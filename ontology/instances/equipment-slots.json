@@ -1,0 +1,24 @@
+{
+  "$schema": "equipment-slot",
+  "_doc": "13 ItemData slots on EntityData.equipment. Indices 2-7 carry HP (chest x1.0, others x0.5). Exact index mapping partly inferred (?).",
+  "slots": [
+    {"id": "unknown-0",   "index": 0,  "accepts": [], "note": "unused (?)"},
+    {"id": "amulet",      "index": 1,  "accepts": ["amulet"], "note": "index inferred (?)"},
+    {"id": "chest",       "index": 2,  "accepts": ["chest-armor"], "hp-mult": 1.0},
+    {"id": "gloves",      "index": 3,  "accepts": ["gloves"], "hp-mult": 0.5},
+    {"id": "boots",       "index": 4,  "accepts": ["boots"], "hp-mult": 0.5},
+    {"id": "shoulders",   "index": 5,  "accepts": ["shoulder-armor"], "hp-mult": 0.5},
+    {"id": "main-hand",   "index": 6,  "accepts": ["weapon"], "input": "M1", "hp-mult": 0.5},
+    {"id": "off-hand",    "index": 7,  "accepts": ["weapon", "shield"], "input": "M2", "hp-mult": 0.5},
+    {"id": "ring-left",   "index": 8,  "accepts": ["ring"]},
+    {"id": "ring-right",  "index": 9,  "accepts": ["ring"]},
+    {"id": "lamp",        "index": 10, "accepts": ["lamp"], "versions": ["A"], "note": "S: innate F ability"},
+    {"id": "special",     "index": 11, "accepts": ["hang-glider", "boat"], "versions": ["A"], "note": "S: key items live in Special tab per land"},
+    {"id": "pet",         "index": 12, "accepts": ["pet-cage"]}
+  ],
+  "extra": {
+    "consumable": {"accepts": ["consumable"], "input": "Q", "note": "separate EntityData.consumable field; chosen via quick-select wheel"},
+    "pet-food": {"accepts": ["pet-food"], "note": "equipped in the pet slot while taming"}
+  },
+  "rules": ["left/right click auto-equips to correct slot if class matches", "red item name = wrong class", "rings do not render on the character"]
+}

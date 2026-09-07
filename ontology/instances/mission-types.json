@@ -1,0 +1,34 @@
+{
+  "$schema": "mission-type",
+  "alpha": {
+    "boss-kill": {"name": "Mission (boss kill)", "icon": "crossed swords", "sites": ["castle", "catacomb", "temple", "pyramid", "ruins", "giant-tree", "giant-rock", "lake", "island", "canyon", "valley", "forest-dungeon", "mountain", "crater", "peak", "cave"], "grid": "8x8 cells per internal region", "assign": "auto on approach; green speech-bubble villagers point to it", "reward": ["xp", "platinum-coin", "items"], "repeat": "regenerate daily / on sleep; marker vanishes when done", "notes": ["mission bosses (saurian) drop no spirit cube", "group XP bug fixed 2013-07-23"], "versions": ["A"]},
+    "quests-cut": {"name": "Procedural quests", "desc": "2011-12 kill/find quests with generated text (EN/DE), quest region on minimap; cut Jan 2013 ('could remove freedom, repetitive'); pre-2019 concept: quest log, rarity-coloured quests, Old Man giver, amulet fetch, Drolu herbs cauldron", "versions": ["X"]}
+  },
+  "steam": {
+    "_shared": {"discover": "talk to villagers/adventurers or read lore → marker (may be far); tier hidden (white text) until visited on foot", "tiers": ["white", "green", "blue", "purple", "yellow"], "reward": "gear one rarity above tier + coins + 1 potion + gems", "repeat": "most daily (inn reset works); gnomes/books once per land", "completed": "check mark"},
+    "combat-encounter":  {"icon": "crossed swords", "name": "Combat / Invasion / Boss fight", "desc": "kill group + boss; factions fighting each other; necromancers raising undead; captives; destroy spawn structures", "repeat": "daily"},
+    "gnome-supplier":    {"icon": "gnome head", "name": "Gnome Supplier rescue", "count": 4, "tiers": ["white", "green", "blue", "purple"], "desc": "boss holds key or freed on objective; unlocks shop rarity", "repeat": "once"},
+    "book-of-crafting":  {"icon": "hammer", "name": "Book of Crafting", "count": 4, "repeat": "once"},
+    "wizard-tower":      {"icon": "purple gem", "name": "Magic Barrier / Wizard Tower", "count": "≤5", "repeat": "once"},
+    "circle-of-power":   {"icon": "cauldron with fire", "name": "Circle of Power", "count": "several"},
+    "demon-portal":      {"icon": "red portal", "name": "Demon Portal / Altar"},
+    "mana-pump":         {"icon": "battery/clipboard", "name": "Mana Pump"},
+    "mana-inductor":     {"icon": null, "name": "Mana Inductor"},
+    "mana-tree":         {"icon": null, "name": "Mana Tree"},
+    "grand-boss":        {"icon": "skull", "name": "Grand boss encounter", "examples": ["yeti", "mammoth", "saurian", "sea-crab", "troll", "hell-demon", "golems"], "repeat": "daily"},
+    "arena":             {"icon": "skull", "name": "Arena", "repeat": "daily"},
+    "artifact-dungeon":  {"icon": "orange circle", "name": "Artifact dungeon", "desc": "land's ultimate goal; parkour, enemies green→yellow, multiple bosses; may need key items"},
+    "key-item":          {"icon": "item pictogram", "name": "Special / key item", "items": ["reins", "boat", "hang-glider", "climbing-spikes", "divine-harp", "sky-whistle", "spirit-bell", "treasure-spirit"], "desc": "reins need no fight; NPC hint places floating icon on map"},
+    "old-hut":           {"icon": "hut / witch", "name": "Old Hut (witch)", "desc": "village petrified until witch killed"},
+    "captured-npc":      {"icon": null, "name": "Captured NPC rescue", "note": "fixed 0.9.1-5"},
+    "spawner":           {"icon": null, "name": "Molehill / Bone pile / Hornet nest / Slime well", "desc": "destroy spawner"},
+    "faction-encounter": {"icon": null, "name": "Faction encounter", "factions": ["unholy-pact", "cult-of-doom", "obsidian-knights", "order-of-the-light", "druids-of-mana", "steel-empire"]},
+    "camp":              {"icon": "Camp", "name": "Camp boss"},
+    "vault":             {"icon": null, "name": "Vault", "needs": "divine-harp"},
+    "sky-island":        {"icon": null, "name": "Sky island", "needs": "sky-whistle"},
+    "lore":              {"icon": "speech bubble", "name": "Lore site"},
+    "hidden-treasure":   {"icon": null, "name": "Hidden treasure"},
+    "undiscovered":      {"icon": "none", "name": "Undiscovered objective"},
+    "region-completion-order": ["activate shrines", "white quests (gnomes first)", "green", "blue", "purple", "get + gear before leaving"]
+  }
+}

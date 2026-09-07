@@ -1,0 +1,33 @@
+{
+  "$schema": "generator-config",
+  "_doc": "Configs and invariants for §6 generators. Numbers are reverse-engineered facts unless marked design.",
+  "world-scales": {
+    "block-native-units": 65536,
+    "position-type": "int64 (16.16 fixed per axis)",
+    "full-mask": "0x0000FFFFFFFFFFFF",
+    "alpha": {"zone-blocks": 256, "region-zones": 64, "region-blocks": 16384, "regions-per-axis": 1024, "world-blocks-per-axis": 16777216, "mission-cells-per-region": [8, 8], "mission-scale": "region/8", "region-struct-bytes": 88104, "zone-struct-bytes": 200, "spawn-struct-bytes": 4336},
+    "steam": {"zone-blocks": 64, "map-chunk-blocks": 20, "zone-fields": 4096, "field": "base_z + vector<Block>", "block-bytes": 6, "coords-typical-spawn": "±5,000,000 from origin", "origin-poi": "wollays-house"},
+    "generation-neighbourhood": {"region-data": "3x3 around player", "region-seeds": "7x7"},
+    "server-chunk-retire-s": 15,
+    "invariants": ["same seed → same world", "no borders (finite 1024² regions)", "terrain generated on the fly, no precompute"]
+  },
+  "seed": {"alpha-default": 26879, "alpha-source": "server.cfg / world creation UI", "steam": "single fixed shared seed, random spawn"},
+  "time": {"max-time-ms": 86400000, "normal-speed": 10.0, "sleep-speed": 100.0, "day-real-minutes": 144, "inn-hours": [18, 6], "inn-target": 7, "reset-hour": 0},
+  "climate": {"fields": ["temperature", "humidity"], "bands": "see landscapes.json climate; devlog: high temp + high humidity → jungle", "hud": true},
+  "land": {"alpha-level": "rises with distance from world spawn (all creatures share)", "alpha-rarity": "0-4 rare zones (?)", "steam-tiers": ["white", "green", "blue", "purple", "yellow"], "border": "dotted map line, no wall", "equal-size": true, "steam-per-land": {"gnomes": 4, "books": 4, "movement-items": 4, "ticket-items": 3, "key-items-max": 9, "towers-max": 5, "circles": "≥1", "artifacts": "1-3 (?)", "settlements": "≥1"}, "alpha-per-land": {"settlements": 1, "mission-cells": 64}},
+  "terrain": {"block-palette": "block-types.json", "features": "terrain-features.json", "water-level": "unknown (?)", "noise-params": "unknown; alpha generator exists only as x86 code wrapped by cuwo tgen", "roads": "auto tunnels through mountains, bridges over canyons", "caves": "type 18 (S)", "rivers": "with waterfalls; lava/toxic variants"},
+  "coarse-map-omega": {"places": ["streets", "buildings", "rivers", "bridges", "trees", "caves", "fields", "windmills", "watchtowers", "walls", "fences", "street lights"], "then": "voxel detail on the fly", "planned-use": ["NPC navigation between distant places", "quest design"]},
+  "settlement": {"alpha-count": 1, "steam-count": "several", "districts-alpha": ["trade", "crafting", "adventurer", "portal", "palace"], "buildings-procedural": ["rooms", "sizes", "roofs"], "style-by-landscape": "buildings.json#settlement-styles", "inn": {"A": "several", "S": 1}},
+  "dungeon": {"alpha-layout": "linear + dead end", "steam-layout": "room gauntlet, rising tiers", "group-size": [2, 4], "mob-tier": "above surface", "traps-alpha": ["spike"], "traps-data-x": ["fire", "stomp"], "boss": {"A": 1, "S": "several"}, "artifact-s": "castles always", "size-cap-s": "0.9.3-0"},
+  "spawns": {"group-sizes": "creatures.json group", "hostility": "creatures.json h", "humanoid-class": "any of 4 classes + spec", "alpha-multipliers": ["+1", "+2", "+3", "+4"], "farm-animals": "white, never aggressive", "night-lanterns": true, "reset": "midnight", "ocean-s-bug": "nearly empty"},
+  "boss": {"chance": "low, any species", "traits": ["named", "enlarged (double-scale flag)", "tier-coloured name", "1-2 random special moves", "breaks terrain", "guards"], "special-pool": ["ground stomp", "fire missiles", "summon zombies", "summon weaker copies / clone", "slowing lava trap", "channelled explosion", "charge", "cyclone", "earthquake", "boulder throw", "doppelganger"], "alpha-size-scaling": "1 at lvl 1 → full at lvl 10", "alpha-spirit-drop": "fixed type+level per boss", "steam-loot": "+1 tier", "coins-s": 20, "arena-waves": [["white","green"],["white","green"],["green","blue"],["blue","purple"],["purple","yellow"]]},
+  "names": {"land": "<Name> Plains|Hills|Mountains|Village|City|Road|Forest", "dungeon": "dungeon-types.json naming", "realm": "factions.json#realm-name-examples", "item": "affixes.json", "quarter": ["Trade Quarter", "Crafting Quarter", "Class Quarter", "Pet Quarter", "Portal", "Palace"], "uniqueness": false, "examples": ["Coria Plains", "Lanno Plains", "Sanion Hills", "Marnis Mountains", "Arris City", "Akar Village", "Caion Road", "Temple of Arno", "Tririon City", "Duragar Forest", "Vardara Forest"]},
+  "item": {"roll": "((attributes<<16)+modifier) % 21", "rarity-range": [0, 4], "mythical-bug": false, "stat-curves": "stats.json#alpha-item-stat-formulas", "cubes-max": {"1h": 16, "2h": 32}, "plus-chance-s": "rare roll; ~1-2 per cleared land", "name-rule": "epic/legendary named"},
+  "loot": "economy.json#loot",
+  "realm": {"kinds": ["kingdom", "realm", "cult", "tribe"], "leader-fields": ["name", "trait", "birth-year", "hometown", "tomb"], "capital-fields": ["name", "founding-year", "destruction-date?"], "lore-per-site-pct": 10, "reveal-at": 100},
+  "npc-appearance": {"asset-counts": "races.json", "hair-rgb": "free", "omega": "fully procedural + expressions"},
+  "schedule": {"stops": ["home", "park", "shops", "inn"], "sleep": "night", "campsite-rest": true, "lantern-night": true},
+  "key-items-s": {"rule": "spawn only if lock type exists (harp→divine door, bell→crypt gate, whistle→bird statue, boat→water)"},
+  "level-formulas-alpha": "stats.json#alpha-character-formulas",
+  "network-alpha": {"port": 12345, "protocol": "TCP", "client-version": 3, "tick-hz": 50, "compression": "zlib", "authority": "client (anticheat scripts)", "packets-c2s": {"0": "EntityUpdate", "6": "Interact", "7": "Hit", "8": "Passive", "9": "Shoot", "10": "ChatMessage", "11": "ChunkDiscovered", "12": "SectorDiscovered", "17": "ClientVersion"}, "packets-s2c": {"0": "EntityUpdate", "1": "MultipleEntityUpdate", "2": "UpdateFinished", "3": "AirshipUpdate", "4": "ServerUpdate", "5": "CurrentTime", "10": "ServerChatMessage", "15": "SeedData", "16": "JoinPacket", "17": "ServerMismatch", "18": "ServerFull"}, "max-players": "4 (10 ?)", "hit-types": {"0": "normal", "1": "block", "3": "miss", "5": "absorb"}, "interact-types": {"2": "npc", "3": "normal", "5": "pickup", "6": "drop", "8": "examine"}, "anticheat-caps": {"level": 1000, "rarity": 4, "air-time-s": 10}}
+}

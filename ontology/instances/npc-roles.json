@@ -1,0 +1,29 @@
+{
+  "$schema": "npc-role",
+  "villager":           {"name": "Villager", "building": "house", "schedule": "home → park → shops → inn; sleeps at night; lantern at night", "dialogue": ["random banter", "mission hints", "key item hints ('saw a special item… didn't need it')", "lore"], "attackable": "no (unless possessed)", "versions": ["A","S"]},
+  "weapon-vendor":      {"name": "Weapon Vendor", "building": "weapon-shop", "service": "sells weapons (A +1..+100 any class; S worn→legendary by gnomes), buys anything", "versions": ["A","S"]},
+  "armor-vendor":       {"name": "Armor Vendor", "building": "armor-shop", "service": "sells armor, buys anything", "versions": ["A","S"]},
+  "item-vendor":        {"name": "Item Vendor / General Store", "building": "item-shop", "service": "A: materials, pet food, formulas, iron lamps, gliders, boats, sugar cubes, flasks; S: flasks (1 coin), bombs, sugar cubes, 1 pet food/day, legendary rings/amulets after 4 gnomes", "versions": ["A","S"]},
+  "identifier":         {"name": "Identifier (A) / Analyst (S)", "building": "identifier", "sign": "magnifying glass", "service": "identifies leftovers for a fee by level & quality; may roll +1 tier; does not buy", "versions": ["A","S"]},
+  "innkeeper":          {"name": "Innkeeper", "building": "inn", "service": "18:00-06:00 → 07:00; A free; S 10 coins + re-roll daily missions; beds heal", "versions": ["A","S"]},
+  "class-trainer":      {"name": "Class Trainer / Master", "building": "class-trainer", "service": "specialization change (fee), respec; practice targets", "versions": ["A"]},
+  "guild-receptionist": {"name": "Guild Master / Receptionist", "building": "guild", "sign": "crown", "service": "specialization swap, free", "versions": ["S"]},
+  "adapter":            {"name": "Adapter", "building": "adapter", "sign": "crossed swords", "service": "re-level item to player power for platinum coins; lowering free", "versions": ["A"]},
+  "flight-master":      {"name": "Flight Master", "building": "flight-master", "service": "buy flight points (min 100 coins, scales with distance, permanent); fly to undiscovered points; free to friends; drops you with temporary glider; 5-30 s flight", "versions": ["S"]},
+  "gem-trader":         {"name": "Gem Trader", "building": null, "service": "roaming gnome: sells emerald 100 / sapphire 200 / ruby 400 / diamond 800; buys anything; fights nearby enemies", "versions": ["S"]},
+  "gnome-supplier":     {"name": "Gnome Supplier", "building": null, "service": "captive (4/land); rescue raises shop stock rarity; drops rewards at your feet", "versions": ["S"]},
+  "arena-master":       {"name": "Arena Master", "building": "arena", "species": "bloodaxe-orc", "service": "starts 5-wave arena", "versions": ["S"]},
+  "carpenter":          {"name": "Carpenter", "building": "workshop", "versions": ["A","S"]},
+  "guard":              {"name": "Guard", "building": "watchtower / frontier wall (X)", "versions": ["A","S"]},
+  "adventurer":         {"name": "Adventurer group", "building": null, "behaviour": "roam and fight monsters like players; some hostile (rarity-coloured names)", "versions": ["A","S"]},
+  "captive":            {"name": "Captured NPC", "service": "rescue mission objective", "versions": ["S"]},
+  "sage":               {"name": "Sage (tower identifier)", "versions": ["A"], "note": "2012 devlog naming of identifier"},
+  "old-man":            {"name": "Old Man quest giver", "versions": ["X"]},
+  "architect":          {"name": "Architect", "service": "house building (2012 prototype)", "versions": ["X"]},
+  "disenchanter":       {"name": "Disenchanter", "service": "iron cubes from gear (2012)", "versions": ["X"]},
+  "wollay-pixxie":      {"name": "Wollay & Pixxie", "building": "wollays-house", "versions": ["S"]},
+  "dialogue-corpus": {
+    "known-lines": ["Dungeons are a dangerous place. Don't forget to take some potions with you.", "PLAY THE DIVINE TUNE TO UNLOCK SEALED AREAS IN THE <land>", "<barrier cleared message>", "lore tablet: a hero who died fighting a Skeleton Horse"],
+    "mechanics": ["speech bubbles", "A green bubble = mission giver", "S dialog options in bubbles (0.9.2-0)", "NPCs face player in range", "2011 quest text generated from phrase sets EN/DE (X)"]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "static-entity",
+  "_doc": "Alpha static entity type ids (cuwo STATIC_NAMES). Header: type, pos, orientation (0 S,1 E,2 N,3 W), size, closed, time_offset, user_id (sitter). Sit-able: sleeping-mat, stool, bench, bed. Open-able: window, castle-window, door, big-door, chest.",
+  "by-id": {
+    "0": "statue", "1": "door", "2": "big-door", "3": "window", "4": "castle-window", "5": "gate", "6": "fire-trap", "7": "spike-trap", "8": "stomp-trap", "9": "lever", "10": "chest", "11": "chest-top-02",
+    "12": "table", "13": "table", "14": "table", "15": "stool", "16": "stool", "17": "stool", "18": "bench", "19": "bed", "20": "bed-table",
+    "21": "market-stand-1", "22": "market-stand-2", "23": "market-stand-3", "24": "barrel", "25": "crate", "26": "open-crate", "27": "sack", "28": "shelter", "29": "cupboard", "30": "desktop", "31": "counter",
+    "32": "shelf-1", "33": "shelf-2", "34": "shelf-3", "35": "castle-shelf-1", "36": "castle-shelf-2", "37": "castle-shelf-3", "38": "stone-shelf-1", "39": "stone-shelf-2", "40": "stone-shelf-3", "41": "sandstone-shelf-1", "42": "sandstone-shelf-2", "43": "sandstone-shelf-3",
+    "44": "corpse", "45": "rune-stone", "46": "artifact", "47": "flower-box-1", "48": "flower-box-2", "49": "flower-box-3", "50": "street-light", "51": "fire-street-light",
+    "52": "fence-1", "53": "fence-2", "54": "fence-3", "55": "fence-4", "56": "vase-1", "57": "vase-2", "58": "vase-3", "59": "vase-4", "60": "vase-5", "61": "vase-6", "62": "vase-7", "63": "vase-8", "64": "vase-9",
+    "65": "campfire", "66": "tent", "67": "beach-umbrella", "68": "beach-towel", "69": "sleeping-mat",
+    "71": "furnace", "72": "anvil", "73": "spinning-wheel", "74": "loom", "75": "saw-bench", "76": "workbench", "77": "customization-bench"
+  },
+  "behaviour": {
+    "door|big-door|gate": "open/close; gates locked by keys/harp/bell (S); objects can't be used through walls (0.9.1-4); mages can't teleport through gates (0.9.2-0)",
+    "chest": "loot; A small chests in houses empty; S one-time dungeon chests",
+    "lever": "dungeon puzzle (2012)",
+    "fire-trap|stomp-trap": "in data, not shipped (X)",
+    "spike-trap": "A dungeons; pierces dodge i-frames",
+    "bed|sleeping-mat|bench|stool": "sit/sleep; sleeping advances clock 100x; beds heal",
+    "vase": "A breakable loot",
+    "campfire": "cooking station",
+    "statue": "revival statue (A)",
+    "market-stand|barrel|crate|sack": "decorative trade district"
+  },
+  "s-additions": ["magic-crystal", "brazier", "mana-generator", "mana-pump", "demon-portal", "bird-statue", "menhir/tablet", "divine door", "cage", "molehill", "bone-pile", "hornet-nest", "slime-well", "shrine-of-life"],
+  "candles": {"colors": ["red", "pink", "green"], "sizes": ["small", "tall", "large forked"], "placement": "red/pink in dungeons/palaces/castles (yellow light); green in ruins/catacombs (green light)"}
+}

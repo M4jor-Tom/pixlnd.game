@@ -1,0 +1,16 @@
+{
+  "$schema": "slash-command",
+  "/connect <addr>": {"desc": "connect to server (seamless if same seed / reconnect)", "versions": ["A"]},
+  "/disconnect":     {"desc": "leave server", "versions": ["A"]},
+  "/name <name>":    {"desc": "rename player", "versions": ["A"]},
+  "/namepet <name>": {"desc": "name active pet", "versions": ["A","S"]},
+  "/pvp":            {"desc": "both players type to duel (modded servers ?)", "versions": ["A?"]},
+  "/sit":            {"desc": "emote", "versions": ["S", "A?"]},
+  "/wave":           {"desc": "emote", "versions": ["S"]},
+  "/dance":          {"desc": "emote", "versions": ["S"]},
+  "/pet":            {"desc": "emote", "versions": ["S"]},
+  "/level":          {"desc": "debug (2012 devlog)", "versions": ["X"]},
+  "!goto <player> / !tp <loc>": {"desc": "modded servers", "versions": ["A-mod"]},
+  "cuwo-server-commands": ["/player", "/pm", "/server", "/who", "/whowhere", "/whereis", "/login", "/say", "/kick", "/setclock", "/ban", "/unban", "/kill", "/stun", "/heal"],
+  "chat-rules": {"key": "Enter", "charset": "ASCII 32-126 displayed", "name-length": "2-16"}
+}

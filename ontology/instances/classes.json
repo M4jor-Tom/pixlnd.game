@@ -1,0 +1,57 @@
+{
+  "$schema": "character-class",
+  "warrior": {
+    "name": "Warrior", "id-number": 1,
+    "weapon-types": ["sword", "axe", "mace", "shield", "greatsword", "greataxe", "greatmace"],
+    "weapon-loadouts": ["dual 1h", "1h + shield", "2h"],
+    "armor-material": "iron", "armor-weight": "heavy",
+    "mp-generation": ["basic hits", "successful blocks"],
+    "special-attack-mode": "charged",
+    "specializations": ["berserker", "guardian"],
+    "hp-multiplier-alpha": 1.30,
+    "versions": ["A","S","Ω"]
+  },
+  "ranger": {
+    "name": "Ranger", "id-number": 2,
+    "weapon-types": ["bow", "crossbow", "boomerang"],
+    "weapon-loadouts": ["2h"],
+    "armor-material": "linen", "armor-weight": "medium",
+    "mp-generation": ["basic hits", "stealth (sniper)"],
+    "special-attack-mode": "charged",
+    "specializations": ["sniper", "scout"],
+    "hp-multiplier-alpha": 1.10,
+    "notes": ["unlimited ammo", "strafes like a shooter, free aim"],
+    "versions": ["A","S","Ω"]
+  },
+  "mage": {
+    "name": "Mage", "id-number": 3, "alt-name": "Spirit Mage (2012)",
+    "weapon-types": ["staff", "wand", "bracelet"],
+    "weapon-loadouts": ["2h staff", "wand", "dual bracelets"],
+    "armor-material": "silk", "armor-weight": "light",
+    "mp-generation": ["passive regeneration to 100"],
+    "special-attack-mode": "charged",
+    "special-attack-cost-mp": 30,
+    "specializations": ["fire-mage", "water-mage"],
+    "hp-multiplier-alpha": 1.00,
+    "notes": ["unarmed = weak bracelet-like bolts", "fire spells light the area like a 2-star lantern"],
+    "versions": ["A","S","Ω"]
+  },
+  "rogue": {
+    "name": "Rogue", "id-number": 4,
+    "weapon-types": ["dagger", "fist", "longsword"],
+    "weapon-loadouts": ["dual 1h (dagger/fist mix allowed)", "2h longsword"],
+    "armor-material": "cotton", "armor-weight": "medium (?) / light",
+    "mp-generation": ["basic hits", "shuriken hits", "stealth (assassin)", "dodges (ninja)"],
+    "special-attack-mode": "instant",
+    "specializations": ["assassin", "ninja"],
+    "hp-multiplier-alpha": 1.20,
+    "notes": ["right-hand weapon decides animation and special", "specials can be prefixed with Intercept (S)"],
+    "versions": ["A","S","Ω"]
+  },
+  "_paladin": {"name": "Paladin", "status": "X — mentioned as possible future class in 2012, never shipped; Order of the Light paladins exist as NPCs (S)"},
+  "_shared": {
+    "unarmed": "punch; unarmed special = short roundhouse kick",
+    "accessories": "all classes: 1 amulet, 2 rings (gold = crit, silver = tempo/haste)",
+    "spec-change": {"A": "adventurer district, next to class trainer, open skills [X], small coin fee; full respec possible", "S": "guild receptionist / trainer in any village, free"}
+  }
+}

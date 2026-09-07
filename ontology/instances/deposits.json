@@ -1,0 +1,13 @@
+{
+  "$schema": "deposit",
+  "_doc": "Entities 131-139 (alpha). Found in caves and underwater caves; yield 1-3; respawn at 0:00; rarely inside boulders needing bombs; harvested by attacking.",
+  "gold-deposit":      {"aid": 131, "yields": "gold-nugget", "versions": ["A","S"]},
+  "iron-deposit":      {"aid": 132, "yields": "iron-nugget", "versions": ["A","S"], "note": "rockling mimics its look"},
+  "silver-deposit":    {"aid": 133, "yields": "silver-nugget", "versions": ["A","S"]},
+  "sandstone-deposit": {"aid": 134, "yields": "sandstone", "versions": ["A"]},
+  "emerald-deposit":   {"aid": 135, "yields": "emerald", "versions": ["A","S"], "note": "may also drop lollipop"},
+  "sapphire-deposit":  {"aid": 136, "yields": "sapphire", "versions": ["A","S"]},
+  "ruby-deposit":      {"aid": 137, "yields": "ruby", "versions": ["A","S"]},
+  "diamond-deposit":   {"aid": 138, "yields": "diamond", "versions": ["A","S"]},
+  "ice-crystal":       {"aid": 139, "yields": "ice-cube", "lands": ["snowlands"], "versions": ["A","S"]}
+}

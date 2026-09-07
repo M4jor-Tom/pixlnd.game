@@ -1,0 +1,29 @@
+{
+  "$schema": "block-type",
+  "_doc": "Every block also carries RGB. Alpha: 5-bit type + breakable bit + darkness flag. 1.0: Block = r,g,b,field_3,type,breakable (6 bytes).",
+  "alpha": {
+    "0": {"id": "air", "solid": false},
+    "1": {"id": "solid", "solid": true, "note": "generic"},
+    "2": {"id": "water", "solid": false, "note": "no colour"},
+    "3": {"id": "flat-water", "solid": true, "note": "walkable; sides coloured, top looks like water"},
+    "4": {"id": "grass", "solid": true},
+    "5": {"id": "field-cliff", "solid": true, "note": "fields near cities and plateau cliff borders (not lava lands)"},
+    "6": {"id": "rock-building", "solid": true, "note": "rocks, buildings (cities, castles), lava-land cliffs"},
+    "7": {"id": "tree-trunk", "solid": true},
+    "8": {"id": "leaves", "solid": true, "note": "incl. snow on leaves"},
+    "9": {"id": "sand", "solid": true},
+    "10": {"id": "snow", "solid": true},
+    "11": {"id": "solid-2", "solid": true, "note": "unknown"},
+    "12": {"id": "lava-floor", "solid": true, "note": "floor in lava lands"},
+    "13": {"id": "solid-3", "solid": true, "note": "unknown"},
+    "14": {"id": "roof", "solid": true, "note": "normal house roofs (special buildings use 6)"},
+    "15": {"id": "solid-4", "solid": true, "note": "unknown"},
+    "flags": {"breakable": "by bombs/bosses; regenerates ~3 game days", "dark": "mesh/cave darkness"}
+  },
+  "steam": {
+    "0": "air", "1": "solid", "2": "water", "3": "wet", "4": "grass", "5": "ground", "6": "building", "7": "tree", "8": "leaves", "10": "snow", "11": "snow-leaves", "13": "path", "17": "lava", "18": "cave", "19": "poison",
+    "note": "poison = toxic rivers (deadlands/dark woods); lava = hazard"
+  },
+  "scale": {"block-native-units": 65536, "alpha-zone-blocks": 256, "steam-zone-blocks": 64, "steam-map-chunk-blocks": 20, "character-height-m": "≈2"},
+  "cub-format": {"header": "3 × uint32 LE (x,y,z size)", "body": "x*y*z × RGB bytes, loop for z: for y: for x", "empty": "RGB (0,0,0)", "compression": "none", "storage": "alpha data1.db sqlite (obfuscated)"}
+}

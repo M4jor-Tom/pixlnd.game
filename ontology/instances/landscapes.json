@@ -1,0 +1,23 @@
+{
+  "$schema": "landscape",
+  "_doc": "climate = temperature × humidity band (devlog 2012-01). Fauna lists in creature-families.json#landscape-rosters.",
+  "greenlands":   {"name": "Greenlands", "climate": {"temp": "mild", "humidity": "mid"}, "terrain": ["grass hills", "forests (birch/pine/normal)", "caves", "plains", "mountains"], "flora": ["mushroom", "ginseng", "dragon-root (S)", "bush", "heartflower", "cotton-plant", "scrub", "apple-tree"], "dungeons": ["castle", "catacomb", "ruins", "forest-dungeon"], "style": "european-framework | medieval-stone", "versions": ["A","S"]},
+  "snowlands":    {"name": "Snowlands", "climate": {"temp": "cold", "humidity": "any"}, "terrain": ["snow", "high mountains", "frozen lakes (Ω ice physics)"], "flora": ["snowberry-bush", "iceflower", "snow-bush", "snow-on-leaves"], "hazards": ["cold-water (slow 15 s; hot chocolate counters)"], "dungeons": ["castle", "catacomb"], "style": "log-houses", "versions": ["A","S"]},
+  "deserts":      {"name": "Deserts", "climate": {"temp": "≈36 °C", "humidity": "≈5 %"}, "terrain": ["dunes (red/orange/yellow sand)", "pyramids", "lava lakes", "oasis", "rare rivers", "occasional forest"], "flora": ["cactus", "fire-shrub", "habanero/chiling plants"], "dungeons": ["pyramid", "desert-ruins"], "style": "desert", "versions": ["A","S"]},
+  "jungles":      {"name": "Jungles", "climate": {"temp": "hot", "humidity": "high"}, "terrain": ["dense large trees", "rivers"], "flora": ["cocoa-tree", "banana-tree", "large trees"], "dungeons": ["temple", "jungle-ruins"], "style": "jungle (orange roofs)", "versions": ["A","S"]},
+  "lava-lands":   {"name": "Lava Lands", "climate": {"temp": "extreme", "humidity": "dry"}, "terrain": ["magma", "lava rivers", "charred terrain (very dark at night)", "volcanoes"], "flora": ["fire-shrub", "thorn-tree"], "hazards": ["lava (burn; lemonade counters)"], "dungeons": ["citadel", "pyramid"], "style": "lava-city", "notes": ["overrun by legendary-tier groups (S)"], "versions": ["A","S"]},
+  "oceans":       {"name": "Oceans", "climate": {"temp": "any", "humidity": "water"}, "terrain": ["water", "small islands", "named large islands", "underwater caves"], "dungeons": ["temple (large islands)", "island", "arena (more common)"], "style": "ocean-city (islands)", "notes": ["swim ≈ ½ walk speed", "A infinite breath, S drowning", "S oceans nearly empty (spawn bug)", "A level-≈5 sea mobs"], "versions": ["A","S"]},
+  "savannahs":    {"name": "Savannahs", "climate": {"temp": "warm", "humidity": "dry"}, "terrain": ["dried grass", "acacia trees"], "flora": ["fire-shrub", "acacia"], "dungeons": ["fort"], "versions": ["S"], "planned": "2013"},
+  "wetlands":     {"name": "Wetlands", "climate": {"temp": "mild", "humidity": "very high"}, "terrain": ["scattered ponds", "land chunks", "rivers"], "dungeons": [], "versions": ["S"]},
+  "swamp-lands":  {"name": "Swamp Lands", "note": "wiki lists it ('wetlands with many forests and large rivers; rivers for boats'); distinct from Wetlands in 1.0 unverified (?)", "versions": ["S?"], "planned": "2013"},
+  "dark-woods":   {"name": "Dark Woods", "climate": {"temp": "cool", "humidity": "high"}, "terrain": ["dark forest, purple/blue bioluminescent foliage", "toxic rivers", "dark by day"], "hazards": ["toxic-river (poison; green smoothie counters)"], "style": "undead (dark grey, pointed roofs, green lights)", "versions": ["S"]},
+  "deadlands":    {"name": "Deadlands (Undead Lands)", "climate": {"temp": "any", "humidity": "any"}, "terrain": ["contaminated", "bioluminescent vegetation", "toxic rivers", "green sky", "graveyards"], "hazards": ["toxic-river"], "style": "undead", "population": "undead villagers", "versions": ["S"], "planned": "2013 as Undead Lands"},
+  "mountains":    {"name": "Mountains", "climate": {"temp": "mild", "humidity": "mid"}, "terrain": ["whole land deemed mountainous; resembles greenlands", "e.g. 'Marnis Mountains'"], "versions": ["S"]},
+  "mushroom-lands": {"name": "Mushroom Lands", "terrain": ["giant mushrooms", "huge insects"], "versions": ["X"], "planned": "2013, never shipped"},
+  "_shared": {
+    "region-shape": "roughly equal-sized lands; dotted map borders; no physical walls; features may appear off-biome (volcano in snow, forest in desert)",
+    "alpha-land-level": "rises with distance from world start; all creatures share it (conflict with 'all power ranges per land' ?)",
+    "s-difficulty": "mob strength colours; each land has own regular + legendary enemies",
+    "village-styles": ["european-framework", "medieval-stone", "north-american-wood", "log", "desert", "jungle", "undead", "lava", "ocean"]
+  }
+}

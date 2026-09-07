@@ -1,0 +1,13 @@
+{
+  "$schema": "crafting-station",
+  "_doc": "static-entity ids from cuwo. Located in the Crafting District (A) / around villages (S). Crafting menu key C shows required station.",
+  "furnace":             {"name": "Furnace", "static-id": 71, "building": "smithy", "does": "nuggets → metal cubes", "versions": ["A","S"]},
+  "anvil":               {"name": "Anvil", "static-id": 72, "building": "smithy", "does": "metal weapons, iron armor, fists, medium armors (X)", "versions": ["A","S"]},
+  "customization-bench": {"name": "Customization Bench", "static-id": 77, "building": "smithy", "does": "attach material cubes (A+S) and spirit cubes (A) to weapons; rotate with M3, drag cubes", "versions": ["A","S"]},
+  "spinning-wheel":      {"name": "Spinning Wheel", "static-id": 73, "building": "clothier", "does": "fiber/capsule/cobweb → yarn", "versions": ["A","S"]},
+  "loom":                {"name": "Loom", "static-id": 74, "building": "clothier", "does": "cloth armor (linen/cotton/silk); bows/crossbows also use yarn", "versions": ["A","S"]},
+  "saw":                 {"name": "Saw (Saw Bench)", "static-id": 75, "building": "workshop", "does": "wood log → wood cube", "versions": ["A","S"]},
+  "workbench":           {"name": "Workbench", "static-id": 76, "building": "workshop", "does": "wooden weapons: staves, wands, bows, crossbows, boomerangs, wooden maces; +12 wood cube upgrade (A)", "versions": ["A","S"]},
+  "campfire":            {"name": "Campfire", "static-id": 65, "building": "campsite", "does": "cooking & alchemy marked campfire; thaw iceflower; standing in it does no damage", "versions": ["A","S"]},
+  "anywhere":            {"name": "No station", "does": "water flask (in water), pineapple slice, snowberry mash, most potions/elixirs/beverages, rings & amulets", "versions": ["A","S"]}
+}

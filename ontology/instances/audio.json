@@ -1,0 +1,21 @@
+{
+  "$schema": "audio",
+  "composer": "Wollay (Wolfram von Funck) — coder, designer, composer; SoundCloud wol_lay",
+  "tracks": {
+    "cube-world-explorers": {"date": "2013", "role": "video theme / first OST track"},
+    "new-lands": {},
+    "awakening": {},
+    "druids-of-mana": {"date": "2015-10-04", "length": "1:58", "faction": "druids-of-mana"},
+    "the-steel-empire": {"date": "2015-10-05", "faction": "steel-empire"},
+    "order-of-the-light": {"date": "2015-10-06", "faction": "order-of-the-light"},
+    "bgum": {"date": "2016-08-21 (?)", "role": "dungeon"},
+    "ocean-music-2017": {"date": "2017-04", "role": "new ocean music"},
+    "omega-tracks": {"date": "2023"},
+    "spirit-world": {"role": "spooky music + fog during spirit bell"},
+    "_gap": "full 2019 tracklist not retrieved (gamerip exists)"
+  },
+  "music-rules": {"loop-option": "0.9.1-4", "volume-sliders": "separate", "backend": "xAudio2 (Win7 unsupported)"},
+  "sfx-alpha-ids": ["hit", "blade1", "blade2", "long-blade1", "long-blade2", "punch1", "punch2", "hit-arrow", "hit-arrow-critical", "smash1", "slam-ground", "swing", "swing-slow", "shield-swing", "arrow-destroy", "salvo2", "block", "shield-slam", "roll", "destroy2", "cry", "levelup2", "missioncomplete", "water-splash01", "step2", "step-water1", "step-water2", "step-water3", "channel2", "channel-hit", "fireball", "fire-hit", "magic02", "lich-scream", "drink2", "pickup", "disenchant2", "upgrade2", "swirl", "human-voice01", "human-voice02", "gate", "spike-trap", "fire-trap", "lever", "charge2", "drop", "drop-coin", "drop-item", "male/female groans per race (human, goblin, lizard, dwarf, orc, undead, frogman)", "monster-groan", "troll-groan", "mole-groan", "slime-groan", "zombie-groan", "Explosion", "menu-open2", "menu-close2", "menu-select", "menu-tab", "menu-grab-item", "menu-drop-item", "craft", "craft-proc", "absorb", "manashield", "bulwark", "bird1", "bird2"],
+  "voices": "each race has distinct groans/voices",
+  "ambient": {"Ω": ["butterflies", "moths around street lights", "chimney smoke", "water lilies"], "S": ["wraith swiping", "nightly lanterns"]}
+}

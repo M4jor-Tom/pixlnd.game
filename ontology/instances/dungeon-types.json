@@ -1,0 +1,33 @@
+{
+  "$schema": "dungeon-type",
+  "_doc": "Alpha location table (cuwo LOCATION_NAMES): type ids 1 Village, 2 Mountain, 3 Forest, 4 Lake, 5 Ruins/Gravesite, 6 Canyon, 7 Valley, 8 Crater, 9 Cave, 10 Portal, 11 Rock, 12 Tree, 13 Peak, 14 Castle/Ruins/Catacombs/Palace/Temple/Pyramid, 15 Island. Layout: A linear + dead end with rewards; S room gauntlet with rising-tier bosses.",
+  "castle":   {"name": "Castle / Palace", "alpha-loc": [14, 0], "naming": ["Castle ___", "___ Castle", "Palace ___"], "lands": ["greenlands", "snowlands"], "entrance": "front gate, locked until nearby enemies dead (S)", "contents": {"S": ["always an artifact"]}, "rosters": ["orcs", "humans", "undead"], "versions": ["A","S"]},
+  "fort":     {"name": "Fort", "naming": ["Fort ___"], "lands": ["savannahs"], "desc": "wooden walls, black spire peaks", "versions": ["S"]},
+  "citadel":  {"name": "Citadel", "naming": ["___ Citadel"], "lands": ["lava-lands"], "desc": "angular spires; castle equivalent", "versions": ["S"]},
+  "ruins":    {"name": "Ruins", "alpha-loc": [[5,0],[14,1]], "naming": ["Ruins of ___", "Ancient Ruins of ___"], "lands": ["any", "jungle variant"], "variants": {"dungeon-ruins": "damaged castles", "overworld-ruins": "scattered white Greco-Roman buildings, no interior"}, "versions": ["A","S"]},
+  "gravesite":{"name": "Gravesite", "alpha-loc": [5, 4], "versions": ["A"]},
+  "temple":   {"name": "Temple", "alpha-loc": [14, 4], "naming": ["Temple of ___", "___ Temple"], "lands": ["jungles", "large ocean islands"], "entrance": "near top → spiral staircase down", "versions": ["A","S"]},
+  "pyramid":  {"name": "Pyramid", "alpha-loc": [14, 5], "naming": ["Pyramid of ___", "___ Pyramid"], "lands": ["deserts", "lava-lands"], "entrance": "at top", "rosters": ["ancient-guardian-anubis", "ancient-guardian-horus", "djinn", "skeleton", "cat", "mosquito", "green-slime"], "versions": ["A","S"]},
+  "catacomb": {"name": "Catacombs", "alpha-loc": [14, 2], "naming": ["Catacombs of ___"], "entrance": "small surface chamber / graveyard → underground", "desc": "dark, no windows; S 'super dungeon' with artifact; green candles", "rosters": ["undead"], "versions": ["A","S"]},
+  "vault":    {"name": "Vault (mine / labyrinth)", "entrance": "golden iris door opened by Divine Harp", "desc": "room-by-room gauntlet of rising difficulty → artifact/treasure; /sit roll exploit patched 0.9.1-4", "versions": ["S"]},
+  "den":      {"name": "Den", "naming": ["___ Den"], "lands": ["inside cities"], "versions": ["A","S"]},
+  "sewer":    {"name": "Sewer", "lands": ["under 5-star villages"], "contents": ["artifact"], "versions": ["S"]},
+  "wizard-tower": {"name": "Wizard / Magic Tower", "see": "poi-types.json#wizard-tower", "versions": ["S"]},
+  "forest-dungeon": {"name": "Forest", "alpha-loc": [3, "0-9"], "naming": ["___ Forest", "Galan Wood (planned)"], "desc": "canopy blocks light; campsites; typed roster + boss (creature-families.json#forest-dungeon-rosters)", "versions": ["A","S"]},
+  "mountain": {"name": "Mountain", "alpha-loc": [2, "0-9"], "natural": true, "versions": ["A","S"]},
+  "peak":     {"name": "Peak", "alpha-loc": [13, "0-9"], "natural": true, "versions": ["A"]},
+  "lake":     {"name": "Lake", "alpha-loc": [4, "0-9"], "natural": true, "versions": ["A","S"]},
+  "island":   {"name": "Island", "alpha-loc": [15, "0-9"], "natural": true, "versions": ["A","S"]},
+  "canyon":   {"name": "Canyon", "alpha-loc": [6, "0-9"], "natural": true, "versions": ["A","S"]},
+  "valley":   {"name": "Valley", "alpha-loc": [7, "0-9"], "natural": true, "boss": "centre", "versions": ["A","S"]},
+  "crater":   {"name": "Crater", "alpha-loc": [8, "0-9"], "natural": true, "versions": ["A"]},
+  "cave":     {"name": "Cave", "alpha-loc": [9, 0], "natural": true, "versions": ["A","S"]},
+  "giant-rock": {"name": "Rock (Giant Rock)", "alpha-loc": [11, "0-9"], "natural": true, "boss": "centre/top", "versions": ["A"]},
+  "giant-tree": {"name": "Tree (Giant Tree)", "alpha-loc": [12, "0-9"], "natural": true, "boss": "top", "versions": ["A"], "s-replacement": "mana-tree"},
+  "overworld-dungeon": {"name": "Overworld dungeon", "desc": "freeform disconnected buildings/ruins, boss near centre (2013)", "versions": ["A"]},
+  "_dungeon-rules": {
+    "A": ["linear route, one dead end with main rewards", "spike traps (only shipped trap; fire/stomp in data X)", "breakable vases", "small chests", "loose items on tables/furniture", "one boss", "runestone at entrance to port back (2012 concept)", "+4 dungeon chest may roll mythical"],
+    "S": ["no vases/small chests/traps", "one-time chests", "multiple bosses of rising tier", "artifact at end", "dungeon map uncovers as explored (2017)", "loot land-bound (0.9.1-5)", "magic barriers", "enemy size capped to fit (0.9.3-0)", "locked doors: keys / harp / bell"],
+    "both": ["mobs spawn above surface tier, groups of 2-4", "ogre + collie patrols", "seamlessly integrated into terrain"]
+  }
+}

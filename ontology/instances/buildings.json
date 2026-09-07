@@ -1,0 +1,45 @@
+{
+  "$schema": "building",
+  "districts": {
+    "trade":      {"name": "Trade District / Quarter", "quarter-id": [1,1], "buildings": ["weapon-shop", "armor-shop", "item-shop", "identifier"], "decor": ["market stalls", "crates", "barrels", "square"], "versions": ["A"]},
+    "crafting":   {"name": "Crafting District / Quarter", "quarter-id": [1,2], "buildings": ["smithy", "clothier", "workshop"], "versions": ["A"]},
+    "adventurer": {"name": "Adventurer District / Class Quarter", "quarter-id": [1,3], "buildings": ["class-trainer-warrior", "class-trainer-ranger", "class-trainer-rogue", "class-trainer-mage"], "versions": ["A"]},
+    "pet":        {"name": "Pet Quarter", "quarter-id": [1,4], "versions": ["X"]},
+    "portal":     {"name": "Portal", "quarter-id": [4,0], "versions": ["A"]},
+    "palace":     {"name": "Palace", "quarter-id": [5,0], "versions": ["A"]}
+  },
+  "buildings": {
+    "inn":            {"name": "Inn / Tavern", "roles": ["innkeeper"], "count": {"A": "several per village", "S": "exactly 1"}, "map-icon": "inn", "versions": ["A","S"]},
+    "weapon-shop":    {"name": "Weapon Shop", "sign": "sword", "roles": ["weapon-vendor"], "versions": ["A","S"]},
+    "armor-shop":     {"name": "Armor Shop", "sign": "chest plate", "roles": ["armor-vendor"], "versions": ["A","S"]},
+    "item-shop":      {"name": "Item Shop / General Store", "roles": ["item-vendor"], "versions": ["A","S"]},
+    "identifier":     {"name": "Identifier's Shop / Analyst", "sign": "magnifying glass", "roles": ["identifier"], "desc": "A: sage in a tower", "versions": ["A","S"]},
+    "smithy":         {"name": "Smithy / Blacksmith", "sign": "anvil", "stations": ["furnace", "anvil", "customization-bench"], "versions": ["A","S"]},
+    "clothier":       {"name": "Clothier", "stations": ["spinning-wheel", "loom"], "versions": ["A","S"]},
+    "workshop":       {"name": "Workshop / Carpenter", "sign": "saw", "stations": ["saw", "workbench"], "roles": ["carpenter"], "versions": ["A","S"]},
+    "class-trainer":  {"name": "Class trainer building (x4)", "roles": ["class-trainer"], "desc": "ranger master has aim targets", "versions": ["A"]},
+    "guild":          {"name": "Guild", "sign": "crown", "roles": ["guild-receptionist"], "versions": ["S"]},
+    "adapter":        {"name": "Adapter tower", "sign": "crossed swords", "roles": ["adapter"], "versions": ["A"]},
+    "flight-master":  {"name": "Flight Master perch", "desc": "giant eagle on a perch; every village", "roles": ["flight-master"], "versions": ["S"]},
+    "den":            {"name": "Den", "desc": "in-city dungeon", "versions": ["A","S"]},
+    "house":          {"name": "House", "desc": "procedural rooms/sizes/roofs; villagers sleep here; A small empty chests", "versions": ["A","S"]},
+    "watchtower":     {"name": "Watchtower / walls / iron fences", "versions": ["Ω", "A?"]},
+    "well":           {"name": "Well", "versions": ["A","S"]},
+    "market":         {"name": "Market square", "desc": "stalls, crates, barrels (decorative)", "versions": ["A","S"]},
+    "park":           {"name": "Park / benches / street lights", "versions": ["A","S"]},
+    "windmill":       {"name": "Windmill (turning)", "versions": ["Ω"]}
+  },
+  "settlement-styles": {
+    "european-framework": {"lands": ["greenlands"]},
+    "medieval-stone":     {"lands": ["greenlands"]},
+    "north-american-wood":{"lands": ["greenlands"]},
+    "log":                {"lands": ["snowlands"], "desc": "dark brown wood"},
+    "desert":             {"lands": ["deserts", "savannahs"]},
+    "jungle":             {"lands": ["jungles"], "desc": "orange roofs"},
+    "undead":             {"lands": ["deadlands", "dark-woods"], "desc": "dark grey, pointed roofs, green lights; undead villagers"},
+    "lava":               {"lands": ["lava-lands"]},
+    "ocean":              {"lands": ["oceans"], "desc": "on islands"}
+  },
+  "population": {"majority": "human", "undead-villages": ["deadlands", "dark-woods"], "animals": ["collie", "cat", "sheep", "terrier", "pig"], "growth": "more NPCs accumulate the longer you stand in town", "schedule": "A* daily paths; sleep in inns/homes at night"},
+  "map-visibility": {"A": "always visible; villages = building cluster + green farm dots; zoom shows inn/shop/portal icons", "S": "hidden until discovered"}
+}

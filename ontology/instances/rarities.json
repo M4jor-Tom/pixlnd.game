@@ -1,0 +1,23 @@
+{
+  "$schema": "rarity",
+  "_doc": "One scale colours items, enemies (S mob strength) and missions. Alpha stat curve multiplies by 2^(0.25*rarity); wiki says displayed stats roughly double per tier (?).",
+  "worn":      {"index": -1, "name": "Worn",      "color": "grey",   "hex": "#9a9a9a", "stars": 1, "gem": null,       "named": false, "note": "S: never drops; any gear becomes Worn outside its land (except +); vendors sell only Worn until gnomes rescued", "versions": ["S"]},
+  "common":    {"index": 0,  "name": "Common",    "color": "white",  "hex": "#ffffff", "stars": 1, "gem": null,       "named": false, "versions": ["A","S"]},
+  "uncommon":  {"index": 1,  "name": "Uncommon",  "color": "green",  "hex": "#3ad63a", "stars": 2, "gem": "emerald",  "named": false, "alt-name": "Magic", "versions": ["A","S"]},
+  "rare":      {"index": 2,  "name": "Rare",      "color": "blue",   "hex": "#3a7bd6", "stars": 3, "gem": "sapphire", "named": false, "versions": ["A","S"]},
+  "epic":      {"index": 3,  "name": "Epic",      "color": "purple", "hex": "#b03ad6", "stars": 4, "gem": "ruby",     "named": true,  "versions": ["A","S"]},
+  "legendary": {"index": 4,  "name": "Legendary", "color": "yellow", "hex": "#e6c41a", "stars": 5, "gem": "diamond",  "named": true,  "versions": ["A","S"]},
+  "mythical":  {"index": 5,  "name": "Mythical",  "color": "red (leftovers list) / renders like common", "stars": null, "gem": null, "named": true, "note": "alpha bug: +4 dungeon chests roll +1 above legendary", "versions": ["A","X"]},
+  "mob-strength-tiers-s": {
+    "white":  {"rarity": "common",    "examples": ["farm animals", "never aggressive"], "hp-range": [150, 250]},
+    "green":  {"rarity": "uncommon",  "examples": ["brown alpaca", "plain runner"]},
+    "blue":   {"rarity": "rare",      "examples": ["rockling", "insect guard"]},
+    "purple": {"rarity": "epic",      "examples": ["dungeon mobs", "lion", "chiling"]},
+    "yellow": {"rarity": "legendary", "examples": ["some collies", "all minotaurs", "lava lands groups"], "note": "yellow-text enemies wear legendary gear"}
+  },
+  "alpha-relative-colors": {
+    "landmark-name": {"white": "lower level than player", "blue": "equal", "red": "higher"},
+    "enemy-name (gamepressure)": {"white": "weaker", "light-blue": "equal", "orange": "slightly stronger", "red": "much stronger", "purple": "boss"},
+    "multiplier-tags": ["+1", "+2", "+3", "+4"]
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "$schema": "recipe",
+  "_doc": "Gear quantities documented for cotton armor; assumed identical pattern for linen/silk (yarn) and iron (cubes). Weapon counts largely undocumented (gap D6).",
+  "gear-armor-quantities": {
+    "unit": "yarn (cloth) | cube (iron)",
+    "common":    {"chest": {"base": 10}, "shoulders": {"base": 6}, "gloves": {"base": 5}, "boots": {"base": 5}, "gem": null},
+    "uncommon":  {"chest": {"base": 20, "gem": 4}, "shoulders": {"base": 12, "gem": 2}, "gloves": {"base": 10, "gem": 2}, "boots": {"base": 10, "gem": 2}, "gem": "emerald"},
+    "rare":      {"chest": {"base": 30, "gem": 4}, "shoulders": {"base": 18, "gem": 2}, "gloves": {"base": 15, "gem": 2}, "boots": {"base": 15, "gem": 2}, "gem": "sapphire"},
+    "epic":      {"chest": {"base": 40, "gem": 4}, "shoulders": {"base": 24, "gem": 2}, "gloves": {"base": 20, "gem": 2}, "boots": {"base": 20, "gem": 2}, "gem": "ruby"},
+    "legendary": {"chest": {"base": 50, "gem": 4}, "shoulders": {"base": 30, "gem": 2}, "gloves": {"base": 25, "gem": 2}, "boots": {"base": 25, "gem": 2}, "gem": "diamond"},
+    "stations": {"iron": "anvil", "cotton|linen|silk": "loom"}
+  },
+  "gear-weapons": {
+    "metal-weapon-common": {"inputs": {"iron-cube": 5}, "station": "anvil", "note": "S guide example"},
+    "fist":      {"inputs": {"cotton-yarn": "?", "iron-cube": "?"}, "station": "anvil"},
+    "bow|crossbow": {"inputs": {"wood-cube": "?", "yarn": "?"}, "station": "workbench"},
+    "boomerang|staff|wand": {"inputs": {"wood-cube": "?"}, "station": "workbench"},
+    "bracelet|ring|amulet": {"inputs": {"gold-cube|silver-cube": "?", "gem": "by rarity (legendary ring may need rubies)"}, "station": "none (amulet & ring tab)"},
+    "gem-per-rarity": {"uncommon": "emerald", "rare": "sapphire", "epic": "ruby", "legendary": "diamond"}
+  },
+  "refining": {
+    "iron-cube":   {"inputs": {"iron-nugget": 1}, "station": "furnace"},
+    "silver-cube": {"inputs": {"silver-nugget": 1}, "station": "furnace"},
+    "gold-cube":   {"inputs": {"gold-nugget": 1}, "station": "furnace"},
+    "wood-cube":   {"inputs": {"wood-log": 1}, "station": "saw"},
+    "linen-yarn":  {"inputs": {"plant-fiber": 1}, "station": "spinning-wheel"},
+    "cotton-yarn": {"inputs": {"cotton-capsule": 1}, "station": "spinning-wheel"},
+    "silk-yarn":   {"inputs": {"cobweb": 1}, "station": "spinning-wheel"},
+    "heartflower-from-iceflower": {"inputs": {"iceflower": 1}, "outputs": {"heartflower": "1-3"}, "station": "campfire"},
+    "water-flask": {"inputs": {"glass-flask": 1}, "station": "standing-in-water"}
+  },
+  "cooking": {"see": "consumables.json (pineapple-slice, snowberry-mash, pumpkin-muffin, ginseng-soup, mushroom-spit)"},
+  "alchemy": {"see": "consumables.json (life-potion, cactus-potion, elixir-*, lemonade, hot-chocolate, green-smoothie)"},
+  "crafting-tabs-a": ["weapon (own class)", "armor (own class)", "amulet & ring (all)", "cooking", "alchemy", "ingredients"],
+  "recipe-sources": {"A": "base recipes appear as power grows; Formulas (+1..+100) from vendors/drops/dungeon tables; learn by right-click at sufficient power; duplicates not relearned", "S": "Books of Crafting (4 per land, 3-4 recipes each), land-scoped; once all 4 found no more recipes for that land"},
+  "customization": {"material-cubes": "wood on wood weapons, iron on metal; +1 cubes; +0.1 effective level each; 16 (1H) / 32 (2H, shield); dragging out of window destroys", "spirit-cubes-a": "see materials.json spirits; level window weapon-10..weapon", "fully-modded-legendary-plus-s": "+58-67 damage each (community)"}
+}

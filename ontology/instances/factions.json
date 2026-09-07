@@ -1,0 +1,15 @@
+{
+  "$schema": "faction",
+  "_doc": "Five factions tweeted Oct 2015 (+ 'at least one more'); gameplay presence in S. Realm names are procedural instances of the realm class, not factions.",
+  "order-of-the-light": {"name": "Order of the Light", "alignment": "good", "leader": "Aurus, legendary paladin, sole survivor of three Legendary Paladins of the Unholy War", "members": ["paladin"], "presence": ["paladins on white horses fighting Unholy Pact legions", "own soundtrack"], "versions": ["S"]},
+  "druids-of-mana":    {"name": "Druids of Mana", "alignment": "good", "leader": "Archdruid Kendu (dead, 'still leading')", "members": ["druid", "treant"], "presence": ["mana trees", "assaulted by Steel Empire", "protect ancient runes"], "versions": ["S"]},
+  "unholy-pact":       {"name": "Unholy Pact", "alignment": "evil", "leader": "three ghost preachers (black cloaks, white faces, green pupils)", "members": ["necromancer", "werewolf", "skeleton-knight", "monstrosity", "zombie"], "presence": ["faction missions", "undead raising"], "versions": ["S"]},
+  "steel-empire":      {"name": "Steel Empire (formerly Steel Legion)", "alignment": "evil", "leader": "Empress Cyphera, said to be immortal", "members": ["steel-empire-soldier", "mana-mech"], "presence": ["airship overhead, paratroopers", "mana pumps / inductors", "mana absorption debuff", "roaming groups any tier", "largest sprite: airship 1313 KB"], "versions": ["S"]},
+  "cult-of-doom":      {"name": "Cult of Doom", "alignment": "evil", "leader": "Dow the half-demon", "members": ["dark-cultist", "imp"], "presence": ["demon portals", "possession"], "versions": ["S"]},
+  "bloodaxe-clan":     {"name": "Bloodaxe Clan", "alignment": "hostile", "members": ["bloodaxe-orc"], "presence": ["arena hosts", "lava lands"], "versions": ["S"]},
+  "obsidian-knights":  {"name": "Obsidian Knights", "alignment": "hostile", "members": ["obsidian-knight"], "presence": ["mission enemy group"], "versions": ["S"]},
+  "thaldania-cult":    {"name": "Thaldania Cult", "alignment": "lore", "note": "dwarf-composed procedural cult instance", "versions": ["S"]},
+  "benkal-pirates":    {"name": "Benkal Pirates", "alignment": "hostile", "note": "seen in gallery ('A Benkal Pirate'); no ship dungeon documented", "versions": ["S"]},
+  "bandits":           {"name": "Bandits", "alignment": "hostile", "members": ["bandit"], "versions": ["A"]},
+  "realm-name-examples": {"kingdoms": ["Kurlent", "Vartarar", "Theomida", "Cydriaia", "Kurnort", "Lanmorar", "Tulmida"], "realms": ["Arigorar", "Gadart", "Gekina", "Ardaria", "Cyrmora", "Rimorar", "Cydrisia", "Ulania", "Ledarar", "Rokaar", "Wynlurt", "Vakaa"], "cults": ["Annoia", "Santara", "Markinia", "Roionar", "Theogora", "Thallonar", "Cyrtara"], "tribes": ["Asionia"]}
+}

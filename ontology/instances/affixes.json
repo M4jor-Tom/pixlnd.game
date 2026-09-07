@@ -1,0 +1,12 @@
+{
+  "$schema": "affix",
+  "_doc": "Item name = <prefix> <material> <type> [of <Name> | <Name>'s ...] [+]. Prefix drawn from the item's rarity list. Epic/legendary always carry a name.",
+  "common":    ["Artless", "Battered", "Common", "Dusty", "Plain", "Scratched", "Shabby", "Unwieldy", "Used", "Worn"],
+  "uncommon":  ["Adjusted", "Balanced", "Battle-tested", "Clean", "Fair", "Flawless", "Good", "Handmade", "Neat", "Undamaged"],
+  "rare":      ["Decorated", "Exceptional", "Exquisite", "Extraordinary", "Grand", "Handsome", "Magic", "Polished", "Superb", "Unique"],
+  "epic":      ["Decorated", "Exceptional", "Exquisite", "Extraordinary", "Grand", "Handsome", "Magic", "Polished", "Superb", "Unique"],
+  "legendary": ["Brilliant", "Extraordinary", "Fabulous", "Famous", "Glorious", "Legendary", "Magnificent", "Pompous", "Splendid", "Shining", "Sublime"],
+  "name-forms": ["<prefix> <material> <type> of <Name>", "<Name>'s <prefix> <material> <type>"],
+  "plus-suffix": "+",
+  "examples": ["Plain Iron Sword", "Battle Tested Iron Greatmace", "Extraordinary Iron Longsword of Wolfman", "Glorious Iron Axe of Ziri", "Pompous Wood Wand (Azyna's)", "Drakzic's Brilliant Iron Dagger+", "Legendary Bronze Boots of Kurzy", "Magic Flannell Chest Armor of Zira"]
+}
