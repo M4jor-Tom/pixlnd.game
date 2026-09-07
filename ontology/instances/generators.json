@@ -14,7 +14,7 @@
   "seed": {"alpha-default": 26879, "alpha-source": "server.cfg / world creation UI", "steam": "single fixed shared seed, random spawn"},
   "time": {"max-time-ms": 86400000, "normal-speed": 10.0, "sleep-speed": 100.0, "day-real-minutes": 144, "inn-hours": [18, 6], "inn-target": 7, "reset-hour": 0},
   "climate": {"fields": ["temperature", "humidity"], "bands": "see landscapes.json climate; devlog: high temp + high humidity → jungle", "hud": true},
-  "land": {"alpha-level": "rises with distance from world spawn (all creatures share)", "alpha-rarity": "0-4 rare zones (?)", "steam-tiers": ["white", "green", "blue", "purple", "yellow"], "border": "dotted map line, no wall", "equal-size": true, "steam-per-land": {"gnomes": 4, "books": 4, "movement-items": 4, "ticket-items": 3, "key-items-max": 9, "towers-max": 5, "circles": "≥1", "artifacts": "1-3 (?)", "settlements": "≥1"}, "alpha-per-land": {"settlements": 1, "mission-cells": 64}},
+  "land": {"alpha-level": "replaced (F4): party-level band + per-land danger tier → design.enemy-level", "alpha-rarity": "0-4 rare zones (?)", "steam-tiers": ["white", "green", "blue", "purple", "yellow"], "border": "dotted map line, no wall", "equal-size": true, "steam-per-land": {"gnomes": 4, "books": 4, "movement-items": 4, "ticket-items": 3, "key-items-max": 9, "towers-max": 5, "circles": "≥1", "artifacts": "1-3 (?)", "settlements": "≥1"}, "alpha-per-land": {"settlements": 1, "mission-cells": 64}},
   "terrain": {"block-palette": "block-types.json", "features": "terrain-features.json", "water-level": "unknown (?)", "noise-params": "unknown; alpha generator exists only as x86 code wrapped by cuwo tgen", "roads": "auto tunnels through mountains, bridges over canyons", "caves": "type 18 (S)", "rivers": "with waterfalls; lava/toxic variants"},
   "coarse-map-omega": {"places": ["streets", "buildings", "rivers", "bridges", "trees", "caves", "fields", "windmills", "watchtowers", "walls", "fences", "street lights"], "then": "voxel detail on the fly", "planned-use": ["NPC navigation between distant places", "quest design"]},
   "settlement": {"alpha-count": 1, "steam-count": "several", "districts-alpha": ["trade", "crafting", "adventurer", "portal", "palace"], "buildings-procedural": ["rooms", "sizes", "roofs"], "style-by-landscape": "buildings.json#settlement-styles", "inn": {"A": "several", "S": 1}},
@@ -29,5 +29,31 @@
   "schedule": {"stops": ["home", "park", "shops", "inn"], "sleep": "night", "campsite-rest": true, "lantern-night": true},
   "key-items-s": {"rule": "spawn only if lock type exists (harp→divine door, bell→crypt gate, whistle→bird statue, boat→water)"},
   "level-formulas-alpha": "stats.json#alpha-character-formulas",
-  "network-alpha": {"port": 12345, "protocol": "TCP", "client-version": 3, "tick-hz": 50, "compression": "zlib", "authority": "client (anticheat scripts)", "packets-c2s": {"0": "EntityUpdate", "6": "Interact", "7": "Hit", "8": "Passive", "9": "Shoot", "10": "ChatMessage", "11": "ChunkDiscovered", "12": "SectorDiscovered", "17": "ClientVersion"}, "packets-s2c": {"0": "EntityUpdate", "1": "MultipleEntityUpdate", "2": "UpdateFinished", "3": "AirshipUpdate", "4": "ServerUpdate", "5": "CurrentTime", "10": "ServerChatMessage", "15": "SeedData", "16": "JoinPacket", "17": "ServerMismatch", "18": "ServerFull"}, "max-players": "4 (10 ?)", "hit-types": {"0": "normal", "1": "block", "3": "miss", "5": "absorb"}, "interact-types": {"2": "npc", "3": "normal", "5": "pickup", "6": "drop", "8": "examine"}, "anticheat-caps": {"level": 1000, "rarity": 4, "air-time-s": 10}}
+  "design": {
+    "_doc": "Owner-designed tunables (D6/F4, 2026-09-07). Sources never had these; engine reads them from here; tune in play.",
+    "enemy-level": {"rule": "creature level rolled in band [min-party-level - below, max-party-level + above] (solo: own level); each land rolls a danger-tier at generation that fixes where in the band it sits", "below": 3, "above": 5, "danger-tiers": {"safe": 0.0, "normal": 0.5, "dangerous": 1.0}, "tier-weights": {"safe": 0.25, "normal": 0.5, "dangerous": 0.25}, "config": "solo settings / server.cfg"},
+    "skill-point": {"effect-per-point": 0.05, "cooldown-per-point": 0.05, "cooldown-floor": 0.25, "cap": null},
+    "crit": {"multiplier": 2.0, "overflow": "crit chance above 1.0 adds to the multiplier (chance 1.5 → x2.5)"},
+    "item-stat-curve": "stats.json#alpha-item-stat-formulas only (no 1.0 tier curve)",
+    "prices": {"buy": "base[item-type] * item-level * rarity-mult (copper)", "sell": 0.25, "rarity-mult": {"common": 1, "uncommon": 2, "rare": 4, "epic": 8, "legendary": 16}, "base": {"weapon": 6, "armor": 6, "ring|amulet": 8, "consumable": 2, "material": 1, "formula": 10}, "calibration": "alpha sell range 20 copper (+1) … 1s50 (+100) for white gear"},
+    "artifact": {"first": 0.05, "decay": 0.9, "floor": 0.01, "stats": "one traversal stat + attack + max-hp, all with this rule"},
+    "stack-cap": null,
+    "enemy-hp": {"rule": "stats.json#alpha-character-formulas.npc-hp * family-mult", "family-mult": "creature-families.json hp-mult, default 1.0", "calibration": "white mob at level 1 → 150–250 HP"},
+    "circle-of-power": {"attack": 0.10, "max-hp": 0.10},
+    "recipes": {"weapon-cubes": "5 * size-class (dagger/fist/shield 1, one-handed 2, two-handed 4)", "gems-per-rarity-above-common": 1, "armor": "cotton table shape for every material"}
+  },
+  "design": {
+    "_doc": "Owner-designed tunables (D6/F4, 2026-09-07). Sources never had these; engine reads them from here; tune in play.",
+    "enemy-level": {"rule": "creature level rolled in band [min-party-level - below, max-party-level + above] (solo: own level); each land rolls a danger-tier at generation that fixes where in the band it sits", "below": 3, "above": 5, "danger-tiers": {"safe": 0.0, "normal": 0.5, "dangerous": 1.0}, "tier-weights": {"safe": 0.25, "normal": 0.5, "dangerous": 0.25}, "config": "solo settings / server.cfg"},
+    "skill-point": {"effect-per-point": 0.05, "cooldown-per-point": 0.05, "cooldown-floor": 0.25, "cap": null},
+    "crit": {"multiplier": 2.0, "overflow": "crit chance above 1.0 adds to the multiplier (chance 1.5 → x2.5)"},
+    "item-stat-curve": "stats.json#alpha-item-stat-formulas only (no 1.0 tier curve)",
+    "prices": {"buy": "base[item-type] * item-level * rarity-mult (copper)", "sell": 0.25, "rarity-mult": {"common": 1, "uncommon": 2, "rare": 4, "epic": 8, "legendary": 16}, "base": {"weapon": 6, "armor": 6, "ring|amulet": 8, "consumable": 2, "material": 1, "formula": 10}, "calibration": "alpha sell range 20 copper (+1) … 1s50 (+100) for white gear"},
+    "artifact": {"first": 0.05, "decay": 0.9, "floor": 0.01, "stats": "one traversal stat + attack + max-hp, all with this rule"},
+    "stack-cap": null,
+    "enemy-hp": {"rule": "stats.json#alpha-character-formulas.npc-hp * family-mult", "family-mult": "creature-families.json hp-mult, default 1.0", "calibration": "white mob at level 1 → 150–250 HP"},
+    "circle-of-power": {"attack": 0.10, "max-hp": 0.10},
+    "recipes": {"weapon-cubes": "5 * size-class (dagger/fist/shield 1, one-handed 2, two-handed 4)", "gems-per-rarity-above-common": 1, "armor": "cotton table shape for every material"}
+  },
+  "network-alpha": {"port": 12345, "protocol": "TCP", "client-version": 3, "tick-hz": 50, "compression": "zlib", "authority": "client (anticheat scripts)", "packets-c2s": {"0": "EntityUpdate", "6": "Interact", "7": "Hit", "8": "Passive", "9": "Shoot", "10": "ChatMessage", "11": "ChunkDiscovered", "12": "SectorDiscovered", "17": "ClientVersion"}, "packets-s2c": {"0": "EntityUpdate", "1": "MultipleEntityUpdate", "2": "UpdateFinished", "3": "AirshipUpdate", "4": "ServerUpdate", "5": "CurrentTime", "10": "ServerChatMessage", "15": "SeedData", "16": "JoinPacket", "17": "ServerMismatch", "18": "ServerFull"}, "max-players": 4, "max-players-configurable": true, "hit-types": {"0": "normal", "1": "block", "3": "miss", "5": "absorb"}, "interact-types": {"2": "npc", "3": "normal", "5": "pickup", "6": "drop", "8": "examine"}, "anticheat-caps": {"level": 1000, "rarity": 4, "air-time-s": 10}}
 }

@@ -135,7 +135,8 @@ A named, bordered gameplay region of one `landscape`. What the wiki calls "regio
 |---|---|---|---|
 | name | string | i | `<Name> Plains/Hills/Mountains/…`; names not unique |
 | landscape | ref | e | exactly one |
-| level | int | i | A: all creatures share it; rises with distance from spawn |
+| level | int | i | hybrid (F4): each creature rolls in the party band [min−X, max+Y], shifted by the land's danger-tier → `generators.json#design.enemy-level`. A: shared, rose with distance |
+| danger-tier | safe / normal / dangerous | i | F4: rolled once at generation |
 | tier-range | `mob-strength-tier`[] | i | S: regions host white→yellow enemies, dungeons above surface |
 | rarity | int 0..4 | i | A devlog "rare zones": stronger monsters, better loot `?` |
 | realm | `realm` ref | e | S: the kingdom/cult/tribe whose lore covers it |
@@ -149,8 +150,8 @@ A named, bordered gameplay region of one `landscape`. What the wiki calls "regio
 | artifacts | 1..n | e | S |
 | settlements | A: exactly 1; S: several | e | |
 Internal grid: alpha region = 64×64 zones = 16 384 blocks; 8×8 mission cells per region;
-world addressable as 1024×1024 regions (finite). Whether one gameplay `land` == one internal
-region cell is unverified `?`.
+world addressable as 1024×1024 regions (finite). One gameplay `land` = one internal region cell
+(F6, decided); heightmap, water level and noise are our own.
 
 ### landscape
 Biome family with climate, palette, flora, fauna and structure rosters. `A S Ω`
@@ -616,7 +617,7 @@ gem-trader `S` roaming, inn, guild, flight-master, adapter `A`). S: stock rarity
 gnomes; restock daily; buy-back tab; A: sales final, +1..+100 stock.
 
 ### inventory
-No slot limit; stacks (cap undocumented `?`; one of each pet food). Tabs: equipment, special `S`,
+No slot limit; stacks (no cap, D6; one of each pet food). Tabs: equipment, special `S`,
 items, ingredients, pets, artifacts `S` (A: amulets tab). S: one page per visited land. Key: B (or I `A`).
 Quick-select wheel (Tab, A/D) chooses the Q item.
 
@@ -640,8 +641,10 @@ mage 1.00; 2 skill points per level; no level cap (int32).
 ### skill-tree `A`
 11 slots. Shared chains (5 points unlock next): pet-master → riding; climbing → hang-gliding;
 swimming → sailing. Class column: skill-1 (1 pt) → skill-2 (5 in skill-1) → skill-3 spec-specific
-(5 in skill-2). Points reduce cooldown and scale one effect (values unpublished `?`). Respec at
-class trainer.
+(5 in skill-2). Points reduce cooldown and scale one effect: +5 % effect and −5 % cooldown per
+point, cooldown floor 25 %, uncapped (D6). Respec at class trainer.
+Hybrid (D10): a 4th `ultimate` column per class holds the Steam R skill, unlocked by 5 points in
+the spec's rank-3 skill; the six alpha-removed rank-3 skills return in their class column.
 
 ### power-gate `A`
 Item `+N` usable at full strength only if player power ≥ N; formulas learnable likewise.
@@ -689,7 +692,8 @@ pairs); hosted by a Bloodaxe orc; resets daily; 18–50 coins + gear; more commo
 ### 3.7 Meta
 
 ### multiplayer-mode
-A: dedicated `Server.exe`, TCP 12345, seed from `server.cfg`, connect by IP/DNS, 4 players (10 `?`),
+Hybrid (D5/D7): dedicated server, alpha style; max players configurable, default 4.
+A: dedicated `Server.exe`, TCP 12345, seed from `server.cfg`, connect by IP/DNS, 4 players (alpha-era wiki said 10),
 client-authoritative, chat + `/connect /disconnect /name /namepet /pvp?`, item trading by drop.
 S: Steam-friends P2P (J), shared seed, keep own position, meet via free flights to friends,
 artifacts lootable by all, ember per participant, other players' level on highlight, emotes
@@ -870,18 +874,21 @@ Decisions only the owner can make (D) and facts research could not settle (F).
   `docs/ROADMAP/*.md` (one file per theme, <100 lines, with online documentation links).
 - **D4 Omega — DECIDED: roadmap only** (`docs/ROADMAP/omega-*.md`). Also: **region lock
   dropped** (gear never loses power while travelling).
-- **D5 Multiplayer target**: dedicated server (alpha style) vs P2P vs both. Still open;
-  hybrid default assumes alpha-style dedicated server (`flags.multiplayer`).
-- **D6 Numeric gaps to design ourselves**: alpha per-point skill percentages, crit multiplier,
-  1.0 stat curve, buy/sell price formula, artifact percentages, stack caps, enemy HP/damage per
-  species, Circle of Power magnitude, vendor recipe quantities per weapon.
-- **F1** Steam ability numbers with conflicts: heroic shout (heal/taunt vs debuff), toughness
-  (+25 HP vs +25 %), battle fury trigger (per-hit ~12–14 % vs on-crit), shadow shooter 30 vs 20 s,
-  bubbles 6 vs 8, shuriken 25 vs 50 stamina, R cooldown blanket 40/30 s vs per-skill.
-- **F2** Rideable flags for ~12 species (table vs page; 1.0.0-1 all-rideable bug).
+- **D5 Multiplayer — DECIDED 2026-09-07: dedicated server**, alpha style, IP/DNS join, seed in
+  server config. **D7** cap configurable, default 4. **D8** skin colour is a creation option.
+  **D9** first-person zoom kept. **D10** 3 alpha columns + 1 `ultimate` column (see `skill-tree`).
+- **D6 Numeric gaps — DECIDED 2026-09-07**, all tunables in `generators.json#design`: 5 %/point
+  uncapped; crit ×2 with chance overflow; alpha item curve only; buy = base×level×rarity, sell 25 %;
+  artifacts +5 % ×0.9 floor 1 % on one traversal stat and on attack/HP; no stack cap; enemy HP =
+  cuwo formula × family multiplier; Circle of Power +10 % attack/HP; recipes 5 cubes × size class.
+- **F1 — DECIDED**: heroic shout = taunt + heal; toughness +25 %; battle fury 13 % per hit; shadow
+  shooter 30 s; bubbles 6; shuriken toss 25 stamina; R cooldowns per skill.
+- **F2 — DECIDED**: per-page, not rideable (the table was the 1.0.0-1 bug).
 - **F3** `+` items: adjacent lands vs kingdom-bound; `+` from 100 % lore.
-- **F4** Alpha land difficulty: level-by-distance vs "all power ranges per land".
-- **F5** Alpha player cap 4 vs 10; skin-colour option existence; first-person zoom in 1.0.
-- **F6** Whether 1.0 gameplay land == one internal 64×64-zone region cell; water level; noise
-  parameters (the alpha generator exists only as x86 code wrapped by cuwo).
+- **F4 — DECIDED (owner override)**: party-level band + per-land danger tier; distance from
+  spawn no longer drives level (`generators.json#design.enemy-level`).
+- **F5** — split into D7/D8/D9, all decided.
+- **F6 — DECIDED**: one land = one region cell; water level and noise are our own.
+- **F8/F9/F10/F11 — DECIDED**: spirit bell 30 s; life potion anywhere; panther/spectrino/rune
+  giant/duckbill/ancient guardians tagged `S` with alpha id reserved; banana mash obtainable.
 - **F7** Omega status after mid-2024 (Vulkan vs UE5 reports).

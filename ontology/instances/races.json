@@ -12,8 +12,8 @@
   "merman":   {"name": "Merman / Mermaid", "playable": false, "alpha-entity-ids": {"male": 149, "female": 148}, "size-class": "normal", "hair": {"m": 3, "f": 3}, "heads": {"m": 3, "f": 3}, "quirks": ["NPC-only humanoid race; hostile, any class, drinks potions"], "versions": ["A","S"]},
   "_creation": {
     "genders": ["male", "female"],
-    "choices": ["race", "gender", "class", "head", "hair-style", "hair-color (free RGB in data; palette in UI ?)", "name (2-16 ASCII)"],
-    "skin-color": "unverified (?) — likely baked into head/body model choice",
+    "choices": ["race", "gender", "class", "head", "hair-style", "hair-color (free RGB in data; palette in UI ?)", "skin-color (D8)", "name (2-16 ASCII)"],
+    "skin-color": "real creation option (D8); per-race palette is ours (original data unverified)",
     "spec-at-creation": false,
     "starting-kit": {"A": ["class weapons", "gold ring", "silver ring"], "S": ["3 weapon sets (one per class weapon type)", "chest armor", "5 life potions"]},
     "spawn": {"A": "world spawn", "S": "shrine of life near a village (0.9.1-3)"},

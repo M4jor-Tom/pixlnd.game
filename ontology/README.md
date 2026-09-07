@@ -18,6 +18,8 @@ ontology/
 - Owner decisions applied: **hybrid ruleset** (alpha progression + steam content), **Godot 4 +
   GDScript** (engine maintenance verified: 4.7.2 stable 2026-08-18), **region lock dropped**,
   all cut/Omega content deferred to `docs/ROADMAP/`.
+- 2026-09-07 (later): every §7 open point settled (`docs/ROADMAP/todo_decide.md`); designed
+  tunables live in `instances/generators.json#design`. Godot binary still not installed here.
 - Still open: D5 multiplayer target (dedicated server assumed) and the `?` facts in `domain.md §7`.
 - Next: router step — scaffold the Godot project and derive engine architecture from the classes.
 

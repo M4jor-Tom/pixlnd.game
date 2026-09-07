@@ -53,5 +53,5 @@
     "background-refresh-reduce": {"since": "0.9.1-6"},
     "missing": ["vsync", "borderless", "FOV (zoom only)"]
   },
-  "camera": {"mode": "third person, wheel zoom; full zoom-in = first person (2011; 1.0 unverified ?)", "aim": "sniper Aim zooms (A)", "map": "rotate LMB, pan RMB"}
+  "camera": {"mode": "third person, wheel zoom; full zoom-in = first person (kept, D9)", "aim": "sniper Aim zooms (A)", "map": "rotate LMB, pan RMB"}
 }

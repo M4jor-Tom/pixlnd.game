@@ -8,7 +8,7 @@
   "ginseng-soup":    {"name": "Ginseng Soup", "kind": "food", "use": "sit", "heal-mult": 200, "alpha-subtype": 4, "recipe": {"ginseng-root": 4}, "station": "campfire", "versions": ["A","S"]},
   "mushroom-spit":   {"name": "Mushroom Spit", "kind": "food", "use": "sit", "heal-mult": 200, "alpha-subtype": 6, "recipe": {"mushroom": 1, "onion-slice": 1}, "station": "campfire", "versions": ["A","S"]},
   "cookie":          {"name": "Cookie", "kind": "food", "alpha-subtype": 0, "note": "2012: heals pets; rare/unused in alpha", "versions": ["A","X"]},
-  "life-potion":     {"name": "Life Potion", "kind": "potion", "use": "channel", "heal-mult": 200, "alpha-subtype": 1, "recipe": {"heartflower": 1, "water-flask": 1}, "station": "anywhere (wiki also says campfire ?)", "note": "S: new characters start with 5", "versions": ["A","S"]},
+  "life-potion":     {"name": "Life Potion", "kind": "potion", "use": "channel", "heal-mult": 200, "alpha-subtype": 1, "recipe": {"heartflower": 1, "water-flask": 1}, "station": "anywhere", "note": "S: new characters start with 5", "versions": ["A","S"]},
   "cactus-potion":   {"name": "Cactus Potion", "kind": "potion", "use": "channel", "heal-mult": 200, "alpha-subtype": 2, "recipe": {"prickly-pear": 1, "glass-flask": 1}, "station": "anywhere", "versions": ["A","S"]},
   "mana-potion":     {"name": "Mana Potion", "kind": "potion", "alpha-subtype": 3, "note": "exists in data enum only; not craftable/documented (?)", "versions": ["X"]},
   "elixir-of-power":     {"name": "Elixir of Power", "kind": "elixir", "use": "channel", "duration-s": 600, "effect": "+20% attack power", "recipe": {"water-flask": 1, "dragon-root": 2, "mushroom": 5}, "versions": ["S"]},

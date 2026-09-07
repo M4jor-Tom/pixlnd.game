@@ -15,7 +15,7 @@
     "spell-power":   {"name": "Spell Power", "source": ["mage weapons", "elixir of sanity"], "note": "fire missiles ≈ 3x SP", "versions": ["A","S"]},
     "armor":         {"name": "Armor", "effect": "physical reduction; 'no damage if armor > attack' (?); pierced progressively by combo", "source": ["armor pieces", "elixir of toughness +20%"], "versions": ["A","S"]},
     "resistance":    {"name": "Resistance", "effect": "magic reduction (FW Weapons: status immunity ?)", "source": ["armor pieces", "elixir of sanity +20%"], "versions": ["A","S"]},
-    "crit":          {"name": "Critical", "effect": "chance for bonus damage (multiplier unknown ?)", "source": ["gold rings", "amulets", "weapons", "armor", "stealth +50%"], "versions": ["A","S"]},
+    "crit":          {"name": "Critical", "effect": "chance for bonus damage; x2.0, chance above 100% adds to the multiplier (D6, generators.json#design.crit)", "source": ["gold rings", "amulets", "weapons", "armor", "stealth +50%"], "versions": ["A","S"]},
     "haste":         {"name": "Haste", "alpha-name": "Tempo", "effect": "basic attack speed (not cyclone)", "source": ["silver rings", "amulets", "weapons", "armor"], "versions": ["A","S"]},
     "regeneration":  {"name": "Regeneration", "effect": "stamina regen (S; A: HP? ?)", "source": ["weapons", "armor (linen/cotton bonus)"], "versions": ["A","S"]},
     "mana-regeneration": {"name": "Mana Regeneration", "source": ["items (A affix)"], "versions": ["A"]},
@@ -56,5 +56,5 @@
     "skill-points-per-level": 2,
     "power-table": {"1": 1, "2": 5, "3": 10, "5": 17, "10": 32, "20": 49, "30": 60, "50": 72, "100": 84, "200": 91, "500": 97, "1000": 99, "1981": 100}
   },
-  "gaps": ["crit multiplier", "1.0 stat curve (tier-based)", "per-point alpha skill percentages", "enemy HP/damage per species", "circle of power magnitude", "artifact % values"]
+  "gaps": [], "gaps-decided": "2026-09-07 D6 → generators.json#design"
 }

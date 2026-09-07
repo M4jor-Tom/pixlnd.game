@@ -153,7 +153,7 @@
       "coin-denominations": ["copper", "silver", "gold"],
       "inn-cost": 10,
       "spec-change": "guild-free",
-      "multiplayer": "dedicated-server (D5 open)",
+      "multiplayer": "dedicated-server",
       "settlements-per-land": "many",
       "settlements-always-on-map": false,
       "map-unexplored-hidden": true,

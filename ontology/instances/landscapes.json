@@ -16,7 +16,7 @@
   "mushroom-lands": {"name": "Mushroom Lands", "terrain": ["giant mushrooms", "huge insects"], "versions": ["X"], "planned": "2013, never shipped"},
   "_shared": {
     "region-shape": "roughly equal-sized lands; dotted map borders; no physical walls; features may appear off-biome (volcano in snow, forest in desert)",
-    "alpha-land-level": "rises with distance from world start; all creatures share it (conflict with 'all power ranges per land' ?)",
+    "land-level": "hybrid (F4): party-level band + per-land danger tier, generators.json#design.enemy-level (alpha: distance from start; Picroma 2013: all ranges per land)",
     "s-difficulty": "mob strength colours; each land has own regular + legendary enemies",
     "village-styles": ["european-framework", "medieval-stone", "north-american-wood", "log", "desert", "jungle", "undead", "lava", "ocean"]
   }

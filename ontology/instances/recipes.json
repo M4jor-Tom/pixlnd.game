@@ -11,11 +11,13 @@
     "stations": {"iron": "anvil", "cotton|linen|silk": "loom"}
   },
   "gear-weapons": {
+    "_rule": "generators.json#design.recipes (D6): cubes = 5 x size-class, +1 gem per rarity tier above common",
     "metal-weapon-common": {"inputs": {"iron-cube": 5}, "station": "anvil", "note": "S guide example"},
-    "fist":      {"inputs": {"cotton-yarn": "?", "iron-cube": "?"}, "station": "anvil"},
-    "bow|crossbow": {"inputs": {"wood-cube": "?", "yarn": "?"}, "station": "workbench"},
-    "boomerang|staff|wand": {"inputs": {"wood-cube": "?"}, "station": "workbench"},
-    "bracelet|ring|amulet": {"inputs": {"gold-cube|silver-cube": "?", "gem": "by rarity (legendary ring may need rubies)"}, "station": "none (amulet & ring tab)"},
+    "fist":      {"inputs": {"cotton-yarn": 2, "iron-cube": 5}, "station": "anvil"},
+    "bow|crossbow": {"inputs": {"wood-cube": 20, "yarn": 4}, "station": "workbench"},
+    "boomerang|wand": {"inputs": {"wood-cube": 10}, "station": "workbench"},
+    "staff": {"inputs": {"wood-cube": 20}, "station": "workbench"},
+    "bracelet|ring|amulet": {"inputs": {"gold-cube|silver-cube": 5, "gem": "by rarity (legendary ring may need rubies)"}, "station": "none (amulet & ring tab)"},
     "gem-per-rarity": {"uncommon": "emerald", "rare": "sapphire", "epic": "ruby", "legendary": "diamond"}
   },
   "refining": {

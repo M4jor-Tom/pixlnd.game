@@ -14,7 +14,7 @@
   "mana-absorption": {"name": "Mana Absorption", "kind": "debuff (land-wide)", "effect": "slows MP gain from attacks", "sources": ["mana-pump"], "removed-by": "destroy mana pump", "versions": ["S"]},
   "petrified":       {"name": "Petrified", "kind": "debuff (settlement)", "effect": "villagers turned to stone until witch killed", "sources": ["witch (old hut)"], "versions": ["S"]},
   "injured":         {"name": "Injured", "kind": "debuff", "effect": "reduced max HP for minutes after death; band-aids on back; cured by eating", "versions": ["X"], "note": "2012 devlog only; released alpha has no death penalty"},
-  "circle-of-power": {"name": "Circle of Power", "kind": "buff (land-wide)", "effect": "'increase your strength throughout the region' (magnitude ?)", "sources": ["eternal-ember at brazier"], "versions": ["S"]},
+  "circle-of-power": {"name": "Circle of Power", "kind": "buff (land-wide)", "effect": "'increase your strength throughout the region': +10% attack, +10% max HP in that land (D6)", "sources": ["eternal-ember at brazier"], "versions": ["S"]},
   "elixir-power":    {"name": "Elixir of Power", "kind": "buff", "duration-s": 600, "effect": "+20% attack power", "versions": ["S"]},
   "elixir-toughness":{"name": "Elixir of Toughness", "kind": "buff", "duration-s": 600, "effect": "+20% armor", "versions": ["S"]},
   "elixir-life":     {"name": "Elixir of Life", "kind": "buff", "duration-s": 600, "effect": "+20% HP", "versions": ["S"]},
