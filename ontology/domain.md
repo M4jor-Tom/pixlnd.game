@@ -826,9 +826,9 @@ One row per fact type. Cardinality as `domain → range`.
 | c-block-rgb | every solid block has its own RGB; (0,0,0) in `.cub` = empty | data |
 | c-name-length | entity name 2..16 ASCII 32–126 | load |
 | c-versions-nonempty | every instance lists ≥1 version tag | load |
-| c-rideable-conflict | if `rideable` is `?`, default to the per-page (stricter) value | load |
+| c-rideable-conflict | resolved (F2): every `rideable` is a boolean, per-page value; a `?` here is a load error | load |
 | c-hostile-in-city | villagers/animals inside settlements unattackable unless possessed | runtime |
-| c-artifact-stat | each artifact raises exactly one of the 7 traversal stats; never combat stats | load |
+| c-artifact-stat | each artifact raises exactly one of the 7 traversal stats, plus attack and max HP (D6); all with `generators.json#design.artifact` diminishing rule | load |
 | c-drowning | S only: breath depletes underwater; empty → HP loss; wall-hold pauses | runtime |
 | c-gate-doors | divine doors re-close at 0:00; bell spirit world lasts 30 s (45 `?`) | runtime |
 

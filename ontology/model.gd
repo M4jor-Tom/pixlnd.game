@@ -31,15 +31,6 @@ const BLOCK_NATIVE_UNITS := 65536
 
 # --- helpers ---------------------------------------------------------------------------------
 
-## Parse a version tag list like ["A","S"]; unknown tags (e.g. "A?", "S?") map to their base.
-static func parse_versions(tags: Variant) -> Array[Version]:
-	var out: Array[Version] = []
-	for t in (tags if tags is Array else []):
-		var key: String = str(t).trim_suffix("?")
-		if VERSION_TAGS.has(key):
-			out.append(VERSION_TAGS[key])
-	return out
-
 ## Alpha level → power (+1..+100). domain.md §3.5 level-formula.
 static func power_for_level(level: int) -> int:
 	return int((101.0 * level - 81.0) / (level + 19.0))
@@ -59,6 +50,15 @@ class Entry extends Resource:                    # common base: stable id + vers
 	@export var display_name: String = ""
 	@export var versions: Array[Version] = []
 	@export var raw: Dictionary = {}              # untouched JSON row for fields not typed yet
+
+	## Parse a version tag list like ["A","S"]; unknown tags (e.g. "A?", "S?") map to their base.
+	static func parse_versions(tags: Variant) -> Array[Version]:
+		var out: Array[Version] = []
+		for t in (tags if tags is Array else []):
+			var key: String = str(t).trim_suffix("?")
+			if VERSION_TAGS.has(key):
+				out.append(VERSION_TAGS[key])
+		return out
 
 class Race extends Entry:
 	@export var playable := true
@@ -99,7 +99,7 @@ class WeaponType extends Entry:
 	@export var cube_capacity := 0
 	@export var combo_cap := -1                                # -1 = undocumented
 
-class Material extends Entry:
+class MaterialDef extends Entry:            # MaterialDef: "Material" hides the native class
 	@export var material_id := -1
 	@export var kind: StringName = &""
 	@export var obtainable := true
@@ -190,7 +190,7 @@ class Ontology extends RefCounted:
 	func _fill(e: Entry, id: String, row: Dictionary) -> void:
 		e.id = StringName(id)
 		e.display_name = str(row.get("name", id))
-		e.versions = CubeWorldModel.parse_versions(row.get("versions", row.get("v", [])))
+		e.versions = Entry.parse_versions(row.get("versions", row.get("v", [])))
 		e.raw = row
 
 	func _ingest(name: String, data: Variant) -> void:
@@ -247,7 +247,7 @@ class Ontology extends RefCounted:
 					weapon_types[id] = w
 			"materials":
 				for id in _rows(data):
-					var m := Material.new(); _fill(m, id, data[id])
+					var m := MaterialDef.new(); _fill(m, id, data[id])
 					m.material_id = int(data[id].get("id", -1) if data[id].get("id") != null else -1)
 					m.kind = StringName(str(data[id].get("kind", ""))); m.obtainable = bool(data[id].get("obtainable", true))
 					materials[id] = m

@@ -9,7 +9,7 @@ ontology/
 ├── instances/       enumerable content, one JSON per family, entries keyed by stable ID
 ├── research/        the five sourced research dumps the ontology was built from (read-only)
 ├── model.gd         typed GDScript model (Godot 4.7): enums, Resource classes, loader + validator
-└── validate.gd      headless check: `godot --headless -s ontology/validate.gd`
+└── validate.gd      headless check: `nix develop -c godot --headless -s ontology/validate.gd`
 ```
 
 ## Status (2026-09-07)
@@ -19,7 +19,8 @@ ontology/
   GDScript** (engine maintenance verified: 4.7.2 stable 2026-08-18), **region lock dropped**,
   all cut/Omega content deferred to `docs/ROADMAP/`.
 - 2026-09-07 (later): every §7 open point settled (`docs/ROADMAP/todo_decide.md`); designed
-  tunables live in `instances/generators.json#design`. Godot binary still not installed here.
+  tunables live in `instances/generators.json#design`. Toolchain pinned in `flake.nix` (Godot 4.7.2,
+  node, jq); `validate.gd` parsed and passed for the first time: 0 errors.
 - Still open: D5 multiplayer target (dedicated server assumed) and the `?` facts in `domain.md §7`.
 - Next: router step — scaffold the Godot project and derive engine architecture from the classes.
 

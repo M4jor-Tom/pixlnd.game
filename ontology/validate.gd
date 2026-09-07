@@ -1,10 +1,12 @@
 ## Headless ontology check: `godot --headless -s ontology/validate.gd` (run from repo root
-## once a project.godot exists; until then any Godot 4.7 project dir works with --path).
+## from the repo root, no project.godot needed; toolchain: `nix develop`).
 ## Exits non-zero when instances violate domain.md §5 load-time constraints.
 extends SceneTree
 
+const Model := preload("res://ontology/model.gd")  # preload: class_name needs a project.godot, this does not
+
 func _init() -> void:
-	var o := CubeWorldModel.Ontology.load_dir("res://ontology/instances")
+	var o := Model.Ontology.load_dir("res://ontology/instances")
 	var ok := o.validate()
 	print("ontology: %d races, %d classes, %d specs, %d abilities, %d weapon types, %d materials, %d creatures, %d pet foods, %d landscapes, %d rulesets" % [
 		o.races.size(), o.classes.size(), o.specs.size(), o.abilities.size(), o.weapon_types.size(),

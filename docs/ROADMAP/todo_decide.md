@@ -6,7 +6,7 @@ D1 hybrid ruleset, D2 Godot 4.7 + GDScript, D3/D4 cut + Omega content → roadma
 `+` items / worn degradation dropped.
 
 **Status 2026-09-07 (evening): every decision below is taken and recorded.** Designed numbers
-live in `ontology/instances/generators.json#design`. Only the Godot install remains.
+live in `ontology/instances/generators.json#design`. Nothing remains: run the `router` skill.
 
 ## A. Design decisions (owner)
 
@@ -55,9 +55,7 @@ live in `ontology/instances/generators.json#design`. Only the Godot install rema
 
 ## C. Process gaps (do, no decision needed)
 
-- [ ] Install Godot 4.7.x; run `godot --headless -s ontology/validate.gd` — `model.gd` has never
-  been parsed by the engine (only the node cross-ref check passed). No binary on this machine
-  as of 2026-09-07.
+- [x] Godot 4.7.2 via `nix develop` (flake.nix); `godot --headless -s ontology/validate.gd` passes
 - [x] `git init` the repo — done, first commit b9e0bfd.
 - [x] Raw research corpus (740 wiki pages, cuwo clone) — not kept; `ontology/research/*.md` is
   what remains.
