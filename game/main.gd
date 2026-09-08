@@ -7,6 +7,8 @@ func _ready() -> void:
 	InputMapBuilder.build(o.configs["keybinds"]["hybrid"])
 	var world := $World; var player := $Player
 	world.target = player
+	world.spawns = OntologyDB.design["spawns"]; world.creatures = o.creatures
+	world.rosters = o.configs["creature-families"]["landscape-rosters"]
 	player.setup(OntologyDB.design["movement"], OntologyDB.design["camera"], o.races["human"].size_class)
 	player.water_top = world.gen.sea_level + 1.0
 	player.ground_ready = world.has_ground

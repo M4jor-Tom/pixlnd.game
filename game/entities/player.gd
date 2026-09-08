@@ -2,7 +2,7 @@
 ## step-up, stamina (D13). `cfg` = generators.json#design.movement, injected by main.gd: this script
 ## never names OntologyDB so headless tests (no autoloads) can drive it.
 ## ponytail: no climb/dodge/glide/fall damage yet; they arrive with §3.3 combat and the HP resource.
-extends CharacterBody3D
+extends "res://game/entities/entity.gd"
 
 var cfg: Dictionary = {}
 var water_top := -INF                                   # y of the water surface (sea level + 1)
@@ -48,14 +48,5 @@ func _physics_process(dt: float) -> void:
 		elif velocity.y > 0.0 and not Input.is_action_pressed("jump"):
 			velocity.y = minf(velocity.y, sqrt(2.0 * g * float(jh["tap"])))   # released early: tap height
 	velocity.x = dir.x * speed; velocity.z = dir.z * speed
-	_step_up(Vector3(velocity.x, 0, velocity.z) * dt)
+	step_up(Vector3(velocity.x, 0, velocity.z) * dt, float(cfg["step-up"]))
 	move_and_slide()
-
-## Cube World walks over 1-block ledges: if the horizontal motion is blocked here but free one
-## step higher, lift the body; move_and_slide's floor snap sets it down on the ledge.
-func _step_up(motion: Vector3) -> void:
-	if not is_on_floor() or motion.is_zero_approx() or not test_move(global_transform, motion):
-		return
-	var lift := Vector3.UP * (float(cfg["step-up"]) + 0.05)
-	if not test_move(global_transform.translated(lift), motion):
-		global_position += lift

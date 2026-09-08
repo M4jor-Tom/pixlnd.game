@@ -3,12 +3,16 @@ extends Node3D
 
 const WorldGen := preload("res://game/world/world_gen.gd")
 const ZoneMesh := preload("res://game/world/zone_mesh.gd")
+const Spawner := preload("res://game/world/spawner.gd")
 
 @export var world_seed := 0             # 0 → design.terrain.seed-default (alpha server.cfg default)
 var target: Node3D                      # set by main.gd: camera for now, the player-character once §3.2 lands
 
 var gen: WorldGen
-var zones := {}                         # Vector2i → MeshInstance3D
+var zones := {}                         # Vector2i → MeshInstance3D (creatures are its children)
+var spawns: Dictionary = {}             # design.spawns; empty = no creatures
+var creatures := {}                     # OntologyDB.data.creatures
+var rosters := {}                       # creature-families.json#landscape-rosters
 var _zone_blocks: int
 var _view: int
 var _land_mat := StandardMaterial3D.new()
@@ -57,6 +61,9 @@ func _spawn_zone(zc: Vector2i) -> void:
 	body.add_child(cs); mi.add_child(body)
 	add_child(mi)
 	zones[zc] = mi
+	if not spawns.is_empty():
+		var lvl: int = target.get("level") if target != null and target.get("level") != null else 1
+		Spawner.populate(mi, Spawner.plan(gen, zc, spawns, creatures, rosters, lvl), spawns, creatures, target)
 
 ## True once the zone under `pos` is built (the player waits for it instead of falling through).
 func has_ground(pos: Vector3) -> bool:

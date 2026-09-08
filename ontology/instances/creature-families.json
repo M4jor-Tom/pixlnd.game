@@ -30,7 +30,7 @@
     "lava-lands":  ["minotaur", "devourer", "hell-demon", "ember-golem", "imp", "fire-beetle", "earth-caterpillar", "demon-marauder", "vampire", "flying-eye", "bloodaxe-orc"],
     "deadlands":   ["skeleton", "skeleton-knight", "skeleton-horse", "skeleton-dog", "skull-slater", "wraith", "frightener", "zombie", "flying-eye", "vampire", "dark-troll", "monstrosity", "dark-cultist", "dark-jester", "werewolf"],
     "dark-woods":  ["skull-slater", "wraith", "frightener", "zombie", "flying-eye", "vampire", "skeleton", "werewolf", "demon-marauder"],
-    "wetlands":    ["mosquito", "fly", "insect-guard", "slimes", "frog", "mermaid", "midge", "bloomling"],
+    "wetlands":    ["mosquito", "fly", "insect-guard", "green-slime", "blue-slime", "pink-slime", "yellow-slime", "frog", "mermaid", "midge", "bloomling"],
     "oceans":      ["piranha", "maw-fish", "shark", "seahorse", "mermaid", "sea-crab", "lantern-fish", "sapphire-fish", "lemon-fish", "blowfish", "seagull", "crocodile", "spitter", "saurian"],
     "savannahs":   ["lion", "camel", "nomad", "djinn", "sand-horror", "habanero", "chiling", "earth-caterpillar", "alpha-dog"],
     "mountains":   ["snail", "caterpillar", "earth-caterpillar", "cyclops", "rockling", "biter", "bat"],

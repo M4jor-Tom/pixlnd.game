@@ -1,0 +1,63 @@
+## gen-spawns (§6) for the open world: per zone, seeded from (world seed, zone), 0–2 groups of one
+## species from the land's landscape roster (D14). Creatures are children of the zone node, so they
+## despawn with it. Dungeon, settlement and boss spawns come with their own slices.
+extends RefCounted
+
+const CREATURE := preload("res://game/entities/creature.tscn")
+const Model := preload("res://ontology/model.gd")
+
+## Deterministic plan for one zone: [{species, level, hostility, positions: [Vector3]}].
+static func plan(gen, zc: Vector2i, spawns: Dictionary, creatures: Dictionary, rosters: Dictionary, party_level: int) -> Array:
+	var out: Array = []
+	var n: int = gen.terrain["zone-blocks"]
+	var land = gen.land_of_block(zc.x * n + n / 2, zc.y * n + n / 2)
+	var roster: Array = rosters.get(land.landscape, [])
+	var skip: Array = spawns["skip-categories"]
+	var pool: Array = roster.filter(func(id: String) -> bool:
+		return creatures.has(id) and not (Model.CreatureCategory.keys()[creatures[id].category].to_lower().replace("_", "-") in skip))
+	if pool.is_empty():
+		return out
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(Vector3i(gen.world_seed, zc.x, zc.y)) ^ hash("spawns")
+	for g in rng.randi_range(int(spawns["groups-per-zone"][0]), int(spawns["groups-per-zone"][1])):
+		var c: Model.Creature = creatures[pool[rng.randi() % pool.size()]]
+		var size := c.group_size if c.group_size != Vector2i(1, 1) else Vector2i(int(spawns["default-group"][0]), int(spawns["default-group"][1]))
+		var count := rng.randi_range(size.x, size.y)
+		var cx := zc.x * n + rng.randi_range(4, n - 5); var cy := zc.y * n + rng.randi_range(4, n - 5)
+		var h: StringName = c.hostility
+		if h == &"V":
+			h = &"H" if rng.randf() < float(spawns["variable-hostility"]["H"]) else &"N"
+		var positions: Array = []
+		var spread := int(spawns["group-spread"])
+		for i in count:
+			var x := cx + rng.randi_range(-spread, spread); var y := cy + rng.randi_range(-spread, spread)
+			var ground: int = gen.height_at(x, y)
+			var in_water: bool = ground < gen.sea_level
+			if in_water != (c.category == Model.CreatureCategory.AQUATIC) and spawns["aquatic-only-in-water"]:
+				continue
+			positions.append(Vector3(x + 0.5, (gen.sea_level if in_water else ground) + 1.0, y + 0.5))
+		if positions.is_empty():
+			continue
+		var lvl: int = gen.creature_level(land, party_level, party_level, rng)
+		var pb := rng.randf_range(float(gen.enemy_hp["power-base"][0]), float(gen.enemy_hp["power-base"][1]))
+		var max_hp := Model.stat_curve(lvl, 0) * 200.0 * pow(2.0, pb * 0.25)      # design.enemy-hp.formula
+		out.append({"species": StringName(c.id), "level": lvl, "hostility": h, "max_hp": max_hp, "positions": positions, "seed": rng.randi()})
+	return out
+
+## Instantiate a plan under `parent` (the zone node). Returns the creatures.
+static func populate(parent: Node3D, plan_: Array, spawns: Dictionary, creatures: Dictionary, target: Node3D) -> Array:
+	var made: Array = []
+	for g in plan_:
+		var c: Model.Creature = creatures[g["species"]]
+		var cat: String = Model.CreatureCategory.keys()[c.category].to_lower().replace("_", "-")
+		var size := float(spawns["size-by-category"].get(cat, 1.0))
+		var color := Color(spawns["hostility-colors"].get(g["hostility"], "#e6e6e6"))
+		for i in g["positions"].size():
+			var m: CharacterBody3D = CREATURE.instantiate()
+			m.position = g["positions"][i] - parent.position          # zone nodes sit at the zone origin, unrotated
+			m.home = g["positions"][i]
+			parent.add_child(m)
+			m.target = target
+			m.setup(g["species"], g["level"], g["max_hp"], g["hostility"], spawns["ai"], size, color, g["seed"] + i)
+			made.append(m)
+	return made

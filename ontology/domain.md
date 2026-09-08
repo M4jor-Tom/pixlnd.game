@@ -829,6 +829,7 @@ One row per fact type. Cardinality as `domain → range`.
 | c-block-rgb | every solid block has its own RGB; (0,0,0) in `.cub` = empty | data |
 | c-name-length | entity name 2..16 ASCII 32–126 | load |
 | c-versions-nonempty | every instance lists ≥1 version tag | load |
+| c-roster-ids | every id in `creature-families.json#landscape-rosters` is a creature (D14) | load |
 | c-rideable-conflict | resolved (F2): every `rideable` is a boolean, per-page value; a `?` here is a load error | load |
 | c-hostile-in-city | villagers/animals inside settlements unattackable unless possessed | runtime |
 | c-artifact-stat | each artifact raises exactly one of the 7 traversal stats, plus attack and max HP (D6); all with `generators.json#design.artifact` diminishing rule | load |
@@ -853,7 +854,7 @@ reproducible; each generator lists invariants that a test can assert.
 | gen-dungeon | land, dungeon-type, tier | layout (A linear + dead end; S room gauntlet), traps `A`, chests, spawns in groups 2–4, boss(es), artifact `S`, locks needing key items | entrance rules per type; at least one boss; artifact at end (S castles always) |
 | gen-poi | land | campsites, arenas, towers ≤5, circles, portals, pumps, trees, shrines, lore sites, spawner nests, hidden treasure, sky islands | counts in `c-land-count` |
 | gen-missions | land, day | A: 8×8 cell boss missions; S: typed missions with icons and tiers, daily regeneration | tier ladder white→yellow present; gnomes/books once per land |
-| gen-spawns | zone, land level/tier | creature spawns: species by landscape roster, group sizes, hostility, humanoid class/spec, `+1..+4` multipliers (A), boss-ification chance | dungeon mobs above surface tier; farm animals white |
+| gen-spawns | zone, land level/tier | creature spawns: species by landscape roster, group sizes, hostility, humanoid class/spec, `+1..+4` multipliers (A), boss-ification chance; open-world numbers `design.spawns` (D14) | dungeon mobs above surface tier; farm animals white |
 | gen-boss | spawn | named, enlarged, coloured-tier variant with 1–2 random special moves; always-boss species; fixed spirit cube per boss (A) | size scaling rule; terrain breaking |
 | gen-name | seed, kind | land names (`<Name> Plains…`), dungeon names ("Castle ___"), realm/leader/capital names, item names (affix + material + type + of-name), boss names, NPC names, quarter names | epic/legendary items always named |
 | gen-item | tier/level, rarity roll, type, material, land (S) | `item` with modifier roll; stats via `gen-item-stats` | rarity ≤ legendary except mythical bug |
@@ -903,4 +904,8 @@ Decisions only the owner can make (D) and facts research could not settle (F).
   jump 1.5/3 blocks tap/hold, gravity 32, auto step-up 1 block, hitbox by size-class, stamina 100;
   orbit camera 0–12 blocks (0 = first person); hybrid key column → `generators.json#design.movement|camera`,
   `keybinds.json#hybrid`.
+- **D14 Open-world spawns — DECIDED 2026-09-08**: 0–2 groups per zone from the landscape roster, group
+  sizes from `creatures.json`, hostility `V` = 50/50, NPC HP = base-hp × 200 × 2^(power-base/4) with
+  power-base ∈ [−1.5, 1.25], wander/chase FSM numbers → `generators.json#design.spawns|enemy-hp`.
+  Land danger tier (F4) rolled per land from `design.enemy-level.tier-weights`.
 - **F7** Omega status after mid-2024 (Vulkan vs UE5 reports).

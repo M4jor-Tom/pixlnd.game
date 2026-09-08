@@ -15,6 +15,7 @@ class Land:
 	var surface: StringName
 	var top: Color
 	var cliff: Color
+	var danger_tier: StringName        # F4: safe / normal / dangerous, rolled once per land
 
 const FIELD_NAMES := ["temp", "humidity", "continent", "relief", "roll"]
 
@@ -22,6 +23,8 @@ var world_seed: int
 var terrain: Dictionary             # design.terrain
 var climate: Dictionary             # design.climate
 var names: Dictionary               # design.names
+var enemy_level: Dictionary         # design.enemy-level (F4)
+var enemy_hp: Dictionary            # design.enemy-hp (D14)
 var landscapes := {}                # id → Model.Landscape, only those with a `gen` block (hybrid)
 var land_blocks: int
 var sea_level: int
@@ -37,6 +40,7 @@ var _h_base: float; var _h_amp: float; var _h_min: int; var _h_max: int; var _cl
 func _init(p_seed: int, design: Dictionary, p_landscapes: Dictionary) -> void:
 	world_seed = p_seed
 	terrain = design["terrain"]; climate = design["climate"]; names = design["names"]
+	enemy_level = design["enemy-level"]; enemy_hp = design["enemy-hp"]
 	land_blocks = int(terrain["land-blocks"]); sea_level = int(terrain["sea-level"])
 	for id in p_landscapes:
 		if not p_landscapes[id].gen.is_empty():
@@ -91,8 +95,26 @@ func land_at(lc: Vector2i) -> Land:
 	l.relief = float(g["relief"]); l.base = float(g["base"]); l.surface = StringName(g["surface"])
 	l.top = Color(g["top"]); l.cliff = Color(g["cliff"])
 	l.name = _land_name(rng, l.landscape)
+	l.danger_tier = _roll_tier(rng)
 	_lands[lc] = l
 	return l
+
+## Weighted roll over design.enemy-level.tier-weights.
+func _roll_tier(rng: RandomNumberGenerator) -> StringName:
+	var weights: Dictionary = enemy_level["tier-weights"]
+	var r := rng.randf(); var acc := 0.0
+	for tier in weights:
+		acc += float(weights[tier])
+		if r <= acc:
+			return StringName(tier)
+	return StringName(weights.keys()[-1])
+
+## Creature level in this land for a party level band (solo: own level). design.enemy-level.
+func creature_level(land: Land, party_min: int, party_max: int, rng: RandomNumberGenerator) -> int:
+	var lo := maxi(1, party_min - int(enemy_level["below"]))
+	var hi := party_max + int(enemy_level["above"])
+	var t := float(enemy_level["danger-tiers"][land.danger_tier])
+	return clampi(roundi(lerpf(lo, hi, t)) + rng.randi_range(-1, 1), lo, hi)
 
 func land_of_block(x: int, y: int) -> Land:
 	return land_at(Vector2i(floori(float(x) / land_blocks), floori(float(y) / land_blocks)))

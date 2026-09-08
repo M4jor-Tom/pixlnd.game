@@ -273,7 +273,7 @@ class Ontology extends RefCounted:
 						"humanoid": CreatureCategory.HUMANOID, "boss-species": CreatureCategory.BOSS_SPECIES,
 						"static-target": CreatureCategory.STATIC_TARGET
 						}.get(str(data[id].get("cat", "unused")), CreatureCategory.UNUSED)
-					c.hostility = StringName(str(data[id].get("h", "P")))
+					c.hostility = StringName(str(data[id].get("h", "P")).left(1))    # "P (rarely H)" → base letter
 					c.lands.assign(data[id].get("lands", []))
 					var g: Variant = data[id].get("group")
 					if g is Array and g.size() == 2: c.group_size = Vector2i(int(g[0]), int(g[1]))
@@ -360,6 +360,10 @@ class Ontology extends RefCounted:
 		for dict in [races, classes, specs, abilities, weapon_types, materials, creatures, landscapes, consumables, key_items]:
 			for id in dict:                                                 # c-versions-nonempty
 				if (dict[id] as Entry).versions.is_empty(): errors.append("%s has no version tag" % id)
+		var rosters: Dictionary = configs.get("creature-families", {}).get("landscape-rosters", {})
+		for land in rosters:                                                # c-roster-ids
+			for cid in rosters[land]:
+				if not creatures.has(cid): errors.append("roster %s: unknown creature %s" % [land, cid])
 		var defaults := rulesets.values().filter(func(r: Ruleset) -> bool: return r.is_default)
 		if defaults.size() != 1: errors.append("exactly one ruleset must be default (found %d)" % defaults.size())
 		return errors.size() == n
