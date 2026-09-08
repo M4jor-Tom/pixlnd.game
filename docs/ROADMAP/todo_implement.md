@@ -55,6 +55,9 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
   near settlements; night lanterns; midnight reset; possession (S).
 - [ ] `creature-families.json` has no `hp-mult` yet (`design.enemy-hp.family-mult` defaults to 1).
 - [ ] Creatures never despawn except with their zone; no per-zone spawn cap or respawn timer.
+- [ ] Creatures beyond `design.spawns.ai.sim-radius` (80 blocks, D16) are frozen mid-state, not LOD-ed: no
+  slow tick, no catch-up when they wake. Zone colliders are still trimeshes (`ConcavePolygonShape3D`); a
+  `HeightMapShape3D` would cut the per-body cost if the radius ever grows — `creature.gd`, `world.gd`.
 
 ## Meta / tooling
 - [ ] Save-data (§3.7): nothing persists (world seed, character, discovered lands).

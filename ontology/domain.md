@@ -1,3 +1,5 @@
+| c-sim-radius | `design.spawns.ai.sim-radius` ≥ `aggro-range` + `leash`, so a creature can still notice you and walk home while you are around (D16) | load |
+| simulation | hybrid: a creature farther than `design.spawns.ai.sim-radius` blocks from the player is frozen — no AI tick, no physics (D16) |
 # Cube World Rebuild — Domain Ontology (canonical layer)
 
 Source of truth for the rebuild of **Cube World** (Picroma / Wollay). Code, data and content are
@@ -912,4 +914,7 @@ Decisions only the owner can make (D) and facts research could not settle (F).
 - **D15 Combat multipliers — DECIDED 2026-09-08**: attack = curve × k × 10, NPC damage = base-hp × 12 ×
   2^(power-base/4), armor floor 10 %, combo +2 %/hit, swing 0.5 s, respawn at spawn point →
   `generators.json#design.combat`; class `hp-mult` in `classes.json`.
+- **D16 Simulation radius — DECIDED 2026-09-08**: only creatures within 80 blocks of the player run AI and
+  physics; the rest stand still. Measured cause of 4 FPS: ~95 bodies on trimesh zones → 40 ms physics
+  ticks → 8 catch-up steps per frame. → `generators.json#design.spawns.ai.sim-radius`, `c-sim-radius`.
 - **F7** Omega status after mid-2024 (Vulkan vs UE5 reports).

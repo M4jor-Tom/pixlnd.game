@@ -366,6 +366,9 @@ class Ontology extends RefCounted:
 		for land in rosters:                                                # c-roster-ids
 			for cid in rosters[land]:
 				if not creatures.has(cid): errors.append("roster %s: unknown creature %s" % [land, cid])
+		var ai: Dictionary = configs.get("generators", {}).get("design", {}).get("spawns", {}).get("ai", {})
+		if ai.has("sim-radius") and float(ai["sim-radius"]) < float(ai.get("aggro-range", 0)) + float(ai.get("leash", 0)):   # c-sim-radius
+			errors.append("design.spawns.ai.sim-radius %s < aggro-range + leash" % ai["sim-radius"])
 		var defaults := rulesets.values().filter(func(r: Ruleset) -> bool: return r.is_default)
 		if defaults.size() != 1: errors.append("exactly one ruleset must be default (found %d)" % defaults.size())
 		return errors.size() == n

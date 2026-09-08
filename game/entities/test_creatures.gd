@@ -49,10 +49,12 @@ func _init() -> void:
 	root.add_child(floor)
 	var target := Node3D.new(); root.add_child(target); target.position = Vector3(8, 0, 0)
 	var plan_ := [{"species": &"wolf", "level": 1, "hostility": &"H", "max_hp": 200.0, "damage": 12.0, "positions": [Vector3(0, 1, 0)], "seed": 1},
-		{"species": &"sheep", "level": 1, "hostility": &"P", "max_hp": 200.0, "damage": 12.0, "positions": [Vector3(0, 1, 30)], "seed": 2}]
+		{"species": &"sheep", "level": 1, "hostility": &"P", "max_hp": 200.0, "damage": 12.0, "positions": [Vector3(0, 1, 30)], "seed": 2},
+		{"species": &"wolf", "level": 1, "hostility": &"H", "max_hp": 200.0, "damage": 12.0, "positions": [Vector3(0, 1, -90)], "seed": 3}]   # beyond sim-radius (80)
 	var holder := Node3D.new(); root.add_child(holder)
 	var made: Array = Spawner.populate(holder, plan_, design, o.creatures, target)
-	var wolf: CharacterBody3D = made[0]; var sheep: CharacterBody3D = made[1]
+	var wolf: CharacterBody3D = made[0]; var sheep: CharacterBody3D = made[1]; var far: CharacterBody3D = made[2]
+	var far_start: Vector3 = far.position
 	var sheep_start: Vector3 = sheep.position                 # holder is at the origin; not in tree yet
 	for i in 120:
 		await physics_frame
@@ -62,6 +64,7 @@ func _init() -> void:
 	for i in 300:
 		await physics_frame
 	check(sheep.position.distance_to(sheep_start) > 0.5, "sheep wanders: moved %.1f" % sheep.position.distance_to(sheep_start))
+	check(far.state == far.State.IDLE and far.position == far_start, "creature beyond sim-radius is frozen (c-sim-radius): state %d, moved %.1f" % [far.state, far.position.distance_to(far_start)])
 	print("creatures: %d groups over %d landscapes %s" % [groups, lands_seen.size(), lands_seen.keys()])
 	print("creatures ok" if _failed == 0 else "creatures FAILED (%d)" % _failed)
 	quit(0 if _failed == 0 else 1)

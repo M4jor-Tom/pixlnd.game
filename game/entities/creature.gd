@@ -23,10 +23,12 @@ var _wait := 0.0
 var _windup := 0.0
 var _cooldown := 0.0
 var _rng := RandomNumberGenerator.new()
+var _sim_r2 := INF                      # design.spawns.ai.sim-radius², D16
 
 func setup(p_species: StringName, p_level: int, p_max_hp: float, p_damage: float, p_hostility: StringName, p_ai: Dictionary, p_atk: Dictionary, size: float, p_color: Color, seed: int) -> void:
 	species = p_species; level = p_level; max_hp = p_max_hp; hp = p_max_hp; damage = p_damage
 	hostility = p_hostility; ai = p_ai; atk = p_atk; color = p_color
+	_sim_r2 = pow(float(ai["sim-radius"]), 2.0)
 	_rng.seed = seed
 	$Collision.shape.radius = size * 0.25; $Collision.shape.height = size; $Collision.position.y = size / 2.0
 	$Body.mesh.radius = size * 0.25; $Body.mesh.height = size; $Body.position.y = size / 2.0
@@ -50,6 +52,10 @@ func _on_died() -> void:
 
 func _physics_process(dt: float) -> void:
 	if ai.is_empty():
+		return
+	# c-sim-radius (D16): far creatures are frozen — no AI, no move_and_slide. ~95 bodies on trimesh zones
+	# cost 40 ms per physics tick and the engine ran 8 catch-up ticks per frame (4 FPS).
+	if target != null and is_instance_valid(target) and global_position.distance_squared_to(target.global_position) > _sim_r2:
 		return
 	velocity.y -= gravity * dt
 	_cooldown -= dt

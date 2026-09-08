@@ -31,5 +31,6 @@ nix develop -c godot --headless -s game/entities/test_player.gd    # player phys
 nix develop -c godot --headless -s game/entities/test_creatures.gd # gen-spawns determinism, rosters, level band, HP calibration, FSM
 nix develop -c godot --headless -s game/combat/test_combat.gd       # formulas, hit/combo/whiff, retaliation, kill, respawn
 nix develop -c godot --write-movie /tmp/f.png --fixed-fps 30 --quit-after 100   # 3D frames of the real scene (the movie writer skips CanvasLayer UI)
+./monitors/godot_threads.sh                                        # while the game runs: main-thread CPU, red = physics spiral (D16)
 # HUD check: temporarily save get_viewport().get_texture().get_image() from main.gd, windowed run
 ```
