@@ -25,6 +25,7 @@ ontology/
   race hitboxes, chase drop, armor formula); none blocks engine work.
 - 2026-09-08: stale `?` (water level, artifact traversal bonus) cleared; D11 settles the four hybrid
   gaps (block reward, regeneration, artifacts per land, `/pvp`) in `generators.json#design`.
+- 2026-09-08: D13 player numbers (movement, camera, hybrid keys) for `game/entities/` + `game/meta/`.
 - 2026-09-08: D12 world numbers (zone/land size, heightfield, climate rules, palettes, land names)
   landed for the first gameplay slice, `game/world/`.
 - 2026-09-08: router step done — `project.godot` + `game/` scaffold; `OntologyDB` autoload loads

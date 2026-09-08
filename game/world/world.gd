@@ -50,5 +50,14 @@ func _spawn_zone(zc: Vector2i) -> void:
 	if mi.mesh.get_surface_count() > 1:
 		mi.mesh.surface_set_material(1, _water_mat)
 	mi.position = Vector3(zc.x * _zone_blocks, 0, zc.y * _zone_blocks)
+	var body := StaticBody3D.new()                        # land surface only (surface 0); water has no collision
+	var shape := ConcavePolygonShape3D.new()
+	shape.set_faces(mi.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX])
+	var cs := CollisionShape3D.new(); cs.shape = shape
+	body.add_child(cs); mi.add_child(body)
 	add_child(mi)
 	zones[zc] = mi
+
+## True once the zone under `pos` is built (the player waits for it instead of falling through).
+func has_ground(pos: Vector3) -> bool:
+	return zones.has(Vector2i(floori(pos.x / _zone_blocks), floori(pos.z / _zone_blocks)))

@@ -36,6 +36,8 @@ live in `ontology/instances/generators.json#design`. Nothing remains: run the `r
 - [x] **D12 World numbers (2026-09-08)** — zone 64², land 256² zones, 1 block = 1 m, sea level 96, fBm
   heightfield, climate rules, land names. Recorded: `generators.json#design.terrain|climate|names`,
   `landscapes.json#*.gen`.
+- [x] **D13 Player movement, camera, keys (2026-09-08)** — walk/sprint/swim/jump/gravity/step-up/hitbox/stamina,
+  orbit camera zoom range, hybrid key column. Recorded: `generators.json#design.movement|camera`, `keybinds.json#hybrid`.
 
 ## B. Conflicting facts (pick a side)
 

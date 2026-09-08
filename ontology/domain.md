@@ -314,7 +314,7 @@ Playable species (8) + NPC-only humanoids. `A S Ω` → `instances/races.json`.
 | genders | male, female |
 | size-class | small (dwarf, goblin: fit through windows) / normal / large (orc) |
 | customization | hair count M/F, head count M/F (alpha asset counts), quirks (frogman "hair" = eyes; dwarf beards/braids; orc jaws; lizard eyelashes) |
-| stats | **none** (purely cosmetic) `?` (tester claim: small races smaller hitbox, more knockback) |
+| stats | **none** (purely cosmetic); hitbox capsule by size-class (D13, `generators.json#design.movement.hitbox`) |
 | voice | race-specific groans |
 
 ### character-class
@@ -703,6 +703,7 @@ artifacts lootable by all, ember per participant, other players' level on highli
 
 ### input-binding
 Default keys per version. → `instances/keybinds.json`. A: no remapping; S: remappable, saved.
+Hybrid defaults (D13): `keybinds.json#hybrid`, the engine builds its InputMap from it.
 
 ### hud-element
 → `instances/ui.json`: portrait+name+level/class+HP+XP (A), coins + key-item bar (S), HP/MP/stamina
@@ -898,4 +899,8 @@ Decisions only the owner can make (D) and facts research could not settle (F).
 - **D12 World numbers — DECIDED 2026-09-08**: zone 64², land 256² zones, 1 block = 1 m, sea level 96,
   fBm heightfield, climate rules, land-name syllables → `generators.json#design.terrain|climate|names`;
   per-landscape relief/base/palette → `landscapes.json#<id>.gen`.
+- **D13 Player movement, camera, keys — DECIDED 2026-09-08**: walk 6 blocks/s, sprint ×1.8, swim ×0.5,
+  jump 1.5/3 blocks tap/hold, gravity 32, auto step-up 1 block, hitbox by size-class, stamina 100;
+  orbit camera 0–12 blocks (0 = first person); hybrid key column → `generators.json#design.movement|camera`,
+  `keybinds.json#hybrid`.
 - **F7** Omega status after mid-2024 (Vulkan vs UE5 reports).

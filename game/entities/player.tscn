@@ -1,0 +1,31 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://game/entities/player.gd" id="1"]
+[ext_resource type="Script" path="res://game/entities/orbit_camera.gd" id="2"]
+
+[sub_resource type="CapsuleShape3D" id="shape"]
+
+[sub_resource type="CapsuleMesh" id="mesh"]
+
+[sub_resource type="StandardMaterial3D" id="mat"]
+albedo_color = Color(0.9, 0.5, 0.2, 1)
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+shape = SubResource("shape")
+
+[node name="Body" type="MeshInstance3D" parent="."]
+mesh = SubResource("mesh")
+material_override = SubResource("mat")
+
+[node name="CameraRig" type="Node3D" parent="."]
+script = ExtResource("2")
+
+[node name="Arm" type="SpringArm3D" parent="CameraRig"]
+spring_length = 6.0
+margin = 0.3
+
+[node name="Camera" type="Camera3D" parent="CameraRig/Arm"]
+far = 2000.0
