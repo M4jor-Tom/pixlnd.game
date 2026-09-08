@@ -14,7 +14,7 @@ ontology/
 
 ## Status (2026-09-07)
 
-- Research complete; `domain.md` + 36 instance files + `model.gd` written.
+- Research complete; `domain.md` + 40 instance files + `model.gd` written.
 - Owner decisions applied: **hybrid ruleset** (alpha progression + steam content), **Godot 4 +
   GDScript** (engine maintenance verified: 4.7.2 stable 2026-08-18), **region lock dropped**,
   all cut/Omega content deferred to `docs/ROADMAP/`.
@@ -23,6 +23,8 @@ ontology/
   node, jq); `validate.gd` parsed and passed for the first time: 0 errors.
 - Still open: only the single-source `?` facts in `domain.md` (rare zones, swamp-lands, mana-cubes,
   race hitboxes, chase drop, armor formula); none blocks engine work.
+- 2026-09-08: stale `?` (water level, artifact traversal bonus) cleared; D11 settles the four hybrid
+  gaps (block reward, regeneration, artifacts per land, `/pvp`) in `generators.json#design`.
 - Next: router step — scaffold the Godot project and derive engine architecture from the classes.
 
 ## Instance files

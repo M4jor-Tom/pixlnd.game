@@ -30,6 +30,9 @@ live in `ontology/instances/generators.json#design`. Nothing remains: run the `r
 - [x] **D10 Ability merge in hybrid** — 3 alpha class columns (removed skills back at rank 3) +
   1 `ultimate` column holding the steam R skill, unlocked by 5 points in the spec's rank-3 skill.
   Recorded: `abilities.json` `alpha-tree` on every R skill, `domain.md §3 skill-tree`.
+- [x] **D11 Hybrid gaps (2026-09-08)** — block gives MP (the bar specials spend); Regeneration =
+  stamina only; artifacts 1–3 per land, seeded; `/pvp` dropped, PvP = `server.cfg` flag default off.
+  Recorded: `generators.json#design` (`block-reward`, `regeneration`, `artifacts-per-land`, `pvp`).
 
 ## B. Conflicting facts (pick a side)
 

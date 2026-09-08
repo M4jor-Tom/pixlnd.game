@@ -437,7 +437,7 @@ stealth, diving-breath `S`, pet-hydration `A`.
 
 ### stat
 Derived number on characters and items. `A S` → `instances/stats.json#stats`: hp, attack-power,
-spell-power, armor, resistance, crit, haste (alpha "tempo"), regeneration (stamina `S` / HP `A?`),
+spell-power, armor, resistance, crit, haste (alpha "tempo"), regeneration (stamina only, D11),
 mana-regeneration `A`, block-power, weapon-rating & armor-rating `S` (average star tier),
 power-level `A`, movement speeds (climb, swim, dive, ride, glide, sail), light-radius.
 Rules: armor is subtractive with floor ("no damage if armor > attack") `?`; combo counter
@@ -483,8 +483,8 @@ more damage and stun/knockdown chance); Rogue instant. Mage M2 costs 30 MP (S). 
 
 ### block
 Hold M2 with shield (Guardian: any weapon; any warrior during Cyclone); drains `block-power`,
-regenerates when not blocking (faster during Cyclone); successful block gives MP `A` / charges
-special `S?`; Guardian block power ×2. `A S`
+regenerates when not blocking (faster during Cyclone); successful block gives MP (D11:
+the bar specials spend); Guardian block power ×2. `A S`
 
 ### dodge
 M3 while moving: roll with i-frames (not vs spike traps / dagger poison), costs 25 stamina (25 %),
@@ -601,7 +601,7 @@ iron-lamp (`A` item / `S` innate F ability), dungeon keys (gold/silver/copper/bo
 antivenom, band-aid, crutch, bandage, salve).
 
 ### artifact
-`S` relic; +1 level each; permanent; works everywhere; raises exactly one of 7 traversal stats
+`S` relic; +1 level each; permanent; works everywhere; 1–3 per land (D11); raises exactly one of 7 traversal stats
 (climb speed, swim speed, diving, ride speed, glide speed, sail speed, light radius), diminishing;
 riding/climbing/gliding bonuses reportedly non-functional in 1.0, functional here (D6); named "<Ring|Stone|…> of <Name>"
 bound to a realm; found at dungeon ends, vaults, sewers, sky islands, some mission chests.
@@ -694,7 +694,7 @@ pairs); hosted by a Bloodaxe orc; resets daily; 18–50 coins + gear; more commo
 ### multiplayer-mode
 Hybrid (D5/D7): dedicated server, alpha style; max players configurable, default 4.
 A: dedicated `Server.exe`, TCP 12345, seed from `server.cfg`, connect by IP/DNS, 4 players (alpha-era wiki said 10),
-client-authoritative, chat + `/connect /disconnect /name /namepet /pvp?`, item trading by drop.
+client-authoritative, chat + `/connect /disconnect /name /namepet /pvp` (`/pvp` dropped, D11: `server.cfg` flag `pvp`, default off), item trading by drop.
 S: Steam-friends P2P (J), shared seed, keep own position, meet via free flights to friends,
 artifacts lootable by all, ember per participant, other players' level on highlight, emotes
 `/sit /wave /dance /pet`; no PvP, no trading UI, no dedicated server.
@@ -891,4 +891,6 @@ Decisions only the owner can make (D) and facts research could not settle (F).
 - **F6 — DECIDED**: one land = one region cell; water level and noise are our own.
 - **F8/F9/F10/F11 — DECIDED**: spirit bell 30 s; life potion anywhere; panther/spectrino/rune
   giant/duckbill/ancient guardians tagged `S` with alpha id reserved; banana mash obtainable.
+- **D11 Hybrid gaps — DECIDED 2026-09-08**, in `generators.json#design`: block gives MP; regeneration
+  = stamina only; 1–3 artifacts per land; `/pvp` dropped, PvP is a `server.cfg` flag (default off).
 - **F7** Omega status after mid-2024 (Vulkan vs UE5 reports).

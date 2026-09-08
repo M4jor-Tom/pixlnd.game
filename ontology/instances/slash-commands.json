@@ -4,7 +4,7 @@
   "/disconnect":     {"desc": "leave server", "versions": ["A"]},
   "/name <name>":    {"desc": "rename player", "versions": ["A"]},
   "/namepet <name>": {"desc": "name active pet", "versions": ["A","S"]},
-  "/pvp":            {"desc": "both players type to duel (modded servers ?)", "versions": ["A?"]},
+  "/pvp":            {"desc": "dropped (D11): PvP is a server.cfg flag, default off; alpha modded-server duel command", "versions": ["X"]},
   "/sit":            {"desc": "emote", "versions": ["S", "A?"]},
   "/wave":           {"desc": "emote", "versions": ["S"]},
   "/dance":          {"desc": "emote", "versions": ["S"]},
