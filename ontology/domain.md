@@ -1,4 +1,5 @@
-| c-sim-radius | `design.spawns.ai.sim-radius` ≥ `aggro-range` + `leash`, so a creature can still notice you and walk home while you are around (D16) | load |
+| c-frame-budget | physics 60 Hz; a tick slower than its budget slows game time instead of stacking catch-up ticks: `Engine.max_physics_steps_per_frame` = `design.frame-budget.max-catch-up-steps` (D17) | engine |
+is frozen — no AI tick, no physics (D16). Distance = nearest player once `multiplayer-mode` lands (single player: the one player). || c-sim-radius | `design.spawns.ai.sim-radius` ≥ `aggro-range` + `leash`, so a creature can still notice you and walk home while you are around (D16) | load |
 | simulation | hybrid: a creature farther than `design.spawns.ai.sim-radius` blocks from the player is frozen — no AI tick, no physics (D16) |
 # Cube World Rebuild — Domain Ontology (canonical layer)
 
@@ -716,7 +717,9 @@ rotating, scalable), compass, time/temperature/humidity, land caption, buff icon
 voxel, zoom 1:4..1:256, markers, missions, players, shrines, flight points), overview map `A`,
 character sheet (power, HP, armor, resi, crit, haste, reg, weapon/armor rating), skills window `A`,
 crafting window, inventory, quick-select wheel, customization bench UI, character creation, world
-selection `A`, friends widget `S`.
+selection `A`, friends widget `S`. Hybrid (D17): `debug-menu` — the runtime profiling overlay any player
+can open without a dev environment (Godot Debug Menu add-on: FPS, frametime, CPU/GPU graphs, GPU +
+driver, OS; F3 cycles hidden/compact/full; shipped in release exports).
 
 ### option
 → `instances/ui.json#options`: FPS limit (default 111), invert Y, camera speed, resolution,
@@ -917,4 +920,8 @@ Decisions only the owner can make (D) and facts research could not settle (F).
 - **D16 Simulation radius — DECIDED 2026-09-08**: only creatures within 80 blocks of the player run AI and
   physics; the rest stand still. Measured cause of 4 FPS: ~95 bodies on trimesh zones → 40 ms physics
   ticks → 8 catch-up steps per frame. → `generators.json#design.spawns.ai.sim-radius`, `c-sim-radius`.
+- **D17 Runtime profiling and frame budget — DECIDED 2026-09-08**: players profile in-game with the Godot
+  Debug Menu add-on (`hud-element` debug-menu, `keybinds.json#hybrid.debug-menu` = F3, like Minecraft F3;
+  MIT, Asset Library "Debug Menu", works in release exports); dev-only `monitors/` stay for CI. Physics
+  catch-up capped → `generators.json#design.frame-budget`, `c-frame-budget`.
 - **F7** Omega status after mid-2024 (Vulkan vs UE5 reports).

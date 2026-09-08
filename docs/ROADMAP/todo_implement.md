@@ -58,6 +58,10 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
 - [ ] Creatures beyond `design.spawns.ai.sim-radius` (80 blocks, D16) are frozen mid-state, not LOD-ed: no
   slow tick, no catch-up when they wake. Zone colliders are still trimeshes (`ConcavePolygonShape3D`); a
   `HeightMapShape3D` would cut the per-body cost if the radius ever grows — `creature.gd`, `world.gd`.
+- [ ] Creatures spawned outside `sim-radius` sit 1 block above ground until they wake, then drop
+  (`gen-spawns` positions = ground + 1) — settle them on spawn or snap on wake, `spawner.gd`.
+- [ ] `sim-radius` measures distance to `creature.target` (the player, or the last attacker); with
+  `multiplayer-mode` it must be the nearest player — `creature.gd`.
 
 ## Meta / tooling
 - [ ] Save-data (§3.7): nothing persists (world seed, character, discovered lands).
@@ -65,6 +69,12 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
   player cap, level band X/Y) unread.
 - [ ] Export templates missing from `flake.nix` (ponytail comment) — add when `godot-export` runs.
 - [ ] Visual checks are manual (`--write-movie`); no reference-frame comparison in CI.
+- [ ] Runtime profiling overlay (D17, `hud-element` debug-menu): add the Godot Debug Menu add-on
+  (`addons/debug_menu`, MIT, Asset Library "Debug Menu"), map `keybinds.json#hybrid.debug-menu` (F3) to its
+  `cycle_debug_menu` action in `input_map.gd`, keep it in release exports. It shows GPU + driver, so it also
+  answers the untested XWayland-vs-native-Wayland question; `monitors/godot_threads.sh` becomes dev/CI only.
+- [ ] `design.frame-budget` (D17) is not consumed yet: set `Engine.max_physics_steps_per_frame` and
+  `Engine.physics_ticks_per_second` from it in `main.gd` (`c-frame-budget`).
 - [ ] ~30 single-source `?` facts in `ontology/instances` wait for playtesting (see §7).
 
 ## Combat (§3.3, slice pending)

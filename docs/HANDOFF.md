@@ -8,7 +8,7 @@ Cube World rebuild in Godot 4.7.2 + GDScript, **ontology-first**: `ontology/` is
 truth (`domain.md` classes/relations/constraints/generators, `instances/*.json` content,
 `model.gd` typed loader + validator). Engine code in `game/` only *consumes* it. Every decision
 the sources never settled is a numbered **D** entry: `domain.md §7` + `docs/ROADMAP/todo_decide.md`
-(D1–D16 all taken). Designed numbers live in `ontology/instances/generators.json#design.<topic>`.
+(D1–D17 all taken). Designed numbers live in `ontology/instances/generators.json#design.<topic>`.
 
 ## State of the build (all committed, master, owner pushes to GitHub themselves)
 | commit | slice | what runs |
@@ -19,7 +19,7 @@ the sources never settled is a numbered **D** entry: `domain.md §7` + `docs/ROA
 | e33c991 | player (§3.2, D13) | CharacterBody3D walk/sprint/jump/swim/step-up/stamina, orbit camera, InputMap from `keybinds.json#hybrid` |
 | 250c121 | creatures (§3.2, D14) | per-zone spawns from landscape rosters, idle/wander/chase/return FSM, `entity.gd` base |
 | 457c947 | combat (§3.3, D15) | basic attack, combo, crit, armor floor, creature attacks + retaliation, death/respawn, fall damage, HUD |
-| uncommitted | perf (D16) | creatures frozen beyond `design.spawns.ai.sim-radius` (80 blocks): 4 → 60 FPS; `monitors/godot_threads.sh` red/green verdict |
+| 69b5702 | perf (D16) | creatures frozen beyond `design.spawns.ai.sim-radius` (80 blocks): 4 → 60 FPS; `monitors/godot_threads.sh` red/green verdict |
 
 Playable now: `nix develop -c godot` — WASD/Shift/Space, mouse look, wheel zoom (0 = first
 person), M1 attack, Esc frees the mouse. You spawn at the centre of land (0,0), seed 26879, a
@@ -79,7 +79,7 @@ docs/ROADMAP/        todo_decide.md (D1–D15), todo_implement.md (deferrals), c
 ## Next slice (recommended order)
 1. **§3.4 items**: item instances from `gen-item` / `gen-item-stats` (`stats.json`, `item-types.json`,
    `materials.json`, `rarities.json`, `affixes.json`), equipment slots, loot on creature death
-   (`gen-loot`, `loot-rule`), inventory. Design gaps to settle as D17: drop rates, starting
+   (`gen-loot`, `loot-rule`), inventory. Design gaps to settle as D18: drop rates, starting
    inventory, stack rules (D6 says no cap).
 2. **§3.5 progression**: `level-formula` (already in `model.gd`: `power_for_level`, `xp_to_next`),
    XP on kill, skill points (D6/D10 tree) → `player.level` stops being a constant.

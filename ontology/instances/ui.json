@@ -20,7 +20,8 @@
     "enemy-names":     {"desc": "colour by relative power (A) / tier (S) + optional stars; friendly = light blue + wave; other players' level on highlight (0.9.3-0)", "versions": ["A","S"]},
     "hp-bars-toggle":  {"key": "V", "versions": ["A"]},
     "item-notifications": {"desc": "receipt notifications consider + gear (0.9.3-0)", "versions": ["S"]},
-    "cast-bars":       {"desc": "ability name + duration", "versions": ["Ω"]}
+    "cast-bars":       {"desc": "ability name + duration", "versions": ["Ω"]},
+    "debug-menu":      {"pos": "top-left", "shows": ["FPS", "frametime graph", "CPU/GPU time", "GPU + driver", "OS", "engine version"], "design": "D17: Godot Debug Menu add-on, F3 cycles hidden/compact/full, kept in release exports so any player can profile", "versions": ["hybrid"]}
   },
   "screens": {
     "world-map":        {"key": "M", "desc": "3-D voxel map, rotate/zoom (1:4..1:256 S); near zoom = terrain miniature (structures visible as voxels + names), far = landmarks; players as heads, missions as icons, markers, shrines as blue dots, flight points as +; A: unexplored uniform blue per land, explored trail lighter; S: full colours everywhere, white flashing current land border, land selector arrows, coordinates; move while open"},
