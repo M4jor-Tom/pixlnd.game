@@ -371,7 +371,7 @@ A non-player species (animal, insect, aquatic, monster, humanoid enemy, boss spe
 | group-size | range | e.g. runners 3–5 |
 | combat-role | melee \| ranged \| mage \| any-class \| none | humanoids may be any class |
 | tame-food | `pet-food` ref? | null = untameable |
-| rideable | bool `?` | many conflicts (1.0.0-1 bug made all rideable) |
+| rideable | bool | per-page value (F2); the 1.0.0-1 bug made all rideable |
 | pet-types | melee, ranged, tank, healer, mount | |
 | boss-species | bool | always-boss species (troll, yeti, cyclops…) |
 | boss-capable | bool | may spawn as boss-ified variant |
@@ -455,7 +455,7 @@ An active or passive skill. `A S Ω` → `instances/abilities.json` (~65).
 | cost | mp / stamina / all-stamina / all-mp / none |
 | cooldown-s, duration-s | |
 | effect | structured summary + numbers (e.g. cyclone tick 0.25 s; fire missiles 4 × ≈3 SP) |
-| alpha-tree | column, rank-needed (1 to unlock first, 5 in previous), per-point effect (values unpublished `?`) |
+| alpha-tree | column, rank-needed (1 to unlock first, 5 in previous), per-point effect (D6: +5 % effect / −5 % cooldown per point, floor 25 %) |
 | alpha-ability-id | cuwo id (21 kick, 34 healing-stream, 48 intercept, 49 teleport, 50 retreat, 54 smash, 79 sneak, 86 cyclone, 88 fire-explosion, 96 shuriken, 97 camouflage, 99 aim, 100 swiftness, 101 bulwark, 102 war-frenzy, 103 mana-shield) |
 | applies | `status-effect` refs |
 
@@ -603,7 +603,7 @@ antivenom, band-aid, crutch, bandage, salve).
 ### artifact
 `S` relic; +1 level each; permanent; works everywhere; raises exactly one of 7 traversal stats
 (climb speed, swim speed, diving, ride speed, glide speed, sail speed, light radius), diminishing;
-riding/climbing/gliding bonuses reportedly non-functional `?`; named "<Ring|Stone|…> of <Name>"
+riding/climbing/gliding bonuses reportedly non-functional in 1.0, functional here (D6); named "<Ring|Stone|…> of <Name>"
 bound to a realm; found at dungeon ends, vaults, sewers, sky islands, some mission chests.
 Static entity id 46 "Artifact" exists in alpha data `X`.
 
@@ -657,13 +657,13 @@ in adjacent lands. The hybrid ruleset removes all of it: `item.land`, `item.plus
 
 ### lore `S`
 Per realm; lore sites ≈ +10 % each; 100 % reveals all its artifacts on the map (all its lands);
-`+` loot from 100 % is disputed `?`.
+`+` loot from 100 % is moot (F3: `+` items dropped with region lock).
 
 ### gnome-supplier `S`
 4 captives per land at white/green/blue/purple missions; each rescue raises shop stock one rarity.
 
 ### circle-of-power `S`
-Kill restless warrior (5★) → eternal ember → light brazier → land-wide power buff (magnitude `?`);
+Kill restless warrior (5★) → eternal ember → light brazier → land-wide power buff (+10 % attack, +10 % max HP, D6);
 several per land; one ember per participant.
 
 ### 3.6 Missions
@@ -830,7 +830,7 @@ One row per fact type. Cardinality as `domain → range`.
 | c-hostile-in-city | villagers/animals inside settlements unattackable unless possessed | runtime |
 | c-artifact-stat | each artifact raises exactly one of the 7 traversal stats, plus attack and max HP (D6); all with `generators.json#design.artifact` diminishing rule | load |
 | c-drowning | S only: breath depletes underwater; empty → HP loss; wall-hold pauses | runtime |
-| c-gate-doors | divine doors re-close at 0:00; bell spirit world lasts 30 s (45 `?`) | runtime |
+| c-gate-doors | divine doors re-close at 0:00; bell spirit world lasts 30 s (F8) | runtime |
 
 ---
 

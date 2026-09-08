@@ -21,7 +21,8 @@ ontology/
 - 2026-09-07 (later): every §7 open point settled (`docs/ROADMAP/todo_decide.md`); designed
   tunables live in `instances/generators.json#design`. Toolchain pinned in `flake.nix` (Godot 4.7.2,
   node, jq); `validate.gd` parsed and passed for the first time: 0 errors.
-- Still open: D5 multiplayer target (dedicated server assumed) and the `?` facts in `domain.md §7`.
+- Still open: only the single-source `?` facts in `domain.md` (rare zones, swamp-lands, mana-cubes,
+  race hitboxes, chase drop, armor formula); none blocks engine work.
 - Next: router step — scaffold the Godot project and derive engine architecture from the classes.
 
 ## Instance files
