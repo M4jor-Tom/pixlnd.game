@@ -110,7 +110,7 @@ Instances: none (runtime). Config: `generators.json#world-scales`.
 Terrain streaming unit (alpha "chunk"). `A S`
 | prop | type | notes |
 |---|---|---|
-| size-blocks | int | A: 256×256; S: 64×64 (`BLOCKS_PER_ZONE = 64`) |
+| size-blocks | int | A: 256×256; S: 64×64 (`BLOCKS_PER_ZONE = 64`); hybrid: 64 (D12, `generators.json#design.terrain`) |
 | columns | `field`[] | one per (x,y); `field` = base-z + vertical run of `block` |
 | static-entities | `static-entity`[] | doors, chests, furniture, stations |
 | spawns | `creature` spawn list | per-zone spawn structs (hostility, type, class, spec, level, power-base, appearance, 13 items, name) |
@@ -149,6 +149,7 @@ A named, bordered gameplay region of one `landscape`. What the wiki calls "regio
 | circles-of-power | 1..n | e | S |
 | artifacts | 1..n | e | S |
 | settlements | A: exactly 1; S: several | e | |
+| coords | int×2 | i | land-grid cell (F6); `seed = hash(world.seed, coords)`, every roll of the land derives from it (D12) |
 Internal grid: alpha region = 64×64 zones = 16 384 blocks; 8×8 mission cells per region;
 world addressable as 1024×1024 regions (finite). One gameplay `land` = one internal region cell
 (F6, decided); heightmap, water level and noise are our own.
@@ -164,6 +165,7 @@ savannahs, wetlands, swamp-lands`?`, dark-woods, deadlands, mountains, mushroom-
 | hazard | cold-water slow, toxic-river poison, lava burn (S) |
 | settlement-style | architecture theme |
 | flora, fauna, dungeon-types | ID lists |
+| gen | ours (D12): `relief` (height multiplier), `base` (height offset, blocks), `surface` block-type, `top`/`cliff` RGB |
 | versions | shipped in A, S, both, or `X` |
 
 ### terrain-feature
@@ -822,7 +824,7 @@ One row per fact type. Cardinality as `domain → range`.
 | c-boss-size | A: boss size/strength from 1 at lvl 1 to full at lvl 10; S: dungeon boss size capped so it fits inside | generator |
 | c-arena-waves | exactly 5 waves with tier ladder W/G, W/G, G/B, B/P, P/Y | generator |
 | c-mission-reward | S reward rarity = quest tier + 1 (cap legendary) | generator |
-| c-zone-size | A zone 256² blocks, region 64² zones; S zone 64² blocks | engine |
+| c-zone-size | A zone 256² blocks, region 64² zones; S zone 64² blocks; hybrid zone 64², land 256² zones (D12) | engine |
 | c-block-rgb | every solid block has its own RGB; (0,0,0) in `.cub` = empty | data |
 | c-name-length | entity name 2..16 ASCII 32–126 | load |
 | c-versions-nonempty | every instance lists ≥1 version tag | load |
@@ -842,7 +844,7 @@ reproducible; each generator lists invariants that a test can assert.
 | id | input | output | invariants |
 |---|---|---|---|
 | gen-world | seed | infinite grid of internal regions → lands; region data generated 3×3 around player, region seeds 7×7 | same seed = same world; no borders; finite 1024² regions |
-| gen-climate | seed, x, y | temperature, humidity → landscape choice | equal-sized lands; features can appear off-biome (volcano in snow) |
+| gen-climate | seed, x, y | temperature, humidity, continent, relief → landscape choice (rules: `design.climate`) | equal-sized lands; features can appear off-biome (volcano in snow) |
 | gen-terrain | land, zone coords | heightfield columns, caves, rivers+waterfalls, lakes, mountains/plateaus, mesas, overhangs; per-voxel RGB by block type & landscape palette | walkable roads with tunnels/bridges; water at rivers/lakes/oceans |
 | gen-coarse-map `Ω` | land seed | coarse map placing streets, buildings, rivers, bridges, trees, caves logically before voxel detail | every structure reachable by road |
 | gen-flora | landscape, zone | trees (procedural, unique), bushes, scrubs, cacti, flowers, mushrooms, fields | per-landscape rosters |
@@ -893,4 +895,7 @@ Decisions only the owner can make (D) and facts research could not settle (F).
   giant/duckbill/ancient guardians tagged `S` with alpha id reserved; banana mash obtainable.
 - **D11 Hybrid gaps — DECIDED 2026-09-08**, in `generators.json#design`: block gives MP; regeneration
   = stamina only; 1–3 artifacts per land; `/pvp` dropped, PvP is a `server.cfg` flag (default off).
+- **D12 World numbers — DECIDED 2026-09-08**: zone 64², land 256² zones, 1 block = 1 m, sea level 96,
+  fBm heightfield, climate rules, land-name syllables → `generators.json#design.terrain|climate|names`;
+  per-landscape relief/base/palette → `landscapes.json#<id>.gen`.
 - **F7** Omega status after mid-2024 (Vulkan vs UE5 reports).

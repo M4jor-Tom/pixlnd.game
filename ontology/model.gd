@@ -135,6 +135,7 @@ class Landscape extends Entry:
 	@export var hazards: Array[StringName] = []
 	@export var dungeon_types: Array[StringName] = []
 	@export var style: String = ""
+	@export var gen: Dictionary = {}                            # D12: relief, base, surface, top, cliff
 
 class StatusEffect extends Entry:
 	@export var kind: StringName = &""
@@ -294,6 +295,7 @@ class Ontology extends RefCounted:
 					var l := Landscape.new(); _fill(l, id, data[id])
 					l.climate = data[id].get("climate", {}); l.hazards.assign(data[id].get("hazards", []))
 					l.dungeon_types.assign(data[id].get("dungeons", [])); l.style = str(data[id].get("style", ""))
+					l.gen = data[id].get("gen", {})
 					landscapes[id] = l
 			"status-effects":
 				for id in _rows(data):

@@ -33,6 +33,9 @@ live in `ontology/instances/generators.json#design`. Nothing remains: run the `r
 - [x] **D11 Hybrid gaps (2026-09-08)** — block gives MP (the bar specials spend); Regeneration =
   stamina only; artifacts 1–3 per land, seeded; `/pvp` dropped, PvP = `server.cfg` flag default off.
   Recorded: `generators.json#design` (`block-reward`, `regeneration`, `artifacts-per-land`, `pvp`).
+- [x] **D12 World numbers (2026-09-08)** — zone 64², land 256² zones, 1 block = 1 m, sea level 96, fBm
+  heightfield, climate rules, land names. Recorded: `generators.json#design.terrain|climate|names`,
+  `landscapes.json#*.gen`.
 
 ## B. Conflicting facts (pick a side)
 
