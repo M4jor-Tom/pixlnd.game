@@ -1,0 +1,15 @@
+; Engine configuration file.
+; Godot 4.7.2 (D2). Toolchain: `nix develop`. Run: `godot --path .`; smoke: `godot --headless --quit`.
+
+config_version=5
+
+[application]
+
+config/name="pixlnd"
+config/description="Cube World rebuild, hybrid ruleset (ontology/ is the source of truth)"
+run/main_scene="res://game/main.tscn"
+config/features=PackedStringArray("4.7", "Forward Plus")
+
+[autoload]
+
+OntologyDB="*res://game/ontology_db.gd"

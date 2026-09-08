@@ -69,6 +69,6 @@ live in `ontology/instances/generators.json#design`. Nothing remains: run the `r
 - F5 split into D7/D8/D9 above, all decided.
 - F7 Omega status (Vulkan vs UE5, silence since 2024) is roadmap-only.
 
-## After all boxes are ticked
+## After all boxes are ticked — DONE 2026-09-08 (`project.godot`, `game/`)
 Run the `router` skill: scaffold the Godot project, derive architecture from `domain.md §3`
 classes, load `instances/` through `ontology/model.gd`.

@@ -25,7 +25,8 @@ ontology/
   race hitboxes, chase drop, armor formula); none blocks engine work.
 - 2026-09-08: stale `?` (water level, artifact traversal bonus) cleared; D11 settles the four hybrid
   gaps (block reward, regeneration, artifacts per land, `/pvp`) in `generators.json#design`.
-- Next: router step — scaffold the Godot project and derive engine architecture from the classes.
+- 2026-09-08: router step done — `project.godot` + `game/` scaffold; `OntologyDB` autoload loads
+  `instances/` through `model.gd` and aborts on any §5 violation. Layout: `game/README.md`.
 
 ## Instance files
 
