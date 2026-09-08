@@ -13,7 +13,7 @@
     "hp":            {"name": "Hit Points", "source": ["level (A)", "weapons", "chest", "gloves", "boots", "shoulders", "elixir of life (S)", "toughness"], "versions": ["A","S"]},
     "attack-power":  {"name": "Attack Power", "source": ["weapon damage", "stealth +20%", "elixir of power +20%"], "versions": ["A","S"]},
     "spell-power":   {"name": "Spell Power", "source": ["mage weapons", "elixir of sanity"], "note": "fire missiles ≈ 3x SP", "versions": ["A","S"]},
-    "armor":         {"name": "Armor", "effect": "physical reduction; 'no damage if armor > attack' (?); pierced progressively by combo", "source": ["armor pieces", "elixir of toughness +20%"], "versions": ["A","S"]},
+    "armor":         {"name": "Armor", "effect": "physical reduction; subtractive with a floor of 10 % of the attack (D15, design.combat.armor-floor); pierced progressively by combo", "source": ["armor pieces", "elixir of toughness +20%"], "versions": ["A","S"]},
     "resistance":    {"name": "Resistance", "effect": "magic reduction (FW Weapons: status immunity ?)", "source": ["armor pieces", "elixir of sanity +20%"], "versions": ["A","S"]},
     "crit":          {"name": "Critical", "effect": "chance for bonus damage; x2.0, chance above 100% adds to the multiplier (D6, generators.json#design.crit)", "source": ["gold rings", "amulets", "weapons", "armor", "stealth +50%"], "versions": ["A","S"]},
     "haste":         {"name": "Haste", "alpha-name": "Tempo", "effect": "basic attack speed (not cyclone)", "source": ["silver rings", "amulets", "weapons", "armor"], "versions": ["A","S"]},

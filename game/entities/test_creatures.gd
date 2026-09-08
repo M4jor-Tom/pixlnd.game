@@ -24,8 +24,8 @@ func _init() -> void:
 	for zx in range(-40, 41, 8):
 		for zy in range(-40, 41, 8):
 			var zc := Vector2i(zx * 32, zy * 32)                       # spread over many lands
-			var pa := Spawner.plan(a, zc, spawns, o.creatures, rosters, 1)
-			var pb := Spawner.plan(b, zc, spawns, o.creatures, rosters, 1)
+			var pa := Spawner.plan(a, zc, design, o.creatures, rosters, 1)
+			var pb := Spawner.plan(b, zc, design, o.creatures, rosters, 1)
 			check(var_to_str(pa) == var_to_str(pb), "same seed → same spawns at %s" % zc)
 			check(pa.size() <= int(spawns["groups-per-zone"][1]), "≤ max groups per zone")
 			var land = a.land_of_block(zc.x * 64 + 32, zc.y * 64 + 32)
@@ -48,15 +48,15 @@ func _init() -> void:
 	box.size = Vector3(200, 1, 200); cs.shape = box; floor.add_child(cs); floor.position.y = -0.5
 	root.add_child(floor)
 	var target := Node3D.new(); root.add_child(target); target.position = Vector3(8, 0, 0)
-	var plan_ := [{"species": &"wolf", "level": 1, "hostility": &"H", "max_hp": 200.0, "positions": [Vector3(0, 1, 0)], "seed": 1},
-		{"species": &"sheep", "level": 1, "hostility": &"P", "max_hp": 200.0, "positions": [Vector3(0, 1, 30)], "seed": 2}]
+	var plan_ := [{"species": &"wolf", "level": 1, "hostility": &"H", "max_hp": 200.0, "damage": 12.0, "positions": [Vector3(0, 1, 0)], "seed": 1},
+		{"species": &"sheep", "level": 1, "hostility": &"P", "max_hp": 200.0, "damage": 12.0, "positions": [Vector3(0, 1, 30)], "seed": 2}]
 	var holder := Node3D.new(); root.add_child(holder)
-	var made: Array = Spawner.populate(holder, plan_, spawns, o.creatures, target)
+	var made: Array = Spawner.populate(holder, plan_, design, o.creatures, target)
 	var wolf: CharacterBody3D = made[0]; var sheep: CharacterBody3D = made[1]
 	var sheep_start: Vector3 = sheep.position                 # holder is at the origin; not in tree yet
 	for i in 120:
 		await physics_frame
-	check(wolf.state == wolf.State.CHASE, "hostile wolf chases: state %d" % wolf.state)
+	check(wolf.state in [wolf.State.CHASE, wolf.State.ATTACK], "hostile wolf chases: state %d" % wolf.state)
 	check(wolf.global_position.distance_to(target.global_position) < 3.0, "wolf reached the target: %.1f" % wolf.global_position.distance_to(target.global_position))
 	check(sheep.state != sheep.State.CHASE, "passive sheep never chases")
 	for i in 300:

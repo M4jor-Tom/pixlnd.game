@@ -5,9 +5,11 @@ extends RefCounted
 
 const CREATURE := preload("res://game/entities/creature.tscn")
 const Model := preload("res://ontology/model.gd")
+const Combat := preload("res://game/combat/combat.gd")
 
 ## Deterministic plan for one zone: [{species, level, hostility, positions: [Vector3]}].
-static func plan(gen, zc: Vector2i, spawns: Dictionary, creatures: Dictionary, rosters: Dictionary, party_level: int) -> Array:
+static func plan(gen, zc: Vector2i, design: Dictionary, creatures: Dictionary, rosters: Dictionary, party_level: int) -> Array:
+	var spawns: Dictionary = design["spawns"]
 	var out: Array = []
 	var n: int = gen.terrain["zone-blocks"]
 	var land = gen.land_of_block(zc.x * n + n / 2, zc.y * n + n / 2)
@@ -41,11 +43,13 @@ static func plan(gen, zc: Vector2i, spawns: Dictionary, creatures: Dictionary, r
 		var lvl: int = gen.creature_level(land, party_level, party_level, rng)
 		var pb := rng.randf_range(float(gen.enemy_hp["power-base"][0]), float(gen.enemy_hp["power-base"][1]))
 		var max_hp := Model.stat_curve(lvl, 0) * 200.0 * pow(2.0, pb * 0.25)      # design.enemy-hp.formula
-		out.append({"species": StringName(c.id), "level": lvl, "hostility": h, "max_hp": max_hp, "positions": positions, "seed": rng.randi()})
+		var dmg := Combat.enemy_damage(lvl, pb, design["combat"])
+		out.append({"species": StringName(c.id), "level": lvl, "hostility": h, "max_hp": max_hp, "damage": dmg, "positions": positions, "seed": rng.randi()})
 	return out
 
 ## Instantiate a plan under `parent` (the zone node). Returns the creatures.
-static func populate(parent: Node3D, plan_: Array, spawns: Dictionary, creatures: Dictionary, target: Node3D) -> Array:
+static func populate(parent: Node3D, plan_: Array, design: Dictionary, creatures: Dictionary, target: Node3D) -> Array:
+	var spawns: Dictionary = design["spawns"]
 	var made: Array = []
 	for g in plan_:
 		var c: Model.Creature = creatures[g["species"]]
@@ -58,6 +62,7 @@ static func populate(parent: Node3D, plan_: Array, spawns: Dictionary, creatures
 			m.home = g["positions"][i]
 			parent.add_child(m)
 			m.target = target
-			m.setup(g["species"], g["level"], g["max_hp"], g["hostility"], spawns["ai"], size, color, g["seed"] + i)
+			m.setup(g["species"], g["level"], g["max_hp"], g["damage"], g["hostility"], spawns["ai"], design["combat"]["enemy-attack"], size, color, g["seed"] + i)
+			m.flash_s = float(design["combat"]["hit-flash-s"])
 			made.append(m)
 	return made

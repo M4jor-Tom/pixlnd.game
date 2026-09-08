@@ -326,6 +326,7 @@ One of Warrior, Ranger, Mage, Rogue. `A S Ω` → `instances/classes.json`.
 | armor-material | iron / linen / silk / cotton |
 | mp-generation | warrior: hits & blocking; ranger: hits (sniper: stealth); rogue: hits (assassin: stealth; ninja: dodges); mage: passive regen to 100 |
 | special-attack-mode | charged (warrior, ranger, mage) vs instant (rogue) |
+| hp-mult | player max-HP class multiplier from `stats.json#player-hp` (warrior 1.30, ranger 1.10, rogue 1.20, mage 1.00) |
 | specializations | 2 |
 
 ### specialization
@@ -442,7 +443,7 @@ Derived number on characters and items. `A S` → `instances/stats.json#stats`: 
 spell-power, armor, resistance, crit, haste (alpha "tempo"), regeneration (stamina only, D11),
 mana-regeneration `A`, block-power, weapon-rating & armor-rating `S` (average star tier),
 power-level `A`, movement speeds (climb, swim, dive, ride, glide, sail), light-radius.
-Rules: armor is subtractive with floor ("no damage if armor > attack") `?`; combo counter
+Rules: armor is subtractive with a 10 % floor (D15, `design.combat.armor-floor`); combo counter
 ignores a growing share of armor; stats roughly double per rarity tier (display) vs ×2^0.25 in the
 raw curve `?`.
 
@@ -908,4 +909,7 @@ Decisions only the owner can make (D) and facts research could not settle (F).
   sizes from `creatures.json`, hostility `V` = 50/50, NPC HP = base-hp × 200 × 2^(power-base/4) with
   power-base ∈ [−1.5, 1.25], wander/chase FSM numbers → `generators.json#design.spawns|enemy-hp`.
   Land danger tier (F4) rolled per land from `design.enemy-level.tier-weights`.
+- **D15 Combat multipliers — DECIDED 2026-09-08**: attack = curve × k × 10, NPC damage = base-hp × 12 ×
+  2^(power-base/4), armor floor 10 %, combo +2 %/hit, swing 0.5 s, respawn at spawn point →
+  `generators.json#design.combat`; class `hp-mult` in `classes.json`.
 - **F7** Omega status after mid-2024 (Vulkan vs UE5 reports).

@@ -27,8 +27,7 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
   needs settlements. Default seed 26879 spawns in deadlands.
 - [ ] Climb (E grab, wall-jump), dodge roll, glider, swim breath/drowning (`abilities.json`
   movement kind; `flags.drowning`, `diving-breath`) — `player.gd` ponytail.
-- [ ] Fall damage numbers exist (`design.movement.fall-damage`) but nothing applies them: needs
-  the HP resource on the player (`entity.hp`).
+- [x] Fall damage (D13 numbers) — applied on landing since the combat slice; dodge does not yet negate it.
 - [ ] `player.level` is a constant 1: `level-formula`, XP, skill points (`skill-tree`) not started;
   enemy levels therefore sit in the 1..6 band.
 - [ ] Race, gender, class, spec, appearance: player is always `human` / capsule
@@ -38,11 +37,13 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
 - [ ] Camera: no follow smoothing/deadzone, `design.camera.shoulder-offset` unused, sniper Aim
   zoom (`ui.json#camera.aim`).
 - [ ] Menu: the `menu` action only toggles mouse capture; no pause/options screen (`option`).
-- [ ] Stamina is invisible: no HUD bars (`hud-element`, `stats.json#resources`).
+- [x] HP/stamina/combo/land HUD (code-built `hud.gd`); still missing: portrait, XP, MP, minimap,
+  damage numbers, enemy name colours + stars, buff icons (`hud-element`, `ui.json`).
 
 ## Creatures (§3.2 creature + ai-behavior, slice pending)
-- [ ] No attacks, damage, death, aggro table, taunt, stun, group aggro, potions, combos
-  (`ai-behavior`, §3.3) — `creature.gd` ponytail. Chasing creatures cannot hurt.
+- [x] Basic melee attack both ways, death, neutral retaliation (combat slice). Still missing: aggro
+  table, taunt, stun, group aggro, potions at low HP, enemy combos, ranged/mage roles
+  (`ai-behavior`, `creature.combat-role`).
 - [ ] Steering is straight-line: no A* with climbing (`ai-behavior.pathfinding`); creatures
   stall on cliffs > 1 block.
 - [ ] Capsules coloured by hostility until species models exist (`appearance`, `.cub` models →
@@ -62,3 +63,19 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
 - [ ] Export templates missing from `flake.nix` (ponytail comment) — add when `godot-export` runs.
 - [ ] Visual checks are manual (`--write-movie`); no reference-frame comparison in CI.
 - [ ] ~30 single-source `?` facts in `ontology/instances` wait for playtesting (see §7).
+
+## Combat (§3.3, slice pending)
+- [ ] Only `basic-attack` exists: no special attack / charge, block + block-power, dodge i-frames,
+  stealth bar, MP gain and spending, class abilities, ultimates (`ability`, `special-attack`,
+  `block`, `dodge`, `stealth`, `c-mp-range`, `c-dodge-cost`).
+- [ ] Hit test is a sphere in front of the camera yaw; no weapon movesets, hit timing, or
+  ranged/projectile weapons (`weapon-type.m1/m2`; bow, staff, boomerang).
+- [ ] Item modifier roll (0..20) ignored in `combat.gd` damage; no item instances, equipment
+  slots or armor stat on anyone (`item`, `equipment-slot`, `gen-item-stats`).
+- [ ] Combo only adds damage; armor piercing per combo and the per-weapon cap colours are missing
+  (`combo-system`).
+- [ ] Death: player respawns at the spawn point after 2 s; no revival statue / shrine, no enemy HP
+  reset, no death screen; creatures vanish (no loot, XP, spirit cubes, corpse) (`death`, `gen-loot`).
+- [ ] Game feel: hit flash only; no hit-stop, shake, knockback, damage numbers, sounds
+  (`game-feel`, `audio.json`).
+- [ ] Status effects (`status-effects.json`) not applied by anything.

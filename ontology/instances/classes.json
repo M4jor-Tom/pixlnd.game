@@ -1,6 +1,6 @@
 {
   "$schema": "character-class",
-  "warrior": {
+  "warrior": { "hp-mult": 1.30,
     "name": "Warrior", "id-number": 1,
     "weapon-types": ["sword", "axe", "mace", "shield", "greatsword", "greataxe", "greatmace"],
     "weapon-loadouts": ["dual 1h", "1h + shield", "2h"],
@@ -11,7 +11,7 @@
     "hp-multiplier-alpha": 1.30,
     "versions": ["A","S","Ω"]
   },
-  "ranger": {
+  "ranger": { "hp-mult": 1.10,
     "name": "Ranger", "id-number": 2,
     "weapon-types": ["bow", "crossbow", "boomerang"],
     "weapon-loadouts": ["2h"],
@@ -23,7 +23,7 @@
     "notes": ["unlimited ammo", "strafes like a shooter, free aim"],
     "versions": ["A","S","Ω"]
   },
-  "mage": {
+  "mage": { "hp-mult": 1.00,
     "name": "Mage", "id-number": 3, "alt-name": "Spirit Mage (2012)",
     "weapon-types": ["staff", "wand", "bracelet"],
     "weapon-loadouts": ["2h staff", "wand", "dual bracelets"],
@@ -36,7 +36,7 @@
     "notes": ["unarmed = weak bracelet-like bolts", "fire spells light the area like a 2-star lantern"],
     "versions": ["A","S","Ω"]
   },
-  "rogue": {
+  "rogue": { "hp-mult": 1.20,
     "name": "Rogue", "id-number": 4,
     "weapon-types": ["dagger", "fist", "longsword"],
     "weapon-loadouts": ["dual 1h (dagger/fist mix allowed)", "2h longsword"],

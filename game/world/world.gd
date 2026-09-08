@@ -10,7 +10,7 @@ var target: Node3D                      # set by main.gd: camera for now, the pl
 
 var gen: WorldGen
 var zones := {}                         # Vector2i → MeshInstance3D (creatures are its children)
-var spawns: Dictionary = {}             # design.spawns; empty = no creatures
+var design: Dictionary = {}             # generators.json#design; empty = no creatures
 var creatures := {}                     # OntologyDB.data.creatures
 var rosters := {}                       # creature-families.json#landscape-rosters
 var _zone_blocks: int
@@ -61,9 +61,9 @@ func _spawn_zone(zc: Vector2i) -> void:
 	body.add_child(cs); mi.add_child(body)
 	add_child(mi)
 	zones[zc] = mi
-	if not spawns.is_empty():
+	if not design.is_empty():
 		var lvl: int = target.get("level") if target != null and target.get("level") != null else 1
-		Spawner.populate(mi, Spawner.plan(gen, zc, spawns, creatures, rosters, lvl), spawns, creatures, target)
+		Spawner.populate(mi, Spawner.plan(gen, zc, design, creatures, rosters, lvl), design, creatures, target)
 
 ## True once the zone under `pos` is built (the player waits for it instead of falling through).
 func has_ground(pos: Vector3) -> bool:

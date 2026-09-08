@@ -1,7 +1,7 @@
 # Roadmap — follow-ups outside v1
 
 **Start with [todo_decide.md](todo_decide.md)** (decisions, all taken) and
-[todo_implement.md](todo_implement.md) (work the shipped slices postponed) — open decisions and fact conflicts to settle
+[todo_implement.md](todo_implement.md) (work the shipped slices postponed). Decisions and fact conflicts were settled
 before any engine work.
 
 Decisions D3/D4 (2026-09-07): every feature tagged `X` (cut / data-only) or `Ω` (Omega, announced

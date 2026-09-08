@@ -70,6 +70,7 @@ class CharacterClass extends Entry:
 	@export var armor_material: StringName = &""
 	@export var specializations: Array[StringName] = []
 	@export var special_attack_mode: StringName = &"charged"   # charged | instant
+	@export var hp_mult := 1.0                                  # D15: stats.json#player-hp class multiplier
 
 class Specialization extends Entry:
 	@export var character_class: StringName = &""
@@ -211,6 +212,7 @@ class Ontology extends RefCounted:
 					c.armor_material = StringName(str(data[id].get("armor-material", "")))
 					c.specializations.assign(data[id].get("specializations", []))
 					c.special_attack_mode = StringName(str(data[id].get("special-attack-mode", "charged")))
+					c.hp_mult = float(data[id].get("hp-mult", 1.0))
 					classes[id] = c
 			"specializations":
 				for id in _rows(data):
