@@ -369,6 +369,23 @@ class Ontology extends RefCounted:
 		var ai: Dictionary = configs.get("generators", {}).get("design", {}).get("spawns", {}).get("ai", {})
 		if ai.has("sim-radius") and float(ai["sim-radius"]) < float(ai.get("aggro-range", 0)) + float(ai.get("leash", 0)):   # c-sim-radius
 			errors.append("design.spawns.ai.sim-radius %s < aggro-range + leash" % ai["sim-radius"])
+		var design: Dictionary = configs.get("generators", {}).get("design", {})
+		var loot: Dictionary = design.get("loot", {})                     # c-loot-config (D18)
+		if not loot.is_empty():
+			var item_types: Dictionary = configs.get("item-types", {})
+			for k in ["gear-chance", "consumable-chance", "species-drop-chance"]:
+				if float(loot[k]) < 0.0 or float(loot[k]) > 1.0: errors.append("design.loot.%s out of [0,1]" % k)
+			if float(loot["coins"]["chance"]) < 0.0 or float(loot["coins"]["chance"]) > 1.0: errors.append("design.loot.coins.chance out of [0,1]")
+			if int(loot["level-spread"]) < 0: errors.append("design.loot.level-spread < 0")
+			var wsum := 0.0
+			for r in loot["rarity-weights"]:
+				if not rarities.has(r) or (rarities[r] as RarityDef).index > Rarity.LEGENDARY: errors.append("design.loot.rarity-weights: bad rarity %s" % r)
+				wsum += float(loot["rarity-weights"][r])
+			if wsum <= 0.0: errors.append("design.loot.rarity-weights sum to 0")
+			for t in loot["gear-kinds"].keys() + design.get("stack-cap", {}).get("stackable", []):
+				if not item_types.has(t): errors.append("design.loot/stack-cap: unknown item-type %s" % t)
+			for c in loot["consumable-pool"]:
+				if not consumables.has(c): errors.append("design.loot.consumable-pool: unknown consumable %s" % c)
 		var defaults := rulesets.values().filter(func(r: Ruleset) -> bool: return r.is_default)
 		if defaults.size() != 1: errors.append("exactly one ruleset must be default (found %d)" % defaults.size())
 		return errors.size() == n

@@ -623,7 +623,15 @@ gem-trader `S` roaming, inn, guild, flight-master, adapter `A`). S: stock rarity
 gnomes; restock daily; buy-back tab; A: sales final, +1..+100 stock.
 
 ### inventory
-No slot limit; stacks (no cap, D6; one of each pet food). Tabs: equipment, special `S`,
+The per-character bag and worn gear. `A S`
+| prop | type | notes |
+|---|---|---|
+| entries | (`item`, count)[] | no slot limit; count > 1 only for stackable item-types (`design.stack-cap`, c-stack-rule) |
+| equipment | `equipment-slot` → `item` | one item per slot; only types the slot `accepts` (c-slot-accepts) |
+| coins | u32 | copper (`currency`); auto-picked up (`design.loot.ground`) |
+| start | `design.starting-inventory` | D18: starter weapon equipped + 5 life potions |
+
+Stacks have no cap (D6; one of each pet food). Tabs: equipment, special `S`,
 items, ingredients, pets, artifacts `S` (A: amulets tab). S: one page per visited land. Key: B (or I `A`).
 Quick-select wheel (Tab, A/D) chooses the Q item.
 
@@ -632,6 +640,8 @@ Drops random by enemy tier ±1 (bosses +1 `S`); leftovers of player tier from sa
 enemies; species drops; A boss: spirit cube + gear of same +N; +4 dungeon chest → mythical `A X`;
 S mission reward ≥1 class-fitting piece one rarity above quest colour + coins + 1 potion + gems;
 dropped items last ~1 game week; mission NPCs drop rewards once. → `generators.json#loot`.
+Open-world numbers (drop chances, rarity weights, level spread, ground lifetime, pickup radius):
+`generators.json#design.loot` (D18).
 
 ### 3.5 Progression
 
@@ -773,6 +783,8 @@ One row per fact type. Cardinality as `domain → range`.
 | rewards | mission-type ∪ arena ∪ poi-type | item-type ∪ key-item ∪ artifact ∪ currency ∪ book-of-crafting | n→n | |
 | guards | creature (boss) | artifact ∪ key-item ∪ gnome-supplier ∪ magic-crystal | n→n | |
 | drops | creature | item ∪ spirit-cube ∪ leftovers ∪ currency | n→n | random by tier + species list |
+| holds | inventory | item | 1→n | count per entry; c-stack-rule |
+| equips | entity | item | 1→13 | one per equipment-slot; c-slot-accepts |
 | requires-key-item | poi-type ∪ dungeon-type | key-item | n→n | harp→divine door, bell→crypt gate, whistle→bird statue, reins→riding |
 | located-in | settlement ∪ dungeon ∪ poi | land | n→1 | |
 | owned-by-realm | land | realm | n→1 | S |
@@ -818,6 +830,9 @@ One row per fact type. Cardinality as `domain → range`.
 | c-gear-global | hybrid: an item's stats are identical in every land; key items and artifacts work everywhere once found | runtime |
 | c-rarity-range | rarity ∈ 0..4 for generated items (5 = mythical bug, off by default) | load |
 | c-stat-roll | roll = ((attributes<<16)+modifier) mod 21 ∈ 0..20 | load |
+| c-loot-config | `design.loot`: every chance ∈ [0,1]; rarity-weights keys are rarities ≤ legendary with a positive sum; level-spread ≥ 0; gear-kinds and stack-cap.stackable name item-types; consumable-pool names consumables | load |
+| c-stack-rule | only `design.stack-cap.stackable` item-types stack (no cap, D6); gear (has a modifier roll) is one item per entry | runtime |
+| c-slot-accepts | an item equips only in an equipment-slot whose `accepts` lists its item-type (weapon-type `offhand` hands → off-hand only) | runtime |
 | c-mp-range | mp ∈ [0, 100]; mage regenerates passively, others gain by hits/blocks/stealth/dodges | runtime |
 | c-stun-immunity | cannot re-stun while stars shown | runtime |
 | c-combo-reset | any attack with a hitbox that misses resets combo to 0; cap per weapon-type | runtime |
@@ -865,7 +880,7 @@ reproducible; each generator lists invariants that a test can assert.
 | gen-name | seed, kind | land names (`<Name> Plains…`), dungeon names ("Castle ___"), realm/leader/capital names, item names (affix + material + type + of-name), boss names, NPC names, quarter names | epic/legendary items always named |
 | gen-item | tier/level, rarity roll, type, material, land (S) | `item` with modifier roll; stats via `gen-item-stats` | rarity ≤ legendary except mythical bug |
 | gen-item-stats `A` | item | damage/HP/armor/resi/regen/tempo/crit from coremaze curves: `curve(n,r) = 2^((1 − 1/((n−1)·0.05+1))·3) · 2^(r·0.25)`, `curve2 = curve/8`, `n = level + 0.1·cubes`; per-type k and material multipliers | monotone in level and rarity; roll ∈ 0..20 |
-| gen-loot | killer tier, source | drops per `loot-rule` | ±1 tier; species items; bosses +1 (S) |
+| gen-loot | source level, species, seed | drops per `loot-rule`: coins, gear via `gen-item`, consumables, species items; numbers `design.loot` (D18) | level = source ± spread, ≥ 1; rarity ≤ legendary; same seed = same drops; bosses +1 rarity (S) |
 | gen-realm `S` | region cluster seed | realm kind, names, leader bio, capital, lore sites, artifact set | 100 % lore ⇒ all artifacts revealed |
 | gen-npc-appearance | race, gender, seed | head/hair model ids, hair RGB, part scales (Ω: fully procedural bodies, expressions) | asset counts in `races.json` |
 | gen-schedule | settlement | daily A* paths for villagers; lantern at night; campsite rests | sleep at night |
@@ -924,4 +939,11 @@ Decisions only the owner can make (D) and facts research could not settle (F).
   Debug Menu add-on (`hud-element` debug-menu, `keybinds.json#hybrid.debug-menu` = F3, like Minecraft F3;
   MIT, Asset Library "Debug Menu", works in release exports); dev-only `monitors/` stay for CI. Physics
   catch-up capped → `generators.json#design.frame-budget`, `c-frame-budget`.
+- **D18 Items, loot, inventory — DECIDED 2026-09-09**: per non-friendly kill: coins 60 % (1 + 2·level), one
+  gear piece 20 % (weapon 4 : chest 2 : gloves 2 : boots 2 : shoulders 2; class rolled uniformly, its
+  material), one consumable 15 %, species drop 50 %; rarity weights 60/25/10/4/1, item level = creature
+  level ±1; ground items live ≈ 1 game week, pickup radius 2, coins auto. Stacks: no cap, only consumable/
+  ingredient/coin/formula/block stack. Start: class weapon + 5 life potions. → `generators.json#design.loot|stack-cap|starting-inventory`,
+  `c-loot-config`, `c-stack-rule`, `c-slot-accepts`. Gear stats this build: damage + armor only (hp/regen/tempo/crit `?`,
+  the stats.json hp roll term `2 − 8r` goes negative as written).
 - **F7** Omega status after mid-2024 (Vulkan vs UE5 reports).

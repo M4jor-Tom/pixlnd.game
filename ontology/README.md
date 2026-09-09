@@ -25,6 +25,7 @@ ontology/
   race hitboxes, chase drop, armor formula); none blocks engine work.
 - 2026-09-08: stale `?` (water level, artifact traversal bonus) cleared; D11 settles the four hybrid
   gaps (block reward, regeneration, artifacts per land, `/pvp`) in `generators.json#design`.
+- 2026-09-09: D18 items, loot, inventory numbers + `c-loot-config` / `c-stack-rule` / `c-slot-accepts` for `game/items/`.
 - 2026-09-08: D17 runtime profiling overlay (Godot Debug Menu, F3) + `design.frame-budget` / `c-frame-budget`.
 - 2026-09-08: D16 simulation radius + `c-sim-radius` (creatures frozen beyond 80 blocks; the 4 FPS fix).
 - 2026-09-08: D15 combat multipliers + class `hp-mult` for `game/combat/`.
