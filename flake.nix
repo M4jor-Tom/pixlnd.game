@@ -17,7 +17,8 @@
             jq        # JSON sanity checks on ontology/instances
             bash      # test loops: `nix develop -c bash -c ...` (zsh does not word-split $var, see HANDOFF gotchas)
           ];
-          # ponytail: no export templates yet, add godot_4-export-templates-bin when godot-export runs
+          # ponytail: no export templates here; CI downloads its own (.github/workflows/release.yml).
+          # Add godot_4-export-templates-bin only if a local --export-release is ever wanted.
         };
       });
     };

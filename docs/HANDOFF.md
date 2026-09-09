@@ -24,6 +24,10 @@ the sources never settled is a numbered **D** entry: `domain.md §7` + `docs/ROA
 | aa45d0a, abaded3 | items (§3.4, D18) | gen-item / gen-item-stats (damage, armor) / names, inventory with stack + slot rules, loot on creature death as ground items, E pick-up, Q potion, B inventory panel, coin HUD |
 | 141b4d7, ad7b0dd | progression (§3.5, D19) | XP per kill (`model.gd#xp_for_kill`, last attacker), level-up with overflow carry, max HP recompute + heal, 2 skill points/level banked, HUD level/xp line; `domain.md` stray head rows fixed, `stats.json` xp table corrected |
 
+Binaries: every push to `master` runs `.github/workflows/release.yml` (`firebelley/godot-export`
+reads `export_presets.cfg`), which refreshes the rolling **`latest`** prerelease with
+`pixlnd_*_amd64.deb` and `pixlnd.exe`. Both presets embed the `.pck`, so each is one file.
+
 Playable now: `nix develop -c godot` — WASD/Shift/Space, mouse look, wheel zoom (0 = first
 person), M1 attack, E pick up, Q life potion, B inventory, Esc frees the mouse. You spawn at the
 centre of land (0,0), seed 26879, a deadlands land; red capsules are hostiles, small spinning

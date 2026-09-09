@@ -1,0 +1,59 @@
+name: Release
+
+# Every push to master refreshes the rolling "latest" prerelease with a Linux
+# .deb and a Windows .exe. GODOT_VERSION must match project.godot / flake.nix.
+on:
+  push:
+    branches: [master]
+
+permissions:
+  contents: write
+
+# Two pushes racing would both rewrite the same rolling release.
+concurrency:
+  group: release-master
+  cancel-in-progress: true
+
+env:
+  GODOT_VERSION: 4.7.2
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # Reads export_presets.cfg and exports every preset defined there.
+      - name: Export Godot presets
+        uses: firebelley/godot-export@v8.0.0
+        with:
+          godot_executable_download_url: https://github.com/godotengine/godot/releases/download/${{ env.GODOT_VERSION }}-stable/Godot_v${{ env.GODOT_VERSION }}-stable_linux.x86_64.zip
+          godot_export_templates_download_url: https://github.com/godotengine/godot/releases/download/${{ env.GODOT_VERSION }}-stable/Godot_v${{ env.GODOT_VERSION }}-stable_export_templates.tpz
+          relative_project_path: ./
+          use_preset_export_path: true
+          cache: true
+
+      # Presets embed the .pck, so each export is a single self-contained file.
+      - name: Stage .deb tree
+        run: install -Dm755 build/linux/pixlnd .debpkg/usr/bin/pixlnd
+
+      - name: Build .deb
+        id: deb
+        uses: jiro4989/build-deb-action@v4.3.0
+        with:
+          package: pixlnd
+          package_root: .debpkg
+          maintainer: M4jor-Tom
+          version: 0.0.0+ci${{ github.run_number }}
+          desc: pixlnd — Cube World rebuild
+
+      - name: Publish rolling release
+        uses: softprops/action-gh-release@v3.0.3
+        with:
+          tag_name: latest
+          name: Latest master build
+          body: Built from ${{ github.sha }} (run ${{ github.run_number }}).
+          prerelease: true
+          files: |
+            ${{ steps.deb.outputs.file_name }}
+            build/windows/pixlnd.exe

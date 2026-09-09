@@ -67,7 +67,9 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
 - [ ] Save-data (§3.7): nothing persists (world seed, character, discovered lands).
 - [ ] Dedicated server (D5, `multiplayer-mode`): single-player only; `server.cfg` flags (pvp,
   player cap, level band X/Y) unread.
-- [ ] Export templates missing from `flake.nix` (ponytail comment) — add when `godot-export` runs.
+- [ ] Export templates missing from `flake.nix`: CI downloads its own
+  (`.github/workflows/release.yml`), so only a *local* `--export-release` is blocked — add
+  `godot_4-export-templates-bin` if that is ever wanted.
 - [ ] Visual checks are manual (`--write-movie`); no reference-frame comparison in CI.
 - [ ] Runtime profiling overlay (D17, `hud-element` debug-menu): add the Godot Debug Menu add-on
   (`addons/debug_menu`, MIT, Asset Library "Debug Menu"), map `keybinds.json#hybrid.debug-menu` (F3) to its
