@@ -3,6 +3,7 @@ extends Node3D
 const InputMapBuilder := preload("res://game/meta/input_map.gd")
 const Combat := preload("res://game/combat/combat.gd")
 const InventoryPanel := preload("res://game/items/inventory_panel.gd")
+const SkillPanel := preload("res://game/progression/skill_panel.gd")
 
 func _ready() -> void:
 	var o: OntologyDB.Model.Ontology = OntologyDB.data
@@ -19,6 +20,7 @@ func _ready() -> void:
 	player.setup_combat(design["combat"], design["crit"], {}, Combat.player_max_hp(player.level, cls.hp_mult))
 	player.setup_items(o, design, cls.id)                  # starting inventory → weapon / armor
 	var panel: CanvasLayer = InventoryPanel.new(); add_child(panel); panel.bind(player)
+	var skills: CanvasLayer = SkillPanel.new(); add_child(skills); skills.bind(player)
 	player.water_top = world.gen.sea_level + 1.0
 	player.ground_ready = world.has_ground
 	# ponytail: spawn at the centre of land (0,0); world.spawn-rule (near village) comes with settlements

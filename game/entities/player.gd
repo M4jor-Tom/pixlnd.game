@@ -1,5 +1,6 @@
 ## player-character (§3.2) movement + §3.3 basic attack, combo, fall damage, death/respawn + §3.4 inventory,
-## gear (main-hand damage, armor sum), pick-up (E), quick item (Q) + §3.5 XP, level-up, banked skill points (D19).
+## gear (main-hand damage, armor sum), pick-up (E), quick item (Q) + §3.5 XP, level-up, skill points (D19), skill tree
+## spending, swim speed per point, keys 1-4 placeholder class strike (D20).
 ## Config dicts (design.movement / camera / combat / crit) are injected by main.gd: this script never
 ## names OntologyDB so headless tests (no autoloads) can drive it.
 ## ponytail: no climb/dodge/glide/special attack/block/stealth/MP yet (todo_implement.md).
@@ -11,9 +12,11 @@ const Items := preload("res://game/items/items.gd")
 const Item := preload("res://game/items/item.gd")
 const Inventory := preload("res://game/items/inventory.gd")
 const Progression := preload("res://game/progression/progression.gd")
+const SkillTree := preload("res://game/progression/skill_tree.gd")
 
 signal picked_up(label: String)
 signal leveled_up(level: int)
+signal skills_changed
 
 var cfg: Dictionary = {}                                # design.movement
 var combat: Dictionary = {}                             # design.combat
@@ -25,6 +28,8 @@ var design: Dictionary = {}                             # generators.json#design
 var crit_chance := 0.0
 var xp := 0
 var skill_points := 0
+var skill_tree                                          # SkillTree, after setup_items (D20)
+var _cooldowns: Dictionary = {}                         # ability id → seconds left
 var hp_mult := 1.0                                      # class hp-mult, for max HP on level-up
 var prog: Dictionary = {}                               # design.progression
 var combo := 0
@@ -55,8 +60,11 @@ func setup_combat(p_combat: Dictionary, p_crit: Dictionary, p_weapon: Dictionary
 		died.connect(_on_died)
 
 ## design.starting-inventory (D18): the class starter weapon equipped + potions + coins; gear → weapon/armor.
-func setup_items(p_o, p_design: Dictionary, class_id: StringName = &"warrior") -> void:
+func setup_items(p_o, p_design: Dictionary, class_id: StringName = &"warrior", spec_id: StringName = &"") -> void:
 	o = p_o; design = p_design
+	if spec_id == &"":
+		spec_id = o.classes[class_id].specializations[0]          # c-spec-of-class: start as spec index 0
+	skill_tree = SkillTree.new(o, design["skill-point"], class_id, spec_id)
 	prog = design["progression"]; hp_mult = o.classes[class_id].hp_mult
 	inventory = Inventory.new(o, design)
 	var start: Dictionary = design["starting-inventory"]
@@ -98,6 +106,26 @@ func gain_xp(amount: int) -> void:
 	if prog["heal-on-level-up"]:
 		hp = max_hp
 	leveled_up.emit(level)
+	skills_changed.emit()
+
+## c-skill-spend (D20): one banked point onto an open node of the tree.
+func spend_skill(a) -> void:
+	skill_points = skill_tree.spend(a, skill_points)
+	skills_changed.emit()
+
+## design.abilities.placeholder-strike (D20): keys 1-4 fire the class node that has points; every ability is the
+## same self-centred strike, damage and cooldown scaled per point (D6). ponytail: real movesets replace this.
+func use_class_skill(slot: int) -> bool:
+	if skill_tree == null:
+		return false
+	var a = skill_tree.class_slot(slot)
+	if a == null or skill_tree.spent(a.id) == 0 or float(_cooldowns.get(a.id, 0.0)) > 0.0:
+		return false
+	var ps: Dictionary = design["abilities"]["placeholder-strike"]
+	var base := SkillTree.listed_cooldown(a)
+	_cooldowns[a.id] = (base if base > 0.0 else float(ps["default-cooldown-s"])) * skill_tree.cooldown_mult(a.id)
+	_strike(global_position + Vector3.UP, float(ps["radius"]), float(weapon["damage"]) * float(ps["damage-mult"]) * skill_tree.effect_mult(a.id), false)
+	return true
 
 func item_label(it) -> String:
 	return Items.item_name(it, o, design)
@@ -153,7 +181,7 @@ func _physics_process(dt: float) -> void:
 		if _stamina_idle >= float(st["regen-delay-s"]):
 			stamina = minf(float(st["max"]), stamina + float(st["regen"]) * dt)
 	if swimming:
-		speed *= float(cfg["swim-mult"])
+		speed *= float(cfg["swim-mult"]) * (skill_tree.effect_mult(&"swimming") if skill_tree != null else 1.0)   # swimming points (D20)
 		velocity.y = float(cfg["swim-vertical"]) * (1.0 if Input.is_action_pressed("jump") else -0.3)
 		_fall_from = -INF                                   # water breaks the fall
 	else:
@@ -190,6 +218,11 @@ func _fall_damage(was_airborne: bool) -> void:
 
 func _combat_tick(dt: float) -> void:
 	_swing_t -= dt; _combo_t -= dt
+	for id in _cooldowns:
+		_cooldowns[id] -= dt
+	for slot in 4:
+		if Input.is_action_just_pressed("class-skill-%d" % (slot + 1)) or (slot == 3 and Input.is_action_just_pressed("ultimate")):
+			use_class_skill(slot + 1)
 	if _combo_t <= 0.0:
 		combo = 0
 	if Input.is_action_just_pressed("basic-attack") and _swing_t <= 0.0:
@@ -201,23 +234,26 @@ func _swing() -> void:
 	var ba: Dictionary = combat["basic-attack"]
 	_swing_t = float(ba["swing-s"])
 	var forward := Basis(Vector3.UP, rig.rotation.y) * Vector3.FORWARD
-	var shape := SphereShape3D.new(); shape.radius = float(ba["hit-radius"])
-	var q := PhysicsShapeQueryParameters3D.new()
-	q.shape = shape
-	q.transform = Transform3D(Basis(), global_position + Vector3.UP + forward * float(ba["reach"]) * 0.6)
-	q.exclude = [get_rid()]
-	var hits := 0
-	for r in get_world_3d().direct_space_state.intersect_shape(q, 8):
-		var body: Object = r["collider"]
-		if body.has_method("take_damage") and not body.get("dead"):
-			var dmg := float(weapon["damage"]) * Combat.combo_mult(combo, combat) * Combat.crit_mult(crit_chance, _rng, crit)
-			body.take_damage(Combat.after_armor(dmg, float(body.get("armor")), combat), self)
-			hits += 1
+	var hits := _strike(global_position + Vector3.UP + forward * float(ba["reach"]) * 0.6, float(ba["hit-radius"]), float(weapon["damage"]), true)
 	if hits > 0:
 		combo = mini(combo + 1, int(weapon["combo_cap"]))
 		_combo_t = float(combat["combo"]["expire-s"])
 	else:
 		combo = 0
+
+## Every live entity inside the sphere takes `dmg` (crit, armor); the combo bonus only for the basic attack.
+func _strike(center: Vector3, radius: float, dmg: float, combo_bonus: bool) -> int:
+	var shape := SphereShape3D.new(); shape.radius = radius
+	var q := PhysicsShapeQueryParameters3D.new()
+	q.shape = shape; q.transform = Transform3D(Basis(), center); q.exclude = [get_rid()]
+	var hits := 0
+	for r in get_world_3d().direct_space_state.intersect_shape(q, 8):
+		var body: Object = r["collider"]
+		if body.has_method("take_damage") and not body.get("dead"):
+			var d := dmg * (Combat.combo_mult(combo, combat) if combo_bonus else 1.0) * Combat.crit_mult(crit_chance, _rng, crit)
+			body.take_damage(Combat.after_armor(d, float(body.get("armor")), combat), self)
+			hits += 1
+	return hits
 
 func _on_died() -> void:
 	velocity = Vector3.ZERO

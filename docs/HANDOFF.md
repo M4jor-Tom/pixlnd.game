@@ -1,4 +1,4 @@
-# Handoff — resume here (written 2026-09-09, after the D19 progression slice)
+# Handoff — resume here (written 2026-09-09, after the D20 skill-tree slice)
 
 Read this, then `git log --oneline -8`, then `docs/ROADMAP/todo_implement.md`. Nothing else is
 needed to continue; the repo is self-describing from these three.
@@ -8,7 +8,7 @@ Cube World rebuild in Godot 4.7.2 + GDScript, **ontology-first**: `ontology/` is
 truth (`domain.md` classes/relations/constraints/generators, `instances/*.json` content,
 `model.gd` typed loader + validator). Engine code in `game/` only *consumes* it. Every decision
 the sources never settled is a numbered **D** entry: `domain.md §7` + `docs/ROADMAP/todo_decide.md`
-(D1–D19 all taken). Designed numbers live in `ontology/instances/generators.json#design.<topic>`.
+(D1–D20 all taken). Designed numbers live in `ontology/instances/generators.json#design.<topic>`.
 
 ## State of the build (all committed and pushed to origin/master)
 | commit | slice | what runs |
@@ -23,17 +23,19 @@ the sources never settled is a numbered **D** entry: `domain.md §7` + `docs/ROA
 | 602ee50 | docs (D17) | runtime profiling overlay + `design.frame-budget` decided in the ontology; **not consumed by code yet** (`todo_implement.md`) |
 | aa45d0a, abaded3 | items (§3.4, D18) | gen-item / gen-item-stats (damage, armor) / names, inventory with stack + slot rules, loot on creature death as ground items, E pick-up, Q potion, B inventory panel, coin HUD |
 | 141b4d7, ad7b0dd | progression (§3.5, D19) | XP per kill (`model.gd#xp_for_kill`, last attacker), level-up with overflow carry, max HP recompute + heal, 2 skill points/level banked, HUD level/xp line; `domain.md` stray head rows fixed, `stats.json` xp table corrected |
+| (this slice) | skill tree (§3.5, D20) | `model.gd#skill_tree` + `c-tree-shape`, `skill_tree.gd` spend/unlock + per-point multipliers, X panel, keys 1–4 placeholder class strike with cooldown, swimming points → swim speed, test_skill_tree |
 
 Binaries: every push to `master` runs `.github/workflows/release.yml` (`firebelley/godot-export`
 reads `export_presets.cfg`), which refreshes the rolling **`latest`** prerelease with
 `pixlnd_*_amd64.deb` and `pixlnd.exe`. Both presets embed the `.pck`, so each is one file.
 
 Playable now: `nix develop -c godot` — WASD/Shift/Space, mouse look, wheel zoom (0 = first
-person), M1 attack, E pick up, Q life potion, B inventory, Esc frees the mouse. You spawn at the
+person), M1 attack, E pick up, Q life potion, B inventory, X skill tree, 1–4 class skills (once a point is in them), Esc frees the mouse. You spawn at the
 centre of land (0,0), seed 26879, a deadlands land; red capsules are hostiles, small spinning
 cubes are loot (colour = rarity, gold = coins). Kills give XP; the HUD line shows level, xp / needed
-and banked skill points (about five even-level kills per level). Every other key in
-`keybinds.json#hybrid` (M2, M3, 1–4, R, Tab, F, T, C, M, F1, F3) is bound but does nothing yet.
+and banked skill points (about five even-level kills per level); spend them on X, then key 1 (Smash) is a
+self-centred strike with a 10 s cooldown that points shorten. Every other key in `keybinds.json#hybrid`
+(M2, M3, Tab, F, T, C, M, F1, F3) is bound but does nothing yet.
 
 ## The loop for every slice (do not skip step 1)
 1. **Ontology sync** — read the §3 class + §6 generator + `instances/*.json` for the feature.
@@ -86,15 +88,16 @@ game/entities/       entity.gd (HP/level/hostility/step-up), player.gd, orbit_ca
 game/combat/         combat.gd (pure formulas)
 game/items/          item.gd, items.gd (gen-item, stats, names, gen-loot, ground drops), inventory.gd,
                      ground_item.{tscn,gd}, inventory_panel.gd
-game/progression/    progression.gd (level settle; xp_for_kill is in ontology/model.gd)
+game/progression/    progression.gd (level settle; xp_for_kill is in ontology/model.gd), skill_tree.gd (points, spend rule,
+                     per-point mults; nodes from model.gd#skill_tree), skill_panel.gd (X)
 game/meta/           input_map.gd (keybinds.json#hybrid → InputMap), hud.gd
 docs/ROADMAP/        todo_decide.md (D1–D19), todo_implement.md (deferrals), cut/Omega specs
 ```
 
 ## Next slice (recommended order)
-1. **Skill tree** (§3.5 `skill-tree`, D6/D10): X screen spending the banked points, per-point effects on
-   the traversal stats + class abilities (needs the first `ability` runtime), trainer respec later.
-2. Then settlements + `world.spawn-rule` (shops consume `design.prices`), or thread zone building.
+1. **Real class abilities** (§3.3 `ability`, `special-attack`, `c-mp-range`): replace `design.abilities.placeholder-strike`
+   with per-ability runtimes (Smash leap, Cyclone channel, ranged/heal/stealth kits), MP/stamina costs, HUD cooldowns.
+2. Then settlements + `world.spawn-rule` (shops consume `design.prices`, class trainer = respec), or thread zone building.
 3. Items backlog (`todo_implement.md` §3.4): rings/amulets, gear HP, upgrade cubes, tabs/tooltips.
 
 Memory for the agent runtime mirrors this file (`cubeworld-rebuild-status`), but this file is

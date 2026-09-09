@@ -89,10 +89,12 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
 - [ ] No crafting, shops, prices in play (`design.prices` unused), identifier, customization bench.
 
 ## Progression (§3.5, slice D19)
-- [ ] Skill points are banked only: no skill-tree screen, no point spending, no class trainer respec,
-  no per-point effects (`skill-tree`, `design.skill-point`, `ability.alpha-tree`). Ontology sync first:
-  `keybinds.json#hybrid` has no skill-tree key yet (`skills-window` is A: X, S: —) and `ui.json` has no
-  skill-tree screen entry — add both before the code.
+- [x] Skill tree (D20, `game/progression/skill_tree.gd`, `skill_panel.gd` on X): spending, unlock rule, per-point multipliers.
+  Still open: every class active is the same self-centred strike (`design.abilities.placeholder-strike`, `player.gd`
+  ponytail) — Smash leap, Cyclone channel, ranged/heal/stealth kits need their own runtimes (`ability.effect`, `combo-system`,
+  `stealth`, `c-mp-range`); no ability cost (MP/stamina), no cast bar or cooldown display on the HUD (`hud-element`);
+  shared skills other than Swimming do nothing until pets, mounts, climbing, glider and boat exist; no class trainer respec
+  (`skill-tree`, needs settlements); the panel is a flat list (no columns drawn, no tooltips) and was not visually checked.
 - [ ] Level-up has no feedback beyond the HUD line: no sound, flash or "level up" toast (`game-feel`, `audio.json`).
 - [ ] The HUD level/xp line was not visually checked (windowed viewport capture, see HANDOFF gotchas).
 - [ ] `power-gate` unread: any item level equips; no adaptation, no `+N` display.
