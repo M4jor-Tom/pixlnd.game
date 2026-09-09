@@ -15,6 +15,7 @@
             godot_4   # engine + headless validator: godot --headless -s ontology/validate.gd
             nodejs    # ontology edit/cross-ref scripts
             jq        # JSON sanity checks on ontology/instances
+            bash      # test loops: `nix develop -c bash -c ...` (zsh does not word-split $var, see HANDOFF gotchas)
           ];
           # ponytail: no export templates yet, add godot_4-export-templates-bin when godot-export runs
         };

@@ -1,4 +1,4 @@
-# Handoff — resume here (written 2026-09-08, after the D16 perf slice)
+# Handoff — resume here (written 2026-09-08, after the D17 docs commit)
 
 Read this, then `git log --oneline -8`, then `docs/ROADMAP/todo_implement.md`. Nothing else is
 needed to continue; the repo is self-describing from these three.
@@ -20,6 +20,7 @@ the sources never settled is a numbered **D** entry: `domain.md §7` + `docs/ROA
 | 250c121 | creatures (§3.2, D14) | per-zone spawns from landscape rosters, idle/wander/chase/return FSM, `entity.gd` base |
 | 457c947 | combat (§3.3, D15) | basic attack, combo, crit, armor floor, creature attacks + retaliation, death/respawn, fall damage, HUD |
 | 69b5702 | perf (D16) | creatures frozen beyond `design.spawns.ai.sim-radius` (80 blocks): 4 → 60 FPS; `monitors/godot_threads.sh` red/green verdict |
+| 602ee50 | docs (D17) | runtime profiling overlay + `design.frame-budget` decided in the ontology; **not consumed by code yet** (`todo_implement.md`) |
 
 Playable now: `nix develop -c godot` — WASD/Shift/Space, mouse look, wheel zoom (0 = first
 person), M1 attack, Esc frees the mouse. You spawn at the centre of land (0,0), seed 26879, a
@@ -56,7 +57,9 @@ deadlands land; red capsules are hostiles.
 - Hand-written `.tscn` node-typed `@export`s did not resolve → assign in code (`world.target`).
 - `--write-movie` drops CanvasLayer UI: to see the HUD, temporarily save
   `get_viewport().get_texture().get_image()` from `main.gd` in a windowed run, then revert.
-- zsh: `set -- $var` does not word-split; sed with `|` delimiter breaks on `|` in the text;
+- zsh (the interactive shell here) does not word-split `$var`: `godot --headless $args` passes one
+  argument and silently runs the main scene forever. Loops that build Godot arguments run under
+  `nix develop -c bash -c '…'` (bash is in the flake for exactly this). Also: sed with `|` delimiter breaks on `|` in the text;
   Perl `$1[` is an array — use `${1}`.
 - Zone build ≈ 40 ms on the main thread (2 per frame): expect hitches; threading is on the todo.
 - Low FPS with idle-looking CPU/GPU = the main thread (physics) pegged: run the game, then
