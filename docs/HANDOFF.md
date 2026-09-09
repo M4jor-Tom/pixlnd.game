@@ -1,4 +1,4 @@
-# Handoff — resume here (written 2026-09-08, after the D18 items slice)
+# Handoff — resume here (written 2026-09-09, after the D18 items slice)
 
 Read this, then `git log --oneline -8`, then `docs/ROADMAP/todo_implement.md`. Nothing else is
 needed to continue; the repo is self-describing from these three.
@@ -8,7 +8,7 @@ Cube World rebuild in Godot 4.7.2 + GDScript, **ontology-first**: `ontology/` is
 truth (`domain.md` classes/relations/constraints/generators, `instances/*.json` content,
 `model.gd` typed loader + validator). Engine code in `game/` only *consumes* it. Every decision
 the sources never settled is a numbered **D** entry: `domain.md §7` + `docs/ROADMAP/todo_decide.md`
-(D1–D17 all taken). Designed numbers live in `ontology/instances/generators.json#design.<topic>`.
+(D1–D18 all taken). Designed numbers live in `ontology/instances/generators.json#design.<topic>`.
 
 ## State of the build (all committed, master, owner pushes to GitHub themselves)
 | commit | slice | what runs |
@@ -21,11 +21,12 @@ the sources never settled is a numbered **D** entry: `domain.md §7` + `docs/ROA
 | 457c947 | combat (§3.3, D15) | basic attack, combo, crit, armor floor, creature attacks + retaliation, death/respawn, fall damage, HUD |
 | 69b5702 | perf (D16) | creatures frozen beyond `design.spawns.ai.sim-radius` (80 blocks): 4 → 60 FPS; `monitors/godot_threads.sh` red/green verdict |
 | 602ee50 | docs (D17) | runtime profiling overlay + `design.frame-budget` decided in the ontology; **not consumed by code yet** (`todo_implement.md`) |
-| aa45d0a…HEAD | items (§3.4, D18) | gen-item / gen-item-stats (damage, armor) / names, inventory with stack + slot rules, loot on creature death as ground items, E pick-up, Q potion, B inventory panel, coin HUD |
+| aa45d0a, abaded3 | items (§3.4, D18) | gen-item / gen-item-stats (damage, armor) / names, inventory with stack + slot rules, loot on creature death as ground items, E pick-up, Q potion, B inventory panel, coin HUD |
 
 Playable now: `nix develop -c godot` — WASD/Shift/Space, mouse look, wheel zoom (0 = first
-person), M1 attack, E pick up, Q life potion, B inventory, Esc frees the mouse. You spawn at the centre of land (0,0), seed 26879, a
-deadlands land; red capsules are hostiles.
+person), M1 attack, E pick up, Q life potion, B inventory, Esc frees the mouse. You spawn at the
+centre of land (0,0), seed 26879, a deadlands land; red capsules are hostiles, small spinning
+cubes are loot (colour = rarity, gold = coins).
 
 ## The loop for every slice (do not skip step 1)
 1. **Ontology sync** — read the §3 class + §6 generator + `instances/*.json` for the feature.
@@ -71,13 +72,15 @@ deadlands land; red capsules are hostiles.
 ```
 ontology/            domain.md, instances/, model.gd, validate.gd, README.md (status log)
 game/ontology_db.gd  autoload: OntologyDB.data (typed), .ruleset, .design, .flag()
-game/main.{tscn,gd}  wires World, Player, HUD, Sun, sky; spawn point; starter weapon
+game/main.{tscn,gd}  wires World, Player, HUD, InventoryPanel, Sun, sky; spawn point; starting inventory
 game/world/          world_gen.gd (lands, climate, heights, names, danger tier, creature level)
                      zone_mesh.gd, world.gd (streaming + spawning), spawner.gd
 game/entities/       entity.gd (HP/level/hostility/step-up), player.gd, orbit_camera.gd, creature.gd
 game/combat/         combat.gd (pure formulas)
+game/items/          item.gd, items.gd (gen-item, stats, names, gen-loot, ground drops), inventory.gd,
+                     ground_item.{tscn,gd}, inventory_panel.gd
 game/meta/           input_map.gd (keybinds.json#hybrid → InputMap), hud.gd
-docs/ROADMAP/        todo_decide.md (D1–D15), todo_implement.md (deferrals), cut/Omega specs
+docs/ROADMAP/        todo_decide.md (D1–D18), todo_implement.md (deferrals), cut/Omega specs
 ```
 
 ## Next slice (recommended order)

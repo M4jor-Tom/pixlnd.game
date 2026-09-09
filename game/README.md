@@ -6,7 +6,7 @@ Consumes `ontology/`; never redefines it. New gameplay = ontology first (sync ru
 - `OntologyDB` (autoload) loads `ontology/instances/*.json` through `ontology/model.gd` at start,
   runs the §5 constraints, aborts the process on any error. Read-only for the whole run.
 - `OntologyDB.ruleset` = the default ruleset (hybrid). Gate features with `OntologyDB.flag("…")`.
-- `OntologyDB.design` = `generators.json#design`, the owner-designed numbers (D6/D11/D12).
+- `OntologyDB.design` = `generators.json#design`, the owner-designed numbers (D6–D18).
 - Mutable state (world, characters, inventory) belongs to `save-data` (§3.7), not to the autoload.
 - Engine scripts `preload("res://ontology/model.gd")` instead of naming `CubeWorldModel`: the
   class-name cache only exists after an editor scan, headless CI has none.

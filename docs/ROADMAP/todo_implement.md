@@ -77,7 +77,7 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
   `Engine.physics_ticks_per_second` from it in `main.gd` (`c-frame-budget`).
 - [ ] ~30 single-source `?` facts in `ontology/instances` wait for playtesting (see §7).
 
-## Items (§3.4, basics landed with D18)
+## Items (§3.4, slice abaded3)
 - [ ] Loot only from open-world kills: no dungeon chests, mission rewards, NPC weapon drops, leftovers,
   boss spirit cubes (`loot-rule`); species drops without an `ingredients.json` row (popcorn, jellies) are skipped.
 - [ ] Ground items: coloured cubes, no item mesh; auto-pickup only coins; no middle-click drop for trading;
