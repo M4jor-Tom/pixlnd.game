@@ -1,16 +1,19 @@
 ## player-character (§3.2) movement + §3.3 basic attack, combo, fall damage, death/respawn + §3.4 inventory,
-## gear (main-hand damage, armor sum), pick-up (E), quick item (Q).
+## gear (main-hand damage, armor sum), pick-up (E), quick item (Q) + §3.5 XP, level-up, banked skill points (D19).
 ## Config dicts (design.movement / camera / combat / crit) are injected by main.gd: this script never
 ## names OntologyDB so headless tests (no autoloads) can drive it.
 ## ponytail: no climb/dodge/glide/special attack/block/stealth/MP yet (todo_implement.md).
 extends "res://game/entities/entity.gd"
 
 const Combat := preload("res://game/combat/combat.gd")
+const Model := preload("res://ontology/model.gd")
 const Items := preload("res://game/items/items.gd")
 const Item := preload("res://game/items/item.gd")
 const Inventory := preload("res://game/items/inventory.gd")
+const Progression := preload("res://game/progression/progression.gd")
 
 signal picked_up(label: String)
+signal leveled_up(level: int)
 
 var cfg: Dictionary = {}                                # design.movement
 var combat: Dictionary = {}                             # design.combat
@@ -20,6 +23,10 @@ var inventory                                           # Inventory, after setup
 var o                                                   # the Ontology (items need weapon types, materials, names)
 var design: Dictionary = {}                             # generators.json#design
 var crit_chance := 0.0
+var xp := 0
+var skill_points := 0
+var hp_mult := 1.0                                      # class hp-mult, for max HP on level-up
+var prog: Dictionary = {}                               # design.progression
 var combo := 0
 var water_top := -INF                                   # y of the water surface (sea level + 1)
 var ground_ready: Callable = func(_p: Vector3) -> bool: return true   # world: is the zone under us built?
@@ -50,6 +57,7 @@ func setup_combat(p_combat: Dictionary, p_crit: Dictionary, p_weapon: Dictionary
 ## design.starting-inventory (D18): the class starter weapon equipped + potions + coins; gear → weapon/armor.
 func setup_items(p_o, p_design: Dictionary, class_id: StringName = &"warrior") -> void:
 	o = p_o; design = p_design
+	prog = design["progression"]; hp_mult = o.classes[class_id].hp_mult
 	inventory = Inventory.new(o, design)
 	var start: Dictionary = design["starting-inventory"]
 	var starter: Dictionary = combat["starter-weapon"]
@@ -72,6 +80,24 @@ func _refresh_gear() -> void:
 	armor = 0.0
 	for slot in inventory.equipment:
 		armor += Items.armor(inventory.equipment[slot], o)
+
+## death of a creature we last hit → design.progression XP (D19), then level-up (c-level-up).
+func on_kill(creature_level: int) -> void:
+	if prog.is_empty():                                    # tests that skip setup_items
+		return
+	gain_xp(Model.xp_for_kill(creature_level, level, prog))
+
+func gain_xp(amount: int) -> void:
+	var s := Progression.settle(level, xp + amount)
+	xp = s["xp"]
+	if s["gained"] == 0:
+		return
+	level = s["level"]
+	skill_points += s["gained"] * Model.SKILL_POINTS_PER_LEVEL
+	max_hp = Combat.player_max_hp(level, hp_mult)
+	if prog["heal-on-level-up"]:
+		hp = max_hp
+	leveled_up.emit(level)
 
 func item_label(it) -> String:
 	return Items.item_name(it, o, design)

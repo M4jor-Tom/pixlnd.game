@@ -1,7 +1,9 @@
 ## hud-element (§3.7), the first three of ui.json: HP bar, stamina bar (hidden until not full, A),
-## combo counter, land caption, coins, item-notifications (pick-up toast). Built in code, bottom-left.
-## ponytail: no portrait/XP/MP/minimap yet.
+## combo counter, land caption, coins, item-notifications (pick-up toast), level + XP line (portrait's text, D19).
+## Built in code, bottom-left. ponytail: no portrait head/MP/minimap yet.
 extends CanvasLayer
+
+const Model := preload("res://ontology/model.gd")
 
 var player: Node
 var world: Node
@@ -10,6 +12,7 @@ var _stamina: ProgressBar
 var _combo: Label
 var _land: Label
 var _coins: Label
+var _level: Label
 var _toast: Label
 
 func bind(p_player: Node, p_world: Node) -> void:
@@ -29,6 +32,7 @@ func _ready() -> void:
 	margin.add_child(box)
 	_land = Label.new(); box.add_child(_land)
 	_coins = Label.new(); box.add_child(_coins)
+	_level = Label.new(); box.add_child(_level)
 	_toast = Label.new(); _toast.modulate.a = 0.0; box.add_child(_toast)
 	_combo = Label.new(); box.add_child(_combo)
 	_hp = _bar(box, Color(0.8, 0.15, 0.15))
@@ -52,6 +56,8 @@ func _process(_dt: float) -> void:
 	_combo.text = "combo %d" % player.combo if player.combo > 0 else ""
 	if player.get("inventory") != null:
 		_coins.text = "%d copper" % player.inventory.coins
+	if player.get("xp") != null:
+		_level.text = "level %d   %d / %d xp   %d skill points" % [player.level, player.xp, Model.xp_to_next(player.level), player.skill_points]
 	if world != null and world.gen != null:
 		var l = world.gen.land_of_block(int(player.global_position.x), int(player.global_position.z))
 		_land.text = "%s  (%s, %s)" % [l.name, l.landscape, l.danger_tier]

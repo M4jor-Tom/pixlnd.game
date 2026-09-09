@@ -1,4 +1,4 @@
-# Handoff — resume here (written 2026-09-09, after the D18 items slice)
+# Handoff — resume here (written 2026-09-09, after the D19 progression slice)
 
 Read this, then `git log --oneline -8`, then `docs/ROADMAP/todo_implement.md`. Nothing else is
 needed to continue; the repo is self-describing from these three.
@@ -8,9 +8,9 @@ Cube World rebuild in Godot 4.7.2 + GDScript, **ontology-first**: `ontology/` is
 truth (`domain.md` classes/relations/constraints/generators, `instances/*.json` content,
 `model.gd` typed loader + validator). Engine code in `game/` only *consumes* it. Every decision
 the sources never settled is a numbered **D** entry: `domain.md §7` + `docs/ROADMAP/todo_decide.md`
-(D1–D18 all taken). Designed numbers live in `ontology/instances/generators.json#design.<topic>`.
+(D1–D19 all taken). Designed numbers live in `ontology/instances/generators.json#design.<topic>`.
 
-## State of the build (all committed, master, owner pushes to GitHub themselves)
+## State of the build (all committed and pushed to origin/master)
 | commit | slice | what runs |
 |---|---|---|
 | c9107df | ontology closed | 40 instance files, validator 0 errors |
@@ -22,11 +22,14 @@ the sources never settled is a numbered **D** entry: `domain.md §7` + `docs/ROA
 | 69b5702 | perf (D16) | creatures frozen beyond `design.spawns.ai.sim-radius` (80 blocks): 4 → 60 FPS; `monitors/godot_threads.sh` red/green verdict |
 | 602ee50 | docs (D17) | runtime profiling overlay + `design.frame-budget` decided in the ontology; **not consumed by code yet** (`todo_implement.md`) |
 | aa45d0a, abaded3 | items (§3.4, D18) | gen-item / gen-item-stats (damage, armor) / names, inventory with stack + slot rules, loot on creature death as ground items, E pick-up, Q potion, B inventory panel, coin HUD |
+| 141b4d7, CODE_HASH | progression (§3.5, D19) | XP per kill (`model.gd#xp_for_kill`, last attacker), level-up with overflow carry, max HP recompute + heal, 2 skill points/level banked, HUD level/xp line; `domain.md` stray head rows fixed, `stats.json` xp table corrected |
 
 Playable now: `nix develop -c godot` — WASD/Shift/Space, mouse look, wheel zoom (0 = first
 person), M1 attack, E pick up, Q life potion, B inventory, Esc frees the mouse. You spawn at the
 centre of land (0,0), seed 26879, a deadlands land; red capsules are hostiles, small spinning
-cubes are loot (colour = rarity, gold = coins).
+cubes are loot (colour = rarity, gold = coins). Kills give XP; the HUD line shows level, xp / needed
+and banked skill points (about five even-level kills per level). Every other key in
+`keybinds.json#hybrid` (M2, M3, 1–4, R, Tab, F, T, C, M, F1, F3) is bound but does nothing yet.
 
 ## The loop for every slice (do not skip step 1)
 1. **Ontology sync** — read the §3 class + §6 generator + `instances/*.json` for the feature.
@@ -42,7 +45,7 @@ cubes are loot (colour = rarity, gold = coins).
    check. All checks are listed in `game/README.md`. Run each under `timeout` (see gotchas).
 5. **Visual check**: `--write-movie` for 3D; HUD needs an in-game viewport capture (gotchas).
 6. Update `game/README.md` folder table + checks, `todo_implement.md`, then commit when the
-   owner says so (they have asked for a commit at the end of each slice so far).
+   owner says so (they have asked for a commit, and since D19 a push, at the end of each slice).
 
 ## Gotchas that cost time (all verified)
 - Headless Godot has no class-name cache: engine scripts `preload("res://ontology/model.gd")`,
@@ -79,13 +82,14 @@ game/entities/       entity.gd (HP/level/hostility/step-up), player.gd, orbit_ca
 game/combat/         combat.gd (pure formulas)
 game/items/          item.gd, items.gd (gen-item, stats, names, gen-loot, ground drops), inventory.gd,
                      ground_item.{tscn,gd}, inventory_panel.gd
+game/progression/    progression.gd (level settle; xp_for_kill is in ontology/model.gd)
 game/meta/           input_map.gd (keybinds.json#hybrid → InputMap), hud.gd
-docs/ROADMAP/        todo_decide.md (D1–D18), todo_implement.md (deferrals), cut/Omega specs
+docs/ROADMAP/        todo_decide.md (D1–D19), todo_implement.md (deferrals), cut/Omega specs
 ```
 
 ## Next slice (recommended order)
-1. **§3.5 progression**: `level-formula` (already in `model.gd`: `power_for_level`, `xp_to_next`),
-   XP on kill, skill points (D6/D10 tree) → `player.level` stops being a constant.
+1. **Skill tree** (§3.5 `skill-tree`, D6/D10): X screen spending the banked points, per-point effects on
+   the traversal stats + class abilities (needs the first `ability` runtime), trainer respec later.
 2. Then settlements + `world.spawn-rule` (shops consume `design.prices`), or thread zone building.
 3. Items backlog (`todo_implement.md` §3.4): rings/amulets, gear HP, upgrade cubes, tabs/tooltips.
 

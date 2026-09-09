@@ -6,7 +6,7 @@ Consumes `ontology/`; never redefines it. New gameplay = ontology first (sync ru
 - `OntologyDB` (autoload) loads `ontology/instances/*.json` through `ontology/model.gd` at start,
   runs the §5 constraints, aborts the process on any error. Read-only for the whole run.
 - `OntologyDB.ruleset` = the default ruleset (hybrid). Gate features with `OntologyDB.flag("…")`.
-- `OntologyDB.design` = `generators.json#design`, the owner-designed numbers (D6–D18).
+- `OntologyDB.design` = `generators.json#design`, the owner-designed numbers (D6–D19).
 - Mutable state (world, characters, inventory) belongs to `save-data` (§3.7), not to the autoload.
 - Engine scripts `preload("res://ontology/model.gd")` instead of naming `CubeWorldModel`: the
   class-name cache only exists after an editor scan, headless CI has none.
@@ -18,7 +18,7 @@ Consumes `ontology/`; never redefines it. New gameplay = ontology first (sync ru
 | 3.2 Entities | `entities/` | **player (D13) + creatures (D14):** `entity.gd` base (HP, level, hostility, step-up), `player.{tscn,gd}` walk/sprint/jump/swim/stamina, `orbit_camera.gd` SpringArm3D orbit, `creature.{tscn,gd}` idle/wander/chase/return FSM, `world/spawner.gd` gen-spawns per zone; next npc, pet |
 | 3.3 Combat | `combat/` | **basics (D15):** `combat.gd` pure formulas (weapon damage, armor floor, crit, combo, player/NPC HP+damage); attack/retaliate/death live in `entities/`; next specials, block, dodge, status effects |
 | 3.4 Items | `items/` | **basics (D18):** `item.gd` instance, `items.gd` gen-item / gen-item-stats (damage, armor) / item names / gen-loot + ground drops, `inventory.gd` stack + slot rules, `ground_item.{tscn,gd}` pick-up area, `inventory_panel.gd` (B); next crafting, shop, leftovers |
-| 3.5 Progression | `progression/` | level formula, skill tree, artifacts |
+| 3.5 Progression | `progression/` | **basics (D19):** `progression.gd` level settle (overflow, multi-level); XP per kill lives in `model.gd#xp_for_kill`, awarded by `creature.gd` to its last attacker, `player.gd#gain_xp` levels up (max HP, heal, banked skill points), HUD level/xp line; next skill tree UI, power-gate, artifacts |
 | 3.6 Missions | `missions/` | mission-type runtime, arena |
 | 3.7 Meta | `meta/` | `input_map.gd` builds InputMap from `keybinds.json#hybrid`; `hud.gd` HP/stamina/combo/land caption; next server/client (`godot-multiplayer`), save-data |
 
@@ -31,6 +31,7 @@ nix develop -c godot --headless -s game/entities/test_player.gd    # player phys
 nix develop -c godot --headless -s game/entities/test_creatures.gd # gen-spawns determinism, rosters, level band, HP calibration, FSM
 nix develop -c godot --headless -s game/combat/test_combat.gd       # formulas, hit/combo/whiff, retaliation, kill, respawn
 nix develop -c godot --headless -s game/items/test_items.gd         # gen-item roll/stats/names, slots, stack rule, gen-loot rates, kill → drop → pick-up → Q
+nix develop -c godot --headless -s game/progression/test_progression.gd   # xp-to-next table, xp-for-kill gap rule, settle, c-xp-config, kills → level 2
 nix develop -c godot --write-movie /tmp/f.png --fixed-fps 30 --quit-after 100   # 3D frames of the real scene (the movie writer skips CanvasLayer UI)
 ./monitors/godot_threads.sh                                        # while the game runs: main-thread CPU, red = physics spiral (D16)
 # HUD check: temporarily save get_viewport().get_texture().get_image() from main.gd, windowed run

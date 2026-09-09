@@ -28,8 +28,8 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
 - [ ] Climb (E grab, wall-jump), dodge roll, glider, swim breath/drowning (`abilities.json`
   movement kind; `flags.drowning`, `diving-breath`) — `player.gd` ponytail.
 - [x] Fall damage (D13 numbers) — applied on landing since the combat slice; dodge does not yet negate it.
-- [ ] `player.level` is a constant 1: `level-formula`, XP, skill points (`skill-tree`) not started;
-  enemy levels therefore sit in the 1..6 band.
+- [x] `player.level` grows: XP per kill + level-up (D19, `game/progression/`); enemy levels follow it
+  through `design.enemy-level`. Still open: see Progression below.
 - [ ] Race, gender, class, spec, appearance: player is always `human` / capsule
   (`player-character` creation, `races.json#_creation`, D8 skin colour).
 - [ ] Rebinding UI + persistence (S: remappable, saved) — `input_map.gd` builds defaults only
@@ -37,7 +37,7 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
 - [ ] Camera: no follow smoothing/deadzone, `design.camera.shoulder-offset` unused, sniper Aim
   zoom (`ui.json#camera.aim`).
 - [ ] Menu: the `menu` action only toggles mouse capture; no pause/options screen (`option`).
-- [x] HP/stamina/combo/land HUD (code-built `hud.gd`); still missing: portrait, XP, MP, minimap,
+- [x] HP/stamina/combo/land/coins/level+xp HUD (code-built `hud.gd`); still missing: portrait, MP, minimap,
   damage numbers, enemy name colours + stars, buff icons (`hud-element`, `ui.json`).
 
 ## Creatures (§3.2 creature + ai-behavior, slice pending)
@@ -86,6 +86,18 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
   no class check on equip (red names), no quick-select wheel (Q takes the first consumable, instant, no sit/channel).
 - [ ] No crafting, shops, prices in play (`design.prices` unused), identifier, customization bench.
 
+## Progression (§3.5, slice D19)
+- [ ] Skill points are banked only: no skill-tree screen, no point spending, no class trainer respec,
+  no per-point effects (`skill-tree`, `design.skill-point`, `ability.alpha-tree`). Ontology sync first:
+  `keybinds.json#hybrid` has no skill-tree key yet (`skills-window` is A: X, S: —) and `ui.json` has no
+  skill-tree screen entry — add both before the code.
+- [ ] Level-up has no feedback beyond the HUD line: no sound, flash or "level up" toast (`game-feel`, `audio.json`).
+- [ ] The HUD level/xp line was not visually checked (windowed viewport capture, see HANDOFF gotchas).
+- [ ] `power-gate` unread: any item level equips; no adaptation, no `+N` display.
+- [ ] XP only from open-world kills by the last attacker; no mission / boss XP, no party share, no pet XP
+  (`pet-xp` flag), no message-log "+N xp" toast (`hud-element` message-log).
+- [ ] HUD shows level/xp as a text line; the portrait (head, name, class) is still missing (`hud-element` portrait).
+
 ## Combat (§3.3, slice pending)
 - [ ] Only `basic-attack` exists: no special attack / charge, block + block-power, dodge i-frames,
   stealth bar, MP gain and spending, class abilities, ultimates (`ability`, `special-attack`,
@@ -99,7 +111,7 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
 - [ ] Combo only adds damage; armor piercing per combo and the per-weapon cap colours are missing
   (`combo-system`).
 - [ ] Death: player respawns at the spawn point after 2 s; no revival statue / shrine, no enemy HP
-  reset, no death screen; creatures drop loot (D18) but no XP, spirit cubes or corpse (`death`).
+  reset, no death screen; creatures drop loot (D18) and XP (D19) but no spirit cubes or corpse (`death`).
 - [ ] Game feel: hit flash only; no hit-stop, shake, knockback, damage numbers, sounds
   (`game-feel`, `audio.json`).
 - [ ] Status effects (`status-effects.json`) not applied by anything.

@@ -46,6 +46,8 @@ func _on_damaged(_amount: float, from: Node) -> void:
 	create_tween().tween_property(mat, "albedo_color", color, flash_s)
 
 func _on_died() -> void:
+	if target != null and is_instance_valid(target) and target.has_method("on_kill"):
+		target.on_kill(level)                               # D19: XP to whoever we were fighting (last attacker)
 	set_physics_process(false)
 	$Collision.disabled = true
 	create_tween().tween_property($Body, "scale", Vector3(1.3, 0.2, 1.3), 0.2).finished.connect(queue_free)

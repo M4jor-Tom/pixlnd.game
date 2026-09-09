@@ -27,6 +27,6 @@ func _ready() -> void:
 	player.spawn_point = player.position
 	$HUD.bind(player, world)
 	var land = world.gen.land_of_block(mid, mid)
-	print("pixlnd: ruleset %s, %d creatures, %d abilities; seed %d, land '%s' (%s, %s); %s dmg %.0f, hp %.0f" % [
+	print("pixlnd: ruleset %s, %d creatures, %d abilities; seed %d, land '%s' (%s, %s); %s dmg %.0f, hp %.0f, level %d" % [
 		OntologyDB.ruleset.id, o.creatures.size(), o.abilities.size(), world.world_seed, land.name, land.landscape, land.danger_tier,
-		player.weapon["type"], player.weapon["damage"], player.max_hp])
+		player.weapon["type"], player.weapon["damage"], player.max_hp, player.level])
