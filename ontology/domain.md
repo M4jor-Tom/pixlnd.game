@@ -1,6 +1,3 @@
-| c-frame-budget | physics 60 Hz; a tick slower than its budget slows game time instead of stacking catch-up ticks: `Engine.max_physics_steps_per_frame` = `design.frame-budget.max-catch-up-steps` (D17) | engine |
-is frozen — no AI tick, no physics (D16). Distance = nearest player once `multiplayer-mode` lands (single player: the one player). || c-sim-radius | `design.spawns.ai.sim-radius` ≥ `aggro-range` + `leash`, so a creature can still notice you and walk home while you are around (D16) | load |
-| simulation | hybrid: a creature farther than `design.spawns.ai.sim-radius` blocks from the player is frozen — no AI tick, no physics (D16) |
 # Cube World Rebuild — Domain Ontology (canonical layer)
 
 Source of truth for the rebuild of **Cube World** (Picroma / Wollay). Code, data and content are
@@ -429,6 +426,7 @@ Rules shared by enemies. `A S`
 | chase | wraith pursues longer; most drop chase eventually `?` |
 | clones | some bosses/NPC mages summon doppelgangers |
 | possession | S: demon portal randomly possesses NPCs in the land (bigger, red, tougher, respawn possessed) |
+| simulation | hybrid: a creature farther than `design.spawns.ai.sim-radius` blocks from the player is frozen — no AI tick, no physics (D16). Distance = nearest player once `multiplayer-mode` lands (single player: the one player). |
 
 ### mob-strength-tier
 S enemy power colour: white (150–250 HP, farm animals) < green < blue < purple (dungeon base) <
@@ -652,7 +650,7 @@ Feature-flag bundle selecting alpha or steam progression. → `instances/ruleset
 `power(lvl) = (101·lvl − 81)/(lvl + 19)` (cap +100 at lvl 1981); `xp-to-next(lvl) = int(1050 −
 1000/(0.05·(lvl−1)+1))`; `base-hp(lvl) = 2^((1 − 1/(0.05·(lvl−1)+1))·3)`; player HP = base × 2 ×
 max-hp-multiplier; class HP multipliers warrior 1.30 (guardian ×1.25 more), ranger 1.10, rogue 1.20,
-mage 1.00; 2 skill points per level; no level cap (int32).
+mage 1.00; 2 skill points per level; no level cap (int32). XP per kill: `design.progression` (D19).
 
 ### skill-tree `A`
 11 slots. Shared chains (5 points unlock next): pet-master → riding; climbing → hang-gliding;
@@ -854,6 +852,10 @@ One row per fact type. Cardinality as `domain → range`.
 | c-rideable-conflict | resolved (F2): every `rideable` is a boolean, per-page value; a `?` here is a load error | load |
 | c-hostile-in-city | villagers/animals inside settlements unattackable unless possessed | runtime |
 | c-artifact-stat | each artifact raises exactly one of the 7 traversal stats, plus attack and max HP (D6); all with `generators.json#design.artifact` diminishing rule | load |
+| c-sim-radius | `design.spawns.ai.sim-radius` ≥ `aggro-range` + `leash`, so a creature can still notice you and walk home while you are around (D16) | load |
+| c-frame-budget | physics 60 Hz; a tick slower than its budget slows game time instead of stacking catch-up ticks: `Engine.max_physics_steps_per_frame` = `design.frame-budget.max-catch-up-steps` (D17) | engine |
+| c-xp-config | `design.progression`: kill-fraction ∈ (0,1]; gap-mult-range = [lo, hi] with 0 ≤ lo ≤ 1 ≤ hi; gap-per-level ≥ 0 (D19) | load |
+| c-level-up | level never decreases; after settling, xp < xp-to-next(level); each level gained adds exactly `skill-points-per-level` (D19) | runtime |
 | c-drowning | S only: breath depletes underwater; empty → HP loss; wall-hold pauses | runtime |
 | c-gate-doors | divine doors re-close at 0:00; bell spirit world lasts 30 s (F8) | runtime |
 
@@ -946,4 +948,9 @@ Decisions only the owner can make (D) and facts research could not settle (F).
   ingredient/coin/formula/block stack. Start: class weapon + 5 life potions. → `generators.json#design.loot|stack-cap|starting-inventory`,
   `c-loot-config`, `c-stack-rule`, `c-slot-accepts`. Gear stats this build: damage + armor only (hp/regen/tempo/crit `?`,
   the stats.json hp roll term `2 − 8r` goes negative as written).
+- **D19 XP and level-up — DECIDED 2026-09-09**: XP per kill = `xp-to-next(creature level)` × kill-fraction 0.2 ×
+  gap multiplier clamp(1 + 0.1·(creature level − player level), 0, 2), so ~5 even-level kills level you up and
+  a creature 10+ levels below is worth nothing; overflow carries, several level-ups per kill; level-up refills HP
+  and recomputes max HP; +2 skill points per level are banked (spending waits for the skill-tree UI + trainer).
+  → `generators.json#design.progression`, `c-xp-config`, `c-level-up`.
 - **F7** Omega status after mid-2024 (Vulkan vs UE5 reports).

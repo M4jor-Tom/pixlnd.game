@@ -25,6 +25,9 @@ ontology/
   race hitboxes, chase drop, armor formula); none blocks engine work.
 - 2026-09-08: stale `?` (water level, artifact traversal bonus) cleared; D11 settles the four hybrid
   gaps (block reward, regeneration, artifacts per land, `/pvp`) in `generators.json#design`.
+- 2026-09-09: `stats.json` xp-to-next table corrected to what its own formula gives (L20 537, L50 760, L100 881).
+- 2026-09-09: D19 XP per kill + level-up rules (`design.progression`, `c-xp-config`, `c-level-up`) for `game/progression/`;
+  three table rows that a D16/D17 edit had prepended above the `domain.md` title moved back into §3.2 ai-behavior and §5.
 - 2026-09-09: D18 items, loot, inventory numbers + `c-loot-config` / `c-stack-rule` / `c-slot-accepts` for `game/items/`.
 - 2026-09-08: D17 runtime profiling overlay (Godot Debug Menu, F3) + `design.frame-budget` / `c-frame-budget`.
 - 2026-09-08: D16 simulation radius + `c-sim-radius` (creatures frozen beyond 80 blocks; the 4 FPS fix).

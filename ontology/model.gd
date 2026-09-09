@@ -39,6 +39,12 @@ static func power_for_level(level: int) -> int:
 static func xp_to_next(level: int) -> int:
 	return int(1050.0 - 1000.0 / (0.05 * (level - 1) + 1.0))
 
+## D19: XP awarded to a player for a kill. design.progression.
+static func xp_for_kill(creature_level: int, player_level: int, prog: Dictionary) -> int:
+	var r: Array = prog["gap-mult-range"]
+	var mult := clampf(1.0 + float(prog["gap-per-level"]) * (creature_level - player_level), float(r[0]), float(r[1]))
+	return int(xp_to_next(creature_level) * float(prog["kill-fraction"]) * mult)
+
 ## Alpha item/character base curve. stats.json#alpha-item-stat-formulas.
 static func stat_curve(n: float, rarity: int) -> float:
 	return pow(2.0, (1.0 - 1.0 / ((n - 1.0) * 0.05 + 1.0)) * 3.0) * pow(2.0, rarity * 0.25)
@@ -386,6 +392,12 @@ class Ontology extends RefCounted:
 				if not item_types.has(t): errors.append("design.loot/stack-cap: unknown item-type %s" % t)
 			for c in loot["consumable-pool"]:
 				if not consumables.has(c): errors.append("design.loot.consumable-pool: unknown consumable %s" % c)
+		var prog: Dictionary = design.get("progression", {})               # c-xp-config (D19)
+		if not prog.is_empty():
+			var kf := float(prog["kill-fraction"]); var r: Array = prog["gap-mult-range"]
+			if kf <= 0.0 or kf > 1.0: errors.append("design.progression.kill-fraction out of (0,1]")
+			if float(r[0]) < 0.0 or float(r[0]) > 1.0 or float(r[1]) < 1.0: errors.append("design.progression.gap-mult-range must bracket 1 with lo >= 0")
+			if float(prog["gap-per-level"]) < 0.0: errors.append("design.progression.gap-per-level < 0")
 		var defaults := rulesets.values().filter(func(r: Ruleset) -> bool: return r.is_default)
 		if defaults.size() != 1: errors.append("exactly one ruleset must be default (found %d)" % defaults.size())
 		return errors.size() == n
