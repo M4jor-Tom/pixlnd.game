@@ -13,6 +13,7 @@ var zones := {}                         # Vector2i → MeshInstance3D (creatures
 var design: Dictionary = {}             # generators.json#design; empty = no creatures
 var creatures := {}                     # OntologyDB.data.creatures
 var rosters := {}                       # creature-families.json#landscape-rosters
+var ontology                            # OntologyDB.data; set → creatures drop loot (items.gd)
 var _zone_blocks: int
 var _view: int
 var _land_mat := StandardMaterial3D.new()
@@ -63,7 +64,7 @@ func _spawn_zone(zc: Vector2i) -> void:
 	zones[zc] = mi
 	if not design.is_empty():
 		var lvl: int = target.get("level") if target != null and target.get("level") != null else 1
-		Spawner.populate(mi, Spawner.plan(gen, zc, design, creatures, rosters, lvl), design, creatures, target)
+		Spawner.populate(mi, Spawner.plan(gen, zc, design, creatures, rosters, lvl), design, creatures, target, ontology)
 
 ## True once the zone under `pos` is built (the player waits for it instead of falling through).
 func has_ground(pos: Vector3) -> bool:

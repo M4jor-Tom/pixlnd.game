@@ -5,6 +5,7 @@ extends RefCounted
 
 const CREATURE := preload("res://game/entities/creature.tscn")
 const Model := preload("res://ontology/model.gd")
+const Items := preload("res://game/items/items.gd")
 const Combat := preload("res://game/combat/combat.gd")
 
 ## Deterministic plan for one zone: [{species, level, hostility, positions: [Vector3]}].
@@ -48,7 +49,8 @@ static func plan(gen, zc: Vector2i, design: Dictionary, creatures: Dictionary, r
 	return out
 
 ## Instantiate a plan under `parent` (the zone node). Returns the creatures.
-static func populate(parent: Node3D, plan_: Array, design: Dictionary, creatures: Dictionary, target: Node3D) -> Array:
+## `ontology` set → every creature drops gen-loot on death (items.gd); null (tests) → no loot.
+static func populate(parent: Node3D, plan_: Array, design: Dictionary, creatures: Dictionary, target: Node3D, ontology = null) -> Array:
 	var spawns: Dictionary = design["spawns"]
 	var made: Array = []
 	for g in plan_:
@@ -64,5 +66,7 @@ static func populate(parent: Node3D, plan_: Array, design: Dictionary, creatures
 			m.target = target
 			m.setup(g["species"], g["level"], g["max_hp"], g["damage"], g["hostility"], spawns["ai"], design["combat"]["enemy-attack"], size, color, g["seed"] + i)
 			m.flash_s = float(design["combat"]["hit-flash-s"])
+			if ontology != null:
+				m.died.connect(func() -> void: Items.drop_for(m, ontology, design))
 			made.append(m)
 	return made

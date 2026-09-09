@@ -1,5 +1,6 @@
 ## hud-element (§3.7), the first three of ui.json: HP bar, stamina bar (hidden until not full, A),
-## combo counter, land caption. Built in code, bottom-left. ponytail: no portrait/XP/MP/minimap yet.
+## combo counter, land caption, coins, item-notifications (pick-up toast). Built in code, bottom-left.
+## ponytail: no portrait/XP/MP/minimap yet.
 extends CanvasLayer
 
 var player: Node
@@ -8,9 +9,13 @@ var _hp: ProgressBar
 var _stamina: ProgressBar
 var _combo: Label
 var _land: Label
+var _coins: Label
+var _toast: Label
 
 func bind(p_player: Node, p_world: Node) -> void:
 	player = p_player; world = p_world
+	if player.has_signal("picked_up"):
+		player.picked_up.connect(_on_picked_up)
 
 func _ready() -> void:
 	var margin := MarginContainer.new()                     # full rect; the box shrinks to bottom-left
@@ -23,6 +28,8 @@ func _ready() -> void:
 	box.size_flags_vertical = Control.SIZE_SHRINK_END
 	margin.add_child(box)
 	_land = Label.new(); box.add_child(_land)
+	_coins = Label.new(); box.add_child(_coins)
+	_toast = Label.new(); _toast.modulate.a = 0.0; box.add_child(_toast)
 	_combo = Label.new(); box.add_child(_combo)
 	_hp = _bar(box, Color(0.8, 0.15, 0.15))
 	_stamina = _bar(box, Color(0.9, 0.8, 0.2))
@@ -43,6 +50,12 @@ func _process(_dt: float) -> void:
 	_stamina.max_value = st_max; _stamina.value = player.stamina
 	_stamina.visible = player.stamina < st_max
 	_combo.text = "combo %d" % player.combo if player.combo > 0 else ""
+	if player.get("inventory") != null:
+		_coins.text = "%d copper" % player.inventory.coins
 	if world != null and world.gen != null:
 		var l = world.gen.land_of_block(int(player.global_position.x), int(player.global_position.z))
 		_land.text = "%s  (%s, %s)" % [l.name, l.landscape, l.danger_tier]
+
+func _on_picked_up(label: String) -> void:
+	_toast.text = "+ " + label; _toast.modulate.a = 1.0
+	create_tween().tween_property(_toast, "modulate:a", 0.0, 2.0).set_delay(1.0)

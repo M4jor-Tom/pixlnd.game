@@ -1,15 +1,24 @@
-## player-character (§3.2) movement + §3.3 basic attack, combo, fall damage, death/respawn.
+## player-character (§3.2) movement + §3.3 basic attack, combo, fall damage, death/respawn + §3.4 inventory,
+## gear (main-hand damage, armor sum), pick-up (E), quick item (Q).
 ## Config dicts (design.movement / camera / combat / crit) are injected by main.gd: this script never
 ## names OntologyDB so headless tests (no autoloads) can drive it.
 ## ponytail: no climb/dodge/glide/special attack/block/stealth/MP yet (todo_implement.md).
 extends "res://game/entities/entity.gd"
 
 const Combat := preload("res://game/combat/combat.gd")
+const Items := preload("res://game/items/items.gd")
+const Item := preload("res://game/items/item.gd")
+const Inventory := preload("res://game/items/inventory.gd")
+
+signal picked_up(label: String)
 
 var cfg: Dictionary = {}                                # design.movement
 var combat: Dictionary = {}                             # design.combat
 var crit: Dictionary = {}                               # design.crit
-var weapon: Dictionary = {}                             # {type, damage, combo_cap}
+var weapon: Dictionary = {}                             # {type, damage, combo_cap}, derived from the main-hand item
+var inventory                                           # Inventory, after setup_items
+var o                                                   # the Ontology (items need weapon types, materials, names)
+var design: Dictionary = {}                             # generators.json#design
 var crit_chance := 0.0
 var combo := 0
 var water_top := -INF                                   # y of the water surface (sea level + 1)
@@ -37,6 +46,68 @@ func setup_combat(p_combat: Dictionary, p_crit: Dictionary, p_weapon: Dictionary
 	max_hp = p_max_hp; hp = p_max_hp
 	if not died.is_connected(_on_died):
 		died.connect(_on_died)
+
+## design.starting-inventory (D18): the class starter weapon equipped + potions + coins; gear → weapon/armor.
+func setup_items(p_o, p_design: Dictionary, class_id: StringName = &"warrior") -> void:
+	o = p_o; design = p_design
+	inventory = Inventory.new(o, design)
+	var start: Dictionary = design["starting-inventory"]
+	var starter: Dictionary = combat["starter-weapon"]
+	var wt = o.weapon_types[o.classes[class_id].weapon_types[0]]
+	var first := Items.generate(_rng, &"weapon", wt.id, Items.weapon_material(wt), int(starter["level"]), int(starter["rarity"]))
+	inventory.add(first); inventory.equip(first)
+	for c in start["consumables"]:
+		inventory.add(Item.stack(&"consumable", StringName(c), int(start["consumables"][c])))
+	inventory.coins = int(start["coins"])
+	inventory.changed.connect(_refresh_gear)
+	_refresh_gear()
+
+## equips: main-hand item → weapon damage (gen-item-stats × attack-power-mult); armor = sum over worn gear.
+func _refresh_gear() -> void:
+	var main = inventory.equipment.get(&"main-hand")
+	if main != null:
+		var wt = o.weapon_types[main.subtype]
+		weapon = {"type": main.subtype, "damage": Items.damage(main, o) * float(combat["attack-power-mult"]),
+			"combo_cap": wt.combo_cap if wt.combo_cap > 0 else int(combat["combo"]["default-cap"])}
+	armor = 0.0
+	for slot in inventory.equipment:
+		armor += Items.armor(inventory.equipment[slot], o)
+
+func item_label(it) -> String:
+	return Items.item_name(it, o, design)
+
+func pick_up(ground: Node3D) -> void:
+	if ground.is_queued_for_deletion():
+		return
+	inventory.add(ground.item)
+	picked_up.emit(ground.label)
+	ground.queue_free()
+
+## pick-up (E): the nearest ground item within design.loot.ground.pickup-radius.
+func pick_up_nearest() -> bool:
+	var best: Node3D
+	var best_d := float(design["loot"]["ground"]["pickup-radius"])
+	for n in get_tree().get_nodes_in_group("ground-items"):
+		var d: float = n.global_position.distance_to(global_position)
+		if d <= best_d and not n.is_queued_for_deletion():
+			best = n; best_d = d
+	if best == null:
+		return false
+	pick_up(best)
+	return true
+
+## consumable: heal (consumable-heal) and spend one. ponytail: instant, no sit/channel time.
+func use_item(it) -> void:
+	hp = minf(max_hp, hp + Items.heal(it, o))
+	inventory.remove(it)
+
+## quick-item (Q): the first consumable stack. ponytail: no quick-select wheel yet.
+func use_quick() -> bool:
+	var it = inventory.first_consumable()
+	if it == null:
+		return false
+	use_item(it)
+	return true
 
 func _physics_process(dt: float) -> void:
 	if cfg.is_empty() or dead or not ground_ready.call(global_position):
@@ -73,6 +144,11 @@ func _physics_process(dt: float) -> void:
 	_fall_damage(was_airborne)
 	if not combat.is_empty():
 		_combat_tick(dt)
+	if inventory != null:
+		if Input.is_action_just_pressed("pick-up"):
+			pick_up_nearest()
+		if Input.is_action_just_pressed("quick-item"):
+			use_quick()
 
 ## design.movement.fall-damage: % of max HP per block beyond the free height.
 func _fall_damage(was_airborne: bool) -> void:

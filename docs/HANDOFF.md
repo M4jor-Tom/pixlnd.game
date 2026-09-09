@@ -1,4 +1,4 @@
-# Handoff — resume here (written 2026-09-08, after the D17 docs commit)
+# Handoff — resume here (written 2026-09-08, after the D18 items slice)
 
 Read this, then `git log --oneline -8`, then `docs/ROADMAP/todo_implement.md`. Nothing else is
 needed to continue; the repo is self-describing from these three.
@@ -21,9 +21,10 @@ the sources never settled is a numbered **D** entry: `domain.md §7` + `docs/ROA
 | 457c947 | combat (§3.3, D15) | basic attack, combo, crit, armor floor, creature attacks + retaliation, death/respawn, fall damage, HUD |
 | 69b5702 | perf (D16) | creatures frozen beyond `design.spawns.ai.sim-radius` (80 blocks): 4 → 60 FPS; `monitors/godot_threads.sh` red/green verdict |
 | 602ee50 | docs (D17) | runtime profiling overlay + `design.frame-budget` decided in the ontology; **not consumed by code yet** (`todo_implement.md`) |
+| aa45d0a…HEAD | items (§3.4, D18) | gen-item / gen-item-stats (damage, armor) / names, inventory with stack + slot rules, loot on creature death as ground items, E pick-up, Q potion, B inventory panel, coin HUD |
 
 Playable now: `nix develop -c godot` — WASD/Shift/Space, mouse look, wheel zoom (0 = first
-person), M1 attack, Esc frees the mouse. You spawn at the centre of land (0,0), seed 26879, a
+person), M1 attack, E pick up, Q life potion, B inventory, Esc frees the mouse. You spawn at the centre of land (0,0), seed 26879, a
 deadlands land; red capsules are hostiles.
 
 ## The loop for every slice (do not skip step 1)
@@ -80,13 +81,10 @@ docs/ROADMAP/        todo_decide.md (D1–D15), todo_implement.md (deferrals), c
 ```
 
 ## Next slice (recommended order)
-1. **§3.4 items**: item instances from `gen-item` / `gen-item-stats` (`stats.json`, `item-types.json`,
-   `materials.json`, `rarities.json`, `affixes.json`), equipment slots, loot on creature death
-   (`gen-loot`, `loot-rule`), inventory. Design gaps to settle as D18: drop rates, starting
-   inventory, stack rules (D6 says no cap).
-2. **§3.5 progression**: `level-formula` (already in `model.gd`: `power_for_level`, `xp_to_next`),
+1. **§3.5 progression**: `level-formula` (already in `model.gd`: `power_for_level`, `xp_to_next`),
    XP on kill, skill points (D6/D10 tree) → `player.level` stops being a constant.
-3. Then settlements + `world.spawn-rule`, or thread zone building.
+2. Then settlements + `world.spawn-rule` (shops consume `design.prices`), or thread zone building.
+3. Items backlog (`todo_implement.md` §3.4): rings/amulets, gear HP, upgrade cubes, tabs/tooltips.
 
 Memory for the agent runtime mirrors this file (`cubeworld-rebuild-status`), but this file is
 the canonical handoff.

@@ -77,18 +77,29 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
   `Engine.physics_ticks_per_second` from it in `main.gd` (`c-frame-budget`).
 - [ ] ~30 single-source `?` facts in `ontology/instances` wait for playtesting (see §7).
 
+## Items (§3.4, basics landed with D18)
+- [ ] Loot only from open-world kills: no dungeon chests, mission rewards, NPC weapon drops, leftovers,
+  boss spirit cubes (`loot-rule`); species drops without an `ingredients.json` row (popcorn, jellies) are skipped.
+- [ ] Ground items: coloured cubes, no item mesh; auto-pickup only coins; no middle-click drop for trading;
+  lifetime is real seconds (`design.loot.ground.lifetime-s`), not tied to `game-clock`.
+- [ ] Inventory panel: one list, no tabs / tooltips / drag / star rating (`screens.inventory`, `item-tooltip`);
+  no class check on equip (red names), no quick-select wheel (Q takes the first consumable, instant, no sit/channel).
+- [ ] No crafting, shops, prices in play (`design.prices` unused), identifier, customization bench.
+
 ## Combat (§3.3, slice pending)
 - [ ] Only `basic-attack` exists: no special attack / charge, block + block-power, dodge i-frames,
   stealth bar, MP gain and spending, class abilities, ultimates (`ability`, `special-attack`,
   `block`, `dodge`, `stealth`, `c-mp-range`, `c-dodge-cost`).
 - [ ] Hit test is a sphere in front of the camera yaw; no weapon movesets, hit timing, or
   ranged/projectile weapons (`weapon-type.m1/m2`; bow, staff, boomerang).
-- [ ] Item modifier roll (0..20) ignored in `combat.gd` damage; no item instances, equipment
-  slots or armor stat on anyone (`item`, `equipment-slot`, `gen-item-stats`).
+- [x] Item instances, equipment slots, armor stat (D18, `game/items/`). Still open: the modifier roll only
+  seeds the name — stats.json gives no roll term for damage/armor; gear hp/regen/tempo/crit are not
+  applied (`gen-item-stats`; the hp roll term `2 − 8r` goes negative as written, `?`), rings/amulets
+  never drop, no upgrade cubes (`item.upgrades`, `c-cube-cap`), no `+` items.
 - [ ] Combo only adds damage; armor piercing per combo and the per-weapon cap colours are missing
   (`combo-system`).
 - [ ] Death: player respawns at the spawn point after 2 s; no revival statue / shrine, no enemy HP
-  reset, no death screen; creatures vanish (no loot, XP, spirit cubes, corpse) (`death`, `gen-loot`).
+  reset, no death screen; creatures drop loot (D18) but no XP, spirit cubes or corpse (`death`).
 - [ ] Game feel: hit flash only; no hit-stop, shake, knockback, damage numbers, sounds
   (`game-feel`, `audio.json`).
 - [ ] Status effects (`status-effects.json`) not applied by anything.
