@@ -659,6 +659,10 @@ swimming → sailing. Class column: skill-1 (1 pt) → skill-2 (5 in skill-1) �
 point, cooldown floor 25 %, uncapped (D6). Respec at class trainer.
 Hybrid (D10): a 4th `ultimate` column per class holds the Steam R skill, unlocked by 5 points in
 the spec's rank-3 skill; the six alpha-removed rank-3 skills return in their class column.
+Spending (D20): one banked point per click on the X screen (`ui.json#screens.skills`, `keybinds.json#hybrid.skills-window`);
+a node opens when the previous node of its column holds `alpha-tree.needs` points (roots 0); class ranks 1–3 + ultimate
+fire on keys 1–4 (`design.abilities.placeholder-strike` until movesets exist); per-point multipliers `design.skill-point`;
+respec waits for the class trainer.
 
 ### power-gate `A`
 Item `+N` usable at full strength only if player power ≥ N; formulas learnable likewise.
@@ -856,6 +860,8 @@ One row per fact type. Cardinality as `domain → range`.
 | c-frame-budget | physics 60 Hz; a tick slower than its budget slows game time instead of stacking catch-up ticks: `Engine.max_physics_steps_per_frame` = `design.frame-budget.max-catch-up-steps` (D17) | engine |
 | c-xp-config | `design.progression`: kill-fraction ∈ (0,1]; gap-mult-range = [lo, hi] with 0 ≤ lo ≤ 1 ≤ hi; gap-per-level ≥ 0 (D19) | load |
 | c-level-up | level never decreases; after settling, xp < xp-to-next(level); each level gained adds exactly `skill-points-per-level` (D19) | runtime |
+| c-tree-shape | for every specialization the tree read from `abilities.json#alpha-tree` has exactly one class node per rank 1..3 and ≤ 1 ultimate; rank 1 and shared-column roots have `needs` 0, one root per shared column, every `unlocks-next` names a node of the same column (D20) | load |
+| c-skill-spend | a point is spent only from the banked pool, one at a time, on a node whose prerequisite holds `needs` points; points never leave a node outside a trainer respec (D20) | runtime |
 | c-drowning | S only: breath depletes underwater; empty → HP loss; wall-hold pauses | runtime |
 | c-gate-doors | divine doors re-close at 0:00; bell spirit world lasts 30 s (F8) | runtime |
 
@@ -953,4 +959,10 @@ Decisions only the owner can make (D) and facts research could not settle (F).
   a creature 10+ levels below is worth nothing; overflow carries, several level-ups per kill; level-up refills HP
   and recomputes max HP; +2 skill points per level are banked (spending waits for the skill-tree UI + trainer).
   → `generators.json#design.progression`, `c-xp-config`, `c-level-up`.
+- **D20 Skill tree — DECIDED 2026-09-09**: spend rules (one point per click, prerequisite = `needs` points in the previous
+  node of the column, roots 0 — the five rank-1 rows said 1 and were corrected), X opens the screen, class nodes on keys 1–4;
+  every class active is one self-centred strike (weapon damage ×2, radius 3, cooldown = the ability's positive listed cooldown or 10 s)
+  scaled per point by `design.skill-point` until movesets land; swimming points raise swim speed; the other shared skills wait
+  for their runtimes (pet, mount, climb, glider, boat); respec at the class trainer with settlements.
+  → `generators.json#design.abilities`, `keybinds.json#hybrid.skills-window`, `ui.json#screens.skills`, `c-tree-shape`, `c-skill-spend`.
 - **F7** Omega status after mid-2024 (Vulkan vs UE5 reports).

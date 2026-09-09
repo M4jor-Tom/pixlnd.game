@@ -335,6 +335,27 @@ class Ontology extends RefCounted:
 				configs[name] = data
 
 	## domain.md §5 load-time constraints. Returns true when no errors were added.
+	## D20: the skill-tree nodes a (class, spec) pair can spend points on — the shared columns, the class
+	## column (its spec-specific rank) and the spec's ultimate — in screen order. `alpha-tree.class` wins
+	## over `owner` (sneak's owner is a per-version list).
+	func skill_tree(class_id: StringName, spec_id: StringName) -> Array:
+		var out: Array = []
+		for id in abilities:
+			var a: Ability = abilities[id]
+			if a.alpha_tree.is_empty():
+				continue
+			var owner := StringName(str(a.alpha_tree.get("class", a.owner if a.owner is String else "")))
+			if owner in [&"all", class_id, spec_id]:
+				out.append(a)
+		out.sort_custom(func(x: Ability, y: Ability) -> bool: return _tree_key(x) < _tree_key(y))
+		return out
+
+	static func _tree_key(a: Ability) -> int:
+		var t := a.alpha_tree
+		if str(t["column"]) == "class":
+			return 100 + int(t.get("rank", 0))
+		return 104 if str(t["column"]) == "ultimate" else int(t.get("skill-slot", 0))
+
 	func validate() -> bool:
 		var n := errors.size()
 		for id in specs:                                                    # c-spec-of-class
@@ -398,6 +419,27 @@ class Ontology extends RefCounted:
 			if kf <= 0.0 or kf > 1.0: errors.append("design.progression.kill-fraction out of (0,1]")
 			if float(r[0]) < 0.0 or float(r[0]) > 1.0 or float(r[1]) < 1.0: errors.append("design.progression.gap-mult-range must bracket 1 with lo >= 0")
 			if float(prog["gap-per-level"]) < 0.0: errors.append("design.progression.gap-per-level < 0")
+		for id in specs:                                                    # c-tree-shape (D20)
+			var s: Specialization = specs[id]
+			var ranks := {}; var ults := 0; var roots := {}
+			for a in skill_tree(s.character_class, StringName(id)):
+				var t: Dictionary = (a as Ability).alpha_tree
+				var col := str(t["column"])
+				if col == "class":
+					ranks[int(t["rank"])] = ranks.get(int(t["rank"]), 0) + 1
+					if int(t["rank"]) == 1 and int(t["needs"]) != 0: errors.append("skill-tree: rank-1 %s must have needs 0" % a.id)
+				elif col == "ultimate":
+					ults += 1
+				else:
+					if int(t["needs"]) == 0: roots[col] = roots.get(col, 0) + 1
+					var nxt := StringName(str((a as Ability).raw.get("unlocks-next", "")))
+					if nxt != &"" and (not abilities.has(nxt) or str((abilities[nxt] as Ability).alpha_tree.get("column")) != col):
+						errors.append("skill-tree: %s unlocks-next %s is not in column %s" % [a.id, nxt, col])
+			for r in [1, 2, 3]:
+				if ranks.get(r, 0) != 1: errors.append("skill-tree %s: %d class nodes of rank %d" % [id, ranks.get(r, 0), r])
+			if ults > 1: errors.append("skill-tree %s: %d ultimates" % [id, ults])
+			for col in roots:
+				if roots[col] != 1: errors.append("skill-tree %s: column %s has %d roots" % [id, col, roots[col]])
 		var defaults := rulesets.values().filter(func(r: Ruleset) -> bool: return r.is_default)
 		if defaults.size() != 1: errors.append("exactly one ruleset must be default (found %d)" % defaults.size())
 		return errors.size() == n
