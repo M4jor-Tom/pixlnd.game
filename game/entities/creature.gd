@@ -3,6 +3,7 @@
 ## windup then damage) → return (past the leash). `ai` = design.spawns.ai, `atk` = design.combat.
 ## enemy-attack, injected by the spawner. ponytail: no aggro table, A*, potions, loot or corpse
 ## (todo_implement.md); capsule placeholder sized by design.spawns.size-by-category.
+## D23: a stealthed target is noticed from a shorter range, and a landed hit rolls design.defence.enemy-hit statuses.
 extends "res://game/entities/entity.gd"
 
 enum State { IDLE, WANDER, CHASE, ATTACK, RETURN }
@@ -10,6 +11,7 @@ enum State { IDLE, WANDER, CHASE, ATTACK, RETURN }
 var species: StringName
 var ai: Dictionary = {}
 var atk: Dictionary = {}
+var design: Dictionary = {}              # generators.json#design (defence.enemy-hit, status-effects, D23); empty = neither
 var damage := 0.0
 var target: Node3D                       # what we chase (the player)
 var home := Vector3.ZERO
@@ -82,7 +84,7 @@ func _tick(dt: float) -> State:
 	match state:
 		State.IDLE:
 			_move(Vector3.ZERO, 0.0)
-			if can_chase and to_target < float(ai["aggro-range"]):
+			if can_chase and to_target < _aggro_range():
 				return State.CHASE
 			_wait -= dt
 			if _wait <= 0.0:
@@ -90,7 +92,7 @@ func _tick(dt: float) -> State:
 				_goal = home + Vector3(_rng.randf_range(-r, r), 0, _rng.randf_range(-r, r))
 				return State.WANDER
 		State.WANDER:
-			if can_chase and to_target < float(ai["aggro-range"]):
+			if can_chase and to_target < _aggro_range():
 				return State.CHASE
 			if _move(_goal, float(ai["walk"])):
 				return State.IDLE
@@ -106,12 +108,29 @@ func _tick(dt: float) -> State:
 			if _windup <= 0.0:
 				if can_chase and to_target <= float(atk["reach"]) * 1.25 and target.has_method("take_damage"):
 					target.take_damage(damage, self)
+					_hit_statuses(target)
 				_cooldown = float(atk["cooldown-s"])
 				return State.CHASE
 		State.RETURN:
 			if _move(home, float(ai["chase"])):
 				return State.IDLE
 	return state
+
+## design.defence.stealth.aggro-cut: full stealth shrinks how far we notice the target (D23).
+func _aggro_range() -> float:
+	var s := float(target.get("stealth")) if target != null and target.get("stealth") != null else 0.0
+	var cut := float(design.get("defence", {}).get("stealth", {}).get("aggro-cut", 0.0))
+	return float(ai["aggro-range"]) * (1.0 - s * cut)
+
+## design.defence.enemy-hit: each status rolls its chance; the target decides whether it took the hit (dodge / block).
+func _hit_statuses(t: Node) -> void:
+	var eh: Dictionary = design.get("defence", {}).get("enemy-hit", {})
+	if eh.is_empty() or not t.has_method("apply_status"):
+		return
+	for key in eh:
+		var id := StringName(str(key).trim_suffix("-chance"))
+		if _rng.randf() < float(eh[key]) and design["status-effects"].has(id):
+			t.apply_status(id, design["status-effects"][id], damage, self)
 
 ## Steer horizontally toward `goal` at `speed`; true when arrived.
 func _move(goal: Vector3, speed: float) -> bool:

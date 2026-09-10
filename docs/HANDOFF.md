@@ -1,4 +1,4 @@
-# Handoff — resume here (written 2026-09-10, after the D22 settlements slice)
+# Handoff — resume here (written 2026-09-11, after the D23 defence slice)
 
 Read this, then `git log --oneline -8`, then `docs/ROADMAP/todo_implement.md`. Nothing else is
 needed to continue; the repo is self-describing from these three.
@@ -8,7 +8,7 @@ Cube World rebuild in Godot 4.7.2 + GDScript, **ontology-first**: `ontology/` is
 truth (`domain.md` classes/relations/constraints/generators, `instances/*.json` content,
 `model.gd` typed loader + validator). Engine code in `game/` only *consumes* it. Every decision
 the sources never settled is a numbered **D** entry: `domain.md §7` + `docs/ROADMAP/todo_decide.md`
-(D1–D22 all taken). Designed numbers live in `ontology/instances/generators.json#design.<topic>`.
+(D1–D23 all taken). Designed numbers live in `ontology/instances/generators.json#design.<topic>`.
 
 ## State of the build (all committed and pushed to origin/master)
 | commit | slice | what runs |
@@ -26,20 +26,21 @@ the sources never settled is a numbered **D** entry: `domain.md §7` + `docs/ROA
 | 0aa89dc, 276e148 | skill tree (§3.5, D20) | `model.gd#skill_tree` + `c-tree-shape`, `skill_tree.gd` spend/unlock + per-point multipliers, X panel, keys 1–4 placeholder class strike with cooldown, swimming points → swim speed, test_skill_tree |
 | eae931c, c3125cf | class abilities (§3.3, D21) | `combat/abilities.gd` dash / channel / burst / buff / heal runtimes from `design.abilities` (23 nodes), MP per hit / mage regen, M2 charged / instant special, stun / knockdown / knockback / burning / slow on creatures (`entity.gd`), HUD MP bar + hotbar cooldown line, `c-ability-runtime`, test_abilities |
 | 529adac, 0d7bcdd | settlements (§3.1, D22) | `world_gen.gd#village_at` one village per land from the land seed, plateau in `height_at`, `settlement.gd` ring of box buildings + `npc.gd` service NPCs streamed by `world.gd`, spawner keeps wild groups 40 blocks off the square, `items/shop.gd` stock + `design.prices` buy / sell with `shop_panel.gd` (E at a vendor), trainer respec + inn rest as HUD toasts, `world.spawn-rule` = the (0,0) village square, `c-settlement-config`, test_settlement |
+| (this slice) | defence (§3.3, D23) | `player.gd` M3 dodge roll (i-frames, 25 stamina, ninja MP / assassin stealth), M2-held block with a shield / as guardian / during cyclone (front cone × 0.2, block-power, MP per block), stealth bar (sneak / aim fill, camouflage pins, empties on a hit; attack / crit / MP bonus), `creature.gd` aggro range × stealth cut + hit rolls stun / knockback on the player (blocked / dodged hits carry nothing), HUD block-power + stealth bars, `c-defence-config`, test_defence |
 
 Binaries: every push to `master` runs `.github/workflows/release.yml` (`firebelley/godot-export`
 reads `export_presets.cfg`), which refreshes the rolling **`latest`** prerelease with
 `pixlnd_*_amd64.deb` and `pixlnd.exe`. Both presets embed the `.pck`, so each is one file.
 
 Playable now: `nix develop -c godot` — WASD/Shift/Space, mouse look, wheel zoom (0 = first
-person), M1 attack, M2 hold-to-charge special (spends MP), E talk / pick up, Q life potion, B inventory, X skill tree, 1–4 class skills (once a point is in them), Esc frees the mouse. You spawn on the
+person), M1 attack, M2 hold-to-charge special (spends MP; with a shield equipped, or as guardian, holding it also blocks front hits), M3 while moving = dodge roll, E talk / pick up, Q life potion, B inventory, X skill tree, 1–4 class skills (once a point is in them), Esc frees the mouse. You spawn on the
 village square of land (0,0), seed 26879, a deadlands land (grey undead-style boxes on a ring: blue capsules at their doors are the
 weapon / armor / item vendors, class trainer and innkeeper; E opens the shop, respecs for 5 × level copper, or rests); red capsules are hostiles, small spinning
 cubes are loot (colour = rarity, gold = coins). Kills give XP; the HUD line shows level, xp / needed
 and banked skill points (about five even-level kills per level); spend them on X, then key 1 (Smash) leaps to the
 nearest enemy and stuns it (100 stamina, 10 s cooldown that points shorten), 2 Cyclone channels, 3 War Frenzy buffs,
 4 Rock Fist charges. Basic hits fill MP; hold M2 (bar turns pink) and release for a special that scales with the MP
-spent. Every other key in `keybinds.json#hybrid` (M3, Tab, F, T, C, M, F1, F3) is bound but does nothing yet. Sell loot at a vendor to afford the stock.
+spent. Every other key in `keybinds.json#hybrid` (Tab, F, T, C, M, F1, F3) is bound but does nothing yet. Buy a shield at the weapon vendor to block; the grey bar is block-power, the purple one stealth (rogue Sneak on key 2). Sell loot at a vendor to afford the stock.
 
 ## The loop for every slice (do not skip step 1)
 1. **Ontology sync** — read the §3 class + §6 generator + `instances/*.json` for the feature.
@@ -99,11 +100,9 @@ docs/ROADMAP/        todo_decide.md (D1–D22), todo_implement.md (deferrals), c
 ```
 
 ## Next slice (recommended order)
-1. **Settlements + `world.spawn-rule`** (§3.1 `gen-settlement`, §3.6): village at spawn, shops consuming `design.prices`,
-   class trainer = respec (`skill-tree`), or thread zone building (`world.gd` ponytail).
-2. Combat feel + defence (§3.3 `dodge`, `block`, `stealth`; `todo_implement.md` Combat): dodge roll with i-frames
-   (`c-dodge-cost`), shield block + block-power, the stealth bar the rogue / sniper kits are stubbed against, projectiles
-   for bow / staff / the burst-stubbed ultimates, creatures applying statuses back, stun stars / buff icons.
+1. Projectiles + weapon movesets (§3.3 `weapon-type.m1/m2`; `todo_implement.md` Combat): bow / crossbow / staff / wand /
+   bracelet basics as projectiles or beams, the burst-stubbed ultimates (fire-missiles, bubbles, shuriken), then game feel
+   (hit-stop, damage numbers, stun stars / buff icons, sounds from `audio.json`).
 2. Items backlog (`todo_implement.md` §3.4): rings/amulets, gear HP, upgrade cubes, tabs/tooltips.
 3. World backlog: thread zone building (`world.gd` ponytail), a game clock (`c-midnight-reset`: restock, inn sleep), flora / dungeons / POIs
    (`gen-flora`, `gen-dungeon`, `gen-poi`), villagers with schedules (`gen-schedule`).

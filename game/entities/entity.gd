@@ -39,6 +39,8 @@ func apply_status(id: StringName, cfg: Dictionary, hit: float, from: Node) -> vo
 
 func tick_statuses(dt: float) -> void:
 	for id in statuses.keys():
+		if not statuses.has(id):                          # a tick killed us and the death handler cleared the rest
+			continue
 		var s: Dictionary = statuses[id]
 		s["left"] -= dt
 		if id == &"burning":

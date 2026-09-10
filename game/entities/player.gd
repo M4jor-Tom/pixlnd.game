@@ -2,9 +2,11 @@
 ## MP + M2 special attack (D21) + §3.4 inventory, gear (main-hand damage, armor sum), pick-up (E), quick item (Q)
 ## + §3.5 XP, level-up, skill points (D19), skill tree spending, swim speed per point (D20).
 ## + D22: E talks to the nearest NPC (vendor → `talked`, trainer respec, inn rest) before picking up.
+## + D23 defence (design.defence): M3 dodge roll with i-frames, M2-held block with block-power, the stealth bar, and
+##   creature hits stunning / knocking us back (statuses tick here too).
 ## Config dicts (design.movement / camera / combat / crit) are injected by main.gd: this script never
 ## names OntologyDB so headless tests (no autoloads) can drive it.
-## ponytail: no climb/dodge/glide/block/stealth bar yet (todo_implement.md).
+## ponytail: no climb/glide yet; dodge has no crit window, stealth ignores darkness (todo_implement.md).
 extends "res://game/entities/entity.gd"
 
 const Combat := preload("res://game/combat/combat.gd")
@@ -49,6 +51,17 @@ var _stamina_idle := 0.0
 var _swing_t := 0.0
 var _combo_t := 0.0
 var _charge := -1.0                                     # M2 charge in MP; < 0 = not charging
+var spec: StringName = &""                              # specialization id (passives decide dodge rewards, guardian block)
+var defence: Dictionary = {}                            # design.defence (D23)
+var block_power := 0.0
+var blocking := false
+var stealth := 0.0                                      # 0..1 bar
+var _dodge: Dictionary = {}                             # {"dir", "left"} while rolling
+var _iframes := 0.0
+var _dodge_cd := 0.0
+var _push := Vector3.ZERO                               # knockback carried across ticks (input rewrites velocity.x/z)
+var _hit_stealth := 0.0                                 # stealth the last _strike was thrown at (MP bonus reads it)
+const PUSH_DECAY := 30.0                                # ponytail: blocks/s² a knockback fades at; make it a design key if it needs tuning
 var _fall_from := -INF
 var _rng := RandomNumberGenerator.new()
 @onready var rig: Node3D = $CameraRig
@@ -74,6 +87,8 @@ func setup_items(p_o, p_design: Dictionary, class_id: StringName = &"warrior", s
 	var cls = o.classes[class_id]
 	if spec_id == &"":
 		spec_id = cls.specializations[0]                          # c-spec-of-class: start as spec index 0
+	spec = spec_id; defence = design.get("defence", {})
+	block_power = block_max()
 	skill_tree = SkillTree.new(o, design["skill-point"], class_id, spec_id)
 	abilities = Abilities.new(self, design["abilities"])
 	special_mode = cls.special_attack_mode
@@ -133,11 +148,96 @@ func use_class_skill(slot: int) -> bool:
 	var a = skill_tree.class_slot(slot)
 	return a != null and skill_tree.spent(a.id) > 0 and abilities.use(a)
 
-## Buffs (bulwark) make us stun-immune; mana-shield absorbs first (D21).
+## D23: a dodge ignores the hit, a front block (design.defence.block) cuts it, spends block-power and gives MP;
+## then buffs (bulwark) make us stun-immune and mana-shield absorbs first (D21).
 func take_damage(amount: float, from: Node) -> void:
+	if _iframes > 0.0:
+		return
+	if blocks_from(from):
+		var bl: Dictionary = defence["block"]
+		amount *= 1.0 - float(bl["damage-reduction"])
+		block_power = maxf(0.0, block_power - float(bl["power-per-hit"]))
+		mp = minf(float(design["resources"]["mp"]["max"]), mp + float(bl["mp-per-block"]))   # D11 block-reward
 	if abilities != null:
 		amount = abilities.absorb(amount * abilities.mult("damage-taken-mult"))
 	super.take_damage(amount, from)
+
+## Dodged or blocked hits carry no status (D23); knockback goes through _push so input does not erase it next tick.
+func apply_status(id: StringName, cfg: Dictionary, hit: float, from: Node) -> void:
+	if _iframes > 0.0 or blocks_from(from):
+		return
+	if StringName(str(cfg.get("as", id))) == &"knockback":
+		var d: Vector3 = global_position - (from as Node3D).global_position; d.y = 0.0
+		_push = d.normalized() * float(cfg["impulse"]); velocity.y += float(cfg["impulse"]) * 0.25
+		return
+	super.apply_status(id, cfg, hit, from)
+	if stunned():
+		_charge = -1.0                                        # stun interrupts charges
+
+func passives() -> Array:
+	if o == null or spec == &"":
+		return []
+	var s = o.specs[spec]
+	return s.passives_a + s.passives_s
+
+func _cyclone() -> bool:
+	return abilities != null and not abilities.channel.is_empty() and abilities.channel["a"].id == &"cyclone"
+
+## block: a shield in the off-hand, any weapon as guardian (barricade), or during cyclone.
+func can_block() -> bool:
+	if defence.is_empty():
+		return false
+	var off = inventory.equipment.get(&"off-hand") if inventory != null else null
+	return _cyclone() or passives().has(&"barricade") or (off != null and off.subtype == &"shield")
+
+func block_max() -> float:
+	if defence.is_empty():
+		return 0.0
+	return float(defence["block"]["max"]) * (float(defence["block"]["guardian-mult"]) if passives().has(&"barricade") else 1.0)
+
+## Is this attacker's hit blocked: blocking, and it stands in the front cone (every direction during cyclone).
+func blocks_from(from: Node) -> bool:
+	if not blocking or not from is Node3D or from == self:
+		return false
+	if _cyclone():
+		return true
+	var d: Vector3 = (from as Node3D).global_position - global_position; d.y = 0.0
+	return d.normalized().dot(Basis(Vector3.UP, rig.rotation.y) * Vector3.FORWARD) >= float(defence["block"]["front-dot"])
+
+## dodge (M3 while moving, c-dodge-cost): roll `dir`, i-frames, stamina; passives reward it (elusiveness MP, way-of-the-shadows stealth).
+func dodge(dir: Vector3) -> bool:
+	var dg: Dictionary = defence["dodge"]
+	if dir == Vector3.ZERO or not _dodge.is_empty() or _dodge_cd > 0.0 or blocking or stunned() or stamina < float(dg["stamina"]) or (abilities != null and abilities.busy()):
+		return false
+	stamina -= float(dg["stamina"]); _stamina_idle = 0.0
+	_dodge = {"dir": dir, "left": float(dg["duration-s"])}
+	_iframes = float(dg["iframe-s"]); _dodge_cd = float(dg["cooldown-s"]) + float(dg["duration-s"])
+	for id in dg["on-dodge"]:
+		if passives().has(StringName(id)):
+			mp = minf(float(design["resources"]["mp"]["max"]), mp + float(dg["on-dodge"][id].get("mp", 0)))
+			stealth = minf(1.0, stealth + float(dg["on-dodge"][id].get("stealth", 0)))
+	return true
+
+## Per tick: dodge timers, the block state + block-power regen, the stealth bar (design.defence).
+func _defence_tick(dt: float, dir: Vector3, still: bool) -> void:
+	_iframes -= dt; _dodge_cd -= dt
+	if not _dodge.is_empty():
+		_dodge["left"] -= dt
+		if _dodge["left"] <= 0.0:
+			_dodge = {}
+	if Input.is_action_just_pressed("dodge"):
+		dodge(dir)
+	var bl: Dictionary = defence["block"]
+	var cyc := _cyclone()
+	blocking = can_block() and block_power > 0.0 and (cyc or (Input.is_action_pressed("special-attack") and not stunned()))
+	if not blocking or cyc:
+		block_power = minf(block_max(), block_power + float(bl["regen-per-s"]) * (float(bl["cyclone-regen-mult"]) if cyc else 1.0) * dt)
+	var sl: Dictionary = defence["stealth"]
+	if abilities != null and abilities.flag("stealth-full"):
+		stealth = 1.0
+	else:
+		var gen: float = (abilities.add("stealth-per-s") if abilities != null else 0.0) * (float(sl["still-mult"]) if still else 1.0)
+		stealth = clampf(stealth + (gen if gen > 0.0 else -float(sl["decay-per-s"])) * dt, 0.0, 1.0)
 
 func stun_immune() -> bool:
 	return abilities != null and abilities.flag("stun-immune")
@@ -219,8 +319,11 @@ func _physics_process(dt: float) -> void:
 	if cfg.is_empty() or dead or ui_open or not ground_ready.call(global_position):
 		return
 	var g := float(cfg["gravity"])
-	var input := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
+	tick_statuses(dt)
+	var input := Vector2.ZERO if stunned() else Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	var dir := (Basis(Vector3.UP, rig.rotation.y) * Vector3(input.x, 0, input.y)).normalized()
+	if not defence.is_empty():
+		_defence_tick(dt, dir, input == Vector2.ZERO)
 	var swimming := global_position.y < water_top - 0.5
 	var speed := float(cfg["walk"])
 	var st: Dictionary = cfg["stamina"]
@@ -234,6 +337,8 @@ func _physics_process(dt: float) -> void:
 			stamina = minf(float(st["max"]), stamina + float(st["regen"]) * dt)
 	if abilities != null:
 		speed *= abilities.mult("move-mult")                 # buffs + channel (D21)
+	if blocking and not _cyclone():
+		speed *= float(defence["block"]["move-mult"])
 	if swimming:
 		speed *= float(cfg["swim-mult"]) * (skill_tree.effect_mult(&"swimming") if skill_tree != null else 1.0)   # swimming points (D20)
 		velocity.y = float(cfg["swim-vertical"]) * (1.0 if Input.is_action_pressed("jump") else -0.3)
@@ -246,6 +351,12 @@ func _physics_process(dt: float) -> void:
 		elif velocity.y > 0.0 and not Input.is_action_pressed("jump"):
 			velocity.y = minf(velocity.y, sqrt(2.0 * g * float(jh["tap"])))   # released early: tap height
 	velocity.x = dir.x * speed; velocity.z = dir.z * speed
+	if not _dodge.is_empty():
+		var roll: Vector3 = _dodge["dir"] * float(defence["dodge"]["distance"]) / float(defence["dodge"]["duration-s"])
+		velocity.x = roll.x; velocity.z = roll.z
+		_fall_from = -INF                                   # the roll's landing does no fall damage
+	velocity.x += _push.x; velocity.z += _push.z
+	_push = _push.move_toward(Vector3.ZERO, PUSH_DECAY * dt)
 	if abilities != null and not abilities.dash.is_empty():
 		var dv: Vector3 = abilities.dash_velocity()
 		velocity.x = dv.x; velocity.z = dv.z
@@ -284,6 +395,9 @@ func _combat_tick(dt: float) -> void:
 			_swing()
 		return
 	abilities.tick(dt)
+	if stunned():                                           # D23: cannot act (abilities and cooldowns still tick)
+		_charge = -1.0
+		return
 	if mp_passive:
 		mp = minf(float(design["resources"]["mp"]["max"]), mp + float(design["resources"]["mp"]["mage-regen-per-s"]) * dt)
 	for slot in 4:
@@ -331,7 +445,8 @@ func _swing() -> void:
 		combo = mini(combo + 1, int(weapon["combo_cap"]))
 		_combo_t = float(combat["combo"]["expire-s"])
 		if abilities != null and not mp_passive:
-			mp = minf(float(design["resources"]["mp"]["max"]), mp + float(design["resources"]["mp"]["per-hit"]))
+			var bonus := 1.0 + _hit_stealth * float(defence["stealth"]["mp-mult-at-full"]) if not defence.is_empty() else 1.0
+			mp = minf(float(design["resources"]["mp"]["max"]), mp + float(design["resources"]["mp"]["per-hit"]) * bonus)
 	else:
 		combo = 0
 
@@ -354,12 +469,17 @@ func nearest_enemy(radius: float) -> Node3D:
 			return b
 	return null
 
-## Every live entity inside the sphere takes `dmg` (buffs, crit, armor); the combo bonus only for the basic attack;
-## `applies` = status-effect ids the hit carries (design.status-effects decides what they do).
+## Every live entity inside the sphere takes `dmg` (buffs, crit, stealth, armor); the combo bonus only for the basic attack;
+## `applies` = status-effect ids the hit carries (design.status-effects decides what they do). A landed hit spends the
+## stealth bar unless a stealth-full buff pins it (D23).
 func _strike(center: Vector3, radius: float, dmg: float, combo_bonus: bool, applies: Array = []) -> int:
 	var hits := 0
 	var chance: float = crit_chance + (abilities.add("crit-add") if abilities != null else 0.0)
 	var se: Dictionary = design.get("status-effects", {})
+	_hit_stealth = stealth
+	if not defence.is_empty():
+		var sl: Dictionary = defence["stealth"]
+		dmg *= 1.0 + stealth * float(sl["attack-mult-at-full"]); chance += stealth * float(sl["crit-add-at-full"])
 	for body in bodies_within(center, radius):
 		var d := dmg * (Combat.combo_mult(combo, combat) if combo_bonus else 1.0) * Combat.crit_mult(chance, _rng, crit)
 		if abilities != null:
@@ -371,13 +491,16 @@ func _strike(center: Vector3, radius: float, dmg: float, combo_bonus: bool, appl
 			if se.has(id) and body.has_method("apply_status"):
 				body.apply_status(id, se[id], d, self)
 		hits += 1
+	if hits > 0 and not (abilities != null and abilities.flag("stealth-full")):
+		stealth = 0.0
 	return hits
 
 func _on_died() -> void:
 	velocity = Vector3.ZERO
 	if abilities != null:
 		abilities.reset()
-	_charge = -1.0
+	_charge = -1.0; _dodge = {}; _push = Vector3.ZERO; blocking = false; stealth = 0.0; statuses.clear()
+	block_power = block_max()
 	await get_tree().create_timer(float(combat["death"]["respawn-s"])).timeout
 	global_position = spawn_point                            # c-no-death-penalty
 	hp = max_hp; stamina = float(cfg["stamina"]["max"]); combo = 0

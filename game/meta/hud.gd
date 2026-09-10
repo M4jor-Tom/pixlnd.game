@@ -1,7 +1,8 @@
 ## hud-element (§3.7), the first three of ui.json: HP bar, stamina bar (hidden until not full, A),
 ## combo counter, land caption, coins, item-notifications (pick-up toast), level + XP line (portrait's text, D19).
 ## MP bar (pink while M2 charges) + hotbar line: keys 1-4 state and active buffs (D21). Village name in the land caption
-## and NPC service notices as toasts (D22). Built in code, bottom-left.
+## and NPC service notices as toasts (D22). Block-power and stealth bars, stunned / blocking in the combo line (D23).
+## Built in code, bottom-left.
 ## ponytail: no portrait head/minimap yet.
 extends CanvasLayer
 
@@ -17,6 +18,8 @@ var _coins: Label
 var _level: Label
 var _skills: Label
 var _mp: ProgressBar
+var _block: ProgressBar
+var _stealth: ProgressBar
 var _toast: Label
 
 func bind(p_player: Node, p_world: Node) -> void:
@@ -45,6 +48,8 @@ func _ready() -> void:
 	_hp = _bar(box, Color(0.8, 0.15, 0.15))
 	_mp = _bar(box, Color(0.3, 0.4, 0.9))
 	_stamina = _bar(box, Color(0.9, 0.8, 0.2))
+	_block = _bar(box, Color(0.7, 0.7, 0.75))
+	_stealth = _bar(box, Color(0.6, 0.3, 0.8))
 
 func _bar(parent: Control, color: Color) -> ProgressBar:
 	var b := ProgressBar.new()
@@ -65,7 +70,15 @@ func _process(_dt: float) -> void:
 		_mp.max_value = float(player.design["resources"]["mp"]["max"]); _mp.value = player.mp
 		(_mp.get_theme_stylebox("fill") as StyleBoxFlat).bg_color = Color(0.95, 0.4, 0.8) if player._charge >= 0.0 else Color(0.3, 0.4, 0.9)
 		_skills.text = _skills_line()
-	_combo.text = "combo %d" % player.combo if player.combo > 0 else ""
+	var line: PackedStringArray = []
+	if player.combo > 0: line.append("combo %d" % player.combo)
+	if player.has_method("stunned") and player.stunned(): line.append("stunned!")           # ui.json#hud.stun-stars, as text
+	if player.get("blocking"): line.append("blocking")
+	_combo.text = "   ".join(line)
+	if player.get("defence") != null and not player.defence.is_empty():
+		_block.max_value = player.block_max(); _block.value = player.block_power
+		_block.visible = player.blocking or player.block_power < player.block_max()
+		_stealth.max_value = 1.0; _stealth.value = player.stealth; _stealth.visible = player.stealth > 0.0
 	if player.get("inventory") != null:
 		_coins.text = "%d copper" % player.inventory.coins
 	if player.get("xp") != null:

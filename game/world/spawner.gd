@@ -68,7 +68,7 @@ static func populate(parent: Node3D, plan_: Array, design: Dictionary, creatures
 			parent.add_child(m)
 			m.target = target
 			m.setup(g["species"], g["level"], g["max_hp"], g["damage"], g["hostility"], spawns["ai"], design["combat"]["enemy-attack"], size, color, g["seed"] + i)
-			m.flash_s = float(design["combat"]["hit-flash-s"])
+			m.flash_s = float(design["combat"]["hit-flash-s"]); m.design = design
 			if ontology != null:
 				m.died.connect(func() -> void: Items.drop_for(m, ontology, design))
 			made.append(m)

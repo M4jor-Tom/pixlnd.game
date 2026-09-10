@@ -110,15 +110,21 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
 - [ ] NPCs never talk (`npc-role.dialogue`, speech bubbles); E resolves the service instantly.
 - [ ] Villagers and animals inside town are absent, so `c-hostile-in-city` only keeps wild spawns 40 blocks away.
 
-## Combat (§3.3, slices 457c947 + D21)
+## Combat (§3.3, slices 457c947 + D21 + D23)
+- [x] Defence (D23, `player.gd` + `creature.gd` from `design.defence`): M3 dodge roll with i-frames and per-passive rewards,
+  M2-held block (shield / guardian / cyclone) with block-power + MP, the stealth bar (sneak / aim fill, camouflage pins,
+  decay, attack / crit / MP bonus, aggro range cut), creature hits rolling stun / knockback on the player. Still open:
+  poison is not a creature hit yet (so "dodge never avoids poison" is moot); the ninja crit window (`elusiveness`),
+  counter-strike and hit-series passives do nothing; stealth ignores darkness / lamps (no game clock); the HUD shows
+  "stunned!" / "blocking" as text (no stun stars, no buff icons); knockback fade is a constant (`player.gd#PUSH_DECAY`);
+  nothing visually checked; every D23 number is untuned.
 - [x] Class abilities (D21, `game/combat/abilities.gd`): every tree node runs a dash / channel / burst / buff / heal with
   `design.abilities` numbers, MP gain per hit / mage regen, M2 charged / instant special, stun / knockdown / knockback /
   burning / slow on creatures, HUD MP bar + hotbar cooldown line. Still open (`abilities.gd` ponytail): fire-missiles,
   bubbles, shuriken-attack are self-centred bursts (no projectiles); shadow-shooter is a damage buff (no clone); quicksand
   is a one-shot slow burst (no zone); aim, sneak, camouflage, ninjutsu are damage / speed buffs (no `stealth` bar, no prone
   zoom); heroic-shout taunts by a 0-damage hit (no aggro table); teleport is a 20-block dash (sources say ~60 `?`);
-  cyclone has no block; no cast interruption; creatures never apply statuses to the player; no dodge (`c-dodge-cost`),
-  block / block-power (`block`), or stun stars / buff icons on the HUD (`ui.json#hud.stun-stars|buff-icons`); every D21
+  no cast interruption (a stun cancels only the M2 charge, D23); no buff icons on the HUD (`ui.json#hud.buff-icons`); every D21
   line was not visually checked (windowed capture, HANDOFF gotchas); every D21 number is untuned.
 - [ ] Hit test is a sphere in front of the camera yaw; no weapon movesets, hit timing, or
   ranged/projectile weapons (`weapon-type.m1/m2`; bow, staff, boomerang).
@@ -132,4 +138,5 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
   reset, no death screen; creatures drop loot (D18) and XP (D19) but no spirit cubes or corpse (`death`).
 - [ ] Game feel: hit flash only; no hit-stop, shake, knockback, damage numbers, sounds
   (`game-feel`, `audio.json`).
-- [ ] Status effects (`status-effects.json`) not applied by anything.
+- [ ] Status effects: only stun / knockdown / knockback / burning / slow (D21) and creature stun / knockback on the player (D23) run;
+  poison, taunt tint, dizzy, drowning and the buff family are unread.
