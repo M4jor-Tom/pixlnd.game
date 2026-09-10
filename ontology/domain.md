@@ -462,6 +462,10 @@ An active or passive skill. `A S Ω` → `instances/abilities.json` (~65).
 | alpha-tree | column, rank-needed (1 to unlock first, 5 in previous), per-point effect (D6: +5 % effect / −5 % cooldown per point, floor 25 %) |
 | alpha-ability-id | cuwo id (21 kick, 34 healing-stream, 48 intercept, 49 teleport, 50 retreat, 54 smash, 79 sneak, 86 cyclone, 88 fire-explosion, 96 shuriken, 97 camouflage, 99 aim, 100 swiftness, 101 bulwark, 102 war-frenzy, 103 mana-shield) |
 | applies | `status-effect` refs |
+Runtime (D21): every class node and ultimate has a `design.abilities` entry naming one of five runtimes (dash, channel,
+burst, buff, heal) with its numbers, cost (mp / stamina, a number or `all`) and cooldown; strikes apply the ability's
+`applies` through `design.status-effects` (`c-ability-runtime`). Shared-column skills have no runtime here (swimming scales
+swim speed; pet, mount, climb, glider, boat wait for their systems).
 
 ### weapon-type
 Weapon family with handedness, class and moveset. `A S` → `instances/weapon-types.json` (21 alpha
@@ -661,7 +665,7 @@ Hybrid (D10): a 4th `ultimate` column per class holds the Steam R skill, unlocke
 the spec's rank-3 skill; the six alpha-removed rank-3 skills return in their class column.
 Spending (D20): one banked point per click on the X screen (`ui.json#screens.skills`, `keybinds.json#hybrid.skills-window`);
 a node opens when the previous node of its column holds `alpha-tree.needs` points (roots 0); class ranks 1–3 + ultimate
-fire on keys 1–4 (`design.abilities.placeholder-strike` until movesets exist); per-point multipliers `design.skill-point`;
+fire on keys 1–4 (their runtimes: `design.abilities`, D21); per-point multipliers `design.skill-point`;
 respec waits for the class trainer.
 
 ### power-gate `A`
@@ -835,7 +839,7 @@ One row per fact type. Cardinality as `domain → range`.
 | c-loot-config | `design.loot`: every chance ∈ [0,1]; rarity-weights keys are rarities ≤ legendary with a positive sum; level-spread ≥ 0; gear-kinds and stack-cap.stackable name item-types; consumable-pool names consumables | load |
 | c-stack-rule | only `design.stack-cap.stackable` item-types stack (no cap, D6); gear (has a modifier roll) is one item per entry | runtime |
 | c-slot-accepts | an item equips only in an equipment-slot whose `accepts` lists its item-type (weapon-type `offhand` hands → off-hand only) | runtime |
-| c-mp-range | mp ∈ [0, 100]; mage regenerates passively, others gain by hits/blocks/stealth/dodges | runtime |
+| c-mp-range | mp ∈ [0, 100]; mage regenerates passively, others gain by hits/blocks/stealth/dodges; numbers `design.resources.mp` (D21) | runtime |
 | c-stun-immunity | cannot re-stun while stars shown | runtime |
 | c-combo-reset | any attack with a hitbox that misses resets combo to 0; cap per weapon-type | runtime |
 | c-dodge-cost | dodge costs 25 stamina; requires movement; standing still M3 = class skill (S) | runtime |
@@ -862,6 +866,7 @@ One row per fact type. Cardinality as `domain → range`.
 | c-level-up | level never decreases; after settling, xp < xp-to-next(level); each level gained adds exactly `skill-points-per-level` (D19) | runtime |
 | c-tree-shape | for every specialization the tree read from `abilities.json#alpha-tree` has exactly one class node per rank 1..3 and ≤ 1 ultimate; rank 1 and shared-column roots have `needs` 0, one root per shared column, every `unlocks-next` names a node of the same column (D20) | load |
 | c-skill-spend | a point is spent only from the banked pool, one at a time, on a node whose prerequisite holds `needs` points; points never leave a node outside a trainer respec (D20) | runtime |
+| c-ability-runtime | every class-column and ultimate node of every spec tree has a `design.abilities` entry whose `runtime` is in `runtimes`; cost mp ≤ 100, stamina ≤ `design.movement.stamina.max` or `all`; cooldown-s > 0; dash distance > 0, strike / burst / channel radius > 0, buff / channel duration-s > 0, heal cast-s ≥ 0; `design.status-effects` keys are status-effect ids and an `as` names another key (D21) | load |
 | c-drowning | S only: breath depletes underwater; empty → HP loss; wall-hold pauses | runtime |
 | c-gate-doors | divine doors re-close at 0:00; bell spirit world lasts 30 s (F8) | runtime |
 
@@ -965,4 +970,17 @@ Decisions only the owner can make (D) and facts research could not settle (F).
   scaled per point by `design.skill-point` until movesets land; swimming points raise swim speed; the other shared skills wait
   for their runtimes (pet, mount, climb, glider, boat); respec at the class trainer with settlements.
   → `generators.json#design.abilities`, `keybinds.json#hybrid.skills-window`, `ui.json#screens.skills`, `c-tree-shape`, `c-skill-spend`.
+- **D21 Class abilities — DECIDED 2026-09-10**: the placeholder strike is gone; each of the 23 class-column / ultimate
+  nodes runs one of five runtimes (dash, channel, burst, buff, heal) with designed numbers: Smash leaps 6 blocks to the nearest
+  enemy within 8 and strikes ×2 with stun (100 stamina, 10 s); Cyclone channels 5 s, ×0.5 every 0.25 s within 3, 25 stamina
+  + 25/s (30 s); War Frenzy / Bulwark / Mana Shield / Swiftness / Aim / Sneak / Camouflage / Ninjutsu / Shadow Shooter are timed
+  self-buffs; Rock Fist / Intercept / Teleport / Retreat / Shuriken are dashes; Kick / Fire Explosion / Heroic Shout / Fire
+  Missiles / Bubbles / Quicksand are bursts; Healing Stream casts 1.5 s then heals 50 %. Costs use the sources' S numbers where
+  given, cooldowns the S values (rock-fist 20, heroic-shout 30, camouflage 40, ninjutsu 60, shadow-shooter 60, quicksand 40,
+  fire-missiles 40, bubbles 30), else 10/12/15/20/25 designed, cyclone 30 (A said ~60). MP: non-mages +8 per landed basic hit,
+  mages +5/s; M2 special attack charges MP at 50/s (rogue instant), damage up to ×2.5, stun chance up to 60 %. Statuses the
+  engine applies: stun 2 s (knockdown = 1.5 s stun), knockback 8, burning 4 s at 10 % of the hit per 0.5 s, slow ×0.3 for 15 s;
+  stealth and taunt are ignored until their runtimes exist. Per point: strike damage, heal, buff duration (D6). Projectile
+  ultimates (fire-missiles, bubbles, shuriken) and the clone / zone ones are self-centred bursts or buffs for now.
+  → `generators.json#design.abilities|resources|special-attack|status-effects`, `c-ability-runtime`.
 - **F7** Omega status after mid-2024 (Vulkan vs UE5 reports).

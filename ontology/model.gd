@@ -440,6 +440,41 @@ class Ontology extends RefCounted:
 			if ults > 1: errors.append("skill-tree %s: %d ultimates" % [id, ults])
 			for col in roots:
 				if roots[col] != 1: errors.append("skill-tree %s: column %s has %d roots" % [id, col, roots[col]])
+		var ab: Dictionary = design.get("abilities", {})                  # c-ability-runtime (D21)
+		var runtimes: Array = ab.get("runtimes", [])
+		var stamina_max := float(design.get("movement", {}).get("stamina", {}).get("max", 100))
+		var seen := {}
+		for id in specs:
+			for a in skill_tree((specs[id] as Specialization).character_class, StringName(id)):
+				var col := str((a as Ability).alpha_tree["column"])
+				if col != "class" and col != "ultimate" or seen.has(a.id):
+					continue
+				seen[a.id] = true
+				var r = ab.get(a.id)
+				if not r is Dictionary or not (str(r.get("runtime")) in runtimes):
+					errors.append("design.abilities.%s: missing or unknown runtime" % a.id); continue
+				if float(r.get("cooldown-s", 0)) <= 0.0: errors.append("design.abilities.%s: cooldown-s must be > 0" % a.id)
+				for res in r.get("cost", {}):
+					var v = r["cost"][res]
+					var cap := 100.0 if str(res) == "mp" else stamina_max
+					if not (str(v) == "all" or ((v is float or v is int) and float(v) >= 0.0 and float(v) <= cap)):
+						errors.append("design.abilities.%s: cost %s = %s outside [0, %d] / 'all'" % [a.id, res, v, cap])
+				match str(r["runtime"]):
+					"dash":
+						if float(r.get("distance", 0)) <= 0.0: errors.append("design.abilities.%s: dash distance must be > 0" % a.id)
+						if r.has("strike") and float(r["strike"].get("radius", 0)) <= 0.0: errors.append("design.abilities.%s: strike radius must be > 0" % a.id)
+					"burst", "channel":
+						if float(r.get("radius", 0)) <= 0.0: errors.append("design.abilities.%s: radius must be > 0" % a.id)
+						if str(r["runtime"]) == "channel" and float(r.get("duration-s", 0)) <= 0.0: errors.append("design.abilities.%s: duration-s must be > 0" % a.id)
+					"buff":
+						if float(r.get("duration-s", 0)) <= 0.0: errors.append("design.abilities.%s: duration-s must be > 0" % a.id)
+					"heal":
+						if float(r.get("cast-s", -1)) < 0.0 or float(r.get("heal-pct", 0)) <= 0.0: errors.append("design.abilities.%s: heal needs cast-s >= 0 and heal-pct > 0" % a.id)
+		var se: Dictionary = design.get("status-effects", {})
+		for id in se:
+			if str(id).begins_with("_"): continue
+			if not status_effects.has(id): errors.append("design.status-effects.%s is not a status-effect" % id)
+			elif se[id].has("as") and not se.has(str(se[id]["as"])): errors.append("design.status-effects.%s: `as` %s has no entry" % [id, se[id]["as"]])
 		var defaults := rulesets.values().filter(func(r: Ruleset) -> bool: return r.is_default)
 		if defaults.size() != 1: errors.append("exactly one ruleset must be default (found %d)" % defaults.size())
 		return errors.size() == n

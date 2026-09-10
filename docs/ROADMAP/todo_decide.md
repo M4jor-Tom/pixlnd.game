@@ -54,6 +54,9 @@ live in `ontology/instances/generators.json#design`. Nothing remains: run the `r
 - [x] **D20 Skill tree (2026-09-09)** — spend/unlock rules, X screen, keys 1-4 placeholder strike, per-point multipliers (swim speed first).
   Recorded: `generators.json#design.abilities`, `keybinds.json#hybrid.skills-window`, `ui.json#screens.skills`, `abilities.json` rank-1 `needs` 0,
   `c-tree-shape`, `c-skill-spend`.
+- [x] **D21 Class abilities (2026-09-10)** — a runtime (dash / channel / burst / buff / heal) with numbers, cost and cooldown for
+  every class node and ultimate; MP gain and the M2 special attack; stun / knockdown / knockback / burning / slow numbers.
+  Recorded: `generators.json#design.abilities|resources|special-attack|status-effects`, `c-ability-runtime`.
 
 ## B. Conflicting facts (pick a side)
 

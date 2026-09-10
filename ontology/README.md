@@ -30,6 +30,8 @@ ontology/
   three table rows that a D16/D17 edit had prepended above the `domain.md` title moved back into §3.2 ai-behavior and §5.
 - 2026-09-09: D20 skill tree spend rules (`design.abilities`, `keybinds.json#hybrid.skills-window` = X, hybrid `screens.skills`,
   `c-tree-shape`, `c-skill-spend`); the five rank-1 class nodes had `needs` 1, now 0 like every other tree root.
+- 2026-09-10: D21 class ability runtimes (`design.abilities` per node, `design.resources.mp`, `design.special-attack`,
+  `design.status-effects`, `c-ability-runtime`) for `game/combat/abilities.gd`; the D20 placeholder strike is retired.
 - 2026-09-09: D18 items, loot, inventory numbers + `c-loot-config` / `c-stack-rule` / `c-slot-accepts` for `game/items/`.
 - 2026-09-08: D17 runtime profiling overlay (Godot Debug Menu, F3) + `design.frame-budget` / `c-frame-budget`.
 - 2026-09-08: D16 simulation radius + `c-sim-radius` (creatures frozen beyond 80 blocks; the 4 FPS fix).
