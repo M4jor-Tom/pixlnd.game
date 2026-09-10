@@ -29,6 +29,7 @@
     "inventory":        {"key": "B", "tabs": {"A": ["equipment", "amulets", "items", "ingredients", "pets"], "S": ["equipment", "special", "items", "ingredients", "pets", "artifacts"]}, "extras": ["S per-land pages", "S weapon/armor star rating at left", "coins (A)"]},
     "character-sheet":  {"stats": {"A": ["power", "hp", "attack power", "spell power", "armor", "resi", "crit", "tempo", "reg", "mana reg"], "S": ["power", "hp", "armor", "resi", "crit", "haste", "reg", "weapon rating", "armor rating"]}},
     "skills":           {"key": "X", "desc": "skill tree, 2 points/level; hybrid (D20): the class/spec tree as a list, activate = spend one banked point", "versions": ["A","hybrid"]},
+    "npc-service":      {"key": "E", "desc": "hybrid (D22): E within design.settlement.npc.interact-radius of an NPC: vendors open a two-list shop (stock / bag; activate = buy / sell; E or Esc closes), trainer respecs, innkeeper rests — both as a HUD toast", "versions": ["hybrid"]},
     "crafting":         {"key": "C", "tabs": ["weapon", "armor", "amulet & ring", "cooking", "alchemy", "ingredients"], "shows": "materials count + required station"},
     "quick-select":     {"key": "Tab", "desc": "wheel of potions/food/bombs; A/D cycle; count shown"},
     "customization-bench": {"desc": "rotate weapon M3, drag cubes onto voxel model; drag out destroys"},

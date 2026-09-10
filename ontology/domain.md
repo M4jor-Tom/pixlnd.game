@@ -101,7 +101,7 @@ The single playable universe instance. `A S`
 | name | string | i | A only (world list) |
 | day | int | i | day counter |
 | time-ms | int 0..86_400_000 | i | ms of game day |
-| spawn-rule | enum `near-village` | i | S 0.9.1-3: new chars spawn near a village; A: world spawn (0,0 area) |
+| spawn-rule | enum `near-village` | i | S 0.9.1-3: new chars spawn near a village; A: world spawn (0,0 area); hybrid (D22): the square of the land (0,0) village |
 | discovered-zones | set<zone-coord> | i | per world; shared by all visitors of a server world (A) |
 | origin-poi | `poi-type` ref | e | S: `wollays-house` at block (0,0) |
 Instances: none (runtime). Config: `generators.json#world-scales`.
@@ -209,6 +209,7 @@ Village or city. `A S`
 | sewer | S: dungeon under some 5★ villages holding an artifact |
 | petrified | bool, S: witch curse until witch killed |
 | possessed | bool, S: demon portal active in land |
+| layout | hybrid (D22): one per land from the land seed, terrain flattened under `design.settlement.radius`, box buildings on a ring, one NPC per service building; numbers `design.settlement` |
 
 ### district
 City quarter. `A` → `instances/buildings.json#districts`.
@@ -666,7 +667,7 @@ the spec's rank-3 skill; the six alpha-removed rank-3 skills return in their cla
 Spending (D20): one banked point per click on the X screen (`ui.json#screens.skills`, `keybinds.json#hybrid.skills-window`);
 a node opens when the previous node of its column holds `alpha-tree.needs` points (roots 0); class ranks 1–3 + ultimate
 fire on keys 1–4 (their runtimes: `design.abilities`, D21); per-point multipliers `design.skill-point`;
-respec waits for the class trainer.
+respec at the class trainer refunds every point to the bank for a fee (`design.settlement.trainer`, D22).
 
 ### power-gate `A`
 Item `+N` usable at full strength only if player power ≥ N; formulas learnable likewise.
@@ -867,6 +868,7 @@ One row per fact type. Cardinality as `domain → range`.
 | c-tree-shape | for every specialization the tree read from `abilities.json#alpha-tree` has exactly one class node per rank 1..3 and ≤ 1 ultimate; rank 1 and shared-column roots have `needs` 0, one root per shared column, every `unlocks-next` names a node of the same column (D20) | load |
 | c-skill-spend | a point is spent only from the banked pool, one at a time, on a node whose prerequisite holds `needs` points; points never leave a node outside a trainer respec (D20) | runtime |
 | c-ability-runtime | every class-column and ultimate node of every spec tree has a `design.abilities` entry whose `runtime` is in `runtimes`; cost mp ≤ 100, stamina ≤ `design.movement.stamina.max` or `all`; cooldown-s > 0; dash distance > 0, strike / burst / channel radius > 0, buff / channel duration-s > 0, heal cast-s ≥ 0; `design.status-effects` keys are status-effect ids and an `as` names another key (D21) | load |
+| c-settlement-config | `design.settlement`: per-land ≥ 1, radius > blend ≥ 0, ring-radius < radius, every `buildings` entry is a `buildings.json#buildings` id, every service role is an `npc-roles.json` id, every landscape with a `gen` block has a `style-by-landscape` entry naming a `buildings.json#settlement-styles` id with two `style-colors`, `shop.rarity-cap` is a rarity ≤ legendary, `no-hostiles-within` ≥ radius (D22) | load |
 | c-drowning | S only: breath depletes underwater; empty → HP loss; wall-hold pauses | runtime |
 | c-gate-doors | divine doors re-close at 0:00; bell spirit world lasts 30 s (F8) | runtime |
 
@@ -884,7 +886,7 @@ reproducible; each generator lists invariants that a test can assert.
 | gen-terrain | land, zone coords | heightfield columns, caves, rivers+waterfalls, lakes, mountains/plateaus, mesas, overhangs; per-voxel RGB by block type & landscape palette | walkable roads with tunnels/bridges; water at rivers/lakes/oceans |
 | gen-coarse-map `Ω` | land seed | coarse map placing streets, buildings, rivers, bridges, trees, caves logically before voxel detail | every structure reachable by road |
 | gen-flora | landscape, zone | trees (procedural, unique), bushes, scrubs, cacti, flowers, mushrooms, fields | per-landscape rosters |
-| gen-settlement | land | 1 (A) / n (S) settlements: districts, procedural buildings (rooms, sizes, roofs), styles, NPC population + schedules, shops, inn, trainers, flight master (S) | ≥1 inn (A several, S exactly 1); shops per district |
+| gen-settlement | land | 1 (A) / n (S) settlements: districts, procedural buildings (rooms, sizes, roofs), styles, NPC population + schedules, shops, inn, trainers, flight master (S) | ≥1 inn (A several, S exactly 1); shops per district; hybrid numbers `design.settlement` (D22) |
 | gen-dungeon | land, dungeon-type, tier | layout (A linear + dead end; S room gauntlet), traps `A`, chests, spawns in groups 2–4, boss(es), artifact `S`, locks needing key items | entrance rules per type; at least one boss; artifact at end (S castles always) |
 | gen-poi | land | campsites, arenas, towers ≤5, circles, portals, pumps, trees, shrines, lore sites, spawner nests, hidden treasure, sky islands | counts in `c-land-count` |
 | gen-missions | land, day | A: 8×8 cell boss missions; S: typed missions with icons and tiers, daily regeneration | tier ladder white→yellow present; gnomes/books once per land |
@@ -983,4 +985,14 @@ Decisions only the owner can make (D) and facts research could not settle (F).
   stealth and taunt are ignored until their runtimes exist. Per point: strike damage, heal, buff duration (D6). Projectile
   ultimates (fire-missiles, bubbles, shuriken) and the clone / zone ones are self-centred bursts or buffs for now.
   → `generators.json#design.abilities|resources|special-attack|status-effects`, `c-ability-runtime`.
+- **D22 Settlements and spawn rule — DECIDED 2026-09-10**: one village per land (alpha count), placed from the land seed on the first
+  ring candidate ≥ 4 blocks above sea, the terrain flattened within 24 blocks and blended over 8; ten box buildings (inn, weapon /
+  armor / item shop, one class trainer, five houses) on a 15-block ring, coloured by settlement-style from the landscape; one NPC
+  per service building at its door, E within 3 blocks talks. Vendors: 8 items rolled once from (seed, village, shop) at the
+  land's creature level band around the player level, rarity ≤ rare until gnomes exist, prices `design.prices` (buy) × 0.25 (sell),
+  worn gear unsellable; the item shop sells the loot consumable pool. Trainer respec refunds every spent point for 5 × level copper;
+  the inn heals fully and moves the respawn point there, free. `world.spawn-rule` = the square of the land (0,0) village. Wild
+  spawns skip groups within 40 blocks of the square. Not yet: districts, procedural rooms / roofs, villagers and schedules, inn
+  time skip, restock, spec change, sewers / dens, flight master, several villages per land (S).
+  → `generators.json#design.settlement`, `ui.json#screens.npc-service`, `c-settlement-config`.
 - **F7** Omega status after mid-2024 (Vulkan vs UE5 reports).

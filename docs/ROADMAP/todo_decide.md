@@ -57,6 +57,9 @@ live in `ontology/instances/generators.json#design`. Nothing remains: run the `r
 - [x] **D21 Class abilities (2026-09-10)** — a runtime (dash / channel / burst / buff / heal) with numbers, cost and cooldown for
   every class node and ultimate; MP gain and the M2 special attack; stun / knockdown / knockback / burning / slow numbers.
   Recorded: `generators.json#design.abilities|resources|special-attack|status-effects`, `c-ability-runtime`.
+- [x] **D22 Settlements and spawn rule (2026-09-10)** — one village per land, placement / flattening / ring layout numbers, one NPC per
+  service building, shop stock + prices in play, trainer respec fee, inn heal + respawn point, spawn on the (0,0) village square.
+  Recorded: `generators.json#design.settlement`, `ui.json#screens.npc-service`, `c-settlement-config`.
 
 ## B. Conflicting facts (pick a side)
 

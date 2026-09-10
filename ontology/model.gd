@@ -475,6 +475,24 @@ class Ontology extends RefCounted:
 			if str(id).begins_with("_"): continue
 			if not status_effects.has(id): errors.append("design.status-effects.%s is not a status-effect" % id)
 			elif se[id].has("as") and not se.has(str(se[id]["as"])): errors.append("design.status-effects.%s: `as` %s has no entry" % [id, se[id]["as"]])
+		var st: Dictionary = design.get("settlement", {})                  # c-settlement-config (D22)
+		if not st.is_empty():
+			var bj: Dictionary = configs.get("buildings", {}); var roles: Dictionary = configs.get("npc-roles", {})
+			if int(st["per-land"]) < 1: errors.append("design.settlement.per-land < 1")
+			if float(st["radius"]) <= float(st["blend"]) or float(st["blend"]) < 0.0: errors.append("design.settlement: need radius > blend >= 0")
+			if float(st["ring-radius"]) >= float(st["radius"]): errors.append("design.settlement.ring-radius must be < radius")
+			if float(st["no-hostiles-within"]) < float(st["radius"]): errors.append("design.settlement.no-hostiles-within < radius")
+			for b in st["buildings"]:
+				if not bj.get("buildings", {}).has(b): errors.append("design.settlement.buildings: unknown building %s" % b)
+			for b in st["npc"]["roles"]:
+				if not roles.has(st["npc"]["roles"][b]): errors.append("design.settlement.npc.roles.%s: unknown npc-role %s" % [b, st["npc"]["roles"][b]])
+			for id in landscapes:
+				if (landscapes[id] as Landscape).gen.is_empty(): continue
+				var style = st["style-by-landscape"].get(id)
+				if style == null or not bj.get("settlement-styles", {}).has(style): errors.append("design.settlement.style-by-landscape.%s: missing or unknown style %s" % [id, style])
+				elif not (st["style-colors"].get(style) is Array and (st["style-colors"][style] as Array).size() == 2): errors.append("design.settlement.style-colors.%s: need [wall, roof]" % style)
+			var cap = st["shop"]["rarity-cap"]
+			if not rarities.has(cap) or (rarities[cap] as RarityDef).index > Rarity.LEGENDARY: errors.append("design.settlement.shop.rarity-cap: bad rarity %s" % cap)
 		var defaults := rulesets.values().filter(func(r: Ruleset) -> bool: return r.is_default)
 		if defaults.size() != 1: errors.append("exactly one ruleset must be default (found %d)" % defaults.size())
 		return errors.size() == n
