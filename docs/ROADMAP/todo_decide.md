@@ -60,6 +60,9 @@ live in `ontology/instances/generators.json#design`. Nothing remains: run the `r
 - [x] **D22 Settlements and spawn rule (2026-09-10)** — one village per land, placement / flattening / ring layout numbers, one NPC per
   service building, shop stock + prices in play, trainer respec fee, inn heal + respawn point, spawn on the (0,0) village square.
   Recorded: `generators.json#design.settlement`, `ui.json#screens.npc-service`, `c-settlement-config`.
+- [x] **D23 Defence (2026-09-11)** — dodge roll numbers + per-passive rewards, block (shield / guardian / cyclone) with block-power,
+  the stealth bar's sources, decay and bonuses, creature hits rolling stun / knockback on the player.
+  Recorded: `generators.json#design.defence`, `design.abilities.<id>.stealth-per-s|stealth-full`, `c-defence-config`.
 
 ## B. Conflicting facts (pick a side)
 

@@ -494,16 +494,19 @@ more damage and stun/knockdown chance); Rogue instant. Mage M2 costs 30 MP (S). 
 Hold M2 with shield (Guardian: any weapon; any warrior during Cyclone); drains `block-power`,
 regenerates when not blocking (faster during Cyclone); successful block gives MP (D11:
 the bar specials spend); Guardian block power ×2. `A S`
+Hybrid (D23): M2 held blocks and charges the special at once; numbers `design.defence.block`.
 
 ### dodge
 M3 while moving: roll with i-frames (not vs spike traps / dagger poison), costs 25 stamina (25 %),
 dismounts, negates fall damage on landing. Ninja gains +25 MP and guaranteed crit; Assassin gains
 stealth. `A S`
+Hybrid (D23): `design.defence.dodge` (roll 4 blocks in 0.4 s, i-frames 0.4 s; the crit window is not built).
 
 ### stealth
 Separate bar: up to +20 % attack power, +50 % crit, faster MP gain, near-zero aggro at full;
 decays when not generated; sources: sneak (faster still / in dark, slower in daylight / near
 lamps), assassin specials, camouflage (instant full), sniper aim `A` / charging `S`. `A S`
+Hybrid (D23): `design.defence.stealth` + `design.abilities.<id>.stealth-per-s|stealth-full`; no darkness / lamp rule until a game clock exists.
 
 ### status-effect
 → `instances/status-effects.json`: poison, burning, slow/frozen (blue tint), stun (stars),
@@ -836,14 +839,14 @@ One row per fact type. Cardinality as `domain → range`.
 | c-plus-adjacent | DROPPED (D4). S reference: plus item full stats iff current land adjacent | — |
 | c-gear-global | hybrid: an item's stats are identical in every land; key items and artifacts work everywhere once found | runtime |
 | c-rarity-range | rarity ∈ 0..4 for generated items (5 = mythical bug, off by default) | load |
-| c-stat-roll | roll = ((attributes<<16)+modifier) mod 21 ∈ 0..20 | load |
+| c-stat-roll | roll = ((attributes<<16)+modifier) mod 21 ∈ 0..20 | generator |
 | c-loot-config | `design.loot`: every chance ∈ [0,1]; rarity-weights keys are rarities ≤ legendary with a positive sum; level-spread ≥ 0; gear-kinds and stack-cap.stackable name item-types; consumable-pool names consumables | load |
 | c-stack-rule | only `design.stack-cap.stackable` item-types stack (no cap, D6); gear (has a modifier roll) is one item per entry | runtime |
 | c-slot-accepts | an item equips only in an equipment-slot whose `accepts` lists its item-type (weapon-type `offhand` hands → off-hand only) | runtime |
 | c-mp-range | mp ∈ [0, 100]; mage regenerates passively, others gain by hits/blocks/stealth/dodges; numbers `design.resources.mp` (D21) | runtime |
 | c-stun-immunity | cannot re-stun while stars shown | runtime |
 | c-combo-reset | any attack with a hitbox that misses resets combo to 0; cap per weapon-type | runtime |
-| c-dodge-cost | dodge costs 25 stamina; requires movement; standing still M3 = class skill (S) | runtime |
+| c-dodge-cost | dodge costs 25 stamina; requires movement; standing still M3 = class skill (S); hybrid numbers `design.defence.dodge` (D23) | runtime |
 | c-no-death-penalty | death never removes gold/items/xp; respawn at statue (A) / activated shrine (S) | runtime |
 | c-time-speed | clock 10× real; sleep 100× clock-only | runtime |
 | c-midnight-reset | at 0:00 respawn mobs, regen missions, deposits, plants; restock shops | runtime |
@@ -855,7 +858,7 @@ One row per fact type. Cardinality as `domain → range`.
 | c-mission-reward | S reward rarity = quest tier + 1 (cap legendary) | generator |
 | c-zone-size | A zone 256² blocks, region 64² zones; S zone 64² blocks; hybrid zone 64², land 256² zones (D12) | engine |
 | c-block-rgb | every solid block has its own RGB; (0,0,0) in `.cub` = empty | data |
-| c-name-length | entity name 2..16 ASCII 32–126 | load |
+| c-name-length | player-character name 2..16 ASCII 32–126 (character creation; creature display names are free text) | runtime |
 | c-versions-nonempty | every instance lists ≥1 version tag | load |
 | c-roster-ids | every id in `creature-families.json#landscape-rosters` is a creature (D14) | load |
 | c-rideable-conflict | resolved (F2): every `rideable` is a boolean, per-page value; a `?` here is a load error | load |
@@ -869,6 +872,7 @@ One row per fact type. Cardinality as `domain → range`.
 | c-skill-spend | a point is spent only from the banked pool, one at a time, on a node whose prerequisite holds `needs` points; points never leave a node outside a trainer respec (D20) | runtime |
 | c-ability-runtime | every class-column and ultimate node of every spec tree has a `design.abilities` entry whose `runtime` is in `runtimes`; cost mp ≤ 100, stamina ≤ `design.movement.stamina.max` or `all`; cooldown-s > 0; dash distance > 0, strike / burst / channel radius > 0, buff / channel duration-s > 0, heal cast-s ≥ 0; `design.status-effects` keys are status-effect ids and an `as` names another key (D21) | load |
 | c-settlement-config | `design.settlement`: per-land ≥ 1, radius > blend ≥ 0, ring-radius < radius, every `buildings` entry is a `buildings.json#buildings` id, every service role is an `npc-roles.json` id, every landscape with a `gen` block has a `style-by-landscape` entry naming a `buildings.json#settlement-styles` id with two `style-colors`, `shop.rarity-cap` is a rarity ≤ legendary, `no-hostiles-within` ≥ radius (D22) | load |
+| c-defence-config | `design.defence`: dodge stamina ∈ (0, stamina max], distance / duration-s > 0, iframe-s ≥ 0, every on-dodge key is a passive ability; block max / power-per-hit > 0, damage-reduction ∈ [0,1], front-dot ∈ [−1,1], regen-per-s ≥ 0, guardian-mult ≥ 1; stealth decay-per-s ≥ 0, still-mult ≥ 1, aggro-cut ∈ [0,1]; enemy-hit chances ∈ [0,1]; every `design.abilities` stealth-per-s ≥ 0 (D23) | load |
 | c-drowning | S only: breath depletes underwater; empty → HP loss; wall-hold pauses | runtime |
 | c-gate-doors | divine doors re-close at 0:00; bell spirit world lasts 30 s (F8) | runtime |
 
@@ -995,4 +999,12 @@ Decisions only the owner can make (D) and facts research could not settle (F).
   spawns skip groups within 40 blocks of the square. Not yet: districts, procedural rooms / roofs, villagers and schedules, inn
   time skip, restock, spec change, sewers / dens, flight master, several villages per land (S).
   → `generators.json#design.settlement`, `ui.json#screens.npc-service`, `c-settlement-config`.
+- **D23 Defence — DECIDED 2026-09-11**: dodge (M3 while moving, 25 stamina, 4 blocks in 0.4 s, hits ignored for 0.4 s, no fall damage on
+  that landing; Ninja +25 MP via elusiveness, Assassin +0.5 stealth via way-of-the-shadows), block (M2 held with a shield / any weapon
+  as guardian / during cyclone: front-cone hits × 0.2, 25 block-power per hit out of 100 (guardian 200), +8 MP per block, regen 20/s while
+  not blocking, ×2 during cyclone), the stealth bar (sneak 0.25/s, aim 0.3/s, ×2 standing still, camouflage pins it full; decay 0.15/s;
+  at full +20 % attack, +50 % crit, ×2 MP per hit, aggro range × 0.1; a landed hit empties it unless pinned), and creature hits rolling
+  stun 5 % / knockback 15 % on the player (blocked or dodged hits roll nothing). Not yet: poison through dodges, the ninja crit window,
+  counter-strike, hit-series, projectiles, stun stars / buff icons beyond HUD text, darkness / lamps.
+  → `generators.json#design.defence`, `design.abilities.<id>.stealth-per-s|stealth-full`, `c-defence-config`.
 - **F7** Omega status after mid-2024 (Vulkan vs UE5 reports).

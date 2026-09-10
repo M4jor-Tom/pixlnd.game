@@ -493,6 +493,23 @@ class Ontology extends RefCounted:
 				elif not (st["style-colors"].get(style) is Array and (st["style-colors"][style] as Array).size() == 2): errors.append("design.settlement.style-colors.%s: need [wall, roof]" % style)
 			var cap = st["shop"]["rarity-cap"]
 			if not rarities.has(cap) or (rarities[cap] as RarityDef).index > Rarity.LEGENDARY: errors.append("design.settlement.shop.rarity-cap: bad rarity %s" % cap)
+		var df: Dictionary = design.get("defence", {})                    # c-defence-config (D23)
+		if not df.is_empty():
+			var dg: Dictionary = df["dodge"]; var bl: Dictionary = df["block"]; var sl: Dictionary = df["stealth"]
+			if float(dg["stamina"]) <= 0.0 or float(dg["stamina"]) > stamina_max: errors.append("design.defence.dodge.stamina outside (0, %d]" % stamina_max)
+			if float(dg["distance"]) <= 0.0 or float(dg["duration-s"]) <= 0.0 or float(dg["iframe-s"]) < 0.0: errors.append("design.defence.dodge: distance / duration-s > 0, iframe-s >= 0")
+			for id in dg["on-dodge"]:
+				if not abilities.has(id) or (abilities[id] as Ability).kind != AbilityKind.PASSIVE: errors.append("design.defence.dodge.on-dodge.%s is not a passive" % id)
+			if float(bl["max"]) <= 0.0 or float(bl["power-per-hit"]) <= 0.0: errors.append("design.defence.block: max / power-per-hit must be > 0")
+			if float(bl["damage-reduction"]) < 0.0 or float(bl["damage-reduction"]) > 1.0: errors.append("design.defence.block.damage-reduction outside [0,1]")
+			if absf(float(bl["front-dot"])) > 1.0: errors.append("design.defence.block.front-dot outside [-1,1]")
+			if float(bl["regen-per-s"]) < 0.0 or float(bl["guardian-mult"]) < 1.0: errors.append("design.defence.block: regen-per-s >= 0, guardian-mult >= 1")
+			if float(sl["decay-per-s"]) < 0.0 or float(sl["still-mult"]) < 1.0: errors.append("design.defence.stealth: decay-per-s >= 0, still-mult >= 1")
+			if float(sl["aggro-cut"]) < 0.0 or float(sl["aggro-cut"]) > 1.0: errors.append("design.defence.stealth.aggro-cut outside [0,1]")
+			for k in df["enemy-hit"]:
+				if float(df["enemy-hit"][k]) < 0.0 or float(df["enemy-hit"][k]) > 1.0: errors.append("design.defence.enemy-hit.%s outside [0,1]" % k)
+			for id in ab:
+				if ab[id] is Dictionary and float(ab[id].get("stealth-per-s", 0.0)) < 0.0: errors.append("design.abilities.%s.stealth-per-s < 0" % id)
 		var defaults := rulesets.values().filter(func(r: Ruleset) -> bool: return r.is_default)
 		if defaults.size() != 1: errors.append("exactly one ruleset must be default (found %d)" % defaults.size())
 		return errors.size() == n
