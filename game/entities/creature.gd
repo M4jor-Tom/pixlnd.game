@@ -61,6 +61,10 @@ func _physics_process(dt: float) -> void:
 		return
 	velocity.y -= gravity * dt
 	_cooldown -= dt
+	tick_statuses(dt)
+	if stunned():                                           # D21: cannot act; a knockback keeps carrying us
+		move_and_slide()
+		return
 	var next := _tick(dt)
 	if next != state:
 		state = next
@@ -115,7 +119,7 @@ func _move(goal: Vector3, speed: float) -> bool:
 	if speed <= 0.0 or d.length() < 0.5:
 		velocity.x = 0.0; velocity.z = 0.0
 		return true
-	d = d.normalized() * speed
+	d = d.normalized() * speed * status_move_mult()          # slow (D21)
 	velocity.x = d.x; velocity.z = d.z
 	step_up(Vector3(velocity.x, 0, velocity.z) * get_physics_process_delta_time(), 1.0)
 	return false

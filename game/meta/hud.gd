@@ -1,6 +1,7 @@
 ## hud-element (§3.7), the first three of ui.json: HP bar, stamina bar (hidden until not full, A),
 ## combo counter, land caption, coins, item-notifications (pick-up toast), level + XP line (portrait's text, D19).
-## Built in code, bottom-left. ponytail: no portrait head/MP/minimap yet.
+## MP bar (pink while M2 charges) + hotbar line: keys 1-4 state and active buffs (D21). Built in code, bottom-left.
+## ponytail: no portrait head/minimap yet.
 extends CanvasLayer
 
 const Model := preload("res://ontology/model.gd")
@@ -13,6 +14,8 @@ var _combo: Label
 var _land: Label
 var _coins: Label
 var _level: Label
+var _skills: Label
+var _mp: ProgressBar
 var _toast: Label
 
 func bind(p_player: Node, p_world: Node) -> void:
@@ -34,8 +37,10 @@ func _ready() -> void:
 	_coins = Label.new(); box.add_child(_coins)
 	_level = Label.new(); box.add_child(_level)
 	_toast = Label.new(); _toast.modulate.a = 0.0; box.add_child(_toast)
+	_skills = Label.new(); box.add_child(_skills)
 	_combo = Label.new(); box.add_child(_combo)
 	_hp = _bar(box, Color(0.8, 0.15, 0.15))
+	_mp = _bar(box, Color(0.3, 0.4, 0.9))
 	_stamina = _bar(box, Color(0.9, 0.8, 0.2))
 
 func _bar(parent: Control, color: Color) -> ProgressBar:
@@ -53,6 +58,10 @@ func _process(_dt: float) -> void:
 	var st_max := float(player.cfg["stamina"]["max"]) if not player.cfg.is_empty() else 100.0
 	_stamina.max_value = st_max; _stamina.value = player.stamina
 	_stamina.visible = player.stamina < st_max
+	if player.get("abilities") != null:
+		_mp.max_value = float(player.design["resources"]["mp"]["max"]); _mp.value = player.mp
+		(_mp.get_theme_stylebox("fill") as StyleBoxFlat).bg_color = Color(0.95, 0.4, 0.8) if player._charge >= 0.0 else Color(0.3, 0.4, 0.9)
+		_skills.text = _skills_line()
 	_combo.text = "combo %d" % player.combo if player.combo > 0 else ""
 	if player.get("inventory") != null:
 		_coins.text = "%d copper" % player.inventory.coins
@@ -65,3 +74,17 @@ func _process(_dt: float) -> void:
 func _on_picked_up(label: String) -> void:
 	_toast.text = "+ " + label; _toast.modulate.a = 1.0
 	create_tween().tween_property(_toast, "modulate:a", 0.0, 2.0).set_delay(1.0)
+
+## hotbar (ui.json#hud.hotbar, keys 1-4): class skill name + ready / cooldown / no points, then active buffs (D21).
+func _skills_line() -> String:
+	var parts: PackedStringArray = []
+	for slot in range(1, 5):
+		var a = player.skill_tree.class_slot(slot)
+		if a == null:
+			continue
+		var cd := float(player.abilities.cooldowns.get(a.id, 0.0))
+		var state := "no points" if player.skill_tree.spent(a.id) == 0 else ("%.0fs" % cd if cd > 0.0 else "ready")
+		parts.append("%d %s: %s" % [slot, a.display_name, state])
+	for id in player.abilities.buffs:
+		parts.append("[%s %.0fs]" % [player.o.abilities[id].display_name, player.abilities.buffs[id]["left"]])
+	return "   ".join(parts)

@@ -90,11 +90,9 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
 
 ## Progression (§3.5, slice D19)
 - [x] Skill tree (D20, `game/progression/skill_tree.gd`, `skill_panel.gd` on X): spending, unlock rule, per-point multipliers.
-  Still open: every class active is the same self-centred strike (`design.abilities.placeholder-strike`, `player.gd`
-  ponytail) — Smash leap, Cyclone channel, ranged/heal/stealth kits need their own runtimes (`ability.effect`, `combo-system`,
-  `stealth`, `c-mp-range`); no ability cost (MP/stamina), no cast bar or cooldown display on the HUD (`hud-element`);
-  shared skills other than Swimming do nothing until pets, mounts, climbing, glider and boat exist; no class trainer respec
-  (`skill-tree`, needs settlements); the panel is a flat list (no columns drawn, no tooltips) and was not visually checked.
+  Class actives have runtimes since D21 (see Combat). Still open: shared skills other than Swimming do nothing until pets,
+  mounts, climbing, glider and boat exist; no class trainer respec (`skill-tree`, needs settlements); the panel is a flat list
+  (no columns drawn, no tooltips) and was not visually checked.
 - [ ] Level-up has no feedback beyond the HUD line: no sound, flash or "level up" toast (`game-feel`, `audio.json`).
 - [ ] The HUD level/xp line was not visually checked (windowed viewport capture, see HANDOFF gotchas).
 - [ ] `power-gate` unread: any item level equips; no adaptation, no `+N` display.
@@ -102,10 +100,16 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
   (`pet-xp` flag), no message-log "+N xp" toast (`hud-element` message-log).
 - [ ] HUD shows level/xp as a text line; the portrait (head, name, class) is still missing (`hud-element` portrait).
 
-## Combat (§3.3, slice pending)
-- [ ] Only `basic-attack` exists: no special attack / charge, block + block-power, dodge i-frames,
-  stealth bar, MP gain and spending, class abilities, ultimates (`ability`, `special-attack`,
-  `block`, `dodge`, `stealth`, `c-mp-range`, `c-dodge-cost`).
+## Combat (§3.3, slices 457c947 + D21)
+- [x] Class abilities (D21, `game/combat/abilities.gd`): every tree node runs a dash / channel / burst / buff / heal with
+  `design.abilities` numbers, MP gain per hit / mage regen, M2 charged / instant special, stun / knockdown / knockback /
+  burning / slow on creatures, HUD MP bar + hotbar cooldown line. Still open (`abilities.gd` ponytail): fire-missiles,
+  bubbles, shuriken-attack are self-centred bursts (no projectiles); shadow-shooter is a damage buff (no clone); quicksand
+  is a one-shot slow burst (no zone); aim, sneak, camouflage, ninjutsu are damage / speed buffs (no `stealth` bar, no prone
+  zoom); heroic-shout taunts by a 0-damage hit (no aggro table); teleport is a 20-block dash (sources say ~60 `?`);
+  cyclone has no block; no cast interruption; creatures never apply statuses to the player; no dodge (`c-dodge-cost`),
+  block / block-power (`block`), or stun stars / buff icons on the HUD (`ui.json#hud.stun-stars|buff-icons`); every D21
+  line was not visually checked (windowed capture, HANDOFF gotchas); every D21 number is untuned.
 - [ ] Hit test is a sphere in front of the camera yaw; no weapon movesets, hit timing, or
   ranged/projectile weapons (`weapon-type.m1/m2`; bow, staff, boomerang).
 - [x] Item instances, equipment slots, armor stat (D18, `game/items/`). Still open: the modifier roll only
