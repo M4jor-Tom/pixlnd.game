@@ -18,13 +18,15 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
   coarse far-terrain LOD (`design.terrain.view-zones`).
 - [ ] Artifact count per land (D11, `design.artifacts-per-land`) is not rolled at land generation
   yet — roll it in `WorldGen.land_at` when artifacts get a slice.
-- [ ] Flora, deposits, settlements, dungeons, POIs, missions (`gen-flora`, `gen-settlement`,
-  `gen-dungeon`, `gen-poi`, `gen-missions`) — not started; lands are empty terrain.
+- [x] Settlements (D22, `world/settlement.gd`): one village per land, plateau, ring of box buildings, service NPCs. Still open
+  (`settlement.gd` ponytail): no districts, procedural rooms / roofs, doors or interiors (buildings are solid boxes), villagers,
+  animals, schedules (`gen-schedule`), lanterns, dens / sewers, watchtowers; one village per land only (S: several, hidden until
+  discovered); the village node floats until its zones load; not visually checked beyond `--write-movie`.
+- [ ] Flora, deposits, dungeons, POIs, missions (`gen-flora`, `gen-dungeon`, `gen-poi`, `gen-missions`) — not started.
 - [ ] Land caption, temperature/humidity HUD (`design.climate.hud`) not shown (`hud-element`).
 
 ## Player (§3.2 player-character, slice e33c991)
-- [ ] Spawn = centre of land (0,0) (`main.gd` ponytail). `world.spawn-rule` = near a village;
-  needs settlements. Default seed 26879 spawns in deadlands.
+- [x] Spawn = the (0,0) village square (`world.spawn-rule`, D22). Default seed 26879 spawns in deadlands (undead village).
 - [ ] Climb (E grab, wall-jump), dodge roll, glider, swim breath/drowning (`abilities.json`
   movement kind; `flags.drowning`, `diving-breath`) — `player.gd` ponytail.
 - [x] Fall damage (D13 numbers) — applied on landing since the combat slice; dodge does not yet negate it.
@@ -86,12 +88,15 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
   lifetime is real seconds (`design.loot.ground.lifetime-s`), not tied to `game-clock`.
 - [ ] Inventory panel: one list, no tabs / tooltips / drag / star rating (`screens.inventory`, `item-tooltip`);
   no class check on equip (red names), no quick-select wheel (Q takes the first consumable, instant, no sit/channel).
-- [ ] No crafting, shops, prices in play (`design.prices` unused), identifier, customization bench.
+- [x] Shops (D22, `items/shop.gd`): weapon / armor / item vendors, `design.prices` buy + sell. Still open (`shop.gd` ponytail): stock
+  never restocks (`c-midnight-reset`) and is re-rolled at the current level on every open; no gnome rarity unlocks, buy-back tab,
+  identifier, adapter, gem trader; the shop panel was not visually checked.
+- [ ] No crafting, customization bench.
 
 ## Progression (§3.5, slice D19)
 - [x] Skill tree (D20, `game/progression/skill_tree.gd`, `skill_panel.gd` on X): spending, unlock rule, per-point multipliers.
   Class actives have runtimes since D21 (see Combat). Still open: shared skills other than Swimming do nothing until pets,
-  mounts, climbing, glider and boat exist; no class trainer respec (`skill-tree`, needs settlements); the panel is a flat list
+  mounts, climbing, glider and boat exist; spec change at the trainer (`npc-role` class-trainer, A fee) and the panel is a flat list
   (no columns drawn, no tooltips) and was not visually checked.
 - [ ] Level-up has no feedback beyond the HUD line: no sound, flash or "level up" toast (`game-feel`, `audio.json`).
 - [ ] The HUD level/xp line was not visually checked (windowed viewport capture, see HANDOFF gotchas).
@@ -99,6 +104,11 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
 - [ ] XP only from open-world kills by the last attacker; no mission / boss XP, no party share, no pet XP
   (`pet-xp` flag), no message-log "+N xp" toast (`hud-element` message-log).
 - [ ] HUD shows level/xp as a text line; the portrait (head, name, class) is still missing (`hud-element` portrait).
+
+## Settlements (§3.1 settlement, slice D22)
+- [ ] Inn: heals and moves the respawn point only; no sleep-to-07:00 (no `game-clock`), no daily mission re-roll (S).
+- [ ] NPCs never talk (`npc-role.dialogue`, speech bubbles); E resolves the service instantly.
+- [ ] Villagers and animals inside town are absent, so `c-hostile-in-city` only keeps wild spawns 40 blocks away.
 
 ## Combat (§3.3, slices 457c947 + D21)
 - [x] Class abilities (D21, `game/combat/abilities.gd`): every tree node runs a dash / channel / burst / buff / heal with

@@ -14,19 +14,20 @@ Consumes `ontology/`; never redefines it. New gameplay = ontology first (sync ru
 ## Folders follow domain.md §3 (create a folder when its first scene lands)
 | §3 section | folder | first pieces |
 |---|---|---|
-| 3.1 World | `world/` | **done (D12):** `world_gen.gd` gen-world/climate/terrain/name, `zone_mesh.gd` heightfield mesher, `world.gd` zone streaming + trimesh collision |
-| 3.2 Entities | `entities/` | **player (D13) + creatures (D14):** `entity.gd` base (HP, level, hostility, step-up), `player.{tscn,gd}` walk/sprint/jump/swim/stamina, `orbit_camera.gd` SpringArm3D orbit, `creature.{tscn,gd}` idle/wander/chase/return FSM, `world/spawner.gd` gen-spawns per zone; next npc, pet |
+| 3.1 World | `world/` | **done (D12) + settlements (D22):** `world_gen.gd` gen-world/climate/terrain/name + `village_at` (placement, plateau in `height_at`), `zone_mesh.gd` heightfield mesher, `world.gd` zone streaming + trimesh collision + village streaming, `settlement.gd` ring of box buildings + NPCs, spawner skips the square; next flora, dungeons, POIs |
+| 3.2 Entities | `entities/` | **player (D13) + creatures (D14):** `entity.gd` base (HP, level, hostility, step-up), `player.{tscn,gd}` walk/sprint/jump/swim/stamina, `orbit_camera.gd` SpringArm3D orbit, `creature.{tscn,gd}` idle/wander/chase/return FSM, `world/spawner.gd` gen-spawns per zone, `npc.gd` service NPC at a door (D22, unattackable); next villagers, pet |
 | 3.3 Combat | `combat/` | **basics (D15) + class abilities (D21):** `combat.gd` pure formulas (weapon damage, armor floor, crit, combo, player/NPC HP+damage); `abilities.gd` runner (dash / channel / burst / buff / heal from `design.abilities`, cooldowns, costs, buff multipliers, absorb); MP + M2 special attack in `player.gd`; stun / knockback / burning / slow in `entity.gd`; next block, dodge, stealth bar, projectiles |
-| 3.4 Items | `items/` | **basics (D18):** `item.gd` instance, `items.gd` gen-item / gen-item-stats (damage, armor) / item names / gen-loot + ground drops, `inventory.gd` stack + slot rules, `ground_item.{tscn,gd}` pick-up area, `inventory_panel.gd` (B); next crafting, shop, leftovers |
-| 3.5 Progression | `progression/` | **basics (D19) + skill tree (D20):** `progression.gd` level settle (overflow, multi-level); XP per kill lives in `model.gd#xp_for_kill`, awarded by `creature.gd` to its last attacker, `player.gd#gain_xp` levels up (max HP, heal, banked skill points), HUD level/xp line; `skill_tree.gd` nodes from `model.gd#skill_tree`, spend/unlock rule, per-point multipliers; `skill_panel.gd` (X); `player.gd#use_class_skill` keys 1-4 → `combat/abilities.gd` (D21), swim speed per point; next power-gate, trainer respec, artifacts |
+| 3.4 Items | `items/` | **basics (D18):** `item.gd` instance, `items.gd` gen-item / gen-item-stats (damage, armor) / item names / gen-loot + ground drops, `inventory.gd` stack + slot rules, `ground_item.{tscn,gd}` pick-up area, `inventory_panel.gd` (B); `shop.gd` stock + `design.prices` buy/sell, `shop_panel.gd` (E at a vendor, D22); next crafting, leftovers |
+| 3.5 Progression | `progression/` | **basics (D19) + skill tree (D20):** `progression.gd` level settle (overflow, multi-level); XP per kill lives in `model.gd#xp_for_kill`, awarded by `creature.gd` to its last attacker, `player.gd#gain_xp` levels up (max HP, heal, banked skill points), HUD level/xp line; `skill_tree.gd` nodes from `model.gd#skill_tree`, spend/unlock rule, per-point multipliers; `skill_panel.gd` (X); `player.gd#use_class_skill` keys 1-4 → `combat/abilities.gd` (D21), swim speed per point; `skill_tree.gd#respec` at the class trainer (E, D22); next power-gate, artifacts |
 | 3.6 Missions | `missions/` | mission-type runtime, arena |
-| 3.7 Meta | `meta/` | `input_map.gd` builds InputMap from `keybinds.json#hybrid`; `hud.gd` HP/MP/stamina/combo/land caption + hotbar cooldown line (D21); next server/client (`godot-multiplayer`), save-data |
+| 3.7 Meta | `meta/` | `input_map.gd` builds InputMap from `keybinds.json#hybrid`; `hud.gd` HP/MP/stamina/combo/land caption (+ village, D22) + hotbar cooldown line (D21) + service toasts; next server/client (`godot-multiplayer`), save-data |
 
 ## Checks
 ```
 nix develop -c godot --headless -s ontology/validate.gd            # ontology constraints
 nix develop -c godot --headless --quit                             # autoload + main scene boot
 nix develop -c godot --headless -s game/world/test_world_gen.gd    # gen-world invariants (seed, range, names, mesh)
+nix develop -c godot --headless -s game/world/test_settlement.gd   # village placement / plateau / layout, no spawns near the square, shop stock + prices, buy / sell, respec, inn, E → NPC
 nix develop -c godot --headless -s game/entities/test_player.gd    # player physics (land, jump height, step-up, sprint, camera)
 nix develop -c godot --headless -s game/entities/test_creatures.gd # gen-spawns determinism, rosters, level band, HP calibration, FSM
 nix develop -c godot --headless -s game/combat/test_combat.gd       # formulas, hit/combo/whiff, retaliation, kill, respawn

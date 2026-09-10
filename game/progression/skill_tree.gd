@@ -41,6 +41,14 @@ func spend(a, banked: int) -> int:
 	points[a.id] = spent(a.id) + 1
 	return banked - 1
 
+## Trainer respec (D22): every point back to the bank; returns how many.
+func respec() -> int:
+	var n := 0
+	for id in points:
+		n += int(points[id])
+	points.clear()
+	return n
+
 ## D6: +effect-per-point per point, uncapped.
 func effect_mult(id: StringName) -> float:
 	return 1.0 + float(sp["effect-per-point"]) * spent(id)

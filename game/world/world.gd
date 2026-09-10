@@ -4,12 +4,14 @@ extends Node3D
 const WorldGen := preload("res://game/world/world_gen.gd")
 const ZoneMesh := preload("res://game/world/zone_mesh.gd")
 const Spawner := preload("res://game/world/spawner.gd")
+const Settlement := preload("res://game/world/settlement.gd")
 
 @export var world_seed := 0             # 0 → design.terrain.seed-default (alpha server.cfg default)
 var target: Node3D                      # set by main.gd: camera for now, the player-character once §3.2 lands
 
 var gen: WorldGen
 var zones := {}                         # Vector2i → MeshInstance3D (creatures are its children)
+var villages := {}                      # land coords → Village node (D22), streamed like zones
 var design: Dictionary = {}             # generators.json#design; empty = no creatures
 var creatures := {}                     # OntologyDB.data.creatures
 var rosters := {}                       # creature-families.json#landscape-rosters
@@ -36,6 +38,7 @@ func _process(_dt: float) -> void:
 	for zc in zones.keys():
 		if maxi(absi(zc.x - c.x), absi(zc.y - c.y)) > _view + 1:
 			zones[zc].queue_free(); zones.erase(zc)
+	_stream_village()
 	# ponytail: nearest ring first, ≤ 2 zones per frame on the main thread; thread it when it hitches
 	var built := 0
 	for r in _view + 1:
@@ -65,6 +68,19 @@ func _spawn_zone(zc: Vector2i) -> void:
 	if not design.is_empty():
 		var lvl: int = target.get("level") if target != null and target.get("level") != null else 1
 		Spawner.populate(mi, Spawner.plan(gen, zc, design, creatures, rosters, lvl), design, creatures, target, ontology)
+
+## gen-settlement (D22): the village of the land under the player exists while its square is within view reach;
+## villages sit ≥ 8 km inside their land, so no other land's village can be in reach.
+func _stream_village() -> void:
+	var here = gen.land_of_block(int(target.global_position.x), int(target.global_position.z))
+	var v := gen.village_at(here)
+	var want := not v.is_empty() and Vector2(target.global_position.x - v["centre"].x, target.global_position.z - v["centre"].y).length() < (_view + 1) * _zone_blocks
+	for lc in villages.keys():
+		if lc != here.coords or not want:
+			villages[lc].queue_free(); villages.erase(lc)
+	if want and not villages.has(here.coords):
+		villages[here.coords] = Settlement.build(v, gen.settlement, ontology.configs["npc-roles"])
+		add_child(villages[here.coords])
 
 ## True once the zone under `pos` is built (the player waits for it instead of falling through).
 func has_ground(pos: Vector3) -> bool:

@@ -27,6 +27,9 @@ static func plan(gen, zc: Vector2i, design: Dictionary, creatures: Dictionary, r
 		var size := c.group_size if c.group_size != Vector2i(1, 1) else Vector2i(int(spawns["default-group"][0]), int(spawns["default-group"][1]))
 		var count := rng.randi_range(size.x, size.y)
 		var cx := zc.x * n + rng.randi_range(4, n - 5); var cy := zc.y * n + rng.randi_range(4, n - 5)
+		var v: Dictionary = gen.village_at(land)                      # c-hostile-in-city (D22): no wild groups near the square
+		if not v.is_empty() and Vector2(cx - v["centre"].x, cy - v["centre"].y).length() < float(design.get("settlement", {}).get("no-hostiles-within", 0)):
+			continue
 		var h: StringName = c.hostility
 		if h == &"V":
 			h = &"H" if rng.randf() < float(spawns["variable-hostility"]["H"]) else &"N"

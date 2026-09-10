@@ -1,6 +1,7 @@
 ## hud-element (§3.7), the first three of ui.json: HP bar, stamina bar (hidden until not full, A),
 ## combo counter, land caption, coins, item-notifications (pick-up toast), level + XP line (portrait's text, D19).
-## MP bar (pink while M2 charges) + hotbar line: keys 1-4 state and active buffs (D21). Built in code, bottom-left.
+## MP bar (pink while M2 charges) + hotbar line: keys 1-4 state and active buffs (D21). Village name in the land caption
+## and NPC service notices as toasts (D22). Built in code, bottom-left.
 ## ponytail: no portrait head/minimap yet.
 extends CanvasLayer
 
@@ -22,6 +23,8 @@ func bind(p_player: Node, p_world: Node) -> void:
 	player = p_player; world = p_world
 	if player.has_signal("picked_up"):
 		player.picked_up.connect(_on_picked_up)
+	if player.has_signal("notice"):
+		player.notice.connect(_show_toast)
 
 func _ready() -> void:
 	var margin := MarginContainer.new()                     # full rect; the box shrinks to bottom-left
@@ -70,9 +73,15 @@ func _process(_dt: float) -> void:
 	if world != null and world.gen != null:
 		var l = world.gen.land_of_block(int(player.global_position.x), int(player.global_position.z))
 		_land.text = "%s  (%s, %s)" % [l.name, l.landscape, l.danger_tier]
+		var v: Dictionary = world.gen.village_at(l)
+		if not v.is_empty() and Vector2(player.global_position.x - v["centre"].x, player.global_position.z - v["centre"].y).length() <= float(world.gen.settlement["radius"]):
+			_land.text += "  —  %s (village)" % v["name"]
 
 func _on_picked_up(label: String) -> void:
-	_toast.text = "+ " + label; _toast.modulate.a = 1.0
+	_show_toast("+ " + label)
+
+func _show_toast(text: String) -> void:
+	_toast.text = text; _toast.modulate.a = 1.0
 	create_tween().tween_property(_toast, "modulate:a", 0.0, 2.0).set_delay(1.0)
 
 ## hotbar (ui.json#hud.hotbar, keys 1-4): class skill name + ready / cooldown / no points, then active buffs (D21).

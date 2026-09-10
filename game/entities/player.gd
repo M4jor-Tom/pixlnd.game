@@ -1,6 +1,7 @@
 ## player-character (§3.2) movement + §3.3 basic attack, combo, fall damage, death/respawn, class abilities on keys 1-4,
 ## MP + M2 special attack (D21) + §3.4 inventory, gear (main-hand damage, armor sum), pick-up (E), quick item (Q)
 ## + §3.5 XP, level-up, skill points (D19), skill tree spending, swim speed per point (D20).
+## + D22: E talks to the nearest NPC (vendor → `talked`, trainer respec, inn rest) before picking up.
 ## Config dicts (design.movement / camera / combat / crit) are injected by main.gd: this script never
 ## names OntologyDB so headless tests (no autoloads) can drive it.
 ## ponytail: no climb/dodge/glide/block/stealth bar yet (todo_implement.md).
@@ -18,6 +19,8 @@ const SkillTree := preload("res://game/progression/skill_tree.gd")
 signal picked_up(label: String)
 signal leveled_up(level: int)
 signal skills_changed
+signal talked(npc: Node)                                # E at an NPC (D22); panels listen for vendor roles
+signal notice(text: String)                             # HUD toast
 
 var cfg: Dictionary = {}                                # design.movement
 var combat: Dictionary = {}                             # design.combat
@@ -40,6 +43,7 @@ var combo := 0
 var water_top := -INF                                   # y of the water surface (sea level + 1)
 var ground_ready: Callable = func(_p: Vector3) -> bool: return true   # world: is the zone under us built?
 var spawn_point := Vector3.ZERO
+var ui_open := false                                    # a panel owns the mouse: no moving, fighting or talking
 var stamina := 100.0
 var _stamina_idle := 0.0
 var _swing_t := 0.0
@@ -148,18 +152,55 @@ func pick_up(ground: Node3D) -> void:
 	picked_up.emit(ground.label)
 	ground.queue_free()
 
+## interact (E, D22): the nearest NPC within design.settlement.npc.interact-radius wins over ground items.
+func interact_nearest() -> bool:
+	var npc := _nearest_in_group("npcs", float(design["settlement"]["npc"]["interact-radius"]))
+	if npc == null:
+		return pick_up_nearest()
+	match npc.role:
+		&"class-trainer": respec()
+		&"innkeeper": rest()
+		_: talked.emit(npc)
+	return true
+
 ## pick-up (E): the nearest ground item within design.loot.ground.pickup-radius.
 func pick_up_nearest() -> bool:
-	var best: Node3D
-	var best_d := float(design["loot"]["ground"]["pickup-radius"])
-	for n in get_tree().get_nodes_in_group("ground-items"):
-		var d: float = n.global_position.distance_to(global_position)
-		if d <= best_d and not n.is_queued_for_deletion():
-			best = n; best_d = d
+	var best := _nearest_in_group("ground-items", float(design["loot"]["ground"]["pickup-radius"]))
 	if best == null:
 		return false
 	pick_up(best)
 	return true
+
+func _nearest_in_group(group: StringName, radius: float) -> Node3D:
+	var best: Node3D
+	for n in get_tree().get_nodes_in_group(group):
+		var d: float = n.global_position.distance_to(global_position)
+		if d <= radius and not n.is_queued_for_deletion():
+			best = n; radius = d
+	return best
+
+## class trainer (skill-tree, D22): every spent point back to the bank for respec-fee-per-level × level copper.
+func respec() -> bool:
+	var fee := int(design["settlement"]["trainer"]["respec-fee-per-level"]) * level
+	if skill_tree.points.is_empty():
+		notice.emit("Nothing to respec"); return false
+	if inventory.coins < fee:
+		notice.emit("A respec costs %d copper" % fee); return false
+	inventory.coins -= fee
+	var n: int = skill_tree.respec()
+	skill_points += n
+	skills_changed.emit(); inventory.changed.emit()
+	notice.emit("Respec: %d points refunded for %d copper" % [n, fee])
+	return true
+
+## innkeeper (D22): full heal, the respawn point moves here. ponytail: no time skip (no game clock yet).
+func rest() -> void:
+	var inn: Dictionary = design["settlement"]["inn"]
+	if inn["heal"]:
+		hp = max_hp; stamina = float(cfg["stamina"]["max"])
+	if inn["sets-spawn"]:
+		spawn_point = global_position
+	notice.emit("Rested at the inn; you will respawn here")
 
 ## consumable: heal (consumable-heal) and spend one. ponytail: instant, no sit/channel time.
 func use_item(it) -> void:
@@ -175,7 +216,7 @@ func use_quick() -> bool:
 	return true
 
 func _physics_process(dt: float) -> void:
-	if cfg.is_empty() or dead or not ground_ready.call(global_position):
+	if cfg.is_empty() or dead or ui_open or not ground_ready.call(global_position):
 		return
 	var g := float(cfg["gravity"])
 	var input := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
@@ -217,8 +258,8 @@ func _physics_process(dt: float) -> void:
 	if not combat.is_empty():
 		_combat_tick(dt)
 	if inventory != null:
-		if Input.is_action_just_pressed("pick-up"):
-			pick_up_nearest()
+		if Input.is_action_just_pressed("interact"):
+			interact_nearest()
 		if Input.is_action_just_pressed("quick-item"):
 			use_quick()
 

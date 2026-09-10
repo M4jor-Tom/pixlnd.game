@@ -16,6 +16,8 @@ class Land:
 	var top: Color
 	var cliff: Color
 	var danger_tier: StringName        # F4: safe / normal / dangerous, rolled once per land
+	var village: Dictionary = {}        # D22: {centre: Vector2i, height, name, style}; empty = none (sea)
+	var village_searched := false
 
 const FIELD_NAMES := ["temp", "humidity", "continent", "relief", "roll"]
 
@@ -25,6 +27,7 @@ var climate: Dictionary             # design.climate
 var names: Dictionary               # design.names
 var enemy_level: Dictionary         # design.enemy-level (F4)
 var enemy_hp: Dictionary            # design.enemy-hp (D14)
+var settlement: Dictionary          # design.settlement (D22); empty = no villages
 var landscapes := {}                # id → Model.Landscape, only those with a `gen` block (hybrid)
 var land_blocks: int
 var sea_level: int
@@ -41,6 +44,7 @@ func _init(p_seed: int, design: Dictionary, p_landscapes: Dictionary) -> void:
 	world_seed = p_seed
 	terrain = design["terrain"]; climate = design["climate"]; names = design["names"]
 	enemy_level = design["enemy-level"]; enemy_hp = design["enemy-hp"]
+	settlement = design.get("settlement", {})
 	land_blocks = int(terrain["land-blocks"]); sea_level = int(terrain["sea-level"])
 	for id in p_landscapes:
 		if not p_landscapes[id].gen.is_empty():
@@ -120,12 +124,40 @@ func land_of_block(x: int, y: int) -> Land:
 	return land_at(Vector2i(floori(float(x) / land_blocks), floori(float(y) / land_blocks)))
 
 func _land_name(rng: RandomNumberGenerator, landscape: StringName) -> String:
+	var suffixes: Array = names["land-suffix"].get(landscape, ["Plains"])
+	return _syllables(rng) + " " + suffixes[rng.randi() % suffixes.size()]
+
+func _syllables(rng: RandomNumberGenerator) -> String:
 	var syl: Array = names["syllables"]
 	var n := ""
 	for i in rng.randi_range(2, 3):
 		n += syl[rng.randi() % syl.size()]
-	var suffixes: Array = names["land-suffix"].get(landscape, ["Plains"])
-	return n.capitalize() + " " + suffixes[rng.randi() % suffixes.size()]
+	return n.capitalize()
+
+# --- settlements (D22) ------------------------------------------------------------------------
+
+## gen-settlement: the land's village — the first candidate on rings of `search-step` blocks around the land centre
+## whose column stands ≥ min-above-sea above the sea; empty when none (an all-sea land). Cached on the land.
+func village_at(l: Land) -> Dictionary:
+	if l.village_searched or settlement.is_empty():
+		return l.village
+	l.village_searched = true
+	var pl: Dictionary = settlement["placement"]
+	var step := int(pl["search-step"]); var min_h: int = sea_level + int(pl["min-above-sea"])
+	var cx := l.coords.x * land_blocks + land_blocks / 2; var cy := l.coords.y * land_blocks + land_blocks / 2
+	var candidates: Array = [Vector2i(cx, cy)]
+	for r in range(1, int(pl["search-rings"]) + 1):
+		for i in 8 * r:
+			var ang := TAU * i / (8 * r)
+			candidates.append(Vector2i(cx + roundi(cos(ang) * r * step), cy + roundi(sin(ang) * r * step)))
+	for c in candidates:
+		var h := _raw_height(c.x, c.y)
+		if h >= min_h:
+			var rng := RandomNumberGenerator.new(); rng.seed = l.land_seed ^ hash("village")
+			l.village = {"centre": c, "height": h, "name": _syllables(rng),
+				"style": StringName(str(settlement["style-by-landscape"].get(String(l.landscape), "european-framework")))}
+			break
+	return l.village
 
 # --- terrain ---------------------------------------------------------------------------------
 
@@ -154,8 +186,24 @@ func _land_blend(x: int, y: int) -> Array:
 	return [[land_at(Vector2i(x0, y0)), (1.0 - tx) * (1.0 - ty)], [land_at(Vector2i(x0 + 1, y0)), tx * (1.0 - ty)],
 		[land_at(Vector2i(x0, y0 + 1)), (1.0 - tx) * ty], [land_at(Vector2i(x0 + 1, y0 + 1)), tx * ty]]
 
-## Height of the top solid block of column (x, y).
+## Height of the top solid block of column (x, y): the heightfield, flattened to the village plateau within
+## design.settlement.radius of the land's village and blended back over `blend` more (D22).
 func height_at(x: int, y: int) -> int:
+	var h := _raw_height(x, y)
+	if settlement.is_empty():
+		return h
+	var v := village_at(land_of_block(x, y))
+	if v.is_empty():
+		return h
+	var d := Vector2(x - v["centre"].x, y - v["centre"].y).length()
+	var r := float(settlement["radius"]); var b := float(settlement["blend"])
+	if d <= r:
+		return v["height"]
+	if d < r + b:
+		return roundi(lerpf(v["height"], h, (d - r) / b))
+	return h
+
+func _raw_height(x: int, y: int) -> int:
 	var c := _cell(x, y)
 	var h: float = _h_base + c["base"] + _h_amp * c["relief"] * _height.get_noise_2d(x, y)
 	return clampi(int(h), _h_min, _h_max)

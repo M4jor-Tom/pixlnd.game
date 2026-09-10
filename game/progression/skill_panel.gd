@@ -28,6 +28,7 @@ func _ready() -> void:
 func _unhandled_input(e: InputEvent) -> void:
 	if e.is_action_pressed("skills-window") and player != null:
 		_panel.visible = not _panel.visible
+		player.ui_open = _panel.visible
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if _panel.visible else Input.MOUSE_MODE_CAPTURED
 		if _panel.visible:
 			_refresh(); _list.grab_focus()
