@@ -24,7 +24,7 @@ the sources never settled is a numbered **D** entry: `domain.md §7` + `docs/ROA
 | aa45d0a, abaded3 | items (§3.4, D18) | gen-item / gen-item-stats (damage, armor) / names, inventory with stack + slot rules, loot on creature death as ground items, E pick-up, Q potion, B inventory panel, coin HUD |
 | 141b4d7, ad7b0dd | progression (§3.5, D19) | XP per kill (`model.gd#xp_for_kill`, last attacker), level-up with overflow carry, max HP recompute + heal, 2 skill points/level banked, HUD level/xp line; `domain.md` stray head rows fixed, `stats.json` xp table corrected |
 | 0aa89dc, 276e148 | skill tree (§3.5, D20) | `model.gd#skill_tree` + `c-tree-shape`, `skill_tree.gd` spend/unlock + per-point multipliers, X panel, keys 1–4 placeholder class strike with cooldown, swimming points → swim speed, test_skill_tree |
-| eae931c, +next | class abilities (§3.3, D21) | `combat/abilities.gd` dash / channel / burst / buff / heal runtimes from `design.abilities` (23 nodes), MP per hit / mage regen, M2 charged / instant special, stun / knockdown / knockback / burning / slow on creatures (`entity.gd`), HUD MP bar + hotbar cooldown line, `c-ability-runtime`, test_abilities |
+| eae931c, c3125cf | class abilities (§3.3, D21) | `combat/abilities.gd` dash / channel / burst / buff / heal runtimes from `design.abilities` (23 nodes), MP per hit / mage regen, M2 charged / instant special, stun / knockdown / knockback / burning / slow on creatures (`entity.gd`), HUD MP bar + hotbar cooldown line, `c-ability-runtime`, test_abilities |
 
 Binaries: every push to `master` runs `.github/workflows/release.yml` (`firebelley/godot-export`
 reads `export_presets.cfg`), which refreshes the rolling **`latest`** prerelease with
