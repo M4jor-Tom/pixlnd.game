@@ -31,8 +31,21 @@ jobs:
           cache: true
 
       # Presets embed the .pck, so each export is a single self-contained file.
-      - name: Stage .deb tree
-        run: install -Dm755 build/linux/pixlnd .debpkg/usr/bin/pixlnd
+      # ponytail: placeholder square icon (appimagetool requires one), swap for real art when it exists.
+      # ponytail: look for a job or tool which generates an AppImage executable straightforwardly from a godot app instead of implementing it here
+      - name: Build AppImage
+        run: |
+          install -Dm755 build/linux/pixlnd AppDir/usr/bin/pixlnd
+          ln -s usr/bin/pixlnd AppDir/AppRun
+          printf '[Desktop Entry]\nType=Application\nName=pixlnd\nExec=pixlnd\nIcon=pixlnd\nCategories=Game;\n' > AppDir/pixlnd.desktop
+          echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><rect width="1" height="1" fill="#4a8"/></svg>' > AppDir/pixlnd.svg
+          curl -fsSLo appimagetool https://github.com/AppImage/appimagetool/releases/download/1.9.1/appimagetool-x86_64.AppImage
+          chmod +x appimagetool
+          ARCH=x86_64 ./appimagetool --appimage-extract-and-run AppDir build/pixlnd-x86_64.AppImage
+
+      # Releases hang off a tag, and an existing tag is never moved by the action.
+      - name: Move latest tag to this commit
+        run: git tag -f latest && git push -f origin latest
 
       - name: Publish rolling release
         uses: softprops/action-gh-release@v3.0.3
@@ -42,5 +55,5 @@ jobs:
           body: Built from ${{ github.sha }} (run ${{ github.run_number }}).
           prerelease: true
           files: |
-            ${{ steps.deb.outputs.file_name }}
+            build/pixlnd-x86_64.AppImage
             build/windows/pixlnd.exe
