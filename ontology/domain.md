@@ -484,6 +484,10 @@ Hybrid (D24): `design.movesets.<weapon-type>.m1|m2` gives every class weapon its
 spin around the player, lunge, finisher status), projectile (count, spread, speed, gravity, life, hit radius, splash, pierce,
 return), beam (instant ray) or at-cursor (sphere where the aim lands); `c-moveset-config`. Alpha m1/m2 prose stays the source.
 
+Hybrid (D25): `design.feel.events` bundles feedback per combat event (hit-stop, camera trauma, sound, damage number,
+impact flash) — hit, crit, kill, hurt, block, dodge, shoot, impact; sounds synthesised from `design.feel.sfx` keyed by
+`audio.json#sfx-alpha-ids` until real assets exist; `c-feel-config`.
+
 ### combo-system
 Hit counter near cursor; +1 per landed hit; ignores growing share of armor and adds damage; any
 whiffed attack resets; expires ~5 s idle; transfers between targets; per-weapon cap (turns blue with
@@ -744,6 +748,9 @@ selection `A`, friends widget `S`. Hybrid (D17): `debug-menu` — the runtime pr
 can open without a dev environment (Godot Debug Menu add-on: FPS, frametime, CPU/GPU graphs, GPU +
 driver, OS; F3 cycles hidden/compact/full; shipped in release exports).
 
+Hybrid (D25): damage numbers, stun stars and buff icons run; sounds are synthesised from `design.feel.sfx`
+until audio assets exist.
+
 ### option
 → `instances/ui.json#options`: FPS limit (default 111), invert Y, camera speed, resolution,
 windowed, render distance, AA samples (`options.cfg`), rarity display, music loop `S`, volumes,
@@ -877,6 +884,7 @@ One row per fact type. Cardinality as `domain → range`.
 | c-settlement-config | `design.settlement`: per-land ≥ 1, radius > blend ≥ 0, ring-radius < radius, every `buildings` entry is a `buildings.json#buildings` id, every service role is an `npc-roles.json` id, every landscape with a `gen` block has a `style-by-landscape` entry naming a `buildings.json#settlement-styles` id with two `style-colors`, `shop.rarity-cap` is a rarity ≤ legendary, `no-hostiles-within` ≥ radius (D22) | load |
 | c-defence-config | `design.defence`: dodge stamina ∈ (0, stamina max], distance / duration-s > 0, iframe-s ≥ 0, every on-dodge key is a passive ability; block max / power-per-hit > 0, damage-reduction ∈ [0,1], front-dot ∈ [−1,1], regen-per-s ≥ 0, guardian-mult ≥ 1; stealth decay-per-s ≥ 0, still-mult ≥ 1, aggro-cut ∈ [0,1]; enemy-hit chances ∈ [0,1]; every `design.abilities` stealth-per-s ≥ 0 (D23) | load |
 | c-moveset-config | `design.movesets`: every key is a weapon-type or `default`, an `as` names a plain entry; m1 / m2 `kind` ∈ `kinds`; `applies` (and finisher applies) are `design.status-effects` keys; damage-mult > 0; melee swing-mult / radius-mult > 0, lunge ≥ 0, finisher every ≥ 2 with chance ∈ [0,1]; projectile speed / radius / life-s > 0, count ≥ 1, spread / gravity / splash ≥ 0, pierce needs tick-s > 0; beam / at-cursor range / radius > 0; every non-offhand class weapon-type has an entry (D24) | load |
+| c-feel-config | `design.feel`: hit-stop.time-scale ∈ (0,1), max-s ∈ (0,1], every `events.*.hit-stop-s` ∈ [0, max-s]; every `events.*.trauma` ∈ [0,1]; shake.decay-per-s > 0, max-offset ≥ 0, shake-mult ≥ 0; every `events.*.sfx` names an `audio.json#sfx-alpha-ids` id with a `design.feel.sfx` entry; every sfx hz > 0, len-s ∈ (0,1], noise ∈ [0,1]; numbers.life-s > 0, crit-scale ≥ 1, every colour a 3-array in [0,1]; impact.impact-s > 0, trail.trail-s / trail-every-s > 0, level-up.pop-s > 0; the required event ids `hit crit kill hurt block dodge shoot impact level-up pickup coin` all present (D25) | load |
 | c-drowning | S only: breath depletes underwater; empty → HP loss; wall-hold pauses | runtime |
 | c-gate-doors | divine doors re-close at 0:00; bell spirit world lasts 30 s (F8) | runtime |
 
@@ -1020,4 +1028,13 @@ Decisions only the owner can make (D) and facts research could not settle (F).
   5 shuriken before the backflip. A whole attack that lands nothing resets the combo. Not yet: animations, hit timing, boomerang
   steering, wand M2 as a held ray, bow dud shots, arrow pickup, creature projectiles.
   → `generators.json#design.movesets`, `design.abilities.runtimes` + `projectile`, `design.status-effects.poison`, `c-moveset-config`.
+- **D25 Game feel — DECIDED 2026-09-11**: every combat event fires a feedback bundle in `design.feel.events` — hit-stop (up to
+  0.12 s on a kill, 0.08 s on a crit, none on being hurt or shooting), camera trauma (0..1, squared into shake on the camera's
+  h/v offset and roll, decaying 1.5/s), floating damage numbers over the target (white hit, gold crit ×1.5, red hurt, orange
+  dot tick, green heal), stun stars over any stunned head, buff icons with a countdown fill on the HUD, a level-up toast that
+  pops from ×1.6 to ×1 over 0.4 s, projectile trails (a fading piece every 0.03 s) and impact flashes (0.15 s sphere, splash
+  radius when the shot splashed), and sounds synthesised (sine + noise + pitch slide) from `design.feel.sfx` keyed by
+  `audio.json#sfx-alpha-ids`. Not yet: real audio assets, particles (spheres stand in), animations / hit timing, a
+  reduce-shake / reduce-flash accessibility screen (the design numbers are the only knob today).
+  → `generators.json#design.feel, audio.json#sfx-alpha-ids, c-feel-config`.
 - **F7** Omega status after mid-2024 (Vulkan vs UE5 reports).

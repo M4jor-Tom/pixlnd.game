@@ -110,6 +110,41 @@
       "staff": {"m1": {"kind": "at-cursor", "range": 20.0, "radius": 2.0}, "m2": {"kind": "at-cursor", "range": 20.0, "radius": 4.0}},
       "wand": {"m1": {"kind": "beam", "range": 25.0, "radius": 0.6}, "m2": {"kind": "beam", "range": 25.0, "radius": 1.5, "damage-mult": 2.0}},
       "bracelet": {"m1": {"kind": "projectile", "speed": 40.0, "gravity": 0.0, "radius": 0.6, "life-s": 2.0}, "m2": {"kind": "projectile", "speed": 25.0, "gravity": 0.0, "radius": 1.2, "life-s": 2.0, "splash": 3.0, "applies": ["knockdown"]}}},
+    "feel": {"_doc": "D25 (2026-09-11): feedback bundles per event (game/combat/feel.gd): hit-stop-s freezes Engine.time_scale at time-scale for that many real seconds (never stacked, the longer wins); trauma adds to the camera's 0..1 trauma (shake = trauma² × max-offset blocks on Camera3D h/v offset + max-roll-deg, decays decay-per-s, × shake-mult for accessibility); sfx = an alpha sound id (audio.json#sfx-alpha-ids) synthesised from design.feel.sfx until assets exist; number = a floating damage number (Label3D over the target: rises rise-blocks over life-s, crit × crit-scale, colour by kind); flash = an impact sphere at the hit (impact-s, impact-radius or the splash radius). stun-stars: a '✶ ✶ ✶' Label3D over any stunned entity's head while the stun lasts. buff-icons: one coloured box per active buff with its initial and a countdown fill (hud). level-up: the toast text and pop scale. projectile trail: a fading sphere every trail-every-s living trail-s. Tune in play.",
+      "hit-stop": {"time-scale": 0.05, "max-s": 0.3},
+      "shake": {"decay-per-s": 1.5, "max-offset": 0.15, "max-roll-deg": 2.0, "shake-mult": 1.0},
+      "numbers": {"rise-blocks": 1.5, "life-s": 0.8, "font-size": 24, "crit-scale": 1.5,
+                  "colours": {"hit": [1,1,1], "crit": [1,0.85,0.2], "dot": [1,0.5,0.1], "hurt": [1,0.25,0.25], "heal": [0.3,1,0.4]}},
+      "impact": {"impact-s": 0.15, "impact-radius": 0.5},
+      "trail": {"trail-every-s": 0.03, "trail-s": 0.25},
+      "level-up": {"text": "LEVEL UP!", "pop-scale": 1.6, "pop-s": 0.4},
+      "events": {
+        "hit":      {"hit-stop-s": 0.04, "trauma": 0.15, "sfx": "hit"},
+        "crit":     {"hit-stop-s": 0.08, "trauma": 0.3,  "sfx": "hit-arrow-critical"},
+        "kill":     {"hit-stop-s": 0.12, "trauma": 0.45, "sfx": "cry"},
+        "hurt":     {"hit-stop-s": 0.0,  "trauma": 0.35, "sfx": "punch1"},
+        "block":    {"hit-stop-s": 0.03, "trauma": 0.1,  "sfx": "block"},
+        "dodge":    {"hit-stop-s": 0.0,  "trauma": 0.0,  "sfx": "roll"},
+        "shoot":    {"hit-stop-s": 0.0,  "trauma": 0.05, "sfx": "swing"},
+        "impact":   {"hit-stop-s": 0.0,  "trauma": 0.1,  "sfx": "fire-hit"},
+        "level-up": {"hit-stop-s": 0.0,  "trauma": 0.2,  "sfx": "levelup2"},
+        "pickup":   {"hit-stop-s": 0.0,  "trauma": 0.0,  "sfx": "pickup"},
+        "coin":     {"hit-stop-s": 0.0,  "trauma": 0.0,  "sfx": "drop-coin"}
+      },
+      "sfx": {
+        "hit":                {"hz": 180, "len-s": 0.08, "noise": 0.5, "slide": -0.6},
+        "hit-arrow-critical": {"hz": 320, "len-s": 0.14, "noise": 0.3, "slide": -0.7},
+        "cry":                {"hz": 140, "len-s": 0.3,  "noise": 0.6, "slide": -0.8},
+        "punch1":             {"hz": 120, "len-s": 0.1,  "noise": 0.7, "slide": -0.5},
+        "block":              {"hz": 600, "len-s": 0.06, "noise": 0.2, "slide": -0.2},
+        "roll":               {"hz": 200, "len-s": 0.12, "noise": 0.8, "slide": 0.3},
+        "swing":              {"hz": 400, "len-s": 0.06, "noise": 0.9, "slide": -0.4},
+        "fire-hit":           {"hz": 260, "len-s": 0.12, "noise": 0.6, "slide": -0.6},
+        "levelup2":           {"hz": 440, "len-s": 0.4,  "noise": 0.0, "slide": 0.8},
+        "pickup":             {"hz": 700, "len-s": 0.05, "noise": 0.0, "slide": 0.4},
+        "drop-coin":          {"hz": 1200,"len-s": 0.05, "noise": 0.0, "slide": 0.2}
+      }
+    },
     "settlement": {"_doc": "D22 (2026-09-10): gen-settlement for the hybrid, the sources never gave placement or layout numbers. One village per land (alpha count, c-land-count), placed from the land seed: the first candidate on rings of `search-step` blocks around the land centre whose column is ≥ min-above-sea above sea level; the terrain is flattened to that height within `radius` and blended over `blend` more (gen-terrain, no cliffs into town). Buildings are boxes [w, h, d] on a ring of `ring-radius` around the square, coloured by settlement-style ([wall, roof]) via style-by-landscape; one NPC per service building (npc-roles) stands at its door; houses are empty. E within interact-radius of an NPC = its service (ui.json#screens.npc-service): vendors open the shop (stock rolled from (world seed, village, shop) at the creature level band of the land around the player level, rarity ≤ rarity-cap until gnomes exist, prices design.prices, sell = buy × design.prices.sell, worn gear cannot be sold), the class trainer refunds every spent point to the bank for respec-fee-per-level × level copper, the innkeeper heals fully and moves the respawn point to the inn (A: free). world.spawn-rule = near-village: new characters start on the square of the land (0,0) village. Wild spawns skip groups within no-hostiles-within blocks of the square (c-hostile-in-city). Tune in play.", "per-land": 1, "placement": {"search-step": 64, "search-rings": 8, "min-above-sea": 4}, "radius": 24, "blend": 8, "ring-radius": 15, "buildings": ["inn", "weapon-shop", "armor-shop", "item-shop", "class-trainer", "house", "house", "house", "house", "house"], "footprint": {"default": [6, 5, 6], "inn": [8, 6, 7], "house": [5, 4, 5]}, "style-by-landscape": {"greenlands": "european-framework", "snowlands": "log", "deserts": "desert", "savannahs": "desert", "jungles": "jungle", "lava-lands": "lava", "oceans": "ocean", "wetlands": "north-american-wood", "dark-woods": "undead", "deadlands": "undead", "mountains": "medieval-stone"}, "style-colors": {"european-framework": ["#d9c9a3", "#8a3b2a"], "medieval-stone": ["#8c8c88", "#4a4a55"], "north-american-wood": ["#a9743f", "#5b3a1e"], "log": ["#5a3a1e", "#e8eef5"], "desert": ["#e0c98f", "#b98a4a"], "jungle": ["#b08a5a", "#e07a2a"], "undead": ["#4a4a4a", "#2a2a2a"], "lava": ["#3a2a2a", "#c04020"], "ocean": ["#e8e2d0", "#3a70b0"]}, "npc": {"interact-radius": 3.0, "color": "#3070e0", "roles": {"inn": "innkeeper", "weapon-shop": "weapon-vendor", "armor-shop": "armor-vendor", "item-shop": "item-vendor", "class-trainer": "class-trainer"}}, "shop": {"stock": 8, "rarity-cap": "rare", "level-spread": 1, "item-shop-pool": "design.loot.consumable-pool", "restock": "never — waits for c-midnight-reset (ponytail)"}, "trainer": {"respec-fee-per-level": 5}, "inn": {"fee": 0, "heal": true, "sets-spawn": true}, "no-hostiles-within": 40}
   },
   "network-alpha": {"port": 12345, "protocol": "TCP", "client-version": 3, "tick-hz": 50, "compression": "zlib", "authority": "client (anticheat scripts)", "packets-c2s": {"0": "EntityUpdate", "6": "Interact", "7": "Hit", "8": "Passive", "9": "Shoot", "10": "ChatMessage", "11": "ChunkDiscovered", "12": "SectorDiscovered", "17": "ClientVersion"}, "packets-s2c": {"0": "EntityUpdate", "1": "MultipleEntityUpdate", "2": "UpdateFinished", "3": "AirshipUpdate", "4": "ServerUpdate", "5": "CurrentTime", "10": "ServerChatMessage", "15": "SeedData", "16": "JoinPacket", "17": "ServerMismatch", "18": "ServerFull"}, "max-players": 4, "max-players-configurable": true, "hit-types": {"0": "normal", "1": "block", "3": "miss", "5": "absorb"}, "interact-types": {"2": "npc", "3": "normal", "5": "pickup", "6": "drop", "8": "examine"}, "anticheat-caps": {"level": 1000, "rarity": 4, "air-time-s": 10}}

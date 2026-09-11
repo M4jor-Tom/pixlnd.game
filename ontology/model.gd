@@ -553,6 +553,44 @@ class Ontology extends RefCounted:
 				if float(df["enemy-hit"][k]) < 0.0 or float(df["enemy-hit"][k]) > 1.0: errors.append("design.defence.enemy-hit.%s outside [0,1]" % k)
 			for id in ab:
 				if ab[id] is Dictionary and float(ab[id].get("stealth-per-s", 0.0)) < 0.0: errors.append("design.abilities.%s.stealth-per-s < 0" % id)
+		var fl: Dictionary = design.get("feel", {})                        # c-feel-config (D25)
+		if not fl.is_empty():
+			var hs: Dictionary = fl["hit-stop"]; var sh: Dictionary = fl["shake"]; var nb: Dictionary = fl["numbers"]
+			var im: Dictionary = fl["impact"]; var tr: Dictionary = fl["trail"]; var lv: Dictionary = fl["level-up"]
+			var ev: Dictionary = fl["events"]; var sfx: Dictionary = fl["sfx"]
+			var alpha_sfx: Array = configs.get("audio", {}).get("sfx-alpha-ids", [])
+			if float(hs["time-scale"]) <= 0.0 or float(hs["time-scale"]) >= 1.0: errors.append("design.feel.hit-stop.time-scale outside (0,1)")
+			if float(hs["max-s"]) <= 0.0 or float(hs["max-s"]) > 1.0: errors.append("design.feel.hit-stop.max-s outside (0,1]")
+			if float(sh["decay-per-s"]) <= 0.0: errors.append("design.feel.shake.decay-per-s must be > 0")
+			if float(sh["max-offset"]) < 0.0: errors.append("design.feel.shake.max-offset must be >= 0")
+			if float(sh["shake-mult"]) < 0.0: errors.append("design.feel.shake.shake-mult must be >= 0")
+			for id in ["hit", "crit", "kill", "hurt", "block", "dodge", "shoot", "impact", "level-up", "pickup", "coin"]:
+				if not ev.has(id): errors.append("design.feel.events missing required event %s" % id)
+			for id in ev:
+				var e: Dictionary = ev[id]
+				if float(e.get("hit-stop-s", 0)) < 0.0 or float(e.get("hit-stop-s", 0)) > float(hs["max-s"]): errors.append("design.feel.events.%s.hit-stop-s outside [0, max-s]" % id)
+				if float(e.get("trauma", 0)) < 0.0 or float(e.get("trauma", 0)) > 1.0: errors.append("design.feel.events.%s.trauma outside [0,1]" % id)
+				var sid := str(e.get("sfx", ""))
+				if not alpha_sfx.has(sid): errors.append("design.feel.events.%s.sfx %s is not an audio.json sfx-alpha-ids entry" % [id, sid])
+				elif not sfx.has(sid): errors.append("design.feel.events.%s.sfx %s has no design.feel.sfx entry" % [id, sid])
+			for id in sfx:
+				var sd: Dictionary = sfx[id]
+				if float(sd.get("hz", 0)) <= 0.0: errors.append("design.feel.sfx.%s.hz must be > 0" % id)
+				if float(sd.get("len-s", 0)) <= 0.0 or float(sd.get("len-s", 0)) > 1.0: errors.append("design.feel.sfx.%s.len-s outside (0,1]" % id)
+				if float(sd.get("noise", 0)) < 0.0 or float(sd.get("noise", 0)) > 1.0: errors.append("design.feel.sfx.%s.noise outside [0,1]" % id)
+			if float(nb["life-s"]) <= 0.0: errors.append("design.feel.numbers.life-s must be > 0")
+			if float(nb["crit-scale"]) < 1.0: errors.append("design.feel.numbers.crit-scale must be >= 1")
+			for k in nb["colours"]:
+				var col: Array = nb["colours"][k]
+				var bad_col: bool = col.size() != 3
+				if not bad_col:
+					for c in col:
+						if float(c) < 0.0 or float(c) > 1.0: bad_col = true
+				if bad_col: errors.append("design.feel.numbers.colours.%s must be a 3-array in [0,1]" % k)
+			if float(im["impact-s"]) <= 0.0: errors.append("design.feel.impact.impact-s must be > 0")
+			if float(tr["trail-s"]) <= 0.0: errors.append("design.feel.trail.trail-s must be > 0")
+			if float(tr["trail-every-s"]) <= 0.0: errors.append("design.feel.trail.trail-every-s must be > 0")
+			if float(lv["pop-s"]) <= 0.0: errors.append("design.feel.level-up.pop-s must be > 0")
 		var defaults := rulesets.values().filter(func(r: Ruleset) -> bool: return r.is_default)
 		if defaults.size() != 1: errors.append("exactly one ruleset must be default (found %d)" % defaults.size())
 		return errors.size() == n
