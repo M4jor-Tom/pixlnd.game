@@ -39,8 +39,8 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
 - [ ] Camera: no follow smoothing/deadzone, `design.camera.shoulder-offset` unused, sniper Aim
   zoom (`ui.json#camera.aim`).
 - [ ] Menu: the `menu` action only toggles mouse capture; no pause/options screen (`option`).
-- [x] HP/stamina/combo/land/coins/level+xp HUD (code-built `hud.gd`); still missing: portrait, MP, minimap,
-  damage numbers, enemy name colours + stars, buff icons (`hud-element`, `ui.json`).
+- [x] HP/stamina/combo/land/coins/level+xp HUD (code-built `hud.gd`); damage numbers, stun stars and buff icons
+  run since D25; still missing: portrait, minimap, enemy name colours (`hud-element`, `ui.json`).
 
 ## Creatures (§3.2 creature + ai-behavior, slice pending)
 - [x] Basic melee attack both ways, death, neutral retaliation (combat slice). Still missing: aggro
@@ -98,7 +98,8 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
   Class actives have runtimes since D21 (see Combat). Still open: shared skills other than Swimming do nothing until pets,
   mounts, climbing, glider and boat exist; spec change at the trainer (`npc-role` class-trainer, A fee) and the panel is a flat list
   (no columns drawn, no tooltips) and was not visually checked.
-- [ ] Level-up has no feedback beyond the HUD line: no sound, flash or "level up" toast (`game-feel`, `audio.json`).
+- [x] Level-up plays its `design.feel` bundle (D25): the popping "LEVEL UP!" toast, camera trauma and a
+  synthesised sound. Still open: no flash / particles, and no real audio asset (`audio.json`).
 - [ ] The HUD level/xp line was not visually checked (windowed viewport capture, see HANDOFF gotchas).
 - [ ] `power-gate` unread: any item level equips; no adaptation, no `+N` display.
 - [ ] XP only from open-world kills by the last attacker; no mission / boss XP, no party share, no pet XP
@@ -115,8 +116,8 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
   M2-held block (shield / guardian / cyclone) with block-power + MP, the stealth bar (sneak / aim fill, camouflage pins,
   decay, attack / crit / MP bonus, aggro range cut), creature hits rolling stun / knockback on the player. Still open:
   poison is not a creature hit yet (so "dodge never avoids poison" is moot); the ninja crit window (`elusiveness`),
-  counter-strike and hit-series passives do nothing; stealth ignores darkness / lamps (no game clock); the HUD shows
-  "stunned!" / "blocking" as text (no stun stars, no buff icons); knockback fade is a constant (`player.gd#PUSH_DECAY`);
+  counter-strike and hit-series passives do nothing; stealth ignores darkness / lamps (no game clock);
+  knockback fade is a constant (`player.gd#PUSH_DECAY`);
   nothing visually checked; every D23 number is untuned.
 - [x] Class abilities (D21, `game/combat/abilities.gd`): every tree node runs a dash / channel / burst / buff / heal with
   `design.abilities` numbers, MP gain per hit / mage regen, M2 charged / instant special, stun / knockdown / knockback /
@@ -124,15 +125,15 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
   bubbles, shuriken-attack now throw projectiles (D24); shadow-shooter is a damage buff (no clone); quicksand
   is a one-shot slow burst (no zone); aim, sneak, camouflage, ninjutsu are damage / speed buffs (no `stealth` bar, no prone
   zoom); heroic-shout taunts by a 0-damage hit (no aggro table); teleport is a 20-block dash (sources say ~60 `?`);
-  no cast interruption (a stun cancels only the M2 charge, D23); no buff icons on the HUD (`ui.json#hud.buff-icons`); every D21
+  no cast interruption (a stun cancels only the M2 charge, D23); every D21
   line was not visually checked (windowed capture, HANDOFF gotchas); every D21 number is untuned.
 - [x] Movesets + projectiles (D24, `combat/projectile.gd`, `player.gd#_attack` from `design.movesets`): every class weapon-type has an M1 / M2
   runtime (melee spin / lunge / finisher, arrows with gravity, bolts, piercing returning boomerangs, staff at-cursor bursts, wand beams,
   bracelet bolts + splash ball), fire-missiles / bubbles are projectile volleys, shuriken-attack throws 5 before the backflip, dagger
   ambush poisons. Still open: no animations or hit timing (a swing is instant; the longsword lunge is a `move_and_collide` jump), the
   boomerang is not camera-steerable, wand M2 is one thick beam (not a held 10-hit ray), bow dud shots do not build combo, poison shares
-  the burning slot (`entity.gd`, one of the two at a time), projectiles are yellow spheres with no trail / model / impact FX, creatures
-  never shoot back (`ai-behavior` ranged / mage roles), the main scene picks the class only from `-- --class=<id>`, nothing visually
+  the burning slot (`entity.gd`, one of the two at a time), projectiles are yellow spheres with a fading-sphere trail and an impact
+  flash (D25) but still no model or particles, creatures never shoot back (`ai-behavior` ranged / mage roles), the main scene picks the class only from `-- --class=<id>`, nothing visually
   checked; every D24 number is untuned.
 - [x] Item instances, equipment slots, armor stat (D18, `game/items/`). Still open: the modifier roll only
   seeds the name — stats.json gives no roll term for damage/armor; gear hp/regen/tempo/crit are not
@@ -142,7 +143,18 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
   (`combo-system`).
 - [ ] Death: player respawns at the spawn point after 2 s; no revival statue / shrine, no enemy HP
   reset, no death screen; creatures drop loot (D18) and XP (D19) but no spirit cubes or corpse (`death`).
-- [ ] Game feel: hit flash only; no hit-stop, shake, knockback, damage numbers, sounds
-  (`game-feel`, `audio.json`).
+- [x] Game feel (D25, `game/combat/feel.gd` from `design.feel`): a feedback bundle per combat event — hit-stop on
+  `Engine.time_scale` (up to 0.12 s on a kill), camera trauma shaking the Camera3D offsets + roll
+  (`orbit_camera.gd`), a synthesised sound, floating damage numbers (crit / dot / hurt colours), impact flashes,
+  projectile trails, stun stars over the head, the level-up toast pop and the HUD buff-icon row.
+  Still open: **sounds are synthesised sine+noise blips** — no audio asset file exists in the repo, so every
+  `audio.json#sfx-alpha-ids` id is a placeholder waveform (`feel.gd#sfx`); **no particles** — flashes, trails and
+  impacts are fading spheres (`feel.gd#_sphere`); **shake / flash reduction is a design number only**
+  (`design.feel.shake.shake-mult`), there is no accessibility option screen; **no hit animations or hit timing** —
+  a swing still lands instantly and the feedback fires on the damage, not on a frame of an animation; **damage
+  numbers are not depth-sorted** (`no_depth_test`, they draw over the world and overlap each other when several
+  land at once); **buff icons are letter boxes**, no ability art, and the fill reads `left / duration-s` so a
+  buff-duration multiplier makes it start above full; nothing visually checked beyond the movie writer (which
+  drops the HUD); every D25 number is untuned.
 - [ ] Status effects: only stun / knockdown / knockback / burning / slow (D21) and creature stun / knockback on the player (D23) run;
   poison, taunt tint, dizzy, drowning and the buff family are unread.

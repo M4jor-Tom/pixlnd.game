@@ -5,6 +5,7 @@ const Combat := preload("res://game/combat/combat.gd")
 const InventoryPanel := preload("res://game/items/inventory_panel.gd")
 const SkillPanel := preload("res://game/progression/skill_panel.gd")
 const ShopPanel := preload("res://game/items/shop_panel.gd")
+const Feel := preload("res://game/combat/feel.gd")
 
 func _ready() -> void:
 	var o: OntologyDB.Model.Ontology = OntologyDB.data
@@ -24,6 +25,9 @@ func _ready() -> void:
 	player.setup(design["movement"], design["camera"], o.races["human"].size_class)
 	player.setup_combat(design["combat"], design["crit"], {}, Combat.player_max_hp(player.level, cls.hp_mult))
 	player.setup_items(o, design, cls.id)                  # starting inventory → weapon / armor
+	var feel := Feel.new(); add_child(feel)                # D25: juice spawns beside us, in world space
+	feel.setup(design["feel"], player.get_node("CameraRig"))
+	player.feel = feel
 	var panel: CanvasLayer = InventoryPanel.new(); add_child(panel); panel.bind(player)
 	var skills: CanvasLayer = SkillPanel.new(); add_child(skills); skills.bind(player)
 	var shop: CanvasLayer = ShopPanel.new(); add_child(shop); shop.bind(player, world)

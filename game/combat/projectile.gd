@@ -2,7 +2,9 @@
 ## `throw`. Flies under its own gravity, sweeps a ray along each tick's path (terrain and bodies), and damages through
 ## the shooter's `_strike` so crit / armor / status / stealth rules stay in one place. A volley shares one `attack`
 ## dict: the first landed hit counts for combo / MP once, and the combo resets only when every shot landed nothing
-## (c-combo-reset). ponytail: a small coloured sphere, no model, no trail, no sound (todo_implement.md).
+## (c-combo-reset). D25: it drops a fading trail piece every design.feel.trail.trail-every-s and plays the `impact`
+## bundle (sound, trauma, flash sphere at the splash radius) when it lands or hits the ground.
+## ponytail: still a small coloured sphere, no model and no particles (todo_implement.md).
 extends Node3D
 
 var shooter                             # the player (has _strike, bodies_within, _landed, combo, dead)
@@ -14,6 +16,7 @@ var applies: Array = []
 var attack: Dictionary = {}             # {"hits", "live"} shared by the volley
 var _t := 0.0
 var _tick := 0.0
+var _trail := 0.0
 var _returning := false
 
 func _ready() -> void:
@@ -26,7 +29,11 @@ func _physics_process(dt: float) -> void:
 	if shooter == null or not is_instance_valid(shooter) or shooter.dead:
 		_end(); return
 	var life := float(shot["life-s"])
-	_t += dt; _tick -= dt
+	_t += dt; _tick -= dt; _trail -= dt
+	var f = shooter.feel
+	if f != null and _trail <= 0.0:
+		_trail = f.trail_every
+		f.trail(global_position)
 	if shot.get("return", false) and not _returning and _t >= life * 0.5:
 		_returning = true
 	if _returning:
@@ -48,19 +55,29 @@ func _physics_process(dt: float) -> void:
 			_tick = float(shot["tick-s"])
 			_hit(shooter._strike(global_position, radius, dmg, combo_bonus, applies))
 		if solid or _t >= life:
+			if solid:
+				_impact(0.0)
 			_end()
 		return
 	var splash := float(shot.get("splash", 0.0))
 	if splash > 0.0:
 		if not ray.is_empty() or not shooter.bodies_within(global_position, radius).is_empty():
-			_hit(shooter._strike(global_position, splash, dmg, combo_bonus, applies)); _end()
+			_hit(shooter._strike(global_position, splash, dmg, combo_bonus, applies))
+			_impact(splash); _end()
 		elif _t >= life:
 			_end()
 		return
 	var hits: int = shooter._strike(global_position, radius, dmg, combo_bonus, applies)
 	_hit(hits)
+	if hits > 0 or solid:
+		_impact(0.0)
 	if hits > 0 or solid or _t >= life:
 		_end()
+
+## D25 `impact` bundle where the shot landed; radius 0 = design.feel.impact.impact-radius.
+func _impact(radius: float) -> void:
+	if shooter != null and is_instance_valid(shooter) and shooter.feel != null:
+		shooter.feel.play(&"impact", global_position, {"radius": radius})
 
 func _hit(hits: int) -> void:
 	if hits <= 0:

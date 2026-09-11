@@ -8,6 +8,8 @@
 ## names OntologyDB so headless tests (no autoloads) can drive it.
 ## + D24 movesets (design.movesets): M1 / M2 per main-hand weapon-type — melee sphere variants, projectiles
 ##   (combat/projectile.gd), beams and at-cursor bursts along the camera aim.
+## + D25 game feel: every hit / crit / kill / hurt / block / dodge / shoot / level-up / pick-up plays its
+##   `design.feel` bundle through `feel` (combat/feel.gd), injected by main.gd; null in tests that skip it.
 ## ponytail: no climb/glide yet; dodge has no crit window, stealth ignores darkness (todo_implement.md).
 extends "res://game/entities/entity.gd"
 
@@ -142,6 +144,8 @@ func gain_xp(amount: int) -> void:
 		hp = max_hp
 	leveled_up.emit(level)
 	skills_changed.emit()
+	if feel != null:
+		feel.play(&"level-up")
 
 ## c-skill-spend (D20): one banked point onto an open node of the tree.
 func spend_skill(a) -> void:
@@ -160,7 +164,8 @@ func use_class_skill(slot: int) -> bool:
 func take_damage(amount: float, from: Node) -> void:
 	if _iframes > 0.0:
 		return
-	if blocks_from(from):
+	var blocked := blocks_from(from)
+	if blocked:
 		var bl: Dictionary = defence["block"]
 		amount *= 1.0 - float(bl["damage-reduction"])
 		block_power = maxf(0.0, block_power - float(bl["power-per-hit"]))
@@ -168,6 +173,11 @@ func take_damage(amount: float, from: Node) -> void:
 	if abilities != null:
 		amount = abilities.absorb(amount * abilities.mult("damage-taken-mult"))
 	super.take_damage(amount, from)
+	if feel != null:                                          # D25 feedback
+		if blocked:
+			feel.play(&"block", head())
+		elif amount > 0.0:
+			feel.play(&"hurt", head(), {"amount": amount, "kind": &"hurt"})
 
 ## Dodged or blocked hits carry no status (D23); knockback goes through _push so input does not erase it next tick.
 func apply_status(id: StringName, cfg: Dictionary, hit: float, from: Node) -> void:
@@ -223,6 +233,8 @@ func dodge(dir: Vector3) -> bool:
 		if passives().has(StringName(id)):
 			mp = minf(float(design["resources"]["mp"]["max"]), mp + float(dg["on-dodge"][id].get("mp", 0)))
 			stealth = minf(1.0, stealth + float(dg["on-dodge"][id].get("stealth", 0)))
+	if feel != null:
+		feel.play(&"dodge")
 	return true
 
 ## Per tick: dodge timers, the block state + block-power regen, the stealth bar (design.defence).
@@ -257,6 +269,8 @@ func pick_up(ground: Node3D) -> void:
 		return
 	inventory.add(ground.item)
 	picked_up.emit(ground.label)
+	if feel != null:
+		feel.play(&"coin" if ground.label.ends_with("copper") else &"pickup")
 	ground.queue_free()
 
 ## interact (E, D22): the nearest NPC within design.settlement.npc.interact-radius wins over ground items.
@@ -510,6 +524,8 @@ func _fire(s: Dictionary, dmg: float, combo_bonus: bool, applies: Array, from :=
 	if from == Vector3.INF:
 		from = eye()
 	var count := int(s.get("count", 1))
+	if feel != null:
+		feel.play(&"shoot")                                   # D25: once per attack, not per shot of a volley
 	var attack := {"hits": 0, "live": count}
 	var out: Array = []
 	for i in count:
@@ -563,12 +579,16 @@ func _strike(center: Vector3, radius: float, dmg: float, combo_bonus: bool, appl
 		var sl: Dictionary = defence["stealth"]
 		dmg *= 1.0 + stealth * float(sl["attack-mult-at-full"]); chance += stealth * float(sl["crit-add-at-full"])
 	for body in bodies_within(center, radius):
-		var d := dmg * (Combat.combo_mult(combo, combat) if combo_bonus else 1.0) * Combat.crit_mult(chance, _rng, crit)
+		var cm := Combat.crit_mult(chance, _rng, crit)
+		var d := dmg * (Combat.combo_mult(combo, combat) if combo_bonus else 1.0) * cm
 		if abilities != null:
 			d *= abilities.mult("damage-mult")
 		d = Combat.after_armor(d, float(body.get("armor")), combat)
 		if d > 0.0 or applies.has(&"taunt"):                   # taunt: a 0-damage hit sets the creature's target
 			body.take_damage(d, self)
+			if feel != null and d > 0.0:                       # D25: kill > crit > hit, number over the head
+				var kind: StringName = &"crit" if cm > 1.0 else &"hit"
+				feel.play(&"kill" if body.dead else kind, body.head(), {"amount": d, "kind": kind})
 		for id in applies:
 			if se.has(id) and body.has_method("apply_status"):
 				body.apply_status(id, se[id], d, self)

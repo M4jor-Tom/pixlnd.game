@@ -1,8 +1,13 @@
 ## camera-systems: third-person orbit on a SpringArm3D (wall push-in), wheel zoom in steps;
 ## distance 0 = first person (D9). Numbers: generators.json#design.camera (D13).
+## D25 game feel: `add_trauma` feeds a 0..1 trauma that shakes the Camera3D offsets + roll (never the body),
+## decaying every frame; the numbers are design.feel.shake, pushed in by combat/feel.gd#setup.
 extends Node3D
 
 var cfg: Dictionary = {}
+var shake: Dictionary = {}                            # design.feel.shake (D25); empty = no shake
+var trauma := 0.0
+var _shake_t := 0.0
 var _yaw := 0.0
 var _pitch := -0.35
 var _dist := 6.0
@@ -21,6 +26,28 @@ func setup(camera: Dictionary, body_height: float, player: CharacterBody3D) -> v
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+## game-feel trauma: hits ADD, they never reset; shake = trauma² so small hits barely move the frame.
+func add_trauma(amount: float) -> void:
+	if shake.is_empty() or amount <= 0.0:
+		return
+	trauma = clampf(trauma + amount * float(shake["shake-mult"]), 0.0, 1.0)
+
+func _process(dt: float) -> void:
+	if shake.is_empty() or (trauma <= 0.0 and _shake_t == 0.0):
+		return
+	var cam: Camera3D = $Arm/Camera
+	trauma = maxf(0.0, trauma - float(shake["decay-per-s"]) * dt)
+	if trauma <= 0.0:                                     # back to rest, exactly
+		cam.h_offset = 0.0; cam.v_offset = 0.0; cam.rotation.z = 0.0
+		_shake_t = 0.0
+		return
+	_shake_t += dt * 30.0                                 # sampled sines, not randf per frame (that buzzes)
+	var k := trauma * trauma
+	var mo := float(shake["max-offset"])
+	cam.h_offset = mo * k * sin(_shake_t * 1.7)
+	cam.v_offset = mo * k * sin(_shake_t * 2.3)
+	cam.rotation.z = deg_to_rad(float(shake["max-roll-deg"])) * k * sin(_shake_t * 1.1)
 
 func _unhandled_input(e: InputEvent) -> void:
 	if cfg.is_empty():
