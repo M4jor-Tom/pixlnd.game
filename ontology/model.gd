@@ -130,6 +130,7 @@ class Creature extends Entry:
 	@export var boss_species := false
 	@export var boss_capable := false
 	@export var drops: Array[StringName] = []
+	@export var combat_role: StringName = &""                  # D26: melee|ranged|mage|any-class|"" (parsed from `role`)
 
 class PetFood extends Entry:
 	@export var subtype := -1                                  # == creature id it tames
@@ -289,6 +290,12 @@ class Ontology extends RefCounted:
 					c.rideable = data[id].get("ride", false) == true
 					c.boss_species = bool(data[id].get("boss", false)); c.boss_capable = bool(data[id].get("bossable", false))
 					c.drops.assign(data[id].get("drops", []))
+					var role_str := str(data[id].get("role", "") if data[id].get("role") != null else "")   # D26: first keyword wins
+					if role_str.contains("any-class"): c.combat_role = &"any-class"
+					elif role_str.contains("ranged"): c.combat_role = &"ranged"
+					elif role_str.contains("mage"): c.combat_role = &"mage"
+					elif role_str.contains("melee"): c.combat_role = &"melee"
+					else: c.combat_role = &""
 					creatures[id] = c
 			"pet-food":
 				for id in _rows(data.get("foods", {})):
@@ -362,6 +369,23 @@ class Ontology extends RefCounted:
 		if float(s.get("speed", 0)) <= 0.0 or float(s.get("radius", 0)) <= 0.0 or float(s.get("life-s", 0)) <= 0.0: out.append("%s: speed, radius, life-s must be > 0" % where)
 		if int(s.get("count", 1)) < 1 or float(s.get("spread", 0)) < 0.0 or float(s.get("gravity", 0)) < 0.0 or float(s.get("splash", 0)) < 0.0: out.append("%s: count >= 1, spread / gravity / splash >= 0" % where)
 		if s.get("pierce", false) and float(s.get("tick-s", 0)) <= 0.0: out.append("%s: pierce needs tick-s > 0" % where)
+		return out
+
+	## c-creature-roles (D26): a ranged/mage role dict from design.creature-roles (or a species-merged one).
+	static func _role_errors(r: Dictionary, where: String, se: Dictionary, alpha_sfx: Array, feel_sfx: Dictionary) -> Array:
+		var out: Array = []
+		if str(r.get("kind", "")) != "projectile": out.append("%s: kind must be projectile" % where); return out
+		if float(r.get("range", -1)) <= float(r.get("keep-away", -1)) or float(r.get("keep-away", -1)) < 0.0: out.append("%s: range must be > keep-away >= 0" % where)
+		if float(r.get("windup-s", -1)) < 0.0: out.append("%s: windup-s must be >= 0" % where)
+		if float(r.get("cooldown-s", 0)) <= 0.0: out.append("%s: cooldown-s must be > 0" % where)
+		if float(r.get("damage-mult", 0)) <= 0.0: out.append("%s: damage-mult must be > 0" % where)
+		out.append_array(_shot_errors(r.get("shot", {}), "%s.shot" % where))
+		for sid in r.get("applies", []):
+			if not se.has(sid): out.append("%s: applies %s has no design.status-effects entry" % [where, sid])
+		var sfx_id := str(r.get("sfx", ""))
+		if not alpha_sfx.has(sfx_id): out.append("%s: sfx %s is not an audio.json sfx-alpha-ids entry" % [where, sfx_id])
+		elif not feel_sfx.has(sfx_id): out.append("%s: sfx %s has no design.feel.sfx entry" % [where, sfx_id])
+		if not Color.html_is_valid(str(r.get("color", ""))): out.append("%s: color is not a valid html colour" % where)
 		return out
 
 	func validate() -> bool:
@@ -599,6 +623,36 @@ class Ontology extends RefCounted:
 			if float(lv["pop-s"]) <= 0.0: errors.append("design.feel.level-up.pop-s must be > 0")
 			if float(lv["pop-scale"]) < 1.0: errors.append("design.feel.level-up.pop-scale must be >= 1")
 			if str(lv["text"]).is_empty(): errors.append("design.feel.level-up.text must not be empty")
+			var cr: Dictionary = design.get("creature-roles", {})              # c-creature-roles (D26)
+			if not cr.is_empty():
+				var alpha_sfx2: Array = configs.get("audio", {}).get("sfx-alpha-ids", [])
+				var feel_sfx: Dictionary = fl.get("sfx", {})
+				var role_kinds := ["melee", "ranged", "mage"]
+				if str(cr.get("default", "")) not in role_kinds: errors.append("design.creature-roles.default must be one of %s" % [role_kinds])
+				var ac: Dictionary = cr.get("any-class", {})
+				var w_sum := 0.0
+				for k in ac:
+					if str(k) not in role_kinds: errors.append("design.creature-roles.any-class key %s must be one of %s" % [k, role_kinds])
+					if float(ac[k]) < 0.0: errors.append("design.creature-roles.any-class.%s must be >= 0" % k)
+					w_sum += float(ac[k])
+				if w_sum <= 0.0: errors.append("design.creature-roles.any-class weights must sum > 0")
+				if str(cr.get("melee", {}).get("kind", "")) != "melee": errors.append("design.creature-roles.melee.kind must be melee")
+				for rid in ["ranged", "mage"]:
+					errors.append_array(_role_errors(cr.get(rid, {}), "design.creature-roles.%s" % rid, se, alpha_sfx2, feel_sfx))
+				var override_keys := ["range", "keep-away", "windup-s", "cooldown-s", "damage-mult", "shot", "applies", "sfx", "color"]
+				for sid in cr.get("species", {}):
+					if not creatures.has(sid): errors.append("design.creature-roles.species.%s is not a creature" % sid); continue
+					var ov: Dictionary = cr["species"][sid]
+					for k in ov:
+						if not override_keys.has(k): errors.append("design.creature-roles.species.%s: unknown override key %s" % [sid, k])
+					var role := str((creatures[sid] as Creature).combat_role)
+					if role not in role_kinds: role = str(cr.get("default", "melee"))
+					var merged: Dictionary = (cr.get(role, {}) as Dictionary).duplicate(true)
+					merged.merge(ov, true)
+					if role == "melee":
+						if str(merged.get("kind", "")) != "melee": errors.append("design.creature-roles.species.%s (merged): kind must be melee" % sid)
+					else:
+						errors.append_array(_role_errors(merged, "design.creature-roles.species.%s (merged)" % sid, se, alpha_sfx2, feel_sfx))
 		var defaults := rulesets.values().filter(func(r: Ruleset) -> bool: return r.is_default)
 		if defaults.size() != 1: errors.append("exactly one ruleset must be default (found %d)" % defaults.size())
 		return errors.size() == n

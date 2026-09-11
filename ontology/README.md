@@ -40,6 +40,8 @@ ontology/
   `c-moveset-config`) for `game/combat/projectile.gd` and the M1 / M2 paths in `game/entities/player.gd`.
 - 2026-09-11: D25 game feel (`design.feel` event bundles: hit-stop / camera trauma / synthesised sfx keyed by `audio.json#sfx-alpha-ids` /
   damage numbers / impact + trail / stun stars / buff icons / level-up pop, `c-feel-config`) for `game/combat/feel.gd`.
+- 2026-09-11: D26 creature ranged / mage roles (`design.creature-roles`: combat-role parsed from `creatures.json`, any-class weighted roll,
+  projectile chase/keep-away/LOS/windup/cooldown, species overrides, `design.feel.sfx.fireball`, `c-creature-roles`) for `game/entities/creature.gd`.
 - 2026-09-09: D18 items, loot, inventory numbers + `c-loot-config` / `c-stack-rule` / `c-slot-accepts` for `game/items/`.
 - 2026-09-08: D17 runtime profiling overlay (Godot Debug Menu, F3) + `design.frame-budget` / `c-frame-budget`.
 - 2026-09-08: D16 simulation radius + `c-sim-radius` (creatures frozen beyond 80 blocks; the 4 FPS fix).

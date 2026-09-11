@@ -69,6 +69,11 @@ live in `ontology/instances/generators.json#design`. Nothing remains: run the `r
 - [x] **D25 Game feel (2026-09-11)** — feedback bundles per combat event: hit-stop, camera trauma / shake, floating damage numbers,
   stun stars, buff icons, level-up toast pop, projectile trails / impact flashes, and sounds synthesised from alpha sound ids.
   Recorded: `generators.json#design.feel`, `audio.json#sfx-alpha-ids`, `c-feel-config`.
+- [x] **D26 Creature ranged / mage roles (2026-09-11)** — a `combat-role` (melee, ranged, mage, any-class) parsed from
+  `creatures.json` role text; ranged / mage chase to range, back off below keep-away, need line of sight, wind up and fire a
+  shot through the target's normal dodge / block / i-frames, applying statuses on a landed hit (poison through dodge);
+  any-class humanoids roll a weighted role per spawned group; species overrides (spitter, snout-beetle) per creature id.
+  Recorded: `generators.json#design.creature-roles`, `design.feel.sfx.fireball`, `c-creature-roles`.
 
 ## B. Conflicting facts (pick a side)
 

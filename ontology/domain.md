@@ -429,6 +429,14 @@ Rules shared by enemies. `A S`
 | possession | S: demon portal randomly possesses NPCs in the land (bigger, red, tougher, respawn possessed) |
 | simulation | hybrid: a creature farther than `design.spawns.ai.sim-radius` blocks from the player is frozen — no AI tick, no physics (D16). Distance = nearest player once `multiplayer-mode` lands (single player: the one player). |
 
+Hybrid (D26): every creature has a `combat-role` (melee, ranged, mage, any-class, none) parsed from `creatures.json`
+`role` text (humanoids may be `any-class`: one of melee/ranged/mage rolled per spawned group, weighted); melee is
+today's reach attack. ranged / mage chase to a `range`, back off below a `keep-away` distance, need line of sight,
+then wind up and fire a projectile (`design.creature-roles`, keyed by role and overridable per species — spitter,
+snout-beetle) that damages through the target's normal dodge / block / i-frames and rolls its `applies` statuses on a
+landed hit — poison is never avoided by dodge (§3.3 status-effects). A creature shot never damages another creature.
+`c-creature-roles`.
+
 ### mob-strength-tier
 S enemy power colour: white (150–250 HP, farm animals) < green < blue < purple (dungeon base) <
 yellow (legendary; minotaurs, some collies). A equivalents: land level + `+1..+4` multiplier
@@ -885,6 +893,7 @@ One row per fact type. Cardinality as `domain → range`.
 | c-defence-config | `design.defence`: dodge stamina ∈ (0, stamina max], distance / duration-s > 0, iframe-s ≥ 0, every on-dodge key is a passive ability; block max / power-per-hit > 0, damage-reduction ∈ [0,1], front-dot ∈ [−1,1], regen-per-s ≥ 0, guardian-mult ≥ 1; stealth decay-per-s ≥ 0, still-mult ≥ 1, aggro-cut ∈ [0,1]; enemy-hit chances ∈ [0,1]; every `design.abilities` stealth-per-s ≥ 0 (D23) | load |
 | c-moveset-config | `design.movesets`: every key is a weapon-type or `default`, an `as` names a plain entry; m1 / m2 `kind` ∈ `kinds`; `applies` (and finisher applies) are `design.status-effects` keys; damage-mult > 0; melee swing-mult / radius-mult > 0, lunge ≥ 0, finisher every ≥ 2 with chance ∈ [0,1]; projectile speed / radius / life-s > 0, count ≥ 1, spread / gravity / splash ≥ 0, pierce needs tick-s > 0; beam / at-cursor range / radius > 0; every non-offhand class weapon-type has an entry (D24) | load |
 | c-feel-config | `design.feel`: hit-stop.time-scale ∈ (0,1), max-s ∈ (0,1], every `events.*.hit-stop-s` ∈ [0, max-s]; every `events.*.trauma` ∈ [0,1]; shake.decay-per-s > 0, max-offset ≥ 0, max-roll-deg ≥ 0, shake-mult ≥ 0; every `events.*.sfx` names an `audio.json#sfx-alpha-ids` id with a `design.feel.sfx` entry; every sfx hz > 0, len-s ∈ (0,1], noise ∈ [0,1] and has a `slide`; numbers.life-s > 0, crit-scale ≥ 1, rise-blocks > 0, font-size > 0, every colour a 3-array in [0,1] and a `hit` colour present (the fallback); impact.impact-s / impact-radius > 0, trail.trail-s / trail-every-s > 0, level-up.pop-s > 0, pop-scale ≥ 1, text non-empty; the required event ids `hit crit kill hurt block dodge shoot impact level-up pickup coin` all present (D25) | load |
+| c-creature-roles | `design.creature-roles`: `default` ∈ {melee, ranged, mage}; every `any-class` key ∈ {melee, ranged, mage}, every weight ≥ 0, sum > 0; `melee.kind == "melee"`; `ranged` / `mage` `kind == "projectile"` with range > keep-away ≥ 0, windup-s ≥ 0, cooldown-s > 0, damage-mult > 0, `shot` passing the moveset shot checks (speed / radius / life-s > 0 …), every `applies` id a `design.status-effects` key, `sfx` an `audio.json#sfx-alpha-ids` id with a `design.feel.sfx` entry, `color` a valid html colour; every `species` key is a `creatures.json` id, every override key one of `range keep-away windup-s cooldown-s damage-mult shot applies sfx color`, and the merged result (species `shot` replaces the whole shot dict) obeys the same rules (D26) | load |
 | c-drowning | S only: breath depletes underwater; empty → HP loss; wall-hold pauses | runtime |
 | c-gate-doors | divine doors re-close at 0:00; bell spirit world lasts 30 s (F8) | runtime |
 
@@ -906,7 +915,7 @@ reproducible; each generator lists invariants that a test can assert.
 | gen-dungeon | land, dungeon-type, tier | layout (A linear + dead end; S room gauntlet), traps `A`, chests, spawns in groups 2–4, boss(es), artifact `S`, locks needing key items | entrance rules per type; at least one boss; artifact at end (S castles always) |
 | gen-poi | land | campsites, arenas, towers ≤5, circles, portals, pumps, trees, shrines, lore sites, spawner nests, hidden treasure, sky islands | counts in `c-land-count` |
 | gen-missions | land, day | A: 8×8 cell boss missions; S: typed missions with icons and tiers, daily regeneration | tier ladder white→yellow present; gnomes/books once per land |
-| gen-spawns | zone, land level/tier | creature spawns: species by landscape roster, group sizes, hostility, humanoid class/spec, `+1..+4` multipliers (A), boss-ification chance; open-world numbers `design.spawns` (D14) | dungeon mobs above surface tier; farm animals white |
+| gen-spawns | zone, land level/tier | creature spawns: species by landscape roster, group sizes, hostility, humanoid class/spec, `+1..+4` multipliers (A), boss-ification chance; open-world numbers `design.spawns` (D14); role per group: creature combat-role, any-class rolled from `design.creature-roles.any-class` (D26) | dungeon mobs above surface tier; farm animals white |
 | gen-boss | spawn | named, enlarged, coloured-tier variant with 1–2 random special moves; always-boss species; fixed spirit cube per boss (A) | size scaling rule; terrain breaking |
 | gen-name | seed, kind | land names (`<Name> Plains…`), dungeon names ("Castle ___"), realm/leader/capital names, item names (affix + material + type + of-name), boss names, NPC names, quarter names | epic/legendary items always named |
 | gen-item | tier/level, rarity roll, type, material, land (S) | `item` with modifier roll; stats via `gen-item-stats` | rarity ≤ legendary except mythical bug |
@@ -1037,4 +1046,16 @@ Decisions only the owner can make (D) and facts research could not settle (F).
   `audio.json#sfx-alpha-ids`. Not yet: real audio assets, particles (spheres stand in), animations / hit timing, a
   reduce-shake / reduce-flash accessibility screen (the design numbers are the only knob today).
   → `generators.json#design.feel, audio.json#sfx-alpha-ids, c-feel-config`.
+- **D26 Creature ranged / mage roles — DECIDED 2026-09-11**: every creature's `combat-role` (melee, ranged, mage, any-class,
+  none) is parsed from `creatures.json` `role` text, first of any-class / ranged / mage / melee found; no role or no keyword
+  = unset, resolved to `design.creature-roles.default` (melee) at spawn, any-class rolled per spawned group from weighted
+  `design.creature-roles.any-class`. melee keeps today's reach attack. ranged / mage chase to `range` blocks, back off below
+  `keep-away`, need line of sight, wind up `windup-s`, fire a `shot` (speed/gravity/radius/life-s/splash, damage = creature
+  damage × `damage-mult` through the target's normal dodge / block / i-frames), wait `cooldown-s`; a landed shot rolls its
+  `applies` status ids (poison is never avoided by dodge) and `design.defence.enemy-hit` stun/knockback like any creature hit;
+  `sfx` plays from the shooter, `color` tints the shot; `species` overrides any of those keys per creature id (spitter:
+  poison, blue; snout-beetle: slower, harder). A creature shot never damages another creature. Not yet: aggro table / group
+  aggro, enemy combos, potions, wizard laser / witch ray as a beam instead of a bolt, class / equipment / appearance for
+  any-class humanoids, snout-beetle dodge, pathfinding.
+  → `generators.json#design.creature-roles, c-creature-roles`.
 - **F7** Omega status after mid-2024 (Vulkan vs UE5 reports).
