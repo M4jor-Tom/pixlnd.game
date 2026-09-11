@@ -1,7 +1,5 @@
 name: Release
 
-# Every push to master refreshes the rolling "latest" prerelease with a Linux
-# .deb and a Windows .exe. GODOT_VERSION must match project.godot / flake.nix.
 on:
   push:
     branches: [master]
@@ -23,9 +21,6 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      # Reads export_presets.cfg and exports every preset defined there. Each
-      # preset lands in build/<preset name>/, hence the presets named
-      # "linux"/"windows" — the action always re-appends that folder.
       - name: Export Godot presets
         uses: firebelley/godot-export@v8.0.0
         with:
@@ -38,16 +33,6 @@ jobs:
       # Presets embed the .pck, so each export is a single self-contained file.
       - name: Stage .deb tree
         run: install -Dm755 build/linux/pixlnd .debpkg/usr/bin/pixlnd
-
-      - name: Build .deb
-        id: deb
-        uses: jiro4989/build-deb-action@v4.3.0
-        with:
-          package: pixlnd
-          package_root: .debpkg
-          maintainer: M4jor-Tom
-          version: 0.0.0+ci${{ github.run_number }}
-          desc: pixlnd — Cube World rebuild
 
       - name: Publish rolling release
         uses: softprops/action-gh-release@v3.0.3
