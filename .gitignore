@@ -4,3 +4,4 @@
 .direnv/
 .claude/worktrees/
 build/
+.superpowers/
