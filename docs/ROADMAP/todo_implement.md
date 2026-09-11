@@ -48,9 +48,12 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
   (`ai-behavior`, `creature.combat-role`).
 - [ ] A ranged / mage creature aims where the target *is*: no lead on a moving one, so strafing walks out of a
   slow mage bolt — `creature.gd#_shoot` ponytail.
-- [ ] Line of sight is one ray: a wall *or another creature* in the way just stops the shot, the shooter never
-  strafes for a clear angle; and the chase still starts at `design.spawns.ai.aggro-range` (12), so a role `range`
-  beyond it is unreachable until the target comes closer — `creature.gd#_los` ponytail.
+- [ ] Line of sight is one head-to-head ray (`entity.gd#head`, a flat 1.5 blocks up): a wall — or a body taller
+  than that — cancels the shot and the shooter never strafes for a clear angle, while a wolf or any other small
+  creature is simply shot over — `creature.gd#_los` ponytail.
+- [ ] A creature notices a target at `design.spawns.ai.aggro-range` (12) whatever its role; the role's `range`
+  (ranged 14) only applies once it is already chasing, so the last 2 blocks never open a fight. Reconcile the two
+  keys in a tuning pass (lower `range`, or give `design.spawns.ai` a role-aware aggro range).
 - [ ] The wizard "staff/wand laser" and witch "ray attack" fire a bolt like every other mage: no beam role
   (`design.creature-roles` has `kind: projectile` only; `design.movesets` has the player's beam runtime).
 - [ ] An `any-class` humanoid's rolled role is the whole class: no spec, weapon, armor or appearance behind it

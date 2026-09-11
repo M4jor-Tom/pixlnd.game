@@ -48,14 +48,16 @@ static func plan(gen, zc: Vector2i, design: Dictionary, creatures: Dictionary, r
 		var pb := rng.randf_range(float(gen.enemy_hp["power-base"][0]), float(gen.enemy_hp["power-base"][1]))
 		var max_hp := Model.stat_curve(lvl, 0) * 200.0 * pow(2.0, pb * 0.25)      # design.enemy-hp.formula
 		var dmg := Combat.enemy_damage(lvl, pb, design["combat"])
-		var cr: Dictionary = design["creature-roles"]                 # D26: one combat-role per group, rolled last
-		var role := str(c.combat_role)                                # so every earlier roll keeps its old value
+		var gseed := rng.randi()                                      # the group seed, the last draw of the zone rng
+		var cr: Dictionary = design["creature-roles"]                 # D26: one combat-role per group, off a private
+		var role := str(c.combat_role)                                # rng so the shared zone stream is untouched
 		if role == "any-class":
-			role = _roll_role(cr["any-class"], rng)                   # humanoids roll a class per group
+			var rr := RandomNumberGenerator.new(); rr.seed = gseed ^ hash("role")
+			role = _roll_role(cr["any-class"], rr)                    # humanoids roll a class per group
 			# ponytail: the roll is the whole "class" — no spec, equipment or appearance behind it (todo_implement.md)
 		elif not cr.has(role):
 			role = str(cr["default"])                                 # no role in creatures.json (or `none`): melee
-		out.append({"species": StringName(c.id), "level": lvl, "hostility": h, "max_hp": max_hp, "damage": dmg, "positions": positions, "role": role, "seed": rng.randi()})
+		out.append({"species": StringName(c.id), "level": lvl, "hostility": h, "max_hp": max_hp, "damage": dmg, "positions": positions, "role": role, "seed": gseed})
 	return out
 
 ## design.creature-roles.any-class: weighted pick from the group's rng (same seed → same role).
@@ -91,7 +93,7 @@ static func populate(parent: Node3D, plan_: Array, design: Dictionary, creatures
 			var cr: Dictionary = design["creature-roles"]             # D26: what this role does, species override on top
 			m.role = StringName(g.get("role", cr["default"]))
 			m.role_cfg = (cr[str(m.role)] as Dictionary).duplicate(true)
-			m.role_cfg.merge((cr["species"].get(str(g["species"]), {}) as Dictionary).duplicate(true), true)
+			m.role_cfg.merge((cr.get("species", {}).get(str(g["species"]), {}) as Dictionary).duplicate(true), true)
 			m._learn_feel(target)                                     # the shots need the player's feel node at spawn
 			if ontology != null:
 				m.died.connect(func() -> void: Items.drop_for(m, ontology, design))

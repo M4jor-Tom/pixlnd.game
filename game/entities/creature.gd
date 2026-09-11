@@ -107,6 +107,8 @@ func _tick(dt: float) -> State:
 		State.CHASE:
 			if not can_chase or global_position.distance_to(home) > float(ai["leash"]):
 				return State.RETURN
+			# ponytail: `design.spawns.ai.aggro-range` decides when we notice a target whatever our role, so a
+			# role `range` beyond it only applies once we are already chasing (todo_implement.md)
 			if _shoots():                                   # D26: hold the gap, shoot when we can see them
 				var keep := float(role_cfg["keep-away"])
 				if to_target < keep:
@@ -125,7 +127,7 @@ func _tick(dt: float) -> State:
 			_windup -= dt
 			if _windup <= 0.0:
 				if _shoots():
-					if can_chase and to_target <= float(role_cfg["range"]):
+					if can_chase and to_target <= float(role_cfg["range"]) and _los():   # they may have stepped behind cover
 						_shoot()
 					_cooldown = float(role_cfg["cooldown-s"])
 					return State.CHASE
@@ -144,22 +146,25 @@ func _shoots() -> bool:
 	return str(role_cfg.get("kind", "melee")) == "projectile"
 
 ## Clear line from our head to the target's: nothing between us, or the first thing hit is the target.
-## ponytail: anything in the way — a wall, or another creature — simply stops the shot from being taken; we never
-## strafe for a clear angle, and `design.spawns.ai.aggro-range` (12) still gates the chase, so a `range` beyond it
-## is unreachable until the target comes closer.
+## ponytail: whatever blocks the ray — a wall, or a body tall enough to reach it — simply cancels the shot; we
+## never strafe for a clear angle. The ray runs head to head (`entity.gd#head`, a flat 1.5 blocks up), so only
+## bodies taller than that stand in it: a wolf or another small creature is shot straight over.
 func _los() -> bool:
-	var to: Vector3 = target.head() if target.has_method("head") else target.global_position + Vector3.UP
-	var q := PhysicsRayQueryParameters3D.create(head(), to, 0xFFFFFFFF, [get_rid()])
+	var q := PhysicsRayQueryParameters3D.create(head(), _target_head(), 0xFFFFFFFF, [get_rid()])
 	var hit: Dictionary = get_world_3d().direct_space_state.intersect_ray(q)
 	return hit.is_empty() or hit["collider"] == target
 
-## One shot of `role_cfg.shot` at the target's chest, aimed high by the drop it takes over the flight
+## The target's head, or a block above it for anything that is not an entity (a bare Node3D in tests).
+func _target_head() -> Vector3:
+	return target.head() if target.has_method("head") else target.global_position + Vector3.UP
+
+## One shot of `role_cfg.shot` at the target's head, aimed high by the drop it takes over the flight
 ## (ponytail: no lead on a moving target). Damage and statuses come back through `_strike`.
 func _shoot() -> void:
 	var s: Dictionary = (role_cfg["shot"] as Dictionary).duplicate()
 	s["color"] = role_cfg["color"]                          # projectile.gd tints the sphere from the shot dict
 	var from := head()
-	var dir: Vector3 = target.global_position + Vector3.UP * 0.8 - from
+	var dir: Vector3 = _target_head() - from
 	var d := dir.length()
 	if d < 0.01:
 		return

@@ -64,10 +64,12 @@ func _watch(c: Node, secs: float) -> int:
 		seen = maxi(seen, _shots(c))
 	return seen
 
-func _labels() -> int:
+## Live damage numbers beside the feel node, optionally only those of one design.feel.numbers colour.
+func _labels(colour := Color.TRANSPARENT) -> int:
 	var n := 0
 	for c in root.get_children():
-		if c is Label3D and not c.is_queued_for_deletion():
+		var rgb := Color(c.modulate.r, c.modulate.g, c.modulate.b) if c is Label3D else Color.BLACK   # alpha fades out
+		if c is Label3D and not c.is_queued_for_deletion() and (colour.a == 0.0 or rgb.is_equal_approx(colour)):
 			n += 1
 	return n
 
@@ -112,18 +114,23 @@ func _init() -> void:
 	var rosters: Dictionary = o.configs["creature-families"]["landscape-rosters"]
 	var skel: Dictionary = {}                                 # an any-class group
 	var plain: Dictionary = {}                                # a group of a species with no role text
-	var at_seed := 0; var at_zone := Vector2i.ZERO
+	var at_seed := 0; var at_zone := Vector2i.ZERO            # a zone whose FIRST group is any-class, with a second behind it
+	var many_seed := 0; var many_zone := Vector2i.ZERO
 	for s in range(1, 60):
 		var gen := WorldGen.new(s, design, o.landscapes)
 		for zx in range(-3, 4):
 			for zy in range(-3, 4):
 				var zc := Vector2i(zx * 16, zy * 16)
-				for g in Spawner.plan(gen, zc, design, o.creatures, rosters, 1):
+				var p_ := Spawner.plan(gen, zc, design, o.creatures, rosters, 1)
+				for g in p_:
 					if g["species"] == &"skeleton" and skel.is_empty():
 						skel = g; at_seed = s; at_zone = zc
 					elif plain.is_empty() and str((o.creatures[g["species"]] as Model.Creature).combat_role) == "":
 						plain = g
-		if not skel.is_empty() and not plain.is_empty():
+				if many_seed == 0 and p_.size() >= 2 and str(p_[0]["role"]) != "melee" \
+						and str((o.creatures[p_[0]["species"]] as Model.Creature).combat_role) == "any-class":
+					many_seed = s; many_zone = zc
+		if not skel.is_empty() and not plain.is_empty() and many_seed != 0:
 			break
 	check(not skel.is_empty(), "found a skeleton (any-class) group in a plan")
 	check(str(skel.get("role", "")) in ["melee", "ranged", "mage"], "the any-class group rolled a role: %s" % skel.get("role", "-"))
@@ -131,6 +138,26 @@ func _init() -> void:
 	var a := Spawner.plan(WorldGen.new(at_seed, design, o.landscapes), at_zone, design, o.creatures, rosters, 1)
 	var b := Spawner.plan(WorldGen.new(at_seed, design, o.landscapes), at_zone, design, o.creatures, rosters, 1)
 	check(var_to_str(a) == var_to_str(b), "same seed → same roles")
+
+	# --- the role roll must not touch the shared zone rng: the same zone planned with every any-class species
+	# forced to melee (no roll at all) must give byte-identical groups apart from `role`.
+	check(many_seed != 0, "found a zone with ≥ 2 groups behind an any-class first group")
+	var any_plan := Spawner.plan(WorldGen.new(many_seed, design, o.landscapes), many_zone, design, o.creatures, rosters, 1)
+	var was: Dictionary = {}
+	for id in o.creatures:
+		if (o.creatures[id] as Model.Creature).combat_role == &"any-class":
+			was[id] = &"any-class"; (o.creatures[id] as Model.Creature).combat_role = &"melee"
+	var melee_plan := Spawner.plan(WorldGen.new(many_seed, design, o.landscapes), many_zone, design, o.creatures, rosters, 1)
+	for id in was:
+		(o.creatures[id] as Model.Creature).combat_role = was[id]
+	check(any_plan.size() == melee_plan.size(), "same group count with and without the role roll (%d / %d)" % [any_plan.size(), melee_plan.size()])
+	var rolled := false
+	for i in mini(any_plan.size(), melee_plan.size()):
+		var x: Dictionary = (any_plan[i] as Dictionary).duplicate(true); var y: Dictionary = (melee_plan[i] as Dictionary).duplicate(true)
+		rolled = rolled or str(x["role"]) != str(y["role"])
+		x.erase("role"); y.erase("role")
+		check(var_to_str(x) == var_to_str(y), "group %d: species / positions / level / hp / seed untouched by the role roll" % i)
+	check(rolled, "…and the any-class group did roll a role other than melee at this seed")
 
 	# --- runtime: flat floor, the player and creatures at distinct positions
 	InputMapBuilder.build(o.configs["keybinds"]["hybrid"])
@@ -190,9 +217,11 @@ func _init() -> void:
 		await process_frame
 	check(p.hp < hp0, "the mage shot hit the player (%.0f → %.0f)" % [hp0, p.hp])
 	check(p.statuses.has(&"burning"), "the mage shot set the player burning (%s)" % [p.statuses.keys()])
-	var before := _labels()
+	mg.set_physics_process(false)                             # no second shot while we count the dot numbers
+	var dot: Array = design["feel"]["numbers"]["colours"]["dot"]
+	var before := _labels(Color(dot[0], dot[1], dot[2]))
 	await _real(float(design["status-effects"]["burning"]["tick-s"]) + 0.2)
-	check(_labels() > before, "the burning ticks float dot numbers (%d new)" % (_labels() - before))
+	check(_labels(Color(dot[0], dot[1], dot[2])) > before, "the burning ticks float orange dot numbers (%d new)" % (_labels(Color(dot[0], dot[1], dot[2])) - before))
 	mg.get_parent().queue_free()
 	p.hp = p.max_hp; p.statuses.clear(); p.clear_stars()
 	await _real(0.2)
