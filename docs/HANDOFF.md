@@ -1,4 +1,4 @@
-# Handoff — resume here (written 2026-09-11, after the D23 defence slice)
+# Handoff — resume here (written 2026-09-11, after the D24 movesets + projectiles slice)
 
 Read this, then `git log --oneline -8`, then `docs/ROADMAP/todo_implement.md`. Nothing else is
 needed to continue; the repo is self-describing from these three.
@@ -8,7 +8,8 @@ Cube World rebuild in Godot 4.7.2 + GDScript, **ontology-first**: `ontology/` is
 truth (`domain.md` classes/relations/constraints/generators, `instances/*.json` content,
 `model.gd` typed loader + validator). Engine code in `game/` only *consumes* it. Every decision
 the sources never settled is a numbered **D** entry: `domain.md §7` + `docs/ROADMAP/todo_decide.md`
-(D1–D23 all taken). Designed numbers live in `ontology/instances/generators.json#design.<topic>`.
+(D1–D2` + `docs/ROADMAP/todo_decide.md`
+(D1–D24 all taken). Designed numbers live in `ontology/instances/generators.json#design.<topic>`.
 
 ## State of the build (all committed and pushed to origin/master)
 | commit | slice | what runs |
@@ -27,13 +28,14 @@ the sources never settled is a numbered **D** entry: `domain.md §7` + `docs/ROA
 | eae931c, c3125cf | class abilities (§3.3, D21) | `combat/abilities.gd` dash / channel / burst / buff / heal runtimes from `design.abilities` (23 nodes), MP per hit / mage regen, M2 charged / instant special, stun / knockdown / knockback / burning / slow on creatures (`entity.gd`), HUD MP bar + hotbar cooldown line, `c-ability-runtime`, test_abilities |
 | 529adac, 0d7bcdd | settlements (§3.1, D22) | `world_gen.gd#village_at` one village per land from the land seed, plateau in `height_at`, `settlement.gd` ring of box buildings + `npc.gd` service NPCs streamed by `world.gd`, spawner keeps wild groups 40 blocks off the square, `items/shop.gd` stock + `design.prices` buy / sell with `shop_panel.gd` (E at a vendor), trainer respec + inn rest as HUD toasts, `world.spawn-rule` = the (0,0) village square, `c-settlement-config`, test_settlement |
 | 4478016, cfacf61 | defence (§3.3, D23) | `player.gd` M3 dodge roll (i-frames, 25 stamina, ninja MP / assassin stealth), M2-held block with a shield / as guardian / during cyclone (front cone × 0.2, block-power, MP per block), stealth bar (sneak / aim fill, camouflage pins, empties on a hit; attack / crit / MP bonus), `creature.gd` aggro range × stealth cut + hit rolls stun / knockback on the player (blocked / dodged hits carry nothing), HUD block-power + stealth bars, `c-defence-config`, test_defence |
+| 35c5be0, SLICE_HASH | movesets + projectiles (§3.3, D24) | `combat/projectile.gd` shots (gravity, ray sweep, splash, pierce + tick, return), `player.gd#_attack` M1 / M2 per main-hand weapon-type from `design.movesets` (melee spin / lunge / finisher, projectile, beam, at-cursor along the camera aim), combo / MP once per attack + whole-attack whiff reset, dagger poison, fire-missiles / bubbles projectile runtime + shuriken-attack `throw` in `abilities.gd`, `main.gd` `-- --class=<id>`, `c-moveset-config`, test_projectiles |
 
 Binaries: every push to `master` runs `.github/workflows/release.yml` (`firebelley/godot-export`
 reads `export_presets.cfg`), which refreshes the rolling **`latest`** prerelease with
 `pixlnd_*_amd64.deb` and `pixlnd.exe`. Both presets embed the `.pck`, so each is one file.
 
-Playable now: `nix develop -c godot` — WASD/Shift/Space, mouse look, wheel zoom (0 = first
-person), M1 attack, M2 hold-to-charge special (spends MP; with a shield equipped, or as guardian, holding it also blocks front hits), M3 while moving = dodge roll, E talk / pick up, Q life potion, B inventory, X skill tree, 1–4 class skills (once a point is in them), Esc frees the mouse. You spawn on the
+Playable now: `nix develop -c godot` (add `-- --class=ranger|mage|rogue` for a bow / staff / dagger start, D24) — WASD/Shift/Space, mouse look, wheel zoom (0 = first
+person), M1 attack (per weapon: arrows arc, wand beams, staff bursts at the cursor, boomerangs return; camera aim = shot direction), M2 hold-to-charge special (per weapon: sword spin, dagger poison, bow volley, bracelet knockdown ball…; spends MP; with a shield equipped, or as guardian, holding it also blocks front hits), M3 while moving = dodge roll, E talk / pick up, Q life potion, B inventory, X skill tree, 1–4 class skills (once a point is in them), Esc frees the mouse. You spawn on the
 village square of land (0,0), seed 26879, a deadlands land (grey undead-style boxes on a ring: blue capsules at their doors are the
 weapon / armor / item vendors, class trainer and innkeeper; E opens the shop, respecs for 5 × level copper, or rests); red capsules are hostiles, small spinning
 cubes are loot (colour = rarity, gold = coins). Kills give XP; the HUD line shows level, xp / needed
@@ -90,19 +92,20 @@ game/main.{tscn,gd}  wires World, Player, HUD, InventoryPanel, Sun, sky; spawn p
 game/world/          world_gen.gd (lands, climate, heights, names, danger tier, creature level, village placement + plateau)
                      zone_mesh.gd, world.gd (zone + village streaming, spawning), spawner.gd, settlement.gd (layout, build)
 game/entities/       entity.gd (HP/level/hostility/step-up, statuses: stun/knockback/burning/slow), player.gd (E: interact → talk / respec / rest / pick up), orbit_camera.gd, creature.gd, npc.gd
-game/combat/         combat.gd (pure formulas), abilities.gd (D21 runtimes: cooldowns, costs, dash/channel/cast state, buffs)
+game/combat/         combat.gd (pure formulas), abilities.gd (D21 runtimes: cooldowns, costs, dash/channel/cast state, buffs; D24 projectile runtime + dash throw),
+                     projectile.gd (D24 shots: gravity, ray sweep, splash, pierce, return; damage through player._strike)
 game/items/          item.gd, items.gd (gen-item, stats, names, gen-loot, ground drops), inventory.gd,
                      ground_item.{tscn,gd}, inventory_panel.gd, shop.gd (stock, prices, buy / sell), shop_panel.gd
 game/progression/    progression.gd (level settle; xp_for_kill is in ontology/model.gd), skill_tree.gd (points, spend rule,
                      per-point mults; nodes from model.gd#skill_tree), skill_panel.gd (X)
 game/meta/           input_map.gd (keybinds.json#hybrid → InputMap), hud.gd (HP/MP/stamina bars, hotbar cooldown line)
-docs/ROADMAP/        todo_decide.md (D1–D22), todo_implement.md (deferrals), cut/Omega specs
+docs/ROADMAP/        todo_decide.md (D1–D24), todo_implement.md (deferrals), cut/Omega specs
 ```
 
 ## Next slice (recommended order)
-1. Projectiles + weapon movesets (§3.3 `weapon-type.m1/m2`; `todo_implement.md` Combat): bow / crossbow / staff / wand /
-   bracelet basics as projectiles or beams, the burst-stubbed ultimates (fire-missiles, bubbles, shuriken), then game feel
-   (hit-stop, damage numbers, stun stars / buff icons, sounds from `audio.json`).
+1. Game feel (`game-feel`, `todo_implement.md` Combat / Progression): hit-stop, damage numbers, stun stars / buff icons, level-up toast,
+   projectile trails / impact flashes, sounds from `audio.json`; then creature ranged / mage roles shooting back (`ai-behavior`,
+   reuse `combat/projectile.gd`).
 2. Items backlog (`todo_implement.md` §3.4): rings/amulets, gear HP, upgrade cubes, tabs/tooltips.
 3. World backlog: thread zone building (`world.gd` ponytail), a game clock (`c-midnight-reset`: restock, inn sleep), flora / dungeons / POIs
    (`gen-flora`, `gen-dungeon`, `gen-poi`), villagers with schedules (`gen-schedule`).

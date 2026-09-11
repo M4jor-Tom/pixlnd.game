@@ -1,7 +1,8 @@
 ## §3.3 ability runtimes (D21): dash / channel / burst / buff / heal from design.abilities, one runner per player.
 ## Holds the transient state (cooldowns, one dash, one channel, one cast, active buffs, heals over time) and the
 ## multipliers the player reads; strikes go through player._strike so crit / armor / status rules stay in one place.
-## ponytail: projectile, clone and zone ultimates are bursts or buffs (todo_implement.md); no cast interruption.
+## D24: `projectile` shots and a dash `throw` go through player._fire (combat/projectile.gd).
+## ponytail: clone and zone ultimates are bursts or buffs (todo_implement.md); no cast interruption.
 extends RefCounted
 
 var p                                # the player
@@ -48,12 +49,18 @@ func use(a) -> bool:
 	var e: float = p.skill_tree.effect_mult(a.id)
 	match str(r["runtime"]):
 		"dash":
+			if r.has("throw"):
+				p._fire(r["throw"], float(p.weapon["damage"]) * float(r["throw"].get("damage-mult", 1.0)) * e, false, a.applies)
 			var d := _dash_dir(r)
 			dash = {"a": a, "r": r, "dir": d[0], "left": d[1], "origin": p.global_position, "e": e}
 		"channel":
 			channel = {"a": a, "r": r, "left": float(r["duration-s"]), "tick": 0.0, "e": e}
 		"burst":
 			_strike(a, r, p.global_position, e)
+		"projectile":
+			p._fire(r, float(p.weapon["damage"]) * float(r.get("damage-mult", 1.0)) * e, false, a.applies)
+			if r.has("heal-pct"):
+				_strike(a, {"heal-pct": r["heal-pct"], "heal-over-s": r.get("heal-over-s", 0.0)}, p.global_position, e)
 		"buff":
 			buffs[a.id] = {"left": float(r["duration-s"]) * e, "r": r}
 			if r.has("absorb-pct-hp"):

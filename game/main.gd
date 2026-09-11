@@ -15,8 +15,12 @@ func _ready() -> void:
 	world.design = design; world.creatures = o.creatures
 	world.rosters = o.configs["creature-families"]["landscape-rosters"]
 	world.ontology = o
-	# ponytail: every hero is a level-1 human warrior until character creation (player-character) lands
-	var cls: OntologyDB.Model.CharacterClass = o.classes["warrior"]
+	# ponytail: every hero is a level-1 human until character creation (player-character) lands; `godot -- --class=ranger` picks the class (D24)
+	var class_id := &"warrior"
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--class=") and o.classes.has(arg.trim_prefix("--class=")):
+			class_id = StringName(arg.trim_prefix("--class="))
+	var cls: OntologyDB.Model.CharacterClass = o.classes[class_id]
 	player.setup(design["movement"], design["camera"], o.races["human"].size_class)
 	player.setup_combat(design["combat"], design["crit"], {}, Combat.player_max_hp(player.level, cls.hp_mult))
 	player.setup_items(o, design, cls.id)                  # starting inventory → weapon / armor

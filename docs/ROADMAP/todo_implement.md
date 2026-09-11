@@ -121,13 +121,19 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
 - [x] Class abilities (D21, `game/combat/abilities.gd`): every tree node runs a dash / channel / burst / buff / heal with
   `design.abilities` numbers, MP gain per hit / mage regen, M2 charged / instant special, stun / knockdown / knockback /
   burning / slow on creatures, HUD MP bar + hotbar cooldown line. Still open (`abilities.gd` ponytail): fire-missiles,
-  bubbles, shuriken-attack are self-centred bursts (no projectiles); shadow-shooter is a damage buff (no clone); quicksand
+  bubbles, shuriken-attack now throw projectiles (D24); shadow-shooter is a damage buff (no clone); quicksand
   is a one-shot slow burst (no zone); aim, sneak, camouflage, ninjutsu are damage / speed buffs (no `stealth` bar, no prone
   zoom); heroic-shout taunts by a 0-damage hit (no aggro table); teleport is a 20-block dash (sources say ~60 `?`);
   no cast interruption (a stun cancels only the M2 charge, D23); no buff icons on the HUD (`ui.json#hud.buff-icons`); every D21
   line was not visually checked (windowed capture, HANDOFF gotchas); every D21 number is untuned.
-- [ ] Hit test is a sphere in front of the camera yaw; no weapon movesets, hit timing, or
-  ranged/projectile weapons (`weapon-type.m1/m2`; bow, staff, boomerang).
+- [x] Movesets + projectiles (D24, `combat/projectile.gd`, `player.gd#_attack` from `design.movesets`): every class weapon-type has an M1 / M2
+  runtime (melee spin / lunge / finisher, arrows with gravity, bolts, piercing returning boomerangs, staff at-cursor bursts, wand beams,
+  bracelet bolts + splash ball), fire-missiles / bubbles are projectile volleys, shuriken-attack throws 5 before the backflip, dagger
+  ambush poisons. Still open: no animations or hit timing (a swing is instant; the longsword lunge is a `move_and_collide` jump), the
+  boomerang is not camera-steerable, wand M2 is one thick beam (not a held 10-hit ray), bow dud shots do not build combo, poison shares
+  the burning slot (`entity.gd`, one of the two at a time), projectiles are yellow spheres with no trail / model / impact FX, creatures
+  never shoot back (`ai-behavior` ranged / mage roles), the main scene picks the class only from `-- --class=<id>`, nothing visually
+  checked; every D24 number is untuned.
 - [x] Item instances, equipment slots, armor stat (D18, `game/items/`). Still open: the modifier roll only
   seeds the name — stats.json gives no roll term for damage/armor; gear hp/regen/tempo/crit are not
   applied (`gen-item-stats`; the hp roll term `2 − 8r` goes negative as written, `?`), rings/amulets

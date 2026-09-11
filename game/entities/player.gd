@@ -6,10 +6,13 @@
 ##   creature hits stunning / knocking us back (statuses tick here too).
 ## Config dicts (design.movement / camera / combat / crit) are injected by main.gd: this script never
 ## names OntologyDB so headless tests (no autoloads) can drive it.
+## + D24 movesets (design.movesets): M1 / M2 per main-hand weapon-type — melee sphere variants, projectiles
+##   (combat/projectile.gd), beams and at-cursor bursts along the camera aim.
 ## ponytail: no climb/glide yet; dodge has no crit window, stealth ignores darkness (todo_implement.md).
 extends "res://game/entities/entity.gd"
 
 const Combat := preload("res://game/combat/combat.gd")
+const Projectile := preload("res://game/combat/projectile.gd")
 const Abilities := preload("res://game/combat/abilities.gd")
 const Model := preload("res://ontology/model.gd")
 const Items := preload("res://game/items/items.gd")
@@ -28,6 +31,9 @@ var cfg: Dictionary = {}                                # design.movement
 var combat: Dictionary = {}                             # design.combat
 var crit: Dictionary = {}                               # design.crit
 var weapon: Dictionary = {}                             # {type, damage, combo_cap}, derived from the main-hand item
+const DEFAULT_MOVESET := {"m1": {"kind": "melee"}, "m2": {"kind": "melee"}}
+var moveset: Dictionary = DEFAULT_MOVESET               # design.movesets entry of the main-hand weapon-type (D24)
+var _m1_hits := 0                                       # landed M1 hits in a row (melee finisher counter)
 var inventory                                           # Inventory, after setup_items
 var o                                                   # the Ontology (items need weapon types, materials, names)
 var design: Dictionary = {}                             # generators.json#design
@@ -113,6 +119,7 @@ func _refresh_gear() -> void:
 		var wt = o.weapon_types[main.subtype]
 		weapon = {"type": main.subtype, "damage": Items.damage(main, o) * float(combat["attack-power-mult"]),
 			"combo_cap": wt.combo_cap if wt.combo_cap > 0 else int(combat["combo"]["default-cap"])}
+		moveset = moveset_for(main.subtype)
 	armor = 0.0
 	for slot in inventory.equipment:
 		armor += Items.armor(inventory.equipment[slot], o)
@@ -423,32 +430,107 @@ func _special_tick(dt: float) -> void:
 	elif Input.is_action_just_pressed("special-attack") and mp >= float(sp["min-mp"]):
 		_special(mp)
 
+## special-attack through the weapon's M2 moveset (D24): the charge fraction scales damage and rolls the stun, the
+## moveset adds its own statuses (dagger poison, fist knockdown …).
 func _special(charged: float) -> void:
 	var sp: Dictionary = design["special-attack"]
 	var f := charged / float(design["resources"]["mp"]["max"])
 	mp -= charged
-	var applies: Array = [&"stun"] if _rng.randf() < f * float(sp["stun-chance-at-full"]) else []
-	if _strike(_front(), float(combat["basic-attack"]["hit-radius"]), float(weapon["damage"]) * (1.0 + f * (float(sp["damage-mult-at-full"]) - 1.0)), false, applies) == 0:
-		combo = 0                                             # c-combo-reset
+	var m: Dictionary = moveset["m2"]
+	var applies: Array = m.get("applies", []).duplicate()
+	if _rng.randf() < f * float(sp["stun-chance-at-full"]):
+		applies.append(&"stun")
+	_attack(m, float(weapon["damage"]) * (1.0 + f * (float(sp["damage-mult-at-full"]) - 1.0)), false, applies)
 
 func _front() -> Vector3:
 	var ba: Dictionary = combat["basic-attack"]
 	return global_position + Vector3.UP + (Basis(Vector3.UP, rig.rotation.y) * Vector3.FORWARD) * float(ba["reach"]) * 0.6
 
-## basic-attack: sphere in front of us (camera yaw); every entity inside takes weapon damage.
-## A whiff resets the combo (c-combo-reset); a hit adds one, capped per weapon-type, and gives non-mages MP.
+## Camera aim: the rig carries pitch and yaw, so its forward is where the cursor points (D24 shots, beams).
+func aim() -> Vector3:
+	return -rig.global_transform.basis.z
+
+func eye() -> Vector3:
+	return global_position + Vector3.UP * rig.position.y
+
+## design.movesets entry for a weapon-type (`as` copies another, missing = default). Empty design = tests without items.
+func moveset_for(type: StringName) -> Dictionary:
+	var mv: Dictionary = design.get("movesets", {})
+	var m: Dictionary = mv.get(type, mv.get("default", DEFAULT_MOVESET))
+	return mv[m["as"]] if m.has("as") else m
+
+## basic-attack through the weapon's M1 moveset (D24). Melee: sphere in front of us (camera yaw); a whiff resets the
+## combo (c-combo-reset), a hit adds one (capped per weapon-type) and gives non-mages MP; a `finisher` rolls its
+## statuses on every `every`-th landed hit. Shots report back through combat/projectile.gd.
 func _swing() -> void:
 	var ba: Dictionary = combat["basic-attack"]
-	_swing_t = float(ba["swing-s"]) * (abilities.mult("swing-mult") if abilities != null else 1.0)
-	var hits := _strike(_front(), float(ba["hit-radius"]), float(weapon["damage"]), true)
+	var m: Dictionary = moveset["m1"]
+	_swing_t = float(ba["swing-s"]) * float(m.get("swing-mult", 1.0)) * (abilities.mult("swing-mult") if abilities != null else 1.0)
+	var applies: Array = m.get("applies", []).duplicate()
+	if m.has("finisher"):
+		var fin: Dictionary = m["finisher"]
+		if (_m1_hits + 1) % int(fin["every"]) == 0 and _rng.randf() < float(fin["chance"]):
+			applies.append_array(fin["applies"])
+	var hits := _attack(m, float(weapon["damage"]), true, applies)
+	if hits == 0:
+		_m1_hits = 0
+
+## One attack of any moveset kind; returns the hits landed, or -1 while shots are still flying.
+func _attack(m: Dictionary, dmg: float, combo_bonus: bool, applies: Array) -> int:
+	var ba: Dictionary = combat["basic-attack"]
+	dmg *= float(m.get("damage-mult", 1.0))
+	var hits := 0
+	match str(m.get("kind", "melee")):
+		"projectile":
+			_fire(m, dmg, combo_bonus, applies)
+			return -1
+		"beam", "at-cursor":
+			hits = _strike(_aim_point(float(m["range"])), float(m["radius"]), dmg, combo_bonus, applies)
+		_:
+			var lunge := float(m.get("lunge", 0.0))
+			if lunge > 0.0:
+				move_and_collide((Basis(Vector3.UP, rig.rotation.y) * Vector3.FORWARD) * lunge)   # ponytail: instant lunge, no animation
+			var center: Vector3 = global_position + Vector3.UP if m.get("around", false) else _front()
+			hits = _strike(center, float(ba["hit-radius"]) * float(m.get("radius-mult", 1.0)), dmg, combo_bonus, applies)
 	if hits > 0:
-		combo = mini(combo + 1, int(weapon["combo_cap"]))
-		_combo_t = float(combat["combo"]["expire-s"])
-		if abilities != null and not mp_passive:
-			var bonus := 1.0 + _hit_stealth * float(defence["stealth"]["mp-mult-at-full"]) if not defence.is_empty() else 1.0
-			mp = minf(float(design["resources"]["mp"]["max"]), mp + float(design["resources"]["mp"]["per-hit"]) * bonus)
+		_landed(combo_bonus)
 	else:
-		combo = 0
+		combo = 0                                             # c-combo-reset
+	return hits
+
+## Where the aim ray lands within `range` (the ray end when it hits nothing).
+func _aim_point(range: float) -> Vector3:
+	var from := eye()
+	var q := PhysicsRayQueryParameters3D.create(from, from + aim() * range, 0xFFFFFFFF, [get_rid()])
+	var hit: Dictionary = get_world_3d().direct_space_state.intersect_ray(q)
+	return hit["position"] if not hit.is_empty() else from + aim() * range
+
+## `count` projectiles fanned by `spread` radians around the aim, sharing one attack record (projectile.gd).
+func _fire(s: Dictionary, dmg: float, combo_bonus: bool, applies: Array, from := Vector3.INF) -> Array:
+	if from == Vector3.INF:
+		from = eye()
+	var count := int(s.get("count", 1))
+	var attack := {"hits": 0, "live": count}
+	var out: Array = []
+	for i in count:
+		var pr := Projectile.new()
+		pr.shooter = self; pr.shot = s; pr.dmg = dmg; pr.combo_bonus = combo_bonus; pr.applies = applies; pr.attack = attack
+		pr.vel = aim().rotated(Vector3.UP, float(s.get("spread", 0.0)) * (i - (count - 1) / 2.0)) * float(s["speed"])
+		get_parent().add_child(pr)
+		pr.global_position = from
+		out.append(pr)
+	return out
+
+## A landed attack: +1 combo (capped per weapon-type), the M1 finisher counter, MP for non-mages on basic hits.
+func _landed(combo_bonus: bool) -> void:
+	combo = mini(combo + 1, int(weapon["combo_cap"]))
+	_combo_t = float(combat["combo"]["expire-s"])
+	if not combo_bonus:
+		return
+	_m1_hits += 1
+	if abilities != null and not mp_passive:
+		var bonus := 1.0 + _hit_stealth * float(defence["stealth"]["mp-mult-at-full"]) if not defence.is_empty() else 1.0
+		mp = minf(float(design["resources"]["mp"]["max"]), mp + float(design["resources"]["mp"]["per-hit"]) * bonus)
 
 ## Live entities inside the sphere, nearest first.
 func bodies_within(center: Vector3, radius: float) -> Array:
