@@ -1,4 +1,4 @@
-# Handoff — resume here (written 2026-09-11, after the D25 game feel slice)
+# Handoff — resume here (written 2026-09-11, after the D26 creature roles slice)
 
 Read this, then `git log --oneline -8`, then `docs/ROADMAP/todo_implement.md`. Nothing else is
 needed to continue; the repo is self-describing from these three.
@@ -8,7 +8,7 @@ Cube World rebuild in Godot 4.7.2 + GDScript, **ontology-first**: `ontology/` is
 truth (`domain.md` classes/relations/constraints/generators, `instances/*.json` content,
 `model.gd` typed loader + validator). Engine code in `game/` only *consumes* it. Every decision
 the sources never settled is a numbered **D** entry: `domain.md §7` + `docs/ROADMAP/todo_decide.md`
-(D1–D25 all taken). Designed numbers live in `ontology/instances/generators.json#design.<topic>`.
+(D1–D26 all taken). Designed numbers live in `ontology/instances/generators.json#design.<topic>`.
 
 ## State of the build (all committed and pushed to origin/master)
 | commit | slice | what runs |
@@ -29,6 +29,7 @@ the sources never settled is a numbered **D** entry: `domain.md §7` + `docs/ROA
 | 4478016, cfacf61 | defence (§3.3, D23) | `player.gd` M3 dodge roll (i-frames, 25 stamina, ninja MP / assassin stealth), M2-held block with a shield / as guardian / during cyclone (front cone × 0.2, block-power, MP per block), stealth bar (sneak / aim fill, camouflage pins, empties on a hit; attack / crit / MP bonus), `creature.gd` aggro range × stealth cut + hit rolls stun / knockback on the player (blocked / dodged hits carry nothing), HUD block-power + stealth bars, `c-defence-config`, test_defence |
 | 35c5be0, 1cfe2d4 | movesets + projectiles (§3.3, D24) | `combat/projectile.gd` shots (gravity, ray sweep, splash, pierce + tick, return), `player.gd#_attack` M1 / M2 per main-hand weapon-type from `design.movesets` (melee spin / lunge / finisher, projectile, beam, at-cursor along the camera aim), combo / MP once per attack + whole-attack whiff reset, dagger poison, fire-missiles / bubbles projectile runtime + shuriken-attack `throw` in `abilities.gd`, `main.gd` `-- --class=<id>`, `c-moveset-config`, test_projectiles |
 | 64e4c66, ec09cbc, 27fa3b2 | game feel (§3.3 + §3.7, D25) | `combat/feel.gd` event bundles from `design.feel` (hit-stop on `Engine.time_scale` with a real-time end, camera trauma → `orbit_camera.gd` shake on the Camera3D offsets, sfx synthesised once per alpha id from `design.feel.sfx`, floating damage numbers as Label3D, impact flash + projectile trail spheres, stun stars over any stunned entity), one bundle per `_strike` (kill > crit > hit) + a number per body, hurt / block / dodge / shoot / level-up / pickup / coin events in `player.gd`, dot ticks number-only, HUD level-up pop + buff-icon row, `c-feel-config`, test_feel |
+| 8538558, 0d157f4, ce94c6d | creature roles (§3.2, D26) | `design.creature-roles`: every creature has a combat role (`model.gd#Creature.combat_role` parsed from the `creatures.json` role text; `any-class` humanoids roll melee / ranged / mage per group from a private rng off the group seed in `spawner.gd`, the zone stream untouched); ranged / mage creatures chase to `range`, back off below `keep-away`, need a head-to-head line of sight, wind up and fire through the shared `projectile.gd#fire` (species overrides: spitter poison spit, snout-beetle charged shot); a landed shot goes through the player's normal `take_damage` (dodge / block / i-frames, hurt bundle, D23 stun / knockback roll) and applies the role status (mage burning, spitter poison — poison now goes through dodge i-frames as the alpha rule says); no friendly fire (`creature.gd#bodies_within` skips creatures); `c-creature-roles`, test_creature_roles |
 
 Binaries: every push to `master` runs `.github/workflows/release.yml` (`firebelley/godot-export`
 reads `export_presets.cfg`), which refreshes the rolling **`latest`** prerelease with
@@ -73,6 +74,7 @@ spent. Every other key in `keybinds.json#hybrid` (Tab, F, T, C, M, F1, F3) is bo
 - Godot front faces are **clockwise** (`zone_mesh.gd` emits that order).
 - Vertex colours need `vertex_color_is_srgb = true` or the palette washes out.
 - Hand-written `.tscn` node-typed `@export`s did not resolve → assign in code (`world.target`).
+- `--headless --write-movie` crashes (dummy renderer, exit 134): the movie writer needs the windowed form in `game/README.md`.
 - `--write-movie` drops CanvasLayer UI: to see the HUD, temporarily save
   `get_viewport().get_texture().get_image()` from `main.gd` in a windowed run, then revert.
 - zsh (the interactive shell here) does not word-split `$var`: `godot --headless $args` passes one
@@ -93,7 +95,7 @@ game/ontology_db.gd  autoload: OntologyDB.data (typed), .ruleset, .design, .flag
 game/main.{tscn,gd}  wires World, Player, HUD, InventoryPanel, Sun, sky; spawn point; starting inventory
 game/world/          world_gen.gd (lands, climate, heights, names, danger tier, creature level, village placement + plateau)
                      zone_mesh.gd, world.gd (zone + village streaming, spawning), spawner.gd, settlement.gd (layout, build)
-game/entities/       entity.gd (HP/level/hostility/step-up, statuses: stun/knockback/burning/slow), player.gd (E: interact → talk / respec / rest / pick up), orbit_camera.gd, creature.gd, npc.gd
+game/entities/       entity.gd (HP/level/hostility/step-up, statuses: stun/knockback/burning/slow), player.gd (E: interact → talk / respec / rest / pick up), orbit_camera.gd, creature.gd (D26: ranged / mage roles shoot through projectile.gd), npc.gd
 game/combat/         combat.gd (pure formulas), abilities.gd (D21 runtimes: cooldowns, costs, dash/channel/cast state, buffs; D24 projectile runtime + dash throw),
                      projectile.gd (D24 shots: gravity, ray sweep, splash, pierce, return; damage through player._strike)
                      feel.gd (D25: hit-stop, trauma, synthesised sfx, damage numbers, flash / trail / stars from design.feel)
@@ -102,13 +104,14 @@ game/items/          item.gd, items.gd (gen-item, stats, names, gen-loot, ground
 game/progression/    progression.gd (level settle; xp_for_kill is in ontology/model.gd), skill_tree.gd (points, spend rule,
                      per-point mults; nodes from model.gd#skill_tree), skill_panel.gd (X)
 game/meta/           input_map.gd (keybinds.json#hybrid → InputMap), hud.gd (HP/MP/stamina bars, hotbar cooldown line)
-docs/ROADMAP/        todo_decide.md (D1–D24), todo_implement.md (deferrals), cut/Omega specs
+docs/ROADMAP/        todo_decide.md (D1–D26), todo_implement.md (deferrals), cut/Omega specs
 ```
 
 ## Next slice (recommended order)
-1. Creature ranged / mage roles shooting back (`game-ai`, `creature.combat-role`, reuse `combat/projectile.gd` with a creature shooter; creature
-   hits then carry `design.status-effects` so the D25 dot numbers show on the player), then the aggro table / group aggro (`ai-behavior`).
-2. Items backlog (`todo_implement.md` §3.4): rings/amulets, gear HP, upgrade cubes, tabs/tooltips.
+1. Aggro table / group aggro (`ai-behavior` aggro + perception rows; `todo_implement.md` Creatures: "aggro table, taunt, group aggro"): per-attacker
+   aggro that damage adds to, highest aggro targeted, heroic-shout taunt forcing it, one member seeing the player pulls the group; `creature.gd`
+   target selection replaces "last attacker"; `sim-radius` then measures the nearest player (`multiplayer-mode` todo).
+2. Items backlog (`todo_implement.md` §3.4): rings/amulets, gear HP, upgrade cubes, tabs/tooltips; player armor applied to creature hits (D26 todo).
 3. World backlog: thread zone building (`world.gd` ponytail), a game clock (`c-midnight-reset`: restock, inn sleep), flora / dungeons / POIs
    (`gen-flora`, `gen-dungeon`, `gen-poi`), villagers with schedules (`gen-schedule`).
 
