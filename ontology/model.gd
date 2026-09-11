@@ -564,6 +564,7 @@ class Ontology extends RefCounted:
 			if float(sh["decay-per-s"]) <= 0.0: errors.append("design.feel.shake.decay-per-s must be > 0")
 			if float(sh["max-offset"]) < 0.0: errors.append("design.feel.shake.max-offset must be >= 0")
 			if float(sh["shake-mult"]) < 0.0: errors.append("design.feel.shake.shake-mult must be >= 0")
+			if float(sh["max-roll-deg"]) < 0.0: errors.append("design.feel.shake.max-roll-deg must be >= 0")
 			for id in ["hit", "crit", "kill", "hurt", "block", "dodge", "shoot", "impact", "level-up", "pickup", "coin"]:
 				if not ev.has(id): errors.append("design.feel.events missing required event %s" % id)
 			for id in ev:
@@ -578,8 +579,12 @@ class Ontology extends RefCounted:
 				if float(sd.get("hz", 0)) <= 0.0: errors.append("design.feel.sfx.%s.hz must be > 0" % id)
 				if float(sd.get("len-s", 0)) <= 0.0 or float(sd.get("len-s", 0)) > 1.0: errors.append("design.feel.sfx.%s.len-s outside (0,1]" % id)
 				if float(sd.get("noise", 0)) < 0.0 or float(sd.get("noise", 0)) > 1.0: errors.append("design.feel.sfx.%s.noise outside [0,1]" % id)
+				if not sd.has("slide"): errors.append("design.feel.sfx.%s needs a slide" % id)
 			if float(nb["life-s"]) <= 0.0: errors.append("design.feel.numbers.life-s must be > 0")
 			if float(nb["crit-scale"]) < 1.0: errors.append("design.feel.numbers.crit-scale must be >= 1")
+			if float(nb["rise-blocks"]) <= 0.0: errors.append("design.feel.numbers.rise-blocks must be > 0")
+			if int(nb["font-size"]) <= 0: errors.append("design.feel.numbers.font-size must be > 0")
+			if not nb["colours"].has("hit"): errors.append("design.feel.numbers.colours needs a hit entry (the fallback colour)")
 			for k in nb["colours"]:
 				var col: Array = nb["colours"][k]
 				var bad_col: bool = col.size() != 3
@@ -588,9 +593,12 @@ class Ontology extends RefCounted:
 						if float(c) < 0.0 or float(c) > 1.0: bad_col = true
 				if bad_col: errors.append("design.feel.numbers.colours.%s must be a 3-array in [0,1]" % k)
 			if float(im["impact-s"]) <= 0.0: errors.append("design.feel.impact.impact-s must be > 0")
+			if float(im["impact-radius"]) <= 0.0: errors.append("design.feel.impact.impact-radius must be > 0")
 			if float(tr["trail-s"]) <= 0.0: errors.append("design.feel.trail.trail-s must be > 0")
 			if float(tr["trail-every-s"]) <= 0.0: errors.append("design.feel.trail.trail-every-s must be > 0")
 			if float(lv["pop-s"]) <= 0.0: errors.append("design.feel.level-up.pop-s must be > 0")
+			if float(lv["pop-scale"]) < 1.0: errors.append("design.feel.level-up.pop-scale must be >= 1")
+			if str(lv["text"]).is_empty(): errors.append("design.feel.level-up.text must not be empty")
 		var defaults := rulesets.values().filter(func(r: Ruleset) -> bool: return r.is_default)
 		if defaults.size() != 1: errors.append("exactly one ruleset must be default (found %d)" % defaults.size())
 		return errors.size() == n

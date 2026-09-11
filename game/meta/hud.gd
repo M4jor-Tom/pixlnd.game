@@ -81,6 +81,7 @@ func _process(_dt: float) -> void:
 		_buff_icons()
 	var line: PackedStringArray = []
 	if player.combo > 0: line.append("combo %d" % player.combo)
+	if player.has_method("stunned") and player.stunned(): line.append("stunned!")   # first person sees no stars
 	if player.get("blocking"): line.append("blocking")
 	_combo.text = "   ".join(line)
 	if player.get("defence") != null and not player.defence.is_empty():
@@ -111,6 +112,7 @@ func _on_level_up(_level: int) -> void:
 	if lv.is_empty():
 		return
 	_show_toast(str(lv["text"]))
+	await get_tree().process_frame                          # the label must be laid out before we centre the pivot
 	_toast.pivot_offset = _toast.size * 0.5
 	_toast.scale = Vector2.ONE * float(lv["pop-scale"])
 	_toast.create_tween().tween_property(_toast, "scale", Vector2.ONE, float(lv["pop-s"])) \
@@ -124,7 +126,7 @@ func _buff_icons() -> void:
 	if key != _buff_key:
 		_buff_key = key
 		for c in _buffs.get_children():
-			c.free()
+			_buffs.remove_child(c); c.queue_free()          # never free a live child mid-layout
 		for id in buffs:
 			var box := ColorRect.new()
 			box.custom_minimum_size = Vector2(18, 18); box.color = Color(0.1, 0.1, 0.15)

@@ -34,6 +34,7 @@ var combat: Dictionary = {}                             # design.combat
 var crit: Dictionary = {}                               # design.crit
 var weapon: Dictionary = {}                             # {type, damage, combo_cap}, derived from the main-hand item
 const DEFAULT_MOVESET := {"m1": {"kind": "melee"}, "m2": {"kind": "melee"}}
+const HIT_TIERS: Array[StringName] = [&"hit", &"crit", &"kill"]   # D25 bundle strength, weakest first
 var moveset: Dictionary = DEFAULT_MOVESET               # design.movesets entry of the main-hand weapon-type (D24)
 var _m1_hits := 0                                       # landed M1 hits in a row (melee finisher counter)
 var inventory                                           # Inventory, after setup_items
@@ -172,12 +173,13 @@ func take_damage(amount: float, from: Node) -> void:
 		mp = minf(float(design["resources"]["mp"]["max"]), mp + float(bl["mp-per-block"]))   # D11 block-reward
 	if abilities != null:
 		amount = abilities.absorb(amount * abilities.mult("damage-taken-mult"))
+	var before := hp
 	super.take_damage(amount, from)
-	if feel != null:                                          # D25 feedback
+	if feel != null and not dot_tick:                         # D25 feedback; a dot tick floats its number only
 		if blocked:
 			feel.play(&"block", head())
-		elif amount > 0.0:
-			feel.play(&"hurt", head(), {"amount": amount, "kind": &"hurt"})
+		elif before > hp:
+			feel.play(&"hurt", head(), {"amount": before - hp, "kind": &"hurt"})   # what we actually lost
 
 ## Dodged or blocked hits carry no status (D23); knockback goes through _push so input does not erase it next tick.
 func apply_status(id: StringName, cfg: Dictionary, hit: float, from: Node) -> void:
@@ -578,6 +580,8 @@ func _strike(center: Vector3, radius: float, dmg: float, combo_bonus: bool, appl
 	if not defence.is_empty():
 		var sl: Dictionary = defence["stealth"]
 		dmg *= 1.0 + stealth * float(sl["attack-mult-at-full"]); chance += stealth * float(sl["crit-add-at-full"])
+	var tier := -1                                            # D25: ONE bundle per strike, the strongest tier wins
+	var tier_at := Vector3.ZERO                               # (an AoE swing must not fire 16 sounds and 16 shakes)
 	for body in bodies_within(center, radius):
 		var cm := Combat.crit_mult(chance, _rng, crit)
 		var d := dmg * (Combat.combo_mult(combo, combat) if combo_bonus else 1.0) * cm
@@ -585,14 +589,20 @@ func _strike(center: Vector3, radius: float, dmg: float, combo_bonus: bool, appl
 			d *= abilities.mult("damage-mult")
 		d = Combat.after_armor(d, float(body.get("armor")), combat)
 		if d > 0.0 or applies.has(&"taunt"):                   # taunt: a 0-damage hit sets the creature's target
+			var before: float = body.hp
 			body.take_damage(d, self)
-			if feel != null and d > 0.0:                       # D25: kill > crit > hit, number over the head
+			if feel != null and before > body.hp:              # a number per body, the bundle once
 				var kind: StringName = &"crit" if cm > 1.0 else &"hit"
-				feel.play(&"kill" if body.dead else kind, body.head(), {"amount": d, "kind": kind})
+				feel.number(body.head(), before - body.hp, kind)
+				var rank: int = HIT_TIERS.find(&"kill" if body.dead else kind)
+				if rank > tier:
+					tier = rank; tier_at = body.head()
 		for id in applies:
 			if se.has(id) and body.has_method("apply_status"):
 				body.apply_status(id, se[id], d, self)
 		hits += 1
+	if tier >= 0:
+		feel.play(HIT_TIERS[tier], tier_at)
 	if hits > 0 and not (abilities != null and abilities.flag("stealth-full")):
 		stealth = 0.0
 	return hits
@@ -602,6 +612,7 @@ func _on_died() -> void:
 	if abilities != null:
 		abilities.reset()
 	_charge = -1.0; _dodge = {}; _push = Vector3.ZERO; blocking = false; stealth = 0.0; statuses.clear()
+	clear_stars()                                            # the stun went with the statuses (D25)
 	block_power = block_max()
 	await get_tree().create_timer(float(combat["death"]["respawn-s"])).timeout
 	global_position = spawn_point                            # c-no-death-penalty

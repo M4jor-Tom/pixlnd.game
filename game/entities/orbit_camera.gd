@@ -37,6 +37,7 @@ func _process(dt: float) -> void:
 	if shake.is_empty() or (trauma <= 0.0 and _shake_t == 0.0):
 		return
 	var cam: Camera3D = $Arm/Camera
+	# `dt` is scaled, so a hit-stop slows the decay and the shake deliberately carries the impact past the freeze.
 	trauma = maxf(0.0, trauma - float(shake["decay-per-s"]) * dt)
 	if trauma <= 0.0:                                     # back to rest, exactly
 		cam.h_offset = 0.0; cam.v_offset = 0.0; cam.rotation.z = 0.0

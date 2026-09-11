@@ -2,14 +2,17 @@
 ## c-feel-config fires on a broken copy; hit-stop drops and restores Engine.time_scale on the real clock and
 ## overlapping bundles end at the later time; camera trauma decays to 0 and the Camera3D offsets rest at 0;
 ## a melee hit floats one damage number that is freed after life-s; a kill fires the stronger kill bundle; a
-## creature hit on the player fires `hurt` with a red number; a stun puts stars over the wolf that vanish with
-## it; a bow shot leaves trail pieces and an impact flash; the level-up bundle runs; every event id's
-## synthesised sfx plays without error under the Dummy driver; a pick-up fires `pickup`.
+## creature hit on the player fires `hurt` with a red number sized to the HP actually lost; a dot tick floats the
+## orange number and no second one; a stun puts stars over the wolf that vanish when the stun ends; a bow shot
+## leaves trail pieces AND an impact flash of impact-radius; one AoE strike fires one bundle but a number per body;
+## the HUD shows the level-up toast text and one buff icon that goes when the buff expires; every event id plays
+## one sfx player that is freed again.
 extends SceneTree
 
 const Model := preload("res://ontology/model.gd")
 const Combat := preload("res://game/combat/combat.gd")
 const Feel := preload("res://game/combat/feel.gd")
+const HUD := preload("res://game/meta/hud.gd")
 const Spawner := preload("res://game/world/spawner.gd")
 const InputMapBuilder := preload("res://game/meta/input_map.gd")
 const PLAYER := preload("res://game/entities/player.tscn")
@@ -68,6 +71,21 @@ func _count(type: String) -> int:
 			n += 1
 	return n
 
+## Juice spheres of exactly `radius`: the impact flash is impact-radius, a trail piece is much smaller.
+func _spheres(radius: float) -> int:
+	var n := 0
+	for c in root.get_children():
+		if c is MeshInstance3D and not c.is_queued_for_deletion() and c.mesh is SphereMesh and is_equal_approx(c.mesh.radius, radius):
+			n += 1
+	return n
+
+func _stars_on(e: Node) -> int:
+	var n := 0
+	for c in e.get_children():
+		if c is Label3D and not c.is_queued_for_deletion():
+			n += 1
+	return n
+
 func _init() -> void:
 	o = Model.Ontology.load_dir("res://ontology/instances")
 	check(o.validate(), "ontology valid")
@@ -87,6 +105,12 @@ func _init() -> void:
 	var kill_ev: Dictionary = fl["events"]["kill"]; fl["events"].erase("kill")
 	check(not o.validate(), "c-feel-config wants every required event id"); o.errors.clear()
 	fl["events"]["kill"] = kill_ev
+	var hit_col: Array = fl["numbers"]["colours"]["hit"]; fl["numbers"]["colours"].erase("hit")
+	check(not o.validate(), "c-feel-config wants the hit colour (feel.gd's eager fallback)"); o.errors.clear()
+	fl["numbers"]["colours"]["hit"] = hit_col
+	var slide = fl["sfx"]["hit"]["slide"]; fl["sfx"]["hit"].erase("slide")
+	check(not o.validate(), "c-feel-config wants a slide on every sfx"); o.errors.clear()
+	fl["sfx"]["hit"]["slide"] = slide
 	check(o.validate(), "restored")
 
 	InputMapBuilder.build(o.configs["keybinds"]["hybrid"])
@@ -99,6 +123,7 @@ func _init() -> void:
 	feel.setup(fl, p.get_node("CameraRig"))
 	var rig := p.get_node("CameraRig")
 	var cam: Camera3D = rig.get_node("Arm/Camera")
+	var hud: CanvasLayer = HUD.new(); root.add_child(hud); hud.bind(p, null)
 
 	# --- hit-stop: the real clock drops and restores the time scale, the longer bundle wins
 	var hs: Dictionary = fl["hit-stop"]
@@ -141,50 +166,97 @@ func _init() -> void:
 	check(rig.trauma > hit_trauma, "the kill bundle shook harder than a hit (%.2f > %.2f)" % [rig.trauma, hit_trauma])
 	await _real(float(fl["events"]["kill"]["hit-stop-s"]) + 0.1)
 
-	# --- a creature hit on the player: hurt bundle + a red number
+	# --- one AoE strike: a number per body, but exactly ONE bundle (one sfx player)
+	var pack: Array = []
+	for i in 3:
+		pack.append(_wolf(p, Vector3(-0.6 + 0.6 * i, 1, -1.2)))
+	await _frames(4)
+	before = _count("Label3D")
+	var players: int = feel.get_child_count()
+	var swept: int = p._strike(p.global_position + Vector3.UP, 3.0, 20.0, false)
+	check(swept >= 3, "the sweep reached the whole pack (%d)" % swept)
+	check(_count("Label3D") == before + swept, "one number per body hit (%d for %d bodies)" % [_count("Label3D") - before, swept])
+	check(feel.get_child_count() == players + 1, "one bundle for the whole sweep, not one per body (%d)" % (feel.get_child_count() - players))
+	for w in pack:
+		w.queue_free()
+	await _real(float(fl["numbers"]["life-s"]) + 0.3)
+
+	# --- a creature hit on the player: hurt bundle + a red number of the HP actually lost
 	before = _count("Label3D")
 	wolf.damage = 10.0
 	wolf.target = p
 	var hp0: float = p.hp
 	p.take_damage(10.0, wolf)
 	check(p.hp < hp0 and _count("Label3D") == before + 1, "hurt bundle floats a number over the player")
+	p.hp = 4.0                                                # a killing blow reports the HP lost, not the raw damage
+	p.take_damage(1000.0, wolf)
+	var last: Label3D = null
+	for c in root.get_children():
+		if c is Label3D and not c.is_queued_for_deletion():
+			last = c
+	check(last != null and last.text == "4", "the hurt number is what we lost, not the raw hit (%s)" % (last.text if last != null else "-"))
+	p.dead = false; p.hp = p.max_hp
 	await _real(float(fl["numbers"]["life-s"]) + 0.3)
 
-	# --- stun stars over the wolf's head while the stun lasts
+	# --- a dot tick floats the orange number only: no hurt bundle, no second number
+	before = _count("Label3D")
+	players = feel.get_child_count()
+	p.statuses[&"burning"] = {"left": 1.0, "tick": 0.0, "tick-s": 0.5, "dmg": 3.0, "from": wolf}
+	p.tick_statuses(0.01)
+	check(_count("Label3D") == before + 1, "a dot tick floats exactly one number (%d)" % (_count("Label3D") - before))
+	check(feel.get_child_count() == players, "a dot tick fires no hurt bundle (%d extra)" % (feel.get_child_count() - players))
+	p.statuses.clear()
+	await _real(float(fl["numbers"]["life-s"]) + 0.3)
+
+	# --- stun stars over the wolf's head, gone the moment the stun ends
 	var se: Dictionary = design["status-effects"]
 	wolf.apply_status(&"stun", se["stun"], 10.0, p)
 	check(wolf.stunned(), "the wolf is stunned")
-	var stars := 0
-	for c in wolf.get_children():
-		if c is Label3D:
-			stars += 1
-	check(stars == 1, "one stun-star label over the wolf (%d)" % stars)
-	await _real(float(se["stun"]["duration-s"]) + 0.3)
-	stars = 0
-	for c in wolf.get_children():
-		if c is Label3D and not c.is_queued_for_deletion():
-			stars += 1
-	check(stars == 0, "the stars went with the stun (%d left)" % stars)
+	check(_stars_on(wolf) == 1, "one stun-star label over the wolf (%d)" % _stars_on(wolf))
+	wolf.tick_statuses(float(se["stun"]["duration-s"]) + 0.1)   # the wolf's physics is off: tick it by hand
+	check(not wolf.stunned(), "the stun ended")
+	await _frames(2)
+	check(_stars_on(wolf) == 0, "the stars went with the stun (%d left)" % _stars_on(wolf))
 
-	# --- a bow shot leaves trail pieces and an impact flash
+	# --- a bow shot leaves trail pieces AND an impact flash of impact-radius
+	var flash_r := float(fl["impact"]["impact-radius"])
 	var r := _player(&"ranger", Vector3(30, 1, 0))
 	var w2 := _wolf(r, Vector3(30, 1, -5))
 	await _frames(5); _aim_at(r, w2)
 	before = _count("MeshInstance3D")
+	check(_spheres(flash_r) == 0, "no impact flash before the shot")
 	await _m1(r)
 	await _frames(6)
 	check(_count("MeshInstance3D") >= before + 1, "the arrow left trail pieces (%d)" % (_count("MeshInstance3D") - before))
-	await _frames(20)
+	var flashes := 0                                          # the flash fades out in impact-s, so watch for it
+	for i in 30:
+		await physics_frame
+		flashes = maxi(flashes, _spheres(flash_r))
 	check(w2.hp < 1e6, "the arrow hit")
+	check(flashes >= 1, "the hit left an impact flash of impact-radius (%d)" % flashes)
 	await _real(float(fl["events"]["hit"]["hit-stop-s"]) + 0.05)
 
-	# --- level-up, pick-up and every synthesised sfx run headless without an error
+	# --- the HUD: level-up toast text, then one buff icon that goes when the buff expires
 	p.gain_xp(100000)
 	check(p.level > 1, "leveled up (level %d)" % p.level)
-	feel.play(&"pickup"); feel.play(&"coin")
+	await process_frame
+	check(hud._toast.text == str(fl["level-up"]["text"]), "the HUD toast shows the level-up text ('%s')" % hud._toast.text)
+	p.abilities.buffs[&"war-frenzy"] = {"left": 0.2, "r": design["abilities"]["war-frenzy"]}
+	await process_frame; await process_frame
+	check(hud._buffs.get_child_count() == 1, "one buff icon on the HUD (%d)" % hud._buffs.get_child_count())
+	p.abilities.tick(0.5)                                     # the buff expired
+	await process_frame; await process_frame
+	check(hud._buffs.get_child_count() == 0, "the icon went with the buff (%d left)" % hud._buffs.get_child_count())
+
+	# --- every event id plays exactly one sfx player, freed again after len-s
+	players = feel.get_child_count()
+	var played := 0
 	for id in fl["events"]:
 		feel.play(StringName(id))
+		played += 1
+		check(feel.get_child_count() == players + played, "%s played one sfx player (%d)" % [id, feel.get_child_count() - players])
 	await _real(1.2)                                          # let every sfx player / tween finish before we quit
+	check(feel.get_child_count() == 0, "every sfx player was freed again (%d left)" % feel.get_child_count())
 	check(Engine.time_scale == 1.0, "every event bundle played and the time scale is back to 1.0")
 
 	Engine.time_scale = 1.0

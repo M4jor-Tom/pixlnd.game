@@ -16,6 +16,8 @@ var hostility: StringName = &"P"          # H hostile, N neutral, P passive, F f
 var dead := false
 var statuses: Dictionary = {}             # status id → {"left": seconds, ...}
 var feel: Node                            # combat/feel.gd (D25), or null: every call site guards
+var dot_tick := false                     # true only while tick_statuses applies a dot: number, never a bundle
+var _stars: Node                          # the '✶ ✶ ✶' label, alive exactly as long as the stun
 
 ## Borrow the attacker's feel node the first time they touch us (creatures are spawned without one).
 func _learn_feel(from: Node) -> void:
@@ -43,7 +45,7 @@ func apply_status(id: StringName, cfg: Dictionary, hit: float, from: Node) -> vo
 			if not statuses.has(&"stun") and not stun_immune():         # c-stun-immunity
 				statuses[&"stun"] = {"left": float(cfg["duration-s"])}
 				if feel != null:
-					feel.stars(self, float(cfg["duration-s"]))          # ui.json#hud.stun-stars (D25)
+					_stars = feel.stars(self)                           # ui.json#hud.stun-stars (D25)
 		&"knockback":
 			var d: Vector3 = global_position - (from as Node3D).global_position; d.y = 0.0
 			velocity += d.normalized() * float(cfg["impulse"]) + Vector3.UP * float(cfg["impulse"]) * 0.25
@@ -62,11 +64,22 @@ func tick_statuses(dt: float) -> void:
 			s["tick"] -= dt
 			if s["tick"] <= 0.0:
 				s["tick"] = s["tick-s"]
+				var before := hp
+				dot_tick = true                                # D25: the number only, never the hurt bundle
 				take_damage(s["dmg"], s["from"] if is_instance_valid(s["from"]) else self)
-				if feel != null:
-					feel.number(head(), s["dmg"], &"dot")       # D25: dot ticks float their own number
+				dot_tick = false
+				if feel != null and before > hp:
+					feel.number(head(), before - hp, &"dot")
 		if s["left"] <= 0.0:
 			statuses.erase(id)
+			if id == &"stun":
+				clear_stars()
+
+## The stun ended (or was cleared wholesale by a death / respawn): the stars go with it.
+func clear_stars() -> void:
+	if _stars != null and is_instance_valid(_stars):
+		_stars.queue_free()
+	_stars = null
 
 func stunned() -> bool:
 	return statuses.has(&"stun")
