@@ -356,6 +356,14 @@ class Ontology extends RefCounted:
 			return 100 + int(t.get("rank", 0))
 		return 104 if str(t["column"]) == "ultimate" else int(t.get("skill-slot", 0))
 
+	## c-moveset-config / c-ability-runtime (D24): a projectile shot (moveset, ultimate or dash `throw`).
+	static func _shot_errors(s: Dictionary, where: String) -> Array:
+		var out: Array = []
+		if float(s.get("speed", 0)) <= 0.0 or float(s.get("radius", 0)) <= 0.0 or float(s.get("life-s", 0)) <= 0.0: out.append("%s: speed, radius, life-s must be > 0" % where)
+		if int(s.get("count", 1)) < 1 or float(s.get("spread", 0)) < 0.0 or float(s.get("gravity", 0)) < 0.0 or float(s.get("splash", 0)) < 0.0: out.append("%s: count >= 1, spread / gravity / splash >= 0" % where)
+		if s.get("pierce", false) and float(s.get("tick-s", 0)) <= 0.0: out.append("%s: pierce needs tick-s > 0" % where)
+		return out
+
 	func validate() -> bool:
 		var n := errors.size()
 		for id in specs:                                                    # c-spec-of-class
@@ -463,6 +471,9 @@ class Ontology extends RefCounted:
 					"dash":
 						if float(r.get("distance", 0)) <= 0.0: errors.append("design.abilities.%s: dash distance must be > 0" % a.id)
 						if r.has("strike") and float(r["strike"].get("radius", 0)) <= 0.0: errors.append("design.abilities.%s: strike radius must be > 0" % a.id)
+						if r.has("throw"): errors.append_array(_shot_errors(r["throw"], "design.abilities.%s.throw" % a.id))
+					"projectile":
+						errors.append_array(_shot_errors(r, "design.abilities.%s" % a.id))
 					"burst", "channel":
 						if float(r.get("radius", 0)) <= 0.0: errors.append("design.abilities.%s: radius must be > 0" % a.id)
 						if str(r["runtime"]) == "channel" and float(r.get("duration-s", 0)) <= 0.0: errors.append("design.abilities.%s: duration-s must be > 0" % a.id)
@@ -475,6 +486,38 @@ class Ontology extends RefCounted:
 			if str(id).begins_with("_"): continue
 			if not status_effects.has(id): errors.append("design.status-effects.%s is not a status-effect" % id)
 			elif se[id].has("as") and not se.has(str(se[id]["as"])): errors.append("design.status-effects.%s: `as` %s has no entry" % [id, se[id]["as"]])
+		var mv: Dictionary = design.get("movesets", {})                    # c-moveset-config (D24)
+		if not mv.is_empty():
+			var kinds: Array = mv.get("kinds", [])
+			for id in mv:
+				if str(id).begins_with("_") or str(id) == "kinds": continue
+				if str(id) != "default" and not weapon_types.has(id): errors.append("design.movesets.%s is not a weapon-type" % id)
+				var m: Dictionary = mv[id]
+				if m.has("as"):
+					if not mv.has(str(m["as"])) or (mv[m["as"]] as Dictionary).has("as"): errors.append("design.movesets.%s: `as` %s is not a plain entry" % [id, m["as"]])
+					continue
+				for slot in ["m1", "m2"]:
+					var s = m.get(slot)
+					var where := "design.movesets.%s.%s" % [id, slot]
+					if not s is Dictionary or not (str(s.get("kind")) in kinds): errors.append("%s: kind must be one of %s" % [where, kinds]); continue
+					for sid in s.get("applies", []):
+						if not se.has(sid): errors.append("%s: applies %s has no design.status-effects entry" % [where, sid])
+					if float(s.get("damage-mult", 1)) <= 0.0: errors.append("%s: damage-mult must be > 0" % where)
+					match str(s["kind"]):
+						"melee":
+							if float(s.get("swing-mult", 1)) <= 0.0 or float(s.get("radius-mult", 1)) <= 0.0 or float(s.get("lunge", 0)) < 0.0: errors.append("%s: swing-mult, radius-mult > 0, lunge >= 0" % where)
+							if s.has("finisher"):
+								var f: Dictionary = s["finisher"]
+								if int(f.get("every", 0)) < 2 or float(f.get("chance", -1)) < 0.0 or float(f.get("chance", -1)) > 1.0: errors.append("%s: finisher every >= 2, chance in [0,1]" % where)
+								for sid in f.get("applies", []):
+									if not se.has(sid): errors.append("%s: finisher applies %s has no design.status-effects entry" % [where, sid])
+						"projectile":
+							errors.append_array(_shot_errors(s, where))
+						_:
+							if float(s.get("range", 0)) <= 0.0 or float(s.get("radius", 0)) <= 0.0: errors.append("%s: range and radius must be > 0" % where)
+			for cid in classes:
+				for wt in (classes[cid] as CharacterClass).weapon_types:
+					if (weapon_types[wt] as WeaponType).hands != Hands.OFFHAND and not mv.has(wt): errors.append("design.movesets: class %s weapon-type %s has no entry" % [cid, wt])
 		var st: Dictionary = design.get("settlement", {})                  # c-settlement-config (D22)
 		if not st.is_empty():
 			var bj: Dictionary = configs.get("buildings", {}); var roles: Dictionary = configs.get("npc-roles", {})

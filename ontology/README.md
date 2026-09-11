@@ -36,6 +36,8 @@ ontology/
   `game/items/shop.gd`; `world.spawn-rule` hybrid = the (0,0) village square.
 - 2026-09-11: D23 defence (`design.defence`, sneak / aim / camouflage `stealth-per-s|stealth-full`, `c-defence-config`) for dodge / block /
   stealth in `game/entities/player.gd`; §5 `c-stat-roll` and `c-name-length` relabelled (nothing loadable carries them).
+- 2026-09-11: D24 weapon movesets + projectiles (`design.movesets`, `design.abilities` runtime `projectile` / dash `throw`, `design.status-effects.poison`,
+  `c-moveset-config`) for `game/combat/projectile.gd` and the M1 / M2 paths in `game/entities/player.gd`.
 - 2026-09-09: D18 items, loot, inventory numbers + `c-loot-config` / `c-stack-rule` / `c-slot-accepts` for `game/items/`.
 - 2026-09-08: D17 runtime profiling overlay (Godot Debug Menu, F3) + `design.frame-budget` / `c-frame-budget`.
 - 2026-09-08: D16 simulation radius + `c-sim-radius` (creatures frozen beyond 80 blocks; the 4 FPS fix).

@@ -463,8 +463,8 @@ An active or passive skill. `A S Ω` → `instances/abilities.json` (~65).
 | alpha-tree | column, rank-needed (1 to unlock first, 5 in previous), per-point effect (D6: +5 % effect / −5 % cooldown per point, floor 25 %) |
 | alpha-ability-id | cuwo id (21 kick, 34 healing-stream, 48 intercept, 49 teleport, 50 retreat, 54 smash, 79 sneak, 86 cyclone, 88 fire-explosion, 96 shuriken, 97 camouflage, 99 aim, 100 swiftness, 101 bulwark, 102 war-frenzy, 103 mana-shield) |
 | applies | `status-effect` refs |
-Runtime (D21): every class node and ultimate has a `design.abilities` entry naming one of five runtimes (dash, channel,
-burst, buff, heal) with its numbers, cost (mp / stamina, a number or `all`) and cooldown; strikes apply the ability's
+Runtime (D21): every class node and ultimate has a `design.abilities` entry naming one of six runtimes (dash, channel,
+burst, buff, heal, projectile — D24: shots along the aim; a dash may `throw` shots first) with its numbers, cost (mp / stamina, a number or `all`) and cooldown; strikes apply the ability's
 `applies` through `design.status-effects` (`c-ability-runtime`). Shared-column skills have no runtime here (swimming scales
 swim speed; pet, mount, climb, glider, boat wait for their systems).
 
@@ -480,6 +480,9 @@ subtypes; 17 usable).
 | combo-cap | fists 50, staff 50, longsword 30, bow/crossbow 30, wand 20, bracelets 20, boomerang 80 |
 | m1 / m2 | moveset summary (e.g. bow M2 volley 4–5 arrows; dagger M2 ambush stun + poison) |
 | material | wood (workbench) / iron (anvil) / gold-silver (bracelets) |
+Hybrid (D24): `design.movesets.<weapon-type>.m1|m2` gives every class weapon its runtime — melee sphere (swing / radius mults,
+spin around the player, lunge, finisher status), projectile (count, spread, speed, gravity, life, hit radius, splash, pierce,
+return), beam (instant ray) or at-cursor (sphere where the aim lands); `c-moveset-config`. Alpha m1/m2 prose stays the source.
 
 ### combo-system
 Hit counter near cursor; +1 per landed hit; ignores growing share of armor and adds damage; any
@@ -870,9 +873,10 @@ One row per fact type. Cardinality as `domain → range`.
 | c-level-up | level never decreases; after settling, xp < xp-to-next(level); each level gained adds exactly `skill-points-per-level` (D19) | runtime |
 | c-tree-shape | for every specialization the tree read from `abilities.json#alpha-tree` has exactly one class node per rank 1..3 and ≤ 1 ultimate; rank 1 and shared-column roots have `needs` 0, one root per shared column, every `unlocks-next` names a node of the same column (D20) | load |
 | c-skill-spend | a point is spent only from the banked pool, one at a time, on a node whose prerequisite holds `needs` points; points never leave a node outside a trainer respec (D20) | runtime |
-| c-ability-runtime | every class-column and ultimate node of every spec tree has a `design.abilities` entry whose `runtime` is in `runtimes`; cost mp ≤ 100, stamina ≤ `design.movement.stamina.max` or `all`; cooldown-s > 0; dash distance > 0, strike / burst / channel radius > 0, buff / channel duration-s > 0, heal cast-s ≥ 0; `design.status-effects` keys are status-effect ids and an `as` names another key (D21) | load |
+| c-ability-runtime | every class-column and ultimate node of every spec tree has a `design.abilities` entry whose `runtime` is in `runtimes`; cost mp ≤ 100, stamina ≤ `design.movement.stamina.max` or `all`; cooldown-s > 0; dash distance > 0, strike / burst / channel radius > 0, buff / channel duration-s > 0, heal cast-s ≥ 0, projectile / dash `throw` shots as c-moveset-config (D24); `design.status-effects` keys are status-effect ids and an `as` names another key (D21) | load |
 | c-settlement-config | `design.settlement`: per-land ≥ 1, radius > blend ≥ 0, ring-radius < radius, every `buildings` entry is a `buildings.json#buildings` id, every service role is an `npc-roles.json` id, every landscape with a `gen` block has a `style-by-landscape` entry naming a `buildings.json#settlement-styles` id with two `style-colors`, `shop.rarity-cap` is a rarity ≤ legendary, `no-hostiles-within` ≥ radius (D22) | load |
 | c-defence-config | `design.defence`: dodge stamina ∈ (0, stamina max], distance / duration-s > 0, iframe-s ≥ 0, every on-dodge key is a passive ability; block max / power-per-hit > 0, damage-reduction ∈ [0,1], front-dot ∈ [−1,1], regen-per-s ≥ 0, guardian-mult ≥ 1; stealth decay-per-s ≥ 0, still-mult ≥ 1, aggro-cut ∈ [0,1]; enemy-hit chances ∈ [0,1]; every `design.abilities` stealth-per-s ≥ 0 (D23) | load |
+| c-moveset-config | `design.movesets`: every key is a weapon-type or `default`, an `as` names a plain entry; m1 / m2 `kind` ∈ `kinds`; `applies` (and finisher applies) are `design.status-effects` keys; damage-mult > 0; melee swing-mult / radius-mult > 0, lunge ≥ 0, finisher every ≥ 2 with chance ∈ [0,1]; projectile speed / radius / life-s > 0, count ≥ 1, spread / gravity / splash ≥ 0, pierce needs tick-s > 0; beam / at-cursor range / radius > 0; every non-offhand class weapon-type has an entry (D24) | load |
 | c-drowning | S only: breath depletes underwater; empty → HP loss; wall-hold pauses | runtime |
 | c-gate-doors | divine doors re-close at 0:00; bell spirit world lasts 30 s (F8) | runtime |
 
@@ -1007,4 +1011,13 @@ Decisions only the owner can make (D) and facts research could not settle (F).
   stun 5 % / knockback 15 % on the player (blocked or dodged hits roll nothing). Not yet: poison through dodges, the ninja crit window,
   counter-strike, hit-series, projectiles, stun stars / buff icons beyond HUD text, darkness / lamps.
   → `generators.json#design.defence`, `design.abilities.<id>.stealth-per-s|stealth-full`, `c-defence-config`.
+- **D24 Weapon movesets and projectiles — DECIDED 2026-09-11**: every class weapon-type gets an M1 / M2 runtime in `design.movesets`: warrior
+  one-handers spin around the player on M2, great weapons swing slow and wide with a knockdown finisher every 3rd hit, dagger M2 stuns
+  and poisons (5 × the hit over 5 s), fist M2 knocks down, longsword M2 lunges 4 blocks and stuns; bow arrows arc (30 blocks/s, gravity
+  10) and M2 volleys 4 with a 2-block splash, crossbow bolts fly flat and fast, boomerangs pierce, tick every 0.25 s and return, staff
+  bursts where the aim lands within 20 blocks, wand is a hitscan beam of 25 blocks, bracelet bolts have no gravity and M2 is a splash
+  ball that knocks down. Ultimates: fire-missiles = 4 splash fireballs, bubbles = 6 slow splash shots + the heal, shuriken-attack throws
+  5 shuriken before the backflip. A whole attack that lands nothing resets the combo. Not yet: animations, hit timing, boomerang
+  steering, wand M2 as a held ray, bow dud shots, arrow pickup, creature projectiles.
+  → `generators.json#design.movesets`, `design.abilities.runtimes` + `projectile`, `design.status-effects.poison`, `c-moveset-config`.
 - **F7** Omega status after mid-2024 (Vulkan vs UE5 reports).
