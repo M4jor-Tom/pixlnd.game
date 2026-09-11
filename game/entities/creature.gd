@@ -1,10 +1,16 @@
 ## creature (§3.2) + ai-behavior: a spawned species instance with a 5-state FSM
-## idle → wander → chase (hostile, or neutral once hit, target in aggro range) → attack (in reach,
-## windup then damage) → return (past the leash). `ai` = design.spawns.ai, `atk` = design.combat.
-## enemy-attack, injected by the spawner. ponytail: no aggro table, A*, potions, loot or corpse
-## (todo_implement.md); capsule placeholder sized by design.spawns.size-by-category.
+## idle → wander → chase (hostile, or neutral once hit, target in aggro range) → attack (a reach bite, or —
+## for a ranged / mage combat-role — a windup then a shot) → return (past the leash). `ai` = design.spawns.ai,
+## `atk` = design.combat.enemy-attack, `role_cfg` = design.creature-roles[role] merged with its species override,
+## all injected by the spawner. ponytail: no aggro table, A*, potions, loot or corpse, no lead on a moving
+## target and no beam for the wizard laser / witch ray (todo_implement.md); capsule placeholder sized by
+## design.spawns.size-by-category.
 ## D23: a stealthed target is noticed from a shorter range, and a landed hit rolls design.defence.enemy-hit statuses.
+## D26: a projectile role keeps `keep-away` blocks between us and the target, needs line of sight, and damages
+## through combat/projectile.gd calling `_strike` back on us — never hitting another creature.
 extends "res://game/entities/entity.gd"
+
+const Projectile := preload("res://game/combat/projectile.gd")
 
 enum State { IDLE, WANDER, CHASE, ATTACK, RETURN }
 
@@ -12,6 +18,8 @@ var species: StringName
 var ai: Dictionary = {}
 var atk: Dictionary = {}
 var design: Dictionary = {}              # generators.json#design (defence.enemy-hit, status-effects, D23); empty = neither
+var role: StringName = &"melee"          # D26 combat-role, resolved per group by the spawner
+var role_cfg: Dictionary = {}            # design.creature-roles[role] + species override; empty / kind melee = the reach bite
 var damage := 0.0
 var target: Node3D                       # what we chase (the player)
 var home := Vector3.ZERO
@@ -71,7 +79,7 @@ func _physics_process(dt: float) -> void:
 	if next != state:
 		state = next
 		_wait = _rng.randf_range(float(ai["wander-pause-s"][0]), float(ai["wander-pause-s"][1]))
-		_windup = float(atk["windup-s"])
+		_windup = float(role_cfg["windup-s"]) if _shoots() else float(atk["windup-s"])
 	move_and_slide()
 
 func _can_chase() -> bool:
@@ -99,6 +107,16 @@ func _tick(dt: float) -> State:
 		State.CHASE:
 			if not can_chase or global_position.distance_to(home) > float(ai["leash"]):
 				return State.RETURN
+			if _shoots():                                   # D26: hold the gap, shoot when we can see them
+				var keep := float(role_cfg["keep-away"])
+				if to_target < keep:
+					var away := global_position - target.global_position; away.y = 0.0
+					_move(global_position + away.normalized() * keep, float(ai["chase"]))
+				elif to_target <= float(role_cfg["range"]) and _cooldown <= 0.0 and _los():
+					return State.ATTACK
+				else:
+					_move(target.global_position, float(ai["chase"]))
+				return state
 			if to_target <= float(atk["reach"]) and _cooldown <= 0.0:
 				return State.ATTACK
 			_move(target.global_position, float(ai["chase"]))
@@ -106,6 +124,11 @@ func _tick(dt: float) -> State:
 			_move(Vector3.ZERO, 0.0)
 			_windup -= dt
 			if _windup <= 0.0:
+				if _shoots():
+					if can_chase and to_target <= float(role_cfg["range"]):
+						_shoot()
+					_cooldown = float(role_cfg["cooldown-s"])
+					return State.CHASE
 				if can_chase and to_target <= float(atk["reach"]) * 1.25 and target.has_method("take_damage"):
 					target.take_damage(damage, self)
 					_hit_statuses(target)
@@ -115,6 +138,68 @@ func _tick(dt: float) -> State:
 			if _move(home, float(ai["chase"])):
 				return State.IDLE
 	return state
+
+## D26: does this combat-role fire a shot instead of biting (design.creature-roles[role].kind)?
+func _shoots() -> bool:
+	return str(role_cfg.get("kind", "melee")) == "projectile"
+
+## Clear line from our head to the target's: nothing between us, or the first thing hit is the target.
+## ponytail: anything in the way — a wall, or another creature — simply stops the shot from being taken; we never
+## strafe for a clear angle, and `design.spawns.ai.aggro-range` (12) still gates the chase, so a `range` beyond it
+## is unreachable until the target comes closer.
+func _los() -> bool:
+	var to: Vector3 = target.head() if target.has_method("head") else target.global_position + Vector3.UP
+	var q := PhysicsRayQueryParameters3D.create(head(), to, 0xFFFFFFFF, [get_rid()])
+	var hit: Dictionary = get_world_3d().direct_space_state.intersect_ray(q)
+	return hit.is_empty() or hit["collider"] == target
+
+## One shot of `role_cfg.shot` at the target's chest, aimed high by the drop it takes over the flight
+## (ponytail: no lead on a moving target). Damage and statuses come back through `_strike`.
+func _shoot() -> void:
+	var s: Dictionary = (role_cfg["shot"] as Dictionary).duplicate()
+	s["color"] = role_cfg["color"]                          # projectile.gd tints the sphere from the shot dict
+	var from := head()
+	var dir: Vector3 = target.global_position + Vector3.UP * 0.8 - from
+	var d := dir.length()
+	if d < 0.01:
+		return
+	var t := d / float(s["speed"])
+	dir.y += float(s.get("gravity", 0.0)) * t * t * 0.5
+	if feel != null:
+		feel.sfx(StringName(str(role_cfg["sfx"])))
+	Projectile.fire(self, from, dir.normalized(), s, damage * float(role_cfg["damage-mult"]), false, role_cfg.get("applies", []))
+
+## projectile.gd damages through the shooter. Every landed shot rolls design.defence.enemy-hit and the role's
+## `applies` statuses; the number over the target is floated by its own take_damage (D25).
+## ponytail: no crit, no combo and no armor on a creature hit — parity with the reach bite above, which ignores
+## the target's armor too (todo_implement.md).
+func _strike(center: Vector3, radius: float, dmg: float, _combo_bonus: bool, applies: Array = []) -> int:
+	var se: Dictionary = design.get("status-effects", {})
+	var hits := 0
+	for body in bodies_within(center, radius):
+		body.take_damage(dmg, self)
+		_hit_statuses(body)
+		for id in applies:
+			if se.has(id) and body.has_method("apply_status"):
+				body.apply_status(id, se[id], dmg, self)
+		hits += 1
+	return hits
+
+## Live damageable bodies in the sphere that are not creatures: a creature shot never hits a creature.
+func bodies_within(center: Vector3, radius: float) -> Array:
+	var shape := SphereShape3D.new(); shape.radius = radius
+	var q := PhysicsShapeQueryParameters3D.new()
+	q.shape = shape; q.transform = Transform3D(Basis(), center); q.exclude = [get_rid()]
+	var out: Array = []
+	for r in get_world_3d().direct_space_state.intersect_shape(q, 16):
+		var body: Object = r["collider"]
+		if body.has_method("take_damage") and not body.get("dead") and body.get("species") == null:
+			out.append(body)
+	return out
+
+## The player's combo / MP bookkeeping; a creature keeps none.
+func _landed(_combo_bonus: bool) -> void:
+	pass
 
 ## design.defence.stealth.aggro-cut: full stealth shrinks how far we notice the target (D23).
 func _aggro_range() -> float:

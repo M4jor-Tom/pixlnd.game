@@ -4,10 +4,12 @@
 ## dict: the first landed hit counts for combo / MP once, and the combo resets only when every shot landed nothing
 ## (c-combo-reset). D25: it drops a fading trail piece every design.feel.trail.trail-every-s and plays the `impact`
 ## bundle (sound, trauma, flash sphere at the splash radius) when it lands or hits the ground.
+## D26: `fire()` spawns a volley for any shooter — the player's `_fire` and a creature's `_shoot` share it, and
+## `shot.color` tints the sphere (creature roles are tinted by `design.creature-roles.<role>.color`).
 ## ponytail: still a small coloured sphere, no model and no particles (todo_implement.md).
 extends Node3D
 
-var shooter                             # the player (has _strike, bodies_within, _landed, combo, dead)
+var shooter                             # the player or a ranged / mage creature (has _strike, bodies_within, _landed, feel, dead)
 var shot: Dictionary = {}               # the moveset / runtime dict (speed, gravity, radius, life-s, splash, pierce, tick-s, return)
 var vel := Vector3.ZERO
 var dmg := 0.0
@@ -19,10 +21,26 @@ var _tick := 0.0
 var _trail := 0.0
 var _returning := false
 
+## `count` shots fanned by `spread` radians around `dir`, sharing one attack record: the whole volley
+## counts once for combo / MP. Any shooter with `_strike` / `bodies_within` / `_landed` / `feel` can fire
+## (the player from `_fire`, a ranged / mage creature from `_shoot`, D26).
+static func fire(shooter, from: Vector3, dir: Vector3, s: Dictionary, dmg: float, combo_bonus: bool, applies: Array) -> Array:
+	var count := int(s.get("count", 1))
+	var attack := {"hits": 0, "live": count}
+	var out: Array = []
+	for i in count:
+		var pr = new()
+		pr.shooter = shooter; pr.shot = s; pr.dmg = dmg; pr.combo_bonus = combo_bonus; pr.applies = applies; pr.attack = attack
+		pr.vel = dir.rotated(Vector3.UP, float(s.get("spread", 0.0)) * (i - (count - 1) / 2.0)) * float(s["speed"])
+		shooter.get_parent().add_child(pr)
+		pr.global_position = from
+		out.append(pr)
+	return out
+
 func _ready() -> void:
 	var m := MeshInstance3D.new(); var s := SphereMesh.new()
 	s.radius = 0.15; s.height = 0.3; m.mesh = s
-	m.material_override = StandardMaterial3D.new(); m.material_override.albedo_color = Color(1.0, 0.85, 0.3)
+	m.material_override = StandardMaterial3D.new(); m.material_override.albedo_color = Color(str(shot.get("color", "#ffd94d")))
 	add_child(m)
 
 func _physics_process(dt: float) -> void:
@@ -89,7 +107,7 @@ func _hit(hits: int) -> void:
 func _end() -> void:
 	if not attack.is_empty():
 		attack["live"] -= 1
-		if attack["live"] <= 0 and attack["hits"] == 0 and shooter != null and is_instance_valid(shooter):
+		if attack["live"] <= 0 and attack["hits"] == 0 and shooter != null and is_instance_valid(shooter) and shooter.get("combo") != null:
 			shooter.combo = 0                              # c-combo-reset: the whole attack whiffed
 		attack = {}
 	queue_free()

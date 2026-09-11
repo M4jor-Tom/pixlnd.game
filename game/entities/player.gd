@@ -181,9 +181,10 @@ func take_damage(amount: float, from: Node) -> void:
 		elif before > hp:
 			feel.play(&"hurt", head(), {"amount": before - hp, "kind": &"hurt"})   # what we actually lost
 
-## Dodged or blocked hits carry no status (D23); knockback goes through _push so input does not erase it next tick.
+## Dodged or blocked hits carry no status (D23) — except poison, which a dodge never avoids (D26, status-effects.json);
+## knockback goes through _push so input does not erase it next tick.
 func apply_status(id: StringName, cfg: Dictionary, hit: float, from: Node) -> void:
-	if _iframes > 0.0 or blocks_from(from):
+	if (_iframes > 0.0 and id != &"poison") or blocks_from(from):   # D23 i-frames, D26: dodge never avoids poison
 		return
 	if StringName(str(cfg.get("as", id))) == &"knockback":
 		var d: Vector3 = global_position - (from as Node3D).global_position; d.y = 0.0
@@ -525,19 +526,9 @@ func _aim_point(range: float) -> Vector3:
 func _fire(s: Dictionary, dmg: float, combo_bonus: bool, applies: Array, from := Vector3.INF) -> Array:
 	if from == Vector3.INF:
 		from = eye()
-	var count := int(s.get("count", 1))
 	if feel != null:
 		feel.play(&"shoot")                                   # D25: once per attack, not per shot of a volley
-	var attack := {"hits": 0, "live": count}
-	var out: Array = []
-	for i in count:
-		var pr := Projectile.new()
-		pr.shooter = self; pr.shot = s; pr.dmg = dmg; pr.combo_bonus = combo_bonus; pr.applies = applies; pr.attack = attack
-		pr.vel = aim().rotated(Vector3.UP, float(s.get("spread", 0.0)) * (i - (count - 1) / 2.0)) * float(s["speed"])
-		get_parent().add_child(pr)
-		pr.global_position = from
-		out.append(pr)
-	return out
+	return Projectile.fire(self, from, aim(), s, dmg, combo_bonus, applies)
 
 ## A landed attack: +1 combo (capped per weapon-type), the M1 finisher counter, MP for non-mages on basic hits.
 func _landed(combo_bonus: bool) -> void:

@@ -8,7 +8,7 @@ const Model := preload("res://ontology/model.gd")
 const Items := preload("res://game/items/items.gd")
 const Combat := preload("res://game/combat/combat.gd")
 
-## Deterministic plan for one zone: [{species, level, hostility, positions: [Vector3]}].
+## Deterministic plan for one zone: [{species, level, hostility, positions: [Vector3], role}].
 static func plan(gen, zc: Vector2i, design: Dictionary, creatures: Dictionary, rosters: Dictionary, party_level: int) -> Array:
 	var spawns: Dictionary = design["spawns"]
 	var out: Array = []
@@ -48,8 +48,27 @@ static func plan(gen, zc: Vector2i, design: Dictionary, creatures: Dictionary, r
 		var pb := rng.randf_range(float(gen.enemy_hp["power-base"][0]), float(gen.enemy_hp["power-base"][1]))
 		var max_hp := Model.stat_curve(lvl, 0) * 200.0 * pow(2.0, pb * 0.25)      # design.enemy-hp.formula
 		var dmg := Combat.enemy_damage(lvl, pb, design["combat"])
-		out.append({"species": StringName(c.id), "level": lvl, "hostility": h, "max_hp": max_hp, "damage": dmg, "positions": positions, "seed": rng.randi()})
+		var cr: Dictionary = design["creature-roles"]                 # D26: one combat-role per group, rolled last
+		var role := str(c.combat_role)                                # so every earlier roll keeps its old value
+		if role == "any-class":
+			role = _roll_role(cr["any-class"], rng)                   # humanoids roll a class per group
+			# ponytail: the roll is the whole "class" — no spec, equipment or appearance behind it (todo_implement.md)
+		elif not cr.has(role):
+			role = str(cr["default"])                                 # no role in creatures.json (or `none`): melee
+		out.append({"species": StringName(c.id), "level": lvl, "hostility": h, "max_hp": max_hp, "damage": dmg, "positions": positions, "role": role, "seed": rng.randi()})
 	return out
+
+## design.creature-roles.any-class: weighted pick from the group's rng (same seed → same role).
+static func _roll_role(weights: Dictionary, rng: RandomNumberGenerator) -> String:
+	var total := 0.0
+	for k in weights:
+		total += float(weights[k])
+	var r := rng.randf() * total
+	for k in weights:
+		r -= float(weights[k])
+		if r <= 0.0:
+			return str(k)
+	return str(weights.keys()[-1])
 
 ## Instantiate a plan under `parent` (the zone node). Returns the creatures.
 ## `ontology` set → every creature drops gen-loot on death (items.gd); null (tests) → no loot.
@@ -69,6 +88,11 @@ static func populate(parent: Node3D, plan_: Array, design: Dictionary, creatures
 			m.target = target
 			m.setup(g["species"], g["level"], g["max_hp"], g["damage"], g["hostility"], spawns["ai"], design["combat"]["enemy-attack"], size, color, g["seed"] + i)
 			m.flash_s = float(design["combat"]["hit-flash-s"]); m.design = design
+			var cr: Dictionary = design["creature-roles"]             # D26: what this role does, species override on top
+			m.role = StringName(g.get("role", cr["default"]))
+			m.role_cfg = (cr[str(m.role)] as Dictionary).duplicate(true)
+			m.role_cfg.merge((cr["species"].get(str(g["species"]), {}) as Dictionary).duplicate(true), true)
+			m._learn_feel(target)                                     # the shots need the player's feel node at spawn
 			if ontology != null:
 				m.died.connect(func() -> void: Items.drop_for(m, ontology, design))
 			made.append(m)

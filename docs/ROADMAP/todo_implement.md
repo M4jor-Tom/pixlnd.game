@@ -43,9 +43,20 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
   run since D25; still missing: portrait, minimap, enemy name colours (`hud-element`, `ui.json`).
 
 ## Creatures (§3.2 creature + ai-behavior, slice pending)
-- [x] Basic melee attack both ways, death, neutral retaliation (combat slice). Still missing: aggro
-  table, taunt, stun, group aggro, potions at low HP, enemy combos, ranged/mage roles
+- [x] Basic melee attack both ways, death, neutral retaliation (combat slice); ranged / mage roles shooting back
+  (D26, `design.creature-roles`). Still missing: aggro table, taunt, group aggro, potions at low HP, enemy combos
   (`ai-behavior`, `creature.combat-role`).
+- [ ] A ranged / mage creature aims where the target *is*: no lead on a moving one, so strafing walks out of a
+  slow mage bolt — `creature.gd#_shoot` ponytail.
+- [ ] Line of sight is one ray: a wall *or another creature* in the way just stops the shot, the shooter never
+  strafes for a clear angle; and the chase still starts at `design.spawns.ai.aggro-range` (12), so a role `range`
+  beyond it is unreachable until the target comes closer — `creature.gd#_los` ponytail.
+- [ ] The wizard "staff/wand laser" and witch "ray attack" fire a bolt like every other mage: no beam role
+  (`design.creature-roles` has `kind: projectile` only; `design.movesets` has the player's beam runtime).
+- [ ] An `any-class` humanoid's rolled role is the whole class: no spec, weapon, armor or appearance behind it
+  (`gen-spawns.humanoid-class`, `gen-npc-appearance`) — `spawner.gd#plan` ponytail.
+- [ ] A creature hit ignores the player's armor (the reach bite and the shot both call `take_damage` raw, no
+  `Combat.after_armor`) and can never crit — `creature.gd#_strike` ponytail.
 - [ ] Steering is straight-line: no A* with climbing (`ai-behavior.pathfinding`); creatures
   stall on cliffs > 1 block.
 - [ ] Capsules coloured by hostility until species models exist (`appearance`, `.cub` models →
@@ -115,7 +126,7 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
 - [x] Defence (D23, `player.gd` + `creature.gd` from `design.defence`): M3 dodge roll with i-frames and per-passive rewards,
   M2-held block (shield / guardian / cyclone) with block-power + MP, the stealth bar (sneak / aim fill, camouflage pins,
   decay, attack / crit / MP bonus, aggro range cut), creature hits rolling stun / knockback on the player. Still open:
-  poison is not a creature hit yet (so "dodge never avoids poison" is moot); the ninja crit window (`elusiveness`),
+  a spitter's poison is a creature hit since D26 and goes through a dodge, as the sources ask; the ninja crit window (`elusiveness`),
   counter-strike and hit-series passives do nothing; stealth ignores darkness / lamps (no game clock);
   knockback fade is a constant (`player.gd#PUSH_DECAY`);
   nothing visually checked; every D23 number is untuned.
@@ -133,7 +144,7 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
   ambush poisons. Still open: no animations or hit timing (a swing is instant; the longsword lunge is a `move_and_collide` jump), the
   boomerang is not camera-steerable, wand M2 is one thick beam (not a held 10-hit ray), bow dud shots do not build combo, poison shares
   the burning slot (`entity.gd`, one of the two at a time), projectiles are yellow spheres with a fading-sphere trail and an impact
-  flash (D25) but still no model or particles, creatures never shoot back (`ai-behavior` ranged / mage roles), the main scene picks the class only from `-- --class=<id>`, nothing visually
+  flash (D25) but still no model or particles (creatures shoot the same projectiles since D26), the main scene picks the class only from `-- --class=<id>`, nothing visually
   checked; every D24 number is untuned.
 - [x] Item instances, equipment slots, armor stat (D18, `game/items/`). Still open: the modifier roll only
   seeds the name — stats.json gives no roll term for damage/armor; gear hp/regen/tempo/crit are not
