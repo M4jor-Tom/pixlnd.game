@@ -1,4 +1,4 @@
-# Handoff — resume here (written 2026-09-11, after the D24 movesets + projectiles slice)
+# Handoff — resume here (written 2026-09-11, after the D25 game feel slice)
 
 Read this, then `git log --oneline -8`, then `docs/ROADMAP/todo_implement.md`. Nothing else is
 needed to continue; the repo is self-describing from these three.
@@ -8,8 +8,7 @@ Cube World rebuild in Godot 4.7.2 + GDScript, **ontology-first**: `ontology/` is
 truth (`domain.md` classes/relations/constraints/generators, `instances/*.json` content,
 `model.gd` typed loader + validator). Engine code in `game/` only *consumes* it. Every decision
 the sources never settled is a numbered **D** entry: `domain.md §7` + `docs/ROADMAP/todo_decide.md`
-(D1–D2` + `docs/ROADMAP/todo_decide.md`
-(D1–D24 all taken). Designed numbers live in `ontology/instances/generators.json#design.<topic>`.
+(D1–D25 all taken). Designed numbers live in `ontology/instances/generators.json#design.<topic>`.
 
 ## State of the build (all committed and pushed to origin/master)
 | commit | slice | what runs |
@@ -29,6 +28,7 @@ the sources never settled is a numbered **D** entry: `domain.md §7` + `docs/ROA
 | 529adac, 0d7bcdd | settlements (§3.1, D22) | `world_gen.gd#village_at` one village per land from the land seed, plateau in `height_at`, `settlement.gd` ring of box buildings + `npc.gd` service NPCs streamed by `world.gd`, spawner keeps wild groups 40 blocks off the square, `items/shop.gd` stock + `design.prices` buy / sell with `shop_panel.gd` (E at a vendor), trainer respec + inn rest as HUD toasts, `world.spawn-rule` = the (0,0) village square, `c-settlement-config`, test_settlement |
 | 4478016, cfacf61 | defence (§3.3, D23) | `player.gd` M3 dodge roll (i-frames, 25 stamina, ninja MP / assassin stealth), M2-held block with a shield / as guardian / during cyclone (front cone × 0.2, block-power, MP per block), stealth bar (sneak / aim fill, camouflage pins, empties on a hit; attack / crit / MP bonus), `creature.gd` aggro range × stealth cut + hit rolls stun / knockback on the player (blocked / dodged hits carry nothing), HUD block-power + stealth bars, `c-defence-config`, test_defence |
 | 35c5be0, 1cfe2d4 | movesets + projectiles (§3.3, D24) | `combat/projectile.gd` shots (gravity, ray sweep, splash, pierce + tick, return), `player.gd#_attack` M1 / M2 per main-hand weapon-type from `design.movesets` (melee spin / lunge / finisher, projectile, beam, at-cursor along the camera aim), combo / MP once per attack + whole-attack whiff reset, dagger poison, fire-missiles / bubbles projectile runtime + shuriken-attack `throw` in `abilities.gd`, `main.gd` `-- --class=<id>`, `c-moveset-config`, test_projectiles |
+| 64e4c66, ec09cbc, 27fa3b2 | game feel (§3.3 + §3.7, D25) | `combat/feel.gd` event bundles from `design.feel` (hit-stop on `Engine.time_scale` with a real-time end, camera trauma → `orbit_camera.gd` shake on the Camera3D offsets, sfx synthesised once per alpha id from `design.feel.sfx`, floating damage numbers as Label3D, impact flash + projectile trail spheres, stun stars over any stunned entity), one bundle per `_strike` (kill > crit > hit) + a number per body, hurt / block / dodge / shoot / level-up / pickup / coin events in `player.gd`, dot ticks number-only, HUD level-up pop + buff-icon row, `c-feel-config`, test_feel |
 
 Binaries: every push to `master` runs `.github/workflows/release.yml` (`firebelley/godot-export`
 reads `export_presets.cfg`), which refreshes the rolling **`latest`** prerelease with
@@ -42,7 +42,7 @@ cubes are loot (colour = rarity, gold = coins). Kills give XP; the HUD line show
 and banked skill points (about five even-level kills per level); spend them on X, then key 1 (Smash) leaps to the
 nearest enemy and stuns it (100 stamina, 10 s cooldown that points shorten), 2 Cyclone channels, 3 War Frenzy buffs,
 4 Rock Fist charges. Basic hits fill MP; hold M2 (bar turns pink) and release for a special that scales with the MP
-spent. Every other key in `keybinds.json#hybrid` (Tab, F, T, C, M, F1, F3) is bound but does nothing yet. Buy a shield at the weapon vendor to block; the grey bar is block-power, the purple one stealth (rogue Sneak on key 2). Sell loot at a vendor to afford the stock.
+spent. Every other key in `keybinds.json#hybrid` (Tab, F, T, C, M, F1, F3) is bound but does nothing yet. Buy a shield at the weapon vendor to block; the grey bar is block-power, the purple one stealth (rogue Sneak on key 2). Sell loot at a vendor to afford the stock. Hits now freeze a frame, shake the camera, float damage numbers (yellow = crit, orange = burning / poison, red = you), blip a placeholder sound, and stunned things wear stars; level-ups pop a toast; buffs show as lettered boxes (D25).
 
 ## The loop for every slice (do not skip step 1)
 1. **Ontology sync** — read the §3 class + §6 generator + `instances/*.json` for the feature.
@@ -79,6 +79,8 @@ spent. Every other key in `keybinds.json#hybrid` (Tab, F, T, C, M, F1, F3) is bo
   argument and silently runs the main scene forever. Loops that build Godot arguments run under
   `nix develop -c bash -c '…'` (bash is in the flake for exactly this). Also: sed with `|` delimiter breaks on `|` in the text;
   Perl `$1[` is an array — use `${1}`.
+- `Engine.time_scale` (D25 hit-stop) also scales `physics_frame` waits and tweens: a test that must get past a hit-stop waits on a
+  real-time timer (`create_timer(s, true, false, true)`); the feel node restores 1.0 on the real clock and in `_exit_tree`.
 - Zone build ≈ 40 ms on the main thread (2 per frame): expect hitches; threading is on the todo.
 - Low FPS with idle-looking CPU/GPU = the main thread (physics) pegged: run the game, then
   `./monitors/godot_threads.sh` (red = physics catch-up spiral). Headless `--print-fps` reproduces it
@@ -94,6 +96,7 @@ game/world/          world_gen.gd (lands, climate, heights, names, danger tier, 
 game/entities/       entity.gd (HP/level/hostility/step-up, statuses: stun/knockback/burning/slow), player.gd (E: interact → talk / respec / rest / pick up), orbit_camera.gd, creature.gd, npc.gd
 game/combat/         combat.gd (pure formulas), abilities.gd (D21 runtimes: cooldowns, costs, dash/channel/cast state, buffs; D24 projectile runtime + dash throw),
                      projectile.gd (D24 shots: gravity, ray sweep, splash, pierce, return; damage through player._strike)
+                     feel.gd (D25: hit-stop, trauma, synthesised sfx, damage numbers, flash / trail / stars from design.feel)
 game/items/          item.gd, items.gd (gen-item, stats, names, gen-loot, ground drops), inventory.gd,
                      ground_item.{tscn,gd}, inventory_panel.gd, shop.gd (stock, prices, buy / sell), shop_panel.gd
 game/progression/    progression.gd (level settle; xp_for_kill is in ontology/model.gd), skill_tree.gd (points, spend rule,
@@ -103,9 +106,8 @@ docs/ROADMAP/        todo_decide.md (D1–D24), todo_implement.md (deferrals), c
 ```
 
 ## Next slice (recommended order)
-1. Game feel (`game-feel`, `todo_implement.md` Combat / Progression): hit-stop, damage numbers, stun stars / buff icons, level-up toast,
-   projectile trails / impact flashes, sounds from `audio.json`; then creature ranged / mage roles shooting back (`ai-behavior`,
-   reuse `combat/projectile.gd`).
+1. Creature ranged / mage roles shooting back (`game-ai`, `creature.combat-role`, reuse `combat/projectile.gd` with a creature shooter; creature
+   hits then carry `design.status-effects` so the D25 dot numbers show on the player), then the aggro table / group aggro (`ai-behavior`).
 2. Items backlog (`todo_implement.md` §3.4): rings/amulets, gear HP, upgrade cubes, tabs/tooltips.
 3. World backlog: thread zone building (`world.gd` ponytail), a game clock (`c-midnight-reset`: restock, inn sleep), flora / dungeons / POIs
    (`gen-flora`, `gen-dungeon`, `gen-poi`), villagers with schedules (`gen-schedule`).
