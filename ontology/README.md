@@ -12,7 +12,18 @@ ontology/
 └── validate.gd      headless check: `nix develop -c godot --headless -s ontology/validate.gd`
 ```
 
-## Status (2026-09-07)
+## Current scope and decisions (2026-09-15)
+
+Hybrid v1 is alpha progression + approved Steam content; A/S source descriptions are historical
+reference, and X/cut or Omega-only content is roadmap coverage, not launch availability (item 8).
+Regional gear power loss is **permanently excluded**: never propose or implement it, even for
+Cube World cloning fidelity. It is not deferred or an alternative mode.
+D1–D26 and subsequent approvals stand; unresolved merges and application status are tracked in
+`docs/ROADMAP/todo_decide.md §E`. Dated build notes below include superseded placeholders, not
+proof of current coverage. For "resume walking through items", follow `tasks/lessons.md` and
+that checkpoint, not the gameplay slice loop.
+
+## Decision and build history (from 2026-09-07)
 
 - Research complete; `domain.md` + 40 instance files + `model.gd` written.
 - Owner decisions applied: **hybrid ruleset** (alpha progression + steam content), **Godot 4 +
@@ -57,7 +68,7 @@ ontology/
 
 | file | contents |
 |---|---|
-| rulesets.json | alpha / steam / omega feature flags |
+| rulesets.json | chosen hybrid flags; alpha / Steam historical reference; Omega announced roadmap |
 | races.json, classes.json, specializations.json | player identity |
 | abilities.json | ~65 skills, passives, movement abilities, alpha tree positions, steam inputs |
 | weapon-types.json, equipment-slots.json, materials.json, rarities.json, affixes.json, item-types.json | item model |

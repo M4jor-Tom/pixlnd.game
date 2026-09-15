@@ -7,7 +7,8 @@ derived from this file and `instances/`. Nothing downstream may drift ahead of i
 
 - Every class, relation, generator and instance has a **stable kebab-case ID**. IDs never change
   once referenced; rename the `name`, not the `id`.
-- **Version tags** mark where a fact comes from. A feature may exist in several versions.
+- **Version tags** mark where a fact comes from, not pixlnd availability or implementation
+  status. A feature may exist in several source versions; hybrid scope follows §1 and approvals.
   - `A`  Alpha 0.1.0 / 0.1.1 (July 2013)
   - `S`  Steam 0.9.x beta → 1.0.0-1 (Sept 23 – Oct 1 2019)
   - `Ω`  Cube World Omega (announced 2023-05-25, unreleased; only announced facts)
@@ -27,10 +28,11 @@ layouts), CWSDK (1.0 modding SDK), coremaze stat reverse-engineering, Wollay's 2
 
 ## 1. Scope
 
-**Domain:** a seed-driven, infinite, voxel, third-person action RPG with 8 races × 4 classes × 2
-specializations, procedurally generated lands (biomes, dungeons, settlements, missions), a
-tame-anything pet system, crafting, and drop-in co-op. Two shipped rule sets exist and are
-**mutually exclusive in progression**:
+**Reference domain:** a seed-driven, infinite, voxel, third-person action RPG with 8 races ×
+4 classes × 2 specializations, procedurally generated lands (biomes, dungeons, settlements,
+missions), a tame-anything pet system, crafting, and drop-in co-op. The original Cube World
+shipped two rulesets with **mutually exclusive progression**; these are historical comparisons,
+not additional playable modes in pixlnd. The chosen hybrid target is listed alongside them:
 
 | Ruleset | Progression | Gear scope | Traversal unlocks | Fast travel |
 |---|---|---|---|---|
@@ -42,20 +44,34 @@ Everything else (world, creatures, weapons, combat feel, crafting stations, pets
 shared with version-specific deltas.
 
 **Decision D1 (owner, 2026-09-07): ship `ruleset-hybrid`.** Alpha progression (XP → levels →
-skill points, skill tree, item power, adaptation, spirit cubes, formulas) **plus** all Steam
-content (key items, artifacts, lore, arenas, factions and events, shrines, flight masters, elixirs,
-gnome suppliers, books of crafting). **Region lock is dropped** (D4): equipment never loses power
+skill points, skill tree, item power, adaptation, spirit cubes, formulas) **plus** approved Steam
+content, subject to D3/D4 and subsequent approvals (key items, artifacts, lore, arenas, factions
+and events, shrines, flight masters, elixirs, gnome suppliers, books of crafting).
+**Region lock is dropped** (D4): equipment never loses power
 when the character travels; there are no `+` items, no `worn` degradation, no per-land inventory
 pages, and key items work everywhere once found. Artifacts stay as permanent traversal-stat
 collectibles but no longer define level. Flags in `instances/rulesets.json#ruleset-hybrid`.
-Alpha/steam rulesets remain documented for reference only.
+Alpha/Steam rulesets remain documented for reference only.
 
-**In scope:** all of the above, including cut content flagged `X` so it can be re-enabled.
+**Permanent exclusion (owner reaffirmed 2026-09-15):** never propose or implement regional
+gear power loss in pixlnd, even for Cube World cloning fidelity. This is not a v2 deferral or
+an alternative mode. Historical region-lock data is reference only, never an implementation target.
+
+**Hybrid v1 scope (item 8, owner approved 2026-09-15):** the approved hybrid above, with D1–D26
+and subsequent reconciliation approvals preserved. Ontology coverage is broader than v1:
+`X` cut/data-only content and `Ω`-only announcements are reference/roadmap material, not launch
+availability, even if a historical flag is true. Their existing definitions and provenance remain.
+**Current-build coverage:** dated slice notes and `generators.json#design` describe approved
+implementation stages, including temporary approximations, not proof that the final target is
+implemented. Later decisions supersede earlier placeholders. Unresolved hybrid merges remain
+in `docs/ROADMAP/todo_decide.md §E` (including inn services, traversal prerequisites and artifact
+accumulation); this scope clarification does not decide them or authorize gameplay changes.
 **Out of scope:** Picroma's engine internals (Plasma GUI runtime, DX11 renderer), the exact
 network byte layout of the 2013 protocol (kept as reference only), Steam platform integration,
 Omega content beyond what was publicly announced.
-**Later (v2):** Omega-only systems (weather, procedural body parts, signature abilities per
-species, coarse-map-first generation) are modeled as `Ω` so they can be turned on later.
+**Roadmap, not a release promise:** cut content and Omega-only systems (weather, procedural body
+parts, signature abilities per species, coarse-map-first generation) remain in `docs/ROADMAP/`
+under D3/D4. Modeling them does not authorize enabling them; a later inclusion needs owner approval.
 
 ---
 
@@ -83,7 +99,7 @@ Each must be answerable from the model + instances. Data requirement in the righ
 | CQ16 | How does multiplayer work in each version? | `multiplayer-mode`, `slash-command` |
 | CQ17 | What is on screen and which key does what? | `hud-element`, `input-binding`, `option` |
 | CQ18 | What was in which version, and what did fans ask to fix? | `ruleset` feature flags, `instances/versions.json` |
-| CQ19 | What did Omega announce that the rebuild should leave room for? | `Ω`-tagged classes/fields |
+| CQ19 | What did Omega announce, retained as roadmap/reference rather than v1 content? | `Ω`-tagged classes/fields |
 
 ---
 
@@ -280,7 +296,7 @@ Anything with a position, HP and appearance. Base of player, NPC, creature, pet,
 |---|---|---|
 | pos, velocity, accel, roll/pitch/yaw | vectors | pos as int64 native units |
 | hostility | `hostility` enum | friendly-player 0, hostile 1, friendly 2/4/5, named-friendly 3, target 6 |
-| species | `race` or `creature` ref | alpha entity-type id 0..155 |
+| species | `race` or `creature` ref | stable ontology ID; numeric source entity IDs use the source version's namespace (see `creature`) |
 | class, specialization | refs | humanoids only (any humanoid NPC may have any class) |
 | hp, mp, stamina, block-power, stealth | `resource` | |
 | level, xp | int | A; S: level = artifact count |
@@ -366,7 +382,7 @@ A non-player species (animal, insect, aquatic, monster, humanoid enemy, boss spe
 → `instances/creatures.json` (~150).
 | prop | type | notes |
 |---|---|---|
-| alpha-entity-id | int? | 0..155 or null (post-alpha) |
+| alpha-entity-id | int? | legacy name for the numeric source entity ID, not alpha-only; JSON `aid`, typed `alpha_entity_id`; null = unrecorded |
 | family | `creature-family` ref? | beetles, runners, slimes, alpacas, dogs, skeletons, golems, sprouts |
 | category | animal \| insect \| aquatic \| plant-creature \| monster \| undead \| demon \| elemental \| humanoid \| boss-species \| static-target \| unused |
 | hostility-default | hostile \| neutral \| passive \| friendly \| variable (by tribe) |
@@ -386,6 +402,14 @@ A non-player species (animal, insect, aquatic, monster, humanoid enemy, boss spe
 | drinks-potions | bool | ogre, mermaid, insect guard, NPCs |
 | lantern-at-night | bool | |
 | versions | | |
+
+Source IDs (reconciliation item 6, approved 2026-09-15): the cuwo alpha reference table covers
+0..155; post-alpha additions may have larger IDs. Radishling Sprout / Mineral Water share 192,
+and Caterpillar / Mixed Salad share 293 (`research/research_creatures_quests.md §2.5`).
+Version tags, not the integer alone, record provenance: an alpha-reserved ID does not prove
+alpha availability (F10). Preserve stable creature IDs, numeric source IDs, version tags and
+`tame-food` / `pet-food.tames` pairings. Keep the legacy field names for compatibility; do not
+clamp later IDs to the alpha range or invent values for unrecorded IDs.
 
 ### creature-family
 Shared base form. → `instances/creature-families.json`.
@@ -505,7 +529,8 @@ whiffed attack resets; expires ~5 s idle; transfers between targets; per-weapon 
 M2. Warrior/Ranger/Mage hold to charge (MP bar turns pink for the amount to be spent; more MP =
 more damage and stun/knockdown chance); Rogue instant. Mage M2 costs 30 MP (S). `A S`
 
-### block
+### combat-block
+Defensive action, distinct from the terrain [block](#block).
 Hold M2 with shield (Guardian: any weapon; any warrior during Cyclone); drains `block-power`,
 regenerates when not blocking (faster during Cyclone); successful block gives MP (D11:
 the bar specials spend); Guardian block power ×2. `A S`
@@ -570,8 +595,23 @@ mythical `A X` (bug). Same scale colours enemies and missions. → `instances/ra
 Name prefix per rarity tier + "of <Name>" / "<Name>'s" for epic/legendary. → `instances/affixes.json`.
 
 ### equipment-slot
-13 entity slots: main-hand (M1), off-hand (M2), chest, shoulders, gloves, boots, amulet, ring-l,
-ring-r, pet, special (glider/boat `A`), lamp `A`, consumable (Q). → `instances/equipment-slots.json`.
+13 indexed entity storage positions, including reserved `unknown-0` (not usable). The 12 usable
+positions are amulet, chest, gloves, boots, shoulders, main-hand, off-hand, ring-left, ring-right,
+lamp, special and pet. Preserve every index in `instances/equipment-slots.json`; no extra slot
+or stat bonus is added. The quick consumable (Q) is separate: selecting it does not displace gear.
+
+Approved hybrid model (reconciliation item 3, 2026-09-15): `accepts` names `item-type` IDs,
+with subtype restrictions where needed:
+- `lamp` accepts `light` (subtype `lamp`).
+- `special` accepts `special` (subtypes `hang-glider` or `boat`), one equipped at a time.
+- Hand slots accept `weapon`; shields are weapon subtypes, not a separate item type.
+  Existing class and handedness restrictions still apply (`c-weapon-class`, `c-hands`).
+- `pet` accepts a `pet-cage` or `pet-food` during taming, without replacing the Q selection.
+- Armor and jewelry retain their matching slots; `unknown-0` accepts nothing.
+
+Ontology approval only: the live slot JSON and its consumers await a separately authorized
+implementation (`docs/ROADMAP/todo_decide.md §E`). Wand handedness and traversal prerequisites
+remain unresolved; this decision does not choose how gliding, sailing or riding is unlocked.
 
 ### consumable
 Food (sit, immobile, heal over 15 s), potion (channel while moving), elixir `S` (10 min +20 % stat),
@@ -604,9 +644,14 @@ Attach `material-cube`s (wood on wood, iron on metal; +0.1 effective level each;
 destroys the cube.
 
 ### spirit-cube
-`A` boss drop (one per kill, always same type/level per boss): fire (+fire damage), wind (+attack
-& move speed per combo hit), ice (slows target, blue), unholy (life steal on specials scaling with
-combo). Level must satisfy `weapon-level − 10 ≤ cube-level ≤ weapon-level`.
+`A` boss drop: one per eligible non-mission boss kill, always the same type/level per boss.
+Fire (+fire damage), wind (+attack & move speed per combo hit), ice (slows target, blue), unholy
+(life steal on specials scaling with combo). Level must satisfy
+`weapon-level − 10 ≤ cube-level ≤ weapon-level`.
+
+Hybrid retains the recorded alpha exception (reconciliation item 7, approved 2026-09-15):
+mission bosses, including Saurians, drop no spirit cube; their normal mission rewards are
+unchanged. Sources: `creatures.json#saurian`, `mission-types.json#alpha.boss-kill`.
 
 ### leftovers
 Unidentified gear drop (type 14) with tier colour and +N; identified for a fee at the identifier
@@ -617,7 +662,9 @@ Unidentified gear drop (type 14) with tier colour and +N; identified for a fee a
 lowering is free. Removed in S.
 
 ### pet-food
-Item type 20; subtype id == creature id it tames; one of each carried at a time. → `instances/pet-food.json` (58 obtainable + 6 cut `X`).
+Item type 20; numeric subtype matches the known source entity ID of the creature named by
+its stable `tames` reference, including post-alpha IDs (`c-food-id`). One of each carried at
+a time. → `instances/pet-food.json` (58 obtainable + 6 cut `X`).
 
 ### key-item
 `S` land-bound "special" items (A: glider & boat were bought items in the special slot).
@@ -648,7 +695,7 @@ The per-character bag and worn gear. `A S`
 | prop | type | notes |
 |---|---|---|
 | entries | (`item`, count)[] | no slot limit; count > 1 only for stackable item-types (`design.stack-cap`, c-stack-rule) |
-| equipment | `equipment-slot` → `item` | one item per slot; only types the slot `accepts` (c-slot-accepts) |
+| equipment | `equipment-slot` → `item` | at most one item per usable slot; type/subtype restrictions in `equipment-slot` (c-slot-accepts); excludes the separate Q selection |
 | coins | u32 | copper (`currency`); auto-picked up (`design.loot.ground`) |
 | start | `design.starting-inventory` | D18: starter weapon equipped + 5 life potions |
 
@@ -658,7 +705,9 @@ Quick-select wheel (Tab, A/D) chooses the Q item.
 
 ### loot-rule
 Drops random by enemy tier ±1 (bosses +1 `S`); leftovers of player tier from same-colour
-enemies; species drops; A boss: spirit cube + gear of same +N; +4 dungeon chest → mythical `A X`;
+enemies; species drops; A eligible non-mission boss: spirit cube + gear of same +N;
+mission bosses (including Saurians) drop no spirit cube in A / hybrid, keeping their normal
+mission rewards; +4 dungeon chest → mythical `A X`;
 S mission reward ≥1 class-fitting piece one rarity above quest colour + coins + 1 potion + gems;
 dropped items last ~1 game week; mission NPCs drop rewards once. → `generators.json#loot`.
 Open-world numbers (drop chances, rarity weights, level spread, ground lifetime, pickup radius):
@@ -695,6 +744,8 @@ Reference only. In 1.0 gear, leftovers, bombs' loot and key items were bound to 
 outside they became worn/grey (e.g. 194.1 → 5.4 dmg) or stopped working; `+` items kept full stats
 in adjacent lands. The hybrid ruleset removes all of it: `item.land`, `item.plus`, `rarity.worn`,
 `land.inventory-page` and constraints `c-region-lock` / `c-plus-adjacent` are inert.
+Permanently excluded from pixlnd: never propose or implement regional gear power loss, even
+for cloning fidelity (owner reaffirmed 2026-09-15, §1).
 
 ### lore `S`
 Per realm; lore sites ≈ +10 % each; 100 % reveals all its artifacts on the map (all its lands);
@@ -804,7 +855,7 @@ One row per fact type. Cardinality as `domain → range`.
 | yields | flora ∪ deposit ∪ creature | ingredient | 1→n | count range |
 | spawns-in | creature ∪ flora ∪ deposit | landscape ∪ terrain-feature ∪ dungeon-type ∪ poi-type | n→n | |
 | placed-in | dungeon-type ∪ poi-type ∪ settlement | landscape | n→n | |
-| tamed-by | creature | pet-food | 1→0..1 | food subtype == creature id |
+| tamed-by | creature | pet-food | 1→0..1 | stable ID pairing; food subtype matches the creature's known numeric source entity ID (alpha or post-alpha) |
 | member-of-family | creature | creature-family | n→1 | |
 | belongs-to-faction | creature ∪ npc-role | faction | n→n | |
 | hosts | dungeon-type ∪ poi-type | mission-type | n→n | |
@@ -812,7 +863,7 @@ One row per fact type. Cardinality as `domain → range`.
 | guards | creature (boss) | artifact ∪ key-item ∪ gnome-supplier ∪ magic-crystal | n→n | |
 | drops | creature | item ∪ spirit-cube ∪ leftovers ∪ currency | n→n | random by tier + species list |
 | holds | inventory | item | 1→n | count per entry; c-stack-rule |
-| equips | entity | item | 1→13 | one per equipment-slot; c-slot-accepts |
+| equips | entity | item | 1→0..12 | at most one per usable equipment-slot; reserved index 0 and separate Q selection excluded; c-slot-accepts |
 | requires-key-item | poi-type ∪ dungeon-type | key-item | n→n | harp→divine door, bell→crypt gate, whistle→bird statue, reins→riding |
 | located-in | settlement ∪ dungeon ∪ poi | land | n→1 | |
 | owned-by-realm | land | realm | n→1 | S |
@@ -825,7 +876,7 @@ One row per fact type. Cardinality as `domain → range`.
 | contains-station | building | crafting-station | 1→n | |
 | in-district | building | district | n→1 | A |
 | styled-by | settlement | landscape | n→1 | architecture theme |
-| equips-in | item-type | equipment-slot | n→1 | |
+| equips-in | item-type | equipment-slot | n→n | permitted slots, not simultaneous copies of an item; rings and weapons have multiple eligible positions, subject to c-slot-accepts |
 | restricted-to-class | weapon-type ∪ material | character-class | n→0..1 | |
 | has-hazard | landscape ∪ terrain-feature | status-effect | n→n | cold-water, toxic, lava |
 | countered-by | status-effect | consumable | n→n | hot chocolate, green smoothie, lemonade |
@@ -847,7 +898,7 @@ One row per fact type. Cardinality as `domain → range`.
 | c-race-class | any race × any class × either gender is valid | type |
 | c-spec-of-class | specialization.class == character.class; player starts as spec index 0 | load |
 | c-one-active-pet | at most one pet summoned; one of each pet-food carried | runtime |
-| c-food-id | pet-food.subtype == creature.alpha-entity-id (or post-alpha id) | load |
+| c-food-id | pet-food.tames references the creature by stable ID; when its numeric source ID is known, pet-food.subtype == creature.alpha-entity-id (legacy field includes post-alpha IDs; no alpha-range clamp) | load |
 | c-weapon-class | equipping weapon-type/armor material requires matching class (red name otherwise) | runtime |
 | c-hands | 1H ×2 or 1H + shield or one 2H; bracelets need two for full damage | runtime |
 | c-cube-cap | upgrades ≤ 16 (1H) / 32 (2H, shield); wood cubes only on wood weapons, iron on metal | load+runtime |
@@ -860,7 +911,7 @@ One row per fact type. Cardinality as `domain → range`.
 | c-stat-roll | roll = ((attributes<<16)+modifier) mod 21 ∈ 0..20 | generator |
 | c-loot-config | `design.loot`: every chance ∈ [0,1]; rarity-weights keys are rarities ≤ legendary with a positive sum; level-spread ≥ 0; gear-kinds and stack-cap.stackable name item-types; consumable-pool names consumables | load |
 | c-stack-rule | only `design.stack-cap.stackable` item-types stack (no cap, D6); gear (has a modifier roll) is one item per entry | runtime |
-| c-slot-accepts | an item equips only in an equipment-slot whose `accepts` lists its item-type (weapon-type `offhand` hands → off-hand only) | runtime |
+| c-slot-accepts | an item equips only in a usable equipment-slot whose `accepts` lists its item-type and whose subtype restrictions it satisfies (§3.4 equipment-slot); weapon-type `offhand` hands → off-hand only; c-weapon-class and c-hands still apply | runtime |
 | c-mp-range | mp ∈ [0, 100]; mage regenerates passively, others gain by hits/blocks/stealth/dodges; numbers `design.resources.mp` (D21) | runtime |
 | c-stun-immunity | cannot re-stun while stars shown | runtime |
 | c-combo-reset | any attack with a hitbox that misses resets combo to 0; cap per weapon-type | runtime |
@@ -916,7 +967,7 @@ reproducible; each generator lists invariants that a test can assert.
 | gen-poi | land | campsites, arenas, towers ≤5, circles, portals, pumps, trees, shrines, lore sites, spawner nests, hidden treasure, sky islands | counts in `c-land-count` |
 | gen-missions | land, day | A: 8×8 cell boss missions; S: typed missions with icons and tiers, daily regeneration | tier ladder white→yellow present; gnomes/books once per land |
 | gen-spawns | zone, land level/tier | creature spawns: species by landscape roster, group sizes, hostility, humanoid class/spec, `+1..+4` multipliers (A), boss-ification chance; open-world numbers `design.spawns` (D14); role per group: creature combat-role, any-class rolled from `design.creature-roles.any-class` (D26) | dungeon mobs above surface tier; farm animals white |
-| gen-boss | spawn | named, enlarged, coloured-tier variant with 1–2 random special moves; always-boss species; fixed spirit cube per boss (A) | size scaling rule; terrain breaking |
+| gen-boss | spawn | named, enlarged, coloured-tier variant with 1–2 random special moves; always-boss species; one fixed-type/level spirit cube per eligible non-mission boss kill (A / hybrid) | size scaling rule; terrain breaking; mission bosses, including Saurians, drop no spirit cube; normal mission rewards unchanged |
 | gen-name | seed, kind | land names (`<Name> Plains…`), dungeon names ("Castle ___"), realm/leader/capital names, item names (affix + material + type + of-name), boss names, NPC names, quarter names | epic/legendary items always named |
 | gen-item | tier/level, rarity roll, type, material, land (S) | `item` with modifier roll; stats via `gen-item-stats` | rarity ≤ legendary except mythical bug |
 | gen-item-stats `A` | item | damage/HP/armor/resi/regen/tempo/crit from coremaze curves: `curve(n,r) = 2^((1 − 1/((n−1)·0.05+1))·3) · 2^(r·0.25)`, `curve2 = curve/8`, `n = level + 0.1·cubes`; per-type k and material multipliers | monotone in level and rarity; roll ∈ 0..20 |
@@ -930,15 +981,19 @@ reproducible; each generator lists invariants that a test can assert.
 
 ## 7. Open points for validation
 
-Decisions only the owner can make (D) and facts research could not settle (F).
+Dated owner decisions (D) and research fact records (F), not a claim that every hybrid detail is
+settled or implemented. The current open questions and approval/application checkpoint are in
+`docs/ROADMAP/todo_decide.md §E`; preserve those deferrals. Earlier slice approximations below
+are historical implementation stages, superseded where later decisions say so.
 
 - **D1 Ruleset — DECIDED 2026-09-07: hybrid** (see §1).
 - **D2 Engine — DECIDED: Godot 4 + GDScript**, conditional on a maintenance check of the
   engine (agent dispatched). `model.gd` follows.
 - **D3 Cut content — DECIDED: not in v1.** Every `X` item is a follow-up in
   `docs/ROADMAP/*.md` (one file per theme, <100 lines, with online documentation links).
-- **D4 Omega — DECIDED: roadmap only** (`docs/ROADMAP/omega-*.md`). Also: **region lock
-  dropped** (gear never loses power while travelling).
+- **D4 Omega — DECIDED: roadmap only** (`docs/ROADMAP/omega-*.md`). Separately, **regional gear
+  power loss is permanently excluded**, not roadmapped: never propose or implement it, even
+  for cloning fidelity (owner reaffirmed 2026-09-15). Gear never loses power while travelling.
 - **D5 Multiplayer — DECIDED 2026-09-07: dedicated server**, alpha style, IP/DNS join, seed in
   server config. **D7** cap configurable, default 4. **D8** skin colour is a creation option.
   **D9** first-person zoom kept. **D10** 3 alpha columns + 1 `ultimate` column (see `skill-tree`).
@@ -949,7 +1004,8 @@ Decisions only the owner can make (D) and facts research could not settle (F).
 - **F1 — DECIDED**: heroic shout = taunt + heal; toughness +25 %; battle fury 13 % per hit; shadow
   shooter 30 s; bubbles 6; shuriken toss 25 stamina; R cooldowns per skill.
 - **F2 — DECIDED**: per-page, not rideable (the table was the 1.0.0-1 bug).
-- **F3** `+` items: adjacent lands vs kingdom-bound; `+` from 100 % lore.
+- **F3 — MOOT for pixlnd (D4)**: `+` items' adjacent-land/kingdom scope and 100 % lore drops
+  remain historical reference, not open gameplay choices.
 - **F4 — DECIDED (owner override)**: party-level band + per-land danger tier; distance from
   spawn no longer drives level (`generators.json#design.enemy-level`).
 - **F5** — split into D7/D8/D9, all decided.

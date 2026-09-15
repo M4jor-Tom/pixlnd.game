@@ -28,7 +28,7 @@
   "rules": {"restock": "daily (S also on inn sleep)", "buy-back": {"A": false, "S": true}, "sell-price-tooltip": "removed 0.9.1-4", "gnome-unlock": {"white": "uncommon", "green": "rare", "blue": "epic", "purple": "legendary"}, "money-abundance-s": "abundant (community)", "off-class-drops": "near-worthless to sell"},
   "loot": {
     "tier": "enemy tier ±1; bosses +1 (S)", "leftovers": "same-colour enemies drop leftovers of player tier", "species-drops": ["parrot-feather", "onion-slice", "radish-slice", "popcorn", "jellies (bats)"], "npc-weapons": "sometimes drop what they wield",
-    "A-boss": "spirit cube (fixed per boss) + gear of same +N", "A-dungeon": "vases, small chests, table items; +4 chest → mythical",
+    "A-boss": "eligible non-mission boss: one spirit cube (fixed type+level per boss) + gear of same +N; mission bosses (including Saurians): no spirit cube, normal mission rewards unchanged; hybrid preserves this exception", "A-dungeon": "vases, small chests, table items; +4 chest → mythical",
     "S-mission": "≥1 class-fitting piece one rarity above quest colour + coins + 1 potion + gems by colour", "S-dungeon": "one-time chests, artifact at end",
     "ground-items": "vanish after ~1 game week; drop via middle-click (player trading)", "npc-rewards": "once (0.9.1-4)"
   },
