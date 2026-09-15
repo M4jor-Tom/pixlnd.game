@@ -15,7 +15,8 @@
     "metal-weapon-common": {"inputs": {"iron-cube": 5}, "station": "anvil", "note": "S guide example"},
     "fist":      {"inputs": {"cotton-yarn": 2, "iron-cube": 5}, "station": "anvil"},
     "bow|crossbow": {"inputs": {"wood-cube": 20, "yarn": 4}, "station": "workbench"},
-    "boomerang|wand": {"inputs": {"wood-cube": 10}, "station": "workbench"},
+    "boomerang": {"inputs": {"wood-cube": 20}, "station": "workbench"},
+    "wand": {"inputs": {"wood-cube": 10}, "station": "workbench"},
     "staff": {"inputs": {"wood-cube": 20}, "station": "workbench"},
     "bracelet|ring|amulet": {"inputs": {"gold-cube|silver-cube": 5, "gem": "by rarity (legendary ring may need rubies)"}, "station": "none (amulet & ring tab)"},
     "gem-per-rarity": {"uncommon": "emerald", "rare": "sapphire", "epic": "ruby", "legendary": "diamond"}

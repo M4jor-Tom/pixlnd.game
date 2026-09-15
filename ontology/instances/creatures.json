@@ -1,6 +1,6 @@
 {
   "$schema": "creature",
-  "_doc": "aid = alpha entity id (cuwo). h = hostility default: P passive, N neutral, H hostile, V variable (by tribe), F friendly. cat = category. role = combat role. tame = pet-food id or null. ride = per-page rideable (see pet-food.json for conflicts). boss = always boss species. bossable = may spawn boss-ified. lands = landscapes / habitats. v = versions.",
+  "_doc": "aid = numeric source entity ID (legacy key): cuwo alpha references or post-alpha additions; null = unrecorded. v records version provenance; an alpha-reserved ID is not proof of alpha availability. h = hostility default: P passive, N neutral, H hostile, V variable (by tribe), F friendly. cat = category. role = combat role. tame = pet-food id or null. ride = per-page rideable (see pet-food.json for conflicts). boss = always boss species. bossable = may spawn boss-ified. lands = landscapes / habitats. v = versions.",
 
   "collie":           {"aid": 19, "name": "Collie", "cat": "animal", "family": "dogs", "h": "P", "lands": ["cities", "greenlands", "castles", "dungeons"], "tame": "bubble-gum", "ride": true, "pet-types": ["melee", "mount"], "notes": ["first pet (Wollay's dog Joschi)", "dungeon patrol ally of ogres (untameable)", "some base-legendary (S)"], "v": ["A","S"]},
   "shepherd-dog":     {"aid": 20, "name": "Shepherd Dog", "cat": "animal", "family": "dogs", "h": "P", "lands": ["greenlands", "near villages"], "tame": null, "v": ["A","S"]},

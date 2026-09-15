@@ -119,6 +119,8 @@ class RarityDef extends Entry:
 	@export var named := false
 
 class Creature extends Entry:
+	## Legacy API name: numeric source entity ID (alpha or post-alpha), -1 = unrecorded.
+	## JSON `aid` and this field keep their names; an ID alone does not establish version provenance.
 	@export var alpha_entity_id := -1
 	@export var family: StringName = &""
 	@export var category: CreatureCategory = CreatureCategory.ANIMAL
@@ -133,8 +135,8 @@ class Creature extends Entry:
 	@export var combat_role: StringName = &""                  # D26: melee|ranged|mage|any-class|"" (parsed from `role`)
 
 class PetFood extends Entry:
-	@export var subtype := -1                                  # == creature id it tames
-	@export var tames: StringName = &""
+	@export var subtype := -1                                  # numeric source entity ID, including post-alpha
+	@export var tames: StringName = &""                         # stable ontology creature ID
 	@export var rideable := false
 	@export var shop := false
 
