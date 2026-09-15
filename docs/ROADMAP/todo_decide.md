@@ -119,24 +119,29 @@ unambiguously, record the decision here for later instead of inventing a rule. T
 subsections track decisions; the reconciliation checklist tracks application. Approval alone does
 not mean a correction is applied; land it in `ontology/` before changing consumers.
 Present each proposal to the owner as the finished player experience, not as a schema edit;
-ask one question at a time. Approval of an ontology decision is not approval to implement
-additional gameplay.
+ask one question at a time. For every item, explain the player-visible result of approval AND
+of not approving/leaving it unresolved. Distinguish current-build effects from future risks;
+a declined documentation correction does not itself break the game or approve the opposite rule.
+Approval of an ontology decision is not approval to implement additional gameplay.
+The full walkthrough/resumption protocol is in `tasks/lessons.md`; the prompt
+**"resume walking through items"** means follow it and this checkpoint, not implement a slice.
+Never propose or implement regional gear power loss in pixlnd, even for Cube World cloning
+fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
-**Resume checkpoint (2026-09-15):** approved items 1 and 2 are applied and validated. Cookie is
-removed only from the shared loot/shop consumable pool; its historical definition and roadmap
-entry remain. `domain.md §4` now permits multi-stat effects and zero/multiple resource costs
-scoped by ruleset; existing effects, costs and hybrid balance are unchanged. Cookie regressions
-were added to the existing item and settlement tests; no runtime code changed. The only
-runtime effect is the explicitly approved Cookie pool removal. The owner reaffirmed items 1–2
-as ontology decisions and requested their commit. Item 3 (equipment) remains unapproved and
-unapplied. Next question, as a proposed finished experience: keep the existing gear positions,
-select the Q consumable independently of worn gear, put each gear category in its matching
-slot, and place taming food in the pet slot rather than the player's quick-consumable slot.
-No extra usable gear slot or stat bonus is proposed; preserve all 13 stored indices, including
-reserved `unknown-0`. Ask for ontology approval, not implementation approval. Slot JSON feeds
-live equipment acceptance, so leave slot data and consumers unchanged until explicitly
-authorized. Wand handedness and traversal prerequisites remain separate open choices.
-All other unresolved choices remain open; do not infer decisions from the owner's absence.
+**Resume checkpoint (2026-09-15):** items 1–2 are applied, validated and committed in `c675f85`.
+Items 3–8 are approved for ontology and their semantic corrections are committed in `f1ec112`
+on `fix/ontology-reconciliation` (see checklist); inspect actual Git state on resume.
+Gameplay implementation remains separate. Item 3's live slot data and related validator/consumer
+changes are deferred, not authorized. Item 7's spirit-cube drops remain unimplemented. Item 8
+clarifies hybrid v1 versus historical/roadmap coverage and temporary build approximations;
+no live flags, balance numbers or unresolved hybrid choices changed.
+**Paused here at the owner's request: do not present item 9 until asked to resume.**
+Next unpresented item: **9 — Validator gaps / validation contract**, linked to the open
+validation-contract question below. It has not been proposed, approved or applied. On
+"resume walking through items", follow `tasks/lessons.md`: present that item in finished-game
+terms with a recommendation and both outcomes, ask one approval question, then wait. Do not
+jump to the gameplay handoff's aggro slice or the deferred equipment implementation.
+Preserve D1–D26 and all walkthrough approvals; all remaining open questions stay open.
 
 ### Approved in the item-by-item walkthrough
 
@@ -148,6 +153,43 @@ All other unresolved choices remain open; do not infer decisions from the owner'
   `c-artifact-stat`). `costs` permits zero or multiple resources with amounts scoped by ruleset
   (Steam Intercept uses stamina and MP). Correct `domain.md §4`; preserve existing effects,
   costs and hybrid balance. This approval does not settle family membership or artifact stacking.
+- [x] **Equipment model (item 3, owner approved for ontology, 2026-09-15).** Gear has dedicated
+  matching positions; the Q consumable is selected independently and never displaces gear.
+  Lamps occupy the light slot, a glider or boat the special slot, and taming food the pet slot
+  rather than the player's quick-use slot. Keep existing class/hand restrictions and all 13
+  stored indices (12 usable positions plus reserved `unknown-0`); no extra slot or stat bonus.
+  Record canonical item-type/subtype distinctions. Gameplay implementation is a separate step;
+  wand handedness and traversal unlocks are not settled by this approval.
+- [x] **World blocks versus combat blocking (item 4, owner approved, 2026-09-15).** Model the
+  terrain voxel as `block` and the defensive action as `combat-block`. Reconcile ontology
+  references only; preserve terrain behavior, controls, block-power costs, MP rewards, damage
+  reduction and existing runtime config/event identifiers. This adds no gameplay mechanic.
+- [x] **Boomerang recipe (item 5, owner approved for ontology, 2026-09-15).** A common boomerang
+  costs 20 wood cubes at the workbench, following D6's two-handed size class. Preserve rarity
+  gem requirements and combat behavior; wand handedness/cost remain separate. Without this
+  correction, using the old recipe in a finished crafting system would charge only 10 wood
+  cubes (half the intended amount); leaving it unresolved would not override D6.
+- [x] **Creature source identities (item 6, owner approved for ontology, 2026-09-15).** Numeric
+  source IDs include post-alpha additions; retain stable creature IDs, numeric IDs, version
+  tags and existing food pairings (192: Radishling Sprout / Mineral Water; 293: Caterpillar /
+  Mixed Salad). Preserve legacy `aid` / `alpha_entity_id` names and null/-1 for unrecorded IDs;
+  version provenance is not inferred from a number alone. No taming or loader behavior change.
+  Without clarification, existing rows still load, but a future alpha-only range check could
+  wrongly exclude these creatures or their bait; that is a risk, not a reproduced gameplay bug.
+- [x] **Mission-boss spirit-cube exception (item 7, owner approved for ontology, 2026-09-15).**
+  Eligible non-mission bosses drop one spirit cube per kill, with a fixed type/level per boss.
+  Mission bosses, including Saurians, do not drop spirit cubes; their normal mission rewards
+  remain unchanged. The hybrid retains the recorded alpha exception. Without reconciliation,
+  implementing the universal wording could give mission bosses extra weapon-upgrade drops;
+  declining the correction would not approve that alternative. No drop runtime is implemented.
+- [x] **Reference versus hybrid scope (item 8, owner approved for ontology, 2026-09-15).**
+  Hybrid v1 retains alpha progression + approved Steam content; A/S comparisons are historical
+  reference, X/cut and Omega-only content remain roadmap material, and current-slice approximations
+  are not final rules. No new content inclusion/exclusion or unresolved merge is authorized.
+  Non-approval would not change the already-decided game; it would leave ambiguous scope text.
+  Owner reaffirmed: **never propose or implement regional gear power loss in pixlnd**, even
+  for cloning fidelity. Permanently excluded, not deferred or an alternative mode.
+  Apply item 8, record the walkthrough protocol in `tasks/lessons.md`, and stop before item 9.
 
 ### Open — decide before the named slice
 
@@ -206,30 +248,42 @@ is still open. Do not mistake a listed proposed correction for an approved new g
   `raises-stat` / `costs` cardinalities as recorded above. Historical data, effects, costs and
   balance numbers preserved. Cookie loot/shop regressions failed before the pool correction and
   passed after it (`game/items/test_items.gd`, `game/world/test_settlement.gd`).
-- [ ] **Equipment model (walkthrough item 3):** distinguish the 13 indexed slots (including
-  reserved `unknown-0`) from the separate quick consumable; normalize `accepts` to item-type
-  IDs (`light`, `special`, `weapon`), with subtype restrictions where needed; represent pet
-  food in the pet slot during taming. Sources: `domain.md §3.4/§5`, `equipment-slots.json`,
-  `item-types.json`; preserve indices. Wand handedness remains open above.
-- [ ] **Duplicate `block` identity:** voxel and combat action share a class ID in `domain.md
-  §3.1/§3.3`. Give the combat action a distinct ID and reconcile references without renaming
-  the established voxel ID.
-- [ ] **Recipe quantities:** D6 requires 20 cubes for the two-handed boomerang, but
-  `recipes.json#gear-weapons` groups it with a 10-cube wand recipe. Align the boomerang with
-  `generators.json#design.recipes`; keep the wand decision separate.
-- [ ] **Creature source IDs:** `domain.md#creature` claims alpha IDs 0..155 or null after alpha,
-  while `creatures.json` / `pet-food.json` use matching IDs 192/293. Clarify source/version
-  namespaces in the domain and typed loader; do not renumber creatures or break taming pairs.
-- [ ] **Boss spirit-cube exception:** reconcile the universal drop rule in `domain.md#spirit-cube`
-  / `#loot-rule` / `gen-boss` with the Saurian/mission-boss exception in `creatures.json#saurian`
-  and `mission-types.json#alpha.boss-kill`. Preserve the recorded exception unless the owner
-  explicitly chooses a hybrid override.
-- [ ] **Reference versus hybrid scope:** label X/Omega as reference/roadmap coverage, not v1
-  availability; distinguish historical A/S descriptions from hybrid rules and current-slice
-  approximations. Sources: `domain.md §1/§7`, `rulesets.json`, `generators.json`.
-  Settlement/inn targets, traversal, artifacts and other unresolved merges are listed above.
-- [ ] **Validator gaps:** add negative checks for missing races and whole moveset blocks,
-  wrong root/row shapes, both directions of class/spec references, spec cardinality/start index,
+- [x] **Equipment model — ontology (item 3, 2026-09-15):** recorded the approved semantics in
+  `domain.md §3.4/§4/§5`: 13 stored positions / 12 usable, independent Q selection, matching
+  item types and subtype restrictions, pet food in the pet slot during taming. Relation
+  cardinalities now count equipped items rather than storage positions and allow an item type
+  multiple eligible slots (rings, weapons). Existing indices, stats and gameplay are unchanged.
+- [ ] **Equipment implementation — deferred (item 3):** after explicit implementation approval,
+  normalize live `equipment-slots.json#accepts` to item-type IDs (`light`, `special`, `weapon`),
+  express subtype restrictions and pet-food placement, and align the validator/consumers with
+  the approved model. Live slot JSON is deliberately unchanged: current `items.gd#slot_id`
+  consumes it directly. Wand handedness and traversal prerequisites remain open above.
+- [x] **Duplicate `block` identity (item 4, 2026-09-15):** kept the voxel `block` in `domain.md
+  §3.1`, renamed only the defensive class to `combat-block` in §3.3, and corrected the heading
+  reference in `generators.json#design.defence._doc`. Runtime config/event keys and all terrain,
+  block-power, MP and damage-reduction behavior are unchanged.
+- [x] **Recipe quantities (item 5, 2026-09-15):** split `recipes.json#gear-weapons.boomerang|wand`
+  into a 20-wood-cube `boomerang` recipe and the unchanged provisional 10-cube `wand` recipe.
+  Both remain at the workbench. All other recipe data, gem requirements and weapon behavior
+  are unchanged. This reconciles the recipe with `generators.json#design.recipes` (D6).
+- [x] **Creature source IDs (item 6, 2026-09-15):** clarified `entity.species`, the legacy
+  `creature.alpha-entity-id`, `pet-food`, `tamed-by` and `c-food-id` in `domain.md`; aligned
+  `Creature` / `PetFood` comments and the creature/food JSON `_doc` fields. Stable and numeric
+  IDs, version tags, taming pairs, legacy property names and executable loader/validator logic
+  are unchanged. F10's reserved-alpha-ID distinction and unrecorded IDs are preserved.
+- [x] **Boss spirit-cube exception (item 7, 2026-09-15):** aligned `domain.md#spirit-cube`,
+  `#loot-rule`, `gen-boss`, `generators.json#boss.alpha-spirit-drop` and `economy.json#loot.A-boss`
+  with the approved hybrid mission-boss exception. Preserved the source notes on Saurians and
+  alpha boss-kill missions, existing mission reward data, spirit effects and level restrictions.
+  No executable drop logic, numeric balance or ruleset flags changed.
+- [x] **Reference versus hybrid scope (item 8, 2026-09-15):** clarified `domain.md §0/§1/§7`,
+  the reference-only `region-lock` entry, `rulesets.json` annotations, `generators.json` annotations
+  and `ontology/README.md`. Recorded permanent exclusion of regional gear power loss, not a
+  roadmap option. Historical data and all live flags/balance values preserved. Settlement/inn
+  targets, traversal, artifacts and other unresolved merges remain open. Walkthrough protocol
+  and the explicit stop/resume route are recorded in `tasks/lessons.md` and `docs/HANDOFF.md`.
+- [ ] **Validator gaps (walkthrough item 9; not presented or approved):** add negative checks
+  for missing races and whole moveset blocks, wrong root/row shapes, both directions of class/spec references, spec cardinality/start index,
   rootless shared skill columns and handedness-specific cube capacities. Align provenance and
   artifact-definition/generated-instance checks after the validation-contract decision above;
   clarify whether `validate()` reports accumulated errors or only newly added errors.
@@ -254,6 +308,52 @@ passed for `ontology/validate.gd`, `game/items/test_items.gd` and
 Cookie (142 drops in the seeded 4,000-kill test; present in shop stock). Relation rows were
 reviewed against existing D6 / `c-artifact-stat` and Steam Intercept data; the headless validator
 does not validate Markdown cardinalities. These checks do not close the other audit findings.
+
+**Item 3 verification (2026-09-15):** `timeout 90 nix develop -c godot --headless -s
+ontology/validate.gd` passed. `jq` confirmed 13 slot entries with indices 0..12, an empty
+reserved `unknown-0`, and the separate Q field. Semantic review matched the approved equipment
+model to existing item-type definitions; the validator does not check Markdown semantics.
+`git diff --check` passed; `game/`, instance JSON and validator code are unchanged. No claim
+that the deferred equipment behavior is implemented or tested at runtime.
+
+**Item 4 verification (2026-09-15):** the headless ontology validator and `git diff --check`
+passed. Heading inspection confirmed one `block` and one `combat-block`; ontology reference
+review found and corrected the generator's §3.3 heading reference. A `jq` comparison against
+`HEAD` confirmed the generator change is exclusively that `_doc` wording. Gameplay, validator
+code, equipment data, weapon definitions and the still-pending recipe data are unchanged.
+
+**Item 5 verification (2026-09-15):** a targeted `jq` check failed before the correction and
+passed after: separate boomerang/wand rows, 20/10 wood cubes respectively, boomerang station
+`workbench`, no shared row. A full JSON comparison against `HEAD` confirmed that only this
+split and the boomerang quantity changed. The headless ontology validator and
+`git diff --check` passed. Gameplay, validator code, weapon definitions, creature/food pairs
+and live equipment data are unchanged. No finished crafting UI/runtime is claimed.
+
+**Item 6 verification (2026-09-15):** the headless ontology validator and
+`game/entities/test_creature_roles.gd` passed. `jq` checked the two named post-alpha IDs,
+version tags and bidirectional food pairings; full JSON comparisons against `HEAD` confirmed
+both creature and pet-food files differ only in `_doc`. Diff review confirmed `model.gd`
+changes are comments only; `game/` and validator runner are unchanged. `git diff --check`
+passed. Source namespace clarification was reviewed against research §2.5 and F10; no
+claim that the future taming system is implemented.
+
+**Item 7 verification (2026-09-15):** the headless ontology validator,
+`game/items/test_items.gd` and `git diff --check` passed. Semantic review confirmed the
+mission-boss exception across the domain's three descriptions and both JSON loot descriptions.
+JSON comparisons confirmed all other economy data and generator values unchanged (apart from
+the previously approved item 4 `_doc` correction). `game/`, the validator runner, mission
+reward data and ruleset flags are unchanged. These checks do not test a spirit-cube drop
+runtime; that remains unimplemented.
+
+**Item 8 verification (2026-09-15):** the headless ontology validator,
+`game/items/test_items.gd`, `game/world/test_settlement.gd` and `git diff --check` passed.
+All instance JSON files parse as objects. Comparisons against the pre-item-8 working files
+confirmed only `rulesets.json` annotations (`_doc`, hybrid `_rule`, Omega `_note`) and
+`generators.json` root/design `_doc` changed; every other value, including prior approvals,
+is unchanged. Hybrid remains default with region-lock, plus-items, worn-rarity and per-land
+inventory disabled, and global key items enabled. `game/` and the validator runner are unchanged.
+Semantic/simplification review checked the scope distinctions, permanent exclusion and explicit
+walkthrough stop/resume route. This is not proof that the validator covers every semantic rule.
 
 **Audit verification baseline (not proof of consistency):** `ontology/validate.gd`,
 `game/items/test_items.gd`, `game/combat/test_defence.gd` and

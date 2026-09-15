@@ -1,7 +1,23 @@
-# Handoff — resume here (written 2026-09-11, after the D26 creature roles slice)
+# Handoff — resume here
 
-Read this, then `git log --oneline -8`, then `docs/ROADMAP/todo_implement.md`. Nothing else is
-needed to continue; the repo is self-describing from these three.
+## Ontology walkthrough entry point (2026-09-15)
+
+When prompted **"resume walking through items"**, read `tasks/lessons.md` and
+`docs/ROADMAP/todo_decide.md §E` first, then the relevant `ontology/` sources and actual Git
+branch/diff. This is the interactive decision walkthrough, **not** the gameplay slice loop below.
+The §E checkpoint records the last applied item and next unpresented item; follow its number,
+preserve approvals/deferrals and pending edits, and ask one gamer-facing approval question at a
+time, including approval AND non-approval consequences. Apply only the authorized correction,
+verify, update the checkpoint and honor stop requests. Ontology approval is not implementation
+permission; do not automatically launch the next gameplay slice or commit/push.
+Regional gear power loss is permanently excluded from pixlnd: **never propose or implement it**,
+even for cloning fidelity. Historical Steam data is reference only, not an alternative mode.
+
+## Gameplay handoff snapshot (2026-09-11, after D26)
+
+For separately authorized gameplay work, read `git log --oneline -8` and
+`docs/ROADMAP/todo_implement.md`, resolving relevant §E questions before the slice loop below.
+The following build/commit details are a dated snapshot, not the current reconciliation status.
 
 ## What this project is
 Cube World rebuild in Godot 4.7.2 + GDScript, **ontology-first**: `ontology/` is the source of
