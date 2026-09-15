@@ -1,12 +1,14 @@
-# TODO — decisions to take BEFORE any engine work
+# TODO — decisions to take before the affected implementation slice
 
 Priority zero. Resume here with any agent. Context: `ontology/domain.md` (§1 scope, §7 open
 points), `ontology/instances/*.json`, `docs/ROADMAP/README.md`. Already decided on 2026-09-07:
 D1 hybrid ruleset, D2 Godot 4.7 + GDScript, D3/D4 cut + Omega content → roadmap, region lock /
 `+` items / worn degradation dropped.
 
-**Status 2026-09-07 (evening): every decision below is taken and recorded.** Designed numbers
-live in `ontology/instances/generators.json#design`. Nothing remains: run the `router` skill.
+**Status 2026-09-13:** D1–D26 and the original fact conflicts below remain decided. The ontology
+reconciliation in §E records approved corrections and additional open questions. Resolve an open
+question before its affected slice; do not reopen settled choices. Designed numbers live in
+`ontology/instances/generators.json#design`.
 
 ## A. Design decisions (owner)
 
@@ -110,6 +112,157 @@ live in `ontology/instances/generators.json#design`. Nothing remains: run the `r
 - F5 split into D7/D8/D9 above, all decided.
 - F7 Omega status (Vulkan vs UE5, silence since 2024) is roadmap-only.
 
-## After all boxes are ticked — DONE 2026-09-08 (`project.godot`, `game/`)
-Run the `router` skill: scaffold the Godot project, derive architecture from `domain.md §3`
-classes, load `instances/` through `ontology/model.gd`.
+## E. Ontology reconciliation (2026-09-13)
+
+Derive straightforward corrections from `ontology/`. If it does not determine the answer
+unambiguously, record the decision here for later instead of inventing a rule. The approved/open
+subsections track decisions; the reconciliation checklist tracks application. Approval alone does
+not mean a correction is applied; land it in `ontology/` before changing consumers.
+Present each proposal to the owner as the finished player experience, not as a schema edit;
+ask one question at a time. Approval of an ontology decision is not approval to implement
+additional gameplay.
+
+**Resume checkpoint (2026-09-15):** approved items 1 and 2 are applied and validated. Cookie is
+removed only from the shared loot/shop consumable pool; its historical definition and roadmap
+entry remain. `domain.md §4` now permits multi-stat effects and zero/multiple resource costs
+scoped by ruleset; existing effects, costs and hybrid balance are unchanged. Cookie regressions
+were added to the existing item and settlement tests; no runtime code changed. The only
+runtime effect is the explicitly approved Cookie pool removal. The owner reaffirmed items 1–2
+as ontology decisions and requested their commit. Item 3 (equipment) remains unapproved and
+unapplied. Next question, as a proposed finished experience: keep the existing gear positions,
+select the Q consumable independently of worn gear, put each gear category in its matching
+slot, and place taming food in the pet slot rather than the player's quick-consumable slot.
+No extra usable gear slot or stat bonus is proposed; preserve all 13 stored indices, including
+reserved `unknown-0`. Ask for ontology approval, not implementation approval. Slot JSON feeds
+live equipment acceptance, so leave slot data and consumers unchanged until explicitly
+authorized. Wand handedness and traversal prerequisites remain separate open choices.
+All other unresolved choices remain open; do not infer decisions from the owner's absence.
+
+### Approved in the item-by-item walkthrough
+
+- [x] **Cookie remains deferred (item 1, owner approved A).** Preserve its A/X reference row
+  and roadmap entry; remove it from `generators.json#design.loot.consumable-pool` (also used by
+  shops). This reconciles D18 content selection with D3, not a new cut-content exception.
+- [x] **Relation cardinalities (item 2, owner approved).** `raises-stat` permits multiple stat
+  targets; each artifact still raises exactly one traversal stat plus attack and max HP (D6,
+  `c-artifact-stat`). `costs` permits zero or multiple resources with amounts scoped by ruleset
+  (Steam Intercept uses stamina and MP). Correct `domain.md §4`; preserve existing effects,
+  costs and hybrid balance. This approval does not settle family membership or artifact stacking.
+
+### Open — decide before the named slice
+
+- [ ] **Aggro / group aggro:** define threat amount, tie-breaking, decay/reset, taunt priority
+  and duration, full-stealth interaction and group membership before the next aggro slice.
+  Sources: `domain.md#ai-behavior`, `generators.json#design.status-effects` (current taunt approximation).
+- [ ] **Combo attack boundary:** whole cast, channel tick or completed channel? How do
+  zero-damage taunts count? Before class-strike bookkeeping changes; sources:
+  `domain.md#combo-system`, `c-combo-reset`, `generators.json#design.movesets` (D24).
+- [ ] **Panel time policy:** live combat or whole-world single-player pause while panels are
+  open? Before fixing player-only timer freezing; sources: `ui.json#screens`, `domain.md#multiplayer-mode`.
+- [ ] **Creature family membership:** one primary scaling family plus descriptive groups, or
+  multiple families with a defined scaling rule? Skeleton Dog appears in dogs and skeletons
+  but its singular family is skeletons. Before family-based scaling; sources:
+  `domain.md#member-of-family` (relation row), `creature-families.json`, `creatures.json#skeleton-dog`.
+- [ ] **Hybrid settlements / inn services:** are multiple settlements and inn cost 10 future
+  targets, or stale flags? Is paid timed sleep distinct from D22's free heal/respawn service?
+  Before changing settlement count or adding sleep; sources: `rulesets.json#ruleset-hybrid.flags`,
+  `generators.json#design.settlement`, D22. Keep current D22 behavior until clarified.
+- [ ] **Traversal prerequisites:** skill, global key item, or both for riding/gliding/sailing;
+  how do climbing spikes interact with climbing points? Before traversal/pets; sources:
+  `abilities.json` shared trees, `key-items.json`, `rulesets.json#ruleset-hybrid.flags`.
+- [ ] **Books and formulas:** are hybrid book recipes permanent/global, and how do duplicate
+  unlocks interact with formulas? Before crafting/save-data; sources: `domain.md#book-of-crafting`,
+  `recipes.json#recipe-sources`, `rulesets.json#ruleset-hybrid.flags`.
+- [ ] **Artifact accumulation:** diminishing returns counted globally or per traversal stat;
+  percentages additive or compounded? Before artifacts; sources: `generators.json#design.artifact`,
+  `key-items.json#artifact`. D6 constants and traversal + attack + HP bonuses remain settled.
+- [ ] **Assassin ultimate:** is Camouflage's `also-ultimate` an alias of rank 3 or a separately
+  unlocked fourth node? Before changing its tree; sources: `abilities.json#camouflage`, D10/D20.
+- [ ] **Wand handedness:** mechanically two-handed despite a one-hand pose, or actually
+  one-handed? Before wand equipment/crafting rules; sources: `weapon-types.json#wand`,
+  `c-hands`, `generators.json#design.recipes`.
+- [ ] **Hybrid persistence / authority:** character portability across worlds, ownership of
+  discoveries/unlocks, and authoritative validation of state. Before save-data/networking;
+  sources: `domain.md#player-character`, `#save-data`, `#multiplayer-mode`,
+  `generators.json#network-alpha`. D5's dedicated server does not alone choose authority.
+- [ ] **World bounds / resets:** does hybrid retain the finite 1024²-region bound despite
+  “infinite” wording, and do cleared dungeon/quest mobs reset at midnight? Before boundary/clock
+  logic; sources: `domain.md#gen-world` (generator row), `#game-clock`, `c-midnight-reset`.
+- [ ] **Validation contract:** which tables/config blocks are mandatory; which instance families
+  inherit version tags; which constraints validate definitions versus generated instances?
+  Before filling validator gaps; sources: `domain.md §2/§5`, `model.gd`, `validate.gd`.
+- [ ] **Remaining uncertain facts:** verify or choose explicit hybrid defaults for swamp-lands
+  identity, Lion tameability (`null` currently means untameable), resistance meaning and the
+  gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
+  `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
+
+### Reconciliation work — application checklist
+
+These are the other findings from the 2026-09-13 audit, alongside the open questions above.
+Keep references/indices and settled D decisions intact; defer any dependent work whose answer
+is still open. Do not mistake a listed proposed correction for an approved new gameplay rule.
+
+- [x] **Apply approved items 1–2 (2026-09-15):** removed Cookie from the active pool and corrected
+  `raises-stat` / `costs` cardinalities as recorded above. Historical data, effects, costs and
+  balance numbers preserved. Cookie loot/shop regressions failed before the pool correction and
+  passed after it (`game/items/test_items.gd`, `game/world/test_settlement.gd`).
+- [ ] **Equipment model (walkthrough item 3):** distinguish the 13 indexed slots (including
+  reserved `unknown-0`) from the separate quick consumable; normalize `accepts` to item-type
+  IDs (`light`, `special`, `weapon`), with subtype restrictions where needed; represent pet
+  food in the pet slot during taming. Sources: `domain.md §3.4/§5`, `equipment-slots.json`,
+  `item-types.json`; preserve indices. Wand handedness remains open above.
+- [ ] **Duplicate `block` identity:** voxel and combat action share a class ID in `domain.md
+  §3.1/§3.3`. Give the combat action a distinct ID and reconcile references without renaming
+  the established voxel ID.
+- [ ] **Recipe quantities:** D6 requires 20 cubes for the two-handed boomerang, but
+  `recipes.json#gear-weapons` groups it with a 10-cube wand recipe. Align the boomerang with
+  `generators.json#design.recipes`; keep the wand decision separate.
+- [ ] **Creature source IDs:** `domain.md#creature` claims alpha IDs 0..155 or null after alpha,
+  while `creatures.json` / `pet-food.json` use matching IDs 192/293. Clarify source/version
+  namespaces in the domain and typed loader; do not renumber creatures or break taming pairs.
+- [ ] **Boss spirit-cube exception:** reconcile the universal drop rule in `domain.md#spirit-cube`
+  / `#loot-rule` / `gen-boss` with the Saurian/mission-boss exception in `creatures.json#saurian`
+  and `mission-types.json#alpha.boss-kill`. Preserve the recorded exception unless the owner
+  explicitly chooses a hybrid override.
+- [ ] **Reference versus hybrid scope:** label X/Omega as reference/roadmap coverage, not v1
+  availability; distinguish historical A/S descriptions from hybrid rules and current-slice
+  approximations. Sources: `domain.md §1/§7`, `rulesets.json`, `generators.json`.
+  Settlement/inn targets, traversal, artifacts and other unresolved merges are listed above.
+- [ ] **Validator gaps:** add negative checks for missing races and whole moveset blocks,
+  wrong root/row shapes, both directions of class/spec references, spec cardinality/start index,
+  rootless shared skill columns and handedness-specific cube capacities. Align provenance and
+  artifact-definition/generated-instance checks after the validation-contract decision above;
+  clarify whether `validate()` reports accumulated errors or only newly added errors.
+  Sources: `model.gd#Ontology`, `validate.gd`, `domain.md §2/§5`.
+- [ ] **Runtime contract violations:** reproduce and fix inventory freezing dodge timers
+  (`player.gd#_physics_process`), poison ticks rejected by dodge (`player.gd#take_damage`,
+  `entity.gd#tick_statuses`), exhausted block protecting against same-interval hits
+  (`player.gd#blocks_from`), and greatsword + shield accepted in either equip order
+  (`inventory.gd#equip`, `c-hands`). Non-projectile class strikes also omit combo result handling
+  (`abilities.gd`). Settle panel-time / combo-boundary questions above before choosing behavior.
+- [ ] **Artifact/document cleanup:** replace the missing `instances/shops.json` reference with
+  `economy.json#shops`; remove the duplicate `economy.json#prices.formula` key; reconcile stale
+  “all settled” summaries and claims that dodge, stealth bar or poison are absent in
+  `ontology/README.md`, `docs/ROADMAP/README.md`, `todo_implement.md`, `docs/HANDOFF.md`.
+  Make `domain.md §7` enumerate actual remaining uncertainties rather than treating optional
+  fields or already-designed hitboxes/armor as open facts. Keep research dumps unchanged.
+
+**Items 1–2 verification (2026-09-15):** `timeout 90 nix develop -c godot --headless -s <script>`
+passed for `ontology/validate.gd`, `game/items/test_items.gd` and
+`game/world/test_settlement.gd`; all `ontology/instances/*.json` parse as objects with `jq`;
+`git diff --check` passed. Before the pool correction, the added regressions failed only for
+Cookie (142 drops in the seeded 4,000-kill test; present in shop stock). Relation rows were
+reviewed against existing D6 / `c-artifact-stat` and Steam Intercept data; the headless validator
+does not validate Markdown cardinalities. These checks do not close the other audit findings.
+
+**Audit verification baseline (not proof of consistency):** `ontology/validate.gd`,
+`game/items/test_items.gd`, `game/combat/test_defence.gd` and
+`game/entities/test_creature_roles.gd` passed at `e4f87f5`. Memory-only negative probes still
+accepted missing races/movesets, 32-cube one-handed swords, missing pet-food versions, duplicate
+spec indices, reversed starting-spec order, rootless shared columns and empty artifact stat kinds.
+Runtime probes reproduced the four violations above. Add regressions for these cases; do not
+rely on the old green tests or temporary probe files surviving the session.
+
+## Initial scaffold — DONE 2026-09-08 (`project.godot`, `game/`)
+The router-derived scaffold loads `instances/` through `ontology/model.gd`. For subsequent
+slices, resolve relevant §E questions, sync `ontology/`, then route implementation.

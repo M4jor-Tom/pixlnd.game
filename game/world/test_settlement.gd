@@ -98,6 +98,7 @@ func _init() -> void:
 	var pool: Array = design["loot"]["consumable-pool"]
 	var cons := Shop.stock(&"item-vendor", a, l0, v0, 7, o, design)
 	check(cons.size() == pool.size() and cons[0].type == &"consumable" and cons[0].level == 7, "item shop sells the consumable pool at the player level")
+	check(not cons.any(func(it) -> bool: return it.subtype == &"cookie"), "D3: item shop does not sell deferred Cookie")
 	var sword := Items.generate(rng, &"weapon", &"sword", &"iron", 1, 0)
 	var rare := Items.generate(rng, &"weapon", &"sword", &"iron", 3, Model.Rarity.RARE)
 	check(Shop.buy_price(sword, o, design) == 6 and Shop.buy_price(rare, o, design) == 72, "buy = base 6 × level × rarity-mult: %d, %d" % [Shop.buy_price(sword, o, design), Shop.buy_price(rare, o, design)])

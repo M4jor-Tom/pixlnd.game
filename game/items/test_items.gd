@@ -73,13 +73,15 @@ func _init() -> void:
 	check(inv.coins == 15 and inv.entries.size() == 2, "coins are a counter, not an entry")
 	# gen-loot rates over many kills (D18 numbers ± 3 %)
 	rng.seed = 99
-	var kills := 4000; var coins := 0; var gear := 0; var cons := 0; var feathers := 0; var bad := 0
+	var kills := 4000; var coins := 0; var gear := 0; var cons := 0; var feathers := 0; var bad := 0; var cookies := 0
 	var parrot: Model.Creature = o.creatures["parrot"]
 	for i in kills:
 		for it in Items.roll_loot(rng, 5, parrot, o, design):
 			match it.type:
 				&"coin": coins += 1; bad += 1 if it.count != 1 + 2 * 5 else 0
-				&"consumable": cons += 1
+				&"consumable":
+					cons += 1
+					if it.subtype == &"cookie": cookies += 1
 				&"ingredient": feathers += 1
 				_:
 					gear += 1
@@ -87,6 +89,7 @@ func _init() -> void:
 	check(absf(coins / float(kills) - float(loot["coins"]["chance"])) < 0.03, "coin rate ≈ %.2f: %.3f" % [loot["coins"]["chance"], coins / float(kills)])
 	check(absf(gear / float(kills) - float(loot["gear-chance"])) < 0.03, "gear rate ≈ %.2f: %.3f" % [loot["gear-chance"], gear / float(kills)])
 	check(absf(cons / float(kills) - float(loot["consumable-chance"])) < 0.03, "consumable rate: %.3f" % (cons / float(kills)))
+	check(cookies == 0, "D3: loot does not drop deferred Cookie (%d dropped)" % cookies)
 	check(absf(feathers / float(kills) - float(loot["species-drop-chance"])) < 0.03, "species drop rate: %.3f" % (feathers / float(kills)))
 	check(bad == 0, "every drop: coins 1+2·level, gear rarity ≤ legendary, level ±1, has a slot (%d bad)" % bad)
 	rng.seed = 5; var l1 := Items.roll_loot(rng, 3, null, o, design); rng.seed = 5; var l2 := Items.roll_loot(rng, 3, null, o, design)
