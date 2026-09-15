@@ -794,7 +794,7 @@ One row per fact type. Cardinality as `domain → range`.
 | grants-ability | specialization ∪ character-class | ability | 1→n | versioned |
 | unlocks-next | ability | ability | 1→0..1 | alpha tree: 5 points |
 | bound-to-input | ability | input-binding | 1→1 per version | |
-| costs | ability | resource | 1→0..1 | with amount |
+| costs | ability | resource | 1→0..n | amount per resource, scoped by ruleset |
 | applies | ability ∪ weapon-type ∪ hazard | status-effect | n→n | |
 | has-moveset | weapon-type | ability (m1, m2) | 1→2 | |
 | crafted-at | recipe | crafting-station | 1→1 | |
@@ -829,7 +829,7 @@ One row per fact type. Cardinality as `domain → range`.
 | restricted-to-class | weapon-type ∪ material | character-class | n→0..1 | |
 | has-hazard | landscape ∪ terrain-feature | status-effect | n→n | cold-water, toxic, lava |
 | countered-by | status-effect | consumable | n→n | hot chocolate, green smoothie, lemonade |
-| raises-stat | artifact ∪ ability ∪ spirit-cube ∪ elixir | stat | n→1 | |
+| raises-stat | artifact ∪ ability ∪ spirit-cube ∪ elixir | stat | n→n | hybrid artifacts: exactly one traversal stat plus attack and max HP (D6, c-artifact-stat) |
 | mounts | player-character | pet | 1→0..1 | needs riding skill `A` / reins `S` |
 | owns | player-character | pet | 1→n | cages |
 | possesses | poi-type(demon-portal) | npc-role ∪ creature | 1→n | S |
