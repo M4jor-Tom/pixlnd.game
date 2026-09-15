@@ -1,6 +1,6 @@
 {
   "$schema": "ruleset",
-  "_doc": "Feature-flag bundles. A world runs exactly one ruleset. Flags are consumed by abilities/items/mechanics via `enabled-by`.",
+  "_doc": "Feature-flag bundles. Only ruleset-hybrid is the pixlnd target (D1); alpha/Steam bundles are historical reference, Omega is announced roadmap content, not v1 (D4). Historical true flags do not authorize hybrid availability. Regional gear power loss is permanently excluded: never propose or implement it, even for cloning fidelity. Hybrid flags describe target/configuration, not proof of implementation; unresolved merges remain in docs/ROADMAP/todo_decide.md §E.",
   "ruleset-alpha": {
     "name": "Alpha 0.1.x rules",
     "versions": ["A"],
@@ -110,7 +110,7 @@
     "versions": ["A","S"],
     "default": true,
     "progression": "xp-levels-skill-points",
-    "_rule": "alpha progression + all steam content; region lock removed (D4); artifacts are traversal-stat collectibles, not level",
+    "_rule": "alpha progression + approved Steam content (D1/D3/D4 and subsequent approvals); regional gear power loss permanently excluded; artifacts do not define level, D6 bonuses unchanged; X/cut and Omega-only content remain reference/roadmap, not v1",
     "flags": {
       "xp-and-levels": true,
       "skill-points-per-level": 2,
@@ -181,6 +181,6 @@
       "facial-expressions": true,
       "cast-bars": true
     },
-    "_note": "Everything else unknown; do not build on this without D4 decision."
+    "_note": "Announced facts only; everything else unknown. D4 already defers Omega-only content to the roadmap, outside v1. These flags are not pixlnd availability or implementation approval; future inclusion requires a separate owner decision."
   }
 }

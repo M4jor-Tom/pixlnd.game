@@ -71,15 +71,43 @@ func _init() -> void:
 	check(not inv.equip(inv.first_consumable()), "consumables cannot be equipped")
 	inv.add(Item.stack(&"coin", &"", 12)); inv.add(Item.stack(&"coin", &"", 3))
 	check(inv.coins == 15 and inv.entries.size() == 2, "coins are a counter, not an entry")
+	# c-hands: both equip orders reject 2H + shield before displacing gear, consuming items or emitting changed.
+	for weapon_id in [&"greatsword", &"bow"]:
+		for shield_first in [true, false]:
+			var hands_inv := Inventory.new(o, design)
+			var two := Items.generate(rng, &"weapon", weapon_id, Items.weapon_material(o.weapon_types[weapon_id]), 1, 0)
+			var shield := Items.generate(rng, &"weapon", &"shield", &"iron", 1, 0)
+			for it in [s1, two, shield]: hands_inv.add(it)
+			hands_inv.coins = 15
+			check(hands_inv.equip(s1), "hand-conflict setup: one-handed weapon")
+			check(hands_inv.equip(shield if shield_first else two), "valid 1H + shield or 2H alone")
+			var bag_before := hands_inv.entries.duplicate()
+			var worn_before := hands_inv.equipment.duplicate()
+			var changes := [0]
+			hands_inv.changed.connect(func(): changes[0] += 1)
+			var label := "%s shield-first=%s" % [weapon_id, shield_first]
+			check(not hands_inv.equip(two if shield_first else shield), "%s: conflicting equip rejected" % label)
+			check(hands_inv.entries == bag_before and hands_inv.equipment == worn_before, "%s: bag order and worn items unchanged" % label)
+			check(changes[0] == 0 and hands_inv.coins == 15, "%s: no changed signal or coin mutation" % label)
+			for it in [s1, two, shield]:
+				check(it.count == 1 and hands_inv.entries.count(it) + hands_inv.equipment.values().count(it) == 1, "%s: items retained exactly once" % label)
+			if shield_first:
+				hands_inv.unequip(&"off-hand")
+				check(hands_inv.equip(two) and hands_inv.equipment[&"main-hand"] == two and s1 in hands_inv.entries, "removing shield permits 2H slot replacement")
+			else:
+				check(hands_inv.equip(s1) and two in hands_inv.entries, "replacing 2H with 1H returns it to the bag")
+				check(hands_inv.equip(shield), "1H replacement permits shield again")
 	# gen-loot rates over many kills (D18 numbers ± 3 %)
 	rng.seed = 99
-	var kills := 4000; var coins := 0; var gear := 0; var cons := 0; var feathers := 0; var bad := 0
+	var kills := 4000; var coins := 0; var gear := 0; var cons := 0; var feathers := 0; var bad := 0; var cookies := 0
 	var parrot: Model.Creature = o.creatures["parrot"]
 	for i in kills:
 		for it in Items.roll_loot(rng, 5, parrot, o, design):
 			match it.type:
 				&"coin": coins += 1; bad += 1 if it.count != 1 + 2 * 5 else 0
-				&"consumable": cons += 1
+				&"consumable":
+					cons += 1
+					if it.subtype == &"cookie": cookies += 1
 				&"ingredient": feathers += 1
 				_:
 					gear += 1
@@ -87,6 +115,7 @@ func _init() -> void:
 	check(absf(coins / float(kills) - float(loot["coins"]["chance"])) < 0.03, "coin rate ≈ %.2f: %.3f" % [loot["coins"]["chance"], coins / float(kills)])
 	check(absf(gear / float(kills) - float(loot["gear-chance"])) < 0.03, "gear rate ≈ %.2f: %.3f" % [loot["gear-chance"], gear / float(kills)])
 	check(absf(cons / float(kills) - float(loot["consumable-chance"])) < 0.03, "consumable rate: %.3f" % (cons / float(kills)))
+	check(cookies == 0, "D3: loot does not drop deferred Cookie (%d dropped)" % cookies)
 	check(absf(feathers / float(kills) - float(loot["species-drop-chance"])) < 0.03, "species drop rate: %.3f" % (feathers / float(kills)))
 	check(bad == 0, "every drop: coins 1+2·level, gear rarity ≤ legendary, level ±1, has a slot (%d bad)" % bad)
 	rng.seed = 5; var l1 := Items.roll_loot(rng, 3, null, o, design); rng.seed = 5; var l2 := Items.roll_loot(rng, 3, null, o, design)

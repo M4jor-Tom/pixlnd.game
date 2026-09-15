@@ -1,6 +1,6 @@
 {
   "$schema": "pet-food",
-  "_doc": "id = item type 20 subtype == creature id it tames. rideable: per-page value; 'table' = wiki table said yes while creature page said no (1.0.0-1 all-rideable bug). shop = purchasable set.",
+  "_doc": "id = item type 20 numeric subtype; matches the known source entity ID (alpha or post-alpha) of the creature named by the stable tames reference. rideable: per-page value; 'table' = wiki table said yes while creature page said no (1.0.0-1 all-rideable bug). shop = purchasable set.",
   "rules": ["equip from Pets tab (right-click) → approach creature → auto success, hearts", "one of each food carried at a time", "group: others turn hostile", "named bosses tameable (keep skills, lose boss status on reload)", "quest-bound pets untameable", "shop sells one food type per town per day (S)", "jellies drop from bats"],
   "shop-set": ["candy", "carrot", "bubble-gum", "chocolate-donut", "waffle", "cotton-candy"],
   "foods": {

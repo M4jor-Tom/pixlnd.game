@@ -6,6 +6,7 @@ signal changed
 
 const Items := preload("res://game/items/items.gd")
 const Item := preload("res://game/items/item.gd")
+const Model := preload("res://ontology/model.gd")
 
 var entries: Array = []            # Item; count lives on the item
 var equipment: Dictionary = {}     # slot id → Item
@@ -32,11 +33,16 @@ func remove(it: Item, n := 1) -> void:
 		entries.erase(it)
 	changed.emit()
 
-## Moves a bag item into its slot; the previous occupant goes back to the bag. False = no slot for it.
+## Moves a bag item into its slot; the previous occupant goes back to the bag. False = no slot or hand conflict; nothing moves.
 func equip(it: Item) -> bool:
 	var slot := Items.slot_id(it, _o)
 	if slot == &"":
 		return false
+	if slot in [&"main-hand", &"off-hand"]:              # c-hands: check the prospective pair before mutating inventory
+		var main: Item = it if slot == &"main-hand" else equipment.get(&"main-hand")
+		var off: Item = it if slot == &"off-hand" else equipment.get(&"off-hand")
+		if main != null and off != null and _o.weapon_types[main.subtype].hands == Model.Hands.TWO_HANDED:
+			return false
 	if equipment.has(slot):
 		entries.append(equipment[slot])
 	entries.erase(it); equipment[slot] = it

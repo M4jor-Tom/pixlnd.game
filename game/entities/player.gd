@@ -54,7 +54,7 @@ var combo := 0
 var water_top := -INF                                   # y of the water surface (sea level + 1)
 var ground_ready: Callable = func(_p: Vector3) -> bool: return true   # world: is the zone under us built?
 var spawn_point := Vector3.ZERO
-var ui_open := false                                    # a panel owns the mouse: no moving, fighting or talking
+var ui_open := false                                    # panel owns input, not simulation time
 var stamina := 100.0
 var _stamina_idle := 0.0
 var _swing_t := 0.0
@@ -162,9 +162,9 @@ func use_class_skill(slot: int) -> bool:
 
 ## D23: a dodge ignores the hit, a front block (design.defence.block) cuts it, spends block-power and gives MP;
 ## then buffs (bulwark) make us stun-immune and mana-shield absorbs first (D21).
-func take_damage(amount: float, from: Node) -> void:
-	if _iframes > 0.0:
-		return
+func take_damage(amount: float, from: Node, status: StringName = &"") -> bool:
+	if _iframes > 0.0 and status != &"poison":              # D26: scheduled poison damage is not dodged
+		return false
 	var blocked := blocks_from(from)
 	if blocked:
 		var bl: Dictionary = defence["block"]
@@ -180,6 +180,7 @@ func take_damage(amount: float, from: Node) -> void:
 			feel.play(&"block", head())
 		elif before > hp:
 			feel.play(&"hurt", head(), {"amount": before - hp, "kind": &"hurt"})   # what we actually lost
+	return blocked                                       # preserve this hit's result even if it emptied the bar
 
 ## Dodged or blocked hits carry no status (D23) — except poison, which a dodge never avoids (D26, status-effects.json);
 ## knockback goes through _push so input does not erase it next tick.
@@ -217,7 +218,7 @@ func block_max() -> float:
 
 ## Is this attacker's hit blocked: blocking, and it stands in the front cone (every direction during cyclone).
 func blocks_from(from: Node) -> bool:
-	if not blocking or not from is Node3D or from == self:
+	if not blocking or block_power <= 0.0 or not from is Node3D or from == self:
 		return false
 	if _cyclone():
 		return true
@@ -247,11 +248,11 @@ func _defence_tick(dt: float, dir: Vector3, still: bool) -> void:
 		_dodge["left"] -= dt
 		if _dodge["left"] <= 0.0:
 			_dodge = {}
-	if Input.is_action_just_pressed("dodge"):
+	if not ui_open and Input.is_action_just_pressed("dodge"):
 		dodge(dir)
 	var bl: Dictionary = defence["block"]
 	var cyc := _cyclone()
-	blocking = can_block() and block_power > 0.0 and (cyc or (Input.is_action_pressed("special-attack") and not stunned()))
+	blocking = can_block() and block_power > 0.0 and (cyc or (not ui_open and Input.is_action_pressed("special-attack") and not stunned()))
 	if not blocking or cyc:
 		block_power = minf(block_max(), block_power + float(bl["regen-per-s"]) * (float(bl["cyclone-regen-mult"]) if cyc else 1.0) * dt)
 	var sl: Dictionary = defence["stealth"]
@@ -340,11 +341,13 @@ func use_quick() -> bool:
 	return true
 
 func _physics_process(dt: float) -> void:
-	if cfg.is_empty() or dead or ui_open or not ground_ready.call(global_position):
+	if cfg.is_empty() or dead or not ground_ready.call(global_position):
 		return
 	var g := float(cfg["gravity"])
 	tick_statuses(dt)
-	var input := Vector2.ZERO if stunned() else Input.get_vector("move_left", "move_right", "move_forward", "move_back")
+	if dead:                                               # a live DOT tick can kill us while browsing
+		return
+	var input := Vector2.ZERO if ui_open or stunned() else Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	var dir := (Basis(Vector3.UP, rig.rotation.y) * Vector3(input.x, 0, input.y)).normalized()
 	if not defence.is_empty():
 		_defence_tick(dt, dir, input == Vector2.ZERO)
@@ -365,14 +368,14 @@ func _physics_process(dt: float) -> void:
 		speed *= float(defence["block"]["move-mult"])
 	if swimming:
 		speed *= float(cfg["swim-mult"]) * (skill_tree.effect_mult(&"swimming") if skill_tree != null else 1.0)   # swimming points (D20)
-		velocity.y = float(cfg["swim-vertical"]) * (1.0 if Input.is_action_pressed("jump") else -0.3)
+		velocity.y = float(cfg["swim-vertical"]) * (1.0 if not ui_open and Input.is_action_pressed("jump") else -0.3)
 		_fall_from = -INF                                   # water breaks the fall
 	else:
 		velocity.y -= g * dt
 		var jh: Dictionary = cfg["jump-height"]
-		if is_on_floor() and Input.is_action_just_pressed("jump"):
+		if not ui_open and is_on_floor() and Input.is_action_just_pressed("jump"):
 			velocity.y = sqrt(2.0 * g * float(jh["hold"]))
-		elif velocity.y > 0.0 and not Input.is_action_pressed("jump"):
+		elif velocity.y > 0.0 and (ui_open or not Input.is_action_pressed("jump")):
 			velocity.y = minf(velocity.y, sqrt(2.0 * g * float(jh["tap"])))   # released early: tap height
 	velocity.x = dir.x * speed; velocity.z = dir.z * speed
 	if not _dodge.is_empty():
@@ -392,7 +395,7 @@ func _physics_process(dt: float) -> void:
 	_fall_damage(was_airborne)
 	if not combat.is_empty():
 		_combat_tick(dt)
-	if inventory != null:
+	if inventory != null and not ui_open:
 		if Input.is_action_just_pressed("interact"):
 			interact_nearest()
 		if Input.is_action_just_pressed("quick-item"):
@@ -415,7 +418,7 @@ func _combat_tick(dt: float) -> void:
 	if _combo_t <= 0.0:
 		combo = 0
 	if abilities == null:
-		if Input.is_action_just_pressed("basic-attack") and _swing_t <= 0.0:
+		if not ui_open and Input.is_action_just_pressed("basic-attack") and _swing_t <= 0.0:
 			_swing()
 		return
 	abilities.tick(dt)
@@ -424,6 +427,8 @@ func _combat_tick(dt: float) -> void:
 		return
 	if mp_passive:
 		mp = minf(float(design["resources"]["mp"]["max"]), mp + float(design["resources"]["mp"]["mage-regen-per-s"]) * dt)
+	if ui_open:
+		return
 	for slot in 4:
 		if Input.is_action_just_pressed("class-skill-%d" % (slot + 1)) or (slot == 3 and Input.is_action_just_pressed("ultimate")):
 			use_class_skill(slot + 1)
@@ -579,18 +584,20 @@ func _strike(center: Vector3, radius: float, dmg: float, combo_bonus: bool, appl
 		if abilities != null:
 			d *= abilities.mult("damage-mult")
 		d = Combat.after_armor(d, float(body.get("armor")), combat)
+		var blocked := false
 		if d > 0.0 or applies.has(&"taunt"):                   # taunt: a 0-damage hit sets the creature's target
 			var before: float = body.hp
-			body.take_damage(d, self)
+			blocked = body.take_damage(d, self)
 			if feel != null and before > body.hp:              # a number per body, the bundle once
 				var kind: StringName = &"crit" if cm > 1.0 else &"hit"
 				feel.number(body.head(), before - body.hp, kind)
 				var rank: int = HIT_TIERS.find(&"kill" if body.dead else kind)
 				if rank > tier:
 					tier = rank; tier_at = body.head()
-		for id in applies:
-			if se.has(id) and body.has_method("apply_status"):
-				body.apply_status(id, se[id], d, self)
+		if not blocked:
+			for id in applies:
+				if se.has(id) and body.has_method("apply_status"):
+					body.apply_status(id, se[id], d, self)
 		hits += 1
 	if tier >= 0:
 		feel.play(HIT_TIERS[tier], tier_at)
