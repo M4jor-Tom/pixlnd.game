@@ -2,14 +2,27 @@
 
 ## Ontology walkthrough entry point (2026-09-17)
 
-**Owner stop / next-agent handoff:** the owner requested commit + push of the current approved
-repairs, then ended the session. The panel-time implementation question below was presented
-but **not answered or authorized**. Resume by obtaining that answer; do not start implementation.
-The proposal is to keep player timers running while inventory, skill-tree and shop panels are
-open (DOT ticks, cooldowns, buff expiry and dodge expiry), preserving current input restrictions
-and other menus. Ask: **“Authorize this narrowly scoped panel-time repair and its regression tests?”**
-The live-time policy itself is already approved. Commit/push authorization covers only the current
-completed repairs and handoff, not the pending question or any additional implementation.
+**Current authorization:** the owner resumed on 2026-09-17 and explicitly authorized only the
+panel-time runtime repair and its regression tests: keep existing simulation running while
+inventory, skill-tree and shop panels are open, preserving current gameplay input restrictions,
+balance and other menus. Authorization is recorded in `ontology/domain.md#hud-element`;
+the repair is applied and tested; independent correctness and ponytail reviews found no issues.
+
+**Current implementation — item 10, class-ability combos:** the owner separately authorized
+the narrowly scoped combo repair and its regressions on 2026-09-17. Record and enforce the
+approved damaging-hit, whole-channel miss/reset and combo-neutral zero-damage-taunt rules,
+preserving balance, inactivity expiry, caps and unrelated runtime behavior. Authorization is
+recorded in `domain.md#combo-system`; the repair is applied and tested. Independent correctness
+and ponytail reviews found no issues. The completed panel-time changes are preserved. No other
+deferred work, commit or push is authorized.
+
+**Next proposal — artifact/document cleanup:** correct broken/stale references and descriptions,
+remove the duplicate price-description key while preserving the currently loaded value, and
+make summaries distinguish implemented, approved/deferred and unresolved work. No gameplay,
+balance, validator/loader behavior or unresolved design choice changes. Approval makes the
+project's written description match the approved game; deferral changes no player behavior but
+leaves misleading documentation. Ask: **“Approve this documentation/data-description cleanup,
+with no gameplay changes?”** Await the owner's answer.
 
 When prompted **"resume walking through items"**, read `tasks/lessons.md` and
 `docs/ROADMAP/todo_decide.md §E` first, then the relevant `ontology/` sources and actual Git
@@ -49,8 +62,29 @@ went red-to-green in both equip orders, preserve bag/worn state and permit valid
 removing the conflict. All 13 game tests, ontology validation and headless boot pass. The equipment
 repair preserved the earlier block runtime/test files. Handedness/slot data remain unchanged;
 wand handedness is still unresolved, and this does not implement the broader item-3 slot model.
-Next pending topic within item 10: **Panel-time runtime repair** — live time is already the
-approved policy; ask separately for runtime-fix authorization. All other runtime fixes remain unauthorized.
+The separately authorized **panel-time runtime repair** is applied: panels gate gameplay input
+instead of skipping the player's physics update, so existing timers/effects and forced movement
+continue; lethal DOT ends the frame. Regressions using all three real panels went red-to-green;
+all 14 game tests, ontology validation and headless boot pass. The windowed regression also
+passed, with panel captures inspected; narrow-window clipping in the fixture was not changed.
+No instance data, balance, other menus or `abilities.gd` changed. Independent correctness and
+ponytail reviews found no issues; see §E verification and `/tmp/pixlnd-panel-time/` logs/reports
+(session-local). Continued active abilities/forced movement and several input branches were
+source-traced, not individually regression-tested while browsing; no network test is claimed.
+The separately authorized **class-ability combo repair** is applied: damaging class strikes
+reuse existing landed-hit bookkeeping; channels settle misses on normal/early end only if no
+hit landed, and zero-damage taunts remain neutral. The regression went from 17 failures to green;
+all 15 game tests, ontology validation and boot pass. The existing War Frenzy fixture now resets
+combo before its isolated buff-damage assertion, because earlier class hits correctly build it.
+Windowed HUD hit/miss assertions passed and both captures were inspected. Panel-time files are
+byte-for-byte unchanged, as are live instance data, validator and projectile/player runtime.
+Independent correctness and ponytail reviews found no issues; see §E verification and
+session-local `/tmp/pixlnd-class-combo/` evidence. Reviewers inspected source/logs, not rerun
+tests. Wall-triggered dash endings, death calling reset, multi-target channel hits and successful
+class-projectile non-double-counting were source-traced rather than individually covered by the
+new regression. No multiplayer test is claimed.
+Next reconciliation item: **artifact/document cleanup**, not an implementation slice.
+All other deferred runtime work remains unauthorized.
 Broader equipment-model implementation (item 3), validator implementation (item 9) and the aggro
 gameplay slice remain separate, deferred work.
 

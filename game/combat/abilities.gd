@@ -10,7 +10,7 @@ var cfg: Dictionary = {}             # design.abilities
 var cooldowns: Dictionary = {}       # ability id → seconds left
 var buffs: Dictionary = {}           # ability id → {"left", "r", "pool"?}
 var dash: Dictionary = {}            # {"a", "r", "dir", "left", "origin", "e"}
-var channel: Dictionary = {}         # {"a", "r", "left", "tick", "e"}
+var channel: Dictionary = {}         # {"a", "r", "left", "tick", "e", "hits"}
 var cast: Dictionary = {}            # {"a", "r", "left", "e"}
 var heals: Array = []                # [{"left", "per-s"}]
 
@@ -54,7 +54,7 @@ func use(a) -> bool:
 			var d := _dash_dir(r)
 			dash = {"a": a, "r": r, "dir": d[0], "left": d[1], "origin": p.global_position, "e": e}
 		"channel":
-			channel = {"a": a, "r": r, "left": float(r["duration-s"]), "tick": 0.0, "e": e}
+			channel = {"a": a, "r": r, "left": float(r["duration-s"]), "tick": 0.0, "e": e, "hits": 0}
 		"burst":
 			_strike(a, r, p.global_position, e)
 		"projectile":
@@ -81,9 +81,16 @@ func _dash_dir(r: Dictionary) -> Array:
 		return [forward, dist]
 	return [forward if str(r["toward"]) == "forward" else -forward, dist]
 
-func _strike(a, r: Dictionary, at: Vector3, e: float) -> void:
-	if float(r.get("damage-mult", 0.0)) > 0.0 or not a.applies.is_empty():
-		p._strike(at + Vector3.UP, float(r["radius"]), float(p.weapon["damage"]) * float(r.get("damage-mult", 0.0)) * e, false, a.applies)
+func _strike(a, r: Dictionary, at: Vector3, e: float, reset_on_miss := true) -> int:
+	var hits := 0
+	var damaging := float(r.get("damage-mult", 0.0)) > 0.0
+	if damaging or not a.applies.is_empty():
+		hits = p._strike(at + Vector3.UP, float(r["radius"]), float(p.weapon["damage"]) * float(r.get("damage-mult", 0.0)) * e, false, a.applies)
+	if damaging:                                           # taunts and heals never change combo or its timer
+		if hits > 0:
+			p._landed(false)
+		elif reset_on_miss:
+			p.combo = 0
 	if r.has("heal-pct"):
 		var total: float = p.max_hp * float(r["heal-pct"]) * e
 		var over := float(r.get("heal-over-s", 0.0))
@@ -91,6 +98,7 @@ func _strike(a, r: Dictionary, at: Vector3, e: float) -> void:
 			heals.append({"left": over, "per-s": total / over})
 		else:
 			p.hp = minf(p.max_hp, p.hp + total)
+	return hits
 
 ## Horizontal velocity the player applies this tick while dashing (Vector3.ZERO when idle).
 func dash_velocity() -> Vector3:
@@ -131,9 +139,15 @@ func tick(dt: float) -> void:
 		p.stamina = maxf(0.0, p.stamina - float(r["drain-per-s"]) * dt); p._stamina_idle = 0.0
 		if channel["tick"] <= 0.0:
 			channel["tick"] = float(r["tick-s"])
-			_strike(channel["a"], r, p.global_position, channel["e"])
+			channel["hits"] += _strike(channel["a"], r, p.global_position, channel["e"], false)
 		if channel["left"] <= 0.0 or p.stamina <= 0.0:
-			channel = {}
+			_end_channel()
+
+## A damaging channel misses only if the entire channel landed nothing, including early ends.
+func _end_channel() -> void:
+	if not channel.is_empty() and channel["hits"] == 0 and float(channel["r"].get("damage-mult", 0.0)) > 0.0:
+		p.combo = 0
+	channel = {}
 
 ## Product over active buffs of `key` (1 when none); `add` sums; `flag` = any buff sets it.
 func mult(key: String) -> float:
@@ -165,4 +179,5 @@ func absorb(amount: float) -> float:
 	return amount
 
 func reset() -> void:
-	dash = {}; channel = {}; cast = {}; buffs.clear(); heals.clear()
+	_end_channel()
+	dash = {}; cast = {}; buffs.clear(); heals.clear()
