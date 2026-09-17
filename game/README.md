@@ -29,6 +29,7 @@ nix develop -c godot --headless --quit                             # autoload + 
 nix develop -c godot --headless -s game/world/test_world_gen.gd    # gen-world invariants (seed, range, names, mesh)
 nix develop -c godot --headless -s game/world/test_settlement.gd   # village placement / plateau / layout, no spawns near the square, shop stock + prices, buy / sell, respec, inn, E → NPC
 nix develop -c godot --headless -s game/entities/test_player.gd    # player physics (land, jump height, step-up, sprint, camera)
+nix develop -c godot --headless -s game/entities/test_panel_time.gd # inventory/skills/shop: live DOT, cooldowns, buff/dodge expiry, blocked gameplay input, close/reopen movement, lethal DOT
 nix develop -c godot --headless -s game/entities/test_creatures.gd # gen-spawns determinism, rosters, level band, HP calibration, FSM
 nix develop -c godot --headless -s game/entities/test_creature_roles.gd   # c-creature-roles, role parsing, role per spawned group, ranged keep-away / LOS / shot, mage splash + burning, poison application/ticks through dodge, unchanged burning/direct-hit dodge, no friendly fire, blocked shot, enemy-hit roll
 nix develop -c godot --headless -s game/combat/test_combat.gd       # formulas, hit/combo/whiff, retaliation, kill, respawn
@@ -36,6 +37,7 @@ nix develop -c godot --headless -s game/items/test_items.gd         # gen-item r
 nix develop -c godot --headless -s game/progression/test_progression.gd   # xp-to-next table, xp-for-kill gap rule, settle, c-xp-config, kills → level 2
 nix develop -c godot --headless -s game/progression/test_skill_tree.gd    # tree shape per spec, c-tree-shape, spend/unlock, per-point mults, key slots, key 1 smash + cooldown
 nix develop -c godot --headless -s game/combat/test_abilities.gd    # c-ability-runtime, costs, smash dash+stun, cyclone ticks, buffs, rock fist, MP per hit, M2 charge, burning, heal cast, shield, bulwark
+nix develop -c godot --headless -s game/combat/test_class_combos.gd # burst/dash hit/miss, whole-channel normal/early end, gains/caps/inactivity, neutral taunts/heals/buffs/movement, projectile side heal
 nix develop -c godot --headless -s game/combat/test_defence.gd      # c-defence-config, dodge cost / roll / i-frames / rewards, shield + guardian block, same-interval block exhaustion / final-hit status protection, stealth fill / aggro / hit bonus / camouflage / decay, enemy-hit stun + knockback
 nix develop -c godot --headless -s game/combat/test_projectiles.gd  # c-moveset-config, bow arrow hit / arc whiff / volley, wand beam, staff at-cursor + range, bracelet knockdown, fire-missiles, boomerang ticks + return, dagger poison, longsword lunge, shuriken throw, greatsword finisher
 nix develop -c godot --headless -s game/combat/test_feel.gd        # c-feel-config, hit-stop freeze + real-time restore + overlap, trauma decay to rest, damage number spawned / freed, kill bundle, hurt number, stun stars, projectile trail + impact, level-up, every event's synthesised sfx

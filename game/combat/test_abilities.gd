@@ -82,6 +82,7 @@ func _init() -> void:
 	# War Frenzy: damage buff ×1.2 for 10 × 1.05 s, basic hits give MP
 	check(p.use_class_skill(3) and is_equal_approx(p.abilities.mult("damage-mult"), 1.2) and p.abilities.buffs[&"war-frenzy"]["left"] > 10.0, "war frenzy buff")
 	await _frames(35)
+	p.combo = 0                                             # isolate the buff multiplier; prior class hits now build combo
 	hp0 = wolf.hp
 	p._swing()
 	check(is_equal_approx(hp0 - wolf.hp, Combat.after_armor(dmg * 1.2, wolf.armor, design["combat"])), "basic hit ×1.2 under war frenzy")

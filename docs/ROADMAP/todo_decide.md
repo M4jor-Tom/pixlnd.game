@@ -154,12 +154,18 @@ repair and its regressions** on 2026-09-17: reject the attempted equip in either
 changing the bag or worn gear. That repair is applied and tested; existing handedness data,
 including the provisional wand classification, is unchanged. All other runtime fixes remain
 unauthorized; the broader item-3 equipment-model implementation remains deferred.
-Next pending topic within item 10: **Panel-time runtime repair** — the live-time policy is already
-approved; ask separately for implementation authorization, not another policy decision.
-**Owner stop:** this implementation question was presented but remains unanswered. The owner
-requested commit + push of the completed repairs and will answer with a new agent. The exact
-pending proposal/question is preserved at the top of `docs/HANDOFF.md`; no panel-time or other
-additional runtime implementation is authorized by that publication request.
+The owner resumed on 2026-09-17 and explicitly authorized **only the panel-time runtime repair
+and its regression tests**, preserving current gameplay input restrictions, balance and other
+menus. Authorization is recorded in `domain.md#hud-element`; the repair is applied with
+red-to-green regression, full headless-suite and windowed-check evidence below. Independent
+correctness and ponytail reviews found no issues. The owner then separately authorized **only
+the class-ability combo runtime repair and its regression tests** on 2026-09-17. Authorization
+is recorded in `domain.md#combo-system`; the repair is applied with red-to-green, full-suite
+and windowed HUD evidence below; independent correctness and ponytail reviews found no issues.
+The completed panel-time changes, balance, inactivity expiry, caps and unrelated runtime
+behavior are preserved.
+The next reconciliation item is **artifact/document cleanup**; no other deferred
+implementation, commit or push is authorized.
 Follow `tasks/lessons.md`: present one gamer-facing recommendation with both outcomes, ask
 one approval question, then wait. Do not jump to the gameplay handoff's aggro slice or the
 deferred equipment/validator implementation. Preserve D1–D26 and all walkthrough approvals;
@@ -264,6 +270,19 @@ all remaining open questions stay open.
   data without settling the provisional wand classification. This authorizes only the conflict
   repair and regressions, not broader slot normalization, class restrictions, dual-wield routing
   or Guardian/Cyclone changes. Deferral would retain the loophole, not approve the invalid loadout.
+
+- [x] **Panel-time — runtime authorization (item 10, 2026-09-17).** Repair the player-only
+  timer freeze while inventory, skill-tree and shop panels are open, with regressions. Existing
+  DOT ticks, cooldowns, buff and dodge expiry must continue; preserve gameplay input restrictions,
+  balance and other menus. Deferral would retain the partial freeze, not authorize a world pause.
+  This authorizes no other runtime fixes, commits or pushes. Application is tracked below.
+
+- [x] **Class-ability combos — runtime authorization (item 10, 2026-09-17).** Repair missing
+  non-projectile class-strike combo handling and add regressions, using the approved damaging-hit,
+  whole-channel miss/reset and combo-neutral zero-damage-taunt rules. Preserve existing gain,
+  inactivity and cap behavior, damage, costs, cooldowns and taunt/healing effects. Projectile
+  and weapon attacks remain unchanged. This authorizes no other deferred work, commit or push.
+  Application and verification are tracked below.
 
 ### Open — decide before the named slice
 
@@ -392,10 +411,19 @@ is still open. Do not mistake a listed proposed correction for an approved new g
   checks greatsword and bow in both equip orders, unchanged bag order/worn gear/coins, no
   change signal and no item loss/duplication; valid swaps work after removing the conflict.
   No slot data, handedness classifications, class checks or other equipment-model work changed.
-- [ ] **Other runtime contract violations — implementation deferred (item 10):** after separate
-  authorization, reproduce and fix panel-related player timer freezing (`player.gd#_physics_process`)
-  under the approved live-time policy. Non-projectile class strikes also omit combo result
-  handling (`abilities.gd`); use the approved channel miss/reset and combo-neutral zero-damage-taunt policies.
+- [x] **Panel-time — runtime repair (item 10, 2026-09-17):** removed the shared panel early
+  return in `player.gd`; existing simulation continues while movement, jump/swim-up, dodge,
+  held block, combat and interaction input remain gated. Existing active effects and forced
+  movement continue, with no new actions permitted. A lethal DOT stops the frame. Real-panel
+  regressions cover inventory, skills and shop, timer expiry/cadence and unchanged input
+  restrictions. No balance, instance data, other menus or class-ability combo handling changed.
+- [x] **Class-ability combo runtime repair (item 10, 2026-09-17):** damaging class strikes
+  reuse `_landed(false)` for combo gain/timer/cap without M1 rewards. Non-channel misses reset;
+  channels accumulate hits and settle a miss only on normal or early end (stamina exhaustion
+  or runtime reset). Zero-damage taunts/heals stay neutral. `test_class_combos.gd` covers the
+  hit/miss/expiry/end cases, existing costs/damage and neutral support/movement skills. The
+  old War Frenzy damage test now explicitly starts from zero combo, isolating its buff assertion
+  from newly counted earlier class hits. No instance data or projectile/player runtime changed.
 - [ ] **Artifact/document cleanup:** replace the missing `instances/shops.json` reference with
   `economy.json#shops`; remove the duplicate `economy.json#prices.formula` key; reconcile stale
   “all settled” summaries and claims that dodge, stealth bar or poison are absent in
@@ -514,6 +542,54 @@ passes found no issues. Reviewers inspected source and red/green/suite logs with
 tests. Other weapon classifications, shield-for-shield and non-hand swaps were source-traced,
 not individually regression-tested. Panel-time, combo and the broader equipment-model
 implementation are still deferred; no commit or push is authorized by this repair approval.
+
+**Item 10 panel-time verification (2026-09-17):** `test_panel_time.gd` first failed 40
+assertions, reproducing frozen poison, cooldowns, buffs and dodge expiry in all three real
+panels (some failures were downstream of the freeze). It passes after the input/simulation
+separation. Its swimming fixture was moved off the floor so collision does not zero sink
+velocity. The regression checks poison cadence, ordinary-hit immunity before and vulnerability
+after dodge expiry, single-step cooldown progression, normal combo inactivity, gameplay-input
+suppression, movement after closing and lethal DOT. All 14 game tests, ontology validation and
+headless boot passed under `timeout 90 nix develop -c godot …`. The same regression passed
+windowed; a temporary copy captured each native panel for inspection (no browser UI). The
+fixture's narrow window clips the wider panels; no UI layout fix is claimed or included.
+Logs/captures: `/tmp/pixlnd-panel-time/{red,green,suite,visual}.log` and three panel PNGs
+(session-local evidence). `/simplify` retained the existing single simulation flow rather than
+adding separate timer machinery. Independent correctness and ponytail reviews found no issues;
+reports are `correctness-review.md` and `ponytail-review.md` in the same log directory. Reviewers
+inspected source and logs, not rerun tests. Active dash/channel/cast/heal continuation, knockback,
+resource regeneration, ultimate input, the abilities-null branch and stored special charges
+were source-traced, not individually regression-tested while browsing. The fixture manually
+steps player physics, batches gameplay input and opens shops through `_open`, not vendor
+interaction; no event-ordering or multiplayer/network claim is made. Live instance JSON,
+balance and `abilities.gd` are unchanged. Combo repair, other deferred work, commit and push
+remain unauthorized.
+
+**Item 10 class-ability combo verification (2026-09-17):** `test_class_combos.gd` first failed
+17 assertions for missing burst/dash hit/miss handling, channel completion and gains/caps.
+It passes after the shared strike-result bookkeeping and channel end settlement. Regressions
+cover multi-target bursts counting once, dash impact, empty/late/multiple channel hits, normal
+duration and early stamina/reset endings, inactivity after a successful channel hit, sword/staff
+caps, no M1 MP/finisher reward, unchanged strike damage/costs/cooldowns, Heroic Shout neutrality
+with/without targets and unchanged taunt/healing effects, non-attacking buffs/movement/heals,
+and a projectile's side heal versus whole-volley miss. The first full suite exposed the existing
+War Frenzy fixture's zero-combo assumption; explicitly resetting that fixture's combo preserves
+its intended buff-only assertion. All 15 game tests, ontology validation and headless boot then
+passed under `timeout 90 nix develop -c godot …`. A temporary windowed copy binds the real HUD,
+asserts `combo 5` on the burst hit and an empty combo label on its miss; both PNGs were inspected.
+Logs/captures: `/tmp/pixlnd-class-combo/` (`red.log`, `green.log`, initial `suite.log`,
+`abilities-green.log`, `suite-green.log`, `visual.log`, `combo-hit.png`, `combo-miss.png`).
+The windowed run reported an ignored Nix evaluation-cache busy warning during concurrent Nix
+startup; Godot and all assertions completed successfully. No browser or multiplayer test is
+claimed. SHA-256 checks confirm the completed panel-time player/test files are unchanged;
+live instance JSON, validator and projectile runtime are unchanged. `/simplify` retained one
+shared strike path and one channel-end helper used by normal completion and reset. Independent
+correctness and ponytail reviews found no issues (`correctness-review.md`, `ponytail-review.md`
+in the same directory); reviewers inspected source/logs and HUD captures, not rerun tests.
+The fixture manually settles dash impacts and steps ability timers: wall-triggered completion,
+death calling reset, multi-target channel counting and successful class-projectile
+non-double-counting were source-traced rather than individually asserted by the new regression.
+No other deferred work, commit or push is authorized.
 
 **Audit verification baseline (not proof of consistency):** `ontology/validate.gd`,
 `game/items/test_items.gd`, `game/combat/test_defence.gd` and

@@ -534,8 +534,14 @@ per-weapon caps are unchanged.
 Hybrid zero-damage taunts (walkthrough item 10, owner approved 2026-09-17) are combo-neutral:
 they neither increase nor reset combo, and do not refresh its inactivity timer, whether or not
 any enemy is affected. Normal inactivity expiry still applies. Existing taunt/healing effects
-are unchanged; this does not settle threat amounts or targeting rules. Both combo policies
-are ontology-only; runtime changes require separate authorization.
+are unchanged; this does not settle threat amounts or targeting rules.
+
+Class-ability combo runtime authorization (walkthrough item 10, owner approved 2026-09-17):
+repair missing non-projectile class-strike combo handling and add regressions for the above
+rules. Reuse the existing landed-hit gain, inactivity timer and weapon cap; preserve damage,
+costs, cooldowns, taunt/healing effects and projectile/weapon attack behavior. Empty channel
+ticks never reset combo; a wholly missed damaging channel resets on normal or early end.
+Zero-damage taunts remain neutral even with no targets. No other deferred work is authorized.
 
 ### special-attack
 M2. Warrior/Ranger/Mage hold to charge (MP bar turns pink for the amount to be spent; more MP =
@@ -850,8 +856,11 @@ skill-tree or shop panel does not pause time, in either solo or multiplayer. The
 timers continue together: enemies and projectiles remain active, damage-over-time effects tick,
 cooldowns count down, buffs expire and dodge protection ends under their existing rules. Opening
 these panels grants no immunity or extension of protection; players remain vulnerable while browsing.
-This does not decide input availability or the behavior of other panels/menus. Ontology rule only;
-fixing the current player-only timer freezing requires separate implementation authorization.
+This does not decide new input availability or the behavior of other panels/menus.
+Panel-time runtime authorization (walkthrough item 10, owner approved 2026-09-17): repair the
+player-only timer freeze and add regressions for these three panels. Preserve current gameplay
+input restrictions, balance and other menus; advance existing simulation rather than admitting
+new movement, combat or interaction input. Other runtime fixes remain separately deferred.
 
 ### option
 → `instances/ui.json#options`: FPS limit (default 111), invert Y, camera speed, resolution,
