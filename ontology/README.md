@@ -12,16 +12,18 @@ ontology/
 └── validate.gd      headless check: `nix develop -c godot --headless -s ontology/validate.gd`
 ```
 
-## Current scope and decisions (2026-09-15)
+## Current scope and decisions (2026-09-17)
 
 Hybrid v1 is alpha progression + approved Steam content; A/S source descriptions are historical
 reference, and X/cut or Omega-only content is roadmap coverage, not launch availability (item 8).
 Regional gear power loss is **permanently excluded**: never propose or implement it, even for
 Cube World cloning fidelity. It is not deferred or an alternative mode.
-D1–D26 and subsequent approvals stand; unresolved merges and application status are tracked in
-`docs/ROADMAP/todo_decide.md §E`. Dated build notes below include superseded placeholders, not
-proof of current coverage. For "resume walking through items", follow `tasks/lessons.md` and
-that checkpoint, not the gameplay slice loop.
+D1–D26 and subsequent approvals stand. `domain.md §7` indexes the remaining hybrid questions;
+`docs/ROADMAP/todo_decide.md §E` tracks their decisions and application status. Equipment-model
+and validation-contract policies are approved, but their broader implementation is deferred.
+Dated build notes below include superseded placeholders, not proof of current coverage. For
+"resume walking through items", follow `tasks/lessons.md` and that checkpoint, not the gameplay
+slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
 ## Decision and build history (from 2026-09-07)
 
@@ -29,11 +31,10 @@ that checkpoint, not the gameplay slice loop.
 - Owner decisions applied: **hybrid ruleset** (alpha progression + steam content), **Godot 4 +
   GDScript** (engine maintenance verified: 4.7.2 stable 2026-08-18), **region lock dropped**,
   all cut/Omega content deferred to `docs/ROADMAP/`.
-- 2026-09-07 (later): every §7 open point settled (`docs/ROADMAP/todo_decide.md`); designed
-  tunables live in `instances/generators.json#design`. Toolchain pinned in `flake.nix` (Godot 4.7.2,
-  node, jq); `validate.gd` parsed and passed for the first time: 0 errors.
-- Still open: only the single-source `?` facts in `domain.md` (rare zones, swamp-lands, mana-cubes,
-  race hitboxes, chase drop, armor formula); none blocks engine work.
+- 2026-09-07 (later): initial owner decisions and fact conflicts recorded in
+  `docs/ROADMAP/todo_decide.md`; designed tunables live in `instances/generators.json#design`.
+  Toolchain pinned in `flake.nix` (Godot 4.7.2, node, jq); `validate.gd` first passed with 0 errors.
+  Later reconciliation identified additional questions; see the current §7/§E indices.
 - 2026-09-08: stale `?` (water level, artifact traversal bonus) cleared; D11 settles the four hybrid
   gaps (block reward, regeneration, artifacts per land, `/pvp`) in `generators.json#design`.
 - 2026-09-09: `stats.json` xp-to-next table corrected to what its own formula gives (L20 537, L50 760, L100 881).
@@ -62,7 +63,16 @@ that checkpoint, not the gameplay slice loop.
 - 2026-09-08: D12 world numbers (zone/land size, heightfield, climate rules, palettes, land names)
   landed for the first gameplay slice, `game/world/`.
 - 2026-09-08: router step done — `project.godot` + `game/` scaffold; `OntologyDB` autoload loads
-  `instances/` through `model.gd` and aborts on any §5 violation. Layout: `game/README.md`.
+  `instances/` through `model.gd` and aborts on reported loader/validator errors, not every
+  possible §5 violation (coverage gaps remain). Layout: `game/README.md`.
+- 2026-09-15: reconciliation items 1–8 applied as recorded in `todo_decide.md §E`; equipment
+  semantics are documented, but the broader live slot/validator/consumer changes remain deferred.
+- 2026-09-17: item 9 validation-contract direction documented; path/provenance/boundary mapping
+  and enforcement remain separate. Item 10's authorized poison/dodge, block-exhaustion, hand-conflict,
+  panel-time and class-combo repairs are applied; latest two repairs committed in `44ab0a1` (rebased reference).
+- 2026-09-17: owner authorized documentation/data-description cleanup without gameplay changes:
+  current/open/historical summaries reconciled, shop reference corrected, duplicate price-description
+  key removed without changing its parsed value. Verification is tracked in `todo_decide.md §E`.
 
 ## Instance files
 
@@ -87,10 +97,11 @@ that checkpoint, not the gameplay slice loop.
 ## Conventions
 
 Version tags `A` (alpha 0.1.x), `S` (Steam 1.0), `Ω` (Omega, announced), `X` (cut / data-only).
-`?` marks unverified or conflicting facts; each is listed in `domain.md §7`.
+`?` on a source value marks uncertainty; `domain.md §7` separates active hybrid questions from
+reference-only gaps. In type notation it means optional/nullable, not a missing design decision.
 
 ## Validate JSON
 
 ```sh
-for f in ontology/instances/*.json; do node -e "JSON.parse(require('fs').readFileSync('$f'))" || echo "BAD $f"; done
+for f in ontology/instances/*.json; do jq -e 'type == "object"' "$f" >/dev/null || exit 1; done
 ```

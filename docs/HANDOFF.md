@@ -2,27 +2,26 @@
 
 ## Ontology walkthrough entry point (2026-09-17)
 
-**Current authorization:** the owner resumed on 2026-09-17 and explicitly authorized only the
-panel-time runtime repair and its regression tests: keep existing simulation running while
-inventory, skill-tree and shop panels are open, preserving current gameplay input restrictions,
-balance and other menus. Authorization is recorded in `ontology/domain.md#hud-element`;
-the repair is applied and tested; independent correctness and ponytail reviews found no issues.
+**Committed reconciliation:** the owner requested committing the staged repairs before continuing;
+`44ab0a1` contains the panel-time and class-combo repairs, regressions and walkthrough records.
+All 15 game tests, ontology validation and boot passed again before that commit. The subsequent
+cleanup is also committed (`docs(ontology): reconcile roadmap, references and open questions`).
+Commit references follow the authorized semantic rebase onto `origin/master` at `20e35d8`
+(2026-09-18); no push or deferred gameplay implementation is authorized.
 
-**Current implementation — item 10, class-ability combos:** the owner separately authorized
-the narrowly scoped combo repair and its regressions on 2026-09-17. Record and enforce the
-approved damaging-hit, whole-channel miss/reset and combo-neutral zero-damage-taunt rules,
-preserving balance, inactivity expiry, caps and unrelated runtime behavior. Authorization is
-recorded in `domain.md#combo-system`; the repair is applied and tested. Independent correctness
-and ponytail reviews found no issues. The completed panel-time changes are preserved. No other
-deferred work, commit or push is authorized.
-
-**Next proposal — artifact/document cleanup:** correct broken/stale references and descriptions,
-remove the duplicate price-description key while preserving the currently loaded value, and
-make summaries distinguish implemented, approved/deferred and unresolved work. No gameplay,
-balance, validator/loader behavior or unresolved design choice changes. Approval makes the
-project's written description match the approved game; deferral changes no player behavior but
-leaves misleading documentation. Ask: **“Approve this documentation/data-description cleanup,
-with no gameplay changes?”** Await the owner's answer.
+**Current authorization — artifact/document cleanup (2026-09-17):** the owner approved the
+next cleanup: correct stale/broken references and status summaries, remove the duplicate
+price-description key without changing parsed values, and index remaining uncertainties.
+No gameplay, balance, validator/loader behavior or unresolved design choice changes are authorized.
+The cleanup is applied and checked. Correctness review found no issues; the two ponytail
+suggestions to remove duplicate prose were applied. At that checkpoint, the instruction was to
+leave the cleanup uncommitted: the commit request covered only the already-staged repairs.
+The cleanup was subsequently committed before the authorized rebase; that old instruction is
+not a request to undo it or start further work.
+Resume with **Aggro / group aggro**, the first open §E topic, one decision at a time—not the
+aggro implementation slice. First pending question: damage-to-threat conversion. Proposed,
+not approved: 1 threat per HP actually removed by damage; taunt, ties, decay/reset, stealth
+interaction and group behavior remain separate questions. Approval would be ontology-only.
 
 When prompted **"resume walking through items"**, read `tasks/lessons.md` and
 `docs/ROADMAP/todo_decide.md §E` first, then the relevant `ontology/` sources and actual Git
@@ -39,11 +38,11 @@ even for cloning fidelity. Historical Steam data is reference only, not an alter
 validation-contract direction was approved on 2026-09-17 and recorded in `ontology/domain.md §5`
 for **documentation only**. Required-path, provenance-inheritance and remaining check-boundary
 mapping precede enforcement; no validator, loader, generator or gameplay implementation is
-authorized. Item **10 — Runtime contract violations** is partially decided: on 2026-09-17 the
+authorized. Item **10 — Runtime contract violations** has its listed repairs applied: on 2026-09-17 the
 owner approved live time for inventory, skill-tree and shop panels in solo and multiplayer,
 whole-channel combo miss/reset for damaging channels (including early ends), and combo-neutral
 zero-damage taunts (no increase, reset or inactivity-timer refresh). The rules are recorded in
-`ontology/domain.md §3.7/§3.3/§5` for documentation only. The owner separately authorized only
+`ontology/domain.md §3.7/§3.3/§5`, initially for documentation only. The owner separately authorized only
 **the poison-tick/dodge runtime repair and its regression test** on 2026-09-17, preserving poison
 balance, ordinary dodge protection and burning behavior (`domain.md#status-effect`). The repair
 is applied with a red-to-green regression; all 13 game tests, ontology validation and headless
@@ -83,7 +82,8 @@ session-local `/tmp/pixlnd-class-combo/` evidence. Reviewers inspected source/lo
 tests. Wall-triggered dash endings, death calling reset, multi-target channel hits and successful
 class-projectile non-double-counting were source-traced rather than individually covered by the
 new regression. No multiplayer test is claimed.
-Next reconciliation item: **artifact/document cleanup**, not an implementation slice.
+Cleanup verification: `docs/ROADMAP/todo_decide.md §E`; `/tmp/pixlnd-doc-cleanup/` holds
+session-local evidence.
 All other deferred runtime work remains unauthorized.
 Broader equipment-model implementation (item 3), validator implementation (item 9) and the aggro
 gameplay slice remain separate, deferred work.
@@ -122,11 +122,17 @@ the sources never settled is a numbered **D** entry: `domain.md §7` + `docs/ROA
 | 64e4c66, ec09cbc, 27fa3b2 | game feel (§3.3 + §3.7, D25) | `combat/feel.gd` event bundles from `design.feel` (hit-stop on `Engine.time_scale` with a real-time end, camera trauma → `orbit_camera.gd` shake on the Camera3D offsets, sfx synthesised once per alpha id from `design.feel.sfx`, floating damage numbers as Label3D, impact flash + projectile trail spheres, stun stars over any stunned entity), one bundle per `_strike` (kill > crit > hit) + a number per body, hurt / block / dodge / shoot / level-up / pickup / coin events in `player.gd`, dot ticks number-only, HUD level-up pop + buff-icon row, `c-feel-config`, test_feel |
 | 8538558, 0d157f4, ce94c6d | creature roles (§3.2, D26) | `design.creature-roles`: every creature has a combat role (`model.gd#Creature.combat_role` parsed from the `creatures.json` role text; `any-class` humanoids roll melee / ranged / mage per group from a private rng off the group seed in `spawner.gd`, the zone stream untouched); ranged / mage creatures chase to `range`, back off below `keep-away`, need a head-to-head line of sight, wind up and fire through the shared `projectile.gd#fire` (species overrides: spitter poison spit, snout-beetle charged shot); a landed shot goes through the player's normal `take_damage` (dodge / block / i-frames, hurt bundle, D23 stun / knockback roll) and applies the role status (mage burning, spitter poison — poison now goes through dodge i-frames as the alpha rule says); no friendly fire (`creature.gd#bodies_within` skips creatures); `c-creature-roles`, test_creature_roles |
 
-Binaries: every push to `master` runs `.github/workflows/release.yml` (`firebelley/godot-export`
-reads `export_presets.cfg`), which refreshes the rolling **`latest`** prerelease with
-`pixlnd_*_amd64.deb` and `pixlnd.exe`. Both presets embed the `.pck`, so each is one file.
+## Current launch and release configuration (2026-09-18, after upstream `20e35d8`)
 
-Playable now: `nix develop -c godot` (add `-- --class=ranger|mage|rogue` for a bow / staff / dagger start, D24) — WASD/Shift/Space, mouse look, wheel zoom (0 = first
+Every push to `master` runs `.github/workflows/release.yml` (`firebelley/godot-export` reads
+`export_presets.cfg`), configured to refresh the rolling **`latest`** prerelease with
+`pixlnd-x86_64.AppImage`, `pixlnd.exe`, macOS `pixlnd.zip` and Android `pixlnd.apk`, not `.deb`.
+All presets export debug builds (`export_debug: true`); the temporary release-keystore experiment
+was removed upstream. Local Nix intentionally omits export templates; this rebase does not
+validate macOS/Android exports or publish a release.
+
+Playable now: `nix run .` (or `nix develop -c godot`); `nix run . -- -- --class=ranger`
+selects a bow start (also `mage` / `rogue` for staff / dagger, D24) — WASD/Shift/Space, mouse look, wheel zoom (0 = first
 person), M1 attack (per weapon: arrows arc, wand beams, staff bursts at the cursor, boomerangs return; camera aim = shot direction), M2 hold-to-charge special (per weapon: sword spin, dagger poison, bow volley, bracelet knockdown ball…; spends MP; with a shield equipped, or as guardian, holding it also blocks front hits), M3 while moving = dodge roll, E talk / pick up, Q life potion, B inventory, X skill tree, 1–4 class skills (once a point is in them), Esc frees the mouse. You spawn on the
 village square of land (0,0), seed 26879, a deadlands land (grey undead-style boxes on a ring: blue capsules at their doors are the
 weapon / armor / item vendors, class trainer and innkeeper; E opens the shop, respecs for 5 × level copper, or rests); red capsules are hostiles, small spinning
