@@ -162,8 +162,8 @@ func use_class_skill(slot: int) -> bool:
 
 ## D23: a dodge ignores the hit, a front block (design.defence.block) cuts it, spends block-power and gives MP;
 ## then buffs (bulwark) make us stun-immune and mana-shield absorbs first (D21).
-func take_damage(amount: float, from: Node) -> void:
-	if _iframes > 0.0:
+func take_damage(amount: float, from: Node, status: StringName = &"") -> void:
+	if _iframes > 0.0 and status != &"poison":              # D26: scheduled poison damage is not dodged
 		return
 	var blocked := blocks_from(from)
 	if blocked:

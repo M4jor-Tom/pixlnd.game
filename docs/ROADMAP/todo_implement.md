@@ -128,8 +128,9 @@ started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes i
 ## Combat (§3.3, slices 457c947 + D21 + D23)
 - [x] Defence (D23, `player.gd` + `creature.gd` from `design.defence`): M3 dodge roll with i-frames and per-passive rewards,
   M2-held block (shield / guardian / cyclone) with block-power + MP, the stealth bar (sneak / aim fill, camouflage pins,
-  decay, attack / crit / MP bonus, aggro range cut), creature hits rolling stun / knockback on the player. Still open:
-  a spitter's poison is a creature hit since D26 and goes through a dodge, as the sources ask; the ninja crit window (`elusiveness`),
+  decay, attack / crit / MP bonus, aggro range cut), creature hits rolling stun / knockback on the player.
+  A spitter's poison application (D26) and scheduled ticks (item 10 repair, 2026-09-17) bypass dodge;
+  ordinary hits and burning retain their existing dodge behavior. Still open: the ninja crit window (`elusiveness`),
   counter-strike and hit-series passives do nothing; stealth ignores darkness / lamps (no game clock);
   knockback fade is a constant (`player.gd#PUSH_DECAY`);
   nothing visually checked; every D23 number is untuned.

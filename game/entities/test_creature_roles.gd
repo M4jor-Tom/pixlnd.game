@@ -2,7 +2,8 @@
 ## c-creature-roles fires on six broken copies; `role` text parses to a combat-role; gen-spawns gives every group a
 ## role (any-class rolled, deterministic); a ranged skeleton keeps its distance, needs line of sight and shoots the
 ## player; a mage skeleton splashes and sets us burning (orange dot numbers); a spitter's poison lands through a
-## dodge; a creature shot never damages a creature; a blocked shot carries no status; a landed shot rolls
+## dodge and ticks through its i-frames without weakening ordinary dodge; a creature shot never damages a creature;
+## a blocked shot carries no status; a landed shot rolls
 ## design.defence.enemy-hit.
 extends SceneTree
 
@@ -237,7 +238,29 @@ func _init() -> void:
 	check(hit == 1 and is_equal_approx(p.hp, hp0), "the dodged shot did no damage (%d hit, %.0f hp)" % [hit, p.hp])
 	check(p.statuses.has(&"burning") and is_equal_approx(float(p.statuses[&"burning"]["dmg"]), 10.0),
 		"…but the poison landed through the i-frames (%s)" % [p.statuses.keys()])
-	p._iframes = 0.0; p.statuses.clear(); p.hp = p.max_hp
+	# Tick synchronously: no frame advances the dodge or introduces another attack.
+	before = _labels()
+	var bundles: int = feel.get_child_count()
+	p.tick_statuses(0.01)
+	check(is_equal_approx(hp0 - p.hp, 10.0), "poison tick damages through dodge (lost %.1f, expected 10)" % (hp0 - p.hp))
+	check(_labels() == before + 1 and feel.get_child_count() == bundles, "poison tick floats one number without a hurt bundle")
+	hp0 = p.hp
+	p.take_damage(10.0, sp)
+	check(is_equal_approx(p.hp, hp0), "ordinary hits remain dodged after a poison tick")
+	p.tick_statuses(0.5)
+	check(is_equal_approx(p.hp, hp0), "poison does not tick before its interval")
+	p.tick_statuses(0.5)
+	check(is_equal_approx(hp0 - p.hp, 10.0), "the next scheduled poison tick also bypasses dodge")
+	# Burning replaces poison in the current shared slot, but must not inherit its dodge exemption.
+	p._iframes = 0.0
+	p.apply_status(&"burning", design["status-effects"]["burning"], 10.0, sp)
+	p._iframes = 1.0; hp0 = p.hp
+	p.tick_statuses(0.01)
+	check(is_equal_approx(p.hp, hp0), "ordinary burning ticks keep their existing dodge behavior")
+	p._iframes = 0.0
+	p.tick_statuses(0.5)
+	check(is_equal_approx(hp0 - p.hp, 1.0), "burning still ticks normally after dodge")
+	p.statuses.clear(); p.hp = p.max_hp
 
 	# --- design.defence.enemy-hit rolls on a landed shot
 	var kb = design["defence"]["enemy-hit"]["knockback-chance"]
