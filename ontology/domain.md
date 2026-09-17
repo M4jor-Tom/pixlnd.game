@@ -13,13 +13,13 @@ derived from this file and `instances/`. Nothing downstream may drift ahead of i
   - `S`  Steam 0.9.x beta → 1.0.0-1 (Sept 23 – Oct 1 2019)
   - `Ω`  Cube World Omega (announced 2023-05-25, unreleased; only announced facts)
   - `X`  present in shipped data / devlog but cut, unused or never functional
-- `?` after a value = single-source, conflicting or unverified. Listed in §7.
+- `?` after a source value marks uncertainty; §7 separates active hybrid questions from reference-only research gaps. In type notation (`int?`, `ref?`), it instead means nullable/optional, not an unanswered design question.
 - Properties are split **intrinsic** (belong to the thing) vs **extrinsic** (references to other IDs).
 - Runtime-generated content (terrain, dungeons, names, loot rolls, bosses) is **not** enumerated;
   its **generator** is a class (§6) and its config lives in `instances/generators.json`.
 - Numeric formulas are written in plain infix. `lvl` = character level, `n` = item level.
 
-Research dumps behind this file: `research_*.md` (classes/combat, items, world, creatures/quests,
+Research dumps behind this file: `research/research_*.md` (classes/combat, items, world, creatures/quests,
 systems). Primary sources: cubeworld.fandom.com, cuwo (alpha server reimplementation, exact data
 layouts), CWSDK (1.0 modding SDK), coremaze stat reverse-engineering, Wollay's 2011–2013 devlog
 (Wayback), picroma.com 2013, wollay.com (Omega), Steam patch notes and guides.
@@ -727,7 +727,7 @@ A: copper/silver/gold (100:1), platinum (adaptation only); S: single coin counte
 walking. Prices/incomes in `instances/economy.json`.
 
 ### shop
-Vendor with stock rules. → `instances/shops.json` (weapon, armor, item/general, identifier,
+Vendor with stock rules. → `instances/economy.json#shops` (weapon, armor, item/general, identifier,
 gem-trader `S` roaming, inn, guild, flight-master, adapter `A`). S: stock rarity capped by rescued
 gnomes; restock daily; buy-back tab; A: sales final, +1..+100 stock.
 
@@ -1077,9 +1077,44 @@ settled or implemented. The current open questions and approval/application chec
 `docs/ROADMAP/todo_decide.md §E`; preserve those deferrals. Earlier slice approximations below
 are historical implementation stages, superseded where later decisions say so.
 
+### Current unresolved hybrid questions (2026-09-17)
+
+This index mirrors the open list in `docs/ROADMAP/todo_decide.md §E`; it does not choose defaults
+or authorize implementation. Resolve each question before its affected slice.
+
+| topic | still undecided / incomplete |
+|---|---|
+| Aggro / group aggro | threat amount, ties, decay/reset, taunt priority/duration, full-stealth interaction, group membership |
+| Creature families | one primary scaling family plus descriptive groups, or multiple families with a scaling rule |
+| Settlements / inn | whether multiple settlements and paid timed sleep are hybrid targets; keep D22's current one village and free heal/respawn service |
+| Traversal | skill versus global key-item prerequisites for riding/gliding/sailing; climbing spikes versus skill points |
+| Books / formulas | permanence/global scope of hybrid book recipes and duplicate unlock interaction with formulas |
+| Artifacts | global versus per-traversal-stat diminishing returns; additive versus compounded percentages (D6 numbers and traversal + attack/HP rewards stand) |
+| Assassin ultimate | Camouflage alias versus separately unlocked fourth node (D10/D20 stand) |
+| Wand handedness | two-handed mechanics versus one-handed; provisional data is not a resolution |
+| Persistence / authority | character portability, ownership of discoveries/unlocks, authoritative state validation (D5 dedicated server stands) |
+| World bounds / resets | finite 1024²-region bound versus “infinite” wording; cleared dungeon/quest mobs at midnight |
+| Validation-contract mapping | exact required paths, permitted provenance inheritance and remaining constraint boundaries; item 9 policy is approved, enforcement deferred |
+| Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
+
+D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
+the hybrid subtractive armor rule and floor; they are not open numeric gaps. Optional/null fields
+are not automatically unknown facts. Equipment-model implementation (item 3) and validator
+implementation (item 9) remain explicitly deferred even where their policies are approved.
+
+### Reference uncertainties, not new hybrid defaults
+
+Historical rare-zone rarity, the alpha `mana-cubes` field, species-specific chase observations,
+source stat-display comparisons and Omega engine/status reports remain research uncertainties.
+They neither override designed hybrid rules nor enable cut/Omega content. Other `?` annotations
+stay attached to their source records; any unresolved implication for active hybrid behavior
+must be decided before implementation, not inferred from a historical flag or loader fallback.
+
+### Historical D/F record
+
 - **D1 Ruleset — DECIDED 2026-09-07: hybrid** (see §1).
-- **D2 Engine — DECIDED: Godot 4 + GDScript**, conditional on a maintenance check of the
-  engine (agent dispatched). `model.gd` follows.
+- **D2 Engine — DECIDED: Godot 4 + GDScript**; toolchain pinned to Godot 4.7.2 through
+  `nix develop`. Typed model and validator: `model.gd`.
 - **D3 Cut content — DECIDED: not in v1.** Every `X` item is a follow-up in
   `docs/ROADMAP/*.md` (one file per theme, <100 lines, with online documentation links).
 - **D4 Omega — DECIDED: roadmap only** (`docs/ROADMAP/omega-*.md`). Separately, **regional gear

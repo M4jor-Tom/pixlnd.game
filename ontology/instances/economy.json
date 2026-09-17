@@ -10,7 +10,6 @@
   },
   "prices": {
     "formula": "generators.json#design.prices (D6)",
-    "formula": "generators.json#design.prices (D6)",
     "S": {"inn": 10, "flight-min": 100, "flight-scaling": "with distance (Wollay's House ≈1.1M)", "flight-to-friend": 0, "gems": {"emerald": 100, "sapphire": 200, "ruby": 400, "diamond": 800}, "glass-flask": 1, "legendary-plus-weapon": "~1800", "identify": "scales with level & quality", "plus-items": "≈2x", "spec-swap": 0},
     "A": {"inn": 0, "spec-swap": "small fee", "adaptation": "platinum coins (community: 'insane')", "vendors": "+1..+100 stock"}
   },

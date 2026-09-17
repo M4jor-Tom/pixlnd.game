@@ -5,7 +5,7 @@ points), `ontology/instances/*.json`, `docs/ROADMAP/README.md`. Already decided 
 D1 hybrid ruleset, D2 Godot 4.7 + GDScript, D3/D4 cut + Omega content → roadmap, region lock /
 `+` items / worn degradation dropped.
 
-**Status 2026-09-13:** D1–D26 and the original fact conflicts below remain decided. The ontology
+**Status 2026-09-17:** D1–D26 and the original fact conflicts below remain decided. The ontology
 reconciliation in §E records approved corrections and additional open questions. Resolve an open
 question before its affected slice; do not reopen settled choices. Designed numbers live in
 `ontology/instances/generators.json#design`.
@@ -128,9 +128,9 @@ The full walkthrough/resumption protocol is in `tasks/lessons.md`; the prompt
 Never propose or implement regional gear power loss in pixlnd, even for Cube World cloning
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
-**Resume checkpoint (2026-09-17):** items 1–2 are applied, validated and committed in `c675f85`.
-Items 3–8 are approved for ontology and their semantic corrections are committed in `f1ec112`;
-their walkthrough handoff is recorded in `d856897`. The owner resumed and approved item 9's
+**Resume checkpoint (2026-09-17; commit references updated after rebase):** items 1–2 are applied,
+validated and committed in `0a562fc`. Items 3–8 are approved for ontology and their semantic
+corrections are committed in `e10836a`; their walkthrough handoff is recorded in `c005f55`. The owner resumed and approved item 9's
 validation-contract direction for **ontology documentation only** on 2026-09-17. Its policy is
 recorded in `domain.md §5`; validator, loader, generator and gameplay implementation remain
 deferred and unauthorized. Exact required paths and unresolved provenance/boundary mappings
@@ -138,7 +138,7 @@ still need documentation before enforcement.
 Inspect actual Git state on `fix/ontology-reconciliation`.
 Item 3's live slot/validator/consumer changes remain deferred, and item 7's
 spirit-cube drops remain unimplemented. No live flags, balance or unresolved gameplay choices changed.
-Item **10 — Runtime contract violations** is partially decided: on 2026-09-17 the owner approved
+Item **10 — Runtime contract violations** has its listed repairs applied: on 2026-09-17 the owner approved
 live time for inventory, skill-tree and shop panels in solo and multiplayer, whole-channel combo
 miss/reset for damaging channels (including early ends), and combo-neutral zero-damage taunts
 (no increase, reset or inactivity-timer refresh). The rules are recorded in `domain.md §3.7/§3.3/§5`
@@ -164,8 +164,17 @@ is recorded in `domain.md#combo-system`; the repair is applied with red-to-green
 and windowed HUD evidence below; independent correctness and ponytail reviews found no issues.
 The completed panel-time changes, balance, inactivity expiry, caps and unrelated runtime
 behavior are preserved.
-The next reconciliation item is **artifact/document cleanup**; no other deferred
-implementation, commit or push is authorized.
+The owner then requested committing the staged repairs before continuing: `44ab0a1` contains
+the panel-time and class-combo repairs and their records. The owner approved **artifact/document
+cleanup**, now applied, checked and reviewed: stale references/statuses, duplicate
+price-description key and an index of remaining questions, with no gameplay or parsed-data-value
+changes. At that checkpoint, cleanup approval did not authorize automatic commit or push.
+The cleanup was subsequently committed before the authorized semantic rebase onto `20e35d8`;
+no push or additional implementation is authorized.
+Next open topic: **Aggro / group aggro**, first in the open list below; begin with damage-to-threat
+conversion (the proposed 1 threat per HP actually removed is not yet approved). Resume one
+ontology decision at a time, not the implementation slice. Other deferred implementation
+remains unauthorized.
 Follow `tasks/lessons.md`: present one gamer-facing recommendation with both outcomes, ask
 one approval question, then wait. Do not jump to the gameplay handoff's aggro slice or the
 deferred equipment/validator implementation. Preserve D1–D26 and all walkthrough approvals;
@@ -283,6 +292,13 @@ all remaining open questions stay open.
   inactivity and cap behavior, damage, costs, cooldowns and taunt/healing effects. Projectile
   and weapon attacks remain unchanged. This authorizes no other deferred work, commit or push.
   Application and verification are tracked below.
+
+- [x] **Artifact/document cleanup — authorized (2026-09-17).** Correct stale references and
+  current-status summaries, remove the duplicate price-description key with its effective value
+  preserved, and distinguish implemented, approved/deferred and unresolved work. No gameplay,
+  balance, loader/validator behavior or unresolved decision changes. Deferral would leave
+  misleading documentation, not change the game. The preceding staged repairs were committed
+  as requested; this approval does not automatically authorize a further commit or push.
 
 ### Open — decide before the named slice
 
@@ -424,12 +440,15 @@ is still open. Do not mistake a listed proposed correction for an approved new g
   hit/miss/expiry/end cases, existing costs/damage and neutral support/movement skills. The
   old War Frenzy damage test now explicitly starts from zero combo, isolating its buff assertion
   from newly counted earlier class hits. No instance data or projectile/player runtime changed.
-- [ ] **Artifact/document cleanup:** replace the missing `instances/shops.json` reference with
-  `economy.json#shops`; remove the duplicate `economy.json#prices.formula` key; reconcile stale
-  “all settled” summaries and claims that dodge, stealth bar or poison are absent in
-  `ontology/README.md`, `docs/ROADMAP/README.md`, `todo_implement.md`, `docs/HANDOFF.md`.
-  Make `domain.md §7` enumerate actual remaining uncertainties rather than treating optional
-  fields or already-designed hitboxes/armor as open facts. Keep research dumps unchanged.
+- [x] **Artifact/document cleanup (2026-09-17):** corrected the shop reference to
+  `economy.json#shops` and the research path; removed the duplicate `prices.formula` description
+  without changing its effective value. Reconciled current/open/historical summaries and stale
+  dodge, stealth, poison, taunt and visual-check claims across the ontology README, roadmap,
+  implementation backlog and handoff. `domain.md §7` now indexes the existing open hybrid
+  questions separately from research uncertainties and optional fields; D13 hitboxes, D14
+  current chase numbers and D15 armor stay decided. Research dumps, runtime and validator/loader
+  code remain untouched. Parsed-data equivalence and targeted runtime checks pass; correctness
+  review found no issues and both ponytail prose-reduction suggestions were applied.
 
 **Items 1–2 verification (2026-09-15):** `timeout 90 nix develop -c godot --headless -s <script>`
 passed for `ontology/validate.gd`, `game/items/test_items.gd` and
@@ -590,6 +609,27 @@ The fixture manually settles dash impacts and steps ability timers: wall-trigger
 death calling reset, multi-target channel counting and successful class-projectile
 non-double-counting were source-traced rather than individually asserted by the new regression.
 No other deferred work, commit or push is authorized.
+
+**Artifact/document cleanup verification (2026-09-17):** the staged repairs were first committed
+as `44ab0a1` (rebased reference) after all 15 game tests, ontology validation and headless boot passed again. Cleanup
+changes only six Markdown files and the removal of one duplicate economy description key.
+Sorted `jq` output before/after is identical; `prices.formula` occurs once, all instance files
+parse as objects, and runtime, validator/loader and research files have no diff. The ontology
+validator, item and settlement tests, and headless boot passed again under `timeout 90 nix develop
+-c godot …`; `git diff --check` passed. A source review reconciled the specific stale claims;
+this does not prove every ontology semantic rule is enforced. The existing open-question list
+is unchanged, with an index added to `domain.md §7`; no choice was silently resolved. No new
+browser/windowed check is needed for this behavior-preserving documentation change. Evidence:
+`/tmp/pixlnd-doc-cleanup/{precommit-suite,checks}.log` and sorted economy snapshots. `/simplify`
+kept the open-question index concise and preserved historical D/F records rather than rewriting
+them as current implementation. Independent correctness review found no issues; ponytail review
+recommended removing duplicated cleanup authorization from §7 and repeated handoff scope/status.
+Both suggestions were applied; approval remains in §E and verification links replace repeated
+prose. Reviewers inspected source and supplied logs/captures, not rerun tests. Reports are
+`correctness-review.md` / `ponytail-review.md` in the same evidence directory; post-adjustment
+checks are recorded in `final-checks.log`.
+At that verification checkpoint the cleanup diff remained uncommitted; it was subsequently
+committed before the authorized rebase. No push or further gameplay implementation is authorized.
 
 **Audit verification baseline (not proof of consistency):** `ontology/validate.gd`,
 `game/items/test_items.gd`, `game/combat/test_defence.gd` and
