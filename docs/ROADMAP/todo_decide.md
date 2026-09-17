@@ -138,8 +138,16 @@ still need documentation before enforcement.
 Inspect actual Git state on `fix/ontology-reconciliation`.
 Item 3's live slot/validator/consumer changes remain deferred, and item 7's
 spirit-cube drops remain unimplemented. No live flags, balance or unresolved gameplay choices changed.
-Next unpresented item: **10 — Runtime contract violations**, starting with the open panel-time
-policy before choosing a timer-freezing fix; combo-boundary policy is a separate question.
+Item **10 — Runtime contract violations** is partially decided: on 2026-09-17 the owner approved
+live time for inventory, skill-tree and shop panels in solo and multiplayer, whole-channel combo
+miss/reset for damaging channels (including early ends), and combo-neutral zero-damage taunts
+(no increase, reset or inactivity-timer refresh). The rules are recorded in `domain.md §3.7/§3.3/§5`
+for ontology documentation only. The owner separately authorized **only the poison-tick/dodge
+runtime repair and its regression test** on 2026-09-17. Its existing rule and narrow scope are
+recorded in `domain.md#status-effect`; the repair is applied with a red-to-green regression and
+passing headless suite (evidence below). All other runtime fixes remain unauthorized.
+Next pending topic within item 10: **Exhausted block and same-interval hits** — review the existing
+rule and ask separately for runtime-fix authorization; do not infer batch approval.
 Follow `tasks/lessons.md`: present one gamer-facing recommendation with both outcomes, ask
 one approval question, then wait. Do not jump to the gameplay handoff's aggro slice or the
 deferred equipment/validator implementation. Preserve D1–D26 and all walkthrough approvals;
@@ -203,17 +211,39 @@ all remaining open questions stay open.
   missing choices, broken progression or invalid upgrades. Leaving the contract open
   would not change today's gameplay or approve different rules; it would retain blind spots.
   Validator, loader, generator and gameplay changes require separate authorization.
+- [x] **Panel-time policy (item 10, owner approved for ontology documentation only, 2026-09-17).**
+  Time keeps running while inventory, skill-tree and shop panels are open, in both solo and
+  multiplayer. Enemies, projectiles, damage-over-time effects, cooldowns, buffs and dodge timers
+  follow their normal rules; browsing grants no immunity or extended protection. Browsing during
+  combat remains risky. Recorded in `domain.md#hud-element`. Leaving this undecided would
+  have retained the current partial player freeze, not approved a whole-world pause. This approval
+  does not settle other panels/menus, input availability or combo boundaries; gameplay fixes still
+  require separate authorization.
+- [x] **Damaging-channel miss/reset boundary (item 10, owner approved for ontology documentation
+  only, 2026-09-17).** Judge the whole channel, not individual ticks: empty ticks do not reset the
+  combo; a channel that lands no hits resets it when it ends, including an early end. Normal
+  inactivity expiry, successful-hit combo gains and per-weapon caps remain unchanged. Thus a
+  Cyclone that hits and then spins through empty space is not treated as a miss. Leaving this
+  undecided would keep the boundary open, not select per-tick resets. Recorded in
+  `domain.md#combo-system` / `c-combo-reset`; runtime fixes require separate authorization.
+- [x] **Zero-damage taunts and combos (item 10, owner approved for ontology documentation only,
+  2026-09-17).** Zero-damage taunts neither increase nor reset combo and do not refresh its
+  inactivity timer, whether or not any enemy is affected. Normal inactivity expiry and existing
+  taunt/healing effects remain unchanged. Players can use a defensive taunt without a combo
+  penalty, but cannot build or sustain a combo by taunting alone. Leaving this undecided would
+  not approve rewarding or penalizing taunts. Recorded in `domain.md#combo-system` / `c-combo-reset`;
+  threat amounts and targeting rules remain separate, and runtime changes require authorization.
+- [x] **Poison ticks during dodge — runtime authorization (item 10, 2026-09-17).** Reproduce and
+  fix poison ticks discarded during dodge, with a regression test. This enforces the existing
+  D26 rule, not a new poison mechanic. Preserve poison damage/duration/cadence, ordinary dodge
+  protection and existing burning behavior. No other deferred runtime work is authorized;
+  application and verification are tracked below.
 
 ### Open — decide before the named slice
 
 - [ ] **Aggro / group aggro:** define threat amount, tie-breaking, decay/reset, taunt priority
   and duration, full-stealth interaction and group membership before the next aggro slice.
   Sources: `domain.md#ai-behavior`, `generators.json#design.status-effects` (current taunt approximation).
-- [ ] **Combo attack boundary:** whole cast, channel tick or completed channel? How do
-  zero-damage taunts count? Before class-strike bookkeeping changes; sources:
-  `domain.md#combo-system`, `c-combo-reset`, `generators.json#design.movesets` (D24).
-- [ ] **Panel time policy:** live combat or whole-world single-player pause while panels are
-  open? Before fixing player-only timer freezing; sources: `ui.json#screens`, `domain.md#multiplayer-mode`.
 - [ ] **Creature family membership:** one primary scaling family plus descriptive groups, or
   multiple families with a defined scaling rule? Skeleton Dog appears in dogs and skeletons
   but its singular family is skeletons. Before family-based scaling; sources:
@@ -310,12 +340,26 @@ is still open. Do not mistake a listed proposed correction for an approved new g
   errors. Currently `Ontology.validate()` checks only whether its pass adds errors; the runner
   separately checks accumulated errors. The approved boolean contract is not implemented.
   `model.gd#Ontology` and `validate.gd` are unchanged; no new checks are implemented.
-- [ ] **Runtime contract violations (walkthrough item 10; not yet presented or approved):** reproduce and fix inventory freezing dodge timers
-  (`player.gd#_physics_process`), poison ticks rejected by dodge (`player.gd#take_damage`,
-  `entity.gd#tick_statuses`), exhausted block protecting against same-interval hits
+- [x] **Panel-time policy — ontology (item 10, 2026-09-17):** documented live time for inventory,
+  skill-tree and shop panels in solo and multiplayer in `domain.md §3.7`. Gameplay and live
+  instance data are unchanged; runtime fixes were not authorized.
+- [x] **Damaging-channel miss/reset boundary — ontology (item 10, 2026-09-17):** documented the
+  whole-channel rule in `domain.md#combo-system` and `c-combo-reset`, including early ends and
+  unchanged inactivity expiry / combo gains / caps. Runtime fixes stay deferred.
+- [x] **Zero-damage taunts — ontology (item 10, 2026-09-17):** documented combo neutrality in
+  `domain.md#combo-system` and `c-combo-reset`, including no inactivity-timer refresh and no-target
+  casts. Taunt/healing effects and threat/targeting decisions are unchanged; runtime fixes stay deferred.
+- [x] **Poison ticks during dodge — runtime repair (item 10, 2026-09-17):** retained the source
+  status ID in the shared tick slot and passed it through `take_damage`; only poison ticks bypass
+  dodge i-frames. Extended `test_creature_roles.gd` with tick damage/cadence/feedback and unchanged
+  burning/direct-hit dodge checks. Poison balance, shared-slot replacement and all other runtime
+  corrections are unchanged.
+- [ ] **Other runtime contract violations — implementation deferred (item 10):** after separate
+  authorization, reproduce and fix panel-related player timer freezing (`player.gd#_physics_process`)
+  under the approved live-time policy, exhausted block protecting against same-interval hits
   (`player.gd#blocks_from`), and greatsword + shield accepted in either equip order
   (`inventory.gd#equip`, `c-hands`). Non-projectile class strikes also omit combo result handling
-  (`abilities.gd`). Settle panel-time / combo-boundary questions above before choosing behavior.
+  (`abilities.gd`); use the approved channel miss/reset and combo-neutral zero-damage-taunt policies.
 - [ ] **Artifact/document cleanup:** replace the missing `instances/shops.json` reference with
   `economy.json#shops`; remove the duplicate `economy.json#prices.formula` key; reconcile stale
   “all settled” summaries and claims that dodge, stealth bar or poison are absent in
@@ -384,6 +428,26 @@ and matching next-item pointers in the roadmap/handoff. Semantic and simplificat
 preserved the approved policy and left unresolved mappings open. `game/`, instance
 JSON, `model.gd` and `validate.gd` are unchanged. The existing validator does not validate this
 Markdown or prove the proposed negative checks work; no enforcement fix is claimed.
+
+**Item 10 policy verification (2026-09-17, before the runtime repair):** the headless ontology validator, `git diff --check`
+and documentation-only scope checks passed. Semantic, `/simplify` and `ponytail-review` passes
+preserved the panel-time and whole-channel rules, including early ends, normal inactivity expiry
+and existing damaging-hit gains / caps. Zero-damage taunts are now combo-neutral, with no timer
+refresh even when no enemy is affected; threat/targeting decisions remain separate. Next-topic
+pointers matched. At that documentation-only stage, only `domain.md`, this roadmap and
+`docs/HANDOFF.md` changed; gameplay, instance JSON and validator code were unchanged. The
+validator does not check these Markdown policies or prove runtime compliance.
+
+**Item 10 poison runtime verification (2026-09-17):** the new regression first failed with
+0 HP lost instead of 10 during dodge, no DOT number and a second discarded poison tick. It
+passed after the identity-preserving fix. All 13 `game/*/test_*.gd` scripts, `ontology/validate.gd`
+and `godot --headless --quit` passed under `nix develop`, each bounded by `timeout 90`.
+The regression also checks tick cadence, one DOT number without a hurt bundle, ordinary-hit
+immunity after a poison tick, and burning replacing poison without inheriting its dodge exemption.
+Live ontology instance data and balance are unchanged. Panel-time, combo, block-exhaustion and
+hand-slot runtime fixes remain deferred. `/simplify` retained the existing shared-slot runtime;
+independent correctness and `ponytail-review` passes found no issues in the runtime/test diff.
+The reviewer inspected the red/green/suite logs rather than rerunning tests.
 
 **Audit verification baseline (not proof of consistency):** `ontology/validate.gd`,
 `game/items/test_items.gd`, `game/combat/test_defence.gd` and

@@ -525,6 +525,18 @@ Hit counter near cursor; +1 per landed hit; ignores growing share of armor and a
 whiffed attack resets; expires ~5 s idle; transfers between targets; per-weapon cap (turns blue with
 "!"); enemies do the same. `A S`
 
+Hybrid damaging-channel miss boundary (walkthrough item 10, owner approved 2026-09-17): judge
+one whole channel, not individual ticks. Empty ticks do not trigger a miss reset. When the
+channel ends, including an early end, reset combo for a miss only if no hit landed during that
+channel. Normal inactivity expiry still applies throughout; successful-hit combo gains and
+per-weapon caps are unchanged.
+
+Hybrid zero-damage taunts (walkthrough item 10, owner approved 2026-09-17) are combo-neutral:
+they neither increase nor reset combo, and do not refresh its inactivity timer, whether or not
+any enemy is affected. Normal inactivity expiry still applies. Existing taunt/healing effects
+are unchanged; this does not settle threat amounts or targeting rules. Both combo policies
+are ontology-only; runtime changes require separate authorization.
+
 ### special-attack
 M2. Warrior/Ranger/Mage hold to charge (MP bar turns pink for the amount to be spent; more MP =
 more damage and stun/knockdown chance); Rogue instant. Mage M2 costs 30 MP (S). `A S`
@@ -555,6 +567,12 @@ petrified `S`, dizzy (glider crash), drowning `S`, injured `X` (2012 devlog deat
 buffs: battle-fury, berserker-rage stacks, torrent stacks, hit-series, fire-spark, intuition,
 elusiveness-window, elixir ×4, beverage-resistance ×3, circle-of-power, mana-shield `A`, bulwark `A`,
 war-frenzy `A`, scouts-swiftness `A`, camouflage, ninjutsu, shadow-shooter clone.
+
+Hybrid poison (D26; narrow runtime repair authorized in walkthrough item 10, 2026-09-17):
+scheduled poison damage is not prevented by dodge i-frames. Preserve poison's identity through
+tick delivery even in the current shared burning-slot approximation. This repair changes neither
+poison damage, duration or cadence nor current burning/direct-hit dodge behavior. Separate poison
+stacking, independent burning/poison slots and other runtime corrections are outside this authorization.
 
 ### death
 No penalty in A or S (no gold/item/XP loss). A: press R → nearest revival statue (never far), enemy
@@ -810,6 +828,14 @@ driver, OS; F3 cycles hidden/compact/full; shipped in release exports).
 Hybrid (D25): damage numbers, stun stars and buff icons run; sounds are synthesised from `design.feel.sfx`
 until audio assets exist.
 
+Hybrid panel-time policy (walkthrough item 10, owner approved 2026-09-17): opening the inventory,
+skill-tree or shop panel does not pause time, in either solo or multiplayer. The world and player
+timers continue together: enemies and projectiles remain active, damage-over-time effects tick,
+cooldowns count down, buffs expire and dodge protection ends under their existing rules. Opening
+these panels grants no immunity or extension of protection; players remain vulnerable while browsing.
+This does not decide input availability or the behavior of other panels/menus. Ontology rule only;
+fixing the current player-only timer freezing requires separate implementation authorization.
+
 ### option
 → `instances/ui.json#options`: FPS limit (default 111), invert Y, camera speed, resolution,
 windowed, render distance, AA samples (`options.cfg`), rarity display, music loop `S`, volumes,
@@ -953,7 +979,7 @@ content selection or live data changes are authorized by this contract.
 | c-slot-accepts | an item equips only in a usable equipment-slot whose `accepts` lists its item-type and whose subtype restrictions it satisfies (§3.4 equipment-slot); weapon-type `offhand` hands → off-hand only; c-weapon-class and c-hands still apply | runtime |
 | c-mp-range | mp ∈ [0, 100]; mage regenerates passively, others gain by hits/blocks/stealth/dodges; numbers `design.resources.mp` (D21) | runtime |
 | c-stun-immunity | cannot re-stun while stars shown | runtime |
-| c-combo-reset | any attack with a hitbox that misses resets combo to 0; cap per weapon-type | runtime |
+| c-combo-reset | any attack with a hitbox that misses resets combo to 0, subject to the hybrid whole-channel and combo-neutral zero-damage-taunt rules in §3.3 combo-system; cap per weapon-type | runtime |
 | c-dodge-cost | dodge costs 25 stamina; requires movement; standing still M3 = class skill (S); hybrid numbers `design.defence.dodge` (D23) | runtime |
 | c-no-death-penalty | death never removes gold/items/xp; respawn at statue (A) / activated shrine (S) | runtime |
 | c-time-speed | clock 10× real; sleep 100× clock-only | runtime |

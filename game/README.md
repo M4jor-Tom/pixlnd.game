@@ -30,7 +30,7 @@ nix develop -c godot --headless -s game/world/test_world_gen.gd    # gen-world i
 nix develop -c godot --headless -s game/world/test_settlement.gd   # village placement / plateau / layout, no spawns near the square, shop stock + prices, buy / sell, respec, inn, E → NPC
 nix develop -c godot --headless -s game/entities/test_player.gd    # player physics (land, jump height, step-up, sprint, camera)
 nix develop -c godot --headless -s game/entities/test_creatures.gd # gen-spawns determinism, rosters, level band, HP calibration, FSM
-nix develop -c godot --headless -s game/entities/test_creature_roles.gd   # c-creature-roles, role parsing, role per spawned group, ranged keep-away / LOS / shot, mage splash + burning, poison through a dodge, no friendly fire, blocked shot, enemy-hit roll
+nix develop -c godot --headless -s game/entities/test_creature_roles.gd   # c-creature-roles, role parsing, role per spawned group, ranged keep-away / LOS / shot, mage splash + burning, poison application/ticks through dodge, unchanged burning/direct-hit dodge, no friendly fire, blocked shot, enemy-hit roll
 nix develop -c godot --headless -s game/combat/test_combat.gd       # formulas, hit/combo/whiff, retaliation, kill, respawn
 nix develop -c godot --headless -s game/items/test_items.gd         # gen-item roll/stats/names, slots, stack rule, gen-loot rates, kill → drop → pick-up → Q
 nix develop -c godot --headless -s game/progression/test_progression.gd   # xp-to-next table, xp-for-kill gap rule, settle, c-xp-config, kills → level 2

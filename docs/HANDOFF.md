@@ -17,9 +17,20 @@ even for cloning fidelity. Historical Steam data is reference only, not an alter
 validation-contract direction was approved on 2026-09-17 and recorded in `ontology/domain.md §5`
 for **documentation only**. Required-path, provenance-inheritance and remaining check-boundary
 mapping precede enforcement; no validator, loader, generator or gameplay implementation is
-authorized. Inspect the actual branch/diff. Next unpresented item: **10 — Runtime contract violations**,
-starting with panel-time policy, one question at a time. Equipment implementation (item 3),
-validator implementation (item 9) and the aggro gameplay slice remain separate, deferred work.
+authorized. Item **10 — Runtime contract violations** is partially decided: on 2026-09-17 the
+owner approved live time for inventory, skill-tree and shop panels in solo and multiplayer,
+whole-channel combo miss/reset for damaging channels (including early ends), and combo-neutral
+zero-damage taunts (no increase, reset or inactivity-timer refresh). The rules are recorded in
+`ontology/domain.md §3.7/§3.3/§5` for documentation only. The owner separately authorized only
+**the poison-tick/dodge runtime repair and its regression test** on 2026-09-17, preserving poison
+balance, ordinary dodge protection and burning behavior (`domain.md#status-effect`). The repair
+is applied with a red-to-green regression; all 13 game tests, ontology validation and headless
+boot pass. Independent correctness/ponytail review found no issues; inspect actual Git state
+and §E verification.
+Next pending topic within item 10: **Exhausted block and same-interval hits** — review the existing
+rule and ask separately for runtime-fix authorization. All other runtime fixes remain unauthorized.
+Equipment implementation (item 3), validator implementation (item 9) and the aggro gameplay slice
+remain separate, deferred work.
 
 ## Gameplay handoff snapshot (2026-09-11, after D26)
 

@@ -27,7 +27,7 @@ func _learn_feel(from: Node) -> void:
 func head() -> Vector3:
 	return global_position + Vector3.UP * 1.5
 
-func take_damage(amount: float, from: Node) -> void:
+func take_damage(amount: float, from: Node, _status: StringName = &"") -> void:
 	if dead:
 		return
 	_learn_feel(from)
@@ -50,7 +50,8 @@ func apply_status(id: StringName, cfg: Dictionary, hit: float, from: Node) -> vo
 			var d: Vector3 = global_position - (from as Node3D).global_position; d.y = 0.0
 			velocity += d.normalized() * float(cfg["impulse"]) + Vector3.UP * float(cfg["impulse"]) * 0.25
 		&"burning":
-			statuses[&"burning"] = {"left": float(cfg["duration-s"]), "tick": 0.0, "tick-s": float(cfg["tick-s"]), "dmg": hit * float(cfg["pct-of-hit"]), "from": from}
+			# ponytail: poison still shares this slot; retain its identity for dodge until separate stacking is built.
+			statuses[&"burning"] = {"id": id, "left": float(cfg["duration-s"]), "tick": 0.0, "tick-s": float(cfg["tick-s"]), "dmg": hit * float(cfg["pct-of-hit"]), "from": from}
 		&"slow":
 			statuses[&"slow"] = {"left": float(cfg["duration-s"]), "move-mult": float(cfg["move-mult"])}
 
@@ -66,7 +67,7 @@ func tick_statuses(dt: float) -> void:
 				s["tick"] = s["tick-s"]
 				var before := hp
 				dot_tick = true                                # D25: the number only, never the hurt bundle
-				take_damage(s["dmg"], s["from"] if is_instance_valid(s["from"]) else self)
+				take_damage(s["dmg"], s["from"] if is_instance_valid(s["from"]) else self, s.get("id", id))
 				dot_tick = false
 				if feel != null and before > hp:
 					feel.number(head(), before - hp, &"dot")
