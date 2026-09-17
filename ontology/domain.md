@@ -893,6 +893,45 @@ One row per fact type. Cardinality as `domain → range`.
 
 ## 5. Constraints
 
+### Validation contract (item 9, owner approved 2026-09-17)
+
+This is the required validation behavior, **not a claim that the current checker implements it**.
+Approval covers ontology documentation only; loader, validator, generator and gameplay changes
+remain separately authorized work (`docs/ROADMAP/todo_decide.md §E`).
+
+- **Required data:** tables and config blocks needed by active, approved hybrid systems must
+  be present and have the documented root/row shapes. Missing data must fail validation, not
+  silently skip its checks; this includes the race catalog and the whole `design.movesets`
+  block. Derive required paths from the approved domain and dependencies, not from whichever
+  files happen to load. Reference/roadmap coverage does not by itself enable a hybrid system
+  or require its runtime implementation.
+- **Existing rules:** validate class/spec references in both directions, two specs per class
+  with distinct indices 0/1 and index 0 first, shared skill-column roots and weapon upgrade
+  capacities according to their approved definitions. Do not settle wand handedness, the
+  Assassin ultimate or other open gameplay choices through a validator default.
+- **Provenance:** versioned content must resolve at least one source-version tag, explicitly
+  or through an inheritance rule documented for that family and its source. Missing tags
+  are not permission to assume A/S, infer provenance from a numeric ID, or enable content.
+  This approval establishes no new per-family inheritance rules; ambiguous mappings remain
+  open until documented. Metadata/config containers are not automatically content instances.
+- **Definitions versus generated instances:** load-time checks validate available definitions
+  and generator configuration, not nonexistent generated objects. For artifacts, check the
+  definition's seven approved traversal stat kinds and D6 bonus configuration at load time;
+  generator/runtime checks separately verify each generated artifact has exactly one of
+  those traversal bonuses plus attack and max HP. Artifact accumulation remains undecided.
+  Passing definition checks is not evidence that generated rewards or runtime behavior work.
+- **Result:** validation succeeds only when the accumulated load/validation error collection
+  is empty. Earlier load errors remain failures even if a validation pass adds no new errors.
+  Malformed data must produce an error rather than be silently discarded or treated as valid.
+
+Before implementing these checks, document the exact required table/config paths, any permitted
+provenance inheritance and each check's definition/generator/runtime boundary from the approved
+ontology. Ask the owner where it does not determine a unique answer; do not fill gaps by guessing.
+Negative regressions must cover missing whole inputs as well as invalid entries. No balance,
+content selection or live data changes are authorized by this contract.
+
+### Constraint catalog
+
 | id | rule | layer |
 |---|---|---|
 | c-race-class | any race × any class × either gender is valid | type |
@@ -928,11 +967,11 @@ One row per fact type. Cardinality as `domain → range`.
 | c-zone-size | A zone 256² blocks, region 64² zones; S zone 64² blocks; hybrid zone 64², land 256² zones (D12) | engine |
 | c-block-rgb | every solid block has its own RGB; (0,0,0) in `.cub` = empty | data |
 | c-name-length | player-character name 2..16 ASCII 32–126 (character creation; creature display names are free text) | runtime |
-| c-versions-nonempty | every instance lists ≥1 version tag | load |
+| c-versions-nonempty | every versioned content instance resolves ≥1 source-version tag, explicit or via a documented family/source inheritance rule; never guessed (item 9) | load |
 | c-roster-ids | every id in `creature-families.json#landscape-rosters` is a creature (D14) | load |
 | c-rideable-conflict | resolved (F2): every `rideable` is a boolean, per-page value; a `?` here is a load error | load |
 | c-hostile-in-city | villagers/animals inside settlements unattackable unless possessed | runtime |
-| c-artifact-stat | each artifact raises exactly one of the 7 traversal stats, plus attack and max HP (D6); all with `generators.json#design.artifact` diminishing rule | load |
+| c-artifact-stat | load: validate the definition's 7 traversal stat kinds and D6 bonus config; generator/runtime: each generated artifact raises exactly one traversal stat plus attack and max HP, using `generators.json#design.artifact`; accumulation semantics remain open (item 9) | load+generator/runtime |
 | c-sim-radius | `design.spawns.ai.sim-radius` ≥ `aggro-range` + `leash`, so a creature can still notice you and walk home while you are around (D16) | load |
 | c-frame-budget | physics 60 Hz; a tick slower than its budget slows game time instead of stacking catch-up ticks: `Engine.max_physics_steps_per_frame` = `design.frame-budget.max-catch-up-steps` (D17) | engine |
 | c-xp-config | `design.progression`: kill-fraction ∈ (0,1]; gap-mult-range = [lo, hi] with 0 ≤ lo ≤ 1 ≤ hi; gap-per-level ≥ 0 (D19) | load |

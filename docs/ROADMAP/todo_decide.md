@@ -128,20 +128,22 @@ The full walkthrough/resumption protocol is in `tasks/lessons.md`; the prompt
 Never propose or implement regional gear power loss in pixlnd, even for Cube World cloning
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
-**Resume checkpoint (2026-09-15):** items 1–2 are applied, validated and committed in `c675f85`.
-Items 3–8 are approved for ontology and their semantic corrections are committed in `f1ec112`
-on `fix/ontology-reconciliation` (see checklist); inspect actual Git state on resume.
-Gameplay implementation remains separate. Item 3's live slot data and related validator/consumer
-changes are deferred, not authorized. Item 7's spirit-cube drops remain unimplemented. Item 8
-clarifies hybrid v1 versus historical/roadmap coverage and temporary build approximations;
-no live flags, balance numbers or unresolved hybrid choices changed.
-**Paused here at the owner's request: do not present item 9 until asked to resume.**
-Next unpresented item: **9 — Validator gaps / validation contract**, linked to the open
-validation-contract question below. It has not been proposed, approved or applied. On
-"resume walking through items", follow `tasks/lessons.md`: present that item in finished-game
-terms with a recommendation and both outcomes, ask one approval question, then wait. Do not
-jump to the gameplay handoff's aggro slice or the deferred equipment implementation.
-Preserve D1–D26 and all walkthrough approvals; all remaining open questions stay open.
+**Resume checkpoint (2026-09-17):** items 1–2 are applied, validated and committed in `c675f85`.
+Items 3–8 are approved for ontology and their semantic corrections are committed in `f1ec112`;
+their walkthrough handoff is recorded in `d856897`. The owner resumed and approved item 9's
+validation-contract direction for **ontology documentation only** on 2026-09-17. Its policy is
+recorded in `domain.md §5`; validator, loader, generator and gameplay implementation remain
+deferred and unauthorized. Exact required paths and unresolved provenance/boundary mappings
+still need documentation before enforcement.
+Inspect actual Git state on `fix/ontology-reconciliation`.
+Item 3's live slot/validator/consumer changes remain deferred, and item 7's
+spirit-cube drops remain unimplemented. No live flags, balance or unresolved gameplay choices changed.
+Next unpresented item: **10 — Runtime contract violations**, starting with the open panel-time
+policy before choosing a timer-freezing fix; combo-boundary policy is a separate question.
+Follow `tasks/lessons.md`: present one gamer-facing recommendation with both outcomes, ask
+one approval question, then wait. Do not jump to the gameplay handoff's aggro slice or the
+deferred equipment/validator implementation. Preserve D1–D26 and all walkthrough approvals;
+all remaining open questions stay open.
 
 ### Approved in the item-by-item walkthrough
 
@@ -189,7 +191,18 @@ Preserve D1–D26 and all walkthrough approvals; all remaining open questions st
   Non-approval would not change the already-decided game; it would leave ambiguous scope text.
   Owner reaffirmed: **never propose or implement regional gear power loss in pixlnd**, even
   for cloning fidelity. Permanently excluded, not deferred or an alternative mode.
-  Apply item 8, record the walkthrough protocol in `tasks/lessons.md`, and stop before item 9.
+  The requested stop before item 9 was honored; the owner resumed on 2026-09-17.
+- [x] **Validation-contract direction (item 9, owner approved for ontology documentation only,
+  2026-09-17).** Require data for active hybrid systems, reject missing whole tables/config blocks
+  and malformed shapes, and check existing class/spec, skill-tree and upgrade-capacity rules
+  without changing balance. Permit source-version inheritance only where explicitly documented,
+  never guessed. Validate definitions/config at load time and generated artifacts separately;
+  report failure for any accumulated loading/validation error. Recorded in `domain.md §5`.
+  Exact path/inheritance/boundary mapping remains preparatory work below, not invented by this
+  approval. Once implemented, these checks should catch data regressions before players encounter
+  missing choices, broken progression or invalid upgrades. Leaving the contract open
+  would not change today's gameplay or approve different rules; it would retain blind spots.
+  Validator, loader, generator and gameplay changes require separate authorization.
 
 ### Open — decide before the named slice
 
@@ -230,9 +243,12 @@ Preserve D1–D26 and all walkthrough approvals; all remaining open questions st
 - [ ] **World bounds / resets:** does hybrid retain the finite 1024²-region bound despite
   “infinite” wording, and do cleared dungeon/quest mobs reset at midnight? Before boundary/clock
   logic; sources: `domain.md#gen-world` (generator row), `#game-clock`, `c-midnight-reset`.
-- [ ] **Validation contract:** which tables/config blocks are mandatory; which instance families
-  inherit version tags; which constraints validate definitions versus generated instances?
-  Before filling validator gaps; sources: `domain.md §2/§5`, `model.gd`, `validate.gd`.
+- [ ] **Validation-contract mapping (policy approved in item 9):** document exact required
+  table/config paths, permitted per-family provenance inheritance and remaining constraint
+  boundaries from `domain.md §2/§5` before filling validator gaps. Ask the owner only where
+  approved definitions do not determine a unique answer; current loader defaults are not
+  authority. Artifact definition versus generated-instance checks are separated in §5.
+  No new inheritance rule or unresolved gameplay choice was approved; implementation is deferred.
 - [ ] **Remaining uncertain facts:** verify or choose explicit hybrid defaults for swamp-lands
   identity, Lion tameability (`null` currently means untameable), resistance meaning and the
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
@@ -282,13 +298,19 @@ is still open. Do not mistake a listed proposed correction for an approved new g
   roadmap option. Historical data and all live flags/balance values preserved. Settlement/inn
   targets, traversal, artifacts and other unresolved merges remain open. Walkthrough protocol
   and the explicit stop/resume route are recorded in `tasks/lessons.md` and `docs/HANDOFF.md`.
-- [ ] **Validator gaps (walkthrough item 9; not presented or approved):** add negative checks
-  for missing races and whole moveset blocks, wrong root/row shapes, both directions of class/spec references, spec cardinality/start index,
-  rootless shared skill columns and handedness-specific cube capacities. Align provenance and
-  artifact-definition/generated-instance checks after the validation-contract decision above;
-  clarify whether `validate()` reports accumulated errors or only newly added errors.
-  Sources: `model.gd#Ontology`, `validate.gd`, `domain.md §2/§5`.
-- [ ] **Runtime contract violations:** reproduce and fix inventory freezing dodge timers
+- [x] **Validation contract — ontology (item 9, 2026-09-17):** recorded the approved direction
+  in `domain.md §5`, clarified `c-versions-nonempty` and split `c-artifact-stat` between
+  definition and generated-instance checks. The roadmap and handoff distinguish applied
+  documentation from deferred enforcement.
+- [ ] **Validator gaps — implementation deferred (item 9):** after separate authorization and
+  the mapping above, add negative checks for missing races and whole moveset blocks, wrong
+  root/row shapes, both directions of class/spec references, spec cardinality/start index,
+  rootless shared skill columns and handedness-specific cube capacities. Enforce documented
+  provenance, separate artifact-definition/generated-instance checks and failure on accumulated
+  errors. Currently `Ontology.validate()` checks only whether its pass adds errors; the runner
+  separately checks accumulated errors. The approved boolean contract is not implemented.
+  `model.gd#Ontology` and `validate.gd` are unchanged; no new checks are implemented.
+- [ ] **Runtime contract violations (walkthrough item 10; not yet presented or approved):** reproduce and fix inventory freezing dodge timers
   (`player.gd#_physics_process`), poison ticks rejected by dodge (`player.gd#take_damage`,
   `entity.gd#tick_statuses`), exhausted block protecting against same-interval hits
   (`player.gd#blocks_from`), and greatsword + shield accepted in either equip order
@@ -354,6 +376,14 @@ is unchanged. Hybrid remains default with region-lock, plus-items, worn-rarity a
 inventory disabled, and global key items enabled. `game/` and the validator runner are unchanged.
 Semantic/simplification review checked the scope distinctions, permanent exclusion and explicit
 walkthrough stop/resume route. This is not proof that the validator covers every semantic rule.
+
+**Item 9 verification (2026-09-17):** `timeout 90 nix develop -c godot --headless -s
+ontology/validate.gd` and `git diff --check` passed. Scope/checkpoint checks confirmed
+documentation-only changes, documentation approved/applied versus enforcement deferred,
+and matching next-item pointers in the roadmap/handoff. Semantic and simplification review
+preserved the approved policy and left unresolved mappings open. `game/`, instance
+JSON, `model.gd` and `validate.gd` are unchanged. The existing validator does not validate this
+Markdown or prove the proposed negative checks work; no enforcement fix is claimed.
 
 **Audit verification baseline (not proof of consistency):** `ontology/validate.gd`,
 `game/items/test_items.gd`, `game/combat/test_defence.gd` and

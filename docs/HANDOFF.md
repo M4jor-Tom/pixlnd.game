@@ -1,6 +1,6 @@
 # Handoff — resume here
 
-## Ontology walkthrough entry point (2026-09-15)
+## Ontology walkthrough entry point (2026-09-17)
 
 When prompted **"resume walking through items"**, read `tasks/lessons.md` and
 `docs/ROADMAP/todo_decide.md §E` first, then the relevant `ontology/` sources and actual Git
@@ -12,6 +12,14 @@ verify, update the checkpoint and honor stop requests. Ontology approval is not 
 permission; do not automatically launch the next gameplay slice or commit/push.
 Regional gear power loss is permanently excluded from pixlnd: **never propose or implement it**,
 even for cloning fidelity. Historical Steam data is reference only, not an alternative mode.
+
+**Current checkpoint:** items 1–8 retain their approvals and recorded application. Item 9's
+validation-contract direction was approved on 2026-09-17 and recorded in `ontology/domain.md §5`
+for **documentation only**. Required-path, provenance-inheritance and remaining check-boundary
+mapping precede enforcement; no validator, loader, generator or gameplay implementation is
+authorized. Inspect the actual branch/diff. Next unpresented item: **10 — Runtime contract violations**,
+starting with panel-time policy, one question at a time. Equipment implementation (item 3),
+validator implementation (item 9) and the aggro gameplay slice remain separate, deferred work.
 
 ## Gameplay handoff snapshot (2026-09-11, after D26)
 
