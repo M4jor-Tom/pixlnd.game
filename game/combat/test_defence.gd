@@ -89,6 +89,33 @@ func _init() -> void:
 	df["enemy-hit"]["stun-chance"] = 1.0; df["enemy-hit"]["knockback-chance"] = 1.0
 	wolf._hit_statuses(p)
 	check(not p.stunned() and p._push == Vector3.ZERO, "a blocked hit carries no status")
+	# No await between hits: the final valid block keeps its statuses out; the next hit gets no free block.
+	var old_damage: float = wolf.damage
+	wolf.damage = 100.0; wolf.hostility = &"H"; wolf.global_position = Vector3(0, 1, -1)
+	for shot in [false, true]:
+		for power in [25.0, 1.0]:                         # positive power still blocks even below one hit's cost
+			p.hp = 1000.0; p.mp = 0.0; p.block_power = power; p.blocking = true
+			p.statuses.clear(); p._push = Vector3.ZERO; p.velocity = Vector3.ZERO
+			for hit in 2:
+				hp0 = p.hp
+				if shot:
+					wolf._strike(p.global_position + Vector3.UP, 0.5, 100.0, false, [&"slow"])
+				else:
+					wolf.state = wolf.State.ATTACK; wolf._windup = 0.0
+					wolf._tick(0.0)
+				var label := "exhaustion shot=%s power=%s hit=%d" % [shot, power, hit + 1]
+				check(is_equal_approx(hp0 - p.hp, 20.0 if hit == 0 else 100.0), "%s: damage %.1f" % [label, hp0 - p.hp])
+				check(is_zero_approx(p.block_power), "%s: power empty" % label)
+				check(is_equal_approx(p.mp, 8.0), "%s: MP only for the valid block, got %.1f" % [label, p.mp])
+				if hit == 0:
+					check(p.statuses.is_empty() and p._push == Vector3.ZERO, "%s: final valid block stops all attached statuses" % label)
+				else:
+					check(p.stunned() and p._push.length() > 0.0, "%s: next hit can stun and push" % label)
+					if shot:
+						check(p.statuses.has(&"slow"), "%s: next shot applies its role status" % label)
+	wolf.damage = old_damage; wolf.hostility = &"P"
+	p.hp = p.max_hp; p.block_power = float(bl["max"]) - float(bl["power-per-hit"])
+	p.statuses.clear(); p._push = Vector3.ZERO; p.velocity = Vector3.ZERO
 	wolf.global_position = Vector3(0, 1, 3)                   # behind
 	hp0 = p.hp; p.take_damage(100.0, wolf)
 	check(is_equal_approx(hp0 - p.hp, 100.0), "hit from behind is not blocked")

@@ -27,15 +27,17 @@ func _learn_feel(from: Node) -> void:
 func head() -> Vector3:
 	return global_position + Vector3.UP * 1.5
 
-func take_damage(amount: float, from: Node, _status: StringName = &"") -> void:
+## Returns whether this hit was blocked; callers skip its attached statuses when true.
+func take_damage(amount: float, from: Node, _status: StringName = &"") -> bool:
 	if dead:
-		return
+		return false
 	_learn_feel(from)
 	hp = maxf(0.0, hp - amount)
 	damaged.emit(amount, from)
 	if hp <= 0.0:
 		dead = true
 		died.emit()
+	return false
 
 ## ability.applies → design.status-effects[id] (`as` redirects knockdown to stun). `hit` = the damage that applied it.
 func apply_status(id: StringName, cfg: Dictionary, hit: float, from: Node) -> void:

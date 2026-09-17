@@ -132,8 +132,8 @@ func _tick(dt: float) -> State:
 					_cooldown = float(role_cfg["cooldown-s"])
 					return State.CHASE
 				if can_chase and to_target <= float(atk["reach"]) * 1.25 and target.has_method("take_damage"):
-					target.take_damage(damage, self)
-					_hit_statuses(target)
+					if not target.take_damage(damage, self):
+						_hit_statuses(target)
 				_cooldown = float(atk["cooldown-s"])
 				return State.CHASE
 		State.RETURN:
@@ -182,11 +182,11 @@ func _strike(center: Vector3, radius: float, dmg: float, _combo_bonus: bool, app
 	var se: Dictionary = design.get("status-effects", {})
 	var hits := 0
 	for body in bodies_within(center, radius):
-		body.take_damage(dmg, self)
-		_hit_statuses(body)
-		for id in applies:
-			if se.has(id) and body.has_method("apply_status"):
-				body.apply_status(id, se[id], dmg, self)
+		if not body.take_damage(dmg, self):
+			_hit_statuses(body)
+			for id in applies:
+				if se.has(id) and body.has_method("apply_status"):
+					body.apply_status(id, se[id], dmg, self)
 		hits += 1
 	return hits
 

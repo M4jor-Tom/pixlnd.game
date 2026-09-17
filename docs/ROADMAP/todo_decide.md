@@ -145,9 +145,21 @@ miss/reset for damaging channels (including early ends), and combo-neutral zero-
 for ontology documentation only. The owner separately authorized **only the poison-tick/dodge
 runtime repair and its regression test** on 2026-09-17. Its existing rule and narrow scope are
 recorded in `domain.md#status-effect`; the repair is applied with a red-to-green regression and
-passing headless suite (evidence below). All other runtime fixes remain unauthorized.
-Next pending topic within item 10: **Exhausted block and same-interval hits** — review the existing
-rule and ask separately for runtime-fix authorization; do not infer batch approval.
+passing headless suite (evidence below). The owner subsequently authorized **only the
+block-exhaustion/same-interval-hit repair and its regression** on 2026-09-17: the final valid
+block retains damage/status protection and its MP reward; later hits at zero power receive none
+of those block benefits. The repair is applied with red-to-green and full headless-suite evidence
+below. The owner then separately authorized **only the two-handed-weapon/shield equip-conflict
+repair and its regressions** on 2026-09-17: reject the attempted equip in either order without
+changing the bag or worn gear. That repair is applied and tested; existing handedness data,
+including the provisional wand classification, is unchanged. All other runtime fixes remain
+unauthorized; the broader item-3 equipment-model implementation remains deferred.
+Next pending topic within item 10: **Panel-time runtime repair** — the live-time policy is already
+approved; ask separately for implementation authorization, not another policy decision.
+**Owner stop:** this implementation question was presented but remains unanswered. The owner
+requested commit + push of the completed repairs and will answer with a new agent. The exact
+pending proposal/question is preserved at the top of `docs/HANDOFF.md`; no panel-time or other
+additional runtime implementation is authorized by that publication request.
 Follow `tasks/lessons.md`: present one gamer-facing recommendation with both outcomes, ask
 one approval question, then wait. Do not jump to the gameplay handoff's aggro slice or the
 deferred equipment/validator implementation. Preserve D1–D26 and all walkthrough approvals;
@@ -236,8 +248,22 @@ all remaining open questions stay open.
 - [x] **Poison ticks during dodge — runtime authorization (item 10, 2026-09-17).** Reproduce and
   fix poison ticks discarded during dodge, with a regression test. This enforces the existing
   D26 rule, not a new poison mechanic. Preserve poison damage/duration/cadence, ordinary dodge
-  protection and existing burning behavior. No other deferred runtime work is authorized;
-  application and verification are tracked below.
+  protection and existing burning behavior. That approval authorized no other deferred runtime
+  work; the subsequent block authorization is separate. Application/verification are tracked below.
+- [x] **Exhausted block and same-interval hits — runtime authorization (item 10, 2026-09-17).**
+  Reproduce and repair blocking after power reaches zero, with a regression. Preserve the final
+  valid hit's damage reduction, MP reward and attached-status protection; subsequent hits at zero
+  power get no block benefits even before the next defence update. Positive power below one hit's
+  cost still permits the existing full block. Preserve all balance, regeneration, Guardian,
+  Cyclone and other defences. Deferral would leave the timing loophole, not approve free blocking.
+  This enforces D23; that block approval authorized no other deferred runtime work.
+- [x] **Two-handed weapon plus shield — runtime authorization (item 10, 2026-09-17).** Reject
+  an equip attempt that would create this conflict in either equip order, leaving worn gear and
+  the attempted bag item unchanged. Do not auto-unequip, delete or duplicate items. Valid 1H +
+  shield, 2H alone and non-conflicting replacements remain available. Use current handedness
+  data without settling the provisional wand classification. This authorizes only the conflict
+  repair and regressions, not broader slot normalization, class restrictions, dual-wield routing
+  or Guardian/Cyclone changes. Deferral would retain the loophole, not approve the invalid loadout.
 
 ### Open — decide before the named slice
 
@@ -354,12 +380,22 @@ is still open. Do not mistake a listed proposed correction for an approved new g
   dodge i-frames. Extended `test_creature_roles.gd` with tick damage/cadence/feedback and unchanged
   burning/direct-hit dodge checks. Poison balance, shared-slot replacement and all other runtime
   corrections are unchanged.
+- [x] **Block exhaustion — runtime repair (item 10, 2026-09-17):** `blocks_from` now checks
+  remaining power per hit. `take_damage` returns that hit's block result so melee, projectile and
+  player-strike callers preserve attached-status protection even when the valid block empties
+  the bar. No persistent hit cache or new balance/config is added. `test_defence.gd` checks
+  consecutive melee/projectile hits without a defence update, with 25 or 1 power remaining:
+  final valid block protected, next hit normal, no extra MP, and correct attached statuses.
+- [x] **Hand conflict — runtime repair (item 10, 2026-09-17):** `Inventory.equip` checks the
+  prospective hand pair before mutating the bag/equipment or emitting `changed`, rejecting a
+  loaded two-handed main weapon plus occupied off-hand (currently shields). The regression
+  checks greatsword and bow in both equip orders, unchanged bag order/worn gear/coins, no
+  change signal and no item loss/duplication; valid swaps work after removing the conflict.
+  No slot data, handedness classifications, class checks or other equipment-model work changed.
 - [ ] **Other runtime contract violations — implementation deferred (item 10):** after separate
   authorization, reproduce and fix panel-related player timer freezing (`player.gd#_physics_process`)
-  under the approved live-time policy, exhausted block protecting against same-interval hits
-  (`player.gd#blocks_from`), and greatsword + shield accepted in either equip order
-  (`inventory.gd#equip`, `c-hands`). Non-projectile class strikes also omit combo result handling
-  (`abilities.gd`); use the approved channel miss/reset and combo-neutral zero-damage-taunt policies.
+  under the approved live-time policy. Non-projectile class strikes also omit combo result
+  handling (`abilities.gd`); use the approved channel miss/reset and combo-neutral zero-damage-taunt policies.
 - [ ] **Artifact/document cleanup:** replace the missing `instances/shops.json` reference with
   `economy.json#shops`; remove the duplicate `economy.json#prices.formula` key; reconcile stale
   “all settled” summaries and claims that dodge, stealth bar or poison are absent in
@@ -444,10 +480,40 @@ passed after the identity-preserving fix. All 13 `game/*/test_*.gd` scripts, `on
 and `godot --headless --quit` passed under `nix develop`, each bounded by `timeout 90`.
 The regression also checks tick cadence, one DOT number without a hurt bundle, ordinary-hit
 immunity after a poison tick, and burning replacing poison without inheriting its dodge exemption.
-Live ontology instance data and balance are unchanged. Panel-time, combo, block-exhaustion and
-hand-slot runtime fixes remain deferred. `/simplify` retained the existing shared-slot runtime;
+Live ontology instance data and balance were unchanged. At the poison-repair checkpoint,
+panel-time, combo, block-exhaustion and hand-slot runtime fixes remained deferred; the later
+block authorization/application is recorded separately above. `/simplify` retained the existing shared-slot runtime;
 independent correctness and `ponytail-review` passes found no issues in the runtime/test diff.
 The reviewer inspected the red/green/suite logs rather than rerunning tests.
+
+**Item 10 block-exhaustion verification (2026-09-17):** `test_defence.gd` first failed 14
+assertions: the second melee/projectile hit lost only 20 HP rather than 100, awarded a second
+8 MP, and incorrectly suppressed statuses. It passed after the per-hit check/result propagation.
+The regression preserves the exhausting hit's protection, tests positive power below one hit's
+cost, and verifies stun/knockback plus a projectile's additional slow status. All 13 game tests,
+`ontology/validate.gd` and headless boot passed under `timeout 90 nix develop -c godot …`.
+Logs: `/tmp/pixlnd-block-exhaustion/{red,green,suite}.log` (session-local evidence). Live instance
+JSON, balance and validator logic are unchanged. `/simplify` retained the per-hit return value
+rather than a persistent hit cache; independent correctness and `ponytail-review` passes found
+no issues. Reviewers read the source and red/green/suite logs, not rerun tests. The new projectile
+regression invokes the impact callback; player-origin and Cyclone-specific exhaustion were
+source-traced, not covered by dedicated new regressions. At that checkpoint, panel-time, combo
+and hand-slot fixes remained deferred; the later hand-conflict approval/application is recorded
+separately. No commit or push was authorized by the block repair approval.
+
+**Item 10 equipment-conflict verification (2026-09-17):** `test_items.gd` first failed 12
+assertions: greatsword/shield and bow/shield were accepted in both equip orders, changed bag/worn
+state and emitted `changed`. The test passed after the pre-mutation hand-pair check. It also
+checks no loss/duplication or coin changes and successful valid replacements after resolving
+the conflict. All 13 game tests, `ontology/validate.gd` and headless boot passed under
+`timeout 90 nix develop -c godot …`. Logs: `/tmp/pixlnd-equipment-conflict/{red,green,suite}.log`
+(session-local evidence). SHA-256 checks confirmed the earlier uncommitted block runtime/test
+files are untouched. Live instance JSON, balance, loader and validator remain unchanged.
+`/simplify` retained the prospective-pair guard; independent correctness and `ponytail-review`
+passes found no issues. Reviewers inspected source and red/green/suite logs without rerunning
+tests. Other weapon classifications, shield-for-shield and non-hand swaps were source-traced,
+not individually regression-tested. Panel-time, combo and the broader equipment-model
+implementation are still deferred; no commit or push is authorized by this repair approval.
 
 **Audit verification baseline (not proof of consistency):** `ontology/validate.gd`,
 `game/items/test_items.gd`, `game/combat/test_defence.gd` and
