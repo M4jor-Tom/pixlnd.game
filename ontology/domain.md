@@ -548,6 +548,14 @@ regenerates when not blocking (faster during Cyclone); successful block gives MP
 the bar specials spend); Guardian block power ×2. `A S`
 Hybrid (D23): M2 held blocks and charges the special at once; numbers `design.defence.block`.
 
+Hybrid exhaustion (walkthrough item 10, runtime repair authorized 2026-09-17): judge each hit
+using the block-power available when it arrives. An eligible hit with positive power is blocked
+normally, even if its cost empties the bar; its attached statuses remain blocked too. Subsequent
+hits at zero power receive neither block reduction nor block MP rewards or status protection,
+even before the next defence update. Other defences still apply. Preserve all block numbers,
+regeneration, Guardian and Cyclone rules. Authorization covers only this repair and its regression;
+panel-time, combo, broader slot-model and validator fixes remain separate, deferred work.
+
 ### dodge
 M3 while moving: roll with i-frames (not vs spike traps / dagger poison), costs 25 stamina (25 %),
 dismounts, negates fall damage on landing. Ninja gains +25 MP and guaranteed crit; Assassin gains
@@ -627,9 +635,18 @@ with subtype restrictions where needed:
 - `pet` accepts a `pet-cage` or `pet-food` during taming, without replacing the Q selection.
 - Armor and jewelry retain their matching slots; `unknown-0` accepts nothing.
 
-Ontology approval only: the live slot JSON and its consumers await a separately authorized
-implementation (`docs/ROADMAP/todo_decide.md §E`). Wand handedness and traversal prerequisites
-remain unresolved; this decision does not choose how gliding, sailing or riding is unlocked.
+The item-3 slot-model approval is ontology-only: normalizing live slot JSON and its consumers
+awaits separate authorization (`docs/ROADMAP/todo_decide.md §E`). Wand handedness and traversal
+prerequisites remain unresolved; this decision does not choose traversal unlocks.
+
+Hybrid hand-conflict repair (item 10, authorized 2026-09-17): reject an equip attempt that would
+pair a two-handed weapon with a shield, regardless of equip order. Leave existing equipment and
+the attempted item in the bag unchanged; do not auto-unequip, delete or duplicate either item.
+Use the currently loaded handedness classifications without changing them; the provisional wand
+classification is not a final decision. Valid one-handed-plus-shield setups, two-handed weapons
+alone and non-conflicting slot replacements keep working. This authorizes only the conflict
+repair and regressions, not the broader slot model, class restrictions, dual-wield routing,
+Guardian/Cyclone blocking changes, or resolution of wand handedness.
 
 ### consumable
 Food (sit, immobile, heal over 15 s), potion (channel while moving), elixir `S` (10 min +20 % stat),

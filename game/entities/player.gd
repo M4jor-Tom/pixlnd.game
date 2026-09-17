@@ -162,9 +162,9 @@ func use_class_skill(slot: int) -> bool:
 
 ## D23: a dodge ignores the hit, a front block (design.defence.block) cuts it, spends block-power and gives MP;
 ## then buffs (bulwark) make us stun-immune and mana-shield absorbs first (D21).
-func take_damage(amount: float, from: Node, status: StringName = &"") -> void:
+func take_damage(amount: float, from: Node, status: StringName = &"") -> bool:
 	if _iframes > 0.0 and status != &"poison":              # D26: scheduled poison damage is not dodged
-		return
+		return false
 	var blocked := blocks_from(from)
 	if blocked:
 		var bl: Dictionary = defence["block"]
@@ -180,6 +180,7 @@ func take_damage(amount: float, from: Node, status: StringName = &"") -> void:
 			feel.play(&"block", head())
 		elif before > hp:
 			feel.play(&"hurt", head(), {"amount": before - hp, "kind": &"hurt"})   # what we actually lost
+	return blocked                                       # preserve this hit's result even if it emptied the bar
 
 ## Dodged or blocked hits carry no status (D23) — except poison, which a dodge never avoids (D26, status-effects.json);
 ## knockback goes through _push so input does not erase it next tick.
@@ -217,7 +218,7 @@ func block_max() -> float:
 
 ## Is this attacker's hit blocked: blocking, and it stands in the front cone (every direction during cyclone).
 func blocks_from(from: Node) -> bool:
-	if not blocking or not from is Node3D or from == self:
+	if not blocking or block_power <= 0.0 or not from is Node3D or from == self:
 		return false
 	if _cyclone():
 		return true
@@ -579,18 +580,20 @@ func _strike(center: Vector3, radius: float, dmg: float, combo_bonus: bool, appl
 		if abilities != null:
 			d *= abilities.mult("damage-mult")
 		d = Combat.after_armor(d, float(body.get("armor")), combat)
+		var blocked := false
 		if d > 0.0 or applies.has(&"taunt"):                   # taunt: a 0-damage hit sets the creature's target
 			var before: float = body.hp
-			body.take_damage(d, self)
+			blocked = body.take_damage(d, self)
 			if feel != null and before > body.hp:              # a number per body, the bundle once
 				var kind: StringName = &"crit" if cm > 1.0 else &"hit"
 				feel.number(body.head(), before - body.hp, kind)
 				var rank: int = HIT_TIERS.find(&"kill" if body.dead else kind)
 				if rank > tier:
 					tier = rank; tier_at = body.head()
-		for id in applies:
-			if se.has(id) and body.has_method("apply_status"):
-				body.apply_status(id, se[id], d, self)
+		if not blocked:
+			for id in applies:
+				if se.has(id) and body.has_method("apply_status"):
+					body.apply_status(id, se[id], d, self)
 		hits += 1
 	if tier >= 0:
 		feel.play(HIT_TIERS[tier], tier_at)

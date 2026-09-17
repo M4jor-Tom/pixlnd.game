@@ -2,6 +2,15 @@
 
 ## Ontology walkthrough entry point (2026-09-17)
 
+**Owner stop / next-agent handoff:** the owner requested commit + push of the current approved
+repairs, then ended the session. The panel-time implementation question below was presented
+but **not answered or authorized**. Resume by obtaining that answer; do not start implementation.
+The proposal is to keep player timers running while inventory, skill-tree and shop panels are
+open (DOT ticks, cooldowns, buff expiry and dodge expiry), preserving current input restrictions
+and other menus. Ask: **“Authorize this narrowly scoped panel-time repair and its regression tests?”**
+The live-time policy itself is already approved. Commit/push authorization covers only the current
+completed repairs and handoff, not the pending question or any additional implementation.
+
 When prompted **"resume walking through items"**, read `tasks/lessons.md` and
 `docs/ROADMAP/todo_decide.md §E` first, then the relevant `ontology/` sources and actual Git
 branch/diff. This is the interactive decision walkthrough, **not** the gameplay slice loop below.
@@ -27,10 +36,23 @@ balance, ordinary dodge protection and burning behavior (`domain.md#status-effec
 is applied with a red-to-green regression; all 13 game tests, ontology validation and headless
 boot pass. Independent correctness/ponytail review found no issues; inspect actual Git state
 and §E verification.
-Next pending topic within item 10: **Exhausted block and same-interval hits** — review the existing
-rule and ask separately for runtime-fix authorization. All other runtime fixes remain unauthorized.
-Equipment implementation (item 3), validator implementation (item 9) and the aggro gameplay slice
-remain separate, deferred work.
+The owner subsequently authorized **only the block-exhaustion/same-interval-hit runtime repair
+and its regression** on 2026-09-17 (`domain.md#combat-block`). That repair is applied: each hit
+checks remaining power, while the exhausting hit's returned block result preserves its own
+attached-status protection. The regression went red-to-green for melee/projectile hits with no
+intervening defence update; all 13 game tests, ontology validation and headless boot pass.
+Instance data and balance remain unchanged; inspect actual Git state and §E verification.
+The owner then separately authorized **only the two-handed-weapon/shield equip-conflict repair
+and its regressions** on 2026-09-17. It is applied: `Inventory.equip` rejects the prospective
+conflicting hand pair before moving items or emitting `changed`. Greatsword and bow regressions
+went red-to-green in both equip orders, preserve bag/worn state and permit valid swaps after
+removing the conflict. All 13 game tests, ontology validation and headless boot pass. The equipment
+repair preserved the earlier block runtime/test files. Handedness/slot data remain unchanged;
+wand handedness is still unresolved, and this does not implement the broader item-3 slot model.
+Next pending topic within item 10: **Panel-time runtime repair** — live time is already the
+approved policy; ask separately for runtime-fix authorization. All other runtime fixes remain unauthorized.
+Broader equipment-model implementation (item 3), validator implementation (item 9) and the aggro
+gameplay slice remain separate, deferred work.
 
 ## Gameplay handoff snapshot (2026-09-11, after D26)
 
