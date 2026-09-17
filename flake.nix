@@ -9,7 +9,7 @@
       forAll = f: nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ]
         (system: f nixpkgs.legacyPackages.${system});
     in {
-      apps = forAll (pkgs: { default = { type = "app"; program = "${pkgs.godot_4}/bin/godot"; }; }); # nix run . == nix develop -c godot
+      apps = forAll (pkgs: { default = { type = "app"; program = "${pkgs.godot_4}/bin/godot"; }; });
       devShells = forAll (pkgs: {
         default = pkgs.mkShell {
           packages = with pkgs; [
