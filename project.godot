@@ -13,3 +13,7 @@ config/features=PackedStringArray("4.7", "Forward Plus")
 [autoload]
 
 OntologyDB="*res://game/ontology_db.gd"
+
+[rendering]
+
+textures/vram_compression/import_etc2_astc=true
