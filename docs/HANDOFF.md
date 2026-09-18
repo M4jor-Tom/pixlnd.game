@@ -20,23 +20,37 @@ leave the cleanup uncommitted: the commit request covered only the already-stage
 The cleanup was subsequently committed before the authorized rebase; that old instruction is
 not a request to undo it or start further work.
 
-**Current authorization (2026-09-18):** damage conversion, targeting ties and continuous
-per-mob/player decay are recorded in `ontology/domain.md#ai-behavior` for documentation only.
+**Current authorization (2026-09-18):** the owner corrected damage gain to **1 aggro point per
+1% of the mob's maximum HP actually removed**, including fractional points, replacing raw-HP
+conversion to keep equivalent percentage-damage threat timing consistent across progression.
+The owner subsequently approved continuous decay at **1 aggro point per second** per mob/player
+pair, and zero-threat behavior: scores floor at zero; past hits alone no longer sustain pursuit,
+but normal hostile detection can still start or maintain aggression. These rules and unchanged
+targeting ties are recorded in `ontology/domain.md#ai-behavior` for documentation only;
+runtime implementation remains unauthorized.
 The requested relationship model is explicit in §4/§5: `threat` connects individual mob/player
 entities, `aggro-points` is its amount, and `current-target` is a separate optional relation.
 The owner rejected no-decay-during-combat: fixed-rate decay continues in and out of combat,
 while hits add threat; losing target priority does not erase remaining threat. Resume **Aggro /
-group aggro** with **the numeric decay rate**: 1 point per second was an example, not yet approved.
-Zero-threat behavior, resets, taunts, full-stealth interaction and group behavior remain open.
-**Publication authorization (2026-09-18):** the owner requested committing and pushing the
-existing documentation after readiness checks, then handing off to another agent. This does
-not authorize gameplay implementation or further decisions. The next agent should resume the
-ontology walkthrough at the numeric decay rate, not start the aggro implementation slice.
+group aggro** with **reset conditions — player death**. Other resets (including engagement
+order), taunts, full-stealth interaction and group behavior also remain open.
+**Publication authorization and stop point (2026-09-18):** the owner requested `commit+push`
+of the current documentation on `fix/ontology-reconciliation`, then handoff to the next agent.
+This authorizes publication only, not further decisions, runtime work or an automatic next slice.
+**Next agent must start with this handoff**, then `tasks/lessons.md`,
+`docs/ROADMAP/todo_decide.md §E` and `ontology/domain.md#ai-behavior`, and inspect actual Git state.
+Resume the player-death question below.
+
+**Pending proposal — presented, NOT approved:** player death immediately clears every mob's
+aggro toward that player, while preserving its aggro toward surviving teammates. After respawn,
+the player rebuilds aggro from zero; normal hostile detection still applies. This would not decide
+enemy healing, whole-fight resets or engagement-order resets. Ask the owner for documentation-only
+approval before recording it as a rule. The `commit+push` request is not approval of this proposal.
 
 When prompted **"resume walking through items"**, read `tasks/lessons.md` and
 `docs/ROADMAP/todo_decide.md §E` first, then the relevant `ontology/` sources and actual Git
 branch/diff. This is the interactive decision walkthrough, **not** the gameplay slice loop below.
-The §E checkpoint records the last applied item and next unpresented item; follow its number,
+The §E checkpoint records the last applied item and next unresolved item; follow its number,
 preserve approvals/deferrals and pending edits, and ask one gamer-facing approval question at a
 time, including approval AND non-approval consequences. Apply only the authorized correction,
 verify, update the checkpoint and honor stop requests. Ontology approval is not implementation
