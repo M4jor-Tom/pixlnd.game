@@ -5,7 +5,7 @@ points), `ontology/instances/*.json`, `docs/ROADMAP/README.md`. Already decided 
 D1 hybrid ruleset, D2 Godot 4.7 + GDScript, D3/D4 cut + Omega content → roadmap, region lock /
 `+` items / worn degradation dropped.
 
-**Status 2026-09-17:** D1–D26 and the original fact conflicts below remain decided. The ontology
+**Status 2026-09-18:** D1–D26 and the original fact conflicts below remain decided. The ontology
 reconciliation in §E records approved corrections and additional open questions. Resolve an open
 question before its affected slice; do not reopen settled choices. Designed numbers live in
 `ontology/instances/generators.json#design`.
@@ -128,7 +128,7 @@ The full walkthrough/resumption protocol is in `tasks/lessons.md`; the prompt
 Never propose or implement regional gear power loss in pixlnd, even for Cube World cloning
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
-**Resume checkpoint (2026-09-17; commit references updated after rebase):** items 1–2 are applied,
+**Resume checkpoint (2026-09-18; commit references updated after rebase):** items 1–2 are applied,
 validated and committed in `0a562fc`. Items 3–8 are approved for ontology and their semantic
 corrections are committed in `e10836a`; their walkthrough handoff is recorded in `c005f55`. The owner resumed and approved item 9's
 validation-contract direction for **ontology documentation only** on 2026-09-17. Its policy is
@@ -170,11 +170,18 @@ cleanup**, now applied, checked and reviewed: stale references/statuses, duplica
 price-description key and an index of remaining questions, with no gameplay or parsed-data-value
 changes. At that checkpoint, cleanup approval did not authorize automatic commit or push.
 The cleanup was subsequently committed before the authorized semantic rebase onto `20e35d8`;
-no push or additional implementation is authorized.
-Next open topic: **Aggro / group aggro**, first in the open list below; begin with damage-to-threat
-conversion (the proposed 1 threat per HP actually removed is not yet approved). Resume one
-ontology decision at a time, not the implementation slice. Other deferred implementation
-remains unauthorized.
+that checkpoint authorized no push or additional implementation.
+**Aggro / group aggro:** damage conversion and targeting ties are approved. On 2026-09-18
+the owner rejected no-decay-during-combat and directed continuous fixed-rate decay per mob/player,
+with hits adding threat concurrently and target switches preserving remaining threat. These
+ontology-only rules are applied in `domain.md#ai-behavior`; the requested relationship model
+is explicit in §4/§5 (`threat`, `aggro-points`, `current-target`). Next question: **the numeric
+decay rate**; 1 point per second was an example, not yet approved. Zero-threat behavior, reset conditions,
+taunts, full-stealth interaction and group behavior remain open. Resume one ontology decision
+at a time, not the implementation slice; all deferred implementation remains unauthorized.
+The owner now authorizes committing and pushing the existing documentation after readiness
+checks, then handing off to another agent (2026-09-18). No further decisions or gameplay work
+are authorized by that publication request; the numeric decay rate remains the next question.
 Follow `tasks/lessons.md`: present one gamer-facing recommendation with both outcomes, ask
 one approval question, then wait. Do not jump to the gameplay handoff's aggro slice or the
 deferred equipment/validator implementation. Preserve D1–D26 and all walkthrough approvals;
@@ -300,10 +307,51 @@ all remaining open questions stay open.
   misleading documentation, not change the game. The preceding staged repairs were committed
   as requested; this approval does not automatically authorize a further commit or push.
 
+- [x] **Aggro damage contribution (owner approved 2026-09-18, ontology documentation only).**
+  Each HP actually removed adds 1 threat against that enemy for the attacker; reduced damage
+  contributes only the HP lost and zero HP loss contributes none. Damage dealt, not hit frequency,
+  is the baseline for attention. Recorded in `domain.md#ai-behavior`; this approval does not
+  settle other aggro questions. Deferral would have left this conversion unresolved, not approved
+  another formula.
+  Current last-attacker targeting is unchanged; no implementation, commit or push is authorized.
+
+- [x] **Aggro current-target ties (owner approved 2026-09-18, ontology documentation only).**
+  In ordinary threat-based targeting, keep the current target when tied for highest threat;
+  another attacker must exceed it to displace it through threat alone. This avoids arbitrary
+  switching on equal scores. Recorded in `domain.md#ai-behavior`; this approval does not settle
+  other targeting ties or special rules. Deferral would have left this tie unresolved, not approved
+  another rule. Current gameplay is unchanged; no implementation, commit or push is authorized.
+
+- [x] **Aggro other-target ties (owner approved 2026-09-18, ontology documentation only).**
+  When the current target is not among the highest-threat attackers, select the tied leader
+  who engaged that enemy first. This gives a predictable fallback, not latest-hit or random
+  selection; higher threat and current-target retention take precedence. Recorded in
+  `domain.md#ai-behavior`. Deferral would have left this selection unresolved, not approved a
+  different rule. Fight boundaries/reset and special rules are not settled by this approval;
+  gameplay is unchanged and no implementation, commit or push is authorized.
+
+- [x] **Aggro continuous decay and retained threat (owner direction/correction, 2026-09-18;
+  ontology documentation only).** Each mob/player threat score decays at a constant points-per-second
+  rate in and out of combat, while hits continue adding threat. Switching targets does not erase
+  other scores: a player with positive remaining threat can become the target again if the
+  higher-threat teammate dies, subject to normal targeting priority. This replaces the proposed
+  no-decay rule; reduced priority is not being "forgiven". The owner used 1 point per second
+  illustratively; the numeric rate, zero-threat behavior and resets remain unresolved.
+  Recorded in `domain.md#ai-behavior`. Deferral would not select no-decay or clearing on target
+  switches. Gameplay is unchanged; no runtime, commit or push is authorized.
+
+- [x] **Aggro relationship model (owner requested 2026-09-18, ontology only).** Formalize
+  `threat` as a directed mob/player entity relation carrying a numeric `aggro-points` amount;
+  `current-target` is a separate, optional single-player relation per mob. Scores belong to
+  individual entity pairs, not species or players globally. Recorded in `domain.md §4/§5`;
+  existing gains, decay policy and targeting priorities stand. This clarification adds no
+  balance choice, runtime implementation, commit or push authorization.
+
 ### Open — decide before the named slice
 
-- [ ] **Aggro / group aggro:** define threat amount, tie-breaking, decay/reset, taunt priority
-  and duration, full-stealth interaction and group membership before the next aggro slice.
+- [ ] **Aggro / group aggro:** damage conversion, targeting ties and continuous decay policy
+  are approved above; define decay rate, zero-threat behavior, reset conditions, taunt priority/
+  duration, full-stealth interaction and group membership before the next aggro slice.
   Sources: `domain.md#ai-behavior`, `generators.json#design.status-effects` (current taunt approximation).
 - [ ] **Creature family membership:** one primary scaling family plus descriptive groups, or
   multiple families with a defined scaling rule? Skeleton Dog appears in dogs and skeletons
@@ -449,6 +497,23 @@ is still open. Do not mistake a listed proposed correction for an approved new g
   current chase numbers and D15 armor stay decided. Research dumps, runtime and validator/loader
   code remain untouched. Parsed-data equivalence and targeted runtime checks pass; correctness
   review found no issues and both ponytail prose-reduction suggestions were applied.
+
+- [x] **Aggro damage contribution — ontology (2026-09-18):** recorded the approved conversion
+  in `domain.md#ai-behavior`, removed it from the unresolved-question index and advanced the
+  checkpoint to current-target ties. Runtime, instance data and all other aggro decisions unchanged.
+- [x] **Aggro current-target ties — ontology (2026-09-18):** recorded the retention rule in
+  `domain.md#ai-behavior` and narrowed the open list/checkpoint to other target-selection ties.
+  Damage conversion, runtime, instance data and other unresolved decisions are unchanged.
+- [x] **Aggro other-target ties — ontology (2026-09-18):** recorded the earliest-engagement
+  fallback in `domain.md#ai-behavior`, preserved prior targeting priorities and advanced the
+  checkpoint to passive threat decay. Runtime, instance data and other open decisions unchanged.
+- [x] **Aggro decay policy — ontology (2026-09-18):** recorded constant per-mob/player decay,
+  concurrent damage gains and retained threat across target changes; advanced the checkpoint
+  to the numeric rate. Recorded the correction in `tasks/lessons.md`. Instance data, runtime
+  (including D16 simulation), validator/loader and unresolved boundary rules remain unchanged.
+- [x] **Aggro relationship model — ontology (2026-09-18):** added the two relation definitions,
+  pair-scoped numeric amount/unit, runtime-layer constraints and illustrative facts; CQ12 now
+  references them. Numeric decay rate remains the next decision; no executable or live data changes.
 
 **Items 1–2 verification (2026-09-15):** `timeout 90 nix develop -c godot --headless -s <script>`
 passed for `ontology/validate.gd`, `game/items/test_items.gd` and
@@ -630,6 +695,26 @@ prose. Reviewers inspected source and supplied logs/captures, not rerun tests. R
 checks are recorded in `final-checks.log`.
 At that verification checkpoint the cleanup diff remained uncommitted; it was subsequently
 committed before the authorized rebase. No push or further gameplay implementation is authorized.
+
+**Aggro ontology verification (2026-09-18):** the headless ontology validator
+(`timeout 90 nix develop -c godot --headless -s ontology/validate.gd`), `git diff --check` and
+scope checks passed after each approval/direction. Only `domain.md`, this roadmap,
+`docs/HANDOFF.md` and `tasks/lessons.md` changed; runtime, live instance data and validator/loader
+code are unchanged. Structural checks confirm unique relation/constraint IDs, entity-instance
+endpoints, the `n→n` / `1→0..1` cardinalities and runtime-layer constraint labels. Semantic,
+`/simplify` and ponytail review preserved the approved rules and separate pair-scoped amount /
+target selection, while leaving the example decay rate and boundary decisions open. Redundant
+explanatory prose was removed; examples remain illustrative, not static data or balance defaults.
+The validator does not check these Markdown rules or prove runtime compliance; aggro
+implementation remains unauthorized.
+
+**Publication readiness (2026-09-18):** all 15 `game/*/test_*.gd` scripts, ontology validation
+and headless boot passed again under `nix develop`, each Godot run bounded by `timeout 90`.
+Scope/structural checks passed. Fresh read-only correctness and ponytail reviews found no issues;
+they reviewed the patch and sources, not rerun tests. Ready to publish this documentation and
+resume the walkthrough at the numeric decay rate, not to implement aggro. Evidence is session-local
+in `/tmp/pixlnd-aggro-handoff.yS0KLL/` (`suite.log`, `correctness-review.md`, `ponytail-review.md`).
+No visual test was needed for this documentation-only change.
 
 **Audit verification baseline (not proof of consistency):** `ontology/validate.gd`,
 `game/items/test_items.gd`, `game/combat/test_defence.gd` and

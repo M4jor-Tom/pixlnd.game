@@ -35,6 +35,17 @@ Owner clarification: "commit several times" means commit the entire current diff
 split into coherent parts—not further implementation rounds. Rule: preserve that scope; no
 push without authorization.
 
+## Aggro decay is not forgiveness
+
+- Owner direction/correction (2026-09-18): threat decays continuously at a fixed rate for each
+  mob/player pair, in and out of combat; hits add threat while that decay continues. Losing
+  highest-threat priority does not clear the remaining score: if the teammate dies, the mob
+  can target the original player again under normal priority rules.
+- Rule: distinguish threat amount from current target selection. Never treat target switching
+  as forgiveness, decay as out-of-combat-only, or attacking as pausing/restarting decay.
+  Example numbers are not approved balance values; confirm the rate separately. Keep runtime
+  authorization and zero-threat/reset decisions separate from this ontology policy.
+
 ## Permanent exclusion: regional gear power loss
 
 - Owner correction (2026-09-15): never propose or implement regional power loss in pixlnd,
