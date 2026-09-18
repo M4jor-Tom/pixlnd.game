@@ -455,26 +455,35 @@ Rules shared by enemies. `A S`
 
 Hybrid aggro rules (owner approved 2026-09-18, documentation only; relation definitions in
 §4, constraints `c-threat-pair` / `c-current-target` in §5):
-- **Damage contribution:** add **1 threat per HP actually removed** against that enemy for the
-  attacker, after damage reduction/absorption, not the attempted hit amount. Zero HP loss adds
-  no damage-based threat; damage dealt, not hit frequency, is the baseline.
+- **Damage contribution (owner correction, 2026-09-18):** add **1 aggro point per 1% of the
+  mob's maximum HP actually removed** by the attacker: `aggro gained = 100 × HP removed / mob max HP`.
+  Use actual HP loss after reduction/absorption, not attempted damage; zero HP loss adds none.
+  Preserve fractional points (0.5% HP loss adds 0.5 points). Equal percentages generate equal
+  threat at every progression level, so fixed-rate decay does not last longer just because
+  HP/damage numbers are larger. This supersedes the raw-HP conversion, not the targeting rules.
 - **Current-target ties:** during ordinary threat-based targeting, retain the current target
   when tied for highest threat. Another attacker must exceed it to displace it through threat
   alone; equal scores do not cause arbitrary switching.
 - **Other-target ties:** when the current target is not among the highest-threat attackers,
   choose the tied leader who engaged that enemy first, not the nearest or latest hitter, nor
   randomly. Higher threat and current-target retention take precedence over engagement order.
-- **Continuous decay:** each mob tracks each player's threat separately and subtracts a fixed
-  number of points per elapsed second, both while fighting and while not fighting. Hits keep
-  adding their normal damage-based threat while decay continues; attacking does not pause or
-  restart the countdown.
+- **Continuous decay (rate approved 2026-09-18):** each mob tracks each player's threat
+  separately and subtracts **1 aggro point per elapsed second**, both while fighting and while
+  not fighting. Decay is continuous (0.5 seconds removes 0.5 points), not whole-second ticks.
+  Hits keep adding their normal damage-based threat while decay continues; attacking does not
+  pause or restart the countdown.
 - **Retained threat:** switching targets does not clear other players' remaining threat. If the
   higher-threat teammate dies, a player with remaining positive threat can be targeted again
   according to the normal highest-threat/tie rules; losing priority is not being "forgiven".
+- **Zero threat (approved 2026-09-18):** decay stops at zero, never going negative. At zero,
+  past hits alone no longer justify pursuing that player; there is no separate damage memory
+  extending pursuit. If the mob no longer detects that player, it stops pursuing them. Normal
+  hostile detection can still start or maintain aggression at zero; reaching zero is not immunity.
+  Other players' remaining threat is unchanged. This does not settle engagement-order resets,
+  taunts or full-stealth interactions.
 
-The owner's 1-point-per-second decay was an example, not an approved numeric rate. The rate,
-zero-threat behavior, reset conditions (including engagement order), taunt rules, full-stealth
-interaction and group behavior remain open in §7. This does not authorize changing runtime,
+Reset conditions (including engagement order), taunt rules, full-stealth interaction and group
+behavior remain open in §7. This does not authorize changing runtime,
 D16 simulation behavior or save/persistence policy.
 
 Hybrid (D26): every creature has a `combat-role` (melee, ranged, mage, any-class, none) parsed from `creatures.json`
@@ -990,7 +999,7 @@ mob-b --threat {aggro-points: 40}--> player-you
 mob-b --current-target-----------> player-you
 ```
 
-The numeric decay rate, zero-threat behavior and other open §7 questions remain unresolved.
+Reset conditions and other open §7 questions remain unresolved.
 
 ---
 
@@ -1056,8 +1065,8 @@ content selection or live data changes are authorized by this contract.
 | c-slot-accepts | an item equips only in a usable equipment-slot whose `accepts` lists its item-type and whose subtype restrictions it satisfies (§3.4 equipment-slot); weapon-type `offhand` hands → off-hand only; c-weapon-class and c-hands still apply | runtime |
 | c-mp-range | mp ∈ [0, 100]; mage regenerates passively, others gain by hits/blocks/stealth/dodges; numbers `design.resources.mp` (D21) | runtime |
 | c-stun-immunity | cannot re-stun while stars shown | runtime |
-| c-threat-pair | at most one `threat` relation per ordered mob/player entity pair; each present relation has exactly one numeric `aggro-points` amount in aggro points, independent of other pairs; changing `current-target` does not clear it; decay/gains follow §3.2, zero/reset behavior remains open | runtime |
-| c-current-target | at most one player target per mob; ordinary threat-based selection compares that mob's eligible players by highest `aggro-points`, retaining a tied current target, otherwise breaking ties by earliest engagement (§3.2); taunt/stealth interactions remain open | runtime |
+| c-threat-pair | at most one `threat` relation per ordered mob/player entity pair; each present relation has exactly one non-negative numeric `aggro-points` amount in aggro points, independent of other pairs; changing `current-target` does not clear it; decay/gains and the zero floor follow §3.2; reset conditions remain open | runtime |
+| c-current-target | at most one player target per mob; ordinary threat-based selection compares that mob's eligible players by highest `aggro-points`, retaining a tied current target, otherwise breaking ties by earliest engagement; at zero, pursuit requires normal hostile detection (§3.2); taunt/stealth interactions remain open | runtime |
 | c-combo-reset | any attack with a hitbox that misses resets combo to 0, subject to the hybrid whole-channel and combo-neutral zero-damage-taunt rules in §3.3 combo-system; cap per weapon-type | runtime |
 | c-dodge-cost | dodge costs 25 stamina; requires movement; standing still M3 = class skill (S); hybrid numbers `design.defence.dodge` (D23) | runtime |
 | c-no-death-penalty | death never removes gold/items/xp; respawn at statue (A) / activated shrine (S) | runtime |
@@ -1137,7 +1146,7 @@ or authorize implementation. Resolve each question before its affected slice.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Aggro / group aggro | decay rate, zero-threat behavior, reset conditions, taunt priority/duration, full-stealth interaction, group membership; damage, targeting ties and continuous decay policy approved in §3.2, runtime deferred |
+| Aggro / group aggro | reset conditions, taunt priority/duration, full-stealth interaction, group membership; damage, targeting ties, continuous decay at 1 aggro point/s and zero-threat behavior approved in §3.2, runtime deferred |
 | Creature families | one primary scaling family plus descriptive groups, or multiple families with a scaling rule |
 | Settlements / inn | whether multiple settlements and paid timed sleep are hybrid targets; keep D22's current one village and free heal/respawn service |
 | Traversal | skill versus global key-item prerequisites for riding/gliding/sailing; climbing spikes versus skill points |

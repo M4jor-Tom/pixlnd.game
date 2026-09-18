@@ -46,6 +46,15 @@ push without authorization.
   Example numbers are not approved balance values; confirm the rate separately. Keep runtime
   authorization and zero-threat/reset decisions separate from this ontology policy.
 
+## Normalize aggro gains across progression
+
+- Owner correction (2026-09-18): award aggro by the percentage of a mob's maximum HP actually
+  removed, not raw damage: 1 point per percentage point, including fractional gains. Equivalent
+  hits must not take longer to decay merely because late-game HP/damage numbers are larger.
+- Rule: use `100 × actual HP removed / mob max HP`, not remaining HP or attempted damage;
+  check equal-percentage examples at different HP scales. Preserve continuous decay and target
+  priority rules; this correction does not approve a decay rate or runtime implementation.
+
 ## Permanent exclusion: regional gear power loss
 
 - Owner correction (2026-09-15): never propose or implement regional power loss in pixlnd,
