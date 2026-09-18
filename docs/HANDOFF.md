@@ -1,15 +1,16 @@
 # Handoff — resume here
 
-## Ontology walkthrough entry point (2026-09-17)
+## Ontology walkthrough entry point (2026-09-18)
 
 **Committed reconciliation:** the owner requested committing the staged repairs before continuing;
 `44ab0a1` contains the panel-time and class-combo repairs, regressions and walkthrough records.
 All 15 game tests, ontology validation and boot passed again before that commit. The subsequent
 cleanup is also committed (`docs(ontology): reconcile roadmap, references and open questions`).
 Commit references follow the authorized semantic rebase onto `origin/master` at `20e35d8`
-(2026-09-18); no push or deferred gameplay implementation is authorized.
+(2026-09-18). The current documentation publication authorization is below; deferred gameplay
+implementation remains unauthorized.
 
-**Current authorization — artifact/document cleanup (2026-09-17):** the owner approved the
+**Prior authorization — artifact/document cleanup (2026-09-17):** the owner approved the
 next cleanup: correct stale/broken references and status summaries, remove the duplicate
 price-description key without changing parsed values, and index remaining uncertainties.
 No gameplay, balance, validator/loader behavior or unresolved design choice changes are authorized.
@@ -18,10 +19,19 @@ suggestions to remove duplicate prose were applied. At that checkpoint, the inst
 leave the cleanup uncommitted: the commit request covered only the already-staged repairs.
 The cleanup was subsequently committed before the authorized rebase; that old instruction is
 not a request to undo it or start further work.
-Resume with **Aggro / group aggro**, the first open §E topic, one decision at a time—not the
-aggro implementation slice. First pending question: damage-to-threat conversion. Proposed,
-not approved: 1 threat per HP actually removed by damage; taunt, ties, decay/reset, stealth
-interaction and group behavior remain separate questions. Approval would be ontology-only.
+
+**Current authorization (2026-09-18):** damage conversion, targeting ties and continuous
+per-mob/player decay are recorded in `ontology/domain.md#ai-behavior` for documentation only.
+The requested relationship model is explicit in §4/§5: `threat` connects individual mob/player
+entities, `aggro-points` is its amount, and `current-target` is a separate optional relation.
+The owner rejected no-decay-during-combat: fixed-rate decay continues in and out of combat,
+while hits add threat; losing target priority does not erase remaining threat. Resume **Aggro /
+group aggro** with **the numeric decay rate**: 1 point per second was an example, not yet approved.
+Zero-threat behavior, resets, taunts, full-stealth interaction and group behavior remain open.
+**Publication authorization (2026-09-18):** the owner requested committing and pushing the
+existing documentation after readiness checks, then handing off to another agent. This does
+not authorize gameplay implementation or further decisions. The next agent should resume the
+ontology walkthrough at the numeric decay rate, not start the aggro implementation slice.
 
 When prompted **"resume walking through items"**, read `tasks/lessons.md` and
 `docs/ROADMAP/todo_decide.md §E` first, then the relevant `ontology/` sources and actual Git

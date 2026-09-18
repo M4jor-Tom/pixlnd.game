@@ -92,7 +92,7 @@ Each must be answerable from the model + instances. Data requirement in the righ
 | CQ9 | How does the player progress, in each ruleset? | `ruleset`, `skill-tree`, `power-level`, `artifact`, `region-lock`, `lore`, `gnome-supplier` |
 | CQ10 | What tasks does the world offer and what do they reward? | `mission-type`, `arena`, relations `rewards` |
 | CQ11 | Who lives in settlements and what services do they give? | `settlement`, `district`, `building`, `npc-role`, `shop` |
-| CQ12 | How do NPCs / enemies behave? (hostility, aggro, groups, patrols, schedules, potions) | `hostility`, `ai-behavior`, `creature` fields |
+| CQ12 | How do NPCs / enemies behave, how many aggro points does each mob hold against each player, and whom does it target? (hostility, groups, patrols, schedules, potions) | `hostility`, `ai-behavior`, `creature` fields; relations `threat`, `current-target` and relation property `aggro-points` |
 | CQ13 | What status effects exist and what applies them? | `status-effect`, relation `applies` |
 | CQ14 | What is the day/night cycle, what resets, how does sleep work? | `game-clock` |
 | CQ15 | What persists between sessions and across worlds? | `save-data`, `world`, `player-character` |
@@ -452,6 +452,30 @@ Rules shared by enemies. `A S`
 | clones | some bosses/NPC mages summon doppelgangers |
 | possession | S: demon portal randomly possesses NPCs in the land (bigger, red, tougher, respawn possessed) |
 | simulation | hybrid: a creature farther than `design.spawns.ai.sim-radius` blocks from the player is frozen — no AI tick, no physics (D16). Distance = nearest player once `multiplayer-mode` lands (single player: the one player). |
+
+Hybrid aggro rules (owner approved 2026-09-18, documentation only; relation definitions in
+§4, constraints `c-threat-pair` / `c-current-target` in §5):
+- **Damage contribution:** add **1 threat per HP actually removed** against that enemy for the
+  attacker, after damage reduction/absorption, not the attempted hit amount. Zero HP loss adds
+  no damage-based threat; damage dealt, not hit frequency, is the baseline.
+- **Current-target ties:** during ordinary threat-based targeting, retain the current target
+  when tied for highest threat. Another attacker must exceed it to displace it through threat
+  alone; equal scores do not cause arbitrary switching.
+- **Other-target ties:** when the current target is not among the highest-threat attackers,
+  choose the tied leader who engaged that enemy first, not the nearest or latest hitter, nor
+  randomly. Higher threat and current-target retention take precedence over engagement order.
+- **Continuous decay:** each mob tracks each player's threat separately and subtracts a fixed
+  number of points per elapsed second, both while fighting and while not fighting. Hits keep
+  adding their normal damage-based threat while decay continues; attacking does not pause or
+  restart the countdown.
+- **Retained threat:** switching targets does not clear other players' remaining threat. If the
+  higher-threat teammate dies, a player with remaining positive threat can be targeted again
+  according to the normal highest-threat/tie rules; losing priority is not being "forgiven".
+
+The owner's 1-point-per-second decay was an example, not an approved numeric rate. The rate,
+zero-threat behavior, reset conditions (including engagement order), taunt rules, full-stealth
+interaction and group behavior remain open in §7. This does not authorize changing runtime,
+D16 simulation behavior or save/persistence policy.
 
 Hybrid (D26): every creature has a `combat-role` (melee, ranged, mage, any-class, none) parsed from `creatures.json`
 `role` text (humanoids may be `any-class`: one of melee/ranged/mage rolled per spawned group, weighted); melee is
@@ -916,6 +940,8 @@ One row per fact type. Cardinality as `domain → range`.
 | drops | creature | item ∪ spirit-cube ∪ leftovers ∪ currency | n→n | random by tier + species list |
 | holds | inventory | item | 1→n | count per entry; c-stack-rule |
 | equips | entity | item | 1→0..12 | at most one per usable equipment-slot; reserved index 0 and separate Q selection excluded; c-slot-accepts |
+| threat | entity (mob) | entity (player-character) | n→n | hybrid mob/player combat state; optional per ordered pair, with one numeric `aggro-points` amount; c-threat-pair |
+| current-target | entity (mob) | entity (player-character) | 1→0..1 | hybrid mob/player target selection, separate from threat amounts; multiple mobs may select the same player; c-current-target |
 | requires-key-item | poi-type ∪ dungeon-type | key-item | n→n | harp→divine door, bell→crypt gate, whistle→bird statue, reins→riding |
 | located-in | settlement ∪ dungeon ∪ poi | land | n→1 | |
 | owned-by-realm | land | realm | n→1 | S |
@@ -940,6 +966,31 @@ One row per fact type. Cardinality as `domain → range`.
 | scales-with | pet | stat(weapon-rating, armor-rating) | 1→2 | S |
 | adjacent-to | land | land | n→n | derived from grid |
 | enabled-by | ability ∪ item-type ∪ mechanic | ruleset | n→n | feature flags |
+
+### Threat and current target (hybrid)
+
+Owner-requested clarification (2026-09-18), documentation only. These relations describe the
+approved mob/player scope. A **mob** is an individual non-player combat `entity`, not the shared
+`creature` species definition; the player endpoint is the active `entity` of a `player-character`.
+This does not decide other combat pairings.
+
+**Threat** is the directed mob → player relationship, not a separate global player stat.
+Its numeric property **`aggro-points`** measures the relationship's strength, in **aggro points**
+(also called threat points). Each mob can track zero or more players and each player can have
+incoming threat relations from zero or more mobs, independently. **`current-target`** identifies
+at most one player that a mob is currently targeting; changing it does not erase other threat
+relations. Ordinary selection uses that mob's own scores and the rules in §3.2 `ai-behavior`.
+
+Illustrative runtime facts, not static instance data or balance defaults:
+```text
+mob-a --threat {aggro-points: 20}--> player-you
+mob-a --threat {aggro-points: 30}--> player-teammate
+mob-a --current-target-----------> player-teammate
+mob-b --threat {aggro-points: 40}--> player-you
+mob-b --current-target-----------> player-you
+```
+
+The numeric decay rate, zero-threat behavior and other open §7 questions remain unresolved.
 
 ---
 
@@ -1005,6 +1056,8 @@ content selection or live data changes are authorized by this contract.
 | c-slot-accepts | an item equips only in a usable equipment-slot whose `accepts` lists its item-type and whose subtype restrictions it satisfies (§3.4 equipment-slot); weapon-type `offhand` hands → off-hand only; c-weapon-class and c-hands still apply | runtime |
 | c-mp-range | mp ∈ [0, 100]; mage regenerates passively, others gain by hits/blocks/stealth/dodges; numbers `design.resources.mp` (D21) | runtime |
 | c-stun-immunity | cannot re-stun while stars shown | runtime |
+| c-threat-pair | at most one `threat` relation per ordered mob/player entity pair; each present relation has exactly one numeric `aggro-points` amount in aggro points, independent of other pairs; changing `current-target` does not clear it; decay/gains follow §3.2, zero/reset behavior remains open | runtime |
+| c-current-target | at most one player target per mob; ordinary threat-based selection compares that mob's eligible players by highest `aggro-points`, retaining a tied current target, otherwise breaking ties by earliest engagement (§3.2); taunt/stealth interactions remain open | runtime |
 | c-combo-reset | any attack with a hitbox that misses resets combo to 0, subject to the hybrid whole-channel and combo-neutral zero-damage-taunt rules in §3.3 combo-system; cap per weapon-type | runtime |
 | c-dodge-cost | dodge costs 25 stamina; requires movement; standing still M3 = class skill (S); hybrid numbers `design.defence.dodge` (D23) | runtime |
 | c-no-death-penalty | death never removes gold/items/xp; respawn at statue (A) / activated shrine (S) | runtime |
@@ -1077,14 +1130,14 @@ settled or implemented. The current open questions and approval/application chec
 `docs/ROADMAP/todo_decide.md §E`; preserve those deferrals. Earlier slice approximations below
 are historical implementation stages, superseded where later decisions say so.
 
-### Current unresolved hybrid questions (2026-09-17)
+### Current unresolved hybrid questions (2026-09-18)
 
 This index mirrors the open list in `docs/ROADMAP/todo_decide.md §E`; it does not choose defaults
 or authorize implementation. Resolve each question before its affected slice.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Aggro / group aggro | threat amount, ties, decay/reset, taunt priority/duration, full-stealth interaction, group membership |
+| Aggro / group aggro | decay rate, zero-threat behavior, reset conditions, taunt priority/duration, full-stealth interaction, group membership; damage, targeting ties and continuous decay policy approved in §3.2, runtime deferred |
 | Creature families | one primary scaling family plus descriptive groups, or multiple families with a scaling rule |
 | Settlements / inn | whether multiple settlements and paid timed sleep are hybrid targets; keep D22's current one village and free heal/respawn service |
 | Traversal | skill versus global key-item prerequisites for riding/gliding/sailing; climbing spikes versus skill points |
