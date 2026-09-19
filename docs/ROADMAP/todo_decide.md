@@ -187,16 +187,18 @@ old position and determine a fresh tie-breaker if needed afterward, without rest
 **Fresh engagement order (owner approved 2026-09-19):** after zero threat, assign a new position
 when that player's aggro toward that mob next rises above zero, behind still-valid positions.
 Applied in `domain.md §3.2/§4/§5` for documentation only; prior targeting priorities remain intact.
-Next question: **aggro / engagement-order resets on escape** (not yet approved). Enemy healing /
-whole-fight resets, other resets, fallback selection among entirely zero-aggro players, taunts,
-full-stealth interaction and group behavior remain open.
-**Current authorization (2026-09-19):** the owner resumed, approved the fresh-order rule and
-requested **commit, then the next walkthrough item**. This supersedes the prior publication
-stop point; that earlier `commit+push` was completed in `55e256a`. The current request authorizes
-no push or runtime work. Follow `tasks/lessons.md`: present one gamer-facing recommendation
-with both outcomes, ask one approval question, then wait. Do not jump to the gameplay handoff's
-aggro slice or deferred equipment/validator implementation. Preserve D1–D26, all walkthrough
-approvals and remaining open questions.
+**Escape (owner approved 2026-09-19):** escape alone preserves remaining positive aggro and
+engagement order under normal decay; reaching zero clears the old position. Applied in
+`domain.md §3.2/§4/§5` for documentation only, without changing chase limits or other players' state.
+Next question: **whole-fight aggro / engagement-order reset** (not yet approved). Enemy healing,
+other resets, fallback selection among entirely zero-aggro players, taunts, full-stealth interaction
+and group behavior remain open.
+**Current authorization (2026-09-19):** the fresh-order rule is committed in `b4e0ea3`. The owner
+approved escape retention and requested **commit, then the next walkthrough item**; no push or
+runtime work. Follow `tasks/lessons.md`: present one gamer-facing recommendation with both
+outcomes, ask one approval question, then wait. Do not jump to the gameplay handoff's aggro slice
+or deferred equipment/validator implementation. Preserve D1–D26, all walkthrough approvals
+and remaining open questions.
 
 ### Approved in the item-by-item walkthrough
 
@@ -404,6 +406,14 @@ approvals and remaining open questions.
   entirely zero-aggro players, taunts and full-stealth interaction remain open. The owner requested a
   commit, then the next walkthrough item; no runtime work or push is authorized.
 
+- [x] **Escape retains threat and order (owner approved 2026-09-19, ontology only).** Getting
+  away or ending pursuit alone does not wipe remaining positive aggro or engagement order.
+  Normal decay continues, zero clears the old position, and later positive threat gets a fresh
+  one. Other players' state and chase limits are unchanged. Players can retreat to let aggro
+  fade, but cannot instantly erase it by crossing a pursuit boundary. Deferral would leave the
+  escape-reset rule open, not approve an instant wipe. Enemy healing and whole-fight resets
+  remain separate. The owner requested a commit, then the next item; no runtime work or push.
+
 - [x] **Aggro relationship model (owner requested 2026-09-18, ontology only).** Formalize
   `threat` as a directed mob/player entity relation carrying a numeric `aggro-points` amount;
   `current-target` is a separate, optional single-player relation per mob. Scores belong to
@@ -413,12 +423,11 @@ approvals and remaining open questions.
 
 ### Open — decide before the named slice
 
-- [ ] **Aggro / group aggro:** damage conversion, targeting priorities, continuous
-  decay at 1 aggro point/s, zero-threat pursuit / order clearing, fresh order on regaining positive
-  threat and player-death aggro / order resets are approved above; define other resets (including
-  engagement order after escape), enemy healing / whole-fight resets, fallback selection among entirely
-  zero-aggro players, taunt priority/duration, full-stealth interaction and group membership
-  before the next aggro slice.
+- [ ] **Aggro / group aggro:** damage conversion, targeting priorities, continuous decay at
+  1 aggro point/s, zero-threat pursuit / order clearing, fresh order on regaining positive threat,
+  player-death aggro / order resets and escape retention are approved above; define enemy healing /
+  whole-fight resets, other resets, fallback selection among entirely zero-aggro players,
+  taunt priority/duration, full-stealth interaction and group membership before the next aggro slice.
   Sources: `domain.md#ai-behavior`, `generators.json#design.status-effects` (current taunt approximation).
 - [ ] **Creature family membership:** one primary scaling family plus descriptive groups, or
   multiple families with a defined scaling rule? Skeleton Dog appears in dogs and skeletons
@@ -601,6 +610,9 @@ is still open. Do not mistake a listed proposed correction for an approved new g
 - [x] **Fresh engagement order — ontology (2026-09-19):** recorded assignment on regaining
   positive threat in `domain.md#ai-behavior`, aligned §4/§5/§7 and advanced the handoff to
   aggro / engagement-order resets on escape. Runtime, live data and other open decisions unchanged.
+- [x] **Escape retention — ontology (2026-09-19):** recorded the approved rule in
+  `domain.md#ai-behavior`, aligned §4/§5/§7 and advanced the handoff to whole-fight aggro /
+  engagement-order reset. Runtime, live data and other open decisions unchanged.
 
 **Items 1–2 verification (2026-09-15):** `timeout 90 nix develop -c godot --headless -s <script>`
 passed for `ontology/validate.gd`, `game/items/test_items.gd` and
@@ -866,6 +878,14 @@ three-file Markdown scope checks passed. Documentation checks cover the positive
 priority preservation, unchanged gain/decay/pursuit rules, unique relation/constraint IDs and
 matching checkpoints. `/simplify` shortened the relation cross-reference; ponytail review found
 no further cuts. Runtime and live data are unchanged; the validator does not enforce this Markdown rule.
+
+**Escape-retention verification (2026-09-19):** headless ontology validation
+(`timeout 90 nix develop -c godot --headless -s ontology/validate.gd`), `git diff --check` and
+three-file Markdown scope checks passed. Documentation checks preserve prior aggro/death rules,
+confirm escape retention without new chase/healing rules, check unique relation/constraint IDs
+and matching checkpoints, and verify the 8-point decay example. `/simplify` and ponytail review
+kept the change documentation-only. Runtime and live data are unchanged; the validator does not
+enforce these Markdown rules, and the arithmetic check is not a gameplay test.
 
 **Audit verification baseline (not proof of consistency):** `ontology/validate.gd`,
 `game/items/test_items.gd`, `game/combat/test_defence.gd` and
