@@ -453,7 +453,7 @@ Rules shared by enemies. `A S`
 | possession | S: demon portal randomly possesses NPCs in the land (bigger, red, tougher, respawn possessed) |
 | simulation | hybrid: a creature farther than `design.spawns.ai.sim-radius` blocks from the player is frozen — no AI tick, no physics (D16). Distance = nearest player once `multiplayer-mode` lands (single player: the one player). |
 
-Hybrid aggro rules (owner approved 2026-09-18, documentation only; relation definitions in
+Hybrid aggro rules (owner approved 2026-09-18/19, documentation only; relation definitions in
 §4, constraints `c-threat-pair` / `c-current-target` in §5):
 - **Damage contribution (owner correction, 2026-09-18):** add **1 aggro point per 1% of the
   mob's maximum HP actually removed** by the attacker: `aggro gained = 100 × HP removed / mob max HP`.
@@ -481,9 +481,13 @@ Hybrid aggro rules (owner approved 2026-09-18, documentation only; relation defi
   hostile detection can still start or maintain aggression at zero; reaching zero is not immunity.
   Other players' remaining threat is unchanged. This does not settle engagement-order resets,
   taunts or full-stealth interactions.
+- **Player death (approved 2026-09-19):** death immediately clears every mob's aggro points
+  toward that player, without changing surviving teammates' scores or their normal decay.
+  After respawn, the player rebuilds aggro from zero; normal hostile detection still applies.
+  This does not decide enemy healing, whole-fight resets or engagement-order resets.
 
-Reset conditions (including engagement order), taunt rules, full-stealth interaction and group
-behavior remain open in §7. This does not authorize changing runtime,
+Other reset conditions (including engagement order), taunt rules, full-stealth interaction and
+group behavior remain open in §7. This does not authorize changing runtime,
 D16 simulation behavior or save/persistence policy.
 
 Hybrid (D26): every creature has a `combat-role` (melee, ranged, mage, any-class, none) parsed from `creatures.json`
@@ -999,7 +1003,7 @@ mob-b --threat {aggro-points: 40}--> player-you
 mob-b --current-target-----------> player-you
 ```
 
-Reset conditions and other open §7 questions remain unresolved.
+Player-death aggro clearing follows §3.2; other resets and open §7 questions remain unresolved.
 
 ---
 
@@ -1065,7 +1069,7 @@ content selection or live data changes are authorized by this contract.
 | c-slot-accepts | an item equips only in a usable equipment-slot whose `accepts` lists its item-type and whose subtype restrictions it satisfies (§3.4 equipment-slot); weapon-type `offhand` hands → off-hand only; c-weapon-class and c-hands still apply | runtime |
 | c-mp-range | mp ∈ [0, 100]; mage regenerates passively, others gain by hits/blocks/stealth/dodges; numbers `design.resources.mp` (D21) | runtime |
 | c-stun-immunity | cannot re-stun while stars shown | runtime |
-| c-threat-pair | at most one `threat` relation per ordered mob/player entity pair; each present relation has exactly one non-negative numeric `aggro-points` amount in aggro points, independent of other pairs; changing `current-target` does not clear it; decay/gains and the zero floor follow §3.2; reset conditions remain open | runtime |
+| c-threat-pair | at most one `threat` relation per ordered mob/player entity pair; each present relation has exactly one non-negative numeric `aggro-points` amount in aggro points, independent of other pairs; changing `current-target` does not clear it; decay/gains, the zero floor and player-death aggro clearing follow §3.2; other reset conditions remain open | runtime |
 | c-current-target | at most one player target per mob; ordinary threat-based selection compares that mob's eligible players by highest `aggro-points`, retaining a tied current target, otherwise breaking ties by earliest engagement; at zero, pursuit requires normal hostile detection (§3.2); taunt/stealth interactions remain open | runtime |
 | c-combo-reset | any attack with a hitbox that misses resets combo to 0, subject to the hybrid whole-channel and combo-neutral zero-damage-taunt rules in §3.3 combo-system; cap per weapon-type | runtime |
 | c-dodge-cost | dodge costs 25 stamina; requires movement; standing still M3 = class skill (S); hybrid numbers `design.defence.dodge` (D23) | runtime |
@@ -1139,14 +1143,14 @@ settled or implemented. The current open questions and approval/application chec
 `docs/ROADMAP/todo_decide.md §E`; preserve those deferrals. Earlier slice approximations below
 are historical implementation stages, superseded where later decisions say so.
 
-### Current unresolved hybrid questions (2026-09-18)
+### Current unresolved hybrid questions (2026-09-19)
 
 This index mirrors the open list in `docs/ROADMAP/todo_decide.md §E`; it does not choose defaults
 or authorize implementation. Resolve each question before its affected slice.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Aggro / group aggro | reset conditions, taunt priority/duration, full-stealth interaction, group membership; damage, targeting ties, continuous decay at 1 aggro point/s and zero-threat behavior approved in §3.2, runtime deferred |
+| Aggro / group aggro | other reset conditions (including engagement order), enemy healing / whole-fight resets, taunt priority/duration, full-stealth interaction, group membership; damage, targeting ties, continuous decay at 1 aggro point/s, zero-threat behavior and player-death aggro clearing approved in §3.2, runtime deferred |
 | Creature families | one primary scaling family plus descriptive groups, or multiple families with a scaling rule |
 | Settlements / inn | whether multiple settlements and paid timed sleep are hybrid targets; keep D22's current one village and free heal/respawn service |
 | Traversal | skill versus global key-item prerequisites for riding/gliding/sailing; climbing spikes versus skill points |

@@ -128,7 +128,7 @@ The full walkthrough/resumption protocol is in `tasks/lessons.md`; the prompt
 Never propose or implement regional gear power loss in pixlnd, even for Cube World cloning
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
-**Resume checkpoint (2026-09-18; commit references updated after rebase):** items 1–2 are applied,
+**Resume checkpoint (2026-09-19; commit references updated after rebase):** items 1–2 are applied,
 validated and committed in `0a562fc`. Items 3–8 are approved for ontology and their semantic
 corrections are committed in `e10836a`; their walkthrough handoff is recorded in `c005f55`. The owner resumed and approved item 9's
 validation-contract direction for **ontology documentation only** on 2026-09-17. Its policy is
@@ -178,16 +178,13 @@ with hits adding threat concurrently and target switches preserving remaining th
 ontology-only rules are applied in `domain.md#ai-behavior`; the requested relationship model
 is explicit in §4/§5 (`threat`, `aggro-points`, `current-target`). The owner subsequently approved
 **1 aggro point per second** and **zero-threat behavior** (2026-09-18), documentation only;
-exact rules are below. Next question: **reset conditions — player death**. Other resets (including
-engagement order), taunts, full-stealth interaction and group behavior remain open. Resume one
-ontology decision at a time, not the implementation slice; deferred implementation is unauthorized.
-**Publication authorization and stop point (2026-09-18):** the owner requested `commit+push`
-of the current documentation on `fix/ontology-reconciliation`, then handoff. This authorizes
-publication, not further decisions or gameplay. The next agent must start at `docs/HANDOFF.md`.
-**Pending, presented but NOT approved:** death immediately clears every mob's aggro toward the
-dead player, preserves surviving teammates' scores, and leaves the respawned player to rebuild
-aggro from zero under normal hostile detection. Enemy healing, whole-fight resets and engagement
-order are separate. Re-present this proposal for documentation-only approval; do not implement it.
+exact rules are below. **Player-death aggro clearing** was approved and recorded on 2026-09-19
+for documentation only; surviving teammates' scores and normal hostile detection are preserved.
+Next question: **engagement-order resets** (not yet presented or approved). Other reset conditions,
+enemy healing / whole-fight resets, taunts, full-stealth interaction and group behavior remain open.
+**Current authorization (2026-09-19):** commit this approved documentation change; no push or
+runtime implementation. The earlier 2026-09-18 `commit+push` authorization covered the prior
+publication only. Start at `docs/HANDOFF.md`; resume the decision walkthrough, not gameplay.
 Follow `tasks/lessons.md`: present one gamer-facing recommendation with both outcomes, ask
 one approval question, then wait. Do not jump to the gameplay handoff's aggro slice or the
 deferred equipment/validator implementation. Preserve D1–D26 and all walkthrough approvals;
@@ -363,6 +360,14 @@ all remaining open questions stay open.
   pursuit or safety beside a hostile mob. Reset conditions (including engagement order), taunts
   and full-stealth interactions remain separate; no runtime, commit or push is authorized.
 
+- [x] **Player-death aggro clearing (owner approved 2026-09-19, ontology documentation only).**
+  Death immediately clears every mob's aggro points toward that player, preserving surviving
+  teammates' scores and normal decay. After respawn, the player rebuilds aggro from zero;
+  normal hostile detection still applies. Death cannot wipe teammates' ongoing threat, and
+  zero aggro grants no immunity. Enemy healing, whole-fight resets and engagement-order resets
+  remain open. Deferral would have left carry-over through death unresolved, not approved it.
+  The owner requested a commit; no runtime implementation or push is authorized.
+
 - [x] **Aggro relationship model (owner requested 2026-09-18, ontology only).** Formalize
   `threat` as a directed mob/player entity relation carrying a numeric `aggro-points` amount;
   `current-target` is a separate, optional single-player relation per mob. Scores belong to
@@ -373,7 +378,8 @@ all remaining open questions stay open.
 ### Open — decide before the named slice
 
 - [ ] **Aggro / group aggro:** damage conversion, targeting ties, continuous decay at
-  1 aggro point/s and zero-threat behavior are approved above; define reset conditions, taunt
+  1 aggro point/s, zero-threat behavior and player-death aggro clearing are approved above;
+  define other resets (including engagement order), enemy healing / whole-fight resets, taunt
   priority/duration, full-stealth interaction and group membership before the next aggro slice.
   Sources: `domain.md#ai-behavior`, `generators.json#design.status-effects` (current taunt approximation).
 - [ ] **Creature family membership:** one primary scaling family plus descriptive groups, or
@@ -545,6 +551,9 @@ is still open. Do not mistake a listed proposed correction for an approved new g
   hostile-detection boundary in `domain.md#ai-behavior` and the relation constraints. Updated
   the open-question indices and handoff to reset conditions, starting with player death.
   Runtime, live data, existing targeting priorities and unresolved reset rules are unchanged.
+- [x] **Player-death aggro clearing — ontology (2026-09-19):** recorded the approved rule
+  in `domain.md#ai-behavior`, aligned §4/§5/§7 and advanced the handoff to engagement-order
+  resets. Runtime, live data and all other unresolved decisions are unchanged.
 
 **Items 1–2 verification (2026-09-15):** `timeout 90 nix develop -c godot --headless -s <script>`
 passed for `ontology/validate.gd`, `game/items/test_items.gd` and
@@ -772,6 +781,14 @@ The four-file Markdown scope preserves all runtime/live data. The player-death p
 presented but unapproved, and the next agent must start at `docs/HANDOFF.md`. Session-local
 suite/review evidence: `/tmp/pixlnd-aggro-publish.TliE3c/`. No visual test was needed; the green
 suite does not prove runtime implementation of the new ontology rules.
+
+**Player-death aggro verification (2026-09-19):** `timeout 90 nix develop -c godot --headless
+-s ontology/validate.gd`, `git diff --check` and documentation/scope checks passed. Only
+`domain.md`, this roadmap and the handoff changed. Checks confirm the approved death rule,
+unchanged prior aggro rules, unique relation/constraint IDs and matching next-question pointers.
+`/simplify` removed repeated handoff wording; ponytail review found no further cuts. Runtime,
+live data and validator code are unchanged; the validator does not check this Markdown rule,
+and no runtime implementation or compliance test is claimed.
 
 **Audit verification baseline (not proof of consistency):** `ontology/validate.gd`,
 `game/items/test_items.gd`, `game/combat/test_defence.gd` and
