@@ -484,11 +484,13 @@ Hybrid aggro rules (owner approved 2026-09-18/19, documentation only; relation d
 - **Player death (approved 2026-09-19):** death immediately clears every mob's aggro points
   toward that player, without changing surviving teammates' scores or their normal decay.
   After respawn, the player rebuilds aggro from zero; normal hostile detection still applies.
-  This does not decide enemy healing, whole-fight resets or engagement-order resets.
+  Death also clears that player's engagement-order position with every mob. Re-engaging gives
+  the player a fresh position; surviving teammates keep theirs. Higher aggro and current-target
+  retention still take precedence. Enemy healing, whole-fight resets and engagement-order
+  resets from reaching zero through decay or escaping remain undecided.
 
-Other reset conditions (including engagement order), taunt rules, full-stealth interaction and
-group behavior remain open in §7. This does not authorize changing runtime,
-D16 simulation behavior or save/persistence policy.
+Other reset conditions, taunt rules, full-stealth interaction and group behavior remain open
+in §7. This does not authorize changing runtime, D16 simulation behavior or save/persistence policy.
 
 Hybrid (D26): every creature has a `combat-role` (melee, ranged, mage, any-class, none) parsed from `creatures.json`
 `role` text (humanoids may be `any-class`: one of melee/ranged/mage rolled per spawned group, weighted); melee is
@@ -1003,7 +1005,7 @@ mob-b --threat {aggro-points: 40}--> player-you
 mob-b --current-target-----------> player-you
 ```
 
-Player-death aggro clearing follows §3.2; other resets and open §7 questions remain unresolved.
+Player-death resets follow §3.2; other resets and open §7 questions remain unresolved.
 
 ---
 
@@ -1070,7 +1072,7 @@ content selection or live data changes are authorized by this contract.
 | c-mp-range | mp ∈ [0, 100]; mage regenerates passively, others gain by hits/blocks/stealth/dodges; numbers `design.resources.mp` (D21) | runtime |
 | c-stun-immunity | cannot re-stun while stars shown | runtime |
 | c-threat-pair | at most one `threat` relation per ordered mob/player entity pair; each present relation has exactly one non-negative numeric `aggro-points` amount in aggro points, independent of other pairs; changing `current-target` does not clear it; decay/gains, the zero floor and player-death aggro clearing follow §3.2; other reset conditions remain open | runtime |
-| c-current-target | at most one player target per mob; ordinary threat-based selection compares that mob's eligible players by highest `aggro-points`, retaining a tied current target, otherwise breaking ties by earliest engagement; at zero, pursuit requires normal hostile detection (§3.2); taunt/stealth interactions remain open | runtime |
+| c-current-target | at most one player target per mob; ordinary threat-based selection compares that mob's eligible players by highest `aggro-points`, retaining a tied current target, otherwise breaking ties by earliest engagement; player-death engagement-order resets follow §3.2; at zero, pursuit requires normal hostile detection (§3.2); taunt/stealth interactions remain open | runtime |
 | c-combo-reset | any attack with a hitbox that misses resets combo to 0, subject to the hybrid whole-channel and combo-neutral zero-damage-taunt rules in §3.3 combo-system; cap per weapon-type | runtime |
 | c-dodge-cost | dodge costs 25 stamina; requires movement; standing still M3 = class skill (S); hybrid numbers `design.defence.dodge` (D23) | runtime |
 | c-no-death-penalty | death never removes gold/items/xp; respawn at statue (A) / activated shrine (S) | runtime |
@@ -1150,7 +1152,7 @@ or authorize implementation. Resolve each question before its affected slice.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Aggro / group aggro | other reset conditions (including engagement order), enemy healing / whole-fight resets, taunt priority/duration, full-stealth interaction, group membership; damage, targeting ties, continuous decay at 1 aggro point/s, zero-threat behavior and player-death aggro clearing approved in §3.2, runtime deferred |
+| Aggro / group aggro | other reset conditions (including engagement order at zero threat or after escape), enemy healing / whole-fight resets, taunt priority/duration, full-stealth interaction, group membership; damage, targeting ties, continuous decay at 1 aggro point/s, zero-threat behavior and player-death aggro / engagement-order resets approved in §3.2, runtime deferred |
 | Creature families | one primary scaling family plus descriptive groups, or multiple families with a scaling rule |
 | Settlements / inn | whether multiple settlements and paid timed sleep are hybrid targets; keep D22's current one village and free heal/respawn service |
 | Traversal | skill versus global key-item prerequisites for riding/gliding/sailing; climbing spikes versus skill points |

@@ -33,16 +33,17 @@ entities, `aggro-points` is its amount, and `current-target` is a separate optio
 The owner rejected no-decay-during-combat: fixed-rate decay continues in and out of combat,
 while hits add threat; losing target priority does not erase remaining threat.
 
-**Current authorization (2026-09-19):** the owner approved player-death aggro clearing for
-ontology documentation only and requested a commit. Recorded in `domain.md#ai-behavior`: death
-immediately clears every mob's aggro toward that player, preserves surviving teammates' scores
-and normal decay, and leaves the respawned player to rebuild from zero under normal hostile
-detection. Commit only; no push, runtime work or automatic gameplay slice is authorized. The prior
-2026-09-18 `commit+push` request covered that earlier documentation publication, not this change.
+**Current authorization (2026-09-19):** after approving player-death aggro clearing, the owner
+also approved death clearing that player's engagement-order position with every mob. On
+re-engaging, the player gets a fresh position; survivors keep theirs. Higher aggro and
+current-target retention still take precedence. Both rules are recorded in
+`domain.md#ai-behavior` for documentation only. The owner requested a commit, not a push;
+no runtime work or automatic gameplay slice is authorized. The prior 2026-09-18 `commit+push`
+request covered that earlier documentation publication, not this change.
 
-**Next walkthrough question:** **Aggro / group aggro — engagement-order resets** (not yet
-presented or approved). Other reset conditions, enemy healing / whole-fight resets, taunts,
-full-stealth interaction and group behavior remain open.
+**Next walkthrough question:** **Aggro / group aggro — engagement order when threat decays
+to zero** (not yet presented or approved). Resets on escape, enemy healing / whole-fight resets,
+other resets, taunts, full-stealth interaction and group behavior remain open.
 **Next agent must start with this handoff**, then `tasks/lessons.md`,
 `docs/ROADMAP/todo_decide.md §E` and `ontology/domain.md#ai-behavior`, and inspect actual Git state.
 
