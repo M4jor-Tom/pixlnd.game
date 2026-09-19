@@ -501,16 +501,14 @@ Hybrid aggro rules (owner approved 2026-09-18/19, documentation only; relation d
 - **Escape (owner approved 2026-09-19):** getting away or ending pursuit alone does not clear
   that player's remaining positive aggro or engagement-order position with the mob. Normal decay
   continues; reaching zero clears the old position, and regaining positive threat assigns a fresh
-  one as above. Other players' scores and order are unchanged. This governs memory, not chase
-  distance; whole-fight aggro/order resets remain undecided.
+  one as above. Other players' scores and order are unchanged. This governs memory, not chase distance.
 - **Return-home trigger (owner approved 2026-09-19):** during pursuit, crossing the existing
   home leash (`design.spawns.ai.leash`, 30 blocks measured from the mob's home) starts return
   regardless of remaining aggro. Within the leash, if its target dies, disappears, or has zero
   aggro and is no longer detected, first consider other living players with positive aggro using
   the approved highest-threat/tie rules. If none remain, normal hostile detection can still
   sustain combat; otherwise return home. Starting return does not clear aggro or engagement
-  order; normal decay continues. Protected-return behavior follows below; arrival aggro/order
-  reset remains undecided.
+  order; normal decay continues. Protected return and the arrival reset follow below.
 - **Protected return (owner approved 2026-09-19):** attacks do not restart pursuit once the
   mob is returning, including after it moves back inside the home leash. During return, its
   movement speed is **×2 the normal return speed** (currently `design.spawns.ai.chase`: 6.5 →
@@ -519,9 +517,16 @@ Hybrid aggro rules (owner approved 2026-09-18/19, documentation only; relation d
   ordinary chase speed or define the general resistance stat. Existing status effects still
   apply; no status cleansing or crowd-control immunity is granted.
   On reaching home alive, restore **full HP once** and end the return-speed/damage-reduction
-  bonuses. A mob killed before arrival stays dead. Aggro follows the existing gain/decay rules;
-  this grants no threat/order wipe. Taunt interactions and arrival aggro/order reset remain open.
+  bonuses. A mob killed before arrival stays dead. Aggro follows the existing gain/decay rules
+  during return. Taunt interactions remain open.
   This discourages repeated damage during retreat but does not make retreat kills impossible.
+- **Arrival aggro/order reset (owner approved 2026-09-19):** on completing return home alive,
+  clear that mob's remaining aggro points and engagement-order positions toward **every player**,
+  once, alongside its full-HP recovery. During the journey, gains and decay continue normally;
+  starting return is not a wipe. Other mobs' threat/order records are unchanged. Normal hostile
+  detection and existing targeting priorities still apply; zero aggro grants no immunity.
+  Damage after arrival builds fresh aggro and order normally, including subsequent poison/burning
+  ticks, because arrival does not cleanse statuses.
 
 Other reset conditions, taunt rules, full-stealth interaction and group behavior remain open
 in §7. This does not authorize changing runtime, D16 simulation behavior or save/persistence policy.
@@ -1105,9 +1110,9 @@ content selection or live data changes are authorized by this contract.
 | c-slot-accepts | an item equips only in a usable equipment-slot whose `accepts` lists its item-type and whose subtype restrictions it satisfies (§3.4 equipment-slot); weapon-type `offhand` hands → off-hand only; c-weapon-class and c-hands still apply | runtime |
 | c-mp-range | mp ∈ [0, 100]; mage regenerates passively, others gain by hits/blocks/stealth/dodges; numbers `design.resources.mp` (D21) | runtime |
 | c-stun-immunity | cannot re-stun while stars shown | runtime |
-| c-threat-pair | at most one `threat` relation per ordered mob/player entity pair; each present relation has exactly one non-negative numeric `aggro-points` amount in aggro points, independent of other pairs; changing `current-target` does not clear it; decay/gains, the zero floor, player-death clearing and escape retention follow §3.2; other reset conditions remain open | runtime |
-| c-current-target | at most one player target per mob; ordinary threat-based selection compares that mob's eligible players by highest `aggro-points`, retaining a tied current target, otherwise breaking positive-threat ties by earliest engagement; player-death and zero-threat order resets, escape retention and fresh assignment on regaining positive threat follow §3.2; at zero, pursuit requires normal hostile detection (§3.2); fallback selection among entirely zero-aggro players and taunt/stealth interactions remain open | runtime |
-| c-return-home | pursuit beyond the home leash starts return regardless of threat; within it, target loss checks positive-threat players then normal hostile detection (§3.2); attacks do not restart pursuit during return; ×2 normal return speed and 90% damage reduction (including DOT) until reaching home alive, then full HP once and both bonuses end; no revival, cleansing, CC immunity or aggro/order wipe; taunt interactions and arrival aggro/order reset remain open | runtime |
+| c-threat-pair | at most one `threat` relation per ordered mob/player entity pair; each present relation has exactly one non-negative numeric `aggro-points` amount in aggro points, independent of other pairs; changing `current-target` does not clear it; decay/gains, the zero floor, player-death and arrival clearing, and escape retention follow §3.2; other reset conditions remain open | runtime |
+| c-current-target | at most one player target per mob; ordinary threat-based selection compares that mob's eligible players by highest `aggro-points`, retaining a tied current target, otherwise breaking positive-threat ties by earliest engagement; player-death, zero-threat and arrival order resets, escape retention and fresh assignment on regaining positive threat follow §3.2; at zero, pursuit requires normal hostile detection (§3.2); fallback selection among entirely zero-aggro players and taunt/stealth interactions remain open | runtime |
+| c-return-home | pursuit beyond the home leash starts return regardless of threat; within it, target loss checks positive-threat players then normal hostile detection (§3.2); attacks do not restart pursuit during return; ×2 normal return speed and 90% damage reduction (including DOT) until reaching home alive, then full HP and clear this mob's aggro/order toward every player once, ending both bonuses; no revival, cleansing or CC immunity; gains/decay continue until arrival and other mobs' records are unchanged; taunt interactions remain open | runtime |
 | c-combo-reset | any attack with a hitbox that misses resets combo to 0, subject to the hybrid whole-channel and combo-neutral zero-damage-taunt rules in §3.3 combo-system; cap per weapon-type | runtime |
 | c-dodge-cost | dodge costs 25 stamina; requires movement; standing still M3 = class skill (S); hybrid numbers `design.defence.dodge` (D23) | runtime |
 | c-no-death-penalty | death never removes gold/items/xp; respawn at statue (A) / activated shrine (S) | runtime |
@@ -1187,7 +1192,7 @@ or authorize implementation. Resolve each question before its affected slice.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Aggro / group aggro | arrival / whole-fight aggro-order resets, other resets, fallback selection among entirely zero-aggro players, taunt priority/duration and return interaction, full-stealth interaction, group membership; damage, targeting priorities, continuous decay at 1 aggro point/s, zero-threat pursuit / order clearing, fresh order on regaining positive threat, player-death aggro / order resets, escape retention, return-home trigger and protected return with full-HP arrival recovery approved in §3.2, runtime deferred |
+| Aggro / group aggro | other resets, fallback selection among entirely zero-aggro players, taunt priority/duration and return interaction, full-stealth interaction, group membership; damage, targeting priorities, continuous decay at 1 aggro point/s, zero-threat pursuit / order clearing, fresh order on regaining positive threat, player-death aggro / order resets, escape retention, return-home trigger, protected return with full-HP arrival recovery and per-mob arrival aggro/order reset approved in §3.2, runtime deferred |
 | Creature families | one primary scaling family plus descriptive groups, or multiple families with a scaling rule |
 | Settlements / inn | whether multiple settlements and paid timed sleep are hybrid targets; keep D22's current one village and free heal/respawn service |
 | Traversal | skill versus global key-item prerequisites for riding/gliding/sailing; climbing spikes versus skill points |

@@ -193,17 +193,20 @@ engagement order under normal decay; reaching zero clears the old position. Appl
 **Return-home trigger (owner approved 2026-09-19):** pursuit beyond the existing 30-block home
 leash starts return regardless of aggro. Inside it, losing a target first checks other living
 positive-threat players, then normal hostile detection before returning. Starting return preserves
-aggro/order; aggro still decays normally. Applied in `domain.md §3.2/§4/§5`, documentation only. The earlier whole-fight reset
-proposal was paused to clarify return conditions and remains unapproved.
+aggro/order; aggro still decays normally. Applied in `domain.md §3.2/§4/§5`, documentation only.
+Arrival behavior follows the separately approved per-mob rule below.
 **Protected return (owner approved 2026-09-19):** attacks do not restart pursuit; return speed
 is ×2 normal (currently 6.5 → 13 blocks/s), with 90% damage reduction including poison/burning.
-Reaching home alive restores full HP once and ends both bonuses. No revival, status cleansing,
-CC immunity or threat/order wipe. Recorded in `domain.md §3.2/§5`, documentation only.
-Next question: **aggro / engagement-order reset on reaching home** (not yet approved). Other
-resets, fallback selection among entirely zero-aggro players, taunts (including during return),
-full-stealth interaction and group behavior remain open.
-**Current authorization (2026-09-19):** the return-home trigger is committed in `ac8e0d5`.
-The owner approved protected return and requested **commit, then the next walkthrough item**;
+Reaching home alive restores full HP once and ends both bonuses. No revival, status cleansing
+or CC immunity. Recorded in `domain.md §3.2/§5`, documentation only; threat reset is separate below.
+**Arrival aggro/order reset (owner approved 2026-09-19):** completing return home alive clears
+that mob's remaining scores and engagement-order positions toward every player, once alongside
+healing. Gains/decay continue until arrival; other mobs are unaffected. Normal detection still
+applies, and later damage, including uncleansed DOT ticks, builds fresh threat normally.
+Next question: **fallback selection among detected zero-aggro players** (not yet approved).
+Other resets, taunts (including during return), full-stealth interaction and group behavior remain open.
+**Current authorization (2026-09-19):** protected return is committed in `06ddadc`.
+The owner approved arrival aggro/order reset and requested **commit, then the next walkthrough item**;
 no push or runtime work. Follow `tasks/lessons.md`: one gamer-facing recommendation using
 **"Approval versus Refusing"**, one approval question, then wait. Do not jump to the gameplay
 handoff's aggro slice or deferred equipment/validator implementation. Preserve D1–D26, all
@@ -438,11 +441,20 @@ walkthrough approvals and remaining open questions.
   pursuit during return. Run at ×2 normal return speed (currently 6.5 → 13 blocks/s), taking 90%
   less damage, including poison/burning ticks. On reaching home alive, restore full HP once and
   end both bonuses; a mob killed on the way stays dead. Existing statuses apply: no cleansing
-  or CC immunity. Aggro gains/decay continue normally; arrival threat/order reset and taunts
-  remain separate. This makes repeated retreat damage less effective without guaranteeing
-  retreat kills are impossible. Refusing would require revising the protection package, not
+  or CC immunity. Aggro gains/decay continue normally; arrival threat/order reset was left open
+  here and approved separately below. Taunts remain open. This makes repeated retreat damage
+  less effective without guaranteeing retreat kills are impossible. Refusing would require revising the protection package, not
   undoing the approved leash/aggro rules. The owner requested a commit and the next item;
   runtime work and push remain unauthorized.
+
+- [x] **Arrival aggro/order reset (owner approved 2026-09-19, ontology only).** When the enemy
+  completes return home alive, clear its remaining aggro and engagement-order positions toward
+  every player, once alongside the approved healing. Gains/decay continue until arrival; other
+  enemies' records remain untouched. Normal detection applies and subsequent damage, including
+  ongoing poison/burning ticks, builds fresh aggro/order; no status cleanse or immunity. Players
+  start with fresh scores after a completed retreat. Refusing would omit this arrival wipe while
+  retaining healing and existing decay unless a different reset were approved. The owner requested
+  a commit and the next item; runtime work and push remain unauthorized.
 
 - [x] **Aggro relationship model (owner requested 2026-09-18, ontology only).** Formalize
   `threat` as a directed mob/player entity relation carrying a numeric `aggro-points` amount;
@@ -456,8 +468,8 @@ walkthrough approvals and remaining open questions.
 - [ ] **Aggro / group aggro:** damage conversion, targeting priorities, continuous decay at
   1 aggro point/s, zero-threat pursuit / order clearing, fresh order on regaining positive threat,
   player-death aggro / order resets, escape retention, the return-home trigger and protected
-  return with full-HP arrival recovery are approved; define arrival / whole-fight aggro-order
-  resets, other resets, fallback selection among entirely zero-aggro players, taunt priority/duration
+  return with full-HP arrival recovery and per-mob arrival aggro/order reset are approved;
+  define other resets, fallback selection among entirely zero-aggro players, taunt priority/duration
   and return interaction, full-stealth interaction and group membership before the next aggro slice.
   Sources: `domain.md#ai-behavior`, `generators.json#design.status-effects` (current taunt approximation).
 - [ ] **Creature family membership:** one primary scaling family plus descriptive groups, or
@@ -651,6 +663,9 @@ is still open. Do not mistake a listed proposed correction for an approved new g
 - [x] **Protected return — ontology (2026-09-19):** recorded speed, resistance, non-interruption
   and arrival recovery in `domain.md#ai-behavior` / `c-return-home`, aligned §7 and advanced the
   handoff to arrival aggro/order reset. Runtime, live data and other open decisions unchanged.
+- [x] **Arrival aggro/order reset — ontology (2026-09-19):** recorded the approved per-mob
+  arrival rule in `domain.md#ai-behavior`, aligned §5/§7 and advanced the handoff to zero-aggro
+  fallback selection. Runtime, live data and other open decisions unchanged.
 
 **Items 1–2 verification (2026-09-15):** `timeout 90 nix develop -c godot --headless -s <script>`
 passed for `ontology/validate.gd`, `game/items/test_items.gd` and
@@ -942,6 +957,15 @@ recovery, exclusions, unique relation/constraint IDs and matching checkpoints. T
 walkthrough clarification is included. `/simplify` removed duplicate handoff wording; ponytail
 review found no further cuts. Runtime and live data are unchanged; neither the arithmetic checks
 nor the validator prove gameplay implementation of these Markdown rules.
+
+**Arrival-reset verification (2026-09-19):** headless ontology validation
+(`timeout 90 nix develop -c godot --headless -s ontology/validate.gd`), `git diff --check` and
+three-file Markdown scope checks passed. Documentation checks preserve prior aggro/return and
+protection rules, confirm the once-per-arrival, alive-only, per-mob reset and subsequent DOT /
+detection behavior, unchanged relation definitions, unique IDs and matching checkpoints.
+`/simplify` removed duplicate cross-references; ponytail review found no further cuts. Runtime
+and live data are unchanged; the validator does not enforce these Markdown rules, and no
+runtime compliance test is claimed.
 
 **Audit verification baseline (not proof of consistency):** `ontology/validate.gd`,
 `game/items/test_items.gd`, `game/combat/test_defence.gd` and
