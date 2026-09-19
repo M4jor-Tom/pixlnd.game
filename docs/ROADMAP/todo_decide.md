@@ -195,11 +195,15 @@ leash starts return regardless of aggro. Inside it, losing a target first checks
 positive-threat players, then normal hostile detection before returning. Starting return preserves
 aggro/order; aggro still decays normally. Applied in `domain.md §3.2/§4/§5`, documentation only. The earlier whole-fight reset
 proposal was paused to clarify return conditions and remains unapproved.
-Next question: **attacks interrupting return home** (not yet approved). Enemy healing /
-whole-fight resets, other resets, fallback selection among entirely zero-aggro players, taunts,
+**Protected return (owner approved 2026-09-19):** attacks do not restart pursuit; return speed
+is ×2 normal (currently 6.5 → 13 blocks/s), with 90% damage reduction including poison/burning.
+Reaching home alive restores full HP once and ends both bonuses. No revival, status cleansing,
+CC immunity or threat/order wipe. Recorded in `domain.md §3.2/§5`, documentation only.
+Next question: **aggro / engagement-order reset on reaching home** (not yet approved). Other
+resets, fallback selection among entirely zero-aggro players, taunts (including during return),
 full-stealth interaction and group behavior remain open.
-**Current authorization (2026-09-19):** escape retention is committed in `8d3c497`. The owner
-approved the return-home trigger and requested **commit, then the next walkthrough item**;
+**Current authorization (2026-09-19):** the return-home trigger is committed in `ac8e0d5`.
+The owner approved protected return and requested **commit, then the next walkthrough item**;
 no push or runtime work. Follow `tasks/lessons.md`: one gamer-facing recommendation using
 **"Approval versus Refusing"**, one approval question, then wait. Do not jump to the gameplay
 handoff's aggro slice or deferred equipment/validator implementation. Preserve D1–D26, all
@@ -426,8 +430,19 @@ walkthrough approvals and remaining open questions.
   combat; otherwise return. Starting return preserves aggro/order under normal decay. Players
   cannot extend pursuit beyond the leash, but losing one target does not end an ongoing fight
   with another eligible player. Refusing would reject this selection rule, not approve an
-  alternative. Return interruption, whole-fight resets and healing remain open. The owner
-  requested a commit and the next item; no runtime work or push is authorized.
+  alternative. Return interruption, whole-fight resets and healing were left open by this approval;
+  protected return is approved separately below. The owner requested a commit and the next item;
+  no runtime work or push is authorized.
+
+- [x] **Protected return (owner approved 2026-09-19, ontology only).** Attacks do not restart
+  pursuit during return. Run at ×2 normal return speed (currently 6.5 → 13 blocks/s), taking 90%
+  less damage, including poison/burning ticks. On reaching home alive, restore full HP once and
+  end both bonuses; a mob killed on the way stays dead. Existing statuses apply: no cleansing
+  or CC immunity. Aggro gains/decay continue normally; arrival threat/order reset and taunts
+  remain separate. This makes repeated retreat damage less effective without guaranteeing
+  retreat kills are impossible. Refusing would require revising the protection package, not
+  undoing the approved leash/aggro rules. The owner requested a commit and the next item;
+  runtime work and push remain unauthorized.
 
 - [x] **Aggro relationship model (owner requested 2026-09-18, ontology only).** Formalize
   `threat` as a directed mob/player entity relation carrying a numeric `aggro-points` amount;
@@ -440,10 +455,10 @@ walkthrough approvals and remaining open questions.
 
 - [ ] **Aggro / group aggro:** damage conversion, targeting priorities, continuous decay at
   1 aggro point/s, zero-threat pursuit / order clearing, fresh order on regaining positive threat,
-  player-death aggro / order resets, escape retention and the return-home trigger are approved;
-  define attacks interrupting return, enemy healing / whole-fight resets, other resets,
-  fallback selection among entirely zero-aggro players, taunt priority/duration, full-stealth
-  interaction and group membership before the next aggro slice.
+  player-death aggro / order resets, escape retention, the return-home trigger and protected
+  return with full-HP arrival recovery are approved; define arrival / whole-fight aggro-order
+  resets, other resets, fallback selection among entirely zero-aggro players, taunt priority/duration
+  and return interaction, full-stealth interaction and group membership before the next aggro slice.
   Sources: `domain.md#ai-behavior`, `generators.json#design.status-effects` (current taunt approximation).
 - [ ] **Creature family membership:** one primary scaling family plus descriptive groups, or
   multiple families with a defined scaling rule? Skeleton Dog appears in dogs and skeletons
@@ -633,6 +648,9 @@ is still open. Do not mistake a listed proposed correction for an approved new g
   `domain.md#ai-behavior`, added `c-return-home`, aligned §4/§7 and advanced the checkpoint to
   attacks interrupting return. Recorded the owner's presentation correction in `tasks/lessons.md`.
   Runtime, live data and other open decisions unchanged.
+- [x] **Protected return — ontology (2026-09-19):** recorded speed, resistance, non-interruption
+  and arrival recovery in `domain.md#ai-behavior` / `c-return-home`, aligned §7 and advanced the
+  handoff to arrival aggro/order reset. Runtime, live data and other open decisions unchanged.
 
 **Items 1–2 verification (2026-09-15):** `timeout 90 nix develop -c godot --headless -s <script>`
 passed for `ontology/validate.gd`, `game/items/test_items.gd` and
@@ -914,6 +932,16 @@ prior aggro/targeting rules, the return branches, unique relation/constraint IDs
 questions, matching checkpoints and the wording correction. `/simplify` shortened the relation
 cross-reference; ponytail review found no further cuts. Runtime and live data are unchanged;
 the validator does not enforce these Markdown rules, and no gameplay compliance test is claimed.
+
+**Protected-return verification (2026-09-19):** headless ontology validation
+(`timeout 90 nix develop -c godot --headless -s ontology/validate.gd`), `git diff --check` and
+four-file Markdown scope checks passed. Nix reported an ignored busy eval-cache warning;
+Godot completed successfully. Documentation checks preserve prior aggro/return-trigger rules,
+verify speed/damage/aggro arithmetic, temporary bonuses, DOT coverage, one-time alive-only
+recovery, exclusions, unique relation/constraint IDs and matching checkpoints. The pending
+walkthrough clarification is included. `/simplify` removed duplicate handoff wording; ponytail
+review found no further cuts. Runtime and live data are unchanged; neither the arithmetic checks
+nor the validator prove gameplay implementation of these Markdown rules.
 
 **Audit verification baseline (not proof of consistency):** `ontology/validate.gd`,
 `game/items/test_items.gd`, `game/combat/test_defence.gd` and

@@ -47,22 +47,26 @@ Recorded in `domain.md#ai-behavior` for documentation only; runtime implementati
 **Escape retention (`8d3c497`, 2026-09-19):** escape alone preserves positive aggro and
 engagement order under normal decay; zero clears the old position. Other players' state is unchanged.
 
-**Current direction (2026-09-19):** the owner approved the return-home trigger. Pursuit beyond
-30 blocks from home starts return regardless of aggro. Inside that leash, losing a target first
-checks other living positive-threat players, then normal hostile detection before returning.
-Starting return preserves aggro/order under normal decay. Recorded in `domain.md#ai-behavior`
-and `c-return-home`, documentation only. The earlier whole-fight reset proposal remains unapproved.
+**Return-home trigger (`ac8e0d5`, 2026-09-19):** pursuit beyond 30 blocks from home starts
+return regardless of aggro. Inside that leash, losing a target first checks other living
+positive-threat players, then normal hostile detection before returning. Starting return
+preserves aggro/order under normal decay.
 
-**Current authorization (2026-09-19):** record the return-home rule, **commit, then the next
+**Current direction (2026-09-19):** the owner approved protected return: attacks do not restart
+pursuit; ×2 normal return speed (currently 6.5 → 13 blocks/s) and 90% damage reduction including
+poison/burning ticks. On reaching home alive, restore full HP once and end both bonuses.
+No revival, status cleansing, CC immunity or threat/order wipe. Recorded in `domain.md#ai-behavior`
+and `c-return-home`, documentation only; arrival aggro/order reset remains unapproved.
+
+**Current authorization (2026-09-19):** record protected return, **commit, then the next
 walkthrough item**. No push or runtime work is authorized.
 
-**Next walkthrough question:** **Aggro / group aggro — attacks interrupting return home**
-(not yet approved). Enemy healing / whole-fight resets, other resets, fallback selection among
-entirely zero-aggro players, taunts, full-stealth interaction and group behavior remain open.
+**Next walkthrough question:** **Aggro / group aggro — aggro / engagement-order reset on reaching home**
+(not yet approved). Other resets, fallback selection among entirely zero-aggro players, taunts
+(including during return), full-stealth interaction and group behavior remain open.
 Start with this handoff, `tasks/lessons.md`, `docs/ROADMAP/todo_decide.md §E` and
-`ontology/domain.md#ai-behavior`, and inspect actual Git state. Present the return-interruption
-question using **"Approval versus Refusing"** as requested by the owner; do not choose a rule
-or implement gameplay without approval.
+`ontology/domain.md#ai-behavior`, and inspect actual Git state. Present the arrival-reset question
+using **"Approval versus Refusing"**; do not choose a rule or implement gameplay without approval.
 
 When prompted **"resume walking through items"**, read `tasks/lessons.md` and
 `docs/ROADMAP/todo_decide.md §E` first, then the relevant `ontology/` sources and actual Git
