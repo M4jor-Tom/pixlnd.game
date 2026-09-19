@@ -38,26 +38,22 @@ position with every mob; survivors keep theirs. Re-engaging gives the player a f
 These documentation-only rules were committed as requested (`5c146c9`, `38bf073`); those
 approval checkpoints authorized no push or runtime implementation.
 
-**Current direction (2026-09-19):** the owner rejected retaining engagement order at zero aggro.
-When a mob's threat toward a player reaches zero, discard that player's old tie-breaker position;
-if needed later, determine it afresh without restoring pre-zero priority. Recorded in
-`domain.md#ai-behavior` for documentation only. Normal detection and targeting priorities remain
-unchanged.
+**Current direction (2026-09-19):** zero aggro clears the player's old tie-breaker position
+with that mob. The owner approved assigning a fresh position when aggro next rises above zero,
+behind players whose positions remain valid. Under the approved damage rule, proximity,
+detection and misses do not qualify. Normal detection and targeting priorities remain unchanged.
+Recorded in `domain.md#ai-behavior` for documentation only; runtime implementation is unauthorized.
 
-**Publication authorization and stop point (2026-09-19):** the owner is leaving and requested
-`commit+push` of the current documentation on `fix/ontology-reconciliation`, including the two
-prior local death-rule commits, then handoff. This authorizes publication only, not runtime work,
-further decisions or presenting the next proposal now. Stop after publication.
+**Current authorization (2026-09-19):** the owner resumed and requested **commit, then the next
+walkthrough item** after approving fresh-order assignment. The previous publication/stop request
+was completed in `55e256a`; this request authorizes no push or runtime work.
 
-**Next walkthrough question:** **Aggro / group aggro — fresh engagement-order assignment after
-zero threat** (not yet presented or approved). The exact assignment trigger, resets on escape,
-enemy healing / whole-fight resets, other resets, taunts, full-stealth interaction and group behavior
-remain open.
-**Next agent: wait until the owner asks to continue** (for example, **"Walk me to next item"**).
-Start with this handoff, then `tasks/lessons.md`, `docs/ROADMAP/todo_decide.md §E` and
-`ontology/domain.md#ai-behavior`, and inspect actual Git state. Present the fresh-order assignment
-question using the walkthrough protocol below. Do not choose a trigger, implement gameplay or
-republish without separate authorization.
+**Next walkthrough question:** **Aggro / group aggro — aggro / engagement-order resets on escape**
+(not yet approved). Enemy healing / whole-fight resets, other resets, fallback selection among
+entirely zero-aggro players, taunts, full-stealth interaction and group behavior remain open.
+Start with this handoff, `tasks/lessons.md`, `docs/ROADMAP/todo_decide.md §E` and
+`ontology/domain.md#ai-behavior`, and inspect actual Git state. Present the escape-reset question
+using the walkthrough protocol below; do not choose a rule or implement gameplay without approval.
 
 When prompted **"resume walking through items"**, read `tasks/lessons.md` and
 `docs/ROADMAP/todo_decide.md §E` first, then the relevant `ontology/` sources and actual Git
