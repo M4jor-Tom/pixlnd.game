@@ -8,6 +8,7 @@
 - Rule: every proposal states both approval and non-approval outcomes for players. Distinguish current behavior from a future risk or unresolved design; never claim declining a documentation correction immediately breaks the game or approves the opposite rule. If neither choice changes the already-approved game, say so.
 - Owner correction (2026-09-19): use **"Approval versus Refusing"**, not "Approval versus leaving it open", for future items.
 - Rule: use that exact heading and describe the player-facing consequences of accepting or refusing the proposal. Refusal rejects this proposal; it does not silently approve the opposite mechanic.
+- Owner clarification (2026-09-19): a question about a mechanic is not a correction or rejection. Rule: answer it without withdrawing the proposal or recording a design-failure lesson; additional mechanics can address the concern separately.
 
 ## Resume the walkthrough, not gameplay implementation
 
