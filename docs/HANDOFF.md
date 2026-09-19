@@ -52,21 +52,26 @@ return regardless of aggro. Inside that leash, losing a target first checks othe
 positive-threat players, then normal hostile detection before returning. Starting return
 preserves aggro/order under normal decay.
 
-**Current direction (2026-09-19):** the owner approved protected return: attacks do not restart
-pursuit; ×2 normal return speed (currently 6.5 → 13 blocks/s) and 90% damage reduction including
-poison/burning ticks. On reaching home alive, restore full HP once and end both bonuses.
-No revival, status cleansing, CC immunity or threat/order wipe. Recorded in `domain.md#ai-behavior`
-and `c-return-home`, documentation only; arrival aggro/order reset remains unapproved.
+**Protected return (`06ddadc`, 2026-09-19):** attacks do not restart pursuit; ×2 normal return
+speed (currently 6.5 → 13 blocks/s) and 90% damage reduction including poison/burning ticks.
+Reaching home alive restores full HP once and ends both bonuses. No revival, status cleansing
+or CC immunity.
 
-**Current authorization (2026-09-19):** record protected return, **commit, then the next
+**Current direction (2026-09-19):** the owner approved clearing that mob's remaining aggro and
+engagement-order positions toward every player once it completes return home alive, alongside
+healing. Gains/decay continue until arrival; other mobs' records are unchanged. Normal detection
+applies and subsequent damage, including remaining DOT ticks, builds fresh aggro/order.
+Recorded in `domain.md#ai-behavior` / §5, documentation only.
+
+**Current authorization (2026-09-19):** record arrival aggro/order reset, **commit, then the next
 walkthrough item**. No push or runtime work is authorized.
 
-**Next walkthrough question:** **Aggro / group aggro — aggro / engagement-order reset on reaching home**
-(not yet approved). Other resets, fallback selection among entirely zero-aggro players, taunts
-(including during return), full-stealth interaction and group behavior remain open.
+**Next walkthrough question:** **Aggro / group aggro — fallback selection among detected zero-aggro players**
+(not yet approved). Other resets, taunts (including during return), full-stealth interaction and
+group behavior remain open. Retaining a valid current target tied for highest threat remains settled.
 Start with this handoff, `tasks/lessons.md`, `docs/ROADMAP/todo_decide.md §E` and
-`ontology/domain.md#ai-behavior`, and inspect actual Git state. Present the arrival-reset question
-using **"Approval versus Refusing"**; do not choose a rule or implement gameplay without approval.
+`ontology/domain.md#ai-behavior`, and inspect actual Git state. Present the zero-aggro fallback
+question using **"Approval versus Refusing"**; do not choose a rule or implement gameplay without approval.
 
 When prompted **"resume walking through items"**, read `tasks/lessons.md` and
 `docs/ROADMAP/todo_decide.md §E` first, then the relevant `ontology/` sources and actual Git
