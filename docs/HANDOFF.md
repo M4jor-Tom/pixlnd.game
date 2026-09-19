@@ -1,6 +1,6 @@
 # Handoff — resume here
 
-## Ontology walkthrough entry point (2026-09-18)
+## Ontology walkthrough entry point (2026-09-19)
 
 **Committed reconciliation:** the owner requested committing the staged repairs before continuing;
 `44ab0a1` contains the panel-time and class-combo repairs, regressions and walkthrough records.
@@ -20,7 +20,7 @@ leave the cleanup uncommitted: the commit request covered only the already-stage
 The cleanup was subsequently committed before the authorized rebase; that old instruction is
 not a request to undo it or start further work.
 
-**Current authorization (2026-09-18):** the owner corrected damage gain to **1 aggro point per
+**Aggro decisions (2026-09-18):** the owner corrected damage gain to **1 aggro point per
 1% of the mob's maximum HP actually removed**, including fractional points, replacing raw-HP
 conversion to keep equivalent percentage-damage threat timing consistent across progression.
 The owner subsequently approved continuous decay at **1 aggro point per second** per mob/player
@@ -31,21 +31,20 @@ runtime implementation remains unauthorized.
 The requested relationship model is explicit in §4/§5: `threat` connects individual mob/player
 entities, `aggro-points` is its amount, and `current-target` is a separate optional relation.
 The owner rejected no-decay-during-combat: fixed-rate decay continues in and out of combat,
-while hits add threat; losing target priority does not erase remaining threat. Resume **Aggro /
-group aggro** with **reset conditions — player death**. Other resets (including engagement
-order), taunts, full-stealth interaction and group behavior also remain open.
-**Publication authorization and stop point (2026-09-18):** the owner requested `commit+push`
-of the current documentation on `fix/ontology-reconciliation`, then handoff to the next agent.
-This authorizes publication only, not further decisions, runtime work or an automatic next slice.
+while hits add threat; losing target priority does not erase remaining threat.
+
+**Current authorization (2026-09-19):** the owner approved player-death aggro clearing for
+ontology documentation only and requested a commit. Recorded in `domain.md#ai-behavior`: death
+immediately clears every mob's aggro toward that player, preserves surviving teammates' scores
+and normal decay, and leaves the respawned player to rebuild from zero under normal hostile
+detection. Commit only; no push, runtime work or automatic gameplay slice is authorized. The prior
+2026-09-18 `commit+push` request covered that earlier documentation publication, not this change.
+
+**Next walkthrough question:** **Aggro / group aggro — engagement-order resets** (not yet
+presented or approved). Other reset conditions, enemy healing / whole-fight resets, taunts,
+full-stealth interaction and group behavior remain open.
 **Next agent must start with this handoff**, then `tasks/lessons.md`,
 `docs/ROADMAP/todo_decide.md §E` and `ontology/domain.md#ai-behavior`, and inspect actual Git state.
-Resume the player-death question below.
-
-**Pending proposal — presented, NOT approved:** player death immediately clears every mob's
-aggro toward that player, while preserving its aggro toward surviving teammates. After respawn,
-the player rebuilds aggro from zero; normal hostile detection still applies. This would not decide
-enemy healing, whole-fight resets or engagement-order resets. Ask the owner for documentation-only
-approval before recording it as a rule. The `commit+push` request is not approval of this proposal.
 
 When prompted **"resume walking through items"**, read `tasks/lessons.md` and
 `docs/ROADMAP/todo_decide.md §E` first, then the relevant `ontology/` sources and actual Git
