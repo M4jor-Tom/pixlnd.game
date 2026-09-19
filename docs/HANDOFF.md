@@ -33,19 +33,31 @@ entities, `aggro-points` is its amount, and `current-target` is a separate optio
 The owner rejected no-decay-during-combat: fixed-rate decay continues in and out of combat,
 while hits add threat; losing target priority does not erase remaining threat.
 
-**Current authorization (2026-09-19):** after approving player-death aggro clearing, the owner
-also approved death clearing that player's engagement-order position with every mob. On
-re-engaging, the player gets a fresh position; survivors keep theirs. Higher aggro and
-current-target retention still take precedence. Both rules are recorded in
-`domain.md#ai-behavior` for documentation only. The owner requested a commit, not a push;
-no runtime work or automatic gameplay slice is authorized. The prior 2026-09-18 `commit+push`
-request covered that earlier documentation publication, not this change.
+**Approved death rules (2026-09-19):** death clears a player's aggro points and engagement-order
+position with every mob; survivors keep theirs. Re-engaging gives the player a fresh position.
+These documentation-only rules were committed as requested (`5c146c9`, `38bf073`); those
+approval checkpoints authorized no push or runtime implementation.
 
-**Next walkthrough question:** **Aggro / group aggro — engagement order when threat decays
-to zero** (not yet presented or approved). Resets on escape, enemy healing / whole-fight resets,
-other resets, taunts, full-stealth interaction and group behavior remain open.
-**Next agent must start with this handoff**, then `tasks/lessons.md`,
-`docs/ROADMAP/todo_decide.md §E` and `ontology/domain.md#ai-behavior`, and inspect actual Git state.
+**Current direction (2026-09-19):** the owner rejected retaining engagement order at zero aggro.
+When a mob's threat toward a player reaches zero, discard that player's old tie-breaker position;
+if needed later, determine it afresh without restoring pre-zero priority. Recorded in
+`domain.md#ai-behavior` for documentation only. Normal detection and targeting priorities remain
+unchanged.
+
+**Publication authorization and stop point (2026-09-19):** the owner is leaving and requested
+`commit+push` of the current documentation on `fix/ontology-reconciliation`, including the two
+prior local death-rule commits, then handoff. This authorizes publication only, not runtime work,
+further decisions or presenting the next proposal now. Stop after publication.
+
+**Next walkthrough question:** **Aggro / group aggro — fresh engagement-order assignment after
+zero threat** (not yet presented or approved). The exact assignment trigger, resets on escape,
+enemy healing / whole-fight resets, other resets, taunts, full-stealth interaction and group behavior
+remain open.
+**Next agent: wait until the owner asks to continue** (for example, **"Walk me to next item"**).
+Start with this handoff, then `tasks/lessons.md`, `docs/ROADMAP/todo_decide.md §E` and
+`ontology/domain.md#ai-behavior`, and inspect actual Git state. Present the fresh-order assignment
+question using the walkthrough protocol below. Do not choose a trigger, implement gameplay or
+republish without separate authorization.
 
 When prompted **"resume walking through items"**, read `tasks/lessons.md` and
 `docs/ROADMAP/todo_decide.md §E` first, then the relevant `ontology/` sources and actual Git
