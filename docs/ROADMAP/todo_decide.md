@@ -190,15 +190,20 @@ Applied in `domain.md §3.2/§4/§5` for documentation only; prior targeting pri
 **Escape (owner approved 2026-09-19):** escape alone preserves remaining positive aggro and
 engagement order under normal decay; reaching zero clears the old position. Applied in
 `domain.md §3.2/§4/§5` for documentation only, without changing chase limits or other players' state.
-Next question: **whole-fight aggro / engagement-order reset** (not yet approved). Enemy healing,
-other resets, fallback selection among entirely zero-aggro players, taunts, full-stealth interaction
-and group behavior remain open.
-**Current authorization (2026-09-19):** the fresh-order rule is committed in `b4e0ea3`. The owner
-approved escape retention and requested **commit, then the next walkthrough item**; no push or
-runtime work. Follow `tasks/lessons.md`: present one gamer-facing recommendation with both
-outcomes, ask one approval question, then wait. Do not jump to the gameplay handoff's aggro slice
-or deferred equipment/validator implementation. Preserve D1–D26, all walkthrough approvals
-and remaining open questions.
+**Return-home trigger (owner approved 2026-09-19):** pursuit beyond the existing 30-block home
+leash starts return regardless of aggro. Inside it, losing a target first checks other living
+positive-threat players, then normal hostile detection before returning. Starting return preserves
+aggro/order; aggro still decays normally. Applied in `domain.md §3.2/§4/§5`, documentation only. The earlier whole-fight reset
+proposal was paused to clarify return conditions and remains unapproved.
+Next question: **attacks interrupting return home** (not yet approved). Enemy healing /
+whole-fight resets, other resets, fallback selection among entirely zero-aggro players, taunts,
+full-stealth interaction and group behavior remain open.
+**Current authorization (2026-09-19):** escape retention is committed in `8d3c497`. The owner
+approved the return-home trigger and requested **commit, then the next walkthrough item**;
+no push or runtime work. Follow `tasks/lessons.md`: one gamer-facing recommendation using
+**"Approval versus Refusing"**, one approval question, then wait. Do not jump to the gameplay
+handoff's aggro slice or deferred equipment/validator implementation. Preserve D1–D26, all
+walkthrough approvals and remaining open questions.
 
 ### Approved in the item-by-item walkthrough
 
@@ -414,6 +419,16 @@ and remaining open questions.
   escape-reset rule open, not approve an instant wipe. Enemy healing and whole-fight resets
   remain separate. The owner requested a commit, then the next item; no runtime work or push.
 
+- [x] **Return-home trigger (owner approved 2026-09-19, ontology only).** Crossing the existing
+  30-block home leash starts return regardless of aggro. Within it, a dead/disappeared target
+  or an undetected zero-threat target prompts selection among other living positive-threat
+  players using the approved priorities. Without one, normal hostile detection can sustain
+  combat; otherwise return. Starting return preserves aggro/order under normal decay. Players
+  cannot extend pursuit beyond the leash, but losing one target does not end an ongoing fight
+  with another eligible player. Refusing would reject this selection rule, not approve an
+  alternative. Return interruption, whole-fight resets and healing remain open. The owner
+  requested a commit and the next item; no runtime work or push is authorized.
+
 - [x] **Aggro relationship model (owner requested 2026-09-18, ontology only).** Formalize
   `threat` as a directed mob/player entity relation carrying a numeric `aggro-points` amount;
   `current-target` is a separate, optional single-player relation per mob. Scores belong to
@@ -425,9 +440,10 @@ and remaining open questions.
 
 - [ ] **Aggro / group aggro:** damage conversion, targeting priorities, continuous decay at
   1 aggro point/s, zero-threat pursuit / order clearing, fresh order on regaining positive threat,
-  player-death aggro / order resets and escape retention are approved above; define enemy healing /
-  whole-fight resets, other resets, fallback selection among entirely zero-aggro players,
-  taunt priority/duration, full-stealth interaction and group membership before the next aggro slice.
+  player-death aggro / order resets, escape retention and the return-home trigger are approved;
+  define attacks interrupting return, enemy healing / whole-fight resets, other resets,
+  fallback selection among entirely zero-aggro players, taunt priority/duration, full-stealth
+  interaction and group membership before the next aggro slice.
   Sources: `domain.md#ai-behavior`, `generators.json#design.status-effects` (current taunt approximation).
 - [ ] **Creature family membership:** one primary scaling family plus descriptive groups, or
   multiple families with a defined scaling rule? Skeleton Dog appears in dogs and skeletons
@@ -613,6 +629,10 @@ is still open. Do not mistake a listed proposed correction for an approved new g
 - [x] **Escape retention — ontology (2026-09-19):** recorded the approved rule in
   `domain.md#ai-behavior`, aligned §4/§5/§7 and advanced the handoff to whole-fight aggro /
   engagement-order reset. Runtime, live data and other open decisions unchanged.
+- [x] **Return-home trigger — ontology (2026-09-19):** recorded the approved rule in
+  `domain.md#ai-behavior`, added `c-return-home`, aligned §4/§7 and advanced the checkpoint to
+  attacks interrupting return. Recorded the owner's presentation correction in `tasks/lessons.md`.
+  Runtime, live data and other open decisions unchanged.
 
 **Items 1–2 verification (2026-09-15):** `timeout 90 nix develop -c godot --headless -s <script>`
 passed for `ontology/validate.gd`, `game/items/test_items.gd` and
@@ -886,6 +906,14 @@ confirm escape retention without new chase/healing rules, check unique relation/
 and matching checkpoints, and verify the 8-point decay example. `/simplify` and ponytail review
 kept the change documentation-only. Runtime and live data are unchanged; the validator does not
 enforce these Markdown rules, and the arithmetic check is not a gameplay test.
+
+**Return-home verification (2026-09-19):** headless ontology validation
+(`timeout 90 nix develop -c godot --headless -s ontology/validate.gd`), `git diff --check` and
+four-file Markdown scope checks passed. Checks confirm the existing 30-block value, unchanged
+prior aggro/targeting rules, the return branches, unique relation/constraint IDs, preserved open
+questions, matching checkpoints and the wording correction. `/simplify` shortened the relation
+cross-reference; ponytail review found no further cuts. Runtime and live data are unchanged;
+the validator does not enforce these Markdown rules, and no gameplay compliance test is claimed.
 
 **Audit verification baseline (not proof of consistency):** `ontology/validate.gd`,
 `game/items/test_items.gd`, `game/combat/test_defence.gd` and
