@@ -6,6 +6,8 @@
 - Rule: explain the player action and consequence, distinguish settled rules from the new proposal, then ask one approval question. Record deferrals; ontology approval alone does not authorize gameplay implementation.
 - Owner correction: include the built-game consequence of not approving each item, not only the proposed benefit.
 - Rule: every proposal states both approval and non-approval outcomes for players. Distinguish current behavior from a future risk or unresolved design; never claim declining a documentation correction immediately breaks the game or approves the opposite rule. If neither choice changes the already-approved game, say so.
+- Owner correction (2026-09-19): use **"Approval versus Refusing"**, not "Approval versus leaving it open", for future items.
+- Rule: use that exact heading and describe the player-facing consequences of accepting or refusing the proposal. Refusal rejects this proposal; it does not silently approve the opposite mechanic.
 
 ## Resume the walkthrough, not gameplay implementation
 
@@ -18,7 +20,7 @@ interactive approach with any agent, without requiring the previous conversation
 2. Resume at the checkpoint's next unpresented item, keeping its number. Do not restart approved
    items or mistake an unchecked, explicitly deferred implementation for the next decision.
 3. Explain one concrete recommendation in gamer-facing terms: what the finished game lets a
-   player do and its rewards, costs or tradeoffs. Give both approval and non-approval outcomes;
+   player do and its rewards, costs or tradeoffs. Use **"Approval versus Refusing"** for both outcomes;
    separate settled rules, current behavior, temporary approximations and future risks.
 4. Ask **one approval question**, then wait. Never offer a permanently rejected feature as an
    option or reopen settled choices. Record a rejection/deferral without selecting its opposite.

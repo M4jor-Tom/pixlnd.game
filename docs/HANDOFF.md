@@ -44,27 +44,32 @@ behind players whose positions remain valid. Under the approved damage rule, pro
 detection and misses do not qualify. Normal detection and targeting priorities remain unchanged.
 Recorded in `domain.md#ai-behavior` for documentation only; runtime implementation is unauthorized.
 
-**Current direction (2026-09-19):** escape alone preserves positive aggro and engagement order
-under normal decay; zero clears the old position. Other players' state and chase limits are
-unchanged. This documentation-only rule is recorded in `domain.md#ai-behavior`.
+**Escape retention (`8d3c497`, 2026-09-19):** escape alone preserves positive aggro and
+engagement order under normal decay; zero clears the old position. Other players' state is unchanged.
 
-**Current authorization (2026-09-19):** the owner approved escape retention and requested
-**commit, then the next walkthrough item**. No push or runtime work is authorized.
+**Current direction (2026-09-19):** the owner approved the return-home trigger. Pursuit beyond
+30 blocks from home starts return regardless of aggro. Inside that leash, losing a target first
+checks other living positive-threat players, then normal hostile detection before returning.
+Starting return preserves aggro/order under normal decay. Recorded in `domain.md#ai-behavior`
+and `c-return-home`, documentation only. The earlier whole-fight reset proposal remains unapproved.
 
-**Next walkthrough question:** **Aggro / group aggro — whole-fight aggro / engagement-order reset**
-(not yet approved). Enemy healing, other resets, fallback selection among entirely zero-aggro
-players, taunts, full-stealth interaction and group behavior remain open.
+**Current authorization (2026-09-19):** record the return-home rule, **commit, then the next
+walkthrough item**. No push or runtime work is authorized.
+
+**Next walkthrough question:** **Aggro / group aggro — attacks interrupting return home**
+(not yet approved). Enemy healing / whole-fight resets, other resets, fallback selection among
+entirely zero-aggro players, taunts, full-stealth interaction and group behavior remain open.
 Start with this handoff, `tasks/lessons.md`, `docs/ROADMAP/todo_decide.md §E` and
-`ontology/domain.md#ai-behavior`, and inspect actual Git state. Present the whole-fight reset
-question using the walkthrough protocol below; do not choose a rule or implement gameplay
-without approval.
+`ontology/domain.md#ai-behavior`, and inspect actual Git state. Present the return-interruption
+question using **"Approval versus Refusing"** as requested by the owner; do not choose a rule
+or implement gameplay without approval.
 
 When prompted **"resume walking through items"**, read `tasks/lessons.md` and
 `docs/ROADMAP/todo_decide.md §E` first, then the relevant `ontology/` sources and actual Git
 branch/diff. This is the interactive decision walkthrough, **not** the gameplay slice loop below.
 The §E checkpoint records the last applied item and next unresolved item; follow its number,
 preserve approvals/deferrals and pending edits, and ask one gamer-facing approval question at a
-time, including approval AND non-approval consequences. Apply only the authorized correction,
+time, with **"Approval versus Refusing"** consequences. Apply only the authorized correction,
 verify, update the checkpoint and honor stop requests. Ontology approval is not implementation
 permission; do not automatically launch the next gameplay slice or commit/push.
 Regional gear power loss is permanently excluded from pixlnd: **never propose or implement it**,
