@@ -46,6 +46,16 @@ push without authorization.
   Example numbers are not approved balance values; confirm the rate separately. Keep runtime
   authorization and zero-threat/reset decisions separate from this ontology policy.
 
+## Zero aggro clears historical tie priority
+
+- Owner correction (2026-09-19): when a mob's aggro toward a player reaches zero, remove that
+  player's old engagement-order position from that mob's tie-breaker memory. If needed afterward,
+  determine a fresh tie-breaker; do not retain or restore the old priority.
+- Rule: do not preserve historical tie priority at zero merely to keep engagement order stable.
+  Scope clearing to that mob/player pair; preserve other players' state, normal detection and
+  existing targeting priorities. Do not invent the fresh-order assignment trigger or treat this
+  ontology correction as runtime, commit or push authorization.
+
 ## Normalize aggro gains across progression
 
 - Owner correction (2026-09-18): award aggro by the percentage of a mob's maximum HP actually

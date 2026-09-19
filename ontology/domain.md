@@ -479,15 +479,20 @@ Hybrid aggro rules (owner approved 2026-09-18/19, documentation only; relation d
   past hits alone no longer justify pursuing that player; there is no separate damage memory
   extending pursuit. If the mob no longer detects that player, it stops pursuing them. Normal
   hostile detection can still start or maintain aggression at zero; reaching zero is not immunity.
-  Other players' remaining threat is unchanged. This does not settle engagement-order resets,
-  taunts or full-stealth interactions.
+  Other players' remaining threat is unchanged; taunts and full-stealth interactions remain open.
+- **Zero-threat tie-breaker memory (owner correction, 2026-09-19):** when a mob's aggro toward
+  a player reaches zero, discard that player's remembered engagement-order position for that
+  mob. Do not retain or restore pre-zero tie-breaking priority. If needed afterward, determine
+  a fresh tie-breaker; the exact fresh-order assignment trigger remains open. Other players'
+  scores and order are unchanged. Normal hostile detection, higher-threat priority and
+  current-target tie retention still apply; clearing historical order does not force a target switch.
 - **Player death (approved 2026-09-19):** death immediately clears every mob's aggro points
   toward that player, without changing surviving teammates' scores or their normal decay.
   After respawn, the player rebuilds aggro from zero; normal hostile detection still applies.
   Death also clears that player's engagement-order position with every mob. Re-engaging gives
   the player a fresh position; surviving teammates keep theirs. Higher aggro and current-target
   retention still take precedence. Enemy healing, whole-fight resets and engagement-order
-  resets from reaching zero through decay or escaping remain undecided.
+  resets on escape remain undecided.
 
 Other reset conditions, taunt rules, full-stealth interaction and group behavior remain open
 in §7. This does not authorize changing runtime, D16 simulation behavior or save/persistence policy.
@@ -1005,7 +1010,8 @@ mob-b --threat {aggro-points: 40}--> player-you
 mob-b --current-target-----------> player-you
 ```
 
-Player-death resets follow §3.2; other resets and open §7 questions remain unresolved.
+Player-death and zero-threat order resets follow §3.2; fresh-order assignment and other open
+§7 questions remain unresolved.
 
 ---
 
@@ -1072,7 +1078,7 @@ content selection or live data changes are authorized by this contract.
 | c-mp-range | mp ∈ [0, 100]; mage regenerates passively, others gain by hits/blocks/stealth/dodges; numbers `design.resources.mp` (D21) | runtime |
 | c-stun-immunity | cannot re-stun while stars shown | runtime |
 | c-threat-pair | at most one `threat` relation per ordered mob/player entity pair; each present relation has exactly one non-negative numeric `aggro-points` amount in aggro points, independent of other pairs; changing `current-target` does not clear it; decay/gains, the zero floor and player-death aggro clearing follow §3.2; other reset conditions remain open | runtime |
-| c-current-target | at most one player target per mob; ordinary threat-based selection compares that mob's eligible players by highest `aggro-points`, retaining a tied current target, otherwise breaking ties by earliest engagement; player-death engagement-order resets follow §3.2; at zero, pursuit requires normal hostile detection (§3.2); taunt/stealth interactions remain open | runtime |
+| c-current-target | at most one player target per mob; ordinary threat-based selection compares that mob's eligible players by highest `aggro-points`, retaining a tied current target, otherwise breaking ties by earliest engagement; player-death and zero-threat engagement-order resets follow §3.2; at zero, pursuit requires normal hostile detection (§3.2); fresh-order assignment and taunt/stealth interactions remain open | runtime |
 | c-combo-reset | any attack with a hitbox that misses resets combo to 0, subject to the hybrid whole-channel and combo-neutral zero-damage-taunt rules in §3.3 combo-system; cap per weapon-type | runtime |
 | c-dodge-cost | dodge costs 25 stamina; requires movement; standing still M3 = class skill (S); hybrid numbers `design.defence.dodge` (D23) | runtime |
 | c-no-death-penalty | death never removes gold/items/xp; respawn at statue (A) / activated shrine (S) | runtime |
@@ -1152,7 +1158,7 @@ or authorize implementation. Resolve each question before its affected slice.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Aggro / group aggro | other reset conditions (including engagement order at zero threat or after escape), enemy healing / whole-fight resets, taunt priority/duration, full-stealth interaction, group membership; damage, targeting ties, continuous decay at 1 aggro point/s, zero-threat behavior and player-death aggro / engagement-order resets approved in §3.2, runtime deferred |
+| Aggro / group aggro | fresh-order assignment after zero threat, other resets (including engagement order after escape), enemy healing / whole-fight resets, taunt priority/duration, full-stealth interaction, group membership; damage, targeting ties, continuous decay at 1 aggro point/s, zero-threat pursuit / order clearing and player-death aggro / order resets approved in §3.2, runtime deferred |
 | Creature families | one primary scaling family plus descriptive groups, or multiple families with a scaling rule |
 | Settlements / inn | whether multiple settlements and paid timed sleep are hybrid targets; keep D22's current one village and free heal/respawn service |
 | Traversal | skill versus global key-item prerequisites for riding/gliding/sailing; climbing spikes versus skill points |
