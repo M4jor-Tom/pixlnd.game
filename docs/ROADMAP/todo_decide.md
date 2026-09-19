@@ -203,14 +203,22 @@ or CC immunity. Recorded in `domain.md §3.2/§5`, documentation only; threat re
 that mob's remaining scores and engagement-order positions toward every player, once alongside
 healing. Gains/decay continue until arrival; other mobs are unaffected. Normal detection still
 applies, and later damage, including uncleansed DOT ticks, builds fresh threat normally.
-Next question: **fallback selection among detected zero-aggro players** (not yet approved).
-Other resets, taunts (including during return), full-stealth interaction and group behavior remain open.
-**Current authorization (2026-09-19):** protected return is committed in `06ddadc`.
-The owner approved arrival aggro/order reset and requested **commit, then the next walkthrough item**;
-no push or runtime work. Follow `tasks/lessons.md`: one gamer-facing recommendation using
-**"Approval versus Refusing"**, one approval question, then wait. Do not jump to the gameplay
-handoff's aggro slice or deferred equipment/validator implementation. Preserve D1–D26, all
-walkthrough approvals and remaining open questions.
+**Zero-threat fallback (owner approved 2026-09-19):** without a positive-threat priority or
+valid current target, choose the nearest normally detected player. This grants no aggro/order;
+retaining a tied current target takes precedence. Recorded in `domain.md §3.2/§5`, documentation only.
+Next question: **exact-distance ties among nearest detected zero-aggro players** (not yet
+presented or approved). Other resets, taunts (including during return), full-stealth interaction
+and group behavior remain open.
+**Publication authorization and stop point (2026-09-19):** the owner approved the fallback,
+requested **handoff, commit, push**, and will resume with the next agent. Publish the current
+documentation on `fix/ontology-reconciliation`, including the five preceding local commits
+(`b4e0ea3`, `8d3c497`, `ac8e0d5`, `06ddadc`, `b8df023`), then stop. No runtime work or next
+proposal is authorized now. The next agent starts at `docs/HANDOFF.md` and waits for the owner
+to resume the walkthrough before presenting the exact-distance tie question. Follow
+`tasks/lessons.md`: one gamer-facing recommendation using **"Approval versus Refusing"**,
+one approval question, then wait. Questions are not corrections or rejection. Do not jump to
+the gameplay handoff's aggro slice or deferred equipment/validator implementation. Preserve
+D1–D26, all walkthrough approvals and remaining open questions.
 
 ### Approved in the item-by-item walkthrough
 
@@ -456,6 +464,15 @@ walkthrough approvals and remaining open questions.
   retaining healing and existing decay unless a different reset were approved. The owner requested
   a commit and the next item; runtime work and push remain unauthorized.
 
+- [x] **Nearest-detected zero-threat fallback (owner approved 2026-09-19, ontology only).**
+  When no positive-threat player takes priority and no valid current target exists, choose the
+  nearest normally detected player. No aggro or engagement order is granted. Higher threat and
+  tied-current-target retention take precedence, so merely moving closer does not steal attention.
+  This gives players a predictable initial target choice. Refusing would reject proximity as
+  the deciding factor, not choose a different fallback or grant immunity at zero. Exact-distance
+  ties, taunts and special stealth interactions remain open. The owner requested handoff,
+  commit and push, then a stop until the next walkthrough; no runtime work is authorized.
+
 - [x] **Aggro relationship model (owner requested 2026-09-18, ontology only).** Formalize
   `threat` as a directed mob/player entity relation carrying a numeric `aggro-points` amount;
   `current-target` is a separate, optional single-player relation per mob. Scores belong to
@@ -468,9 +485,10 @@ walkthrough approvals and remaining open questions.
 - [ ] **Aggro / group aggro:** damage conversion, targeting priorities, continuous decay at
   1 aggro point/s, zero-threat pursuit / order clearing, fresh order on regaining positive threat,
   player-death aggro / order resets, escape retention, the return-home trigger and protected
-  return with full-HP arrival recovery and per-mob arrival aggro/order reset are approved;
-  define other resets, fallback selection among entirely zero-aggro players, taunt priority/duration
-  and return interaction, full-stealth interaction and group membership before the next aggro slice.
+  return with full-HP arrival recovery, per-mob arrival aggro/order reset and nearest-detected
+  zero-threat fallback are approved; define exact-distance fallback ties, other resets, taunt
+  priority/duration and return interaction, full-stealth interaction and group membership
+  before the next aggro slice.
   Sources: `domain.md#ai-behavior`, `generators.json#design.status-effects` (current taunt approximation).
 - [ ] **Creature family membership:** one primary scaling family plus descriptive groups, or
   multiple families with a defined scaling rule? Skeleton Dog appears in dogs and skeletons
@@ -666,6 +684,9 @@ is still open. Do not mistake a listed proposed correction for an approved new g
 - [x] **Arrival aggro/order reset — ontology (2026-09-19):** recorded the approved per-mob
   arrival rule in `domain.md#ai-behavior`, aligned §5/§7 and advanced the handoff to zero-aggro
   fallback selection. Runtime, live data and other open decisions unchanged.
+- [x] **Nearest-detected zero-threat fallback — ontology (2026-09-19):** recorded the rule in
+  `domain.md#ai-behavior` / `c-current-target`, aligned §7 and advanced the handoff to exact-distance
+  ties. Recorded the requested publication/stop point. Runtime, live data and other open decisions unchanged.
 
 **Items 1–2 verification (2026-09-15):** `timeout 90 nix develop -c godot --headless -s <script>`
 passed for `ontology/validate.gd`, `game/items/test_items.gd` and
@@ -966,6 +987,18 @@ detection behavior, unchanged relation definitions, unique IDs and matching chec
 `/simplify` removed duplicate cross-references; ponytail review found no further cuts. Runtime
 and live data are unchanged; the validator does not enforce these Markdown rules, and no
 runtime compliance test is claimed.
+
+**Nearest-fallback handoff/publication verification (2026-09-19):** all 15 game test scripts,
+ontology validation and headless boot passed under `nix develop`, each Godot process bounded by
+`timeout 90`; logs contain no script/runtime errors. `git diff --check` and documentation checks
+confirm preserved earlier rules, nearest fallback without aggro/order gains, exact-distance ties
+left open, unchanged relation definitions, unique IDs and matching publication/stop checkpoints.
+The fetched tracking branch has no divergence; the five prior local commits plus this change
+modify only `domain.md`, this roadmap, the handoff and lessons. `/simplify` removed repeated
+handoff instructions; ponytail review found no further cuts. Session-local logs are in
+`/tmp/pixlnd-nearest-handoff.0EH8bK/`. The next agent must wait for a resume request and present
+exact-distance ties without choosing a default. Runtime/live data remain unchanged; the green
+suite does not establish implementation of the new ontology policies. No visual test was needed.
 
 **Audit verification baseline (not proof of consistency):** `ontology/validate.gd`,
 `game/items/test_items.gd`, `game/combat/test_defence.gd` and

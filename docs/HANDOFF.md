@@ -57,21 +57,34 @@ speed (currently 6.5 → 13 blocks/s) and 90% damage reduction including poison/
 Reaching home alive restores full HP once and ends both bonuses. No revival, status cleansing
 or CC immunity.
 
-**Current direction (2026-09-19):** the owner approved clearing that mob's remaining aggro and
-engagement-order positions toward every player once it completes return home alive, alongside
-healing. Gains/decay continue until arrival; other mobs' records are unchanged. Normal detection
-applies and subsequent damage, including remaining DOT ticks, builds fresh aggro/order.
-Recorded in `domain.md#ai-behavior` / §5, documentation only.
+**Arrival reset (`b8df023`, 2026-09-19):** completing return home alive clears that mob's
+remaining aggro and engagement-order positions toward every player alongside healing.
+Gains/decay continue until arrival; other mobs' records are unchanged. Normal detection applies
+and subsequent damage, including remaining DOT ticks, builds fresh aggro/order.
 
-**Current authorization (2026-09-19):** record arrival aggro/order reset, **commit, then the next
-walkthrough item**. No push or runtime work is authorized.
+**Current direction (2026-09-19):** the owner approved nearest-detected zero-threat fallback:
+without a positive-threat priority or valid current target, select the nearest normally detected
+player without granting aggro/order. Retaining a tied current target still takes precedence;
+merely moving closer does not steal attention. Recorded in `domain.md#ai-behavior` /
+`c-current-target`, documentation only.
 
-**Next walkthrough question:** **Aggro / group aggro — fallback selection among detected zero-aggro players**
-(not yet approved). Other resets, taunts (including during return), full-stealth interaction and
-group behavior remain open. Retaining a valid current target tied for highest threat remains settled.
-Start with this handoff, `tasks/lessons.md`, `docs/ROADMAP/todo_decide.md §E` and
-`ontology/domain.md#ai-behavior`, and inspect actual Git state. Present the zero-aggro fallback
-question using **"Approval versus Refusing"**; do not choose a rule or implement gameplay without approval.
+**Publication authorization and stop point (2026-09-19):** the owner requested **handoff,
+commit, push**, including the five prior local documentation commits listed above, then will
+resume with the next agent. Publish on `fix/ontology-reconciliation` and stop. No runtime work
+or next proposal is authorized now.
+
+**Publication checks:** all 15 game tests, ontology validation and headless boot passed (17 checks).
+The publication changes only four Markdown files, not runtime/live data; these tests do not prove
+implementation of the new policies. Commands and session-local evidence: `todo_decide.md §E`.
+
+**Next walkthrough question:** **Aggro / group aggro — exact-distance ties among nearest detected
+zero-aggro players** (not yet presented or approved). Other resets, taunts (including during
+return), full-stealth interaction and group behavior remain open. The next agent must **wait
+for the owner to resume the walkthrough**, then follow the protocol below and read
+`ontology/domain.md#ai-behavior`. Present only the exact-distance tie question, using
+**"Approval versus Refusing"**, then wait.
+Questions are clarification, not corrections or rejection. Do not choose the tie-breaker or
+start gameplay/validator/equipment implementation without separate authorization.
 
 When prompted **"resume walking through items"**, read `tasks/lessons.md` and
 `docs/ROADMAP/todo_decide.md §E` first, then the relevant `ontology/` sources and actual Git
