@@ -184,19 +184,19 @@ engagement order; normal hostile detection and targeting priorities are preserve
 **Zero-threat order clearing (owner correction, 2026-09-19):** retaining the old tie-breaker
 position was rejected. When a mob's threat toward a player reaches zero, discard that player's
 old position and determine a fresh tie-breaker if needed afterward, without restoring old priority.
-Next question: **fresh engagement-order assignment after zero threat** (not yet presented or
-approved). Its exact trigger, resets on escape, enemy healing / whole-fight resets, other resets,
-taunts, full-stealth interaction and group behavior remain open.
-**Publication authorization and stop point (2026-09-19):** the owner is leaving and requested
-`commit+push` of the current documentation on `fix/ontology-reconciliation`, including the prior
-local death-rule commits (`5c146c9`, `38bf073`), then handoff. Publication only; no runtime work,
-further decisions or next proposal now. The next agent must start at `docs/HANDOFF.md` and wait
-until the owner asks to continue (for example, **"Walk me to next item"**), then walk through
-fresh engagement-order assignment after zero threat. Do not choose the trigger without approval.
-Follow `tasks/lessons.md`: present one gamer-facing recommendation with both outcomes, ask
-one approval question, then wait. Do not jump to the gameplay handoff's aggro slice or the
-deferred equipment/validator implementation. Preserve D1–D26 and all walkthrough approvals;
-all remaining open questions stay open.
+**Fresh engagement order (owner approved 2026-09-19):** after zero threat, assign a new position
+when that player's aggro toward that mob next rises above zero, behind still-valid positions.
+Applied in `domain.md §3.2/§4/§5` for documentation only; prior targeting priorities remain intact.
+Next question: **aggro / engagement-order resets on escape** (not yet approved). Enemy healing /
+whole-fight resets, other resets, fallback selection among entirely zero-aggro players, taunts,
+full-stealth interaction and group behavior remain open.
+**Current authorization (2026-09-19):** the owner resumed, approved the fresh-order rule and
+requested **commit, then the next walkthrough item**. This supersedes the prior publication
+stop point; that earlier `commit+push` was completed in `55e256a`. The current request authorizes
+no push or runtime work. Follow `tasks/lessons.md`: present one gamer-facing recommendation
+with both outcomes, ask one approval question, then wait. Do not jump to the gameplay handoff's
+aggro slice or deferred equipment/validator implementation. Preserve D1–D26, all walkthrough
+approvals and remaining open questions.
 
 ### Approved in the item-by-item walkthrough
 
@@ -392,8 +392,17 @@ all remaining open questions stay open.
   scores/order, normal detection and existing targeting priorities remain unchanged. This removes
   expired historical priority without granting immunity or forcing a target switch. Deferral would
   leave the rule unresolved, not approve retaining old priority. The fresh-order assignment trigger
-  and other reset questions remain open. Runtime implementation remains unauthorized; the
-  subsequent publication authorization is recorded in the checkpoint above.
+  was left open here and approved separately below; other resets remain open. Runtime
+  implementation remains unauthorized.
+
+- [x] **Fresh engagement-order assignment (owner approved 2026-09-19, ontology only).** After
+  zero threat, assign a new position when that player's aggro toward that mob next becomes
+  positive, behind players whose positions remain valid. Damage must generate positive aggro;
+  proximity, detection and misses do not qualify. Higher threat and current-target tie retention
+  take precedence. Players rebuild tie priority rather than recover expired priority. Deferral
+  would leave the trigger unresolved, not restore the old position. Fallback selection among
+  entirely zero-aggro players, taunts and full-stealth interaction remain open. The owner requested a
+  commit, then the next walkthrough item; no runtime work or push is authorized.
 
 - [x] **Aggro relationship model (owner requested 2026-09-18, ontology only).** Formalize
   `threat` as a directed mob/player entity relation carrying a numeric `aggro-points` amount;
@@ -404,11 +413,12 @@ all remaining open questions stay open.
 
 ### Open — decide before the named slice
 
-- [ ] **Aggro / group aggro:** damage conversion, targeting ties, continuous decay at
-  1 aggro point/s, zero-threat pursuit / order clearing and player-death aggro / order resets
-  are approved above; define fresh-order assignment after zero threat, other resets (including
-  engagement order after escape), enemy healing / whole-fight resets, taunt priority/duration,
-  full-stealth interaction and group membership before the next aggro slice.
+- [ ] **Aggro / group aggro:** damage conversion, targeting priorities, continuous
+  decay at 1 aggro point/s, zero-threat pursuit / order clearing, fresh order on regaining positive
+  threat and player-death aggro / order resets are approved above; define other resets (including
+  engagement order after escape), enemy healing / whole-fight resets, fallback selection among entirely
+  zero-aggro players, taunt priority/duration, full-stealth interaction and group membership
+  before the next aggro slice.
   Sources: `domain.md#ai-behavior`, `generators.json#design.status-effects` (current taunt approximation).
 - [ ] **Creature family membership:** one primary scaling family plus descriptive groups, or
   multiple families with a defined scaling rule? Skeleton Dog appears in dogs and skeletons
@@ -588,6 +598,9 @@ is still open. Do not mistake a listed proposed correction for an approved new g
 - [x] **Zero-threat order clearing — ontology (2026-09-19):** recorded the owner's correction
   in `domain.md#ai-behavior`, aligned §4/§5/§7, recorded the lesson and advanced the handoff
   to fresh-order assignment after zero threat. Runtime, live data and other open decisions unchanged.
+- [x] **Fresh engagement order — ontology (2026-09-19):** recorded assignment on regaining
+  positive threat in `domain.md#ai-behavior`, aligned §4/§5/§7 and advanced the handoff to
+  aggro / engagement-order resets on escape. Runtime, live data and other open decisions unchanged.
 
 **Items 1–2 verification (2026-09-15):** `timeout 90 nix develop -c godot --headless -s <script>`
 passed for `ontology/validate.gd`, `game/items/test_items.gd` and
@@ -846,6 +859,13 @@ including the two local death-rule commits, differs from the fetched remote only
 files; there was no remote divergence. `/simplify` reused the existing walkthrough protocol;
 ponytail review found no further cuts. The next agent must wait for a resume prompt and present
 fresh-order assignment without choosing a trigger. No gameplay or runtime enforcement is claimed.
+
+**Fresh-order verification (2026-09-19):** headless ontology validation
+(`timeout 90 nix develop -c godot --headless -s ontology/validate.gd`), `git diff --check` and
+three-file Markdown scope checks passed. Documentation checks cover the positive-threat trigger,
+priority preservation, unchanged gain/decay/pursuit rules, unique relation/constraint IDs and
+matching checkpoints. `/simplify` shortened the relation cross-reference; ponytail review found
+no further cuts. Runtime and live data are unchanged; the validator does not enforce this Markdown rule.
 
 **Audit verification baseline (not proof of consistency):** `ontology/validate.gd`,
 `game/items/test_items.gd`, `game/combat/test_defence.gd` and
