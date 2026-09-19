@@ -467,7 +467,13 @@ Hybrid aggro rules (owner approved 2026-09-18/19, documentation only; relation d
 - **Other-target ties:** when the highest threat is positive and the current target is not
   among the highest-threat attackers, choose the tied leader who engaged that enemy first,
   not the nearest or latest hitter, nor randomly. Higher threat and current-target retention
-  take precedence over engagement order; zero-threat fallback remains open below.
+  take precedence over engagement order; zero-threat fallback is defined below.
+- **Zero-threat fallback (owner approved 2026-09-19):** in ordinary targeting, when no eligible
+  positive-threat player takes priority and there is no valid current target, choose the nearest
+  player among those the mob normally detects. This does not generate aggro or assign an
+  engagement-order position. Retaining a valid current target tied for highest threat still
+  takes precedence: a closer zero-threat player does not displace it. Exact-distance ties among
+  equally nearest detected players, taunts and special stealth interactions remain undecided.
 - **Continuous decay (rate approved 2026-09-18):** each mob tracks each player's threat
   separately and subtracts **1 aggro point per elapsed second**, both while fighting and while
   not fighting. Decay is continuous (0.5 seconds removes 0.5 points), not whole-second ticks.
@@ -490,8 +496,8 @@ Hybrid aggro rules (owner approved 2026-09-18/19, documentation only; relation d
   engagement-order position when that player's aggro toward that mob next rises above zero,
   after players whose existing positions remain valid. Under the approved damage rule, this
   requires damage that generates positive aggro, not proximity, detection or a missed attack.
-  Higher threat and current-target tie retention still take precedence. Fallback selection among
-  entirely zero-aggro players remains open; this does not settle taunts or full-stealth rules.
+  Higher threat and current-target tie retention still take precedence. Zero-threat fallback
+  does not assign an engagement-order position; taunts and full-stealth rules remain open.
 - **Player death (approved 2026-09-19):** death immediately clears every mob's aggro points
   toward that player, without changing surviving teammates' scores or their normal decay.
   After respawn, the player rebuilds aggro from zero; normal hostile detection still applies.
@@ -1111,7 +1117,7 @@ content selection or live data changes are authorized by this contract.
 | c-mp-range | mp ∈ [0, 100]; mage regenerates passively, others gain by hits/blocks/stealth/dodges; numbers `design.resources.mp` (D21) | runtime |
 | c-stun-immunity | cannot re-stun while stars shown | runtime |
 | c-threat-pair | at most one `threat` relation per ordered mob/player entity pair; each present relation has exactly one non-negative numeric `aggro-points` amount in aggro points, independent of other pairs; changing `current-target` does not clear it; decay/gains, the zero floor, player-death and arrival clearing, and escape retention follow §3.2; other reset conditions remain open | runtime |
-| c-current-target | at most one player target per mob; ordinary threat-based selection compares that mob's eligible players by highest `aggro-points`, retaining a tied current target, otherwise breaking positive-threat ties by earliest engagement; player-death, zero-threat and arrival order resets, escape retention and fresh assignment on regaining positive threat follow §3.2; at zero, pursuit requires normal hostile detection (§3.2); fallback selection among entirely zero-aggro players and taunt/stealth interactions remain open | runtime |
+| c-current-target | at most one player target per mob; ordinary targeting compares that mob's eligible players by highest `aggro-points`, retains a tied current target, otherwise breaks positive-threat ties by earliest engagement; without a positive-threat priority or valid current target, choose the nearest normally detected zero-threat player without granting aggro/order (§3.2); player-death, zero-threat and arrival order resets, escape retention and fresh assignment follow §3.2; at zero, pursuit requires normal hostile detection; exact-distance fallback ties and taunt/stealth interactions remain open | runtime |
 | c-return-home | pursuit beyond the home leash starts return regardless of threat; within it, target loss checks positive-threat players then normal hostile detection (§3.2); attacks do not restart pursuit during return; ×2 normal return speed and 90% damage reduction (including DOT) until reaching home alive, then full HP and clear this mob's aggro/order toward every player once, ending both bonuses; no revival, cleansing or CC immunity; gains/decay continue until arrival and other mobs' records are unchanged; taunt interactions remain open | runtime |
 | c-combo-reset | any attack with a hitbox that misses resets combo to 0, subject to the hybrid whole-channel and combo-neutral zero-damage-taunt rules in §3.3 combo-system; cap per weapon-type | runtime |
 | c-dodge-cost | dodge costs 25 stamina; requires movement; standing still M3 = class skill (S); hybrid numbers `design.defence.dodge` (D23) | runtime |
@@ -1192,7 +1198,7 @@ or authorize implementation. Resolve each question before its affected slice.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Aggro / group aggro | other resets, fallback selection among entirely zero-aggro players, taunt priority/duration and return interaction, full-stealth interaction, group membership; damage, targeting priorities, continuous decay at 1 aggro point/s, zero-threat pursuit / order clearing, fresh order on regaining positive threat, player-death aggro / order resets, escape retention, return-home trigger, protected return with full-HP arrival recovery and per-mob arrival aggro/order reset approved in §3.2, runtime deferred |
+| Aggro / group aggro | exact-distance ties in zero-aggro fallback, other resets, taunt priority/duration and return interaction, full-stealth interaction, group membership; damage, targeting priorities including nearest-detected zero-threat fallback, continuous decay at 1 aggro point/s, zero-threat pursuit / order clearing, fresh order on regaining positive threat, player-death aggro / order resets, escape retention, return-home trigger, protected return with full-HP arrival recovery and per-mob arrival aggro/order reset approved in §3.2, runtime deferred |
 | Creature families | one primary scaling family plus descriptive groups, or multiple families with a scaling rule |
 | Settlements / inn | whether multiple settlements and paid timed sleep are hybrid targets; keep D22's current one village and free heal/respawn service |
 | Traversal | skill versus global key-item prerequisites for riding/gliding/sailing; climbing spikes versus skill points |
