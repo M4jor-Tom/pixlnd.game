@@ -131,7 +131,7 @@ Never propose or implement regional gear power loss in pixlnd, even for Cube Wor
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
 **Current direction (2026-09-28):** traversal items **1–3 approved**, item **4 corrected to
-75% less climbing stamina consumption**, not elimination. Item **1 recorded**; items **2–5**
+75% less climbing stamina consumption**, not elimination. Items **1–2 recorded**; items **3–5**
 await recording. The owner later approved item **5**'s remaining-cost stacking recommendation.
 Complete traversal recording/review before books/formulas. Five documentation commits are authorized; no
 runtime/live JSON/test work, model/loader/validator changes, push, merge or history rewriting.
@@ -602,11 +602,15 @@ Documentation only; item 5's composition rule is a separate approval, not inferr
 
 | item | recording / commit |
 |---|---|
-| 1 — riding training + Reins | recorded in this item commit; hash follows in next record |
-| 2 — gliding training + equipped bought glider | approved, pending recording |
+| 1 — riding training + Reins | `b4da965` |
+| 2 — gliding training + equipped bought glider | recorded in this item commit; hash follows in next record |
 | 3 — sailing training + equipped bought boat | approved, pending recording |
 | 4 — Spikes reduce climbing consumption by 75% | corrected principle, pending recording |
 | 5 — remaining-cost stacking | approved, pending recording |
+
+Item 1 passed scope inspection, `/simplify`, ponytail-review and `git diff --check` (exit 0).
+Its first bounded validator command timed out during Nix downloads (exit 124, before Godot);
+a supervisor-authorized exact retry passed (exit 0, `ontology valid`). Logs retain both attempts.
 
 Independent review and parent verification are pending. Per-item evidence is saved under
 `/tmp/pixlnd-traversal-20260928/`; loaded-data validation does not prove these Markdown rules

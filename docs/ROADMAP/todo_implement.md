@@ -53,6 +53,9 @@ degradation) are not backlog features.
 - [ ] Riding item 1 (`domain.md#pet`, `c-riding`): enforce 5 Pet Master + ≥1 Riding point,
   global Reins and a rideable tamed pet; retain further-point speed benefits. Live-data and
   runtime changes are deferred; no new species permission, Reins route or slot is approved.
+- [ ] Gliding item 2 (`domain.md#skill-tree`, `c-gliding`): 5 Climbing + ≥1 Hang Gliding point
+  and a vendor-bought Hang Glider equipped in `special`; further points improve speed.
+  Purchase alone does not unlock flight. Vendor/data/slot/runtime enforcement remains deferred.
 
 ## Creatures (§3.2 creature + ai-behavior, D14 + D26)
 - [x] Basic melee attack both ways, death, neutral retaliation (combat slice); ranged / mage roles shooting back

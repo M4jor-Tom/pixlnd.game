@@ -36,8 +36,8 @@ and runtime enforcement remain deferred.
 **Settlements/inn items 1–4 recorded (2026-09-27):** one settlement per land is final;
 free recovery is separate from paid sleep, with ordinary midnight resets only and unanimous
 connected-player agreement / success-only initiator payment (`domain.md#game-clock`).
-**Traversal (2026-09-28):** item 1 recorded (training + global Reins + rideable tamed pet);
-items 2–3 and 5 approved and item 4 corrected to 75% less climbing stamina consumption, pending
+**Traversal (2026-09-28):** items 1–2 recorded (riding gates; training + equipped bought glider);
+items 3 and 5 approved and item 4 corrected to 75% less climbing stamina consumption, pending
 recording. Complete traversal recording/review before books/formulas.
 Live-data migration and enforcement remain deferred; cleared dungeon/quest enemy reset eligibility
 stays in the later world/reset topic.
