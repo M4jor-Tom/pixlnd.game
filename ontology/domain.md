@@ -457,10 +457,19 @@ Hybrid aggro rules (owner approved 2026-09-18/19 and 2026-09-27, documentation o
 §4, constraints `c-threat-pair` / `c-current-target` in §5):
 - **Damage contribution (owner correction, 2026-09-18):** add **1 aggro point per 1% of the
   mob's maximum HP actually removed** by the attacker: `aggro gained = 100 × HP removed / mob max HP`.
-  Use actual HP loss after reduction/absorption, not attempted damage; zero HP loss adds none.
+  Except at full stealth (below), use actual HP loss after reduction/absorption, not attempted
+  damage; zero HP loss adds none.
   Preserve fractional points (0.5% HP loss adds 0.5 points). Equal percentages generate equal
   threat at every progression level, so fixed-rate decay does not last longer just because
   HP/damage numbers are larger. This supersedes the raw-HP conversion, not the targeting rules.
+- **Full stealth (owner approved 2026-09-27):** full stealth prevents new damage-generated
+  threat; it neither erases existing threat nor cancels an active taunt. Check the attacker's
+  stealth when damage lands, before that hit consumes the stealth bar; check each damage-over-time
+  tick individually. Camouflage can sustain threat-free damage while it keeps stealth full.
+  Partial stealth retains its existing detection-range reduction, with no additional threat
+  multiplier. Existing positive threat can still sustain pursuit; ordinary zero-threat targeting
+  still requires detection. Stealth is not automatic rescue for an existing target, but can allow
+  attacks without pulling an enemy that cannot detect the attacker.
 - **Current-target ties:** during ordinary threat-based targeting, retain the current target
   when tied for highest threat. Another attacker must exceed it to displace it through threat
   alone; equal scores do not cause arbitrary switching.
@@ -507,7 +516,7 @@ Hybrid aggro rules (owner approved 2026-09-18/19 and 2026-09-27, documentation o
   memory extending it. Without an active taunt, if the mob no longer detects that player, it stops
   pursuing them. Normal
   hostile detection can still start or maintain aggression at zero; reaching zero is not immunity.
-  Other players' remaining threat is unchanged; full-stealth interaction is in the approved batch.
+  Other players' remaining threat is unchanged; full stealth does not erase it.
 - **Zero-threat tie-breaker memory (owner correction, 2026-09-19):** when a mob's aggro toward
   a player reaches zero, discard that player's remembered engagement-order position for that
   mob. Do not retain or restore pre-zero tie-breaking priority. Other players' scores and order
@@ -556,8 +565,8 @@ Hybrid aggro rules (owner approved 2026-09-18/19 and 2026-09-27, documentation o
   Damage after arrival builds fresh aggro and order normally, including subsequent poison/burning
   ticks, because arrival does not cleanse statuses.
 
-Other reset conditions, taunt rules, full-stealth interaction and group behavior remain open
-in §7. This does not authorize changing runtime, D16 simulation behavior or save/persistence policy.
+Approved batch application and unresolved subcases are tracked in §7 / `todo_decide.md §E`.
+These documentation decisions do not authorize runtime or live-data changes.
 
 Hybrid (D26): every creature has a `combat-role` (melee, ranged, mage, any-class, none) parsed from `creatures.json`
 `role` text (humanoids may be `any-class`: one of melee/ranged/mage rolled per spawned group, weighted); melee is
@@ -679,6 +688,8 @@ Separate bar: up to +20 % attack power, +50 % crit, faster MP gain, near-zero ag
 decays when not generated; sources: sneak (faster still / in dark, slower in daylight / near
 lamps), assassin specials, camouflage (instant full), sniper aim `A` / charging `S`. `A S`
 Hybrid (D23): `design.defence.stealth` + `design.abilities.<id>.stealth-per-s|stealth-full`; no darkness / lamp rule until a game clock exists.
+Hybrid threat behavior (approved 2026-09-27): full stealth means zero new damage-generated
+threat, not a threat wipe or taunt cancellation; landing-time checks and DOT follow §3.2 `ai-behavior`.
 
 ### status-effect
 → `instances/status-effects.json`: poison, burning, slow/frozen (blue tint), stun (stars),
@@ -1140,7 +1151,7 @@ content selection or live data changes are authorized by this contract.
 | c-slot-accepts | an item equips only in a usable equipment-slot whose `accepts` lists its item-type and whose subtype restrictions it satisfies (§3.4 equipment-slot); weapon-type `offhand` hands → off-hand only; c-weapon-class and c-hands still apply | runtime |
 | c-mp-range | mp ∈ [0, 100]; mage regenerates passively, others gain by hits/blocks/stealth/dodges; numbers `design.resources.mp` (D21) | runtime |
 | c-stun-immunity | cannot re-stun while stars shown | runtime |
-| c-threat-pair | at most one `threat` relation per ordered mob/player entity pair; each present relation has exactly one non-negative numeric `aggro-points` amount in aggro points, independent of other pairs; changing `current-target` does not clear it; decay/gains, the zero floor, player-death and arrival clearing, and escape retention follow §3.2; other reset conditions remain open | runtime |
+| c-threat-pair | at most one `threat` relation per ordered mob/player entity pair; each present relation has exactly one non-negative numeric `aggro-points` amount in aggro points, independent of other pairs; changing `current-target` does not clear it; decay/gains (including the full-stealth damage exception), the zero floor, player-death and arrival clearing, and escape retention follow §3.2; other reset conditions remain open | runtime |
 | c-current-target | at most one player target per mob; ordinary targeting compares that mob's eligible players by highest `aggro-points`, retains a tied current target, otherwise breaks positive-threat ties by earliest engagement; without a positive-threat priority or valid current target, choose the nearest normally detected zero-threat player without granting aggro/order (§3.2); player-death, zero-threat and arrival order resets, escape retention and fresh assignment follow §3.2; at zero, ordinary pursuit requires normal hostile detection; equally nearest fallback ties are chosen randomly once with equal chances, then normal retention applies; Heroic Shout temporarily overrides ordinary targeting without threat/order gain; eligibility, duration, replacement and termination follow §3.2, open subcases §7 | runtime |
 | c-return-home | pursuit beyond the home leash starts return regardless of threat; within it, target loss checks positive-threat players then normal hostile detection (§3.2); attacks do not restart pursuit during return; ×2 normal return speed and 90% damage reduction (including DOT) until reaching home alive, then full HP and clear this mob's aggro/order toward every player once, ending both bonuses; no revival, cleansing or CC immunity; gains/decay continue until arrival and other mobs' records are unchanged; starting return cancels taunt, and new taunts neither interrupt nor queue for afterward | runtime |
 | c-combo-reset | any attack with a hitbox that misses resets combo to 0, subject to the hybrid whole-channel and combo-neutral zero-damage-taunt rules in §3.3 combo-system; cap per weapon-type | runtime |
