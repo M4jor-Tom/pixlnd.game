@@ -133,8 +133,11 @@ fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09
 **Current direction (2026-09-28):** traversal **items 1–5 recorded**, including item **4**'s
 corrected **75%** reduction and item **5**'s separately approved **remaining-cost ×0.25** rule.
 No presented traversal question remains; independent review and parent verification passed
-(evidence below). Books/formulas is next. No
-runtime/live JSON/test work, model/loader/validator changes, push, merge or history rewriting.
+(`93886e0`, evidence below). **Books/formulas items 1–3 were presented and remain unanswered.**
+The owner requested **“Handoff, commit, push”**: preserve the exact batch below, commit this
+handoff, push `fix/ontology-reconciliation` including the six local traversal/verification commits,
+verify publication and clean state, then stop. No book/formula decision, runtime/live JSON/test
+work, model/loader/validator changes, merge or history rewriting is authorized.
 Settlements/inn items 1–4 and family items 1–9 remain recorded. The 2026-09-27 handoff's
 publication/stop instruction is historical and its unanswered 1–4 status is superseded.
 **Aggro batch applied: 1–14/14**, independently reviewed; restart persistence remains a later topic.
@@ -562,10 +565,12 @@ D1–D26, all walkthrough approvals and remaining open questions.
 ### Open — decide before the named slice
 
 Traversal items 1–5 are recorded (item 4 corrected) and reviewed; evidence below.
-Books/formulas is next; remaining-cost stacking is not an open question.
+Books/formulas items 1–3 are presented and unanswered; remaining-cost stacking is settled.
 
-- [ ] **Books and formulas:** are hybrid book recipes permanent/global, and how do duplicate
-  unlocks interact with formulas? Before crafting/save-data; sources: `domain.md#book-of-crafting`,
+- [ ] **Books and formulas — items 1–3 unanswered:** permanent/global book recipes; shared
+  recipe knowledge and duplicates; immediate recording but power-locked usability. Exact proposals
+  below; items 2–3 interact where knowledge and usability differ. Before crafting/save-data;
+  sources: `domain.md#book-of-crafting`, `#formula`, `#power-gate`,
   `recipes.json#recipe-sources`, `rulesets.json#ruleset-hybrid.flags`.
 - [ ] **Artifact accumulation:** diminishing returns counted globally or per traversal stat;
   percentages additive or compounded? Before artifacts; sources: `generators.json#design.artifact`,
@@ -593,6 +598,76 @@ Books/formulas is next; remaining-cost stacking is not an open question.
   identity, Lion tameability (`null` currently means untameable), resistance meaning and the
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
+
+### Books/formulas — presented but unanswered at handoff (2026-09-28)
+
+**Status:** all three items were presented; none was approved or refused. The owner's
+**“Handoff, commit, push”** authorizes publication and a stop, not these policies. Resume this
+batch, not artifacts. Preserve items 2–3's knowledge/usability interaction for consistency checks;
+do not decide it through a loader or UI default. Exact presented batch follows (heading depth adjusted).
+
+Both remain part of the hybrid game. These proposals concern recipe knowledge, not changes to crafting materials or equipment strength.
+
+#### 1. Book recipes are permanent and global
+
+**Recommendation:** Recipes learned from books stay with that character across lands and sessions. Moving elsewhere never requires relearning them. Character portability between worlds remains a later question.
+
+##### Approval versus Refusing
+- **Approval:** Finding a book permanently expands your crafting choices everywhere.
+- **Refusing:** Book-recipe permanence and geographic scope remain unresolved.
+
+#### 2. Books and formulas share the same recipe collection
+
+**Recommendation:** Learning the same recipe twice grants nothing extra. A book teaches only its unknown recipes, without rerolling known ones or granting compensation. Attempting to learn an already-known formula leaves the scroll unconsumed.
+
+Example: a book containing four recipes, three already known, teaches one new recipe.
+
+##### Approval versus Refusing
+- **Approval:** Either source can teach a recipe, but overlap can make later books less rewarding.
+- **Refusing:** Duplicate handling remains unresolved; neither compensation nor separate source-specific unlocks is automatically approved.
+
+#### 3. Books do not bypass power progression
+
+**Settled:** Formula learning already requires sufficient character power.
+
+**Recommendation:** Books can record recipes immediately, but recipes above your power remain visibly locked until you reach their requirement. Formula learning keeps its existing requirement.
+
+Example: discovering a higher-power recipe gives you a future crafting goal, not immediate access to crafting it.
+
+##### Approval versus Refusing
+- **Approval:** Books remain useful early discoveries without skipping recipe progression.
+- **Refusing:** How book recipes interact with power requirements remains unresolved; immediate unrestricted crafting is not automatically approved.
+
+Please answer **`1: …; 2: …; 3: …`**. These are ontology-only proposals.
+
+**Source/resumption paths:** `ontology/domain.md#formula`, `#book-of-crafting`, `#power-gate`,
+`#player-character`, §5 `c-power-gate`; `ontology/instances/recipes.json#recipe-sources`,
+`key-items.json#books-of-crafting`, `rulesets.json#ruleset-hybrid.flags`,
+`research/research_items.md` crafting/recipe-source sections. Current `game/items/shop.gd`
+recognizes formula prices, but crafting/recipe-learning/save-data systems remain deferred in
+`todo_implement.md`. Historical A/S descriptions and active hybrid inclusion do not decide
+these unanswered merges; no gameplay, live JSON or validator work is approved.
+
+**Pre-publication checkpoint:** clean `fix/ontology-reconciliation` at `93886e0`; remote
+`d6bbaf7` confirmed with `git ls-remote`. Publish the five traversal item commits listed below,
+verification commit `93886e0` and this handoff. Verify final remote/local HEAD equality and clean
+worktree afterward; no force-push, merge or further walkthrough proposals.
+
+**Handoff verification:** exact proposal/consequence comparison (heading depth ignored),
+two-file scope and `git diff --check` passed. Fresh bounded ontology validation and headless
+boot exited 0 (`ontology valid`, normal main-scene startup). Commands:
+`timeout 150 nix develop -c godot --headless -s ontology/validate.gd`;
+`timeout 150 nix develop -c godot --headless --quit`. Initial parallel boot logged an ignored
+Nix SQLite-cache busy warning, not a Godot failure. Fresh independent read-only review found
+no issues; parent inspected the final diff/report/logs. `/simplify` reused the existing ledger
+and removed superseded status text; ponytail-review found no further cuts. Parent reran the
+final checks sequentially before committing. The reviewer inspected evidence, not rerun tests.
+Evidence: `/tmp/pixlnd-books-handoff-20260928/` (`presented-batch.md`, `proposal-check.log`,
+`handoff.diff`, `scope.log`, `validator.{log,exit}`, `boot.{log,exit}`, `independent-review.md`,
+`parent-review.md`, `final-checks.log`, `final-validator.log`, `final-boot.log`). These are fresh handoff
+checks, not reused traversal logs. They cover current loaded data/startup, not new policies'
+implementation; no gameplay suite, visuals or network checks were run. The handoff changes
+only HANDOFF and this ledger; the six preceding local commits change only Markdown.
 
 ### Traversal — approvals and recording (2026-09-28)
 
@@ -624,7 +699,8 @@ valid`). Evidence: `/tmp/pixlnd-traversal-20260928/` (`independent-review.md`, `
 `parent-validator.{log,exit}`, per-item logs). The reviewer read saved logs, not rerun tests.
 The verification-record diff also received `/simplify`, ponytail-review and fresh diff/validator
 checks. Loaded-data validation does not prove Markdown fidelity or gameplay implementation;
-runtime/live-data migration remains unauthorized (`todo_implement.md`). No push was performed.
+runtime/live-data migration remains unauthorized (`todo_implement.md`). No push was performed
+at that verification checkpoint (`93886e0`); the later handoff above now authorizes publication.
 
 #### 5. Remaining-cost stacking — approved and recorded
 
@@ -633,7 +709,7 @@ percentage points. Illustrative only: a skill-adjusted 8 stamina (from 10) becom
 0.5. Points retain their benefit with Spikes; Spikes do not turn a positive remaining cost into
 zero by themselves. Canonical rule: `domain.md#key-item` / `#skill-tree` / `c-climbing`.
 No skill reduction curve/floor or artifact-combination rule is inferred. All five traversal
-items are reconciled; books/formulas is next.
+items are reconciled; books/formulas items 1–3 remain unanswered above.
 
 #### Items 1–4 — recorded principles
 
