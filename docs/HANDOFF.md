@@ -2,22 +2,38 @@
 
 ## Ontology walkthrough entry point (2026-09-27)
 
-**Current authorization (2026-09-27):** the owner requested **“Handoff for the next agent,
-commit+push”**, then answered **“5: Approved; 6: Approved”**. Record each approved family item
-in its own ontology-documentation commit on `fix/ontology-reconciliation`, then hand off and stop.
-**Items 1–6 are recorded.** Parent owns the final handoff commit and
-publication after fresh review; no push has occurred in this pass. No runtime, live JSON, tests,
-merge or new proposals are authorized.
-Canonical rules: `ontology/domain.md#creature-family`; application/checks: `todo_decide.md §E`.
+**Authorized handoff (2026-09-27):** the owner requested **“Handoff for the next agent,
+commit+push”**, then answered **“5: Approved; 6: Approved”**. **Family items 1–6 are recorded**
+in separate ontology-only commits. This handoff is finalized after independent review and parent
+verification, for authorized commit + push on `fix/ontology-reconciliation`, then a stop.
+No merge, runtime, live JSON, test changes or new proposals are authorized.
+Canonical rules: `ontology/domain.md#creature-family`; six-item commit table and evidence:
+`docs/ROADMAP/todo_decide.md §E`.
 
-**Remaining family boundary:** ordinary-dog mapping for existing skeleton-only rosters is
-unpresented and unresolved, not chosen by approvals 5–6. Next agent inspects canonical candidates
-and asks only where choices remain; do not reopen items 1–6. Settlements/inn follows this boundary.
-The old relative-weight proposal is superseded, not approved; generation/data work remains
-separately unauthorized.
+**Pre-handoff Git checkpoint:** item 6 is `a730d74`, following item 5 `7d8b86c`; this handoff
+is a separate commit after those six decision commits. Publication starts from remote branch
+`fix/ontology-reconciliation` at `858f038` (confirmed with `git ls-remote`). Inspect actual HEAD,
+upstream and worktree on resumption rather than treating this pre-publication reference as current.
 
-**Aggro batch applied: 1–14/14.** Fourteen separate ontology-only commits `ba3d39e` through
-`7e17d5e`; prior workflow update `d59396d`. Fresh independent review found no recording issues;
+**Resume boundary — not yet presented:** existing skeleton-only dog rosters, notably deadlands,
+need ordinary-dog candidates for the non-skeletal outcomes. No replacement pool, dog-frequency
+change or extra unrestricted Skeleton Dog spawns are approved. Next agent inspects canonical
+ordinary-dog candidates and asks only where choices remain; do not reopen items 1–6.
+Settlements/inn follows this real mapping boundary. Migration/model/loader/validator support,
+family scaling and encounter enforcement remain separate unauthorized implementation debt.
+Prior primary-`skeletons` and one-tenth relative-weight proposals are superseded, not approved;
+there are **no unanswered presented family questions**.
+
+**Verification:** items 5–6 each passed diff checks and bounded ontology validation. Fresh
+independent review found no issues; parent inspected the six commits, scope and final handoff,
+and reran ontology validation and headless boot successfully. Simplify/ponytail cuts were applied;
+§E records evidence. A green validator checks current loaded data, not Markdown semantics or
+new runtime rules. No gameplay suite, visual or network tests were rerun. Session-local logs:
+`/tmp/pixlnd-family-handoff-20260927/`. Publication must be verified against the remote commit
+and clean worktree after pushing; do not resume the walkthrough within this handoff session.
+
+**Historical aggro batch applied: 1–14/14.** Fourteen separate ontology-only commits `ba3d39e` through
+`7e17d5e`; prior workflow update `d59396d`. At that checkpoint independent review found no recording issues;
 parent verified the scope, clean worktree and passing ontology validator. See §E verification.
 The validator does not prove Markdown semantics or runtime implementation. Handoff checks:
 `git diff --check`, bounded ontology validation and headless main-scene boot passed; the final

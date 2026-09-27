@@ -132,9 +132,9 @@ fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09
 
 **Current direction (2026-09-27):** the owner requested **“Handoff for the next agent, commit+push”**,
 then answered **“5: Approved; 6: Approved”**. Family items 1–6 are recorded in separate
-ontology-only commits; prepare the handoff and stop. Parent owns the final handoff commit
-and publication after fresh review; no push has occurred in this pass. No runtime/live JSON/test
-changes, merge or new proposals are authorized. Items 5–6 are answered, not pending questions.
+ontology-only commits. The final handoff is reviewed and verified for authorized commit + push
+on `fix/ontology-reconciliation`, then a stop. No runtime/live JSON/test changes, merge or new
+proposals are authorized. Items 5–6 are answered, not pending questions.
 Ordinary-dog mapping for skeleton-only rosters remains unpresented; settlements/inn follows that
 boundary. Do not reopen approved family decisions.
 **Aggro batch applied: 1–14/14**, independently reviewed; restart persistence remains a later topic.
@@ -616,20 +616,20 @@ recorded in item 4 below; the owner subsequently approved both follow-ups 5–6.
 | 3 | Recorded: unassigned creatures retain ordinary stats with ×1.0 family modifier; `domain.md §3.2/§5` | `b2db99b` |
 | 4 | Recorded with amendment: 1% encounter chance relative to dog spawns; `domain.md §3.2/§5` | `c4dd5fe` |
 | 5 | Recorded: independent per-individual-dog roll; mixed packs permitted; `domain.md §3.2/§5` | `7d8b86c` |
-| 6 | Recorded: wherever dogs already spawn, preserving settlement safety; `domain.md §3.2/§5` | `docs(ontology): record rare dog variant habitat scope` |
+| 6 | Recorded: wherever dogs already spawn, preserving settlement safety; `domain.md §3.2/§5` | `a730d74` |
 
-**Family item 1 verification:** `/simplify` removed superseded question/refusal prose;
+**Historical family item 1 verification:** `/simplify` removed superseded question/refusal prose;
 writer ponytail-review found no further cuts. `git diff --check` and
 `timeout 150 nix develop -c godot --headless -s ontology/validate.gd` passed (`ontology valid`).
 Logs: `/tmp/pixlnd-family-record-20260927/item-1-{validator,diff-check,scope,review}.log`.
 Validator coverage is current loaded data only, not Markdown semantics or runtime compliance.
 
-**Family item 2 verification:** exact 25 IDs/counts checked against the approved list and
+**Historical family item 2 verification:** exact 25 IDs/counts checked against the approved list and
 current top-level family members/missing fields. `/simplify` removed the duplicate roadmap
 table; writer ponytail-review found no further cuts. The same diff check and bounded validator
 passed (`ontology valid`); logs use `item-2-*` in the directory above. Follow-up 4 is unchanged.
 
-**Family item 3 verification:** `/simplify` removed the temporary policy summary and redundant
+**Historical family item 3 verification:** `/simplify` removed the temporary policy summary and redundant
 status prose; writer ponytail-review found no further cuts. The same diff check and bounded
 validator passed (`ontology valid`); logs use `item-3-*` above. Scope checks preserve item 2's
 table and follow-up 4; no runtime/live JSON/tests changed across items 1–3.
@@ -648,10 +648,10 @@ The observed missing fields and overlap remain live-data facts, not evidence of 
 amongst dog. Ensure 1% is relative to dogs spawn.” This is approval of dog-relative encounter
 rarity with an amended probability/denominator, not blanket approval of the previous proposal.
 Canonical rule: `domain.md#creature-family` / `c-skeleton-dog-encounter`. No combat/loot bonus.
-The earlier one-tenth ordinary-species weight is superseded, never approved. Roll unit,
-habitat scope and replacement pools are not silently decided.
+The earlier one-tenth ordinary-species weight is superseded, never approved. Item 4 alone did
+not decide roll unit or habitat scope (now settled by 5–6); replacement pools remain unchosen.
 
-**Item 4 verification:** `/simplify` removed the superseded probability example; ponytail-review
+**Historical item 4 verification:** `/simplify` removed the superseded probability example; ponytail-review
 found no further cuts. `git diff --check` and the bounded ontology validator passed (`ontology
 valid`, exit 0; `/tmp/pixlnd-family-item4-validator.log`). Only six Markdown files changed;
 loaded data and runtime are unchanged. Validation does not prove the documented chance is implemented.
@@ -679,15 +679,40 @@ remain, without reopening 1–6. No pool, dog-frequency change or extra unrestri
 spawns are approved. Settlements/inn follows this boundary; migration/enforcement are deferred
 implementation, not unanswered design. No fresh proposal is authorized during this handoff.
 
-**Item 5 verification:** `/simplify` removed superseded question/refusal prose; writer
+**Fresh item 5 verification:** `/simplify` removed superseded question/refusal prose; writer
 ponytail-review found no further cuts. `git diff --check` and the bounded ontology validator
 passed (`ontology valid`, exit 0). Evidence: `/tmp/pixlnd-family-handoff-20260927/item-5-*`.
 Only permitted Markdown records changed; loaded-data checks do not prove runtime compliance.
 
-**Item 6 verification:** `/simplify` removed repeated primary/category prose and a duplicate
+**Fresh item 6 verification:** `/simplify` removed repeated primary/category prose and a duplicate
 constraint reference; writer ponytail-review found no further cuts. The same diff check and
 bounded ontology validator passed (`ontology valid`, exit 0). Evidence: `item-6-*` in the same
 directory. Only permitted Markdown records changed; no live roster or runtime migration.
+
+**Pre-publication family handoff checkpoint (2026-09-27):** branch `fix/ontology-reconciliation`;
+item 6 commit `a730d74` is followed by a separate handoff commit. `git ls-remote` confirmed the
+remote branch at `858f038` before publication. The handoff changes only `docs/HANDOFF.md` and
+this §E record. Push this authorized branch without merging or rewriting history, verify remote
+HEAD equals local HEAD and the worktree is clean, then stop. Remote:
+`git@github.com:M4jor-Tom/pixlnd.game.git`. Inspect actual Git state on resumption.
+
+**Fresh final checks:** `git diff --check`, `git diff 858f038 --check`,
+`timeout 150 nix develop -c godot --headless -s ontology/validate.gd` (`ontology valid`) and
+`timeout 150 nix develop -c godot --headless --quit` (main scene booted), all exit 0.
+Logs: `/tmp/pixlnd-family-handoff-20260927/final-{diff-check,aggregate-diff-check,validator,boot}.log`.
+Individual item diffs/reviews are in the same directory; reviewed publication draft:
+`/tmp/pixlnd-family-handoff-review.diff` (`git diff 858f038`). Parent's final two-file handoff diff:
+`parent-final-handoff.diff` in the log directory. The batch includes
+historical `tasks/lessons.md` edits from items 1/4; this pass changes only the five permitted records.
+Earlier family/aggro/gameplay evidence is historical. No gameplay suite, visuals or networking
+checks rerun; validator/boot success does not prove Markdown semantics or deferred runtime rules.
+Independent publication review found no issues; parent inspected the six commits and actual diff,
+confirmed Markdown-only scope, and reran the bounded validator and boot successfully (logs:
+`parent-validator.log`, `parent-boot.log` in the same directory). Review artifact (session-local):
+`~/.pi-game-dev/sessions/--home-theta-repos-pixlnd--/subagent-artifacts/outputs/b209f9a8-fb63-4990-a897-9edfa4d3bab8/family-handoff-review.md`.
+Final `/simplify` removed temporary writer/staging instructions; ponytail-review found no further
+cuts. The unresolved roster mapping above is real design work, not a claim of full family
+completion or permission to implement the approved rules.
 
 ### Reconciliation work — application checklist
 
