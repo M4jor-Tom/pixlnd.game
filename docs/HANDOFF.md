@@ -3,15 +3,17 @@
 ## Ontology walkthrough entry point (2026-09-27)
 
 **Current walkthrough (2026-09-27):** owner answer: **“8: Skeletal dogs must behave like normal
-dogs, "skeletal" is just a different dog race; 9: Approved”**. Item 8 records ordinary dog behavior
-in the same encounter/state, not the proposed skeleton-only passivity/taming-provocation exemption.
+dogs, "skeletal" is just a different dog race; 9: Approved”**. Family items 1–9 are recorded.
+Item 8 (`2f5ad06`) replaces the skeleton-only passivity proposal with normal dog behavior;
+item 9 shares Bubble Gum with Collie, retaining its source identity, availability and prices.
 Item 7's Collie fallback and tameability stand (`a4c6206`); canonical rules:
-`ontology/domain.md#creature-family`. No runtime/live JSON/test changes or push are authorized.
+`ontology/domain.md#creature-family` / `#pet-food`. No runtime/live JSON/test changes or push
+are authorized. Model/loader/validator shared-food support also remains deferred.
 
-**Resume boundary:** item 9's Bubble Gum pairing is approved, awaiting its separate documentation
-application, not another answer. Preserve ordinary dog behavior, existing family/category and
-encounter rules; no new riding permission. Settlements/inn follows once item 9 is recorded.
-Item-to-commit and fresh verification evidence: `todo_decide.md §E`, family items 7–9.
+**Next topic: settlements/inn.** No unanswered family proposal remains. Preserve normal dog
+behavior, family/category and encounter rules; no new riding permission. Item-to-commit and
+fresh verification evidence: `todo_decide.md §E`, family items 7–9. The settlements/inn questions
+remain open in §E; do not treat D22's current free heal/respawn service as a paid-sleep decision.
 
 **Historical handoff for items 1–6 (2026-09-27):** the owner requested **“Handoff for the next agent,
 commit+push”**, then answered **“5: Approved; 6: Approved”**. **Family items 1–6 are recorded**
@@ -126,7 +128,7 @@ or next proposal is authorized now.
 The publication changes only four Markdown files, not runtime/live data; these tests do not prove
 implementation of the new policies. Commands and session-local evidence: `todo_decide.md §E`.
 
-**Current walkthrough topic:** **Record approved family item 9**, then settlements/inn.
+**Current walkthrough topic:** **Settlements/inn**, after recorded family items 1–9.
 Aggro items **1–14** are recorded; do not re-ask 13–14. Restart persistence remains a later topic.
 Do not start gameplay/validator/equipment implementation without separate authorization.
 

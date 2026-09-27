@@ -476,10 +476,9 @@ ordinary / 1% skeletal; do not add unrestricted Skeleton Dog spawns or new dog l
 Collie's existing traits, including its untameable dungeon-patrol exception, remain unchanged.
 
 **Owner amendment:** Skeleton Dog is **non-aggressive and tameable**, superseding its former
-hostile/untameable policy. Item 8 below clarifies normal dog behavior; item 9's approved food
-pairing awaits its separate documentation application. Existing general taming eligibility
-restrictions and settlement protection remain; no riding permission, numerical source ID,
-combat/loot bonus or other species-trait change is granted.
+hostile/untameable policy. Items 8–9 below clarify normal dog behavior and taming food.
+Existing general taming eligibility restrictions and settlement protection remain; no riding
+permission, numerical source ID, combat/loot bonus or other species-trait change is granted.
 
 **Hybrid family item 8 (owner clarified, 2026-09-27):** Skeleton Dog is a different dog breed,
 not a special behavior category. It follows **normal dog behavior in the same encounter and
@@ -490,8 +489,14 @@ usual taming-induced group hostility is not adopted. Once tamed, normal pet beha
 The stable species ID, primary `dogs` family, descriptive memberships and independent `undead`
 category remain; “dog race” does not introduce a playable `race` or new species-trait inheritance.
 
-Documentation only: live rosters/traits still lack these decisions. Migration, model/loader/
-validator support and runtime enforcement remain separately deferred and unauthorized.
+**Hybrid family item 9 (owner approved, 2026-09-27):** the same **Bubble Gum (`bubble-gum`)**
+tames both Collie and Skeleton Dog, under their ordinary eligibility rules. Keep Bubble Gum's
+existing availability and prices; add no food, recipe or family-wide bait inheritance.
+The shared-food/source-ID contract is in §3.4 `pet-food` / §5 `c-food-id`.
+
+Documentation only: live rosters/traits and Bubble Gum's single-species mapping still lack
+these decisions. Migration, model/loader/validator support and runtime enforcement remain
+separately deferred and unauthorized.
 
 ### pet
 A tamed creature owned by a player. `A S`
@@ -937,9 +942,17 @@ Unidentified gear drop (type 14) with tier colour and +N; identified for a fee a
 lowering is free. Removed in S.
 
 ### pet-food
-Item type 20; numeric subtype matches the known source entity ID of the creature named by
-its stable `tames` reference, including post-alpha IDs (`c-food-id`). One of each carried at
-a time. → `instances/pet-food.json` (58 obtainable + 6 cut `X`).
+Item type 20. `tames` identifies explicitly approved creature species by stable ID; each creature
+still has at most one `tame-food`. Normally a food names one species and its numeric subtype
+matches that species' known source entity ID, including post-alpha IDs (`c-food-id`).
+
+**Shared-food exception (family item 9, approved 2026-09-27):** Bubble Gum names both `collie`
+and `skeleton-dog`. It remains one food item, with subtype **19** anchored to Collie's source ID;
+this neither assigns 19 to Skeleton Dog nor invents its unrecorded source ID. All other food
+pairings and numeric identities remain unchanged; membership in `dogs` grants no bait pairing.
+One of each food carried at a time still applies, not one Bubble Gum per target species.
+Live `pet-food.tames`, model/loader and validator remain single-species; migration is deferred.
+→ `instances/pet-food.json` (58 obtainable + 6 cut `X`).
 
 ### key-item
 `S` land-bound "special" items (A: glider & boat were bought items in the special slot).
@@ -1141,7 +1154,7 @@ One row per fact type. Cardinality as `domain → range`.
 | yields | flora ∪ deposit ∪ creature | ingredient | 1→n | count range |
 | spawns-in | creature ∪ flora ∪ deposit | landscape ∪ terrain-feature ∪ dungeon-type ∪ poi-type | n→n | |
 | placed-in | dungeon-type ∪ poi-type ∪ settlement | landscape | n→n | |
-| tamed-by | creature | pet-food | 1→0..1 | stable ID pairing; food subtype matches the creature's known numeric source entity ID (alpha or post-alpha) |
+| tamed-by | creature | pet-food | 1→0..1 | stable ID pairing; one food may serve multiple explicitly approved species (Bubble Gum: Collie and Skeleton Dog); numeric identity follows c-food-id, not family inheritance |
 | member-of-family | creature | creature-family | 1→0..1 | optional primary balancing family (`creature.family`); sole source of family stat modifiers |
 | descriptive-member-of-family | creature | creature-family | 1→0..n | descriptive memberships only (`creature.descriptive-families`); never supply or stack stat modifiers |
 | belongs-to-faction | creature ∪ npc-role | faction | n→n | |
@@ -1261,8 +1274,8 @@ content selection or live data changes are authorized by this contract.
 | c-one-active-pet | at most one pet summoned; one of each pet-food carried | runtime |
 | c-creature-family | primary and descriptive references name defined creature families; at most one primary per creature, consistent with §3.2 approved assignments; without a primary, the family modifier is ×1.0 and other ordinary stat calculations remain; descriptive memberships never supply or stack family stat modifiers, nor imply species-trait inheritance | load+runtime (deferred) |
 | c-skeleton-dog-encounter | Skeleton Dog has an independent 1% chance per individual dog spawn, not per pack, all creatures or a relative species weight; mixed packs are permitted and no quota is guaranteed; applies wherever dogs already spawn, preserving settlement safety; existing skeleton-only dog encounters use Collie for ordinary outcomes, preserving dog frequency/pack sizes and other existing ordinary selections, not extra unrestricted skeletal spawns (§3.2) | generator (deferred) |
-| c-skeleton-dog-taming | Skeleton Dogs follow normal dog behavior for the same encounter/state, including retaliation, pack response and taming reactions, with no skeleton-only passivity exception (§3.2 item 8); the species is tameable under general eligibility restrictions and settlement protection; item 9's approved food pairing awaits separate documentation application | runtime+data (deferred) |
-| c-food-id | pet-food.tames references the creature by stable ID; when its numeric source ID is known, pet-food.subtype == creature.alpha-entity-id (legacy field includes post-alpha IDs; no alpha-range clamp) | load |
+| c-skeleton-dog-taming | Skeleton Dogs follow normal dog behavior for the same encounter/state, including retaliation, pack response and taming reactions, with no skeleton-only passivity exception (§3.2 item 8); Bubble Gum tames them under general eligibility restrictions and settlement protection (§3.2 item 9) | runtime+data (deferred) |
+| c-food-id | pet-food.tames names defined creatures by stable ID and agrees with each creature's tame-food; normally the food subtype matches its species' known source entity ID (alpha or post-alpha, no alpha-range clamp); the sole approved shared-food exception is Bubble Gum → Collie and Skeleton Dog, retaining subtype 19 from Collie without assigning it to Skeleton Dog; other pairings/IDs are unchanged (§3.4) | load (shared-food support deferred) |
 | c-weapon-class | equipping weapon-type/armor material requires matching class (red name otherwise) | runtime |
 | c-hands | 1H ×2 or 1H + shield or one 2H; bracelets need two for full damage | runtime |
 | c-cube-cap | upgrades ≤ 16 (1H) / 32 (2H, shield); wood cubes only on wood weapons, iron on metal | load+runtime |
@@ -1360,15 +1373,14 @@ This index mirrors the open list in `docs/ROADMAP/todo_decide.md §E`; it does n
 or authorize implementation. Resolve each question before its affected slice.
 Aggro items 1–14, including the two former open follow-ups, are approved and recorded in §3.2
 (2026-09-27; `todo_decide.md §E`); implementation remains deferred.
-Creature family items 1–8 are recorded: Skeleton Dog follows normal dog behavior, not a
-skeleton-only passivity exception. Item 9's Bubble Gum pairing is approved and awaits separate
-recording, not another owner decision. The independent 1% per-dog chance, existing habitat scope,
-Collie fallback and tameability stand. Implementation remains separately deferred.
+Creature family items 1–9 are recorded: Skeleton Dog follows normal dog behavior, not a
+skeleton-only passivity exception, and shares Bubble Gum with Collie. The independent 1% per-dog
+chance, existing habitat scope and Collie fallback stand. No unanswered family proposal remains;
+implementation is separately deferred.
 Threat across server restart stays in the persistence topic below.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Creature families — recording only | Item 9's shared Bubble Gum pairing is approved, awaiting separate documentation application; no unanswered family proposal (`todo_decide.md §E`) |
 | Settlements / inn | whether multiple settlements and paid timed sleep are hybrid targets; keep D22's current one village and free heal/respawn service |
 | Traversal | skill versus global key-item prerequisites for riding/gliding/sailing; climbing spikes versus skill points |
 | Books / formulas | permanence/global scope of hybrid book recipes and duplicate unlock interaction with formulas |

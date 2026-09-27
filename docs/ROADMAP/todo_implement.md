@@ -78,7 +78,7 @@ degradation) are not backlog features.
 - [ ] Alpha `+1..+4` creature multipliers; boss-ification (`gen-boss`); farm animals near settlements;
   night lanterns; midnight reset; possession (S). Humanoid identity beyond the rolled combat role is deferred above.
 - [ ] Creature-family implementation is deferred pending separate authorization (`domain.md#creature-family`,
-  family items 1–8 in §E; item 9 approved, recording next). Live JSON still gives Skeleton Dog primary `skeletons`, not approved `dogs`;
+  family items 1–9 in §E). Live JSON still gives Skeleton Dog primary `skeletons`, not approved `dogs`;
   the 25 missing assignments, descriptive memberships and constraint support await migration/model/loader/
   validator work. No runtime family scaling or family `hp-mult` data exists (`design.enemy-hp.family-mult`
   defaults to 1). No new numerical stat modifier is approved. Skeleton Dog's 1% dog-relative encounter
@@ -86,9 +86,10 @@ degradation) are not backlog features.
   preserving settlement safety. Item 7 selects Collie for ordinary outcomes in existing skeleton-only
   dog encounters, preserving dog frequency/pack sizes, and makes Skeleton Dog non-aggressive and
   tameable. Item 8 specifies normal dog behavior, including ordinary retaliation/pack/taming reactions,
-  not a Skeleton-Dog-only passivity exemption. Live rosters/traits remain unchanged; item 9's shared
-  Bubble Gum pairing is approved, awaiting separate recording. No runtime work, riding permission
-  or extra unrestricted skeletal spawns is authorized by these documentation decisions.
+  not a Skeleton-Dog-only passivity exemption. Item 9 shares Bubble Gum with Collie while retaining
+  subtype 19 from Collie, not assigning Skeleton Dog that ID. Live rosters/traits and single-species
+  `pet-food.tames` remain unchanged; shared-food model/loader/validator support awaits authorization.
+  No runtime work, riding permission or extra unrestricted skeletal spawns is authorized here.
 - [ ] Creatures never despawn except with their zone; no per-zone spawn cap or respawn timer.
   Zone-owned nodes currently disappear on unload; preserving logical threat/order across temporary
   unload/disconnect is approved but unimplemented (`domain.md#ai-behavior`, Aggro 11 in §E).

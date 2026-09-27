@@ -131,11 +131,10 @@ Never propose or implement regional gear power loss in pixlnd, even for Cube Wor
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
 **Current direction (2026-09-27):** the owner answered **“8: Skeletal dogs must behave like
-normal dogs, "skeletal" is just a different dog race; 9: Approved”**. Item 8 records normal dog
-behavior, not a skeleton-only passivity exception. Item 9's shared Bubble Gum pairing is approved
-and awaits its separate documentation application, not another answer. Preserve prior family
-approvals; settlements/inn follows after item 9 is recorded. No runtime/live JSON/test changes,
-merge or push are authorized. Earlier publication instructions below are historical.
+normal dogs, "skeletal" is just a different dog race; 9: Approved”**. Family items 1–9 are
+recorded: normal dog behavior, not a skeleton-only passivity exception, and Bubble Gum shared
+with Collie. No unanswered family proposal remains; **settlements/inn is next**. No runtime/live
+JSON/test changes, merge or push are authorized. Earlier publication instructions are historical.
 **Aggro batch applied: 1–14/14**, independently reviewed; restart persistence remains a later topic.
 Older publication instructions and hashes below are historical checkpoints.
 
@@ -560,9 +559,6 @@ D1–D26, all walkthrough approvals and remaining open questions.
 
 ### Open — decide before the named slice
 
-- [ ] **Creature family item 9 — approved, recording next:** shared Bubble Gum pairing needs
-  its separate canonical documentation application. Item 8's normal dog behavior is recorded;
-  no unanswered family proposal remains. Migration/enforcement stays separately unauthorized.
 - [ ] **Hybrid settlements / inn services:** are multiple settlements and inn cost 10 future
   targets, or stale flags? Is paid timed sleep distinct from D22's free heal/respawn service?
   Before changing settlement count or adding sleep; sources: `rulesets.json#ruleset-hybrid.flags`,
@@ -600,7 +596,7 @@ D1–D26, all walkthrough approvals and remaining open questions.
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
 
-### Creature family membership — approvals and remaining taming details (2026-09-27)
+### Creature family membership — items 1–9 recorded (2026-09-27)
 
 **Owner answer:** “1: Approved, but make the skeletal dog a (rare if rarity is defineable) dog as
 individual family, not a skeleton; 2: Approved; 3: Approved”. Approval covers documentation only;
@@ -727,11 +723,22 @@ different dog race; 9: Approved”.
   ordinary encounter/state rules govern aggression, retaliation, pack response and taming.
   The proposed skeleton-only complete passivity/taming-provocation exemption is superseded,
   not approved. Normal pet behavior and existing family/category distinctions remain.
-  Commit subject: `docs(ontology): align skeletal behavior with normal dogs`.
-- [ ] **9 — Shared Bubble Gum (approved, awaiting separate recording):** tame both Collies
-  and Skeleton Dogs, retaining existing food availability/prices. An explicit two-species food
-  exception, not dog-family inheritance; no new food/recipe or invented source ID. Model/loader/
-  validator and live-data migration remain separately unauthorized.
+  Commit: `2f5ad06`.
+- [x] **9 — Shared Bubble Gum:** recorded in `domain.md#creature-family` / `#pet-food`,
+  `tamed-by` and `c-food-id`. Bubble Gum tames Collie and Skeleton Dog, retaining existing
+  availability/prices and subtype 19 from Collie without assigning Skeleton Dog that source ID.
+  Other pairings remain; no family-wide inheritance or new food/recipe. Live data and shared-food
+  model/loader/validator support remain separately unauthorized.
+  Commit subject: `docs(ontology): share bubble gum with skeletal dogs`.
+
+**Item 9 verification:** checked shared-food cardinality, source identity and preserved pairings.
+`/simplify` removed settled questions and temporary recording status; ponytail-review found no
+further cuts. Diff/scope checks and the bounded ontology validator passed (exit 0, `ontology valid`);
+only five intended Markdown files changed. Evidence: `/tmp/pixlnd-family-items8-9-20260927/item-9-*`.
+Fresh independent review of items 8–9 found no issues; report copied to `independent-review.md`
+in that directory. Parent inspected both diffs and verification logs. The reviewer ran no tests;
+validation covers unchanged loaded data, not new Markdown semantics or runtime compliance.
+No gameplay suite, visuals or network checks were run.
 
 **Item 8 verification:** checked the exact correction against normal dog, pack and pet rules.
 `/simplify` removed the superseded special-passivity proposal; ponytail-review found no further
