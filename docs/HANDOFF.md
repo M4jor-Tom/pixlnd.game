@@ -2,7 +2,7 @@
 
 ## Ontology walkthrough entry point (2026-09-27)
 
-**Current owner direction:** resume **Aggro / group aggro** and present all its remaining
+**Current owner direction:** resume **Creature family membership** and present all its remaining
 questions together. Check answers/refusals against settled rules and each other; ask follow-up
 batches, including new items if needed, until consistent. Commit each reconciled ontology item
 separately. On an explicit handoff request, record the next topic or unfinished items, commit
@@ -10,7 +10,7 @@ and push, then stop. No runtime implementation is authorized. Protocol: `tasks/l
 This supersedes the older single-question and stop instructions below. The owner subsequently
 approved each **Aggro item 1–14** (2026-09-27), including the two follow-ups, documentation only,
 one commit per item.
-**Aggro batch applied: 1–13/14.** Application and verification: `todo_decide.md §E`.
+**Aggro batch applied: 1–14/14.** Application and verification: `todo_decide.md §E`.
 No runtime/live JSON/test changes or push are authorized. Older hashes below are historical.
 
 **Committed reconciliation:** the owner requested committing the staged repairs before continuing;
@@ -88,12 +88,12 @@ or next proposal is authorized now.
 The publication changes only four Markdown files, not runtime/live data; these tests do not prove
 implementation of the new policies. Commands and session-local evidence: `todo_decide.md §E`.
 
-**Current walkthrough checkpoint:** the owner approved follow-ups **13–14**, superseding their
-previous OPEN status. Independent per-enemy taunt arbitration (13) is recorded; finish recording
-no lasting neutral eligibility from taunt alone (14) in its own commit. Then resume **Creature
-family membership** if consistency review finds no new aggro question. Restart persistence stays
-in its later topic.
-Read `ontology/domain.md#ai-behavior` and `docs/ROADMAP/todo_decide.md §E`.
+**Current walkthrough topic:** **Creature family membership** — one primary scaling family
+plus descriptive groups, or multiple families with a scaling rule? Aggro items **1–14** are
+recorded, including independent per-enemy taunt arbitration (13) and no lasting neutral eligibility
+from taunt alone (14). Their former OPEN status is superseded; no unresolved aggro question was
+identified in this batch's consistency review. Restart persistence stays in its later topic.
+Read `docs/ROADMAP/todo_decide.md §E` and the creature/family definitions in `ontology/`.
 Do not start gameplay/validator/equipment implementation without separate authorization.
 
 When prompted **"resume walking through items"**, read `tasks/lessons.md` and
