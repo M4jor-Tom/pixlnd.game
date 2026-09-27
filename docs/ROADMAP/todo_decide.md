@@ -131,7 +131,7 @@ Never propose or implement regional gear power loss in pixlnd, even for Cube Wor
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
 **Current resume direction (2026-09-27):** the owner approved each **Aggro batch item 1–12**
-for documentation and one separate commit per item. **Aggro batch applied: 1–3/12.**
+for documentation and one separate commit per item. **Aggro batch applied: 1–4/12.**
 The numbered Aggro entries below track application, distinct from older reconciliation items 1–10.
 Remaining approved items await recording; **questions 13–14 remain OPEN** below, without defaults.
 Finish recording, then resume those two questions together; do not call the topic closed or move
@@ -504,6 +504,11 @@ D1–D26, all walkthrough approvals and remaining open questions.
   Latest successful taunt replaces the previous one with its own duration; replaced taunts
   never resume. Simultaneous casts choose one caster randomly once. Winner scope across enemies
   remains OPEN as item 13, not a per-enemy or shared default (`domain.md §3.2/§5`).
+
+- [x] **Aggro 4 — taunt eligibility and cover (approved/applied 2026-09-27, documentation only).**
+  Affect hostile and already-provoked neutral enemies within 5 metres even through walls;
+  never provoke peaceful neutrals or affect friendly/passive creatures. `domain.md §3.2/§5`;
+  this does not resolve post-taunt neutral eligibility (item 14).
 
 ### Open — decide before the named slice
 
