@@ -2,16 +2,24 @@
 
 ## Ontology walkthrough entry point (2026-09-27)
 
-**Current owner direction:** resume **Creature family membership** and present all its remaining
-questions together. Check answers/refusals against settled rules and each other; ask follow-up
-batches, including new items if needed, until consistent. Commit each reconciled ontology item
-separately. On an explicit handoff request, record the next topic or unfinished items, commit
-and push, then stop. No runtime implementation is authorized. Protocol: `tasks/lessons.md`.
-This supersedes the older single-question and stop instructions below. The owner subsequently
-approved each **Aggro item 1–14** (2026-09-27), including the two follow-ups, documentation only,
-one commit per item.
-**Aggro batch applied: 1–14/14.** Application and verification: `todo_decide.md §E`.
-No runtime/live JSON/test changes or push are authorized. Older hashes below are historical.
+**Handoff requested (2026-09-27):** the owner authorized **commit + push** of the current
+reconciliation branch, then a stop to this walkthrough. Publish `fix/ontology-reconciliation`;
+do not merge. No gameplay, live JSON or test changes are authorized.
+
+**Resume:** **Creature family membership, items 1–3 — presented, all unanswered.** The exact
+proposals and refusal follow-ups are in `docs/ROADMAP/todo_decide.md §E`, under **Creature family
+membership — pending proposal batch**. Handoff is not approval. When the owner resumes, present
+those three questions together and await answers; do not skip to settlements or reopen aggro.
+Follow `tasks/lessons.md`: check consistency, clarify contradictions/new cases, commit each
+reconciled item separately, and push only on explicit authorization.
+
+**Aggro batch applied: 1–14/14.** Fourteen separate ontology-only commits `ba3d39e` through
+`7e17d5e`; prior workflow update `d59396d`. Fresh independent review found no recording issues;
+parent verified the scope, clean worktree and passing ontology validator. See §E verification.
+The validator does not prove Markdown semantics or runtime implementation. Handoff checks:
+`git diff --check`, bounded ontology validation and headless main-scene boot passed; the final
+handoff diff changes only this file and `todo_decide.md`. No gameplay suite was rerun. Older
+hashes and publication checks below are historical, not fresh gameplay-test evidence.
 
 **Committed reconciliation:** the owner requested committing the staged repairs before continuing;
 `44ab0a1` contains the panel-time and class-combo repairs, regressions and walkthrough records.
@@ -88,12 +96,11 @@ or next proposal is authorized now.
 The publication changes only four Markdown files, not runtime/live data; these tests do not prove
 implementation of the new policies. Commands and session-local evidence: `todo_decide.md §E`.
 
-**Current walkthrough topic:** **Creature family membership** — one primary scaling family
-plus descriptive groups, or multiple families with a scaling rule? Aggro items **1–14** are
-recorded, including independent per-enemy taunt arbitration (13) and no lasting neutral eligibility
-from taunt alone (14). Their former OPEN status is superseded; no unresolved aggro question was
-identified in this batch's consistency review. Restart persistence stays in its later topic.
-Read `docs/ROADMAP/todo_decide.md §E` and the creature/family definitions in `ontology/`.
+**Current walkthrough topic:** **Creature family membership**, pending items 1–3: one primary
+balancing family plus descriptive memberships; the 25 unambiguous missing assignments; and
+allowing unassigned creatures with the existing ×1.0 family modifier. All are proposals awaiting
+owner answers, not accepted rules. Read their full §E batch and the creature/family definitions.
+Aggro items **1–14** are recorded; do not re-ask 13–14. Restart persistence remains a later topic.
 Do not start gameplay/validator/equipment implementation without separate authorization.
 
 When prompted **"resume walking through items"**, read `tasks/lessons.md` and

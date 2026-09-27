@@ -134,9 +134,11 @@ fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09
 for documentation and one separate commit per item. **Aggro batch applied: 1–14/14.**
 The numbered Aggro entries below track application, distinct from older reconciliation items 1–10.
 The owner subsequently approved both follow-ups 13–14, superseding their earlier OPEN status.
-All fourteen are recorded; no unresolved aggro question was identified in this batch's consistency
-review. Resume **Creature family membership**. Restart persistence stays in its later topic.
-No runtime/live JSON/test changes or push are authorized. Older publication instructions and
+All fourteen are recorded; independent review found no recording issues. Resume **Creature family
+membership, items 1–3 — presented, all unanswered**, as recorded in the pending proposal batch below.
+Restart persistence stays in its later topic. The owner now requests **handoff, commit + push**
+on `fix/ontology-reconciliation`, then stop the walkthrough; this is not approval of family items.
+No runtime/live JSON/test changes or merge are authorized. Older publication instructions and
 hashes below are historical checkpoints, superseded by this direction.
 
 **Prior checkpoint (2026-09-19; references from the earlier rebase):** items 1–2 are applied,
@@ -600,6 +602,41 @@ D1–D26, all walkthrough approvals and remaining open questions.
   identity, Lion tameability (`null` currently means untameable), resistance meaning and the
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
+
+### Creature family membership — pending proposal batch (2026-09-27)
+
+**Status: all three questions were presented; no answers, approvals or refusals were received.**
+The owner requested handoff instead. Resume with the whole batch, not gameplay implementation.
+These are proposals only; they do not change the canonical ontology or live family data.
+Use **"Approval versus Refusing"** for each item and check the combined answers for consistency.
+
+1. **One primary balancing family, multiple descriptive groups?** Recommend at most one primary
+   family supplying family-based stat multipliers; additional descriptive memberships do not
+   stack bonuses. Skeleton Dog keeps `skeletons` primary while remaining descriptively dog-like.
+   No change to taming, abilities, drops or pack aggro. **Approval:** no accidental double family
+   multiplier. **Refusing:** ask whether multiple families affect stats and how modifiers combine.
+2. **Complete the unambiguous missing assignments?** Recommend preserving existing primary
+   assignments and assigning the following 25 creatures from their sole family list, without
+   introducing new multipliers. **Approval:** consistent future family-based balancing.
+   **Refusing:** ask which exceptions should stay unassigned or use a different family.
+
+   | proposed primary family | currently listed creatures without an individual family field |
+   |---|---|
+   | cats (3) | `cat`, `brown-cat`, `white-cat` |
+   | sprouts (9) | `onionling`, `desert-onionling`, `radishling`, `radishling-sprout`, `cormling`, `cormling-sprout`, `chiling`, `habanero`, `bloomling` |
+   | guardians (2) | `ancient-guardian-anubis`, `ancient-guardian-horus` |
+   | trolls (3) | `troll`, `dark-troll`, `yeti` |
+   | fish (8) | `sapphire-fish`, `lemon-fish`, `seahorse`, `shark`, `lantern-fish`, `maw-fish`, `piranha`, `blowfish` |
+
+3. **Must every creature have a family?** Recommend no: creatures outside the defined families
+   may stay unassigned and use the existing ×1.0 family modifier; do not invent classifications
+   merely to fill every entry. **Approval:** ordinary calculated stats without extra family
+   adjustment. **Refusing:** ask for the required classification before family-based balancing.
+
+Sources: `ontology/instances/creatures.json`, top-level family lists in `creature-families.json`
+(not its nested spawn rosters), `generators.json#design.enemy-hp`, `domain.md#creature` and
+`#member-of-family`. The observed 25 missing fields and Skeleton Dog's overlap are data facts;
+the proposed reconciliation and any future balancing remain separate owner decisions.
 
 ### Reconciliation work — application checklist
 
@@ -1088,6 +1125,16 @@ items 1–12. Writer semantic review, `/simplify`, then ponytail-review preserve
 and replaced only the formerly open boundaries with the subsequent explicit owner decisions.
 Evidence: `item-13` / `item-14` logs and diffs in `/tmp/pixlnd-aggro-record-20260927/`.
 No runtime/live data/tests changed; no gameplay compliance is claimed. Next: Creature family membership.
+
+**Aggro final acceptance (2026-09-27):** fresh read-only independent review inspected the updated
+fourteen-item approval packet, individual/combined diffs, final sources, per-item logs and reflog;
+no recording defects or additional unanswered aggro cases were found. `/simplify` and ponytail
+review found nothing further to cut. The reviewer did not execute tests; the parent separately
+ran the bounded ontology validator and `git diff d59396d..HEAD --check`, inspected all fourteen
+commit entries and confirmed the clean worktree. Review artifact (session-local):
+`~/.pi-game-dev/sessions/--home-theta-repos-pixlnd--/subagent-artifacts/outputs/0c1a31b5-eb56-479b-b6d8-7576cc05dddc/aggro/final-review.md`.
+No fresh gameplay, visual or networking tests are claimed. Publication is now explicitly
+requested by the handoff; the three creature-family proposals remain unanswered.
 
 **Audit verification baseline (not proof of consistency):** `ontology/validate.gd`,
 `game/items/test_items.gd`, `game/combat/test_defence.gd` and
