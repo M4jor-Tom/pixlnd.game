@@ -155,7 +155,10 @@ degradation) are not backlog features.
   allows ≥1 and placement can fail on all-sea land. No live-data, validator or generation changes authorized.
 - [ ] Inn item 2 (`domain.md#game-clock`): implement separate paid timed sleep, preserving free recovery.
   Runtime has no clock/skip; the hybrid `inn-cost` flag lacks the service distinction.
-  Live-data migration and implementation remain unauthorized; approved items 3–4 await recording.
+  Live-data migration and implementation remain unauthorized; approved item 4 awaits recording.
+- [ ] Inn item 3 (`c-midnight-reset`): apply ordinary resets once on a midnight-crossing skip,
+  without sleep-specific shop refreshes/mission rerolls. S refresh records are reference, not hybrid
+  targets. Cleared dungeon/quest enemy reset eligibility remains a later world/reset decision.
 - [ ] NPCs never talk (`npc-role.dialogue`, speech bubbles); E resolves the service instantly.
 - [ ] Villagers and animals inside town are absent, so `c-hostile-in-city` only keeps wild spawns 40 blocks away.
 

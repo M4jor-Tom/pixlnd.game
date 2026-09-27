@@ -131,8 +131,8 @@ Never propose or implement regional gear power loss in pixlnd, even for Cube Wor
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
 **Current direction (2026-09-27):** the owner approved settlements/inn items **1–4**, each to
-receive its own documentation commit; **no push now**. Items **1–2 are recorded**; approved items
-**3–4 await recording**, then traversal is next. This supersedes the earlier handoff's unanswered,
+receive its own documentation commit; **no push now**. Items **1–3 are recorded**; approved item
+**4 awaits recording**, then traversal is next. This supersedes the earlier handoff's unanswered,
 stop and publication instructions. Family items 1–9 remain recorded. No runtime/live JSON/test
 work, model/loader/validator changes or merge is authorized.
 **Aggro batch applied: 1–14/14**, independently reviewed; restart persistence remains a later topic.
@@ -559,8 +559,8 @@ D1–D26, all walkthrough approvals and remaining open questions.
 
 ### Open — decide before the named slice
 
-- [ ] **Hybrid settlements / inn application:** items 1–2 recorded; approved items 3–4 await
-  recording below (both depend on recorded item 2). This is recording work, not unanswered policy or runtime permission.
+- [ ] **Hybrid settlements / inn application:** items 1–3 recorded; approved item 4 awaits
+  recording below (depends on recorded item 2). This is recording work, not unanswered policy or runtime permission.
 - [ ] **Traversal prerequisites:** skill, global key item, or both for riding/gliding/sailing;
   how do climbing spikes interact with climbing points? Before traversal/pets; sources:
   `abilities.json` shared trees, `key-items.json`, `rulesets.json#ruleset-hybrid.flags`.
@@ -608,19 +608,11 @@ eligibility remains in the later world/reset topic. Current D22 runtime and live
    10-copper sleep, 18:00–06:00 → next 07:00, without fast-forwarding combat.
    Canonical rule and date examples: `domain.md#game-clock` / `c-inn-hours`.
 
-**Approved items awaiting recording:**
+3. [x] **No extra daily refresh for sleeping:** ordinary midnight resets once only when the
+   skip crosses midnight; no additional shop refresh or mission reroll. Canonical rule:
+   `domain.md#game-clock` / `c-midnight-reset`. Cleared dungeon/quest enemy eligibility stays open.
 
-#### 3. Sleep does not grant an extra daily refresh
-
-*Conditional on approving 2.*
-
-**Recommendation:** Apply ordinary midnight resets once when the skip crosses midnight. Do not additionally refresh shops or reroll missions merely because someone sleeps.
-
-##### Approval versus Refusing
-- **Approval:** Sleeping at 23:00 advances into a fresh day; sleeping at 02:00 does not reroll that day’s content again.
-- **Refusing:** Sleep-specific refresh behavior remains open—not automatically repeatable rerolls.
-
-Which cleared dungeon/quest enemies reset remains a separate, later decision.
+**Approved item awaiting recording:**
 
 #### 4. Multiplayer sleep requires everyone’s agreement
 

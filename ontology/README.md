@@ -33,9 +33,10 @@ Collie supplies skeleton-only encounters' ordinary outcomes. Skeleton Dog is a t
 breed with normal dog behavior, not a special passivity rule, and shares Bubble Gum with Collie.
 No unanswered family proposal remains. Live data, shared-food model/loader/validator support
 and runtime enforcement remain deferred.
-**Settlements/inn items 1–4 approved (2026-09-27):** items 1–2 recorded: one settlement per
-land is final; free anytime recovery is separate from paid timed sleep (`domain.md#game-clock`).
-Items 3–4 await recording (`todo_decide.md §E`). Live-data migration and enforcement remain deferred.
+**Settlements/inn items 1–4 approved (2026-09-27):** items 1–3 recorded: one settlement per
+land is final; free recovery is separate from paid sleep, with no extra daily refresh
+(`domain.md#game-clock`). Item 4 awaits recording (`todo_decide.md §E`). Live-data migration
+and enforcement remain deferred; cleared dungeon/quest reset eligibility stays in the later topic.
 Gameplay and live JSON remain unchanged; restart persistence stays in its later topic.
 
 ## Decision and build history (from 2026-09-07)
