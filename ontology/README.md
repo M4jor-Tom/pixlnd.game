@@ -12,7 +12,7 @@ ontology/
 └── validate.gd      headless check: `nix develop -c godot --headless -s ontology/validate.gd`
 ```
 
-## Current scope and decisions (2026-09-17)
+## Current scope and decisions (2026-09-27)
 
 Hybrid v1 is alpha progression + approved Steam content; A/S source descriptions are historical
 reference, and X/cut or Omega-only content is roadmap coverage, not launch availability (item 8).
@@ -24,6 +24,10 @@ and validation-contract policies are approved, but their broader implementation 
 Dated build notes below include superseded placeholders, not proof of current coverage. For
 "resume walking through items", follow `tasks/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
+
+**Aggro batch applied: 1–1/12.** All twelve items were approved on 2026-09-27 for documentation;
+remaining application and OPEN follow-ups 13–14 are tracked in `todo_decide.md §E` / `domain.md §7`.
+Gameplay and live JSON remain unchanged; the topic is not closed.
 
 ## Decision and build history (from 2026-09-07)
 

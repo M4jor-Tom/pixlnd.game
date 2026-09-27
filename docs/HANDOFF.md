@@ -7,9 +7,10 @@ questions together. Check answers/refusals against settled rules and each other;
 batches, including new items if needed, until consistent. Commit each reconciled ontology item
 separately. On an explicit handoff request, record the next topic or unfinished items, commit
 and push, then stop. No runtime implementation is authorized. Protocol: `tasks/lessons.md`.
-This supersedes the older single-question and stop instructions below. No new aggro rule is
-approved by this workflow change. The owner rebased/pushed the branch to `8d983b3`; older hashes
-below describe earlier checkpoints, not the new commit identities or fresh verification.
+This supersedes the older single-question and stop instructions below. The owner subsequently
+approved each **Aggro batch item 1–12** (2026-09-27), documentation only, one commit per item.
+**Aggro batch applied: 1–1/12.** Remaining approved items await recording in `todo_decide.md §E`.
+No runtime/live JSON/test changes or push are authorized. Older hashes below are historical.
 
 **Committed reconciliation:** the owner requested committing the staged repairs before continuing;
 `44ab0a1` contains the panel-time and class-combo repairs, regressions and walkthrough records.
@@ -86,11 +87,13 @@ or next proposal is authorized now.
 The publication changes only four Markdown files, not runtime/live data; these tests do not prove
 implementation of the new policies. Commands and session-local evidence: `todo_decide.md §E`.
 
-**Current walkthrough topic:** **Aggro / group aggro** — exact-distance zero-threat ties,
-remaining resets, taunt priority/duration/return interaction, full stealth and group behavior.
-Read `ontology/domain.md#ai-behavior` and `docs/ROADMAP/todo_decide.md §E`; present all remaining
-questions together under the current protocol. These choices remain unapproved. Do not start
-gameplay/validator/equipment implementation without separate authorization.
+**Current walkthrough topic:** **Aggro / group aggro**, unfinished after the approved batch:
+**13:** simultaneous-taunt winner shared across overlapping enemies, or chosen per enemy?
+**14:** after taunt expires, is a previously uninvolved caster ordinarily eligible to a provoked
+neutral creature? Both are OPEN; present them together, without defaults. Complete the approved
+recording first. Next topic afterward: Creature families; restart persistence stays in its later topic.
+Read `ontology/domain.md#ai-behavior` and `docs/ROADMAP/todo_decide.md §E`.
+Do not start gameplay/validator/equipment implementation without separate authorization.
 
 When prompted **"resume walking through items"**, read `tasks/lessons.md` and
 `docs/ROADMAP/todo_decide.md §E` first, then the relevant `ontology/` sources and actual Git

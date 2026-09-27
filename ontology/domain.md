@@ -453,7 +453,7 @@ Rules shared by enemies. `A S`
 | possession | S: demon portal randomly possesses NPCs in the land (bigger, red, tougher, respawn possessed) |
 | simulation | hybrid: a creature farther than `design.spawns.ai.sim-radius` blocks from the player is frozen — no AI tick, no physics (D16). Distance = nearest player once `multiplayer-mode` lands (single player: the one player). |
 
-Hybrid aggro rules (owner approved 2026-09-18/19, documentation only; relation definitions in
+Hybrid aggro rules (owner approved 2026-09-18/19 and 2026-09-27, documentation only; relation definitions in
 §4, constraints `c-threat-pair` / `c-current-target` in §5):
 - **Damage contribution (owner correction, 2026-09-18):** add **1 aggro point per 1% of the
   mob's maximum HP actually removed** by the attacker: `aggro gained = 100 × HP removed / mob max HP`.
@@ -472,8 +472,9 @@ Hybrid aggro rules (owner approved 2026-09-18/19, documentation only; relation d
   positive-threat player takes priority and there is no valid current target, choose the nearest
   player among those the mob normally detects. This does not generate aggro or assign an
   engagement-order position. Retaining a valid current target tied for highest threat still
-  takes precedence: a closer zero-threat player does not displace it. Exact-distance ties among
-  equally nearest detected players, taunts and special stealth interactions remain undecided.
+  takes precedence: a closer zero-threat player does not displace it. **Exact-distance ties
+  (owner approved 2026-09-27):** choose once at random with equal chances among equally nearest
+  detected players, then retain that target under the existing tie rule; do not repeatedly reroll.
 - **Continuous decay (rate approved 2026-09-18):** each mob tracks each player's threat
   separately and subtracts **1 aggro point per elapsed second**, both while fighting and while
   not fighting. Decay is continuous (0.5 seconds removes 0.5 points), not whole-second ticks.
@@ -1117,7 +1118,7 @@ content selection or live data changes are authorized by this contract.
 | c-mp-range | mp ∈ [0, 100]; mage regenerates passively, others gain by hits/blocks/stealth/dodges; numbers `design.resources.mp` (D21) | runtime |
 | c-stun-immunity | cannot re-stun while stars shown | runtime |
 | c-threat-pair | at most one `threat` relation per ordered mob/player entity pair; each present relation has exactly one non-negative numeric `aggro-points` amount in aggro points, independent of other pairs; changing `current-target` does not clear it; decay/gains, the zero floor, player-death and arrival clearing, and escape retention follow §3.2; other reset conditions remain open | runtime |
-| c-current-target | at most one player target per mob; ordinary targeting compares that mob's eligible players by highest `aggro-points`, retains a tied current target, otherwise breaks positive-threat ties by earliest engagement; without a positive-threat priority or valid current target, choose the nearest normally detected zero-threat player without granting aggro/order (§3.2); player-death, zero-threat and arrival order resets, escape retention and fresh assignment follow §3.2; at zero, pursuit requires normal hostile detection; exact-distance fallback ties and taunt/stealth interactions remain open | runtime |
+| c-current-target | at most one player target per mob; ordinary targeting compares that mob's eligible players by highest `aggro-points`, retains a tied current target, otherwise breaks positive-threat ties by earliest engagement; without a positive-threat priority or valid current target, choose the nearest normally detected zero-threat player without granting aggro/order (§3.2); player-death, zero-threat and arrival order resets, escape retention and fresh assignment follow §3.2; at zero, pursuit requires normal hostile detection; equally nearest fallback ties are chosen randomly once with equal chances, then normal retention applies; taunt/stealth interactions follow the batch checkpoint in §7 | runtime |
 | c-return-home | pursuit beyond the home leash starts return regardless of threat; within it, target loss checks positive-threat players then normal hostile detection (§3.2); attacks do not restart pursuit during return; ×2 normal return speed and 90% damage reduction (including DOT) until reaching home alive, then full HP and clear this mob's aggro/order toward every player once, ending both bonuses; no revival, cleansing or CC immunity; gains/decay continue until arrival and other mobs' records are unchanged; taunt interactions remain open | runtime |
 | c-combo-reset | any attack with a hitbox that misses resets combo to 0, subject to the hybrid whole-channel and combo-neutral zero-damage-taunt rules in §3.3 combo-system; cap per weapon-type | runtime |
 | c-dodge-cost | dodge costs 25 stamina; requires movement; standing still M3 = class skill (S); hybrid numbers `design.defence.dodge` (D23) | runtime |
@@ -1191,14 +1192,14 @@ settled or implemented. The current open questions and approval/application chec
 `docs/ROADMAP/todo_decide.md §E`; preserve those deferrals. Earlier slice approximations below
 are historical implementation stages, superseded where later decisions say so.
 
-### Current unresolved hybrid questions (2026-09-19)
+### Current unresolved hybrid questions (2026-09-27)
 
 This index mirrors the open list in `docs/ROADMAP/todo_decide.md §E`; it does not choose defaults
 or authorize implementation. Resolve each question before its affected slice.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Aggro / group aggro | exact-distance ties in zero-aggro fallback, other resets, taunt priority/duration and return interaction, full-stealth interaction, group membership; damage, targeting priorities including nearest-detected zero-threat fallback, continuous decay at 1 aggro point/s, zero-threat pursuit / order clearing, fresh order on regaining positive threat, player-death aggro / order resets, escape retention, return-home trigger, protected return with full-HP arrival recovery and per-mob arrival aggro/order reset approved in §3.2, runtime deferred |
+| Aggro / group aggro | batch items 1–12 approved 2026-09-27; application tracked in `todo_decide.md §E`, semantics in §3.2; OPEN 13: simultaneous-taunt winner shared across overlapping enemies or chosen per enemy? OPEN 14: after taunt, is a previously uninvolved caster ordinarily eligible to a provoked neutral? Runtime deferred; restart persistence belongs to the later persistence topic |
 | Creature families | one primary scaling family plus descriptive groups, or multiple families with a scaling rule |
 | Settlements / inn | whether multiple settlements and paid timed sleep are hybrid targets; keep D22's current one village and free heal/respawn service |
 | Traversal | skill versus global key-item prerequisites for riding/gliding/sailing; climbing spikes versus skill points |

@@ -130,10 +130,14 @@ The full walkthrough/resumption protocol is in `tasks/lessons.md`; the prompt
 Never propose or implement regional gear power loss in pixlnd, even for Cube World cloning
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
-**Current resume direction (2026-09-27):** continue **Aggro / group aggro** as a topic-wide
-question batch, not just the exact-distance tie question. No new aggro decision is approved by
-this process change. This direction supersedes the older single-question/stop instructions below.
-The owner rebased/pushed to `8d983b3`; older hashes/evidence below are historical checkpoints.
+**Current resume direction (2026-09-27):** the owner approved each **Aggro batch item 1–12**
+for documentation and one separate commit per item. **Aggro batch applied: 1–1/12.**
+The numbered Aggro entries below track application, distinct from older reconciliation items 1–10.
+Remaining approved items await recording; **questions 13–14 remain OPEN** below, without defaults.
+Finish recording, then resume those two questions together; do not call the topic closed or move
+on to Creature families yet. Restart persistence belongs to the later persistence topic.
+No runtime/live JSON/test changes or push are authorized. Older publication instructions and
+hashes below are historical checkpoints, superseded by this direction.
 
 **Prior checkpoint (2026-09-19; references from the earlier rebase):** items 1–2 are applied,
 validated and committed in `0a562fc`. Items 3–8 are approved for ontology and their semantic
@@ -486,16 +490,21 @@ D1–D26, all walkthrough approvals and remaining open questions.
   existing gains, decay policy and targeting priorities stand. This clarification adds no
   balance choice, runtime implementation, commit or push authorization.
 
+- [x] **Aggro 1 — equal-distance fallback (approved/applied 2026-09-27, documentation only).**
+  Equal-chance random choice once among equally nearest detected zero-threat players;
+  valid tied-current-target retention wins and prevents repeated random switching.
+  Recorded in `domain.md#ai-behavior` / `c-current-target`.
+
 ### Open — decide before the named slice
 
-- [ ] **Aggro / group aggro:** damage conversion, targeting priorities, continuous decay at
-  1 aggro point/s, zero-threat pursuit / order clearing, fresh order on regaining positive threat,
-  player-death aggro / order resets, escape retention, the return-home trigger and protected
-  return with full-HP arrival recovery, per-mob arrival aggro/order reset and nearest-detected
-  zero-threat fallback are approved; define exact-distance fallback ties, other resets, taunt
-  priority/duration and return interaction, full-stealth interaction and group membership
-  before the next aggro slice.
-  Sources: `domain.md#ai-behavior`, `generators.json#design.status-effects` (current taunt approximation).
+- [ ] **Aggro / group aggro — follow-ups to the approved 2026-09-27 batch:**
+  - **13 — simultaneous-taunt arbitration:** choose one caster across the affected overlap,
+    or choose separately for each affected enemy? Item 3 approves random selection, not this scope.
+  - **14 — neutral eligibility after taunt:** after taunt expires, does a previously uninvolved
+    caster remain ordinarily eligible to a provoked neutral creature? In particular, if all
+    scores are zero, current-target retention still requires a valid target; do not infer eligibility.
+  Sources: `domain.md#ai-behavior` / §7. Neither question blocks recording the twelve approved
+  principles; neither has an approved default. Runtime remains deferred.
 - [ ] **Creature family membership:** one primary scaling family plus descriptive groups, or
   multiple families with a defined scaling rule? Skeleton Dog appears in dogs and skeletons
   but its singular family is skeletons. Before family-based scaling; sources:

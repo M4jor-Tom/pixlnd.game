@@ -53,7 +53,8 @@ degradation) are not backlog features.
 - [x] Basic melee attack both ways, death, neutral retaliation (combat slice); ranged / mage roles shooting back
   (D26, `design.creature-roles`). Heroic Shout currently provokes/retargets by a zero-damage hit.
   Still missing: aggro table, timed taunt priority, group aggro, potions at low HP, enemy combos
-  (`ai-behavior`, `creature.combat-role`); threat/taunt/group rules remain open in §E.
+  (`ai-behavior`, `creature.combat-role`); approved aggro batch and open subcases are tracked in §E.
+  All approved aggro policies remain deferred implementation, not permission to change live JSON.
 - [ ] A ranged / mage creature aims where the target *is*: no lead on a moving one, so strafing walks out of a
   slow mage bolt — `creature.gd#_shoot` ponytail.
 - [ ] Line of sight is one head-to-head ray (`entity.gd#head`, a flat 1.5 blocks up): a wall — or a body taller
