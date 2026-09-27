@@ -918,8 +918,8 @@ with subtype restrictions where needed:
 The item-3 slot-model approval is ontology-only: normalizing live slot JSON and its consumers
 awaits separate authorization (`docs/ROADMAP/todo_decide.md §E`). Wand handedness remains
 unresolved; traversal approvals are recorded separately under `skill-tree` / `pet`.
-Gliding requires the Hang Glider equipped in `special`, not merely bought; the single-slot
-restriction remains (traversal item 2, approved 2026-09-28).
+Gliding/sailing require the respective Hang Glider/Boat equipped in `special`, not merely bought
+(traversal items 2–3, approved 2026-09-28). They share that single slot; no dual equip or new slot.
 
 Hybrid hand-conflict repair (item 10, authorized 2026-09-17): reject an equip attempt that would
 pair a two-handed weapon with a shield, regardless of equip order. Leave existing equipment and
@@ -1002,8 +1002,8 @@ antivenom, band-aid, crutch, bandage, salve).
 Hybrid key items work globally once acquired (`c-gear-global`); the land-bound S records above
 are historical reference. Reins are required alongside training and a rideable tamed pet
 (`pet`, traversal item 1), not an alternative to either. No Reins slot or new acquisition route
-is approved. Hybrid gliding needs a vendor-bought, equipped Hang Glider plus training
-(`skill-tree`, traversal item 2); A/S acquisition records do not override this rule.
+is approved. Hybrid gliding/sailing need the respective vendor-bought, equipped Hang Glider/Boat
+plus training (`skill-tree`, traversal items 2–3); A/S acquisition records do not override these rules.
 
 ### artifact
 `S` relic; +1 level each; permanent; works everywhere; 1–3 per land (D11); raises exactly one of 7 traversal stats
@@ -1074,6 +1074,12 @@ and a rideable tamed pet; training and further-point speed benefits follow `pet`
 points + at least 1 Hang Gliding point** and an **equipped Hang Glider bought from an item
 vendor**. Further Hang Gliding points improve glide speed. Buying alone is insufficient;
 the glider occupies the existing single `special` slot, not an extra slot. Live-data migration
+and runtime enforcement remain deferred.
+
+**Hybrid traversal item 3 (owner approved, 2026-09-28):** sailing requires **5 Swimming
+points + at least 1 Sailing point** and an **equipped Boat bought from an item vendor**.
+Further Sailing points improve sailing speed. Buying alone is insufficient; equip the boat
+instead of the glider in the existing single `special` slot, never both. Live-data migration
 and runtime enforcement remain deferred.
 
 ### power-gate `A`
@@ -1219,7 +1225,7 @@ One row per fact type. Cardinality as `domain → range`.
 | equips | entity | item | 1→0..12 | at most one per usable equipment-slot; reserved index 0 and separate Q selection excluded; c-slot-accepts |
 | threat | entity (mob) | entity (player-character) | n→n | hybrid mob/player combat state, retained across temporary absence (§3.2); optional per ordered pair, with one numeric `aggro-points` amount; c-threat-pair |
 | current-target | entity (mob) | entity (player-character) | 1→0..1 | hybrid mob/player target selection, separate from threat amounts; multiple mobs may select the same player; c-current-target |
-| requires-key-item | poi-type ∪ dungeon-type ∪ ability | key-item | n→n | divine door→harp, crypt gate→bell, bird statue→whistle; hybrid riding→reins (acquired, c-riding), hang-gliding→hang-glider (equipped, c-gliding); global scope |
+| requires-key-item | poi-type ∪ dungeon-type ∪ ability | key-item | n→n | divine door→harp, crypt gate→bell, bird statue→whistle; hybrid riding→reins (acquired, c-riding), hang-gliding→hang-glider and sailing→boat (equipped, c-gliding/c-sailing); global scope |
 | located-in | settlement ∪ dungeon ∪ poi | land | n→1 | |
 | owned-by-realm | land | realm | n→1 | S |
 | reveals | realm (lore 100 %) | artifact | 1→n | S |
@@ -1327,6 +1333,7 @@ content selection or live data changes are authorized by this contract.
 | c-one-active-pet | at most one pet summoned; one of each pet-food carried | runtime |
 | c-riding | hybrid: mounting requires 5 Pet Master points, ≥1 Riding point, globally acquired Reins and a rideable tamed pet; further Riding points improve speed; no new species riding permission, Reins route or slot (§3.2 pet) | runtime (deferred) |
 | c-gliding | hybrid: gliding requires 5 Climbing points, ≥1 Hang Gliding point and a Hang Glider bought from an item vendor and equipped in the single special slot; buying alone is insufficient; further Hang Gliding points improve speed (§3.5) | runtime (deferred) |
+| c-sailing | hybrid: sailing requires 5 Swimming points, ≥1 Sailing point and a Boat bought from an item vendor and equipped in the single special slot; buying alone is insufficient; further Sailing points improve speed; boat and glider cannot be equipped together (§3.5) | runtime (deferred) |
 | c-creature-family | primary and descriptive references name defined creature families; at most one primary per creature, consistent with §3.2 approved assignments; without a primary, the family modifier is ×1.0 and other ordinary stat calculations remain; descriptive memberships never supply or stack family stat modifiers, nor imply species-trait inheritance | load+runtime (deferred) |
 | c-skeleton-dog-encounter | Skeleton Dog has an independent 1% chance per individual dog spawn, not per pack, all creatures or a relative species weight; mixed packs are permitted and no quota is guaranteed; applies wherever dogs already spawn, preserving settlement safety; existing skeleton-only dog encounters use Collie for ordinary outcomes, preserving dog frequency/pack sizes and other existing ordinary selections, not extra unrestricted skeletal spawns (§3.2) | generator (deferred) |
 | c-skeleton-dog-taming | Skeleton Dogs follow normal dog behavior for the same encounter/state, including retaliation, pack response and taming reactions, with no skeleton-only passivity exception (§3.2 item 8); Bubble Gum tames them under general eligibility restrictions and settlement protection (§3.2 item 9) | runtime+data (deferred) |
@@ -1432,14 +1439,14 @@ Creature family items 1–9 are recorded: Skeleton Dog follows normal dog behavi
 skeleton-only passivity exception, and shares Bubble Gum with Collie. The independent 1% per-dog
 chance, existing habitat scope and Collie fallback stand. No unanswered family proposal remains;
 implementation is separately deferred.
-Settlements/inn items 1–4 are recorded in §3.1 (2026-09-27). Traversal items 1–2 are recorded;
-items 3 and 5 are approved and item 4's 75% principle corrected, pending recording. Live-data migration and implementation remain deferred;
-cleared dungeon/quest enemy reset eligibility stays in
-world/reset below. Threat across server restart stays in the persistence topic below.
+Settlements/inn items 1–4 are recorded in §3.1 (2026-09-27). Traversal items 1–3 are recorded;
+item 4's corrected 75% principle and item 5's approved stacking rule await recording.
+Live-data migration and implementation remain deferred; cleared dungeon/quest enemy reset
+eligibility stays in world/reset below. Threat across server restart stays in the persistence topic below.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Traversal | items 3–5 approved, pending recording, not new approval questions; item 5 separately settles remaining-cost stacking |
+| Traversal | items 4–5 approved, pending recording, not new approval questions; item 5 separately settles remaining-cost stacking |
 | Books / formulas | permanence/global scope of hybrid book recipes and duplicate unlock interaction with formulas |
 | Artifacts | global versus per-traversal-stat diminishing returns; additive versus compounded percentages (D6 numbers and traversal + attack/HP rewards stand) |
 | Assassin ultimate | Camouflage alias versus separately unlocked fourth node (D10/D20 stand) |

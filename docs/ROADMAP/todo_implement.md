@@ -34,7 +34,7 @@ degradation) are not backlog features.
 ## Player (§3.2 player-character, slice e33c991)
 - [x] Spawn = the (0,0) village square (`world.spawn-rule`, D22). Default seed 26879 spawns in deadlands (undead village).
 - [ ] Climb (E grab, wall-jump), glider, swim breath/drowning (`abilities.json` movement kind;
-  `flags.drowning`, `diving-breath`) — `player.gd` ponytail. Traversal prerequisites remain open in §E.
+  `flags.drowning`, `diving-breath`) — `player.gd` ponytail. Approved traversal gates/debt are below.
 - [x] Dodge roll (D23): cost, movement, i-frames and passive rewards run; see Combat for remaining passives.
 - [x] Fall damage (D13 numbers) — applied on landing; D23 clears fall tracking while rolling.
 - [x] `player.level` grows: XP per kill + level-up (D19, `game/progression/`); enemy levels follow it
@@ -56,6 +56,9 @@ degradation) are not backlog features.
 - [ ] Gliding item 2 (`domain.md#skill-tree`, `c-gliding`): 5 Climbing + ≥1 Hang Gliding point
   and a vendor-bought Hang Glider equipped in `special`; further points improve speed.
   Purchase alone does not unlock flight. Vendor/data/slot/runtime enforcement remains deferred.
+- [ ] Sailing item 3 (`domain.md#skill-tree`, `c-sailing`): 5 Swimming + ≥1 Sailing point
+  and a vendor-bought Boat equipped instead of the glider in `special`; further points improve
+  speed. Vendor/data/slot/runtime enforcement remains deferred; no dual equip or new slot.
 
 ## Creatures (§3.2 creature + ai-behavior, D14 + D26)
 - [x] Basic melee attack both ways, death, neutral retaliation (combat slice); ranged / mage roles shooting back

@@ -3,8 +3,8 @@
 ## Ontology walkthrough entry point (2026-09-28)
 
 **Current traversal recording:** the owner approved items **1–3** and corrected item **4**:
-Climbing Spikes reduce climbing stamina consumption by **75%**, not eliminate it. Items **1–2**
-are recorded; items **3–5** await recording in separate documentation commits. The owner later
+Climbing Spikes reduce climbing stamina consumption by **75%**, not eliminate it. Items **1–3**
+are recorded; items **4–5** await recording in separate documentation commits. The owner later
 approved item **5**'s remaining-cost stacking rule. Complete traversal recording/review before
 books/formulas; only the parent presents the next questions. Canonical rules: `ontology/domain.md`; ledger/evidence: `todo_decide.md §E`.
 Independent review and parent verification of this batch are pending. No gameplay, live JSON,
