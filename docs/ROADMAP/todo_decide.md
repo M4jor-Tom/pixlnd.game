@@ -131,10 +131,10 @@ Never propose or implement regional gear power loss in pixlnd, even for Cube Wor
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
 **Current resume direction (2026-09-27):** the owner approved each **Aggro batch item 1–12**
-for documentation and one separate commit per item. **Aggro batch applied: 1–11/12.**
+for documentation and one separate commit per item. **Aggro batch applied: 1–12/12.**
 The numbered Aggro entries below track application, distinct from older reconciliation items 1–10.
-Remaining approved items await recording; **questions 13–14 remain OPEN** below, without defaults.
-Finish recording, then resume those two questions together; do not call the topic closed or move
+All twelve principles are recorded; **questions 13–14 remain OPEN** below, without defaults.
+Resume those two questions together; do not call the topic closed or move
 on to Creature families yet. Restart persistence belongs to the later persistence topic.
 No runtime/live JSON/test changes or push are authorized. Older publication instructions and
 hashes below are historical checkpoints, superseded by this direction.
@@ -543,6 +543,10 @@ D1–D26, all walkthrough approvals and remaining open questions.
   Temporary disconnect/unload grants no extra wipe: logical pair scores/order follow normal
   decay and approved resets. Absent players cannot be targeted; reconnect can restore eligibility.
   Actual mob death/respawn starts fresh. Restart persistence is still open (`domain.md §3.2/§4/§5`).
+
+- [x] **Aggro 12 — elapsed threat and taunt timers (approved/applied 2026-09-27, documentation only).**
+  Threat decay and taunt expiry reflect elapsed gameplay time while distant mobs are frozen.
+  Movement/attacks remain frozen; this is not an all-status-timer decision (`domain.md §3.2/§5`).
 
 ### Open — decide before the named slice
 
@@ -1064,6 +1068,16 @@ handoff instructions; ponytail review found no further cuts. Session-local logs 
 `/tmp/pixlnd-nearest-handoff.0EH8bK/`. The next agent must wait for a resume request and present
 exact-distance ties without choosing a default. Runtime/live data remain unchanged; the green
 suite does not establish implementation of the new ontology policies. No visual test was needed.
+
+**Aggro batch 1–12 verification (2026-09-27):** before each item commit,
+`git diff --check` and `timeout 150 nix develop -c godot --headless -s ontology/validate.gd`
+passed (`ontology valid`). Scope/structure checks confirmed only the five authorized Markdown
+files changed, unique relation/constraint IDs and unchanged historical D/F records. Per-item
+semantic review, then `/simplify` and ponytail-review kept canonical rules in `domain.md` and
+compact ledger/checkpoint links; these were writer self-reviews, not independent reviews.
+Logs/diffs: `/tmp/pixlnd-aggro-record-20260927/item-<1..12>-{validator,diff-check,scope,review}.log`
+and `item-<1..12>.diff` (session-local). No runtime/live JSON/test changes or gameplay compliance
+claim: the validator does not check Markdown semantics. Questions 13–14 remain OPEN.
 
 **Audit verification baseline (not proof of consistency):** `ontology/validate.gd`,
 `game/items/test_items.gd`, `game/combat/test_defence.gd` and

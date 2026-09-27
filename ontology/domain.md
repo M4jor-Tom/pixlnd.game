@@ -451,7 +451,7 @@ Rules shared by enemies. `A S`
 | chase | wraith pursues longer; most drop chase eventually `?` |
 | clones | some bosses/NPC mages summon doppelgangers |
 | possession | S: demon portal randomly possesses NPCs in the land (bigger, red, tougher, respawn possessed) |
-| simulation | hybrid: a creature farther than `design.spawns.ai.sim-radius` blocks from the player is frozen — no AI tick, no physics (D16). Distance = nearest player once `multiplayer-mode` lands (single player: the one player). |
+| simulation | hybrid: beyond `design.spawns.ai.sim-radius`, movement and attacks stay frozen (D16); threat decay and taunt expiry reflect elapsed gameplay time (approved 2026-09-27, below). Distance = nearest player once `multiplayer-mode` lands (single player: the one player). |
 
 Hybrid aggro rules (owner approved 2026-09-18/19 and 2026-09-27, documentation only; relation definitions in
 §4, constraints `c-threat-pair` / `c-current-target` in §5):
@@ -523,6 +523,11 @@ Hybrid aggro rules (owner approved 2026-09-18/19 and 2026-09-27, documentation o
   not fighting. Decay is continuous (0.5 seconds removes 0.5 points), not whole-second ticks.
   Hits keep adding their normal damage-based threat while decay continues; attacking does not
   pause or restart the countdown.
+- **Distant timers (owner approved 2026-09-27):** threat decay and taunt expiry use elapsed
+  gameplay time even while the mob is outside the simulation radius. On reactivation, remaining
+  threat and taunt duration reflect the time that passed; movement and attacks remain frozen
+  while distant. This approval does not extend to every other status timer or choose how to
+  implement elapsed-time accounting.
 - **Retained threat:** switching targets does not clear other players' remaining threat. If the
   higher-threat teammate dies, a player with remaining positive threat can be targeted again
   according to the normal highest-threat/tie rules; losing priority is not being "forgiven".
@@ -1182,8 +1187,8 @@ content selection or live data changes are authorized by this contract.
 | c-slot-accepts | an item equips only in a usable equipment-slot whose `accepts` lists its item-type and whose subtype restrictions it satisfies (§3.4 equipment-slot); weapon-type `offhand` hands → off-hand only; c-weapon-class and c-hands still apply | runtime |
 | c-mp-range | mp ∈ [0, 100]; mage regenerates passively, others gain by hits/blocks/stealth/dodges; numbers `design.resources.mp` (D21) | runtime |
 | c-stun-immunity | cannot re-stun while stars shown | runtime |
-| c-threat-pair | at most one `threat` relation per ordered logical mob/player entity pair; each present relation has exactly one non-negative numeric `aggro-points` amount in aggro points, independent of other pairs; changing `current-target` does not clear it; decay/gains (including the full-stealth damage exception), the zero floor, player-death and arrival clearing, and escape/temporary-absence retention follow §3.2; actual mob death/respawn starts fresh; restart persistence remains open | runtime |
-| c-current-target | at most one present, living player target per mob; ordinary targeting compares that mob's eligible players by highest `aggro-points`, retains a tied current target, otherwise breaks positive-threat ties by earliest engagement; without a positive-threat priority or valid current target, choose the nearest normally detected zero-threat player without granting aggro/order (§3.2); player-death, zero-threat and arrival order resets, escape retention and fresh assignment follow §3.2; at zero, ordinary pursuit requires normal detection and hostility/provocation eligibility; equally nearest fallback ties are chosen randomly once with equal chances, then normal retention applies; Heroic Shout temporarily overrides ordinary targeting without threat/order gain; eligibility, duration, replacement and termination follow §3.2, open subcases §7 | runtime |
+| c-threat-pair | at most one `threat` relation per ordered logical mob/player entity pair; each present relation has exactly one non-negative numeric `aggro-points` amount in aggro points, independent of other pairs; changing `current-target` does not clear it; decay/gains (including the full-stealth damage exception), the zero floor, player-death and arrival clearing, and escape/temporary-absence retention follow §3.2; actual mob death/respawn starts fresh; decay reflects elapsed gameplay time even outside simulation radius; restart persistence remains open | runtime |
+| c-current-target | at most one present, living player target per mob; ordinary targeting compares that mob's eligible players by highest `aggro-points`, retains a tied current target, otherwise breaks positive-threat ties by earliest engagement; without a positive-threat priority or valid current target, choose the nearest normally detected zero-threat player without granting aggro/order (§3.2); player-death, zero-threat and arrival order resets, escape retention and fresh assignment follow §3.2; at zero, ordinary pursuit requires normal detection and hostility/provocation eligibility; equally nearest fallback ties are chosen randomly once with equal chances, then normal retention applies; Heroic Shout temporarily overrides ordinary targeting without threat/order gain; eligibility, duration, replacement and termination follow §3.2; taunt expiry reflects elapsed gameplay time even outside simulation radius; open subcases §7 | runtime |
 | c-pack-response | only the generated pack responds, under the hostile-detection / aggressor-specific neutral-provocation rules in §3.2; friendly/passive creatures are excluded and protected return cannot be interrupted; share current sightings only, never threat/order, and select targets independently; each neutral clears its own provocation on arrival (§3.2) | runtime |
 | c-return-home | pursuit beyond the home leash starts return regardless of threat; within it, target loss checks eligible positive-threat players then normal detection of eligible players (§3.2); attacks do not restart pursuit during return; ×2 normal return speed and 90% damage reduction (including DOT) until reaching home alive, then full HP and clear this mob's aggro/order toward every player and its neutral provocation once, ending both bonuses; no revival, cleansing or CC immunity; gains/decay continue until arrival and other mobs' records are unchanged; starting return cancels taunt, and new taunts neither interrupt nor queue for afterward | runtime |
 | c-combo-reset | any attack with a hitbox that misses resets combo to 0, subject to the hybrid whole-channel and combo-neutral zero-damage-taunt rules in §3.3 combo-system; cap per weapon-type | runtime |
@@ -1265,7 +1270,7 @@ or authorize implementation. Resolve each question before its affected slice.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Aggro / group aggro | batch items 1–12 approved 2026-09-27; application tracked in `todo_decide.md §E`, semantics in §3.2; OPEN 13: simultaneous-taunt winner shared across overlapping enemies or chosen per enemy? OPEN 14: after taunt, is a previously uninvolved caster ordinarily eligible to a provoked neutral? Runtime deferred; restart persistence belongs to the later persistence topic |
+| Aggro / group aggro | batch items 1–12 approved/applied 2026-09-27, documentation only; application tracked in `todo_decide.md §E`, semantics in §3.2; OPEN 13: simultaneous-taunt winner shared across overlapping enemies or chosen per enemy? OPEN 14: after taunt, is a previously uninvolved caster ordinarily eligible to a provoked neutral? Runtime deferred; restart persistence belongs to the later persistence topic |
 | Creature families | one primary scaling family plus descriptive groups, or multiple families with a scaling rule |
 | Settlements / inn | whether multiple settlements and paid timed sleep are hybrid targets; keep D22's current one village and free heal/respawn service |
 | Traversal | skill versus global key-item prerequisites for riding/gliding/sailing; climbing spikes versus skill points |

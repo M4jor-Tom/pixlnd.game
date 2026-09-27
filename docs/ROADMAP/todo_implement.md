@@ -82,7 +82,9 @@ degradation) are not backlog features.
   Zone-owned nodes currently disappear on unload; preserving logical threat/order across temporary
   unload/disconnect is approved but unimplemented (`domain.md#ai-behavior`, Aggro 11 in §E).
 - [ ] Creatures beyond `design.spawns.ai.sim-radius` (80 blocks, D16) are frozen mid-state, not LOD-ed: no
-  slow tick, no catch-up when they wake. Zone colliders are still trimeshes (`ConcavePolygonShape3D`); a
+  slow tick, no catch-up when they wake. Elapsed-gameplay-time threat decay / taunt expiry is
+  approved but unimplemented (Aggro 12 in §E); movement/attacks stay frozen and other status timers
+  are outside that approval. Zone colliders are still trimeshes (`ConcavePolygonShape3D`); a
   `HeightMapShape3D` would cut the per-body cost if the radius ever grows — `creature.gd`, `world.gd`.
 - [ ] Creatures spawned outside `sim-radius` sit 1 block above ground until they wake, then drop
   (`gen-spawns` positions = ground + 1) — settle them on spawn or snap on wake, `spawner.gd`.
