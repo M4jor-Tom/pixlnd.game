@@ -130,13 +130,12 @@ The full walkthrough/resumption protocol is in `tasks/lessons.md`; the prompt
 Never propose or implement regional gear power loss in pixlnd, even for Cube World cloning
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
-**Current direction (2026-09-27):** the owner resumed and answered **“7: Approved, but make
-skeletal dog non-aggressive and tameable.”** Item 7 records Collie fallback for existing
-skeleton-only dog encounters and the Skeleton Dog temperament/taming amendment. Follow-ups
-8–9 below remain unanswered: wild retaliation/pack/taming provocation and food mapping.
-Preserve approved family items 1–7; settlements/inn follows after these details are reconciled.
-No runtime/live JSON/test changes, merge or push are authorized by this answer. The prior
-items 1–6 handoff is committed at `ef81bd6`; its publication instructions below are historical.
+**Current direction (2026-09-27):** the owner answered **“8: Skeletal dogs must behave like
+normal dogs, "skeletal" is just a different dog race; 9: Approved”**. Item 8 records normal dog
+behavior, not a skeleton-only passivity exception. Item 9's shared Bubble Gum pairing is approved
+and awaits its separate documentation application, not another answer. Preserve prior family
+approvals; settlements/inn follows after item 9 is recorded. No runtime/live JSON/test changes,
+merge or push are authorized. Earlier publication instructions below are historical.
 **Aggro batch applied: 1–14/14**, independently reviewed; restart persistence remains a later topic.
 Older publication instructions and hashes below are historical checkpoints.
 
@@ -561,10 +560,9 @@ D1–D26, all walkthrough approvals and remaining open questions.
 
 ### Open — decide before the named slice
 
-- [ ] **Creature family follow-ups 8–9:** wild Skeleton Dog retaliation/pack/taming provocation
-  and taming-food mapping remain unanswered. Item 7 approves Collie fallback for skeleton-only
-  dog encounters and non-aggressive, tameable Skeleton Dogs. Preserve those principles; do not
-  infer the pending details. Migration/enforcement remains separately unauthorized.
+- [ ] **Creature family item 9 — approved, recording next:** shared Bubble Gum pairing needs
+  its separate canonical documentation application. Item 8's normal dog behavior is recorded;
+  no unanswered family proposal remains. Migration/enforcement stays separately unauthorized.
 - [ ] **Hybrid settlements / inn services:** are multiple settlements and inn cost 10 future
   targets, or stale flags? Is paid timed sleep distinct from D22's free heal/respawn service?
   Before changing settlement count or adding sleep; sources: `rulesets.json#ruleset-hybrid.flags`,
@@ -712,33 +710,35 @@ Final `/simplify` removed temporary writer/staging instructions; ponytail-review
 cuts. The unresolved roster mapping above is real design work, not a claim of full family
 completion or permission to implement the approved rules.
 
-#### Item 7 — approved with amendment; follow-ups 8–9 (2026-09-27)
+#### Items 7–9 — approved mapping, behavior and taming (2026-09-27)
 
 **Owner answer:** “7: Approved, but make skeletal dog non-aggressive and tameable.”
 
 - [x] **7 — Collie fallback and Skeleton Dog amendment:** recorded in
   `domain.md#creature-family` / `c-skeleton-dog-encounter` / `c-skeleton-dog-taming`.
-  The approved mapping and non-aggressive/tameable principle stand; 8–9 are unresolved.
-  Live data, loader/validator, tests and gameplay remain unchanged. This item's commit subject:
-  `docs(ontology): record dog fallback and taming intent`.
+  Recorded in `a4c6206`; its former open details are answered below.
+  Live data, loader/validator, tests and gameplay remain unchanged.
 
-**Unanswered recommendations — neither is approved by item 7:**
+**Owner follow-up:** “8: Skeletal dogs must behave like normal dogs, "skeletal" is just a
+different dog race; 9: Approved”.
 
-8. **Fully passive while wild.** Recommend that wild Skeleton Dogs never attack players,
-   including retaliation when hit, pack provocation or another dog's taming. This explicitly
-   exempts them from the generic pet-food rule that taming makes other group members hostile.
-   Once tamed, normal pet behavior still lets them help against their owner's target.
-   **Approval versus Refusing:** approval lets players approach or tame one without wild
-   Skeleton Dogs turning on them; their pet can still help in combat. Refusal rejects this
-   complete-passivity rule, not the approved non-aggression/tameability; the specific retaliation
-   and taming-provocation behavior would still need a decision.
-9. **Share Bubble Gum with Collies.** Recommend Bubble Gum for Skeleton Dogs too, retaining
-   its existing availability and prices. This is an explicit two-species food exception, not
-   inheritance by every dog family member; no new food/recipe or invented source ID. The present
-   single-species `pet-food.tames` contract would need a separately authorized migration.
-   **Approval versus Refusing:** approval lets players use the same bait for an ordinary Collie
-   and a rare Skeleton Dog. Refusal keeps Skeleton Dog tameability approved but leaves its bait
-   unresolved; it does not approve a new item or another existing food.
+- [x] **8 — Normal dog behavior (owner correction):** recorded in `domain.md#creature-family`
+  / `c-skeleton-dog-taming`. “Skeletal” is a dog breed, not a special behavioral category:
+  ordinary encounter/state rules govern aggression, retaliation, pack response and taming.
+  The proposed skeleton-only complete passivity/taming-provocation exemption is superseded,
+  not approved. Normal pet behavior and existing family/category distinctions remain.
+  Commit subject: `docs(ontology): align skeletal behavior with normal dogs`.
+- [ ] **9 — Shared Bubble Gum (approved, awaiting separate recording):** tame both Collies
+  and Skeleton Dogs, retaining existing food availability/prices. An explicit two-species food
+  exception, not dog-family inheritance; no new food/recipe or invented source ID. Model/loader/
+  validator and live-data migration remain separately unauthorized.
+
+**Item 8 verification:** checked the exact correction against normal dog, pack and pet rules.
+`/simplify` removed the superseded special-passivity proposal; ponytail-review found no further
+cuts. Diff/scope checks and the bounded ontology validator passed (exit 0, `ontology valid`);
+only six intended Markdown files changed. Evidence: `/tmp/pixlnd-family-items8-9-20260927/item-8-*`.
+The validator checks unchanged loaded data, not Markdown semantics or runtime compliance.
+No gameplay suite, visuals or network checks were run.
 
 **Item 7 verification:** inspected the exact approval, canonical rules, dog rosters and taming
 contract; `/simplify` removed duplicate ledger semantics and obsolete pool-status prose, then

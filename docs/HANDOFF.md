@@ -2,19 +2,16 @@
 
 ## Ontology walkthrough entry point (2026-09-27)
 
-**Current walkthrough (2026-09-27):** the owner resumed and answered **“7: Approved, but
-make skeletal dog non-aggressive and tameable.”** Item 7 records Collie as the ordinary fallback
-for existing skeleton-only dog encounters and the Skeleton Dog temperament/taming amendment
-in `ontology/domain.md#creature-family`. Preserve items 1–6, encounter frequency/pack sizes,
-existing ordinary selections and settlement protection. No runtime/live JSON/test changes or
-push are authorized by this answer.
+**Current walkthrough (2026-09-27):** owner answer: **“8: Skeletal dogs must behave like normal
+dogs, "skeletal" is just a different dog race; 9: Approved”**. Item 8 records ordinary dog behavior
+in the same encounter/state, not the proposed skeleton-only passivity/taming-provocation exemption.
+Item 7's Collie fallback and tameability stand (`a4c6206`); canonical rules:
+`ontology/domain.md#creature-family`. No runtime/live JSON/test changes or push are authorized.
 
-**Resume at family follow-ups 8–9:** wild retaliation/pack/taming provocation and taming-food
-mapping remain unanswered. Exact recommendations and consequences are in `todo_decide.md §E`
-under “Item 7 — approved with amendment; follow-ups 8–9”. Do not assume passive versus neutral,
-a food pairing or riding permission; do not reopen the Collie fallback or non-aggressive/tameable
-principle. Settlements/inn follows only after these details are reconciled. Verification for
-this item is recorded alongside it in §E, not inherited from the historical checks below.
+**Resume boundary:** item 9's Bubble Gum pairing is approved, awaiting its separate documentation
+application, not another answer. Preserve ordinary dog behavior, existing family/category and
+encounter rules; no new riding permission. Settlements/inn follows once item 9 is recorded.
+Item-to-commit and fresh verification evidence: `todo_decide.md §E`, family items 7–9.
 
 **Historical handoff for items 1–6 (2026-09-27):** the owner requested **“Handoff for the next agent,
 commit+push”**, then answered **“5: Approved; 6: Approved”**. **Family items 1–6 are recorded**
@@ -129,7 +126,7 @@ or next proposal is authorized now.
 The publication changes only four Markdown files, not runtime/live data; these tests do not prove
 implementation of the new policies. Commands and session-local evidence: `todo_decide.md §E`.
 
-**Current walkthrough topic:** **Creature family follow-ups 8–9**, as checkpointed above.
+**Current walkthrough topic:** **Record approved family item 9**, then settlements/inn.
 Aggro items **1–14** are recorded; do not re-ask 13–14. Restart persistence remains a later topic.
 Do not start gameplay/validator/equipment implementation without separate authorization.
 

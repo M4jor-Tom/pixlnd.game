@@ -78,16 +78,17 @@ degradation) are not backlog features.
 - [ ] Alpha `+1..+4` creature multipliers; boss-ification (`gen-boss`); farm animals near settlements;
   night lanterns; midnight reset; possession (S). Humanoid identity beyond the rolled combat role is deferred above.
 - [ ] Creature-family implementation is deferred pending separate authorization (`domain.md#creature-family`,
-  family items 1–7 in §E). Live JSON still gives Skeleton Dog primary `skeletons`, not approved `dogs`;
+  family items 1–8 in §E; item 9 approved, recording next). Live JSON still gives Skeleton Dog primary `skeletons`, not approved `dogs`;
   the 25 missing assignments, descriptive memberships and constraint support await migration/model/loader/
   validator work. No runtime family scaling or family `hp-mult` data exists (`design.enemy-hp.family-mult`
   defaults to 1). No new numerical stat modifier is approved. Skeleton Dog's 1% dog-relative encounter
   chance is independent per individual dog wherever dogs already spawn, permitting mixed packs and
   preserving settlement safety. Item 7 selects Collie for ordinary outcomes in existing skeleton-only
   dog encounters, preserving dog frequency/pack sizes, and makes Skeleton Dog non-aggressive and
-  tameable. Live rosters/traits remain unchanged; retaliation/provocation and food mapping await 8–9
-  before dependent implementation. No probability, new riding permission or extra unrestricted
-  skeletal spawns are implemented or authorized by this documentation approval.
+  tameable. Item 8 specifies normal dog behavior, including ordinary retaliation/pack/taming reactions,
+  not a Skeleton-Dog-only passivity exemption. Live rosters/traits remain unchanged; item 9's shared
+  Bubble Gum pairing is approved, awaiting separate recording. No runtime work, riding permission
+  or extra unrestricted skeletal spawns is authorized by these documentation decisions.
 - [ ] Creatures never despawn except with their zone; no per-zone spawn cap or respawn timer.
   Zone-owned nodes currently disappear on unload; preserving logical threat/order across temporary
   unload/disconnect is approved but unimplemented (`domain.md#ai-behavior`, Aggro 11 in §E).

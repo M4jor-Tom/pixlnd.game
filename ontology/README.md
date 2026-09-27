@@ -27,11 +27,11 @@ slice loop. A green validator proves only its implemented checks, not full ontol
 
 **Aggro batch applied: 1–14/14.** The original twelve and follow-ups 13–14 were approved and
 recorded on 2026-09-27; their former open boundaries are settled.
-**Creature family items 1–7 recorded (2026-09-27):** `domain.md §3.2/§4/§5`;
+**Creature family items 1–8 recorded (2026-09-27):** `domain.md §3.2/§4/§5`;
 **independent 1% per individual dog wherever dogs already spawn**, preserving settlement safety.
-Item 7 selects Collie for skeleton-only encounters' ordinary outcomes and makes Skeleton Dog
-non-aggressive and tameable. Wild retaliation/provocation and taming food remain open in
-follow-ups 8–9 (`todo_decide.md §E`); live data and enforcement remain deferred.
+Collie supplies skeleton-only encounters' ordinary outcomes. Skeleton Dog is a tameable dog
+breed with normal dog behavior, not a special passivity rule. Item 9's shared Bubble Gum pairing
+is approved and awaits separate recording (`todo_decide.md §E`); live data/enforcement remain deferred.
 Gameplay and live JSON remain unchanged; restart persistence stays in its later topic.
 
 ## Decision and build history (from 2026-09-07)

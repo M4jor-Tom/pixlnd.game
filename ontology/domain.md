@@ -476,16 +476,22 @@ ordinary / 1% skeletal; do not add unrestricted Skeleton Dog spawns or new dog l
 Collie's existing traits, including its untameable dungeon-patrol exception, remain unchanged.
 
 **Owner amendment:** Skeleton Dog is **non-aggressive and tameable**, superseding its former
-hostile/untameable policy. Wild Skeleton Dogs do not attack players merely for approaching.
-The response to attacks or pack/taming provocation and the taming food remain unresolved
-(follow-ups 8–9 in §E);
-do not infer passive versus retaliatory behavior or a food pairing. Existing general taming
-eligibility restrictions and settlement protection remain; no riding permission, numerical
-source ID, combat/loot bonus or other species-trait change is granted.
+hostile/untameable policy. Item 8 below clarifies normal dog behavior; item 9's approved food
+pairing awaits its separate documentation application. Existing general taming eligibility
+restrictions and settlement protection remain; no riding permission, numerical source ID,
+combat/loot bonus or other species-trait change is granted.
 
-Documentation only: live rosters/traits still lack this mapping and amendment, and no taming
-food is assigned. Migration, model/loader/validator support and runtime enforcement remain
-separately deferred and unauthorized; hold dependent implementation until 8–9 are resolved.
+**Hybrid family item 8 (owner clarified, 2026-09-27):** Skeleton Dog is a different dog breed,
+not a special behavior category. It follows **normal dog behavior in the same encounter and
+state**, including ordinary aggression/retaliation, pack response and taming reactions. Item 7's
+non-aggression means the ordinary dog's baseline, not unconditional passivity overriding normal
+encounter/provocation rules. The proposed Skeleton-Dog-only immunity to retaliation and to the
+usual taming-induced group hostility is not adopted. Once tamed, normal pet behavior applies.
+The stable species ID, primary `dogs` family, descriptive memberships and independent `undead`
+category remain; “dog race” does not introduce a playable `race` or new species-trait inheritance.
+
+Documentation only: live rosters/traits still lack these decisions. Migration, model/loader/
+validator support and runtime enforcement remain separately deferred and unauthorized.
 
 ### pet
 A tamed creature owned by a player. `A S`
@@ -1255,7 +1261,7 @@ content selection or live data changes are authorized by this contract.
 | c-one-active-pet | at most one pet summoned; one of each pet-food carried | runtime |
 | c-creature-family | primary and descriptive references name defined creature families; at most one primary per creature, consistent with §3.2 approved assignments; without a primary, the family modifier is ×1.0 and other ordinary stat calculations remain; descriptive memberships never supply or stack family stat modifiers, nor imply species-trait inheritance | load+runtime (deferred) |
 | c-skeleton-dog-encounter | Skeleton Dog has an independent 1% chance per individual dog spawn, not per pack, all creatures or a relative species weight; mixed packs are permitted and no quota is guaranteed; applies wherever dogs already spawn, preserving settlement safety; existing skeleton-only dog encounters use Collie for ordinary outcomes, preserving dog frequency/pack sizes and other existing ordinary selections, not extra unrestricted skeletal spawns (§3.2) | generator (deferred) |
-| c-skeleton-dog-taming | wild Skeleton Dogs do not attack players merely for approaching and the species is tameable under existing general eligibility restrictions; response to attacks/pack/taming provocation and food mapping await follow-ups 8–9 (§3.2), not loader defaults; settlement protection remains | runtime+data (deferred) |
+| c-skeleton-dog-taming | Skeleton Dogs follow normal dog behavior for the same encounter/state, including retaliation, pack response and taming reactions, with no skeleton-only passivity exception (§3.2 item 8); the species is tameable under general eligibility restrictions and settlement protection; item 9's approved food pairing awaits separate documentation application | runtime+data (deferred) |
 | c-food-id | pet-food.tames references the creature by stable ID; when its numeric source ID is known, pet-food.subtype == creature.alpha-entity-id (legacy field includes post-alpha IDs; no alpha-range clamp) | load |
 | c-weapon-class | equipping weapon-type/armor material requires matching class (red name otherwise) | runtime |
 | c-hands | 1H ×2 or 1H + shield or one 2H; bracelets need two for full damage | runtime |
@@ -1354,16 +1360,15 @@ This index mirrors the open list in `docs/ROADMAP/todo_decide.md §E`; it does n
 or authorize implementation. Resolve each question before its affected slice.
 Aggro items 1–14, including the two former open follow-ups, are approved and recorded in §3.2
 (2026-09-27; `todo_decide.md §E`); implementation remains deferred.
-Creature family items 1–7 are recorded, including the independent 1% per-dog chance wherever
-dogs already spawn and Collie fallback for skeleton-only encounters. Skeleton Dog is now
-non-aggressive and tameable; retaliation/provocation and food mapping remain open in 8–9.
-Implementation is separately deferred. Do not re-ask approved family assignments, percentage,
-roll unit, habitat scope, Collie fallback or the non-aggressive/tameable principle.
+Creature family items 1–8 are recorded: Skeleton Dog follows normal dog behavior, not a
+skeleton-only passivity exception. Item 9's Bubble Gum pairing is approved and awaits separate
+recording, not another owner decision. The independent 1% per-dog chance, existing habitat scope,
+Collie fallback and tameability stand. Implementation remains separately deferred.
 Threat across server restart stays in the persistence topic below.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Creature families — Skeleton Dog details | Follow-ups 8–9: wild retaliation/pack/taming provocation and taming-food mapping; item 7 approves Collie fallback and non-aggressive, tameable Skeleton Dogs (`todo_decide.md §E`) |
+| Creature families — recording only | Item 9's shared Bubble Gum pairing is approved, awaiting separate documentation application; no unanswered family proposal (`todo_decide.md §E`) |
 | Settlements / inn | whether multiple settlements and paid timed sleep are hybrid targets; keep D22's current one village and free heal/respawn service |
 | Traversal | skill versus global key-item prerequisites for riding/gliding/sailing; climbing spikes versus skill points |
 | Books / formulas | permanence/global scope of hybrid book recipes and duplicate unlock interaction with formulas |

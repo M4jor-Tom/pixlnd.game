@@ -58,8 +58,13 @@ push without authorization.
 - Owner amendment (2026-09-27): item 7's Collie fallback is approved, but Skeleton Dog must
   be non-aggressive and tameable, not retain its old hostile/untameable traits.
 - Rule: apply the explicit exception without reopening the approved mapping or rarity. Do not
-  infer retaliation, taming-provocation behavior, a food pairing or riding permission from
-  “non-aggressive and tameable”; clarify concrete dependencies and defer runtime implementation.
+  infer a food pairing or riding permission from “tameable”; clarify concrete dependencies and
+  defer runtime implementation.
+- Owner correction (2026-09-27, item 8): skeletal dogs behave like normal dogs; “skeletal” is
+  a different dog breed, not a special behavior category. Item 9 separately approves Bubble Gum.
+- Rule: reuse normal dog behavior in the same encounter/state. Do not invent Skeleton-Dog-only
+  pacifism, retaliation or taming-provocation exemptions, or reinterpret “dog race” as a new
+  playable race. Preserve the existing family/category distinctions and separately approved bait.
 
 ## State the denominator of an encounter chance
 
