@@ -388,7 +388,7 @@ A saved hero. `A S`
 | level, xp, skills[11] | A |
 | artifacts | S (level = count) |
 | inventory, equipment, coins, platinum `A` | |
-| known-recipes | A formulas learned; S books per land |
+| known-recipes | hybrid: book-learned recipes stay with this character across lands and sessions (§3.4); A formulas learned; S books per land (reference) |
 | lore-known | S per realm |
 | discovered lands/portals/shrines/flight-points | |
 | pets (cages), active pet, pet slot | |
@@ -949,11 +949,18 @@ slot, food, potions, elixirs, beverages, refining, rings/amulets, water flask).
 
 ### formula
 `A` recipe scroll (item type 2) with +N level; sold by vendors, dropped by tier, on dungeon tables;
-right-click to learn once power suffices. Replaced in S by `book-of-crafting`.
+right-click to learn once power suffices. Historically replaced in S by `book-of-crafting`;
+both sources remain in hybrid.
 
 ### book-of-crafting
 `S` 4 per land (uncommon/rare/epic/legendary), 3–4 recipes each, from hammer-icon missions; only
-recipe source; recipes land-scoped.
+recipe source; recipes land-scoped. These are historical S rules, not hybrid exclusivity or scope.
+
+**Hybrid books/formulas item 1 (owner approved, 2026-09-28):** books and formulas both remain
+in the hybrid game. Recipes learned from books are **permanent for that character across lands
+and sessions**; moving to another land never requires relearning them. This does not decide
+character portability between worlds or grant shared-account knowledge. Crafting materials and
+equipment strength are unchanged. Live-data migration and implementation remain deferred.
 
 ### customization-bench
 Attach `material-cube`s (wood on wood, iron on metal; +0.1 effective level each; 16/32 cap) and
@@ -1200,6 +1207,9 @@ A: `Save/characters.db` (sqlite `blobs(key,value)`; character blob ≈ EntityDat
 S: per-world sqlite (`world_db_database`), Steam Cloud listed. Pets' XP didn't persist in
 multiplayer `A`.
 
+Hybrid book-learned recipe knowledge persists with the character across sessions and lands
+(`book-of-crafting`, item 1); cross-world character portability remains unresolved.
+
 ### slash-command
 → `instances/slash-commands.json`.
 
@@ -1227,6 +1237,7 @@ One row per fact type. Cardinality as `domain → range`.
 | costs | ability | resource | 1→0..n | amount per resource, scoped by ruleset |
 | applies | ability ∪ weapon-type ∪ hazard | status-effect | n→n | |
 | has-moveset | weapon-type | ability (m1, m2) | 1→2 | |
+| knows-recipe | player-character | recipe | n→n | character recipe knowledge (`known-recipes`); hybrid book-learned recipes persist across lands and sessions, not shared-account knowledge |
 | crafted-at | recipe | crafting-station | 1→1 | |
 | consumes | recipe | ingredient ∪ material | 1→n | with counts |
 | produces | recipe | item-type ∪ consumable | 1→1 | |
@@ -1364,6 +1375,7 @@ content selection or live data changes are authorized by this contract.
 | c-cube-cap | upgrades ≤ 16 (1H) / 32 (2H, shield); wood cubes only on wood weapons, iron on metal | load+runtime |
 | c-spirit-level | A: weapon.level − 10 ≤ spirit.level ≤ weapon.level | runtime |
 | c-power-gate | A: item.level ≤ power(player.level) for full strength; formula learn likewise | runtime |
+| c-book-recipe-persistence | hybrid: book-learned recipes remain known to that character across lands and sessions, with no relearning on travel; cross-world character portability remains open (§3.4) | runtime+save-data (deferred) |
 | c-region-lock | DROPPED (D4). S reference: item.land ≠ current land ∧ ¬plus → worn; key items inert | — |
 | c-plus-adjacent | DROPPED (D4). S reference: plus item full stats iff current land adjacent | — |
 | c-gear-global | hybrid: an item's stats are identical in every land; key items and artifacts work everywhere once found | runtime |
@@ -1463,13 +1475,13 @@ chance, existing habitat scope and Collie fallback stand. No unanswered family p
 implementation is separately deferred.
 Settlements/inn items 1–4 are recorded in §3.1 (2026-09-27). Traversal items 1–5 are recorded
 (2026-09-28): training/item gates, corrected 75% Spikes reduction and remaining-cost stacking.
-No presented traversal question remains; books/formulas is next.
+No presented traversal question remains. Books/formulas items 1–3 are approved (2026-09-28):
+item 1 is recorded in §3.4; items 2–3 await recording, not owner answers.
 Live-data migration and implementation remain deferred; cleared dungeon/quest enemy reset
 eligibility stays in world/reset below. Threat across server restart stays in the persistence topic below.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Books / formulas | permanence/global scope of hybrid book recipes and duplicate unlock interaction with formulas |
 | Artifacts | global versus per-traversal-stat diminishing returns; additive versus compounded percentages (D6 numbers and traversal + attack/HP rewards stand) |
 | Assassin ultimate | Camouflage alias versus separately unlocked fourth node (D10/D20 stand) |
 | Wand handedness | two-handed mechanics versus one-handed; provisional data is not a resolution |

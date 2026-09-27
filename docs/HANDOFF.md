@@ -2,25 +2,21 @@
 
 ## Ontology walkthrough entry point (2026-09-28)
 
-**Authorized handoff:** after books/formulas items **1–3** were presented, the owner requested
-**“Handoff, commit, push”**. All three remain **unanswered**; exact proposals and approval/refusal
-consequences are preserved in `todo_decide.md §E`, “Books/formulas — presented but unanswered
-at handoff”. Commit this handoff and push `fix/ontology-reconciliation`, including the five
-traversal decision commits and verification commit `93886e0`, then verify publication and stop.
-This approves no book/formula policy, gameplay, live JSON, tests, model/loader/validator changes
-or merge. No further walkthrough proposals after publication.
+**Books/formulas approvals (2026-09-28):** the owner answered **“1: Approved; 2: Approved;
+3: Approved; When done, handoff, commit, push”**. Item **1** is recorded: book recipes stay
+with that character across lands and sessions. Items **2–3** are approved and await recording,
+not further owner answers: shared recipe knowledge/duplicates and immediate but power-locked
+book recipes. Canonical rules: `ontology/domain.md`; application/evidence: `todo_decide.md §E`.
 
-**Resume boundary: books/formulas items 1–3.** Unanswered: permanent/global book recipes;
-shared recipe knowledge and duplicate handling; immediately recorded but power-locked book
-recipes. Items 2–3 must be reconciled together where recipe knowledge and usability differ.
-Do not silently choose defaults or advance to artifacts. Character portability between worlds
-remains in the later persistence topic.
+**Current boundary:** finish the three separately verified ontology-only commits, then hand off
+for independent review and parent verification. Parent alone publishes after verification; the
+writer does not push. No gameplay, live JSON, tests, model/loader/validator changes or merge.
+No next-topic proposals. Cross-world character portability remains in the later persistence topic.
 
-**Pre-publication checkpoint:** clean `fix/ontology-reconciliation` at `93886e0`; remote
-`d6bbaf7` confirmed with `git ls-remote`. Publish the six local commits plus this handoff, without
-force-push or merge, and verify final remote/local HEAD equality and clean worktree. This is a
-checkpoint, not a publication claim; inspect actual Git state on resumption. Fresh handoff
-verification is recorded separately in §E.
+**Historical unanswered checkpoint (superseded):** `e76921a` preserved the exact proposals
+before the current answers; its pre-publication state was clean `93886e0`, remote `d6bbaf7`.
+The old publication instructions are not fresh Git-state or verification claims. This batch
+started clean at `e76921ae5c2f23b6ee2085b7f14e31ce00766a13` on `fix/ontology-reconciliation`.
 
 **Traversal items 1–5 recorded:** riding requires training + global Reins + a rideable tamed
 pet; gliding/sailing require training + the respective vendor-bought item equipped in the single
@@ -180,7 +176,7 @@ or next proposal is authorized now.
 The publication changes only four Markdown files, not runtime/live data; these tests do not prove
 implementation of the new policies. Commands and session-local evidence: `todo_decide.md §E`.
 
-**Current walkthrough topic: books/formulas items 1–3, presented and unanswered.** Traversal
+**Current walkthrough topic: books/formulas items 1–3 approved; recording in progress.** Traversal
 items **1–5** are recorded and reviewed. Settlements/inn
 items **1–4** and family items **1–9** are recorded.
 Aggro items **1–14** are recorded; do not re-ask 13–14. Restart persistence remains a later topic.

@@ -152,6 +152,10 @@ degradation) are not backlog features.
   identifier, adapter, gem trader. Item 10's native panel capture checks rendering with empty stock;
   the full vendor/stock/trade flow is not visually verified.
 - [ ] No crafting, customization bench.
+- [ ] Books/formulas item 1 (`domain.md#book-of-crafting`, `c-book-recipe-persistence`): persist
+  book-learned recipes with the character across lands/sessions, without relearning on travel.
+  Live-data migration and crafting/save-data implementation remain unauthorized; cross-world
+  character portability is a separate persistence question.
 
 ## Progression (§3.5, slice D19)
 - [x] Skill tree (D20, `game/progression/skill_tree.gd`, `skill_panel.gd` on X): spending, unlock rule, per-point multipliers.

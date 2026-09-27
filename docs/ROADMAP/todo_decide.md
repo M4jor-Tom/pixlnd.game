@@ -130,17 +130,13 @@ The full walkthrough/resumption protocol is in `tasks/lessons.md`; the prompt
 Never propose or implement regional gear power loss in pixlnd, even for Cube World cloning
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
-**Current direction (2026-09-28):** traversal **items 1–5 recorded**, including item **4**'s
-corrected **75%** reduction and item **5**'s separately approved **remaining-cost ×0.25** rule.
-No presented traversal question remains; independent review and parent verification passed
-(`93886e0`, evidence below). **Books/formulas items 1–3 were presented and remain unanswered.**
-The owner requested **“Handoff, commit, push”**: preserve the exact batch below, commit this
-handoff, push `fix/ontology-reconciliation` including the six local traversal/verification commits,
-verify publication and clean state, then stop. No book/formula decision, runtime/live JSON/test
-work, model/loader/validator changes, merge or history rewriting is authorized.
-Settlements/inn items 1–4 and family items 1–9 remain recorded. The 2026-09-27 handoff's
-publication/stop instruction is historical and its unanswered 1–4 status is superseded.
-**Aggro batch applied: 1–14/14**, independently reviewed; restart persistence remains a later topic.
+**Current direction (2026-09-28):** books/formulas **items 1–3 approved**; item 1 is recorded,
+items 2–3 await recording, not owner answers. Exact approval and application status are in the
+books batch below. The owner requested handoff, commit and push; the writer records one
+ontology-only commit per item, then hands off for independent review and parent verification.
+Parent alone publishes after verification; no push by the writer or next-topic proposals.
+No gameplay, live JSON, tests, model/loader/validator changes, merge or history rewriting.
+Traversal items 1–5, settlements/inn 1–4, family 1–9 and aggro 1–14 remain recorded.
 Older publication instructions and hashes below are historical checkpoints.
 
 **Prior checkpoint (2026-09-19; references from the earlier rebase):** items 1–2 are applied,
@@ -565,13 +561,8 @@ D1–D26, all walkthrough approvals and remaining open questions.
 ### Open — decide before the named slice
 
 Traversal items 1–5 are recorded (item 4 corrected) and reviewed; evidence below.
-Books/formulas items 1–3 are presented and unanswered; remaining-cost stacking is settled.
+Books/formulas items 1–3 are approved; recording status is below, not an open design question.
 
-- [ ] **Books and formulas — items 1–3 unanswered:** permanent/global book recipes; shared
-  recipe knowledge and duplicates; immediate recording but power-locked usability. Exact proposals
-  below; items 2–3 interact where knowledge and usability differ. Before crafting/save-data;
-  sources: `domain.md#book-of-crafting`, `#formula`, `#power-gate`,
-  `recipes.json#recipe-sources`, `rulesets.json#ruleset-hybrid.flags`.
 - [ ] **Artifact accumulation:** diminishing returns counted globally or per traversal stat;
   percentages additive or compounded? Before artifacts; sources: `generators.json#design.artifact`,
   `key-items.json#artifact`. D6 constants and traversal + attack + HP bonuses remain settled.
@@ -599,61 +590,38 @@ Books/formulas items 1–3 are presented and unanswered; remaining-cost stacking
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
 
-### Books/formulas — presented but unanswered at handoff (2026-09-28)
+### Books/formulas — approvals and recording (2026-09-28)
 
-**Status:** all three items were presented; none was approved or refused. The owner's
-**“Handoff, commit, push”** authorizes publication and a stop, not these policies. Resume this
-batch, not artifacts. Preserve items 2–3's knowledge/usability interaction for consistency checks;
-do not decide it through a loader or UI default. Exact presented batch follows (heading depth adjusted).
+**Owner answer:** “1: Approved; 2: Approved; 3: Approved; When done, handoff, commit, push”.
+Documentation only; both sources remain in hybrid, with no crafting-material or equipment-strength
+change. Knowledge and usability must remain distinct when recording items 2–3.
 
-Both remain part of the hybrid game. These proposals concern recipe knowledge, not changes to crafting materials or equipment strength.
+1. [x] **Permanent/global book recipes:** recorded in `domain.md#book-of-crafting`,
+   `#player-character`, `#save-data`, `knows-recipe` / `c-book-recipe-persistence`.
+   Character knowledge survives lands and sessions; cross-world portability remains in persistence.
+2. [ ] **Approved, awaiting recording — shared recipe collection:** books teach only unknown
+   recipes, with no rerolls or compensation; an already-known formula stays unconsumed.
+3. [ ] **Approved, awaiting recording — book power gates:** books record immediately;
+   above-power recipes stay visibly locked until their requirement is reached. Formula learning
+   retains its existing power requirement; duplicate knowledge cannot bypass a crafting gate.
 
-#### 1. Book recipes are permanent and global
+Per-item verification and commit mapping follow as recording completes. Independent review,
+parent verification and publication are pending. Implementation debt: `todo_implement.md`.
+No shared-account knowledge, multiplayer reward allocation, recipe-generation/identity defaults
+or cross-world portability is chosen.
 
-**Recommendation:** Recipes learned from books stay with that character across lands and sessions. Moving elsewhere never requires relearning them. Character portability between worlds remains a later question.
+**Sources inspected:** `domain.md#formula`, `#book-of-crafting`, `#power-gate`, `#player-character`,
+§4/§5; `instances/recipes.json#recipe-sources`, `key-items.json#books-of-crafting`,
+`rulesets.json#ruleset-hybrid.flags`, `research/research_items.md §3.3`.
+`game/items/shop.gd` recognizes formula prices, but crafting/learning/save-data remain deferred.
+A/S descriptions are historical provenance, not hybrid policy; live data is unchanged.
 
-##### Approval versus Refusing
-- **Approval:** Finding a book permanently expands your crafting choices everywhere.
-- **Refusing:** Book-recipe permanence and geographic scope remain unresolved.
+**Historical unanswered handoff (superseded):** `e76921a` preserved the three exact proposals
+and Approval versus Refusing consequences, before these answers. Its pre-publication checkpoint
+was clean `93886e0`, remote `d6bbaf7`; it authorized the five traversal commits, verification
+commit and that handoff. It does not supply fresh verification for this books recording.
 
-#### 2. Books and formulas share the same recipe collection
-
-**Recommendation:** Learning the same recipe twice grants nothing extra. A book teaches only its unknown recipes, without rerolling known ones or granting compensation. Attempting to learn an already-known formula leaves the scroll unconsumed.
-
-Example: a book containing four recipes, three already known, teaches one new recipe.
-
-##### Approval versus Refusing
-- **Approval:** Either source can teach a recipe, but overlap can make later books less rewarding.
-- **Refusing:** Duplicate handling remains unresolved; neither compensation nor separate source-specific unlocks is automatically approved.
-
-#### 3. Books do not bypass power progression
-
-**Settled:** Formula learning already requires sufficient character power.
-
-**Recommendation:** Books can record recipes immediately, but recipes above your power remain visibly locked until you reach their requirement. Formula learning keeps its existing requirement.
-
-Example: discovering a higher-power recipe gives you a future crafting goal, not immediate access to crafting it.
-
-##### Approval versus Refusing
-- **Approval:** Books remain useful early discoveries without skipping recipe progression.
-- **Refusing:** How book recipes interact with power requirements remains unresolved; immediate unrestricted crafting is not automatically approved.
-
-Please answer **`1: …; 2: …; 3: …`**. These are ontology-only proposals.
-
-**Source/resumption paths:** `ontology/domain.md#formula`, `#book-of-crafting`, `#power-gate`,
-`#player-character`, §5 `c-power-gate`; `ontology/instances/recipes.json#recipe-sources`,
-`key-items.json#books-of-crafting`, `rulesets.json#ruleset-hybrid.flags`,
-`research/research_items.md` crafting/recipe-source sections. Current `game/items/shop.gd`
-recognizes formula prices, but crafting/recipe-learning/save-data systems remain deferred in
-`todo_implement.md`. Historical A/S descriptions and active hybrid inclusion do not decide
-these unanswered merges; no gameplay, live JSON or validator work is approved.
-
-**Pre-publication checkpoint:** clean `fix/ontology-reconciliation` at `93886e0`; remote
-`d6bbaf7` confirmed with `git ls-remote`. Publish the five traversal item commits listed below,
-verification commit `93886e0` and this handoff. Verify final remote/local HEAD equality and clean
-worktree afterward; no force-push, merge or further walkthrough proposals.
-
-**Handoff verification:** exact proposal/consequence comparison (heading depth ignored),
+**Historical handoff verification (before books approvals):** exact proposal/consequence comparison (heading depth ignored),
 two-file scope and `git diff --check` passed. Fresh bounded ontology validation and headless
 boot exited 0 (`ontology valid`, normal main-scene startup). Commands:
 `timeout 150 nix develop -c godot --headless -s ontology/validate.gd`;
@@ -709,7 +677,7 @@ percentage points. Illustrative only: a skill-adjusted 8 stamina (from 10) becom
 0.5. Points retain their benefit with Spikes; Spikes do not turn a positive remaining cost into
 zero by themselves. Canonical rule: `domain.md#key-item` / `#skill-tree` / `c-climbing`.
 No skill reduction curve/floor or artifact-combination rule is inferred. All five traversal
-items are reconciled; books/formulas items 1–3 remain unanswered above.
+items are reconciled; subsequent books/formulas approvals are recorded above.
 
 #### Items 1–4 — recorded principles
 
