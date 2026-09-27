@@ -2,20 +2,19 @@
 
 ## Ontology walkthrough entry point (2026-09-27)
 
-**Current authorization (2026-09-27):** record each approved creature-family item in its own
-ontology-documentation commit on `fix/ontology-reconciliation`. **Items 1–4 are recorded**;
-item 4 is amended to a **1% encounter chance relative to dog spawns**. No runtime, live JSON,
-tests, push or merge are authorized.
+**Current authorization (2026-09-27):** the owner requested **“Handoff for the next agent,
+commit+push”**, then answered **“5: Approved; 6: Approved”**. Record each approved family item
+in its own ontology-documentation commit on `fix/ontology-reconciliation`, then hand off and stop.
+**Items 1–5 are recorded; item 6 awaits recording.** Parent owns the final handoff commit and
+publication after fresh review; no push has occurred in this pass. No runtime, live JSON, tests,
+merge or new proposals are authorized.
 Canonical rules: `ontology/domain.md#creature-family`; application/checks: `todo_decide.md §E`.
 
-**Resume:** **Creature family follow-ups 5–6 — per-dog versus per-pack roll and habitat scope,
-presented but unanswered.** Preserve their exact §E proposals and alternatives; ask numbered
-answers together. Do not re-ask the approved dogs primary family or 1% dog-relative probability,
-skip to settlements or reopen aggro. The old relative-weight proposal is superseded, not approved;
-dependent generation/data changes await clarification and separate implementation permission.
-
-**Historical handoff request (earlier 2026-09-27):** the owner authorized commit + push of the
-preceding reconciliation checkpoint, then a stop. That is not today's push authorization.
+**Remaining family boundary:** ordinary-dog mapping for existing skeleton-only rosters is
+unpresented and unresolved, not chosen by approvals 5–6. Next agent inspects canonical candidates
+and asks only where choices remain; do not reopen items 1–6. Settlements/inn follows this boundary.
+The old relative-weight proposal is superseded, not approved; generation/data work remains
+separately unauthorized.
 
 **Aggro batch applied: 1–14/14.** Fourteen separate ontology-only commits `ba3d39e` through
 `7e17d5e`; prior workflow update `d59396d`. Fresh independent review found no recording issues;
@@ -100,7 +99,7 @@ or next proposal is authorized now.
 The publication changes only four Markdown files, not runtime/live data; these tests do not prove
 implementation of the new policies. Commands and session-local evidence: `todo_decide.md §E`.
 
-**Current walkthrough topic:** **Creature family follow-ups 5–6**, as checkpointed above.
+**Current walkthrough topic:** **Creature family roster mapping**, as checkpointed above.
 Aggro items **1–14** are recorded; do not re-ask 13–14. Restart persistence remains a later topic.
 Do not start gameplay/validator/equipment implementation without separate authorization.
 

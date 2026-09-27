@@ -130,12 +130,13 @@ The full walkthrough/resumption protocol is in `tasks/lessons.md`; the prompt
 Never propose or implement regional gear power loss in pixlnd, even for Cube World cloning
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
-**Current resume direction (2026-09-27):** **Creature family items 1–4 approved and recorded**,
-item 1 with Skeleton Dog primary `dogs`, and item 4 amended to **1% relative to dog spawns**,
-not relative species-selection weight. Resume at **family follow-ups 5–6 — individual versus
-pack roll and habitat scope, presented but unanswered**, not settlements or approved items 1–4.
-No runtime/live JSON/test changes, push or merge are authorized. The earlier 2026-09-27 handoff/
-commit + push request is historical, not current publication permission.
+**Current direction (2026-09-27):** the owner requested **“Handoff for the next agent, commit+push”**,
+then answered **“5: Approved; 6: Approved”**. Family items 1–5 are recorded; record item 6 in its
+own ontology-only commit, then prepare the handoff and stop. Parent owns the final handoff commit
+and publication after fresh review; no push has occurred in this pass. No runtime/live JSON/test
+changes, merge or new proposals are authorized. Items 5–6 are answered, not pending questions.
+Ordinary-dog mapping for skeleton-only rosters remains unpresented; settlements/inn follows that
+boundary. Do not reopen approved family decisions.
 **Aggro batch applied: 1–14/14**, independently reviewed; restart persistence remains a later topic.
 Older publication instructions and hashes below are historical checkpoints.
 
@@ -560,9 +561,10 @@ D1–D26, all walkthrough approvals and remaining open questions.
 
 ### Open — decide before the named slice
 
-- [ ] **Creature family follow-ups 5–6 — Skeleton Dog encounter scope:** individual versus pack
-  roll and habitat scope remain unanswered below. The 1% dog-relative chance is approved;
-  dependent application and all implementation remain deferred.
+- [ ] **Creature family roster mapping — not yet presented:** existing skeleton-only dog rosters
+  need ordinary-dog candidates for non-skeletal outcomes before generation. Approvals 5–6 choose
+  no replacement pool or dog-frequency change. Inspect canonical candidates next session and ask
+  only where choices remain; do not reopen items 1–6. Runtime migration is separate deferred work.
 - [ ] **Hybrid settlements / inn services:** are multiple settlements and inn cost 10 future
   targets, or stale flags? Is paid timed sleep distinct from D22's free heal/respawn service?
   Before changing settlement count or adding sleep; sources: `rulesets.json#ruleset-hybrid.flags`,
@@ -600,19 +602,21 @@ D1–D26, all walkthrough approvals and remaining open questions.
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
 
-### Creature family membership — approvals and pending follow-up (2026-09-27)
+### Creature family membership — approvals and remaining roster mapping (2026-09-27)
 
 **Owner answer:** “1: Approved, but make the skeletal dog a (rare if rarity is defineable) dog as
 individual family, not a skeleton; 2: Approved; 3: Approved”. Approval covers documentation only;
 live data, model/loader/validator and gameplay remain unchanged. The later rarity amendment is
-recorded in item 4 below; only its roll unit and habitat scope await follow-ups 5–6.
+recorded in item 4 below; the owner subsequently approved both follow-ups 5–6.
 
 | item | documentation application | commit |
 |---|---|---|
 | 1 | Recorded: primary/descriptive distinction and owner amendment; `domain.md §3.2/§4/§5` | `dd5d9f8` |
 | 2 | Recorded: authoritative 25-assignment table; `domain.md#creature-family` | `3da743c` |
 | 3 | Recorded: unassigned creatures retain ordinary stats with ×1.0 family modifier; `domain.md §3.2/§5` | `b2db99b` |
-| 4 | Recorded with amendment: 1% encounter chance relative to dog spawns; roll unit/habitat scope unresolved; `domain.md §3.2/§5` | `docs(ontology): record dog-relative skeletal encounter chance` |
+| 4 | Recorded with amendment: 1% encounter chance relative to dog spawns; `domain.md §3.2/§5` | `c4dd5fe` |
+| 5 | Recorded: independent per-individual-dog roll; mixed packs permitted; `domain.md §3.2/§5` | `docs(ontology): record independent skeletal roll per dog` |
+| 6 | Approved; habitat scope awaiting recording | — |
 
 **Family item 1 verification:** `/simplify` removed superseded question/refusal prose;
 writer ponytail-review found no further cuts. `git diff --check` and
@@ -652,28 +656,30 @@ found no further cuts. `git diff --check` and the bounded ontology validator pas
 valid`, exit 0; `/tmp/pixlnd-family-item4-validator.log`). Only six Markdown files changed;
 loaded data and runtime are unchanged. Validation does not prove the documented chance is implemented.
 
-#### Follow-ups 5–6 — presented but unanswered
+#### Follow-ups 5–6 — approved (2026-09-27)
 
-These clarify application of the approved 1%; they do not reopen the percentage or dog family.
+**Owner answer:** “5: Approved; 6: Approved”. These clarify application of the approved 1%;
+they do not reopen the percentage or dog family.
 Current generator selects one species per group, then creates the group's individuals. Current
 Skeleton Dog habitats are dungeons, dark woods and deadlands; other dogs also occur in ordinary
 biomes and settlements. The live deadlands roster has Skeleton Dog as its only dog candidate.
 No new species pools, habitat assignments or runtime changes are authorized by item 4.
 
-5. **Roll per dog or per pack?** Recommend an independent 1% roll per individual dog, not one
-   roll turning an entire pack skeletal. A pack could contain one skeletal dog among ordinary
-   dogs. **Approval versus Refusing:** Approval makes individual dogs the probability unit;
-   Refusing requires choosing the pack-level rule or another unit, without changing the 1%.
-6. **Which dog locations count?** Recommend allowing the rare variant wherever dogs already
-   spawn, while preserving existing settlement safety. This could reveal a skeletal dog in an
-   ordinary dog habitat, not only its old spooky habitats. The narrower alternative is 1% of
-   dog spawns only in dungeons/dark woods/deadlands. **Approval versus Refusing:** Approval
-   extends eligible locations to existing dog-spawn locations; Refusing leaves the habitat scope
-   to clarify, not automatically the narrower alternative. Existing skeleton-only rosters must
-   be reconciled with the chosen scope before generation; no ordinary-dog replacement pool is
-   chosen here.
+5. [x] **Independent roll per dog — approved and recorded:** each individual dog has an
+   independent 1% chance; a pack may mix ordinary and skeletal dogs. Canonical rule:
+   `domain.md#creature-family` / `c-skeleton-dog-encounter`. No per-species weighting or quota.
+6. **Habitat scope — approved, awaiting recording:** allow the rare variant wherever dogs already
+   spawn, preserving existing settlement safety, rather than only dungeons/dark woods/deadlands.
+   Existing skeleton-only rosters must be reconciled before generation; no ordinary-dog
+   replacement pool is chosen here.
 
-Ask for numbered **5–6: approve, refuse or amend**. Hold dependent application until clarified.
+No presented family questions remain unanswered. Record item 6 next; ordinary-dog roster
+mapping is a separate unpresented boundary, not authorization to invent a pool.
+
+**Item 5 verification:** `/simplify` removed superseded question/refusal prose; writer
+ponytail-review found no further cuts. `git diff --check` and the bounded ontology validator
+passed (`ontology valid`, exit 0). Evidence: `/tmp/pixlnd-family-handoff-20260927/item-5-*`.
+Only permitted Markdown records changed; loaded-data checks do not prove runtime compliance.
 
 ### Reconciliation work — application checklist
 
@@ -1172,7 +1178,7 @@ commit entries and confirmed the clean worktree. Review artifact (session-local)
 `~/.pi-game-dev/sessions/--home-theta-repos-pixlnd--/subagent-artifacts/outputs/0c1a31b5-eb56-479b-b6d8-7576cc05dddc/aggro/final-review.md`.
 No fresh gameplay, visual or networking tests are claimed. At that historical checkpoint,
 publication was requested and the three creature-family proposals were unanswered; their
-subsequent approvals and current no-push scope are recorded above.
+subsequent approvals and current handoff/publication authorization are recorded above.
 
 **Audit verification baseline (not proof of consistency):** `ontology/validate.gd`,
 `game/items/test_items.gd`, `game/combat/test_defence.gd` and
