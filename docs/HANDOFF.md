@@ -5,7 +5,7 @@
 **Current authorization (2026-09-27):** the owner requested **“Handoff for the next agent,
 commit+push”**, then answered **“5: Approved; 6: Approved”**. Record each approved family item
 in its own ontology-documentation commit on `fix/ontology-reconciliation`, then hand off and stop.
-**Items 1–5 are recorded; item 6 awaits recording.** Parent owns the final handoff commit and
+**Items 1–6 are recorded.** Parent owns the final handoff commit and
 publication after fresh review; no push has occurred in this pass. No runtime, live JSON, tests,
 merge or new proposals are authorized.
 Canonical rules: `ontology/domain.md#creature-family`; application/checks: `todo_decide.md §E`.

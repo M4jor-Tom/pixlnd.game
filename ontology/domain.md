@@ -424,9 +424,10 @@ primary assignments or automatic species-trait inheritance.
 
 **Skeleton Dog (`skeleton-dog`) has primary family `dogs`, not `skeletons`.** It retains descriptive
 membership in both dogs and skeletons; its `undead` category is independent and unchanged.
-Other existing primary assignments remain. This changes no taming, abilities, drops, hostility,
-habitats or pack aggro, and introduces no numerical family modifier. Encounter rarity is a
-separate decision below, not a combat/loot tier.
+Other existing primary assignments remain. The family assignment itself changes no taming,
+abilities, drops, hostility, habitats or pack aggro, and introduces no numerical family modifier.
+Items 4–6 below separately decide encounter rarity and extend variant habitat permission,
+not combat/loot tiers.
 
 Documentation only: live `creatures.json` still assigns Skeleton Dog to `skeletons`; migration,
 model/loader/validator support and runtime family scaling remain deferred and unauthorized.
@@ -459,8 +460,18 @@ It grants no extra combat strength or loot tier.
 **Hybrid family item 5 (owner approved, 2026-09-27):** roll the 1% chance independently for
 **each individual dog**, not once per pack. Packs may mix ordinary and skeletal dogs. The
 denominator remains dog spawns, with no per-species weighting or guaranteed quota.
-Item 6's approved habitat scope awaits recording; no replacement pool is chosen here.
-Dependent generation/data changes still require separate implementation authorization.
+
+**Hybrid family item 6 (owner approved, 2026-09-27):** apply the rare dog variant **wherever
+dogs already spawn**, not only Skeleton Dog's former dungeons/dark woods/deadlands habitats.
+Preserve existing settlement safety (`c-hostile-in-city`); this does not make protected town
+inhabitants attackable. This habitat permission changes no species' abilities, taming, drops,
+hostility, combat/loot tiers or pack aggro.
+
+Existing skeleton-only dog rosters must be reconciled before generation: the live deadlands
+roster has no ordinary-dog candidate. **No ordinary-dog replacement pool is chosen here.**
+This does not authorize changing dog frequency or retaining unrestricted Skeleton Dog spawns
+alongside the 1% rule. Ordinary-dog outcome mapping remains unpresented and unresolved;
+implementation/migration/enforcement are separately deferred and unauthorized.
 
 ### pet
 A tamed creature owned by a player. `A S`
@@ -1229,7 +1240,7 @@ content selection or live data changes are authorized by this contract.
 | c-spec-of-class | specialization.class == character.class; player starts as spec index 0 | load |
 | c-one-active-pet | at most one pet summoned; one of each pet-food carried | runtime |
 | c-creature-family | primary and descriptive references name defined creature families; at most one primary per creature, consistent with §3.2 approved assignments; without a primary, the family modifier is ×1.0 and other ordinary stat calculations remain; descriptive memberships never supply or stack family stat modifiers, nor imply species-trait inheritance | load+runtime (deferred) |
-| c-skeleton-dog-encounter | Skeleton Dog has an independent 1% chance per individual dog spawn, not per pack, all creatures or a relative species weight; mixed packs are permitted and no quota is guaranteed (§3.2); item 6's approved habitat scope awaits recording before enforcement | generator (deferred) |
+| c-skeleton-dog-encounter | Skeleton Dog has an independent 1% chance per individual dog spawn, not per pack, all creatures or a relative species weight; mixed packs are permitted and no quota is guaranteed; applies wherever dogs already spawn, preserving settlement safety; existing skeleton-only dog rosters require ordinary-dog outcome mapping before generation, not extra unrestricted skeletal spawns (§3.2) | generator (deferred) |
 | c-food-id | pet-food.tames references the creature by stable ID; when its numeric source ID is known, pet-food.subtype == creature.alpha-entity-id (legacy field includes post-alpha IDs; no alpha-range clamp) | load |
 | c-weapon-class | equipping weapon-type/armor material requires matching class (red name otherwise) | runtime |
 | c-hands | 1H ×2 or 1H + shield or one 2H; bracelets need two for full damage | runtime |
@@ -1328,8 +1339,9 @@ This index mirrors the open list in `docs/ROADMAP/todo_decide.md §E`; it does n
 or authorize implementation. Resolve each question before its affected slice.
 Aggro items 1–14, including the two former open follow-ups, are approved and recorded in §3.2
 (2026-09-27; `todo_decide.md §E`); implementation remains deferred.
-Creature family items 1–5 are approved and recorded, including the independent 1% per-dog
-encounter chance; item 6's habitat approval awaits recording. Implementation remains deferred.
+Creature family items 1–6 are approved and recorded, including the independent 1% per-dog
+chance wherever dogs already spawn, preserving settlement safety. Ordinary-dog outcome mapping
+for skeleton-only rosters remains unpresented; implementation is separately deferred.
 Do not re-ask the approved family assignments, percentage, roll unit or habitat scope.
 Threat across server restart stays in the persistence topic below.
 

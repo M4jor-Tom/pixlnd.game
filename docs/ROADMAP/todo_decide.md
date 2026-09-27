@@ -131,8 +131,8 @@ Never propose or implement regional gear power loss in pixlnd, even for Cube Wor
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
 **Current direction (2026-09-27):** the owner requested **“Handoff for the next agent, commit+push”**,
-then answered **“5: Approved; 6: Approved”**. Family items 1–5 are recorded; record item 6 in its
-own ontology-only commit, then prepare the handoff and stop. Parent owns the final handoff commit
+then answered **“5: Approved; 6: Approved”**. Family items 1–6 are recorded in separate
+ontology-only commits; prepare the handoff and stop. Parent owns the final handoff commit
 and publication after fresh review; no push has occurred in this pass. No runtime/live JSON/test
 changes, merge or new proposals are authorized. Items 5–6 are answered, not pending questions.
 Ordinary-dog mapping for skeleton-only rosters remains unpresented; settlements/inn follows that
@@ -615,8 +615,8 @@ recorded in item 4 below; the owner subsequently approved both follow-ups 5–6.
 | 2 | Recorded: authoritative 25-assignment table; `domain.md#creature-family` | `3da743c` |
 | 3 | Recorded: unassigned creatures retain ordinary stats with ×1.0 family modifier; `domain.md §3.2/§5` | `b2db99b` |
 | 4 | Recorded with amendment: 1% encounter chance relative to dog spawns; `domain.md §3.2/§5` | `c4dd5fe` |
-| 5 | Recorded: independent per-individual-dog roll; mixed packs permitted; `domain.md §3.2/§5` | `docs(ontology): record independent skeletal roll per dog` |
-| 6 | Approved; habitat scope awaiting recording | — |
+| 5 | Recorded: independent per-individual-dog roll; mixed packs permitted; `domain.md §3.2/§5` | `7d8b86c` |
+| 6 | Recorded: wherever dogs already spawn, preserving settlement safety; `domain.md §3.2/§5` | `docs(ontology): record rare dog variant habitat scope` |
 
 **Family item 1 verification:** `/simplify` removed superseded question/refusal prose;
 writer ponytail-review found no further cuts. `git diff --check` and
@@ -660,26 +660,34 @@ loaded data and runtime are unchanged. Validation does not prove the documented 
 
 **Owner answer:** “5: Approved; 6: Approved”. These clarify application of the approved 1%;
 they do not reopen the percentage or dog family.
-Current generator selects one species per group, then creates the group's individuals. Current
-Skeleton Dog habitats are dungeons, dark woods and deadlands; other dogs also occur in ordinary
-biomes and settlements. The live deadlands roster has Skeleton Dog as its only dog candidate.
-No new species pools, habitat assignments or runtime changes are authorized by item 4.
+Live data/runtime still select one species per group and retain Skeleton Dog's old habitats
+(dungeons, dark woods and deadlands); other dogs also occur in ordinary biomes and settlements.
+The live deadlands roster has Skeleton Dog as its only dog candidate. These are migration gaps,
+not exceptions to the approved rule.
 
 5. [x] **Independent roll per dog — approved and recorded:** each individual dog has an
    independent 1% chance; a pack may mix ordinary and skeletal dogs. Canonical rule:
    `domain.md#creature-family` / `c-skeleton-dog-encounter`. No per-species weighting or quota.
-6. **Habitat scope — approved, awaiting recording:** allow the rare variant wherever dogs already
+6. [x] **Habitat scope — approved and recorded:** allow the rare variant wherever dogs already
    spawn, preserving existing settlement safety, rather than only dungeons/dark woods/deadlands.
    Existing skeleton-only rosters must be reconciled before generation; no ordinary-dog
    replacement pool is chosen here.
 
-No presented family questions remain unanswered. Record item 6 next; ordinary-dog roster
-mapping is a separate unpresented boundary, not authorization to invent a pool.
+No presented family questions remain unanswered. Ordinary-dog roster mapping is a separate
+unpresented boundary: inspect canonical candidates next session and ask only where choices
+remain, without reopening 1–6. No pool, dog-frequency change or extra unrestricted Skeleton Dog
+spawns are approved. Settlements/inn follows this boundary; migration/enforcement are deferred
+implementation, not unanswered design. No fresh proposal is authorized during this handoff.
 
 **Item 5 verification:** `/simplify` removed superseded question/refusal prose; writer
 ponytail-review found no further cuts. `git diff --check` and the bounded ontology validator
 passed (`ontology valid`, exit 0). Evidence: `/tmp/pixlnd-family-handoff-20260927/item-5-*`.
 Only permitted Markdown records changed; loaded-data checks do not prove runtime compliance.
+
+**Item 6 verification:** `/simplify` removed repeated primary/category prose and a duplicate
+constraint reference; writer ponytail-review found no further cuts. The same diff check and
+bounded ontology validator passed (`ontology valid`, exit 0). Evidence: `item-6-*` in the same
+directory. Only permitted Markdown records changed; no live roster or runtime migration.
 
 ### Reconciliation work — application checklist
 

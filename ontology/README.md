@@ -27,10 +27,10 @@ slice loop. A green validator proves only its implemented checks, not full ontol
 
 **Aggro batch applied: 1–14/14.** The original twelve and follow-ups 13–14 were approved and
 recorded on 2026-09-27; their former open boundaries are settled.
-**Creature family items 1–5 approved and recorded (2026-09-27):** `domain.md §3.2/§4/§5`;
-the **1% dog-relative chance is independent per individual dog**, not a species weight or pack roll.
-Item 6's habitat approval awaits recording; ordinary-dog mapping for skeleton-only rosters remains
-unresolved (`todo_decide.md §E`). Live family data and enforcement deliberately remain deferred.
+**Creature family items 1–6 approved and recorded (2026-09-27):** `domain.md §3.2/§4/§5`;
+**independent 1% per individual dog wherever dogs already spawn**, preserving settlement safety.
+Ordinary-dog mapping for skeleton-only rosters remains unpresented and unresolved
+(`todo_decide.md §E`); live family data and enforcement deliberately remain deferred.
 Gameplay and live JSON remain unchanged; restart persistence stays in its later topic.
 
 ## Decision and build history (from 2026-09-07)

@@ -78,12 +78,14 @@ degradation) are not backlog features.
 - [ ] Alpha `+1..+4` creature multipliers; boss-ification (`gen-boss`); farm animals near settlements;
   night lanterns; midnight reset; possession (S). Humanoid identity beyond the rolled combat role is deferred above.
 - [ ] Creature-family implementation is deferred pending separate authorization (`domain.md#creature-family`,
-  family items 1–5 recorded in §E; item 6 approved, awaiting recording). Live JSON still gives Skeleton Dog primary `skeletons`, not approved `dogs`;
+  family items 1–6 in §E). Live JSON still gives Skeleton Dog primary `skeletons`, not approved `dogs`;
   the 25 missing assignments, descriptive memberships and constraint support await migration/model/loader/
   validator work. No runtime family scaling or family `hp-mult` data exists (`design.enemy-hp.family-mult`
   defaults to 1). No new numerical stat modifier is approved. Skeleton Dog's 1% dog-relative encounter
-  chance is independent per individual dog, permitting mixed packs. Necessary ordinary-dog mapping
-  for skeleton-only rosters precedes dependent generation/data work. No probability is implemented.
+  chance is independent per individual dog wherever dogs already spawn, permitting mixed packs and
+  preserving settlement safety. Ordinary-dog outcome mapping for skeleton-only rosters is still
+  unresolved (§E), not permission to invent a pool, change dog frequency or keep extra unrestricted
+  skeletal spawns. No probability is implemented.
 - [ ] Creatures never despawn except with their zone; no per-zone spawn cap or respawn timer.
   Zone-owned nodes currently disappear on unload; preserving logical threat/order across temporary
   unload/disconnect is approved but unimplemented (`domain.md#ai-behavior`, Aggro 11 in §E).
