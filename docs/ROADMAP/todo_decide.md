@@ -130,10 +130,10 @@ The full walkthrough/resumption protocol is in `tasks/lessons.md`; the prompt
 Never propose or implement regional gear power loss in pixlnd, even for Cube World cloning
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
-**Current resume direction (2026-09-27):** **Creature family items 1–3 approved**, item 1 with
-Skeleton Dog primary `dogs`, not `skeletons`. Record each as a separate documentation commit;
-all three are recorded below. Resume at **family follow-up 4,
-Skeleton Dog encounter rarity — presented but unanswered**, not settlements or approved items 1–3.
+**Current resume direction (2026-09-27):** **Creature family items 1–4 approved and recorded**,
+item 1 with Skeleton Dog primary `dogs`, and item 4 amended to **1% relative to dog spawns**,
+not relative species-selection weight. Resume at **family follow-ups 5–6 — individual versus
+pack roll and habitat scope, presented but unanswered**, not settlements or approved items 1–4.
 No runtime/live JSON/test changes, push or merge are authorized. The earlier 2026-09-27 handoff/
 commit + push request is historical, not current publication permission.
 **Aggro batch applied: 1–14/14**, independently reviewed; restart persistence remains a later topic.
@@ -560,8 +560,9 @@ D1–D26, all walkthrough approvals and remaining open questions.
 
 ### Open — decide before the named slice
 
-- [ ] **Creature family follow-up 4 — Skeleton Dog encounter rarity:** presented but unanswered
-  below. Items 1–3 are approved, not open design questions; implementation remains deferred.
+- [ ] **Creature family follow-ups 5–6 — Skeleton Dog encounter scope:** individual versus pack
+  roll and habitat scope remain unanswered below. The 1% dog-relative chance is approved;
+  dependent application and all implementation remain deferred.
 - [ ] **Hybrid settlements / inn services:** are multiple settlements and inn cost 10 future
   targets, or stale flags? Is paid timed sleep distinct from D22's free heal/respawn service?
   Before changing settlement count or adding sleep; sources: `rulesets.json#ruleset-hybrid.flags`,
@@ -603,13 +604,15 @@ D1–D26, all walkthrough approvals and remaining open questions.
 
 **Owner answer:** “1: Approved, but make the skeletal dog a (rare if rarity is defineable) dog as
 individual family, not a skeleton; 2: Approved; 3: Approved”. Approval covers documentation only;
-live data, model/loader/validator and gameplay remain unchanged. Conditional rarity awaits item 4.
+live data, model/loader/validator and gameplay remain unchanged. The later rarity amendment is
+recorded in item 4 below; only its roll unit and habitat scope await follow-ups 5–6.
 
 | item | documentation application | commit |
 |---|---|---|
 | 1 | Recorded: primary/descriptive distinction and owner amendment; `domain.md §3.2/§4/§5` | `dd5d9f8` |
 | 2 | Recorded: authoritative 25-assignment table; `domain.md#creature-family` | `3da743c` |
-| 3 | Recorded: unassigned creatures retain ordinary stats with ×1.0 family modifier; `domain.md §3.2/§5` | `docs(ontology): record unassigned creature family policy` |
+| 3 | Recorded: unassigned creatures retain ordinary stats with ×1.0 family modifier; `domain.md §3.2/§5` | `b2db99b` |
+| 4 | Recorded with amendment: 1% encounter chance relative to dog spawns; roll unit/habitat scope unresolved; `domain.md §3.2/§5` | `docs(ontology): record dog-relative skeletal encounter chance` |
 
 **Family item 1 verification:** `/simplify` removed superseded question/refusal prose;
 writer ponytail-review found no further cuts. `git diff --check` and
@@ -635,24 +638,42 @@ Sources: `ontology/instances/creatures.json`, top-level family lists in `creatur
 (not its nested spawn rosters), `generators.json#design.enemy-hp`, `domain.md#creature-family`.
 The observed missing fields and overlap remain live-data facts, not evidence of implementation.
 
-#### Follow-up 4 — presented but unanswered
+#### Follow-up 4 — approved with amendment (2026-09-27)
 
-Can Skeleton Dog be a rare encounter rather than a higher combat/loot tier?
-Current facts: species selection is uniform among eligible entries in a biome roster
-(`game/world/spawner.gd`); no per-species spawn-rarity setting exists. Rarity can be designed,
-but isn't defined today.
+**Owner clarification:** “A skeletal dog shall have a 1% chance of encounter instead of 10%
+amongst dog. Ensure 1% is relative to dogs spawn.” This is approval of dog-relative encounter
+rarity with an amended probability/denominator, not blanket approval of the previous proposal.
+Canonical rule: `domain.md#creature-family` / `c-skeleton-dog-encounter`. No combat/loot bonus.
+The earlier one-tenth ordinary-species weight is superseded, never approved. Roll unit,
+habitat scope and replacement pools are not silently decided.
 
-**Proposal ONLY, not approved:** use one-tenth the selection weight of an ordinary eligible
-species for Skeleton Dog in its existing habitats, without raising combat/loot tier, adding
-stat bonuses or changing total group counts. This is a relative weight, NOT a flat 10%
-probability and NOT a chance to replace any dog anywhere. Example with nine ordinary candidates:
-Skeleton Dog weight 0.1 and each other species 1 gives 0.1/9.1 ≈ 1.1% per species selection.
-Actual rates depend on the eligible roster.
+**Item 4 verification:** `/simplify` removed the superseded probability example; ponytail-review
+found no further cuts. `git diff --check` and the bounded ontology validator passed (`ontology
+valid`, exit 0; `/tmp/pixlnd-family-item4-validator.log`). Only six Markdown files changed;
+loaded data and runtime are unchanged. Validation does not prove the documented chance is implemented.
 
-**Approval versus Refusing:** Approval makes encounters rarer while leaving strength/rewards
-alone. Refusing requires the owner's intended meaning or frequency; it does not undo the dogs
-primary-family decision or authorize a different rarity rule. Ask owner for **4: approve,
-refuse or amend**. No rarity values go into canonical approved rules or live JSON before approval.
+#### Follow-ups 5–6 — presented but unanswered
+
+These clarify application of the approved 1%; they do not reopen the percentage or dog family.
+Current generator selects one species per group, then creates the group's individuals. Current
+Skeleton Dog habitats are dungeons, dark woods and deadlands; other dogs also occur in ordinary
+biomes and settlements. The live deadlands roster has Skeleton Dog as its only dog candidate.
+No new species pools, habitat assignments or runtime changes are authorized by item 4.
+
+5. **Roll per dog or per pack?** Recommend an independent 1% roll per individual dog, not one
+   roll turning an entire pack skeletal. A pack could contain one skeletal dog among ordinary
+   dogs. **Approval versus Refusing:** Approval makes individual dogs the probability unit;
+   Refusing requires choosing the pack-level rule or another unit, without changing the 1%.
+6. **Which dog locations count?** Recommend allowing the rare variant wherever dogs already
+   spawn, while preserving existing settlement safety. This could reveal a skeletal dog in an
+   ordinary dog habitat, not only its old spooky habitats. The narrower alternative is 1% of
+   dog spawns only in dungeons/dark woods/deadlands. **Approval versus Refusing:** Approval
+   extends eligible locations to existing dog-spawn locations; Refusing leaves the habitat scope
+   to clarify, not automatically the narrower alternative. Existing skeleton-only rosters must
+   be reconciled with the chosen scope before generation; no ordinary-dog replacement pool is
+   chosen here.
+
+Ask for numbered **5–6: approve, refuse or amend**. Hold dependent application until clarified.
 
 ### Reconciliation work — application checklist
 

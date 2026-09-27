@@ -425,9 +425,8 @@ primary assignments or automatic species-trait inheritance.
 **Skeleton Dog (`skeleton-dog`) has primary family `dogs`, not `skeletons`.** It retains descriptive
 membership in both dogs and skeletons; its `undead` category is independent and unchanged.
 Other existing primary assignments remain. This changes no taming, abilities, drops, hostility,
-habitats or pack aggro, and introduces no numerical family modifier. The conditional rarity
-request is unresolved at `docs/ROADMAP/todo_decide.md §E`, family follow-up 4; combat/loot rarity
-is not an encounter-frequency rule.
+habitats or pack aggro, and introduces no numerical family modifier. Encounter rarity is a
+separate decision below, not a combat/loot tier.
 
 Documentation only: live `creatures.json` still assigns Skeleton Dog to `skeletons`; migration,
 model/loader/validator support and runtime family scaling remain deferred and unauthorized.
@@ -450,6 +449,15 @@ Live JSON still lacks these assignments; migration remains deferred.
 may remain unassigned. With no primary family, the family modifier is **×1.0**, preserving all
 other ordinary stat calculations (`design.enemy-hp` already records this default). Do not invent
 catch-all families merely to fill every entry.
+
+**Hybrid family item 4 (owner approved with amendment, 2026-09-27):** Skeleton Dog has a
+**1% encounter chance relative to dog spawns**; the remaining 99% are non-skeletal dogs.
+This replaces the proposed one-tenth relative species-selection weight. The denominator is dog
+spawns, not all creatures, and 1% is a probability, not a guaranteed quota every 100 encounters.
+It grants no extra combat strength or loot tier. **Still unresolved:** whether the roll is per
+individual dog or per pack, and where it applies (family follow-ups 5–6 in `todo_decide.md §E`).
+Do not assume a habitat expansion, replacement pool or roll unit; hold dependent generation/data
+changes until these boundaries and separate implementation authorization are settled.
 
 ### pet
 A tamed creature owned by a player. `A S`
@@ -1218,6 +1226,7 @@ content selection or live data changes are authorized by this contract.
 | c-spec-of-class | specialization.class == character.class; player starts as spec index 0 | load |
 | c-one-active-pet | at most one pet summoned; one of each pet-food carried | runtime |
 | c-creature-family | primary and descriptive references name defined creature families; at most one primary per creature, consistent with §3.2 approved assignments; without a primary, the family modifier is ×1.0 and other ordinary stat calculations remain; descriptive memberships never supply or stack family stat modifiers, nor imply species-trait inheritance | load+runtime (deferred) |
+| c-skeleton-dog-encounter | Skeleton Dog encounter chance is 1% conditional on dog spawns, not all creatures or a relative species weight (§3.2); roll unit and habitat scope remain unresolved before enforcement (family follow-ups 5–6) | generator (deferred) |
 | c-food-id | pet-food.tames references the creature by stable ID; when its numeric source ID is known, pet-food.subtype == creature.alpha-entity-id (legacy field includes post-alpha IDs; no alpha-range clamp) | load |
 | c-weapon-class | equipping weapon-type/armor material requires matching class (red name otherwise) | runtime |
 | c-hands | 1H ×2 or 1H + shield or one 2H; bracelets need two for full damage | runtime |
@@ -1316,13 +1325,14 @@ This index mirrors the open list in `docs/ROADMAP/todo_decide.md §E`; it does n
 or authorize implementation. Resolve each question before its affected slice.
 Aggro items 1–14, including the two former open follow-ups, are approved and recorded in §3.2
 (2026-09-27; `todo_decide.md §E`); implementation remains deferred.
-Creature family items 1–3 are approved and recorded in §3.2/§4/§5, including the unassigned
-policy; implementation remains deferred. Resume at unanswered family follow-up 4, not items 1–3.
+Creature family items 1–4 are approved and recorded, with item 4 amended to a 1% dog-relative
+encounter chance. Roll unit and habitat scope remain unresolved at follow-ups 5–6; implementation
+remains deferred. Do not re-ask the approved family assignments or percentage.
 Threat across server restart stays in the persistence topic below.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Creature families — follow-up 4 | Skeleton Dog encounter rarity: proposal presented but unanswered in `todo_decide.md §E`; no encounter-rarity rule approved |
+| Creature families — follow-ups 5–6 | Skeleton Dog's approved 1% dog-relative encounter chance: individual versus pack roll and habitat scope remain unanswered (`todo_decide.md §E`) |
 | Settlements / inn | whether multiple settlements and paid timed sleep are hybrid targets; keep D22's current one village and free heal/respawn service |
 | Traversal | skill versus global key-item prerequisites for riding/gliding/sailing; climbing spikes versus skill points |
 | Books / formulas | permanence/global scope of hybrid book recipes and duplicate unlock interaction with formulas |

@@ -2,15 +2,17 @@
 
 ## Ontology walkthrough entry point (2026-09-27)
 
-**Current authorization (2026-09-27):** record creature-family items 1–3 as three separate
-ontology-documentation commits on `fix/ontology-reconciliation`. **Items 1–3 are recorded.**
-No runtime, live JSON, tests, push or merge are authorized.
+**Current authorization (2026-09-27):** record each approved creature-family item in its own
+ontology-documentation commit on `fix/ontology-reconciliation`. **Items 1–4 are recorded**;
+item 4 is amended to a **1% encounter chance relative to dog spawns**. No runtime, live JSON,
+tests, push or merge are authorized.
 Canonical rules: `ontology/domain.md#creature-family`; application/checks: `todo_decide.md §E`.
 
-**Resume:** **Creature family follow-up 4 — Skeleton Dog encounter rarity, presented but
-unanswered.** Preserve its exact §E proposal and ask approve, refuse or amend; do not re-ask
-approved items 1–3, skip to settlements or reopen aggro. The dogs primary-family amendment
-stands independently of rarity. Follow `tasks/lessons.md`; implementation remains deferred.
+**Resume:** **Creature family follow-ups 5–6 — per-dog versus per-pack roll and habitat scope,
+presented but unanswered.** Preserve their exact §E proposals and alternatives; ask numbered
+answers together. Do not re-ask the approved dogs primary family or 1% dog-relative probability,
+skip to settlements or reopen aggro. The old relative-weight proposal is superseded, not approved;
+dependent generation/data changes await clarification and separate implementation permission.
 
 **Historical handoff request (earlier 2026-09-27):** the owner authorized commit + push of the
 preceding reconciliation checkpoint, then a stop. That is not today's push authorization.
@@ -98,7 +100,7 @@ or next proposal is authorized now.
 The publication changes only four Markdown files, not runtime/live data; these tests do not prove
 implementation of the new policies. Commands and session-local evidence: `todo_decide.md §E`.
 
-**Current walkthrough topic:** **Creature family follow-up 4**, as checkpointed above.
+**Current walkthrough topic:** **Creature family follow-ups 5–6**, as checkpointed above.
 Aggro items **1–14** are recorded; do not re-ask 13–14. Restart persistence remains a later topic.
 Do not start gameplay/validator/equipment implementation without separate authorization.
 

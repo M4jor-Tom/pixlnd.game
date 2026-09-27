@@ -53,6 +53,14 @@ push without authorization.
   does not authorize guessed encounter frequency, combat/loot tier or strength rules; clarify
   it separately without reopening the approved family assignment.
 
+## State the denominator of an encounter chance
+
+- Owner amendment (2026-09-27): Skeleton Dog's encounter chance is **1% relative to dog spawns**,
+  not a relative weight against arbitrary creature species.
+- Rule: record both the percentage and its population. An amended probability supersedes the
+  earlier proposal; do not import unapproved roll-unit or habitat assumptions. Use plain
+  encounter examples before implementation details.
+
 ## Aggro decay is not forgiveness
 
 - Owner direction/correction (2026-09-18): threat decays continuously at a fixed rate for each
