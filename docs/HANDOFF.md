@@ -2,18 +2,35 @@
 
 ## Ontology walkthrough entry point (2026-09-27)
 
-**Current walkthrough (2026-09-27):** owner answer: **“8: Skeletal dogs must behave like normal
-dogs, "skeletal" is just a different dog race; 9: Approved”**. Family items 1–9 are recorded.
-Item 8 (`2f5ad06`) replaces the skeleton-only passivity proposal with normal dog behavior;
-item 9 shares Bubble Gum with Collie, retaining its source identity, availability and prices.
-Item 7's Collie fallback and tameability stand (`a4c6206`); canonical rules:
-`ontology/domain.md#creature-family` / `#pet-food`. No runtime/live JSON/test changes or push
-are authorized. Model/loader/validator shared-food support also remains deferred.
+**Authorized handoff (2026-09-27):** the owner requested **“Handoff, then commit+push”** after
+settlements/inn items **1–4** were presented. **All four remain unanswered.** Preserve their
+exact recommendations, refusal consequences and dependencies in `todo_decide.md §E`,
+“Settlements / inn — presented but unanswered at handoff”. This request authorizes committing
+this handoff and pushing `fix/ontology-reconciliation`, including the three local family commits
+below, then stopping. It approves no settlement/inn proposal, gameplay, live JSON, tests,
+model/loader/validator work or merge. Do not launch new walkthrough proposals after publication.
 
-**Next topic: settlements/inn.** No unanswered family proposal remains. Preserve normal dog
-behavior, family/category and encounter rules; no new riding permission. Item-to-commit and
-fresh verification evidence: `todo_decide.md §E`, family items 7–9. The settlements/inn questions
-remain open in §E; do not treat D22's current free heal/respawn service as a paid-sleep decision.
+**Family items 1–9 are recorded:** item 7 (`a4c6206`) selects Collie fallback for existing
+skeleton-only dog encounters and makes Skeleton Dog non-aggressive/tameable; item 8 (`2f5ad06`)
+clarifies normal dog behavior, not the proposed skeleton-only passivity exemption; item 9
+(`683fd79`) shares Bubble Gum with Collie, preserving availability/prices and subtype 19 from
+Collie without assigning Skeleton Dog that source ID. Canonical rules:
+`ontology/domain.md#creature-family` / `#pet-food`; no new riding permission. Live data, family
+migration/scaling, shared-food model/loader/validator support and runtime enforcement remain
+deferred and unauthorized. The original primary-`skeletons`, one-tenth species-weight and
+special-passivity proposals are superseded, not approved alternatives.
+
+**Resume boundary: settlements/inn items 1–4.** The unanswered recommendations concern final
+settlement count; paid sleep separate from free recovery; sleep-specific daily refreshes; and
+multiplayer consent/payment. Items 3–4 depend on item 2. Keep current D22 behavior until answers
+are reconciled; do not silently advance to traversal or infer approval from this handoff.
+Cleared dungeon/quest enemy reset eligibility remains in the later world/reset topic.
+
+**Pre-publication Git checkpoint:** clean `fix/ontology-reconciliation` at `683fd79` before
+this two-file handoff. Remote branch was `ef81bd6` (`git ls-remote`); three local family commits
+plus this separate handoff are authorized for publication. Verify remote HEAD equals final
+local HEAD and the worktree is clean after pushing; inspect actual Git state on resumption.
+Fresh handoff verification and evidence limits are recorded in §E, not inherited from old logs.
 
 **Historical handoff for items 1–6 (2026-09-27):** the owner requested **“Handoff for the next agent,
 commit+push”**, then answered **“5: Approved; 6: Approved”**. **Family items 1–6 are recorded**
@@ -23,7 +40,7 @@ No merge, runtime, live JSON, test changes or new proposals are authorized.
 Canonical rules: `ontology/domain.md#creature-family`; six-item commit table and evidence:
 `docs/ROADMAP/todo_decide.md §E`.
 
-**Pre-handoff Git checkpoint:** item 6 is `a730d74`, following item 5 `7d8b86c`; this handoff
+**Historical pre-handoff Git checkpoint:** item 6 is `a730d74`, following item 5 `7d8b86c`; this handoff
 is a separate commit after those six decision commits. Publication starts from remote branch
 `fix/ontology-reconciliation` at `858f038` (confirmed with `git ls-remote`). Inspect actual HEAD,
 upstream and worktree on resumption rather than treating this pre-publication reference as current.
@@ -128,7 +145,7 @@ or next proposal is authorized now.
 The publication changes only four Markdown files, not runtime/live data; these tests do not prove
 implementation of the new policies. Commands and session-local evidence: `todo_decide.md §E`.
 
-**Current walkthrough topic:** **Settlements/inn**, after recorded family items 1–9.
+**Current walkthrough topic:** **Settlements/inn items 1–4, presented and unanswered**; family items 1–9 are recorded.
 Aggro items **1–14** are recorded; do not re-ask 13–14. Restart persistence remains a later topic.
 Do not start gameplay/validator/equipment implementation without separate authorization.
 

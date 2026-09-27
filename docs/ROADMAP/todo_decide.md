@@ -130,11 +130,12 @@ The full walkthrough/resumption protocol is in `tasks/lessons.md`; the prompt
 Never propose or implement regional gear power loss in pixlnd, even for Cube World cloning
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
-**Current direction (2026-09-27):** the owner answered **“8: Skeletal dogs must behave like
-normal dogs, "skeletal" is just a different dog race; 9: Approved”**. Family items 1–9 are
-recorded: normal dog behavior, not a skeleton-only passivity exception, and Bubble Gum shared
-with Collie. No unanswered family proposal remains; **settlements/inn is next**. No runtime/live
-JSON/test changes, merge or push are authorized. Earlier publication instructions are historical.
+**Current direction (2026-09-27):** the owner requested **“Handoff, then commit+push”** after
+settlements/inn items **1–4** were presented. All four remain unanswered; their exact text and
+dependencies are preserved below. Family items 1–9 are recorded, including normal dog behavior
+and shared Bubble Gum. Commit this handoff, push `fix/ontology-reconciliation` including the
+three local family commits, verify publication and clean state, then stop. No settlement/inn
+proposal, runtime/live JSON/test work, model/loader/validator changes or merge is approved.
 **Aggro batch applied: 1–14/14**, independently reviewed; restart persistence remains a later topic.
 Older publication instructions and hashes below are historical checkpoints.
 
@@ -559,9 +560,9 @@ D1–D26, all walkthrough approvals and remaining open questions.
 
 ### Open — decide before the named slice
 
-- [ ] **Hybrid settlements / inn services:** are multiple settlements and inn cost 10 future
-  targets, or stale flags? Is paid timed sleep distinct from D22's free heal/respawn service?
-  Before changing settlement count or adding sleep; sources: `rulesets.json#ruleset-hybrid.flags`,
+- [ ] **Hybrid settlements / inn services — presented items 1–4 unanswered:** final settlement
+  count; paid sleep separate from free recovery; sleep-specific daily refreshes; multiplayer
+  consent/payment. Exact proposals below; 3–4 depend on 2. Sources: `rulesets.json#ruleset-hybrid.flags`,
   `generators.json#design.settlement`, D22. Keep current D22 behavior until clarified.
 - [ ] **Traversal prerequisites:** skill, global key item, or both for riding/gliding/sailing;
   how do climbing spikes interact with climbing points? Before traversal/pets; sources:
@@ -595,6 +596,82 @@ D1–D26, all walkthrough approvals and remaining open questions.
   identity, Lion tameability (`null` currently means untameable), resistance meaning and the
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
+
+### Settlements / inn — presented but unanswered at handoff (2026-09-27)
+
+**Status:** all four items below were presented; none was approved or refused. The owner's
+“Handoff, then commit+push” is publication/stop authorization only. Resume this batch, not
+traversal. Items 3–4 are conditional on item 2; the cleared-dungeon reset question remains separate.
+The following preserves the presented recommendations and consequences verbatim.
+
+**Current approved build:** one village per land; inns heal and set your respawn point for free. The conflicting “many settlements” and “inn cost 10” flags still need reconciliation.
+
+#### 1. Keep one settlement per land as the final target
+
+**Recommendation:** Retain one settlement per land, rather than treating multiple settlements as an unfinished feature.
+
+##### Approval versus Refusing
+- **Approval:** Each land has one main service hub; wilderness journeys between towns remain longer.
+- **Refusing:** Settlement count remains open; it does not automatically approve any particular number of villages.
+
+#### 2. Separate paid sleep from free recovery
+
+**Recommendation:** Keep healing and setting your respawn point free at any time. Add a separate **10-copper sleep service**, available **18:00–06:00**, which skips the clock to the next **07:00** without fast-forwarding combat.
+
+For example, sleeping at 22:00 reaches tomorrow morning; sleeping at 02:00 reaches that morning.
+
+##### Approval versus Refusing
+- **Approval:** You never need money to recover, but can pay a small fee to skip the remaining night.
+- **Refusing:** Free recovery remains; whether to offer timed sleep, and at what price, stays unresolved.
+
+#### 3. Sleep does not grant an extra daily refresh
+
+*Conditional on approving 2.*
+
+**Recommendation:** Apply ordinary midnight resets once when the skip crosses midnight. Do not additionally refresh shops or reroll missions merely because someone sleeps.
+
+##### Approval versus Refusing
+- **Approval:** Sleeping at 23:00 advances into a fresh day; sleeping at 02:00 does not reroll that day’s content again.
+- **Refusing:** Sleep-specific refresh behavior remains open—not automatically repeatable rerolls.
+
+Which cleared dungeon/quest enemies reset remains a separate, later decision.
+
+#### 4. Multiplayer sleep requires everyone’s agreement
+
+*Conditional on approving 2.*
+
+**Recommendation:** All connected players must explicitly agree before the shared clock skips. The initiating player pays the single 10-copper fee only when the skip succeeds. Free recovery needs no agreement.
+
+##### Approval versus Refusing
+- **Approval:** Nobody can unexpectedly skip another player’s night. One refusal blocks the skip, but nobody loses money.
+- **Refusing:** Multiplayer sleep coordination remains unresolved; it does not authorize unilateral time changes.
+
+**Please answer `1: …; 2: …; 3: …; 4: …`.**
+
+Sources inspected: `ontology/domain.md#settlement`, `#game-clock`, `#currency`, `#multiplayer-mode`,
+`c-inn-hours`, `c-midnight-reset` and D22; `instances/rulesets.json#ruleset-hybrid.flags`,
+`generators.json#time|design.settlement`, `economy.json#shops.inn|rules`, `npc-roles.json#innkeeper`,
+`buildings.json`, `research/research_world.md §5/§7`; consumers `game/world/world_gen.gd#village_at`,
+`world.gd#_stream_village`, `settlement.gd`, `game/entities/player.gd#rest`. The live build still
+has free recovery and no game clock/time skip; flags do not settle the conflicting target policies.
+
+**Publication checkpoint:** branch `fix/ontology-reconciliation` at `683fd79` before this handoff;
+remote `ef81bd6` confirmed with `git ls-remote`. Publish existing family commits `a4c6206`,
+`2f5ad06`, `683fd79` plus this separate two-file handoff commit. No merge, history rewrite or
+force-push. After pushing, verify remote/local HEAD equality and clean worktree, then stop.
+
+**Handoff verification:** exact proposal-text comparison (heading depth ignored), diff/scope
+checks, bounded ontology validation and headless boot passed. `/simplify` kept the question
+batch in this ledger without duplicating it in HANDOFF; ponytail-review found no further cuts.
+Fresh independent read-only review found no issues; parent inspected the diff, report and logs.
+Evidence: `/tmp/pixlnd-settlement-handoff-20260927/` (`presented-batch.md`, `scope.log`,
+`parent-review.md`, `independent-review.md`, `validator.log`, `boot.log`, `checks.log`).
+Commands: `git diff --check`; `timeout 150 nix develop -c godot --headless -s ontology/validate.gd`;
+`timeout 150 nix develop -c godot --headless --quit`. All exited 0; validator: `ontology valid`.
+The handoff changes only HANDOFF and this ledger; the publication changes six Markdown files.
+These checks cover current loaded data/startup, not new Markdown semantics or implementation.
+No gameplay suite, visuals or network tests were rerun; historical logs are not fresh evidence.
+Remote equality and clean-state publication checks must follow the push.
 
 ### Creature family membership — items 1–9 recorded (2026-09-27)
 
@@ -729,7 +806,7 @@ different dog race; 9: Approved”.
   availability/prices and subtype 19 from Collie without assigning Skeleton Dog that source ID.
   Other pairings remain; no family-wide inheritance or new food/recipe. Live data and shared-food
   model/loader/validator support remain separately unauthorized.
-  Commit subject: `docs(ontology): share bubble gum with skeletal dogs`.
+  Commit: `683fd79`.
 
 **Item 9 verification:** checked shared-food cardinality, source identity and preserved pairings.
 `/simplify` removed settled questions and temporary recording status; ponytail-review found no
