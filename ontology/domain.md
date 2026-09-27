@@ -442,7 +442,7 @@ Rules shared by enemies. `A S`
 | rule | value |
 |---|---|
 | aggro | table per attacker; damage adds aggro; highest aggro targeted; taunt (heroic shout, 5 m) forces; full stealth → zero aggro gain |
-| perception | hybrid: spawned packs respond to detection or neutral provocation under the eligibility and protected-return rules below; not unconditional “all attack” |
+| perception | hybrid: spawned packs share current sightings, not threat/order; eligibility and protected-return rules below govern each member independently |
 | pathfinding | A* with climbing and arbitrary bounding boxes; chases "to the most unreachable locations" |
 | patrol | ogre + collie patrols in dungeons, stronger than static guards; forest guards at campfires; some paths ignore stealthed players |
 | stun | stars over head; immune to re-stun while stars visible (players too) |
@@ -464,6 +464,12 @@ Hybrid aggro rules (owner approved 2026-09-18/19 and 2026-09-27, documentation o
   members finish their protected return rather than being pulled back into combat. Neutral
   provocation establishes aggressor-specific eligibility, not unconditional pursuit at zero
   threat without detection; taunt remains a temporary override with question 14 still open.
+- **Shared awareness (owner approved 2026-09-27):** packmates share current sightings, not
+  threat points or engagement order. Detection in these targeting rules includes a packmate's
+  current sighting, so a member can react around a corner while another detects the player.
+  Once nobody in the pack detects that player, there is no retained shared sighting; each mob's
+  own remaining threat governs continued pursuit. Apply targeting priorities independently per
+  mob, preserving hostility/provocation eligibility and each member's protected return.
 - **Damage contribution (owner correction, 2026-09-18):** add **1 aggro point per 1% of the
   mob's maximum HP actually removed** by the attacker: `aggro gained = 100 × HP removed / mob max HP`.
   Except at full stealth (below), use actual HP loss after reduction/absorption, not attempted
@@ -552,8 +558,8 @@ Hybrid aggro rules (owner approved 2026-09-18/19 and 2026-09-27, documentation o
   regardless of remaining aggro or taunt. Within the leash, if its target dies, disappears, or
   (outside an active taunt) has zero aggro and is no longer detected, first consider other living
   eligible players with positive aggro using the approved highest-threat/tie rules. If none
-  remain, normal detection of eligible players can still sustain combat; otherwise return home. Starting return does not clear aggro or engagement
-  order; normal decay continues. Protected return and the arrival reset follow below.
+  remain, normal detection of eligible players can still sustain combat; otherwise return home.
+  Starting return does not clear aggro or engagement order; normal decay continues. Protected return and the arrival reset follow below.
 - **Protected return (owner approved 2026-09-19):** attacks do not restart pursuit once the
   mob is returning, including after it moves back inside the home leash. During return, its
   movement speed is **×2 the normal return speed** (currently `design.spawns.ai.chase`: 6.5 →
@@ -1094,7 +1100,8 @@ mob-b --current-target-----------> player-you
 ```
 
 Pack membership is the generated grouping of mob individuals (§3.2), not `member-of-family`
-or `belongs-to-faction`. Threat, order and targeting rules follow §3.2; open questions are in §7.
+or `belongs-to-faction`. Shared current sightings do not copy `threat`, engagement order or
+`current-target`; each mob selects independently under §3.2. Open questions are in §7.
 
 ---
 
@@ -1162,7 +1169,7 @@ content selection or live data changes are authorized by this contract.
 | c-stun-immunity | cannot re-stun while stars shown | runtime |
 | c-threat-pair | at most one `threat` relation per ordered mob/player entity pair; each present relation has exactly one non-negative numeric `aggro-points` amount in aggro points, independent of other pairs; changing `current-target` does not clear it; decay/gains (including the full-stealth damage exception), the zero floor, player-death and arrival clearing, and escape retention follow §3.2; other reset conditions remain open | runtime |
 | c-current-target | at most one player target per mob; ordinary targeting compares that mob's eligible players by highest `aggro-points`, retains a tied current target, otherwise breaks positive-threat ties by earliest engagement; without a positive-threat priority or valid current target, choose the nearest normally detected zero-threat player without granting aggro/order (§3.2); player-death, zero-threat and arrival order resets, escape retention and fresh assignment follow §3.2; at zero, ordinary pursuit requires normal detection and hostility/provocation eligibility; equally nearest fallback ties are chosen randomly once with equal chances, then normal retention applies; Heroic Shout temporarily overrides ordinary targeting without threat/order gain; eligibility, duration, replacement and termination follow §3.2, open subcases §7 | runtime |
-| c-pack-response | only the generated pack responds, under the hostile-detection / aggressor-specific neutral-provocation rules in §3.2; friendly/passive creatures are excluded and protected return cannot be interrupted | runtime |
+| c-pack-response | only the generated pack responds, under the hostile-detection / aggressor-specific neutral-provocation rules in §3.2; friendly/passive creatures are excluded and protected return cannot be interrupted; share current sightings only, never threat/order, and select targets independently (§3.2) | runtime |
 | c-return-home | pursuit beyond the home leash starts return regardless of threat; within it, target loss checks eligible positive-threat players then normal detection of eligible players (§3.2); attacks do not restart pursuit during return; ×2 normal return speed and 90% damage reduction (including DOT) until reaching home alive, then full HP and clear this mob's aggro/order toward every player once, ending both bonuses; no revival, cleansing or CC immunity; gains/decay continue until arrival and other mobs' records are unchanged; starting return cancels taunt, and new taunts neither interrupt nor queue for afterward | runtime |
 | c-combo-reset | any attack with a hitbox that misses resets combo to 0, subject to the hybrid whole-channel and combo-neutral zero-damage-taunt rules in §3.3 combo-system; cap per weapon-type | runtime |
 | c-dodge-cost | dodge costs 25 stamina; requires movement; standing still M3 = class skill (S); hybrid numbers `design.defence.dodge` (D23) | runtime |
