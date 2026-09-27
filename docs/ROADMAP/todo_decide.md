@@ -131,7 +131,7 @@ Never propose or implement regional gear power loss in pixlnd, even for Cube Wor
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
 **Current resume direction (2026-09-27):** the owner approved each **Aggro batch item 1–12**
-for documentation and one separate commit per item. **Aggro batch applied: 1–4/12.**
+for documentation and one separate commit per item. **Aggro batch applied: 1–5/12.**
 The numbered Aggro entries below track application, distinct from older reconciliation items 1–10.
 Remaining approved items await recording; **questions 13–14 remain OPEN** below, without defaults.
 Finish recording, then resume those two questions together; do not call the topic closed or move
@@ -509,6 +509,11 @@ D1–D26, all walkthrough approvals and remaining open questions.
   Affect hostile and already-provoked neutral enemies within 5 metres even through walls;
   never provoke peaceful neutrals or affect friendly/passive creatures. `domain.md §3.2/§5`;
   this does not resolve post-taunt neutral eligibility (item 14).
+
+- [x] **Aggro 5 — taunt termination and return (approved/applied 2026-09-27, documentation only).**
+  Return cancels taunt and rejects new/deferred taunts. Outside return, caster death or
+  disappearance ends it early; leaving the casting radius alone does not. The home leash remains
+  binding (`domain.md#ai-behavior` / `c-current-target` / `c-return-home`).
 
 ### Open — decide before the named slice
 

@@ -490,6 +490,10 @@ Hybrid aggro rules (owner approved 2026-09-18/19 and 2026-09-27, documentation o
   previous one and starts its own duration; replaced taunts never resume. For genuinely
   simultaneous taunts, choose one caster randomly once. Whether the winner is shared across
   overlapping affected enemies or chosen separately per enemy is **OPEN (question 13)**.
+- **Taunt termination (owner approved 2026-09-27):** starting return cancels any active taunt;
+  new taunts cannot interrupt protected return or queue for afterward. Outside return, a taunt
+  ends early if its caster dies or disappears. Moving beyond the initial 5-metre casting radius
+  alone does not cancel it; the existing home leash still applies.
 - **Continuous decay (rate approved 2026-09-18):** each mob tracks each player's threat
   separately and subtracts **1 aggro point per elapsed second**, both while fighting and while
   not fighting. Decay is continuous (0.5 seconds removes 0.5 points), not whole-second ticks.
@@ -527,8 +531,9 @@ Hybrid aggro rules (owner approved 2026-09-18/19 and 2026-09-27, documentation o
   one as above. Other players' scores and order are unchanged. This governs memory, not chase distance.
 - **Return-home trigger (owner approved 2026-09-19):** during pursuit, crossing the existing
   home leash (`design.spawns.ai.leash`, 30 blocks measured from the mob's home) starts return
-  regardless of remaining aggro. Within the leash, if its target dies, disappears, or has zero
-  aggro and is no longer detected, first consider other living players with positive aggro using
+  regardless of remaining aggro or taunt. Within the leash, if its target dies, disappears, or
+  (outside an active taunt) has zero aggro and is no longer detected, first consider other living
+  players with positive aggro using
   the approved highest-threat/tie rules. If none remain, normal hostile detection can still
   sustain combat; otherwise return home. Starting return does not clear aggro or engagement
   order; normal decay continues. Protected return and the arrival reset follow below.
@@ -541,7 +546,7 @@ Hybrid aggro rules (owner approved 2026-09-18/19 and 2026-09-27, documentation o
   apply; no status cleansing or crowd-control immunity is granted.
   On reaching home alive, restore **full HP once** and end the return-speed/damage-reduction
   bonuses. A mob killed before arrival stays dead. Aggro follows the existing gain/decay rules
-  during return. Taunt interactions remain open.
+  during return; taunts cannot interrupt it (taunt termination above).
   This discourages repeated damage during retreat but does not make retreat kills impossible.
 - **Arrival aggro/order reset (owner approved 2026-09-19):** on completing return home alive,
   clear that mob's remaining aggro points and engagement-order positions toward **every player**,
@@ -1136,8 +1141,8 @@ content selection or live data changes are authorized by this contract.
 | c-mp-range | mp ∈ [0, 100]; mage regenerates passively, others gain by hits/blocks/stealth/dodges; numbers `design.resources.mp` (D21) | runtime |
 | c-stun-immunity | cannot re-stun while stars shown | runtime |
 | c-threat-pair | at most one `threat` relation per ordered mob/player entity pair; each present relation has exactly one non-negative numeric `aggro-points` amount in aggro points, independent of other pairs; changing `current-target` does not clear it; decay/gains, the zero floor, player-death and arrival clearing, and escape retention follow §3.2; other reset conditions remain open | runtime |
-| c-current-target | at most one player target per mob; ordinary targeting compares that mob's eligible players by highest `aggro-points`, retains a tied current target, otherwise breaks positive-threat ties by earliest engagement; without a positive-threat priority or valid current target, choose the nearest normally detected zero-threat player without granting aggro/order (§3.2); player-death, zero-threat and arrival order resets, escape retention and fresh assignment follow §3.2; at zero, ordinary pursuit requires normal hostile detection; equally nearest fallback ties are chosen randomly once with equal chances, then normal retention applies; Heroic Shout temporarily overrides ordinary targeting without threat/order gain; eligibility, duration and competing-taunt rules follow §3.2, open subcases §7 | runtime |
-| c-return-home | pursuit beyond the home leash starts return regardless of threat; within it, target loss checks positive-threat players then normal hostile detection (§3.2); attacks do not restart pursuit during return; ×2 normal return speed and 90% damage reduction (including DOT) until reaching home alive, then full HP and clear this mob's aggro/order toward every player once, ending both bonuses; no revival, cleansing or CC immunity; gains/decay continue until arrival and other mobs' records are unchanged; taunt interactions remain open | runtime |
+| c-current-target | at most one player target per mob; ordinary targeting compares that mob's eligible players by highest `aggro-points`, retains a tied current target, otherwise breaks positive-threat ties by earliest engagement; without a positive-threat priority or valid current target, choose the nearest normally detected zero-threat player without granting aggro/order (§3.2); player-death, zero-threat and arrival order resets, escape retention and fresh assignment follow §3.2; at zero, ordinary pursuit requires normal hostile detection; equally nearest fallback ties are chosen randomly once with equal chances, then normal retention applies; Heroic Shout temporarily overrides ordinary targeting without threat/order gain; eligibility, duration, replacement and termination follow §3.2, open subcases §7 | runtime |
+| c-return-home | pursuit beyond the home leash starts return regardless of threat; within it, target loss checks positive-threat players then normal hostile detection (§3.2); attacks do not restart pursuit during return; ×2 normal return speed and 90% damage reduction (including DOT) until reaching home alive, then full HP and clear this mob's aggro/order toward every player once, ending both bonuses; no revival, cleansing or CC immunity; gains/decay continue until arrival and other mobs' records are unchanged; starting return cancels taunt, and new taunts neither interrupt nor queue for afterward | runtime |
 | c-combo-reset | any attack with a hitbox that misses resets combo to 0, subject to the hybrid whole-channel and combo-neutral zero-damage-taunt rules in §3.3 combo-system; cap per weapon-type | runtime |
 | c-dodge-cost | dodge costs 25 stamina; requires movement; standing still M3 = class skill (S); hybrid numbers `design.defence.dodge` (D23) | runtime |
 | c-no-death-penalty | death never removes gold/items/xp; respawn at statue (A) / activated shrine (S) | runtime |
