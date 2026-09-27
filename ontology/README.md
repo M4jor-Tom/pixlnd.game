@@ -27,8 +27,8 @@ slice loop. A green validator proves only its implemented checks, not full ontol
 
 **Aggro batch applied: 1–14/14.** The original twelve and follow-ups 13–14 were approved and
 recorded on 2026-09-27; their former open boundaries are settled.
-**Creature family items 1–3 approved (2026-09-27):** items 1–2 recorded in `domain.md §3.2/§4/§5`;
-item 3 awaits its separate record. Live family data and enforcement deliberately remain deferred.
+**Creature family items 1–3 approved and recorded (2026-09-27):** `domain.md §3.2/§4/§5`.
+Live family data and enforcement deliberately remain deferred.
 Next unanswered question: **family follow-up 4, Skeleton Dog encounter rarity** (`todo_decide.md §E`).
 Gameplay and live JSON remain unchanged; restart persistence stays in its later topic.
 

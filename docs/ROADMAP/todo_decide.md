@@ -132,7 +132,7 @@ fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09
 
 **Current resume direction (2026-09-27):** **Creature family items 1–3 approved**, item 1 with
 Skeleton Dog primary `dogs`, not `skeletons`. Record each as a separate documentation commit;
-items 1–2 are recorded, item 3 awaits its separate record below. Resume at **family follow-up 4,
+all three are recorded below. Resume at **family follow-up 4,
 Skeleton Dog encounter rarity — presented but unanswered**, not settlements or approved items 1–3.
 No runtime/live JSON/test changes, push or merge are authorized. The earlier 2026-09-27 handoff/
 commit + push request is historical, not current publication permission.
@@ -608,8 +608,8 @@ live data, model/loader/validator and gameplay remain unchanged. Conditional rar
 | item | documentation application | commit |
 |---|---|---|
 | 1 | Recorded: primary/descriptive distinction and owner amendment; `domain.md §3.2/§4/§5` | `dd5d9f8` |
-| 2 | Recorded: authoritative 25-assignment table; `domain.md#creature-family` | `docs(ontology): record missing creature family assignments` |
-| 3 | Approved; unassigned policy awaits separate canonical record | pending |
+| 2 | Recorded: authoritative 25-assignment table; `domain.md#creature-family` | `3da743c` |
+| 3 | Recorded: unassigned creatures retain ordinary stats with ×1.0 family modifier; `domain.md §3.2/§5` | `docs(ontology): record unassigned creature family policy` |
 
 **Family item 1 verification:** `/simplify` removed superseded question/refusal prose;
 writer ponytail-review found no further cuts. `git diff --check` and
@@ -622,12 +622,14 @@ current top-level family members/missing fields. `/simplify` removed the duplica
 table; writer ponytail-review found no further cuts. The same diff check and bounded validator
 passed (`ontology valid`); logs use `item-2-*` in the directory above. Follow-up 4 is unchanged.
 
+**Family item 3 verification:** `/simplify` removed the temporary policy summary and redundant
+status prose; writer ponytail-review found no further cuts. The same diff check and bounded
+validator passed (`ontology valid`); logs use `item-3-*` above. Scope checks preserve item 2's
+table and follow-up 4; no runtime/live JSON/tests changed across items 1–3.
+
 **Historical proposals 1–3 (superseded by the owner answer):** the earlier handoff received
 no answers; the subsequent approval above replaces that checkpoint. In particular, item 1's
 original recommendation to keep Skeleton Dog primary `skeletons` is superseded by `dogs`.
-
-Item 3 approves leaving creatures outside defined families unassigned with the existing ×1.0
-family modifier; no catch-all classification. Its canonical record follows separately.
 
 Sources: `ontology/instances/creatures.json`, top-level family lists in `creature-families.json`
 (not its nested spawn rosters), `generators.json#design.enemy-hp`, `domain.md#creature-family`.

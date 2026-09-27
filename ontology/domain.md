@@ -446,6 +446,11 @@ Live JSON still lacks these assignments; migration remains deferred.
 | trolls (3) | `troll`, `dark-troll`, `yeti` |
 | fish (8) | `sapphire-fish`, `lemon-fish`, `seahorse`, `shark`, `lantern-fish`, `maw-fish`, `piranha`, `blowfish` |
 
+**Hybrid family item 3 (owner approved, 2026-09-27):** creatures outside the defined families
+may remain unassigned. With no primary family, the family modifier is **×1.0**, preserving all
+other ordinary stat calculations (`design.enemy-hp` already records this default). Do not invent
+catch-all families merely to fill every entry.
+
 ### pet
 A tamed creature owned by a player. `A S`
 | prop | notes |
@@ -1212,7 +1217,7 @@ content selection or live data changes are authorized by this contract.
 | c-race-class | any race × any class × either gender is valid | type |
 | c-spec-of-class | specialization.class == character.class; player starts as spec index 0 | load |
 | c-one-active-pet | at most one pet summoned; one of each pet-food carried | runtime |
-| c-creature-family | primary and descriptive references name defined creature families; at most one primary per creature, consistent with §3.2 approved assignments; descriptive memberships never supply or stack family stat modifiers, nor imply species-trait inheritance | load+runtime (deferred) |
+| c-creature-family | primary and descriptive references name defined creature families; at most one primary per creature, consistent with §3.2 approved assignments; without a primary, the family modifier is ×1.0 and other ordinary stat calculations remain; descriptive memberships never supply or stack family stat modifiers, nor imply species-trait inheritance | load+runtime (deferred) |
 | c-food-id | pet-food.tames references the creature by stable ID; when its numeric source ID is known, pet-food.subtype == creature.alpha-entity-id (legacy field includes post-alpha IDs; no alpha-range clamp) | load |
 | c-weapon-class | equipping weapon-type/armor material requires matching class (red name otherwise) | runtime |
 | c-hands | 1H ×2 or 1H + shield or one 2H; bracelets need two for full damage | runtime |
@@ -1311,8 +1316,8 @@ This index mirrors the open list in `docs/ROADMAP/todo_decide.md §E`; it does n
 or authorize implementation. Resolve each question before its affected slice.
 Aggro items 1–14, including the two former open follow-ups, are approved and recorded in §3.2
 (2026-09-27; `todo_decide.md §E`); implementation remains deferred.
-Creature family items 1–3 are approved: items 1–2 are recorded in §3.2/§4/§5; item 3 awaits
-its separate documentation commit. Resume at unanswered family follow-up 4, not items 1–3.
+Creature family items 1–3 are approved and recorded in §3.2/§4/§5, including the unassigned
+policy; implementation remains deferred. Resume at unanswered family follow-up 4, not items 1–3.
 Threat across server restart stays in the persistence topic below.
 
 | topic | still undecided / incomplete |

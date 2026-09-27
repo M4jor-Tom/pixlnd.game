@@ -3,8 +3,8 @@
 ## Ontology walkthrough entry point (2026-09-27)
 
 **Current authorization (2026-09-27):** record creature-family items 1–3 as three separate
-ontology-documentation commits on `fix/ontology-reconciliation`. Items 1–2 are recorded; item 3
-is approved, awaiting its separate record. No runtime, live JSON, tests, push or merge.
+ontology-documentation commits on `fix/ontology-reconciliation`. **Items 1–3 are recorded.**
+No runtime, live JSON, tests, push or merge are authorized.
 Canonical rules: `ontology/domain.md#creature-family`; application/checks: `todo_decide.md §E`.
 
 **Resume:** **Creature family follow-up 4 — Skeleton Dog encounter rarity, presented but
