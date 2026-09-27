@@ -131,7 +131,7 @@ Never propose or implement regional gear power loss in pixlnd, even for Cube Wor
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
 **Current resume direction (2026-09-27):** the owner approved each **Aggro batch item 1–12**
-for documentation and one separate commit per item. **Aggro batch applied: 1–6/12.**
+for documentation and one separate commit per item. **Aggro batch applied: 1–7/12.**
 The numbered Aggro entries below track application, distinct from older reconciliation items 1–10.
 Remaining approved items await recording; **questions 13–14 remain OPEN** below, without defaults.
 Finish recording, then resume those two questions together; do not call the topic closed or move
@@ -519,6 +519,10 @@ D1–D26, all walkthrough approvals and remaining open questions.
   Check full stealth on landing before hit consumption, separately per DOT tick: no new
   damage threat, no existing-threat wipe or taunt cancellation. Partial stealth only keeps its
   existing detection reduction; Camouflage can sustain the exception. `domain.md §3.2/§3.3/§5`.
+
+- [x] **Aggro 7 — spawned-pack membership (approved/applied 2026-09-27, documentation only).**
+  A group is one generated pack of creature individuals, not nearby members of a species
+  or faction. Recorded in `domain.md §3.2/§4`; no proximity-based pack merging.
 
 ### Open — decide before the named slice
 

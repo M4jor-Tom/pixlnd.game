@@ -455,6 +455,9 @@ Rules shared by enemies. `A S`
 
 Hybrid aggro rules (owner approved 2026-09-18/19 and 2026-09-27, documentation only; relation definitions in
 §4, constraints `c-threat-pair` / `c-current-target` in §5):
+- **Pack membership (owner approved 2026-09-27):** creatures generated together as one
+  spawned pack belong to that group. Nearby packs do not merge merely because they share
+  a species or faction. Membership concerns spawned individuals, not `creature` definitions.
 - **Damage contribution (owner correction, 2026-09-18):** add **1 aggro point per 1% of the
   mob's maximum HP actually removed** by the attacker: `aggro gained = 100 × HP removed / mob max HP`.
   Except at full stealth (below), use actual HP loss after reduction/absorption, not attempted
@@ -1085,7 +1088,8 @@ mob-b --threat {aggro-points: 40}--> player-you
 mob-b --current-target-----------> player-you
 ```
 
-Threat, order and targeting rules follow §3.2; unresolved questions are listed in §7.
+Pack membership is the generated grouping of mob individuals (§3.2), not `member-of-family`
+or `belongs-to-faction`. Threat, order and targeting rules follow §3.2; open questions are in §7.
 
 ---
 

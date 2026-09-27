@@ -25,7 +25,7 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `tasks/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Aggro batch applied: 1–6/12.** All twelve items were approved on 2026-09-27 for documentation;
+**Aggro batch applied: 1–7/12.** All twelve items were approved on 2026-09-27 for documentation;
 remaining application and OPEN follow-ups 13–14 are tracked in `todo_decide.md §E` / `domain.md §7`.
 Gameplay and live JSON remain unchanged; the topic is not closed.
 
