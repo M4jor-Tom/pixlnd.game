@@ -5,7 +5,7 @@
 **Current authorization (2026-09-27):** the owner answered **“1: Approved; 2: Approved;
 3: Approved; 4: Approved”** for settlements/inn. Record each as a separate documentation commit;
 **no push now**. This supersedes the earlier handoff's unanswered/stop/publication instructions.
-Item **1 is recorded**; items **2–4 are approved, awaiting recording** (`todo_decide.md §E`).
+Items **1–2 are recorded**; items **3–4 are approved, awaiting recording** (`todo_decide.md §E`).
 No gameplay, live JSON, tests, model/loader/validator changes or merge are authorized.
 
 **Family items 1–9 are recorded:** item 7 (`a4c6206`) selects Collie fallback for existing
@@ -18,7 +18,7 @@ migration/scaling, shared-food model/loader/validator support and runtime enforc
 deferred and unauthorized. The original primary-`skeletons`, one-tenth species-weight and
 special-passivity proposals are superseded, not approved alternatives.
 
-**Resume boundary: record approved settlements/inn items 2–4**, then traversal. Items 3–4
+**Resume boundary: record approved settlements/inn items 3–4**, then traversal. Items 3–4
 depend on item 2. Canonical rules: `domain.md#settlement` / `#game-clock`.
 Current D22 runtime stays unchanged; migration/enforcement is deferred.
 Cleared dungeon/quest enemy reset eligibility remains in the later world/reset topic.
@@ -142,7 +142,7 @@ or next proposal is authorized now.
 The publication changes only four Markdown files, not runtime/live data; these tests do not prove
 implementation of the new policies. Commands and session-local evidence: `todo_decide.md §E`.
 
-**Current walkthrough topic:** **Settlements/inn item 1 recorded; approved items 2–4 await recording**;
+**Current walkthrough topic:** **Settlements/inn items 1–2 recorded; approved items 3–4 await recording**;
 traversal follows. Family items 1–9 are recorded.
 Aggro items **1–14** are recorded; do not re-ask 13–14. Restart persistence remains a later topic.
 Do not start gameplay/validator/equipment implementation without separate authorization.

@@ -288,11 +288,22 @@ Time, resets and sleep. `A S`
 | prop | value |
 |---|---|
 | speed | 10× real time (1 game min ≈ 6 s; day = 2 h 24 min real) |
-| sleep-speed | 100× (clock only, world does not simulate faster) |
+| sleep-speed | A/S reference: 100× (clock only, world does not simulate faster); hybrid inn skip below |
 | midnight-reset | 0:00: respawn monsters (not already-cleared quest/dungeon mobs `S?`), regenerate missions, respawn deposits and wilderness plants, restock shops, re-close divine doors |
-| inn-reset | innkeeper 18:00–06:00 → set 07:00; A free; S 10 coins, also re-rolls daily missions |
+| inn-reset | A/S reference: innkeeper 18:00–06:00 → set 07:00; A free; S 10 coins, also re-rolls daily missions; hybrid services below |
 | night | very dark; lanterns; stealth builds faster in darkness |
 | weather | none in A/S; Ω: rain, snow, moving clouds, freezing water |
+
+**Hybrid settlements/inn item 2 (owner approved, 2026-09-27):** inn recovery fully heals and
+sets the respawn point **for free at any time**. A separate sleep service costs **10 copper**,
+is available **18:00–06:00**, and skips the clock to the **next 07:00**: 22:00 reaches tomorrow
+morning; 02:00 reaches that morning. This is a clock skip, not fast-forwarded combat, status
+effects or cooldowns. The sleep hours and fee do not restrict free recovery.
+
+Documentation only: `design.settlement.inn` and current runtime still provide free recovery
+without a clock/skip. The hybrid `inn-cost: 10` flag does not distinguish the two services;
+`generators.json#time` and A/S inn records are not a complete hybrid service contract.
+Live-data migration and runtime implementation remain deferred and unauthorized.
 
 ### 3.2 Entities
 
@@ -1304,9 +1315,9 @@ content selection or live data changes are authorized by this contract.
 | c-combo-reset | any attack with a hitbox that misses resets combo to 0, subject to the hybrid whole-channel and combo-neutral zero-damage-taunt rules in §3.3 combo-system; cap per weapon-type | runtime |
 | c-dodge-cost | dodge costs 25 stamina; requires movement; standing still M3 = class skill (S); hybrid numbers `design.defence.dodge` (D23) | runtime |
 | c-no-death-penalty | death never removes gold/items/xp; respawn at statue (A) / activated shrine (S) | runtime |
-| c-time-speed | clock 10× real; sleep 100× clock-only | runtime |
+| c-time-speed | clock 10× real; reference sleep 100× clock-only; hybrid inn sleep skips to the next 07:00 without fast-forwarding combat/status effects/cooldowns (§3.1) | runtime |
 | c-midnight-reset | at 0:00 respawn mobs, regen missions, deposits, plants; restock shops | runtime |
-| c-inn-hours | inn reset only 18:00–06:00 → 07:00 | runtime |
+| c-inn-hours | hybrid: separate 10-copper sleep service only 18:00–06:00 → next 07:00; healing and setting respawn stay free at any time (§3.1) | runtime |
 | c-land-count | hybrid: exactly 1 settlement per land (approved 2026-09-27); S per land: gnomes = 4, books = 4, movement items ≤ 4, ticket items ≤ 3, key items ≤ 9, towers ≤ 5, settlements ≥ 1; A per land: settlements = 1, missions = 64 cells | generator |
 | c-key-item-need | a key item spawns only if its lock type exists in the land | generator |
 | c-boss-size | A: boss size/strength from 1 at lvl 1 to full at lvl 10; S: dungeon boss size capped so it fits inside | generator |
@@ -1387,7 +1398,7 @@ Threat across server restart stays in the persistence topic below.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Settlements / inn | item 1 recorded: one settlement per land is final; approved inn items 2–4 await recording (`todo_decide.md §E`); D22 runtime unchanged |
+| Settlements / inn | items 1–2 recorded; approved reset/consent items 3–4 await recording (`todo_decide.md §E`); D22 runtime unchanged |
 | Traversal | skill versus global key-item prerequisites for riding/gliding/sailing; climbing spikes versus skill points |
 | Books / formulas | permanence/global scope of hybrid book recipes and duplicate unlock interaction with formulas |
 | Artifacts | global versus per-traversal-stat diminishing returns; additive versus compounded percentages (D6 numbers and traversal + attack/HP rewards stand) |

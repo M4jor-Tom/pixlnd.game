@@ -153,7 +153,9 @@ degradation) are not backlog features.
 - [ ] Item 1's exact-one-settlement target (`domain.md#settlement`): migrate the conflicting hybrid
   `settlements-per-land: "many"` flag and enforce the exact count; current config is 1 but validation
   allows ≥1 and placement can fail on all-sea land. No live-data, validator or generation changes authorized.
-- [ ] Inn: heals and moves the respawn point only; no sleep-to-07:00 (no `game-clock`), no daily mission re-roll (S).
+- [ ] Inn item 2 (`domain.md#game-clock`): implement separate paid timed sleep, preserving free recovery.
+  Runtime has no clock/skip; the hybrid `inn-cost` flag lacks the service distinction.
+  Live-data migration and implementation remain unauthorized; approved items 3–4 await recording.
 - [ ] NPCs never talk (`npc-role.dialogue`, speech bubbles); E resolves the service instantly.
 - [ ] Villagers and animals inside town are absent, so `c-hostile-in-city` only keeps wild spawns 40 blocks away.
 

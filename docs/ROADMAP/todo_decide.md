@@ -131,8 +131,8 @@ Never propose or implement regional gear power loss in pixlnd, even for Cube Wor
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
 **Current direction (2026-09-27):** the owner approved settlements/inn items **1–4**, each to
-receive its own documentation commit; **no push now**. Item **1 is recorded**; approved items
-**2–4 await recording**, then traversal is next. This supersedes the earlier handoff's unanswered,
+receive its own documentation commit; **no push now**. Items **1–2 are recorded**; approved items
+**3–4 await recording**, then traversal is next. This supersedes the earlier handoff's unanswered,
 stop and publication instructions. Family items 1–9 remain recorded. No runtime/live JSON/test
 work, model/loader/validator changes or merge is authorized.
 **Aggro batch applied: 1–14/14**, independently reviewed; restart persistence remains a later topic.
@@ -559,8 +559,8 @@ D1–D26, all walkthrough approvals and remaining open questions.
 
 ### Open — decide before the named slice
 
-- [ ] **Hybrid settlements / inn application:** item 1 recorded; approved items 2–4 await
-  recording below (3–4 depend on 2). This is recording work, not unanswered policy or runtime permission.
+- [ ] **Hybrid settlements / inn application:** items 1–2 recorded; approved items 3–4 await
+  recording below (both depend on recorded item 2). This is recording work, not unanswered policy or runtime permission.
 - [ ] **Traversal prerequisites:** skill, global key item, or both for riding/gliding/sailing;
   how do climbing spikes interact with climbing points? Before traversal/pets; sources:
   `abilities.json` shared trees, `key-items.json`, `rulesets.json#ruleset-hybrid.flags`.
@@ -604,17 +604,11 @@ eligibility remains in the later world/reset topic. Current D22 runtime and live
    Canonical rule: `domain.md#settlement`, `c-land-count`, `gen-settlement`.
    Conflicting live flag and exact-count enforcement are deferred in `todo_implement.md`.
 
+2. [x] **Separate paid sleep from free recovery:** free healing/respawn setting at any time;
+   10-copper sleep, 18:00–06:00 → next 07:00, without fast-forwarding combat.
+   Canonical rule and date examples: `domain.md#game-clock` / `c-inn-hours`.
+
 **Approved items awaiting recording:**
-
-#### 2. Separate paid sleep from free recovery
-
-**Recommendation:** Keep healing and setting your respawn point free at any time. Add a separate **10-copper sleep service**, available **18:00–06:00**, which skips the clock to the next **07:00** without fast-forwarding combat.
-
-For example, sleeping at 22:00 reaches tomorrow morning; sleeping at 02:00 reaches that morning.
-
-##### Approval versus Refusing
-- **Approval:** You never need money to recover, but can pay a small fee to skip the remaining night.
-- **Refusing:** Free recovery remains; whether to offer timed sleep, and at what price, stays unresolved.
 
 #### 3. Sleep does not grant an extra daily refresh
 
