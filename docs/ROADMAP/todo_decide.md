@@ -130,11 +130,10 @@ The full walkthrough/resumption protocol is in `tasks/lessons.md`; the prompt
 Never propose or implement regional gear power loss in pixlnd, even for Cube World cloning
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
-**Current direction (2026-09-27):** the owner approved settlements/inn items **1–4**, each to
-receive its own documentation commit; **no push now**. Items **1–3 are recorded**; approved item
-**4 awaits recording**, then traversal is next. This supersedes the earlier handoff's unanswered,
-stop and publication instructions. Family items 1–9 remain recorded. No runtime/live JSON/test
-work, model/loader/validator changes or merge is authorized.
+**Current direction (2026-09-27):** settlements/inn items **1–4 are approved and recorded**
+as separate documentation commits; **traversal is next; no push now**. This supersedes the
+earlier handoff's unanswered, stop and publication instructions. Family items 1–9 remain recorded.
+No runtime/live JSON/test work, model/loader/validator changes or merge is authorized.
 **Aggro batch applied: 1–14/14**, independently reviewed; restart persistence remains a later topic.
 Older publication instructions and hashes below are historical checkpoints.
 
@@ -559,8 +558,6 @@ D1–D26, all walkthrough approvals and remaining open questions.
 
 ### Open — decide before the named slice
 
-- [ ] **Hybrid settlements / inn application:** items 1–3 recorded; approved item 4 awaits
-  recording below (depends on recorded item 2). This is recording work, not unanswered policy or runtime permission.
 - [ ] **Traversal prerequisites:** skill, global key item, or both for riding/gliding/sailing;
   how do climbing spikes interact with climbing points? Before traversal/pets; sources:
   `abilities.json` shared trees, `key-items.json`, `rulesets.json#ruleset-hybrid.flags`.
@@ -594,11 +591,12 @@ D1–D26, all walkthrough approvals and remaining open questions.
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
 
-### Settlements / inn — items 1–4 approved (2026-09-27)
+### Settlements / inn — items 1–4 recorded (2026-09-27)
 
 **Owner answer:** “1: Approved; 2: Approved; 3: Approved; 4: Approved”. Documentation only;
-items 3–4 depend on 2. Record each separately; no push. Cleared dungeon/quest enemy reset
-eligibility remains in the later world/reset topic. Current D22 runtime and live JSON are unchanged.
+items 3–4 depend on recorded item 2. All four are recorded; traversal is next, no push.
+Cleared dungeon/quest enemy reset eligibility remains in the later world/reset topic.
+Current D22 runtime and live JSON are unchanged.
 
 1. [x] **One settlement per land is the final target**, not unfinished multiplicity.
    Canonical rule: `domain.md#settlement`, `c-land-count`, `gen-settlement`.
@@ -612,24 +610,25 @@ eligibility remains in the later world/reset topic. Current D22 runtime and live
    skip crosses midnight; no additional shop refresh or mission reroll. Canonical rule:
    `domain.md#game-clock` / `c-midnight-reset`. Cleared dungeon/quest enemy eligibility stays open.
 
-**Approved item awaiting recording:**
+4. [x] **Everyone agrees before shared-clock sleep:** all connected players explicitly agree;
+   the initiator pays the single 10-copper fee only on success. Refusal blocks the skip without
+   charge; free recovery needs no agreement. Canonical rule: `domain.md#game-clock` / `#multiplayer-mode`.
 
-#### 4. Multiplayer sleep requires everyone’s agreement
-
-*Conditional on approving 2.*
-
-**Recommendation:** All connected players must explicitly agree before the shared clock skips. The initiating player pays the single 10-copper fee only when the skip succeeds. Free recovery needs no agreement.
-
-##### Approval versus Refusing
-- **Approval:** Nobody can unexpectedly skip another player’s night. One refusal blocks the skip, but nobody loses money.
-- **Refusing:** Multiplayer sleep coordination remains unresolved; it does not authorize unilateral time changes.
+**Writer verification (not independent review):** per-item diff inspection, `/simplify`, then
+ponytail-review; `git diff --check` and
+`timeout 150 nix develop -c godot --headless -s ontology/validate.gd`.
+Fresh logs: `/tmp/pixlnd-settlements-20260927/item-{1,2,3,4}-{diff-check,validator,results,scope,review}.log`
+and `item-{1,2,3,4}-diff.patch`. These check current loaded data and documentation scope, not
+runtime compliance or automatic validation of Markdown semantics. No gameplay/visual/network
+checks were run; fresh independent review is pending.
 
 Sources inspected: `ontology/domain.md#settlement`, `#game-clock`, `#currency`, `#multiplayer-mode`,
 `c-inn-hours`, `c-midnight-reset` and D22; `instances/rulesets.json#ruleset-hybrid.flags`,
 `generators.json#time|design.settlement`, `economy.json#shops.inn|rules`, `npc-roles.json#innkeeper`,
 `buildings.json`, `research/research_world.md §5/§7`; consumers `game/world/world_gen.gd#village_at`,
 `world.gd#_stream_village`, `settlement.gd`, `game/entities/player.gd#rest`. The live build still
-has free recovery and no game clock/time skip; flags do not settle the conflicting target policies.
+has free recovery and no game clock/time skip; conflicting/incomplete flags await migration,
+not reinterpretation as alternatives to the approved policies.
 
 **Historical publication checkpoint (superseded):** branch `fix/ontology-reconciliation` at `683fd79` before that handoff;
 remote `ef81bd6` confirmed with `git ls-remote`. Publish existing family commits `a4c6206`,
@@ -850,7 +849,7 @@ is still open. Do not mistake a listed proposed correction for an approved new g
   the reference-only `region-lock` entry, `rulesets.json` annotations, `generators.json` annotations
   and `ontology/README.md`. Recorded permanent exclusion of regional gear power loss, not a
   roadmap option. Historical data and all live flags/balance values preserved. Settlement/inn
-  targets, traversal, artifacts and other unresolved merges remain open. Walkthrough protocol
+  targets are now recorded above; traversal, artifacts and other unresolved merges remain open. Walkthrough protocol
   and the explicit stop/resume route are recorded in `tasks/lessons.md` and `docs/HANDOFF.md`.
 - [x] **Validation contract — ontology (item 9, 2026-09-17):** recorded the approved direction
   in `domain.md §5`, clarified `c-versions-nonempty` and split `c-artifact-stat` between

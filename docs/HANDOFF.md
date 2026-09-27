@@ -5,7 +5,7 @@
 **Current authorization (2026-09-27):** the owner answered **“1: Approved; 2: Approved;
 3: Approved; 4: Approved”** for settlements/inn. Record each as a separate documentation commit;
 **no push now**. This supersedes the earlier handoff's unanswered/stop/publication instructions.
-Items **1–3 are recorded**; item **4 is approved, awaiting recording** (`todo_decide.md §E`).
+**Settlements/inn items 1–4 are recorded; traversal is next** (`todo_decide.md §E`).
 No gameplay, live JSON, tests, model/loader/validator changes or merge are authorized.
 
 **Family items 1–9 are recorded:** item 7 (`a4c6206`) selects Collie fallback for existing
@@ -18,10 +18,11 @@ migration/scaling, shared-food model/loader/validator support and runtime enforc
 deferred and unauthorized. The original primary-`skeletons`, one-tenth species-weight and
 special-passivity proposals are superseded, not approved alternatives.
 
-**Resume boundary: record approved settlements/inn item 4**, then traversal. It depends on
-recorded item 2. Canonical rules: `domain.md#settlement` / `#game-clock`.
-Current D22 runtime stays unchanged; migration/enforcement is deferred.
+**Resume boundary: traversal.** Canonical settlements/inn rules: `domain.md#settlement` /
+`#game-clock`. Current D22 runtime stays unchanged; migration/enforcement is deferred.
 Cleared dungeon/quest enemy reset eligibility remains in the later world/reset topic.
+Writer evidence: `/tmp/pixlnd-settlements-20260927/item-{1,2,3,4}-*`; fresh independent review
+is pending. Validator checks loaded data, not these Markdown policies or runtime compliance.
 
 **Historical pre-publication Git checkpoint (superseded):** clean `fix/ontology-reconciliation` at `683fd79` before
 this two-file handoff. Remote branch was `ef81bd6` (`git ls-remote`); three local family commits
@@ -142,8 +143,8 @@ or next proposal is authorized now.
 The publication changes only four Markdown files, not runtime/live data; these tests do not prove
 implementation of the new policies. Commands and session-local evidence: `todo_decide.md §E`.
 
-**Current walkthrough topic:** **Settlements/inn items 1–3 recorded; approved item 4 awaits recording**;
-traversal follows. Family items 1–9 are recorded.
+**Current walkthrough topic: traversal.** Settlements/inn items **1–4** and family items **1–9**
+are recorded.
 Aggro items **1–14** are recorded; do not re-ask 13–14. Restart persistence remains a later topic.
 Do not start gameplay/validator/equipment implementation without separate authorization.
 

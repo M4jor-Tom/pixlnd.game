@@ -64,7 +64,7 @@ availability, even if a historical flag is true. Their existing definitions and 
 **Current-build coverage:** dated slice notes and `generators.json#design` describe approved
 implementation stages, including temporary approximations, not proof that the final target is
 implemented. Later decisions supersede earlier placeholders. Unresolved hybrid merges remain
-in `docs/ROADMAP/todo_decide.md §E` (including inn services, traversal prerequisites and artifact
+in `docs/ROADMAP/todo_decide.md §E` (including traversal prerequisites and artifact
 accumulation); this scope clarification does not decide them or authorize gameplay changes.
 **Out of scope:** Picroma's engine internals (Plasma GUI runtime, DX11 renderer), the exact
 network byte layout of the 2013 protocol (kept as reference only), Steam platform integration,
@@ -305,6 +305,12 @@ ordinary midnight resets **once when the skip crosses midnight**. Sleeping at 23
 midnight; sleeping at 02:00 does not. Sleeping itself grants **no extra shop refresh or mission
 reroll**. Which already-cleared dungeon/quest enemies reset remains unresolved for the later
 world/reset topic.
+
+**Hybrid settlements/inn item 4 (owner approved, 2026-09-27; depends on item 2):** **all
+connected players must explicitly agree** before the shared clock skips. The initiating player
+pays the **single 10-copper fee only when the skip succeeds**. A refusal blocks the skip and
+nobody loses money. Free recovery needs no agreement. This specifies no voting timeout or
+disconnect protocol.
 
 Documentation only: `design.settlement.inn` and current runtime still provide free recovery
 without a clock/skip. The hybrid `inn-cost: 10` flag does not distinguish the two services;
@@ -1097,6 +1103,7 @@ pairs); hosted by a Bloodaxe orc; resets daily; 18–50 coins + gear; more commo
 
 ### multiplayer-mode
 Hybrid (D5/D7): dedicated server, alpha style; max players configurable, default 4.
+Shared-clock inn sleep consent/payment follows `game-clock` item 4 (approved 2026-09-27).
 A: dedicated `Server.exe`, TCP 12345, seed from `server.cfg`, connect by IP/DNS, 4 players (alpha-era wiki said 10),
 client-authoritative, chat + `/connect /disconnect /name /namepet /pvp` (`/pvp` dropped, D11: `server.cfg` flag `pvp`, default off), item trading by drop.
 S: Steam-friends P2P (J), shared seed, keep own position, meet via free flights to friends,
@@ -1324,7 +1331,7 @@ content selection or live data changes are authorized by this contract.
 | c-no-death-penalty | death never removes gold/items/xp; respawn at statue (A) / activated shrine (S) | runtime |
 | c-time-speed | clock 10× real; reference sleep 100× clock-only; hybrid inn sleep skips to the next 07:00 without fast-forwarding combat/status effects/cooldowns (§3.1) | runtime |
 | c-midnight-reset | at 0:00 respawn eligible mobs, regen missions, deposits, plants; restock shops; hybrid sleep applies ordinary midnight resets once only if crossing midnight, never extra shop refreshes/mission rerolls merely for sleeping; cleared dungeon/quest enemy eligibility remains unresolved (§3.1) | runtime |
-| c-inn-hours | hybrid: separate 10-copper sleep service only 18:00–06:00 → next 07:00; healing and setting respawn stay free at any time (§3.1) | runtime |
+| c-inn-hours | hybrid: separate 10-copper sleep service only 18:00–06:00 → next 07:00; all connected players explicitly agree, initiator pays the single fee only on success; refusal blocks skip without charge; healing and setting respawn stay free at any time without agreement (§3.1) | runtime |
 | c-land-count | hybrid: exactly 1 settlement per land (approved 2026-09-27); S per land: gnomes = 4, books = 4, movement items ≤ 4, ticket items ≤ 3, key items ≤ 9, towers ≤ 5, settlements ≥ 1; A per land: settlements = 1, missions = 64 cells | generator |
 | c-key-item-need | a key item spawns only if its lock type exists in the land | generator |
 | c-boss-size | A: boss size/strength from 1 at lvl 1 to full at lvl 10; S: dungeon boss size capped so it fits inside | generator |
@@ -1401,11 +1408,12 @@ Creature family items 1–9 are recorded: Skeleton Dog follows normal dog behavi
 skeleton-only passivity exception, and shares Bubble Gum with Collie. The independent 1% per-dog
 chance, existing habitat scope and Collie fallback stand. No unanswered family proposal remains;
 implementation is separately deferred.
-Threat across server restart stays in the persistence topic below.
+Settlements/inn items 1–4 are recorded in §3.1 (2026-09-27); traversal is next. Live-data migration
+and implementation remain deferred; cleared dungeon/quest enemy reset eligibility stays in
+world/reset below. Threat across server restart stays in the persistence topic below.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Settlements / inn | items 1–3 recorded; approved consent/payment item 4 awaits recording (`todo_decide.md §E`); D22 runtime unchanged |
 | Traversal | skill versus global key-item prerequisites for riding/gliding/sailing; climbing spikes versus skill points |
 | Books / formulas | permanence/global scope of hybrid book recipes and duplicate unlock interaction with formulas |
 | Artifacts | global versus per-traversal-stat diminishing returns; additive versus compounded percentages (D6 numbers and traversal + attack/HP rewards stand) |
