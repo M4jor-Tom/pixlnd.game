@@ -21,8 +21,11 @@ special-passivity proposals are superseded, not approved alternatives.
 **Resume boundary: traversal.** Canonical settlements/inn rules: `domain.md#settlement` /
 `#game-clock`. Current D22 runtime stays unchanged; migration/enforcement is deferred.
 Cleared dungeon/quest enemy reset eligibility remains in the later world/reset topic.
-Writer evidence: `/tmp/pixlnd-settlements-20260927/item-{1,2,3,4}-*`; fresh independent review
-is pending. Validator checks loaded data, not these Markdown policies or runtime compliance.
+All four item commits passed diff checks and bounded ontology validation; fresh independent
+review found no issues. Parent inspected the actual diff/commits/logs and reran validation.
+Commit map and evidence: `todo_decide.md §E`, `/tmp/pixlnd-settlements-20260927/`.
+Validator checks loaded data, not these Markdown policies or runtime compliance. No gameplay,
+boot, visual or network checks were rerun; no push is authorized.
 
 **Historical pre-publication Git checkpoint (superseded):** clean `fix/ontology-reconciliation` at `683fd79` before
 this two-file handoff. Remote branch was `ef81bd6` (`git ls-remote`); three local family commits

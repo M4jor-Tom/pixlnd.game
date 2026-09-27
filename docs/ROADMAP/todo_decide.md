@@ -614,13 +614,23 @@ Current D22 runtime and live JSON are unchanged.
    the initiator pays the single 10-copper fee only on success. Refusal blocks the skip without
    charge; free recovery needs no agreement. Canonical rule: `domain.md#game-clock` / `#multiplayer-mode`.
 
-**Writer verification (not independent review):** per-item diff inspection, `/simplify`, then
-ponytail-review; `git diff --check` and
-`timeout 150 nix develop -c godot --headless -s ontology/validate.gd`.
-Fresh logs: `/tmp/pixlnd-settlements-20260927/item-{1,2,3,4}-{diff-check,validator,results,scope,review}.log`
-and `item-{1,2,3,4}-diff.patch`. These check current loaded data and documentation scope, not
-runtime compliance or automatic validation of Markdown semantics. No gameplay/visual/network
-checks were run; fresh independent review is pending.
+| item | ontology-only commit |
+|---|---|
+| 1 — final settlement count | `154df56` |
+| 2 — separate paid sleep | `0b7c2d4` |
+| 3 — midnight-crossing refreshes | `250f964` |
+| 4 — agreement and success-only payment | `f207a48` |
+
+**Verification:** each item received diff inspection, `/simplify`, then ponytail-review and
+appropriate cuts; `git diff --check` and
+`timeout 150 nix develop -c godot --headless -s ontology/validate.gd` passed (exit 0,
+`ontology valid`). Fresh independent read-only review found no issues; parent inspected the
+actual diff/commits/logs and reran validation successfully. All four commits change only the
+five ontology/status Markdown files; live JSON, executable files and tests are unchanged.
+Evidence: `/tmp/pixlnd-settlements-20260927/` (`item-{1,2,3,4}-*`, `independent-review.md`,
+`parent-final-diff.patch`, `parent-validator.log`). The reviewer checked Markdown semantics and
+matched patches to Git; validation checks loaded data, not implementation of these policies.
+No gameplay, boot, visual or network checks were rerun. No push is authorized.
 
 Sources inspected: `ontology/domain.md#settlement`, `#game-clock`, `#currency`, `#multiplayer-mode`,
 `c-inn-hours`, `c-midnight-reset` and D22; `instances/rulesets.json#ruleset-hybrid.flags`,
