@@ -383,7 +383,8 @@ A non-player species (animal, insect, aquatic, monster, humanoid enemy, boss spe
 | prop | type | notes |
 |---|---|---|
 | alpha-entity-id | int? | legacy name for the numeric source entity ID, not alpha-only; JSON `aid`, typed `alpha_entity_id`; null = unrecorded |
-| family | `creature-family` ref? | beetles, runners, slimes, alpacas, dogs, skeletons, golems, sprouts |
+| family | `creature-family` ref? | optional primary balancing family; only this family supplies family stat modifiers |
+| descriptive-families | set<`creature-family` ref> | zero or more descriptive memberships; never supply or stack stat modifiers |
 | category | animal \| insect \| aquatic \| plant-creature \| monster \| undead \| demon \| elemental \| humanoid \| boss-species \| static-target \| unused |
 | hostility-default | hostile \| neutral \| passive \| friendly \| variable (by tribe) |
 | landscapes | refs | |
@@ -412,7 +413,25 @@ alpha availability (F10). Preserve stable creature IDs, numeric source IDs, vers
 clamp later IDs to the alpha range or invent values for unrecorded IDs.
 
 ### creature-family
-Shared base form. → `instances/creature-families.json`.
+Shared base form. → `instances/creature-families.json` (top-level family `members` lists,
+not nested spawn rosters).
+
+**Hybrid family item 1 (owner approved with amendment, 2026-09-27):** a creature has at most
+one primary balancing family (`family` / `member-of-family`). Multiple descriptive memberships
+(`descriptive-families` / `descriptive-member-of-family`) may coexist, but never supply or stack
+family stat modifiers. Top-level family `members` lists describe memberships, not multiple
+primary assignments or automatic species-trait inheritance.
+
+**Skeleton Dog (`skeleton-dog`) has primary family `dogs`, not `skeletons`.** It retains descriptive
+membership in both dogs and skeletons; its `undead` category is independent and unchanged.
+Other existing primary assignments remain. This changes no taming, abilities, drops, hostility,
+habitats or pack aggro, and introduces no numerical family modifier. The conditional rarity
+request is unresolved at `docs/ROADMAP/todo_decide.md §E`, family follow-up 4; combat/loot rarity
+is not an encounter-frequency rule.
+
+Documentation only: live `creatures.json` still assigns Skeleton Dog to `skeletons`; migration,
+model/loader/validator support and runtime family scaling remain deferred and unauthorized.
+There is no live family `hp-mult` data or runtime family scaling today.
 
 ### pet
 A tamed creature owned by a player. `A S`
@@ -1063,7 +1082,8 @@ One row per fact type. Cardinality as `domain → range`.
 | spawns-in | creature ∪ flora ∪ deposit | landscape ∪ terrain-feature ∪ dungeon-type ∪ poi-type | n→n | |
 | placed-in | dungeon-type ∪ poi-type ∪ settlement | landscape | n→n | |
 | tamed-by | creature | pet-food | 1→0..1 | stable ID pairing; food subtype matches the creature's known numeric source entity ID (alpha or post-alpha) |
-| member-of-family | creature | creature-family | n→1 | |
+| member-of-family | creature | creature-family | 1→0..1 | optional primary balancing family (`creature.family`); sole source of family stat modifiers |
+| descriptive-member-of-family | creature | creature-family | 1→0..n | descriptive memberships only (`creature.descriptive-families`); never supply or stack stat modifiers |
 | belongs-to-faction | creature ∪ npc-role | faction | n→n | |
 | hosts | dungeon-type ∪ poi-type | mission-type | n→n | |
 | rewards | mission-type ∪ arena ∪ poi-type | item-type ∪ key-item ∪ artifact ∪ currency ∪ book-of-crafting | n→n | |
@@ -1179,6 +1199,7 @@ content selection or live data changes are authorized by this contract.
 | c-race-class | any race × any class × either gender is valid | type |
 | c-spec-of-class | specialization.class == character.class; player starts as spec index 0 | load |
 | c-one-active-pet | at most one pet summoned; one of each pet-food carried | runtime |
+| c-creature-family | primary and descriptive references name defined creature families; at most one primary per creature, consistent with §3.2 approved assignments; descriptive memberships never supply or stack family stat modifiers, nor imply species-trait inheritance | load+runtime (deferred) |
 | c-food-id | pet-food.tames references the creature by stable ID; when its numeric source ID is known, pet-food.subtype == creature.alpha-entity-id (legacy field includes post-alpha IDs; no alpha-range clamp) | load |
 | c-weapon-class | equipping weapon-type/armor material requires matching class (red name otherwise) | runtime |
 | c-hands | 1H ×2 or 1H + shield or one 2H; bracelets need two for full damage | runtime |
@@ -1276,12 +1297,14 @@ are historical implementation stages, superseded where later decisions say so.
 This index mirrors the open list in `docs/ROADMAP/todo_decide.md §E`; it does not choose defaults
 or authorize implementation. Resolve each question before its affected slice.
 Aggro items 1–14, including the two former open follow-ups, are approved and recorded in §3.2
-(2026-09-27; `todo_decide.md §E`); implementation remains deferred. Next: Creature family membership.
+(2026-09-27; `todo_decide.md §E`); implementation remains deferred.
+Creature family items 1–3 are approved: item 1 is recorded in §3.2/§4/§5; items 2–3 await
+separate documentation commits. Resume at unanswered family follow-up 4, not items 1–3.
 Threat across server restart stays in the persistence topic below.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Creature families | one primary scaling family plus descriptive groups, or multiple families with a scaling rule |
+| Creature families — follow-up 4 | Skeleton Dog encounter rarity: proposal presented but unanswered in `todo_decide.md §E`; no encounter-rarity rule approved |
 | Settlements / inn | whether multiple settlements and paid timed sleep are hybrid targets; keep D22's current one village and free heal/respawn service |
 | Traversal | skill versus global key-item prerequisites for riding/gliding/sailing; climbing spikes versus skill points |
 | Books / formulas | permanence/global scope of hybrid book recipes and duplicate unlock interaction with formulas |

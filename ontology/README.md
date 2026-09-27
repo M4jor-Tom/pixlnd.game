@@ -26,9 +26,11 @@ Dated build notes below include superseded placeholders, not proof of current co
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
 **Aggro batch applied: 1–14/14.** The original twelve and follow-ups 13–14 were approved and
-recorded on 2026-09-27; their former open boundaries are settled. Next walkthrough topic:
-**Creature family membership** (`todo_decide.md §E` / `domain.md §7`). Gameplay and live JSON
-remain unchanged; restart persistence stays in its later topic.
+recorded on 2026-09-27; their former open boundaries are settled.
+**Creature family items 1–3 approved (2026-09-27):** item 1 recorded in `domain.md §3.2/§4/§5`;
+items 2–3 await separate records. Live family data and enforcement deliberately remain deferred.
+Next unanswered question: **family follow-up 4, Skeleton Dog encounter rarity** (`todo_decide.md §E`).
+Gameplay and live JSON remain unchanged; restart persistence stays in its later topic.
 
 ## Decision and build history (from 2026-09-07)
 

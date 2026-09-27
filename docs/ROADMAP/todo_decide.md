@@ -130,16 +130,14 @@ The full walkthrough/resumption protocol is in `tasks/lessons.md`; the prompt
 Never propose or implement regional gear power loss in pixlnd, even for Cube World cloning
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
-**Current resume direction (2026-09-27):** the owner approved each **Aggro item 1–14**
-for documentation and one separate commit per item. **Aggro batch applied: 1–14/14.**
-The numbered Aggro entries below track application, distinct from older reconciliation items 1–10.
-The owner subsequently approved both follow-ups 13–14, superseding their earlier OPEN status.
-All fourteen are recorded; independent review found no recording issues. Resume **Creature family
-membership, items 1–3 — presented, all unanswered**, as recorded in the pending proposal batch below.
-Restart persistence stays in its later topic. The owner now requests **handoff, commit + push**
-on `fix/ontology-reconciliation`, then stop the walkthrough; this is not approval of family items.
-No runtime/live JSON/test changes or merge are authorized. Older publication instructions and
-hashes below are historical checkpoints, superseded by this direction.
+**Current resume direction (2026-09-27):** **Creature family items 1–3 approved**, item 1 with
+Skeleton Dog primary `dogs`, not `skeletons`. Record each as a separate documentation commit;
+item 1 is recorded, items 2–3 await their separate records below. Resume at **family follow-up 4,
+Skeleton Dog encounter rarity — presented but unanswered**, not settlements or approved items 1–3.
+No runtime/live JSON/test changes, push or merge are authorized. The earlier 2026-09-27 handoff/
+commit + push request is historical, not current publication permission.
+**Aggro batch applied: 1–14/14**, independently reviewed; restart persistence remains a later topic.
+Older publication instructions and hashes below are historical checkpoints.
 
 **Prior checkpoint (2026-09-19; references from the earlier rebase):** items 1–2 are applied,
 validated and committed in `0a562fc`. Items 3–8 are approved for ontology and their semantic
@@ -562,10 +560,8 @@ D1–D26, all walkthrough approvals and remaining open questions.
 
 ### Open — decide before the named slice
 
-- [ ] **Creature family membership:** one primary scaling family plus descriptive groups, or
-  multiple families with a defined scaling rule? Skeleton Dog appears in dogs and skeletons
-  but its singular family is skeletons. Before family-based scaling; sources:
-  `domain.md#member-of-family` (relation row), `creature-families.json`, `creatures.json#skeleton-dog`.
+- [ ] **Creature family follow-up 4 — Skeleton Dog encounter rarity:** presented but unanswered
+  below. Items 1–3 are approved, not open design questions; implementation remains deferred.
 - [ ] **Hybrid settlements / inn services:** are multiple settlements and inn cost 10 future
   targets, or stale flags? Is paid timed sleep distinct from D22's free heal/respawn service?
   Before changing settlement count or adding sleep; sources: `rulesets.json#ruleset-hybrid.flags`,
@@ -603,22 +599,29 @@ D1–D26, all walkthrough approvals and remaining open questions.
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
 
-### Creature family membership — pending proposal batch (2026-09-27)
+### Creature family membership — approvals and pending follow-up (2026-09-27)
 
-**Status: all three questions were presented; no answers, approvals or refusals were received.**
-The owner requested handoff instead. Resume with the whole batch, not gameplay implementation.
-These are proposals only; they do not change the canonical ontology or live family data.
-Use **"Approval versus Refusing"** for each item and check the combined answers for consistency.
+**Owner answer:** “1: Approved, but make the skeletal dog a (rare if rarity is defineable) dog as
+individual family, not a skeleton; 2: Approved; 3: Approved”. Approval covers documentation only;
+live data, model/loader/validator and gameplay remain unchanged. Conditional rarity awaits item 4.
 
-1. **One primary balancing family, multiple descriptive groups?** Recommend at most one primary
-   family supplying family-based stat multipliers; additional descriptive memberships do not
-   stack bonuses. Skeleton Dog keeps `skeletons` primary while remaining descriptively dog-like.
-   No change to taming, abilities, drops or pack aggro. **Approval:** no accidental double family
-   multiplier. **Refusing:** ask whether multiple families affect stats and how modifiers combine.
-2. **Complete the unambiguous missing assignments?** Recommend preserving existing primary
-   assignments and assigning the following 25 creatures from their sole family list, without
-   introducing new multipliers. **Approval:** consistent future family-based balancing.
-   **Refusing:** ask which exceptions should stay unassigned or use a different family.
+| item | documentation application | commit |
+|---|---|---|
+| 1 | Recorded: primary/descriptive distinction and owner amendment; `domain.md §3.2/§4/§5` | `docs(ontology): record primary creature families and dog override` |
+| 2 | Approved; 25 assignments await separate canonical record | pending |
+| 3 | Approved; unassigned policy awaits separate canonical record | pending |
+
+**Family item 1 verification:** `/simplify` removed superseded question/refusal prose;
+writer ponytail-review found no further cuts. `git diff --check` and
+`timeout 150 nix develop -c godot --headless -s ontology/validate.gd` passed (`ontology valid`).
+Logs: `/tmp/pixlnd-family-record-20260927/item-1-{validator,diff-check,scope,review}.log`.
+Validator coverage is current loaded data only, not Markdown semantics or runtime compliance.
+
+**Historical proposals 1–3 (superseded by the owner answer):** the earlier handoff received
+no answers; the subsequent approval above replaces that checkpoint. In particular, item 1's
+original recommendation to keep Skeleton Dog primary `skeletons` is superseded by `dogs`.
+
+Item 2's approved list, awaiting its separate canonical record:
 
    | proposed primary family | currently listed creatures without an individual family field |
    |---|---|
@@ -628,15 +631,31 @@ Use **"Approval versus Refusing"** for each item and check the combined answers 
    | trolls (3) | `troll`, `dark-troll`, `yeti` |
    | fish (8) | `sapphire-fish`, `lemon-fish`, `seahorse`, `shark`, `lantern-fish`, `maw-fish`, `piranha`, `blowfish` |
 
-3. **Must every creature have a family?** Recommend no: creatures outside the defined families
-   may stay unassigned and use the existing ×1.0 family modifier; do not invent classifications
-   merely to fill every entry. **Approval:** ordinary calculated stats without extra family
-   adjustment. **Refusing:** ask for the required classification before family-based balancing.
+Item 3 approves leaving creatures outside defined families unassigned with the existing ×1.0
+family modifier; no catch-all classification. Its canonical record follows separately.
 
 Sources: `ontology/instances/creatures.json`, top-level family lists in `creature-families.json`
-(not its nested spawn rosters), `generators.json#design.enemy-hp`, `domain.md#creature` and
-`#member-of-family`. The observed 25 missing fields and Skeleton Dog's overlap are data facts;
-the proposed reconciliation and any future balancing remain separate owner decisions.
+(not its nested spawn rosters), `generators.json#design.enemy-hp`, `domain.md#creature-family`.
+The observed missing fields and overlap remain live-data facts, not evidence of implementation.
+
+#### Follow-up 4 — presented but unanswered
+
+Can Skeleton Dog be a rare encounter rather than a higher combat/loot tier?
+Current facts: species selection is uniform among eligible entries in a biome roster
+(`game/world/spawner.gd`); no per-species spawn-rarity setting exists. Rarity can be designed,
+but isn't defined today.
+
+**Proposal ONLY, not approved:** use one-tenth the selection weight of an ordinary eligible
+species for Skeleton Dog in its existing habitats, without raising combat/loot tier, adding
+stat bonuses or changing total group counts. This is a relative weight, NOT a flat 10%
+probability and NOT a chance to replace any dog anywhere. Example with nine ordinary candidates:
+Skeleton Dog weight 0.1 and each other species 1 gives 0.1/9.1 ≈ 1.1% per species selection.
+Actual rates depend on the eligible roster.
+
+**Approval versus Refusing:** Approval makes encounters rarer while leaving strength/rewards
+alone. Refusing requires the owner's intended meaning or frequency; it does not undo the dogs
+primary-family decision or authorize a different rarity rule. Ask owner for **4: approve,
+refuse or amend**. No rarity values go into canonical approved rules or live JSON before approval.
 
 ### Reconciliation work — application checklist
 
@@ -1133,8 +1152,9 @@ review found nothing further to cut. The reviewer did not execute tests; the par
 ran the bounded ontology validator and `git diff d59396d..HEAD --check`, inspected all fourteen
 commit entries and confirmed the clean worktree. Review artifact (session-local):
 `~/.pi-game-dev/sessions/--home-theta-repos-pixlnd--/subagent-artifacts/outputs/0c1a31b5-eb56-479b-b6d8-7576cc05dddc/aggro/final-review.md`.
-No fresh gameplay, visual or networking tests are claimed. Publication is now explicitly
-requested by the handoff; the three creature-family proposals remain unanswered.
+No fresh gameplay, visual or networking tests are claimed. At that historical checkpoint,
+publication was requested and the three creature-family proposals were unanswered; their
+subsequent approvals and current no-push scope are recorded above.
 
 **Audit verification baseline (not proof of consistency):** `ontology/validate.gd`,
 `game/items/test_items.gd`, `game/combat/test_defence.gd` and

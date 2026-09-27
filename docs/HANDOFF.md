@@ -2,16 +2,18 @@
 
 ## Ontology walkthrough entry point (2026-09-27)
 
-**Handoff requested (2026-09-27):** the owner authorized **commit + push** of the current
-reconciliation branch, then a stop to this walkthrough. Publish `fix/ontology-reconciliation`;
-do not merge. No gameplay, live JSON or test changes are authorized.
+**Current authorization (2026-09-27):** record creature-family items 1–3 as three separate
+ontology-documentation commits on `fix/ontology-reconciliation`. Item 1 is recorded; items 2–3
+are approved, awaiting their separate records. No runtime, live JSON, tests, push or merge.
+Canonical rules: `ontology/domain.md#creature-family`; application/checks: `todo_decide.md §E`.
 
-**Resume:** **Creature family membership, items 1–3 — presented, all unanswered.** The exact
-proposals and refusal follow-ups are in `docs/ROADMAP/todo_decide.md §E`, under **Creature family
-membership — pending proposal batch**. Handoff is not approval. When the owner resumes, present
-those three questions together and await answers; do not skip to settlements or reopen aggro.
-Follow `tasks/lessons.md`: check consistency, clarify contradictions/new cases, commit each
-reconciled item separately, and push only on explicit authorization.
+**Resume:** **Creature family follow-up 4 — Skeleton Dog encounter rarity, presented but
+unanswered.** Preserve its exact §E proposal and ask approve, refuse or amend; do not re-ask
+approved items 1–3, skip to settlements or reopen aggro. The dogs primary-family amendment
+stands independently of rarity. Follow `tasks/lessons.md`; implementation remains deferred.
+
+**Historical handoff request (earlier 2026-09-27):** the owner authorized commit + push of the
+preceding reconciliation checkpoint, then a stop. That is not today's push authorization.
 
 **Aggro batch applied: 1–14/14.** Fourteen separate ontology-only commits `ba3d39e` through
 `7e17d5e`; prior workflow update `d59396d`. Fresh independent review found no recording issues;
@@ -26,7 +28,7 @@ hashes and publication checks below are historical, not fresh gameplay-test evid
 All 15 game tests, ontology validation and boot passed again before that commit. The subsequent
 cleanup is also committed (`docs(ontology): reconcile roadmap, references and open questions`).
 Commit references follow the authorized semantic rebase onto `origin/master` at `20e35d8`
-(2026-09-18). The current documentation publication authorization is below; deferred gameplay
+(2026-09-18). Publication authorizations below are historical; deferred gameplay
 implementation remains unauthorized.
 
 **Prior authorization — artifact/document cleanup (2026-09-17):** the owner approved the
@@ -96,10 +98,7 @@ or next proposal is authorized now.
 The publication changes only four Markdown files, not runtime/live data; these tests do not prove
 implementation of the new policies. Commands and session-local evidence: `todo_decide.md §E`.
 
-**Current walkthrough topic:** **Creature family membership**, pending items 1–3: one primary
-balancing family plus descriptive memberships; the 25 unambiguous missing assignments; and
-allowing unassigned creatures with the existing ×1.0 family modifier. All are proposals awaiting
-owner answers, not accepted rules. Read their full §E batch and the creature/family definitions.
+**Current walkthrough topic:** **Creature family follow-up 4**, as checkpointed above.
 Aggro items **1–14** are recorded; do not re-ask 13–14. Restart persistence remains a later topic.
 Do not start gameplay/validator/equipment implementation without separate authorization.
 

@@ -45,6 +45,14 @@ Owner clarification: "commit several times" means commit the entire current diff
 split into coherent parts—not further implementation rounds. Rule: preserve that scope; no
 push without authorization.
 
+## Explicit family assignment overrides current data
+
+- Owner amendment (2026-09-27): Skeleton Dog's primary family is `dogs`, not `skeletons`;
+  descriptive skeleton membership and the independent undead category remain.
+- Rule: explicit owner assignment supersedes current-data classification. Conditional rarity
+  does not authorize guessed encounter frequency, combat/loot tier or strength rules; clarify
+  it separately without reopening the approved family assignment.
+
 ## Aggro decay is not forgiveness
 
 - Owner direction/correction (2026-09-18): threat decays continuously at a fixed rate for each
