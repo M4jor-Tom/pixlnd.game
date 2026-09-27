@@ -130,12 +130,12 @@ The full walkthrough/resumption protocol is in `tasks/lessons.md`; the prompt
 Never propose or implement regional gear power loss in pixlnd, even for Cube World cloning
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
-**Current resume direction (2026-09-27):** the owner approved each **Aggro batch item 1–12**
-for documentation and one separate commit per item. **Aggro batch applied: 1–12/12.**
+**Current resume direction (2026-09-27):** the owner approved each **Aggro item 1–14**
+for documentation and one separate commit per item. **Aggro batch applied: 1–13/14.**
 The numbered Aggro entries below track application, distinct from older reconciliation items 1–10.
-All twelve principles are recorded; **questions 13–14 remain OPEN** below, without defaults.
-Resume those two questions together; do not call the topic closed or move
-on to Creature families yet. Restart persistence belongs to the later persistence topic.
+The owner subsequently approved both follow-ups 13–14, superseding their earlier OPEN status.
+Item 13 is recorded; finish item 14's separate commit, then resume **Creature family membership**
+if consistency review finds no new unresolved aggro case. Restart persistence stays in its later topic.
 No runtime/live JSON/test changes or push are authorized. Older publication instructions and
 hashes below are historical checkpoints, superseded by this direction.
 
@@ -498,12 +498,12 @@ D1–D26, all walkthrough approvals and remaining open questions.
 - [x] **Aggro 2 — three-second taunt (approved/applied 2026-09-27, documentation only).**
   Heroic Shout forces targeting for 3 seconds without threat/order gain; gains/decay continue
   and ordinary priorities resume afterward. Radius, healing, cooldown and existing skill scaling
-  stay unchanged. `domain.md §3.2/§4/§5`; neutral post-taunt eligibility remains OPEN as item 14.
+  stay unchanged. `domain.md §3.2/§4/§5`; neutral post-taunt eligibility is addressed by approved follow-up 14, awaiting recording.
 
 - [x] **Aggro 3 — competing taunts (approved/applied 2026-09-27, documentation only).**
   Latest successful taunt replaces the previous one with its own duration; replaced taunts
   never resume. Simultaneous casts choose one caster randomly once. Winner scope across enemies
-  remains OPEN as item 13, not a per-enemy or shared default (`domain.md §3.2/§5`).
+  was left open here and is settled by follow-up 13 below (`domain.md §3.2/§5`).
 
 - [x] **Aggro 4 — taunt eligibility and cover (approved/applied 2026-09-27, documentation only).**
   Affect hostile and already-provoked neutral enemies within 5 metres even through walls;
@@ -527,7 +527,7 @@ D1–D26, all walkthrough approvals and remaining open questions.
 - [x] **Aggro 8 — pack response and neutral aggressors (approved/applied 2026-09-27, documentation only).**
   Hostile detection alerts the pack; damaging a neutral provokes combat-capable packmates
   against that aggressor only. Friendly/passive creatures stay excluded and returning members
-  finish their return. `domain.md §3.2` / `c-pack-response`; item 14 remains OPEN.
+  finish their return. `domain.md §3.2` / `c-pack-response`; follow-up 14 is approved, awaiting recording.
 
 - [x] **Aggro 9 — current sightings, individual threat (approved/applied 2026-09-27, documentation only).**
   Share current sightings only, permitting around-corner reactions while a packmate detects
@@ -548,16 +548,13 @@ D1–D26, all walkthrough approvals and remaining open questions.
   Threat decay and taunt expiry reflect elapsed gameplay time while distant mobs are frozen.
   Movement/attacks remain frozen; this is not an all-status-timer decision (`domain.md §3.2/§5`).
 
+- [x] **Aggro 13 — independent simultaneous-taunt winners (approved/applied 2026-09-27, documentation only).**
+  Each affected enemy randomly chooses once among simultaneous eligible taunters whose
+  casts reached it, independently of other enemies. The pack may split; no shared winner is
+  guaranteed. Settles item 3's former open scope (`domain.md#ai-behavior` / `c-current-target`).
+
 ### Open — decide before the named slice
 
-- [ ] **Aggro / group aggro — follow-ups to the approved 2026-09-27 batch:**
-  - **13 — simultaneous-taunt arbitration:** choose one caster across the affected overlap,
-    or choose separately for each affected enemy? Item 3 approves random selection, not this scope.
-  - **14 — neutral eligibility after taunt:** after taunt expires, does a previously uninvolved
-    caster remain ordinarily eligible to a provoked neutral creature? In particular, if all
-    scores are zero, current-target retention still requires a valid target; do not infer eligibility.
-  Sources: `domain.md#ai-behavior` / §7. Neither question blocks recording the twelve approved
-  principles; neither has an approved default. Runtime remains deferred.
 - [ ] **Creature family membership:** one primary scaling family plus descriptive groups, or
   multiple families with a defined scaling rule? Skeleton Dog appears in dogs and skeletons
   but its singular family is skeletons. Before family-based scaling; sources:
@@ -1077,7 +1074,8 @@ semantic review, then `/simplify` and ponytail-review kept canonical rules in `d
 compact ledger/checkpoint links; these were writer self-reviews, not independent reviews.
 Logs/diffs: `/tmp/pixlnd-aggro-record-20260927/item-<1..12>-{validator,diff-check,scope,review}.log`
 and `item-<1..12>.diff` (session-local). No runtime/live JSON/test changes or gameplay compliance
-claim: the validator does not check Markdown semantics. Questions 13–14 remain OPEN.
+claim: the validator does not check Markdown semantics. At that checkpoint questions 13–14
+were OPEN; the owner subsequently approved both, with separate application tracked above.
 
 **Audit verification baseline (not proof of consistency):** `ontology/validate.gd`,
 `game/items/test_items.gd`, `game/combat/test_defence.gd` and

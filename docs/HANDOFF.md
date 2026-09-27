@@ -8,8 +8,9 @@ batches, including new items if needed, until consistent. Commit each reconciled
 separately. On an explicit handoff request, record the next topic or unfinished items, commit
 and push, then stop. No runtime implementation is authorized. Protocol: `tasks/lessons.md`.
 This supersedes the older single-question and stop instructions below. The owner subsequently
-approved each **Aggro batch item 1–12** (2026-09-27), documentation only, one commit per item.
-**Aggro batch applied: 1–12/12.** Application and verification: `todo_decide.md §E`.
+approved each **Aggro item 1–14** (2026-09-27), including the two follow-ups, documentation only,
+one commit per item.
+**Aggro batch applied: 1–13/14.** Application and verification: `todo_decide.md §E`.
 No runtime/live JSON/test changes or push are authorized. Older hashes below are historical.
 
 **Committed reconciliation:** the owner requested committing the staged repairs before continuing;
@@ -87,11 +88,11 @@ or next proposal is authorized now.
 The publication changes only four Markdown files, not runtime/live data; these tests do not prove
 implementation of the new policies. Commands and session-local evidence: `todo_decide.md §E`.
 
-**Current walkthrough topic:** **Aggro / group aggro**, unfinished after the approved batch:
-**13:** simultaneous-taunt winner shared across overlapping enemies, or chosen per enemy?
-**14:** after taunt expires, is a previously uninvolved caster ordinarily eligible to a provoked
-neutral creature? Both are OPEN; present them together, without defaults. Next topic afterward:
-Creature families; restart persistence stays in its later topic.
+**Current walkthrough checkpoint:** the owner approved follow-ups **13–14**, superseding their
+previous OPEN status. Independent per-enemy taunt arbitration (13) is recorded; finish recording
+no lasting neutral eligibility from taunt alone (14) in its own commit. Then resume **Creature
+family membership** if consistency review finds no new aggro question. Restart persistence stays
+in its later topic.
 Read `ontology/domain.md#ai-behavior` and `docs/ROADMAP/todo_decide.md §E`.
 Do not start gameplay/validator/equipment implementation without separate authorization.
 

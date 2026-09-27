@@ -463,7 +463,7 @@ Hybrid aggro rules (owner approved 2026-09-18/19 and 2026-09-27, documentation o
   that aggressor, not uninvolved players. Friendly/passive creatures are excluded. Returning
   members finish their protected return rather than being pulled back into combat. Neutral
   provocation establishes aggressor-specific eligibility, not unconditional pursuit at zero
-  threat without detection; taunt remains a temporary override with question 14 still open.
+  threat without detection; taunt remains a temporary override (follow-up 14 approved; recording pending).
 - **Shared awareness (owner approved 2026-09-27):** packmates share current sightings, not
   threat points or engagement order. Detection in these targeting rules includes a packmate's
   current sighting, so a member can react around a corner while another detects the player.
@@ -506,14 +506,16 @@ Hybrid aggro rules (owner approved 2026-09-18/19 and 2026-09-27, documentation o
   not guaranteed. Preserve the existing **5-metre radius**, healing (50% max HP over 10 seconds),
   30-second base cooldown and existing skill-point scaling; this adds no taunt-duration scaling.
   A previously uninvolved caster's ordinary eligibility to a provoked neutral after taunt is
-  **OPEN (question 14)**; forced targeting alone does not settle that eligibility.
+  addressed by approved follow-up 14, awaiting its separate recording below.
 - **Taunt eligibility (owner approved 2026-09-27):** Heroic Shout affects hostile enemies
   and already-provoked neutral enemies within 5 metres, including through cover; walls do not
   block application. It does not provoke peaceful neutrals or affect friendly/passive creatures.
 - **Competing taunts (owner approved 2026-09-27):** the latest successful taunt replaces the
   previous one and starts its own duration; replaced taunts never resume. For genuinely
-  simultaneous taunts, choose one caster randomly once. Whether the winner is shared across
-  overlapping affected enemies or chosen separately per enemy is **OPEN (question 13)**.
+  simultaneous taunts, choose one caster randomly once. **Winner scope (follow-up 13, owner
+  approved 2026-09-27):** each affected enemy chooses independently among simultaneous eligible
+  taunters whose casts reached that enemy. A pack may split between casters; there is no shared
+  winner or guarantee of keeping the pack together.
 - **Taunt termination (owner approved 2026-09-27):** starting return cancels any active taunt;
   new taunts cannot interrupt protected return or queue for afterward. Outside return, a taunt
   ends early if its caster dies or disappears. Moving beyond the initial 5-metre casting radius
@@ -1188,7 +1190,7 @@ content selection or live data changes are authorized by this contract.
 | c-mp-range | mp ∈ [0, 100]; mage regenerates passively, others gain by hits/blocks/stealth/dodges; numbers `design.resources.mp` (D21) | runtime |
 | c-stun-immunity | cannot re-stun while stars shown | runtime |
 | c-threat-pair | at most one `threat` relation per ordered logical mob/player entity pair; each present relation has exactly one non-negative numeric `aggro-points` amount in aggro points, independent of other pairs; changing `current-target` does not clear it; decay/gains (including the full-stealth damage exception), the zero floor, player-death and arrival clearing, and escape/temporary-absence retention follow §3.2; actual mob death/respawn starts fresh; decay reflects elapsed gameplay time even outside simulation radius; restart persistence remains open | runtime |
-| c-current-target | at most one present, living player target per mob; ordinary targeting compares that mob's eligible players by highest `aggro-points`, retains a tied current target, otherwise breaks positive-threat ties by earliest engagement; without a positive-threat priority or valid current target, choose the nearest normally detected zero-threat player without granting aggro/order (§3.2); player-death, zero-threat and arrival order resets, escape retention and fresh assignment follow §3.2; at zero, ordinary pursuit requires normal detection and hostility/provocation eligibility; equally nearest fallback ties are chosen randomly once with equal chances, then normal retention applies; Heroic Shout temporarily overrides ordinary targeting without threat/order gain; eligibility, duration, replacement and termination follow §3.2; taunt expiry reflects elapsed gameplay time even outside simulation radius; open subcases §7 | runtime |
+| c-current-target | at most one present, living player target per mob; ordinary targeting compares that mob's eligible players by highest `aggro-points`, retains a tied current target, otherwise breaks positive-threat ties by earliest engagement; without a positive-threat priority or valid current target, choose the nearest normally detected zero-threat player without granting aggro/order (§3.2); player-death, zero-threat and arrival order resets, escape retention and fresh assignment follow §3.2; at zero, ordinary pursuit requires normal detection and hostility/provocation eligibility; equally nearest fallback ties are chosen randomly once with equal chances, then normal retention applies; Heroic Shout temporarily overrides ordinary targeting without threat/order gain; eligibility, duration, replacement, per-enemy simultaneous arbitration and termination follow §3.2; taunt expiry reflects elapsed gameplay time even outside simulation radius; open subcases §7 | runtime |
 | c-pack-response | only the generated pack responds, under the hostile-detection / aggressor-specific neutral-provocation rules in §3.2; friendly/passive creatures are excluded and protected return cannot be interrupted; share current sightings only, never threat/order, and select targets independently; each neutral clears its own provocation on arrival (§3.2) | runtime |
 | c-return-home | pursuit beyond the home leash starts return regardless of threat; within it, target loss checks eligible positive-threat players then normal detection of eligible players (§3.2); attacks do not restart pursuit during return; ×2 normal return speed and 90% damage reduction (including DOT) until reaching home alive, then full HP and clear this mob's aggro/order toward every player and its neutral provocation once, ending both bonuses; no revival, cleansing or CC immunity; gains/decay continue until arrival and other mobs' records are unchanged; starting return cancels taunt, and new taunts neither interrupt nor queue for afterward | runtime |
 | c-combo-reset | any attack with a hitbox that misses resets combo to 0, subject to the hybrid whole-channel and combo-neutral zero-damage-taunt rules in §3.3 combo-system; cap per weapon-type | runtime |
@@ -1270,7 +1272,7 @@ or authorize implementation. Resolve each question before its affected slice.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Aggro / group aggro | batch items 1–12 approved/applied 2026-09-27, documentation only; application tracked in `todo_decide.md §E`, semantics in §3.2; OPEN 13: simultaneous-taunt winner shared across overlapping enemies or chosen per enemy? OPEN 14: after taunt, is a previously uninvolved caster ordinarily eligible to a provoked neutral? Runtime deferred; restart persistence belongs to the later persistence topic |
+| Aggro / group aggro | items 1–14 approved 2026-09-27; 1–13 recorded, follow-up 14 awaiting its separate application in `todo_decide.md §E`; semantics in §3.2, runtime deferred; restart persistence belongs to the later persistence topic |
 | Creature families | one primary scaling family plus descriptive groups, or multiple families with a scaling rule |
 | Settlements / inn | whether multiple settlements and paid timed sleep are hybrid targets; keep D22's current one village and free heal/respawn service |
 | Traversal | skill versus global key-item prerequisites for riding/gliding/sailing; climbing spikes versus skill points |
