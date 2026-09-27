@@ -131,7 +131,7 @@ Never propose or implement regional gear power loss in pixlnd, even for Cube Wor
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
 **Current resume direction (2026-09-27):** the owner approved each **Aggro batch item 1–12**
-for documentation and one separate commit per item. **Aggro batch applied: 1–7/12.**
+for documentation and one separate commit per item. **Aggro batch applied: 1–8/12.**
 The numbered Aggro entries below track application, distinct from older reconciliation items 1–10.
 Remaining approved items await recording; **questions 13–14 remain OPEN** below, without defaults.
 Finish recording, then resume those two questions together; do not call the topic closed or move
@@ -523,6 +523,11 @@ D1–D26, all walkthrough approvals and remaining open questions.
 - [x] **Aggro 7 — spawned-pack membership (approved/applied 2026-09-27, documentation only).**
   A group is one generated pack of creature individuals, not nearby members of a species
   or faction. Recorded in `domain.md §3.2/§4`; no proximity-based pack merging.
+
+- [x] **Aggro 8 — pack response and neutral aggressors (approved/applied 2026-09-27, documentation only).**
+  Hostile detection alerts the pack; damaging a neutral provokes combat-capable packmates
+  against that aggressor only. Friendly/passive creatures stay excluded and returning members
+  finish their return. `domain.md §3.2` / `c-pack-response`; item 14 remains OPEN.
 
 ### Open — decide before the named slice
 

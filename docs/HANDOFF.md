@@ -9,7 +9,7 @@ separately. On an explicit handoff request, record the next topic or unfinished 
 and push, then stop. No runtime implementation is authorized. Protocol: `tasks/lessons.md`.
 This supersedes the older single-question and stop instructions below. The owner subsequently
 approved each **Aggro batch item 1–12** (2026-09-27), documentation only, one commit per item.
-**Aggro batch applied: 1–7/12.** Remaining approved items await recording in `todo_decide.md §E`.
+**Aggro batch applied: 1–8/12.** Remaining approved items await recording in `todo_decide.md §E`.
 No runtime/live JSON/test changes or push are authorized. Older hashes below are historical.
 
 **Committed reconciliation:** the owner requested committing the staged repairs before continuing;
@@ -278,7 +278,8 @@ docs/ROADMAP/        todo_decide.md (D1–D26), todo_implement.md (deferrals), c
 ## Next slice (recommended order)
 1. Aggro table / group aggro (`ai-behavior` aggro + perception rows; `todo_implement.md` Creatures: "aggro table, taunt, group aggro"): per-attacker
    aggro that damage adds to, highest aggro targeted, heroic-shout taunt forcing it, one member seeing the player pulls the group; `creature.gd`
-   target selection replaces "last attacker"; `sim-radius` then measures the nearest player (`multiplayer-mode` todo).
+   target selection replaces "last attacker" subject to approved eligibility/return rules, not unconditional
+   group attacks; `sim-radius` then measures the nearest player (`multiplayer-mode` todo).
 2. Items backlog (`todo_implement.md` §3.4): rings/amulets, gear HP, upgrade cubes, tabs/tooltips; player armor applied to creature hits (D26 todo).
 3. World backlog: thread zone building (`world.gd` ponytail), a game clock (`c-midnight-reset`: restock, inn sleep), flora / dungeons / POIs
    (`gen-flora`, `gen-dungeon`, `gen-poi`), villagers with schedules (`gen-schedule`).
