@@ -475,6 +475,14 @@ Hybrid aggro rules (owner approved 2026-09-18/19 and 2026-09-27, documentation o
   takes precedence: a closer zero-threat player does not displace it. **Exact-distance ties
   (owner approved 2026-09-27):** choose once at random with equal chances among equally nearest
   detected players, then retain that target under the existing tie rule; do not repeatedly reroll.
+- **Heroic Shout (owner approved 2026-09-27):** affected enemies must target the caster
+  for **3 seconds**, overriding ordinary threat priority without adding or copying aggro points
+  or assigning engagement order. Damage gains and decay continue underneath. On expiry, resume
+  ordinary targeting, including retention of a valid tied current target; lasting control is
+  not guaranteed. Preserve the existing **5-metre radius**, healing (50% max HP over 10 seconds),
+  30-second base cooldown and existing skill-point scaling; this adds no taunt-duration scaling.
+  A previously uninvolved caster's ordinary eligibility to a provoked neutral after taunt is
+  **OPEN (question 14)**; forced targeting alone does not settle that eligibility.
 - **Continuous decay (rate approved 2026-09-18):** each mob tracks each player's threat
   separately and subtracts **1 aggro point per elapsed second**, both while fighting and while
   not fighting. Decay is continuous (0.5 seconds removes 0.5 points), not whole-second ticks.
@@ -484,10 +492,11 @@ Hybrid aggro rules (owner approved 2026-09-18/19 and 2026-09-27, documentation o
   higher-threat teammate dies, a player with remaining positive threat can be targeted again
   according to the normal highest-threat/tie rules; losing priority is not being "forgiven".
 - **Zero threat (approved 2026-09-18):** decay stops at zero, never going negative. At zero,
-  past hits alone no longer justify pursuing that player; there is no separate damage memory
-  extending pursuit. If the mob no longer detects that player, it stops pursuing them. Normal
+  past hits alone no longer justify ordinary pursuit of that player; there is no separate damage
+  memory extending it. Without an active taunt, if the mob no longer detects that player, it stops
+  pursuing them. Normal
   hostile detection can still start or maintain aggression at zero; reaching zero is not immunity.
-  Other players' remaining threat is unchanged; taunts and full-stealth interactions remain open.
+  Other players' remaining threat is unchanged; full-stealth interaction is in the approved batch.
 - **Zero-threat tie-breaker memory (owner correction, 2026-09-19):** when a mob's aggro toward
   a player reaches zero, discard that player's remembered engagement-order position for that
   mob. Do not retain or restore pre-zero tie-breaking priority. Other players' scores and order
@@ -498,7 +507,7 @@ Hybrid aggro rules (owner approved 2026-09-18/19 and 2026-09-27, documentation o
   after players whose existing positions remain valid. Under the approved damage rule, this
   requires damage that generates positive aggro, not proximity, detection or a missed attack.
   Higher threat and current-target tie retention still take precedence. Zero-threat fallback
-  does not assign an engagement-order position; taunts and full-stealth rules remain open.
+  does not assign an engagement-order position, nor does taunting.
 - **Player death (approved 2026-09-19):** death immediately clears every mob's aggro points
   toward that player, without changing surviving teammates' scores or their normal decay.
   After respawn, the player rebuilds aggro from zero; normal hostile detection still applies.
@@ -1041,6 +1050,8 @@ Its numeric property **`aggro-points`** measures the relationship's strength, in
 incoming threat relations from zero or more mobs, independently. **`current-target`** identifies
 at most one player that a mob is currently targeting; changing it does not erase other threat
 relations. Ordinary selection uses that mob's own scores and the rules in §3.2 `ai-behavior`.
+Heroic Shout temporarily overrides `current-target`, not `threat`: it grants neither aggro
+points nor engagement order. Ordinary targeting resumes when the taunt ends (§3.2).
 
 Illustrative runtime facts, not static instance data or balance defaults:
 ```text
@@ -1118,7 +1129,7 @@ content selection or live data changes are authorized by this contract.
 | c-mp-range | mp ∈ [0, 100]; mage regenerates passively, others gain by hits/blocks/stealth/dodges; numbers `design.resources.mp` (D21) | runtime |
 | c-stun-immunity | cannot re-stun while stars shown | runtime |
 | c-threat-pair | at most one `threat` relation per ordered mob/player entity pair; each present relation has exactly one non-negative numeric `aggro-points` amount in aggro points, independent of other pairs; changing `current-target` does not clear it; decay/gains, the zero floor, player-death and arrival clearing, and escape retention follow §3.2; other reset conditions remain open | runtime |
-| c-current-target | at most one player target per mob; ordinary targeting compares that mob's eligible players by highest `aggro-points`, retains a tied current target, otherwise breaks positive-threat ties by earliest engagement; without a positive-threat priority or valid current target, choose the nearest normally detected zero-threat player without granting aggro/order (§3.2); player-death, zero-threat and arrival order resets, escape retention and fresh assignment follow §3.2; at zero, pursuit requires normal hostile detection; equally nearest fallback ties are chosen randomly once with equal chances, then normal retention applies; taunt/stealth interactions follow the batch checkpoint in §7 | runtime |
+| c-current-target | at most one player target per mob; ordinary targeting compares that mob's eligible players by highest `aggro-points`, retains a tied current target, otherwise breaks positive-threat ties by earliest engagement; without a positive-threat priority or valid current target, choose the nearest normally detected zero-threat player without granting aggro/order (§3.2); player-death, zero-threat and arrival order resets, escape retention and fresh assignment follow §3.2; at zero, ordinary pursuit requires normal hostile detection; equally nearest fallback ties are chosen randomly once with equal chances, then normal retention applies; Heroic Shout overrides ordinary priority for 3 seconds without granting threat/order, then ordinary selection resumes (§3.2); open subcases in §7 | runtime |
 | c-return-home | pursuit beyond the home leash starts return regardless of threat; within it, target loss checks positive-threat players then normal hostile detection (§3.2); attacks do not restart pursuit during return; ×2 normal return speed and 90% damage reduction (including DOT) until reaching home alive, then full HP and clear this mob's aggro/order toward every player once, ending both bonuses; no revival, cleansing or CC immunity; gains/decay continue until arrival and other mobs' records are unchanged; taunt interactions remain open | runtime |
 | c-combo-reset | any attack with a hitbox that misses resets combo to 0, subject to the hybrid whole-channel and combo-neutral zero-damage-taunt rules in §3.3 combo-system; cap per weapon-type | runtime |
 | c-dodge-cost | dodge costs 25 stamina; requires movement; standing still M3 = class skill (S); hybrid numbers `design.defence.dodge` (D23) | runtime |

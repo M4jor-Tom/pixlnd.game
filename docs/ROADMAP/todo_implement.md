@@ -153,7 +153,7 @@ degradation) are not backlog features.
   shuriken-attack throw projectiles (D24); Aim/Sneak fill the stealth bar and Camouflage pins it (D23), while
   Ninjutsu buffs damage/swing speed. Still open (`abilities.gd` ponytail): Shadow Shooter is a damage buff (no clone);
   Quicksand is a one-shot slow burst (no zone); no prone/aim zoom; Heroic Shout retargets by a zero-damage hit
-  (no aggro table or settled taunt priority); Teleport is a 20-block dash (source distance unverified);
+  (no aggro table or timed taunt implementation; approved rules in §E); Teleport is a 20-block dash (source distance unverified);
   no cast interruption (stun cancels only the M2 charge). Item 10's captures cover the HUD hit/miss counter and
   static hotbar, not every ability animation/effect; D21 numbers remain untuned.
 - [x] Class-strike combo handling (item 10, `44ab0a1`): damaging burst/dash hits and channel ticks build combo;

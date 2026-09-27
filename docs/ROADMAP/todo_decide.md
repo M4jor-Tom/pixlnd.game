@@ -131,7 +131,7 @@ Never propose or implement regional gear power loss in pixlnd, even for Cube Wor
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
 **Current resume direction (2026-09-27):** the owner approved each **Aggro batch item 1–12**
-for documentation and one separate commit per item. **Aggro batch applied: 1–1/12.**
+for documentation and one separate commit per item. **Aggro batch applied: 1–2/12.**
 The numbered Aggro entries below track application, distinct from older reconciliation items 1–10.
 Remaining approved items await recording; **questions 13–14 remain OPEN** below, without defaults.
 Finish recording, then resume those two questions together; do not call the topic closed or move
@@ -494,6 +494,11 @@ D1–D26, all walkthrough approvals and remaining open questions.
   Equal-chance random choice once among equally nearest detected zero-threat players;
   valid tied-current-target retention wins and prevents repeated random switching.
   Recorded in `domain.md#ai-behavior` / `c-current-target`.
+
+- [x] **Aggro 2 — three-second taunt (approved/applied 2026-09-27, documentation only).**
+  Heroic Shout forces targeting for 3 seconds without threat/order gain; gains/decay continue
+  and ordinary priorities resume afterward. Radius, healing, cooldown and existing skill scaling
+  stay unchanged. `domain.md §3.2/§4/§5`; neutral post-taunt eligibility remains OPEN as item 14.
 
 ### Open — decide before the named slice
 
