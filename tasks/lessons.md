@@ -3,7 +3,7 @@
 ## Ontology walkthroughs: describe the finished game
 
 - Owner preference: propose each decision in gamer-facing terms, as it would finally play, rather than leading with schema edits or current implementation limitations.
-- Rule: explain the player action and consequence, distinguish settled rules from the new proposal, then ask one approval question. Record deferrals; ontology approval alone does not authorize gameplay implementation.
+- Rule: explain the player action and consequence, distinguish settled rules from each proposal, and use the topic-batched approval protocol below. Record deferrals; ontology approval alone does not authorize gameplay implementation.
 - Owner correction: include the built-game consequence of not approving each item, not only the proposed benefit.
 - Rule: every proposal states both approval and non-approval outcomes for players. Distinguish current behavior from a future risk or unresolved design; never claim declining a documentation correction immediately breaks the game or approves the opposite rule. If neither choice changes the already-approved game, say so.
 - Owner correction (2026-09-19): use **"Approval versus Refusing"**, not "Approval versus leaving it open", for future items.
@@ -18,21 +18,28 @@ interactive approach with any agent, without requiring the previous conversation
 1. Read this file, `docs/ROADMAP/todo_decide.md §E` (especially the resume checkpoint, approvals,
    open questions and application checklist), `docs/HANDOFF.md` and the relevant `ontology/`
    sources. Inspect the actual branch/diff; preserve pending edits and recorded approvals.
-2. Resume at the checkpoint's next unpresented item, keeping its number. Do not restart approved
-   items or mistake an unchecked, explicitly deferred implementation for the next decision.
-3. Explain one concrete recommendation in gamer-facing terms: what the finished game lets a
-   player do and its rewards, costs or tradeoffs. Use **"Approval versus Refusing"** for both outcomes;
-   separate settled rules, current behavior, temporary approximations and future risks.
-4. Ask **one approval question**, then wait. Never offer a permanently rejected feature as an
-   option or reopen settled choices. Record a rejection/deferral without selecting its opposite.
-5. On approval, record the precise authorization, apply only authorized ontology corrections,
-   verify scope and run relevant checks, then update approval/application status and the checkpoint.
-   JSON consumed by gameplay can change behavior without code edits; ontology approval alone
-   does not authorize gameplay, validator or consumer implementation. A green validator does
-   not prove complete semantic consistency. Commit/push only when authorized.
-6. Normally continue one item at a time after recording the answer. Honor explicit stop points:
-   stop after the requested item, record the next unpresented item, and wait for a resume request.
-   Never turn this prompt into an automatic implementation slice or batch approval.
+2. Resume the checkpoint's unfinished topic/items; otherwise take the next open topic. Preserve
+   item labels and approvals. Deferred implementation is not an unanswered design question.
+3. Present **all known remaining questions for that topic together**, numbered, with concrete
+   gamer-facing recommendations. Use **"Approval versus Refusing"** for the player consequences;
+   distinguish settled rules, current behavior, temporary approximations and future risks.
+4. Wait for answers, then check them against one another and settled decisions. Refusal does not
+   choose the opposite rule; questions are not rejection. Ask a follow-up batch for ambiguous,
+   contradictory or newly exposed cases, adding topic items when needed. Never silently resolve
+   conflicts, reopen settled choices or offer permanently rejected features.
+5. Apply only approved, internally consistent ontology corrections; verify scope, run relevant
+   checks, update approval/application status and checkpoint, and **commit each reconciled item
+   separately**. Hold dependent items until their conflicts are resolved. Ontology approval does
+   not authorize gameplay, validator or consumer implementation, including behavior-changing JSON.
+   A green validator proves only its implemented checks, not full semantic consistency.
+6. Continue within the topic until reconciled, then proceed to the next topic unless told to stop.
+   On an explicit **handoff** request, record resolved/refused/pending items, outstanding questions
+   and the exact next topic or unfinished items; **commit and push**, then stop. Otherwise do not
+   push. The next agent resumes that checkpoint, not a gameplay implementation slice.
+
+Owner workflow change (2026-09-27): topic-batched questions, consistency follow-ups, one commit
+per reconciled item, and commit + push on handoff supersede the former one-question-at-a-time
+protocol. Rule: update both entry-point documents when the walkthrough protocol changes.
 
 Owner clarification: "commit several times" means commit the entire current diff, optionally
 split into coherent parts—not further implementation rounds. Rule: preserve that scope; no

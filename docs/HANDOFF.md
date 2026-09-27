@@ -1,6 +1,15 @@
 # Handoff — resume here
 
-## Ontology walkthrough entry point (2026-09-19)
+## Ontology walkthrough entry point (2026-09-27)
+
+**Current owner direction:** resume **Aggro / group aggro** and present all its remaining
+questions together. Check answers/refusals against settled rules and each other; ask follow-up
+batches, including new items if needed, until consistent. Commit each reconciled ontology item
+separately. On an explicit handoff request, record the next topic or unfinished items, commit
+and push, then stop. No runtime implementation is authorized. Protocol: `tasks/lessons.md`.
+This supersedes the older single-question and stop instructions below. No new aggro rule is
+approved by this workflow change. The owner rebased/pushed the branch to `8d983b3`; older hashes
+below describe earlier checkpoints, not the new commit identities or fresh verification.
 
 **Committed reconciliation:** the owner requested committing the staged repairs before continuing;
 `44ab0a1` contains the panel-time and class-combo repairs, regressions and walkthrough records.
@@ -68,7 +77,7 @@ player without granting aggro/order. Retaining a tied current target still takes
 merely moving closer does not steal attention. Recorded in `domain.md#ai-behavior` /
 `c-current-target`, documentation only.
 
-**Publication authorization and stop point (2026-09-19):** the owner requested **handoff,
+**Historical publication authorization and stop point (2026-09-19):** the owner requested **handoff,
 commit, push**, including the five prior local documentation commits listed above, then will
 resume with the next agent. Publish on `fix/ontology-reconciliation` and stop. No runtime work
 or next proposal is authorized now.
@@ -77,23 +86,19 @@ or next proposal is authorized now.
 The publication changes only four Markdown files, not runtime/live data; these tests do not prove
 implementation of the new policies. Commands and session-local evidence: `todo_decide.md §E`.
 
-**Next walkthrough question:** **Aggro / group aggro — exact-distance ties among nearest detected
-zero-aggro players** (not yet presented or approved). Other resets, taunts (including during
-return), full-stealth interaction and group behavior remain open. The next agent must **wait
-for the owner to resume the walkthrough**, then follow the protocol below and read
-`ontology/domain.md#ai-behavior`. Present only the exact-distance tie question, using
-**"Approval versus Refusing"**, then wait.
-Questions are clarification, not corrections or rejection. Do not choose the tie-breaker or
-start gameplay/validator/equipment implementation without separate authorization.
+**Current walkthrough topic:** **Aggro / group aggro** — exact-distance zero-threat ties,
+remaining resets, taunt priority/duration/return interaction, full stealth and group behavior.
+Read `ontology/domain.md#ai-behavior` and `docs/ROADMAP/todo_decide.md §E`; present all remaining
+questions together under the current protocol. These choices remain unapproved. Do not start
+gameplay/validator/equipment implementation without separate authorization.
 
 When prompted **"resume walking through items"**, read `tasks/lessons.md` and
 `docs/ROADMAP/todo_decide.md §E` first, then the relevant `ontology/` sources and actual Git
 branch/diff. This is the interactive decision walkthrough, **not** the gameplay slice loop below.
-The §E checkpoint records the last applied item and next unresolved item; follow its number,
-preserve approvals/deferrals and pending edits, and ask one gamer-facing approval question at a
-time, with **"Approval versus Refusing"** consequences. Apply only the authorized correction,
-verify, update the checkpoint and honor stop requests. Ontology approval is not implementation
-permission; do not automatically launch the next gameplay slice or commit/push.
+The §E checkpoint records approved/deferred work and unresolved questions. Follow the topic-batched
+protocol in `tasks/lessons.md`, preserving approvals and pending edits, with **"Approval versus
+Refusing"** consequences per proposal. Verify and commit each reconciled item; push on handoff.
+Ontology approval is not implementation permission; do not launch the gameplay slice.
 Regional gear power loss is permanently excluded from pixlnd: **never propose or implement it**,
 even for cloning fidelity. Historical Steam data is reference only, not an alternative mode.
 

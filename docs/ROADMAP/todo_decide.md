@@ -118,17 +118,24 @@ Derive straightforward corrections from `ontology/`. If it does not determine th
 unambiguously, record the decision here for later instead of inventing a rule. The approved/open
 subsections track decisions; the reconciliation checklist tracks application. Approval alone does
 not mean a correction is applied; land it in `ontology/` before changing consumers.
-Present each proposal to the owner as the finished player experience, not as a schema edit;
-ask one question at a time. For every item, explain the player-visible result of approval AND
-of not approving/leaving it unresolved. Distinguish current-build effects from future risks;
-a declined documentation correction does not itself break the game or approve the opposite rule.
+Present all known remaining questions for one topic together, with numbered gamer-facing
+recommendations and **"Approval versus Refusing"** consequences. Check answers against settled
+rules and one another; clarify refusals, contradictions and newly exposed cases before applying
+dependent decisions. Refusal does not approve the opposite rule or immediately break the game.
+Commit each reconciled item separately. On explicit handoff, record the next topic or unfinished
+items, commit and push, then stop; otherwise do not push (owner workflow change, 2026-09-27).
 Approval of an ontology decision is not approval to implement additional gameplay.
 The full walkthrough/resumption protocol is in `tasks/lessons.md`; the prompt
 **"resume walking through items"** means follow it and this checkpoint, not implement a slice.
 Never propose or implement regional gear power loss in pixlnd, even for Cube World cloning
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
-**Resume checkpoint (2026-09-19; commit references updated after rebase):** items 1–2 are applied,
+**Current resume direction (2026-09-27):** continue **Aggro / group aggro** as a topic-wide
+question batch, not just the exact-distance tie question. No new aggro decision is approved by
+this process change. This direction supersedes the older single-question/stop instructions below.
+The owner rebased/pushed to `8d983b3`; older hashes/evidence below are historical checkpoints.
+
+**Prior checkpoint (2026-09-19; references from the earlier rebase):** items 1–2 are applied,
 validated and committed in `0a562fc`. Items 3–8 are approved for ontology and their semantic
 corrections are committed in `e10836a`; their walkthrough handoff is recorded in `c005f55`. The owner resumed and approved item 9's
 validation-contract direction for **ontology documentation only** on 2026-09-17. Its policy is
@@ -206,10 +213,9 @@ applies, and later damage, including uncleansed DOT ticks, builds fresh threat n
 **Zero-threat fallback (owner approved 2026-09-19):** without a positive-threat priority or
 valid current target, choose the nearest normally detected player. This grants no aggro/order;
 retaining a tied current target takes precedence. Recorded in `domain.md §3.2/§5`, documentation only.
-Next question: **exact-distance ties among nearest detected zero-aggro players** (not yet
-presented or approved). Other resets, taunts (including during return), full-stealth interaction
-and group behavior remain open.
-**Publication authorization and stop point (2026-09-19):** the owner approved the fallback,
+Remaining topic items include **exact-distance ties among nearest detected zero-aggro players**,
+other resets, taunts (including during return), full-stealth interaction and group behavior.
+**Historical publication authorization and stop point (2026-09-19):** the owner approved the fallback,
 requested **handoff, commit, push**, and will resume with the next agent. Publish the current
 documentation on `fix/ontology-reconciliation`, including the five preceding local commits
 (`b4e0ea3`, `8d3c497`, `ac8e0d5`, `06ddadc`, `b8df023`), then stop. No runtime work or next
