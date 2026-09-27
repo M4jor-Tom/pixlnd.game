@@ -46,7 +46,7 @@ stays in the later world/reset topic.
 knowledge without duplicate rewards/rerolls or consuming known formulas, and immediate book
 recording with visibly power-locked crafting (`domain.md#recipe` / `#book-of-crafting` / `#power-gate`).
 No presented books question remains; duplicate knowledge never bypasses power requirements.
-Independent review/parent verification are pending; cross-world portability remains open.
+Independent review and parent verification passed (`todo_decide.md §E`); cross-world portability remains open.
 Gameplay and live JSON remain unchanged; restart persistence stays in its later topic.
 
 ## Decision and build history (from 2026-09-07)

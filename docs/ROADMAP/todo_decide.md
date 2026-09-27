@@ -132,9 +132,9 @@ fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09
 
 **Current direction (2026-09-28):** books/formulas **items 1–3 recorded**; no presented books
 question remains. Exact approval and application status are in the books batch below. The owner
-requested handoff, commit and push; each item has its own ontology-only commit, followed by
-handoff for independent review and parent verification.
-Parent alone publishes after verification; no push by the writer or next-topic proposals.
+requested handoff, commit and push; each item has its own ontology-only commit. Independent
+review found no issues and parent verification passed (evidence below). Commit the final handoff,
+push `fix/ontology-reconciliation`, verify publication and clean state, then stop; no next-topic proposals.
 No gameplay, live JSON, tests, model/loader/validator changes, merge or history rewriting.
 Traversal items 1–5, settlements/inn 1–4, family 1–9 and aggro 1–14 remain recorded.
 Older publication instructions and hashes below are historical checkpoints.
@@ -609,8 +609,45 @@ change. Knowledge and usability are distinct: a known recipe can remain power-lo
    Known-but-locked recipes follow item 2's duplicate rules without bypassing the crafting gate
    or granting compensation (`domain.md#power-gate`, `c-power-gate` / `c-recipe-learning`).
 
-Per-item verification and commit mapping follow as recording completes. Independent review,
-parent verification and publication are pending. Implementation debt: `todo_implement.md`.
+| item | ontology-only commit |
+|---|---|
+| 1 — permanent/global book recipes | `9f4262e` |
+| 2 — shared knowledge and duplicates | `4ddd76e` |
+| 3 — immediate recording, power-locked crafting | `11cc07f` |
+
+**Writer verification:** each item received semantic/scope inspection, `/simplify`, then
+ponytail-review; `git diff --check` and
+`timeout 150 nix develop -c godot --headless -s ontology/validate.gd` passed (exit 0,
+`ontology valid`). Checks confirmed five allowed Markdown paths, unique relation/constraint IDs
+and unchanged historical D/F records. The combined review checked known-but-locked duplicates:
+no extra knowledge, compensation, consumed formula or power bypass. These are writer checks,
+not independent acceptance; validation covers loaded data, not Markdown semantics or gameplay.
+No gameplay suite, boot, visual or network checks were run; runtime, live JSON and tests are unchanged.
+
+Evidence: `/tmp/pixlnd-books-20260928/` (`item-{1,2,3}.diff`, `item-N-review.md`,
+`item-N-{scope,diff-check,validator}.{log,exit}`, `item-N-commit.{log,txt}`, `commit-map.md`,
+`batch.diff`). Item 1's initial scratch scope check failed on a nonexistent `/usr/bin/git`;
+a supervisor-approved PATH correction passed (`item-1-scope-retry.{log,exit}`), before validation.
+The setup failure/log is preserved, not counted as an ontology validation failure.
+
+**Independent review and parent verification:** fresh read-only review found no issues; it inspected
+sources and saved evidence, not rerun tests (`independent-review.md` in the evidence directory).
+Parent inspected all three actual commit diffs against the approvals, verified each saved item diff
+matches its commit, confirmed five-Markdown-file scope and an empty index, and reran
+`git diff e76921a --check`, the bounded ontology validator and
+`timeout 150 nix develop -c godot --headless --quit` successfully (exit 0, normal startup).
+Logs: `parent-validator.{log,exit}`, `parent-boot.{log,exit}`. The final record received `/simplify`
+(removing temporary writer/parent instructions), then ponytail-review; no policy changes were needed.
+Validation covers current loaded data/startup, not the new recipe policies' implementation.
+No gameplay suite, visuals or network checks were run.
+
+**Pre-publication checkpoint:** branch `fix/ontology-reconciliation`, item HEAD `11cc07f`, remote
+`e76921a` confirmed with `git ls-remote`. The final verification/handoff commit follows the three
+items; push without force or merge, verify remote/local HEAD equality and a clean worktree, then stop.
+This checkpoint is not a publication claim; inspect actual Git state on resumption.
+No presented books question remains. Next walkthrough topic: artifact accumulation (global versus
+per-stat diminishing returns; additive versus compounded percentages), with D6 numbers/rewards
+settled; no new proposals here. Implementation debt remains in `todo_implement.md`.
 No shared-account knowledge, multiplayer reward allocation, recipe-generation/identity defaults
 or cross-world portability is chosen.
 

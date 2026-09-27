@@ -9,10 +9,21 @@ formulas, and immediate book recording with visibly power-locked crafting. Knowl
 usability; duplicates never bypass the power gate. Canonical rules: `ontology/domain.md`;
 application/evidence: `todo_decide.md §E`.
 
-**Current boundary:** hand off the three ontology-only items for independent review and parent
-verification. Parent alone publishes after verification; the writer does not push.
-No gameplay, live JSON, tests, model/loader/validator changes or merge.
-No next-topic proposals. Cross-world character portability remains in the later persistence topic.
+**Authorized handoff:** commit this verification/handoff record and push the three item commits
+on `fix/ontology-reconciliation`, verify remote/local HEAD equality and a clean worktree, then stop.
+No gameplay, live JSON, tests, model/loader/validator changes, merge or next-topic proposals.
+Cross-world character portability remains in the later persistence topic.
+
+**Verification:** item commits **`9f4262e` / `4ddd76e` / `11cc07f`** each passed semantic/scope
+inspection, `/simplify`, ponytail-review, diff checks and bounded ontology validation. Fresh
+independent review found no issues; parent inspected the actual diffs/commits/logs and reran
+ontology validation and headless boot successfully (exit 0). Only five Markdown paths changed.
+Evidence: `todo_decide.md §E`, `/tmp/pixlnd-books-20260928/`. These checks cover loaded data/startup,
+not implementation of the new policies; no gameplay suite, visual or network checks were run.
+
+**Pre-publication checkpoint:** item HEAD `11cc07f`, remote `e76921a` confirmed with
+`git ls-remote`; the final verification/handoff commit follows the three items. This is not a
+publication claim: verify actual branch, HEAD, upstream and worktree on resumption.
 
 **Historical unanswered checkpoint (superseded):** `e76921a` preserved the exact proposals
 before the current answers; its pre-publication state was clean `93886e0`, remote `d6bbaf7`.
