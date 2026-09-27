@@ -433,6 +433,19 @@ Documentation only: live `creatures.json` still assigns Skeleton Dog to `skeleto
 model/loader/validator support and runtime family scaling remain deferred and unauthorized.
 There is no live family `hp-mult` data or runtime family scaling today.
 
+**Hybrid family item 2 (owner approved, 2026-09-27):** these 25 missing primary assignments
+are authoritative. Preserve all other existing assignments except item 1's Skeleton Dog override.
+No numerical changes, new family classifications or species-trait inheritance are introduced.
+Live JSON still lacks these assignments; migration remains deferred.
+
+| primary family | creature IDs |
+|---|---|
+| cats (3) | `cat`, `brown-cat`, `white-cat` |
+| sprouts (9) | `onionling`, `desert-onionling`, `radishling`, `radishling-sprout`, `cormling`, `cormling-sprout`, `chiling`, `habanero`, `bloomling` |
+| guardians (2) | `ancient-guardian-anubis`, `ancient-guardian-horus` |
+| trolls (3) | `troll`, `dark-troll`, `yeti` |
+| fish (8) | `sapphire-fish`, `lemon-fish`, `seahorse`, `shark`, `lantern-fish`, `maw-fish`, `piranha`, `blowfish` |
+
 ### pet
 A tamed creature owned by a player. `A S`
 | prop | notes |
@@ -1298,8 +1311,8 @@ This index mirrors the open list in `docs/ROADMAP/todo_decide.md §E`; it does n
 or authorize implementation. Resolve each question before its affected slice.
 Aggro items 1–14, including the two former open follow-ups, are approved and recorded in §3.2
 (2026-09-27; `todo_decide.md §E`); implementation remains deferred.
-Creature family items 1–3 are approved: item 1 is recorded in §3.2/§4/§5; items 2–3 await
-separate documentation commits. Resume at unanswered family follow-up 4, not items 1–3.
+Creature family items 1–3 are approved: items 1–2 are recorded in §3.2/§4/§5; item 3 awaits
+its separate documentation commit. Resume at unanswered family follow-up 4, not items 1–3.
 Threat across server restart stays in the persistence topic below.
 
 | topic | still undecided / incomplete |

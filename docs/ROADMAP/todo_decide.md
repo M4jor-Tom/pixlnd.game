@@ -132,7 +132,7 @@ fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09
 
 **Current resume direction (2026-09-27):** **Creature family items 1–3 approved**, item 1 with
 Skeleton Dog primary `dogs`, not `skeletons`. Record each as a separate documentation commit;
-item 1 is recorded, items 2–3 await their separate records below. Resume at **family follow-up 4,
+items 1–2 are recorded, item 3 awaits its separate record below. Resume at **family follow-up 4,
 Skeleton Dog encounter rarity — presented but unanswered**, not settlements or approved items 1–3.
 No runtime/live JSON/test changes, push or merge are authorized. The earlier 2026-09-27 handoff/
 commit + push request is historical, not current publication permission.
@@ -607,8 +607,8 @@ live data, model/loader/validator and gameplay remain unchanged. Conditional rar
 
 | item | documentation application | commit |
 |---|---|---|
-| 1 | Recorded: primary/descriptive distinction and owner amendment; `domain.md §3.2/§4/§5` | `docs(ontology): record primary creature families and dog override` |
-| 2 | Approved; 25 assignments await separate canonical record | pending |
+| 1 | Recorded: primary/descriptive distinction and owner amendment; `domain.md §3.2/§4/§5` | `dd5d9f8` |
+| 2 | Recorded: authoritative 25-assignment table; `domain.md#creature-family` | `docs(ontology): record missing creature family assignments` |
 | 3 | Approved; unassigned policy awaits separate canonical record | pending |
 
 **Family item 1 verification:** `/simplify` removed superseded question/refusal prose;
@@ -617,19 +617,14 @@ writer ponytail-review found no further cuts. `git diff --check` and
 Logs: `/tmp/pixlnd-family-record-20260927/item-1-{validator,diff-check,scope,review}.log`.
 Validator coverage is current loaded data only, not Markdown semantics or runtime compliance.
 
+**Family item 2 verification:** exact 25 IDs/counts checked against the approved list and
+current top-level family members/missing fields. `/simplify` removed the duplicate roadmap
+table; writer ponytail-review found no further cuts. The same diff check and bounded validator
+passed (`ontology valid`); logs use `item-2-*` in the directory above. Follow-up 4 is unchanged.
+
 **Historical proposals 1–3 (superseded by the owner answer):** the earlier handoff received
 no answers; the subsequent approval above replaces that checkpoint. In particular, item 1's
 original recommendation to keep Skeleton Dog primary `skeletons` is superseded by `dogs`.
-
-Item 2's approved list, awaiting its separate canonical record:
-
-   | proposed primary family | currently listed creatures without an individual family field |
-   |---|---|
-   | cats (3) | `cat`, `brown-cat`, `white-cat` |
-   | sprouts (9) | `onionling`, `desert-onionling`, `radishling`, `radishling-sprout`, `cormling`, `cormling-sprout`, `chiling`, `habanero`, `bloomling` |
-   | guardians (2) | `ancient-guardian-anubis`, `ancient-guardian-horus` |
-   | trolls (3) | `troll`, `dark-troll`, `yeti` |
-   | fish (8) | `sapphire-fish`, `lemon-fish`, `seahorse`, `shark`, `lantern-fish`, `maw-fish`, `piranha`, `blowfish` |
 
 Item 3 approves leaving creatures outside defined families unassigned with the existing ×1.0
 family modifier; no catch-all classification. Its canonical record follows separately.
