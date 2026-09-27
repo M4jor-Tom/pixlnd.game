@@ -131,7 +131,7 @@ Never propose or implement regional gear power loss in pixlnd, even for Cube Wor
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
 **Current resume direction (2026-09-27):** the owner approved each **Aggro batch item 1–12**
-for documentation and one separate commit per item. **Aggro batch applied: 1–9/12.**
+for documentation and one separate commit per item. **Aggro batch applied: 1–10/12.**
 The numbered Aggro entries below track application, distinct from older reconciliation items 1–10.
 Remaining approved items await recording; **questions 13–14 remain OPEN** below, without defaults.
 Finish recording, then resume those two questions together; do not call the topic closed or move
@@ -533,6 +533,11 @@ D1–D26, all walkthrough approvals and remaining open questions.
   Share current sightings only, permitting around-corner reactions while a packmate detects
   the player. Once all lose detection, only each mob's own remaining threat sustains pursuit;
   no copied threat/order or shared target choice. `domain.md §3.2/§4` / `c-pack-response`.
+
+- [x] **Aggro 10 — individual neutral forgiveness (approved/applied 2026-09-27, documentation only).**
+  Arrival clears that creature's provocation alongside its threat/order reset. Seeing the
+  old aggressor cannot re-provoke it; a new damaging attack can. Other packmates keep their
+  state (`domain.md §3.2` / `c-pack-response` / `c-return-home`).
 
 ### Open — decide before the named slice
 
