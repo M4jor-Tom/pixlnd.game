@@ -156,6 +156,9 @@ degradation) are not backlog features.
   book-learned recipes with the character across lands/sessions, without relearning on travel.
   Live-data migration and crafting/save-data implementation remain unauthorized; cross-world
   character portability is a separate persistence question.
+- [ ] Books/formulas item 2 (`domain.md#recipe`, `c-recipe-learning`): shared character recipe
+  collection; books teach only unknown recipes without rerolls/compensation; known formula
+  scrolls remain unconsumed. Data/learning/UI enforcement awaits separate authorization.
 
 ## Progression (§3.5, slice D19)
 - [x] Skill tree (D20, `game/progression/skill_tree.gd`, `skill_panel.gd` on X): spending, unlock rule, per-point multipliers.

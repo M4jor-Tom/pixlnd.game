@@ -130,8 +130,8 @@ The full walkthrough/resumption protocol is in `tasks/lessons.md`; the prompt
 Never propose or implement regional gear power loss in pixlnd, even for Cube World cloning
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
-**Current direction (2026-09-28):** books/formulas **items 1–3 approved**; item 1 is recorded,
-items 2–3 await recording, not owner answers. Exact approval and application status are in the
+**Current direction (2026-09-28):** books/formulas **items 1–3 approved**; items 1–2 are recorded,
+item 3 awaits recording, not an owner answer. Exact approval and application status are in the
 books batch below. The owner requested handoff, commit and push; the writer records one
 ontology-only commit per item, then hands off for independent review and parent verification.
 Parent alone publishes after verification; no push by the writer or next-topic proposals.
@@ -599,8 +599,9 @@ change. Knowledge and usability must remain distinct when recording items 2–3.
 1. [x] **Permanent/global book recipes:** recorded in `domain.md#book-of-crafting`,
    `#player-character`, `#save-data`, `knows-recipe` / `c-book-recipe-persistence`.
    Character knowledge survives lands and sessions; cross-world portability remains in persistence.
-2. [ ] **Approved, awaiting recording — shared recipe collection:** books teach only unknown
-   recipes, with no rerolls or compensation; an already-known formula stays unconsumed.
+2. [x] **Shared recipe collection:** books teach only unknown recipes, without rerolls or
+   compensation; an already-known formula stays unconsumed. Canonical rule: `domain.md#recipe`,
+   `knows-recipe` / `c-recipe-learning`. Overlap can make later books less rewarding.
 3. [ ] **Approved, awaiting recording — book power gates:** books record immediately;
    above-power recipes stay visibly locked until their requirement is reached. Formula learning
    retains its existing power requirement; duplicate knowledge cannot bypass a crafting gate.

@@ -388,7 +388,7 @@ A saved hero. `A S`
 | level, xp, skills[11] | A |
 | artifacts | S (level = count) |
 | inventory, equipment, coins, platinum `A` | |
-| known-recipes | hybrid: book-learned recipes stay with this character across lands and sessions (§3.4); A formulas learned; S books per land (reference) |
+| known-recipes | hybrid: one set of recipes shared by book/formula learning, with no source-specific duplicates; book-learned recipes persist across lands/sessions (§3.4); A formulas learned; S books per land (reference) |
 | lore-known | S per realm |
 | discovered lands/portals/shrines/flight-points | |
 | pets (cages), active pet, pet slot | |
@@ -944,13 +944,21 @@ Gatherable, drop or refined crafting material. → `instances/ingredients.json`.
 Inputs → output at a station. `A S` → `instances/recipes.json` (gear quantity table by rarity ×
 slot, food, potions, elixirs, beverages, refining, rings/amulets, water flask).
 
+**Hybrid books/formulas item 2 (owner approved, 2026-09-28):** books and formulas teach into
+one character recipe collection (`known-recipes` / `knows-recipe`), not separate source-specific
+unlocks. Learning the same recipe twice grants nothing extra. A book teaches **only its unknown
+recipes**, with **no rerolls or compensation** for known ones; four recipes with three already
+known teach one. Attempting to learn an **already-known formula leaves the scroll unconsumed**.
+Overlap can make later books less rewarding. This chooses no recipe-generation or identity defaults.
+Live-data migration and recipe-learning implementation remain deferred.
+
 ### crafting-station
 7 stations + campfire + "anywhere". → `instances/crafting-stations.json`.
 
 ### formula
 `A` recipe scroll (item type 2) with +N level; sold by vendors, dropped by tier, on dungeon tables;
 right-click to learn once power suffices. Historically replaced in S by `book-of-crafting`;
-both sources remain in hybrid.
+both sources remain in hybrid and share recipe knowledge/duplicate handling (`recipe`, item 2).
 
 ### book-of-crafting
 `S` 4 per land (uncommon/rare/epic/legendary), 3–4 recipes each, from hammer-icon missions; only
@@ -1237,7 +1245,7 @@ One row per fact type. Cardinality as `domain → range`.
 | costs | ability | resource | 1→0..n | amount per resource, scoped by ruleset |
 | applies | ability ∪ weapon-type ∪ hazard | status-effect | n→n | |
 | has-moveset | weapon-type | ability (m1, m2) | 1→2 | |
-| knows-recipe | player-character | recipe | n→n | character recipe knowledge (`known-recipes`); hybrid book-learned recipes persist across lands and sessions, not shared-account knowledge |
+| knows-recipe | player-character | recipe | n→n | one known fact per character/recipe, shared by books and formulas (`known-recipes`); book-learned recipes persist across lands/sessions, not shared-account knowledge |
 | crafted-at | recipe | crafting-station | 1→1 | |
 | consumes | recipe | ingredient ∪ material | 1→n | with counts |
 | produces | recipe | item-type ∪ consumable | 1→1 | |
@@ -1376,6 +1384,7 @@ content selection or live data changes are authorized by this contract.
 | c-spirit-level | A: weapon.level − 10 ≤ spirit.level ≤ weapon.level | runtime |
 | c-power-gate | A: item.level ≤ power(player.level) for full strength; formula learn likewise | runtime |
 | c-book-recipe-persistence | hybrid: book-learned recipes remain known to that character across lands and sessions, with no relearning on travel; cross-world character portability remains open (§3.4) | runtime+save-data (deferred) |
+| c-recipe-learning | hybrid: books/formulas share one known-recipe set per character; repeated learning grants nothing extra; books teach only unknown recipes without rerolls/compensation; an already-known formula remains unconsumed (§3.4 recipe) | runtime (deferred) |
 | c-region-lock | DROPPED (D4). S reference: item.land ≠ current land ∧ ¬plus → worn; key items inert | — |
 | c-plus-adjacent | DROPPED (D4). S reference: plus item full stats iff current land adjacent | — |
 | c-gear-global | hybrid: an item's stats are identical in every land; key items and artifacts work everywhere once found | runtime |
@@ -1476,7 +1485,7 @@ implementation is separately deferred.
 Settlements/inn items 1–4 are recorded in §3.1 (2026-09-27). Traversal items 1–5 are recorded
 (2026-09-28): training/item gates, corrected 75% Spikes reduction and remaining-cost stacking.
 No presented traversal question remains. Books/formulas items 1–3 are approved (2026-09-28):
-item 1 is recorded in §3.4; items 2–3 await recording, not owner answers.
+items 1–2 are recorded in §3.4; item 3 awaits recording, not an owner answer.
 Live-data migration and implementation remain deferred; cleared dungeon/quest enemy reset
 eligibility stays in world/reset below. Threat across server restart stays in the persistence topic below.
 

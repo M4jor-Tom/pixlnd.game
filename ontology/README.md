@@ -42,9 +42,10 @@ Spikes reduce climbing stamina consumption by 75%, applied to the skill-adjusted
 verification passed (`todo_decide.md §E`). Artifact combination remains open.
 Live-data migration and enforcement remain deferred; cleared dungeon/quest enemy reset eligibility
 stays in the later world/reset topic.
-**Books/formulas item 1 recorded (2026-09-28):** book recipes persist with the character across
-lands and sessions (`domain.md#book-of-crafting`); no cross-world portability choice. Items 2–3
-are approved and await recording, not answers. Independent review/parent verification are pending.
+**Books/formulas items 1–2 recorded (2026-09-28):** permanent/global book recipes and shared
+book/formula knowledge, with no duplicate rewards/rerolls and known formula scrolls unconsumed
+(`domain.md#book-of-crafting` / `#recipe`). Item 3 is approved and awaits recording, not an answer.
+Independent review/parent verification are pending; cross-world portability remains open.
 Gameplay and live JSON remain unchanged; restart persistence stays in its later topic.
 
 ## Decision and build history (from 2026-09-07)

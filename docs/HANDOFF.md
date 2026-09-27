@@ -3,10 +3,10 @@
 ## Ontology walkthrough entry point (2026-09-28)
 
 **Books/formulas approvals (2026-09-28):** the owner answered **“1: Approved; 2: Approved;
-3: Approved; When done, handoff, commit, push”**. Item **1** is recorded: book recipes stay
-with that character across lands and sessions. Items **2–3** are approved and await recording,
-not further owner answers: shared recipe knowledge/duplicates and immediate but power-locked
-book recipes. Canonical rules: `ontology/domain.md`; application/evidence: `todo_decide.md §E`.
+3: Approved; When done, handoff, commit, push”**. Items **1–2** are recorded: permanent/global
+book recipes and shared recipe knowledge, without duplicate rewards/rerolls or consuming known
+formula scrolls. Item **3** is approved and awaits recording, not an owner answer: immediate
+but power-locked book recipes. Canonical rules: `ontology/domain.md`; evidence: `todo_decide.md §E`.
 
 **Current boundary:** finish the three separately verified ontology-only commits, then hand off
 for independent review and parent verification. Parent alone publishes after verification; the
