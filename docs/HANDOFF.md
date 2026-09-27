@@ -9,7 +9,7 @@ separately. On an explicit handoff request, record the next topic or unfinished 
 and push, then stop. No runtime implementation is authorized. Protocol: `tasks/lessons.md`.
 This supersedes the older single-question and stop instructions below. The owner subsequently
 approved each **Aggro batch item 1–12** (2026-09-27), documentation only, one commit per item.
-**Aggro batch applied: 1–10/12.** Remaining approved items await recording in `todo_decide.md §E`.
+**Aggro batch applied: 1–11/12.** Remaining approved items await recording in `todo_decide.md §E`.
 No runtime/live JSON/test changes or push are authorized. Older hashes below are historical.
 
 **Committed reconciliation:** the owner requested committing the staged repairs before continuing;

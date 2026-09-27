@@ -553,6 +553,13 @@ Hybrid aggro rules (owner approved 2026-09-18/19 and 2026-09-27, documentation o
   that player's remaining positive aggro or engagement-order position with the mob. Normal decay
   continues; reaching zero clears the old position, and regaining positive threat assigns a fresh
   one as above. Other players' scores and order are unchanged. This governs memory, not chase distance.
+- **Temporary absence (owner approved 2026-09-27):** within the same running world,
+  temporary player disconnect or zone unloading does not grant an extra threat/order wipe.
+  Preserve the logical mob/player pair's remaining state under normal decay and approved resets;
+  an absent player cannot be targeted. Reconnecting before threat expires can restore eligibility
+  under normal targeting rules, not guaranteed priority. A mob that actually dies and respawns
+  starts with fresh threat/order. Persistence across a server restart remains a later topic;
+  this does not choose a storage strategy.
 - **Return-home trigger (owner approved 2026-09-19):** during pursuit, crossing the existing
   home leash (`design.spawns.ai.leash`, 30 blocks measured from the mob's home) starts return
   regardless of remaining aggro or taunt. Within the leash, if its target dies, disappears, or
@@ -1052,7 +1059,7 @@ One row per fact type. Cardinality as `domain → range`.
 | drops | creature | item ∪ spirit-cube ∪ leftovers ∪ currency | n→n | random by tier + species list |
 | holds | inventory | item | 1→n | count per entry; c-stack-rule |
 | equips | entity | item | 1→0..12 | at most one per usable equipment-slot; reserved index 0 and separate Q selection excluded; c-slot-accepts |
-| threat | entity (mob) | entity (player-character) | n→n | hybrid mob/player combat state; optional per ordered pair, with one numeric `aggro-points` amount; c-threat-pair |
+| threat | entity (mob) | entity (player-character) | n→n | hybrid mob/player combat state, retained across temporary absence (§3.2); optional per ordered pair, with one numeric `aggro-points` amount; c-threat-pair |
 | current-target | entity (mob) | entity (player-character) | 1→0..1 | hybrid mob/player target selection, separate from threat amounts; multiple mobs may select the same player; c-current-target |
 | requires-key-item | poi-type ∪ dungeon-type | key-item | n→n | harp→divine door, bell→crypt gate, whistle→bird statue, reins→riding |
 | located-in | settlement ∪ dungeon ∪ poi | land | n→1 | |
@@ -1083,8 +1090,11 @@ One row per fact type. Cardinality as `domain → range`.
 
 Owner-requested clarification (2026-09-18), documentation only. These relations describe the
 approved mob/player scope. A **mob** is an individual non-player combat `entity`, not the shared
-`creature` species definition; the player endpoint is the active `entity` of a `player-character`.
-This does not decide other combat pairings.
+`creature` species definition; the player endpoint identifies an individual `player-character`.
+For threat/order retention, these are logical mob/player identities in the running world, not
+only currently spawned nodes. Temporary absence preserves their remaining state under §3.2;
+`current-target` requires a present, living player entity. This neither decides a storage strategy
+or restart persistence nor extends the approved combat pairings.
 
 **Threat** is the directed mob → player relationship, not a separate global player stat.
 Its numeric property **`aggro-points`** measures the relationship's strength, in **aggro points**
@@ -1172,8 +1182,8 @@ content selection or live data changes are authorized by this contract.
 | c-slot-accepts | an item equips only in a usable equipment-slot whose `accepts` lists its item-type and whose subtype restrictions it satisfies (§3.4 equipment-slot); weapon-type `offhand` hands → off-hand only; c-weapon-class and c-hands still apply | runtime |
 | c-mp-range | mp ∈ [0, 100]; mage regenerates passively, others gain by hits/blocks/stealth/dodges; numbers `design.resources.mp` (D21) | runtime |
 | c-stun-immunity | cannot re-stun while stars shown | runtime |
-| c-threat-pair | at most one `threat` relation per ordered mob/player entity pair; each present relation has exactly one non-negative numeric `aggro-points` amount in aggro points, independent of other pairs; changing `current-target` does not clear it; decay/gains (including the full-stealth damage exception), the zero floor, player-death and arrival clearing, and escape retention follow §3.2; other reset conditions remain open | runtime |
-| c-current-target | at most one player target per mob; ordinary targeting compares that mob's eligible players by highest `aggro-points`, retains a tied current target, otherwise breaks positive-threat ties by earliest engagement; without a positive-threat priority or valid current target, choose the nearest normally detected zero-threat player without granting aggro/order (§3.2); player-death, zero-threat and arrival order resets, escape retention and fresh assignment follow §3.2; at zero, ordinary pursuit requires normal detection and hostility/provocation eligibility; equally nearest fallback ties are chosen randomly once with equal chances, then normal retention applies; Heroic Shout temporarily overrides ordinary targeting without threat/order gain; eligibility, duration, replacement and termination follow §3.2, open subcases §7 | runtime |
+| c-threat-pair | at most one `threat` relation per ordered logical mob/player entity pair; each present relation has exactly one non-negative numeric `aggro-points` amount in aggro points, independent of other pairs; changing `current-target` does not clear it; decay/gains (including the full-stealth damage exception), the zero floor, player-death and arrival clearing, and escape/temporary-absence retention follow §3.2; actual mob death/respawn starts fresh; restart persistence remains open | runtime |
+| c-current-target | at most one present, living player target per mob; ordinary targeting compares that mob's eligible players by highest `aggro-points`, retains a tied current target, otherwise breaks positive-threat ties by earliest engagement; without a positive-threat priority or valid current target, choose the nearest normally detected zero-threat player without granting aggro/order (§3.2); player-death, zero-threat and arrival order resets, escape retention and fresh assignment follow §3.2; at zero, ordinary pursuit requires normal detection and hostility/provocation eligibility; equally nearest fallback ties are chosen randomly once with equal chances, then normal retention applies; Heroic Shout temporarily overrides ordinary targeting without threat/order gain; eligibility, duration, replacement and termination follow §3.2, open subcases §7 | runtime |
 | c-pack-response | only the generated pack responds, under the hostile-detection / aggressor-specific neutral-provocation rules in §3.2; friendly/passive creatures are excluded and protected return cannot be interrupted; share current sightings only, never threat/order, and select targets independently; each neutral clears its own provocation on arrival (§3.2) | runtime |
 | c-return-home | pursuit beyond the home leash starts return regardless of threat; within it, target loss checks eligible positive-threat players then normal detection of eligible players (§3.2); attacks do not restart pursuit during return; ×2 normal return speed and 90% damage reduction (including DOT) until reaching home alive, then full HP and clear this mob's aggro/order toward every player and its neutral provocation once, ending both bonuses; no revival, cleansing or CC immunity; gains/decay continue until arrival and other mobs' records are unchanged; starting return cancels taunt, and new taunts neither interrupt nor queue for afterward | runtime |
 | c-combo-reset | any attack with a hitbox that misses resets combo to 0, subject to the hybrid whole-channel and combo-neutral zero-damage-taunt rules in §3.3 combo-system; cap per weapon-type | runtime |
@@ -1263,7 +1273,7 @@ or authorize implementation. Resolve each question before its affected slice.
 | Artifacts | global versus per-traversal-stat diminishing returns; additive versus compounded percentages (D6 numbers and traversal + attack/HP rewards stand) |
 | Assassin ultimate | Camouflage alias versus separately unlocked fourth node (D10/D20 stand) |
 | Wand handedness | two-handed mechanics versus one-handed; provisional data is not a resolution |
-| Persistence / authority | character portability, ownership of discoveries/unlocks, authoritative state validation (D5 dedicated server stands) |
+| Persistence / authority | character portability, ownership of discoveries/unlocks, authoritative state validation, threat across server restart (D5 dedicated server stands; same-running-world absence retention approved in §3.2) |
 | World bounds / resets | finite 1024²-region bound versus “infinite” wording; cleared dungeon/quest mobs at midnight |
 | Validation-contract mapping | exact required paths, permitted provenance inheritance and remaining constraint boundaries; item 9 policy is approved, enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |

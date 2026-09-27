@@ -79,6 +79,8 @@ degradation) are not backlog features.
   night lanterns; midnight reset; possession (S). Humanoid identity beyond the rolled combat role is deferred above.
 - [ ] `creature-families.json` has no `hp-mult` yet (`design.enemy-hp.family-mult` defaults to 1).
 - [ ] Creatures never despawn except with their zone; no per-zone spawn cap or respawn timer.
+  Zone-owned nodes currently disappear on unload; preserving logical threat/order across temporary
+  unload/disconnect is approved but unimplemented (`domain.md#ai-behavior`, Aggro 11 in §E).
 - [ ] Creatures beyond `design.spawns.ai.sim-radius` (80 blocks, D16) are frozen mid-state, not LOD-ed: no
   slow tick, no catch-up when they wake. Zone colliders are still trimeshes (`ConcavePolygonShape3D`); a
   `HeightMapShape3D` would cut the per-body cost if the radius ever grows — `creature.gd`, `world.gd`.

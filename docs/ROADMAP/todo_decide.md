@@ -131,7 +131,7 @@ Never propose or implement regional gear power loss in pixlnd, even for Cube Wor
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
 **Current resume direction (2026-09-27):** the owner approved each **Aggro batch item 1–12**
-for documentation and one separate commit per item. **Aggro batch applied: 1–10/12.**
+for documentation and one separate commit per item. **Aggro batch applied: 1–11/12.**
 The numbered Aggro entries below track application, distinct from older reconciliation items 1–10.
 Remaining approved items await recording; **questions 13–14 remain OPEN** below, without defaults.
 Finish recording, then resume those two questions together; do not call the topic closed or move
@@ -539,6 +539,11 @@ D1–D26, all walkthrough approvals and remaining open questions.
   old aggressor cannot re-provoke it; a new damaging attack can. Other packmates keep their
   state (`domain.md §3.2` / `c-pack-response` / `c-return-home`).
 
+- [x] **Aggro 11 — same-world absence retention (approved/applied 2026-09-27, documentation only).**
+  Temporary disconnect/unload grants no extra wipe: logical pair scores/order follow normal
+  decay and approved resets. Absent players cannot be targeted; reconnect can restore eligibility.
+  Actual mob death/respawn starts fresh. Restart persistence is still open (`domain.md §3.2/§4/§5`).
+
 ### Open — decide before the named slice
 
 - [ ] **Aggro / group aggro — follow-ups to the approved 2026-09-27 batch:**
@@ -572,7 +577,8 @@ D1–D26, all walkthrough approvals and remaining open questions.
   one-handed? Before wand equipment/crafting rules; sources: `weapon-types.json#wand`,
   `c-hands`, `generators.json#design.recipes`.
 - [ ] **Hybrid persistence / authority:** character portability across worlds, ownership of
-  discoveries/unlocks, and authoritative validation of state. Before save-data/networking;
+  discoveries/unlocks, authoritative validation of state and threat across a server restart.
+  Same-running-world absence retention is approved in Aggro 11. Before save-data/networking;
   sources: `domain.md#player-character`, `#save-data`, `#multiplayer-mode`,
   `generators.json#network-alpha`. D5's dedicated server does not alone choose authority.
 - [ ] **World bounds / resets:** does hybrid retain the finite 1024²-region bound despite
