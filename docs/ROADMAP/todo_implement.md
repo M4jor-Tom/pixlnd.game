@@ -61,8 +61,11 @@ degradation) are not backlog features.
   speed. Vendor/data/slot/runtime enforcement remains deferred; no dual equip or new slot.
 - [ ] Climbing item 4 (`domain.md#key-item`, `#skill-tree`, `c-climbing`): basic climbing without
   points/Spikes, skill drain reduction, global Spikes reducing consumption by 75%, not the S
-  infinite-endurance behavior. Live data/runtime remain unchanged; item 5 separately records
-  stacking. Do not infer a skill reduction curve/floor from the percentage.
+  infinite-endurance behavior. Live data/runtime remain unchanged; do not infer a skill
+  reduction curve/floor from the percentage.
+- [ ] Climbing item 5 (`domain.md#key-item`, `c-climbing`): apply Spikes to the remaining
+  skill-adjusted cost (×0.25), never additive percentage points. No artifact-combination rule
+  or skill reduction curve/floor is chosen; implementation remains separately unauthorized.
 
 ## Creatures (§3.2 creature + ai-behavior, D14 + D26)
 - [x] Basic melee attack both ways, death, neutral retaliation (combat slice); ranged / mage roles shooting back

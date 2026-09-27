@@ -130,10 +130,10 @@ The full walkthrough/resumption protocol is in `tasks/lessons.md`; the prompt
 Never propose or implement regional gear power loss in pixlnd, even for Cube World cloning
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
-**Current direction (2026-09-28):** traversal items **1–3 approved**, item **4 corrected to
-75% less climbing stamina consumption**, not elimination. Items **1–3** and **4**'s corrected
-principle are recorded; item **5**'s separately approved remaining-cost stacking awaits recording.
-Complete traversal recording/review before books/formulas. Five documentation commits are authorized; no
+**Current direction (2026-09-28):** traversal **items 1–5 recorded**, including item **4**'s
+corrected **75%** reduction and item **5**'s separately approved **remaining-cost ×0.25** rule.
+No presented traversal question remains; books/formulas is next after independent review and
+parent verification (both pending). Only the parent presents its questions. No
 runtime/live JSON/test work, model/loader/validator changes, push, merge or history rewriting.
 Settlements/inn items 1–4 and family items 1–9 remain recorded. The 2026-09-27 handoff's
 publication/stop instruction is historical and its unanswered 1–4 status is superseded.
@@ -561,8 +561,8 @@ D1–D26, all walkthrough approvals and remaining open questions.
 
 ### Open — decide before the named slice
 
-Traversal items 1–5 are approved (item 4 corrected); recording status below. Complete their
-recording/review before books/formulas; remaining-cost stacking is no longer an open question.
+Traversal items 1–5 are recorded (item 4 corrected); review/verification pending below.
+Books/formulas is next; remaining-cost stacking is not an open question.
 
 - [ ] **Books and formulas:** are hybrid book recipes permanent/global, and how do duplicate
   unlocks interact with formulas? Before crafting/save-data; sources: `domain.md#book-of-crafting`,
@@ -605,81 +605,46 @@ Documentation only; item 5's composition rule is a separate approval, not inferr
 | 1 — riding training + Reins | `b4da965` |
 | 2 — gliding training + equipped bought glider | `88c54ac` |
 | 3 — sailing training + equipped bought boat | `0462e9c` |
-| 4 — Spikes reduce climbing consumption by 75% | corrected principle recorded in this item commit; hash follows in next record |
-| 5 — remaining-cost stacking | approved, pending recording |
+| 4 — Spikes reduce climbing consumption by 75% | `54f53fd` |
+| 5 — remaining-cost stacking | recorded in this item commit; final hash belongs in parent verification record |
 
 Item 1 passed scope inspection, `/simplify`, ponytail-review and `git diff --check` (exit 0).
 Its first bounded validator command timed out during Nix downloads (exit 124, before Godot);
 a supervisor-authorized exact retry passed (exit 0, `ontology valid`). Logs retain both attempts.
-Items 2–3 passed the same reviews, diff checks and bounded validators (exit 0, `ontology valid`).
+Items 2–5 passed the same reviews, diff checks and bounded validators (exit 0, `ontology valid`).
+Command: `timeout 150 nix develop -c godot --headless -s ontology/validate.gd`.
+`item-N-review.md`, `item-N-diff-check.{log,exit}` and `item-N-validator.{log,exit}` hold the
+per-item evidence (item 1's success is `item-1-validator-retry.{log,exit}`). No gameplay, boot,
+visual or network checks were run; no tests, live JSON or runtime files changed.
 
 Independent review and parent verification are pending. Per-item evidence is saved under
 `/tmp/pixlnd-traversal-20260928/`; loaded-data validation does not prove these Markdown rules
 or gameplay implementation. Runtime/live-data migration is deferred (`todo_implement.md`).
 
-#### 5. Combine Spikes with Climbing skill reductions — APPROVED, pending recording
+#### 5. Remaining-cost stacking — approved and recorded
 
-**Settled:** Spikes reduce consumption by 75%; Climbing points also reduce drain.
-**Approved recommendation:** apply Spikes to the stamina cost remaining after the
-Climbing skill reduction (multiply that remaining drain by 0.25), rather than adding 75
-percentage points to the skill reduction. Illustrative example only, not balance defaults:
-if skill points reduce a climb's cost from 10 stamina to 8, Spikes reduce it from 8 to 2,
-not to 0.5. This is not an artifact-combination rule.
+Apply Spikes after Climbing's skill reduction: remaining cost **×0.25**, not an added 75
+percentage points. Illustrative only: a skill-adjusted 8 stamina (from 10) becomes **2**, not
+0.5. Points retain their benefit with Spikes; Spikes do not turn a positive remaining cost into
+zero by themselves. Canonical rule: `domain.md#key-item` / `#skill-tree` / `c-climbing`.
+No skill reduction curve/floor or artifact-combination rule is inferred. All five traversal
+items are reconciled; books/formulas follows review, with questions presented by the parent.
 
-##### Approval versus Refusing
-- **Approval:** Climbing points remain useful alongside Spikes; Spikes do not turn a positive
-  skill-adjusted cost into zero by themselves.
-- **Refusing:** the 75% Spikes reduction remains approved, but its combination with skill
-  points needs a different rule.
+#### Items 1–4 — recorded principles
 
-The owner answered **“5: Approved”**. Complete traversal recording/review before books/formulas.
+- [x] **1 — Riding:** 5 Pet Master + ≥1 Riding point, global Reins and a rideable tamed pet;
+  further points improve speed (`domain.md#pet`, `c-riding`). No species permission/route/slot added.
+- [x] **2 — Gliding:** 5 Climbing + ≥1 Hang Gliding point and a vendor-bought equipped Hang
+  Glider; further points improve speed (`domain.md#skill-tree`, `c-gliding`). Buying alone is insufficient.
+- [x] **3 — Sailing:** 5 Swimming + ≥1 Sailing point and a vendor-bought equipped Boat;
+  further points improve speed (`c-sailing`). Boat/glider share the single special slot, never both.
+- [x] **4 — Climbing:** no points/Spikes needed for basic climbing; skill points reduce drain,
+  Spikes reduce consumption by 75%; five Climbing points remain the gliding prerequisite
+  (`domain.md#key-item`, `#skill-tree`, `c-climbing`).
 
-#### Historical presentation (2026-09-27, superseded by the answers above)
-
-The following records the original proposals, not active unanswered items. Item 4's infinite
-endurance recommendation and tradeoff are superseded by the owner's 75% correction.
-
-**Already settled:** the shared skill chains remain, key items work globally across lands, and glider/boat share one equipped special slot. The unresolved question is how skills and items combine.
-
-#### 1. Riding requires both training and Reins
-
-**Recommendation:** Require **5 Pet Master points + at least 1 Riding point**, globally acquired **Reins**, and a rideable tamed pet. Further Riding points retain their speed benefit.
-
-Finding Reins early would not immediately let an untrained character mount.
-
-##### Approval versus Refusing
-- **Approval:** Riding rewards both character investment and exploration; Reins never need replacing at land borders.
-- **Refusing:** The riding requirement remains unresolved—not automatically skill-only or Reins-only.
-
-#### 2. Gliding requires training and an equipped glider
-
-**Recommendation:** Require **5 Climbing points + at least 1 Hang Gliding point**, plus an equipped **Hang Glider** bought from an item vendor. Further points improve glide speed.
-
-Buying the glider before learning the skill would not yet let you deploy it.
-
-##### Approval versus Refusing
-- **Approval:** Gliding is an earned movement upgrade involving training and a purchase, usable across all lands.
-- **Refusing:** Its prerequisites and acquisition route remain unresolved; this does not automatically approve immediate item-only flight.
-
-#### 3. Sailing requires training and an equipped boat
-
-**Recommendation:** Require **5 Swimming points + at least 1 Sailing point**, plus an equipped **Boat** bought from an item vendor. Further points improve sailing speed.
-
-You would equip the boat instead of the glider when preparing to cross deep water.
-
-##### Approval versus Refusing
-- **Approval:** Swimming investment leads to faster water travel, with the existing equipment choice preserved.
-- **Refusing:** Sailing requirements remain unresolved—not automatically unlocked by buying a boat.
-
-#### 4. Historical infinite-endurance recommendation — superseded
-
-The owner replaced the proposal to remove all drain with **75% less climbing stamina
-consumption**. Basic climbing still needs neither points nor Spikes; points reduce drain and
-five remain the gliding prerequisite. The former “points no longer help endurance” tradeoff is
-not adopted. Canonical corrected principle: `domain.md#key-item` / `#skill-tree` / `c-climbing`;
-item 5's stacking rule is separately approved, not inferred from item 4.
-
-The original request for answers to 1–4 is superseded by the 2026-09-28 response above.
+**Historical presentation (2026-09-27, superseded):** exact proposals/consequences remain in
+`d6bbaf7` and the old handoff evidence below. The owner superseded item 4's infinite-endurance
+recommendation and “points no longer help” tradeoff, not basic climbing or the gliding prerequisite.
 
 **Source/resumption paths:** `ontology/domain.md#pet`, `#equipment-slot`, `#key-item`,
 `#skill-tree`, §5 `c-gear-global`; `instances/abilities.json` shared nodes,
@@ -687,8 +652,8 @@ The original request for answers to 1–4 is superseded by the 2026-09-28 respon
 `game/progression/skill_tree.gd` and `game/entities/player.gd`; research
 `research/research_systems.md` movement/progression sections. Skill spending/swimming run;
 pet riding, climbing, glider and boat runtimes remain deferred. Existing source-version fields
-and flags do not settle the unanswered hybrid prerequisites. No gameplay implementation is
-approved by this handoff; existing deferrals remain in `todo_implement.md`.
+and flags do not override the recorded hybrid gates. No gameplay implementation is
+approved by these decisions; existing deferrals remain in `todo_implement.md`.
 
 **Historical pre-publication checkpoint (2026-09-27, superseded):** clean `fix/ontology-reconciliation` at `fa716ab` before this
 handoff; remote `b4ce91e` confirmed with `git ls-remote`. Publish the four settlements/inn
@@ -956,7 +921,7 @@ is still open. Do not mistake a listed proposed correction for an approved new g
   normalize live `equipment-slots.json#accepts` to item-type IDs (`light`, `special`, `weapon`),
   express subtype restrictions and pet-food placement, and align the validator/consumers with
   the approved model. Live slot JSON is deliberately unchanged: current `items.gd#slot_id`
-  consumes it directly. Wand handedness and traversal prerequisites remain open above.
+  consumes it directly. Wand handedness remains open; traversal gates are now recorded above.
 - [x] **Duplicate `block` identity (item 4, 2026-09-15):** kept the voxel `block` in `domain.md
   §3.1`, renamed only the defensive class to `combat-block` in §3.3, and corrected the heading
   reference in `generators.json#design.defence._doc`. Runtime config/event keys and all terrain,
@@ -979,7 +944,7 @@ is still open. Do not mistake a listed proposed correction for an approved new g
   the reference-only `region-lock` entry, `rulesets.json` annotations, `generators.json` annotations
   and `ontology/README.md`. Recorded permanent exclusion of regional gear power loss, not a
   roadmap option. Historical data and all live flags/balance values preserved. Settlement/inn
-  targets are now recorded above; traversal, artifacts and other unresolved merges remain open. Walkthrough protocol
+  and traversal targets are now recorded above; artifacts and other unresolved merges remain open. Walkthrough protocol
   and the explicit stop/resume route are recorded in `tasks/lessons.md` and `docs/HANDOFF.md`.
 - [x] **Validation contract — ontology (item 9, 2026-09-17):** recorded the approved direction
   in `domain.md §5`, clarified `c-versions-nonempty` and split `c-artifact-stat` between

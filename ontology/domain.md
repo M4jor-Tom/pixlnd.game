@@ -64,8 +64,8 @@ availability, even if a historical flag is true. Their existing definitions and 
 **Current-build coverage:** dated slice notes and `generators.json#design` describe approved
 implementation stages, including temporary approximations, not proof that the final target is
 implemented. Later decisions supersede earlier placeholders. Unresolved hybrid merges remain
-in `docs/ROADMAP/todo_decide.md §E` (including traversal prerequisites and artifact
-accumulation); this scope clarification does not decide them or authorize gameplay changes.
+in `docs/ROADMAP/todo_decide.md §E` (including artifact accumulation); this scope clarification
+does not decide them or authorize gameplay changes.
 **Out of scope:** Picroma's engine internals (Plasma GUI runtime, DX11 renderer), the exact
 network byte layout of the 2013 protocol (kept as reference only), Steam platform integration,
 Omega content beyond what was publicly announced.
@@ -1009,8 +1009,15 @@ plus training (`skill-tree`, traversal items 2–3); A/S acquisition records do 
 reduce climbing stamina consumption by 75%**, rather than eliminating it. Basic climbing and
 Climbing points' drain reduction follow `skill-tree`. The infinite-climbing/no-stamina S behavior
 in `key-items.json#climbing-spikes` and `abilities.json#climb` is reference only, not a hybrid
-target. Item 5's separately approved stacking rule awaits its own record; no composition formula
-is inferred from this percentage. Live-data migration and runtime enforcement remain deferred.
+target. Live-data migration and runtime enforcement remain deferred.
+
+**Hybrid traversal item 5 (owner approved separately, 2026-09-28):** apply Spikes **after the
+Climbing skill reduction**: `climbing cost with Spikes = skill-adjusted climbing cost × 0.25`.
+Do not add 75 percentage points to the skill reduction. Illustrative only, not balance defaults:
+if skill reduces a climb's cost from 10 stamina to 8, Spikes reduce 8 to **2**, not 0.5.
+Climbing points retain their drain-reduction benefit alongside Spikes; Spikes alone do not turn
+a positive skill-adjusted cost into zero. This defines neither the skill reduction curve/floor
+nor artifact-combination semantics.
 
 ### artifact
 `S` relic; +1 level each; permanent; works everywhere; 1–3 per land (D11); raises exactly one of 7 traversal stats
@@ -1093,7 +1100,8 @@ and runtime enforcement remain deferred.
 skill points nor Spikes**. Climbing points reduce stamina drain; global Spikes reduce climbing
 stamina consumption by **75%**, not an exemption from stamina costs (`key-item`). Five Climbing
 points remain the Hang Gliding prerequisite under item 2. This principle does not define the
-skill reduction curve/floor or infer its combination with Spikes; item 5 records that separately.
+skill reduction curve/floor. Item 5 separately applies Spikes to the remaining skill-adjusted
+cost (×0.25), not additive percentage points (`key-item`).
 
 ### power-gate `A`
 Item `+N` usable at full strength only if player power ≥ N; formulas learnable likewise.
@@ -1359,7 +1367,7 @@ content selection or live data changes are authorized by this contract.
 | c-region-lock | DROPPED (D4). S reference: item.land ≠ current land ∧ ¬plus → worn; key items inert | — |
 | c-plus-adjacent | DROPPED (D4). S reference: plus item full stats iff current land adjacent | — |
 | c-gear-global | hybrid: an item's stats are identical in every land; key items and artifacts work everywhere once found | runtime |
-| c-climbing | hybrid: basic climbing needs neither points nor Spikes; Climbing points reduce stamina drain and global Climbing Spikes reduce consumption by 75%, not eliminate it; 5 Climbing points still prerequisite Hang Gliding; composition recorded separately under item 5, no skill curve/floor inferred (§3.4/§3.5) | runtime (deferred) |
+| c-climbing | hybrid: basic climbing needs neither points nor Spikes; Climbing points reduce stamina drain and global Climbing Spikes reduce consumption by 75%, not eliminate it; 5 Climbing points remain a Hang Gliding prerequisite; item 5 applies Spikes after skill reduction (remaining cost ×0.25), never additive percentage points; no skill curve/floor or artifact-combination rule inferred (§3.4/§3.5) | runtime (deferred) |
 | c-rarity-range | rarity ∈ 0..4 for generated items (5 = mythical bug, off by default) | load |
 | c-stat-roll | roll = ((attributes<<16)+modifier) mod 21 ∈ 0..20 | generator |
 | c-loot-config | `design.loot`: every chance ∈ [0,1]; rarity-weights keys are rarities ≤ legendary with a positive sum; level-spread ≥ 0; gear-kinds and stack-cap.stackable name item-types; consumable-pool names consumables | load |
@@ -1453,14 +1461,14 @@ Creature family items 1–9 are recorded: Skeleton Dog follows normal dog behavi
 skeleton-only passivity exception, and shares Bubble Gum with Collie. The independent 1% per-dog
 chance, existing habitat scope and Collie fallback stand. No unanswered family proposal remains;
 implementation is separately deferred.
-Settlements/inn items 1–4 are recorded in §3.1 (2026-09-27). Traversal items 1–3 and item 4's
-corrected 75% principle are recorded; item 5's separately approved stacking rule awaits recording.
+Settlements/inn items 1–4 are recorded in §3.1 (2026-09-27). Traversal items 1–5 are recorded
+(2026-09-28): training/item gates, corrected 75% Spikes reduction and remaining-cost stacking.
+No presented traversal question remains; books/formulas is next after review.
 Live-data migration and implementation remain deferred; cleared dungeon/quest enemy reset
 eligibility stays in world/reset below. Threat across server restart stays in the persistence topic below.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Traversal | item 5 remaining-cost stacking approved, pending recording, not a new approval question |
 | Books / formulas | permanence/global scope of hybrid book recipes and duplicate unlock interaction with formulas |
 | Artifacts | global versus per-traversal-stat diminishing returns; additive versus compounded percentages (D6 numbers and traversal + attack/HP rewards stand) |
 | Assassin ultimate | Camouflage alias versus separately unlocked fourth node (D10/D20 stand) |

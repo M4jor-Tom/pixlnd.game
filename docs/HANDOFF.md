@@ -2,12 +2,14 @@
 
 ## Ontology walkthrough entry point (2026-09-28)
 
-**Current traversal recording:** the owner approved items **1–3** and corrected item **4**:
-Climbing Spikes reduce climbing stamina consumption by **75%**, not eliminate it. Items **1–3**
-and item **4**'s corrected principle are recorded; item **5**'s separately approved remaining-cost
-stacking rule awaits its own recording. Complete traversal recording/review before
-books/formulas; only the parent presents the next questions. Canonical rules: `ontology/domain.md`; ledger/evidence: `todo_decide.md §E`.
-Independent review and parent verification of this batch are pending. No gameplay, live JSON,
+**Traversal items 1–5 recorded:** riding requires training + global Reins + a rideable tamed
+pet; gliding/sailing require training + the respective vendor-bought item equipped in the single
+special slot. Item **4** corrects Spikes to **75% less climbing stamina consumption**, not
+elimination. Separately approved item **5** applies that reduction to the **skill-adjusted
+remaining cost (×0.25)**, not additive percentage points. No presented traversal question remains.
+**Books/formulas is next after independent review and parent verification, both pending**;
+only the parent presents its questions. Canonical rules: `ontology/domain.md`; commits/checks:
+`todo_decide.md §E` and `/tmp/pixlnd-traversal-20260928/`. No gameplay, live JSON,
 tests, model/loader/validator changes, push, merge or history rewriting are authorized.
 
 **Historical handoff (2026-09-27, superseded):** the owner requested “I'll reconcily that with
@@ -157,7 +159,7 @@ or next proposal is authorized now.
 The publication changes only four Markdown files, not runtime/live data; these tests do not prove
 implementation of the new policies. Commands and session-local evidence: `todo_decide.md §E`.
 
-**Current walkthrough topic: traversal; items 1–5 approved, recording status above.** Settlements/inn
+**Current walkthrough checkpoint: traversal 1–5 recorded; review pending, then books/formulas.** Settlements/inn
 items **1–4** and family items **1–9** are recorded.
 Aggro items **1–14** are recorded; do not re-ask 13–14. Restart persistence remains a later topic.
 Do not start gameplay/validator/equipment implementation without separate authorization.

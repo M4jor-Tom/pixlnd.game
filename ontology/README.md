@@ -36,10 +36,10 @@ and runtime enforcement remain deferred.
 **Settlements/inn items 1–4 recorded (2026-09-27):** one settlement per land is final;
 free recovery is separate from paid sleep, with ordinary midnight resets only and unanimous
 connected-player agreement / success-only initiator payment (`domain.md#game-clock`).
-**Traversal (2026-09-28):** items 1–3 recorded (riding gates; training + equipped bought glider/boat);
-item 4's corrected 75% climbing stamina reduction is recorded, not infinite endurance.
-Item 5's separately approved stacking awaits recording. Complete traversal recording/review
-before books/formulas.
+**Traversal items 1–5 recorded (2026-09-28):** riding gates; training + equipped bought glider/boat;
+Spikes reduce climbing stamina consumption by 75%, applied to the skill-adjusted remaining cost
+(×0.25), not infinite endurance or additive percentage points. Books/formulas is next after
+independent review and parent verification; both are pending. Artifact combination remains open.
 Live-data migration and enforcement remain deferred; cleared dungeon/quest enemy reset eligibility
 stays in the later world/reset topic.
 Gameplay and live JSON remain unchanged; restart persistence stays in its later topic.
