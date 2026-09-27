@@ -2,7 +2,21 @@
 
 ## Ontology walkthrough entry point (2026-09-27)
 
-**Authorized handoff (2026-09-27):** the owner requested **“Handoff for the next agent,
+**Current walkthrough (2026-09-27):** the owner resumed and answered **“7: Approved, but
+make skeletal dog non-aggressive and tameable.”** Item 7 records Collie as the ordinary fallback
+for existing skeleton-only dog encounters and the Skeleton Dog temperament/taming amendment
+in `ontology/domain.md#creature-family`. Preserve items 1–6, encounter frequency/pack sizes,
+existing ordinary selections and settlement protection. No runtime/live JSON/test changes or
+push are authorized by this answer.
+
+**Resume at family follow-ups 8–9:** wild retaliation/pack/taming provocation and taming-food
+mapping remain unanswered. Exact recommendations and consequences are in `todo_decide.md §E`
+under “Item 7 — approved with amendment; follow-ups 8–9”. Do not assume passive versus neutral,
+a food pairing or riding permission; do not reopen the Collie fallback or non-aggressive/tameable
+principle. Settlements/inn follows only after these details are reconciled. Verification for
+this item is recorded alongside it in §E, not inherited from the historical checks below.
+
+**Historical handoff for items 1–6 (2026-09-27):** the owner requested **“Handoff for the next agent,
 commit+push”**, then answered **“5: Approved; 6: Approved”**. **Family items 1–6 are recorded**
 in separate ontology-only commits. This handoff is finalized after independent review and parent
 verification, for authorized commit + push on `fix/ontology-reconciliation`, then a stop.
@@ -15,7 +29,7 @@ is a separate commit after those six decision commits. Publication starts from r
 `fix/ontology-reconciliation` at `858f038` (confirmed with `git ls-remote`). Inspect actual HEAD,
 upstream and worktree on resumption rather than treating this pre-publication reference as current.
 
-**Resume boundary — not yet presented:** existing skeleton-only dog rosters, notably deadlands,
+**Historical pre-item-7 boundary:** existing skeleton-only dog rosters, notably deadlands,
 need ordinary-dog candidates for the non-skeletal outcomes. No replacement pool, dog-frequency
 change or extra unrestricted Skeleton Dog spawns are approved. Next agent inspects canonical
 ordinary-dog candidates and asks only where choices remain; do not reopen items 1–6.
@@ -24,7 +38,7 @@ family scaling and encounter enforcement remain separate unauthorized implementa
 Prior primary-`skeletons` and one-tenth relative-weight proposals are superseded, not approved;
 there are **no unanswered presented family questions**.
 
-**Verification:** items 5–6 each passed diff checks and bounded ontology validation. Fresh
+**Historical items 5–6 verification:** items 5–6 each passed diff checks and bounded ontology validation. Fresh
 independent review found no issues; parent inspected the six commits, scope and final handoff,
 and reran ontology validation and headless boot successfully. Simplify/ponytail cuts were applied;
 §E records evidence. A green validator checks current loaded data, not Markdown semantics or
@@ -115,7 +129,7 @@ or next proposal is authorized now.
 The publication changes only four Markdown files, not runtime/live data; these tests do not prove
 implementation of the new policies. Commands and session-local evidence: `todo_decide.md §E`.
 
-**Current walkthrough topic:** **Creature family roster mapping**, as checkpointed above.
+**Current walkthrough topic:** **Creature family follow-ups 8–9**, as checkpointed above.
 Aggro items **1–14** are recorded; do not re-ask 13–14. Restart persistence remains a later topic.
 Do not start gameplay/validator/equipment implementation without separate authorization.
 

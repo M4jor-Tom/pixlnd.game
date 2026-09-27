@@ -130,13 +130,13 @@ The full walkthrough/resumption protocol is in `tasks/lessons.md`; the prompt
 Never propose or implement regional gear power loss in pixlnd, even for Cube World cloning
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
-**Current direction (2026-09-27):** the owner requested **“Handoff for the next agent, commit+push”**,
-then answered **“5: Approved; 6: Approved”**. Family items 1–6 are recorded in separate
-ontology-only commits. The final handoff is reviewed and verified for authorized commit + push
-on `fix/ontology-reconciliation`, then a stop. No runtime/live JSON/test changes, merge or new
-proposals are authorized. Items 5–6 are answered, not pending questions.
-Ordinary-dog mapping for skeleton-only rosters remains unpresented; settlements/inn follows that
-boundary. Do not reopen approved family decisions.
+**Current direction (2026-09-27):** the owner resumed and answered **“7: Approved, but make
+skeletal dog non-aggressive and tameable.”** Item 7 records Collie fallback for existing
+skeleton-only dog encounters and the Skeleton Dog temperament/taming amendment. Follow-ups
+8–9 below remain unanswered: wild retaliation/pack/taming provocation and food mapping.
+Preserve approved family items 1–7; settlements/inn follows after these details are reconciled.
+No runtime/live JSON/test changes, merge or push are authorized by this answer. The prior
+items 1–6 handoff is committed at `ef81bd6`; its publication instructions below are historical.
 **Aggro batch applied: 1–14/14**, independently reviewed; restart persistence remains a later topic.
 Older publication instructions and hashes below are historical checkpoints.
 
@@ -561,10 +561,10 @@ D1–D26, all walkthrough approvals and remaining open questions.
 
 ### Open — decide before the named slice
 
-- [ ] **Creature family roster mapping — not yet presented:** existing skeleton-only dog rosters
-  need ordinary-dog candidates for non-skeletal outcomes before generation. Approvals 5–6 choose
-  no replacement pool or dog-frequency change. Inspect canonical candidates next session and ask
-  only where choices remain; do not reopen items 1–6. Runtime migration is separate deferred work.
+- [ ] **Creature family follow-ups 8–9:** wild Skeleton Dog retaliation/pack/taming provocation
+  and taming-food mapping remain unanswered. Item 7 approves Collie fallback for skeleton-only
+  dog encounters and non-aggressive, tameable Skeleton Dogs. Preserve those principles; do not
+  infer the pending details. Migration/enforcement remains separately unauthorized.
 - [ ] **Hybrid settlements / inn services:** are multiple settlements and inn cost 10 future
   targets, or stale flags? Is paid timed sleep distinct from D22's free heal/respawn service?
   Before changing settlement count or adding sleep; sources: `rulesets.json#ruleset-hybrid.flags`,
@@ -602,7 +602,7 @@ D1–D26, all walkthrough approvals and remaining open questions.
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
 
-### Creature family membership — approvals and remaining roster mapping (2026-09-27)
+### Creature family membership — approvals and remaining taming details (2026-09-27)
 
 **Owner answer:** “1: Approved, but make the skeletal dog a (rare if rarity is defineable) dog as
 individual family, not a skeleton; 2: Approved; 3: Approved”. Approval covers documentation only;
@@ -673,11 +673,9 @@ not exceptions to the approved rule.
    Existing skeleton-only rosters must be reconciled before generation; no ordinary-dog
    replacement pool is chosen here.
 
-No presented family questions remain unanswered. Ordinary-dog roster mapping is a separate
-unpresented boundary: inspect canonical candidates next session and ask only where choices
-remain, without reopening 1–6. No pool, dog-frequency change or extra unrestricted Skeleton Dog
-spawns are approved. Settlements/inn follows this boundary; migration/enforcement are deferred
-implementation, not unanswered design. No fresh proposal is authorized during this handoff.
+**Historical handoff boundary before item 7:** all presented questions were answered, but
+ordinary-dog roster mapping was unpresented. Item 7 below settles that mapping; no dog-frequency
+change or extra unrestricted skeletal spawns is approved. Migration/enforcement remains deferred.
 
 **Fresh item 5 verification:** `/simplify` removed superseded question/refusal prose; writer
 ponytail-review found no further cuts. `git diff --check` and the bounded ontology validator
@@ -713,6 +711,42 @@ confirmed Markdown-only scope, and reran the bounded validator and boot successf
 Final `/simplify` removed temporary writer/staging instructions; ponytail-review found no further
 cuts. The unresolved roster mapping above is real design work, not a claim of full family
 completion or permission to implement the approved rules.
+
+#### Item 7 — approved with amendment; follow-ups 8–9 (2026-09-27)
+
+**Owner answer:** “7: Approved, but make skeletal dog non-aggressive and tameable.”
+
+- [x] **7 — Collie fallback and Skeleton Dog amendment:** recorded in
+  `domain.md#creature-family` / `c-skeleton-dog-encounter` / `c-skeleton-dog-taming`.
+  The approved mapping and non-aggressive/tameable principle stand; 8–9 are unresolved.
+  Live data, loader/validator, tests and gameplay remain unchanged. This item's commit subject:
+  `docs(ontology): record dog fallback and taming intent`.
+
+**Unanswered recommendations — neither is approved by item 7:**
+
+8. **Fully passive while wild.** Recommend that wild Skeleton Dogs never attack players,
+   including retaliation when hit, pack provocation or another dog's taming. This explicitly
+   exempts them from the generic pet-food rule that taming makes other group members hostile.
+   Once tamed, normal pet behavior still lets them help against their owner's target.
+   **Approval versus Refusing:** approval lets players approach or tame one without wild
+   Skeleton Dogs turning on them; their pet can still help in combat. Refusal rejects this
+   complete-passivity rule, not the approved non-aggression/tameability; the specific retaliation
+   and taming-provocation behavior would still need a decision.
+9. **Share Bubble Gum with Collies.** Recommend Bubble Gum for Skeleton Dogs too, retaining
+   its existing availability and prices. This is an explicit two-species food exception, not
+   inheritance by every dog family member; no new food/recipe or invented source ID. The present
+   single-species `pet-food.tames` contract would need a separately authorized migration.
+   **Approval versus Refusing:** approval lets players use the same bait for an ordinary Collie
+   and a rare Skeleton Dog. Refusal keeps Skeleton Dog tameability approved but leaves its bait
+   unresolved; it does not approve a new item or another existing food.
+
+**Item 7 verification:** inspected the exact approval, canonical rules, dog rosters and taming
+contract; `/simplify` removed duplicate ledger semantics and obsolete pool-status prose, then
+ponytail-review found no further cuts. `git diff --check` and
+`timeout 150 nix develop -c godot --headless -s ontology/validate.gd` passed (exit 0, `ontology valid`).
+Only six intended Markdown files changed. Session-local evidence: `/tmp/pixlnd-family-item7-20260927/`.
+Validation covers unchanged loaded data, not Markdown semantics or runtime compliance. No
+independent review, gameplay suite, visuals or network tests are claimed for this single item.
 
 ### Reconciliation work — application checklist
 

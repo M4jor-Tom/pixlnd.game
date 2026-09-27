@@ -53,6 +53,14 @@ push without authorization.
   does not authorize guessed encounter frequency, combat/loot tier or strength rules; clarify
   it separately without reopening the approved family assignment.
 
+## Species amendments override preserved traits
+
+- Owner amendment (2026-09-27): item 7's Collie fallback is approved, but Skeleton Dog must
+  be non-aggressive and tameable, not retain its old hostile/untameable traits.
+- Rule: apply the explicit exception without reopening the approved mapping or rarity. Do not
+  infer retaliation, taming-provocation behavior, a food pairing or riding permission from
+  “non-aggressive and tameable”; clarify concrete dependencies and defer runtime implementation.
+
 ## State the denominator of an encounter chance
 
 - Owner amendment (2026-09-27): Skeleton Dog's encounter chance is **1% relative to dog spawns**,
