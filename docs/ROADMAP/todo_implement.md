@@ -49,6 +49,11 @@ degradation) are not backlog features.
 - [x] HP/stamina/combo/land/coins/level+xp HUD (code-built `hud.gd`); damage numbers, stun stars and buff icons
   run since D25; still missing: portrait, minimap, enemy name colours (`hud-element`, `ui.json`).
 
+## Traversal (approved documentation, implementation unauthorized)
+- [ ] Riding item 1 (`domain.md#pet`, `c-riding`): enforce 5 Pet Master + ≥1 Riding point,
+  global Reins and a rideable tamed pet; retain further-point speed benefits. Live-data and
+  runtime changes are deferred; no new species permission, Reins route or slot is approved.
+
 ## Creatures (§3.2 creature + ai-behavior, D14 + D26)
 - [x] Basic melee attack both ways, death, neutral retaliation (combat slice); ranged / mage roles shooting back
   (D26, `design.creature-roles`). Heroic Shout currently provokes/retargets by a zero-damage hit.

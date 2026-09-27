@@ -540,7 +540,12 @@ A tamed creature owned by a player. `A S`
 | scaling | S: from owner's weapon/armor rating incl. `+` gear |
 | boss-origin | tamed boss keeps skills, normal size; reverts to normal on reload |
 | behaviour | never initiates; attacks owner's target; recall/ride key; teleports to owner if far (S); revives ~1 min after death or on re-slot; ignores wraiths |
-| riding | A: needs pet-master 5 → riding skill; S: needs land's `reins`; dismount on attack/dodge/fall/shift/pet death/water |
+| riding | A reference: pet-master 5 → riding skill; S reference: land's `reins`; hybrid gate below; dismount on attack/dodge/fall/shift/pet death/water |
+
+**Hybrid traversal item 1 (owner approved, 2026-09-28):** mounting requires **5 Pet Master
+points and at least 1 Riding point**, globally acquired **Reins**, and a **rideable tamed pet**.
+Further Riding points retain their speed benefit. This grants no new species riding permission,
+Reins acquisition route or equipment slot. Live data and runtime enforcement remain deferred.
 
 ### faction
 Lore/gameplay group. `S` (tweeted 2015) → `instances/factions.json` (order-of-the-light,
@@ -992,6 +997,11 @@ iron-lamp (`A` item / `S` innate F ability), dungeon keys (gold/silver/copper/bo
 (auto-owned, activates shrines), alpha special-accessory data `X` (key, jewel case, medicine,
 antivenom, band-aid, crutch, bandage, salve).
 
+Hybrid key items work globally once acquired (`c-gear-global`); the land-bound S records above
+are historical reference. Reins are required alongside training and a rideable tamed pet
+(`pet`, traversal item 1), not an alternative to either. No Reins slot or new acquisition route
+is approved.
+
 ### artifact
 `S` relic; +1 level each; permanent; works everywhere; 1–3 per land (D11); raises exactly one of 7 traversal stats
 (climb speed, swim speed, diving, ride speed, glide speed, sail speed, light radius), diminishing;
@@ -1053,6 +1063,9 @@ Spending (D20): one banked point per click on the X screen (`ui.json#screens.ski
 a node opens when the previous node of its column holds `alpha-tree.needs` points (roots 0); class ranks 1–3 + ultimate
 fire on keys 1–4 (their runtimes: `design.abilities`, D21); per-point multipliers `design.skill-point`;
 respec at the class trainer refunds every point to the bank for a fee (`design.settlement.trainer`, D22).
+
+Hybrid traversal item 1 (approved 2026-09-28): the riding chain also requires global Reins
+and a rideable tamed pet; training and further-point speed benefits follow `pet` / `c-riding`.
 
 ### power-gate `A`
 Item `+N` usable at full strength only if player power ≥ N; formulas learnable likewise.
@@ -1197,7 +1210,7 @@ One row per fact type. Cardinality as `domain → range`.
 | equips | entity | item | 1→0..12 | at most one per usable equipment-slot; reserved index 0 and separate Q selection excluded; c-slot-accepts |
 | threat | entity (mob) | entity (player-character) | n→n | hybrid mob/player combat state, retained across temporary absence (§3.2); optional per ordered pair, with one numeric `aggro-points` amount; c-threat-pair |
 | current-target | entity (mob) | entity (player-character) | 1→0..1 | hybrid mob/player target selection, separate from threat amounts; multiple mobs may select the same player; c-current-target |
-| requires-key-item | poi-type ∪ dungeon-type | key-item | n→n | harp→divine door, bell→crypt gate, whistle→bird statue, reins→riding |
+| requires-key-item | poi-type ∪ dungeon-type ∪ ability | key-item | n→n | divine door→harp, crypt gate→bell, bird statue→whistle; hybrid riding→reins (acquired globally, with skill/pet gates in c-riding) |
 | located-in | settlement ∪ dungeon ∪ poi | land | n→1 | |
 | owned-by-realm | land | realm | n→1 | S |
 | reveals | realm (lore 100 %) | artifact | 1→n | S |
@@ -1214,7 +1227,7 @@ One row per fact type. Cardinality as `domain → range`.
 | has-hazard | landscape ∪ terrain-feature | status-effect | n→n | cold-water, toxic, lava |
 | countered-by | status-effect | consumable | n→n | hot chocolate, green smoothie, lemonade |
 | raises-stat | artifact ∪ ability ∪ spirit-cube ∪ elixir | stat | n→n | hybrid artifacts: exactly one traversal stat plus attack and max HP (D6, c-artifact-stat) |
-| mounts | player-character | pet | 1→0..1 | needs riding skill `A` / reins `S` |
+| mounts | player-character | pet | 1→0..1 | hybrid training + global Reins + rideable tamed pet: c-riding; A skill-only / S land Reins are reference |
 | owns | player-character | pet | 1→n | cages |
 | possesses | poi-type(demon-portal) | npc-role ∪ creature | 1→n | S |
 | petrifies | creature(witch boss) | settlement | 1→1 | S |
@@ -1303,6 +1316,7 @@ content selection or live data changes are authorized by this contract.
 | c-race-class | any race × any class × either gender is valid | type |
 | c-spec-of-class | specialization.class == character.class; player starts as spec index 0 | load |
 | c-one-active-pet | at most one pet summoned; one of each pet-food carried | runtime |
+| c-riding | hybrid: mounting requires 5 Pet Master points, ≥1 Riding point, globally acquired Reins and a rideable tamed pet; further Riding points improve speed; no new species riding permission, Reins route or slot (§3.2 pet) | runtime (deferred) |
 | c-creature-family | primary and descriptive references name defined creature families; at most one primary per creature, consistent with §3.2 approved assignments; without a primary, the family modifier is ×1.0 and other ordinary stat calculations remain; descriptive memberships never supply or stack family stat modifiers, nor imply species-trait inheritance | load+runtime (deferred) |
 | c-skeleton-dog-encounter | Skeleton Dog has an independent 1% chance per individual dog spawn, not per pack, all creatures or a relative species weight; mixed packs are permitted and no quota is guaranteed; applies wherever dogs already spawn, preserving settlement safety; existing skeleton-only dog encounters use Collie for ordinary outcomes, preserving dog frequency/pack sizes and other existing ordinary selections, not extra unrestricted skeletal spawns (§3.2) | generator (deferred) |
 | c-skeleton-dog-taming | Skeleton Dogs follow normal dog behavior for the same encounter/state, including retaliation, pack response and taming reactions, with no skeleton-only passivity exception (§3.2 item 8); Bubble Gum tames them under general eligibility restrictions and settlement protection (§3.2 item 9) | runtime+data (deferred) |
@@ -1398,7 +1412,7 @@ settled or implemented. The current open questions and approval/application chec
 `docs/ROADMAP/todo_decide.md §E`; preserve those deferrals. Earlier slice approximations below
 are historical implementation stages, superseded where later decisions say so.
 
-### Current unresolved hybrid questions (2026-09-27)
+### Current unresolved hybrid questions (2026-09-28)
 
 This index mirrors the open list in `docs/ROADMAP/todo_decide.md §E`; it does not choose defaults
 or authorize implementation. Resolve each question before its affected slice.
@@ -1408,13 +1422,14 @@ Creature family items 1–9 are recorded: Skeleton Dog follows normal dog behavi
 skeleton-only passivity exception, and shares Bubble Gum with Collie. The independent 1% per-dog
 chance, existing habitat scope and Collie fallback stand. No unanswered family proposal remains;
 implementation is separately deferred.
-Settlements/inn items 1–4 are recorded in §3.1 (2026-09-27); traversal is next. Live-data migration
-and implementation remain deferred; cleared dungeon/quest enemy reset eligibility stays in
+Settlements/inn items 1–4 are recorded in §3.1 (2026-09-27). Traversal item 1 is recorded;
+items 2–3 and 5 are approved and item 4's 75% principle corrected, pending recording. Live-data migration and implementation remain deferred;
+cleared dungeon/quest enemy reset eligibility stays in
 world/reset below. Threat across server restart stays in the persistence topic below.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Traversal | skill versus global key-item prerequisites for riding/gliding/sailing; climbing spikes versus skill points |
+| Traversal | items 2–5 approved, pending recording, not new approval questions; item 5 separately settles remaining-cost stacking |
 | Books / formulas | permanence/global scope of hybrid book recipes and duplicate unlock interaction with formulas |
 | Artifacts | global versus per-traversal-stat diminishing returns; additive versus compounded percentages (D6 numbers and traversal + attack/HP rewards stand) |
 | Assassin ultimate | Camouflage alias versus separately unlocked fourth node (D10/D20 stand) |

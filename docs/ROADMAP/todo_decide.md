@@ -130,13 +130,13 @@ The full walkthrough/resumption protocol is in `tasks/lessons.md`; the prompt
 Never propose or implement regional gear power loss in pixlnd, even for Cube World cloning
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
-**Current direction (2026-09-27):** the owner requested **“I'll reconcily that with another
-agent: Handoff, commit, push”** after traversal items **1–4** were presented. All four remain
-unanswered; their exact proposals are preserved below. Settlements/inn items 1–4 and their
-verification are recorded in five local commits. Commit this handoff, push
-`fix/ontology-reconciliation` including those commits, verify publication/clean state, then stop.
-Family items 1–9 remain recorded. No traversal proposal, runtime/live JSON/test work,
-model/loader/validator changes or merge is approved.
+**Current direction (2026-09-28):** traversal items **1–3 approved**, item **4 corrected to
+75% less climbing stamina consumption**, not elimination. Item **1 recorded**; items **2–5**
+await recording. The owner later approved item **5**'s remaining-cost stacking recommendation.
+Complete traversal recording/review before books/formulas. Five documentation commits are authorized; no
+runtime/live JSON/test work, model/loader/validator changes, push, merge or history rewriting.
+Settlements/inn items 1–4 and family items 1–9 remain recorded. The 2026-09-27 handoff's
+publication/stop instruction is historical and its unanswered 1–4 status is superseded.
 **Aggro batch applied: 1–14/14**, independently reviewed; restart persistence remains a later topic.
 Older publication instructions and hashes below are historical checkpoints.
 
@@ -561,11 +561,9 @@ D1–D26, all walkthrough approvals and remaining open questions.
 
 ### Open — decide before the named slice
 
-- [ ] **Traversal prerequisites — presented items 1–4 unanswered:** riding skill plus Reins;
-  gliding skill plus bought/equipped glider; sailing skill plus bought/equipped boat; Climbing
-  Spikes versus skill-point stamina reduction. Exact proposals below; item 4's Hang Gliding
-  tradeoff depends on item 2. Before traversal/pets; sources: `abilities.json` shared trees,
-  `key-items.json`, `rulesets.json#ruleset-hybrid.flags`.
+Traversal items 1–5 are approved (item 4 corrected); recording status below. Complete their
+recording/review before books/formulas; remaining-cost stacking is no longer an open question.
+
 - [ ] **Books and formulas:** are hybrid book recipes permanent/global, and how do duplicate
   unlocks interact with formulas? Before crafting/save-data; sources: `domain.md#book-of-crafting`,
   `recipes.json#recipe-sources`, `rulesets.json#ruleset-hybrid.flags`.
@@ -596,12 +594,45 @@ D1–D26, all walkthrough approvals and remaining open questions.
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
 
-### Traversal — presented but unanswered at handoff (2026-09-27)
+### Traversal — approvals and recording (2026-09-28)
 
-**Status:** all four items were presented; none was approved or refused. The owner's handoff
-request authorizes publication and a stop, not these proposals. Resume this batch, not
-books/formulas. Item 4's Hang Gliding tradeoff is conditional on proposal 2. The text below
-preserves the presented recommendations and consequences verbatim.
+**Owner answer:** “1: Approved; 2: Approved; 3: Approved; 4: Correction: Climbing spike reduce
+climing stamina consumption by 75% instead of making it disappear”. Later: **“5: Approved”**.
+Documentation only; item 5's composition rule is a separate approval, not inferred from item 4.
+
+| item | recording / commit |
+|---|---|
+| 1 — riding training + Reins | recorded in this item commit; hash follows in next record |
+| 2 — gliding training + equipped bought glider | approved, pending recording |
+| 3 — sailing training + equipped bought boat | approved, pending recording |
+| 4 — Spikes reduce climbing consumption by 75% | corrected principle, pending recording |
+| 5 — remaining-cost stacking | approved, pending recording |
+
+Independent review and parent verification are pending. Per-item evidence is saved under
+`/tmp/pixlnd-traversal-20260928/`; loaded-data validation does not prove these Markdown rules
+or gameplay implementation. Runtime/live-data migration is deferred (`todo_implement.md`).
+
+#### 5. Combine Spikes with Climbing skill reductions — APPROVED, pending recording
+
+**Settled:** Spikes reduce consumption by 75%; Climbing points also reduce drain.
+**Approved recommendation:** apply Spikes to the stamina cost remaining after the
+Climbing skill reduction (multiply that remaining drain by 0.25), rather than adding 75
+percentage points to the skill reduction. Illustrative example only, not balance defaults:
+if skill points reduce a climb's cost from 10 stamina to 8, Spikes reduce it from 8 to 2,
+not to 0.5. This is not an artifact-combination rule.
+
+##### Approval versus Refusing
+- **Approval:** Climbing points remain useful alongside Spikes; Spikes do not turn a positive
+  skill-adjusted cost into zero by themselves.
+- **Refusing:** the 75% Spikes reduction remains approved, but its combination with skill
+  points needs a different rule.
+
+The owner answered **“5: Approved”**. Complete traversal recording/review before books/formulas.
+
+#### Historical presentation (2026-09-27, superseded by the answers above)
+
+The following records the original proposals, not active unanswered items. Item 4's infinite
+endurance recommendation and tradeoff are superseded by the owner's 75% correction.
 
 **Already settled:** the shared skill chains remain, key items work globally across lands, and glider/boat share one equipped special slot. The unresolved question is how skills and items combine.
 
@@ -645,7 +676,7 @@ You would equip the boat instead of the glider when preparing to cross deep wate
 - **Approval:** Early climbing requires managing stamina; Spikes eventually let you climb without exhausting it.
 - **Refusing:** How Spikes interact with Climbing points remains unresolved; neither the item nor the skill is automatically removed.
 
-Please answer **`1: …; 2: …; 3: …; 4: …`**. These remain ontology-only proposals.
+The original request for answers to 1–4 is superseded by the 2026-09-28 response above.
 
 **Source/resumption paths:** `ontology/domain.md#pet`, `#equipment-slot`, `#key-item`,
 `#skill-tree`, §5 `c-gear-global`; `instances/abilities.json` shared nodes,
@@ -656,12 +687,12 @@ pet riding, climbing, glider and boat runtimes remain deferred. Existing source-
 and flags do not settle the unanswered hybrid prerequisites. No gameplay implementation is
 approved by this handoff; existing deferrals remain in `todo_implement.md`.
 
-**Pre-publication checkpoint:** clean `fix/ontology-reconciliation` at `fa716ab` before this
+**Historical pre-publication checkpoint (2026-09-27, superseded):** clean `fix/ontology-reconciliation` at `fa716ab` before this
 handoff; remote `b4ce91e` confirmed with `git ls-remote`. Publish the four settlements/inn
 commits listed below, verification commit `fa716ab`, and this separate handoff commit. Verify
 remote/local HEAD equality and clean state afterward, then stop; no force-push or merge.
 
-**Handoff verification:** exact proposal-text comparison (heading depth ignored), two-file scope
+**Historical handoff verification (2026-09-27):** exact proposal-text comparison (heading depth ignored), two-file scope
 and diff checks, bounded ontology validation and headless boot passed. `/simplify` removed
 redundant settled-rule prose while preserving the verbatim batch; ponytail-review found no further
 cuts. Fresh independent read-only review found no issues; parent inspected the final diff,
@@ -678,8 +709,8 @@ Verify remote/local final HEAD equality and clean worktree after pushing, then s
 ### Settlements / inn — items 1–4 recorded (2026-09-27)
 
 **Owner answer:** “1: Approved; 2: Approved; 3: Approved; 4: Approved”. Documentation only;
-items 3–4 depend on recorded item 2. All four are recorded; traversal items 1–4 are unanswered.
-Publication is now authorized by the separate handoff above; no new design approval is implied.
+items 3–4 depend on recorded item 2. All four are recorded; traversal status is above.
+The separate 2026-09-27 handoff authorized publication then, not new publication now.
 Cleared dungeon/quest enemy reset eligibility remains in the later world/reset topic.
 Current D22 runtime and live JSON are unchanged.
 

@@ -1,14 +1,18 @@
 # Handoff — resume here
 
-## Ontology walkthrough entry point (2026-09-27)
+## Ontology walkthrough entry point (2026-09-28)
 
-**Authorized handoff (2026-09-27):** after traversal items **1–4** were presented, the owner
-requested **“I'll reconcily that with another agent: Handoff, commit, push”**. All four remain
-**unanswered**. Their exact proposals and approval/refusal consequences are preserved in
-`todo_decide.md §E`, “Traversal — presented but unanswered at handoff”. This authorizes committing
-this handoff and pushing `fix/ontology-reconciliation`, including the five local settlements/inn
-commits below, then stopping. It approves no traversal proposal, gameplay, live JSON, tests,
-model/loader/validator changes or merge. Do not continue the walkthrough after publication.
+**Current traversal recording:** the owner approved items **1–3** and corrected item **4**:
+Climbing Spikes reduce climbing stamina consumption by **75%**, not eliminate it. Item **1**
+is recorded; items **2–5** await recording in separate documentation commits. The owner later
+approved item **5**'s remaining-cost stacking rule. Complete traversal recording/review before
+books/formulas; only the parent presents the next questions. Canonical rules: `ontology/domain.md`; ledger/evidence: `todo_decide.md §E`.
+Independent review and parent verification of this batch are pending. No gameplay, live JSON,
+tests, model/loader/validator changes, push, merge or history rewriting are authorized.
+
+**Historical handoff (2026-09-27, superseded):** the owner requested “I'll reconcily that with
+another agent: Handoff, commit, push” with traversal 1–4 unanswered. That publication/stop
+instruction is historical, not new push permission; the 2026-09-28 answers supersede its status.
 
 **Family items 1–9 are recorded:** item 7 (`a4c6206`) selects Collie fallback for existing
 skeleton-only dog encounters and makes Skeleton Dog non-aggressive/tameable; item 8 (`2f5ad06`)
@@ -20,12 +24,6 @@ migration/scaling, shared-food model/loader/validator support and runtime enforc
 deferred and unauthorized. The original primary-`skeletons`, one-tenth species-weight and
 special-passivity proposals are superseded, not approved alternatives.
 
-**Resume boundary: traversal items 1–4.** Unanswered: riding skill plus Reins; gliding skill
-plus bought/equipped glider; sailing skill plus bought/equipped boat; Climbing Spikes removing
-climbing stamina drain. Item 4's Hang Gliding tradeoff depends on item 2. Preserve the proposals,
-not approved defaults; do not advance to books/formulas. Existing shared trees, global key-item
-scope and the single special slot remain settled.
-
 **Settlements/inn items 1–4 are recorded** in `154df56`, `0b7c2d4`, `250f964`, `f207a48`;
 `fa716ab` records verification. Canonical rules: `domain.md#settlement` / `#game-clock`.
 Current D22 runtime stays unchanged; migration/enforcement is deferred. Cleared dungeon/quest
@@ -35,7 +33,7 @@ actual diff/commits/logs and reran validation. Evidence: §E and `/tmp/pixlnd-se
 Those checks cover loaded data, not new runtime; no gameplay, boot, visual or network checks
 were rerun for that batch. Fresh handoff verification is recorded separately in §E.
 
-**Pre-publication checkpoint:** clean `fix/ontology-reconciliation` at `fa716ab` before this
+**Historical pre-publication checkpoint (2026-09-27, superseded):** clean `fix/ontology-reconciliation` at `fa716ab` before this
 handoff; remote `b4ce91e` confirmed with `git ls-remote`. Publish those five local commits plus
 this handoff, then verify remote/local HEAD equality and a clean worktree. No force-push or merge.
 Inspect actual Git state on resumption; this checkpoint is not a claim of publication.
@@ -159,7 +157,7 @@ or next proposal is authorized now.
 The publication changes only four Markdown files, not runtime/live data; these tests do not prove
 implementation of the new policies. Commands and session-local evidence: `todo_decide.md §E`.
 
-**Current walkthrough topic: traversal items 1–4, presented and unanswered.** Settlements/inn
+**Current walkthrough topic: traversal; items 1–5 approved, recording status above.** Settlements/inn
 items **1–4** and family items **1–9** are recorded.
 Aggro items **1–14** are recorded; do not re-ask 13–14. Restart persistence remains a later topic.
 Do not start gameplay/validator/equipment implementation without separate authorization.

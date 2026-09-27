@@ -12,7 +12,7 @@ ontology/
 └── validate.gd      headless check: `nix develop -c godot --headless -s ontology/validate.gd`
 ```
 
-## Current scope and decisions (2026-09-27)
+## Current scope and decisions (2026-09-28)
 
 Hybrid v1 is alpha progression + approved Steam content; A/S source descriptions are historical
 reference, and X/cut or Omega-only content is roadmap coverage, not launch availability (item 8).
@@ -36,8 +36,11 @@ and runtime enforcement remain deferred.
 **Settlements/inn items 1–4 recorded (2026-09-27):** one settlement per land is final;
 free recovery is separate from paid sleep, with ordinary midnight resets only and unanimous
 connected-player agreement / success-only initiator payment (`domain.md#game-clock`).
-**Traversal is next** (`todo_decide.md §E`). Live-data migration and enforcement remain deferred;
-cleared dungeon/quest enemy reset eligibility stays in the later world/reset topic.
+**Traversal (2026-09-28):** item 1 recorded (training + global Reins + rideable tamed pet);
+items 2–3 and 5 approved and item 4 corrected to 75% less climbing stamina consumption, pending
+recording. Complete traversal recording/review before books/formulas.
+Live-data migration and enforcement remain deferred; cleared dungeon/quest enemy reset eligibility
+stays in the later world/reset topic.
 Gameplay and live JSON remain unchanged; restart persistence stays in its later topic.
 
 ## Decision and build history (from 2026-09-07)
