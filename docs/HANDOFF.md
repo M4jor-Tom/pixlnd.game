@@ -2,11 +2,13 @@
 
 ## Ontology walkthrough entry point (2026-09-27)
 
-**Current authorization (2026-09-27):** the owner answered **“1: Approved; 2: Approved;
-3: Approved; 4: Approved”** for settlements/inn. Record each as a separate documentation commit;
-**no push now**. This supersedes the earlier handoff's unanswered/stop/publication instructions.
-**Settlements/inn items 1–4 are recorded; traversal is next** (`todo_decide.md §E`).
-No gameplay, live JSON, tests, model/loader/validator changes or merge are authorized.
+**Authorized handoff (2026-09-27):** after traversal items **1–4** were presented, the owner
+requested **“I'll reconcily that with another agent: Handoff, commit, push”**. All four remain
+**unanswered**. Their exact proposals and approval/refusal consequences are preserved in
+`todo_decide.md §E`, “Traversal — presented but unanswered at handoff”. This authorizes committing
+this handoff and pushing `fix/ontology-reconciliation`, including the five local settlements/inn
+commits below, then stopping. It approves no traversal proposal, gameplay, live JSON, tests,
+model/loader/validator changes or merge. Do not continue the walkthrough after publication.
 
 **Family items 1–9 are recorded:** item 7 (`a4c6206`) selects Collie fallback for existing
 skeleton-only dog encounters and makes Skeleton Dog non-aggressive/tameable; item 8 (`2f5ad06`)
@@ -18,14 +20,25 @@ migration/scaling, shared-food model/loader/validator support and runtime enforc
 deferred and unauthorized. The original primary-`skeletons`, one-tenth species-weight and
 special-passivity proposals are superseded, not approved alternatives.
 
-**Resume boundary: traversal.** Canonical settlements/inn rules: `domain.md#settlement` /
-`#game-clock`. Current D22 runtime stays unchanged; migration/enforcement is deferred.
-Cleared dungeon/quest enemy reset eligibility remains in the later world/reset topic.
-All four item commits passed diff checks and bounded ontology validation; fresh independent
-review found no issues. Parent inspected the actual diff/commits/logs and reran validation.
-Commit map and evidence: `todo_decide.md §E`, `/tmp/pixlnd-settlements-20260927/`.
-Validator checks loaded data, not these Markdown policies or runtime compliance. No gameplay,
-boot, visual or network checks were rerun; no push is authorized.
+**Resume boundary: traversal items 1–4.** Unanswered: riding skill plus Reins; gliding skill
+plus bought/equipped glider; sailing skill plus bought/equipped boat; Climbing Spikes removing
+climbing stamina drain. Item 4's Hang Gliding tradeoff depends on item 2. Preserve the proposals,
+not approved defaults; do not advance to books/formulas. Existing shared trees, global key-item
+scope and the single special slot remain settled.
+
+**Settlements/inn items 1–4 are recorded** in `154df56`, `0b7c2d4`, `250f964`, `f207a48`;
+`fa716ab` records verification. Canonical rules: `domain.md#settlement` / `#game-clock`.
+Current D22 runtime stays unchanged; migration/enforcement is deferred. Cleared dungeon/quest
+enemy reset eligibility remains in the later world/reset topic. Per-item diff checks and bounded
+ontology validation passed; fresh independent review found no issues, and parent inspected the
+actual diff/commits/logs and reran validation. Evidence: §E and `/tmp/pixlnd-settlements-20260927/`.
+Those checks cover loaded data, not new runtime; no gameplay, boot, visual or network checks
+were rerun for that batch. Fresh handoff verification is recorded separately in §E.
+
+**Pre-publication checkpoint:** clean `fix/ontology-reconciliation` at `fa716ab` before this
+handoff; remote `b4ce91e` confirmed with `git ls-remote`. Publish those five local commits plus
+this handoff, then verify remote/local HEAD equality and a clean worktree. No force-push or merge.
+Inspect actual Git state on resumption; this checkpoint is not a claim of publication.
 
 **Historical pre-publication Git checkpoint (superseded):** clean `fix/ontology-reconciliation` at `683fd79` before
 this two-file handoff. Remote branch was `ef81bd6` (`git ls-remote`); three local family commits
@@ -146,8 +159,8 @@ or next proposal is authorized now.
 The publication changes only four Markdown files, not runtime/live data; these tests do not prove
 implementation of the new policies. Commands and session-local evidence: `todo_decide.md §E`.
 
-**Current walkthrough topic: traversal.** Settlements/inn items **1–4** and family items **1–9**
-are recorded.
+**Current walkthrough topic: traversal items 1–4, presented and unanswered.** Settlements/inn
+items **1–4** and family items **1–9** are recorded.
 Aggro items **1–14** are recorded; do not re-ask 13–14. Restart persistence remains a later topic.
 Do not start gameplay/validator/equipment implementation without separate authorization.
 

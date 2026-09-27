@@ -130,10 +130,13 @@ The full walkthrough/resumption protocol is in `tasks/lessons.md`; the prompt
 Never propose or implement regional gear power loss in pixlnd, even for Cube World cloning
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
-**Current direction (2026-09-27):** settlements/inn items **1–4 are approved and recorded**
-as separate documentation commits; **traversal is next; no push now**. This supersedes the
-earlier handoff's unanswered, stop and publication instructions. Family items 1–9 remain recorded.
-No runtime/live JSON/test work, model/loader/validator changes or merge is authorized.
+**Current direction (2026-09-27):** the owner requested **“I'll reconcily that with another
+agent: Handoff, commit, push”** after traversal items **1–4** were presented. All four remain
+unanswered; their exact proposals are preserved below. Settlements/inn items 1–4 and their
+verification are recorded in five local commits. Commit this handoff, push
+`fix/ontology-reconciliation` including those commits, verify publication/clean state, then stop.
+Family items 1–9 remain recorded. No traversal proposal, runtime/live JSON/test work,
+model/loader/validator changes or merge is approved.
 **Aggro batch applied: 1–14/14**, independently reviewed; restart persistence remains a later topic.
 Older publication instructions and hashes below are historical checkpoints.
 
@@ -558,9 +561,11 @@ D1–D26, all walkthrough approvals and remaining open questions.
 
 ### Open — decide before the named slice
 
-- [ ] **Traversal prerequisites:** skill, global key item, or both for riding/gliding/sailing;
-  how do climbing spikes interact with climbing points? Before traversal/pets; sources:
-  `abilities.json` shared trees, `key-items.json`, `rulesets.json#ruleset-hybrid.flags`.
+- [ ] **Traversal prerequisites — presented items 1–4 unanswered:** riding skill plus Reins;
+  gliding skill plus bought/equipped glider; sailing skill plus bought/equipped boat; Climbing
+  Spikes versus skill-point stamina reduction. Exact proposals below; item 4's Hang Gliding
+  tradeoff depends on item 2. Before traversal/pets; sources: `abilities.json` shared trees,
+  `key-items.json`, `rulesets.json#ruleset-hybrid.flags`.
 - [ ] **Books and formulas:** are hybrid book recipes permanent/global, and how do duplicate
   unlocks interact with formulas? Before crafting/save-data; sources: `domain.md#book-of-crafting`,
   `recipes.json#recipe-sources`, `rulesets.json#ruleset-hybrid.flags`.
@@ -591,10 +596,90 @@ D1–D26, all walkthrough approvals and remaining open questions.
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
 
+### Traversal — presented but unanswered at handoff (2026-09-27)
+
+**Status:** all four items were presented; none was approved or refused. The owner's handoff
+request authorizes publication and a stop, not these proposals. Resume this batch, not
+books/formulas. Item 4's Hang Gliding tradeoff is conditional on proposal 2. The text below
+preserves the presented recommendations and consequences verbatim.
+
+**Already settled:** the shared skill chains remain, key items work globally across lands, and glider/boat share one equipped special slot. The unresolved question is how skills and items combine.
+
+#### 1. Riding requires both training and Reins
+
+**Recommendation:** Require **5 Pet Master points + at least 1 Riding point**, globally acquired **Reins**, and a rideable tamed pet. Further Riding points retain their speed benefit.
+
+Finding Reins early would not immediately let an untrained character mount.
+
+##### Approval versus Refusing
+- **Approval:** Riding rewards both character investment and exploration; Reins never need replacing at land borders.
+- **Refusing:** The riding requirement remains unresolved—not automatically skill-only or Reins-only.
+
+#### 2. Gliding requires training and an equipped glider
+
+**Recommendation:** Require **5 Climbing points + at least 1 Hang Gliding point**, plus an equipped **Hang Glider** bought from an item vendor. Further points improve glide speed.
+
+Buying the glider before learning the skill would not yet let you deploy it.
+
+##### Approval versus Refusing
+- **Approval:** Gliding is an earned movement upgrade involving training and a purchase, usable across all lands.
+- **Refusing:** Its prerequisites and acquisition route remain unresolved; this does not automatically approve immediate item-only flight.
+
+#### 3. Sailing requires training and an equipped boat
+
+**Recommendation:** Require **5 Swimming points + at least 1 Sailing point**, plus an equipped **Boat** bought from an item vendor. Further points improve sailing speed.
+
+You would equip the boat instead of the glider when preparing to cross deep water.
+
+##### Approval versus Refusing
+- **Approval:** Swimming investment leads to faster water travel, with the existing equipment choice preserved.
+- **Refusing:** Sailing requirements remain unresolved—not automatically unlocked by buying a boat.
+
+#### 4. Climbing Spikes eliminate climbing stamina drain
+
+**Recommendation:** Basic climbing needs neither skill points nor Spikes. Climbing points reduce stamina drain; finding **Climbing Spikes** removes that drain globally.
+
+**Tradeoff:** after finding Spikes, additional Climbing points no longer help endurance. The first five still serve as the Hang Gliding prerequisite under proposal 2.
+
+##### Approval versus Refusing
+- **Approval:** Early climbing requires managing stamina; Spikes eventually let you climb without exhausting it.
+- **Refusing:** How Spikes interact with Climbing points remains unresolved; neither the item nor the skill is automatically removed.
+
+Please answer **`1: …; 2: …; 3: …; 4: …`**. These remain ontology-only proposals.
+
+**Source/resumption paths:** `ontology/domain.md#pet`, `#equipment-slot`, `#key-item`,
+`#skill-tree`, §5 `c-gear-global`; `instances/abilities.json` shared nodes,
+`key-items.json`, `rulesets.json#ruleset-hybrid.flags`; consumers
+`game/progression/skill_tree.gd` and `game/entities/player.gd`; research
+`research/research_systems.md` movement/progression sections. Skill spending/swimming run;
+pet riding, climbing, glider and boat runtimes remain deferred. Existing source-version fields
+and flags do not settle the unanswered hybrid prerequisites. No gameplay implementation is
+approved by this handoff; existing deferrals remain in `todo_implement.md`.
+
+**Pre-publication checkpoint:** clean `fix/ontology-reconciliation` at `fa716ab` before this
+handoff; remote `b4ce91e` confirmed with `git ls-remote`. Publish the four settlements/inn
+commits listed below, verification commit `fa716ab`, and this separate handoff commit. Verify
+remote/local HEAD equality and clean state afterward, then stop; no force-push or merge.
+
+**Handoff verification:** exact proposal-text comparison (heading depth ignored), two-file scope
+and diff checks, bounded ontology validation and headless boot passed. `/simplify` removed
+redundant settled-rule prose while preserving the verbatim batch; ponytail-review found no further
+cuts. Fresh independent read-only review found no issues; parent inspected the final diff,
+report and logs. Commands: `git diff --check`;
+`timeout 150 nix develop -c godot --headless -s ontology/validate.gd`;
+`timeout 150 nix develop -c godot --headless --quit`. All exited 0; validator: `ontology valid`.
+Evidence: `/tmp/pixlnd-traversal-handoff-20260927/` (`presented-batch.md`, `scope.log`,
+`validator.log`, `boot.log`, `checks.log`, `independent-review.md`, `parent-review.md`).
+The handoff changes only HANDOFF and this ledger; publication changes five Markdown files.
+These checks cover current loaded data/startup, not new policies' implementation. No gameplay
+suite, visuals or network checks were rerun; old batch logs are not fresh handoff evidence.
+Verify remote/local final HEAD equality and clean worktree after pushing, then stop.
+
 ### Settlements / inn — items 1–4 recorded (2026-09-27)
 
 **Owner answer:** “1: Approved; 2: Approved; 3: Approved; 4: Approved”. Documentation only;
-items 3–4 depend on recorded item 2. All four are recorded; traversal is next, no push.
+items 3–4 depend on recorded item 2. All four are recorded; traversal items 1–4 are unanswered.
+Publication is now authorized by the separate handoff above; no new design approval is implied.
 Cleared dungeon/quest enemy reset eligibility remains in the later world/reset topic.
 Current D22 runtime and live JSON are unchanged.
 
@@ -630,7 +715,8 @@ five ontology/status Markdown files; live JSON, executable files and tests are u
 Evidence: `/tmp/pixlnd-settlements-20260927/` (`item-{1,2,3,4}-*`, `independent-review.md`,
 `parent-final-diff.patch`, `parent-validator.log`). The reviewer checked Markdown semantics and
 matched patches to Git; validation checks loaded data, not implementation of these policies.
-No gameplay, boot, visual or network checks were rerun. No push is authorized.
+No gameplay, boot, visual or network checks were rerun for that batch. Its original no-push
+boundary is superseded only by the separate handoff/publication authorization above.
 
 Sources inspected: `ontology/domain.md#settlement`, `#game-clock`, `#currency`, `#multiplayer-mode`,
 `c-inn-hours`, `c-midnight-reset` and D22; `instances/rulesets.json#ruleset-hybrid.flags`,
