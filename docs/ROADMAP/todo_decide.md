@@ -130,10 +130,10 @@ The full walkthrough/resumption protocol is in `tasks/lessons.md`; the prompt
 Never propose or implement regional gear power loss in pixlnd, even for Cube World cloning
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
-**Current direction (2026-09-28):** books/formulas **items 1–3 approved**; items 1–2 are recorded,
-item 3 awaits recording, not an owner answer. Exact approval and application status are in the
-books batch below. The owner requested handoff, commit and push; the writer records one
-ontology-only commit per item, then hands off for independent review and parent verification.
+**Current direction (2026-09-28):** books/formulas **items 1–3 recorded**; no presented books
+question remains. Exact approval and application status are in the books batch below. The owner
+requested handoff, commit and push; each item has its own ontology-only commit, followed by
+handoff for independent review and parent verification.
 Parent alone publishes after verification; no push by the writer or next-topic proposals.
 No gameplay, live JSON, tests, model/loader/validator changes, merge or history rewriting.
 Traversal items 1–5, settlements/inn 1–4, family 1–9 and aggro 1–14 remain recorded.
@@ -561,7 +561,8 @@ D1–D26, all walkthrough approvals and remaining open questions.
 ### Open — decide before the named slice
 
 Traversal items 1–5 are recorded (item 4 corrected) and reviewed; evidence below.
-Books/formulas items 1–3 are approved; recording status is below, not an open design question.
+Books/formulas items 1–3 are recorded below; artifact accumulation is the next walkthrough topic,
+not a new proposal in this handoff. Cross-world character portability remains in persistence.
 
 - [ ] **Artifact accumulation:** diminishing returns counted globally or per traversal stat;
   percentages additive or compounded? Before artifacts; sources: `generators.json#design.artifact`,
@@ -572,7 +573,8 @@ Books/formulas items 1–3 are approved; recording status is below, not an open 
   one-handed? Before wand equipment/crafting rules; sources: `weapon-types.json#wand`,
   `c-hands`, `generators.json#design.recipes`.
 - [ ] **Hybrid persistence / authority:** character portability across worlds, ownership of
-  discoveries/unlocks, authoritative validation of state and threat across a server restart.
+  other discoveries/unlocks (book/formula knowledge is per character), authoritative validation
+  of state and threat across a server restart.
   Same-running-world absence retention is approved in Aggro 11. Before save-data/networking;
   sources: `domain.md#player-character`, `#save-data`, `#multiplayer-mode`,
   `generators.json#network-alpha`. D5's dedicated server does not alone choose authority.
@@ -594,7 +596,7 @@ Books/formulas items 1–3 are approved; recording status is below, not an open 
 
 **Owner answer:** “1: Approved; 2: Approved; 3: Approved; When done, handoff, commit, push”.
 Documentation only; both sources remain in hybrid, with no crafting-material or equipment-strength
-change. Knowledge and usability must remain distinct when recording items 2–3.
+change. Knowledge and usability are distinct: a known recipe can remain power-locked.
 
 1. [x] **Permanent/global book recipes:** recorded in `domain.md#book-of-crafting`,
    `#player-character`, `#save-data`, `knows-recipe` / `c-book-recipe-persistence`.
@@ -602,9 +604,10 @@ change. Knowledge and usability must remain distinct when recording items 2–3.
 2. [x] **Shared recipe collection:** books teach only unknown recipes, without rerolls or
    compensation; an already-known formula stays unconsumed. Canonical rule: `domain.md#recipe`,
    `knows-recipe` / `c-recipe-learning`. Overlap can make later books less rewarding.
-3. [ ] **Approved, awaiting recording — book power gates:** books record immediately;
-   above-power recipes stay visibly locked until their requirement is reached. Formula learning
-   retains its existing power requirement; duplicate knowledge cannot bypass a crafting gate.
+3. [x] **Book power gates:** books record immediately; above-power recipes stay visibly
+   locked until their requirement is reached. Formula learning retains its existing requirement.
+   Known-but-locked recipes follow item 2's duplicate rules without bypassing the crafting gate
+   or granting compensation (`domain.md#power-gate`, `c-power-gate` / `c-recipe-learning`).
 
 Per-item verification and commit mapping follow as recording completes. Independent review,
 parent verification and publication are pending. Implementation debt: `todo_implement.md`.

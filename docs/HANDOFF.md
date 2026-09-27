@@ -3,14 +3,15 @@
 ## Ontology walkthrough entry point (2026-09-28)
 
 **Books/formulas approvals (2026-09-28):** the owner answered **“1: Approved; 2: Approved;
-3: Approved; When done, handoff, commit, push”**. Items **1–2** are recorded: permanent/global
-book recipes and shared recipe knowledge, without duplicate rewards/rerolls or consuming known
-formula scrolls. Item **3** is approved and awaits recording, not an owner answer: immediate
-but power-locked book recipes. Canonical rules: `ontology/domain.md`; evidence: `todo_decide.md §E`.
+3: Approved; When done, handoff, commit, push”**. Items **1–3** are recorded: permanent/global
+book recipes, shared recipe knowledge without duplicate rewards/rerolls or consuming known
+formulas, and immediate book recording with visibly power-locked crafting. Knowledge is not
+usability; duplicates never bypass the power gate. Canonical rules: `ontology/domain.md`;
+application/evidence: `todo_decide.md §E`.
 
-**Current boundary:** finish the three separately verified ontology-only commits, then hand off
-for independent review and parent verification. Parent alone publishes after verification; the
-writer does not push. No gameplay, live JSON, tests, model/loader/validator changes or merge.
+**Current boundary:** hand off the three ontology-only items for independent review and parent
+verification. Parent alone publishes after verification; the writer does not push.
+No gameplay, live JSON, tests, model/loader/validator changes or merge.
 No next-topic proposals. Cross-world character portability remains in the later persistence topic.
 
 **Historical unanswered checkpoint (superseded):** `e76921a` preserved the exact proposals
@@ -176,7 +177,9 @@ or next proposal is authorized now.
 The publication changes only four Markdown files, not runtime/live data; these tests do not prove
 implementation of the new policies. Commands and session-local evidence: `todo_decide.md §E`.
 
-**Current walkthrough topic: books/formulas items 1–3 approved; recording in progress.** Traversal
+**Books/formulas items 1–3 recorded; no presented books question remains.** The next walkthrough
+topic is artifact accumulation (global versus per-stat diminishing returns, additive versus
+compounded percentages); D6 numbers/rewards stand. No new proposals in this handoff. Traversal
 items **1–5** are recorded and reviewed. Settlements/inn
 items **1–4** and family items **1–9** are recorded.
 Aggro items **1–14** are recorded; do not re-ask 13–14. Restart persistence remains a later topic.

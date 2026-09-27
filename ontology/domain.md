@@ -950,6 +950,7 @@ unlocks. Learning the same recipe twice grants nothing extra. A book teaches **o
 recipes**, with **no rerolls or compensation** for known ones; four recipes with three already
 known teach one. Attempting to learn an **already-known formula leaves the scroll unconsumed**.
 Overlap can make later books less rewarding. This chooses no recipe-generation or identity defaults.
+A known recipe need not be usable: book-recorded recipes may be power-locked (`power-gate`, item 3).
 Live-data migration and recipe-learning implementation remain deferred.
 
 ### crafting-station
@@ -968,7 +969,9 @@ recipe source; recipes land-scoped. These are historical S rules, not hybrid exc
 in the hybrid game. Recipes learned from books are **permanent for that character across lands
 and sessions**; moving to another land never requires relearning them. This does not decide
 character portability between worlds or grant shared-account knowledge. Crafting materials and
-equipment strength are unchanged. Live-data migration and implementation remain deferred.
+equipment strength are unchanged. Shared knowledge/duplicates follow `recipe` item 2;
+immediate recording and power-locked crafting follow `power-gate` item 3.
+Live-data migration and implementation remain deferred.
 
 ### customization-bench
 Attach `material-cube`s (wood on wood, iron on metal; +0.1 effective level each; 16/32 cap) and
@@ -1121,6 +1124,18 @@ cost (×0.25), not additive percentage points (`key-item`).
 ### power-gate `A`
 Item `+N` usable at full strength only if player power ≥ N; formulas learnable likewise.
 
+**Hybrid books/formulas item 3 (owner approved, 2026-09-28):** books record their unknown
+recipes **immediately, regardless of current power**. A recipe above the character's power
+remains **known but visibly locked against crafting until that power requirement is reached**.
+It is a future crafting goal, not immediate crafting access. Formula learning retains its
+existing sufficient-power requirement; books do not bypass recipe progression or change item
+strength, materials or station requirements.
+
+Known-but-locked recipes count as known for item 2's duplicate rules: another book teaches
+nothing extra for them, and an already-known formula remains unconsumed. Neither source removes
+the power lock or grants compensation for a duplicate. Runtime/UI enforcement and live-data
+migration remain separately deferred and unauthorized.
+
 ### region-lock `S` — **DROPPED (D4)**
 Reference only. In 1.0 gear, leftovers, bombs' loot and key items were bound to origin `land`;
 outside they became worn/grey (e.g. 194.1 → 5.4 dmg) or stopped working; `+` items kept full stats
@@ -1245,7 +1260,7 @@ One row per fact type. Cardinality as `domain → range`.
 | costs | ability | resource | 1→0..n | amount per resource, scoped by ruleset |
 | applies | ability ∪ weapon-type ∪ hazard | status-effect | n→n | |
 | has-moveset | weapon-type | ability (m1, m2) | 1→2 | |
-| knows-recipe | player-character | recipe | n→n | one known fact per character/recipe, shared by books and formulas (`known-recipes`); book-learned recipes persist across lands/sessions, not shared-account knowledge |
+| knows-recipe | player-character | recipe | n→n | one known fact per character/recipe, shared by books and formulas (`known-recipes`), even while power-locked; knowledge alone does not grant crafting usability; book-learned recipes persist across lands/sessions, not shared-account knowledge |
 | crafted-at | recipe | crafting-station | 1→1 | |
 | consumes | recipe | ingredient ∪ material | 1→n | with counts |
 | produces | recipe | item-type ∪ consumable | 1→1 | |
@@ -1382,9 +1397,9 @@ content selection or live data changes are authorized by this contract.
 | c-hands | 1H ×2 or 1H + shield or one 2H; bracelets need two for full damage | runtime |
 | c-cube-cap | upgrades ≤ 16 (1H) / 32 (2H, shield); wood cubes only on wood weapons, iron on metal | load+runtime |
 | c-spirit-level | A: weapon.level − 10 ≤ spirit.level ≤ weapon.level | runtime |
-| c-power-gate | A: item.level ≤ power(player.level) for full strength; formula learn likewise | runtime |
+| c-power-gate | A / hybrid: item.level ≤ power(player.level) for full strength; formula learning retains its sufficient-power requirement. Hybrid books record recipes immediately, but above-power recipes remain known and visibly locked against crafting until their requirement is reached; duplicate acquisition never removes the lock (§3.5 power-gate) | runtime (recipe enforcement deferred) |
 | c-book-recipe-persistence | hybrid: book-learned recipes remain known to that character across lands and sessions, with no relearning on travel; cross-world character portability remains open (§3.4) | runtime+save-data (deferred) |
-| c-recipe-learning | hybrid: books/formulas share one known-recipe set per character; repeated learning grants nothing extra; books teach only unknown recipes without rerolls/compensation; an already-known formula remains unconsumed (§3.4 recipe) | runtime (deferred) |
+| c-recipe-learning | hybrid: books/formulas share one known-recipe set per character, including known-but-power-locked recipes; repeated learning grants nothing extra; books teach only unknown recipes without rerolls/compensation; an already-known formula remains unconsumed, without bypassing c-power-gate (§3.4 recipe) | runtime (deferred) |
 | c-region-lock | DROPPED (D4). S reference: item.land ≠ current land ∧ ¬plus → worn; key items inert | — |
 | c-plus-adjacent | DROPPED (D4). S reference: plus item full stats iff current land adjacent | — |
 | c-gear-global | hybrid: an item's stats are identical in every land; key items and artifacts work everywhere once found | runtime |
@@ -1484,8 +1499,10 @@ chance, existing habitat scope and Collie fallback stand. No unanswered family p
 implementation is separately deferred.
 Settlements/inn items 1–4 are recorded in §3.1 (2026-09-27). Traversal items 1–5 are recorded
 (2026-09-28): training/item gates, corrected 75% Spikes reduction and remaining-cost stacking.
-No presented traversal question remains. Books/formulas items 1–3 are approved (2026-09-28):
-items 1–2 are recorded in §3.4; item 3 awaits recording, not an owner answer.
+No presented traversal question remains. Books/formulas items 1–3 are recorded in §3.4/§3.5
+(2026-09-28): permanent/global book recipes, shared knowledge/duplicates and immediate recording
+with power-locked crafting. No presented books question remains; cross-world portability stays
+in persistence. Artifact accumulation is the next walkthrough topic, not a new proposal here.
 Live-data migration and implementation remain deferred; cleared dungeon/quest enemy reset
 eligibility stays in world/reset below. Threat across server restart stays in the persistence topic below.
 
@@ -1494,7 +1511,7 @@ eligibility stays in world/reset below. Threat across server restart stays in th
 | Artifacts | global versus per-traversal-stat diminishing returns; additive versus compounded percentages (D6 numbers and traversal + attack/HP rewards stand) |
 | Assassin ultimate | Camouflage alias versus separately unlocked fourth node (D10/D20 stand) |
 | Wand handedness | two-handed mechanics versus one-handed; provisional data is not a resolution |
-| Persistence / authority | character portability, ownership of discoveries/unlocks, authoritative state validation, threat across server restart (D5 dedicated server stands; same-running-world absence retention approved in §3.2) |
+| Persistence / authority | character portability, ownership of other discoveries/unlocks (book/formula knowledge is per character), authoritative state validation, threat across server restart (D5 dedicated server stands; same-running-world absence retention approved in §3.2) |
 | World bounds / resets | finite 1024²-region bound versus “infinite” wording; cleared dungeon/quest mobs at midnight |
 | Validation-contract mapping | exact required paths, permitted provenance inheritance and remaining constraint boundaries; item 9 policy is approved, enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |

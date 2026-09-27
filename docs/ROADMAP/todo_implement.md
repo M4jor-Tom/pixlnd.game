@@ -159,6 +159,10 @@ degradation) are not backlog features.
 - [ ] Books/formulas item 2 (`domain.md#recipe`, `c-recipe-learning`): shared character recipe
   collection; books teach only unknown recipes without rerolls/compensation; known formula
   scrolls remain unconsumed. Data/learning/UI enforcement awaits separate authorization.
+- [ ] Books/formulas item 3 (`domain.md#power-gate`, `c-power-gate`): record book recipes
+  immediately but display/enforce above-power crafting locks until requirements are reached;
+  preserve formula learning's power requirement. Known-but-locked duplicates grant no bypass
+  or compensation and leave known formula scrolls unconsumed. Runtime/UI/data work is unauthorized.
 
 ## Progression (§3.5, slice D19)
 - [x] Skill tree (D20, `game/progression/skill_tree.gd`, `skill_panel.gd` on X): spending, unlock rule, per-point multipliers.
