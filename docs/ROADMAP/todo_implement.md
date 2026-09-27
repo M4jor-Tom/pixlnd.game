@@ -59,6 +59,10 @@ degradation) are not backlog features.
 - [ ] Sailing item 3 (`domain.md#skill-tree`, `c-sailing`): 5 Swimming + ≥1 Sailing point
   and a vendor-bought Boat equipped instead of the glider in `special`; further points improve
   speed. Vendor/data/slot/runtime enforcement remains deferred; no dual equip or new slot.
+- [ ] Climbing item 4 (`domain.md#key-item`, `#skill-tree`, `c-climbing`): basic climbing without
+  points/Spikes, skill drain reduction, global Spikes reducing consumption by 75%, not the S
+  infinite-endurance behavior. Live data/runtime remain unchanged; item 5 separately records
+  stacking. Do not infer a skill reduction curve/floor from the percentage.
 
 ## Creatures (§3.2 creature + ai-behavior, D14 + D26)
 - [x] Basic melee attack both ways, death, neutral retaliation (combat slice); ranged / mage roles shooting back

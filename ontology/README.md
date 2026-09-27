@@ -37,7 +37,9 @@ and runtime enforcement remain deferred.
 free recovery is separate from paid sleep, with ordinary midnight resets only and unanimous
 connected-player agreement / success-only initiator payment (`domain.md#game-clock`).
 **Traversal (2026-09-28):** items 1–3 recorded (riding gates; training + equipped bought glider/boat);
-item 4's corrected 75% climbing stamina reduction and item 5's approved stacking await recording. Complete traversal recording/review before books/formulas.
+item 4's corrected 75% climbing stamina reduction is recorded, not infinite endurance.
+Item 5's separately approved stacking awaits recording. Complete traversal recording/review
+before books/formulas.
 Live-data migration and enforcement remain deferred; cleared dungeon/quest enemy reset eligibility
 stays in the later world/reset topic.
 Gameplay and live JSON remain unchanged; restart persistence stays in its later topic.

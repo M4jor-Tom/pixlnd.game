@@ -45,6 +45,14 @@ Owner clarification: "commit several times" means commit the entire current diff
 split into coherent parts—not further implementation rounds. Rule: preserve that scope; no
 push without authorization.
 
+## A percentage reduction is not a stamina exemption
+
+- Owner correction (2026-09-28, traversal item 4): Climbing Spikes reduce climbing stamina
+  consumption by **75%**, replacing the proposed infinite-endurance exemption.
+- Rule: record the specified percentage, not zero cost or useless skill points. Do not infer
+  stacking rules from a percentage; item 5's remaining-cost rule needed separate owner approval.
+  Preserve source S behavior as historical reference and defer runtime implementation.
+
 ## Explicit family assignment overrides current data
 
 - Owner amendment (2026-09-27): Skeleton Dog's primary family is `dogs`, not `skeletons`;

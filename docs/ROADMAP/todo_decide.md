@@ -131,8 +131,8 @@ Never propose or implement regional gear power loss in pixlnd, even for Cube Wor
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
 **Current direction (2026-09-28):** traversal items **1–3 approved**, item **4 corrected to
-75% less climbing stamina consumption**, not elimination. Items **1–3 recorded**; items **4–5**
-await recording. The owner later approved item **5**'s remaining-cost stacking recommendation.
+75% less climbing stamina consumption**, not elimination. Items **1–3** and **4**'s corrected
+principle are recorded; item **5**'s separately approved remaining-cost stacking awaits recording.
 Complete traversal recording/review before books/formulas. Five documentation commits are authorized; no
 runtime/live JSON/test work, model/loader/validator changes, push, merge or history rewriting.
 Settlements/inn items 1–4 and family items 1–9 remain recorded. The 2026-09-27 handoff's
@@ -604,14 +604,14 @@ Documentation only; item 5's composition rule is a separate approval, not inferr
 |---|---|
 | 1 — riding training + Reins | `b4da965` |
 | 2 — gliding training + equipped bought glider | `88c54ac` |
-| 3 — sailing training + equipped bought boat | recorded in this item commit; hash follows in next record |
-| 4 — Spikes reduce climbing consumption by 75% | corrected principle, pending recording |
+| 3 — sailing training + equipped bought boat | `0462e9c` |
+| 4 — Spikes reduce climbing consumption by 75% | corrected principle recorded in this item commit; hash follows in next record |
 | 5 — remaining-cost stacking | approved, pending recording |
 
 Item 1 passed scope inspection, `/simplify`, ponytail-review and `git diff --check` (exit 0).
 Its first bounded validator command timed out during Nix downloads (exit 124, before Godot);
 a supervisor-authorized exact retry passed (exit 0, `ontology valid`). Logs retain both attempts.
-Item 2 passed the same reviews, diff check and bounded validator (exit 0, `ontology valid`).
+Items 2–3 passed the same reviews, diff checks and bounded validators (exit 0, `ontology valid`).
 
 Independent review and parent verification are pending. Per-item evidence is saved under
 `/tmp/pixlnd-traversal-20260928/`; loaded-data validation does not prove these Markdown rules
@@ -671,15 +671,13 @@ You would equip the boat instead of the glider when preparing to cross deep wate
 - **Approval:** Swimming investment leads to faster water travel, with the existing equipment choice preserved.
 - **Refusing:** Sailing requirements remain unresolved—not automatically unlocked by buying a boat.
 
-#### 4. Climbing Spikes eliminate climbing stamina drain
+#### 4. Historical infinite-endurance recommendation — superseded
 
-**Recommendation:** Basic climbing needs neither skill points nor Spikes. Climbing points reduce stamina drain; finding **Climbing Spikes** removes that drain globally.
-
-**Tradeoff:** after finding Spikes, additional Climbing points no longer help endurance. The first five still serve as the Hang Gliding prerequisite under proposal 2.
-
-##### Approval versus Refusing
-- **Approval:** Early climbing requires managing stamina; Spikes eventually let you climb without exhausting it.
-- **Refusing:** How Spikes interact with Climbing points remains unresolved; neither the item nor the skill is automatically removed.
+The owner replaced the proposal to remove all drain with **75% less climbing stamina
+consumption**. Basic climbing still needs neither points nor Spikes; points reduce drain and
+five remain the gliding prerequisite. The former “points no longer help endurance” tradeoff is
+not adopted. Canonical corrected principle: `domain.md#key-item` / `#skill-tree` / `c-climbing`;
+item 5's stacking rule is separately approved, not inferred from item 4.
 
 The original request for answers to 1–4 is superseded by the 2026-09-28 response above.
 

@@ -1005,6 +1005,13 @@ are historical reference. Reins are required alongside training and a rideable t
 is approved. Hybrid gliding/sailing need the respective vendor-bought, equipped Hang Glider/Boat
 plus training (`skill-tree`, traversal items 2–3); A/S acquisition records do not override these rules.
 
+**Hybrid traversal item 4 (owner corrected, 2026-09-28):** globally acquired **Climbing Spikes
+reduce climbing stamina consumption by 75%**, rather than eliminating it. Basic climbing and
+Climbing points' drain reduction follow `skill-tree`. The infinite-climbing/no-stamina S behavior
+in `key-items.json#climbing-spikes` and `abilities.json#climb` is reference only, not a hybrid
+target. Item 5's separately approved stacking rule awaits its own record; no composition formula
+is inferred from this percentage. Live-data migration and runtime enforcement remain deferred.
+
 ### artifact
 `S` relic; +1 level each; permanent; works everywhere; 1–3 per land (D11); raises exactly one of 7 traversal stats
 (climb speed, swim speed, diving, ride speed, glide speed, sail speed, light radius), diminishing;
@@ -1081,6 +1088,12 @@ points + at least 1 Sailing point** and an **equipped Boat bought from an item v
 Further Sailing points improve sailing speed. Buying alone is insufficient; equip the boat
 instead of the glider in the existing single `special` slot, never both. Live-data migration
 and runtime enforcement remain deferred.
+
+**Hybrid traversal item 4 (owner corrected, 2026-09-28):** basic climbing requires **neither
+skill points nor Spikes**. Climbing points reduce stamina drain; global Spikes reduce climbing
+stamina consumption by **75%**, not an exemption from stamina costs (`key-item`). Five Climbing
+points remain the Hang Gliding prerequisite under item 2. This principle does not define the
+skill reduction curve/floor or infer its combination with Spikes; item 5 records that separately.
 
 ### power-gate `A`
 Item `+N` usable at full strength only if player power ≥ N; formulas learnable likewise.
@@ -1346,6 +1359,7 @@ content selection or live data changes are authorized by this contract.
 | c-region-lock | DROPPED (D4). S reference: item.land ≠ current land ∧ ¬plus → worn; key items inert | — |
 | c-plus-adjacent | DROPPED (D4). S reference: plus item full stats iff current land adjacent | — |
 | c-gear-global | hybrid: an item's stats are identical in every land; key items and artifacts work everywhere once found | runtime |
+| c-climbing | hybrid: basic climbing needs neither points nor Spikes; Climbing points reduce stamina drain and global Climbing Spikes reduce consumption by 75%, not eliminate it; 5 Climbing points still prerequisite Hang Gliding; composition recorded separately under item 5, no skill curve/floor inferred (§3.4/§3.5) | runtime (deferred) |
 | c-rarity-range | rarity ∈ 0..4 for generated items (5 = mythical bug, off by default) | load |
 | c-stat-roll | roll = ((attributes<<16)+modifier) mod 21 ∈ 0..20 | generator |
 | c-loot-config | `design.loot`: every chance ∈ [0,1]; rarity-weights keys are rarities ≤ legendary with a positive sum; level-spread ≥ 0; gear-kinds and stack-cap.stackable name item-types; consumable-pool names consumables | load |
@@ -1439,14 +1453,14 @@ Creature family items 1–9 are recorded: Skeleton Dog follows normal dog behavi
 skeleton-only passivity exception, and shares Bubble Gum with Collie. The independent 1% per-dog
 chance, existing habitat scope and Collie fallback stand. No unanswered family proposal remains;
 implementation is separately deferred.
-Settlements/inn items 1–4 are recorded in §3.1 (2026-09-27). Traversal items 1–3 are recorded;
-item 4's corrected 75% principle and item 5's approved stacking rule await recording.
+Settlements/inn items 1–4 are recorded in §3.1 (2026-09-27). Traversal items 1–3 and item 4's
+corrected 75% principle are recorded; item 5's separately approved stacking rule awaits recording.
 Live-data migration and implementation remain deferred; cleared dungeon/quest enemy reset
 eligibility stays in world/reset below. Threat across server restart stays in the persistence topic below.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Traversal | items 4–5 approved, pending recording, not new approval questions; item 5 separately settles remaining-cost stacking |
+| Traversal | item 5 remaining-cost stacking approved, pending recording, not a new approval question |
 | Books / formulas | permanence/global scope of hybrid book recipes and duplicate unlock interaction with formulas |
 | Artifacts | global versus per-traversal-stat diminishing returns; additive versus compounded percentages (D6 numbers and traversal + attack/HP rewards stand) |
 | Assassin ultimate | Camouflage alias versus separately unlocked fourth node (D10/D20 stand) |
