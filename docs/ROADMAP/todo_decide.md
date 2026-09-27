@@ -132,8 +132,8 @@ fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09
 
 **Current direction (2026-09-28):** traversal **items 1–5 recorded**, including item **4**'s
 corrected **75%** reduction and item **5**'s separately approved **remaining-cost ×0.25** rule.
-No presented traversal question remains; books/formulas is next after independent review and
-parent verification (both pending). Only the parent presents its questions. No
+No presented traversal question remains; independent review and parent verification passed
+(evidence below). Books/formulas is next. No
 runtime/live JSON/test work, model/loader/validator changes, push, merge or history rewriting.
 Settlements/inn items 1–4 and family items 1–9 remain recorded. The 2026-09-27 handoff's
 publication/stop instruction is historical and its unanswered 1–4 status is superseded.
@@ -561,7 +561,7 @@ D1–D26, all walkthrough approvals and remaining open questions.
 
 ### Open — decide before the named slice
 
-Traversal items 1–5 are recorded (item 4 corrected); review/verification pending below.
+Traversal items 1–5 are recorded (item 4 corrected) and reviewed; evidence below.
 Books/formulas is next; remaining-cost stacking is not an open question.
 
 - [ ] **Books and formulas:** are hybrid book recipes permanent/global, and how do duplicate
@@ -606,7 +606,7 @@ Documentation only; item 5's composition rule is a separate approval, not inferr
 | 2 — gliding training + equipped bought glider | `88c54ac` |
 | 3 — sailing training + equipped bought boat | `0462e9c` |
 | 4 — Spikes reduce climbing consumption by 75% | `54f53fd` |
-| 5 — remaining-cost stacking | recorded in this item commit; final hash belongs in parent verification record |
+| 5 — remaining-cost stacking | `e70fb8f` |
 
 Item 1 passed scope inspection, `/simplify`, ponytail-review and `git diff --check` (exit 0).
 Its first bounded validator command timed out during Nix downloads (exit 124, before Godot);
@@ -617,9 +617,14 @@ Command: `timeout 150 nix develop -c godot --headless -s ontology/validate.gd`.
 per-item evidence (item 1's success is `item-1-validator-retry.{log,exit}`). No gameplay, boot,
 visual or network checks were run; no tests, live JSON or runtime files changed.
 
-Independent review and parent verification are pending. Per-item evidence is saved under
-`/tmp/pixlnd-traversal-20260928/`; loaded-data validation does not prove these Markdown rules
-or gameplay implementation. Runtime/live-data migration is deferred (`todo_implement.md`).
+Fresh independent read-only review found no issues across all five items, including the late
+item-5 approval. Parent inspected the actual diff, item/commit mapping, allowed six-Markdown-file
+scope and logs, confirmed a clean worktree, and reran the bounded validator (exit 0, `ontology
+valid`). Evidence: `/tmp/pixlnd-traversal-20260928/` (`independent-review.md`, `parent-batch.diff`,
+`parent-validator.{log,exit}`, per-item logs). The reviewer read saved logs, not rerun tests.
+The verification-record diff also received `/simplify`, ponytail-review and fresh diff/validator
+checks. Loaded-data validation does not prove Markdown fidelity or gameplay implementation;
+runtime/live-data migration remains unauthorized (`todo_implement.md`). No push was performed.
 
 #### 5. Remaining-cost stacking — approved and recorded
 
@@ -628,7 +633,7 @@ percentage points. Illustrative only: a skill-adjusted 8 stamina (from 10) becom
 0.5. Points retain their benefit with Spikes; Spikes do not turn a positive remaining cost into
 zero by themselves. Canonical rule: `domain.md#key-item` / `#skill-tree` / `c-climbing`.
 No skill reduction curve/floor or artifact-combination rule is inferred. All five traversal
-items are reconciled; books/formulas follows review, with questions presented by the parent.
+items are reconciled; books/formulas is next.
 
 #### Items 1–4 — recorded principles
 

@@ -1463,7 +1463,7 @@ chance, existing habitat scope and Collie fallback stand. No unanswered family p
 implementation is separately deferred.
 Settlements/inn items 1–4 are recorded in §3.1 (2026-09-27). Traversal items 1–5 are recorded
 (2026-09-28): training/item gates, corrected 75% Spikes reduction and remaining-cost stacking.
-No presented traversal question remains; books/formulas is next after review.
+No presented traversal question remains; books/formulas is next.
 Live-data migration and implementation remain deferred; cleared dungeon/quest enemy reset
 eligibility stays in world/reset below. Threat across server restart stays in the persistence topic below.
 

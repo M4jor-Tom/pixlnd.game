@@ -38,8 +38,8 @@ free recovery is separate from paid sleep, with ordinary midnight resets only an
 connected-player agreement / success-only initiator payment (`domain.md#game-clock`).
 **Traversal items 1–5 recorded (2026-09-28):** riding gates; training + equipped bought glider/boat;
 Spikes reduce climbing stamina consumption by 75%, applied to the skill-adjusted remaining cost
-(×0.25), not infinite endurance or additive percentage points. Books/formulas is next after
-independent review and parent verification; both are pending. Artifact combination remains open.
+(×0.25), not infinite endurance or additive percentage points. Independent review and parent
+verification passed (`todo_decide.md §E`); books/formulas is next. Artifact combination remains open.
 Live-data migration and enforcement remain deferred; cleared dungeon/quest enemy reset eligibility
 stays in the later world/reset topic.
 Gameplay and live JSON remain unchanged; restart persistence stays in its later topic.

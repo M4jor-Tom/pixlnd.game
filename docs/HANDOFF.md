@@ -7,9 +7,10 @@ pet; gliding/sailing require training + the respective vendor-bought item equipp
 special slot. Item **4** corrects Spikes to **75% less climbing stamina consumption**, not
 elimination. Separately approved item **5** applies that reduction to the **skill-adjusted
 remaining cost (×0.25)**, not additive percentage points. No presented traversal question remains.
-**Books/formulas is next after independent review and parent verification, both pending**;
-only the parent presents its questions. Canonical rules: `ontology/domain.md`; commits/checks:
-`todo_decide.md §E` and `/tmp/pixlnd-traversal-20260928/`. No gameplay, live JSON,
+**Books/formulas is next.** Fresh independent review found no issues; parent inspected all five
+commits and the actual diff/logs and reran ontology validation successfully. Canonical rules:
+`ontology/domain.md`; commits/checks: `todo_decide.md §E` and `/tmp/pixlnd-traversal-20260928/`.
+Validation covers loaded data, not traversal gameplay. No gameplay, live JSON,
 tests, model/loader/validator changes, push, merge or history rewriting are authorized.
 
 **Historical handoff (2026-09-27, superseded):** the owner requested “I'll reconcily that with
@@ -159,7 +160,7 @@ or next proposal is authorized now.
 The publication changes only four Markdown files, not runtime/live data; these tests do not prove
 implementation of the new policies. Commands and session-local evidence: `todo_decide.md §E`.
 
-**Current walkthrough checkpoint: traversal 1–5 recorded; review pending, then books/formulas.** Settlements/inn
+**Current walkthrough checkpoint: traversal 1–5 recorded and reviewed; books/formulas next.** Settlements/inn
 items **1–4** and family items **1–9** are recorded.
 Aggro items **1–14** are recorded; do not re-ask 13–14. Restart persistence remains a later topic.
 Do not start gameplay/validator/equipment implementation without separate authorization.
