@@ -2,13 +2,11 @@
 
 ## Ontology walkthrough entry point (2026-09-27)
 
-**Authorized handoff (2026-09-27):** the owner requested **“Handoff, then commit+push”** after
-settlements/inn items **1–4** were presented. **All four remain unanswered.** Preserve their
-exact recommendations, refusal consequences and dependencies in `todo_decide.md §E`,
-“Settlements / inn — presented but unanswered at handoff”. This request authorizes committing
-this handoff and pushing `fix/ontology-reconciliation`, including the three local family commits
-below, then stopping. It approves no settlement/inn proposal, gameplay, live JSON, tests,
-model/loader/validator work or merge. Do not launch new walkthrough proposals after publication.
+**Current authorization (2026-09-27):** the owner answered **“1: Approved; 2: Approved;
+3: Approved; 4: Approved”** for settlements/inn. Record each as a separate documentation commit;
+**no push now**. This supersedes the earlier handoff's unanswered/stop/publication instructions.
+Item **1 is recorded**; items **2–4 are approved, awaiting recording** (`todo_decide.md §E`).
+No gameplay, live JSON, tests, model/loader/validator changes or merge are authorized.
 
 **Family items 1–9 are recorded:** item 7 (`a4c6206`) selects Collie fallback for existing
 skeleton-only dog encounters and makes Skeleton Dog non-aggressive/tameable; item 8 (`2f5ad06`)
@@ -20,13 +18,12 @@ migration/scaling, shared-food model/loader/validator support and runtime enforc
 deferred and unauthorized. The original primary-`skeletons`, one-tenth species-weight and
 special-passivity proposals are superseded, not approved alternatives.
 
-**Resume boundary: settlements/inn items 1–4.** The unanswered recommendations concern final
-settlement count; paid sleep separate from free recovery; sleep-specific daily refreshes; and
-multiplayer consent/payment. Items 3–4 depend on item 2. Keep current D22 behavior until answers
-are reconciled; do not silently advance to traversal or infer approval from this handoff.
+**Resume boundary: record approved settlements/inn items 2–4**, then traversal. Items 3–4
+depend on item 2. Canonical rules: `domain.md#settlement` / `#game-clock`.
+Current D22 runtime stays unchanged; migration/enforcement is deferred.
 Cleared dungeon/quest enemy reset eligibility remains in the later world/reset topic.
 
-**Pre-publication Git checkpoint:** clean `fix/ontology-reconciliation` at `683fd79` before
+**Historical pre-publication Git checkpoint (superseded):** clean `fix/ontology-reconciliation` at `683fd79` before
 this two-file handoff. Remote branch was `ef81bd6` (`git ls-remote`); three local family commits
 plus this separate handoff are authorized for publication. Verify remote HEAD equals final
 local HEAD and the worktree is clean after pushing; inspect actual Git state on resumption.
@@ -145,7 +142,8 @@ or next proposal is authorized now.
 The publication changes only four Markdown files, not runtime/live data; these tests do not prove
 implementation of the new policies. Commands and session-local evidence: `todo_decide.md §E`.
 
-**Current walkthrough topic:** **Settlements/inn items 1–4, presented and unanswered**; family items 1–9 are recorded.
+**Current walkthrough topic:** **Settlements/inn item 1 recorded; approved items 2–4 await recording**;
+traversal follows. Family items 1–9 are recorded.
 Aggro items **1–14** are recorded; do not re-ask 13–14. Restart persistence remains a later topic.
 Do not start gameplay/validator/equipment implementation without separate authorization.
 

@@ -130,12 +130,11 @@ The full walkthrough/resumption protocol is in `tasks/lessons.md`; the prompt
 Never propose or implement regional gear power loss in pixlnd, even for Cube World cloning
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
-**Current direction (2026-09-27):** the owner requested **“Handoff, then commit+push”** after
-settlements/inn items **1–4** were presented. All four remain unanswered; their exact text and
-dependencies are preserved below. Family items 1–9 are recorded, including normal dog behavior
-and shared Bubble Gum. Commit this handoff, push `fix/ontology-reconciliation` including the
-three local family commits, verify publication and clean state, then stop. No settlement/inn
-proposal, runtime/live JSON/test work, model/loader/validator changes or merge is approved.
+**Current direction (2026-09-27):** the owner approved settlements/inn items **1–4**, each to
+receive its own documentation commit; **no push now**. Item **1 is recorded**; approved items
+**2–4 await recording**, then traversal is next. This supersedes the earlier handoff's unanswered,
+stop and publication instructions. Family items 1–9 remain recorded. No runtime/live JSON/test
+work, model/loader/validator changes or merge is authorized.
 **Aggro batch applied: 1–14/14**, independently reviewed; restart persistence remains a later topic.
 Older publication instructions and hashes below are historical checkpoints.
 
@@ -560,10 +559,8 @@ D1–D26, all walkthrough approvals and remaining open questions.
 
 ### Open — decide before the named slice
 
-- [ ] **Hybrid settlements / inn services — presented items 1–4 unanswered:** final settlement
-  count; paid sleep separate from free recovery; sleep-specific daily refreshes; multiplayer
-  consent/payment. Exact proposals below; 3–4 depend on 2. Sources: `rulesets.json#ruleset-hybrid.flags`,
-  `generators.json#design.settlement`, D22. Keep current D22 behavior until clarified.
+- [ ] **Hybrid settlements / inn application:** item 1 recorded; approved items 2–4 await
+  recording below (3–4 depend on 2). This is recording work, not unanswered policy or runtime permission.
 - [ ] **Traversal prerequisites:** skill, global key item, or both for riding/gliding/sailing;
   how do climbing spikes interact with climbing points? Before traversal/pets; sources:
   `abilities.json` shared trees, `key-items.json`, `rulesets.json#ruleset-hybrid.flags`.
@@ -597,22 +594,17 @@ D1–D26, all walkthrough approvals and remaining open questions.
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
 
-### Settlements / inn — presented but unanswered at handoff (2026-09-27)
+### Settlements / inn — items 1–4 approved (2026-09-27)
 
-**Status:** all four items below were presented; none was approved or refused. The owner's
-“Handoff, then commit+push” is publication/stop authorization only. Resume this batch, not
-traversal. Items 3–4 are conditional on item 2; the cleared-dungeon reset question remains separate.
-The following preserves the presented recommendations and consequences verbatim.
+**Owner answer:** “1: Approved; 2: Approved; 3: Approved; 4: Approved”. Documentation only;
+items 3–4 depend on 2. Record each separately; no push. Cleared dungeon/quest enemy reset
+eligibility remains in the later world/reset topic. Current D22 runtime and live JSON are unchanged.
 
-**Current approved build:** one village per land; inns heal and set your respawn point for free. The conflicting “many settlements” and “inn cost 10” flags still need reconciliation.
+1. [x] **One settlement per land is the final target**, not unfinished multiplicity.
+   Canonical rule: `domain.md#settlement`, `c-land-count`, `gen-settlement`.
+   Conflicting live flag and exact-count enforcement are deferred in `todo_implement.md`.
 
-#### 1. Keep one settlement per land as the final target
-
-**Recommendation:** Retain one settlement per land, rather than treating multiple settlements as an unfinished feature.
-
-##### Approval versus Refusing
-- **Approval:** Each land has one main service hub; wilderness journeys between towns remain longer.
-- **Refusing:** Settlement count remains open; it does not automatically approve any particular number of villages.
+**Approved items awaiting recording:**
 
 #### 2. Separate paid sleep from free recovery
 
@@ -646,8 +638,6 @@ Which cleared dungeon/quest enemies reset remains a separate, later decision.
 - **Approval:** Nobody can unexpectedly skip another player’s night. One refusal blocks the skip, but nobody loses money.
 - **Refusing:** Multiplayer sleep coordination remains unresolved; it does not authorize unilateral time changes.
 
-**Please answer `1: …; 2: …; 3: …; 4: …`.**
-
 Sources inspected: `ontology/domain.md#settlement`, `#game-clock`, `#currency`, `#multiplayer-mode`,
 `c-inn-hours`, `c-midnight-reset` and D22; `instances/rulesets.json#ruleset-hybrid.flags`,
 `generators.json#time|design.settlement`, `economy.json#shops.inn|rules`, `npc-roles.json#innkeeper`,
@@ -655,12 +645,12 @@ Sources inspected: `ontology/domain.md#settlement`, `#game-clock`, `#currency`, 
 `world.gd#_stream_village`, `settlement.gd`, `game/entities/player.gd#rest`. The live build still
 has free recovery and no game clock/time skip; flags do not settle the conflicting target policies.
 
-**Publication checkpoint:** branch `fix/ontology-reconciliation` at `683fd79` before this handoff;
+**Historical publication checkpoint (superseded):** branch `fix/ontology-reconciliation` at `683fd79` before that handoff;
 remote `ef81bd6` confirmed with `git ls-remote`. Publish existing family commits `a4c6206`,
 `2f5ad06`, `683fd79` plus this separate two-file handoff commit. No merge, history rewrite or
 force-push. After pushing, verify remote/local HEAD equality and clean worktree, then stop.
 
-**Handoff verification:** exact proposal-text comparison (heading depth ignored), diff/scope
+**Historical handoff verification:** exact proposal-text comparison (heading depth ignored), diff/scope
 checks, bounded ontology validation and headless boot passed. `/simplify` kept the question
 batch in this ledger without duplicating it in HANDOFF; ponytail-review found no further cuts.
 Fresh independent read-only review found no issues; parent inspected the diff, report and logs.

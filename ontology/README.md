@@ -31,9 +31,12 @@ recorded on 2026-09-27; their former open boundaries are settled.
 **independent 1% per individual dog wherever dogs already spawn**, preserving settlement safety.
 Collie supplies skeleton-only encounters' ordinary outcomes. Skeleton Dog is a tameable dog
 breed with normal dog behavior, not a special passivity rule, and shares Bubble Gum with Collie.
-No unanswered family proposal remains; settlements/inn is next (`todo_decide.md §E`). Live data,
-shared-food model/loader/validator support and runtime enforcement remain deferred.
-Gameplay and live JSON remain unchanged; restart persistence stays in its later topic.
+No unanswered family proposal remains. Live data, shared-food model/loader/validator support
+and runtime enforcement remain deferred.
+**Settlements/inn items 1–4 approved (2026-09-27):** item 1 recorded: one settlement per land
+is the final target; items 2–4 await recording (`todo_decide.md §E`). Conflicting live flags and
+enforcement await separate migration authorization. Gameplay and live JSON remain unchanged;
+restart persistence stays in its later topic.
 
 ## Decision and build history (from 2026-09-07)
 

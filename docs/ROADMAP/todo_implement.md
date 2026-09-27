@@ -25,9 +25,9 @@ degradation) are not backlog features.
   yet — roll it in `WorldGen.land_at` when artifacts get a slice.
 - [x] Settlements (D22, `world/settlement.gd`): one village per land, plateau, ring of box buildings, service NPCs. Still open
   (`settlement.gd` ponytail): no districts, procedural rooms / roofs, doors or interiors (buildings are solid boxes), villagers,
-  animals, schedules (`gen-schedule`), lanterns, dens / sewers, watchtowers; one village per land only (S: several, hidden until
-  discovered; hybrid multiplicity remains undecided in §E); the village node floats until its zones load;
-  not visually checked beyond `--write-movie`.
+  animals, schedules (`gen-schedule`), lanterns, dens / sewers, watchtowers; the village node floats until its zones load;
+  not visually checked beyond `--write-movie`. S settlements are hidden until discovered (reference).
+  One settlement per land is the final hybrid target (item 1, §E), not backlog.
 - [ ] Flora, deposits, dungeons, POIs, missions (`gen-flora`, `gen-dungeon`, `gen-poi`, `gen-missions`) — not started.
 - [ ] Temperature/humidity HUD (`design.climate.hud`) not shown; the land/village caption already runs (`hud-element`).
 
@@ -150,6 +150,9 @@ degradation) are not backlog features.
 - [ ] HUD shows level/xp as a text line; the portrait (head, name, class) is still missing (`hud-element` portrait).
 
 ## Settlements (§3.1 settlement, slice D22)
+- [ ] Item 1's exact-one-settlement target (`domain.md#settlement`): migrate the conflicting hybrid
+  `settlements-per-land: "many"` flag and enforce the exact count; current config is 1 but validation
+  allows ≥1 and placement can fail on all-sea land. No live-data, validator or generation changes authorized.
 - [ ] Inn: heals and moves the respawn point only; no sleep-to-07:00 (no `game-clock`), no daily mission re-roll (S).
 - [ ] NPCs never talk (`npc-role.dialogue`, speech bubbles); E resolves the service instantly.
 - [ ] Villagers and animals inside town are absent, so `c-hostile-in-city` only keeps wild spawns 40 blocks away.

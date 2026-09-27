@@ -164,7 +164,7 @@ A named, bordered gameplay region of one `landscape`. What the wiki calls "regio
 | wizard-towers | ≤ 5 | e | S |
 | circles-of-power | 1..n | e | S |
 | artifacts | 1..n | e | S |
-| settlements | A: exactly 1; S: several | e | |
+| settlements | hybrid / A: exactly 1; S: several | e | |
 | coords | int×2 | i | land-grid cell (F6); `seed = hash(world.seed, coords)`, every roll of the land derives from it (D12) |
 Internal grid: alpha region = 64×64 zones = 16 384 blocks; 8×8 mission cells per region;
 world addressable as 1024×1024 regions (finite). One gameplay `land` = one internal region cell
@@ -221,11 +221,17 @@ Village or city. `A S`
 | buildings | `building`[] |
 | population | `race` mix (humans majority; undead villages in deadlands/dark woods) + village animals |
 | visibility | A: always on map; S: hidden until discovered |
-| count-per-land | A: 1; S: several |
+| count-per-land | hybrid / A: 1; S: several |
 | sewer | S: dungeon under some 5★ villages holding an artifact |
 | petrified | bool, S: witch curse until witch killed |
 | possessed | bool, S: demon portal active in land |
 | layout | hybrid (D22): one per land from the land seed, terrain flattened under `design.settlement.radius`, box buildings on a ring, one NPC per service building; numbers `design.settlement` |
+
+**Hybrid settlements item 1 (owner approved, 2026-09-27):** exactly one settlement per land
+is the final target, not a temporary limit pending multiple settlements. Other D22 layout,
+services and settlement-safety rules are unchanged. Live `rulesets.json#ruleset-hybrid.flags`
+still says `settlements-per-land: "many"`; flag migration and enforcement remain deferred.
+`design.settlement.per-land` already equals 1; the current validator only checks ≥1.
 
 ### district
 City quarter. `A` → `instances/buildings.json#districts`.
@@ -1301,7 +1307,7 @@ content selection or live data changes are authorized by this contract.
 | c-time-speed | clock 10× real; sleep 100× clock-only | runtime |
 | c-midnight-reset | at 0:00 respawn mobs, regen missions, deposits, plants; restock shops | runtime |
 | c-inn-hours | inn reset only 18:00–06:00 → 07:00 | runtime |
-| c-land-count | S per land: gnomes = 4, books = 4, movement items ≤ 4, ticket items ≤ 3, key items ≤ 9, towers ≤ 5, settlements ≥ 1; A per land: settlements = 1, missions = 64 cells | generator |
+| c-land-count | hybrid: exactly 1 settlement per land (approved 2026-09-27); S per land: gnomes = 4, books = 4, movement items ≤ 4, ticket items ≤ 3, key items ≤ 9, towers ≤ 5, settlements ≥ 1; A per land: settlements = 1, missions = 64 cells | generator |
 | c-key-item-need | a key item spawns only if its lock type exists in the land | generator |
 | c-boss-size | A: boss size/strength from 1 at lvl 1 to full at lvl 10; S: dungeon boss size capped so it fits inside | generator |
 | c-arena-waves | exactly 5 waves with tier ladder W/G, W/G, G/B, B/P, P/Y | generator |
@@ -1321,7 +1327,7 @@ content selection or live data changes are authorized by this contract.
 | c-tree-shape | for every specialization the tree read from `abilities.json#alpha-tree` has exactly one class node per rank 1..3 and ≤ 1 ultimate; rank 1 and shared-column roots have `needs` 0, one root per shared column, every `unlocks-next` names a node of the same column (D20) | load |
 | c-skill-spend | a point is spent only from the banked pool, one at a time, on a node whose prerequisite holds `needs` points; points never leave a node outside a trainer respec (D20) | runtime |
 | c-ability-runtime | every class-column and ultimate node of every spec tree has a `design.abilities` entry whose `runtime` is in `runtimes`; cost mp ≤ 100, stamina ≤ `design.movement.stamina.max` or `all`; cooldown-s > 0; dash distance > 0, strike / burst / channel radius > 0, buff / channel duration-s > 0, heal cast-s ≥ 0, projectile / dash `throw` shots as c-moveset-config (D24); `design.status-effects` keys are status-effect ids and an `as` names another key (D21) | load |
-| c-settlement-config | `design.settlement`: per-land ≥ 1, radius > blend ≥ 0, ring-radius < radius, every `buildings` entry is a `buildings.json#buildings` id, every service role is an `npc-roles.json` id, every landscape with a `gen` block has a `style-by-landscape` entry naming a `buildings.json#settlement-styles` id with two `style-colors`, `shop.rarity-cap` is a rarity ≤ legendary, `no-hostiles-within` ≥ radius (D22) | load |
+| c-settlement-config | `design.settlement`: per-land = 1 (exact-count enforcement deferred), radius > blend ≥ 0, ring-radius < radius, every `buildings` entry is a `buildings.json#buildings` id, every service role is an `npc-roles.json` id, every landscape with a `gen` block has a `style-by-landscape` entry naming a `buildings.json#settlement-styles` id with two `style-colors`, `shop.rarity-cap` is a rarity ≤ legendary, `no-hostiles-within` ≥ radius (D22) | load |
 | c-defence-config | `design.defence`: dodge stamina ∈ (0, stamina max], distance / duration-s > 0, iframe-s ≥ 0, every on-dodge key is a passive ability; block max / power-per-hit > 0, damage-reduction ∈ [0,1], front-dot ∈ [−1,1], regen-per-s ≥ 0, guardian-mult ≥ 1; stealth decay-per-s ≥ 0, still-mult ≥ 1, aggro-cut ∈ [0,1]; enemy-hit chances ∈ [0,1]; every `design.abilities` stealth-per-s ≥ 0 (D23) | load |
 | c-moveset-config | `design.movesets`: every key is a weapon-type or `default`, an `as` names a plain entry; m1 / m2 `kind` ∈ `kinds`; `applies` (and finisher applies) are `design.status-effects` keys; damage-mult > 0; melee swing-mult / radius-mult > 0, lunge ≥ 0, finisher every ≥ 2 with chance ∈ [0,1]; projectile speed / radius / life-s > 0, count ≥ 1, spread / gravity / splash ≥ 0, pierce needs tick-s > 0; beam / at-cursor range / radius > 0; every non-offhand class weapon-type has an entry (D24) | load |
 | c-feel-config | `design.feel`: hit-stop.time-scale ∈ (0,1), max-s ∈ (0,1], every `events.*.hit-stop-s` ∈ [0, max-s]; every `events.*.trauma` ∈ [0,1]; shake.decay-per-s > 0, max-offset ≥ 0, max-roll-deg ≥ 0, shake-mult ≥ 0; every `events.*.sfx` names an `audio.json#sfx-alpha-ids` id with a `design.feel.sfx` entry; every sfx hz > 0, len-s ∈ (0,1], noise ∈ [0,1] and has a `slide`; numbers.life-s > 0, crit-scale ≥ 1, rise-blocks > 0, font-size > 0, every colour a 3-array in [0,1] and a `hit` colour present (the fallback); impact.impact-s / impact-radius > 0, trail.trail-s / trail-every-s > 0, level-up.pop-s > 0, pop-scale ≥ 1, text non-empty; the required event ids `hit crit kill hurt block dodge shoot impact level-up pickup coin` all present (D25) | load |
@@ -1343,7 +1349,7 @@ reproducible; each generator lists invariants that a test can assert.
 | gen-terrain | land, zone coords | heightfield columns, caves, rivers+waterfalls, lakes, mountains/plateaus, mesas, overhangs; per-voxel RGB by block type & landscape palette | walkable roads with tunnels/bridges; water at rivers/lakes/oceans |
 | gen-coarse-map `Ω` | land seed | coarse map placing streets, buildings, rivers, bridges, trees, caves logically before voxel detail | every structure reachable by road |
 | gen-flora | landscape, zone | trees (procedural, unique), bushes, scrubs, cacti, flowers, mushrooms, fields | per-landscape rosters |
-| gen-settlement | land | 1 (A) / n (S) settlements: districts, procedural buildings (rooms, sizes, roofs), styles, NPC population + schedules, shops, inn, trainers, flight master (S) | ≥1 inn (A several, S exactly 1); shops per district; hybrid numbers `design.settlement` (D22) |
+| gen-settlement | land | 1 (hybrid / A) / n (S) settlements: districts, procedural buildings (rooms, sizes, roofs), styles, NPC population + schedules, shops, inn, trainers, flight master (S) | ≥1 inn (A several, S exactly 1); shops per district; hybrid numbers `design.settlement` (D22) |
 | gen-dungeon | land, dungeon-type, tier | layout (A linear + dead end; S room gauntlet), traps `A`, chests, spawns in groups 2–4, boss(es), artifact `S`, locks needing key items | entrance rules per type; at least one boss; artifact at end (S castles always) |
 | gen-poi | land | campsites, arenas, towers ≤5, circles, portals, pumps, trees, shrines, lore sites, spawner nests, hidden treasure, sky islands | counts in `c-land-count` |
 | gen-missions | land, day | A: 8×8 cell boss missions; S: typed missions with icons and tiers, daily regeneration | tier ladder white→yellow present; gnomes/books once per land |
@@ -1381,7 +1387,7 @@ Threat across server restart stays in the persistence topic below.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Settlements / inn | whether multiple settlements and paid timed sleep are hybrid targets; keep D22's current one village and free heal/respawn service |
+| Settlements / inn | item 1 recorded: one settlement per land is final; approved inn items 2–4 await recording (`todo_decide.md §E`); D22 runtime unchanged |
 | Traversal | skill versus global key-item prerequisites for riding/gliding/sailing; climbing spikes versus skill points |
 | Books / formulas | permanence/global scope of hybrid book recipes and duplicate unlock interaction with formulas |
 | Artifacts | global versus per-traversal-stat diminishing returns; additive versus compounded percentages (D6 numbers and traversal + attack/HP rewards stand) |
@@ -1495,7 +1501,8 @@ must be decided before implementation, not inferred from a historical flag or lo
   worn gear unsellable; the item shop sells the loot consumable pool. Trainer respec refunds every spent point for 5 × level copper;
   the inn heals fully and moves the respawn point there, free. `world.spawn-rule` = the square of the land (0,0) village. Wild
   spawns skip groups within 40 blocks of the square. Not yet: districts, procedural rooms / roofs, villagers and schedules, inn
-  time skip, restock, spec change, sewers / dens, flight master, several villages per land (S).
+  time skip, restock, spec change, sewers / dens, flight master. Several villages per land (S) are not
+  a hybrid target (settlements item 1, approved 2026-09-27).
   → `generators.json#design.settlement`, `ui.json#screens.npc-service`, `c-settlement-config`.
 - **D23 Defence — DECIDED 2026-09-11**: dodge (M3 while moving, 25 stamina, 4 blocks in 0.4 s, hits ignored for 0.4 s, no fall damage on
   that landing; Ninja +25 MP via elusiveness, Assassin +0.5 stealth via way-of-the-shadows), block (M2 held with a shield / any weapon
