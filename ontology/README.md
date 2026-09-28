@@ -25,12 +25,13 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `tasks/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Validation-contract mapping items 1–3 recorded (2026-09-28):** taxonomy/style configuration,
-per-food evidence and qualified reference annotations (`domain.md §5` / `#pet-food`). No presented
-question remains; required paths, other source-specific inheritance mappings, per-food research
-and remaining check boundaries are unfinished, not whole-topic completion. Independent review
-found no issues and parent verification passed; evidence/limits: `docs/ROADMAP/todo_decide.md §E`.
-No live data or checker changes authorized; handoff/stop: `docs/HANDOFF.md`.
+**Validation-contract mapping items 1–4 recorded (2026-09-28):** `domain.md §5` now maps
+required heterogeneous paths/shapes, bounded source inheritance and definition/generator/runtime
+checks; items 1–3 stand. The game is undeployed, with no player data to migrate: require current
+rules directly, not legacy compatibility (§0). Per-food and unscoped mixed-container history
+remain source research/attribution, not whole-topic completion or unanswered gameplay proposals.
+Item 4's independent review, parent verification and publication remain pending; evidence/limits:
+`docs/ROADMAP/todo_decide.md §E`. No data/code/checker work authorized; handoff: `docs/HANDOFF.md`.
 
 **Persistence / authority — all nine documentation decisions recorded (2026-09-28).**
 No presented Persistence / authority question remains. Independent review and parent verification
@@ -62,7 +63,7 @@ connected-player agreement / success-only initiator payment (`domain.md#game-clo
 Spikes reduce climbing stamina consumption by 75%, applied to the skill-adjusted remaining cost
 (×0.25), not infinite endurance or additive percentage points. Independent review and parent
 verification passed (`todo_decide.md §E`). Artifact approvals are tracked below.
-Live-data migration and enforcement remain deferred; world/reset item 3 now records cleared
+Direct data correction and enforcement remain deferred; world/reset item 3 now records cleared
 dungeon/quest enemy reset eligibility (`domain.md#game-clock`).
 **Books/formulas items 1–3 recorded (2026-09-28):** permanent/global book recipes, shared
 knowledge without duplicate rewards/rerolls or consuming known formulas, and immediate book
@@ -74,7 +75,7 @@ logarithmic total (initial **z=0.1**), equal additive shares and recalculated ar
 Traversal counts matching artifacts; attack and maximum HP count all. D6's decay/1% floor is
 superseded, not its rewards or other decisions; no levels or gate bypass. No presented artifact
 question remains. Independent review and parent verification passed (`todo_decide.md §E`).
-Live-data migration, model/loader/validator support and runtime implementation remain deferred.
+Direct data correction, model/loader/validator support and runtime implementation remain deferred.
 **Assassin item 1 recorded (2026-09-28):** Camouflage is one rank-3 skill on key 3, with no
 separate fourth node, key-4 ability, investment or charge (`domain.md#skill-tree`). This is the
 explicit Assassin exception to D10; other specializations and existing Camouflage behavior stand.

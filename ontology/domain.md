@@ -19,6 +19,12 @@ derived from this file and `instances/`. Nothing downstream may drift ahead of i
   its **generator** is a class (§6) and its config lives in `instances/generators.json`.
 - Numeric formulas are written in plain infix. `lvl` = character level, `n` = item level.
 
+**Undeployed-game clarification (owner, 2026-09-28):** no player data exists to migrate.
+Require current approved definitions directly; obsolete checked-in values need direct replacement
+when separately authorized, not save/config migrators, legacy-read fallbacks or compatibility
+paths. Older “migration” deferrals in this document mean data correction/enforcement debt only,
+not a migration plan. Stable source IDs and previously approved names remain unchanged.
+
 Research dumps behind this file: `research/research_*.md` (classes/combat, items, world, creatures/quests,
 systems). Primary sources: cubeworld.fandom.com, cuwo (alpha server reimplementation, exact data
 layouts), CWSDK (1.0 modding SDK), coremaze stat reverse-engineering, Wollay's 2011–2013 devlog
@@ -1187,8 +1193,9 @@ The first artifact remains 5%.
 Documentation only: live `generators.json#design.artifact` still stores D6's `first: 0.05`,
 `decay: 0.9`, `floor: 0.01`; `key-items.json#artifact` still mixes historical S levels with
 old D6 accumulation text, and `rulesets.json#ruleset-hybrid._rule` still says D6 bonuses are
-unchanged. These do not override the current rules above. Live-data migration, model/loader/
-validator support and generated-artifact/runtime enforcement remain deferred and unauthorized.
+unchanged. These do not override the current rules above. Direct replacement of obsolete checked-in values,
+model/loader/validator support and generated-artifact/runtime enforcement remain deferred and
+unauthorized; no legacy format or migration support is required (§0).
 
 ### currency
 A: copper/silver/gold (100:1), platinum (adaptation only); S: single coin counter, auto-pickup by
@@ -1571,8 +1578,9 @@ remain separately authorized work (`docs/ROADMAP/todo_decide.md §E`).
 - **Provenance:** versioned content must resolve at least one source-version tag, explicitly
   or through an inheritance rule documented for that family and its source. Missing tags
   are not permission to assume A/S, infer provenance from a numeric ID, or enable content.
-  This approval establishes no new per-family inheritance rules; ambiguous mappings remain
-  open until documented. Metadata/config containers are not automatically content instances.
+  Item 9 alone established no per-family inheritance rules; item 4 below records the bounded
+  mappings now approved. Unscoped histories remain research. Metadata/config containers are
+  not automatically content instances.
   Taxonomy/style config, pet-food evidence and qualified reference annotations follow the
   Validation-contract mapping below.
 - **Definitions versus generated instances:** load-time checks validate available definitions
@@ -1580,15 +1588,15 @@ remain separately authorized work (`docs/ROADMAP/todo_decide.md §E`).
   definition's seven approved traversal stat kinds and approved bonus configuration at load time;
   generator/runtime checks separately verify each generated artifact has exactly one of
   those traversal bonuses plus attack and max HP. The approved accumulation curve, counts and
-  recalculation are in §3.4 `artifact`; live-data migration and enforcement remain deferred.
+  recalculation are in §3.4 `artifact`; direct data correction and enforcement remain deferred.
   Passing definition checks is not evidence that generated rewards or runtime behavior work.
 - **Result:** validation succeeds only when the accumulated load/validation error collection
   is empty. Earlier load errors remain failures even if a validation pass adds no new errors.
   Malformed data must produce an error rather than be silently discarded or treated as valid.
 
-Before implementing these checks, document the exact required table/config paths, any permitted
-provenance inheritance and each check's definition/generator/runtime boundary from the approved
-ontology. Ask the owner where it does not determine a unique answer; do not fill gaps by guessing.
+The required paths, permitted source inheritance and check boundaries are mapped below.
+Resolve remaining source attribution from evidence before its affected checks; ask the owner
+only where approved rules leave a genuine choice, never fill gaps by guessing.
 Negative regressions must cover missing whole inputs as well as invalid entries. No balance,
 content selection or live data changes are authorized by this contract.
 
@@ -1615,6 +1623,110 @@ adding a distinct shipping biome. Do not delete or reject a reference merely for
 tag, or silently promote it to confirmed history. This chooses no runtime schema/type or parser
 behavior: the current parser strips `?`; preserving the qualification in model/loader/validator
 handling remains deferred and unauthorized.
+
+#### Item 4 — Required inputs, source scopes and check boundaries
+
+Owner approved 2026-09-28, with the undeployed-game clarification in §0. This maps existing
+rules, not new content, balance or a serialization schema. Required means dependencies of the
+**approved hybrid**, including unimplemented systems, not merely today's consumers. Within a
+mixed file, historical A/S alternatives, X/cut and Omega-only rows remain reference; requiring
+its active definitions does not activate every row or require generating objects at load time.
+
+**Required paths and shapes.** Paths below are relative to `ontology/instances/`; each file
+root is an object. Braces enumerate exact sibling paths, not arbitrary keys. A catalog is an
+ID→row-object map unless noted. Metadata (`$schema`, `_doc`, source notes, examples and negative
+research) is not a content row; neither silently discard malformed catalog rows nor flatten
+legitimate arrays/scalars/config into invented instances. The §3 definitions and constraint
+catalog govern row fields and numeric/reference rules; the inventory locates their inputs.
+
+| dependency | required definition/config paths and heterogeneous shapes |
+|---|---|
+| Identity and skills (§3.2/§3.5) | `races.json`, `classes.json`, `specializations.json`, `abilities.json` catalogs; `abilities.json#<id>.alpha-tree` is a per-ability object, not a root table. |
+| Combat and item types (§3.3/§3.4) | `weapon-types.json`, `materials.json`, `item-types.json`, `rarities.json`, `status-effects.json` catalogs. Rarity comparison maps `mob-strength-tiers-s` / `alpha-relative-colors` are separate reference config; `status-effects.json#ability-buffs` is a definition-reference object and `#not-found` a negative-research array, not effects to instantiate. |
+| Stats and slots (§3.3–5) | `stats.json#{resources,stats}` catalogs and `#{alpha-item-stat-formulas,alpha-character-formulas}` mixed formula objects (strings, numbers, tables); `equipment-slots.json#slots` an array of rows with `id`/index, `#extra` an object of separate quick-use/taming descriptions, `#rules` a string array. Current slot acceptance text must conform to §3.4, not redefine it. |
+| Creatures and pets (§3.2/§3.4) | `creatures.json` catalog; the 12 `creature-families.json` config objects listed in item 1; `#landscape-rosters` maps to creature-ID arrays; `#forest-dungeon-rosters` maps to objects with `members` arrays and `boss` strings, including race/family tokens, not uniformly creature IDs. `pet-food.json#foods` catalog; `#rules` / `#shop-set` arrays; `#cut` a separate reference catalog. |
+| World and encounters (§3.1/§3.6) | `landscapes.json`, `terrain-features.json`, `flora.json`, `deposits.json`, `dungeon-types.json`, `poi-types.json`, `factions.json` catalogs (realm-name examples are not factions); `landscapes.json#<id>.gen` objects for generated hybrid landscapes. `mission-types.json#{alpha,steam}` nested catalogs, with `_shared` config and `steam.region-completion-order` guide array distinct from mission rows. |
+| Blocks and structures (§3.1) | `block-types.json#alpha` numeric-key→row objects plus `flags`, `#steam` numeric-key→strings plus `note`, `#{scale,cub-format}` config objects; `static-entities.json#by-id` numeric-key→name strings, `#behaviour` a mixed description map, `#s-additions` string array, `#candles` config object. Numeric table presence is not content availability. |
+| Crafting and traversal (§3.4/§3.5) | `consumables.json`, `ingredients.json`, `crafting-stations.json`, `key-items.json` catalogs with separate summary/config objects (`consumables#rules`, `key-items#counts-per-land-s` and cut `#special-accessories-x`). `recipes.json#{gear-armor-quantities,gear-weapons,refining,recipe-sources,customization}` mixed rule/recipe objects; `#{cooking,alchemy}` objects referring to consumables; `#crafting-tabs-a` string array. `key-items.json#artifact.stat-kinds` is the seven-kind definition array, not generated rewards. |
+| Settlements and economy (§3.1/§3.4) | `buildings.json#{districts,buildings}` catalogs, `#{settlement-styles,population,map-visibility}` config objects; `npc-roles.json` catalog (dialogue corpus separate); `economy.json#{currency,incomes,prices,shops,rules,loot}` mixed source/config objects. Approved hybrid services, prices and resets govern, not historical alternatives. |
+| Names (gen-name) | `affixes.json#{common,uncommon,rare,epic,legendary,name-forms}` string arrays; examples are reference and `#plus-suffix` is an excluded S mechanic, not hybrid naming. |
+| Rules, controls and presentation (§3.7) | `rulesets.json#ruleset-hybrid` object with `flags` object and default boolean; other rulesets reference only. `keybinds.json#hybrid` binding object; `ui.json#{hud,screens,options,camera}` grouped objects; `audio.json#sfx-alpha-ids` string array (includes descriptive entries, not all asset IDs). `slash-commands.json` command-key→row catalog with separate `cuwo-server-commands` array / `chat-rules` object; only approved commands, never `/pvp`. Historical audio backend/track records are not runtime asset requirements. |
+
+`versions.json#{timeline,alpha-to-steam-delta,reception}` (array/object/object) is history
+coverage, not an active gameplay dependency merely because the directory loader visits it.
+Reference data still needs structural validity and qualified attribution; no whole-file exemption
+or uniform row-shape assumption follows from the active/reference distinction.
+
+`generators.json#design` is required as an object. Its required children are grouped below;
+existing config constraints specify dependent fields. Current obsolete values do **not** satisfy
+later approvals. In particular, require the approved artifact logarithm directly, not decay/floor
+as an accepted alternate format. This chooses no new JSON keys for that rule.
+
+| dependency | exact `design` children and nested shapes |
+|---|---|
+| World/spawns | `{enemy-level,enemy-hp,terrain,climate,names,spawns}` objects; `terrain.{height,heightfield}` and `spawns.ai` objects, `climate.rules` array of `[landscape-id, expression-string]`, `names.syllables` string array / `names.land-suffix` map of string arrays. |
+| Skills/combat | `{skill-point,abilities,resources,special-attack,status-effects,progression,crit,movement,camera,combat,defence,movesets}` objects; `abilities.runtimes` / `movesets.kinds` arrays, ability/moveset entries objects (including documented aliases); `resources.mp`, `movement.stamina`, `defence.{dodge,block,stealth,enemy-hit}` objects. Whole `movesets`, `default` and required class-weapon entries cannot be skipped when absent. |
+| Roles/feedback/engine | `{creature-roles,feel,frame-budget}` objects; `creature-roles.{any-class,melee,ranged,mage,species}` objects and `default` string; `feel.{hit-stop,shake,numbers,impact,trail,level-up,events,sfx}` objects with event/sound references and colour arrays per the catalog. |
+| Inventory/settlements | `{prices,stack-cap,loot,starting-inventory,settlement}` objects; `stack-cap.stackable` / `loot.consumable-pool` arrays; `loot.{coins,rarity-weights,gear-kinds,ground}` objects; `settlement.buildings` array, `settlement.npc.roles` / `settlement.style-by-landscape` maps, `settlement.style-colors` map of two-colour arrays, `settlement.{shop,inn,trainer}` objects. |
+| Other approved systems | `{artifact,artifacts-per-land,circle-of-power,recipes,pvp}` objects, regardless of incomplete consumers. `{item-stat-curve,block-reward,regeneration}` are **strings**, not object blocks. |
+
+Other `generators.json` inputs for §6 are mixed historical/approved-system objects:
+`{world-scales,seed,time,climate,land,terrain,settlement,dungeon,spawns,boss,names,item,realm,npc-appearance,schedule,key-items-s}`;
+`loot` and `level-formulas-alpha` are string references. Check approved dependencies within these
+containers, not every source-specific alternative as hybrid config. `coarse-map-omega` and
+`network-alpha` are reference-only objects; no borders, sleep-fast-forward and client authority
+in older source descriptions cannot override the approved bounds, inn skip and server authority.
+There is no current save-schema file or generated-object catalog to invent as a required input.
+
+**Permitted source inheritance.** This is a finite mapping of explicit source envelopes, not
+an A+S default. Apply only to the stated table facts or subfacts without their own annotation;
+retain explicit row-level X, `A?`/`S?`, uncertainty and narrower exceptions. Source-table origin
+proves neither shipped source functionality nor hybrid availability. Item 1's taxonomy/style
+configuration and owner-authored `design` / hybrid bindings need no invented historical ancestry.
+
+| source envelope | inherited historical scope and evidence boundary |
+|---|---|
+| `block-types.json#{alpha,steam}` | A / S table facts respectively (`research/research_world.md §2.3`); flags/notes remain metadata, not block instances. |
+| `item-types.json` alpha type/subtype table | A table origin from `_doc` (cuwo ItemData), corroborated by `research/research_systems.md §9.2`; retain explicit X rows and nested cut qualifiers. `_s-additions` supplies S subfacts only. Type 20 does not date individual foods. |
+| `static-entities.json#by-id` / `#s-additions` | A STATIC_NAMES / S additions (`_doc`, `research/research_systems.md §9.1`). Do not extend to mixed `behaviour` or unscoped `candles`; explicit fire/stomp X and alpha artifact ID 46 never establish working alpha artifact gameplay. |
+| `mission-types.json#{alpha,steam}` | A / S catalog scopes (`research/research_creatures_quests.md §7.1–2`); `alpha.quests-cut` stays X. `_shared` and completion-order are source rules/guide metadata, not missions. |
+| `rarities.json#{mob-strength-tiers-s,alpha-relative-colors}` | S / A comparison facts only; do not propagate through rarity references. |
+| `stats.json#{alpha-item-stat-formulas,alpha-character-formulas}` | A formula sources explicitly identify coremaze 0.1.1 reverse engineering / cuwo; this does not resolve uncertain formula correctness. |
+| `audio.json#sfx-alpha-ids` | A identifier-list origin (`research/research_systems.md §8`), not asset availability or dates for tracks. |
+| `equipment-slots.json#slots` and `#extra.consumable` | A storage-table / separate consumable-field origin (`research/research_systems.md §5.1/§9.2`); preserve partly inferred indices and row/subfact annotations. Approved hybrid slot rules remain independent. No A+S blanket on equip rules. |
+| `keybinds.json` action-row `A` / `S` cells | That cell's source only (`research/research_systems.md §5.3`); em dash records absence, not a binding. Mixed `map-controls` and `hybrid` receive no inherited A+S tags. |
+| Explicit source subfacts in mixed containers | `economy.json#{currency,incomes,prices}.{A,S}`, `#shops.weapon-shop.stock.{A,S}`, `#shops.item-shop.sells.{A,S}`, `#rules.buy-back.{A,S}`, `#loot.{A-boss,A-dungeon,S-mission,S-dungeon}`; `recipes.json#crafting-tabs-a`, `#recipe-sources.{A,S}`, `#customization.{spirit-cubes-a,fully-modded-legendary-plus-s}`; `buildings.json#map-visibility.{A,S}`, `audio.json#ambient.{S,Ω}`, `key-items.json#counts-per-land-s`: only the explicitly named source subfact, never the whole mixed parent. Excluded regional mechanics remain reference. |
+| Explicit generator source sections | `generators.json#world-scales.{alpha,steam}`, `#seed.{alpha-default,alpha-source,steam}`, `#land.{alpha-level,alpha-rarity,steam-tiers,steam-per-land,alpha-per-land}`, `#settlement.{alpha-count,steam-count,districts-alpha,inn.A,inn.S}`, `#dungeon.{alpha-layout,steam-layout,traps-alpha,traps-data-x,boss.A,boss.S,artifact-s,size-cap-s}`, `#boss.{alpha-size-scaling,alpha-spirit-drop,steam-loot,coins-s}`, `#npc-appearance.omega`, `#{coarse-map-omega,key-items-s,level-formulas-alpha,network-alpha}`: A/S/X/Ω only as explicitly identified there; preserve local hybrid overrides, never tag all generators A+S. |
+
+Untagged histories outside these scopes remain **source research/attribution**, not guessed
+labels or new gameplay ballots: individual foods; roster and embedded family traits; affix
+prefixes; mixed recipe/shop/population/UI facts; unscoped audio, static behavior/candles and
+dialogue/example claims. The mixed food table in `research/research_items.md §5` supplies
+pairings, not per-food A+S history; preserve existing sourced S/X food facts and F11 Banana Mash.
+Neither referenced species nor numeric IDs lend tags. `status-effects.json#ability-buffs` points
+to existing definitions; `#not-found` creates none. `versions.json` keeps its history schema
+(dates and scalar release identifiers, not content-tag arrays); cuwo command lists keep their
+modded-server context, not stock-command or hybrid approval. No new labels or parser schema
+are selected for these remaining cases.
+
+**Check boundaries.** Load checks concern the above definitions/config, including required
+presence before iteration, valid references/shapes and cumulative errors under item 9. Numeric
+predicates remain in the constraint catalog; no duplicate balance table is introduced here.
+
+| rules | definition/config load | generated objects, runtime and save/import checks |
+|---|---|---|
+| Class/spec/tree | Both reference directions, two specs with distinct indices 0/1 and index 0 first, shared roots/links, Assassin exception and ability config coverage. | Starting spec; spend/prerequisite/bank/respec, costs/cooldowns and actual effects. |
+| Items/stats/recipes | Types, materials, slots, wand hands/recipe, capacities, formula/ingredient/station references and approved configuration. | Generated rarity/roll/stats/names; actual upgrades and equip class/slot/hand/power limits, stacks, transactions and recipe knowledge/duplicates/locks. Generated-rarity checks do not remove mythical/worn reference definitions. |
+| Families/pets | Primary/descriptive references, roster IDs, food pairings/source identity and rideability. | Primary-only scaling, per-dog 1% generation/Collie fallback, normal dog behavior, taming/one-active-pet and training/item/equip traversal gates. Provenance is not inferred from these relations. |
+| Artifacts (`c-artifact-stat`, §3.4) | Seven-kind `key-items.json#artifact.stat-kinds` definition and `generators.json#design.artifact` conforming to the approved normalized logarithm (5% first, positive adjustable z, initial z=0.1, no decay/1% floor). Old decay/floor cannot pass as an alternate. | Generation: exactly one approved traversal kind plus attack and max HP. Runtime: matching contributors per traversal stat, all artifacts for attack/HP, equal additive shares of the logarithmic total, recalculated from current artifact-free stats. No levels or gate bypass; personal source claims follow §3.7. |
+| World/settlement/mission (§6) | Bounds/scales, climate rule shapes and parseability, rosters/styles/buildings/roles, sites/rewards and generator config. | Seeded geography, finite bounds, exact-one settlement, placement/count/lock/wave/boss-fit/loot invariants; map/travel boundary, protected settlements, clock/inn/reset/occupied-site rules and nonrenewing permanent claims. No generated-world census at load time. |
+| AI/combat | Ability/status/moveset/projectile/role references and numeric config, including simulation-radius relationship. | Threat pairs/order/target eligibility, pack response, home return, actual hit/damage/status/dodge/block/combo behavior and live panel time. Valid config alone proves none of these effects. |
+| Persistence/authority (§3.7) | Available rule/config definitions only; no invented save format or transport. | Server-validated actions/outcomes; portable versus character/world versus shared-world ownership; source claims, no downtime catch-up and surviving-mob retention. Validate imports against current rules; reject invalid imports with explanation and original save untouched, not conversion or a claim of earned-progression proof. |
+| UI/engine/assets | Binding/UI/sound/format declarations and frame-budget config. | Player-name input limits, actual RGB payloads, map/input/HUD/feedback and physics/catch-up behavior; nonexistent generated payloads are not malformed definitions. |
+
+Future regressions must exercise each predicate at its mapped boundary, including item 9's
+missing-whole-input cases. A passing current validator does not prove this mapping's enforcement;
+direct data correction and loader/validator/generator/runtime work remain unauthorized.
 
 ### Constraint catalog
 
@@ -1668,11 +1780,11 @@ handling remains deferred and unauthorized.
 | c-zone-size | A zone 256² blocks, region 64² zones; S zone 64² blocks; hybrid zone 64², land 256² zones (D12) | engine |
 | c-block-rgb | every solid block has its own RGB; (0,0,0) in `.cub` = empty | data |
 | c-name-length | player-character name 2..16 ASCII 32–126 (character creation; creature display names are free text) | runtime |
-| c-versions-nonempty | every versioned content instance resolves ≥1 source-version tag explicitly or via a documented family/source inheritance rule, never guessed (item 9); source-independent config and uncertainty-qualified reference annotations follow Validation-contract mapping items 1 and 3 above | load |
+| c-versions-nonempty | every versioned content instance resolves ≥1 source-version tag explicitly or via a documented family/source inheritance rule, never guessed (item 9); source-independent config, qualified annotations and bounded inheritance follow Validation-contract mapping items 1, 3 and 4 above | load |
 | c-roster-ids | every id in `creature-families.json#landscape-rosters` is a creature (D14) | load |
 | c-rideable-conflict | resolved (F2): every `rideable` is a boolean, per-page value; a `?` here is a load error | load |
 | c-hostile-in-city | villagers/animals inside settlements unattackable unless possessed | runtime |
-| c-artifact-stat | load: validate the definition's 7 traversal stat kinds and approved bonus config; generator/runtime: each generated artifact raises exactly one traversal stat plus attack and max HP; accumulation follows §3.4 artifact; live `generators.json#design.artifact` migration is deferred | load+generator/runtime (deferred) |
+| c-artifact-stat | definition/config and generated/runtime boundaries follow mapping item 4 above; seven traversal kinds, approved logarithmic config only, one kind plus attack/max HP per artifact and §3.4 accumulation; direct data correction/enforcement deferred | load+generator/runtime (deferred) |
 | c-sim-radius | `design.spawns.ai.sim-radius` ≥ `aggro-range` + `leash`, so a creature can still notice you and walk home while you are around (D16) | load |
 | c-frame-budget | physics 60 Hz; a tick slower than its budget slows game time instead of stacking catch-up ticks: `Engine.max_physics_steps_per_frame` = `design.frame-budget.max-catch-up-steps` (D17) | engine |
 | c-xp-config | `design.progression`: kill-fraction ∈ (0,1]; gap-mult-range = [lo, hi] with 0 ≤ lo ≤ 1 ≤ hi; gap-per-level ≥ 0 (D19) | load |
@@ -1750,7 +1862,7 @@ separate ultimate node or key-4 ability (§3.5). No presented Assassin question 
 **Wand item 1 — DECIDED 2026-09-28:** mechanically two-handed despite a one-hand pose;
 existing damage/attacks and 32-cube limit stand; common crafting costs 20 wood cubes under D6
 (§3.3 `weapon-type`). No presented Wand question remains.
-Live-data migration and implementation remain deferred; world/reset item 3 records cleared
+Direct data correction and implementation remain deferred; world/reset item 3 records cleared
 dungeon/quest enemy eligibility (§3.1). Persistence approvals and recording status follow.
 
 **Persistence / authority items 1–9 — DECIDED 2026-09-28:** all nine documentation decisions
@@ -1760,14 +1872,14 @@ verification passed (`todo_decide.md §E`, including evidence limits).
 **World bounds / resets items 1–4 — DECIDED 2026-09-28:** all four recorded in
 §3.1/§3.7/§5/§6. No presented world/reset question remains. Independent review and parent
 verification passed (`todo_decide.md §E`, including evidence limits); implementation remains deferred.
-**Validation-contract mapping items 1–3 — DECIDED 2026-09-28:** taxonomy/style classification,
-per-food evidence policy and qualified reference annotations recorded in §5 / §3.4 `pet-food`.
-No presented question remains; unfinished mapping/source work is listed below and in
-`todo_decide.md §E`. Enforcement remains separately unauthorized.
+**Validation-contract mapping items 1–4 — DECIDED 2026-09-28:** items 1–3 stand; item 4
+records required heterogeneous paths/shapes, bounded source inheritance and check boundaries in
+§5, requiring current definitions directly for this undeployed game (§0). No presented question
+remains; source research/attribution below is unfinished. Enforcement is separately unauthorized.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract mapping | items 1–3 recorded, not whole-topic completion: required-path inventory, other source-specific inheritance mappings, per-food research and remaining check boundaries; enforcement deferred |
+| Validation-contract source research/attribution | items 1–4 recorded, not whole-topic completion: per-food history and unscoped mixed-container facts listed in §5 item 4; no guessed labels, new content defaults or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

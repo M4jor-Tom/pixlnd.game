@@ -137,12 +137,12 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Validation-contract mapping direction (2026-09-28):** owner answered **“1: Approved;
-2: Approved; 3: Approved; When done, handoff, commit, push”**. All three policies approved
-without amendment or refusal and recorded below. No presented question remains; broader mapping
-and source work are unfinished. Independent review and parent verification passed (evidence below).
-Ontology documentation only; implementation remains unauthorized. Final handoff/publication/stop:
-`docs/HANDOFF.md`. No next-topic proposals.
+**Validation-contract mapping direction (2026-09-28):** items 1–4 are recorded below; item 4
+adds the detailed mapping and owner correction: undeployed game, no player data to migrate,
+require current rules directly. No presented question remains. Resume remaining **Validation-contract
+source research/attribution**, not uncertain gameplay facts or implementation. Item 4's fresh
+independent review, parent verification and publication remain pending (`docs/HANDOFF.md`).
+No next-topic proposals; earlier verification of items 1–3 does not cover this diff.
 
 **Historical world/reset direction (2026-09-28, superseded):** owner answered **“1: Approved; 2: Approved;
 3: Approved; 4: Approved”**, then **“When done, handoff, commit, push”**. Items 1–4 are recorded.
@@ -644,13 +644,12 @@ Books/formulas items 1–3, artifact items 1–6, Assassin item 1 and Wand item 
 not open questions. Persistence items 1–9 are recorded and reviewed above.
 World bounds / resets items 1–4 are recorded below; no presented question remains.
 Validation-contract mapping approvals/recording are tracked below; broader mapping remains open.
-- [ ] **Validation-contract mapping (item 9 and mapping items 1–3 approved):** still document
-  the exact required table/config path inventory, permitted source-specific inheritance mappings
-  outside these decisions and remaining definition/generator/runtime check boundaries from
-  `domain.md §2/§5`. Per-food source research remains unfinished. Follow existing approvals,
-  not loader defaults; artifact definition/generated checks are already separated in §5.
-  No new inheritance rule, content default or gameplay choice was approved. Enforcement remains
-  deferred; these three recorded policies do not complete the broader mapping topic.
+- [ ] **Validation-contract source research/attribution (item 9 and mapping items 1–4 approved):**
+  required paths/shapes, bounded source inheritance and check boundaries are now recorded in
+  `domain.md §5`. Per-food histories and unscoped mixed-container facts listed there remain
+  research, not guessed labels or new gameplay ballots. No whole-topic completion is claimed;
+  direct data correction and enforcement remain separately unauthorized, with no migration or
+  obsolete-format compatibility work.
 - [ ] **Remaining uncertain facts:** verify or choose explicit hybrid defaults for swamp-lands
   identity, Lion tameability (`null` currently means untameable), resistance meaning and the
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
@@ -663,10 +662,12 @@ Validation-contract mapping approvals/recording are tracked below; broader mappi
 | 1 — Hybrid taxonomy/style configuration | [x] recorded | `domain.md §5` | 50e2e82bbf97add642c6bc73c207e9f1e0a46abd |
 | 2 — Individual pet-food provenance | [x] recorded | `pet-food` | 645e18a51a05997e9cc655abecbc7625942a39e3 |
 | 3 — Qualified source annotations | [x] recorded | §0 / §5 | 8e02ee7a1f9cc90d9f18f8b8c127550337d340a1 |
+| 4 — Required inputs, source scopes and check boundaries | [x] recorded; review/publication pending | §0 / §5 / §7 | pending parent commit |
 
 Item 1 preserves approved creatures/styles without invented ancestry; the unresolved-classification
 alternative was not selected, not a user refusal or automatic content removal. Canonical scope
-and historical-fact exclusions are in §5. No new inheritance rule is approved.
+and historical-fact exclusions are in §5. Item 1 itself approved no inheritance rule; item 4
+now supplies the finite source mappings.
 Item 2 records per-food evidence with unsupported history unresolved, preserving taming. The
 alternative of needing another evidence-backed approach was not selected; neither loader fallback
 nor different taming rules became approved. No actual food labels are assigned; source work remains.
@@ -674,7 +675,27 @@ Item 3 preserves uncertain reference history without selecting available content
 handling unresolved was not selected; deleting references or treating them as confirmed was not
 approved. Swamp Lands identity remains separate. No presented question remains.
 
-**Evidence:** `/tmp/pixlnd-validation-reconcile.zahgTc/approval-brief.md` preserves the exact
+**Item 4 owner answer:** “4: Approved; Mind that the game is not deployed, and that no data
+on earth exists to migrate. Don't implement migration code, just require the new one. Once done,
+handoff, commit, push”. Recorded in §5 without new balance, labels or schema. The correction
+supersedes the proposal's migration terminology: stale checked-in values need direct replacement
+only when separately authorized, never migrators/legacy-read support. The initial parent lesson
+is preserved with that correction (`tasks/lessons.md`). Refusal was not selected; it would have
+left this mapping unfinished, not made old artifact decay/floor acceptable.
+
+**Item 4 evidence / pending gates:** `/tmp/pixlnd-validation-map.k0hNQx/approval-brief.md`
+preserves the exact proposal/correction and names the two read-only source reports. The canonical
+mapping was checked against JSON, approved definitions and existing research, not copied as a
+parallel spec. `item-4-review.md`, `item-4.diff` and `item-4-{diff-check,validator}.log/.exit`
+record writer semantic/scope, `/simplify`, ponytail-review and checks. Writer diff check and
+`timeout 150 nix develop -c godot --headless -s ontology/validate.gd` passed (exit 0,
+`ontology valid`; expected dirty-tree warning). These check existing loaded data, not newly
+documented enforcement. No tests, live JSON, research or checker changes.
+Fresh independent review, parent actual-diff inspection and independent bounded validator/boot
+reruns remain pending, followed by the parent-owned commits/publication in `docs/HANDOFF.md`.
+Remaining source research is listed above; no presented unanswered question or next-topic proposal.
+
+**Historical items 1–3 evidence:** `/tmp/pixlnd-validation-reconcile.zahgTc/approval-brief.md` preserves the exact
 numbered proposals and Approval versus Refusing alternatives. `item-N.diff` holds each exact
 precommit binary diff; `item-N-review.md` records semantic/scope inspection, `/simplify` then
 ponytail-review. Commands: `git diff --check` and
@@ -683,8 +704,8 @@ ponytail-review. Commands: `git diff --check` and
 aggregate in `batch.diff`. All three item validators printed `ontology valid` and exited 0;
 all per-item diff checks passed.
 
-**Independent review / parent verification:** no findings from fresh read-only source/log review
-(`independent-review.md`); the reviewer did not rerun commands or recompute Git comparisons.
+**Historical items 1–3 independent review / parent verification:** no findings from fresh
+read-only source/log review (`independent-review.md`); the reviewer did not rerun commands or recompute Git comparisons.
 Parent inspected the three actual commits/diffs, verified exact saved-diff correspondence and
 five-Markdown-path scope (`parent-audit.log/.exit`), and reran both bounded checks successfully:
 ```
@@ -697,7 +718,7 @@ These checks cover existing loaded data/startup, not Markdown semantics or polic
 No gameplay suite, visual or network checks were run. Source, live data, checker and test files
 remain unchanged; unfinished mapping/source work is listed above.
 
-**Handoff:** this separate verification/handoff commit follows the three items. Clean item HEAD
+**Historical items 1–3 handoff (superseded):** that separate verification/handoff commit follows the three items. Clean item HEAD
 `8e02ee7`; live remote `f414c86` confirmed again with `git ls-remote`
 (`pre-publication-remote.log`). These are pre-publication checkpoints, not a publication claim.
 The final record receives `/simplify`, ponytail-review and fresh sequential bounded rechecks;

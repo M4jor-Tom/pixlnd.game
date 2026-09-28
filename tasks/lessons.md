@@ -10,6 +10,13 @@
 - Rule: use that exact heading and describe the player-facing consequences of accepting or refusing the proposal. Refusal rejects this proposal; it does not silently approve the opposite mechanic.
 - Owner clarification (2026-09-19): a question about a mechanic is not a correction or rejection. Rule: answer it without withdrawing the proposal or recording a design-failure lesson; additional mechanics can address the concern separately.
 
+## Separate settled rules from stale executable data
+
+- Owner clarification: artifact data still describing pre-logarithmic bonuses is stale checked-in data, not a new choice about the approved accumulation rule.
+- Rule: lead with the latest canonical decision, then distinguish superseded data from missing enforcement. Hypothetical invalid output does not mean the definition permits it; do not ask to reapprove settled mechanics when proposing validation documentation.
+- Owner correction (2026-09-28, validation mapping item 4): the game is undeployed; no player data exists to migrate. Require the current rules directly.
+- Rule: do not plan or implement migrators, legacy-read fallbacks or compatibility paths for obsolete saves/config. Direct checked-in data correction and enforcement still need separate authorization; documentation approval does not permit them.
+
 ## Resume the walkthrough, not gameplay implementation
 
 Owner instruction (2026-09-15): **"resume walking through items"** must restore this same

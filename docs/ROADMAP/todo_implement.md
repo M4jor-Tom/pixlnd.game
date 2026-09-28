@@ -10,18 +10,23 @@ implementation; an approved policy is not implementation authorization. Historic
 are not automatically hybrid targets. D4 exclusions (regional gear power loss, `+` items and worn
 degradation) are not backlog features.
 
+Owner clarification (2026-09-28, validation mapping item 4): the game is undeployed and no player
+data exists to migrate. Require current rules directly (`domain.md §0/§5`); data-correction debt
+below means replacing checked-in stale definitions when authorized, never migration code,
+legacy-read fallbacks or obsolete-format compatibility. Implementation remains unauthorized.
+
 ## World (§3.1, slice 475e72b)
 - [ ] World/reset item 1 (`domain.md#world`, `c-world-bounds`, `gen-world`): enforce the approved
   finite 1024×1024-land grid, coordinates −512..511 on each horizontal axis, without wrapping.
   Current terrain generation/streaming is unbounded; live `world-scales.invariants` still says
-  “no borders”. Data/checker migration and generation/runtime enforcement remain unauthorized.
+  “no borders”. Direct data correction, checker and generation/runtime enforcement remain unauthorized.
 - [ ] World/reset item 2 (`domain.md#world`, `c-world-bounds`): mark the outer boundary on the
   map and block outward travel including flight/teleport destinations; allow turning back, with
   no special damage/death/forced teleport. Map/travel enforcement is deferred.
 - [ ] World/reset item 3 (`domain.md#game-clock`, `c-midnight-reset`): daily return of defeated
   ordinary-dungeon/repeatable-daily enemies including bosses; completed one-time guards/boss stay
   cleared, artifact/book claims never renew, world improvements keep their existing reset rules.
-  Clock/dungeon/mission/save enforcement and data/checker migration remain unauthorized.
+  Clock/dungeon/mission/save enforcement, direct data correction and checker work remain unauthorized.
 - [ ] World/reset item 4 (`domain.md#game-clock`, `c-midnight-reset`): defer occupied dungeon/quest
   refresh until all players leave; coalesce missed midnights into one refresh using item 3's
   eligibility. No clock-triggered healing/replacement of survivors or ongoing-fight wipe; preserve
@@ -112,8 +117,8 @@ degradation) are not backlog features.
   night lanterns; midnight reset; possession (S). Humanoid identity beyond the rolled combat role is deferred above.
 - [ ] Creature-family implementation is deferred pending separate authorization (`domain.md#creature-family`,
   family items 1–9 in §E). Live JSON still gives Skeleton Dog primary `skeletons`, not approved `dogs`;
-  the 25 missing assignments, descriptive memberships and constraint support await migration/model/loader/
-  validator work. No runtime family scaling or family `hp-mult` data exists (`design.enemy-hp.family-mult`
+  the 25 missing assignments, descriptive memberships and constraint support await direct data correction
+  and model/loader/validator work. No runtime family scaling or family `hp-mult` data exists (`design.enemy-hp.family-mult`
   defaults to 1). No new numerical stat modifier is approved. Skeleton Dog's 1% dog-relative encounter
   chance is independent per individual dog wherever dogs already spawn, permitting mixed packs and
   preserving settlement safety. Item 7 selects Collie for ordinary outcomes in existing skeleton-only
@@ -154,15 +159,18 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 ## Validation contract (documentation approved; implementation unauthorized)
 - [ ] Mapping item 1 (`domain.md §5`): taxonomy/style ID, shape and reference checks without
   invented source tags; preserve embedded historical facts and separately scoped rosters/buildings.
-  Live-data migration and model/loader/validator changes await separate authorization.
+  Direct data correction and model/loader/validator changes await separate authorization.
 - [ ] Mapping item 2 (`domain.md#pet-food`): source each food's provenance individually, keeping
-  unsupported claims unresolved; then separately authorize data/model/loader/validator migration.
+  unsupported claims unresolved; then separately authorize data correction and model/loader/validator work.
   Current A+S fallback is not evidence; shared-food pairings and source IDs remain unchanged.
 - [ ] Mapping item 3 (`domain.md §5`): preserve qualified reference annotations in later
   model/loader/validator handling; current parsing strips `?`. No schema or parser change is
   authorized now, nor content selection or a decision on Swamp Lands identity.
-- [ ] Finish required-path inventory, other permitted source-specific inheritance mappings and
-  detailed definition/generator/runtime check boundaries from existing approvals before enforcement.
+- [ ] Mapping item 4 (`domain.md §5`): implement the recorded required-path/shape, bounded
+  source-inheritance and layer-specific checks when separately authorized, including missing-whole-input
+  negatives and cumulative errors. Require current artifact log config directly; no old decay/floor
+  alternative. Finish the listed unscoped source research before its affected provenance checks;
+  do not invent tags, save schemas or compatibility paths.
 
 ## Meta / tooling
 - [ ] Save-data (§3.7): nothing persists (world seed, character, discovered lands).
@@ -195,13 +203,13 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
   identifier, adapter, gem trader. Item 10's native panel capture checks rendering with empty stock;
   the full vendor/stock/trade flow is not visually verified.
 - [ ] No crafting, customization bench.
-- [ ] Wand item 1 (`domain.md#weapon-type`, `c-hands`): migrate provisional live handedness to
+- [ ] Wand item 1 (`domain.md#weapon-type`, `c-hands`): correct provisional checked-in handedness to
   2H and the common recipe from 10 to 20 wood cubes; enforce no other hand item and the existing
   32-cube limit, preserving damage/attacks and rarity gems. Equipment/crafting/customization and
   validation coverage require separate authorization; no live data or runtime changed.
 - [ ] Books/formulas item 1 (`domain.md#book-of-crafting`, `c-book-recipe-persistence`): persist
   book-learned recipes with the character across lands/sessions, without relearning on travel.
-  Live-data migration and crafting/save-data implementation remain unauthorized; cross-world
+  Direct data correction and crafting/save-data implementation remain unauthorized; cross-world
   portability now follows persistence item 1 (`save-data`).
 - [ ] Books/formulas item 2 (`domain.md#recipe`, `c-recipe-learning`): shared character recipe
   collection; books teach only unknown recipes without rerolls/compensation; known formula
@@ -221,7 +229,7 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
   matching-only traversal counts versus all-artifact attack/maximum-HP counts. No artifact levels,
   traversal-gate bypass, old decay/floor, replacement clamp or extension to ordinary gear.
   Live `generators.json#design.artifact`, `key-items.json#artifact` and hybrid `rulesets.json`
-  wording still carry old D6 policy; migrate only with separate authorization. Model/loader/
+  wording still carry old D6 policy; replace directly only with separate authorization. Model/loader/
   validator support, generated rewards and runtime recalculation remain deferred and unauthorized.
 - [x] Skill tree (D20, `game/progression/skill_tree.gd`, `skill_panel.gd` on X): spending, unlock rule, per-point multipliers.
   Class actives have runtimes since D21 (see Combat). Still open: shared skills other than Swimming do nothing until pets,
@@ -237,12 +245,12 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 - [ ] HUD shows level/xp as a text line; the portrait (head, name, class) is still missing (`hud-element` portrait).
 
 ## Settlements (§3.1 settlement, slice D22)
-- [ ] Item 1's exact-one-settlement target (`domain.md#settlement`): migrate the conflicting hybrid
+- [ ] Item 1's exact-one-settlement target (`domain.md#settlement`): correct the conflicting hybrid
   `settlements-per-land: "many"` flag and enforce the exact count; current config is 1 but validation
   allows ≥1 and placement can fail on all-sea land. No live-data, validator or generation changes authorized.
 - [ ] Inn item 2 (`domain.md#game-clock`): implement separate paid timed sleep, preserving free recovery.
   Runtime has no clock/skip; the hybrid `inn-cost` flag lacks the service distinction.
-  Live-data migration and implementation remain unauthorized.
+  Direct data correction and implementation remain unauthorized.
 - [ ] Inn item 3 (`c-midnight-reset`): apply ordinary resets once on a midnight-crossing skip,
   without sleep-specific shop refreshes/mission rerolls. S refresh records are reference, not hybrid
   targets. Cleared dungeon/quest enemy eligibility and occupied-site timing follow world/reset items 3–4 above.
@@ -287,7 +295,7 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
   never drop, no upgrade cubes (`item.upgrades`, `c-cube-cap`).
 - [x] Two-handed weapon/shield conflicts are rejected atomically in either equip order (item 10).
   The broader approved equipment-model/slot implementation remains deferred (§E item 3);
-  the approved two-handed wand's migration/enforcement is deferred under Items above.
+  the approved two-handed wand's data correction/enforcement is deferred under Items above.
 - [ ] Combo only adds damage; armor piercing per combo and the per-weapon cap colours are missing
   (`combo-system`).
 - [ ] Death: player respawns at the spawn point after 2 s; no revival statue / shrine, no enemy HP
