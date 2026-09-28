@@ -1286,6 +1286,14 @@ S: Steam-friends P2P (J), shared seed, keep own position, meet via free flights 
 artifacts lootable by all, ember per participant, other players' level on highlight, emotes
 `/sit /wave /dance /pet`; no PvP, no trading UI, no dedicated server.
 
+**Hybrid persistence item 6 (owner approved, 2026-09-28):** clients **request actions**;
+the server validates movement, attacks, costs, damage, loot, purchases and progression against
+the rules and decides gameplay outcomes. A client cannot simply announce extra money or a
+successful hit. Client predictions may need correction to authoritative outcomes.
+Alpha's client-authoritative protocol and `generators.json#network-alpha` are historical
+reference, not hybrid authority. This chooses no transport/protocol, anti-cheat numeric defaults
+or central trust service. Networking and enforcement remain deferred and unauthorized.
+
 ### input-binding
 Default keys per version. → `instances/keybinds.json`. A: no remapping; S: remappable, saved.
 Hybrid defaults (D13): `keybinds.json#hybrid`, the engine builds its InputMap from it.
@@ -1644,7 +1652,7 @@ Live-data migration and implementation remain deferred; cleared dungeon/quest en
 eligibility stays in world/reset below. Persistence approvals and recording status follow.
 
 <!-- persistence-index -->
-**Persistence / authority — DECIDED 2026-09-28:** all nine recommendations approved; items 1–5 recorded. Items 6–9 are approved, awaiting recording.
+**Persistence / authority — DECIDED 2026-09-28:** all nine recommendations approved; items 1–6 recorded. Items 7–9 are approved, awaiting recording.
 Canonical rules: §3.1/§3.2/§3.7. Implementation is deferred; independent review and parent
 verification are pending (`todo_decide.md §E`). Next topic, named only: **World bounds / resets**.
 <!-- /persistence-index -->

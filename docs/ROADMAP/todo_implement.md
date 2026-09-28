@@ -130,6 +130,7 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 - [ ] Item 3 — world-shared terrain exploration, distinct from personal shrine/flight/lore unlocks (`world.discovered-zones`).
 - [ ] Item 4 — persist world-shared supplier/barrier/village-curse changes under existing reset rules (`save-data`).
 - [ ] Item 5 — personal artifact/one-time-book source claims per saved world (`c-permanent-source-claim`), preserving duplicate recipes and ordinary loot.
+- [ ] Item 6 — server validation of action requests and authoritative gameplay outcomes (`multiplayer-mode`), not Alpha client trust.
 <!-- /persistence-debt -->
 
 ## Meta / tooling
