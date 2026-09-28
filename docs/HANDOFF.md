@@ -2,13 +2,40 @@
 
 ## Ontology walkthrough entry point (2026-09-28)
 
-**Assassin reconciled (2026-09-28):** owner answered **“1: Approved; Once item reconciled,
+**Wand handedness reconciled (2026-09-28):** owner answered **“1: Approved; When done,
+handoff, commit, push”**. Item **1** is recorded in **`1f5eabc`**: wands are mechanically
+two-handed despite a one-hand pose, with no other hand item. Existing damage/beam attacks and
+the 32-cube limit stand; the common recipe is 20 wood cubes at a workbench under D6, preserving
+rarity gems. Canonical rule: `ontology/domain.md#weapon-type` / `c-hands`. The one-handed
+alternative was not selected; no presented Wand question remains.
+
+**Applied versus deferred:** ontology documentation only. Live wand data still parses as
+one-handed and its recipe still lists 10 wood cubes. Data migration, equipment/crafting/
+customization enforcement and validation coverage remain separately unauthorized; no gameplay,
+live JSON, tests, model/loader/validator changes. Deferrals: `todo_implement.md` Items.
+
+**Item verification:** semantic/scope inspection, `/simplify`, ponytail-review, diff check,
+bounded ontology validation, existing item/projectile regressions and headless boot passed.
+Fresh independent review found no issues through source/saved-log inspection; parent confirmed
+the actual item commit matches the reviewed diff and reran all four bounded checks successfully
+for the final handoff (exit 0). Evidence and limits: `todo_decide.md §E`,
+`/tmp/pixlnd-wand-reconcile.bNMtmi/`. These checks cover existing loaded data/gameplay/startup,
+not enforcement of the new policy. No full suite, visual or network checks were run.
+
+**Authorized publication:** commit this final handoff and push `fix/ontology-reconciliation`,
+verify remote/local HEAD equality and a clean worktree, then stop. No merge, force-push or history
+rewrite. **Pre-publication checkpoint:** clean item HEAD `1f5eabc`; remote `83b318b` confirmed
+with `git ls-remote`. The separate handoff commit follows item 1; this is not a publication claim.
+Inspect actual Git state on resumption. Next topic, named only: **Persistence / authority**.
+No next-topic proposal is presented. Older publication authorizations below are historical.
+
+**Historical Assassin handoff (2026-09-28, superseded):** owner answered **“1: Approved; Once item reconciled,
 handoff, commit, push”**. Item **1** is recorded in **`b19662b`**: Camouflage is one rank-3
 skill on key 3, with no separate fourth node or key-4 ability, investment or charge. This is
 an explicit Assassin exception to D10; existing Camouflage behavior and other specializations
 stand. Canonical rule: `ontology/domain.md#skill-tree` / `c-tree-shape`.
-No presented Assassin question remains. Next topic, named only: **Wand handedness**.
-No new proposal is presented in this handoff; stop after publication.
+No presented Assassin question remains. Its historical next topic, **Wand handedness**, is
+now reconciled above. This older handoff presented no next-topic proposal.
 
 **Applied versus deferred:** only ontology documentation changed. Current key-3/no-key-4 runtime
 already matches. Live `also-ultimate` metadata clarification and validation coverage remain
@@ -22,10 +49,10 @@ three bounded checks for the final handoff (exit 0). Evidence: §E and
 not exhaustive Camouflage gameplay or deferred threat enforcement; no full suite, visual or
 network checks were run.
 
-**Authorized publication:** commit this final handoff and push `fix/ontology-reconciliation`,
-verify remote/local HEAD equality and a clean worktree, then stop. No merge, force-push or history
-rewrite. **Pre-publication checkpoint:** clean item HEAD `b19662b`; remote `0399f15` verified
-again before publication with `git ls-remote`. The separate handoff commit follows item 1. This is not a
+**Historical Assassin publication authorization (superseded):** commit that handoff and push
+`fix/ontology-reconciliation`, verify remote/local HEAD equality and a clean worktree, then stop.
+No merge, force-push or history rewrite. **Pre-publication checkpoint:** clean item HEAD `b19662b`;
+remote `0399f15` verified again before publication with `git ls-remote`. The separate handoff commit follows item 1. This is not a
 publication claim; inspect actual Git state on resumption. Older authorizations below are historical.
 
 **Historical artifacts handoff (2026-09-28):** all six approved items are recorded in separate
@@ -238,8 +265,8 @@ The publication changes only four Markdown files, not runtime/live data; these t
 implementation of the new policies. Commands and session-local evidence: `todo_decide.md §E`.
 
 **Books/formulas items 1–3 recorded; no presented books question remains.** Artifact approvals
-supersede D6's accumulation rule, not its other decisions. Assassin item 1 and the current
-handoff status are at the entry point above. No new proposals in this handoff. Traversal
+supersede D6's accumulation rule, not its other decisions. Assassin and Wand item 1 are recorded;
+the current handoff status is at the entry point above. No new proposals in this handoff. Traversal
 items **1–5** are recorded and reviewed. Settlements/inn
 items **1–4** and family items **1–9** are recorded.
 Aggro items **1–14** are recorded; do not re-ask 13–14. Restart persistence remains a later topic.
@@ -281,7 +308,8 @@ conflicting hand pair before moving items or emitting `changed`. Greatsword and 
 went red-to-green in both equip orders, preserve bag/worn state and permit valid swaps after
 removing the conflict. All 13 game tests, ontology validation and headless boot pass. The equipment
 repair preserved the earlier block runtime/test files. Handedness/slot data remain unchanged;
-wand handedness is still unresolved, and this does not implement the broader item-3 slot model.
+the later Wand item 1 rule is documentation-only and its migration remains deferred. This repair
+does not implement the broader item-3 slot model.
 The separately authorized **panel-time runtime repair** is applied: panels gate gameplay input
 instead of skipping the player's physics update, so existing timers/effects and forced movement
 continue; lethal DOT ends the frame. Regressions using all three real panels went red-to-green;

@@ -133,10 +133,10 @@ Never propose or implement regional gear power loss in pixlnd, even for Cube Wor
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
 **Current direction (2026-09-28):** owner answered **“1: Approved; When done, handoff, commit,
-push”** for Wand handedness. Item 1 is recorded below for documentation only. Verify and commit
-the item, then the final handoff; publish `fix/ontology-reconciliation`, verify remote/local
-HEAD equality and a clean worktree, then stop. No gameplay, live JSON, tests, model/loader/validator
-changes, merge or history rewrite. Next topic, named only: **Persistence / authority**.
+push”** for Wand handedness. Documentation-only item 1 is recorded in **`1f5eabc`** and passed
+checks and independent review below. Commit the final handoff; publish `fix/ontology-reconciliation`,
+verify remote/local HEAD equality and a clean worktree, then stop. No gameplay, live JSON, tests,
+model/loader/validator changes, merge or history rewrite. Next topic, named only: **Persistence / authority**.
 
 **Historical Assassin direction (2026-09-28, superseded):** owner answered **“1: Approved; Once item reconciled,
 handoff, commit, push”** for Assassin. Item 1 is recorded below: single rank-3 Camouflage on
@@ -606,6 +606,37 @@ parses as one-handed, and `recipes.json#gear-weapons.wand` still costs 10 wood c
 an override. Migration, equipment/crafting/customization enforcement and validation coverage remain
 separately unauthorized (`todo_implement.md`). Next topic, named only: **Persistence / authority**;
 no next-topic proposal is presented.
+
+**Item 1 commit:** `1f5eabc` (`docs(ontology): reconcile two-handed wand equipment and crafting`).
+Only four Markdown paths changed: `domain.md`, `ontology/README.md` and the two roadmap ledgers.
+Parent inspected semantic fidelity and scope, ran `/simplify` (trimmed repeated checkpoint detail
+and a pending-evidence sentence), then ponytail-review (no further cuts). Fresh independent review
+found no issues through source/saved-log inspection, not rerun commands. Parent confirmed the
+actual commit exactly matches the reviewed diff and the worktree was clean after committing.
+
+**Fresh item checks — all exit 0:** `git diff --check` and these bounded checks:
+```
+timeout 150 nix develop -c godot --headless -s ontology/validate.gd
+timeout 150 nix develop -c godot --headless -s game/items/test_items.gd
+timeout 150 nix develop -c godot --headless -s game/combat/test_projectiles.gd
+timeout 150 nix develop -c godot --headless --quit
+```
+Results: `ontology valid`, `items ok`, `test_projectiles: OK`, normal startup. Expected Nix
+dirty-tree warnings only. Evidence: `/tmp/pixlnd-wand-reconcile.bNMtmi/` (`approval-brief.md`,
+`item-1.diff`, `parent-item-1.diff`, `committed-item-1.diff`, `item-1-review.md`,
+`independent-review.md`, `item-1-*.log/.exit`, `item-1-commit.txt`). Checks cover current loaded
+data, existing inventory/beam behavior and startup, not enforcement of the newly documented rule.
+No full gameplay suite, visual or network checks were run; gameplay/data/checker files are unchanged.
+
+**Final handoff checks:** parent inspected the two-file handoff diff, ran `/simplify` (trimmed
+redundant next-topic wording), then ponytail-review (no further cuts), and reran all four bounded
+checks above successfully (exit 0; `final-*.log/.exit`, `handoff-review.md`). Final diff checks
+passed. Only five Markdown paths differ from starting HEAD `83b318b`; runtime/live data are unchanged.
+
+**Pre-publication checkpoint:** clean item HEAD `1f5eabc`, remote `83b318b` confirmed again with
+`git ls-remote`. The separate final handoff follows item 1. Push only the authorized branch without
+force or merge, verify remote/local HEAD equality and a clean worktree, then stop. This is not a
+publication claim; inspect actual Git state on resumption.
 
 ### Assassin ultimate — item 1 recorded (2026-09-28)
 
