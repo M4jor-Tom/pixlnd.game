@@ -35,9 +35,9 @@ unauthorized.
 / §5–6: finite 1024×1024 lands with a map-marked outer boundary; eligible daily enemies return
 without renewing permanent claims or completed one-time objectives; occupied sites wait for
 all players to leave, with one pending refresh and no clock-triggered survivor/fight reset.
-No presented world/reset question remains. Independent review and parent verification are pending;
-runtime, live-data and checker changes remain unauthorized. Mapping/evidence and publication
-direction: §E / `docs/HANDOFF.md`. Next topic, named only: **Validation-contract mapping**.
+No presented world/reset question remains. Independent review and parent verification passed;
+evidence and limits: §E. Runtime, live-data and checker changes remain unauthorized. Publication/
+stop direction: `docs/HANDOFF.md`. Next topic, named only: **Validation-contract mapping**.
 
 **Aggro batch applied: 1–14/14.** The original twelve and follow-ups 13–14 were approved and
 recorded on 2026-09-27; their former open boundaries are settled.

@@ -1723,7 +1723,7 @@ Canonical rules: §3.1/§3.2/§3.7. Implementation is deferred; independent revi
 verification passed (`todo_decide.md §E`, including evidence limits).
 **World bounds / resets items 1–4 — DECIDED 2026-09-28:** all four recorded in
 §3.1/§3.7/§5/§6. No presented world/reset question remains. Independent review and parent
-verification are pending (`todo_decide.md §E`); implementation remains deferred.
+verification passed (`todo_decide.md §E`, including evidence limits); implementation remains deferred.
 Next topic, named only: **Validation-contract mapping** (item 9 policy already approved).
 
 | topic | still undecided / incomplete |

@@ -6,17 +6,23 @@
 **“When done, handoff, commit, push”**. World bounds / resets items **1–4 are recorded**.
 No presented world/reset question remains. Next topic, named only: **Validation-contract mapping**
 (existing item 9 policy approved; remaining path/provenance/check-boundary mappings).
-Canonical rules: `ontology/domain.md`; mapping/evidence: `docs/ROADMAP/todo_decide.md §E`,
-`/tmp/pixlnd-world-reset-reconcile.xc2Nuh/`. Independent review and parent verification are pending.
-Ontology documentation only; runtime, live JSON, tests and checker changes remain unauthorized.
-Per-item diff checks/loaded-data validation and final startup smoke evidence are in §E; none
-proves the new runtime rules. The parent must fill item 4’s final hash and actual review verdict.
+Four item commits: `a126910`, `32a8c49`, `3f92a32`, `539cc70`. Canonical rules:
+`ontology/domain.md#world` / `#game-clock`; mapping/evidence: `docs/ROADMAP/todo_decide.md §E`,
+`/tmp/pixlnd-world-reset-reconcile.xc2Nuh/`.
 
-**Publication boundary:** the writer records four item commits only; the parent performs fresh
-read-only review/audit, finalizes the handoff/verification commit, then publishes only
-`fix/ontology-reconciliation`, verifies live remote/upstream/local equality and clean status,
-and stops. No next-topic proposals, merge, force-push or history rewrite. Starting clean HEAD,
-upstream and live remote: `7bff485cfb1c3e68a95778a5c1b29244997e2e14`; this is not a publication claim.
+**Verification:** each item passed semantic/scope inspection, `/simplify`, ponytail-review,
+diff checks and bounded ontology validation. Fresh independent review found no issues through
+source/log inspection; parent inspected all four actual commits/diffs, confirmed exact saved-diff
+matches and reran ontology validation and headless boot successfully (exit 0). Checks cover
+loaded data/startup, not enforcement of the new policies. Ontology documentation only; boundary,
+map/travel, clock/reset, occupancy and persistence enforcement remain deferred in `todo_implement.md`.
+No gameplay, live JSON, tests or checker implementation changes are authorized.
+
+**Authorized publication:** commit this final verification/handoff and push only
+`fix/ontology-reconciliation`, verify live remote/upstream/local equality and clean status, then
+stop. No next-topic proposals, merge, force-push or history rewrite. **Pre-publication checkpoint:**
+clean item HEAD `539cc70`, remote `7bff485` confirmed with `git ls-remote`. The separate handoff
+commit follows; inspect actual Git state on resumption, not this checkpoint as proof of publication.
 
 **Historical unanswered checkpoint (superseded):** the prior “I'll handle this with the next
 agent” handoff preserved world/reset items 1–4 unanswered; the current approvals replace that

@@ -140,10 +140,10 @@ checker implementation remain unauthorized. Verification record: `7a79913`.
 **Current world/reset direction (2026-09-28):** owner answered **“1: Approved; 2: Approved;
 3: Approved; 4: Approved”**, then **“When done, handoff, commit, push”**. Items 1–4 are recorded.
 No presented world/reset question remains; item 2’s dependency on item 1 is satisfied.
-Only the five existing Markdown paths may change; runtime, live JSON, tests and checker work
-remain unauthorized. Independent review and parent verification are pending. The writer makes
-four item commits; the parent finalizes verification/handoff and publishes only
-`fix/ontology-reconciliation`, checks remote/upstream/local equality and clean status, then stops.
+Only five existing Markdown paths changed; runtime, live JSON, tests and checker work remain
+unauthorized. Independent review found no issues; parent verified actual commits/diffs and reran
+checks successfully (evidence below). Commit this final handoff and push only
+`fix/ontology-reconciliation`, verify remote/upstream/local equality and clean status, then stop.
 No merge, force-push, history rewrite or next-topic proposals. Next topic, named only:
 **Validation-contract mapping** (existing item 9 policy already approved).
 
@@ -658,21 +658,33 @@ Canonical semantics are recorded in `domain.md`; all four items are applied as d
 | 1 — Finite world | [x] recorded | `world`, `c-world-bounds`, `gen-world` | a1269106043f226550009a96b6f7a5f6b615c92b |
 | 2 — Outer boundary | [x] recorded | `world`, `c-world-bounds` | 32a8c4948ba28d3bea1fa8a5ec39bf47d2b79ae3 |
 | 3 — Cleared-enemy eligibility | [x] recorded | `game-clock`, `c-midnight-reset`, `gen-dungeon`, `gen-missions` | 3f92a32ca1f527cfb48d78abe366e5d67cff1ea1 |
-| 4 — Occupied-site refresh | [x] recorded | `game-clock`, `c-midnight-reset`, `c-threat-pair` | awaiting parent fill after item commit |
+| 4 — Occupied-site refresh | [x] recorded | `game-clock`, `c-midnight-reset`, `c-threat-pair` | 539cc70880e822d77bd328ed2074bf7b08671593 |
 
 **Evidence:** `/tmp/pixlnd-world-reset-reconcile.xc2Nuh/` holds the approval brief, exact
 `item-N.diff` pre-commit diffs, `item-N-review.md`, `item-N-{diff-check,validator,commit}.{log,exit}`,
-`commit-map.md`, final `batch.diff` and `final-git.log`. Each item receives semantic/scope
+`commit-map.md`, final `batch.diff` and `final-git.log`. Each item passed semantic/scope
 inspection, `/simplify`, ponytail-review, `git diff --check` and bounded ontology validation
-before commit. Commands:
+before its separate commit. All four validators printed `ontology valid` and exited 0.
+
+**Independent review and parent verification:** fresh read-only review found no issues through
+source/saved-log inspection, not rerun commands (`independent-review.md`). Parent inspected all
+four actual commits/diffs/logs and independently confirmed their exact saved-diff correspondence,
+five-Markdown-path scope, preserved proposal text and bound arithmetic (`parent-audit.{log,exit}`).
+Parent reran both bounded checks successfully (exit 0; `parent-{validator,boot}.{log,exit}`):
 ```
 timeout 150 nix develop -c godot --headless -s ontology/validate.gd
 timeout 150 nix develop -c godot --headless --quit
 ```
-Final startup smoke evidence: `final-boot.{log,exit}`. These check existing loaded data/startup,
-not Markdown semantics or new boundary/reset enforcement. No gameplay suite, visual or network
-checks are claimed. Fresh independent review and parent audit/handoff remain pending, including
-item 4’s actual hash and final pre-publication Git checkpoint; the writer does not push.
+Results: `ontology valid` and normal hybrid startup. Checks cover existing loaded data/startup,
+not automated Markdown consistency or new boundary/reset enforcement. No gameplay suite, visual
+or network checks were run. Live data, gameplay and checker files remain unchanged.
+
+**Handoff checkpoint:** clean item HEAD `539cc70`; live remote `7bff485` confirmed again with
+`git ls-remote` (`pre-publication-remote.log`). This separate final handoff commit follows the
+four items; these references are pre-publication evidence, not a claim of publication.
+The final handoff receives `/simplify`, ponytail-review and fresh bounded rechecks before commit;
+evidence: `handoff-review.md`, `handoff.diff`, `handoff-{diff-check,validator,boot}.{log,exit}`.
+After the authorized push, verify remote/upstream/local HEAD equality and clean state, then stop.
 
 **Historical presentation (now approved):** the exact proposals and their pre-answer “Settled”
 context below are retained for provenance, not as current unanswered questions.
