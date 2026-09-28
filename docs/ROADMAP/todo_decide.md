@@ -140,9 +140,9 @@ checker implementation remain unauthorized. Verification record: `7a79913`.
 **Validation-contract mapping direction (2026-09-28):** items 1–4 are recorded below; item 4
 adds the detailed mapping and owner correction: undeployed game, no player data to migrate,
 require current rules directly. No presented question remains. Resume remaining **Validation-contract
-source research/attribution**, not uncertain gameplay facts or implementation. Item 4's fresh
-independent review, parent verification and publication remain pending (`docs/HANDOFF.md`).
-No next-topic proposals; earlier verification of items 1–3 does not cover this diff.
+source research/attribution**, not uncertain gameplay facts or implementation. Item 4 is committed
+as `25552b5`; fresh independent review and parent verification passed (evidence below).
+Final handoff/publication/stop: `docs/HANDOFF.md`. No next-topic proposals.
 
 **Historical world/reset direction (2026-09-28, superseded):** owner answered **“1: Approved; 2: Approved;
 3: Approved; 4: Approved”**, then **“When done, handoff, commit, push”**. Items 1–4 are recorded.
@@ -662,7 +662,7 @@ Validation-contract mapping approvals/recording are tracked below; broader mappi
 | 1 — Hybrid taxonomy/style configuration | [x] recorded | `domain.md §5` | 50e2e82bbf97add642c6bc73c207e9f1e0a46abd |
 | 2 — Individual pet-food provenance | [x] recorded | `pet-food` | 645e18a51a05997e9cc655abecbc7625942a39e3 |
 | 3 — Qualified source annotations | [x] recorded | §0 / §5 | 8e02ee7a1f9cc90d9f18f8b8c127550337d340a1 |
-| 4 — Required inputs, source scopes and check boundaries | [x] recorded; review/publication pending | §0 / §5 / §7 | pending parent commit |
+| 4 — Required inputs, source scopes and check boundaries | [x] recorded and verified | §0 / §5 / §7 | 25552b50e5d41d2a34767e94fba86566cda3a4fe |
 
 Item 1 preserves approved creatures/styles without invented ancestry; the unresolved-classification
 alternative was not selected, not a user refusal or automatic content removal. Canonical scope
@@ -683,7 +683,7 @@ only when separately authorized, never migrators/legacy-read support. The initia
 is preserved with that correction (`tasks/lessons.md`). Refusal was not selected; it would have
 left this mapping unfinished, not made old artifact decay/floor acceptable.
 
-**Item 4 evidence / pending gates:** `/tmp/pixlnd-validation-map.k0hNQx/approval-brief.md`
+**Item 4 evidence:** `/tmp/pixlnd-validation-map.k0hNQx/approval-brief.md`
 preserves the exact proposal/correction and names the two read-only source reports. The canonical
 mapping was checked against JSON, approved definitions and existing research, not copied as a
 parallel spec. `item-4-review.md`, `item-4.diff` and `item-4-{diff-check,validator}.log/.exit`
@@ -691,9 +691,26 @@ record writer semantic/scope, `/simplify`, ponytail-review and checks. Writer di
 `timeout 150 nix develop -c godot --headless -s ontology/validate.gd` passed (exit 0,
 `ontology valid`; expected dirty-tree warning). These check existing loaded data, not newly
 documented enforcement. No tests, live JSON, research or checker changes.
-Fresh independent review, parent actual-diff inspection and independent bounded validator/boot
-reruns remain pending, followed by the parent-owned commits/publication in `docs/HANDOFF.md`.
-Remaining source research is listed above; no presented unanswered question or next-topic proposal.
+Fresh independent source/log review found no issues (`independent-review.md`); the reviewer did
+not execute Git/tests or recompute hashes. Parent inspected the actual diff and confirmed exact
+saved-diff correspondence before and after item commit (`parent-audit.log/.exit`,
+`parent-precommit.diff`, `item-4-committed.diff`). Only the six authorized Markdown paths changed.
+Parent independently reran both bounded commands successfully (exit 0):
+```
+timeout 150 nix develop -c godot --headless -s ontology/validate.gd
+timeout 150 nix develop -c godot --headless --quit
+```
+`parent-{validator,boot}.log/.exit` show `ontology valid` and normal hybrid startup, with expected
+dirty-tree warnings. They do not prove new enforcement or prose semantics. No gameplay suite,
+visual or network checks were run. Source research remains as listed above, including the existing
+six-versus-five cut-food summary discrepancy; preserve F11 and do not invent a sixth entry.
+No presented unanswered question or next-topic proposal remains.
+
+**Item 4 handoff:** this separate final verification/handoff follows item `25552b5`. Pre-publication
+remote `0f4e954` was confirmed with `git ls-remote` (`pre-publication-remote.log`); inspect actual
+Git state on resumption. Final record review/diff/check evidence: `handoff-review.md`, `handoff.diff`,
+`handoff-{diff-check,validator,boot}.log/.exit`. Publish only the authorized branch, verify
+local/upstream/live remote equality and a clean worktree, then stop (`docs/HANDOFF.md`).
 
 **Historical items 1–3 evidence:** `/tmp/pixlnd-validation-reconcile.zahgTc/approval-brief.md` preserves the exact
 numbered proposals and Approval versus Refusing alternatives. `item-N.diff` holds each exact

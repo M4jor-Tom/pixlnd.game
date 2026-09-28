@@ -30,8 +30,9 @@ required heterogeneous paths/shapes, bounded source inheritance and definition/g
 checks; items 1–3 stand. The game is undeployed, with no player data to migrate: require current
 rules directly, not legacy compatibility (§0). Per-food and unscoped mixed-container history
 remain source research/attribution, not whole-topic completion or unanswered gameplay proposals.
-Item 4's independent review, parent verification and publication remain pending; evidence/limits:
-`docs/ROADMAP/todo_decide.md §E`. No data/code/checker work authorized; handoff: `docs/HANDOFF.md`.
+Item 4 is committed as `25552b5`; independent review found no issues and parent diff/validator/boot
+verification passed. Evidence/limits: `docs/ROADMAP/todo_decide.md §E`. No data/code/checker work
+authorized; final handoff/publication/stop: `docs/HANDOFF.md`.
 
 **Persistence / authority — all nine documentation decisions recorded (2026-09-28).**
 No presented Persistence / authority question remains. Independent review and parent verification

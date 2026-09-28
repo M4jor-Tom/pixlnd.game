@@ -2,7 +2,7 @@
 
 ## Ontology walkthrough entry point (2026-09-28)
 
-**Validation-contract mapping — item 4 recorded (2026-09-28), final review/publication pending.**
+**Validation-contract mapping — item 4 recorded and verified (2026-09-28), commit `25552b5`.**
 Owner answer: **“4: Approved; Mind that the game is not deployed, and that no data on earth
 exists to migrate. Don't implement migration code, just require the new one. Once done, handoff,
 commit, push”**. `ontology/domain.md §5` is the canonical required-path/shape, source-inheritance
@@ -16,17 +16,26 @@ save/import enforcement remain separately unauthorized. Existing validator succe
 prove these newly documented checks. Evidence: `todo_decide.md §E` and
 `/tmp/pixlnd-validation-map.k0hNQx/`.
 
-**Parent still to do:** fresh read-only review, actual-diff inspection and independent bounded
-ontology-validator/headless-boot reruns. Then the authorized item-4 docs commit and separate final
-verification/handoff commit, push only `fix/ontology-reconciliation`, verify local/upstream/live
-remote equality and clean worktree, and stop. No worker commit/push or publication is claimed.
-Base checkpoint: `0f4e954`; inspect actual Git state rather than treating it as publication proof.
+**Verification:** `/simplify` and ponytail-review completed; fresh independent source/log review
+found no issues. Parent inspected the actual diff, confirmed its exact match to the reviewed
+saved diff and item commit, and reran bounded ontology validation and headless boot successfully
+(exit 0). These check existing loaded data/startup, not new enforcement; no gameplay suite,
+visual or network checks were run. Evidence and limits: `todo_decide.md §E`.
+
+**Authorized publication:** commit this separate final verification/handoff after item `25552b5`,
+push only `fix/ontology-reconciliation`, verify local/upstream/live remote equality and clean
+worktree, then stop. No merge, force-push, history rewrite or new proposals. **Pre-publication
+checkpoint:** clean item HEAD `25552b5`; live remote `0f4e954` confirmed with `git ls-remote`.
+The final handoff commit follows; inspect actual Git state on resumption, not this checkpoint
+as proof of publication.
 
 **Exact resumption:** remaining **Validation-contract source research/attribution** in §5 item 4:
 individual food histories and unscoped mixed-container facts. Use the named JSON/source sections
 and `#pet-food`; preserve uncertainty, no ancestry from species/IDs, no availability from source
 tags, no guessed labels or reopened approvals. Swamp Lands identity, Lion tameability, resistance
-and gear HP remain later uncertain-fact work. No new proposal after this handoff.
+and gear HP remain later uncertain-fact work. Research also retains the existing inventory-count
+mismatch: `pet-food` prose says six cut foods, JSON lists five; preserve F11's obtainable Banana
+Mash rather than inventing a sixth cut entry. No new proposal after this handoff.
 
 **Historical items 1–3 checkpoint (superseded):** owner approved all three, then requested
 handoff/commit/push. Commits `50e2e82` / `645e18a` / `8e02ee7` recorded taxonomy/style
