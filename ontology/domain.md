@@ -241,6 +241,8 @@ services and settlement-safety rules are unchanged. Live `rulesets.json#ruleset-
 still says `settlements-per-land: "many"`; flag migration and enforcement remain deferred.
 `design.settlement.per-land` already equals 1; the current validator only checks ≥1.
 
+Hybrid village-curse state is world-shared and persistent under `save-data` item 4.
+
 ### district
 City quarter. `A` → `instances/buildings.json#districts`.
 
@@ -1240,6 +1242,7 @@ Per realm; lore sites ≈ +10 % each; 100 % reveals all its artifacts on the map
 
 ### gnome-supplier `S`
 4 captives per land at white/green/blue/purple missions; each rescue raises shop stock one rarity.
+Hybrid rescues benefit the saved world, not only the rescuer (`save-data`, persistence item 4).
 
 ### circle-of-power `S`
 Kill restless warrior (5★) → eternal ember → light brazier → land-wide power buff (+10 % attack, +10 % max HP, D6);
@@ -1332,6 +1335,13 @@ progression. Returning restores that world's records; first entry uses its start
 under the existing D22 `world.spawn-rule`, not a new spawn policy. Independently created worlds
 have separate mutable histories even when their seeds match. Seed equality determines generation
 and geography, **not saved-world identity**; no storage format or identity-allocation scheme is chosen.
+
+**Hybrid persistence item 4 (owner approved, 2026-09-28):** supplier rescues, removed
+barriers and resolved village curses belong to **that saved world**, not the character who
+completed them. Their effects benefit everyone there, including later arrivals, and survive
+sessions **subject to each mechanic's existing reset rules**. Visitors inhabit one consistent
+world and may find these objectives already completed. This sets no new reset schedule and
+does not decide which cleared dungeon/quest enemies reset at midnight (`game-clock`).
 
 Documentation only: save-data and networking are unimplemented; these policies do not authorize
 runtime, live-data, model/loader/validator or test changes.
@@ -1620,7 +1630,7 @@ Live-data migration and implementation remain deferred; cleared dungeon/quest en
 eligibility stays in world/reset below. Persistence approvals and recording status follow.
 
 <!-- persistence-index -->
-**Persistence / authority — DECIDED 2026-09-28:** all nine recommendations approved; items 1–3 recorded. Items 4–9 are approved, awaiting recording.
+**Persistence / authority — DECIDED 2026-09-28:** all nine recommendations approved; items 1–4 recorded. Items 5–9 are approved, awaiting recording.
 Canonical rules: §3.1/§3.2/§3.7. Implementation is deferred; independent review and parent
 verification are pending (`todo_decide.md §E`). Next topic, named only: **World bounds / resets**.
 <!-- /persistence-index -->

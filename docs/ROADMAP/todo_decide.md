@@ -133,7 +133,7 @@ Never propose or implement regional gear power loss in pixlnd, even for Cube Wor
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
 <!-- persistence-ledger -->
-**Persistence / authority — items 1–3 recorded (2026-09-28).** All nine owner recommendations are approved. Items 4–9 are approved, awaiting recording.
+**Persistence / authority — items 1–4 recorded (2026-09-28).** All nine owner recommendations are approved. Items 5–9 are approved, awaiting recording.
 Ontology documentation only; implementation, live JSON, tests and checker changes remain unauthorized.
 Independent review and parent verification are **PENDING**. No push, merge or history rewrite
 is authorized. Next topic after recording, named only: **World bounds / resets**.
@@ -147,8 +147,8 @@ not its already-approved running-world retention. Canonical semantics: `domain.m
 |---|---|---|---|
 | 1 — Portable heroes | [x] recorded | `save-data` | 01199a214bc1246b869e279978672a16b384bfb9 |
 | 2 — World-local personal history | [x] recorded | `save-data` | 4de5271bcadd8681b12d01080c883d88a46f1a2f |
-| 3 — Shared terrain exploration | [x] recorded | `world` | this item commit; final hash in evidence |
-| 4 — Shared world changes | [ ] approved | `save-data` | approved; awaiting recording |
+| 3 — Shared terrain exploration | [x] recorded | `world` | bde3bf7bbe22abbff12e57561237ba06d5b6bfde |
+| 4 — Shared world changes | [x] recorded | `save-data` | this item commit; final hash in evidence |
 | 5 — Personal permanent-source claims | [ ] approved | `save-data` | approved; awaiting recording |
 | 6 — Server-authoritative outcomes | [ ] approved | `multiplayer-mode` | approved; awaiting recording |
 | 7 — Trusted-co-op imports | [ ] approved | `multiplayer-mode` | approved; awaiting recording |
