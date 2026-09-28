@@ -6,8 +6,8 @@
 **“1: Approved; 2: Approved; 3: Approved; When done, handoff, commit, push”**.
 Canonical policies: `ontology/domain.md §5` / `#pet-food` (taxonomy/style configuration,
 individual food evidence, uncertainty-qualified reference annotations). No presented question
-remains; this is **not** completion of the broader mapping topic. Items 1–2: `50e2e82`,
-`645e18a`; item 3 is this commit, with its hash to be finalized in the parent handoff.
+remains; this is **not** completion of the broader mapping topic. Item commits: **`50e2e82`
+/ `645e18a` / `8e02ee7`**.
 
 **Remaining work:** required table/config path inventory, permitted source-specific inheritance
 mappings outside these three decisions, per-food source research and detailed remaining
@@ -15,16 +15,26 @@ load-definition/generator/runtime check boundaries. Follow existing approvals, n
 defaults or loader fallbacks. Swamp Lands identity, Lion tameability, resistance and gear HP remain
 later uncertain-fact work; no next-topic proposal is presented.
 
-**Verification / scope:** per-item writer semantic/scope inspection, `/simplify`, ponytail-review,
-diff checks and bounded ontology-validation evidence are in
-`/tmp/pixlnd-validation-reconcile.zahgTc/`; item map and deferrals: `todo_decide.md §E` /
-`todo_implement.md`. Loaded-data validation does not prove these policies' enforcement.
-Only the five allowed Markdown paths change; no source, live JSON, tests or checker changes.
-Fresh independent review and parent verification are pending. Parent reviews actual commits/diffs,
-reruns bounded validation and headless boot, finalizes handoff in a separate commit, publishes only
-`fix/ontology-reconciliation`, verifies live remote/upstream/local equality and clean status,
-then stops. Writer does not push; no merge, rebase, amend or new proposals.
-Starting checkpoint: clean `f414c86`; inspect actual Git state, not this as publication proof.
+**Verification / scope:** each item passed semantic/scope inspection, `/simplify`, ponytail-review,
+diff checks and bounded ontology validation. Fresh independent review found no issues through
+source/log inspection. Parent inspected all three actual commits/diffs, confirmed exact saved-diff
+matches and reran ontology validation and headless boot successfully (exit 0). Evidence and limits:
+`todo_decide.md §E`, `/tmp/pixlnd-validation-reconcile.zahgTc/`. Checks cover existing loaded data
+and startup, not enforcement of these policies. Only five Markdown paths changed; no source,
+live JSON, tests or checker changes. Implementation remains separately unauthorized.
+
+**Resume this topic:** use `domain.md §5` / `#pet-food`, `todo_decide.md §E`, the relevant
+`ontology/instances/*.json` and `ontology/model.gd` alongside current consumers. Derive the
+remaining path/check mappings from approved definitions, preserve qualified source uncertainty,
+and research food history without inferring it from target species. Ask only where evidence or
+existing approvals leave a real choice; do not re-ask items 1–3 or skip to uncertain gameplay facts.
+
+**Authorized publication:** commit this final verification/handoff, push only
+`fix/ontology-reconciliation`, verify live remote/upstream/local equality and clean status, then
+stop. No merge, force-push, history rewrite or next-topic proposals. **Pre-publication checkpoint:**
+clean item HEAD `8e02ee7`, live remote `f414c86` confirmed with `git ls-remote`. This separate
+handoff commit follows the three items; inspect actual Git state on resumption, not this checkpoint
+as proof of publication.
 
 **Historical world/reset handoff (superseded):** the following checkpoint predates the current
 mapping approvals and is not fresh publication authority.

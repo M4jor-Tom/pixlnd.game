@@ -140,8 +140,9 @@ checker implementation remain unauthorized. Verification record: `7a79913`.
 **Validation-contract mapping direction (2026-09-28):** owner answered **“1: Approved;
 2: Approved; 3: Approved; When done, handoff, commit, push”**. All three policies approved
 without amendment or refusal and recorded below. No presented question remains; broader mapping
-and source work are unfinished. Only ontology Markdown is authorized. Fresh independent review
-and parent verification/publication remain pending; no next-topic proposals.
+and source work are unfinished. Independent review and parent verification passed (evidence below).
+Ontology documentation only; implementation remains unauthorized. Final handoff/publication/stop:
+`docs/HANDOFF.md`. No next-topic proposals.
 
 **Historical world/reset direction (2026-09-28, superseded):** owner answered **“1: Approved; 2: Approved;
 3: Approved; 4: Approved”**, then **“When done, handoff, commit, push”**. Items 1–4 are recorded.
@@ -661,7 +662,7 @@ Validation-contract mapping approvals/recording are tracked below; broader mappi
 |---|---|---|---|
 | 1 — Hybrid taxonomy/style configuration | [x] recorded | `domain.md §5` | 50e2e82bbf97add642c6bc73c207e9f1e0a46abd |
 | 2 — Individual pet-food provenance | [x] recorded | `pet-food` | 645e18a51a05997e9cc655abecbc7625942a39e3 |
-| 3 — Qualified source annotations | [x] recorded | §0 / §5 | this item commit; hash in final handoff |
+| 3 — Qualified source annotations | [x] recorded | §0 / §5 | 8e02ee7a1f9cc90d9f18f8b8c127550337d340a1 |
 
 Item 1 preserves approved creatures/styles without invented ancestry; the unresolved-classification
 alternative was not selected, not a user refusal or automatic content removal. Canonical scope
@@ -679,9 +680,30 @@ precommit binary diff; `item-N-review.md` records semantic/scope inspection, `/s
 ponytail-review. Commands: `git diff --check` and
 `timeout 150 nix develop -c godot --headless -s ontology/validate.gd`; results are in
 `item-N-{diff-check,validator}.log/.exit`, commits in `item-N-commit.txt` / `commit-map.md`,
-aggregate in `batch.diff`. Independent review and parent verification remain pending. Validation
-covers unchanged loaded data, not these policies' enforcement; no gameplay, boot, visual or
-network checks are claimed by the writer. Parent review/publication/stop steps: `docs/HANDOFF.md`.
+aggregate in `batch.diff`. All three item validators printed `ontology valid` and exited 0;
+all per-item diff checks passed.
+
+**Independent review / parent verification:** no findings from fresh read-only source/log review
+(`independent-review.md`); the reviewer did not rerun commands or recompute Git comparisons.
+Parent inspected the three actual commits/diffs, verified exact saved-diff correspondence and
+five-Markdown-path scope (`parent-audit.log/.exit`), and reran both bounded checks successfully:
+```
+timeout 150 nix develop -c godot --headless -s ontology/validate.gd
+timeout 150 nix develop -c godot --headless --quit
+```
+Both exited 0: `ontology valid` and normal hybrid startup (`parent-{validator,boot}.log/.exit`).
+Validation emitted an explicitly ignored Nix SQLite-cache-busy warning; Godot ran successfully.
+These checks cover existing loaded data/startup, not Markdown semantics or policy enforcement.
+No gameplay suite, visual or network checks were run. Source, live data, checker and test files
+remain unchanged; unfinished mapping/source work is listed above.
+
+**Handoff:** this separate verification/handoff commit follows the three items. Clean item HEAD
+`8e02ee7`; live remote `f414c86` confirmed again with `git ls-remote`
+(`pre-publication-remote.log`). These are pre-publication checkpoints, not a publication claim.
+The final record receives `/simplify`, ponytail-review and fresh sequential bounded rechecks;
+evidence: `handoff-review.md`, `handoff.diff`, `handoff-{diff-check,validator,boot}.log/.exit`.
+Publish only the authorized branch, verify remote/upstream/local equality and a clean worktree,
+then stop. Resumption remains Validation-contract mapping, not new gameplay proposals.
 
 ### World bounds / resets — approved batch (2026-09-28)
 

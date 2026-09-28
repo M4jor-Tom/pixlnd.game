@@ -29,7 +29,7 @@ slice loop. A green validator proves only its implemented checks, not full ontol
 per-food evidence and qualified reference annotations (`domain.md §5` / `#pet-food`). No presented
 question remains; required paths, other source-specific inheritance mappings, per-food research
 and remaining check boundaries are unfinished, not whole-topic completion. Independent review
-and parent verification pending; evidence/status: `docs/ROADMAP/todo_decide.md §E`.
+found no issues and parent verification passed; evidence/limits: `docs/ROADMAP/todo_decide.md §E`.
 No live data or checker changes authorized; handoff/stop: `docs/HANDOFF.md`.
 
 **Persistence / authority — all nine documentation decisions recorded (2026-09-28).**
