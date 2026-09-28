@@ -51,7 +51,7 @@ Independent review and parent verification passed (`todo_decide.md §E`); cross-
 logarithmic total (initial **z=0.1**), equal additive shares and recalculated artifact-free stat basis.
 Traversal counts matching artifacts; attack and maximum HP count all. D6's decay/1% floor is
 superseded, not its rewards or other decisions; no levels or gate bypass. No presented artifact
-question remains. Independent review and parent verification are pending (`todo_decide.md §E`).
+question remains. Independent review and parent verification passed (`todo_decide.md §E`).
 Live-data migration, model/loader/validator support and runtime implementation remain deferred.
 Gameplay and live JSON remain unchanged; restart persistence stays in its later topic.
 

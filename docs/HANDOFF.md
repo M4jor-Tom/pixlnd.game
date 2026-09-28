@@ -2,20 +2,28 @@
 
 ## Ontology walkthrough entry point (2026-09-28)
 
-**Artifacts (2026-09-28; draft writer handoff):** all six approved items are recorded
-(`todo_decide.md §E`), in separate documentation commits ordered **1, 2, 3, 4, 6, 5**. Final owner
-answer: **“5: Approved with z=0.1; 6: Approved”**; handoff direction: **“Once ontology adjusted,
-handoff, commit, push”**. The normalized logarithmic total replaces D6's decay/1% floor, not
-its rewards or other decisions. No presented artifact question remains. Canonical rules:
-`ontology/domain.md#artifact`. Independent review and parent verification are pending;
-parent finalizes the handoff and publication after fresh review.
-No writer push, gameplay, live JSON, tests, model/loader/validator changes or next-topic proposals.
-Per-item writer checks and exact commit map/diffs/logs: `/tmp/pixlnd-artifacts-20260928/`.
-Bounded ontology validation covers loaded data, not Markdown semantics or artifact gameplay;
-live-data migration, model/loader/validator support and runtime enforcement remain deferred.
-No gameplay suite, boot, visual or network checks were run for this batch.
-Next topic, named only: **Assassin ultimate
-(Camouflage alias versus separately unlocked fourth node)**.
+**Artifacts reconciled (2026-09-28):** all six approved items are recorded in separate
+ontology-only commits; item/hash mapping is in `todo_decide.md §E`. Final owner answer:
+**“5: Approved with z=0.1; 6: Approved”**; handoff direction: **“Once ontology adjusted,
+handoff, commit, push”**. The normalized logarithmic total replaces D6's decay/1% floor,
+not its rewards or other decisions. Canonical rules: `ontology/domain.md#artifact`.
+No presented artifact question remains. Next topic, named only: **Assassin ultimate
+(Camouflage alias versus separately unlocked fourth node)**. No new proposals in this handoff.
+
+**Verification:** each item passed semantic/scope inspection, `/simplify`, ponytail-review,
+diff checks and bounded ontology validation. Fresh independent review found no issues; parent
+inspected the actual six commits/diffs/logs, verified their saved-diff correspondence and reran
+ontology validation and headless boot successfully (exit 0). Arithmetic checks cover counts
+0..10000 at z=0.1. Evidence and limits: `todo_decide.md §E`, `/tmp/pixlnd-artifacts-20260928/`.
+Only six Markdown paths changed. These checks cover text fidelity, arithmetic and loaded
+data/startup, not artifact gameplay; no gameplay suite, visual or network checks were run.
+Live-data migration, model/loader/validator support and runtime enforcement remain unauthorized.
+
+**Authorized publication:** commit this final verification/handoff record and push
+`fix/ontology-reconciliation`, verify remote/local HEAD equality and a clean worktree, then stop.
+No merge, force-push, history rewrite, gameplay or live JSON changes. **Pre-publication checkpoint:**
+clean item HEAD `52f171b`, remote `8135a50` confirmed with `git ls-remote`; the handoff commit
+follows the six item commits. This is not a publication claim: inspect actual Git state on resumption.
 
 **Historical books/formulas approvals (2026-09-28):** the owner answered **“1: Approved; 2: Approved;
 3: Approved; When done, handoff, commit, push”**. Items **1–3** are recorded: permanent/global

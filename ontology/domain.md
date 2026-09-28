@@ -1559,7 +1559,8 @@ No presented traversal question remains. Books/formulas items 1–3 are recorded
 with power-locked crafting. No presented books question remains; cross-world portability stays
 in persistence. **Artifact items 1–6 — DECIDED 2026-09-28:** recorded in §3.4; logarithmic
 accumulation (initial z=0.1) replaces D6's decay/floor, preserving its rewards and other decisions.
-No presented artifact question remains; independent review and parent verification are pending.
+No presented artifact question remains; independent review and parent verification passed
+(`todo_decide.md §E`, with verification limits).
 Live-data migration and implementation remain deferred; cleared dungeon/quest enemy reset
 eligibility stays in world/reset below. Threat across server restart stays in the persistence topic below.
 

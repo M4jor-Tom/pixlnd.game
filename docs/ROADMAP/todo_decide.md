@@ -131,11 +131,12 @@ The full walkthrough/resumption protocol is in `tasks/lessons.md`; the prompt
 Never propose or implement regional gear power loss in pixlnd, even for Cube World cloning
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
-**Current direction (2026-09-28):** artifact items **1–6 recorded** below;
-no presented artifact question remains. The owner requested “Once ontology adjusted,
-handoff, commit, push”. Record six separately scoped documentation commits; parent finalizes
-independent review, verification, handoff and publication. Writer must not push. No gameplay,
-live JSON, tests, model/loader/validator changes, merge, history rewriting or next-topic proposals.
+**Current direction (2026-09-28):** artifact items **1–6 recorded** in six separately scoped
+ontology-only commits below; no presented artifact question remains. The owner requested
+“Once ontology adjusted, handoff, commit, push”. Independent review found no issues and parent
+verification passed. Commit the final handoff, push `fix/ontology-reconciliation`, verify publication
+and clean state, then stop. No gameplay, live JSON, tests, model/loader/validator changes, merge,
+history rewriting or next-topic proposals.
 Books/formulas 1–3, traversal 1–5, settlements/inn 1–4, family 1–9 and aggro 1–14 remain recorded.
 Older publication instructions and hashes below are historical checkpoints.
 
@@ -617,27 +618,48 @@ Documentation only; no live JSON or runtime authorization. Recording order: **1,
 
 Per-item writer evidence: `/tmp/pixlnd-artifacts-20260928/` (`item-N.diff`, `item-N-review.md`,
 `item-N-{scope,diff-check,validator}.{log,exit}`, `item-N-commit.{log,txt}`; final `commit-map.md`
-and `batch.diff`). Each item receives semantic/scope inspection, `/simplify`, then ponytail-review,
+and `batch.diff`). Each item received semantic/scope inspection, `/simplify`, then ponytail-review,
 `git diff --check` and `timeout 150 nix develop -c godot --headless -s ontology/validate.gd`.
 Starting branch: `fix/ontology-reconciliation` at `8135a5010fd673658b447c4e9e6f3639529c0d6d`.
 The parent's initial 14-line `tasks/lessons.md` diff is preserved verbatim in item 1.
 
-| item (commit order) | scope / diff / validator exits | simplify outcome; subsequent ponytail-review |
-|---|---|---|
-| 1 | 0 / 0 / 0 | removed duplicate constraint prose; no further cuts |
-| 2 | 0 / 0 / 0 | trimmed repeated deferral prose; no further cuts |
-| 3 | 0 / 0 / 0 | kept one compact deferral; no further cuts |
-| 4 | 0 / 0 / 0 | separated source history from reward rule; no cuts |
-| 6 | 0 / 0 / 0 | kept compact existing pointers; no cuts |
-| 5 | 0 / 0 / 0 | removed rejected equation/repeated check prose; no further cuts |
+| item (commit order) | ontology-only commit | scope / diff / validator exits | simplify outcome; subsequent ponytail-review |
+|---|---|---|---|
+| 1 | `012cd06` | 0 / 0 / 0 | removed duplicate constraint prose; no further cuts |
+| 2 | `a27e221` | 0 / 0 / 0 | trimmed repeated deferral prose; no further cuts |
+| 3 | `00720ff` | 0 / 0 / 0 | kept one compact deferral; no further cuts |
+| 4 | `0ee1027` | 0 / 0 / 0 | separated source history from reward rule; no cuts |
+| 6 | `db44551` | 0 / 0 / 0 | kept compact existing pointers; no cuts |
+| 5 | `52f171b` | 0 / 0 / 0 | removed rejected equation/repeated check prose; no further cuts |
 
 All six validators reported `ontology valid`; Nix's dirty-tree warning was expected.
 Fresh scratch arithmetic passed (exit 0): counts 0..10000 at z=0.1, zero/first, increasing totals,
 diminishing marginal gains, decreasing equal shares, sum consistency and no 1% floor.
 Command: `timeout 150 nix develop -c jq -n -e -r -f /tmp/pixlnd-artifacts-20260928/parent-curve-check.jq`;
 writer output: `writer-curve-check.{log,exit}` in the same directory. This is arithmetic, not gameplay.
-Loaded-data validation does not prove Markdown semantics or new runtime behavior. Independent
-review and parent verification remain pending; no gameplay, boot, visual or network checks claimed.
+**Independent review and parent verification:** fresh read-only review found no issues across
+all six items; it inspected source/diffs and saved evidence, not rerun commands. Parent inspected
+the actual commits, verified each saved item diff matches its commit and the six-Markdown-file
+boundary, and reran `git diff 8135a50 HEAD --check`, bounded ontology validation and headless
+boot successfully (exit 0, `ontology valid`, normal startup). Commands:
+`timeout 150 nix develop -c godot --headless -s ontology/validate.gd`;
+`timeout 150 nix develop -c godot --headless --quit`.
+Logs/reports in the evidence directory: `independent-review.md`, `parent-batch.diff`,
+`parent-commit-check.{log,exit}`, `parent-validator.{log,exit}`, `parent-boot.{log,exit}`.
+The parent's arithmetic check also passed; its initial assertion used the wrong count to
+illustrate a share below 1% at z=0.1. Corrected that witness to 1000 without changing the formula;
+initial failure and explanation remain in `parent-curve-check-initial.*` / `parent-curve-check-notes.md`.
+The final record received `/simplify` (removed temporary writer/review instructions), then
+ponytail-review; no policy changes were needed. Final handoff checks are in `final-handoff-*` logs.
+Loaded-data/startup checks and arithmetic do not prove artifact gameplay; no gameplay suite,
+visual or network checks were run. Gameplay, live JSON, tests and model/loader/validator are unchanged.
+
+**Pre-publication checkpoint:** clean item HEAD `52f171b` on `fix/ontology-reconciliation`, remote
+`8135a50` confirmed with `git ls-remote`. The final verification/handoff commit follows these six
+commits. Push the authorized branch without force or merge, verify remote/local HEAD equality and
+clean worktree, then stop. This is not a publication claim; inspect actual Git state on resumption.
+No presented artifact question remains. Next topic, named only: **Assassin ultimate (Camouflage
+alias versus separately unlocked fourth node)**. Implementation debt stays in `todo_implement.md`.
 
 ### Books/formulas — approvals and recording (2026-09-28)
 
