@@ -999,6 +999,8 @@ equipment strength are unchanged. Shared knowledge/duplicates follow `recipe` it
 immediate recording and power-locked crafting follow `power-gate` item 3.
 Live-data migration and implementation remain deferred.
 
+Hybrid one-time book-source claims are personal per saved world (`save-data`, persistence item 5).
+
 ### customization-bench
 Attach `material-cube`s (wood on wood, iron on metal; +0.1 effective level each; 16/32 cap) and
 `spirit-cube`s `A` at 3-D positions on the weapon model (rotate with M3, drag cubes). Removal
@@ -1069,6 +1071,8 @@ Named "<Ring|Stone|…> of <Name>", bound to a realm; found at dungeon ends, vau
 sky islands and some mission chests. **S reference only:** each relic granted +1 level;
 riding/climbing/gliding bonuses were reportedly non-functional in 1.0 (functional in hybrid, D6).
 Static entity id 46 "Artifact" exists in alpha data `X`.
+
+Hybrid artifact-source claims are personal per saved world (`save-data`, persistence item 5).
 
 **Hybrid artifacts item 1 (owner corrected, 2026-09-28):** count contributors **separately
 for each traversal stat**, not globally across traversal kinds. All collected artifacts that
@@ -1343,6 +1347,15 @@ sessions **subject to each mechanic's existing reset rules**. Visitors inhabit o
 world and may find these objectives already completed. This sets no new reset schedule and
 does not decide which cleared dungeon/quest enemies reset at midnight (`game-clock`).
 
+**Hybrid persistence item 5 (owner approved, 2026-09-28):** each character may claim a
+given **artifact or one-time book source once in that saved world**. Another character's claim
+does not consume theirs; later visitors can still collect their own **at the source**, not by
+automatic remote award. Leaving, restarting or returning never renews an existing claim.
+Genuinely separate worlds, including independently created matching-seed worlds, offer additional
+sources; item 1's portable heroes can therefore earn additional artifacts by world-hopping.
+Existing recipe-duplicate rules still apply (`recipe`): no compensation, rerolls or account-wide
+knowledge. Ordinary ground loot is unchanged; this is not a blanket all-reward instancing rule.
+
 Documentation only: save-data and networking are unimplemented; these policies do not authorize
 runtime, live-data, model/loader/validator or test changes.
 
@@ -1514,6 +1527,7 @@ content selection or live data changes are authorized by this contract.
 | c-spirit-level | A: weapon.level − 10 ≤ spirit.level ≤ weapon.level | runtime |
 | c-power-gate | A / hybrid: item.level ≤ power(player.level) for full strength; formula learning retains its sufficient-power requirement. Hybrid books record recipes immediately, but above-power recipes remain known and visibly locked against crafting until their requirement is reached; duplicate acquisition never removes the lock (§3.5 power-gate) | runtime (recipe enforcement deferred) |
 | c-book-recipe-persistence | hybrid: book-learned recipes remain known to that character across lands and sessions, with no relearning on travel, including between worlds under persistence item 1 (§3.7 save-data) | runtime+save-data (deferred) |
+| c-permanent-source-claim | hybrid: at most one claim per character/saved-world/artifact-or-one-time-book-source; claims remain available to other characters at the source and are not renewed by leaving, restarting or returning (§3.7 save-data, item 5); ordinary ground loot unchanged | runtime+save-data (deferred) |
 | c-recipe-learning | hybrid: books/formulas share one known-recipe set per character, including known-but-power-locked recipes; repeated learning grants nothing extra; books teach only unknown recipes without rerolls/compensation; an already-known formula remains unconsumed, without bypassing c-power-gate (§3.4 recipe) | runtime (deferred) |
 | c-region-lock | DROPPED (D4). S reference: item.land ≠ current land ∧ ¬plus → worn; key items inert | — |
 | c-plus-adjacent | DROPPED (D4). S reference: plus item full stats iff current land adjacent | — |
@@ -1630,7 +1644,7 @@ Live-data migration and implementation remain deferred; cleared dungeon/quest en
 eligibility stays in world/reset below. Persistence approvals and recording status follow.
 
 <!-- persistence-index -->
-**Persistence / authority — DECIDED 2026-09-28:** all nine recommendations approved; items 1–4 recorded. Items 5–9 are approved, awaiting recording.
+**Persistence / authority — DECIDED 2026-09-28:** all nine recommendations approved; items 1–5 recorded. Items 6–9 are approved, awaiting recording.
 Canonical rules: §3.1/§3.2/§3.7. Implementation is deferred; independent review and parent
 verification are pending (`todo_decide.md §E`). Next topic, named only: **World bounds / resets**.
 <!-- /persistence-index -->

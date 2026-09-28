@@ -129,6 +129,7 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 - [ ] Item 2 — per-character/world position, respawn, travel and lore; separate saved-world identity from seed (`save-data`).
 - [ ] Item 3 — world-shared terrain exploration, distinct from personal shrine/flight/lore unlocks (`world.discovered-zones`).
 - [ ] Item 4 — persist world-shared supplier/barrier/village-curse changes under existing reset rules (`save-data`).
+- [ ] Item 5 — personal artifact/one-time-book source claims per saved world (`c-permanent-source-claim`), preserving duplicate recipes and ordinary loot.
 <!-- /persistence-debt -->
 
 ## Meta / tooling

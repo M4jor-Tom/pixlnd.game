@@ -3,7 +3,7 @@
 ## Ontology walkthrough entry point (2026-09-28)
 
 <!-- persistence-status -->
-**Persistence / authority — items 1–4 recorded (2026-09-28).** All nine owner recommendations are approved. Items 5–9 are approved, awaiting recording.
+**Persistence / authority — items 1–5 recorded (2026-09-28).** All nine owner recommendations are approved. Items 6–9 are approved, awaiting recording.
 Ontology documentation only; implementation, live JSON, tests and checker changes remain unauthorized.
 Independent review and parent verification are **PENDING**. No push, merge or history rewrite
 is authorized. Next topic after recording, named only: **World bounds / resets**.
