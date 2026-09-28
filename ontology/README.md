@@ -25,11 +25,12 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `tasks/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Validation-contract mapping (2026-09-28):** items 1–2's hybrid taxonomy/style classification
-and per-food evidence policy are recorded in `domain.md §5` / `#pet-food`; approved item 3 awaits
-separate recording. Broader mapping/source work and enforcement remain unfinished. Independent review
+**Validation-contract mapping items 1–3 recorded (2026-09-28):** taxonomy/style configuration,
+per-food evidence and qualified reference annotations (`domain.md §5` / `#pet-food`). No presented
+question remains; required paths, other source-specific inheritance mappings, per-food research
+and remaining check boundaries are unfinished, not whole-topic completion. Independent review
 and parent verification pending; evidence/status: `docs/ROADMAP/todo_decide.md §E`.
-No live data or checker changes authorized.
+No live data or checker changes authorized; handoff/stop: `docs/HANDOFF.md`.
 
 **Persistence / authority — all nine documentation decisions recorded (2026-09-28).**
 No presented Persistence / authority question remains. Independent review and parent verification
@@ -44,7 +45,7 @@ all players to leave, with one pending refresh and no clock-triggered survivor/f
 No presented world/reset question remains. Independent review and parent verification passed;
 evidence and limits: §E. Runtime, live-data and checker changes remain unauthorized. Publication/
 stop direction at that historical checkpoint: `docs/HANDOFF.md`. Validation-contract mapping
-is now being recorded above.
+recording status is above.
 
 **Aggro batch applied: 1–14/14.** The original twelve and follow-ups 13–14 were approved and
 recorded on 2026-09-27; their former open boundaries are settled.

@@ -2,6 +2,33 @@
 
 ## Ontology walkthrough entry point (2026-09-28)
 
+**Validation-contract mapping — items 1–3 recorded (2026-09-28).** Owner answer:
+**“1: Approved; 2: Approved; 3: Approved; When done, handoff, commit, push”**.
+Canonical policies: `ontology/domain.md §5` / `#pet-food` (taxonomy/style configuration,
+individual food evidence, uncertainty-qualified reference annotations). No presented question
+remains; this is **not** completion of the broader mapping topic. Items 1–2: `50e2e82`,
+`645e18a`; item 3 is this commit, with its hash to be finalized in the parent handoff.
+
+**Remaining work:** required table/config path inventory, permitted source-specific inheritance
+mappings outside these three decisions, per-food source research and detailed remaining
+load-definition/generator/runtime check boundaries. Follow existing approvals, not new content
+defaults or loader fallbacks. Swamp Lands identity, Lion tameability, resistance and gear HP remain
+later uncertain-fact work; no next-topic proposal is presented.
+
+**Verification / scope:** per-item writer semantic/scope inspection, `/simplify`, ponytail-review,
+diff checks and bounded ontology-validation evidence are in
+`/tmp/pixlnd-validation-reconcile.zahgTc/`; item map and deferrals: `todo_decide.md §E` /
+`todo_implement.md`. Loaded-data validation does not prove these policies' enforcement.
+Only the five allowed Markdown paths change; no source, live JSON, tests or checker changes.
+Fresh independent review and parent verification are pending. Parent reviews actual commits/diffs,
+reruns bounded validation and headless boot, finalizes handoff in a separate commit, publishes only
+`fix/ontology-reconciliation`, verifies live remote/upstream/local equality and clean status,
+then stops. Writer does not push; no merge, rebase, amend or new proposals.
+Starting checkpoint: clean `f414c86`; inspect actual Git state, not this as publication proof.
+
+**Historical world/reset handoff (superseded):** the following checkpoint predates the current
+mapping approvals and is not fresh publication authority.
+
 **Owner answers:** “1: Approved; 2: Approved; 3: Approved; 4: Approved”. Follow-up:
 **“When done, handoff, commit, push”**. World bounds / resets items **1–4 are recorded**.
 No presented world/reset question remains. Next topic, named only: **Validation-contract mapping**
@@ -18,7 +45,7 @@ loaded data/startup, not enforcement of the new policies. Ontology documentation
 map/travel, clock/reset, occupancy and persistence enforcement remain deferred in `todo_implement.md`.
 No gameplay, live JSON, tests or checker implementation changes are authorized.
 
-**Authorized publication:** commit this final verification/handoff and push only
+**Historical world/reset publication (superseded):** commit this final verification/handoff and push only
 `fix/ontology-reconciliation`, verify live remote/upstream/local equality and clean status, then
 stop. No next-topic proposals, merge, force-push or history rewrite. **Pre-publication checkpoint:**
 clean item HEAD `539cc70`, remote `7bff485` confirmed with `git ls-remote`. The separate handoff

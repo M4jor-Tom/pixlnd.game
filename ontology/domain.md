@@ -13,7 +13,7 @@ derived from this file and `instances/`. Nothing downstream may drift ahead of i
   - `S`  Steam 0.9.x beta → 1.0.0-1 (Sept 23 – Oct 1 2019)
   - `Ω`  Cube World Omega (announced 2023-05-25, unreleased; only announced facts)
   - `X`  present in shipped data / devlog but cut, unused or never functional
-- `?` after a source value marks uncertainty; §7 separates active hybrid questions from reference-only research gaps. In type notation (`int?`, `ref?`), it instead means nullable/optional, not an unanswered design question.
+- `?` after a source value marks uncertainty, including qualified version annotations such as `S?` / `A?` (§5 Validation-contract mapping item 3); §7 separates active hybrid questions from reference-only research gaps. In type notation (`int?`, `ref?`), it instead means nullable/optional, not an unanswered design question.
 - Properties are split **intrinsic** (belong to the thing) vs **extrinsic** (references to other IDs).
 - Runtime-generated content (terrain, dungeons, names, loot rolls, bosses) is **not** enumerated;
   its **generator** is a class (§6) and its config lives in `instances/generators.json`.
@@ -1573,6 +1573,8 @@ remain separately authorized work (`docs/ROADMAP/todo_decide.md §E`).
   are not permission to assume A/S, infer provenance from a numeric ID, or enable content.
   This approval establishes no new per-family inheritance rules; ambiguous mappings remain
   open until documented. Metadata/config containers are not automatically content instances.
+  Taxonomy/style config, pet-food evidence and qualified reference annotations follow the
+  Validation-contract mapping below.
 - **Definitions versus generated instances:** load-time checks validate available definitions
   and generator configuration, not nonexistent generated objects. For artifacts, check the
   definition's seven approved traversal stat kinds and approved bonus configuration at load time;
@@ -1604,6 +1606,15 @@ settlement styles stand; no species-trait inheritance or numerical family modifi
 
 **Item 2 — Individual pet-food provenance:** evidence and unresolved claims follow §3.4
 `pet-food`, independently of approved taming pairings and numeric source identity.
+
+**Item 3 — Qualified source annotations:** retain `S?` and `A?` as uncertainty-qualified
+source annotations for reference records, not confirmed S/A history. These annotations do not
+independently establish hybrid availability; explicit hybrid decisions still govern it (§1).
+An uncertain Swamp Lands reference remains useful for research without deciding its identity or
+adding a distinct shipping biome. Do not delete or reject a reference merely for its qualified
+tag, or silently promote it to confirmed history. This chooses no runtime schema/type or parser
+behavior: the current parser strips `?`; preserving the qualification in model/loader/validator
+handling remains deferred and unauthorized.
 
 ### Constraint catalog
 
@@ -1657,7 +1668,7 @@ settlement styles stand; no species-trait inheritance or numerical family modifi
 | c-zone-size | A zone 256² blocks, region 64² zones; S zone 64² blocks; hybrid zone 64², land 256² zones (D12) | engine |
 | c-block-rgb | every solid block has its own RGB; (0,0,0) in `.cub` = empty | data |
 | c-name-length | player-character name 2..16 ASCII 32–126 (character creation; creature display names are free text) | runtime |
-| c-versions-nonempty | every versioned content instance resolves ≥1 source-version tag, explicit or via a documented family/source inheritance rule; never guessed (item 9); source-independent taxonomy/style config follows Validation-contract mapping item 1 above | load |
+| c-versions-nonempty | every versioned content instance resolves ≥1 source-version tag explicitly or via a documented family/source inheritance rule, never guessed (item 9); source-independent config and uncertainty-qualified reference annotations follow Validation-contract mapping items 1 and 3 above | load |
 | c-roster-ids | every id in `creature-families.json#landscape-rosters` is a creature (D14) | load |
 | c-rideable-conflict | resolved (F2): every `rideable` is a boolean, per-page value; a `?` here is a load error | load |
 | c-hostile-in-city | villagers/animals inside settlements unattackable unless possessed | runtime |
@@ -1749,13 +1760,14 @@ verification passed (`todo_decide.md §E`, including evidence limits).
 **World bounds / resets items 1–4 — DECIDED 2026-09-28:** all four recorded in
 §3.1/§3.7/§5/§6. No presented world/reset question remains. Independent review and parent
 verification passed (`todo_decide.md §E`, including evidence limits); implementation remains deferred.
-**Validation-contract mapping items 1–2 — DECIDED 2026-09-28:** taxonomy/style classification
-and per-food evidence policy recorded in §5 / §3.4 `pet-food`. Item 3 is approved, awaiting
-separate recording; mapping/source work and enforcement remain incomplete (`todo_decide.md §E`).
+**Validation-contract mapping items 1–3 — DECIDED 2026-09-28:** taxonomy/style classification,
+per-food evidence policy and qualified reference annotations recorded in §5 / §3.4 `pet-food`.
+No presented question remains; unfinished mapping/source work is listed below and in
+`todo_decide.md §E`. Enforcement remains separately unauthorized.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract mapping | exact required paths, permitted provenance inheritance and remaining constraint boundaries; item 9 policy is approved, enforcement deferred |
+| Validation-contract mapping | items 1–3 recorded, not whole-topic completion: required-path inventory, other source-specific inheritance mappings, per-food research and remaining check boundaries; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

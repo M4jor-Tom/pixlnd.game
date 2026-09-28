@@ -139,8 +139,9 @@ checker implementation remain unauthorized. Verification record: `7a79913`.
 
 **Validation-contract mapping direction (2026-09-28):** owner answered **“1: Approved;
 2: Approved; 3: Approved; When done, handoff, commit, push”**. All three policies approved
-without amendment or refusal; recording/evidence below. Only ontology Markdown is authorized.
-Fresh independent review and parent verification/publication remain pending; no next-topic proposals.
+without amendment or refusal and recorded below. No presented question remains; broader mapping
+and source work are unfinished. Only ontology Markdown is authorized. Fresh independent review
+and parent verification/publication remain pending; no next-topic proposals.
 
 **Historical world/reset direction (2026-09-28, superseded):** owner answered **“1: Approved; 2: Approved;
 3: Approved; 4: Approved”**, then **“When done, handoff, commit, push”**. Items 1–4 are recorded.
@@ -642,12 +643,13 @@ Books/formulas items 1–3, artifact items 1–6, Assassin item 1 and Wand item 
 not open questions. Persistence items 1–9 are recorded and reviewed above.
 World bounds / resets items 1–4 are recorded below; no presented question remains.
 Validation-contract mapping approvals/recording are tracked below; broader mapping remains open.
-- [ ] **Validation-contract mapping (policy approved in item 9):** document exact required
-  table/config paths, permitted per-family provenance inheritance and remaining constraint
-  boundaries from `domain.md §2/§5` before filling validator gaps. Ask the owner only where
-  approved definitions do not determine a unique answer; current loader defaults are not
-  authority. Artifact definition versus generated-instance checks are separated in §5.
-  No new inheritance rule or unresolved gameplay choice was approved; implementation is deferred.
+- [ ] **Validation-contract mapping (item 9 and mapping items 1–3 approved):** still document
+  the exact required table/config path inventory, permitted source-specific inheritance mappings
+  outside these decisions and remaining definition/generator/runtime check boundaries from
+  `domain.md §2/§5`. Per-food source research remains unfinished. Follow existing approvals,
+  not loader defaults; artifact definition/generated checks are already separated in §5.
+  No new inheritance rule, content default or gameplay choice was approved. Enforcement remains
+  deferred; these three recorded policies do not complete the broader mapping topic.
 - [ ] **Remaining uncertain facts:** verify or choose explicit hybrid defaults for swamp-lands
   identity, Lion tameability (`null` currently means untameable), resistance meaning and the
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
@@ -658,8 +660,8 @@ Validation-contract mapping approvals/recording are tracked below; broader mappi
 | item | application | canonical section | commit |
 |---|---|---|---|
 | 1 — Hybrid taxonomy/style configuration | [x] recorded | `domain.md §5` | 50e2e82bbf97add642c6bc73c207e9f1e0a46abd |
-| 2 — Individual pet-food provenance | [x] recorded | `pet-food` | this item commit |
-| 3 — Qualified source annotations | approved; recording pending | §0 / §5 | pending |
+| 2 — Individual pet-food provenance | [x] recorded | `pet-food` | 645e18a51a05997e9cc655abecbc7625942a39e3 |
+| 3 — Qualified source annotations | [x] recorded | §0 / §5 | this item commit; hash in final handoff |
 
 Item 1 preserves approved creatures/styles without invented ancestry; the unresolved-classification
 alternative was not selected, not a user refusal or automatic content removal. Canonical scope
@@ -667,11 +669,19 @@ and historical-fact exclusions are in §5. No new inheritance rule is approved.
 Item 2 records per-food evidence with unsupported history unresolved, preserving taming. The
 alternative of needing another evidence-backed approach was not selected; neither loader fallback
 nor different taming rules became approved. No actual food labels are assigned; source work remains.
+Item 3 preserves uncertain reference history without selecting available content. Leaving qualified-tag
+handling unresolved was not selected; deleting references or treating them as confirmed was not
+approved. Swamp Lands identity remains separate. No presented question remains.
 
 **Evidence:** `/tmp/pixlnd-validation-reconcile.zahgTc/approval-brief.md` preserves the exact
-numbered proposals and Approval versus Refusing alternatives. Per-item diffs, reviews, diff-check
-and bounded-validator logs/exits are saved there before commits. Independent review and parent
-verification remain pending. Validation covers loaded data, not these policies' enforcement.
+numbered proposals and Approval versus Refusing alternatives. `item-N.diff` holds each exact
+precommit binary diff; `item-N-review.md` records semantic/scope inspection, `/simplify` then
+ponytail-review. Commands: `git diff --check` and
+`timeout 150 nix develop -c godot --headless -s ontology/validate.gd`; results are in
+`item-N-{diff-check,validator}.log/.exit`, commits in `item-N-commit.txt` / `commit-map.md`,
+aggregate in `batch.diff`. Independent review and parent verification remain pending. Validation
+covers unchanged loaded data, not these policies' enforcement; no gameplay, boot, visual or
+network checks are claimed by the writer. Parent review/publication/stop steps: `docs/HANDOFF.md`.
 
 ### World bounds / resets — approved batch (2026-09-28)
 

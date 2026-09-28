@@ -158,6 +158,11 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 - [ ] Mapping item 2 (`domain.md#pet-food`): source each food's provenance individually, keeping
   unsupported claims unresolved; then separately authorize data/model/loader/validator migration.
   Current A+S fallback is not evidence; shared-food pairings and source IDs remain unchanged.
+- [ ] Mapping item 3 (`domain.md §5`): preserve qualified reference annotations in later
+  model/loader/validator handling; current parsing strips `?`. No schema or parser change is
+  authorized now, nor content selection or a decision on Swamp Lands identity.
+- [ ] Finish required-path inventory, other permitted source-specific inheritance mappings and
+  detailed definition/generator/runtime check boundaries from existing approvals before enforcement.
 
 ## Meta / tooling
 - [ ] Save-data (§3.7): nothing persists (world seed, character, discovered lands).
