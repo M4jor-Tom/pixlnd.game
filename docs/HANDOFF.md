@@ -2,13 +2,28 @@
 
 ## Ontology walkthrough entry point (2026-09-28)
 
+**Owner handoff direction:** “handoff, commit, push. I'll handle this with the next agent”.
+Resume **World bounds / resets items 1–4**, all **presented but unanswered**: finite size,
+outer-boundary behavior (depends on item 1), cleared-enemy eligibility, and occupied-site refresh.
+The exact recommendations, examples, dependencies and **Approval versus Refusing** consequences
+are preserved in `docs/ROADMAP/todo_decide.md §E`. Handoff is not approval; no world/reset rule
+has been applied. Do not skip these items or reopen the nine approved persistence decisions.
+
+**Authorized publication:** commit this handoff and push `fix/ontology-reconciliation`, verify
+remote/local HEAD equality and a clean worktree, then stop. No merge, force-push, history rewrite,
+implementation or further proposals. **Pre-publication checkpoint:** clean HEAD `7a79913`
+(nine item commits plus their verification record), remote `2ed538d` confirmed with `git ls-remote`.
+The handoff commit follows; inspect actual Git state on resumption, not this checkpoint as proof
+of publication. Fresh handoff evidence/limits are in §E and `/tmp/pixlnd-persistence-handoff.UID5vE/`.
+
 **Persistence / authority — all nine documentation decisions recorded (2026-09-28).**
 No presented Persistence / authority question remains. Nine item commits: `01199a2` through
 `6771f31`. Independent review found no issues; parent inspected the actual commits/diffs/logs,
 confirmed all nine saved-diff matches, and reran bounded ontology validation and headless boot
 successfully (exit 0). These check loaded data/startup, not enforcement of the new policies.
 Ontology documentation only; gameplay, live JSON, tests and checker implementation remain
-unauthorized. No push, merge or history rewrite is authorized. Next topic: **World bounds / resets**.
+unauthorized. Verification record: `7a79913`. The current handoff above authorizes publication
+only; World bounds / resets items 1–4 remain unanswered.
 Evidence and item mapping: `docs/ROADMAP/todo_decide.md §E`,
 `/tmp/pixlnd-persistence-reconcile.XsnIBI/`.
 

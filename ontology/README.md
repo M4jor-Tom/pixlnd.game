@@ -29,7 +29,8 @@ slice loop. A green validator proves only its implemented checks, not full ontol
 No presented Persistence / authority question remains. Independent review and parent verification
 passed; item mapping, evidence and limits: `docs/ROADMAP/todo_decide.md §E`.
 Ontology documentation only; gameplay, live JSON, tests and checker implementation remain
-unauthorized. No push is authorized. Next topic: **World bounds / resets**.
+unauthorized. **World bounds / resets items 1–4 are presented but unanswered**; exact proposals
+and the owner's publication/stop handoff are in §E / `docs/HANDOFF.md`.
 
 **Aggro batch applied: 1–14/14.** The original twelve and follow-ups 13–14 were approved and
 recorded on 2026-09-27; their former open boundaries are settled.

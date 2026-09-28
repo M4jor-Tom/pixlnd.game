@@ -135,8 +135,15 @@ fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09
 **Persistence / authority — all nine documentation decisions recorded (2026-09-28).**
 No presented Persistence / authority question remains. Independent review and parent verification
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
-checker implementation remain unauthorized. No push, merge or history rewrite is authorized.
-Next topic: **World bounds / resets**.
+checker implementation remain unauthorized. Verification record: `7a79913`.
+
+**Current handoff direction:** “handoff, commit, push. I'll handle this with the next agent”.
+World bounds / resets items **1–4 are presented but unanswered**, preserved verbatim below.
+None is approved, refused or applied; item 2 depends on item 1. Handoff grants no design approval.
+Commit this handoff and push `fix/ontology-reconciliation`, verify remote/local HEAD equality
+and a clean worktree, then stop. No merge, force-push, history rewrite, implementation or further
+proposals. Pre-publication state: clean `7a79913`, remote `2ed538d` confirmed with `git ls-remote`;
+these are checkpoints, not claims of publication. Resume the four unanswered items, not a later topic.
 
 **Owner answer:** “1: Approved; 2: Approved; 3: Approved; 4: Approved; 5: Approved;
 6: Approved; 7: Approved; 8: Approved; 9: Approved (I thought that I already approved 9
@@ -173,6 +180,14 @@ Historical D/F text, gameplay, live JSON and checker files are unchanged.
 `commit-map.md`, `independent-review.md`, and `parent-{audit,validator,boot}.{log,exit}`.
 The final verification-record diff received `/simplify` and ponytail-review; final bounded
 rechecks and whitespace checks are in `verification-record-*.log/.exit`.
+
+**Fresh handoff verification (2026-09-28):** parent inspected the four-file documentation diff,
+preserved the exact unanswered batch, ran `/simplify` then ponytail-review, and reran both
+bounded commands above: `ontology valid` and normal startup, exit 0. Expected Nix dirty-tree
+warnings only. Diff checks passed; no runtime/data/checker policy was changed. Evidence:
+`/tmp/pixlnd-persistence-handoff.UID5vE/` (`handoff-review.md`, `handoff.diff`,
+`validator.{log,exit}`, `boot.{log,exit}`, `diff-check.{log,exit}`). These are fresh loaded-data/
+startup checks, not gameplay, visual, network or boundary/reset enforcement tests.
 
 **Historical Wand direction (2026-09-28, superseded):** owner answered **“1: Approved; When done, handoff, commit,
 push”** for Wand handedness. Documentation-only item 1 is recorded in **`1f5eabc`** and passed
@@ -614,7 +629,7 @@ D1–D26, all walkthrough approvals and remaining open questions.
 Traversal items 1–5 are recorded (item 4 corrected) and reviewed; evidence below.
 Books/formulas items 1–3, artifact items 1–6, Assassin item 1 and Wand item 1 are recorded below,
 not open questions. Persistence items 1–9 are recorded and reviewed above.
-Next topic: **World bounds / resets**.
+Current topic: **World bounds / resets**; items 1–4 below are presented but unanswered.
 
 - [ ] **World bounds / resets:** does hybrid retain the finite 1024²-region bound despite
   “infinite” wording, and do cleared dungeon/quest mobs reset at midnight? Before boundary/clock
@@ -629,6 +644,64 @@ Next topic: **World bounds / resets**.
   identity, Lion tameability (`null` currently means untameable), resistance meaning and the
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
+
+### World bounds / resets — exact presented batch, unanswered (2026-09-28)
+
+**Status:** all four proposals await owner answers. The handoff request is neither approval nor
+refusal. Preserve their numbering and the item-2 dependency; do not implement or adopt these
+recommendations as defaults. No other world/reset proposal was presented.
+
+#### 1. A huge but finite world
+
+**Settled:** each land is 16,384 blocks across. The ontology inconsistently describes both an infinite world and a 1,024 × 1,024-land limit.
+
+**Recommend:** retain the finite square: **1,048,576 lands**, roughly **16,777 km per side**, with land coordinates −512 through 511 on each axis.
+
+##### Approval versus Refusing
+- **Approval:** an enormous but bounded world; travelling far enough eventually reaches its outer edge.
+- **Refusing:** rejects this size limit; it does not automatically select unlimited generation or a wrapping world.
+
+#### 2. A clearly marked outer boundary
+
+**Depends on item 1.** No hybrid edge behavior is settled.
+
+**Recommend:** mark the outer boundary on the map and prevent outward travel, including flight and teleport destinations. Players can turn back; crossing attempts cause no special damage, death or forced teleport.
+
+##### Approval versus Refusing
+- **Approval:** predictable limits, but an artificial boundary rather than endlessly generated terrain.
+- **Refusing:** another boundary behavior must be selected if the finite world is approved.
+
+#### 3. Which cleared enemies return at midnight?
+
+**Settled:** midnight resets eligible monsters and daily missions. Permanent collectible claims and world improvements survive; cleared dungeon/quest enemy eligibility remains open.
+
+**Recommend:** defeated enemies—including bosses—in ordinary dungeons and repeatable daily encounters return with the daily reset. Enemies belonging to a **completed one-time objective** stay cleared, including its guards and boss. Resetting enemies never renews an artifact or book claim.
+
+Example: tomorrow offers another daily boss fight, but does not recreate the completed supplier-rescue encounter.
+
+##### Approval versus Refusing
+- **Approval:** repeatable places remain useful, while completed one-time objectives stay completed.
+- **Refusing:** rejects this eligibility split; neither universal respawning nor permanently empty dungeons becomes the default.
+
+#### 4. Don’t reset an occupied encounter around its players
+
+**Settled:** a genuinely respawned mob starts with fresh threat. Midnight’s treatment of an occupied dungeon or quest site is unspecified.
+
+**Recommend:** an occupied dungeon/quest site waits until all players leave before applying its pending daily refresh. Multiple missed midnights produce only one refresh, not stacked waves. The clock change itself never heals or replaces living enemies or erases an ongoing fight.
+
+Example: a dungeon run spanning midnight can finish without its defeated guards suddenly reappearing behind the party.
+
+##### Approval versus Refusing
+- **Approval:** uninterrupted runs, at the cost of delaying that site’s refresh while players remain there.
+- **Refusing:** the occupied-site reset rule needs an alternative; immediate respawning is not automatically approved.
+
+**Resumption sources:** `ontology/domain.md#land`, `#game-clock`, `#save-data`, `#ai-behavior`,
+§5 `c-midnight-reset` and §6 `gen-world`; `ontology/instances/generators.json#world-scales` / `#time`,
+`ontology/instances/mission-types.json`, `ontology/instances/dungeon-types.json`; historical references
+in `ontology/research/research_world.md` and `ontology/research/research_systems.md §6`.
+Current consumers: `game/world/world_gen.gd#land_at` and `game/world/world.gd` stream terrain
+without the proposed boundary; the world-clock/dungeon/mission/reset systems are unimplemented.
+That is deferred implementation, not evidence for or against the proposals.
 
 ### Wand handedness — item 1 recorded (2026-09-28)
 
