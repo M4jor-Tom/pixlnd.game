@@ -657,13 +657,16 @@ Validation-contract mapping approvals/recording are tracked below; broader mappi
 
 | item | application | canonical section | commit |
 |---|---|---|---|
-| 1 — Hybrid taxonomy/style configuration | [x] recorded | `domain.md §5` | this item commit |
-| 2 — Individual pet-food provenance | approved; recording pending | `pet-food` | pending |
+| 1 — Hybrid taxonomy/style configuration | [x] recorded | `domain.md §5` | 50e2e82bbf97add642c6bc73c207e9f1e0a46abd |
+| 2 — Individual pet-food provenance | [x] recorded | `pet-food` | this item commit |
 | 3 — Qualified source annotations | approved; recording pending | §0 / §5 | pending |
 
 Item 1 preserves approved creatures/styles without invented ancestry; the unresolved-classification
 alternative was not selected, not a user refusal or automatic content removal. Canonical scope
 and historical-fact exclusions are in §5. No new inheritance rule is approved.
+Item 2 records per-food evidence with unsupported history unresolved, preserving taming. The
+alternative of needing another evidence-backed approach was not selected; neither loader fallback
+nor different taming rules became approved. No actual food labels are assigned; source work remains.
 
 **Evidence:** `/tmp/pixlnd-validation-reconcile.zahgTc/approval-brief.md` preserves the exact
 numbered proposals and Approval versus Refusing alternatives. Per-item diffs, reviews, diff-check

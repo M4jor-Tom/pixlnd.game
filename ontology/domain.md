@@ -1091,6 +1091,15 @@ One of each food carried at a time still applies, not one Bubble Gum per target 
 Live `pet-food.tames`, model/loader and validator remain single-species; migration is deferred.
 → `instances/pet-food.json` (58 obtainable + 6 cut `X`).
 
+**Validation-contract mapping item 2 (owner approved, 2026-09-28):** record provenance
+individually for each food from evidence, not a blanket family default or copied target-creature
+history. Unsupported historical claims remain explicitly unresolved; the loader's current A+S
+fallback for untagged foods is not provenance authority. Preserve existing sourced facts and all
+approved taming pairings, including shared Bubble Gum, availability/prices and numeric source IDs
+(`c-food-id`). Adding Skeleton Dog as a target does not rewrite Bubble Gum's history. This policy
+assigns no new A/S/X labels. Per-food source research remains unfinished; live-data/model/loader/
+validator migration remains separately unauthorized.
+
 ### key-item
 `S` land-bound "special" items (A: glider & boat were bought items in the special slot).
 → `instances/key-items.json`: hang-glider, boat, reins, climbing-spikes (movement, 4/land);
@@ -1593,6 +1602,9 @@ trait descriptions, retain their provenance; nested spawn rosters and versioned 
 are outside this classification. Existing family assignments, creature behavior, encounters and
 settlement styles stand; no species-trait inheritance or numerical family modifier is introduced.
 
+**Item 2 — Individual pet-food provenance:** evidence and unresolved claims follow §3.4
+`pet-food`, independently of approved taming pairings and numeric source identity.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -1737,9 +1749,9 @@ verification passed (`todo_decide.md §E`, including evidence limits).
 **World bounds / resets items 1–4 — DECIDED 2026-09-28:** all four recorded in
 §3.1/§3.7/§5/§6. No presented world/reset question remains. Independent review and parent
 verification passed (`todo_decide.md §E`, including evidence limits); implementation remains deferred.
-**Validation-contract mapping item 1 — DECIDED 2026-09-28:** taxonomy/style classification
-recorded in §5. Items 2–3 are approved, awaiting separate recording; mapping/source work and
-enforcement remain incomplete (`todo_decide.md §E`).
+**Validation-contract mapping items 1–2 — DECIDED 2026-09-28:** taxonomy/style classification
+and per-food evidence policy recorded in §5 / §3.4 `pet-food`. Item 3 is approved, awaiting
+separate recording; mapping/source work and enforcement remain incomplete (`todo_decide.md §E`).
 
 | topic | still undecided / incomplete |
 |---|---|

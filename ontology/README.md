@@ -25,10 +25,11 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `tasks/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Validation-contract mapping (2026-09-28):** item 1's hybrid taxonomy/style classification
-is recorded in `domain.md §5`; approved items 2–3 await separate recording. Broader mapping/source
-work and enforcement remain unfinished. Fresh independent review and parent verification pending;
-evidence/status: `docs/ROADMAP/todo_decide.md §E`. No live data or checker changes authorized.
+**Validation-contract mapping (2026-09-28):** items 1–2's hybrid taxonomy/style classification
+and per-food evidence policy are recorded in `domain.md §5` / `#pet-food`; approved item 3 awaits
+separate recording. Broader mapping/source work and enforcement remain unfinished. Independent review
+and parent verification pending; evidence/status: `docs/ROADMAP/todo_decide.md §E`.
+No live data or checker changes authorized.
 
 **Persistence / authority — all nine documentation decisions recorded (2026-09-28).**
 No presented Persistence / authority question remains. Independent review and parent verification
