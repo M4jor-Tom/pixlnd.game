@@ -610,7 +610,8 @@ Documentation only; no live JSON or runtime authorization. Recording order: **1,
    whose counts remain matching-only. Exactly one existing traversal kind plus attack and maximum
    HP per artifact; no character levels, traversal-gate bypass or new slot.
 5. [ ] **Normalized logarithmic total, initial z=0.1:** approved; awaiting separate recording.
-6. [ ] **Remove the old 1% floor:** approved; awaiting separate recording.
+6. [x] **Remove the old 1% floor:** recorded before item 5's equation; no hidden clamp,
+   minimum artifact share or minimum marginal gain. First artifact remains 5%.
 
 Per-item writer evidence: `/tmp/pixlnd-artifacts-20260928/` (`item-N.diff`, `item-N-review.md`,
 `item-N-{scope,diff-check,validator}.{log,exit}`, `item-N-commit.{log,txt}`; final `commit-map.md`
@@ -624,6 +625,8 @@ and `batch.diff`). Each item receives semantic/scope inspection, `/simplify`, th
 `/simplify` kept one compact deferral, then ponytail-review found no further cuts.
 **Item 4 writer checks:** scope, diff check and bounded validator passed (exit 0, `ontology valid`);
 `/simplify` separated historical source prose from the reward rule, then ponytail-review found no cuts.
+**Item 6 writer checks (recorded fifth):** scope, diff check and bounded validator passed
+(exit 0, `ontology valid`); `/simplify` kept compact existing pointers, then ponytail-review found no cuts.
 Loaded-data validation does not prove Markdown semantics or new runtime behavior. Independent
 review and parent verification remain pending; no gameplay, boot, visual or network checks claimed.
 

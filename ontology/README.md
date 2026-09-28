@@ -47,12 +47,12 @@ knowledge without duplicate rewards/rerolls or consuming known formulas, and imm
 recording with visibly power-locked crafting (`domain.md#recipe` / `#book-of-crafting` / `#power-gate`).
 No presented books question remains; duplicate knowledge never bypasses power requirements.
 Independent review and parent verification passed (`todo_decide.md §E`); cross-world portability remains open.
-**Artifacts items 1–6 approved (2026-09-28):** items 1–4 recorded in `domain.md#artifact`:
+**Artifacts items 1–6 approved (2026-09-28):** items 1–4 and 6 recorded in `domain.md#artifact`:
 separate traversal counts, equal additive contributions and a recalculated artifact-free stat basis;
 attack and maximum HP count all artifacts under the same rule, without levels or gate bypass.
-Items 5–6 await separate recording; no presented artifact question remains. Independent review
-and parent verification are pending (`todo_decide.md §E`). Live-data migration and runtime
-implementation remain deferred.
+The old 1% floor is removed; item 5 awaits separate recording. No presented artifact question remains.
+Independent review and parent verification are pending (`todo_decide.md §E`). Live-data
+migration and runtime implementation remain deferred.
 Gameplay and live JSON remain unchanged; restart persistence stays in its later topic.
 
 ## Decision and build history (from 2026-09-07)

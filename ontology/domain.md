@@ -1074,6 +1074,11 @@ maximum HP**. Attack and maximum HP use the **same recalculation** as traversal,
 only its matching artifacts, separately. Artifacts grant no character levels and bypass no
 existing traversal training/item gates; no equipment slot is added.
 
+**Hybrid artifacts item 6 (owner approved, 2026-09-28):** **remove the old per-artifact 1%
+floor**. The approved logarithmic curve replaces D6's ×0.9 accumulation/decay rule and its
+floor; there is no hidden clamp, minimum per-artifact contribution or minimum marginal gain.
+The first artifact remains 5%; item 5 records the replacement equation separately.
+
 Documentation only: artifact live-data migration and runtime enforcement remain deferred.
 
 ### currency
@@ -1535,8 +1540,8 @@ Settlements/inn items 1–4 are recorded in §3.1 (2026-09-27). Traversal items 
 No presented traversal question remains. Books/formulas items 1–3 are recorded in §3.4/§3.5
 (2026-09-28): permanent/global book recipes, shared knowledge/duplicates and immediate recording
 with power-locked crafting. No presented books question remains; cross-world portability stays
-in persistence. Artifact items 1–6 are approved (2026-09-28); items 1–4 are recorded in §3.4,
-with the remaining approvals awaiting their separate recording, not further owner decisions.
+in persistence. Artifact items 1–6 are approved (2026-09-28); items 1–4 and 6 are recorded
+in §3.4. Item 5 awaits separate recording, not a further owner decision.
 Live-data migration and implementation remain deferred; cleared dungeon/quest enemy reset
 eligibility stays in world/reset below. Threat across server restart stays in the persistence topic below.
 

@@ -3,7 +3,7 @@
 ## Ontology walkthrough entry point (2026-09-28)
 
 **Artifact approvals (2026-09-28; draft writer handoff):** all six items are approved;
-items 1–4 are recorded, the remainder await separate recording (`todo_decide.md §E`). Final owner
+items 1–4 and 6 are recorded, item 5 awaits separate recording (`todo_decide.md §E`). Final owner
 answer: **“5: Approved with z=0.1; 6: Approved”**; handoff direction: **“Once ontology adjusted,
 handoff, commit, push”**. No presented artifact question remains. Canonical rules:
 `ontology/domain.md#artifact`. Independent review and parent verification are pending.
