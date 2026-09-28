@@ -602,7 +602,8 @@ Documentation only; no live JSON or runtime authorization. Recording order: **1,
    order is irrelevant. No new reduction system for other item kinds. The existing item
    definitions, stat formulas and `game/items/items.gd` / `inventory.gd` show no equivalent
    ordinary-gear item-count diminishing mechanism; level/rarity curves and power gates remain.
-2. [ ] **Additive contributions:** approved; awaiting separate recording.
+2. [x] **Additive contributions:** recorded; `B(x)` is already the fractional total, never
+   multiplied by the count again; equal current share is `B(x)/x` for positive counts.
 3. [ ] **Recalculated artifact-free stat basis:** approved; awaiting separate recording.
 4. [ ] **Attack / maximum HP count all artifacts:** approved; awaiting separate recording.
 5. [ ] **Normalized logarithmic total, initial z=0.1:** approved; awaiting separate recording.
@@ -614,6 +615,8 @@ and `batch.diff`). Each item receives semantic/scope inspection, `/simplify`, th
 `git diff --check` and bounded ontology validation. Results are recorded as checks complete.
 **Item 1 writer checks:** scope, diff check and bounded validator passed (exit 0, `ontology valid`);
 `/simplify` removed duplicate constraint prose, then ponytail-review found no further cuts.
+**Item 2 writer checks:** scope, diff check and bounded validator passed (exit 0, `ontology valid`);
+`/simplify` trimmed repeated deferral prose, then ponytail-review found no further cuts.
 Loaded-data validation does not prove Markdown semantics or new runtime behavior. Independent
 review and parent verification remain pending; no gameplay, boot, visual or network checks claimed.
 
