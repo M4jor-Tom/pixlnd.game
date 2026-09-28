@@ -133,10 +133,10 @@ Never propose or implement regional gear power loss in pixlnd, even for Cube Wor
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
 **Persistence / authority — all nine documentation decisions recorded (2026-09-28).**
-All nine owner recommendations are approved; no presented Persistence / authority question remains.
-Ontology documentation only; implementation, live JSON, tests and checker changes remain unauthorized.
-Independent review and parent verification are **PENDING**. No push, merge or history rewrite
-is authorized. Next topic, named only: **World bounds / resets**.
+No presented Persistence / authority question remains. Independent review and parent verification
+passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
+checker implementation remain unauthorized. No push, merge or history rewrite is authorized.
+Next topic: **World bounds / resets**.
 
 **Owner answer:** “1: Approved; 2: Approved; 3: Approved; 4: Approved; 5: Approved;
 6: Approved; 7: Approved; 8: Approved; 9: Approved (I thought that I already approved 9
@@ -153,18 +153,26 @@ not its already-approved running-world retention. Canonical semantics: `domain.m
 | 6 — Server-authoritative outcomes | [x] recorded | `multiplayer-mode` | a312dc5b866dc515a08d0a61949757a02d718b2b |
 | 7 — Trusted-co-op imports | [x] recorded | `multiplayer-mode` | 1817dfd228ca6106d608a5adfaee3b26bbaf530e |
 | 8 — Stopped shutdown clock | [x] recorded | `game-clock` | 467500c376f2d77ee1cdcc57230f852f26a04c92 |
-| 9 — Restart threat retention | [x] recorded | `ai-behavior` | this item commit; final hash in evidence |
+| 9 — Restart threat retention | [x] recorded | `ai-behavior` | 6771f3168ceb35b4c3d954f04fc33fcd95ba1dd1 |
 
-**Writer evidence:** `/tmp/pixlnd-persistence-reconcile.XsnIBI/approval-brief.md` preserves the
-approved recommendations and boundaries; `item-N.diff`, `item-N-review.md`,
-`item-N-{scope,diff-check,validator}.{log,exit}` and `item-N-commit.{log,txt}` record each item.
-Each recorded item receives semantic/scope inspection, `/simplify`, then ponytail-review,
-`git diff --check` and `timeout 150 nix develop -c godot --headless -s ontology/validate.gd`
-before committing. Read the logs for results; checks cover existing loaded data, not Markdown
-semantics or runtime policy. Final aggregate diff and mapping: `batch.diff`, `commit-map.md`.
-No gameplay suite, visual or network checks are claimed. Final unchanged-data startup check after
-item 9: `timeout 150 nix develop -c godot --headless --quit`; results in `final-boot.{log,exit}`.
-Parent will finalize verification and item 9's hash after independent review; no acceptance is preclaimed.
+**Verification:** each item passed semantic/scope inspection, `/simplify`, ponytail-review,
+`git diff --check` and bounded ontology validation before its commit. Fresh independent review
+found no issues through source/saved-log inspection, not rerun commands. Parent inspected the
+actual nine commits and aggregate diff, independently confirmed exact saved-diff correspondence
+and the five-Markdown-path boundary, and reran both checks successfully (exit 0):
+```
+timeout 150 nix develop -c godot --headless -s ontology/validate.gd
+timeout 150 nix develop -c godot --headless --quit
+```
+Results: `ontology valid` and normal startup. These cover existing loaded data/startup, not
+runtime enforcement of the new policies. No gameplay suite, visual or network checks were run.
+Historical D/F text, gameplay, live JSON and checker files are unchanged.
+
+**Session-local evidence:** `/tmp/pixlnd-persistence-reconcile.XsnIBI/` holds the exact
+`approval-brief.md`, per-item diffs/review notes/check logs/exits/commit records, `batch.diff`,
+`commit-map.md`, `independent-review.md`, and `parent-{audit,validator,boot}.{log,exit}`.
+The final verification-record diff received `/simplify` and ponytail-review; final bounded
+rechecks and whitespace checks are in `verification-record-*.log/.exit`.
 
 **Historical Wand direction (2026-09-28, superseded):** owner answered **“1: Approved; When done, handoff, commit,
 push”** for Wand handedness. Documentation-only item 1 is recorded in **`1f5eabc`** and passed
@@ -605,8 +613,8 @@ D1–D26, all walkthrough approvals and remaining open questions.
 
 Traversal items 1–5 are recorded (item 4 corrected) and reviewed; evidence below.
 Books/formulas items 1–3, artifact items 1–6, Assassin item 1 and Wand item 1 are recorded below,
-not open questions. Persistence recommendations 1–9 are approved (recording status above),
-not unanswered. All nine documentation decisions are now recorded. Next topic: **World bounds / resets**.
+not open questions. Persistence items 1–9 are recorded and reviewed above.
+Next topic: **World bounds / resets**.
 
 - [ ] **World bounds / resets:** does hybrid retain the finite 1024²-region bound despite
   “infinite” wording, and do cleared dungeon/quest mobs reset at midnight? Before boundary/clock

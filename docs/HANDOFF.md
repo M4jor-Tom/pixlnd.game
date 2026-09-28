@@ -3,10 +3,12 @@
 ## Ontology walkthrough entry point (2026-09-28)
 
 **Persistence / authority — all nine documentation decisions recorded (2026-09-28).**
-All nine owner recommendations are approved; no presented Persistence / authority question remains.
-Ontology documentation only; implementation, live JSON, tests and checker changes remain unauthorized.
-Independent review and parent verification are **PENDING**. No push, merge or history rewrite
-is authorized. Next topic, named only: **World bounds / resets**.
+No presented Persistence / authority question remains. Nine item commits: `01199a2` through
+`6771f31`. Independent review found no issues; parent inspected the actual commits/diffs/logs,
+confirmed all nine saved-diff matches, and reran bounded ontology validation and headless boot
+successfully (exit 0). These check loaded data/startup, not enforcement of the new policies.
+Ontology documentation only; gameplay, live JSON, tests and checker implementation remain
+unauthorized. No push, merge or history rewrite is authorized. Next topic: **World bounds / resets**.
 Evidence and item mapping: `docs/ROADMAP/todo_decide.md §E`,
 `/tmp/pixlnd-persistence-reconcile.XsnIBI/`.
 

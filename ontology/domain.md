@@ -1684,7 +1684,7 @@ eligibility stays in world/reset below. Persistence approvals and recording stat
 **Persistence / authority items 1–9 — DECIDED 2026-09-28:** all nine documentation decisions
 are recorded. No presented Persistence / authority question remains.
 Canonical rules: §3.1/§3.2/§3.7. Implementation is deferred; independent review and parent
-verification are pending (`todo_decide.md §E`). Next topic, named only: **World bounds / resets**.
+verification passed (`todo_decide.md §E`, including evidence limits). Next topic: **World bounds / resets**.
 
 | topic | still undecided / incomplete |
 |---|---|
