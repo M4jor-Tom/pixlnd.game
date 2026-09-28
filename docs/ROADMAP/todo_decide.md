@@ -20,8 +20,9 @@ question before its affected slice; do not reopen settled choices. Designed numb
   - [x] crit: ×2.0, chance above 100 % adds to the multiplier → `stats.json#stats.crit`
   - [x] item stat curve: alpha curve only, no 1.0 tier curve → `stats.json`
   - [x] prices: buy = base × level × rarity mult (1/2/4/8/16), sell 25 % → `economy.json#prices`
-  - [x] artifacts: +5 % first, ×0.9 each next, floor 1 %; one traversal stat **and** attack + max HP
-    with the same rule → `key-items.json#artifact`
+  - [x] artifacts (historical D6): +5 % first, ×0.9 each next, floor 1 %; one traversal stat
+    **and** attack + max HP → `key-items.json#artifact`. Accumulation is superseded by the
+    2026-09-28 approvals in §E / `domain.md#artifact`; live-data migration is deferred.
   - [x] inventory stack cap: none → `domain.md §3 inventory`
   - [x] enemy HP/damage: cuwo npc-hp formula × per-family multiplier, white lvl-1 mob = 150–250 HP
   - [x] Circle of Power: +10 % attack, +10 % max HP in the land → `status-effects.json`
@@ -130,13 +131,12 @@ The full walkthrough/resumption protocol is in `tasks/lessons.md`; the prompt
 Never propose or implement regional gear power loss in pixlnd, even for Cube World cloning
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
-**Current direction (2026-09-28):** books/formulas **items 1–3 recorded**; no presented books
-question remains. Exact approval and application status are in the books batch below. The owner
-requested handoff, commit and push; each item has its own ontology-only commit. Independent
-review found no issues and parent verification passed (evidence below). Commit the final handoff,
-push `fix/ontology-reconciliation`, verify publication and clean state, then stop; no next-topic proposals.
-No gameplay, live JSON, tests, model/loader/validator changes, merge or history rewriting.
-Traversal items 1–5, settlements/inn 1–4, family 1–9 and aggro 1–14 remain recorded.
+**Current direction (2026-09-28):** artifact items **1–6 approved**, recording in progress
+below; no presented artifact question remains. The owner requested “Once ontology adjusted,
+handoff, commit, push”. Record six separately scoped documentation commits; parent finalizes
+independent review, verification, handoff and publication. Writer must not push. No gameplay,
+live JSON, tests, model/loader/validator changes, merge, history rewriting or next-topic proposals.
+Books/formulas 1–3, traversal 1–5, settlements/inn 1–4, family 1–9 and aggro 1–14 remain recorded.
 Older publication instructions and hashes below are historical checkpoints.
 
 **Prior checkpoint (2026-09-19; references from the earlier rebase):** items 1–2 are applied,
@@ -561,12 +561,9 @@ D1–D26, all walkthrough approvals and remaining open questions.
 ### Open — decide before the named slice
 
 Traversal items 1–5 are recorded (item 4 corrected) and reviewed; evidence below.
-Books/formulas items 1–3 are recorded below; artifact accumulation is the next walkthrough topic,
-not a new proposal in this handoff. Cross-world character portability remains in persistence.
+Books/formulas items 1–3 are recorded below. Artifact items 1–6 are approved and being recorded,
+not open questions. Cross-world character portability remains in persistence.
 
-- [ ] **Artifact accumulation:** diminishing returns counted globally or per traversal stat;
-  percentages additive or compounded? Before artifacts; sources: `generators.json#design.artifact`,
-  `key-items.json#artifact`. D6 constants and traversal + attack + HP bonuses remain settled.
 - [ ] **Assassin ultimate:** is Camouflage's `also-ultimate` an alias of rank 3 or a separately
   unlocked fourth node? Before changing its tree; sources: `abilities.json#camouflage`, D10/D20.
 - [ ] **Wand handedness:** mechanically two-handed despite a one-hand pose, or actually
@@ -591,6 +588,34 @@ not a new proposal in this handoff. Cross-world character portability remains in
   identity, Lion tameability (`null` currently means untameable), resistance meaning and the
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
+
+### Artifacts — approvals and recording (2026-09-28)
+
+**Authority:** item 1's per-stat approach received “Good approach”, with equal-current-share
+correction; items 2–3 were approved. Follow-up: “4: Approved; 5: Decrease in total bonus is not
+intentional”. Final: **“5: Approved with z=0.1; 6: Approved”**. The normalized logarithmic
+proposal supersedes both exponential examples and the initial expression whose z cancelled.
+Canonical rules: `domain.md#artifact`; the other D6 decisions and D11 land counts stand.
+Documentation only; no live JSON or runtime authorization. Recording order: **1, 2, 3, 4, 6, 5**.
+
+1. [x] **Separate traversal counts / equal current contributions:** recorded; acquisition
+   order is irrelevant. No new reduction system for other item kinds. The existing item
+   definitions, stat formulas and `game/items/items.gd` / `inventory.gd` show no equivalent
+   ordinary-gear item-count diminishing mechanism; level/rarity curves and power gates remain.
+2. [ ] **Additive contributions:** approved; awaiting separate recording.
+3. [ ] **Recalculated artifact-free stat basis:** approved; awaiting separate recording.
+4. [ ] **Attack / maximum HP count all artifacts:** approved; awaiting separate recording.
+5. [ ] **Normalized logarithmic total, initial z=0.1:** approved; awaiting separate recording.
+6. [ ] **Remove the old 1% floor:** approved; awaiting separate recording.
+
+Per-item writer evidence: `/tmp/pixlnd-artifacts-20260928/` (`item-N.diff`, `item-N-review.md`,
+`item-N-{scope,diff-check,validator}.{log,exit}`, `item-N-commit.{log,txt}`; final `commit-map.md`
+and `batch.diff`). Each item receives semantic/scope inspection, `/simplify`, then ponytail-review,
+`git diff --check` and bounded ontology validation. Results are recorded as checks complete.
+**Item 1 writer checks:** scope, diff check and bounded validator passed (exit 0, `ontology valid`);
+`/simplify` removed duplicate constraint prose, then ponytail-review found no further cuts.
+Loaded-data validation does not prove Markdown semantics or new runtime behavior. Independent
+review and parent verification remain pending; no gameplay, boot, visual or network checks claimed.
 
 ### Books/formulas — approvals and recording (2026-09-28)
 
@@ -641,13 +666,13 @@ Logs: `parent-validator.{log,exit}`, `parent-boot.{log,exit}`. The final record 
 Validation covers current loaded data/startup, not the new recipe policies' implementation.
 No gameplay suite, visuals or network checks were run.
 
-**Pre-publication checkpoint:** branch `fix/ontology-reconciliation`, item HEAD `11cc07f`, remote
+**Historical books pre-publication checkpoint (superseded):** branch `fix/ontology-reconciliation`, item HEAD `11cc07f`, remote
 `e76921a` confirmed with `git ls-remote`. The final verification/handoff commit follows the three
 items; push without force or merge, verify remote/local HEAD equality and a clean worktree, then stop.
 This checkpoint is not a publication claim; inspect actual Git state on resumption.
-No presented books question remains. Next walkthrough topic: artifact accumulation (global versus
-per-stat diminishing returns; additive versus compounded percentages), with D6 numbers/rewards
-settled; no new proposals here. Implementation debt remains in `todo_implement.md`.
+No presented books question remained. Artifact accumulation was next at that checkpoint;
+the artifact approvals above supersede that status and its preserved D6 accumulation values.
+Implementation debt remains in `todo_implement.md`.
 No shared-account knowledge, multiplayer reward allocation, recipe-generation/identity defaults
 or cross-world portability is chosen.
 
@@ -1034,7 +1059,7 @@ is still open. Do not mistake a listed proposed correction for an approved new g
   the reference-only `region-lock` entry, `rulesets.json` annotations, `generators.json` annotations
   and `ontology/README.md`. Recorded permanent exclusion of regional gear power loss, not a
   roadmap option. Historical data and all live flags/balance values preserved. Settlement/inn
-  and traversal targets are now recorded above; artifacts and other unresolved merges remain open. Walkthrough protocol
+  and traversal targets are now recorded above; artifact approvals are tracked above, while other unresolved merges remain open. Walkthrough protocol
   and the explicit stop/resume route are recorded in `tasks/lessons.md` and `docs/HANDOFF.md`.
 - [x] **Validation contract — ontology (item 9, 2026-09-17):** recorded the approved direction
   in `domain.md §5`, clarified `c-versions-nonempty` and split `c-artifact-stat` between

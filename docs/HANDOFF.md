@@ -2,14 +2,24 @@
 
 ## Ontology walkthrough entry point (2026-09-28)
 
-**Books/formulas approvals (2026-09-28):** the owner answered **“1: Approved; 2: Approved;
+**Artifact approvals (2026-09-28; draft writer handoff):** all six items are approved;
+item 1 is recorded, the remainder await separate recording (`todo_decide.md §E`). Final owner
+answer: **“5: Approved with z=0.1; 6: Approved”**; handoff direction: **“Once ontology adjusted,
+handoff, commit, push”**. No presented artifact question remains. Canonical rules:
+`ontology/domain.md#artifact`. Independent review and parent verification are pending.
+The writer records six documentation commits only; parent finalizes handoff and publication.
+No writer push, gameplay, live JSON, tests, model/loader/validator changes or next-topic proposals.
+Evidence: `/tmp/pixlnd-artifacts-20260928/`. Next topic, named only: **Assassin ultimate
+(Camouflage alias versus separately unlocked fourth node)**.
+
+**Historical books/formulas approvals (2026-09-28):** the owner answered **“1: Approved; 2: Approved;
 3: Approved; When done, handoff, commit, push”**. Items **1–3** are recorded: permanent/global
 book recipes, shared recipe knowledge without duplicate rewards/rerolls or consuming known
 formulas, and immediate book recording with visibly power-locked crafting. Knowledge is not
 usability; duplicates never bypass the power gate. Canonical rules: `ontology/domain.md`;
 application/evidence: `todo_decide.md §E`.
 
-**Authorized handoff:** commit this verification/handoff record and push the three item commits
+**Historical books handoff (superseded, not fresh publication authority):** commit this verification/handoff record and push the three item commits
 on `fix/ontology-reconciliation`, verify remote/local HEAD equality and a clean worktree, then stop.
 No gameplay, live JSON, tests, model/loader/validator changes, merge or next-topic proposals.
 Cross-world character portability remains in the later persistence topic.
@@ -188,9 +198,9 @@ or next proposal is authorized now.
 The publication changes only four Markdown files, not runtime/live data; these tests do not prove
 implementation of the new policies. Commands and session-local evidence: `todo_decide.md §E`.
 
-**Books/formulas items 1–3 recorded; no presented books question remains.** The next walkthrough
-topic is artifact accumulation (global versus per-stat diminishing returns, additive versus
-compounded percentages); D6 numbers/rewards stand. No new proposals in this handoff. Traversal
+**Books/formulas items 1–3 recorded; no presented books question remains.** Artifact approvals
+and current handoff status are at the entry point above; they supersede D6's accumulation rule,
+not its other decisions. No new proposals in this handoff. Traversal
 items **1–5** are recorded and reviewed. Settlements/inn
 items **1–4** and family items **1–9** are recorded.
 Aggro items **1–14** are recorded; do not re-ask 13–14. Restart persistence remains a later topic.

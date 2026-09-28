@@ -64,7 +64,7 @@ availability, even if a historical flag is true. Their existing definitions and 
 **Current-build coverage:** dated slice notes and `generators.json#design` describe approved
 implementation stages, including temporary approximations, not proof that the final target is
 implemented. Later decisions supersede earlier placeholders. Unresolved hybrid merges remain
-in `docs/ROADMAP/todo_decide.md §E` (including artifact accumulation); this scope clarification
+in `docs/ROADMAP/todo_decide.md §E`; this scope clarification
 does not decide them or authorize gameplay changes.
 **Out of scope:** Picroma's engine internals (Plasma GUI runtime, DX11 renderer), the exact
 network byte layout of the 2013 protocol (kept as reference only), Steam platform integration,
@@ -1044,6 +1044,18 @@ riding/climbing/gliding bonuses reportedly non-functional in 1.0, functional her
 bound to a realm; found at dungeon ends, vaults, sewers, sky islands, some mission chests.
 Static entity id 46 "Artifact" exists in alpha data `X`.
 
+**Hybrid artifacts item 1 (owner corrected, 2026-09-28):** count contributors **separately
+for each traversal stat**, not globally across traversal kinds. All collected artifacts that
+contribute to the same stat share its **current contribution equally**; acquisition order does
+not preserve earlier, larger grants. Collecting a different traversal kind does not reduce
+this stat's contributors' rate. The initial exponential equal-share examples are superseded;
+the separately approved logarithmic curve is awaiting item 5's recording, not an open decision.
+This artifact-count mechanism does not extend to other item kinds. Existing level/rarity
+curves, power gates and other non-artifact rules remain unchanged; inspect and ask before
+changing any existing reduction mechanism.
+
+Documentation only: artifact live-data migration and runtime enforcement remain deferred.
+
 ### currency
 A: copper/silver/gold (100:1), platinum (adaptation only); S: single coin counter, auto-pickup by
 walking. Prices/incomes in `instances/economy.json`.
@@ -1365,9 +1377,10 @@ remain separately authorized work (`docs/ROADMAP/todo_decide.md §E`).
   open until documented. Metadata/config containers are not automatically content instances.
 - **Definitions versus generated instances:** load-time checks validate available definitions
   and generator configuration, not nonexistent generated objects. For artifacts, check the
-  definition's seven approved traversal stat kinds and D6 bonus configuration at load time;
+  definition's seven approved traversal stat kinds and approved bonus configuration at load time;
   generator/runtime checks separately verify each generated artifact has exactly one of
-  those traversal bonuses plus attack and max HP. Artifact accumulation remains undecided.
+  those traversal bonuses plus attack and max HP. Artifact approvals are being recorded under
+  §3.4 `artifact`; live-data migration and enforcement remain deferred.
   Passing definition checks is not evidence that generated rewards or runtime behavior work.
 - **Result:** validation succeeds only when the accumulated load/validation error collection
   is empty. Earlier load errors remain failures even if a validation pass adds no new errors.
@@ -1433,7 +1446,7 @@ content selection or live data changes are authorized by this contract.
 | c-roster-ids | every id in `creature-families.json#landscape-rosters` is a creature (D14) | load |
 | c-rideable-conflict | resolved (F2): every `rideable` is a boolean, per-page value; a `?` here is a load error | load |
 | c-hostile-in-city | villagers/animals inside settlements unattackable unless possessed | runtime |
-| c-artifact-stat | load: validate the definition's 7 traversal stat kinds and D6 bonus config; generator/runtime: each generated artifact raises exactly one traversal stat plus attack and max HP, using `generators.json#design.artifact`; accumulation semantics remain open (item 9) | load+generator/runtime |
+| c-artifact-stat | load: validate the definition's 7 traversal stat kinds and approved bonus config; generator/runtime: each generated artifact raises exactly one traversal stat plus attack and max HP; accumulation follows §3.4 artifact; live `generators.json#design.artifact` migration is deferred | load+generator/runtime (deferred) |
 | c-sim-radius | `design.spawns.ai.sim-radius` ≥ `aggro-range` + `leash`, so a creature can still notice you and walk home while you are around (D16) | load |
 | c-frame-budget | physics 60 Hz; a tick slower than its budget slows game time instead of stacking catch-up ticks: `Engine.max_physics_steps_per_frame` = `design.frame-budget.max-catch-up-steps` (D17) | engine |
 | c-xp-config | `design.progression`: kill-fraction ∈ (0,1]; gap-mult-range = [lo, hi] with 0 ≤ lo ≤ 1 ≤ hi; gap-per-level ≥ 0 (D19) | load |
@@ -1502,13 +1515,13 @@ Settlements/inn items 1–4 are recorded in §3.1 (2026-09-27). Traversal items 
 No presented traversal question remains. Books/formulas items 1–3 are recorded in §3.4/§3.5
 (2026-09-28): permanent/global book recipes, shared knowledge/duplicates and immediate recording
 with power-locked crafting. No presented books question remains; cross-world portability stays
-in persistence. Artifact accumulation is the next walkthrough topic, not a new proposal here.
+in persistence. Artifact items 1–6 are approved (2026-09-28); item 1 is recorded in §3.4,
+with the remaining approvals awaiting their separate recording, not further owner decisions.
 Live-data migration and implementation remain deferred; cleared dungeon/quest enemy reset
 eligibility stays in world/reset below. Threat across server restart stays in the persistence topic below.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Artifacts | global versus per-traversal-stat diminishing returns; additive versus compounded percentages (D6 numbers and traversal + attack/HP rewards stand) |
 | Assassin ultimate | Camouflage alias versus separately unlocked fourth node (D10/D20 stand) |
 | Wand handedness | two-handed mechanics versus one-handed; provisional data is not a resolution |
 | Persistence / authority | character portability, ownership of other discoveries/unlocks (book/formula knowledge is per character), authoritative state validation, threat across server restart (D5 dedicated server stands; same-running-world absence retention approved in §3.2) |
@@ -1546,6 +1559,8 @@ must be decided before implementation, not inferred from a historical flag or lo
   uncapped; crit ×2 with chance overflow; alpha item curve only; buy = base×level×rarity, sell 25 %;
   artifacts +5 % ×0.9 floor 1 % on one traversal stat and on attack/HP; no stack cap; enemy HP =
   cuwo formula × family multiplier; Circle of Power +10 % attack/HP; recipes 5 cubes × size class.
+  Artifact accumulation values above are historical: the 2026-09-28 artifact approvals (§3.4)
+  supersede that rule; the remaining D6 decisions and D11 land counts stand.
 - **F1 — DECIDED**: heroic shout = taunt + heal; toughness +25 %; battle fury 13 % per hit; shadow
   shooter 30 s; bubbles 6; shuriken toss 25 stamina; R cooldowns per skill.
 - **F2 — DECIDED**: per-page, not rideable (the table was the 1.0.0-1 bug).

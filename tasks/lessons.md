@@ -45,6 +45,20 @@ Owner clarification: "commit several times" means commit the entire current diff
 split into coherent parts—not further implementation rounds. Rule: preserve that scope; no
 push without authorization.
 
+## Distinguish retroactive diminishing returns from acquisition-order rewards
+
+- Owner correction (artifact item 1): contributors to the same traversal stat share the
+  current rate, rather than preserving acquisition-order bonuses. The initial equal-share
+  examples (5%; 4.5% each; 4.05% each) are superseded by item 5's logarithmic direction:
+  total bonus must not fall when another artifact is collected, and zero artifacts give zero.
+- Rule: distinguish equal sharing from the aggregate curve. Simplify proposed formulas to
+  detect cancelled balance parameters; calculate zero/first/large-count cases and check
+  monotonic totals before recording policy. Clarify units and conflicts with earlier floors;
+  do not invent curve constants or silently add a clamp. Attack/HP count all artifacts (item 4).
+  Do not extend the mechanism to other item kinds. Inspect their existing rules and ask before
+  changing any existing reduction mechanism. Preserve independent approvals while clarification
+  is pending; the owner's request to reformulate is not implementation permission.
+
 ## A percentage reduction is not a stamina exemption
 
 - Owner correction (2026-09-28, traversal item 4): Climbing Spikes reduce climbing stamina

@@ -165,6 +165,9 @@ degradation) are not backlog features.
   or compensation and leave known formula scrolls unconsumed. Runtime/UI/data work is unauthorized.
 
 ## Progression (§3.5, slice D19)
+- [ ] Artifact item 1 (`domain.md#artifact`, `c-artifact-stat`): separate traversal counts and
+  equal current contributions, independent of acquisition order. Live-data migration and
+  runtime enforcement remain unauthorized; do not extend this mechanism to ordinary gear.
 - [x] Skill tree (D20, `game/progression/skill_tree.gd`, `skill_panel.gd` on X): spending, unlock rule, per-point multipliers.
   Class actives have runtimes since D21 (see Combat). Still open: shared skills other than Swimming do nothing until pets,
   mounts, climbing, glider and boat exist; spec change at the trainer (`npc-role` class-trainer, A fee) and the panel is a flat list

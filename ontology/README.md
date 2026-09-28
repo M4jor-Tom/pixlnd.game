@@ -39,7 +39,7 @@ connected-player agreement / success-only initiator payment (`domain.md#game-clo
 **Traversal items 1–5 recorded (2026-09-28):** riding gates; training + equipped bought glider/boat;
 Spikes reduce climbing stamina consumption by 75%, applied to the skill-adjusted remaining cost
 (×0.25), not infinite endurance or additive percentage points. Independent review and parent
-verification passed (`todo_decide.md §E`). Artifact combination remains open.
+verification passed (`todo_decide.md §E`). Artifact approvals are tracked below.
 Live-data migration and enforcement remain deferred; cleared dungeon/quest enemy reset eligibility
 stays in the later world/reset topic.
 **Books/formulas items 1–3 recorded (2026-09-28):** permanent/global book recipes, shared
@@ -47,6 +47,11 @@ knowledge without duplicate rewards/rerolls or consuming known formulas, and imm
 recording with visibly power-locked crafting (`domain.md#recipe` / `#book-of-crafting` / `#power-gate`).
 No presented books question remains; duplicate knowledge never bypasses power requirements.
 Independent review and parent verification passed (`todo_decide.md §E`); cross-world portability remains open.
+**Artifacts items 1–6 approved (2026-09-28):** item 1 recorded in `domain.md#artifact`:
+separate traversal counts and equal current contributions, not acquisition-order grants.
+Items 2–6 await separate recording; no presented artifact question remains. Independent review
+and parent verification are pending (`todo_decide.md §E`). Live-data migration and runtime
+implementation remain deferred.
 Gameplay and live JSON remain unchanged; restart persistence stays in its later topic.
 
 ## Decision and build history (from 2026-09-07)
