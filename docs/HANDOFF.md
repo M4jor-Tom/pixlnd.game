@@ -3,8 +3,8 @@
 ## Ontology walkthrough entry point (2026-09-28)
 
 **Owner answers:** “1: Approved; 2: Approved; 3: Approved; 4: Approved”. Follow-up:
-**“When done, handoff, commit, push”**. World bounds / resets item **1 is recorded**;
-items **2–4 are approved and await separate recording commits**, not further owner answers.
+**“When done, handoff, commit, push”**. World bounds / resets items **1–2 are recorded**;
+items **3–4 are approved and await separate recording commits**, not further owner answers.
 Canonical rules: `ontology/domain.md`; mapping/evidence: `docs/ROADMAP/todo_decide.md §E`,
 `/tmp/pixlnd-world-reset-reconcile.xc2Nuh/`. Independent review and parent verification are pending.
 Ontology documentation only; runtime, live JSON, tests and checker changes remain unauthorized.

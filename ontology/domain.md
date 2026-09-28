@@ -123,6 +123,12 @@ not unlimited generation or a wrapping world. Historical “infinite” / “no 
 do not override this hybrid limit. Boundary enforcement and live-data/checker migration remain
 deferred; the current terrain streamer does not enforce the bound.
 
+**Hybrid world/reset item 2 (owner approved, 2026-09-28; depends on item 1):** mark the
+outer world boundary on the map and **prevent outward travel**, including **flight and
+teleport destinations**. Players can turn back; crossing attempts cause **no special damage,
+death or forced teleport**. This chooses no edge art, warning UI, biome or numerical buffer.
+Map/travel enforcement remains deferred and unauthorized.
+
 | prop | type | i/e | notes |
 |---|---|---|---|
 | seed | uint32 | i | A: chosen per world at creation (server default 26879); S: one fixed shared seed, no UI |
@@ -174,7 +180,7 @@ A named, bordered gameplay region of one `landscape`. What the wiki calls "regio
 | tier-range | `mob-strength-tier`[] | i | S: regions host white→yellow enemies, dungeons above surface |
 | rarity | int 0..4 | i | A devlog "rare zones": stronger monsters, better loot `?` |
 | realm | `realm` ref | e | S: the kingdom/cult/tribe whose lore covers it |
-| border | polygon (map only) | i | dotted line on map, no physical wall (A devlog kingdoms had walls `X`) |
+| border | polygon (map only) | i | internal land border: dotted line on map, no physical wall (A devlog kingdoms had walls `X`); hybrid outer world boundary follows `world` item 2 |
 | inventory-page | — | — | S: each land owns an inventory tab (see `inventory`) |
 | key-items | `key-item`[] ≤ 9 | e | S: up to 4 movement + 3 ticket + treasure spirit + ember |
 | gnome-suppliers | 4 | e | S |
@@ -1603,7 +1609,7 @@ content selection or live data changes are authorized by this contract.
 | c-boss-size | A: boss size/strength from 1 at lvl 1 to full at lvl 10; S: dungeon boss size capped so it fits inside | generator |
 | c-arena-waves | exactly 5 waves with tier ladder W/G, W/G, G/B, B/P, P/Y | generator |
 | c-mission-reward | S reward rarity = quest tier + 1 (cap legendary) | generator |
-| c-world-bounds | hybrid: finite 1024×1024 lands, one land = one region, coordinates −512..511 inclusive on each horizontal axis; 16,384 blocks per land and 16,777,216 blocks per world side; no wrapping (§3.1 world) | generator+runtime (deferred) |
+| c-world-bounds | hybrid: finite 1024×1024 lands, one land = one region, coordinates −512..511 inclusive on each horizontal axis; 16,384 blocks per land and 16,777,216 blocks per world side; no wrapping; outer boundary marked on map, outward travel including flight/teleport destinations prevented, with turn-back allowed and no special damage/death/forced teleport (§3.1 world) | generator+runtime/UI (deferred) |
 | c-zone-size | A zone 256² blocks, region 64² zones; S zone 64² blocks; hybrid zone 64², land 256² zones (D12) | engine |
 | c-block-rgb | every solid block has its own RGB; (0,0,0) in `.cub` = empty | data |
 | c-name-length | player-character name 2..16 ASCII 32–126 (character creation; creature display names are free text) | runtime |
@@ -1696,14 +1702,14 @@ eligibility stays in world/reset below. Persistence approvals and recording stat
 are recorded. No presented Persistence / authority question remains.
 Canonical rules: §3.1/§3.2/§3.7. Implementation is deferred; independent review and parent
 verification passed (`todo_decide.md §E`, including evidence limits).
-**World bounds / resets items 1–4 — DECIDED 2026-09-28:** all four approved; item 1 is
-recorded in §3.1/§5/§6. Items 2–4 await separate recording commits, not owner answers.
+**World bounds / resets items 1–4 — DECIDED 2026-09-28:** all four approved; items 1–2 are
+recorded in §3.1/§5/§6. Items 3–4 await separate recording commits, not owner answers.
 Independent review and parent verification are pending (`todo_decide.md §E`); implementation
 remains deferred.
 
 | topic | still undecided / incomplete |
 |---|---|
-| World bounds / resets | all four items approved; items 2–4 await recording, not further design approval |
+| World bounds / resets | all four items approved; items 3–4 await recording, not further design approval |
 | Validation-contract mapping | exact required paths, permitted provenance inheritance and remaining constraint boundaries; item 9 policy is approved, enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 

@@ -31,9 +31,10 @@ passed; item mapping, evidence and limits: `docs/ROADMAP/todo_decide.md §E`.
 Ontology documentation only; gameplay, live JSON, tests and checker implementation remain
 unauthorized.
 
-**World bounds / resets items 1–4 approved (2026-09-28):** item 1 is recorded in
+**World bounds / resets items 1–4 approved (2026-09-28):** items 1–2 are recorded in
 `domain.md#world` / `c-world-bounds` / `gen-world`: finite 1024×1024 lands, not unlimited or
-wrapping. Items 2–4 await separate recording commits, not owner answers. Independent review
+wrapping, with a map-marked outer boundary preventing outward travel without special penalties.
+Items 3–4 await separate recording commits, not owner answers. Independent review
 and parent verification are pending; runtime, live-data and checker changes remain unauthorized.
 Item mapping/evidence and publication direction: §E / `docs/HANDOFF.md`.
 

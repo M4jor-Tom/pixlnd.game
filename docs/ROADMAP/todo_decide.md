@@ -138,8 +138,8 @@ passed; evidence and limits below. Ontology documentation only; gameplay, live J
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
 **Current world/reset direction (2026-09-28):** owner answered **“1: Approved; 2: Approved;
-3: Approved; 4: Approved”**, then **“When done, handoff, commit, push”**. Item 1 is recorded;
-items 2–4 await separate recording commits, not owner answers. Item 2 depends on approved item 1.
+3: Approved; 4: Approved”**, then **“When done, handoff, commit, push”**. Items 1–2 are recorded;
+items 3–4 await separate recording commits, not owner answers. Item 2 depends on approved item 1.
 Only the five existing Markdown paths may change; runtime, live JSON, tests and checker work
 remain unauthorized. Independent review and parent verification are pending. The writer makes
 four item commits; the parent finalizes verification/handoff and publishes only
@@ -636,7 +636,7 @@ Books/formulas items 1–3, artifact items 1–6, Assassin item 1 and Wand item 
 not open questions. Persistence items 1–9 are recorded and reviewed above.
 Current topic: **World bounds / resets**; all four items are approved; recording status below.
 
-- [ ] **World bounds / resets recording:** item 1 recorded; approved items 2–4 await separate
+- [ ] **World bounds / resets recording:** items 1–2 recorded; approved items 3–4 await separate
   commits. No further owner answer is needed for the presented batch; implementation is deferred.
 - [ ] **Validation-contract mapping (policy approved in item 9):** document exact required
   table/config paths, permitted per-family provenance inheritance and remaining constraint
@@ -656,8 +656,8 @@ Canonical semantics are recorded in `domain.md`; application is tracked independ
 
 | item | application | canonical section | commit |
 |---|---|---|---|
-| 1 — Finite world | [x] recorded | `world`, `c-world-bounds`, `gen-world` | awaiting commit hash |
-| 2 — Outer boundary | [ ] approved, awaiting recording | `world` | pending |
+| 1 — Finite world | [x] recorded | `world`, `c-world-bounds`, `gen-world` | a1269106043f226550009a96b6f7a5f6b615c92b |
+| 2 — Outer boundary | [x] recorded | `world`, `c-world-bounds` | awaiting commit hash |
 | 3 — Cleared-enemy eligibility | [ ] approved, awaiting recording | `game-clock` | pending |
 | 4 — Occupied-site refresh | [ ] approved, awaiting recording | `game-clock` | pending |
 

@@ -15,6 +15,9 @@ degradation) are not backlog features.
   finite 1024×1024-land grid, coordinates −512..511 on each horizontal axis, without wrapping.
   Current terrain generation/streaming is unbounded; live `world-scales.invariants` still says
   “no borders”. Data/checker migration and generation/runtime enforcement remain unauthorized.
+- [ ] World/reset item 2 (`domain.md#world`, `c-world-bounds`): mark the outer boundary on the
+  map and block outward travel including flight/teleport destinations; allow turning back, with
+  no special damage/death/forced teleport. Map/travel enforcement is deferred.
 - [ ] Zone build (~40 ms mesh + trimesh) runs on the main thread, ≤2 zones/frame; hitches on load
   and when crossing zones. Thread it (`WorkerThreadPool`) — `world.gd` ponytail.
 - [ ] Heightfield only: no caves, overhangs, rivers/waterfalls, lakes, plateaus/mesas, roads with
