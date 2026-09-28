@@ -606,7 +606,9 @@ Documentation only; no live JSON or runtime authorization. Recording order: **1,
    multiplied by the count again; equal current share is `B(x)/x` for positive counts.
 3. [x] **Recalculated artifact-free stat basis:** recorded; compute normal level/equipment/
    skill/buff inputs first, then multiply by `1+B(x)`; no pickup-time snapshot or new stat target.
-4. [ ] **Attack / maximum HP count all artifacts:** approved; awaiting separate recording.
+4. [x] **Attack / maximum HP count all artifacts:** recorded; same recalculation as traversal,
+   whose counts remain matching-only. Exactly one existing traversal kind plus attack and maximum
+   HP per artifact; no character levels, traversal-gate bypass or new slot.
 5. [ ] **Normalized logarithmic total, initial z=0.1:** approved; awaiting separate recording.
 6. [ ] **Remove the old 1% floor:** approved; awaiting separate recording.
 
@@ -620,6 +622,8 @@ and `batch.diff`). Each item receives semantic/scope inspection, `/simplify`, th
 `/simplify` trimmed repeated deferral prose, then ponytail-review found no further cuts.
 **Item 3 writer checks:** scope, diff check and bounded validator passed (exit 0, `ontology valid`);
 `/simplify` kept one compact deferral, then ponytail-review found no further cuts.
+**Item 4 writer checks:** scope, diff check and bounded validator passed (exit 0, `ontology valid`);
+`/simplify` separated historical source prose from the reward rule, then ponytail-review found no cuts.
 Loaded-data validation does not prove Markdown semantics or new runtime behavior. Independent
 review and parent verification remain pending; no gameplay, boot, visual or network checks claimed.
 

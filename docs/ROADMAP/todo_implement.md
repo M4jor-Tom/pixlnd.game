@@ -165,8 +165,9 @@ degradation) are not backlog features.
   or compensation and leave known formula scrolls unconsumed. Runtime/UI/data work is unauthorized.
 
 ## Progression (§3.5, slice D19)
-- [ ] Artifact items 1–3 (`domain.md#artifact`, `c-artifact-stat`): separate traversal counts,
-  equal additive contributions and recalculation from the current artifact-free stat.
+- [ ] Artifact items 1–4 (`domain.md#artifact`, `c-artifact-stat`): matching-only traversal
+  counts versus all-artifact attack/maximum-HP counts, with equal additive contributions and
+  recalculation from the current artifact-free stat. Preserve traversal gates; no artifact levels.
   Live-data migration and runtime enforcement remain unauthorized; no extension to ordinary gear.
 - [x] Skill tree (D20, `game/progression/skill_tree.gd`, `skill_panel.gd` on X): spending, unlock rule, per-point multipliers.
   Class actives have runtimes since D21 (see Combat). Still open: shared skills other than Swimming do nothing until pets,

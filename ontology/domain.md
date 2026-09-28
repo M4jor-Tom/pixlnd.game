@@ -49,8 +49,9 @@ content, subject to D3/D4 and subsequent approvals (key items, artifacts, lore, 
 and events, shrines, flight masters, elixirs, gnome suppliers, books of crafting).
 **Region lock is dropped** (D4): equipment never loses power
 when the character travels; there are no `+` items, no `worn` degradation, no per-land inventory
-pages, and key items work everywhere once found. Artifacts stay as permanent traversal-stat
-collectibles but no longer define level. Flags in `instances/rulesets.json#ruleset-hybrid`.
+pages, and key items work everywhere once found. Artifacts stay as permanent collectibles
+with traversal and D6 attack/maximum-HP rewards, but do not grant character levels.
+Flags in `instances/rulesets.json#ruleset-hybrid`.
 Alpha/Steam rulesets remain documented for reference only.
 
 **Permanent exclusion (owner reaffirmed 2026-09-15):** never propose or implement regional
@@ -386,7 +387,7 @@ A saved hero. `A S`
 |---|---|
 | race, gender, class, spec, appearance, name | creation |
 | level, xp, skills[11] | A |
-| artifacts | S (level = count) |
+| artifacts | hybrid: collected permanent stat rewards (§3.4), not character levels; S reference: level = count |
 | inventory, equipment, coins, platinum `A` | |
 | known-recipes | hybrid: one set of recipes shared by book/formula learning, with no source-specific duplicates; book-learned recipes persist across lands/sessions (§3.4); A formulas learned; S books per land (reference) |
 | lore-known | S per realm |
@@ -1038,10 +1039,10 @@ a positive skill-adjusted cost into zero. This defines neither the skill reducti
 nor artifact-combination semantics.
 
 ### artifact
-`S` relic; +1 level each; permanent; works everywhere; 1–3 per land (D11); raises exactly one of 7 traversal stats
-(climb speed, swim speed, diving, ride speed, glide speed, sail speed, light radius), diminishing;
-riding/climbing/gliding bonuses reportedly non-functional in 1.0, functional here (D6); named "<Ring|Stone|…> of <Name>"
-bound to a realm; found at dungeon ends, vaults, sewers, sky islands, some mission chests.
+Relic collectible from `S`; permanent and works everywhere; hybrid count is 1–3 per land (D11).
+Named "<Ring|Stone|…> of <Name>", bound to a realm; found at dungeon ends, vaults, sewers,
+sky islands and some mission chests. **S reference only:** each relic granted +1 level;
+riding/climbing/gliding bonuses were reportedly non-functional in 1.0 (functional in hybrid, D6).
 Static entity id 46 "Artifact" exists in alpha data `X`.
 
 **Hybrid artifacts item 1 (owner corrected, 2026-09-28):** count contributors **separately
@@ -1064,6 +1065,14 @@ normally **without artifacts**, including applicable level, equipment, skills an
 Then `stat with artifacts = current artifact-free stat × (1 + B(x))`. Recalculate when
 ordinary stat inputs change; never snapshot the stat at pickup. This adds no stat target
 or unrelated effect.
+
+**Hybrid artifacts item 4 (owner approved after clarification, 2026-09-28):** every artifact
+still grants **exactly one** of the seven existing traversal kinds (`climb-speed`, `swim-speed`,
+`diving-skill`, `ride-speed`, `glide-speed`, `sail-speed`, `light-radius`) **plus attack and
+maximum HP**. Attack and maximum HP use the **same recalculation** as traversal, each counting
+**all collected artifacts**, because every artifact grants both. Each traversal stat counts
+only its matching artifacts, separately. Artifacts grant no character levels and bypass no
+existing traversal training/item gates; no equipment slot is added.
 
 Documentation only: artifact live-data migration and runtime enforcement remain deferred.
 
@@ -1319,7 +1328,7 @@ One row per fact type. Cardinality as `domain → range`.
 | restricted-to-class | weapon-type ∪ material | character-class | n→0..1 | |
 | has-hazard | landscape ∪ terrain-feature | status-effect | n→n | cold-water, toxic, lava |
 | countered-by | status-effect | consumable | n→n | hot chocolate, green smoothie, lemonade |
-| raises-stat | artifact ∪ ability ∪ spirit-cube ∪ elixir | stat | n→n | hybrid artifacts: exactly one traversal stat plus attack and max HP (D6, c-artifact-stat) |
+| raises-stat | artifact ∪ ability ∪ spirit-cube ∪ elixir | stat | n→n | hybrid artifacts: exactly one traversal stat plus attack and max HP; per-stat counting and recalculation follow §3.4 artifact / c-artifact-stat |
 | mounts | player-character | pet | 1→0..1 | hybrid training + global Reins + rideable tamed pet: c-riding; A skill-only / S land Reins are reference |
 | owns | player-character | pet | 1→n | cages |
 | possesses | poi-type(demon-portal) | npc-role ∪ creature | 1→n | S |
@@ -1526,7 +1535,7 @@ Settlements/inn items 1–4 are recorded in §3.1 (2026-09-27). Traversal items 
 No presented traversal question remains. Books/formulas items 1–3 are recorded in §3.4/§3.5
 (2026-09-28): permanent/global book recipes, shared knowledge/duplicates and immediate recording
 with power-locked crafting. No presented books question remains; cross-world portability stays
-in persistence. Artifact items 1–6 are approved (2026-09-28); items 1–3 are recorded in §3.4,
+in persistence. Artifact items 1–6 are approved (2026-09-28); items 1–4 are recorded in §3.4,
 with the remaining approvals awaiting their separate recording, not further owner decisions.
 Live-data migration and implementation remain deferred; cleared dungeon/quest enemy reset
 eligibility stays in world/reset below. Threat across server restart stays in the persistence topic below.
