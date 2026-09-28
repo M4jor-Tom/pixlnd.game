@@ -137,15 +137,20 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Current handoff direction:** “handoff, commit, push. I'll handle this with the next agent”.
-World bounds / resets items **1–4 are presented but unanswered**, preserved verbatim below.
-None is approved, refused or applied; item 2 depends on item 1. Handoff grants no design approval.
-Commit this handoff and push `fix/ontology-reconciliation`, verify remote/local HEAD equality
-and a clean worktree, then stop. No merge, force-push, history rewrite, implementation or further
-proposals. Pre-publication state: clean `7a79913`, remote `2ed538d` confirmed with `git ls-remote`;
-these are checkpoints, not claims of publication. Resume the four unanswered items, not a later topic.
+**Current world/reset direction (2026-09-28):** owner answered **“1: Approved; 2: Approved;
+3: Approved; 4: Approved”**, then **“When done, handoff, commit, push”**. Item 1 is recorded;
+items 2–4 await separate recording commits, not owner answers. Item 2 depends on approved item 1.
+Only the five existing Markdown paths may change; runtime, live JSON, tests and checker work
+remain unauthorized. Independent review and parent verification are pending. The writer makes
+four item commits; the parent finalizes verification/handoff and publishes only
+`fix/ontology-reconciliation`, checks remote/upstream/local equality and clean status, then stops.
+No merge, force-push, history rewrite or next-topic proposals.
 
-**Owner answer:** “1: Approved; 2: Approved; 3: Approved; 4: Approved; 5: Approved;
+**Historical unanswered handoff (superseded):** the former “I'll handle this with the next
+agent” direction preserved items 1–4 without answers. Its clean `7a79913` / remote `2ed538d`
+checkpoint predates the current approvals and is not a fresh publication claim.
+
+**Persistence owner answer:** “1: Approved; 2: Approved; 3: Approved; 4: Approved; 5: Approved;
 6: Approved; 7: Approved; 8: Approved; 9: Approved (I thought that I already approved 9
 in the threat topic, otherwise it's fine)”. Item 9 closes Aggro 11's deferred restart case,
 not its already-approved running-world retention. Canonical semantics: `domain.md` sections below.
@@ -629,11 +634,10 @@ D1–D26, all walkthrough approvals and remaining open questions.
 Traversal items 1–5 are recorded (item 4 corrected) and reviewed; evidence below.
 Books/formulas items 1–3, artifact items 1–6, Assassin item 1 and Wand item 1 are recorded below,
 not open questions. Persistence items 1–9 are recorded and reviewed above.
-Current topic: **World bounds / resets**; items 1–4 below are presented but unanswered.
+Current topic: **World bounds / resets**; all four items are approved; recording status below.
 
-- [ ] **World bounds / resets:** does hybrid retain the finite 1024²-region bound despite
-  “infinite” wording, and do cleared dungeon/quest mobs reset at midnight? Before boundary/clock
-  logic; sources: `domain.md#gen-world` (generator row), `#game-clock`, `c-midnight-reset`.
+- [ ] **World bounds / resets recording:** item 1 recorded; approved items 2–4 await separate
+  commits. No further owner answer is needed for the presented batch; implementation is deferred.
 - [ ] **Validation-contract mapping (policy approved in item 9):** document exact required
   table/config paths, permitted per-family provenance inheritance and remaining constraint
   boundaries from `domain.md §2/§5` before filling validator gaps. Ask the owner only where
@@ -645,11 +649,27 @@ Current topic: **World bounds / resets**; items 1–4 below are presented but un
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
 
-### World bounds / resets — exact presented batch, unanswered (2026-09-28)
+### World bounds / resets — approved batch (2026-09-28)
 
-**Status:** all four proposals await owner answers. The handoff request is neither approval nor
-refusal. Preserve their numbering and the item-2 dependency; do not implement or adopt these
-recommendations as defaults. No other world/reset proposal was presented.
+**Status:** all four proposals approved without amendment or refusal. Item 2 depends on item 1.
+Canonical semantics are recorded in `domain.md`; application is tracked independently below.
+
+| item | application | canonical section | commit |
+|---|---|---|---|
+| 1 — Finite world | [x] recorded | `world`, `c-world-bounds`, `gen-world` | awaiting commit hash |
+| 2 — Outer boundary | [ ] approved, awaiting recording | `world` | pending |
+| 3 — Cleared-enemy eligibility | [ ] approved, awaiting recording | `game-clock` | pending |
+| 4 — Occupied-site refresh | [ ] approved, awaiting recording | `game-clock` | pending |
+
+**Evidence:** `/tmp/pixlnd-world-reset-reconcile.xc2Nuh/` holds the approval brief, exact
+`item-N.diff` pre-commit diffs, per-item review/check logs/exits and commit mapping.
+Each item requires semantic/scope inspection, `/simplify`, ponytail-review, `git diff --check`
+and `timeout 150 nix develop -c godot --headless -s ontology/validate.gd` before commit.
+The final bounded boot is a startup smoke check only; checks do not prove Markdown semantics
+or new runtime enforcement. Fresh independent review and parent audit/handoff remain pending.
+
+**Historical presentation (now approved):** the exact proposals and their pre-answer “Settled”
+context below are retained for provenance, not as current unanswered questions.
 
 #### 1. A huge but finite world
 

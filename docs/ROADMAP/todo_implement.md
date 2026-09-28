@@ -11,6 +11,10 @@ are not automatically hybrid targets. D4 exclusions (regional gear power loss, `
 degradation) are not backlog features.
 
 ## World (§3.1, slice 475e72b)
+- [ ] World/reset item 1 (`domain.md#world`, `c-world-bounds`, `gen-world`): enforce the approved
+  finite 1024×1024-land grid, coordinates −512..511 on each horizontal axis, without wrapping.
+  Current terrain generation/streaming is unbounded; live `world-scales.invariants` still says
+  “no borders”. Data/checker migration and generation/runtime enforcement remain unauthorized.
 - [ ] Zone build (~40 ms mesh + trimesh) runs on the main thread, ≤2 zones/frame; hitches on load
   and when crossing zones. Thread it (`WorkerThreadPool`) — `world.gd` ponytail.
 - [ ] Heightfield only: no caves, overhangs, rivers/waterfalls, lakes, plateaus/mesas, roads with

@@ -2,19 +2,23 @@
 
 ## Ontology walkthrough entry point (2026-09-28)
 
-**Owner handoff direction:** “handoff, commit, push. I'll handle this with the next agent”.
-Resume **World bounds / resets items 1–4**, all **presented but unanswered**: finite size,
-outer-boundary behavior (depends on item 1), cleared-enemy eligibility, and occupied-site refresh.
-The exact recommendations, examples, dependencies and **Approval versus Refusing** consequences
-are preserved in `docs/ROADMAP/todo_decide.md §E`. Handoff is not approval; no world/reset rule
-has been applied. Do not skip these items or reopen the nine approved persistence decisions.
+**Owner answers:** “1: Approved; 2: Approved; 3: Approved; 4: Approved”. Follow-up:
+**“When done, handoff, commit, push”**. World bounds / resets item **1 is recorded**;
+items **2–4 are approved and await separate recording commits**, not further owner answers.
+Canonical rules: `ontology/domain.md`; mapping/evidence: `docs/ROADMAP/todo_decide.md §E`,
+`/tmp/pixlnd-world-reset-reconcile.xc2Nuh/`. Independent review and parent verification are pending.
+Ontology documentation only; runtime, live JSON, tests and checker changes remain unauthorized.
 
-**Authorized publication:** commit this handoff and push `fix/ontology-reconciliation`, verify
-remote/local HEAD equality and a clean worktree, then stop. No merge, force-push, history rewrite,
-implementation or further proposals. **Pre-publication checkpoint:** clean HEAD `7a79913`
-(nine item commits plus their verification record), remote `2ed538d` confirmed with `git ls-remote`.
-The handoff commit follows; inspect actual Git state on resumption, not this checkpoint as proof
-of publication. Fresh handoff evidence/limits are in §E and `/tmp/pixlnd-persistence-handoff.UID5vE/`.
+**Publication boundary:** the writer records four item commits only; the parent performs fresh
+read-only review/audit, finalizes the handoff/verification commit, then publishes only
+`fix/ontology-reconciliation`, verifies live remote/upstream/local equality and clean status,
+and stops. No next-topic proposals, merge, force-push or history rewrite. Starting clean HEAD,
+upstream and live remote: `7bff485cfb1c3e68a95778a5c1b29244997e2e14`; this is not a publication claim.
+
+**Historical unanswered checkpoint (superseded):** the prior “I'll handle this with the next
+agent” handoff preserved world/reset items 1–4 unanswered; the current approvals replace that
+status. Its pre-publication `7a79913` / remote `2ed538d` and evidence in
+`/tmp/pixlnd-persistence-handoff.UID5vE/` are historical, not current Git verification.
 
 **Persistence / authority — all nine documentation decisions recorded (2026-09-28).**
 No presented Persistence / authority question remains. Nine item commits: `01199a2` through
@@ -22,8 +26,8 @@ No presented Persistence / authority question remains. Nine item commits: `01199
 confirmed all nine saved-diff matches, and reran bounded ontology validation and headless boot
 successfully (exit 0). These check loaded data/startup, not enforcement of the new policies.
 Ontology documentation only; gameplay, live JSON, tests and checker implementation remain
-unauthorized. Verification record: `7a79913`. The current handoff above authorizes publication
-only; World bounds / resets items 1–4 remain unanswered.
+unauthorized. Verification record: `7a79913`. The prior unanswered world/reset
+checkpoint is superseded by the owner approvals above.
 Evidence and item mapping: `docs/ROADMAP/todo_decide.md §E`,
 `/tmp/pixlnd-persistence-reconcile.XsnIBI/`.
 

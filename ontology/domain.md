@@ -28,7 +28,8 @@ layouts), CWSDK (1.0 modding SDK), coremaze stat reverse-engineering, Wollay's 2
 
 ## 1. Scope
 
-**Reference domain:** a seed-driven, infinite, voxel, third-person action RPG with 8 races ×
+**Reference domain:** a seed-driven voxel, third-person action RPG, historically described as
+“infinite” (not the hybrid bound below), with 8 races ×
 4 classes × 2 specializations, procedurally generated lands (biomes, dungeons, settlements,
 missions), a tame-anything pet system, crafting, and drop-in co-op. The original Cube World
 shipped two rulesets with **mutually exclusive progression**; these are historical comparisons,
@@ -113,6 +114,15 @@ Format per class: **id** — one-line definition. `versions`. Property table. In
 ### world
 The single playable universe instance. `A S`
 Hybrid saved-world identity is distinct from the generation seed (`save-data`, persistence item 2).
+
+**Hybrid world/reset item 1 (owner approved, 2026-09-28):** the world is a finite square of
+**1,024 × 1,024 lands (1,048,576 total)**, one land per region. Each land is **16,384 blocks
+across** (D12), giving **16,777,216 blocks / roughly 16,777 km per side**. Land coordinates
+run **−512 through 511 inclusive on each horizontal axis**. This is enormous but bounded,
+not unlimited generation or a wrapping world. Historical “infinite” / “no borders” descriptions
+do not override this hybrid limit. Boundary enforcement and live-data/checker migration remain
+deferred; the current terrain streamer does not enforce the bound.
+
 | prop | type | i/e | notes |
 |---|---|---|---|
 | seed | uint32 | i | A: chosen per world at creation (server default 26879); S: one fixed shared seed, no UI |
@@ -173,7 +183,7 @@ A named, bordered gameplay region of one `landscape`. What the wiki calls "regio
 | circles-of-power | 1..n | e | S |
 | artifacts | 1..n | e | S |
 | settlements | hybrid / A: exactly 1; S: several | e | |
-| coords | int×2 | i | land-grid cell (F6); `seed = hash(world.seed, coords)`, every roll of the land derives from it (D12) |
+| coords | int×2 | i | land-grid cell (F6); hybrid −512..511 inclusive on each horizontal axis (§3.1 world); `seed = hash(world.seed, coords)`, every roll of the land derives from it (D12) |
 Internal grid: alpha region = 64×64 zones = 16 384 blocks; 8×8 mission cells per region;
 world addressable as 1024×1024 regions (finite). One gameplay `land` = one internal region cell
 (F6, decided); heightmap, water level and noise are our own.
@@ -1593,6 +1603,7 @@ content selection or live data changes are authorized by this contract.
 | c-boss-size | A: boss size/strength from 1 at lvl 1 to full at lvl 10; S: dungeon boss size capped so it fits inside | generator |
 | c-arena-waves | exactly 5 waves with tier ladder W/G, W/G, G/B, B/P, P/Y | generator |
 | c-mission-reward | S reward rarity = quest tier + 1 (cap legendary) | generator |
+| c-world-bounds | hybrid: finite 1024×1024 lands, one land = one region, coordinates −512..511 inclusive on each horizontal axis; 16,384 blocks per land and 16,777,216 blocks per world side; no wrapping (§3.1 world) | generator+runtime (deferred) |
 | c-zone-size | A zone 256² blocks, region 64² zones; S zone 64² blocks; hybrid zone 64², land 256² zones (D12) | engine |
 | c-block-rgb | every solid block has its own RGB; (0,0,0) in `.cub` = empty | data |
 | c-name-length | player-character name 2..16 ASCII 32–126 (character creation; creature display names are free text) | runtime |
@@ -1625,7 +1636,7 @@ reproducible; each generator lists invariants that a test can assert.
 
 | id | input | output | invariants |
 |---|---|---|---|
-| gen-world | seed | infinite grid of internal regions → lands; region data generated 3×3 around player, region seeds 7×7 | same seed = same generation/geography, not mutable saved-world identity (§3.7); no borders; finite 1024² regions |
+| gen-world | seed | hybrid: finite 1024×1024 grid of internal regions → lands; reference generation neighbourhood: region data 3×3 around player, region seeds 7×7 | same seed = same generation/geography, not mutable saved-world identity (§3.7); hybrid coordinates −512..511 on each horizontal axis, no wrapping (c-world-bounds); live `world-scales.invariants` “no borders” wording is not hybrid authority |
 | gen-climate | seed, x, y | temperature, humidity, continent, relief → landscape choice (rules: `design.climate`) | equal-sized lands; features can appear off-biome (volcano in snow) |
 | gen-terrain | land, zone coords | heightfield columns, caves, rivers+waterfalls, lakes, mountains/plateaus, mesas, overhangs; per-voxel RGB by block type & landscape palette | walkable roads with tunnels/bridges; water at rivers/lakes/oceans |
 | gen-coarse-map `Ω` | land seed | coarse map placing streets, buildings, rivers, bridges, trees, caves logically before voxel detail | every structure reachable by road |
@@ -1685,12 +1696,14 @@ eligibility stays in world/reset below. Persistence approvals and recording stat
 are recorded. No presented Persistence / authority question remains.
 Canonical rules: §3.1/§3.2/§3.7. Implementation is deferred; independent review and parent
 verification passed (`todo_decide.md §E`, including evidence limits).
-**World bounds / resets items 1–4 are presented but unanswered**; their exact proposals are
-preserved in §E for the next agent. No world/reset proposal is approved or applied.
+**World bounds / resets items 1–4 — DECIDED 2026-09-28:** all four approved; item 1 is
+recorded in §3.1/§5/§6. Items 2–4 await separate recording commits, not owner answers.
+Independent review and parent verification are pending (`todo_decide.md §E`); implementation
+remains deferred.
 
 | topic | still undecided / incomplete |
 |---|---|
-| World bounds / resets | finite 1024²-region bound versus “infinite” wording; cleared dungeon/quest mobs at midnight |
+| World bounds / resets | all four items approved; items 2–4 await recording, not further design approval |
 | Validation-contract mapping | exact required paths, permitted provenance inheritance and remaining constraint boundaries; item 9 policy is approved, enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
