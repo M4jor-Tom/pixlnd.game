@@ -152,6 +152,10 @@ degradation) are not backlog features.
   identifier, adapter, gem trader. Item 10's native panel capture checks rendering with empty stock;
   the full vendor/stock/trade flow is not visually verified.
 - [ ] No crafting, customization bench.
+- [ ] Wand item 1 (`domain.md#weapon-type`, `c-hands`): migrate provisional live handedness to
+  2H and the common recipe from 10 to 20 wood cubes; enforce no other hand item and the existing
+  32-cube limit, preserving damage/attacks and rarity gems. Equipment/crafting/customization and
+  validation coverage require separate authorization; no live data or runtime changed.
 - [ ] Books/formulas item 1 (`domain.md#book-of-crafting`, `c-book-recipe-persistence`): persist
   book-learned recipes with the character across lands/sessions, without relearning on travel.
   Live-data migration and crafting/save-data implementation remain unauthorized; cross-world
@@ -239,7 +243,8 @@ degradation) are not backlog features.
   applied (`gen-item-stats`; the hp roll term `2 − 8r` goes negative as written, `?`), rings/amulets
   never drop, no upgrade cubes (`item.upgrades`, `c-cube-cap`).
 - [x] Two-handed weapon/shield conflicts are rejected atomically in either equip order (item 10).
-  The broader approved equipment-model/slot implementation remains deferred (§E item 3); wand handedness is open.
+  The broader approved equipment-model/slot implementation remains deferred (§E item 3);
+  the approved two-handed wand's migration/enforcement is deferred under Items above.
 - [ ] Combo only adds damage; armor piercing per combo and the per-weapon cap colours are missing
   (`combo-system`).
 - [ ] Death: player respawns at the spawn point after 2 s; no revival statue / shrine, no enemy HP

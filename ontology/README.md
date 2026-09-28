@@ -57,8 +57,12 @@ Live-data migration, model/loader/validator support and runtime implementation r
 separate fourth node, key-4 ability, investment or charge (`domain.md#skill-tree`). This is the
 explicit Assassin exception to D10; other specializations and existing Camouflage behavior stand.
 No presented Assassin question remains. Live metadata clarification and validation coverage
-remain deferred; current key-3/no-key-4 runtime already matches. Next topic: Wand handedness.
-Gameplay and live JSON remain unchanged; restart persistence stays in its later topic.
+remain deferred; current key-3/no-key-4 runtime already matches.
+**Wand item 1 recorded (2026-09-28):** mechanically two-handed despite a one-hand pose, with
+no other hand item; existing damage/attacks and 32-cube limit stand; common recipe follows D6
+at 20 wood cubes (`domain.md#weapon-type`). No presented Wand question remains. Live handedness
+and recipe data, enforcement and validation coverage remain deferred. Next topic: Persistence / authority.
+Gameplay and live JSON remain unchanged; restart persistence stays in that next topic.
 
 ## Decision and build history (from 2026-09-07)
 

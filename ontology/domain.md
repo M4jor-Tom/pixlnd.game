@@ -785,6 +785,20 @@ subtypes; 17 usable).
 | combo-cap | fists 50, staff 50, longsword 30, bow/crossbow 30, wand 20, bracelets 20, boomerang 80 |
 | m1 / m2 | moveset summary (e.g. bow M2 volley 4–5 arrows; dagger M2 ambush stun + poison) |
 | material | wood (workbench) / iron (anvil) / gold-silver (bracelets) |
+
+**Hybrid Wand item 1 (owner approved, 2026-09-28):** a wand is **mechanically two-handed**,
+even if held visually in one hand. Equip one wand with **no other hand item**, including a
+second wand or bracelet; the pose grants no off-hand capacity. Preserve its Mage restriction,
+existing damage (`damage-k: 8`), beam attacks, combo rules and **32-cube upgrade limit**.
+Under D6's existing two-handed size class, a **common wand costs 20 wood cubes at a workbench**
+(`5 × 4`), with existing rarity-gem requirements unchanged. This selects a complete two-handed
+loadout, not a one-handed pairing or a new damage/upgrade exception.
+
+Documentation only: live `weapon-types.json#wand.hands` still says `1h (2h in wiki)`, parsed
+as one-handed, and `recipes.json#gear-weapons.wand` still lists 10 wood cubes. Those provisional
+values do not override this rule. Live-data migration, equipment/crafting/customization enforcement
+and validation coverage remain separately deferred and unauthorized.
+
 Hybrid (D24): `design.movesets.<weapon-type>.m1|m2` gives every class weapon its runtime — melee sphere (swing / radius mults,
 spin around the player, lunge, finisher status), projectile (count, spread, speed, gravity, life, hit radius, splash, pierce,
 return), beam (instant ray) or at-cursor (sphere where the aim lands); `c-moveset-config`. Alpha m1/m2 prose stays the source.
@@ -917,19 +931,20 @@ with subtype restrictions where needed:
 - Armor and jewelry retain their matching slots; `unknown-0` accepts nothing.
 
 The item-3 slot-model approval is ontology-only: normalizing live slot JSON and its consumers
-awaits separate authorization (`docs/ROADMAP/todo_decide.md §E`). Wand handedness remains
-unresolved; traversal approvals are recorded separately under `skill-tree` / `pet`.
+awaits separate authorization (`docs/ROADMAP/todo_decide.md §E`). Wand handedness is approved
+under `weapon-type`; traversal approvals are recorded separately under `skill-tree` / `pet`.
 Gliding/sailing require the respective Hang Glider/Boat equipped in `special`, not merely bought
 (traversal items 2–3, approved 2026-09-28). They share that single slot; no dual equip or new slot.
 
 Hybrid hand-conflict repair (item 10, authorized 2026-09-17): reject an equip attempt that would
 pair a two-handed weapon with a shield, regardless of equip order. Leave existing equipment and
 the attempted item in the bag unchanged; do not auto-unequip, delete or duplicate either item.
-Use the currently loaded handedness classifications without changing them; the provisional wand
-classification is not a final decision. Valid one-handed-plus-shield setups, two-handed weapons
+The repair uses loaded handedness classifications without changing them; it did not settle the
+then-provisional wand classification. The later Wand item 1 rule is recorded under `weapon-type`;
+its live-data migration remains deferred. Valid one-handed-plus-shield setups, two-handed weapons
 alone and non-conflicting slot replacements keep working. This authorizes only the conflict
 repair and regressions, not the broader slot model, class restrictions, dual-wield routing,
-Guardian/Cyclone blocking changes, or resolution of wand handedness.
+Guardian/Cyclone blocking changes, or the later Wand item 1 migration.
 
 ### consumable
 Food (sit, immobile, heal over 15 s), potion (channel while moving), elixir `S` (10 min +20 % stat),
@@ -1424,7 +1439,8 @@ remain separately authorized work (`docs/ROADMAP/todo_decide.md §E`).
 - **Existing rules:** validate class/spec references in both directions, two specs per class
   with distinct indices 0/1 and index 0 first, shared skill-column roots and weapon upgrade
   capacities according to their approved definitions. Preserve the approved Assassin single-node
-  exception (§3.5); do not settle wand handedness or other open choices through a validator default.
+  exception (§3.5) and the approved two-handed wand (§3.3); do not settle open choices through
+  a validator default.
 - **Provenance:** versioned content must resolve at least one source-version tag, explicitly
   or through an inheritance rule documented for that family and its source. Missing tags
   are not permission to assume A/S, infer provenance from a numeric ID, or enable content.
@@ -1462,7 +1478,7 @@ content selection or live data changes are authorized by this contract.
 | c-skeleton-dog-taming | Skeleton Dogs follow normal dog behavior for the same encounter/state, including retaliation, pack response and taming reactions, with no skeleton-only passivity exception (§3.2 item 8); Bubble Gum tames them under general eligibility restrictions and settlement protection (§3.2 item 9) | runtime+data (deferred) |
 | c-food-id | pet-food.tames names defined creatures by stable ID and agrees with each creature's tame-food; normally the food subtype matches its species' known source entity ID (alpha or post-alpha, no alpha-range clamp); the sole approved shared-food exception is Bubble Gum → Collie and Skeleton Dog, retaining subtype 19 from Collie without assigning it to Skeleton Dog; other pairings/IDs are unchanged (§3.4) | load (shared-food support deferred) |
 | c-weapon-class | equipping weapon-type/armor material requires matching class (red name otherwise) | runtime |
-| c-hands | 1H ×2 or 1H + shield or one 2H; bracelets need two for full damage | runtime |
+| c-hands | 1H ×2 or 1H + shield or one 2H; bracelets need two for full damage; hybrid wand is mechanically 2H with no other hand item, regardless of pose (§3.3 weapon-type; wand enforcement deferred) | runtime |
 | c-cube-cap | upgrades ≤ 16 (1H) / 32 (2H, shield); wood cubes only on wood weapons, iron on metal | load+runtime |
 | c-spirit-level | A: weapon.level − 10 ≤ spirit.level ≤ weapon.level | runtime |
 | c-power-gate | A / hybrid: item.level ≤ power(player.level) for full strength; formula learning retains its sufficient-power requirement. Hybrid books record recipes immediately, but above-power recipes remain known and visibly locked against crafting until their requirement is reached; duplicate acquisition never removes the lock (§3.5 power-gate) | runtime (recipe enforcement deferred) |
@@ -1576,12 +1592,14 @@ No presented artifact question remains; independent review and parent verificati
 (`todo_decide.md §E`, with verification limits).
 **Assassin item 1 — DECIDED 2026-09-28:** Camouflage is one rank-3 skill on key 3, with no
 separate ultimate node or key-4 ability (§3.5). No presented Assassin question remains.
+**Wand item 1 — DECIDED 2026-09-28:** mechanically two-handed despite a one-hand pose;
+existing damage/attacks and 32-cube limit stand; common crafting costs 20 wood cubes under D6
+(§3.3 `weapon-type`). No presented Wand question remains.
 Live-data migration and implementation remain deferred; cleared dungeon/quest enemy reset
 eligibility stays in world/reset below. Threat across server restart stays in the persistence topic below.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Wand handedness | two-handed mechanics versus one-handed; provisional data is not a resolution |
 | Persistence / authority | character portability, ownership of other discoveries/unlocks (book/formula knowledge is per character), authoritative state validation, threat across server restart (D5 dedicated server stands; same-running-world absence retention approved in §3.2) |
 | World bounds / resets | finite 1024²-region bound versus “infinite” wording; cleared dungeon/quest mobs at midnight |
 | Validation-contract mapping | exact required paths, permitted provenance inheritance and remaining constraint boundaries; item 9 policy is approved, enforcement deferred |

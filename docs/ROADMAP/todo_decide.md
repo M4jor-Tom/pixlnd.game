@@ -132,7 +132,13 @@ The full walkthrough/resumption protocol is in `tasks/lessons.md`; the prompt
 Never propose or implement regional gear power loss in pixlnd, even for Cube World cloning
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
-**Current direction (2026-09-28):** owner answered **“1: Approved; Once item reconciled,
+**Current direction (2026-09-28):** owner answered **“1: Approved; When done, handoff, commit,
+push”** for Wand handedness. Item 1 is recorded below for documentation only. Verify and commit
+the item, then the final handoff; publish `fix/ontology-reconciliation`, verify remote/local
+HEAD equality and a clean worktree, then stop. No gameplay, live JSON, tests, model/loader/validator
+changes, merge or history rewrite. Next topic, named only: **Persistence / authority**.
+
+**Historical Assassin direction (2026-09-28, superseded):** owner answered **“1: Approved; Once item reconciled,
 handoff, commit, push”** for Assassin. Item 1 is recorded below: single rank-3 Camouflage on
 key 3, no separate fourth node or key-4 ability. Scoped item commit **`b19662b`** passed checks
 and independent review below. Commit the final handoff; publish on `fix/ontology-reconciliation`,
@@ -563,12 +569,9 @@ D1–D26, all walkthrough approvals and remaining open questions.
 ### Open — decide before the named slice
 
 Traversal items 1–5 are recorded (item 4 corrected) and reviewed; evidence below.
-Books/formulas items 1–3, artifact items 1–6 and Assassin item 1 are recorded below, not open questions.
-Next topic, named only for handoff: **Wand handedness**. Cross-world portability stays in persistence.
+Books/formulas items 1–3, artifact items 1–6, Assassin item 1 and Wand item 1 are recorded below,
+not open questions. Next topic, named only for handoff: **Persistence / authority**.
 
-- [ ] **Wand handedness:** mechanically two-handed despite a one-hand pose, or actually
-  one-handed? Before wand equipment/crafting rules; sources: `weapon-types.json#wand`,
-  `c-hands`, `generators.json#design.recipes`.
 - [ ] **Hybrid persistence / authority:** character portability across worlds, ownership of
   other discoveries/unlocks (book/formula knowledge is per character), authoritative validation
   of state and threat across a server restart.
@@ -589,6 +592,21 @@ Next topic, named only for handoff: **Wand handedness**. Cross-world portability
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
 
+### Wand handedness — item 1 recorded (2026-09-28)
+
+**Owner answer:** “1: Approved; When done, handoff, commit, push”.
+
+1. [x] **Mechanically two-handed despite a one-hand pose:** recorded in `domain.md#weapon-type`
+   / `c-hands`. No other hand item; existing damage, beam attacks and 32-cube upgrade limit stand.
+   D6's two-handed recipe costs 20 wood cubes at a workbench for common rarity, keeping rarity gems.
+   The one-handed alternative was not selected. No presented Wand question remains.
+
+**Applied versus deferred:** ontology documentation only. Live `weapon-types.json#wand` still
+parses as one-handed, and `recipes.json#gear-weapons.wand` still costs 10 wood cubes; neither is
+an override. Migration, equipment/crafting/customization enforcement and validation coverage remain
+separately unauthorized (`todo_implement.md`). Next topic, named only: **Persistence / authority**;
+no next-topic proposal is presented.
+
 ### Assassin ultimate — item 1 recorded (2026-09-28)
 
 **Owner answer:** “1: Approved; Once item reconciled, handoff, commit, push”.
@@ -603,7 +621,7 @@ already matches; `abilities.json#camouflage.alpha-tree.also-ultimate` remains un
 Metadata clarification and validation coverage remain separately deferred in `todo_implement.md`.
 No gameplay, live JSON, tests, loader or validator edits are authorized.
 No presented Assassin question remains; the separate-fourth-node alternative was not selected.
-Next topic, named only for handoff: **Wand handedness**; no proposal has been presented for it.
+Its historical next topic was **Wand handedness**, now reconciled above.
 
 **Item 1 commit:** `b19662b` (`docs(ontology): reconcile Assassin Camouflage as one skill`).
 Only four Markdown paths changed: `domain.md`, `ontology/README.md` and the two roadmap ledgers.
@@ -1123,7 +1141,8 @@ is still open. Do not mistake a listed proposed correction for an approved new g
   normalize live `equipment-slots.json#accepts` to item-type IDs (`light`, `special`, `weapon`),
   express subtype restrictions and pet-food placement, and align the validator/consumers with
   the approved model. Live slot JSON is deliberately unchanged: current `items.gd#slot_id`
-  consumes it directly. Wand handedness remains open; traversal gates are now recorded above.
+  consumes it directly. Wand handedness and traversal gates are now recorded above; their
+  live-data migration/enforcement remains separately deferred.
 - [x] **Duplicate `block` identity (item 4, 2026-09-15):** kept the voxel `block` in `domain.md
   §3.1`, renamed only the defensive class to `combat-block` in §3.3, and corrected the heading
   reference in `generators.json#design.defence._doc`. Runtime config/event keys and all terrain,
