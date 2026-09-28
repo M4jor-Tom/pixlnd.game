@@ -1294,6 +1294,14 @@ Alpha's client-authoritative protocol and `generators.json#network-alpha` are hi
 reference, not hybrid authority. This chooses no transport/protocol, anti-cheat numeric defaults
 or central trust service. Networking and enforcement remain deferred and unauthorized.
 
+**Hybrid persistence item 7 (owner approved, 2026-09-28; depends on item 1):** accept
+**rule-valid portable characters as trusted-co-op imports**, without requiring a central
+progression service. Reject an invalid import with an explanation and **leave the original save
+untouched**; never silently strip items or levels. A legally shaped edited save can still pass:
+item 6's authority over gameplay after joining cannot prove where imported progression was earned
+and does not make portable progression cheat-proof. No provenance proof, closed economy or
+global concurrency guarantee is promised. Import validation/enforcement remains deferred.
+
 ### input-binding
 Default keys per version. → `instances/keybinds.json`. A: no remapping; S: remappable, saved.
 Hybrid defaults (D13): `keybinds.json#hybrid`, the engine builds its InputMap from it.
@@ -1652,7 +1660,7 @@ Live-data migration and implementation remain deferred; cleared dungeon/quest en
 eligibility stays in world/reset below. Persistence approvals and recording status follow.
 
 <!-- persistence-index -->
-**Persistence / authority — DECIDED 2026-09-28:** all nine recommendations approved; items 1–6 recorded. Items 7–9 are approved, awaiting recording.
+**Persistence / authority — DECIDED 2026-09-28:** all nine recommendations approved; items 1–7 recorded. Items 8–9 are approved, awaiting recording.
 Canonical rules: §3.1/§3.2/§3.7. Implementation is deferred; independent review and parent
 verification are pending (`todo_decide.md §E`). Next topic, named only: **World bounds / resets**.
 <!-- /persistence-index -->

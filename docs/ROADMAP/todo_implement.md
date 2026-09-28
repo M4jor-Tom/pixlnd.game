@@ -131,6 +131,7 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 - [ ] Item 4 — persist world-shared supplier/barrier/village-curse changes under existing reset rules (`save-data`).
 - [ ] Item 5 — personal artifact/one-time-book source claims per saved world (`c-permanent-source-claim`), preserving duplicate recipes and ordinary loot.
 - [ ] Item 6 — server validation of action requests and authoritative gameplay outcomes (`multiplayer-mode`), not Alpha client trust.
+- [ ] Item 7 — rule-valid trusted-co-op imports; explain rejection without modifying the original save (`multiplayer-mode`); no provenance guarantee.
 <!-- /persistence-debt -->
 
 ## Meta / tooling

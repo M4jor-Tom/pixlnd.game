@@ -133,7 +133,7 @@ Never propose or implement regional gear power loss in pixlnd, even for Cube Wor
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
 <!-- persistence-ledger -->
-**Persistence / authority — items 1–6 recorded (2026-09-28).** All nine owner recommendations are approved. Items 7–9 are approved, awaiting recording.
+**Persistence / authority — items 1–7 recorded (2026-09-28).** All nine owner recommendations are approved. Items 8–9 are approved, awaiting recording.
 Ontology documentation only; implementation, live JSON, tests and checker changes remain unauthorized.
 Independent review and parent verification are **PENDING**. No push, merge or history rewrite
 is authorized. Next topic after recording, named only: **World bounds / resets**.
@@ -150,8 +150,8 @@ not its already-approved running-world retention. Canonical semantics: `domain.m
 | 3 — Shared terrain exploration | [x] recorded | `world` | bde3bf7bbe22abbff12e57561237ba06d5b6bfde |
 | 4 — Shared world changes | [x] recorded | `save-data` | 36e1a6427e597123bf3b86e0de71fc6ef466a952 |
 | 5 — Personal permanent-source claims | [x] recorded | `save-data` | da2b35795866a8d82acda786f030136759a1fa90 |
-| 6 — Server-authoritative outcomes | [x] recorded | `multiplayer-mode` | this item commit; final hash in evidence |
-| 7 — Trusted-co-op imports | [ ] approved | `multiplayer-mode` | approved; awaiting recording |
+| 6 — Server-authoritative outcomes | [x] recorded | `multiplayer-mode` | a312dc5b866dc515a08d0a61949757a02d718b2b |
+| 7 — Trusted-co-op imports | [x] recorded | `multiplayer-mode` | this item commit; final hash in evidence |
 | 8 — Stopped shutdown clock | [ ] approved | `game-clock` | approved; awaiting recording |
 | 9 — Restart threat retention | [ ] approved | `ai-behavior` | approved; awaiting recording |
 
