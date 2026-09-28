@@ -25,6 +25,11 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `tasks/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
+**Validation-contract mapping (2026-09-28):** item 1's hybrid taxonomy/style classification
+is recorded in `domain.md §5`; approved items 2–3 await separate recording. Broader mapping/source
+work and enforcement remain unfinished. Fresh independent review and parent verification pending;
+evidence/status: `docs/ROADMAP/todo_decide.md §E`. No live data or checker changes authorized.
+
 **Persistence / authority — all nine documentation decisions recorded (2026-09-28).**
 No presented Persistence / authority question remains. Independent review and parent verification
 passed; item mapping, evidence and limits: `docs/ROADMAP/todo_decide.md §E`.
@@ -37,7 +42,8 @@ without renewing permanent claims or completed one-time objectives; occupied sit
 all players to leave, with one pending refresh and no clock-triggered survivor/fight reset.
 No presented world/reset question remains. Independent review and parent verification passed;
 evidence and limits: §E. Runtime, live-data and checker changes remain unauthorized. Publication/
-stop direction: `docs/HANDOFF.md`. Next topic, named only: **Validation-contract mapping**.
+stop direction at that historical checkpoint: `docs/HANDOFF.md`. Validation-contract mapping
+is now being recorded above.
 
 **Aggro batch applied: 1–14/14.** The original twelve and follow-ups 13–14 were approved and
 recorded on 2026-09-27; their former open boundaries are settled.

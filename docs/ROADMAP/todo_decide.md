@@ -137,7 +137,12 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Current world/reset direction (2026-09-28):** owner answered **“1: Approved; 2: Approved;
+**Validation-contract mapping direction (2026-09-28):** owner answered **“1: Approved;
+2: Approved; 3: Approved; When done, handoff, commit, push”**. All three policies approved
+without amendment or refusal; recording/evidence below. Only ontology Markdown is authorized.
+Fresh independent review and parent verification/publication remain pending; no next-topic proposals.
+
+**Historical world/reset direction (2026-09-28, superseded):** owner answered **“1: Approved; 2: Approved;
 3: Approved; 4: Approved”**, then **“When done, handoff, commit, push”**. Items 1–4 are recorded.
 No presented world/reset question remains; item 2’s dependency on item 1 is satisfied.
 Only five existing Markdown paths changed; runtime, live JSON, tests and checker work remain
@@ -636,7 +641,7 @@ Traversal items 1–5 are recorded (item 4 corrected) and reviewed; evidence bel
 Books/formulas items 1–3, artifact items 1–6, Assassin item 1 and Wand item 1 are recorded below,
 not open questions. Persistence items 1–9 are recorded and reviewed above.
 World bounds / resets items 1–4 are recorded below; no presented question remains.
-Next topic, named only: **Validation-contract mapping**.
+Validation-contract mapping approvals/recording are tracked below; broader mapping remains open.
 - [ ] **Validation-contract mapping (policy approved in item 9):** document exact required
   table/config paths, permitted per-family provenance inheritance and remaining constraint
   boundaries from `domain.md §2/§5` before filling validator gaps. Ask the owner only where
@@ -647,6 +652,23 @@ Next topic, named only: **Validation-contract mapping**.
   identity, Lion tameability (`null` currently means untameable), resistance meaning and the
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
+
+### Validation-contract mapping — approved batch (2026-09-28)
+
+| item | application | canonical section | commit |
+|---|---|---|---|
+| 1 — Hybrid taxonomy/style configuration | [x] recorded | `domain.md §5` | this item commit |
+| 2 — Individual pet-food provenance | approved; recording pending | `pet-food` | pending |
+| 3 — Qualified source annotations | approved; recording pending | §0 / §5 | pending |
+
+Item 1 preserves approved creatures/styles without invented ancestry; the unresolved-classification
+alternative was not selected, not a user refusal or automatic content removal. Canonical scope
+and historical-fact exclusions are in §5. No new inheritance rule is approved.
+
+**Evidence:** `/tmp/pixlnd-validation-reconcile.zahgTc/approval-brief.md` preserves the exact
+numbered proposals and Approval versus Refusing alternatives. Per-item diffs, reviews, diff-check
+and bounded-validator logs/exits are saved there before commits. Independent review and parent
+verification remain pending. Validation covers loaded data, not these policies' enforcement.
 
 ### World bounds / resets — approved batch (2026-09-28)
 

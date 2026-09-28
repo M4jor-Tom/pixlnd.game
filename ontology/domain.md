@@ -258,6 +258,7 @@ still says `settlements-per-land: "many"`; flag migration and enforcement remain
 `design.settlement.per-land` already equals 1; the current validator only checks ≥1.
 
 Hybrid village-curse state is world-shared and persistent under `save-data` item 4.
+Settlement-style records are hybrid configuration under §5 Validation-contract mapping item 1.
 
 ### district
 City quarter. `A` → `instances/buildings.json#districts`.
@@ -498,7 +499,7 @@ clamp later IDs to the alpha range or invent values for unrecorded IDs.
 
 ### creature-family
 Shared base form. → `instances/creature-families.json` (top-level family `members` lists,
-not nested spawn rosters).
+not nested spawn rosters). These taxonomy records follow §5 Validation-contract mapping item 1.
 
 **Hybrid family item 1 (owner approved with amendment, 2026-09-27):** a creature has at most
 one primary balancing family (`family` / `member-of-family`). Multiple descriptive memberships
@@ -1580,6 +1581,18 @@ ontology. Ask the owner where it does not determine a unique answer; do not fill
 Negative regressions must cover missing whole inputs as well as invalid entries. No balance,
 content selection or live data changes are authorized by this contract.
 
+### Validation-contract mapping (owner approved, 2026-09-28)
+
+**Item 1 — Hybrid taxonomy/configuration:** the 12 top-level families in
+`creature-families.json` (`beetles`, `runners`, `slimes`, `alpacas`, `dogs`, `cats`, `golems`,
+`trolls`, `skeletons`, `sprouts`, `guardians`, `fish`) and `buildings.json#settlement-styles`
+are source-independent hybrid taxonomy/style configuration. Validate their stable IDs, shapes
+and references; do not manufacture A/S ancestry or derive it from member-version unions.
+This is not a whole-file exemption: separately sourced historical facts, including embedded
+trait descriptions, retain their provenance; nested spawn rosters and versioned buildings/districts
+are outside this classification. Existing family assignments, creature behavior, encounters and
+settlement styles stand; no species-trait inheritance or numerical family modifier is introduced.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -1632,7 +1645,7 @@ content selection or live data changes are authorized by this contract.
 | c-zone-size | A zone 256² blocks, region 64² zones; S zone 64² blocks; hybrid zone 64², land 256² zones (D12) | engine |
 | c-block-rgb | every solid block has its own RGB; (0,0,0) in `.cub` = empty | data |
 | c-name-length | player-character name 2..16 ASCII 32–126 (character creation; creature display names are free text) | runtime |
-| c-versions-nonempty | every versioned content instance resolves ≥1 source-version tag, explicit or via a documented family/source inheritance rule; never guessed (item 9) | load |
+| c-versions-nonempty | every versioned content instance resolves ≥1 source-version tag, explicit or via a documented family/source inheritance rule; never guessed (item 9); source-independent taxonomy/style config follows Validation-contract mapping item 1 above | load |
 | c-roster-ids | every id in `creature-families.json#landscape-rosters` is a creature (D14) | load |
 | c-rideable-conflict | resolved (F2): every `rideable` is a boolean, per-page value; a `?` here is a load error | load |
 | c-hostile-in-city | villagers/animals inside settlements unattackable unless possessed | runtime |
@@ -1724,7 +1737,9 @@ verification passed (`todo_decide.md §E`, including evidence limits).
 **World bounds / resets items 1–4 — DECIDED 2026-09-28:** all four recorded in
 §3.1/§3.7/§5/§6. No presented world/reset question remains. Independent review and parent
 verification passed (`todo_decide.md §E`, including evidence limits); implementation remains deferred.
-Next topic, named only: **Validation-contract mapping** (item 9 policy already approved).
+**Validation-contract mapping item 1 — DECIDED 2026-09-28:** taxonomy/style classification
+recorded in §5. Items 2–3 are approved, awaiting separate recording; mapping/source work and
+enforcement remain incomplete (`todo_decide.md §E`).
 
 | topic | still undecided / incomplete |
 |---|---|

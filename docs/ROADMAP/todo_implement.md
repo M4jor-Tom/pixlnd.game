@@ -151,6 +151,11 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 - [ ] Item 8 — save/resume world time without downtime advance or catch-up; running empty servers keep approved timers, not full distant AI (`game-clock`).
 - [ ] Item 9 — surviving logical-mob threat/order/provocation across restart; preserve normal resets and taunt termination (`ai-behavior`, `c-threat-pair`).
 
+## Validation contract (documentation approved; implementation unauthorized)
+- [ ] Mapping item 1 (`domain.md §5`): taxonomy/style ID, shape and reference checks without
+  invented source tags; preserve embedded historical facts and separately scoped rosters/buildings.
+  Live-data migration and model/loader/validator changes await separate authorization.
+
 ## Meta / tooling
 - [ ] Save-data (§3.7): nothing persists (world seed, character, discovered lands).
 - [ ] Dedicated server (D5, `multiplayer-mode`): single-player only; `server.cfg` flags (pvp,
