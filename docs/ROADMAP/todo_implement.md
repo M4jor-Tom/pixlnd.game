@@ -121,6 +121,13 @@ degradation) are not backlog features.
 - [ ] `sim-radius` measures distance to `creature.target` (the player, or the last attacker); with
   `multiplayer-mode` it must be the nearest player — `creature.gd`.
 
+## Persistence / authority (approved documentation, implementation unauthorized)
+
+Canonical rules: `domain.md#save-data`, `#multiplayer-mode`, `#game-clock`, `#ai-behavior`.
+No save/network implementation exists; current `main.gd` creates a new hero and starting kit.
+- [ ] Item 1 — portable character progression, possessions and pets including progression (`save-data`).
+<!-- /persistence-debt -->
+
 ## Meta / tooling
 - [ ] Save-data (§3.7): nothing persists (world seed, character, discovered lands).
 - [ ] Dedicated server (D5, `multiplayer-mode`): single-player only; `server.cfg` flags (pvp,
@@ -159,7 +166,7 @@ degradation) are not backlog features.
 - [ ] Books/formulas item 1 (`domain.md#book-of-crafting`, `c-book-recipe-persistence`): persist
   book-learned recipes with the character across lands/sessions, without relearning on travel.
   Live-data migration and crafting/save-data implementation remain unauthorized; cross-world
-  character portability is a separate persistence question.
+  portability now follows persistence item 1 (`save-data`).
 - [ ] Books/formulas item 2 (`domain.md#recipe`, `c-recipe-learning`): shared character recipe
   collection; books teach only unknown recipes without rerolls/compensation; known formula
   scrolls remain unconsumed. Data/learning/UI enforcement awaits separate authorization.

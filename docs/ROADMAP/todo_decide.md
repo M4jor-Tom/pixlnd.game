@@ -132,7 +132,40 @@ The full walkthrough/resumption protocol is in `tasks/lessons.md`; the prompt
 Never propose or implement regional gear power loss in pixlnd, even for Cube World cloning
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
-**Current direction (2026-09-28):** owner answered **“1: Approved; When done, handoff, commit,
+<!-- persistence-ledger -->
+**Persistence / authority — item 1 recorded (2026-09-28).** All nine owner recommendations are approved. Items 2–9 are approved, awaiting recording.
+Ontology documentation only; implementation, live JSON, tests and checker changes remain unauthorized.
+Independent review and parent verification are **PENDING**. No push, merge or history rewrite
+is authorized. Next topic after recording, named only: **World bounds / resets**.
+
+**Owner answer:** “1: Approved; 2: Approved; 3: Approved; 4: Approved; 5: Approved;
+6: Approved; 7: Approved; 8: Approved; 9: Approved (I thought that I already approved 9
+in the threat topic, otherwise it's fine)”. Item 9 closes Aggro 11's deferred restart case,
+not its already-approved running-world retention. Canonical semantics: `domain.md` sections below.
+
+| item | application | canonical section | commit |
+|---|---|---|---|
+| 1 — Portable heroes | [x] recorded | `save-data` | this item commit; final hash in evidence |
+| 2 — World-local personal history | [ ] approved | `save-data` | approved; awaiting recording |
+| 3 — Shared terrain exploration | [ ] approved | `world` | approved; awaiting recording |
+| 4 — Shared world changes | [ ] approved | `save-data` | approved; awaiting recording |
+| 5 — Personal permanent-source claims | [ ] approved | `save-data` | approved; awaiting recording |
+| 6 — Server-authoritative outcomes | [ ] approved | `multiplayer-mode` | approved; awaiting recording |
+| 7 — Trusted-co-op imports | [ ] approved | `multiplayer-mode` | approved; awaiting recording |
+| 8 — Stopped shutdown clock | [ ] approved | `game-clock` | approved; awaiting recording |
+| 9 — Restart threat retention | [ ] approved | `ai-behavior` | approved; awaiting recording |
+
+**Writer evidence:** `/tmp/pixlnd-persistence-reconcile.XsnIBI/approval-brief.md` preserves the
+approved recommendations and boundaries; `item-N.diff`, `item-N-review.md`,
+`item-N-{scope,diff-check,validator}.{log,exit}` and `item-N-commit.{log,txt}` record each item.
+Each recorded item receives semantic/scope inspection, `/simplify`, then ponytail-review,
+`git diff --check` and `timeout 150 nix develop -c godot --headless -s ontology/validate.gd`
+before committing. Read the logs for results; checks cover existing loaded data, not Markdown
+semantics or runtime policy. Final aggregate diff and mapping: `batch.diff`, `commit-map.md`.
+No gameplay suite, visual or network checks are claimed; final unchanged-data boot follows item 9.
+<!-- /persistence-ledger -->
+
+**Historical Wand direction (2026-09-28, superseded):** owner answered **“1: Approved; When done, handoff, commit,
 push”** for Wand handedness. Documentation-only item 1 is recorded in **`1f5eabc`** and passed
 checks and independent review below. Commit the final handoff; publish `fix/ontology-reconciliation`,
 verify remote/local HEAD equality and a clean worktree, then stop. No gameplay, live JSON, tests,
@@ -570,14 +603,9 @@ D1–D26, all walkthrough approvals and remaining open questions.
 
 Traversal items 1–5 are recorded (item 4 corrected) and reviewed; evidence below.
 Books/formulas items 1–3, artifact items 1–6, Assassin item 1 and Wand item 1 are recorded below,
-not open questions. Next topic, named only for handoff: **Persistence / authority**.
+not open questions. Persistence recommendations 1–9 are approved (recording status above),
+not unanswered. Next topic after recording, named only: **World bounds / resets**.
 
-- [ ] **Hybrid persistence / authority:** character portability across worlds, ownership of
-  other discoveries/unlocks (book/formula knowledge is per character), authoritative validation
-  of state and threat across a server restart.
-  Same-running-world absence retention is approved in Aggro 11. Before save-data/networking;
-  sources: `domain.md#player-character`, `#save-data`, `#multiplayer-mode`,
-  `generators.json#network-alpha`. D5's dedicated server does not alone choose authority.
 - [ ] **World bounds / resets:** does hybrid retain the finite 1024²-region bound despite
   “infinite” wording, and do cleared dungeon/quest mobs reset at midnight? Before boundary/clock
   logic; sources: `domain.md#gen-world` (generator row), `#game-clock`, `c-midnight-reset`.
@@ -604,8 +632,8 @@ not open questions. Next topic, named only for handoff: **Persistence / authorit
 **Applied versus deferred:** ontology documentation only. Live `weapon-types.json#wand` still
 parses as one-handed, and `recipes.json#gear-weapons.wand` still costs 10 wood cubes; neither is
 an override. Migration, equipment/crafting/customization enforcement and validation coverage remain
-separately unauthorized (`todo_implement.md`). Next topic, named only: **Persistence / authority**;
-no next-topic proposal is presented.
+separately unauthorized (`todo_implement.md`). Its historical next topic was **Persistence / authority**;
+current approvals and recording status are above.
 
 **Item 1 commit:** `1f5eabc` (`docs(ontology): reconcile two-handed wand equipment and crafting`).
 Only four Markdown paths changed: `domain.md`, `ontology/README.md` and the two roadmap ledgers.
@@ -761,7 +789,7 @@ change. Knowledge and usability are distinct: a known recipe can remain power-lo
 
 1. [x] **Permanent/global book recipes:** recorded in `domain.md#book-of-crafting`,
    `#player-character`, `#save-data`, `knows-recipe` / `c-book-recipe-persistence`.
-   Character knowledge survives lands and sessions; cross-world portability remains in persistence.
+   Character knowledge survives lands and sessions; persistence item 1 now records cross-world portability.
 2. [x] **Shared recipe collection:** books teach only unknown recipes, without rerolls or
    compensation; an already-known formula stays unconsumed. Canonical rule: `domain.md#recipe`,
    `knows-recipe` / `c-recipe-learning`. Overlap can make later books less rewarding.
@@ -809,8 +837,9 @@ This checkpoint is not a publication claim; inspect actual Git state on resumpti
 No presented books question remained. Artifact accumulation was next at that checkpoint;
 the artifact approvals above supersede that status and its preserved D6 accumulation values.
 Implementation debt remains in `todo_implement.md`.
-No shared-account knowledge, multiplayer reward allocation, recipe-generation/identity defaults
-or cross-world portability is chosen.
+Those books approvals chose no shared-account knowledge, multiplayer reward allocation,
+recipe-generation/identity defaults or cross-world portability; later persistence approvals
+are tracked above.
 
 **Sources inspected:** `domain.md#formula`, `#book-of-crafting`, `#power-gate`, `#player-character`,
 §4/§5; `instances/recipes.json#recipe-sources`, `key-items.json#books-of-crafting`,

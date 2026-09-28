@@ -389,11 +389,11 @@ A saved hero. `A S`
 | level, xp, skills[11] | A |
 | artifacts | hybrid: collected permanent stat rewards (§3.4), not character levels; S reference: level = count |
 | inventory, equipment, coins, platinum `A` | |
-| known-recipes | hybrid: one set of recipes shared by book/formula learning, with no source-specific duplicates; book-learned recipes persist across lands/sessions (§3.4); A formulas learned; S books per land (reference) |
+| known-recipes | hybrid: one set of recipes shared by book/formula learning, with no source-specific duplicates; recipes persist across lands/sessions/worlds (§3.7 save-data); A formulas learned; S books per land (reference) |
 | lore-known | S per realm |
 | discovered lands/portals/shrines/flight-points | |
 | pets (cages), active pet, pet slot | |
-| world-independent | A: any character enters any world; S: one world |
+| world-independent | hybrid: portable hero and progression between solo worlds and servers (§3.7 save-data, persistence item 1); A: any character enters any world; S: one world |
 | starting-kit | A: class weapons + gold ring + silver ring; S: 3 weapon sets + chest + 5 life potions |
 
 ### npc-role
@@ -536,7 +536,7 @@ A tamed creature owned by a player. `A S`
 | species | `creature` ref |
 | name | via `/namepet` |
 | cage | `item` of type pet (turtle cage = shell) |
-| level, xp | A (did not persist in multiplayer) |
+| level, xp | hybrid: retained with the portable hero (§3.7 save-data); A reference: did not persist in multiplayer |
 | hydration | A: droplets under HP; drains while riding; refill in water |
 | scaling | S: from owner's weapon/armor rating incl. `+` gear |
 | boss-origin | tamed boss keeps skills, normal size; reverts to normal on reload |
@@ -983,8 +983,8 @@ recipe source; recipes land-scoped. These are historical S rules, not hybrid exc
 
 **Hybrid books/formulas item 1 (owner approved, 2026-09-28):** books and formulas both remain
 in the hybrid game. Recipes learned from books are **permanent for that character across lands
-and sessions**; moving to another land never requires relearning them. This does not decide
-character portability between worlds or grant shared-account knowledge. Crafting materials and
+and sessions**; moving to another land never requires relearning them. Persistence item 1
+(§3.7) extends character recipe knowledge across worlds, without shared-account knowledge. Crafting materials and
 equipment strength are unchanged. Shared knowledge/duplicates follow `recipe` item 2;
 immediate recording and power-locked crafting follow `power-gate` item 3.
 Live-data migration and implementation remain deferred.
@@ -1312,8 +1312,14 @@ A: `Save/characters.db` (sqlite `blobs(key,value)`; character blob ≈ EntityDat
 S: per-world sqlite (`world_db_database`), Steam Cloud listed. Pets' XP didn't persist in
 multiplayer `A`.
 
-Hybrid book-learned recipe knowledge persists with the character across sessions and lands
-(`book-of-crafting`, item 1); cross-world character portability remains unresolved.
+**Hybrid persistence item 1 (owner approved, 2026-09-28):** a hero carries their identity,
+level/XP, skills, inventory, equipment, money, recipes, acquired key items, artifacts and pets,
+**including pet progression**, between solo worlds and servers. These remain that character's
+progress; other characters do not inherit them automatically. Experienced heroes can enter
+fresh worlds with their existing strength. Equipment never weakens on travel (§1).
+
+Documentation only: save-data and networking are unimplemented; these policies do not authorize
+runtime, live-data, model/loader/validator or test changes.
 
 ### slash-command
 → `instances/slash-commands.json`.
@@ -1342,7 +1348,7 @@ One row per fact type. Cardinality as `domain → range`.
 | costs | ability | resource | 1→0..n | amount per resource, scoped by ruleset |
 | applies | ability ∪ weapon-type ∪ hazard | status-effect | n→n | |
 | has-moveset | weapon-type | ability (m1, m2) | 1→2 | |
-| knows-recipe | player-character | recipe | n→n | one known fact per character/recipe, shared by books and formulas (`known-recipes`), even while power-locked; knowledge alone does not grant crafting usability; book-learned recipes persist across lands/sessions, not shared-account knowledge |
+| knows-recipe | player-character | recipe | n→n | one known fact per character/recipe, shared by books and formulas (`known-recipes`), even while power-locked; knowledge alone does not grant crafting usability; recipes persist across lands/sessions/worlds (§3.7 save-data), not shared-account knowledge |
 | crafted-at | recipe | crafting-station | 1→1 | |
 | consumes | recipe | ingredient ∪ material | 1→n | with counts |
 | produces | recipe | item-type ∪ consumable | 1→1 | |
@@ -1482,7 +1488,7 @@ content selection or live data changes are authorized by this contract.
 | c-cube-cap | upgrades ≤ 16 (1H) / 32 (2H, shield); wood cubes only on wood weapons, iron on metal | load+runtime |
 | c-spirit-level | A: weapon.level − 10 ≤ spirit.level ≤ weapon.level | runtime |
 | c-power-gate | A / hybrid: item.level ≤ power(player.level) for full strength; formula learning retains its sufficient-power requirement. Hybrid books record recipes immediately, but above-power recipes remain known and visibly locked against crafting until their requirement is reached; duplicate acquisition never removes the lock (§3.5 power-gate) | runtime (recipe enforcement deferred) |
-| c-book-recipe-persistence | hybrid: book-learned recipes remain known to that character across lands and sessions, with no relearning on travel; cross-world character portability remains open (§3.4) | runtime+save-data (deferred) |
+| c-book-recipe-persistence | hybrid: book-learned recipes remain known to that character across lands and sessions, with no relearning on travel, including between worlds under persistence item 1 (§3.7 save-data) | runtime+save-data (deferred) |
 | c-recipe-learning | hybrid: books/formulas share one known-recipe set per character, including known-but-power-locked recipes; repeated learning grants nothing extra; books teach only unknown recipes without rerolls/compensation; an already-known formula remains unconsumed, without bypassing c-power-gate (§3.4 recipe) | runtime (deferred) |
 | c-region-lock | DROPPED (D4). S reference: item.land ≠ current land ∧ ¬plus → worn; key items inert | — |
 | c-plus-adjacent | DROPPED (D4). S reference: plus item full stats iff current land adjacent | — |
@@ -1585,8 +1591,8 @@ Settlements/inn items 1–4 are recorded in §3.1 (2026-09-27). Traversal items 
 (2026-09-28): training/item gates, corrected 75% Spikes reduction and remaining-cost stacking.
 No presented traversal question remains. Books/formulas items 1–3 are recorded in §3.4/§3.5
 (2026-09-28): permanent/global book recipes, shared knowledge/duplicates and immediate recording
-with power-locked crafting. No presented books question remains; cross-world portability stays
-in persistence. **Artifact items 1–6 — DECIDED 2026-09-28:** recorded in §3.4; logarithmic
+with power-locked crafting. No presented books question remains; cross-world portability is
+recorded under persistence item 1 (§3.7). **Artifact items 1–6 — DECIDED 2026-09-28:** recorded in §3.4; logarithmic
 accumulation (initial z=0.1) replaces D6's decay/floor, preserving its rewards and other decisions.
 No presented artifact question remains; independent review and parent verification passed
 (`todo_decide.md §E`, with verification limits).
@@ -1596,11 +1602,16 @@ separate ultimate node or key-4 ability (§3.5). No presented Assassin question 
 existing damage/attacks and 32-cube limit stand; common crafting costs 20 wood cubes under D6
 (§3.3 `weapon-type`). No presented Wand question remains.
 Live-data migration and implementation remain deferred; cleared dungeon/quest enemy reset
-eligibility stays in world/reset below. Threat across server restart stays in the persistence topic below.
+eligibility stays in world/reset below. Persistence approvals and recording status follow.
+
+<!-- persistence-index -->
+**Persistence / authority — DECIDED 2026-09-28:** all nine recommendations approved; item 1 recorded. Items 2–9 are approved, awaiting recording.
+Canonical rules: §3.1/§3.2/§3.7. Implementation is deferred; independent review and parent
+verification are pending (`todo_decide.md §E`). Next topic, named only: **World bounds / resets**.
+<!-- /persistence-index -->
 
 | topic | still undecided / incomplete |
 |---|---|
-| Persistence / authority | character portability, ownership of other discoveries/unlocks (book/formula knowledge is per character), authoritative state validation, threat across server restart (D5 dedicated server stands; same-running-world absence retention approved in §3.2) |
 | World bounds / resets | finite 1024²-region bound versus “infinite” wording; cleared dungeon/quest mobs at midnight |
 | Validation-contract mapping | exact required paths, permitted provenance inheritance and remaining constraint boundaries; item 9 policy is approved, enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |

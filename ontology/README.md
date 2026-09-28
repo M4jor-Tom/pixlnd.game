@@ -25,6 +25,15 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `tasks/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
+<!-- persistence-status -->
+**Persistence / authority — item 1 recorded (2026-09-28).** All nine owner recommendations are approved. Items 2–9 are approved, awaiting recording.
+Ontology documentation only; implementation, live JSON, tests and checker changes remain unauthorized.
+Independent review and parent verification are **PENDING**. No push, merge or history rewrite
+is authorized. Next topic after recording, named only: **World bounds / resets**.
+Evidence and item mapping: `docs/ROADMAP/todo_decide.md §E`,
+`/tmp/pixlnd-persistence-reconcile.XsnIBI/`.
+<!-- /persistence-status -->
+
 **Aggro batch applied: 1–14/14.** The original twelve and follow-ups 13–14 were approved and
 recorded on 2026-09-27; their former open boundaries are settled.
 **Creature family items 1–9 recorded (2026-09-27):** `domain.md §3.2/§4/§5`;
@@ -46,7 +55,7 @@ stays in the later world/reset topic.
 knowledge without duplicate rewards/rerolls or consuming known formulas, and immediate book
 recording with visibly power-locked crafting (`domain.md#recipe` / `#book-of-crafting` / `#power-gate`).
 No presented books question remains; duplicate knowledge never bypasses power requirements.
-Independent review and parent verification passed (`todo_decide.md §E`); cross-world portability remains open.
+Independent review and parent verification passed (`todo_decide.md §E`); persistence item 1 now records cross-world portability.
 **Artifacts items 1–6 recorded (2026-09-28):** `domain.md#artifact` defines the normalized
 logarithmic total (initial **z=0.1**), equal additive shares and recalculated artifact-free stat basis.
 Traversal counts matching artifacts; attack and maximum HP count all. D6's decay/1% floor is
@@ -61,8 +70,8 @@ remain deferred; current key-3/no-key-4 runtime already matches.
 **Wand item 1 recorded (2026-09-28):** mechanically two-handed despite a one-hand pose, with
 no other hand item; existing damage/attacks and 32-cube limit stand; common recipe follows D6
 at 20 wood cubes (`domain.md#weapon-type`). No presented Wand question remains. Live handedness
-and recipe data, enforcement and validation coverage remain deferred. Next topic: Persistence / authority.
-Gameplay and live JSON remain unchanged; restart persistence stays in that next topic.
+and recipe data, enforcement and validation coverage remain deferred.
+Gameplay and live JSON remain unchanged; current persistence recording status is above.
 
 ## Decision and build history (from 2026-09-07)
 

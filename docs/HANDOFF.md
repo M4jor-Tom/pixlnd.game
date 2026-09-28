@@ -2,6 +2,18 @@
 
 ## Ontology walkthrough entry point (2026-09-28)
 
+<!-- persistence-status -->
+**Persistence / authority — item 1 recorded (2026-09-28).** All nine owner recommendations are approved. Items 2–9 are approved, awaiting recording.
+Ontology documentation only; implementation, live JSON, tests and checker changes remain unauthorized.
+Independent review and parent verification are **PENDING**. No push, merge or history rewrite
+is authorized. Next topic after recording, named only: **World bounds / resets**.
+Evidence and item mapping: `docs/ROADMAP/todo_decide.md §E`,
+`/tmp/pixlnd-persistence-reconcile.XsnIBI/`.
+<!-- /persistence-status -->
+
+**Historical Wand handoff (superseded):** the following verification/publication checkpoint
+predates the current persistence batch and grants no new push permission.
+
 **Wand handedness reconciled (2026-09-28):** owner answered **“1: Approved; When done,
 handoff, commit, push”**. Item **1** is recorded in **`1f5eabc`**: wands are mechanically
 two-handed despite a one-hand pose, with no other hand item. Existing damage/beam attacks and
@@ -22,7 +34,7 @@ for the final handoff (exit 0). Evidence and limits: `todo_decide.md §E`,
 `/tmp/pixlnd-wand-reconcile.bNMtmi/`. These checks cover existing loaded data/gameplay/startup,
 not enforcement of the new policy. No full suite, visual or network checks were run.
 
-**Authorized publication:** commit this final handoff and push `fix/ontology-reconciliation`,
+**Historical Wand publication authorization (superseded):** commit this final handoff and push `fix/ontology-reconciliation`,
 verify remote/local HEAD equality and a clean worktree, then stop. No merge, force-push or history
 rewrite. **Pre-publication checkpoint:** clean item HEAD `1f5eabc`; remote `83b318b` confirmed
 with `git ls-remote`. The separate handoff commit follows item 1; this is not a publication claim.
@@ -88,7 +100,7 @@ application/evidence: `todo_decide.md §E`.
 **Historical books handoff (superseded, not fresh publication authority):** commit this verification/handoff record and push the three item commits
 on `fix/ontology-reconciliation`, verify remote/local HEAD equality and a clean worktree, then stop.
 No gameplay, live JSON, tests, model/loader/validator changes, merge or next-topic proposals.
-Cross-world character portability remains in the later persistence topic.
+Cross-world portability was deferred at that checkpoint; persistence item 1 now records it.
 
 **Verification:** item commits **`9f4262e` / `4ddd76e` / `11cc07f`** each passed semantic/scope
 inspection, `/simplify`, ponytail-review, diff checks and bounded ontology validation. Fresh
@@ -269,7 +281,8 @@ supersede D6's accumulation rule, not its other decisions. Assassin and Wand ite
 the current handoff status is at the entry point above. No new proposals in this handoff. Traversal
 items **1–5** are recorded and reviewed. Settlements/inn
 items **1–4** and family items **1–9** are recorded.
-Aggro items **1–14** are recorded; do not re-ask 13–14. Restart persistence remains a later topic.
+Aggro items **1–14** are recorded; do not re-ask 13–14. Persistence recommendations are all
+approved; recording status is at the entry point above.
 Do not start gameplay/validator/equipment implementation without separate authorization.
 
 When prompted **"resume walking through items"**, read `tasks/lessons.md` and
