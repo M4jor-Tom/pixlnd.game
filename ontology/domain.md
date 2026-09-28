@@ -112,6 +112,7 @@ Format per class: **id** — one-line definition. `versions`. Property table. In
 
 ### world
 The single playable universe instance. `A S`
+Hybrid saved-world identity is distinct from the generation seed (`save-data`, persistence item 2).
 | prop | type | i/e | notes |
 |---|---|---|---|
 | seed | uint32 | i | A: chosen per world at creation (server default 26879); S: one fixed shared seed, no UI |
@@ -390,9 +391,10 @@ A saved hero. `A S`
 | artifacts | hybrid: collected permanent stat rewards (§3.4), not character levels; S reference: level = count |
 | inventory, equipment, coins, platinum `A` | |
 | known-recipes | hybrid: one set of recipes shared by book/formula learning, with no source-specific duplicates; recipes persist across lands/sessions/worlds (§3.7 save-data); A formulas learned; S books per land (reference) |
-| lore-known | S per realm |
-| discovered lands/portals/shrines/flight-points | |
+| lore-known | hybrid: per character, realm and saved world (§3.7 save-data); S: per realm |
+| discovered lands/portals/shrines/flight-points | hybrid: personal travel unlocks per saved world (§3.7 save-data) |
 | pets (cages), active pet, pet slot | |
+| position, respawn point | hybrid: per character per saved world (§3.7 save-data) |
 | world-independent | hybrid: portable hero and progression between solo worlds and servers (§3.7 save-data, persistence item 1); A: any character enters any world; S: one world |
 | starting-kit | A: class weapons + gold ring + silver ring; S: 3 weapon sets + chest + 5 life potions |
 
@@ -1318,6 +1320,13 @@ level/XP, skills, inventory, equipment, money, recipes, acquired key items, arti
 progress; other characters do not inherit them automatically. Experienced heroes can enter
 fresh worlds with their existing strength. Equipment never weakens on travel (§1).
 
+**Hybrid persistence item 2 (owner approved, 2026-09-28):** position, respawn point,
+travel unlocks and lore are saved **per character per saved world**, separate from portable
+progression. Returning restores that world's records; first entry uses its starting location
+under the existing D22 `world.spawn-rule`, not a new spawn policy. Independently created worlds
+have separate mutable histories even when their seeds match. Seed equality determines generation
+and geography, **not saved-world identity**; no storage format or identity-allocation scheme is chosen.
+
 Documentation only: save-data and networking are unimplemented; these policies do not authorize
 runtime, live-data, model/loader/validator or test changes.
 
@@ -1548,7 +1557,7 @@ reproducible; each generator lists invariants that a test can assert.
 
 | id | input | output | invariants |
 |---|---|---|---|
-| gen-world | seed | infinite grid of internal regions → lands; region data generated 3×3 around player, region seeds 7×7 | same seed = same world; no borders; finite 1024² regions |
+| gen-world | seed | infinite grid of internal regions → lands; region data generated 3×3 around player, region seeds 7×7 | same seed = same generation/geography, not mutable saved-world identity (§3.7); no borders; finite 1024² regions |
 | gen-climate | seed, x, y | temperature, humidity, continent, relief → landscape choice (rules: `design.climate`) | equal-sized lands; features can appear off-biome (volcano in snow) |
 | gen-terrain | land, zone coords | heightfield columns, caves, rivers+waterfalls, lakes, mountains/plateaus, mesas, overhangs; per-voxel RGB by block type & landscape palette | walkable roads with tunnels/bridges; water at rivers/lakes/oceans |
 | gen-coarse-map `Ω` | land seed | coarse map placing streets, buildings, rivers, bridges, trees, caves logically before voxel detail | every structure reachable by road |
@@ -1605,7 +1614,7 @@ Live-data migration and implementation remain deferred; cleared dungeon/quest en
 eligibility stays in world/reset below. Persistence approvals and recording status follow.
 
 <!-- persistence-index -->
-**Persistence / authority — DECIDED 2026-09-28:** all nine recommendations approved; item 1 recorded. Items 2–9 are approved, awaiting recording.
+**Persistence / authority — DECIDED 2026-09-28:** all nine recommendations approved; items 1–2 recorded. Items 3–9 are approved, awaiting recording.
 Canonical rules: §3.1/§3.2/§3.7. Implementation is deferred; independent review and parent
 verification are pending (`todo_decide.md §E`). Next topic, named only: **World bounds / resets**.
 <!-- /persistence-index -->

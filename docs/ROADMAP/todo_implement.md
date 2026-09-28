@@ -126,6 +126,7 @@ degradation) are not backlog features.
 Canonical rules: `domain.md#save-data`, `#multiplayer-mode`, `#game-clock`, `#ai-behavior`.
 No save/network implementation exists; current `main.gd` creates a new hero and starting kit.
 - [ ] Item 1 — portable character progression, possessions and pets including progression (`save-data`).
+- [ ] Item 2 — per-character/world position, respawn, travel and lore; separate saved-world identity from seed (`save-data`).
 <!-- /persistence-debt -->
 
 ## Meta / tooling
