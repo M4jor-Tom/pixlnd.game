@@ -1059,6 +1059,12 @@ changing any existing reduction mechanism.
 bonus** from its `x` contributing artifacts. For `x > 0`, each artifact's equal current share
 is `B(x) / x`; their sum is `B(x)`, not `x × B(x)`. The total curve is recorded separately in item 5.
 
+**Hybrid artifacts item 3 (owner approved, 2026-09-28):** first compute the affected stat
+normally **without artifacts**, including applicable level, equipment, skills and buffs.
+Then `stat with artifacts = current artifact-free stat × (1 + B(x))`. Recalculate when
+ordinary stat inputs change; never snapshot the stat at pickup. This adds no stat target
+or unrelated effect.
+
 Documentation only: artifact live-data migration and runtime enforcement remain deferred.
 
 ### currency
@@ -1520,7 +1526,7 @@ Settlements/inn items 1–4 are recorded in §3.1 (2026-09-27). Traversal items 
 No presented traversal question remains. Books/formulas items 1–3 are recorded in §3.4/§3.5
 (2026-09-28): permanent/global book recipes, shared knowledge/duplicates and immediate recording
 with power-locked crafting. No presented books question remains; cross-world portability stays
-in persistence. Artifact items 1–6 are approved (2026-09-28); items 1–2 are recorded in §3.4,
+in persistence. Artifact items 1–6 are approved (2026-09-28); items 1–3 are recorded in §3.4,
 with the remaining approvals awaiting their separate recording, not further owner decisions.
 Live-data migration and implementation remain deferred; cleared dungeon/quest enemy reset
 eligibility stays in world/reset below. Threat across server restart stays in the persistence topic below.
