@@ -26,7 +26,7 @@ Dated build notes below include superseded placeholders, not proof of current co
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
 <!-- persistence-status -->
-**Persistence / authority — items 1–2 recorded (2026-09-28).** All nine owner recommendations are approved. Items 3–9 are approved, awaiting recording.
+**Persistence / authority — items 1–3 recorded (2026-09-28).** All nine owner recommendations are approved. Items 4–9 are approved, awaiting recording.
 Ontology documentation only; implementation, live JSON, tests and checker changes remain unauthorized.
 Independent review and parent verification are **PENDING**. No push, merge or history rewrite
 is authorized. Next topic after recording, named only: **World bounds / resets**.

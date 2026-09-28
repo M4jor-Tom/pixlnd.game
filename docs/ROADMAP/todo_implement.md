@@ -127,6 +127,7 @@ Canonical rules: `domain.md#save-data`, `#multiplayer-mode`, `#game-clock`, `#ai
 No save/network implementation exists; current `main.gd` creates a new hero and starting kit.
 - [ ] Item 1 — portable character progression, possessions and pets including progression (`save-data`).
 - [ ] Item 2 — per-character/world position, respawn, travel and lore; separate saved-world identity from seed (`save-data`).
+- [ ] Item 3 — world-shared terrain exploration, distinct from personal shrine/flight/lore unlocks (`world.discovered-zones`).
 <!-- /persistence-debt -->
 
 ## Meta / tooling

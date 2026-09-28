@@ -120,9 +120,15 @@ Hybrid saved-world identity is distinct from the generation seed (`save-data`, p
 | day | int | i | day counter |
 | time-ms | int 0..86_400_000 | i | ms of game day |
 | spawn-rule | enum `near-village` | i | S 0.9.1-3: new chars spawn near a village; A: world spawn (0,0 area); hybrid (D22): the square of the land (0,0) village |
-| discovered-zones | set<zone-coord> | i | per world; shared by all visitors of a server world (A) |
+| discovered-zones | set<zone-coord> | i | hybrid: world-shared terrain exploration (persistence item 3 below); A: shared by all visitors |
 | origin-poi | `poi-type` ref | e | S: `wollays-house` at block (0,0) |
 Instances: none (runtime). Config: `generators.json#world-scales`.
+
+**Hybrid persistence item 3 (owner approved, 2026-09-28):** explored terrain belongs to
+that saved world and is visible to all its visitors, including later arrivals. Seeing a place
+on the shared map grants **no personal shrine activation, flight access or lore knowledge**;
+those remain character/world records (`save-data`, item 2). Exploration helps the group, but
+newcomers inherit the already-explored map rather than starting with a private blank map.
 
 ### zone
 Terrain streaming unit (alpha "chunk"). `A S`
@@ -392,7 +398,7 @@ A saved hero. `A S`
 | inventory, equipment, coins, platinum `A` | |
 | known-recipes | hybrid: one set of recipes shared by book/formula learning, with no source-specific duplicates; recipes persist across lands/sessions/worlds (§3.7 save-data); A formulas learned; S books per land (reference) |
 | lore-known | hybrid: per character, realm and saved world (§3.7 save-data); S: per realm |
-| discovered lands/portals/shrines/flight-points | hybrid: personal travel unlocks per saved world (§3.7 save-data) |
+| discovered lands/portals/shrines/flight-points | hybrid: terrain exploration uses world.discovered-zones; personal travel unlocks remain per character/world (§3.7 save-data) |
 | pets (cages), active pet, pet slot | |
 | position, respawn point | hybrid: per character per saved world (§3.7 save-data) |
 | world-independent | hybrid: portable hero and progression between solo worlds and servers (§3.7 save-data, persistence item 1); A: any character enters any world; S: one world |
@@ -1614,7 +1620,7 @@ Live-data migration and implementation remain deferred; cleared dungeon/quest en
 eligibility stays in world/reset below. Persistence approvals and recording status follow.
 
 <!-- persistence-index -->
-**Persistence / authority — DECIDED 2026-09-28:** all nine recommendations approved; items 1–2 recorded. Items 3–9 are approved, awaiting recording.
+**Persistence / authority — DECIDED 2026-09-28:** all nine recommendations approved; items 1–3 recorded. Items 4–9 are approved, awaiting recording.
 Canonical rules: §3.1/§3.2/§3.7. Implementation is deferred; independent review and parent
 verification are pending (`todo_decide.md §E`). Next topic, named only: **World bounds / resets**.
 <!-- /persistence-index -->
