@@ -138,8 +138,8 @@ passed; evidence and limits below. Ontology documentation only; gameplay, live J
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
 **Current world/reset direction (2026-09-28):** owner answered **“1: Approved; 2: Approved;
-3: Approved; 4: Approved”**, then **“When done, handoff, commit, push”**. Items 1–2 are recorded;
-items 3–4 await separate recording commits, not owner answers. Item 2 depends on approved item 1.
+3: Approved; 4: Approved”**, then **“When done, handoff, commit, push”**. Items 1–3 are recorded;
+item 4 awaits its separate recording commit, not an owner answer. Item 2 depends on approved item 1.
 Only the five existing Markdown paths may change; runtime, live JSON, tests and checker work
 remain unauthorized. Independent review and parent verification are pending. The writer makes
 four item commits; the parent finalizes verification/handoff and publishes only
@@ -636,8 +636,8 @@ Books/formulas items 1–3, artifact items 1–6, Assassin item 1 and Wand item 
 not open questions. Persistence items 1–9 are recorded and reviewed above.
 Current topic: **World bounds / resets**; all four items are approved; recording status below.
 
-- [ ] **World bounds / resets recording:** items 1–2 recorded; approved items 3–4 await separate
-  commits. No further owner answer is needed for the presented batch; implementation is deferred.
+- [ ] **World bounds / resets recording:** items 1–3 recorded; approved item 4 awaits its separate
+  commit. No further owner answer is needed for the presented batch; implementation is deferred.
 - [ ] **Validation-contract mapping (policy approved in item 9):** document exact required
   table/config paths, permitted per-family provenance inheritance and remaining constraint
   boundaries from `domain.md §2/§5` before filling validator gaps. Ask the owner only where
@@ -657,8 +657,8 @@ Canonical semantics are recorded in `domain.md`; application is tracked independ
 | item | application | canonical section | commit |
 |---|---|---|---|
 | 1 — Finite world | [x] recorded | `world`, `c-world-bounds`, `gen-world` | a1269106043f226550009a96b6f7a5f6b615c92b |
-| 2 — Outer boundary | [x] recorded | `world`, `c-world-bounds` | awaiting commit hash |
-| 3 — Cleared-enemy eligibility | [ ] approved, awaiting recording | `game-clock` | pending |
+| 2 — Outer boundary | [x] recorded | `world`, `c-world-bounds` | 32a8c4948ba28d3bea1fa8a5ec39bf47d2b79ae3 |
+| 3 — Cleared-enemy eligibility | [x] recorded | `game-clock`, `c-midnight-reset`, `gen-dungeon`, `gen-missions` | awaiting commit hash |
 | 4 — Occupied-site refresh | [ ] approved, awaiting recording | `game-clock` | pending |
 
 **Evidence:** `/tmp/pixlnd-world-reset-reconcile.xc2Nuh/` holds the approval brief, exact
@@ -1062,7 +1062,7 @@ Verify remote/local final HEAD equality and clean worktree after pushing, then s
 **Owner answer:** “1: Approved; 2: Approved; 3: Approved; 4: Approved”. Documentation only;
 items 3–4 depend on recorded item 2. All four are recorded; traversal status is above.
 The separate 2026-09-27 handoff authorized publication then, not new publication now.
-Cleared dungeon/quest enemy reset eligibility remains in the later world/reset topic.
+Cleared dungeon/quest enemy eligibility was unresolved at that checkpoint; world/reset item 3 now records it.
 Current D22 runtime and live JSON are unchanged.
 
 1. [x] **One settlement per land is the final target**, not unfinished multiplicity.

@@ -3,8 +3,8 @@
 ## Ontology walkthrough entry point (2026-09-28)
 
 **Owner answers:** “1: Approved; 2: Approved; 3: Approved; 4: Approved”. Follow-up:
-**“When done, handoff, commit, push”**. World bounds / resets items **1–2 are recorded**;
-items **3–4 are approved and await separate recording commits**, not further owner answers.
+**“When done, handoff, commit, push”**. World bounds / resets items **1–3 are recorded**;
+item **4 is approved and awaits its separate recording commit**, not a further owner answer.
 Canonical rules: `ontology/domain.md`; mapping/evidence: `docs/ROADMAP/todo_decide.md §E`,
 `/tmp/pixlnd-world-reset-reconcile.xc2Nuh/`. Independent review and parent verification are pending.
 Ontology documentation only; runtime, live JSON, tests and checker changes remain unauthorized.
@@ -166,7 +166,7 @@ special-passivity proposals are superseded, not approved alternatives.
 **Settlements/inn items 1–4 are recorded** in `154df56`, `0b7c2d4`, `250f964`, `f207a48`;
 `fa716ab` records verification. Canonical rules: `domain.md#settlement` / `#game-clock`.
 Current D22 runtime stays unchanged; migration/enforcement is deferred. Cleared dungeon/quest
-enemy reset eligibility remains in the later world/reset topic. Per-item diff checks and bounded
+enemy eligibility, unresolved at that checkpoint, is now recorded in world/reset item 3. Per-item diff checks and bounded
 ontology validation passed; fresh independent review found no issues, and parent inspected the
 actual diff/commits/logs and reran validation. Evidence: §E and `/tmp/pixlnd-settlements-20260927/`.
 Those checks cover loaded data, not new runtime; no gameplay, boot, visual or network checks

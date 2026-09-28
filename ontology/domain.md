@@ -315,10 +315,19 @@ Time, resets and sleep. `A S`
 |---|---|
 | speed | 10× real time (1 game min ≈ 6 s; day = 2 h 24 min real) |
 | sleep-speed | A/S reference: 100× (clock only, world does not simulate faster); hybrid inn skip below |
-| midnight-reset | 0:00: respawn monsters (cleared quest/dungeon eligibility unresolved for hybrid; exclusion uncertain in S), regenerate missions, respawn deposits and wilderness plants, restock shops, re-close divine doors |
+| midnight-reset | 0:00: respawn eligible monsters, regenerate daily missions, respawn deposits and wilderness plants, restock shops, re-close divine doors; hybrid cleared-enemy eligibility follows world/reset item 3 below (historical S exclusion uncertain) |
 | inn-reset | A/S reference: innkeeper 18:00–06:00 → set 07:00; A free; S 10 coins, also re-rolls daily missions; hybrid services below |
 | night | very dark; lanterns; stealth builds faster in darkness |
 | weather | none in A/S; Ω: rain, snow, moving clouds, freezing water |
+
+**Hybrid world/reset item 3 (owner approved, 2026-09-28):** defeated enemies, **including
+bosses**, in **ordinary dungeons and repeatable daily encounters** return with the daily reset.
+Enemies belonging to a **completed one-time objective stay cleared**, including its guards
+and boss. Enemy resets **never renew an artifact or book claim**: personal source claims and
+world-shared improvements retain their approved scopes and reset rules (`save-data`, items 4–5).
+Tomorrow may offer another daily boss fight, but never recreate a completed supplier-rescue
+encounter. Daily-enemy eligibility does not change other mechanics' resets or reward rules.
+Live-data/checker migration and reset/save implementation remain deferred and unauthorized.
 
 **Hybrid settlements/inn item 2 (owner approved, 2026-09-27):** inn recovery fully heals and
 sets the respawn point **for free at any time**. A separate sleep service costs **10 copper**,
@@ -329,8 +338,7 @@ effects or cooldowns. The sleep hours and fee do not restrict free recovery.
 **Hybrid settlements/inn item 3 (owner approved, 2026-09-27; depends on item 2):** apply
 ordinary midnight resets **once when the skip crosses midnight**. Sleeping at 23:00 crosses
 midnight; sleeping at 02:00 does not. Sleeping itself grants **no extra shop refresh or mission
-reroll**. Which already-cleared dungeon/quest enemies reset remains unresolved for the later
-world/reset topic.
+reroll**. Cleared dungeon/quest enemy eligibility follows world/reset item 3 above.
 
 **Hybrid settlements/inn item 4 (owner approved, 2026-09-27; depends on item 2):** **all
 connected players must explicitly agree** before the shared clock skips. The initiating player
@@ -1395,13 +1403,14 @@ and geography, **not saved-world identity**; no storage format or identity-alloc
 barriers and resolved village curses belong to **that saved world**, not the character who
 completed them. Their effects benefit everyone there, including later arrivals, and survive
 sessions **subject to each mechanic's existing reset rules**. Visitors inhabit one consistent
-world and may find these objectives already completed. This sets no new reset schedule and
-does not decide which cleared dungeon/quest enemies reset at midnight (`game-clock`).
+world and may find these objectives already completed. This persistence rule sets no new reset
+schedule; cleared dungeon/quest enemy eligibility follows `game-clock` world/reset item 3.
 
 **Hybrid persistence item 5 (owner approved, 2026-09-28):** each character may claim a
 given **artifact or one-time book source once in that saved world**. Another character's claim
 does not consume theirs; later visitors can still collect their own **at the source**, not by
-automatic remote award. Leaving, restarting or returning never renews an existing claim.
+automatic remote award. Leaving, restarting or returning never renews an existing claim;
+neither do daily enemy resets (`game-clock`, world/reset item 3).
 Genuinely separate worlds, including independently created matching-seed worlds, offer additional
 sources; item 1's portable heroes can therefore earn additional artifacts by world-hopping.
 Existing recipe-duplicate rules still apply (`recipe`): no compensation, rerolls or account-wide
@@ -1581,7 +1590,7 @@ content selection or live data changes are authorized by this contract.
 | c-spirit-level | A: weapon.level − 10 ≤ spirit.level ≤ weapon.level | runtime |
 | c-power-gate | A / hybrid: item.level ≤ power(player.level) for full strength; formula learning retains its sufficient-power requirement. Hybrid books record recipes immediately, but above-power recipes remain known and visibly locked against crafting until their requirement is reached; duplicate acquisition never removes the lock (§3.5 power-gate) | runtime (recipe enforcement deferred) |
 | c-book-recipe-persistence | hybrid: book-learned recipes remain known to that character across lands and sessions, with no relearning on travel, including between worlds under persistence item 1 (§3.7 save-data) | runtime+save-data (deferred) |
-| c-permanent-source-claim | hybrid: at most one claim per character/saved-world/artifact-or-one-time-book-source; claims remain available to other characters at the source and are not renewed by leaving, restarting or returning (§3.7 save-data, item 5); ordinary ground loot unchanged | runtime+save-data (deferred) |
+| c-permanent-source-claim | hybrid: at most one claim per character/saved-world/artifact-or-one-time-book-source; claims remain available to other characters at the source and are not renewed by leaving, restarting, returning or daily enemy resets (§3.7 save-data, item 5; §3.1 world/reset item 3); ordinary ground loot unchanged | runtime+save-data (deferred) |
 | c-recipe-learning | hybrid: books/formulas share one known-recipe set per character, including known-but-power-locked recipes; repeated learning grants nothing extra; books teach only unknown recipes without rerolls/compensation; an already-known formula remains unconsumed, without bypassing c-power-gate (§3.4 recipe) | runtime (deferred) |
 | c-region-lock | DROPPED (D4). S reference: item.land ≠ current land ∧ ¬plus → worn; key items inert | — |
 | c-plus-adjacent | DROPPED (D4). S reference: plus item full stats iff current land adjacent | — |
@@ -1602,7 +1611,7 @@ content selection or live data changes are authorized by this contract.
 | c-dodge-cost | dodge costs 25 stamina; requires movement; standing still M3 = class skill (S); hybrid numbers `design.defence.dodge` (D23) | runtime |
 | c-no-death-penalty | death never removes gold/items/xp; respawn at statue (A) / activated shrine (S) | runtime |
 | c-time-speed | clock 10× real while the world runs; hybrid shutdown adds no gameplay time or reset catch-up (persistence item 8, §3.1); reference sleep 100× clock-only; hybrid inn sleep skips to the next 07:00 without fast-forwarding combat/status effects/cooldowns (§3.1) | runtime (clock/save enforcement deferred) |
-| c-midnight-reset | at 0:00 respawn eligible mobs, regen missions, deposits, plants; restock shops; hybrid sleep applies ordinary midnight resets once only if crossing midnight, never extra shop refreshes/mission rerolls merely for sleeping; cleared dungeon/quest enemy eligibility remains unresolved (§3.1) | runtime |
+| c-midnight-reset | at 0:00 respawn eligible mobs, regen daily missions, deposits, plants; restock shops; hybrid defeated ordinary-dungeon/repeatable-daily enemies including bosses return, completed one-time-objective guards/boss stay cleared, and artifact/book claims never renew; preserve world improvements' existing reset rules; sleep applies ordinary midnight resets once only if crossing midnight, never extra shop refreshes/mission rerolls merely for sleeping (§3.1) | runtime+save-data (deferred) |
 | c-inn-hours | hybrid: separate 10-copper sleep service only 18:00–06:00 → next 07:00; all connected players explicitly agree, initiator pays the single fee only on success; refusal blocks skip without charge; healing and setting respawn stay free at any time without agreement (§3.1) | runtime |
 | c-land-count | hybrid: exactly 1 settlement per land (approved 2026-09-27); S per land: gnomes = 4, books = 4, movement items ≤ 4, ticket items ≤ 3, key items ≤ 9, towers ≤ 5, settlements ≥ 1; A per land: settlements = 1, missions = 64 cells | generator |
 | c-key-item-need | a key item spawns only if its lock type exists in the land | generator |
@@ -1648,9 +1657,9 @@ reproducible; each generator lists invariants that a test can assert.
 | gen-coarse-map `Ω` | land seed | coarse map placing streets, buildings, rivers, bridges, trees, caves logically before voxel detail | every structure reachable by road |
 | gen-flora | landscape, zone | trees (procedural, unique), bushes, scrubs, cacti, flowers, mushrooms, fields | per-landscape rosters |
 | gen-settlement | land | 1 (hybrid / A) / n (S) settlements: districts, procedural buildings (rooms, sizes, roofs), styles, NPC population + schedules, shops, inn, trainers, flight master (S) | ≥1 inn (A several, S exactly 1); shops per district; hybrid numbers `design.settlement` (D22) |
-| gen-dungeon | land, dungeon-type, tier | layout (A linear + dead end; S room gauntlet), traps `A`, chests, spawns in groups 2–4, boss(es), artifact `S`, locks needing key items | entrance rules per type; at least one boss; artifact at end (S castles always) |
+| gen-dungeon | land, dungeon-type, tier | layout (A linear + dead end; S room gauntlet), traps `A`, chests, spawns in groups 2–4, boss(es), artifact `S`, locks needing key items | entrance rules per type; at least one boss; artifact at end (S castles always); hybrid enemy refresh eligibility and permanent claims follow c-midnight-reset |
 | gen-poi | land | campsites, arenas, towers ≤5, circles, portals, pumps, trees, shrines, lore sites, spawner nests, hidden treasure, sky islands | counts in `c-land-count` |
-| gen-missions | land, day | A: 8×8 cell boss missions; S: typed missions with icons and tiers, daily regeneration | tier ladder white→yellow present; gnomes/books once per land |
+| gen-missions | land, day | A: 8×8 cell boss missions; S: typed missions with icons and tiers, daily regeneration | tier ladder white→yellow present; S: gnomes/books once per land; hybrid refresh and source claims follow c-midnight-reset / §3.7 save-data |
 | gen-spawns | zone, land level/tier | creature spawns: species by landscape roster, group sizes, hostility, humanoid class/spec, `+1..+4` multipliers (A), boss-ification chance; open-world numbers `design.spawns` (D14); role per group: creature combat-role, any-class rolled from `design.creature-roles.any-class` (D26) | dungeon mobs above surface tier; farm animals white |
 | gen-boss | spawn | named, enlarged, coloured-tier variant with 1–2 random special moves; always-boss species; one fixed-type/level spirit cube per eligible non-mission boss kill (A / hybrid) | size scaling rule; terrain breaking; mission bosses, including Saurians, drop no spirit cube; normal mission rewards unchanged |
 | gen-name | seed, kind | land names (`<Name> Plains…`), dungeon names ("Castle ___"), realm/leader/capital names, item names (affix + material + type + of-name), boss names, NPC names, quarter names | epic/legendary items always named |
@@ -1695,21 +1704,21 @@ separate ultimate node or key-4 ability (§3.5). No presented Assassin question 
 **Wand item 1 — DECIDED 2026-09-28:** mechanically two-handed despite a one-hand pose;
 existing damage/attacks and 32-cube limit stand; common crafting costs 20 wood cubes under D6
 (§3.3 `weapon-type`). No presented Wand question remains.
-Live-data migration and implementation remain deferred; cleared dungeon/quest enemy reset
-eligibility stays in world/reset below. Persistence approvals and recording status follow.
+Live-data migration and implementation remain deferred; world/reset item 3 records cleared
+dungeon/quest enemy eligibility (§3.1). Persistence approvals and recording status follow.
 
 **Persistence / authority items 1–9 — DECIDED 2026-09-28:** all nine documentation decisions
 are recorded. No presented Persistence / authority question remains.
 Canonical rules: §3.1/§3.2/§3.7. Implementation is deferred; independent review and parent
 verification passed (`todo_decide.md §E`, including evidence limits).
-**World bounds / resets items 1–4 — DECIDED 2026-09-28:** all four approved; items 1–2 are
-recorded in §3.1/§5/§6. Items 3–4 await separate recording commits, not owner answers.
+**World bounds / resets items 1–4 — DECIDED 2026-09-28:** all four approved; items 1–3 are
+recorded in §3.1/§3.7/§5/§6. Item 4 awaits its separate recording commit, not an owner answer.
 Independent review and parent verification are pending (`todo_decide.md §E`); implementation
 remains deferred.
 
 | topic | still undecided / incomplete |
 |---|---|
-| World bounds / resets | all four items approved; items 3–4 await recording, not further design approval |
+| World bounds / resets | all four items approved; item 4 awaits recording, not further design approval |
 | Validation-contract mapping | exact required paths, permitted provenance inheritance and remaining constraint boundaries; item 9 policy is approved, enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 

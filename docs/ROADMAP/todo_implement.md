@@ -18,6 +18,10 @@ degradation) are not backlog features.
 - [ ] World/reset item 2 (`domain.md#world`, `c-world-bounds`): mark the outer boundary on the
   map and block outward travel including flight/teleport destinations; allow turning back, with
   no special damage/death/forced teleport. Map/travel enforcement is deferred.
+- [ ] World/reset item 3 (`domain.md#game-clock`, `c-midnight-reset`): daily return of defeated
+  ordinary-dungeon/repeatable-daily enemies including bosses; completed one-time guards/boss stay
+  cleared, artifact/book claims never renew, world improvements keep their existing reset rules.
+  Clock/dungeon/mission/save enforcement and data/checker migration remain unauthorized.
 - [ ] Zone build (~40 ms mesh + trimesh) runs on the main thread, ≤2 zones/frame; hitches on load
   and when crossing zones. Thread it (`WorkerThreadPool`) — `world.gd` ponytail.
 - [ ] Heightfield only: no caves, overhangs, rivers/waterfalls, lakes, plateaus/mesas, roads with
@@ -224,7 +228,7 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
   Live-data migration and implementation remain unauthorized.
 - [ ] Inn item 3 (`c-midnight-reset`): apply ordinary resets once on a midnight-crossing skip,
   without sleep-specific shop refreshes/mission rerolls. S refresh records are reference, not hybrid
-  targets. Cleared dungeon/quest enemy reset eligibility remains a later world/reset decision.
+  targets. Cleared dungeon/quest enemy eligibility now follows world/reset item 3 above.
 - [ ] Inn item 4 (`game-clock`, `multiplayer-mode`): connected-player agreement and success-only
   initiator payment are unimplemented; free recovery needs no agreement. No vote timeout or
   disconnect protocol is specified; no networking/payment implementation authorized.

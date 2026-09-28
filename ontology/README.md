@@ -31,10 +31,10 @@ passed; item mapping, evidence and limits: `docs/ROADMAP/todo_decide.md §E`.
 Ontology documentation only; gameplay, live JSON, tests and checker implementation remain
 unauthorized.
 
-**World bounds / resets items 1–4 approved (2026-09-28):** items 1–2 are recorded in
-`domain.md#world` / `c-world-bounds` / `gen-world`: finite 1024×1024 lands, not unlimited or
-wrapping, with a map-marked outer boundary preventing outward travel without special penalties.
-Items 3–4 await separate recording commits, not owner answers. Independent review
+**World bounds / resets items 1–4 approved (2026-09-28):** items 1–3 are recorded in
+`domain.md#world` / `#game-clock` / §5–6: finite 1024×1024 lands with a map-marked outer
+boundary; daily enemy refresh without recreating completed one-time objectives or renewing
+artifact/book claims. Item 4 awaits its separate recording commit, not an owner answer. Independent review
 and parent verification are pending; runtime, live-data and checker changes remain unauthorized.
 Item mapping/evidence and publication direction: §E / `docs/HANDOFF.md`.
 
@@ -53,8 +53,8 @@ connected-player agreement / success-only initiator payment (`domain.md#game-clo
 Spikes reduce climbing stamina consumption by 75%, applied to the skill-adjusted remaining cost
 (×0.25), not infinite endurance or additive percentage points. Independent review and parent
 verification passed (`todo_decide.md §E`). Artifact approvals are tracked below.
-Live-data migration and enforcement remain deferred; cleared dungeon/quest enemy reset eligibility
-stays in the later world/reset topic.
+Live-data migration and enforcement remain deferred; world/reset item 3 now records cleared
+dungeon/quest enemy reset eligibility (`domain.md#game-clock`).
 **Books/formulas items 1–3 recorded (2026-09-28):** permanent/global book recipes, shared
 knowledge without duplicate rewards/rerolls or consuming known formulas, and immediate book
 recording with visibly power-locked crafting (`domain.md#recipe` / `#book-of-crafting` / `#power-gate`).
