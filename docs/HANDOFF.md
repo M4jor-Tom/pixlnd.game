@@ -2,14 +2,19 @@
 
 ## Ontology walkthrough entry point (2026-09-28)
 
-**Artifact approvals (2026-09-28; draft writer handoff):** all six items are approved;
-items 1–4 and 6 are recorded, item 5 awaits separate recording (`todo_decide.md §E`). Final owner
+**Artifacts (2026-09-28; draft writer handoff):** all six approved items are recorded
+(`todo_decide.md §E`), in separate documentation commits ordered **1, 2, 3, 4, 6, 5**. Final owner
 answer: **“5: Approved with z=0.1; 6: Approved”**; handoff direction: **“Once ontology adjusted,
-handoff, commit, push”**. No presented artifact question remains. Canonical rules:
-`ontology/domain.md#artifact`. Independent review and parent verification are pending.
-The writer records six documentation commits only; parent finalizes handoff and publication.
+handoff, commit, push”**. The normalized logarithmic total replaces D6's decay/1% floor, not
+its rewards or other decisions. No presented artifact question remains. Canonical rules:
+`ontology/domain.md#artifact`. Independent review and parent verification are pending;
+parent finalizes the handoff and publication after fresh review.
 No writer push, gameplay, live JSON, tests, model/loader/validator changes or next-topic proposals.
-Evidence: `/tmp/pixlnd-artifacts-20260928/`. Next topic, named only: **Assassin ultimate
+Per-item writer checks and exact commit map/diffs/logs: `/tmp/pixlnd-artifacts-20260928/`.
+Bounded ontology validation covers loaded data, not Markdown semantics or artifact gameplay;
+live-data migration, model/loader/validator support and runtime enforcement remain deferred.
+No gameplay suite, boot, visual or network checks were run for this batch.
+Next topic, named only: **Assassin ultimate
 (Camouflage alias versus separately unlocked fourth node)**.
 
 **Historical books/formulas approvals (2026-09-28):** the owner answered **“1: Approved; 2: Approved;

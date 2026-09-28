@@ -1049,8 +1049,8 @@ Static entity id 46 "Artifact" exists in alpha data `X`.
 for each traversal stat**, not globally across traversal kinds. All collected artifacts that
 contribute to the same stat share its **current contribution equally**; acquisition order does
 not preserve earlier, larger grants. Collecting a different traversal kind does not reduce
-this stat's contributors' rate. The initial exponential equal-share examples are superseded;
-the separately approved logarithmic curve is awaiting item 5's recording, not an open decision.
+this stat's contributors' rate. The initial exponential equal-share examples are superseded
+by item 5's logarithmic total below.
 This artifact-count mechanism does not extend to other item kinds. Existing level/rarity
 curves, power gates and other non-artifact rules remain unchanged; inspect and ask before
 changing any existing reduction mechanism.
@@ -1074,12 +1074,29 @@ maximum HP**. Attack and maximum HP use the **same recalculation** as traversal,
 only its matching artifacts, separately. Artifacts grant no character levels and bypass no
 existing traversal training/item gates; no equipment slot is added.
 
+**Hybrid artifacts item 5 (owner approved with initial z=0.1, 2026-09-28):** for the affected
+stat's **nonnegative integer count** `x`, the fractional total bonus is:
+
+`B(x) = 0.05 × ln(1 + z × x) / ln(1 + z)`, with `z > 0`; **initial z = 0.1**.
+
+`B(0) = 0` (no stat change), `B(1) = 0.05` (5%). Totals strictly increase as more contributing
+artifacts are collected, with diminishing marginal gains and **no hard cap**. Equal current
+shares follow item 2, and the current-stat multiplier follows item 3. Larger positive `z`
+gives stronger diminishing returns; `z` is adjustable for balance. The normalized logarithm's
+base cancels, so there is **no separate y tuning knob**.
+Rounded total examples at z=0.1: two contributors give **9.565%**, three
+**13.764%**; these are totals, not individual grants.
+
 **Hybrid artifacts item 6 (owner approved, 2026-09-28):** **remove the old per-artifact 1%
 floor**. The approved logarithmic curve replaces D6's ×0.9 accumulation/decay rule and its
 floor; there is no hidden clamp, minimum per-artifact contribution or minimum marginal gain.
-The first artifact remains 5%; item 5 records the replacement equation separately.
+The first artifact remains 5%.
 
-Documentation only: artifact live-data migration and runtime enforcement remain deferred.
+Documentation only: live `generators.json#design.artifact` still stores D6's `first: 0.05`,
+`decay: 0.9`, `floor: 0.01`; `key-items.json#artifact` still mixes historical S levels with
+old D6 accumulation text, and `rulesets.json#ruleset-hybrid._rule` still says D6 bonuses are
+unchanged. These do not override the current rules above. Live-data migration, model/loader/
+validator support and generated-artifact/runtime enforcement remain deferred and unauthorized.
 
 ### currency
 A: copper/silver/gold (100:1), platinum (adaptation only); S: single coin counter, auto-pickup by
@@ -1404,8 +1421,8 @@ remain separately authorized work (`docs/ROADMAP/todo_decide.md §E`).
   and generator configuration, not nonexistent generated objects. For artifacts, check the
   definition's seven approved traversal stat kinds and approved bonus configuration at load time;
   generator/runtime checks separately verify each generated artifact has exactly one of
-  those traversal bonuses plus attack and max HP. Artifact approvals are being recorded under
-  §3.4 `artifact`; live-data migration and enforcement remain deferred.
+  those traversal bonuses plus attack and max HP. The approved accumulation curve, counts and
+  recalculation are in §3.4 `artifact`; live-data migration and enforcement remain deferred.
   Passing definition checks is not evidence that generated rewards or runtime behavior work.
 - **Result:** validation succeeds only when the accumulated load/validation error collection
   is empty. Earlier load errors remain failures even if a validation pass adds no new errors.
@@ -1540,8 +1557,9 @@ Settlements/inn items 1–4 are recorded in §3.1 (2026-09-27). Traversal items 
 No presented traversal question remains. Books/formulas items 1–3 are recorded in §3.4/§3.5
 (2026-09-28): permanent/global book recipes, shared knowledge/duplicates and immediate recording
 with power-locked crafting. No presented books question remains; cross-world portability stays
-in persistence. Artifact items 1–6 are approved (2026-09-28); items 1–4 and 6 are recorded
-in §3.4. Item 5 awaits separate recording, not a further owner decision.
+in persistence. **Artifact items 1–6 — DECIDED 2026-09-28:** recorded in §3.4; logarithmic
+accumulation (initial z=0.1) replaces D6's decay/floor, preserving its rewards and other decisions.
+No presented artifact question remains; independent review and parent verification are pending.
 Live-data migration and implementation remain deferred; cleared dungeon/quest enemy reset
 eligibility stays in world/reset below. Threat across server restart stays in the persistence topic below.
 

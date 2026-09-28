@@ -165,11 +165,13 @@ degradation) are not backlog features.
   or compensation and leave known formula scrolls unconsumed. Runtime/UI/data work is unauthorized.
 
 ## Progression (§3.5, slice D19)
-- [ ] Artifact items 1–4 and 6 (`domain.md#artifact`, `c-artifact-stat`): matching-only traversal
-  counts versus all-artifact attack/maximum-HP counts, with equal additive contributions and
-  recalculation from the current artifact-free stat. Preserve traversal gates; no artifact levels.
-  Remove the old 1% floor without a replacement clamp or minimum marginal gain.
-  Live-data migration and runtime enforcement remain unauthorized; no extension to ordinary gear.
+- [ ] Artifact items 1–6 (`domain.md#artifact`, `c-artifact-stat`): implement the approved
+  logarithmic total (initial z=0.1), equal additive shares and current artifact-free stat basis;
+  matching-only traversal counts versus all-artifact attack/maximum-HP counts. No artifact levels,
+  traversal-gate bypass, old decay/floor, replacement clamp or extension to ordinary gear.
+  Live `generators.json#design.artifact`, `key-items.json#artifact` and hybrid `rulesets.json`
+  wording still carry old D6 policy; migrate only with separate authorization. Model/loader/
+  validator support, generated rewards and runtime recalculation remain deferred and unauthorized.
 - [x] Skill tree (D20, `game/progression/skill_tree.gd`, `skill_panel.gd` on X): spending, unlock rule, per-point multipliers.
   Class actives have runtimes since D21 (see Combat). Still open: shared skills other than Swimming do nothing until pets,
   mounts, climbing, glider and boat exist; spec change at the trainer (`npc-role` class-trainer, A fee) and the panel is a flat list
