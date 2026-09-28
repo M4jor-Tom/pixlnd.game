@@ -2,13 +2,39 @@
 
 ## Ontology walkthrough entry point (2026-09-28)
 
-**Artifacts reconciled (2026-09-28):** all six approved items are recorded in separate
+**Assassin reconciled (2026-09-28):** owner answered **“1: Approved; Once item reconciled,
+handoff, commit, push”**. Item **1** is recorded in **`b19662b`**: Camouflage is one rank-3
+skill on key 3, with no separate fourth node or key-4 ability, investment or charge. This is
+an explicit Assassin exception to D10; existing Camouflage behavior and other specializations
+stand. Canonical rule: `ontology/domain.md#skill-tree` / `c-tree-shape`.
+No presented Assassin question remains. Next topic, named only: **Wand handedness**.
+No new proposal is presented in this handoff; stop after publication.
+
+**Applied versus deferred:** only ontology documentation changed. Current key-3/no-key-4 runtime
+already matches. Live `also-ultimate` metadata clarification and validation coverage remain
+separately deferred; no gameplay, live JSON, test, model/loader/validator changes are authorized.
+
+**Item verification:** semantic/scope inspection, `/simplify`, ponytail-review, diff check,
+bounded ontology validation, existing skill-tree regression and headless boot passed. Independent
+review found no issues; parent confirmed actual/reviewed diff correspondence and reran all
+three bounded checks for the final handoff (exit 0). Evidence: §E and
+`/tmp/pixlnd-assassin-20260928/`. Checks cover loaded data, existing tree behavior and startup,
+not exhaustive Camouflage gameplay or deferred threat enforcement; no full suite, visual or
+network checks were run.
+
+**Authorized publication:** commit this final handoff and push `fix/ontology-reconciliation`,
+verify remote/local HEAD equality and a clean worktree, then stop. No merge, force-push or history
+rewrite. **Pre-publication checkpoint:** clean item HEAD `b19662b`; remote `0399f15` verified
+again before publication with `git ls-remote`. The separate handoff commit follows item 1. This is not a
+publication claim; inspect actual Git state on resumption. Older authorizations below are historical.
+
+**Historical artifacts handoff (2026-09-28):** all six approved items are recorded in separate
 ontology-only commits; item/hash mapping is in `todo_decide.md §E`. Final owner answer:
 **“5: Approved with z=0.1; 6: Approved”**; handoff direction: **“Once ontology adjusted,
 handoff, commit, push”**. The normalized logarithmic total replaces D6's decay/1% floor,
 not its rewards or other decisions. Canonical rules: `ontology/domain.md#artifact`.
-No presented artifact question remains. Next topic, named only: **Assassin ultimate
-(Camouflage alias versus separately unlocked fourth node)**. No new proposals in this handoff.
+No presented artifact question remains. Its historical next topic, **Assassin ultimate**, is
+now reconciled above.
 
 **Verification:** each item passed semantic/scope inspection, `/simplify`, ponytail-review,
 diff checks and bounded ontology validation. Fresh independent review found no issues; parent
@@ -19,8 +45,8 @@ Only six Markdown paths changed. These checks cover text fidelity, arithmetic an
 data/startup, not artifact gameplay; no gameplay suite, visual or network checks were run.
 Live-data migration, model/loader/validator support and runtime enforcement remain unauthorized.
 
-**Authorized publication:** commit this final verification/handoff record and push
-`fix/ontology-reconciliation`, verify remote/local HEAD equality and a clean worktree, then stop.
+**Historical artifact publication authorization (superseded):** commit that final handoff and
+push `fix/ontology-reconciliation`, verify remote/local HEAD equality and a clean worktree, then stop.
 No merge, force-push, history rewrite, gameplay or live JSON changes. **Pre-publication checkpoint:**
 clean item HEAD `52f171b`, remote `8135a50` confirmed with `git ls-remote`; the handoff commit
 follows the six item commits. This is not a publication claim: inspect actual Git state on resumption.
@@ -212,8 +238,8 @@ The publication changes only four Markdown files, not runtime/live data; these t
 implementation of the new policies. Commands and session-local evidence: `todo_decide.md §E`.
 
 **Books/formulas items 1–3 recorded; no presented books question remains.** Artifact approvals
-and current handoff status are at the entry point above; they supersede D6's accumulation rule,
-not its other decisions. No new proposals in this handoff. Traversal
+supersede D6's accumulation rule, not its other decisions. Assassin item 1 and the current
+handoff status are at the entry point above. No new proposals in this handoff. Traversal
 items **1–5** are recorded and reviewed. Settlements/inn
 items **1–4** and family items **1–9** are recorded.
 Aggro items **1–14** are recorded; do not re-ask 13–14. Restart persistence remains a later topic.

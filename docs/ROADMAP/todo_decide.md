@@ -134,9 +134,9 @@ fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09
 
 **Current direction (2026-09-28):** owner answered **“1: Approved; Once item reconciled,
 handoff, commit, push”** for Assassin. Item 1 is recorded below: single rank-3 Camouflage on
-key 3, no separate fourth node or key-4 ability. Verification and the scoped item commit precede
-the final handoff; publish on `fix/ontology-reconciliation`, verify remote/local HEAD equality and
-a clean worktree, then stop. No gameplay, live JSON, tests, model/loader/validator changes, merge,
+key 3, no separate fourth node or key-4 ability. Scoped item commit **`b19662b`** passed checks
+and independent review below. Commit the final handoff; publish on `fix/ontology-reconciliation`,
+verify remote/local HEAD equality and a clean worktree, then stop. No gameplay, live JSON, tests, model/loader/validator changes, merge,
 history rewriting or next-topic proposals. Next topic, named only: **Wand handedness**.
 Artifacts 1–6, books/formulas 1–3, traversal 1–5, settlements/inn 1–4, family 1–9 and aggro 1–14
 remain recorded. Older publication instructions and hashes below are historical checkpoints.
@@ -604,6 +604,34 @@ Metadata clarification and validation coverage remain separately deferred in `to
 No gameplay, live JSON, tests, loader or validator edits are authorized.
 No presented Assassin question remains; the separate-fourth-node alternative was not selected.
 Next topic, named only for handoff: **Wand handedness**; no proposal has been presented for it.
+
+**Item 1 commit:** `b19662b` (`docs(ontology): reconcile Assassin Camouflage as one skill`).
+Only four Markdown paths changed: `domain.md`, `ontology/README.md` and the two roadmap ledgers.
+Parent inspected approval fidelity and scope, ran `/simplify` (cut three repeated ledger lines),
+then ponytail-review (no further cuts). Fresh independent review found no issues through source
+and saved-log inspection, not rerun commands. Parent confirmed the reviewed diff matches the
+actual worktree before committing; no gameplay, live data, tests or checker files changed.
+
+**Fresh item checks — all exit 0:** `git diff --check`;
+`timeout 150 nix develop -c godot --headless -s ontology/validate.gd` (`ontology valid`);
+`timeout 150 nix develop -c godot --headless -s game/progression/test_skill_tree.gd` (`skill tree ok`);
+`timeout 150 nix develop -c godot --headless --quit` (normal startup).
+Evidence: `/tmp/pixlnd-assassin-20260928/` (`approval-brief.md`, `item-1.diff`,
+`parent-item-1.diff`, `item-1-review.md`, `independent-review.md`, `item-1-*.log/.exit`,
+`item-1-commit.txt`). These checks cover loaded data, existing tree behavior (including no
+Assassin fourth node/key 4) and startup, not exhaustive Camouflage runtime or deferred threat
+implementation. No full gameplay suite, visual or network checks were run.
+
+**Final handoff checks:** parent inspected the two-file handoff diff, applied `/simplify`
+(trimmed repeated verification prose), then ponytail-review (no further cuts), and reran all
+three bounded checks above successfully (exit 0; `final-*.log/.exit`, `handoff-review.md`).
+The committed item diff matches its reviewed diff; only five Markdown paths differ from the
+starting HEAD. Final diff checks passed; gameplay/data/checker files remain unchanged.
+
+**Pre-publication checkpoint:** clean item HEAD `b19662b`, remote `0399f15` confirmed again before
+publication with `git ls-remote`. The separate final handoff follows the item commit. Push only the
+authorized branch without force or merge, verify remote/local HEAD equality and a clean worktree,
+then stop. This checkpoint is not a publication claim; inspect actual Git state on resumption.
 
 ### Artifacts — approvals and recording (2026-09-28)
 
