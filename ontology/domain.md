@@ -1148,10 +1148,23 @@ swimming → sailing. Class column: skill-1 (1 pt) → skill-2 (5 in skill-1) �
 point, cooldown floor 25 %, uncapped (D6). Respec at class trainer.
 Hybrid (D10): a 4th `ultimate` column per class holds the Steam R skill, unlocked by 5 points in
 the spec's rank-3 skill; the six alpha-removed rank-3 skills return in their class column.
+Assassin's single-skill exception is defined below.
 Spending (D20): one banked point per click on the X screen (`ui.json#screens.skills`, `keybinds.json#hybrid.skills-window`);
 a node opens when the previous node of its column holds `alpha-tree.needs` points (roots 0); class ranks 1–3 + ultimate
 fire on keys 1–4 (their runtimes: `design.abilities`, D21); per-point multipliers `design.skill-point`;
 respec at the class trainer refunds every point to the bank for a fee (`design.settlement.trainer`, D22).
+
+**Hybrid Assassin item 1 (owner approved, 2026-09-28):** Camouflage's alpha rank-3 skill and
+Steam ultimate are **the same ability**, not separately purchased copies. After **5 Sneak
+points**, spend at least **1 Camouflage point** to use it on **key 3**. Assassin has **no
+separate fourth node or key-4 ability**, even after five Camouflage points; `also-ultimate`
+denotes the shared source identity, not another unlock. There is one point investment, one
+cooldown and one buff, with no extra charge or duplicate purchase. Keep Camouflage's existing
+effect, duration, cooldown, per-point scaling and approved stealth/threat rules unchanged.
+This is an explicit Assassin exception to D10's separate ultimate node; other specializations
+and the remaining D10/D20 rules stand. The player has three distinct class skills rather than
+paying twice for the same skill. Current key-3/no-key-4 runtime already matches; live metadata
+clarification and validation coverage remain separately deferred, not authorized by this approval.
 
 Hybrid traversal item 1 (approved 2026-09-28): the riding chain also requires global Reins
 and a rideable tamed pet; training and further-point speed benefits follow `pet` / `c-riding`.
@@ -1410,8 +1423,8 @@ remain separately authorized work (`docs/ROADMAP/todo_decide.md §E`).
   or require its runtime implementation.
 - **Existing rules:** validate class/spec references in both directions, two specs per class
   with distinct indices 0/1 and index 0 first, shared skill-column roots and weapon upgrade
-  capacities according to their approved definitions. Do not settle wand handedness, the
-  Assassin ultimate or other open gameplay choices through a validator default.
+  capacities according to their approved definitions. Preserve the approved Assassin single-node
+  exception (§3.5); do not settle wand handedness or other open choices through a validator default.
 - **Provenance:** versioned content must resolve at least one source-version tag, explicitly
   or through an inheritance rule documented for that family and its source. Missing tags
   are not permission to assume A/S, infer provenance from a numeric ID, or enable content.
@@ -1493,7 +1506,7 @@ content selection or live data changes are authorized by this contract.
 | c-frame-budget | physics 60 Hz; a tick slower than its budget slows game time instead of stacking catch-up ticks: `Engine.max_physics_steps_per_frame` = `design.frame-budget.max-catch-up-steps` (D17) | engine |
 | c-xp-config | `design.progression`: kill-fraction ∈ (0,1]; gap-mult-range = [lo, hi] with 0 ≤ lo ≤ 1 ≤ hi; gap-per-level ≥ 0 (D19) | load |
 | c-level-up | level never decreases; after settling, xp < xp-to-next(level); each level gained adds exactly `skill-points-per-level` (D19) | runtime |
-| c-tree-shape | for every specialization the tree read from `abilities.json#alpha-tree` has exactly one class node per rank 1..3 and ≤ 1 ultimate; rank 1 and shared-column roots have `needs` 0, one root per shared column, every `unlocks-next` names a node of the same column (D20) | load |
+| c-tree-shape | for every specialization the tree read from `abilities.json#alpha-tree` has exactly one class node per rank 1..3 and ≤ 1 ultimate; Assassin has Camouflage only at rank 3 and no separate ultimate node (§3.5, exception enforcement deferred); rank 1 and shared-column roots have `needs` 0, one root per shared column, every `unlocks-next` names a node of the same column (D20) | load |
 | c-skill-spend | a point is spent only from the banked pool, one at a time, on a node whose prerequisite holds `needs` points; points never leave a node outside a trainer respec (D20) | runtime |
 | c-ability-runtime | every class-column and ultimate node of every spec tree has a `design.abilities` entry whose `runtime` is in `runtimes`; cost mp ≤ 100, stamina ≤ `design.movement.stamina.max` or `all`; cooldown-s > 0; dash distance > 0, strike / burst / channel radius > 0, buff / channel duration-s > 0, heal cast-s ≥ 0, projectile / dash `throw` shots as c-moveset-config (D24); `design.status-effects` keys are status-effect ids and an `as` names another key (D21) | load |
 | c-settlement-config | `design.settlement`: per-land = 1 (exact-count enforcement deferred), radius > blend ≥ 0, ring-radius < radius, every `buildings` entry is a `buildings.json#buildings` id, every service role is an `npc-roles.json` id, every landscape with a `gen` block has a `style-by-landscape` entry naming a `buildings.json#settlement-styles` id with two `style-colors`, `shop.rarity-cap` is a rarity ≤ legendary, `no-hostiles-within` ≥ radius (D22) | load |
@@ -1561,12 +1574,13 @@ in persistence. **Artifact items 1–6 — DECIDED 2026-09-28:** recorded in §3
 accumulation (initial z=0.1) replaces D6's decay/floor, preserving its rewards and other decisions.
 No presented artifact question remains; independent review and parent verification passed
 (`todo_decide.md §E`, with verification limits).
+**Assassin item 1 — DECIDED 2026-09-28:** Camouflage is one rank-3 skill on key 3, with no
+separate ultimate node or key-4 ability (§3.5). No presented Assassin question remains.
 Live-data migration and implementation remain deferred; cleared dungeon/quest enemy reset
 eligibility stays in world/reset below. Threat across server restart stays in the persistence topic below.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Assassin ultimate | Camouflage alias versus separately unlocked fourth node (D10/D20 stand) |
 | Wand handedness | two-handed mechanics versus one-handed; provisional data is not a resolution |
 | Persistence / authority | character portability, ownership of other discoveries/unlocks (book/formula knowledge is per character), authoritative state validation, threat across server restart (D5 dedicated server stands; same-running-world absence retention approved in §3.2) |
 | World bounds / resets | finite 1024²-region bound versus “infinite” wording; cleared dungeon/quest mobs at midnight |
@@ -1598,7 +1612,8 @@ must be decided before implementation, not inferred from a historical flag or lo
   for cloning fidelity (owner reaffirmed 2026-09-15). Gear never loses power while travelling.
 - **D5 Multiplayer — DECIDED 2026-09-07: dedicated server**, alpha style, IP/DNS join, seed in
   server config. **D7** cap configurable, default 4. **D8** skin colour is a creation option.
-  **D9** first-person zoom kept. **D10** 3 alpha columns + 1 `ultimate` column (see `skill-tree`).
+  **D9** first-person zoom kept. **D10** 3 alpha columns + 1 `ultimate` column (see `skill-tree`,
+  including the subsequently approved Assassin single-skill exception).
 - **D6 Numeric gaps — DECIDED 2026-09-07**, all tunables in `generators.json#design`: 5 %/point
   uncapped; crit ×2 with chance overflow; alpha item curve only; buy = base×level×rarity, sell 25 %;
   artifacts +5 % ×0.9 floor 1 % on one traversal stat and on attack/HP; no stack cap; enemy HP =

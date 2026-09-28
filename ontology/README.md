@@ -53,6 +53,11 @@ Traversal counts matching artifacts; attack and maximum HP count all. D6's decay
 superseded, not its rewards or other decisions; no levels or gate bypass. No presented artifact
 question remains. Independent review and parent verification passed (`todo_decide.md §E`).
 Live-data migration, model/loader/validator support and runtime implementation remain deferred.
+**Assassin item 1 recorded (2026-09-28):** Camouflage is one rank-3 skill on key 3, with no
+separate fourth node, key-4 ability, investment or charge (`domain.md#skill-tree`). This is the
+explicit Assassin exception to D10; other specializations and existing Camouflage behavior stand.
+No presented Assassin question remains. Live metadata clarification and validation coverage
+remain deferred; current key-3/no-key-4 runtime already matches. Next topic: Wand handedness.
 Gameplay and live JSON remain unchanged; restart persistence stays in its later topic.
 
 ## Decision and build history (from 2026-09-07)

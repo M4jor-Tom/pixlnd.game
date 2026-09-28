@@ -32,7 +32,8 @@ question before its affected slice; do not reopen settled choices. Designed numb
 - [x] **D9 First-person zoom** — kept. Recorded: `ui.json#camera`.
 - [x] **D10 Ability merge in hybrid** — 3 alpha class columns (removed skills back at rank 3) +
   1 `ultimate` column holding the steam R skill, unlocked by 5 points in the spec's rank-3 skill.
-  Recorded: `abilities.json` `alpha-tree` on every R skill, `domain.md §3 skill-tree`.
+  Recorded: `abilities.json` `alpha-tree` on R skills, `domain.md §3 skill-tree`; Assassin's
+  single-skill exception was approved on 2026-09-28 (§E).
 - [x] **D11 Hybrid gaps (2026-09-08)** — block gives MP (the bar specials spend); Regeneration =
   stamina only; artifacts 1–3 per land, seeded; `/pvp` dropped, PvP = `server.cfg` flag default off.
   Recorded: `generators.json#design` (`block-reward`, `regeneration`, `artifacts-per-land`, `pvp`).
@@ -131,14 +132,14 @@ The full walkthrough/resumption protocol is in `tasks/lessons.md`; the prompt
 Never propose or implement regional gear power loss in pixlnd, even for Cube World cloning
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
-**Current direction (2026-09-28):** artifact items **1–6 recorded** in six separately scoped
-ontology-only commits below; no presented artifact question remains. The owner requested
-“Once ontology adjusted, handoff, commit, push”. Independent review found no issues and parent
-verification passed. Commit the final handoff, push `fix/ontology-reconciliation`, verify publication
-and clean state, then stop. No gameplay, live JSON, tests, model/loader/validator changes, merge,
-history rewriting or next-topic proposals.
-Books/formulas 1–3, traversal 1–5, settlements/inn 1–4, family 1–9 and aggro 1–14 remain recorded.
-Older publication instructions and hashes below are historical checkpoints.
+**Current direction (2026-09-28):** owner answered **“1: Approved; Once item reconciled,
+handoff, commit, push”** for Assassin. Item 1 is recorded below: single rank-3 Camouflage on
+key 3, no separate fourth node or key-4 ability. Verification and the scoped item commit precede
+the final handoff; publish on `fix/ontology-reconciliation`, verify remote/local HEAD equality and
+a clean worktree, then stop. No gameplay, live JSON, tests, model/loader/validator changes, merge,
+history rewriting or next-topic proposals. Next topic, named only: **Wand handedness**.
+Artifacts 1–6, books/formulas 1–3, traversal 1–5, settlements/inn 1–4, family 1–9 and aggro 1–14
+remain recorded. Older publication instructions and hashes below are historical checkpoints.
 
 **Prior checkpoint (2026-09-19; references from the earlier rebase):** items 1–2 are applied,
 validated and committed in `0a562fc`. Items 3–8 are approved for ontology and their semantic
@@ -562,11 +563,9 @@ D1–D26, all walkthrough approvals and remaining open questions.
 ### Open — decide before the named slice
 
 Traversal items 1–5 are recorded (item 4 corrected) and reviewed; evidence below.
-Books/formulas items 1–3 and artifact items 1–6 are recorded below, not open questions.
-Next topic, named only for handoff: Assassin ultimate. Cross-world portability stays in persistence.
+Books/formulas items 1–3, artifact items 1–6 and Assassin item 1 are recorded below, not open questions.
+Next topic, named only for handoff: **Wand handedness**. Cross-world portability stays in persistence.
 
-- [ ] **Assassin ultimate:** is Camouflage's `also-ultimate` an alias of rank 3 or a separately
-  unlocked fourth node? Before changing its tree; sources: `abilities.json#camouflage`, D10/D20.
 - [ ] **Wand handedness:** mechanically two-handed despite a one-hand pose, or actually
   one-handed? Before wand equipment/crafting rules; sources: `weapon-types.json#wand`,
   `c-hands`, `generators.json#design.recipes`.
@@ -589,6 +588,22 @@ Next topic, named only for handoff: Assassin ultimate. Cross-world portability s
   identity, Lion tameability (`null` currently means untameable), resistance meaning and the
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
+
+### Assassin ultimate — item 1 recorded (2026-09-28)
+
+**Owner answer:** “1: Approved; Once item reconciled, handoff, commit, push”.
+
+1. [x] **One Camouflage, not two purchases:** `domain.md#skill-tree` / `c-tree-shape` records
+   the Assassin-specific D10 exception: one rank-3 skill on key 3, no separate fourth node/key-4
+   ability, investment or charge. Existing Camouflage behavior and other specializations stand.
+   The canonical rule retains the Sneak prerequisite and normal point spending.
+
+**Applied versus deferred:** ontology documentation only. The current key-3/no-key-4 runtime
+already matches; `abilities.json#camouflage.alpha-tree.also-ultimate` remains unchanged.
+Metadata clarification and validation coverage remain separately deferred in `todo_implement.md`.
+No gameplay, live JSON, tests, loader or validator edits are authorized.
+No presented Assassin question remains; the separate-fourth-node alternative was not selected.
+Next topic, named only for handoff: **Wand handedness**; no proposal has been presented for it.
 
 ### Artifacts — approvals and recording (2026-09-28)
 
@@ -658,8 +673,8 @@ visual or network checks were run. Gameplay, live JSON, tests and model/loader/v
 `8135a50` confirmed with `git ls-remote`. The final verification/handoff commit follows these six
 commits. Push the authorized branch without force or merge, verify remote/local HEAD equality and
 clean worktree, then stop. This is not a publication claim; inspect actual Git state on resumption.
-No presented artifact question remains. Next topic, named only: **Assassin ultimate (Camouflage
-alias versus separately unlocked fourth node)**. Implementation debt stays in `todo_implement.md`.
+No presented artifact question remains. The historical next topic was **Assassin ultimate**,
+now reconciled above. Implementation debt stays in `todo_implement.md`.
 
 ### Books/formulas — approvals and recording (2026-09-28)
 

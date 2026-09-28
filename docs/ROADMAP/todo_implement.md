@@ -165,6 +165,10 @@ degradation) are not backlog features.
   or compensation and leave known formula scrolls unconsumed. Runtime/UI/data work is unauthorized.
 
 ## Progression (§3.5, slice D19)
+- [ ] Assassin item 1 (`domain.md#skill-tree`, `c-tree-shape`): clarify live `also-ultimate`
+  metadata and add validation coverage for the approved single rank-3 Camouflage exception
+  when separately authorized. Current key-3/no-key-4 runtime already matches; no fourth-node,
+  alternate-key or duplicate-cast implementation is requested. JSON/tests/validator unchanged.
 - [ ] Artifact items 1–6 (`domain.md#artifact`, `c-artifact-stat`): implement the approved
   logarithmic total (initial z=0.1), equal additive shares and current artifact-free stat basis;
   matching-only traversal counts versus all-artifact attack/maximum-HP counts. No artifact levels,
