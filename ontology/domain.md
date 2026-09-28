@@ -328,6 +328,15 @@ without a clock/skip. The hybrid `inn-cost: 10` flag does not distinguish the tw
 The S sleep-specific refreshes in `economy.json#rules` / `npc-roles.json#innkeeper` are reference,
 not hybrid policy. Live-data migration and runtime implementation remain deferred and unauthorized.
 
+**Hybrid persistence item 8 (owner approved, 2026-09-28):** a **shut-down world accumulates
+no gameplay time**. Its clock and timed resets resume from saved time, without offline combat
+or overnight reset catch-up. A dedicated server that remains running continues normally even
+with nobody connected. This preserves D16's frozen distant movement/attacks and the approved
+elapsed-gameplay-time threat/taunt timers (`ai-behavior`); it does not require simulating every
+creature in an empty world. Approved inn sleep remains its distinct clock-skip rule above.
+No character-absent cooldown/status policy, serialization/checkpoint cadence or crash-recovery
+policy is chosen. Clock/save implementation remains deferred and unauthorized.
+
 ### 3.2 Entities
 
 ### entity
@@ -1563,7 +1572,7 @@ content selection or live data changes are authorized by this contract.
 | c-combo-reset | any attack with a hitbox that misses resets combo to 0, subject to the hybrid whole-channel and combo-neutral zero-damage-taunt rules in §3.3 combo-system; cap per weapon-type | runtime |
 | c-dodge-cost | dodge costs 25 stamina; requires movement; standing still M3 = class skill (S); hybrid numbers `design.defence.dodge` (D23) | runtime |
 | c-no-death-penalty | death never removes gold/items/xp; respawn at statue (A) / activated shrine (S) | runtime |
-| c-time-speed | clock 10× real; reference sleep 100× clock-only; hybrid inn sleep skips to the next 07:00 without fast-forwarding combat/status effects/cooldowns (§3.1) | runtime |
+| c-time-speed | clock 10× real while the world runs; hybrid shutdown adds no gameplay time or reset catch-up (persistence item 8, §3.1); reference sleep 100× clock-only; hybrid inn sleep skips to the next 07:00 without fast-forwarding combat/status effects/cooldowns (§3.1) | runtime (clock/save enforcement deferred) |
 | c-midnight-reset | at 0:00 respawn eligible mobs, regen missions, deposits, plants; restock shops; hybrid sleep applies ordinary midnight resets once only if crossing midnight, never extra shop refreshes/mission rerolls merely for sleeping; cleared dungeon/quest enemy eligibility remains unresolved (§3.1) | runtime |
 | c-inn-hours | hybrid: separate 10-copper sleep service only 18:00–06:00 → next 07:00; all connected players explicitly agree, initiator pays the single fee only on success; refusal blocks skip without charge; healing and setting respawn stay free at any time without agreement (§3.1) | runtime |
 | c-land-count | hybrid: exactly 1 settlement per land (approved 2026-09-27); S per land: gnomes = 4, books = 4, movement items ≤ 4, ticket items ≤ 3, key items ≤ 9, towers ≤ 5, settlements ≥ 1; A per land: settlements = 1, missions = 64 cells | generator |
@@ -1660,7 +1669,7 @@ Live-data migration and implementation remain deferred; cleared dungeon/quest en
 eligibility stays in world/reset below. Persistence approvals and recording status follow.
 
 <!-- persistence-index -->
-**Persistence / authority — DECIDED 2026-09-28:** all nine recommendations approved; items 1–7 recorded. Items 8–9 are approved, awaiting recording.
+**Persistence / authority — DECIDED 2026-09-28:** all nine recommendations approved; items 1–8 recorded. Item 9 is approved, awaiting recording.
 Canonical rules: §3.1/§3.2/§3.7. Implementation is deferred; independent review and parent
 verification are pending (`todo_decide.md §E`). Next topic, named only: **World bounds / resets**.
 <!-- /persistence-index -->

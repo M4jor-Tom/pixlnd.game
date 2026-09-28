@@ -132,6 +132,7 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 - [ ] Item 5 — personal artifact/one-time-book source claims per saved world (`c-permanent-source-claim`), preserving duplicate recipes and ordinary loot.
 - [ ] Item 6 — server validation of action requests and authoritative gameplay outcomes (`multiplayer-mode`), not Alpha client trust.
 - [ ] Item 7 — rule-valid trusted-co-op imports; explain rejection without modifying the original save (`multiplayer-mode`); no provenance guarantee.
+- [ ] Item 8 — save/resume world time without downtime advance or catch-up; running empty servers keep approved timers, not full distant AI (`game-clock`).
 <!-- /persistence-debt -->
 
 ## Meta / tooling
