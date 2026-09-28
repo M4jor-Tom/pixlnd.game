@@ -315,7 +315,7 @@ Time, resets and sleep. `A S`
 |---|---|
 | speed | 10× real time (1 game min ≈ 6 s; day = 2 h 24 min real) |
 | sleep-speed | A/S reference: 100× (clock only, world does not simulate faster); hybrid inn skip below |
-| midnight-reset | 0:00: respawn eligible monsters, regenerate daily missions, respawn deposits and wilderness plants, restock shops, re-close divine doors; hybrid cleared-enemy eligibility follows world/reset item 3 below (historical S exclusion uncertain) |
+| midnight-reset | 0:00: respawn eligible monsters, regenerate daily missions, respawn deposits and wilderness plants, restock shops, re-close divine doors; hybrid cleared-enemy eligibility and occupied-site timing follow world/reset items 3–4 below (historical S exclusion uncertain) |
 | inn-reset | A/S reference: innkeeper 18:00–06:00 → set 07:00; A free; S 10 coins, also re-rolls daily missions; hybrid services below |
 | night | very dark; lanterns; stealth builds faster in darkness |
 | weather | none in A/S; Ω: rain, snow, moving clouds, freezing water |
@@ -329,6 +329,15 @@ Tomorrow may offer another daily boss fight, but never recreate a completed supp
 encounter. Daily-enemy eligibility does not change other mechanics' resets or reward rules.
 Live-data/checker migration and reset/save implementation remain deferred and unauthorized.
 
+**Hybrid world/reset item 4 (owner approved, 2026-09-28):** an **occupied dungeon/quest
+site waits until all players leave** before applying its pending daily refresh, using item 3's
+eligibility. **Multiple missed midnights produce one refresh**, never stacked waves. The clock
+change itself **never heals or replaces living enemies or erases an ongoing fight**; a run
+spanning midnight can finish without defeated guards respawning behind the party. Ordinary
+threat decay, targeting and home-return rules remain unchanged (`ai-behavior`): genuine mob
+death/respawn starts fresh, not a clock-triggered wipe of surviving mobs. No site radius,
+occupancy grace period or storage format is chosen. Occupancy/reset enforcement is deferred.
+
 **Hybrid settlements/inn item 2 (owner approved, 2026-09-27):** inn recovery fully heals and
 sets the respawn point **for free at any time**. A separate sleep service costs **10 copper**,
 is available **18:00–06:00**, and skips the clock to the **next 07:00**: 22:00 reaches tomorrow
@@ -338,7 +347,8 @@ effects or cooldowns. The sleep hours and fee do not restrict free recovery.
 **Hybrid settlements/inn item 3 (owner approved, 2026-09-27; depends on item 2):** apply
 ordinary midnight resets **once when the skip crosses midnight**. Sleeping at 23:00 crosses
 midnight; sleeping at 02:00 does not. Sleeping itself grants **no extra shop refresh or mission
-reroll**. Cleared dungeon/quest enemy eligibility follows world/reset item 3 above.
+reroll**. Cleared dungeon/quest enemy eligibility and occupied-site timing follow world/reset
+items 3–4 above.
 
 **Hybrid settlements/inn item 4 (owner approved, 2026-09-27; depends on item 2):** **all
 connected players must explicitly agree** before the shared clock skips. The initiating player
@@ -1603,7 +1613,7 @@ content selection or live data changes are authorized by this contract.
 | c-slot-accepts | an item equips only in a usable equipment-slot whose `accepts` lists its item-type and whose subtype restrictions it satisfies (§3.4 equipment-slot); weapon-type `offhand` hands → off-hand only; c-weapon-class and c-hands still apply | runtime |
 | c-mp-range | mp ∈ [0, 100]; mage regenerates passively, others gain by hits/blocks/stealth/dodges; numbers `design.resources.mp` (D21) | runtime |
 | c-stun-immunity | cannot re-stun while stars shown | runtime |
-| c-threat-pair | at most one `threat` relation per ordered logical mob/player entity pair; each present relation has exactly one non-negative numeric `aggro-points` amount in aggro points, independent of other pairs; changing `current-target` does not clear it; decay/gains (including the full-stealth damage exception), the zero floor, player-death and arrival clearing, and escape/temporary-absence retention follow §3.2; actual mob death/respawn starts fresh; decay reflects elapsed gameplay time even outside simulation radius; surviving-mob restart retains threat/order/neutral provocation under persistence item 9 (§3.2), with no downtime decay (§3.1) | runtime+save-data (deferred) |
+| c-threat-pair | at most one `threat` relation per ordered logical mob/player entity pair; each present relation has exactly one non-negative numeric `aggro-points` amount in aggro points, independent of other pairs; changing `current-target` does not clear it; decay/gains (including the full-stealth damage exception), the zero floor, player-death and arrival clearing, and escape/temporary-absence retention follow §3.2; actual mob death/respawn starts fresh, but midnight itself grants no survivor wipe (§3.1 world/reset item 4); decay reflects elapsed gameplay time even outside simulation radius; surviving-mob restart retains threat/order/neutral provocation under persistence item 9 (§3.2), with no downtime decay (§3.1) | runtime+save-data (deferred) |
 | c-current-target | at most one present, living player target per mob; ordinary targeting compares that mob's eligible players by highest `aggro-points`, retains a tied current target, otherwise breaks positive-threat ties by earliest engagement; without a positive-threat priority or valid current target, choose the nearest normally detected zero-threat player without granting aggro/order (§3.2); player-death, zero-threat and arrival order resets, escape retention and fresh assignment follow §3.2; at zero, ordinary pursuit requires normal detection and hostility/provocation eligibility; equally nearest fallback ties are chosen randomly once with equal chances, then normal retention applies; Heroic Shout temporarily overrides ordinary targeting without threat/order gain; eligibility, duration, replacement, per-enemy simultaneous arbitration and termination follow §3.2; taunt expiry reflects elapsed gameplay time even outside simulation radius; taunt alone adds no neutral provocation or lasting ordinary caster eligibility (§3.2) | runtime |
 | c-pack-response | only the generated pack responds, under the hostile-detection / aggressor-specific neutral-provocation rules in §3.2; friendly/passive creatures are excluded and protected return cannot be interrupted; share current sightings only, never threat/order, and select targets independently; each neutral clears its own provocation on arrival (§3.2) | runtime |
 | c-return-home | pursuit beyond the home leash starts return regardless of threat; within it, target loss checks eligible positive-threat players then normal detection of eligible players (§3.2); attacks do not restart pursuit during return; ×2 normal return speed and 90% damage reduction (including DOT) until reaching home alive, then full HP and clear this mob's aggro/order toward every player and its neutral provocation once, ending both bonuses; no revival, cleansing or CC immunity; gains/decay continue until arrival and other mobs' records are unchanged; starting return cancels taunt, and new taunts neither interrupt nor queue for afterward | runtime |
@@ -1611,7 +1621,7 @@ content selection or live data changes are authorized by this contract.
 | c-dodge-cost | dodge costs 25 stamina; requires movement; standing still M3 = class skill (S); hybrid numbers `design.defence.dodge` (D23) | runtime |
 | c-no-death-penalty | death never removes gold/items/xp; respawn at statue (A) / activated shrine (S) | runtime |
 | c-time-speed | clock 10× real while the world runs; hybrid shutdown adds no gameplay time or reset catch-up (persistence item 8, §3.1); reference sleep 100× clock-only; hybrid inn sleep skips to the next 07:00 without fast-forwarding combat/status effects/cooldowns (§3.1) | runtime (clock/save enforcement deferred) |
-| c-midnight-reset | at 0:00 respawn eligible mobs, regen daily missions, deposits, plants; restock shops; hybrid defeated ordinary-dungeon/repeatable-daily enemies including bosses return, completed one-time-objective guards/boss stay cleared, and artifact/book claims never renew; preserve world improvements' existing reset rules; sleep applies ordinary midnight resets once only if crossing midnight, never extra shop refreshes/mission rerolls merely for sleeping (§3.1) | runtime+save-data (deferred) |
+| c-midnight-reset | at 0:00 respawn eligible mobs, regen daily missions, deposits, plants; restock shops; hybrid defeated ordinary-dungeon/repeatable-daily enemies including bosses return, completed one-time-objective guards/boss stay cleared, and artifact/book claims never renew; preserve world improvements' existing reset rules; occupied dungeon/quest sites wait until all players leave, coalescing missed midnights into one pending refresh; the clock itself never heals/replaces living enemies or erases a fight, preserving ordinary threat/home-return rules (§3.1 world/reset items 3–4); sleep applies ordinary midnight resets once only if crossing midnight, never extra shop refreshes/mission rerolls merely for sleeping (§3.1) | runtime+save-data (deferred) |
 | c-inn-hours | hybrid: separate 10-copper sleep service only 18:00–06:00 → next 07:00; all connected players explicitly agree, initiator pays the single fee only on success; refusal blocks skip without charge; healing and setting respawn stay free at any time without agreement (§3.1) | runtime |
 | c-land-count | hybrid: exactly 1 settlement per land (approved 2026-09-27); S per land: gnomes = 4, books = 4, movement items ≤ 4, ticket items ≤ 3, key items ≤ 9, towers ≤ 5, settlements ≥ 1; A per land: settlements = 1, missions = 64 cells | generator |
 | c-key-item-need | a key item spawns only if its lock type exists in the land | generator |
@@ -1657,7 +1667,7 @@ reproducible; each generator lists invariants that a test can assert.
 | gen-coarse-map `Ω` | land seed | coarse map placing streets, buildings, rivers, bridges, trees, caves logically before voxel detail | every structure reachable by road |
 | gen-flora | landscape, zone | trees (procedural, unique), bushes, scrubs, cacti, flowers, mushrooms, fields | per-landscape rosters |
 | gen-settlement | land | 1 (hybrid / A) / n (S) settlements: districts, procedural buildings (rooms, sizes, roofs), styles, NPC population + schedules, shops, inn, trainers, flight master (S) | ≥1 inn (A several, S exactly 1); shops per district; hybrid numbers `design.settlement` (D22) |
-| gen-dungeon | land, dungeon-type, tier | layout (A linear + dead end; S room gauntlet), traps `A`, chests, spawns in groups 2–4, boss(es), artifact `S`, locks needing key items | entrance rules per type; at least one boss; artifact at end (S castles always); hybrid enemy refresh eligibility and permanent claims follow c-midnight-reset |
+| gen-dungeon | land, dungeon-type, tier | layout (A linear + dead end; S room gauntlet), traps `A`, chests, spawns in groups 2–4, boss(es), artifact `S`, locks needing key items | entrance rules per type; at least one boss; artifact at end (S castles always); hybrid enemy refresh eligibility/timing and permanent claims follow c-midnight-reset |
 | gen-poi | land | campsites, arenas, towers ≤5, circles, portals, pumps, trees, shrines, lore sites, spawner nests, hidden treasure, sky islands | counts in `c-land-count` |
 | gen-missions | land, day | A: 8×8 cell boss missions; S: typed missions with icons and tiers, daily regeneration | tier ladder white→yellow present; S: gnomes/books once per land; hybrid refresh and source claims follow c-midnight-reset / §3.7 save-data |
 | gen-spawns | zone, land level/tier | creature spawns: species by landscape roster, group sizes, hostility, humanoid class/spec, `+1..+4` multipliers (A), boss-ification chance; open-world numbers `design.spawns` (D14); role per group: creature combat-role, any-class rolled from `design.creature-roles.any-class` (D26) | dungeon mobs above surface tier; farm animals white |
@@ -1711,14 +1721,13 @@ dungeon/quest enemy eligibility (§3.1). Persistence approvals and recording sta
 are recorded. No presented Persistence / authority question remains.
 Canonical rules: §3.1/§3.2/§3.7. Implementation is deferred; independent review and parent
 verification passed (`todo_decide.md §E`, including evidence limits).
-**World bounds / resets items 1–4 — DECIDED 2026-09-28:** all four approved; items 1–3 are
-recorded in §3.1/§3.7/§5/§6. Item 4 awaits its separate recording commit, not an owner answer.
-Independent review and parent verification are pending (`todo_decide.md §E`); implementation
-remains deferred.
+**World bounds / resets items 1–4 — DECIDED 2026-09-28:** all four recorded in
+§3.1/§3.7/§5/§6. No presented world/reset question remains. Independent review and parent
+verification are pending (`todo_decide.md §E`); implementation remains deferred.
+Next topic, named only: **Validation-contract mapping** (item 9 policy already approved).
 
 | topic | still undecided / incomplete |
 |---|---|
-| World bounds / resets | all four items approved; item 4 awaits recording, not further design approval |
 | Validation-contract mapping | exact required paths, permitted provenance inheritance and remaining constraint boundaries; item 9 policy is approved, enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 

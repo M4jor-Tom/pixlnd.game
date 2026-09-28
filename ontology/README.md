@@ -31,12 +31,13 @@ passed; item mapping, evidence and limits: `docs/ROADMAP/todo_decide.md §E`.
 Ontology documentation only; gameplay, live JSON, tests and checker implementation remain
 unauthorized.
 
-**World bounds / resets items 1–4 approved (2026-09-28):** items 1–3 are recorded in
-`domain.md#world` / `#game-clock` / §5–6: finite 1024×1024 lands with a map-marked outer
-boundary; daily enemy refresh without recreating completed one-time objectives or renewing
-artifact/book claims. Item 4 awaits its separate recording commit, not an owner answer. Independent review
-and parent verification are pending; runtime, live-data and checker changes remain unauthorized.
-Item mapping/evidence and publication direction: §E / `docs/HANDOFF.md`.
+**World bounds / resets items 1–4 recorded (2026-09-28):** `domain.md#world` / `#game-clock`
+/ §5–6: finite 1024×1024 lands with a map-marked outer boundary; eligible daily enemies return
+without renewing permanent claims or completed one-time objectives; occupied sites wait for
+all players to leave, with one pending refresh and no clock-triggered survivor/fight reset.
+No presented world/reset question remains. Independent review and parent verification are pending;
+runtime, live-data and checker changes remain unauthorized. Mapping/evidence and publication
+direction: §E / `docs/HANDOFF.md`. Next topic, named only: **Validation-contract mapping**.
 
 **Aggro batch applied: 1–14/14.** The original twelve and follow-ups 13–14 were approved and
 recorded on 2026-09-27; their former open boundaries are settled.

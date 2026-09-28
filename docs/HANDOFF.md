@@ -3,11 +3,14 @@
 ## Ontology walkthrough entry point (2026-09-28)
 
 **Owner answers:** “1: Approved; 2: Approved; 3: Approved; 4: Approved”. Follow-up:
-**“When done, handoff, commit, push”**. World bounds / resets items **1–3 are recorded**;
-item **4 is approved and awaits its separate recording commit**, not a further owner answer.
+**“When done, handoff, commit, push”**. World bounds / resets items **1–4 are recorded**.
+No presented world/reset question remains. Next topic, named only: **Validation-contract mapping**
+(existing item 9 policy approved; remaining path/provenance/check-boundary mappings).
 Canonical rules: `ontology/domain.md`; mapping/evidence: `docs/ROADMAP/todo_decide.md §E`,
 `/tmp/pixlnd-world-reset-reconcile.xc2Nuh/`. Independent review and parent verification are pending.
 Ontology documentation only; runtime, live JSON, tests and checker changes remain unauthorized.
+Per-item diff checks/loaded-data validation and final startup smoke evidence are in §E; none
+proves the new runtime rules. The parent must fill item 4’s final hash and actual review verdict.
 
 **Publication boundary:** the writer records four item commits only; the parent performs fresh
 read-only review/audit, finalizes the handoff/verification commit, then publishes only

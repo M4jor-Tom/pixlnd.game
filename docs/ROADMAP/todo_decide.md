@@ -138,13 +138,14 @@ passed; evidence and limits below. Ontology documentation only; gameplay, live J
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
 **Current world/reset direction (2026-09-28):** owner answered **“1: Approved; 2: Approved;
-3: Approved; 4: Approved”**, then **“When done, handoff, commit, push”**. Items 1–3 are recorded;
-item 4 awaits its separate recording commit, not an owner answer. Item 2 depends on approved item 1.
+3: Approved; 4: Approved”**, then **“When done, handoff, commit, push”**. Items 1–4 are recorded.
+No presented world/reset question remains; item 2’s dependency on item 1 is satisfied.
 Only the five existing Markdown paths may change; runtime, live JSON, tests and checker work
 remain unauthorized. Independent review and parent verification are pending. The writer makes
 four item commits; the parent finalizes verification/handoff and publishes only
 `fix/ontology-reconciliation`, checks remote/upstream/local equality and clean status, then stops.
-No merge, force-push, history rewrite or next-topic proposals.
+No merge, force-push, history rewrite or next-topic proposals. Next topic, named only:
+**Validation-contract mapping** (existing item 9 policy already approved).
 
 **Historical unanswered handoff (superseded):** the former “I'll handle this with the next
 agent” direction preserved items 1–4 without answers. Its clean `7a79913` / remote `2ed538d`
@@ -634,10 +635,8 @@ D1–D26, all walkthrough approvals and remaining open questions.
 Traversal items 1–5 are recorded (item 4 corrected) and reviewed; evidence below.
 Books/formulas items 1–3, artifact items 1–6, Assassin item 1 and Wand item 1 are recorded below,
 not open questions. Persistence items 1–9 are recorded and reviewed above.
-Current topic: **World bounds / resets**; all four items are approved; recording status below.
-
-- [ ] **World bounds / resets recording:** items 1–3 recorded; approved item 4 awaits its separate
-  commit. No further owner answer is needed for the presented batch; implementation is deferred.
+World bounds / resets items 1–4 are recorded below; no presented question remains.
+Next topic, named only: **Validation-contract mapping**.
 - [ ] **Validation-contract mapping (policy approved in item 9):** document exact required
   table/config paths, permitted per-family provenance inheritance and remaining constraint
   boundaries from `domain.md §2/§5` before filling validator gaps. Ask the owner only where
@@ -652,21 +651,28 @@ Current topic: **World bounds / resets**; all four items are approved; recording
 ### World bounds / resets — approved batch (2026-09-28)
 
 **Status:** all four proposals approved without amendment or refusal. Item 2 depends on item 1.
-Canonical semantics are recorded in `domain.md`; application is tracked independently below.
+Canonical semantics are recorded in `domain.md`; all four items are applied as documentation only.
 
 | item | application | canonical section | commit |
 |---|---|---|---|
 | 1 — Finite world | [x] recorded | `world`, `c-world-bounds`, `gen-world` | a1269106043f226550009a96b6f7a5f6b615c92b |
 | 2 — Outer boundary | [x] recorded | `world`, `c-world-bounds` | 32a8c4948ba28d3bea1fa8a5ec39bf47d2b79ae3 |
-| 3 — Cleared-enemy eligibility | [x] recorded | `game-clock`, `c-midnight-reset`, `gen-dungeon`, `gen-missions` | awaiting commit hash |
-| 4 — Occupied-site refresh | [ ] approved, awaiting recording | `game-clock` | pending |
+| 3 — Cleared-enemy eligibility | [x] recorded | `game-clock`, `c-midnight-reset`, `gen-dungeon`, `gen-missions` | 3f92a32ca1f527cfb48d78abe366e5d67cff1ea1 |
+| 4 — Occupied-site refresh | [x] recorded | `game-clock`, `c-midnight-reset`, `c-threat-pair` | awaiting parent fill after item commit |
 
 **Evidence:** `/tmp/pixlnd-world-reset-reconcile.xc2Nuh/` holds the approval brief, exact
-`item-N.diff` pre-commit diffs, per-item review/check logs/exits and commit mapping.
-Each item requires semantic/scope inspection, `/simplify`, ponytail-review, `git diff --check`
-and `timeout 150 nix develop -c godot --headless -s ontology/validate.gd` before commit.
-The final bounded boot is a startup smoke check only; checks do not prove Markdown semantics
-or new runtime enforcement. Fresh independent review and parent audit/handoff remain pending.
+`item-N.diff` pre-commit diffs, `item-N-review.md`, `item-N-{diff-check,validator,commit}.{log,exit}`,
+`commit-map.md`, final `batch.diff` and `final-git.log`. Each item receives semantic/scope
+inspection, `/simplify`, ponytail-review, `git diff --check` and bounded ontology validation
+before commit. Commands:
+```
+timeout 150 nix develop -c godot --headless -s ontology/validate.gd
+timeout 150 nix develop -c godot --headless --quit
+```
+Final startup smoke evidence: `final-boot.{log,exit}`. These check existing loaded data/startup,
+not Markdown semantics or new boundary/reset enforcement. No gameplay suite, visual or network
+checks are claimed. Fresh independent review and parent audit/handoff remain pending, including
+item 4’s actual hash and final pre-publication Git checkpoint; the writer does not push.
 
 **Historical presentation (now approved):** the exact proposals and their pre-answer “Settled”
 context below are retained for provenance, not as current unanswered questions.
@@ -720,7 +726,7 @@ Example: a dungeon run spanning midnight can finish without its defeated guards 
 `ontology/instances/mission-types.json`, `ontology/instances/dungeon-types.json`; historical references
 in `ontology/research/research_world.md` and `ontology/research/research_systems.md §6`.
 Current consumers: `game/world/world_gen.gd#land_at` and `game/world/world.gd` stream terrain
-without the proposed boundary; the world-clock/dungeon/mission/reset systems are unimplemented.
+without the approved boundary; the world-clock/dungeon/mission/reset systems are unimplemented.
 That is deferred implementation, not evidence for or against the proposals.
 
 ### Wand handedness — item 1 recorded (2026-09-28)
