@@ -132,11 +132,11 @@ The full walkthrough/resumption protocol is in `tasks/lessons.md`; the prompt
 Never propose or implement regional gear power loss in pixlnd, even for Cube World cloning
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
 
-<!-- persistence-ledger -->
-**Persistence / authority — items 1–8 recorded (2026-09-28).** All nine owner recommendations are approved. Item 9 is approved, awaiting recording.
+**Persistence / authority — all nine documentation decisions recorded (2026-09-28).**
+All nine owner recommendations are approved; no presented Persistence / authority question remains.
 Ontology documentation only; implementation, live JSON, tests and checker changes remain unauthorized.
 Independent review and parent verification are **PENDING**. No push, merge or history rewrite
-is authorized. Next topic after recording, named only: **World bounds / resets**.
+is authorized. Next topic, named only: **World bounds / resets**.
 
 **Owner answer:** “1: Approved; 2: Approved; 3: Approved; 4: Approved; 5: Approved;
 6: Approved; 7: Approved; 8: Approved; 9: Approved (I thought that I already approved 9
@@ -152,8 +152,8 @@ not its already-approved running-world retention. Canonical semantics: `domain.m
 | 5 — Personal permanent-source claims | [x] recorded | `save-data` | da2b35795866a8d82acda786f030136759a1fa90 |
 | 6 — Server-authoritative outcomes | [x] recorded | `multiplayer-mode` | a312dc5b866dc515a08d0a61949757a02d718b2b |
 | 7 — Trusted-co-op imports | [x] recorded | `multiplayer-mode` | 1817dfd228ca6106d608a5adfaee3b26bbaf530e |
-| 8 — Stopped shutdown clock | [x] recorded | `game-clock` | this item commit; final hash in evidence |
-| 9 — Restart threat retention | [ ] approved | `ai-behavior` | approved; awaiting recording |
+| 8 — Stopped shutdown clock | [x] recorded | `game-clock` | 467500c376f2d77ee1cdcc57230f852f26a04c92 |
+| 9 — Restart threat retention | [x] recorded | `ai-behavior` | this item commit; final hash in evidence |
 
 **Writer evidence:** `/tmp/pixlnd-persistence-reconcile.XsnIBI/approval-brief.md` preserves the
 approved recommendations and boundaries; `item-N.diff`, `item-N-review.md`,
@@ -162,8 +162,9 @@ Each recorded item receives semantic/scope inspection, `/simplify`, then ponytai
 `git diff --check` and `timeout 150 nix develop -c godot --headless -s ontology/validate.gd`
 before committing. Read the logs for results; checks cover existing loaded data, not Markdown
 semantics or runtime policy. Final aggregate diff and mapping: `batch.diff`, `commit-map.md`.
-No gameplay suite, visual or network checks are claimed; final unchanged-data boot follows item 9.
-<!-- /persistence-ledger -->
+No gameplay suite, visual or network checks are claimed. Final unchanged-data startup check after
+item 9: `timeout 150 nix develop -c godot --headless --quit`; results in `final-boot.{log,exit}`.
+Parent will finalize verification and item 9's hash after independent review; no acceptance is preclaimed.
 
 **Historical Wand direction (2026-09-28, superseded):** owner answered **“1: Approved; When done, handoff, commit,
 push”** for Wand handedness. Documentation-only item 1 is recorded in **`1f5eabc`** and passed
@@ -583,7 +584,8 @@ D1–D26, all walkthrough approvals and remaining open questions.
 - [x] **Aggro 11 — same-world absence retention (approved/applied 2026-09-27, documentation only).**
   Temporary disconnect/unload grants no extra wipe: logical pair scores/order follow normal
   decay and approved resets. Absent players cannot be targeted; reconnect can restore eligibility.
-  Actual mob death/respawn starts fresh. Restart persistence is still open (`domain.md §3.2/§4/§5`).
+  Actual mob death/respawn starts fresh. Persistence item 9 now closes the restart case
+  (`domain.md §3.2/§4/§5`), without reopening this running-world rule.
 
 - [x] **Aggro 12 — elapsed threat and taunt timers (approved/applied 2026-09-27, documentation only).**
   Threat decay and taunt expiry reflect elapsed gameplay time while distant mobs are frozen.
@@ -604,7 +606,7 @@ D1–D26, all walkthrough approvals and remaining open questions.
 Traversal items 1–5 are recorded (item 4 corrected) and reviewed; evidence below.
 Books/formulas items 1–3, artifact items 1–6, Assassin item 1 and Wand item 1 are recorded below,
 not open questions. Persistence recommendations 1–9 are approved (recording status above),
-not unanswered. Next topic after recording, named only: **World bounds / resets**.
+not unanswered. All nine documentation decisions are now recorded. Next topic: **World bounds / resets**.
 
 - [ ] **World bounds / resets:** does hybrid retain the finite 1024²-region bound despite
   “infinite” wording, and do cleared dungeon/quest mobs reset at midnight? Before boundary/clock

@@ -2,14 +2,13 @@
 
 ## Ontology walkthrough entry point (2026-09-28)
 
-<!-- persistence-status -->
-**Persistence / authority — items 1–8 recorded (2026-09-28).** All nine owner recommendations are approved. Item 9 is approved, awaiting recording.
+**Persistence / authority — all nine documentation decisions recorded (2026-09-28).**
+All nine owner recommendations are approved; no presented Persistence / authority question remains.
 Ontology documentation only; implementation, live JSON, tests and checker changes remain unauthorized.
 Independent review and parent verification are **PENDING**. No push, merge or history rewrite
-is authorized. Next topic after recording, named only: **World bounds / resets**.
+is authorized. Next topic, named only: **World bounds / resets**.
 Evidence and item mapping: `docs/ROADMAP/todo_decide.md §E`,
 `/tmp/pixlnd-persistence-reconcile.XsnIBI/`.
-<!-- /persistence-status -->
 
 **Historical Wand handoff (superseded):** the following verification/publication checkpoint
 predates the current persistence batch and grants no new push permission.

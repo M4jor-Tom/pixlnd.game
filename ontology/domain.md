@@ -709,8 +709,18 @@ Hybrid aggro rules (owner approved 2026-09-18/19 and 2026-09-27, documentation o
   Preserve the logical mob/player pair's remaining state under normal decay and approved resets;
   an absent player cannot be targeted. Reconnecting before threat expires can restore eligibility
   under normal targeting rules, not guaranteed priority. A mob that actually dies and respawns
-  starts with fresh threat/order. Persistence across a server restart remains a later topic;
-  this does not choose a storage strategy.
+  starts with fresh threat/order. Restart retention follows persistence item 9 below;
+  neither decision chooses a storage strategy.
+- **Restart persistence (hybrid persistence item 9, owner approved 2026-09-28):** save each
+  **surviving logical mob's remaining threat, engagement order and neutral provocation** across
+  a server restart. Restarting alone grants no wipe; shutdown downtime causes no decay under
+  `game-clock` persistence item 8. Resume normal targeting and return-home rules: absent players
+  cannot be targeted, and caster disappearance still terminates taunts. Each mob/player pair
+  remains independent; normal gains/decay and the approved zero, player-death and home-arrival
+  resets still apply. Actual mob death/respawn starts fresh, not from the saved survivor record.
+  For example, saved threat of 10 resumes at 10, then ordinary decay or completed return can
+  clear it. This promises no full combat snapshot, resurrected target node, guaranteed target
+  priority, resumed expired/terminated taunt or unrelated HP/status/cooldown persistence.
 - **Return-home trigger (owner approved 2026-09-19):** during pursuit, crossing the existing
   home leash (`design.spawns.ai.leash`, 30 blocks measured from the mob's home) starts return
   regardless of remaining aggro or taunt. Within the leash, if its target dies, disappears, or
@@ -1381,6 +1391,9 @@ sources; item 1's portable heroes can therefore earn additional artifacts by wor
 Existing recipe-duplicate rules still apply (`recipe`): no compensation, rerolls or account-wide
 knowledge. Ordinary ground loot is unchanged; this is not a blanket all-reward instancing rule.
 
+World time across shutdown follows `game-clock` item 8; surviving logical mobs
+retain threat/order/neutral provocation across restart under `ai-behavior` item 9.
+
 Documentation only: save-data and networking are unimplemented; these policies do not authorize
 runtime, live-data, model/loader/validator or test changes.
 
@@ -1429,7 +1442,7 @@ One row per fact type. Cardinality as `domain → range`.
 | drops | creature | item ∪ spirit-cube ∪ leftovers ∪ currency | n→n | random by tier + species list |
 | holds | inventory | item | 1→n | count per entry; c-stack-rule |
 | equips | entity | item | 1→0..12 | at most one per usable equipment-slot; reserved index 0 and separate Q selection excluded; c-slot-accepts |
-| threat | entity (mob) | entity (player-character) | n→n | hybrid mob/player combat state, retained across temporary absence (§3.2); optional per ordered pair, with one numeric `aggro-points` amount; c-threat-pair |
+| threat | entity (mob) | entity (player-character) | n→n | hybrid mob/player combat state, retained across temporary absence and surviving-mob restart (§3.2); optional per ordered pair, with one numeric `aggro-points` amount; c-threat-pair |
 | current-target | entity (mob) | entity (player-character) | 1→0..1 | hybrid mob/player target selection, separate from threat amounts; multiple mobs may select the same player; c-current-target |
 | requires-key-item | poi-type ∪ dungeon-type ∪ ability | key-item | n→n | divine door→harp, crypt gate→bell, bird statue→whistle; hybrid riding→reins (acquired, c-riding), hang-gliding→hang-glider and sailing→boat (equipped, c-gliding/c-sailing); global scope |
 | located-in | settlement ∪ dungeon ∪ poi | land | n→1 | |
@@ -1461,10 +1474,10 @@ One row per fact type. Cardinality as `domain → range`.
 Owner-requested clarification (2026-09-18), documentation only. These relations describe the
 approved mob/player scope. A **mob** is an individual non-player combat `entity`, not the shared
 `creature` species definition; the player endpoint identifies an individual `player-character`.
-For threat/order retention, these are logical mob/player identities in the running world, not
-only currently spawned nodes. Temporary absence preserves their remaining state under §3.2;
-`current-target` requires a present, living player entity. This neither decides a storage strategy
-or restart persistence nor extends the approved combat pairings.
+For threat/order retention, these are logical mob/player identities, not only currently spawned
+nodes. Temporary absence and surviving-mob restart preserve the approved remaining state under
+§3.2; `current-target` still requires a present, living player entity. Restart retention promises
+no restored target node, chooses no storage strategy and adds no combat pairings.
 
 **Threat** is the directed mob → player relationship, not a separate global player stat.
 Its numeric property **`aggro-points`** measures the relationship's strength, in **aggro points**
@@ -1565,7 +1578,7 @@ content selection or live data changes are authorized by this contract.
 | c-slot-accepts | an item equips only in a usable equipment-slot whose `accepts` lists its item-type and whose subtype restrictions it satisfies (§3.4 equipment-slot); weapon-type `offhand` hands → off-hand only; c-weapon-class and c-hands still apply | runtime |
 | c-mp-range | mp ∈ [0, 100]; mage regenerates passively, others gain by hits/blocks/stealth/dodges; numbers `design.resources.mp` (D21) | runtime |
 | c-stun-immunity | cannot re-stun while stars shown | runtime |
-| c-threat-pair | at most one `threat` relation per ordered logical mob/player entity pair; each present relation has exactly one non-negative numeric `aggro-points` amount in aggro points, independent of other pairs; changing `current-target` does not clear it; decay/gains (including the full-stealth damage exception), the zero floor, player-death and arrival clearing, and escape/temporary-absence retention follow §3.2; actual mob death/respawn starts fresh; decay reflects elapsed gameplay time even outside simulation radius; restart persistence remains open | runtime |
+| c-threat-pair | at most one `threat` relation per ordered logical mob/player entity pair; each present relation has exactly one non-negative numeric `aggro-points` amount in aggro points, independent of other pairs; changing `current-target` does not clear it; decay/gains (including the full-stealth damage exception), the zero floor, player-death and arrival clearing, and escape/temporary-absence retention follow §3.2; actual mob death/respawn starts fresh; decay reflects elapsed gameplay time even outside simulation radius; surviving-mob restart retains threat/order/neutral provocation under persistence item 9 (§3.2), with no downtime decay (§3.1) | runtime+save-data (deferred) |
 | c-current-target | at most one present, living player target per mob; ordinary targeting compares that mob's eligible players by highest `aggro-points`, retains a tied current target, otherwise breaks positive-threat ties by earliest engagement; without a positive-threat priority or valid current target, choose the nearest normally detected zero-threat player without granting aggro/order (§3.2); player-death, zero-threat and arrival order resets, escape retention and fresh assignment follow §3.2; at zero, ordinary pursuit requires normal detection and hostility/provocation eligibility; equally nearest fallback ties are chosen randomly once with equal chances, then normal retention applies; Heroic Shout temporarily overrides ordinary targeting without threat/order gain; eligibility, duration, replacement, per-enemy simultaneous arbitration and termination follow §3.2; taunt expiry reflects elapsed gameplay time even outside simulation radius; taunt alone adds no neutral provocation or lasting ordinary caster eligibility (§3.2) | runtime |
 | c-pack-response | only the generated pack responds, under the hostile-detection / aggressor-specific neutral-provocation rules in §3.2; friendly/passive creatures are excluded and protected return cannot be interrupted; share current sightings only, never threat/order, and select targets independently; each neutral clears its own provocation on arrival (§3.2) | runtime |
 | c-return-home | pursuit beyond the home leash starts return regardless of threat; within it, target loss checks eligible positive-threat players then normal detection of eligible players (§3.2); attacks do not restart pursuit during return; ×2 normal return speed and 90% damage reduction (including DOT) until reaching home alive, then full HP and clear this mob's aggro/order toward every player and its neutral provocation once, ending both bonuses; no revival, cleansing or CC immunity; gains/decay continue until arrival and other mobs' records are unchanged; starting return cancels taunt, and new taunts neither interrupt nor queue for afterward | runtime |
@@ -1668,11 +1681,10 @@ existing damage/attacks and 32-cube limit stand; common crafting costs 20 wood c
 Live-data migration and implementation remain deferred; cleared dungeon/quest enemy reset
 eligibility stays in world/reset below. Persistence approvals and recording status follow.
 
-<!-- persistence-index -->
-**Persistence / authority — DECIDED 2026-09-28:** all nine recommendations approved; items 1–8 recorded. Item 9 is approved, awaiting recording.
+**Persistence / authority items 1–9 — DECIDED 2026-09-28:** all nine documentation decisions
+are recorded. No presented Persistence / authority question remains.
 Canonical rules: §3.1/§3.2/§3.7. Implementation is deferred; independent review and parent
 verification are pending (`todo_decide.md §E`). Next topic, named only: **World bounds / resets**.
-<!-- /persistence-index -->
 
 | topic | still undecided / incomplete |
 |---|---|

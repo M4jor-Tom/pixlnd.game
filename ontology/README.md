@@ -25,14 +25,13 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `tasks/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-<!-- persistence-status -->
-**Persistence / authority — items 1–8 recorded (2026-09-28).** All nine owner recommendations are approved. Item 9 is approved, awaiting recording.
+**Persistence / authority — all nine documentation decisions recorded (2026-09-28).**
+All nine owner recommendations are approved; no presented Persistence / authority question remains.
 Ontology documentation only; implementation, live JSON, tests and checker changes remain unauthorized.
 Independent review and parent verification are **PENDING**. No push, merge or history rewrite
-is authorized. Next topic after recording, named only: **World bounds / resets**.
+is authorized. Next topic, named only: **World bounds / resets**.
 Evidence and item mapping: `docs/ROADMAP/todo_decide.md §E`,
 `/tmp/pixlnd-persistence-reconcile.XsnIBI/`.
-<!-- /persistence-status -->
 
 **Aggro batch applied: 1–14/14.** The original twelve and follow-ups 13–14 were approved and
 recorded on 2026-09-27; their former open boundaries are settled.

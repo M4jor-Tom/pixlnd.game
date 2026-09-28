@@ -111,6 +111,7 @@ degradation) are not backlog features.
 - [ ] Creatures never despawn except with their zone; no per-zone spawn cap or respawn timer.
   Zone-owned nodes currently disappear on unload; preserving logical threat/order across temporary
   unload/disconnect is approved but unimplemented (`domain.md#ai-behavior`, Aggro 11 in §E).
+  Persistence item 9 additionally retains surviving-mob threat/order/provocation across restart.
 - [ ] Creatures beyond `design.spawns.ai.sim-radius` (80 blocks, D16) are frozen mid-state, not LOD-ed: no
   slow tick, no catch-up when they wake. Elapsed-gameplay-time threat decay / taunt expiry is
   approved but unimplemented (Aggro 12 in §E); movement/attacks stay frozen and other status timers
@@ -133,7 +134,7 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 - [ ] Item 6 — server validation of action requests and authoritative gameplay outcomes (`multiplayer-mode`), not Alpha client trust.
 - [ ] Item 7 — rule-valid trusted-co-op imports; explain rejection without modifying the original save (`multiplayer-mode`); no provenance guarantee.
 - [ ] Item 8 — save/resume world time without downtime advance or catch-up; running empty servers keep approved timers, not full distant AI (`game-clock`).
-<!-- /persistence-debt -->
+- [ ] Item 9 — surviving logical-mob threat/order/provocation across restart; preserve normal resets and taunt termination (`ai-behavior`, `c-threat-pair`).
 
 ## Meta / tooling
 - [ ] Save-data (§3.7): nothing persists (world seed, character, discovered lands).
