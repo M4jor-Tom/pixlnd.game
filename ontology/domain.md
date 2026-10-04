@@ -1782,6 +1782,21 @@ Population/community observations (`research_creatures_quests.md §4`), unversio
 details (`research_items.md §4`) and dialogue examples/hypotheses do not become universal or
 confirmed release facts. No encounter, crafting, shop or presentation change is authorized.
 
+#### Item 8 — Additional dated patch evidence (owner approved, 2026-10-04)
+
+Retained `research/research_systems.md §1.2–1.3` reports the following specific patch facts,
+not fresh external verification or dates for unrelated features:
+
+| subfact | reported patch and evidence limit |
+|---|---|
+| `ui.json#options.invert-y` | Alpha 2013-07-05 added invert-Y (§1.2, cited wiki `July_5th,_2013`). |
+| `ui.json#options.fps-limit` | Alpha 2013-07-23 added the FPS limit, default **111 FPS** (§1.2, cited wiki `July_23rd,_2013`). Patch dates do not resolve the uncertain Alpha version numbers (§11). |
+| Independent minimap scaling | S **0.9.1-3, 2019-09-24**: minimap scalable separately from the HUD (§1.3, cited patch page `0.9.1-3`), not blanket UI ancestry. |
+| `consumables.json#snowberry-mash` crafting | S **0.9.1-5, 2019-09-26** lists “craft Snow Berry Mash” among fixes (§1.3, cited `0.9.1-5`): a crafting-functionality report, not verified first introduction or support for every recipe detail. |
+| Music looping | S **0.9.2-0, 2019-09-28** reports “music loop fixed” (§1.3, cited `0.9.2-0`), distinct from the **2019-09-25** option addition already recorded in item 7. No track-inclusion claim follows. |
+
+No controls, recipes, audio, source labels or live JSON change; remaining histories stay open.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -1940,10 +1955,12 @@ unsupported release histories remain unresolved, not newly assigned labels.
 mixed-container subfacts, dated previews and remaining uncertainty, not blanket inheritance.
 Items 5–7 passed independent source review and parent verification (`todo_decide.md §E`,
 including check limits); historical research and enforcement remain unfinished.
+**Validation-contract source item 8 — DECIDED 2026-10-04:** §5 records additional dated
+patch reports and their limits. Independent review and parent verification remain pending.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–7 recorded, not whole-topic completion: unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5 item 7); no guessed labels, new content defaults or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–8 recorded, not whole-topic completion; source item 9 awaits clarification/approval (`todo_decide.md §E`), item 10 approved awaiting recording. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5) stay open; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

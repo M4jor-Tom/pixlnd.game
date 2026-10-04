@@ -2,6 +2,19 @@
 
 ## Ontology walkthrough entry point (2026-10-04)
 
+**Source-attribution item 8 recorded; item 10 approved awaiting recording.** Canonical evidence:
+`ontology/domain.md §5`; approval/application ledger: `docs/ROADMAP/todo_decide.md §E`.
+Independent review and parent verification are pending; writer evidence is in
+`/tmp/pixlnd-source-record.6o6KXJ/`. No push, merge or history rewrite is authorized.
+
+**Next unanswered proposal: source item 9**, pending clarification/approval, not refused.
+The exact proposal, owner's wand question, response and restated approval request remain in §E.
+Resume it before later research or uncertain gameplay topics; do not apply it without an answer.
+Only the five existing Markdown records may change; gameplay, live JSON, research dumps, tests
+and checker implementation remain unauthorized. Earlier approvals and exclusions stand.
+
+## Historical source-attribution items 5–7 checkpoint (2026-10-04, superseded entry point)
+
 **Source-attribution items 5–7 recorded and verified (2026-10-04).** Item 5: food count
 (`e575f22`); item 6: food-history evidence/limits (`73ae633`); item 7: bounded mixed-source
 findings (`0531ca4`). Owner approved 5 and 7, then approved 6 after clarification:

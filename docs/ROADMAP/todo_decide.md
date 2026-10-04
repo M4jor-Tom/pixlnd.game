@@ -137,10 +137,10 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Source-attribution direction (2026-10-04):** approved items 5–7 are recorded and verified below.
-No presented unanswered proposal remains. Independent review found no issues; parent verified
-actual diffs and reran validator/boot checks. Final handoff/publication/stop: `docs/HANDOFF.md`.
-Resumption remains source research, not the uncertain-gameplay-facts batch or implementation.
+**Source-attribution direction (2026-10-04):** item 8 recorded; item 10 independently approved
+awaiting recording. Item 9 awaits clarification/approval, not refused; exact proposal and answer
+request below. Independent review and parent verification for this batch are pending. Resume item 9
+before later research/topics; no implementation or push authorization. Items 1–7 stand.
 
 **Historical validation-contract mapping direction (2026-09-28):** items 1–4 are recorded below; item 4
 adds the detailed mapping and owner correction: undeployed game, no player data to migrate,
@@ -648,10 +648,11 @@ Traversal items 1–5 are recorded (item 4 corrected) and reviewed; evidence bel
 Books/formulas items 1–3, artifact items 1–6, Assassin item 1 and Wand item 1 are recorded below,
 not open questions. Persistence items 1–9 are recorded and reviewed above.
 World bounds / resets items 1–4 are recorded below; no presented question remains.
-Validation-contract mapping/source approvals 1–7 are recorded below; historical research remains open.
-- [ ] **Validation-contract source research/attribution (item 9 and items 1–7 approved):**
+Validation-contract mapping/source items 1–8 are recorded below; source item 9 awaits clarification/
+approval, item 10 is approved awaiting recording. Historical research remains open.
+- [ ] **Validation-contract source research/attribution (2026-09-17 contract approved):**
   required paths/shapes, bounded source inheritance and check boundaries are recorded in
-  `domain.md §5`; source items 6–7 add bounded evidence, not complete histories. Unsupported
+  `domain.md §5`; source items 6–8 add bounded evidence, not complete histories. Unsupported
   food release histories (`pet-food`) and remaining mixed-container histories (§5 item 7) are
   research, not guessed labels or new gameplay ballots. No whole-topic completion is claimed;
   direct data correction and enforcement remain separately unauthorized, with no migration or
@@ -661,7 +662,57 @@ Validation-contract mapping/source approvals 1–7 are recorded below; historica
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
 
-### Validation-contract source attribution — approved items 5–7 (2026-10-04)
+### Validation-contract source attribution — items 8–10 (2026-10-04)
+
+**Exact owner answer:** “8: Approved; 9: Why would the five-cube example replace the
+twenty-cube wand recipe ?; 10: Approved”. Items 8 and 10 are independently approved for
+documentation only. Item 9 is pending clarification/approval, neither refused nor approved.
+
+| item | application | canonical section | commit |
+|---|---|---|---|
+| 8 — Additional dated patch evidence | [x] recorded; independent review pending | `domain.md §5` / §7 | this scoped item commit; evidence map below |
+| 9 — Encounter, crafting, shop and map reports | [ ] pending clarification/approval | proposal below, not applied | — |
+| 10 — Historical sleep-speed wording | [ ] approved awaiting recording | — | — |
+
+**Item 8 — Approval versus Refusing:** approval makes precise patch history traceable,
+including music-loop addition versus fix, without changing controls, recipes or audio.
+Refusing would leave findings unrecorded, not remove/reject features. Canonical evidence and
+limits are in §5; no fresh external verification or whole-topic completion is claimed.
+
+#### 9. Record narrowly supported encounter, crafting, shop and map reports — pending
+
+**Finding:** retained research explicitly describes Alpha slimes accompanying Djinn in deserts;
+Steam Slime Wells, one five-iron-cube/anvil recipe example, daily stock changes vs Alpha identical
+restocked goods, map zoom 1:4–1:256, coordinates and star markers; Omega Slime Divide preview
+2023-06-26, not shipped hybrid behavior.
+**Sources:** `research_creatures_quests.md §2.4/§9`; `research_items.md §3.1/§3.4/§7.2`;
+`research_world.md §10` (all under `ontology/research/`).
+**Recommendation:** Attribute only these specific statements, not entire rosters/recipe
+tables/interfaces. Keep exact affix histories and unsupported claims open.
+
+##### Approval versus Refusing
+- **Approval:** documents evidence without changing encounters/crafting/shops or enabling Omega
+  splitting in v1.
+- **Refusing:** leaves attribution unfinished, not alternative gameplay approval.
+
+The original example said the five-cube example does not replace the approved 20-wood-cube wand
+recipe. **Owner question:** “Why would the five-cube example replace the twenty-cube wand recipe ?”
+**Response:** “It wouldn’t. The five-cube example is a metal weapon, while your approved wand
+recipe uses 20 wood cubes. There is no conflict; my comparison was unnecessarily confusing.”
+**Restated question awaiting answer:** “May I document the specific historical reports listed
+above, with their limits, without changing any approved gameplay rule?”
+
+**Evidence/gates:** `/tmp/pixlnd-source-record.6o6KXJ/` holds `approval-brief.md`, per-item
+`item-N-review.md` (semantic/scope inspection, `/simplify`, then ponytail-review), binary
+`item-N.diff`, `item-N-{diff-check,validator}.log/.exit`, commit records and `commit-map.md`.
+Commands: `git diff --check`; `timeout 150 nix develop -c godot --headless -s ontology/validate.gd`.
+Logs/exits, not approval, establish results. Independent review and parent verification are
+pending. Validation checks loaded data, not historical evidence, prose semantics or new enforcement.
+No gameplay suite, boot, visual, network or fresh external-source check is claimed; external cuwo
+retrieval in the preceding research timed out without a revision/payload. Gameplay, live JSON,
+research dumps, tests and checker files remain unchanged; no migration/compatibility code is needed.
+
+### Historical validation-contract source attribution — approved items 5–7 (2026-10-04)
 
 **Exact owner answers:** “5: Approved; 6: Define an evidence and an assumtion quickly, how
 they materialise in the ontology, then re-state the question with another example, eventually

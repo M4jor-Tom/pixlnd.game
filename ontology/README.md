@@ -25,7 +25,12 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `tasks/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Source-attribution items 5–7 recorded (2026-10-04):** corrected food count, food-history
+**Source-attribution item 8 recorded (2026-10-04):** additional dated patch evidence in
+`domain.md §5`; independent review and parent verification pending. Item 10 is approved awaiting
+recording; item 9 awaits clarification/approval before later research/topics (`todo_decide.md §E`).
+No data/code/checker changes or new publication authority.
+
+**Historical source-attribution items 5–7 recorded (2026-10-04):** corrected food count, food-history
 evidence/limits and bounded mixed-source subfacts (`domain.md#pet-food` / §5), preserving F11
 and existing annotations. No blanket fauna ancestry or completed-history claim. Fresh independent
 review found no issues; parent verified actual diffs and reran bounded validator/boot checks.

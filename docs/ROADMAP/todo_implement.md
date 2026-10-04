@@ -170,9 +170,9 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 - [ ] Mapping item 4 (`domain.md §5`): implement the recorded required-path/shape, bounded
   source-inheritance and layer-specific checks when separately authorized, including missing-whole-input
   negatives and cumulative errors. Require current artifact log config directly; no old decay/floor
-  alternative. Source item 7 records bounded mixed-container findings, not whole-file labels;
-  finish its remaining research before affected provenance checks. Do not infer fauna history
-  from landscape versions, or invent tags, save schemas or compatibility paths.
+  alternative. Source items 7–8 record bounded mixed-container/patch findings, not whole-file labels;
+  source item 9 awaits clarification/approval in §E. Finish remaining research before affected
+  provenance checks; no fauna history from landscape versions or invented tags/schemas/compatibility.
 
 ## Meta / tooling
 - [ ] Save-data (§3.7): nothing persists (world seed, character, discovered lands).
