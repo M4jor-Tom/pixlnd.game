@@ -1219,6 +1219,21 @@ enemy-drop/shop advice establishes no per-food acquisition or guaranteed stock. 
 pairings, availability, prices, IDs and all hybrid rules stand; no new A/S labels or taming/stock
 mechanics follow. Individual food histories remain research.
 
+**Validation-contract source item 31 (owner approved, 2026-10-04):**
+[Kaliptus Leaf revision 10086](https://cubeworld.fandom.com/wiki/Kaliptus_Leaf?oldid=10086),
+edited **2014-07-20T23:29:44Z**, associates Leaf with Koala and reports it **“currently
+unobtainable in this version”**, but obtainable **“with cheats”**. **“This version” is
+unidentified**; the food/taming wording is not demonstrated cheat-fed taming or original-build
+functionality. Neither the edit date nor earliest returned revision dates Alpha/Steam presence,
+introduction or when Eucalyptus Candy replaced Leaf.
+
+Saved raw revision body/metadata and capture sidecars were inspected here, not externally
+re-fetched, cheat-executed or original-build tested. Source-scout request-start
+**2026-10-04T22:32:19Z** is not response completion; documentary edit timing is not release
+history. **Eucalyptus Candy remains Koala's bait; Kaliptus Leaf remains cut** (items 6/13/16).
+Replacement chronology, per-food obtainability and successful original taming remain research.
+No pairing, availability, source label, ID or hybrid rule change follows.
+
 ### key-item
 `S` land-bound "special" items (A: glider & boat were bought items in the special slot).
 → `instances/key-items.json`: hang-glider, boat, reins, climbing-spikes (movement, 4/land);
@@ -2447,9 +2462,13 @@ not selected controls, healing or clock mechanics. Fresh independent review rema
 the current Alpha-focused Kotaku guide's ten wiki-credited pair reports, not an authenticated
 2013 list, per-food obtainability, first appearances or demonstrated taming; no new A/S labels.
 
+**Validation-contract source item 31 — DECIDED 2026-10-04:** §3.4 `pet-food` records
+Leaf 10086's Koala association/unidentified-version unobtainability/cheat-acquisition report,
+not demonstrated taming or chronology; Candy stays Koala's bait and Leaf stays cut.
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–28 historically recorded and verified; items 29–30 recorded, 31 approved awaiting recording; fresh independent review pending (`todo_decide.md §E`). Items 32–35 are presented but unanswered, preserved exactly in `docs/HANDOFF.md`; resume those in this topic, not implementation or whole-topic completion. Unsupported food/mixed-container histories, including sleep-speed units, remain research; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–28 historically recorded and verified; approved items 29–31 recorded; fresh independent recording review/parent final verification pending (`todo_decide.md §E`). Items 32–35 are presented but unanswered, preserved exactly in `docs/HANDOFF.md`; resume those in this topic, not implementation or whole-topic completion. Unsupported food/mixed-container histories, including sleep-speed units, remain research; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

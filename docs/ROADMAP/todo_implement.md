@@ -160,10 +160,12 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 - [ ] Mapping item 1 (`domain.md §5`): taxonomy/style ID, shape and reference checks without
   invented source tags; preserve embedded historical facts and separately scoped rosters/buildings.
   Direct data correction and model/loader/validator changes await separate authorization.
-- [ ] Mapping/source items 2/6/12–14/16/30 (`domain.md#pet-food`): finish individual food release histories
+- [ ] Mapping/source items 2/6/12–14/16/30–31 (`domain.md#pet-food`): finish individual food release histories
   beyond pinned cuwo names, conflicting/blank Koala reports, S-food pairs and the current
   Alpha-focused Kotaku guide's wiki-credited pairs (not an authenticated 2013 list); first
   obtainability, working original-build taming and Leaf/Candy chronology stay unresolved.
+  Leaf 10086's unidentified-version unobtainability/cheat-acquisition report does not establish
+  cheat-fed taming or date either bait; Candy stays Koala's bait and Leaf stays cut.
   Data correction and model/loader/validator work need separate authorization.
   Current A+S fallback is not evidence; shared-food pairings and source IDs remain unchanged.
 - [ ] Mapping item 3 (`domain.md §5`): preserve qualified reference annotations in later

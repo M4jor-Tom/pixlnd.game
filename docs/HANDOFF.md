@@ -2,11 +2,12 @@
 
 ## Ontology walkthrough entry point (2026-10-04, source items 29–35)
 
-**Current task: record approved 29–31, hand off for fresh review/parent publication, then STOP.**
+**Current task: fresh recording review/parent final handoff and publication, then STOP.**
 Owner exact answer: **“2ç: Approved; 30: Approved; 31: Approved; Keep the next items for next
 agents (you're already at 86% of context); Once handled, handoff, commit, push.”**
 Parent explicitly interpreted **2ç as 29** (AZERTY 9 = ç), not broader approval.
-**Items 29–30 recorded; 31 approved awaiting recording. Items 32–35 are PRESENTED BUT UNANSWERED**,
+**Approved items 29–31 recorded in three separate documentation commits. Items 32–35 are
+PRESENTED BUT UNANSWERED**,
 not refused, unpresented candidates, approved decisions or held implementation. Items 1–28 and
 all earlier hybrid approvals stand. Prior checkpoints below are historical.
 
