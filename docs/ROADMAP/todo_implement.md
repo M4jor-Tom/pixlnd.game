@@ -171,9 +171,9 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 - [ ] Mapping item 4 (`domain.md §5`): implement the recorded required-path/shape, bounded
   source-inheritance and layer-specific checks when separately authorized, including missing-whole-input
   negatives and cumulative errors. Require current artifact log config directly; no old decay/floor
-  alternative. Source items 7–9 record bounded mixed-container/patch findings, not whole-file labels;
-  finish remaining research before affected provenance checks (§E). No fauna history from landscape
-  versions or invented tags/schemas/compatibility.
+  alternative. Source items 7–9/17 record bounded mixed-container/patch/encounter reports, not whole-file labels;
+  per-membership fauna histories and other embedded traits remain research (§E), not roster corrections.
+  No fauna history from landscape versions or invented tags/schemas/compatibility.
 - [ ] Source item 15 (`domain.md §5`): three dated community-wiki UI patch reports do not
   complete UI/camera/static/candle/furniture/audio/dialogue histories or authorize interface work.
   Historical `+` equipment and regional gear power loss stay excluded; other research remains open.

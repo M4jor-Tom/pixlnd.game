@@ -1932,6 +1932,35 @@ No live UI, camera or notification work follows. Historical `+` equipment remain
 from pixlnd, and regional gear power loss remains **permanently excluded** (§1); approved
 interface/game rules and all live declarations remain unchanged.
 
+#### Item 17 — Forest and Beetle encounter reports (owner approved, 2026-10-04)
+
+[Forest revision 10997](https://cubeworld.fandom.com/wiki/Forest?oldid=10997) reports these
+eight dungeon-forest rows, preserving the source's nouns and boss alternatives:
+
+| forest type | reported residing mobs | reported boss |
+|---|---|---|
+| Insect | Insektoids, Flies and Mosquitoes | Insektoid |
+| Animal (I) | Lizardmen, Crows, Moles, Pigs and Biters | Lizardman |
+| Animal (II) | Goblins, Crows, Moles, Pigs and Biters | Goblin |
+| Undead | Undeads, Zombies, Skeletons, Frighteners, Vampires and Slimes | Undead |
+| Orc | Orcs, Collies, Terriers, Pigs and Ogres | Orc |
+| Human | Humans, Minotaurs, Werewolves, Collies, Black Cats and Jesters | Human |
+| Beetle | Bark Beetles, Lemon Beetles and Snout Beetles | Bark Beetle / Lemon Beetle / Snout Beetle |
+| Dwarf | Dwarves, Moles and Rocklings | Dwarf |
+
+Live `creature-families.json#forest-dungeon-rosters` uses `cat` and `boss: beetle` as
+abstractions, not exact source quotations; this approval does not correct that data.
+[Beetle revision 19899](https://cubeworld.fandom.com/wiki/Beetle?oldid=19899) reports
+**most landscapes except Snowlands**, **usually groups of 3–5**, and Fire Beetles
+**exclusively in Deserts and Lava Lands**. “Most” is not exhaustive every-other-biome
+coverage; “usually” is not a guaranteed pack size. No encounter, family or roster changes.
+
+These and subsequent pinned community-wiki records below were retrieved by source scouts
+on **2026-10-04**, with captured revision bodies/metadata inspected by this writer, not
+externally re-fetched or original behavior tested. Wiki edit/capture dates are not release
+or introduction dates. This report supplies no A/S release attribution or availability for
+the Forest page's separately planned forests; per-membership histories/other traits remain research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2121,12 +2150,15 @@ Remaining histories are research, not unanswered proposals.
 
 **Validation-contract source item 16 — DECIDED 2026-10-04:** §3.4 records the archived
 Koala report's empty Food cell, not food identity, chronology or demonstrated taming.
-Source items 17–21 are approved, awaiting documentation recording; fresh independent review
+
+**Validation-contract source item 17 — DECIDED 2026-10-04:** §5 records eight Forest rows
+and bounded Beetle reports, not roster changes or release attribution.
+Source items 18–21 are approved, awaiting documentation recording; fresh independent review
 and parent verification/publication of this batch remain pending (`todo_decide.md §E`).
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–16 recorded; items 17–21 approved awaiting recording; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–17 recorded; items 18–21 approved awaiting recording; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
