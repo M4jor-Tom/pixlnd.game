@@ -25,9 +25,10 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `tasks/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Source-attribution items 29–31 recorded (2026-10-04):** all three approved, separate
-documentation commits. Canonical evidence: `domain.md §5` / `#pet-food`; no game rules, labels or live data
-change. Fresh independent recording review/parent final verification are pending. **Items 32–35
+**Source-attribution items 29–31 recorded and verified (2026-10-04):** all three approved,
+separate documentation commits. Canonical evidence: `domain.md §5` / `#pet-food`; no game rules,
+labels or live data change. Fresh independent recording review found no issues; parent verified
+actual commits/diffs and reran bounded validator/boot checks. **Items 32–35
 were presented and remain unanswered**, preserved exactly for the next agent in `docs/HANDOFF.md`;
 resume those in the same source-attribution topic. Evidence/deferrals: `todo_decide.md §E` /
 `todo_implement.md`. Parent owns final handoff/publication, then STOP; no new research or proposals.

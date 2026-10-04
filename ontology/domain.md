@@ -2456,7 +2456,7 @@ Remaining histories stay research, not unanswered proposals at that historical c
 
 **Validation-contract source item 29 — DECIDED 2026-10-04:** §5 records Sleep 4042's
 head-of-bed R/HP-refill report and paired approximate normal/camp game-minute intervals,
-not selected controls, healing or clock mechanics. Fresh independent review remains pending (§E).
+not selected controls, healing or clock mechanics.
 
 **Validation-contract source item 30 — DECIDED 2026-10-04:** §3.4 `pet-food` attributes
 the current Alpha-focused Kotaku guide's ten wiki-credited pair reports, not an authenticated
@@ -2465,10 +2465,13 @@ the current Alpha-focused Kotaku guide's ten wiki-credited pair reports, not an 
 **Validation-contract source item 31 — DECIDED 2026-10-04:** §3.4 `pet-food` records
 Leaf 10086's Koala association/unidentified-version unobtainability/cheat-acquisition report,
 not demonstrated taming or chronology; Candy stays Koala's bait and Leaf stays cut.
+Items 29–31 passed fresh independent source/diff/log review and parent actual-commit/diff audit /
+bounded validator/boot verification (`todo_decide.md §E`, with limits). Items 32–35 remain
+presented but unanswered, preserved in `docs/HANDOFF.md`; remaining histories stay research.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–28 historically recorded and verified; approved items 29–31 recorded; fresh independent recording review/parent final verification pending (`todo_decide.md §E`). Items 32–35 are presented but unanswered, preserved exactly in `docs/HANDOFF.md`; resume those in this topic, not implementation or whole-topic completion. Unsupported food/mixed-container histories, including sleep-speed units, remain research; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–31 recorded and verified (`todo_decide.md §E`, with evidence limits). Items 32–35 are presented but unanswered, preserved exactly in `docs/HANDOFF.md`; resume those in this topic, not implementation or whole-topic completion. Unsupported food/mixed-container histories, including sleep-speed units, remain research; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

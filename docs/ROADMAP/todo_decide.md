@@ -138,8 +138,9 @@ passed; evidence and limits below. Ontology documentation only; gameplay, live J
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
 **Source-attribution direction — items 29–31 (2026-10-04):** owner approved only 29–31
-(“2ç” explicitly read as 29). All three recorded in separate documentation commits. Fresh independent
-recording review/parent final verification pending. **Items 32–35 were presented but remain
+(“2ç” explicitly read as 29). All three recorded and verified in separate documentation commits.
+Fresh independent recording review found no issues; parent actual-diff audit and bounded
+validator/boot reruns passed (evidence below). **Items 32–35 were presented but remain
 unanswered**, preserved verbatim in `docs/HANDOFF.md`; next agent resumes them in this topic.
 Parent owns final verified handoff/commit/push, then STOP; no new research, proposals or implementation.
 
@@ -675,7 +676,7 @@ Books/formulas items 1–3, artifact items 1–6, Assassin item 1 and Wand item 
 not open questions. Persistence items 1–9 are recorded and reviewed above.
 World bounds / resets items 1–4 are recorded below; no presented question remains.
 Validation-contract mapping/source items 1–28 are historically recorded and verified below;
-approved 29–31 are recorded; fresh independent recording review/parent final verification pending.
+approved 29–31 are recorded and verified, with fresh independent review and parent checks below.
 **Presented but unanswered 32–35** resume in this topic; exact proposals/consequences/examples/links
 are in `docs/HANDOFF.md`. Historical research, including original Alpha/Steam sleep-rate
 baseline/units (§5 items 10–11), stays open.
@@ -701,9 +702,9 @@ Those exact proposals, alternatives/refusal consequences, examples and URLs are 
 
 | item | application | canonical section | commit evidence |
 |---|---|---|---|
-| 29 — Early sleep instructions/clock estimates | [x] recorded; fresh review pending | `domain.md §5` / §7 | `recording/item-29.sha` |
-| 30 — Alpha-focused ten food/pet reports | [x] recorded; fresh review pending | `domain.md#pet-food` / §7 | `recording/item-30.sha` |
-| 31 — Early Kaliptus Leaf availability report | [x] recorded; fresh review pending | `domain.md#pet-food` / §7 | `recording/item-31.sha` |
+| 29 — Early sleep instructions/clock estimates | [x] recorded and verified | `domain.md §5` / §7 | 9fee85b22523850f513be0038c9f5329127cf874 |
+| 30 — Alpha-focused ten food/pet reports | [x] recorded and verified | `domain.md#pet-food` / §7 | 3df90bf5a76f011973fd662fd70438e7da76680f |
+| 31 — Early Kaliptus Leaf availability report | [x] recorded and verified | `domain.md#pet-food` / §7 | fed80c6068705318286fcd9058a4983035cec3a9 |
 
 **29 — Approval versus Refusing:** approval adds traceable sleep evidence, not controls,
 healing numbers or a clock mechanic; refusal would leave the report unrecorded, not select
@@ -723,18 +724,33 @@ exact binary/full-index `item-N.diff`, `item-N-staged.diff`, `item-N-committed.d
 logs/exits, `item-N-{diff-check,validator}.log/.exit`, full `item-N.sha`, aggregate `batch.diff`
 and `commit-map.md`. Per-item commands: `git diff --check` and
 `timeout 150 nix develop -c godot --headless -s ontology/validate.gd`; actual output/exits are
-in those logs, not old proof. Validator checks existing loaded data, not prose/history or new
+in those logs: all three exited 0, with actual Godot output and `ontology valid`, not old proof.
+Validator checks existing loaded data, not prose/history or new
 enforcement. Saved source bodies/metadata inspected, not externally re-fetched or original-build
 executed; request-start capture times are not response completion. No images, full gameplay
 suite, visual or multiplayer checks. Only five existing Markdown paths; no labels, JSON, gameplay,
 tests, checker, research, schema/defaults or compatibility changes.
 
-**Fresh independent recording review / parent final verification: pending.** Pre-approval
-research review is not post-recording review. Writer stops after the three item commits with a
-clean worktree, without pushing. Parent audits actual commits/diff correspondence and scope,
-reruns bounded validator/boot, records true verdict/limits in a small separate final verified
-handoff commit, then normal-pushes only `fix/ontology-reconciliation`, checks fresh remote /
-upstream / local equality and clean state, and STOPs. No amendments, rewrite, merge, new research
+**Fresh independent recording review / parent verification:** read-only source/diff/log review
+found no issues (`independent-review.md`); reviewer ran no commands/tests or independent byte
+comparisons. Parent inspected actual commits/source passages and confirmed all saved/staged/
+committed diffs, aggregate correspondence, exactly three item commits and the five-path boundary
+(`parent-audit.log/.exit`, `parent-item-N-committed.diff`, `parent-batch.diff`), then reran:
+```
+timeout 150 nix develop -c godot --headless -s ontology/validate.gd
+timeout 150 nix develop -c godot --headless --quit
+```
+Both exited 0: `ontology valid` and normal hybrid startup (`parent-{validator,boot}.log/.exit`).
+These cover existing loaded data/startup, not historical truth, Markdown or new enforcement.
+Parent corrected the unanswered handoff copy to the actual chat presentation rather than its
+semantically equivalent scratch draft; no recommendation, alternative or approval changed.
+
+**Final handoff/stop:** this separate verification record follows item `fed80c6`. Live remote
+`12aea8a` confirmed before publication (`pre-publication-remote.log/.exit`); inspect actual Git
+state on resumption. Final record review/rechecks: `/simplify`, ponytail-review and bounded
+diff/validator/boot (`handoff-review.md`, `handoff.diff`, `handoff-{diff-check,validator,boot}.log/.exit`).
+Commit the final handoff, normal-push only `fix/ontology-reconciliation`, verify fresh remote /
+upstream / local equality and clean state, then STOP. No amendments, rewrite, merge, new research
 or proposals; next agent resumes unanswered **32–35 in Validation-contract source research/attribution**.
 
 ### Historical validation-contract source attribution — items 26–28 (2026-10-04)
