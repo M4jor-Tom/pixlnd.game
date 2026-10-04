@@ -2320,8 +2320,9 @@ and placement reports, not exclusive locations, release dates or pickup/activati
 
 **Validation-contract source item 25 — DECIDED 2026-10-04:** §5 attributes limited campsite
 furniture reports, not mandatory layouts, sitting-heal/cooking rules or release history.
-Items 22–25 are recorded. Writer review/check evidence: `todo_decide.md §E`;
-fresh independent review and parent checks pending. Remaining histories stay research.
+Items 22–25 passed fresh independent source/diff/log review and parent actual-commit/diff
+audit / bounded validator/boot verification (`todo_decide.md §E`, including evidence limits).
+Remaining histories stay research, not unanswered proposals.
 
 | topic | still undecided / incomplete |
 |---|---|

@@ -137,11 +137,11 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Source-attribution direction — items 22–25 (2026-10-04):** all four approved and recorded.
-Items 1–21 and all hybrid approvals stand.
-Evidence only; no presented unanswered proposal remains. Writer review/check evidence below;
-fresh independent review and parent checks pending. Parent owns final handoff/publication;
-writer creates only the four item commits, no new proposals or implementation.
+**Source-attribution direction — items 22–25 (2026-10-04):** all four approved, recorded
+and verified in separate documentation commits. Items 1–21 and all hybrid approvals stand;
+no presented unanswered proposal remains. Fresh independent source/diff/log review found no
+issues; parent actual-commit/diff audit and bounded validator/boot reruns passed (evidence below).
+Final handoff/publication, then STOP; no new proposals or implementation.
 
 **Historical source-attribution direction — items 16–21 (2026-10-04):** all six approved, recorded
 and verified in separate documentation commits. Items 1–15 and settled hybrid rules stand;
@@ -685,10 +685,10 @@ Canonical content: `domain.md §5`; all earlier approvals stand.
 
 | item | application | canonical section | commit |
 |---|---|---|---|
-| 22 — Existing rarity-prefix lists | [x] recorded; fresh review pending | `domain.md §5` / §7 | 3fba786f46f7fdaca40017b3d098f6be9f79d501 |
-| 23 — Furniture-sleep reports | [x] recorded; fresh review pending | `domain.md §5` / §7 | c7e154b351e2fbf48edc34fc3a1a8e279ada7632 |
-| 24 — Candle appearance/placement | [x] recorded; fresh review pending | `domain.md §5` / §7 | f66a329abf12eb10a21fc88d7abd979f3f7ca1d3 |
-| 25 — Campsite furniture | [x] recorded; fresh review pending | `domain.md §5` / §7 | pending — parent finalizes actual item hash in separate handoff commit |
+| 22 — Existing rarity-prefix lists | [x] recorded and verified | `domain.md §5` / §7 | 3fba786f46f7fdaca40017b3d098f6be9f79d501 |
+| 23 — Furniture-sleep reports | [x] recorded and verified | `domain.md §5` / §7 | c7e154b351e2fbf48edc34fc3a1a8e279ada7632 |
+| 24 — Candle appearance/placement | [x] recorded and verified | `domain.md §5` / §7 | f66a329abf12eb10a21fc88d7abd979f3f7ca1d3 |
+| 25 — Campsite furniture | [x] recorded and verified | `domain.md §5` / §7 | 0b5379f2b7fae0521cd61c57aed61611dbb9aaae |
 
 **22 — Approval versus Refusing:** approval attributes existing prefixes without changing the
 always-named equipment guarantee; refusal would leave the report unrecorded, not change names
@@ -710,19 +710,34 @@ not select empty camps or another layout.
 `approval-brief.md`, `inspected-sources.md`, exact binary `item-N.diff`, `item-N-staged.diff`,
 `item-N-committed.diff`, `item-N-review.md` (semantic/scope/source inspection, `/simplify`, then
 ponytail-review), `item-N-{diff-check,validator}.log/.exit`, comparison logs, full hashes and
-`commit-map.md`. Inspect those logs/exits for actual per-item results. Required commands:
-`git diff --check` and `timeout 150 nix develop -c godot --headless -s ontology/validate.gd`.
-A Nix timeout before Godot runs is not validation. Checks cover existing loaded data, not prose,
-historical truth or new enforcement. Saved source bodies/metadata were inspected, not externally
+`commit-map.md`. Each item passed `git diff --check` and
+`timeout 150 nix develop -c godot --headless -s ontology/validate.gd` (exit 0; Godot actually
+ran and reported `ontology valid`). Checks cover existing loaded data, not prose, historical
+truth or new enforcement. Saved source bodies/metadata were inspected, not externally
 re-fetched or original-build executed; images were not inspected. No gameplay suite, visual or
 multiplayer tests, labels, JSON, research, checker, schema/default or compatibility changes.
 
-**Fresh independent review / parent checks pending:** parent must inspect actual sources,
-diffs/commits/logs, confirm exact correspondence and the five-existing-Markdown-path boundary,
-rerun bounded validator/boot, finalize the last hash and replace pending statuses in a separate
-reviewed verification/handoff commit. Writer does not make that commit or push; no amendments,
-rewrite, merge, new research or proposals. Remaining research is not an unanswered ballot;
-next title and unfinished histories: `docs/HANDOFF.md`.
+**Independent review / parent verification:** fresh read-only source/diff/log review found
+no issues (`independent-review.md`); the reviewer executed no commands/tests or independent
+hash comparisons. Parent inspected actual commits/source passages and confirmed each exact
+saved/staged/committed diff, aggregate reviewed-diff correspondence and five-path boundary
+(`parent-audit.log/.exit`, `parent-item-N-committed.diff`, `parent-batch.diff`). The initial
+byte-audit failure was abbreviated versus full-index diff headers, preserved in `parent-initial-*`
+and resolved by using explicit `--full-index`; no content changed. Parent reran:
+```
+timeout 150 nix develop -c godot --headless -s ontology/validate.gd
+timeout 150 nix develop -c godot --headless --quit
+```
+Both exited 0: `ontology valid` and normal hybrid startup (`parent-{validator,boot}.log/.exit`).
+
+**Final handoff/stop:** this separate verification record follows item `0b5379f`. Pre-publication
+live remote `dd8e1a5` was confirmed (`pre-publication-remote.log/.exit`); inspect actual Git state
+on resumption. Final record checks: `/simplify`, ponytail-review and bounded diff/validator/boot
+rechecks (`handoff-review.md`, `handoff.diff`, `handoff-{diff-check,validator,boot}.log/.exit`).
+Commit this handoff, push only `fix/ontology-reconciliation`, verify local/upstream/fresh live
+remote equality and clean state, then STOP. No amendments, rewrite, merge, new research or
+proposals. Remaining research is not an unanswered ballot; next title and unfinished histories:
+`docs/HANDOFF.md` — **Validation-contract source research/attribution (remaining research)**.
 
 ### Historical validation-contract source attribution — items 16–21 (2026-10-04)
 

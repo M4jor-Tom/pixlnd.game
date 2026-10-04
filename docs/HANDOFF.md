@@ -2,22 +2,29 @@
 
 ## Ontology walkthrough entry point (2026-10-04, source items 22–25)
 
-**Current task: fresh independent review and parent verification/handoff of recorded items 22–25.**
+**Current task: final verified handoff/publication, then STOP.**
 Owner: **“22: Approved; 23: Approved; 24: Approved; 25: Approved; When done, handoff, commit, push”**.
-**Items 22–25 recorded in four separate documentation commits.** No presented unanswered proposal remains.
+**Items 22–25 recorded and verified in four separate documentation commits.** No presented unanswered proposal remains.
 All earlier approvals stand; the previous active checkpoint below is historical.
 
 Canonical evidence: `ontology/domain.md §5`; compact ledger/deferrals:
 `docs/ROADMAP/todo_decide.md §E` / `todo_implement.md`; binding brief, actual source inspection,
 per-item diffs/reviews/check logs/exits and commit map: `/tmp/pixlnd-source-items-22-25.cMj0dO/`.
 Five existing Markdown paths only; no gameplay, JSON, research, tests, checker, labels, defaults,
-schema, migration or compatibility changes. Writer makes one docs commit per item; no final
-handoff commit, amendments, rewrite, merge or push. **Fresh independent review and parent
-checks pending**; inspect actual per-item logs, not this status as verification evidence.
-Parent owns the separate reviewed final verification/handoff commit and authorized branch push.
-Existing validator checks loaded data, not historical truth, prose or new enforcement. Captured
-source bodies/metadata were inspected, not externally re-fetched or original-build executed;
-no images, gameplay suite, visual or multiplayer tests are claimed.
+schema, migration or compatibility changes. Each item passed semantic/scope/source inspection,
+`/simplify`, ponytail-review, diff checks and bounded ontology validation. Fresh independent
+source/diff/log review found no issues; parent inspected the actual four commits, confirmed exact
+saved/staged/committed diffs and the five-path boundary, and reran bounded validator/boot
+successfully (exit 0). Evidence/limits: `todo_decide.md §E`.
+Checks cover existing loaded data/startup, not historical truth, prose or new enforcement.
+Captured source bodies/metadata were inspected, not externally re-fetched or original-build
+executed; no images, gameplay suite, visual or multiplayer tests are claimed.
+
+**Authorized publication:** commit this separate final verification/handoff after item
+`0b5379f`, push only `fix/ontology-reconciliation`, verify local/upstream/fresh live remote
+equality and clean state, then STOP. Pre-publication checkpoint: clean item HEAD `0b5379f`;
+live remote `dd8e1a5` confirmed. This is not a publication claim; inspect actual Git state
+on resumption. No amendments, rewrite, merge or new proposals.
 
 **Next resume topic: Validation-contract source research/attribution (remaining research).**
 Unfinished: per-food first obtainable original builds/successful taming and Leaf/Candy chronology;
@@ -29,7 +36,8 @@ cause; shipped A*/daily routes/night lanterns; remaining UI/camera/static/candle
 tracks/literal dialogue histories. Broad histories remain research, not gameplay ballots.
 New UI/camera/audio retrievals were HTTP403, not absent-feature evidence. No whole-topic
 completion; do not advance to Swamp Lands/Lion/resistance/gear HP or implementation.
-No new research or proposals in this recording batch; all earlier approvals remain authoritative.
+No new research or proposals after this handoff; all earlier approvals remain authoritative.
+After publication, final response: next topic title only.
 
 ## Historical source-attribution items 16–21 checkpoint (2026-10-04, superseded entry point)
 
