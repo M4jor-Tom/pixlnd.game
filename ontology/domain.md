@@ -2030,6 +2030,24 @@ That remains a hypothesis, not a promised hint reward or mechanic. No schedule, 
 hint-reward, furniture/sleep rule, source label or runtime change follows; remaining histories
 stay research, not unanswered proposals.
 
+#### Item 22 — Existing rarity-prefix lists (owner approved, 2026-10-04)
+
+[Rarity revision 9901](https://cubeworld.fandom.com/wiki/Rarity?oldid=9901), edited
+**2014-02-06T11:29:33Z**, contains all five existing Common–Legendary prefix lists in
+`affixes.json`: ten entries each for Common, Uncommon, Rare and Epic, eleven for Legendary.
+Rare and Epic share the same list; the source spelling **Battle-tested** is retained.
+It gives examples **“Polished Iron Dagger of Xemi”** and **“Legendary Iron Shield of Kiba”**,
+and says Epic/Legendary items **“often”** have lore names. That is the community report's
+historical claim, not a weakening of pixlnd's approved **always-named Epic/Legendary equipment**
+guarantee (§6 gen-name).
+
+The saved raw revision body/metadata and extracted text were inspected here; the source-scout
+capture was retrieved **2026-10-04**, not externally re-fetched or original-build tested by
+this writer. Its edit date (or earliest returned revision) proves neither first publication,
+feature introduction nor original Alpha/Steam behavior. Exact possessive-name and original-prefix
+generation/release histories remain unresolved. No names, naming frequency, prefixes, source
+labels or live declarations change.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2238,9 +2256,14 @@ Items 16–21 passed fresh independent source/diff/log review and parent actual-
 bounded validator/boot verification (`todo_decide.md §E`, including evidence limits).
 Remaining histories are research, not unanswered proposals.
 
+**Validation-contract source item 22 — DECIDED 2026-10-04:** §5 attributes the existing
+rarity-prefix lists, preserving the always-named guarantee and unresolved name histories.
+Writer review/check evidence: `todo_decide.md §E`; fresh independent review and parent checks pending.
+Items 23–25 are approved and await recording; remaining histories stay research.
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–21 recorded; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–22 recorded; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

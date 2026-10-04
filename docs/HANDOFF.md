@@ -1,8 +1,39 @@
 # Handoff — resume here
 
-## Ontology walkthrough entry point (2026-10-04, source items 16–21)
+## Ontology walkthrough entry point (2026-10-04, source items 22–25)
 
-**Current task: final verified handoff/publication, then STOP.**
+**Current task: record only approved source-attribution items 22–25, then parent review/handoff.**
+Owner: **“22: Approved; 23: Approved; 24: Approved; 25: Approved; When done, handoff, commit, push”**.
+**Item 22 recorded; approved 23–25 await recording.** No presented unanswered proposal remains.
+All earlier approvals stand; the previous active checkpoint below is historical.
+
+Canonical evidence: `ontology/domain.md §5`; compact ledger/deferrals:
+`docs/ROADMAP/todo_decide.md §E` / `todo_implement.md`; binding brief, actual source inspection,
+per-item diffs/reviews/check logs/exits and commit map: `/tmp/pixlnd-source-items-22-25.cMj0dO/`.
+Five existing Markdown paths only; no gameplay, JSON, research, tests, checker, labels, defaults,
+schema, migration or compatibility changes. Writer makes one docs commit per item; no final
+handoff commit, amendments, rewrite, merge or push. **Fresh independent review and parent
+checks pending**; inspect actual per-item logs, not this status as verification evidence.
+Parent owns the separate reviewed final verification/handoff commit and authorized branch push.
+Existing validator checks loaded data, not historical truth, prose or new enforcement. Captured
+source bodies/metadata were inspected, not externally re-fetched or original-build executed;
+no images, gameplay suite, visual or multiplayer tests are claimed.
+
+**Next resume topic: Validation-contract source research/attribution (remaining research).**
+Unfinished: per-food first obtainable original builds/successful taming and Leaf/Candy chronology;
+original Alpha/Steam sleep/furniture activation/healing/rate/baseline/units; per-membership fauna
+and other traits; exact possessive/name and original-prefix generation/release histories;
+refining yields/ratios, noncotton/undocumented weapon costs; unscoped stock/loot/probabilities/
+daily pet-food amount; original population/undead exceptions/animal composition/accumulation
+cause; shipped A*/daily routes/night lanterns; remaining UI/camera/static/candle/furniture/audio/
+tracks/literal dialogue histories. Broad histories remain research, not gameplay ballots.
+New UI/camera/audio retrievals were HTTP403, not absent-feature evidence. No whole-topic
+completion; do not advance to Swamp Lands/Lion/resistance/gear HP or implementation.
+No new research or proposals in this recording batch; all earlier approvals remain authoritative.
+
+## Historical source-attribution items 16–21 checkpoint (2026-10-04, superseded entry point)
+
+**Historical task: final verified handoff/publication, then STOP.**
 Owner: **“16: Approved; 17: Approved; 18: Approved; 19: Approved; 20: Approved;
 21: Approved; When handled, handoff, commit, push”**.
 **Items 16–21 recorded and verified in six separate documentation commits.**

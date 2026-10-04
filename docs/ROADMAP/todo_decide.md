@@ -137,7 +137,13 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Source-attribution direction — items 16–21 (2026-10-04):** all six approved, recorded
+**Source-attribution direction — items 22–25 (2026-10-04):** all four approved;
+item 22 recorded, 23–25 await recording. Items 1–21 and all hybrid approvals stand.
+Evidence only; no presented unanswered proposal remains. Writer review/check evidence below;
+fresh independent review and parent checks pending. Parent owns final handoff/publication;
+writer creates only the four item commits, no new proposals or implementation.
+
+**Historical source-attribution direction — items 16–21 (2026-10-04):** all six approved, recorded
 and verified in separate documentation commits. Items 1–15 and settled hybrid rules stand;
 no presented unanswered proposal remains. Fresh independent source/diff/log review found no
 issues; parent actual-commit audit and bounded validator/boot reruns passed (evidence below).
@@ -656,12 +662,12 @@ Traversal items 1–5 are recorded (item 4 corrected) and reviewed; evidence bel
 Books/formulas items 1–3, artifact items 1–6, Assassin item 1 and Wand item 1 are recorded below,
 not open questions. Persistence items 1–9 are recorded and reviewed above.
 World bounds / resets items 1–4 are recorded below; no presented question remains.
-Validation-contract mapping/source items 1–21 are recorded below; all six items 16–21 committed;
+Validation-contract mapping/source items 1–22 are recorded below; approved 23–25 await recording;
 no presented unanswered proposal remains. Historical research, including original Alpha/Steam
 sleep-rate baseline/units (§5 items 10–11), stays open.
 - [ ] **Validation-contract source research/attribution (2026-09-17 contract approved):**
   required paths/shapes, bounded source inheritance and check boundaries are recorded in
-  `domain.md §5`; source items 6–21 add bounded evidence, not complete histories. Unsupported
+  `domain.md §5`; source items 6–22 add bounded evidence, not complete histories. Unsupported
   food release histories (`pet-food`) and remaining mixed-container histories (§5 item 7) are
   research, not guessed labels or new gameplay ballots. No whole-topic completion is claimed;
   direct data correction and enforcement remain separately unauthorized, with no migration or
@@ -671,7 +677,42 @@ sleep-rate baseline/units (§5 items 10–11), stays open.
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
 
-### Validation-contract source attribution — items 16–21 (2026-10-04)
+### Validation-contract source attribution — items 22–25 (2026-10-04)
+
+**Exact owner answer:** “22: Approved; 23: Approved; 24: Approved; 25: Approved;
+When done, handoff, commit, push”. No presented unanswered proposal remains; evidence only.
+Canonical content: `domain.md §5`; all earlier approvals stand.
+
+| item | application | canonical section | commit |
+|---|---|---|---|
+| 22 — Existing rarity-prefix lists | [x] recorded; fresh review pending | `domain.md §5` / §7 | pending item commit |
+| 23 — Furniture-sleep reports | approved; awaiting recording | `domain.md §5` / §7 | pending recording |
+| 24 — Candle appearance/placement | approved; awaiting recording | `domain.md §5` / §7 | pending recording |
+| 25 — Campsite furniture | approved; awaiting recording | `domain.md §5` / §7 | pending recording |
+
+**22 — Approval versus Refusing:** approval attributes existing prefixes without changing the
+always-named equipment guarantee; refusal would leave the report unrecorded, not change names
+or naming frequency.
+
+**Writer evidence/gates:** `/tmp/pixlnd-source-items-22-25.cMj0dO/` holds the binding
+`approval-brief.md`, `inspected-sources.md`, exact binary `item-N.diff`, `item-N-staged.diff`,
+`item-N-committed.diff`, `item-N-review.md` (semantic/scope/source inspection, `/simplify`, then
+ponytail-review), `item-N-{diff-check,validator}.log/.exit`, comparison logs, full hashes and
+`commit-map.md`. Inspect those logs/exits for actual per-item results. Required commands:
+`git diff --check` and `timeout 150 nix develop -c godot --headless -s ontology/validate.gd`.
+A Nix timeout before Godot runs is not validation. Checks cover existing loaded data, not prose,
+historical truth or new enforcement. Saved source bodies/metadata were inspected, not externally
+re-fetched or original-build executed; images were not inspected. No gameplay suite, visual or
+multiplayer tests, labels, JSON, research, checker, schema/default or compatibility changes.
+
+**Fresh independent review / parent checks pending:** parent must inspect actual sources,
+diffs/commits/logs, confirm exact correspondence and the five-existing-Markdown-path boundary,
+rerun bounded validator/boot, finalize the last hash and replace pending statuses in a separate
+reviewed verification/handoff commit. Writer does not make that commit or push; no amendments,
+rewrite, merge, new research or proposals. Remaining research is not an unanswered ballot;
+next title and unfinished histories: `docs/HANDOFF.md`.
+
+### Historical validation-contract source attribution — items 16–21 (2026-10-04)
 
 **Exact owner answer:** “16: Approved; 17: Approved; 18: Approved; 19: Approved;
 20: Approved; 21: Approved; When handled, handoff, commit, push”. Evidence only;
