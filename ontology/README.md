@@ -25,12 +25,18 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `tasks/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Source-attribution items 29–31 recorded and verified (2026-10-04):** all three approved,
+**Source-attribution items 33–35 (2026-10-04):** all approved; item 33 recorded, 34–35
+await separate recording. Canonical reports/limits: `domain.md §5` / §7; no encounters,
+layout, controls, labels or live-data change. Independent review and parent verification pending.
+**Item 32 alone remains presented but unanswered**, verbatim in `docs/HANDOFF.md`.
+Evidence/deferrals: `todo_decide.md §E` / `todo_implement.md`; parent owns final verification/
+handoff/last-hash finalization and authorized push, then STOP. No new research or proposals.
+
+**Historical source-attribution items 29–31 recorded and verified (2026-10-04):** all three approved,
 separate documentation commits. Canonical evidence: `domain.md §5` / `#pet-food`; no game rules,
 labels or live data change. Fresh independent recording review found no issues; parent verified
-actual commits/diffs and reran bounded validator/boot checks. **Items 32–35
-were presented and remain unanswered**, preserved exactly for the next agent in `docs/HANDOFF.md`;
-resume those in the same source-attribution topic. Evidence/deferrals: `todo_decide.md §E` /
+actual commits/diffs and reran bounded validator/boot checks at that historical checkpoint.
+Items 32–35 were then unanswered; current approvals/status are above. Evidence/deferrals: `todo_decide.md §E` /
 `todo_implement.md`. Parent owns final handoff/publication, then STOP; no new research or proposals.
 
 **Historical source-attribution items 26–28 recorded and verified (2026-10-04):** all three approved,

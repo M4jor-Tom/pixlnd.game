@@ -2218,6 +2218,23 @@ recovery and separate paid, consensual sleep to the **next 07:00**, with approve
 rules (§3.1), remain unchanged. No clock/furniture declaration, source label or gameplay change;
 original sleep activation/healing/rate/baseline histories remain research.
 
+#### Item 33 — Slime habitat and colour reports (owner approved, 2026-10-04)
+
+[Slime revision 19848](https://cubeworld.fandom.com/wiki/Slime?oldid=19848), edited
+**2024-08-14T22:13:29Z**, describes uncommon monsters naturally spawning in **“Mountain
+Areas”** and says **“Slimes will appear in any color in any biome”**, including **Blue
+Slimes not being restricted to Snowlands**. These are unscoped community habitat/colour
+reports, not numerical rarity, the named **Mountains landscape** specifically or a guarantee
+of every colour in every land. The nearby Steam Slime Wells / Alpha Djinn-in-Deserts bullets
+(item 9) do not date these clauses or give whole-family ancestry.
+
+Saved raw revision body/metadata and capture sidecars were inspected, from a prior scout's
+2026-10-04 capture, not externally re-fetched, image-inspected or original-build tested.
+Edit/capture timing is not release or first-introduction evidence. Existing species/family
+and roster declarations are unchanged; their broader wording is not verified by this passage.
+Per-membership histories remain research; no encounters, source labels, rarity or live-data
+changes follow.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2466,12 +2483,17 @@ the current Alpha-focused Kotaku guide's ten wiki-credited pair reports, not an 
 Leaf 10086's Koala association/unidentified-version unobtainability/cheat-acquisition report,
 not demonstrated taming or chronology; Candy stays Koala's bait and Leaf stays cut.
 Items 29–31 passed fresh independent source/diff/log review and parent actual-commit/diff audit /
-bounded validator/boot verification (`todo_decide.md §E`, with limits). Items 32–35 remain
-presented but unanswered, preserved in `docs/HANDOFF.md`; remaining histories stay research.
+bounded validator/boot verification (`todo_decide.md §E`, with limits) at that historical checkpoint.
+Remaining histories stay research.
+
+**Validation-contract source item 33 — DECIDED 2026-10-04:** §5 attributes Slime
+habitat/colour reports, not named-Mountains scope, numerical rarity or guaranteed distribution.
+Items 34–35 are approved, awaiting separate recording; independent review and parent verification
+are pending. Item 32 alone remains presented but unanswered, verbatim in `docs/HANDOFF.md`.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–31 recorded and verified (`todo_decide.md §E`, with evidence limits). Items 32–35 are presented but unanswered, preserved exactly in `docs/HANDOFF.md`; resume those in this topic, not implementation or whole-topic completion. Unsupported food/mixed-container histories, including sleep-speed units, remain research; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–31 recorded and verified (`todo_decide.md §E`, with evidence limits). Item 33 recorded; 34–35 approved awaiting recording, independent review/parent verification pending. Item 32 alone is presented but unanswered, preserved exactly in `docs/HANDOFF.md`; resume it in this topic, not implementation or whole-topic completion. Unsupported food/mixed-container histories, including sleep-speed units, remain research; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

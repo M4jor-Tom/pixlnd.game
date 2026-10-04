@@ -137,11 +137,16 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Source-attribution direction — items 29–31 (2026-10-04):** owner approved only 29–31
+**Source-attribution direction — items 33–35 (2026-10-04):** all approved; item 33 recorded,
+34–35 await separate recording. Independent review / parent verification pending. Item 32 alone
+remains presented but unanswered, verbatim in `docs/HANDOFF.md`; no refusal or implementation debt.
+Parent owns final verification/handoff/last-hash finalization and authorized push, then STOP.
+
+**Historical source-attribution direction — items 29–31 (2026-10-04):** owner approved only 29–31
 (“2ç” explicitly read as 29). All three recorded and verified in separate documentation commits.
 Fresh independent recording review found no issues; parent actual-diff audit and bounded
-validator/boot reruns passed (evidence below). **Items 32–35 were presented but remain
-unanswered**, preserved verbatim in `docs/HANDOFF.md`; next agent resumes them in this topic.
+validator/boot reruns passed (evidence below). Items 32–35 were then unanswered; current
+approvals/status are above.
 Parent owns final verified handoff/commit/push, then STOP; no new research, proposals or implementation.
 
 **Historical source-attribution direction — items 26–28 (2026-10-04):** all three approved, recorded
@@ -677,8 +682,9 @@ not open questions. Persistence items 1–9 are recorded and reviewed above.
 World bounds / resets items 1–4 are recorded below; no presented question remains.
 Validation-contract mapping/source items 1–28 are historically recorded and verified below;
 approved 29–31 are recorded and verified, with fresh independent review and parent checks below.
-**Presented but unanswered 32–35** resume in this topic; exact proposals/consequences/examples/links
-are in `docs/HANDOFF.md`. Historical research, including original Alpha/Steam sleep-rate
+Item 33 is recorded; 34–35 approved awaiting separate recording, independent review/parent
+verification pending. **Presented but unanswered 32 alone** resumes in this topic; its exact
+proposal/consequences/example/link are in `docs/HANDOFF.md`. Historical research, including original Alpha/Steam sleep-rate
 baseline/units (§5 items 10–11), stays open.
 - [ ] **Validation-contract source research/attribution (2026-09-17 contract approved):**
   required paths/shapes, bounded source inheritance and check boundaries are recorded in
@@ -692,7 +698,40 @@ baseline/units (§5 items 10–11), stays open.
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
 
-### Validation-contract source attribution — items 29–31 (2026-10-04)
+### Validation-contract source attribution — items 33–35 (2026-10-04)
+
+**Exact owner answer:** “33: Approved; 34: Approved; 35: Approved; When handled, handoff, commit, psh”.
+Parent interprets `psh` as push; writer does not push. **32 remains PRESENTED BUT UNANSWERED**,
+verbatim in `docs/HANDOFF.md`, not refused or held implementation. Items 1–31 and hybrid rules stand.
+Only approved source reports/limits in five existing Markdown paths; no gameplay, JSON, tests,
+checker, research, labels, defaults, schema, compatibility or migration changes.
+
+| item | application | canonical section | commit evidence |
+|---|---|---|---|
+| 33 — Slime habitat/colour reports | [x] recorded; review pending | `domain.md §5` / §7 | pending item commit; parent finalizes |
+| 34 — Individual Runner habitat reports | approved; awaiting recording | `domain.md §5` / §7 | pending |
+| 35 — Limited HUD/placement disagreement | approved; awaiting recording | `domain.md §5` / §7 | pending |
+
+**33 — Approval versus Refusing:** approval adds bounded habitat evidence without changing
+encounters; refusal would leave it unrecorded, not select snow-only Blue Slimes.
+
+**Writer evidence/gates:** `/tmp/pixlnd-source-resume-32-35.RySLWG/recording/` holds source
+extractions (`item-N-source.txt`, raw source paths/hashes in `source-sidecars.log`), semantic/scope
+inspection, `/simplify` then ponytail-review (`item-N-review.md`), exact binary/full-index
+`item-N.diff`, `item-N-staged.diff`, `item-N-committed.diff`, comparisons, full `item-N.sha`,
+`commit-map.md` and aggregate `batch.diff`. Each recorded item is gated before commit by
+`git diff --check` and `timeout 150 nix develop -c godot --headless -s ontology/validate.gd`;
+actual logs/exits: `item-N-{diff-check,validator}.log/.exit`, not prior batches' proof.
+Validator covers existing loaded data, not prose/history or new enforcement. Saved captures
+inspected, not externally re-fetched, image-inspected or original-build executed; capture timing
+is not response completion or release evidence. No boot, gameplay suite, visual or multiplayer
+checks by this writer. Initial extraction exit 5 is preserved in `source-inspection-failure.log/.exit`;
+supervisor approved corrected local content/title extraction, not an external retry or missing-UI
+inference (`extraction-authorization.md`). **Independent review and parent verification pending.**
+Parent owns the separate final verification/handoff commit, last hash and authorized normal push,
+then STOP. Item 32 alone is the next exact unanswered question; broader histories remain research.
+
+### Historical validation-contract source attribution — items 29–31 (2026-10-04)
 
 **Exact owner answer:** “2ç: Approved; 30: Approved; 31: Approved; Keep the next items for
 next agents (you're already at 86% of context); Once handled, handoff, commit, push.”

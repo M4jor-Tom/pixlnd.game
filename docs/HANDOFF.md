@@ -1,8 +1,46 @@
 # Handoff — resume here
 
-## Ontology walkthrough entry point (2026-10-04, source items 29–35)
+## Ontology walkthrough entry point (2026-10-04, source items 33–35)
 
-**Current task: final verified handoff/publication, then STOP.**
+**Current task: record approved source items 33–35, then independent review / parent verification.**
+Owner exact answer: **“33: Approved; 34: Approved; 35: Approved; When handled, handoff, commit, psh”**.
+Parent reads `psh` as push; parent alone owns final verification/handoff commit, last-hash
+finalization and authorized normal push on `fix/ontology-reconciliation`, then STOP.
+**Item 33 recorded; 34–35 approved, awaiting separate recording.** Independent review and
+parent verification are **pending**, not inherited from previous batches. Items 1–31 and all
+settled hybrid rules stand. Previous checkpoints below are explicitly historical.
+
+Canonical evidence: `ontology/domain.md §5` / §7; approvals/commit mapping and limits:
+`docs/ROADMAP/todo_decide.md §E`; remaining research/enforcement: `todo_implement.md`.
+Binding approvals, saved-source inspection, per-item simplify → ponytail-review notes, fresh
+bounded check logs/exits and exact binary/full-index diffs/comparisons:
+`/tmp/pixlnd-source-resume-32-35.RySLWG/recording/` (brief in its parent directory).
+Saved raw sources inspected locally, not externally re-fetched, image-inspected or original-build
+executed. Capture/edit timing is not release evidence; validator checks existing loaded data,
+not historical truth, Markdown or new enforcement. No boot, gameplay suite, visual or multiplayer
+checks by this writer. Initial local source extraction failed; supervisor authorized corrected
+field/title selection (preserved failure and reply in evidence); no external retry/re-fetch.
+Five existing Markdown paths only; no gameplay, JSON, tests, checker, research, labels, defaults,
+schema, compatibility or migration changes. No amendments, merge, rewrite, push or new proposals.
+
+**Next resume: Validation-contract source research/attribution — item 32 alone.**
+It is **PRESENTED BUT UNANSWERED**, neither refused nor approved nor implementation debt.
+Other unsupported histories remain research; do not advance to Swamp Lands/Lion/resistance/
+gear HP or implementation. Preserve this exact proposal and wait for its answer:
+
+### 32. One pet-food type is not one purchasable unit
+
+**Recommendation:** attribute [Pet Food revision 20438](https://cubeworld.fandom.com/wiki/Pet_Food?oldid=20438)’s **“one type of pet food per day”** wording—not a one-unit purchase limit.
+
+For example, stocking only Carrots says nothing here about how many carrots can be bought. This sentence identifies no Alpha/Steam build. Other stale page clauses cannot override Banana Mash or shared Bubble Gum approvals.
+
+#### Approval versus Refusing
+- **Approval:** documents the type/quantity distinction; changes no stock or purchases.
+- **Refusing:** leaves attribution incomplete; does not approve a one-unit limit.
+
+## Historical source-attribution items 29–31 checkpoint (2026-10-04, superseded entry point)
+
+**Historical task: final verified handoff/publication, then STOP.**
 Owner exact answer: **“2ç: Approved; 30: Approved; 31: Approved; Keep the next items for next
 agents (you're already at 86% of context); Once handled, handoff, commit, push.”**
 Parent explicitly interpreted **2ç as 29** (AZERTY 9 = ç), not broader approval.
