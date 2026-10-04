@@ -1961,6 +1961,26 @@ externally re-fetched or original behavior tested. Wiki edit/capture dates are n
 or introduction dates. This report supplies no A/S release attribution or availability for
 the Forest page's separately planned forests; per-membership histories/other traits remain research.
 
+#### Item 18 — Cotton-only armor quantities (owner approved, 2026-10-04)
+
+[Cotton Armor revision 12947](https://cubeworld.fandom.com/wiki/Cotton_Armor?oldid=12947)
+reports a full **20-row cotton table**, summarized here by rarity (Cotton Yarn quantities):
+
+| rarity | chest | shoulder | gloves | boots | additional gems |
+|---|---|---|---|---|---|
+| Common | 10 | 6 | 5 | 5 | none |
+| Uncommon | 20 | 12 | 10 | 10 | Emerald: chest 4, each other piece 2 |
+| Rare | 30 | 18 | 15 | 15 | Sapphire: chest 4, each other piece 2 |
+| Epic | 40 | 24 | 20 | 20 | Ruby: chest 4, each other piece 2 |
+| Legendary | 50 | 30 | 25 | 25 | Diamond: chest 4, each other piece 2 |
+
+Thus the source reports a common chest at **10 yarn**, a legendary chest at **50 yarn +
+4 diamonds**. This attributes the existing reported table, not a newly selected crafting bill.
+Community-report/capture/date limits follow item 17. It establishes neither equivalent iron,
+linen or silk costs, per-weapon quantities nor a release date. The other-material generalization
+in `recipes.json` remains an assumption; **D6 and the approved Wand's 20 wood cubes stand
+independently and unchanged**. No recipe, station, label or live-data changes.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2153,12 +2173,15 @@ Koala report's empty Food cell, not food identity, chronology or demonstrated ta
 
 **Validation-contract source item 17 — DECIDED 2026-10-04:** §5 records eight Forest rows
 and bounded Beetle reports, not roster changes or release attribution.
-Source items 18–21 are approved, awaiting documentation recording; fresh independent review
+
+**Validation-contract source item 18 — DECIDED 2026-10-04:** §5 attributes cotton quantities,
+not other-material/weapon costs or new recipes.
+Source items 19–21 are approved, awaiting documentation recording; fresh independent review
 and parent verification/publication of this batch remain pending (`todo_decide.md §E`).
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–17 recorded; items 18–21 approved awaiting recording; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–18 recorded; items 19–21 approved awaiting recording; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

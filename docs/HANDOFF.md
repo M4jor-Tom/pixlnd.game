@@ -4,7 +4,7 @@
 
 **Current task: record six approved documentation items, then parent handoff/publication and STOP.**
 Owner: **“16: Approved; 17: Approved; 18: Approved; 19: Approved; 20: Approved;
-21: Approved; When handled, handoff, commit, push”**. Items 16–17 recorded; 18–21 await recording.
+21: Approved; When handled, handoff, commit, push”**. Items 16–18 recorded; 19–21 await recording.
 No presented unanswered proposal remains. Older handoff-only/publication entries below are
 historical; this new invocation authorizes only this six-item recording batch.
 
