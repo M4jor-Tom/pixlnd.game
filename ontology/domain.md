@@ -1181,6 +1181,17 @@ reports or exclusively S history. Existing S annotations are preserved, not newl
 confirmed. Rideability columns do not override **F2**. All pairings, labels, prices and IDs,
 **F11's obtainable Banana Mash**, shared Bubble Gum and hybrid rules remain unchanged.
 
+**Validation-contract source item 16 (owner approved, 2026-10-04):** the archived community
+[Koala page](https://web.archive.org/web/20130708192756/http://cubeworldwiki.net/index.php/Koala),
+snapshot **20130708192756**, revision **4032**, has an **empty Food cell**. It supplies no food
+identity. Its Rideable cell is also empty, with no inference overriding F2; classifying Koala
+as a pet is not demonstrated taming. The snapshot date and displayed last edit (7 July 2013,
+13:47) do not date either bait's introduction or replacement. This report proves neither Alpha
+absence, either bait's obtainability nor successful taming. **Eucalyptus Candy remains Koala's
+bait; Kaliptus Leaf remains cut**, with chronology unresolved (items 6/12–14). The source-scout
+capture was retrieved 2026-10-04 and inspected here, not re-fetched or behavior-tested by this
+writer. No pairing, availability, source label or hybrid rule changes.
+
 ### key-item
 `S` land-bound "special" items (A: glider & boat were bought items in the special slot).
 → `instances/key-items.json`: hang-glider, boat, reins, climbing-spikes (movement, 4/land);
@@ -2108,9 +2119,14 @@ Items 12–15 passed fresh independent source review and parent actual-diff audi
 validator/boot verification (`todo_decide.md §E`, including evidence limits).
 Remaining histories are research, not unanswered proposals.
 
+**Validation-contract source item 16 — DECIDED 2026-10-04:** §3.4 records the archived
+Koala report's empty Food cell, not food identity, chronology or demonstrated taming.
+Source items 17–21 are approved, awaiting documentation recording; fresh independent review
+and parent verification/publication of this batch remain pending (`todo_decide.md §E`).
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–15 recorded; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–16 recorded; items 17–21 approved awaiting recording; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

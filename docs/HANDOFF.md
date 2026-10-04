@@ -1,8 +1,40 @@
 # Handoff — resume here
 
-## Ontology walkthrough entry point (2026-10-04, source items 12–15)
+## Ontology walkthrough entry point (2026-10-04, source items 16–21)
 
-**Current task: final reviewed handoff/publication, then STOP.**
+**Current task: record six approved documentation items, then parent handoff/publication and STOP.**
+Owner: **“16: Approved; 17: Approved; 18: Approved; 19: Approved; 20: Approved;
+21: Approved; When handled, handoff, commit, push”**. Item 16 recorded; 17–21 await recording.
+No presented unanswered proposal remains. Older handoff-only/publication entries below are
+historical; this new invocation authorizes only this six-item recording batch.
+
+Canonical evidence: `ontology/domain.md#pet-food` (16) / §5 (17–21); compact approval/status
+and evidence: `docs/ROADMAP/todo_decide.md §E`, `/tmp/pixlnd-source-reconciliation.j0nQEI/`.
+All earlier decisions stand. Five existing Markdown paths only; no gameplay, JSON, research,
+tests/checker work, labels, defaults, migration or compatibility changes.
+
+**Writer checkpoint: recording in progress.** Per-item semantic/scope, `/simplify`, ponytail-review,
+diff-check and bounded validator results are saved in that scratch directory. These checks cover
+existing loaded data, not original-game behavior, prose semantics or new enforcement; saved
+community source bodies are inspected, not executed or externally re-fetched by this writer.
+Fresh independent review, parent actual-commit/diff audit and fresh validator/boot checks,
+separate final verification/handoff record and publication are **PENDING**, not passed.
+Parent alone finalizes and pushes `fix/ontology-reconciliation`, verifies local/upstream/fresh
+live remote equality and clean state, then STOP. No merge, rewrite or new proposals.
+
+**Next resume topic: Validation-contract source research/attribution (remaining research).**
+Unfinished: per-food first obtainable appearances and working taming in identified original
+builds; Leaf/Candy chronology; Alpha/Steam furniture sleep activation/healing/rate/baseline/units;
+per-membership fauna/other traits; exact affix/name/possessive histories; refining yields/ratios,
+noncotton/undocumented weapon costs; unscoped stock/loot/probabilities/daily pet-food amount;
+original population census/undead exceptions/animal composition/accumulation cause; shipped A*/
+daily routes/nightly lanterns; other UI/camera/candle/furniture/audio/track/literal dialogue histories.
+No whole-topic completion; do not advance to Swamp Lands/Lion/resistance/gear HP or gameplay.
+After parent publication, final response: next topic title only.
+
+## Historical source-attribution items 12–15 checkpoint (2026-10-04, superseded entry point)
+
+**Historical task: final reviewed handoff/publication, then STOP.**
 Owner answers: **“12: Approved; 13: Approved; 14: Approved; 15: clarify”**, then after
 clarification **“15: Approved; When done, handoff, commit, push”**. The item-15 question was
 clarification, not refusal. The previous handoff-only boundary below is historical, superseded
