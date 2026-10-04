@@ -1997,6 +1997,21 @@ establishes release chronology beyond its explicit report scope; community/captu
 follow item 17. Existing loot/reward rules remain unchanged. No shop, pricing, loot or source-label
 changes, excluded `+` equipment proposal or regional mechanic follows.
 
+#### Item 20 — Population observations, not a census (owner approved, 2026-10-04)
+
+[Human revision 19440](https://cubeworld.fandom.com/wiki/Human?oldid=19440) says humans
+are the **majority** of city residents, not that towns are **all-human**.
+[City revision 20239](https://cubeworld.fandom.com/wiki/City?oldid=20239) gives village
+animals **“such as” Collies, Cats, Sheep, Terriers and Pigs**, and reports that more NPCs
+**accumulate the longer the player stands in town**. These are community observations with
+item 17's capture/date limits, not an exhaustive or mandatory every-town roster.
+
+Majority does not prove exclusivity or a numeric ratio. These passages supply no original
+Alpha/Steam census, undead-exception scope, accumulation cause, growth/spawn algorithm or
+stable timing. The retained all-human community observation is not converted into an
+exhaustive rule or a demonstrated original-behavior contradiction. Existing hybrid settlements
+and safety remain unchanged; no population, encounter, source-label or live-data changes.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2195,12 +2210,15 @@ not other-material/weapon costs or new recipes.
 
 **Validation-contract source item 19 — DECIDED 2026-10-04:** §5 records stock/Leftovers
 reports, not probabilities, tier restrictions or economy changes.
-Source items 20–21 are approved, awaiting documentation recording; fresh independent review
+
+**Validation-contract source item 20 — DECIDED 2026-10-04:** §5 distinguishes population
+observations from a census or spawn algorithm.
+Source item 21 is approved, awaiting documentation recording; fresh independent review
 and parent verification/publication of this batch remain pending (`todo_decide.md §E`).
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–19 recorded; items 20–21 approved awaiting recording; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–20 recorded; item 21 approved awaiting recording; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
