@@ -1158,6 +1158,29 @@ demonstrates working taming. **Eucalyptus Candy remains Koala's food; Kaliptus L
 cut**. The retained replacement note stands with chronology unresolved; no guide reverses it
 or changes source labels, availability or hybrid rules.
 
+**Validation-contract source item 14 (owner approved, 2026-10-04):** individually attribute
+these **ten already S-annotated foods** to the inspected guides' food/pet columns. Guide links
+and current-capture qualifications are in item 13 above; these are community reports only.
+
+| existing food | reported pet | Steam guide ID |
+|---|---|---|
+| Banana Mash | Warthog | 1865509515 and 1879943518 |
+| Buckhorn | Beaver | 1873333729 |
+| Cabbage Rolls | Snail | 1873333729 |
+| Chocolate Ice Cream | Baby Mammoth | 1873333729 |
+| Mineral Water | Radishling Sprout | 1873333729 |
+| Mixed Salad | Caterpillar | 1873333729 |
+| Peanut | Baby Elephant | 1873333729 |
+| Radicchio Salad | Earth Caterpillar | 1873333729 |
+| Raspberry Juice | Flamingo | 1873333729 |
+| Spring Water | Cormling Sprout | 1873333729 |
+
+These reports establish neither first appearances, Alpha absence, per-food obtainability nor
+demonstrated successful taming. They do not date individual row additions or prove independent
+reports or exclusively S history. Existing S annotations are preserved, not newly inferred or
+confirmed. Rideability columns do not override **F2**. All pairings, labels, prices and IDs,
+**F11's obtainable Banana Mash**, shared Bubble Gum and hybrid rules remain unchanged.
+
 ### key-item
 `S` land-bound "special" items (A: glider & boat were bought items in the special slot).
 → `instances/key-items.json`: hang-glider, boat, reins, climbing-spikes (movement, 4/land);
@@ -2058,9 +2081,12 @@ Writer checks/evidence and pending independent review: `todo_decide.md §E`.
 **Validation-contract source item 13 — DECIDED 2026-10-04:** §3.4 records conflicting
 Koala-food community reports, preserving Eucalyptus Candy, cut Kaliptus Leaf and unresolved chronology.
 
+**Validation-contract source item 14 — DECIDED 2026-10-04:** §3.4 individually attributes
+ten existing S-food pair reports, not first appearances, obtainability or successful taming.
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–13 recorded; items 14–15 approved for recording; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–14 recorded; item 15 approved for recording; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

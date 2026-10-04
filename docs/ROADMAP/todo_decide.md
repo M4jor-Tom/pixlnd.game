@@ -138,7 +138,7 @@ passed; evidence and limits below. Ontology documentation only; gameplay, live J
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
 **Source-attribution direction (2026-10-04):** all items 12–15 approved, item 15 after
-clarification; recorded for documentation only: 12–13. Items 14–15 are approved, awaiting recording.
+clarification; recorded for documentation only: 12–14. Item 15 is approved, awaiting recording.
 Items 1–11 and settled hybrid rules stand; no presented unanswered proposal remains.
 Writer evidence and pending independent review / parent verification: the current record below.
 Parent owns final handoff/publication, then STOP; no new proposals or implementation.
@@ -649,12 +649,12 @@ Traversal items 1–5 are recorded (item 4 corrected) and reviewed; evidence bel
 Books/formulas items 1–3, artifact items 1–6, Assassin item 1 and Wand item 1 are recorded below,
 not open questions. Persistence items 1–9 are recorded and reviewed above.
 World bounds / resets items 1–4 are recorded below; no presented question remains.
-Validation-contract mapping/source items 1–13 are recorded below; all items 12–15 approved;
+Validation-contract mapping/source items 1–14 are recorded below; all items 12–15 approved;
 no presented unanswered proposal remains. Historical research, including original Alpha/Steam
 sleep-rate baseline/units (§5 items 10–11), stays open.
 - [ ] **Validation-contract source research/attribution (2026-09-17 contract approved):**
   required paths/shapes, bounded source inheritance and check boundaries are recorded in
-  `domain.md §5`; source items 6–13 add bounded evidence, not complete histories. Unsupported
+  `domain.md §5`; source items 6–14 add bounded evidence, not complete histories. Unsupported
   food release histories (`pet-food`) and remaining mixed-container histories (§5 item 7) are
   research, not guessed labels or new gameplay ballots. No whole-topic completion is claimed;
   direct data correction and enforcement remain separately unauthorized, with no migration or
@@ -674,7 +674,7 @@ clarification was not refusal/correction. No presented unanswered proposal remai
 |---|---|---|
 | 12 — Pinned cuwo food names | [x] recorded | `domain.md#pet-food` / §7 |
 | 13 — Conflicting Koala-food reports | [x] recorded | `domain.md#pet-food` / §7 |
-| 14 — Ten existing S-food reports | approved; awaiting recording | `domain.md#pet-food` / §7 |
+| 14 — Ten existing S-food reports | [x] recorded | `domain.md#pet-food` / §7 |
 | 15 — Three dated UI patch reports | approved; awaiting recording | `domain.md §5` / §7 |
 
 **12 — Approval versus Refusing:** approval strengthens item 6's naming evidence without
@@ -684,6 +684,10 @@ not select different pairings or history.
 **13 — Approval versus Refusing:** approval records the Koala-food disagreement without
 changing the planned Eucalyptus Candy offer; refusal would leave comparison unrecorded,
 neither restore Kaliptus Leaf nor resolve history.
+
+**14 — Approval versus Refusing:** approval makes existing bait choices traceable, including
+Banana Mash/Warthog, without a new mechanic; refusal would leave attribution unrecorded
+while all choices, F11 and shared Bubble Gum stand.
 
 **Evidence/checks:** `/tmp/pixlnd-reconcile-research.7wbpsE/` holds the binding approval brief,
 source checks and per-item `item-N-review.md` (`/simplify`, then ponytail-review), exact binary
