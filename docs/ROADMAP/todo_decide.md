@@ -138,7 +138,7 @@ passed; evidence and limits below. Ontology documentation only; gameplay, live J
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
 **Source-attribution direction — items 22–25 (2026-10-04):** all four approved;
-item 22 recorded, 23–25 await recording. Items 1–21 and all hybrid approvals stand.
+items 22–23 recorded, 24–25 await recording. Items 1–21 and all hybrid approvals stand.
 Evidence only; no presented unanswered proposal remains. Writer review/check evidence below;
 fresh independent review and parent checks pending. Parent owns final handoff/publication;
 writer creates only the four item commits, no new proposals or implementation.
@@ -662,12 +662,12 @@ Traversal items 1–5 are recorded (item 4 corrected) and reviewed; evidence bel
 Books/formulas items 1–3, artifact items 1–6, Assassin item 1 and Wand item 1 are recorded below,
 not open questions. Persistence items 1–9 are recorded and reviewed above.
 World bounds / resets items 1–4 are recorded below; no presented question remains.
-Validation-contract mapping/source items 1–22 are recorded below; approved 23–25 await recording;
+Validation-contract mapping/source items 1–23 are recorded below; approved 24–25 await recording;
 no presented unanswered proposal remains. Historical research, including original Alpha/Steam
 sleep-rate baseline/units (§5 items 10–11), stays open.
 - [ ] **Validation-contract source research/attribution (2026-09-17 contract approved):**
   required paths/shapes, bounded source inheritance and check boundaries are recorded in
-  `domain.md §5`; source items 6–22 add bounded evidence, not complete histories. Unsupported
+  `domain.md §5`; source items 6–23 add bounded evidence, not complete histories. Unsupported
   food release histories (`pet-food`) and remaining mixed-container histories (§5 item 7) are
   research, not guessed labels or new gameplay ballots. No whole-topic completion is claimed;
   direct data correction and enforcement remain separately unauthorized, with no migration or
@@ -685,14 +685,18 @@ Canonical content: `domain.md §5`; all earlier approvals stand.
 
 | item | application | canonical section | commit |
 |---|---|---|---|
-| 22 — Existing rarity-prefix lists | [x] recorded; fresh review pending | `domain.md §5` / §7 | pending item commit |
-| 23 — Furniture-sleep reports | approved; awaiting recording | `domain.md §5` / §7 | pending recording |
+| 22 — Existing rarity-prefix lists | [x] recorded; fresh review pending | `domain.md §5` / §7 | 3fba786f46f7fdaca40017b3d098f6be9f79d501 |
+| 23 — Furniture-sleep reports | [x] recorded; fresh review pending | `domain.md §5` / §7 | pending item commit |
 | 24 — Candle appearance/placement | approved; awaiting recording | `domain.md §5` / §7 | pending recording |
 | 25 — Campsite furniture | approved; awaiting recording | `domain.md §5` / §7 | pending recording |
 
 **22 — Approval versus Refusing:** approval attributes existing prefixes without changing the
 always-named equipment guarantee; refusal would leave the report unrecorded, not change names
 or naming frequency.
+
+**23 — Approval versus Refusing:** approval records furniture-sleep reports and uncertainty,
+not controls, healing numbers or mechanics; refusal would leave them unrecorded, not approve
+a rate or interpretation. The approved inn service remains unchanged either way.
 
 **Writer evidence/gates:** `/tmp/pixlnd-source-items-22-25.cMj0dO/` holds the binding
 `approval-brief.md`, `inspected-sources.md`, exact binary `item-N.diff`, `item-N-staged.diff`,

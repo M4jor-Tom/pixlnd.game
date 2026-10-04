@@ -2048,6 +2048,27 @@ feature introduction nor original Alpha/Steam behavior. Exact possessive-name an
 generation/release histories remain unresolved. No names, naming frequency, prefixes, source
 labels or live declarations change.
 
+#### Item 23 — Furniture-sleep reports, not a selected rate (owner approved, 2026-10-04)
+
+[Sleep revision 17998](https://cubeworld.fandom.com/wiki/Sleep?oldid=17998), edited
+**2024-01-04T06:55:34Z**, reports interacting with a **bed or bedroll** using **R in Alpha /
+E in Steam**, regenerating HP **without restoration items**, and being unable to do so
+**in combat stance**. It also reports approximately **two game minutes per second** while
+asleep; that speed sentence has no individually identified Alpha/Steam build scope.
+[Bedroll revision 11769](https://cubeworld.fandom.com/wiki/Bedroll?oldid=11769), edited
+**2019-04-23T19:59:38Z**, estimates **10 health per second**, explicitly **“Requires Testing”**.
+Its **“does not pass time like an Inn”** wording does not clearly distinguish clock acceleration
+from an inn skip. Neither page demonstrates either rate in an identified original build or
+resolves historical sleep baseline/units (items 10–11); no numerical contradiction is proven.
+
+Saved raw revision bodies/metadata and extracted passages were inspected here, from source-scout
+captures retrieved **2026-10-04**, not externally re-fetched or original behavior tested by this
+writer. Edit/capture dates do not date feature introductions. These community reports select
+no furniture controls, healing numbers or sleep mechanics, and do not extend bed/bedroll claims
+to bench/stool IDs. Free inn recovery and separate paid, consensual sleep to the **next 07:00**,
+with the approved reset/payment rules, remain unchanged (§3.1). No rate, source label or live
+furniture/clock declaration changes; original activation/healing/rate histories remain research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2258,12 +2279,15 @@ Remaining histories are research, not unanswered proposals.
 
 **Validation-contract source item 22 — DECIDED 2026-10-04:** §5 attributes the existing
 rarity-prefix lists, preserving the always-named guarantee and unresolved name histories.
+
+**Validation-contract source item 23 — DECIDED 2026-10-04:** §5 records bed/bedroll reports
+and uncertain rates/inn wording, not furniture mechanics or a hybrid inn change.
 Writer review/check evidence: `todo_decide.md §E`; fresh independent review and parent checks pending.
-Items 23–25 are approved and await recording; remaining histories stay research.
+Items 24–25 are approved and await recording; remaining histories stay research.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–22 recorded; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–23 recorded; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

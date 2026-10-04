@@ -184,9 +184,10 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 - [ ] Source item 22 (`domain.md §5`): prefix-list attribution does not resolve exact possessive-name
   or original-prefix generation/release histories; keep the always-named Epic/Legendary guarantee.
   No names, naming frequency, prefixes or label changes are authorized.
-- [ ] Source items 10–11 (`domain.md §5`): original Alpha/Steam sleeping baseline/units remain
-  research. The pinned cuwo normal-clock calculation does not resolve them; its named sleep constant
-  appears only at its definition. No inferred sleep rate, furniture rule or hybrid clock/inn change.
+- [ ] Source items 10–11/23 (`domain.md §5`): original Alpha/Steam furniture-sleep activation,
+  healing, rate and baseline/units remain research. Pinned cuwo normal-clock code/definition-only
+  sleep constant and community Sleep/Bedroll reports do not resolve them. Retain “Requires Testing”
+  and ambiguous inn wording; no inferred controls, healing/rate, bench/stool rule or hybrid inn change.
 
 ## Meta / tooling
 - [ ] Save-data (§3.7): nothing persists (world seed, character, discovered lands).
