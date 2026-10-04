@@ -27,9 +27,10 @@ slice loop. A green validator proves only its implemented checks, not full ontol
 
 **Source-attribution items 5–7 recorded (2026-10-04):** corrected food count, food-history
 evidence/limits and bounded mixed-source subfacts (`domain.md#pet-food` / §5), preserving F11
-and existing annotations. No blanket fauna ancestry or completed-history claim. Independent
-review and parent finalization are pending; remaining research/evidence: `todo_decide.md §E`.
-No data/code/checker work authorized; final handoff/publication belongs to the parent.
+and existing annotations. No blanket fauna ancestry or completed-history claim. Fresh independent
+review found no issues; parent verified actual diffs and reran bounded validator/boot checks.
+Remaining research and evidence limits: `todo_decide.md §E`. Data/code/checker work remains
+unauthorized; final handoff/publication/stop: `docs/HANDOFF.md`.
 
 **Historical validation-contract mapping items 1–4 recorded (2026-09-28):** `domain.md §5` now maps
 required heterogeneous paths/shapes, bounded source inheritance and definition/generator/runtime

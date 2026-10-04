@@ -137,9 +137,10 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Source-attribution direction (2026-10-04):** approved items 5–7 are recorded below.
-No presented unanswered proposal remains. Independent review and parent finalization are pending;
-resume remaining source research, not the uncertain-gameplay-facts batch or implementation.
+**Source-attribution direction (2026-10-04):** approved items 5–7 are recorded and verified below.
+No presented unanswered proposal remains. Independent review found no issues; parent verified
+actual diffs and reran validator/boot checks. Final handoff/publication/stop: `docs/HANDOFF.md`.
+Resumption remains source research, not the uncertain-gameplay-facts batch or implementation.
 
 **Historical validation-contract mapping direction (2026-09-28):** items 1–4 are recorded below; item 4
 adds the detailed mapping and owner correction: undeployed game, no player data to migrate,
@@ -670,9 +671,9 @@ Items 1–4 and their 2026-09-28 dates stand.
 
 | item | application | canonical section | commit |
 |---|---|---|---|
-| 5 — Pet-food count | [x] recorded; pending independent review | `domain.md#pet-food` / §7 | e575f22a4c271d6f77dcc86af77d0d44c3ffd1ff |
-| 6 — Food-history evidence and limits | [x] recorded; pending independent review | `domain.md#pet-food` / §7 | 73ae633587d7a6d0c508297b3d3aa1fc585240e1 |
-| 7 — Narrow mixed-source subfacts | [x] recorded; pending independent review | `domain.md §5` / §7 | this item commit; hash finalized by parent handoff |
+| 5 — Pet-food count | [x] recorded and verified | `domain.md#pet-food` / §7 | e575f22a4c271d6f77dcc86af77d0d44c3ffd1ff |
+| 6 — Food-history evidence and limits | [x] recorded and verified | `domain.md#pet-food` / §7 | 73ae633587d7a6d0c508297b3d3aa1fc585240e1 |
+| 7 — Narrow mixed-source subfacts | [x] recorded and verified | `domain.md §5` / §7 | 0531ca460480a7829b9df67caf66323544faa56e |
 
 **Item 5:** corrected the summary to 58 obtainable + five cut. Original JSON count and the
 older six-name research lists were inspected directly; Banana Mash is the overlap, not a missing
@@ -699,17 +700,37 @@ not approve alternative gameplay or blanket labels.
 **Remaining research (not new proposals):** unsupported food release histories; roster memberships/
 traits, exact affix lists, recipe/refining quantities, unscoped shop/loot, population/shipped
 schedules, UI/camera details, candles/furniture and audio/dialogue examples (`domain.md §5 item 7`).
-Independent review and parent checks must precede the final handoff commit and authorized push;
-the writer does not publish. No whole-topic completion or next-topic proposal is claimed.
+The remaining research is not an unanswered owner ballot. No whole-topic completion or next-topic
+proposal is claimed; the authorized handoff ends this walkthrough session.
 
 **Evidence and gates:** `/tmp/pixlnd-source-attribution.ADFqBg/` holds the binding
 `approval-brief.md`, `food-counts.json`, per-item `item-N-review.md` (semantic/scope inspection,
 `/simplify`, then ponytail-review), exact binary `item-N.diff`, `item-N-{diff-check,validator}.log/.exit`,
 commit output/hash and `commit-map.md`. Commands for each item: `git diff --check` and
 `timeout 150 nix develop -c godot --headless -s ontology/validate.gd`. Logs/exits record actual
-results; these checks cover existing loaded data, not prose semantics or new enforcement.
-Independent review and parent final verification/handoff/publication are pending. No tests,
-live data, research dumps or code changes are authorized; no external-source verification claimed.
+results: all three validators printed `ontology valid` and exited 0, with expected dirty-tree
+warnings; all diff checks passed. These check existing loaded data, not prose semantics or new
+enforcement. No tests, live data, research dumps or code changed.
+
+**Independent review / parent verification:** fresh read-only source/diff/log review found no
+issues (`independent-review.md`); the reviewer ran no commands/tests or independent hash comparisons.
+Parent inspected the actual three commits and source citations, confirmed every saved/committed
+diff match, commit order and five-Markdown-path scope (`parent-audit.log/.exit`,
+`item-N-committed.diff`, `parent-batch.diff`), and independently reran both commands (exit 0):
+```
+timeout 150 nix develop -c godot --headless -s ontology/validate.gd
+timeout 150 nix develop -c godot --headless --quit
+```
+`parent-{validator,boot}.log/.exit` show `ontology valid` and normal hybrid startup. These checks
+cover loaded data/startup, not newly documented enforcement. No gameplay suite, visual, network
+or fresh external-source/binary verification was performed.
+
+**Final handoff:** this separate verification record follows item `0531ca4`. Pre-publication
+remote `ede00f9` was confirmed with `git ls-remote` (`pre-publication-remote.log`); inspect actual
+Git state on resumption. The final record receives `/simplify`, ponytail-review and bounded
+rechecks, saved as `handoff-review.md`, `handoff.diff` and `handoff-{diff-check,validator,boot}.log/.exit`.
+Publish only the authorized branch, verify local/upstream/live remote equality and clean state,
+then stop (`docs/HANDOFF.md`). No merge, force-push, history rewrite or new proposals.
 
 ### Validation-contract mapping — approved batch (2026-09-28)
 

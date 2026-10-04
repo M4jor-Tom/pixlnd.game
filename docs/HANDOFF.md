@@ -2,18 +2,31 @@
 
 ## Ontology walkthrough entry point (2026-10-04)
 
-**Source-attribution items 5–7 recorded; pending independent review/parent finalization.**
-Item 5: food count (`e575f22`); item 6: food-history evidence/limits (`73ae633`); item 7:
-bounded mixed-source findings (this commit; parent finalizes hash). Canonical findings:
-`ontology/domain.md#pet-food` / §5; exact approvals, commits and evidence:
-`docs/ROADMAP/todo_decide.md §E`, `/tmp/pixlnd-source-attribution.ADFqBg/`.
-No presented unanswered proposal remains. Per-item checks/logs cover existing loaded data,
-not prose semantics or new enforcement; final independent review and parent checks are pending.
+**Source-attribution items 5–7 recorded and verified (2026-10-04).** Item 5: food count
+(`e575f22`); item 6: food-history evidence/limits (`73ae633`); item 7: bounded mixed-source
+findings (`0531ca4`). Owner approved 5 and 7, then approved 6 after clarification:
+**“6: Approved; When done, handoff, commit, push”**. No presented unanswered proposal remains.
+Canonical findings: `ontology/domain.md#pet-food` / §5; exact approvals, item mapping and
+verification limits: `docs/ROADMAP/todo_decide.md §E`.
 
-Only the five existing Markdown paths in `/tmp/pixlnd-source-attribution.ADFqBg/approval-brief.md`
-are authorized; no gameplay, live JSON, research dumps, tests, checker/schema or migration work.
-Parent owns final verification/handoff commit, publication of `fix/ontology-reconciliation`
-and stop. Do not push or start another topic from this writer checkpoint.
+**Verification:** each item passed semantic/scope inspection, `/simplify`, ponytail-review,
+diff checks and bounded ontology validation. Fresh independent source/log review found no issues.
+Parent inspected the actual commits/diffs and source citations, confirmed exact saved-diff
+correspondence and reran bounded ontology validation and headless boot successfully (exit 0).
+Checks cover existing loaded data/startup, not new enforcement. No gameplay suite, visual,
+network or fresh external-source verification. Session-local evidence:
+`/tmp/pixlnd-source-attribution.ADFqBg/`.
+
+**Applied versus deferred:** five existing Markdown paths only. Gameplay, live JSON, research
+dumps, tests and checker/schema remain unchanged; data correction/enforcement are separately
+unauthorized. No migration or legacy compatibility work is needed for this undeployed game.
+
+**Authorized publication:** commit this separate final verification/handoff, push only
+`fix/ontology-reconciliation`, verify local/upstream/live remote equality and clean state,
+then stop. No merge, force-push, history rewrite or new proposals. **Pre-publication checkpoint:**
+clean item HEAD `0531ca4`; live remote `ede00f9` confirmed with `git ls-remote`. The final
+handoff commit follows; inspect actual Git state on resumption, not this checkpoint as proof
+of publication.
 
 **Exact resumption — unfinished source research:** unsupported individual food release histories;
 roster memberships/traits, exact affix lists, recipe/refining quantities, unscoped shop/loot,

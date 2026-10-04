@@ -1938,7 +1938,8 @@ Alpha lead, undated replacement and retained S/X annotations with their evidence
 unsupported release histories remain unresolved, not newly assigned labels.
 **Validation-contract source item 7 — DECIDED 2026-10-04:** §5 records narrowly supported
 mixed-container subfacts, dated previews and remaining uncertainty, not blanket inheritance.
-Items 5–7 await independent review and parent finalization (`todo_decide.md §E`).
+Items 5–7 passed independent source review and parent verification (`todo_decide.md §E`,
+including check limits); historical research and enforcement remain unfinished.
 
 | topic | still undecided / incomplete |
 |---|---|
