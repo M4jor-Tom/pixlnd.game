@@ -160,6 +160,8 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 - [ ] Source item 33 (`domain.md §5`): Slime “Mountain Areas”/colour reports establish no
   named-Mountains scope, numerical rarity, universal colour distribution or release history;
   no encounters, family/roster declarations or source labels change.
+- [ ] Source item 34 (`domain.md §5`): individual Runner habitat reports date no memberships
+  or taming; Desert-only exclusivity does not extend to Snow/Leaf/family. No species or foods move.
 - [ ] Mapping item 1 (`domain.md §5`): taxonomy/style ID, shape and reference checks without
   invented source tags; preserve embedded historical facts and separately scoped rosters/buildings.
   Direct data correction and model/loader/validator changes await separate authorization.

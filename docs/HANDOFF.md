@@ -6,7 +6,7 @@
 Owner exact answer: **“33: Approved; 34: Approved; 35: Approved; When handled, handoff, commit, psh”**.
 Parent reads `psh` as push; parent alone owns final verification/handoff commit, last-hash
 finalization and authorized normal push on `fix/ontology-reconciliation`, then STOP.
-**Item 33 recorded; 34–35 approved, awaiting separate recording.** Independent review and
+**Items 33–34 recorded; 35 approved, awaiting separate recording.** Independent review and
 parent verification are **pending**, not inherited from previous batches. Items 1–31 and all
 settled hybrid rules stand. Previous checkpoints below are explicitly historical.
 

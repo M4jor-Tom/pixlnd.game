@@ -2235,6 +2235,26 @@ and roster declarations are unchanged; their broader wording is not verified by 
 Per-membership histories remain research; no encounters, source labels, rarity or live-data
 changes follow.
 
+#### Item 34 — Three individual Runner habitat reports (owner approved, 2026-10-04)
+
+[Runner revision 19849](https://cubeworld.fandom.com/wiki/Runner?oldid=19849), edited
+**2024-08-14T22:13:45Z**, reports these individual memberships:
+
+| named creature | reported habitat |
+|---|---|
+| Snow Runner | inhabits Snowlands |
+| Leaf Runner | lives in Jungles |
+| Desert Runner | spawns **exclusively in Deserts** |
+
+Exclusivity belongs only to the Desert Runner sentence, not Snow/Leaf Runners or the whole
+family. These unscoped community reports supply no release dates, whole-family ancestry or
+new successful-taming proof; adjacent food sentences remain reports, not demonstrated taming.
+Saved raw body/metadata and capture sidecars were inspected from the prior scout's 2026-10-04
+capture, not externally re-fetched, image-inspected or original-build tested. Edit/capture
+timing is not release/first-introduction evidence. Existing species memberships, foods, family
+and roster declarations remain unchanged; no species moves, bait, source labels or encounters
+are selected. Per-membership release histories and other traits remain research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2488,12 +2508,14 @@ Remaining histories stay research.
 
 **Validation-contract source item 33 — DECIDED 2026-10-04:** §5 attributes Slime
 habitat/colour reports, not named-Mountains scope, numerical rarity or guaranteed distribution.
-Items 34–35 are approved, awaiting separate recording; independent review and parent verification
+**Validation-contract source item 34 — DECIDED 2026-10-04:** §5 attributes Snow/Leaf/Desert
+Runner memberships, with exclusivity only for Desert Runner, not release/taming proof.
+Item 35 is approved, awaiting separate recording; independent review and parent verification
 are pending. Item 32 alone remains presented but unanswered, verbatim in `docs/HANDOFF.md`.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–31 recorded and verified (`todo_decide.md §E`, with evidence limits). Item 33 recorded; 34–35 approved awaiting recording, independent review/parent verification pending. Item 32 alone is presented but unanswered, preserved exactly in `docs/HANDOFF.md`; resume it in this topic, not implementation or whole-topic completion. Unsupported food/mixed-container histories, including sleep-speed units, remain research; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–31 recorded and verified (`todo_decide.md §E`, with evidence limits). Items 33–34 recorded; 35 approved awaiting recording, independent review/parent verification pending. Item 32 alone is presented but unanswered, preserved exactly in `docs/HANDOFF.md`; resume it in this topic, not implementation or whole-topic completion. Unsupported food/mixed-container histories, including sleep-speed units, remain research; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
