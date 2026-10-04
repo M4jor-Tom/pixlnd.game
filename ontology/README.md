@@ -25,11 +25,11 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `tasks/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Source-attribution batch (2026-10-04):** items 5–6 record the corrected food count and
-food-history evidence/limits (`domain.md#pet-food`), preserving F11 and existing annotations.
-Item 7 is approved, awaiting recording; independent review and parent finalization are pending.
-Source research remains unfinished; no data/code/checker work authorized. Evidence/status:
-`todo_decide.md §E`.
+**Source-attribution items 5–7 recorded (2026-10-04):** corrected food count, food-history
+evidence/limits and bounded mixed-source subfacts (`domain.md#pet-food` / §5), preserving F11
+and existing annotations. No blanket fauna ancestry or completed-history claim. Independent
+review and parent finalization are pending; remaining research/evidence: `todo_decide.md §E`.
+No data/code/checker work authorized; final handoff/publication belongs to the parent.
 
 **Historical validation-contract mapping items 1–4 recorded (2026-09-28):** `domain.md §5` now maps
 required heterogeneous paths/shapes, bounded source inheritance and definition/generator/runtime

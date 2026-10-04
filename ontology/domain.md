@@ -1730,7 +1730,8 @@ Neither referenced species nor numeric IDs lend tags. `status-effects.json#abili
 to existing definitions; `#not-found` creates none. `versions.json` keeps its history schema
 (dates and scalar release identifiers, not content-tag arrays); cuwo command lists keep their
 modded-server context, not stock-command or hybrid approval. No new labels or parser schema
-are selected for these remaining cases.
+are selected for these remaining cases. Subsequent bounded findings and unresolved scope are
+recorded in item 6 (§3.4 `pet-food`) and item 7 below, not whole-container attribution.
 
 **Check boundaries.** Load checks concern the above definitions/config, including required
 presence before iteration, valid references/shapes and cumulative errors under item 9. Numeric
@@ -1750,6 +1751,36 @@ predicates remain in the constraint catalog; no duplicate balance table is intro
 Future regressions must exercise each predicate at its mapped boundary, including item 9's
 missing-whole-input cases. A passing current validator does not prove this mapping's enforcement;
 direct data correction and loader/validator/generator/runtime work remain unauthorized.
+
+#### Item 7 — Bounded mixed-source findings (owner approved, 2026-10-04)
+
+These citations record only the named subfacts in existing mixed containers; they grant no
+whole-file ancestry or new labels. Sources inspected are the retained `research/` dumps, not
+freshly retrieved external pages. Existing approvals, source qualifications and cut status stand.
+
+| existing subfact | evidence and historical limit |
+|---|---|
+| `creature-families.json#runners.traits` | `research/research_creatures_quests.md §2.1` explicitly scopes animals A+S unless noted: its Runner row describes large two-legged neckless birds, groups 3–5, high attack tempo/run speed and all but Lava Lands. This supports those descriptions only, not unrelated family traits or roster ancestry. |
+| `recipes.json#customization.material-cubes`, `ui.json#screens.customization-bench` | `research/research_items.md §3.5` explicitly A: matching wood/metal material, 16/32 capacities, M3 rotation, cube placement and destruction on removal; each cube adds **≈0.1** effective level. S separately supports the bench's material-cube upgrading, not every Alpha numeric/UI detail. Its 58–67 damage anecdote is community evidence, not a universal bonus. |
+| `economy.json#rules.sell-price-tooltip`, `#loot.npc-rewards`; dated `ui.json` subfacts | `research/research_systems.md §1.3`: S 0.9.1-4 (2019-09-25) removes tooltip sell price, limits NPC rewards to once, saves remapped controls and adds music looping; 0.9.1-6 (09-27) adds configurable anti-aliasing samples and reduced background refresh; 0.9.3-0 (09-29) adds the Esc help button and default-on help for new characters. These date those patches, not every shop, loot or screen statement. |
+| `audio.json#music-rules`, `#voices`; `ui.json#options` audio settings | `research/research_systems.md §8` reports S looping, separate volume sliders and xAudio2; §5.4 lists Alpha volume controls. §8's Alpha SOUND_NAMES paragraph reports race-specific voices, not retrieved assets or confirmed S voice history. The historical backend is not a pixlnd dependency. |
+| `static-entities.json#behaviour` selected interactions | `research/research_systems.md §1.3`: S 0.9.1-4 prevents object use through walls; 0.9.2-0 (2019-09-28) prevents Mage teleport through gates. `research/research_world.md §7–8` supports Alpha empty house chests, decorative trade stalls/crates/barrels, dungeon spike traps and breakable vases; S one-time dungeon chests. This does not date all bundled clauses (including trap dodge penetration, furniture healing or campfire use). |
+| `npc-roles.json#dialogue-corpus` selected subfacts | `research/research_world.md §9` reports Alpha green mission bubbles and pre-alpha EN/DE procedural quests cut before Alpha. `research/research_systems.md §1.3` dates S speech-bubble dialogue options to 0.9.2-0. `research/research_creatures_quests.md §7.3` gives the Skeleton Horse lore tablet as an S **example**, not a required literal line or whole-corpus attribution. |
+| Dated previews: `static-entities.json#behaviour.lever`, `buildings.json#population.schedule`, `ui.json#screens.character-creation` / `#camera` | `research/research_systems.md §1.1` reports levers in 2012-02-10 dungeons, daily NPC routes in the 2012-12-04 AI preview, random creation background on 2013-01-28 and zoom-to-first-person on 2011-06-09. These are pre-alpha development reports, not proof the exact functions shipped; §7 leaves S first-person documentation uncertain. D9's approved hybrid camera is independent. |
+| `audio.json#tracks` | `research/research_systems.md §8` records publication/catalog leads: Explorers (2013 video theme), faction tracks (2015-10-04/05/06), Bgum (2016-08-21 **?**), Omega (2023); `research/research_world.md §1` reports new ocean music in the 2017-04-01 tweets. Publication/preview dates do not establish build inclusion. `research/research_creatures_quests.md §7.2` explicitly reports S Spirit World spooky music/fog, not a retrieved named track identity or date. New Lands/Awakening dates and the full 2019 tracklist remain unresolved. |
+
+**Remaining source research:** landscape/forest-dungeon roster memberships and other embedded
+traits; exact affix lists/name examples; recipe/refining quantities; unscoped shop/loot claims;
+population and shipped schedules; other UI/camera details; candles/furniture; remaining audio
+and dialogue/example histories. `research/research_world.md §3.2` dates **landscapes**, not all
+adjacent fauna: its Jungle A+1.0 row includes Warthog/Elephant/Baby Elephant, explicitly S
+elsewhere; Snow Leopard retains S? in `research_creatures_quests.md §2.1`. Neither that Ver
+column nor species tags/IDs alone date individual habitat memberships; unscoped reports stay undated.
+`research_items.md §3.4` expressly assumes other armor materials follow cotton and leaves
+per-weapon counts undocumented; D6 and the approved Wand rule are independent hybrid decisions.
+Population/community observations (`research_creatures_quests.md §4`), unversioned candle
+details (`research_items.md §4`) and dialogue examples/hypotheses do not become universal or
+confirmed release facts. No encounter, crafting, shop or presentation change is authorized.
 
 ### Constraint catalog
 
@@ -1861,7 +1892,7 @@ settled or implemented. The current open questions and approval/application chec
 `docs/ROADMAP/todo_decide.md §E`; preserve those deferrals. Earlier slice approximations below
 are historical implementation stages, superseded where later decisions say so.
 
-### Current unresolved hybrid questions (2026-09-28)
+### Current unresolved hybrid questions (2026-10-04)
 
 This index mirrors the open list in `docs/ROADMAP/todo_decide.md §E`; it does not choose defaults
 or authorize implementation. Resolve each question before its affected slice.
@@ -1905,10 +1936,13 @@ corrected to 58 obtainable + five cut (§3.4), preserving F11.
 **Validation-contract source item 6 — DECIDED 2026-10-04:** §3.4 records the named-food
 Alpha lead, undated replacement and retained S/X annotations with their evidence limits;
 unsupported release histories remain unresolved, not newly assigned labels.
+**Validation-contract source item 7 — DECIDED 2026-10-04:** §5 records narrowly supported
+mixed-container subfacts, dated previews and remaining uncertainty, not blanket inheritance.
+Items 5–7 await independent review and parent finalization (`todo_decide.md §E`).
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–4 recorded, not whole-topic completion: per-food history and unscoped mixed-container facts listed in §5 item 4; no guessed labels, new content defaults or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–7 recorded, not whole-topic completion: unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5 item 7); no guessed labels, new content defaults or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

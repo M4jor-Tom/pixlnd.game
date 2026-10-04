@@ -137,9 +137,9 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Source-attribution direction (2026-10-04):** items 5–7 approved; items 5–6 recorded, item 7
-awaits recording below. No presented unanswered proposal remains. Independent review and parent
-finalization are pending; remaining source research is not the uncertain-gameplay-facts batch.
+**Source-attribution direction (2026-10-04):** approved items 5–7 are recorded below.
+No presented unanswered proposal remains. Independent review and parent finalization are pending;
+resume remaining source research, not the uncertain-gameplay-facts batch or implementation.
 
 **Historical validation-contract mapping direction (2026-09-28):** items 1–4 are recorded below; item 4
 adds the detailed mapping and owner correction: undeployed game, no player data to migrate,
@@ -647,10 +647,11 @@ Traversal items 1–5 are recorded (item 4 corrected) and reviewed; evidence bel
 Books/formulas items 1–3, artifact items 1–6, Assassin item 1 and Wand item 1 are recorded below,
 not open questions. Persistence items 1–9 are recorded and reviewed above.
 World bounds / resets items 1–4 are recorded below; no presented question remains.
-Validation-contract mapping approvals/recording are tracked below; broader mapping remains open.
-- [ ] **Validation-contract source research/attribution (item 9 and mapping items 1–4 approved):**
-  required paths/shapes, bounded source inheritance and check boundaries are now recorded in
-  `domain.md §5`. Per-food histories and unscoped mixed-container facts listed there remain
+Validation-contract mapping/source approvals 1–7 are recorded below; historical research remains open.
+- [ ] **Validation-contract source research/attribution (item 9 and items 1–7 approved):**
+  required paths/shapes, bounded source inheritance and check boundaries are recorded in
+  `domain.md §5`; source items 6–7 add bounded evidence, not complete histories. Unsupported
+  food release histories (`pet-food`) and remaining mixed-container histories (§5 item 7) are
   research, not guessed labels or new gameplay ballots. No whole-topic completion is claimed;
   direct data correction and enforcement remain separately unauthorized, with no migration or
   obsolete-format compatibility work.
@@ -670,8 +671,8 @@ Items 1–4 and their 2026-09-28 dates stand.
 | item | application | canonical section | commit |
 |---|---|---|---|
 | 5 — Pet-food count | [x] recorded; pending independent review | `domain.md#pet-food` / §7 | e575f22a4c271d6f77dcc86af77d0d44c3ffd1ff |
-| 6 — Food-history evidence and limits | [x] recorded; pending independent review | `domain.md#pet-food` / §7 | this item commit; hash finalized next item |
-| 7 — Narrow mixed-source subfacts | [ ] approved; awaiting recording | `domain.md §5` | pending |
+| 6 — Food-history evidence and limits | [x] recorded; pending independent review | `domain.md#pet-food` / §7 | 73ae633587d7a6d0c508297b3d3aa1fc585240e1 |
+| 7 — Narrow mixed-source subfacts | [x] recorded; pending independent review | `domain.md §5` / §7 | this item commit; hash finalized by parent handoff |
 
 **Item 5:** corrected the summary to 58 obtainable + five cut. Original JSON count and the
 older six-name research lists were inspected directly; Banana Mash is the overlap, not a missing
@@ -687,6 +688,19 @@ The owner approved. **Approval versus Refusing:** approval records the distincti
 changing foods/pets; refusal would leave findings unrecorded, not approve assumptions.
 The 47-name Alpha lead, Eucalyptus replacement and retained 10 S / five X annotations are
 recorded with limits; unsupported food histories remain research, not completed attribution.
+
+**Item 7:** `domain.md §5` records only directly supported mixed-container subfacts, with
+pre-release, publication, approximate and example/community limits intact. Landscape release
+history does not date all adjacent fauna/habitats; Spirit World music/fog is an S effect report,
+not named-track dating. **Approval versus Refusing:** approval improves traceability without
+changing encounters, crafting, shops or presentation; refusal would leave attribution unfinished,
+not approve alternative gameplay or blanket labels.
+
+**Remaining research (not new proposals):** unsupported food release histories; roster memberships/
+traits, exact affix lists, recipe/refining quantities, unscoped shop/loot, population/shipped
+schedules, UI/camera details, candles/furniture and audio/dialogue examples (`domain.md §5 item 7`).
+Independent review and parent checks must precede the final handoff commit and authorized push;
+the writer does not publish. No whole-topic completion or next-topic proposal is claimed.
 
 **Evidence and gates:** `/tmp/pixlnd-source-attribution.ADFqBg/` holds the binding
 `approval-brief.md`, `food-counts.json`, per-item `item-N-review.md` (semantic/scope inspection,

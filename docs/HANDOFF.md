@@ -2,19 +2,27 @@
 
 ## Ontology walkthrough entry point (2026-10-04)
 
-**Source-attribution items 5–7 approved; recording in progress.** Items 5–6 record the
-pet-food count and food-history evidence/limits; item 7 awaits recording. Canonical findings:
-`ontology/domain.md`; approvals, commits and evidence: `docs/ROADMAP/todo_decide.md §E`.
-No presented unanswered proposal remains. Independent review and parent finalization are pending.
+**Source-attribution items 5–7 recorded; pending independent review/parent finalization.**
+Item 5: food count (`e575f22`); item 6: food-history evidence/limits (`73ae633`); item 7:
+bounded mixed-source findings (this commit; parent finalizes hash). Canonical findings:
+`ontology/domain.md#pet-food` / §5; exact approvals, commits and evidence:
+`docs/ROADMAP/todo_decide.md §E`, `/tmp/pixlnd-source-attribution.ADFqBg/`.
+No presented unanswered proposal remains. Per-item checks/logs cover existing loaded data,
+not prose semantics or new enforcement; final independent review and parent checks are pending.
 
 Only the five existing Markdown paths in `/tmp/pixlnd-source-attribution.ADFqBg/approval-brief.md`
 are authorized; no gameplay, live JSON, research dumps, tests, checker/schema or migration work.
 Parent owns final verification/handoff commit, publication of `fix/ontology-reconciliation`
 and stop. Do not push or start another topic from this writer checkpoint.
 
-**Unfinished topic:** individual food release histories and unscoped mixed-container facts
-in `domain.md#pet-food` / §5; item 6 records evidence and limits, not complete food histories.
-Swamp Lands identity, Lion tameability, resistance and gear HP remain later uncertain-fact work.
+**Exact resumption — unfinished source research:** unsupported individual food release histories;
+roster memberships/traits, exact affix lists, recipe/refining quantities, unscoped shop/loot,
+population/shipped schedules, other UI/camera details, candles/furniture, remaining audio and
+dialogue/example histories (`domain.md#pet-food` item 6 / §5 item 7). No blanket fauna ancestry
+from landscape versions, shipped functionality from previews or build inclusion from soundtrack
+publication. Spirit World music/fog is an S atmospheric report, not a dated named track.
+Swamp Lands identity, Lion tameability, resistance and gear HP remain later uncertain-fact work,
+not the next topic. No new proposals; items 5–7 do not finish historical research.
 Preserve F11, Bubble Gum sharing/subtype 19 from Collie only, logarithmic artifacts and the
 permanent exclusion of regional gear power loss.
 
