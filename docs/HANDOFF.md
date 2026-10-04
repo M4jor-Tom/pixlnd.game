@@ -1,6 +1,37 @@
 # Handoff — resume here
 
-## Ontology walkthrough entry point (2026-10-04, source items 22–25)
+## Ontology walkthrough entry point (2026-10-04, source items 26–28)
+
+**Current task: record the approved batch, then parent-reviewed handoff/publication and STOP.**
+Owner: **“26: Approved; 27: Approved; 28: Approved”**, then **“When handled, handoff, commit, push”**.
+**Item 26 recorded; items 27–28 approved, pending recording.** Item 28 covers **Golem AND Troll**.
+Fresh independent review and parent verification remain **PENDING**, not verified or published.
+All earlier approvals stand; prior checkpoint prose/hashes below are historical.
+
+Canonical evidence: `ontology/domain.md §5`; compact status/deferrals: `todo_decide.md §E` /
+`todo_implement.md`. Binding brief, actual source inspection, exact per-item saved/staged/committed
+diffs, simplify/ponytail reviews, check logs/exits and commit map:
+`/tmp/pixlnd-reconcile-source-resume.jldATd/`. Five existing Markdown paths only; no gameplay,
+JSON, tests, checker, research, labels, defaults, schema, migration or compatibility changes.
+Per-item gates and source/check limits: §E; validation covers existing loaded data, not history
+or new enforcement. No external re-fetch, original-build execution, images or full-suite claim.
+
+**Publication boundary:** writer makes only three separate item commits and leaves clean HEAD;
+preceding hashes enter the next item commit, last hash awaits the parent's final record, without
+amendments. Fresh read-only review and parent actual-commit/diff audit plus bounded validator/boot
+checks precede the parent's separate verification/handoff commit. Parent alone pushes only
+`fix/ontology-reconciliation`, verifies local/upstream/fresh live remote equality and clean state,
+then STOP. No fourth writer commit, push, rewrite, merge, new research or proposals.
+
+**Next resume topic: Validation-contract source research/attribution (remaining research).**
+Unfinished food/taming/Koala chronology; original sleep activation/healing/rates/baseline/units;
+refining yields/ratios/silk-station history, noncotton/weapon costs; naming, stock/loot/probabilities/
+daily food amount; habitat/other traits, population/undead/animals/accumulation; shipped A*/routes/
+lanterns; remaining UI/camera/static/candle/furniture/audio/track/literal-dialogue histories.
+No whole-topic completion or advancement to Swamp Lands/Lion/resistance/gear HP/implementation.
+After parent publication, final response: next topic title only.
+
+## Historical source-attribution items 22–25 checkpoint (2026-10-04, superseded entry point)
 
 **Current task: final verified handoff/publication, then STOP.**
 Owner: **“22: Approved; 23: Approved; 24: Approved; 25: Approved; When done, handoff, commit, push”**.

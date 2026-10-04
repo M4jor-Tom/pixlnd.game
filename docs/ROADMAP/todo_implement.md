@@ -188,9 +188,10 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
   appearance/placement reports prove no exclusive locations and authorize no lighting/placement changes.
 - [ ] Source item 25 (`domain.md §5`): campsite furniture/release histories remain research;
   no mandatory contents, exact stool/bench IDs, sitting-heal effect or cooking behavior selected.
-- [ ] Source items 10–11/23 (`domain.md §5`): original Alpha/Steam furniture-sleep activation,
+- [ ] Source items 10–11/23/26 (`domain.md §5`): original Alpha/Steam furniture-sleep activation,
   healing, rate and baseline/units remain research. Pinned cuwo normal-clock code/definition-only
-  sleep constant and community Sleep/Bedroll reports do not resolve them. Retain “Requires Testing”
+  sleep constant, community Sleep/Bedroll reports and archived 2013 Camp Bed report do not resolve
+  them; archival timing is not introduction or demonstrated behavior. Retain “Requires Testing”
   and ambiguous inn wording; no inferred controls, healing/rate, bench/stool rule or hybrid inn change.
 
 ## Meta / tooling

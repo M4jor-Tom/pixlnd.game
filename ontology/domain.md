@@ -2101,6 +2101,22 @@ edit/capture dates supply no release chronology. No exact stool/bench IDs, sitti
 cooking behavior or required camp contents are selected. Furniture/release histories remain
 research; no campsite layout, sleep rule, source label or live declaration changes.
 
+#### Item 26 — Archived camp-bed sleep report (owner approved, 2026-10-04)
+
+The archived [Camp Bed article, reached through Bedroll](https://web.archive.org/web/20130711002813id_/http://cubeworldwiki.net:80/index.php/Bedroll),
+revision **6155**, says sleeping **“simultaneously speeds up time and replenishes health.”**
+Wayback snapshot **20130711002813** and header Memento-Datetime **2013-07-11T00:28:13Z**
+establish documentary timing, not feature introduction or demonstrated original-build behavior.
+The body says last modified **10 July 2013 at 05:23**, timezone unspecified.
+
+Saved body/headers/metadata were inspected here; capture timestamp **2026-10-04T21:01:27Z**
+was recorded before the response (HTTP 200 / curl exit 0), not its completion time. No external
+re-fetch, image inspection or original-build execution. This community report selects no rate,
+controls, combat restriction, Steam scope, bench/stool effect or inn-like skip. Free inn recovery
+and separate paid, consensual sleep to the **next 07:00**, with approved reset/payment rules,
+remain unchanged (§3.1); original sleep histories and baseline/units remain research (items 10–11/23).
+No furniture/clock declaration, source label or gameplay change follows.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2324,9 +2340,13 @@ Items 22–25 passed fresh independent source/diff/log review and parent actual-
 audit / bounded validator/boot verification (`todo_decide.md §E`, including evidence limits).
 Remaining histories stay research, not unanswered proposals.
 
+**Validation-contract source item 26 — DECIDED 2026-10-04:** §5 records the archived
+2013 Camp Bed report's qualitative sleep/time/health combination, not rates or demonstrated
+original behavior. Recorded; fresh independent review and parent verification pending (§E).
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–25 recorded; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–26 recorded; items 27–28 approved, pending recording (`todo_decide.md §E`); no presented unanswered proposal remains, not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
