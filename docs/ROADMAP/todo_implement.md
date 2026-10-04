@@ -181,6 +181,9 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 - [ ] Source item 15 (`domain.md §5`): three dated community-wiki UI patch reports do not
   complete UI/camera/static/candle/furniture/audio/dialogue histories or authorize interface work.
   Historical `+` equipment and regional gear power loss stay excluded; other research remains open.
+- [ ] Source item 28 (`domain.md §5`): Golem/Troll named-species reports establish no
+  family/boss-wide trait inheritance or confirmed original Alpha/Steam histories. Habitat/other
+  traits remain research; no attacks, scaling, encounters or new behavior implementation authorized.
 - [ ] Source item 27 (`domain.md §5`): qualitative refining chains establish no yields/ratios,
   input/output counts or original Alpha/Steam recipes; current input 1 values are not verified
   history. Silk-station history remains research; no recipe/station change or new quantity default.

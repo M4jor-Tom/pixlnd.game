@@ -137,8 +137,8 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Source-attribution direction — items 26–28 (2026-10-04):** all three approved; items 26–27
-recorded, 28 pending recording. Item 28 covers Golem AND Troll. Fresh independent review
+**Source-attribution direction — items 26–28 (2026-10-04):** all three approved and recorded
+in separate documentation commits. Item 28 covers Golem AND Troll. Fresh independent review
 and parent verification are PENDING, not publication. No presented unanswered proposal remains;
 earlier approvals stand. Three separate docs commits, then parent handoff/publication/STOP;
 no new research, proposals or implementation. Evidence/limits below.
@@ -668,12 +668,12 @@ Traversal items 1–5 are recorded (item 4 corrected) and reviewed; evidence bel
 Books/formulas items 1–3, artifact items 1–6, Assassin item 1 and Wand item 1 are recorded below,
 not open questions. Persistence items 1–9 are recorded and reviewed above.
 World bounds / resets items 1–4 are recorded below; no presented question remains.
-Validation-contract mapping/source items 1–27 are recorded below; 28 approved, pending recording;
+Validation-contract mapping/source items 1–28 are recorded below; 26–28 pending fresh review/parent verification;
 no presented unanswered proposal remains. Historical research, including original Alpha/Steam
 sleep-rate baseline/units (§5 items 10–11), stays open.
 - [ ] **Validation-contract source research/attribution (2026-09-17 contract approved):**
   required paths/shapes, bounded source inheritance and check boundaries are recorded in
-  `domain.md §5`; source items 6–27 add bounded evidence, not complete histories. Unsupported
+  `domain.md §5`; source items 6–28 add bounded evidence, not complete histories. Unsupported
   food release histories (`pet-food`) and remaining mixed-container histories (§5 item 7) are
   research, not guessed labels or new gameplay ballots. No whole-topic completion is claimed;
   direct data correction and enforcement remain separately unauthorized, with no migration or
@@ -692,8 +692,8 @@ No presented unanswered proposal remains. Canonical content: `domain.md §5`, co
 | item | application | canonical section | commit |
 |---|---|---|---|
 | 26 — Archived camp-bed sleep report | [x] recorded; review/parent verification pending | `domain.md §5` / §7 | 5383938b1cc0902f84c6e61928629ee94166dfcb |
-| 27 — Qualitative refining chains | [x] recorded; review/parent verification pending | `domain.md §5` / §7 | pending this item commit |
-| 28 — Golem AND Troll species reports | approved; recording pending | `domain.md §5` / §7 | pending |
+| 27 — Qualitative refining chains | [x] recorded; review/parent verification pending | `domain.md §5` / §7 | ce0f13fb805f10d7782d57a1480a6ce7caac3aa6 |
+| 28 — Golem AND Troll species reports | [x] recorded; review/parent verification pending | `domain.md §5` / §7 | pending parent final record (no amendment) |
 
 **26 — Approval versus Refusing:** approval adds the archived qualitative sleep/time/health
 citation only; refusal would leave it unrecorded, not approve opposite sleep mechanics.
@@ -703,14 +703,18 @@ Free inn recovery and separate paid/consensual next-07:00 sleep/reset/payment st
 quantities, silk-station attribution or release histories; refusal would leave citations
 unrecorded, not change recipes or approve different conversions. D6 and approved weapon costs stand.
 
+**28 — Approval versus Refusing:** approval makes named Golem/Troll descriptions traceable
+without family/boss-wide traits, attacks, scaling or encounters; refusal would leave reports
+unrecorded, not approve opposite creature behavior. Earlier family/species rules stand.
+
 **Writer evidence/gates:** `/tmp/pixlnd-reconcile-source-resume.jldATd/` holds the binding
 `approval-brief.md`, presentation, `inspected-sources.md`, `item-N-review.md` (semantic/scope/source,
 `/simplify`, then ponytail-review), exact binary/full-index `item-N.diff`, `item-N-staged.diff`,
 `item-N-committed.diff`, comparison logs, `item-N-{diff-check,validator}.log/.exit`, full commit
-SHAs, `batch.diff` and `commit-map.md`. Before each item commit run `git diff --check` and
-`timeout 150 nix develop -c godot --headless -s ontology/validate.gd`; actual output/exits live
-in those logs, not inherited checks. Validation covers existing loaded data, not prose/history
-or new enforcement. Source bodies/metadata inspected, not externally re-fetched or original-build
+SHAs, `batch.diff` and `commit-map.md`. Each item passed `git diff --check` and
+`timeout 150 nix develop -c godot --headless -s ontology/validate.gd` before its commit
+(exit 0; Godot actually ran and reported `ontology valid`). Actual output/exits live in those logs.
+Validation covers existing loaded data, not prose/history or new enforcement. Source bodies/metadata inspected, not externally re-fetched or original-build
 executed; no images, full suite, visual or multiplayer claim. Five existing Markdown paths only;
 no labels, live JSON, gameplay, tests, checker, research, schemas/defaults or compatibility edits.
 

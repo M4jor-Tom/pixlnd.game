@@ -2139,6 +2139,25 @@ research. The separate Spinning Wheel yarn-to-armor clause is not used to redefi
 **D6 and the approved two-handed wand/boomerang costs of 20 wood cubes remain unchanged.**
 No recipe, station, source label, live-data or gameplay change follows.
 
+#### Item 28 — Named Golem AND Troll reports (owner approved, 2026-10-04)
+
+[Golem revision 19270](https://cubeworld.fandom.com/wiki/Golem?oldid=19270), edited
+**2024-08-09T02:02:45Z**, describes **elemental giants** and a **thrown boulder resembling
+an Iron Deposit**. These unscoped trait sentences do not inherit Steam from the adjacent
+mission sentence. “Most landscapes” versus infobox “All” proves no exhaustive habitat list.
+[Troll revision 19806](https://cubeworld.fandom.com/wiki/Troll?oldid=19806), edited
+**2024-08-13T16:42:07Z**, says **“Like all boss type monsters, it can break terrain.”**
+Record only the **named Troll terrain-breaking report**, not that universal boss generalization.
+
+Saved raw bodies/metadata and extracted wikitext were inspected here; retrieval batch timestamp
+**2026-10-04T21:00:24Z** is not an individual response completion time. These are current edited
+community-wiki bodies, not archival release bodies, externally re-fetched pages or original-build
+execution. Edit/capture dates establish no release/introduction dates or confirmed Alpha/Steam
+trait histories. Neither report grants **Dark Troll/Yeti/Ember Golem/Snow Golem inheritance**,
+new attacks, scaling or encounters, or establishes big-weapon/Earthquake traits. Habitat and other
+trait histories remain research; earlier family/species approvals stand. No source label, live
+declaration or gameplay change follows; this records reports, not newly implemented traits.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2370,9 +2389,14 @@ original behavior. Recorded; fresh independent review and parent verification pe
 metal/wood/linen/cotton/silk refining chains, not quantities, silk station or release histories.
 Recorded; fresh independent review and parent verification pending (§E).
 
+**Validation-contract source item 28 — DECIDED 2026-10-04:** §5 attributes named Golem
+(elemental giant/boulder) and Troll (terrain breaking) reports, not universal family/boss traits
+or release histories. Items 26–28 recorded; fresh independent review and parent verification
+pending (§E); histories stay research.
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–27 recorded; item 28 approved, pending recording (`todo_decide.md §E`); no presented unanswered proposal remains, not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–28 recorded; 26–28 pending fresh independent review and parent verification (`todo_decide.md §E`); no presented unanswered proposal remains, not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

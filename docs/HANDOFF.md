@@ -2,9 +2,9 @@
 
 ## Ontology walkthrough entry point (2026-10-04, source items 26–28)
 
-**Current task: record the approved batch, then parent-reviewed handoff/publication and STOP.**
+**Current task: fresh independent review and parent verification/handoff/publication, then STOP.**
 Owner: **“26: Approved; 27: Approved; 28: Approved”**, then **“When handled, handoff, commit, push”**.
-**Items 26–27 recorded; item 28 approved, pending recording.** Item 28 covers **Golem AND Troll**.
+**Items 26–28 recorded in three separate documentation commits.** Item 28 covers **Golem AND Troll**.
 Fresh independent review and parent verification remain **PENDING**, not verified or published.
 All earlier approvals stand; prior checkpoint prose/hashes below are historical.
 
