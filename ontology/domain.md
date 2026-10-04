@@ -2019,7 +2019,8 @@ Items 8–10 passed fresh independent source review and parent diff/validator/bo
 **Validation-contract source item 11 — DECIDED 2026-10-04:** §5 records fresh, revision-pinned
 cuwo normal-clock code and the sleep constant's definition-only occurrence, not original Alpha/Steam
 sleeping behavior. Item 10's historical units remain unresolved; no gameplay or live data change.
-Application and verification: `todo_decide.md §E`.
+Fresh independent source review and parent diff/validator/boot verification passed
+(`todo_decide.md §E`, including limits); source research and enforcement remain unfinished.
 
 | topic | still undecided / incomplete |
 |---|---|

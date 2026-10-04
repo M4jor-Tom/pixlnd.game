@@ -137,8 +137,8 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Source-attribution direction (2026-10-04):** item 11 recorded for documentation only; items
-1–10 stand and no presented unanswered proposal remains. It verifies the inspected cuwo revision's
+**Source-attribution direction (2026-10-04):** item 11 recorded and verified for documentation only;
+items 1–10 stand and no presented unanswered proposal remains. It verifies the inspected cuwo revision's
 normal-clock calculation, not historical sleeping behavior. Verification and authorized handoff/
 publication/stop: the item-11 record below and `docs/HANDOFF.md`. Resume remaining source research,
 not uncertain gameplay facts or implementation.
@@ -670,7 +670,8 @@ remains. Historical research, including original Alpha/Steam sleep-rate baseline
 about cuwo was clarification, not refusal or correction: it is an open-source Alpha-server
 reimplementation consulted as historical evidence, not code added to pixlnd.
 
-**11 — Verified cuwo clock code and limits:** [x] recorded in `domain.md §5` / §7.
+**11 — Verified cuwo clock code and limits:** [x] recorded and verified in `domain.md §5` / §7;
+commit **`dcb3cd1392fb2cc0ad60bcad7bcb7fe6b8d9a725`**.
 Original Alpha/Steam sleeping behavior and item 10's historical units remain unresolved;
 the canonical record supplies the revision, links and precise evidence limits.
 **Approval versus Refusing:** approval records stronger evidence and its limits without changing
@@ -685,13 +686,28 @@ history or new enforcement. **Per-item checks:** semantic/scope inspection, `/si
 ponytail-review completed; `git diff --check` and
 `timeout 150 nix develop -c godot --headless -s ontology/validate.gd` passed (exit 0,
 `ontology valid`; expected dirty-tree warning only). Evidence: `item-11-review.md` and
-`item-11-{diff-check,validator}.log/.exit` in that scratch directory. Final independent review,
-commit mapping and handoff checks follow separately.
+`item-11-{diff-check,validator}.log/.exit` in that scratch directory.
 
-**Authorized handoff:** verify and commit item 11 separately, then commit the final handoff and
-push only `fix/ontology-reconciliation`; verify local/upstream/live remote equality and clean state,
-then stop. No merge, history rewrite or new proposals. No presented unanswered item remains;
-food and mixed-container histories, including original sleeping units, remain research.
+**Independent review / parent verification:** fresh read-only source/diff/log review found no issues
+(`independent-review.md`); the reviewer ran no commands/tests or independent Git hash comparisons.
+Parent inspected the actual commit, confirmed exact saved/committed diff correspondence and the
+five-Markdown-path boundary (`parent-audit.log`, `item-11.diff`, `item-11-committed.diff`), and reran:
+```
+timeout 150 nix develop -c godot --headless -s ontology/validate.gd
+timeout 150 nix develop -c godot --headless --quit
+```
+Both exited 0: `ontology valid` and normal hybrid startup (`parent-{validator,boot}.log/.exit`).
+These check existing loaded data/startup, not original-game history or new enforcement. No gameplay
+suite, visual or network tests. Fresh external verification was source inspection of the named cuwo
+revision only, not original binaries, Steam or execution of that reimplementation.
+
+**Final handoff/stop:** this separate verification record follows item `dcb3cd1`. Pre-publication
+live remote `199cb85` was confirmed with `git ls-remote` (`pre-publication-remote.log/.exit`);
+inspect actual Git state on resumption. The final record receives `/simplify`, ponytail-review and
+bounded rechecks (`handoff-review.md`, `handoff.diff`, `handoff-{diff-check,validator,boot}.log/.exit`).
+Commit it and push only `fix/ontology-reconciliation`; verify local/upstream/live remote equality and
+clean state, then stop. No merge, history rewrite or new proposals. No presented unanswered item
+remains; food and mixed-container histories, including original sleeping units, remain research.
 Next title: **Validation-contract source research/attribution (remaining research)**.
 
 ### Historical validation-contract source attribution — items 8–10 (2026-10-04)

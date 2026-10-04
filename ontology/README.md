@@ -25,11 +25,12 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `tasks/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Source-attribution item 11 recorded (2026-10-04):** `domain.md §5` adds freshly inspected,
+**Source-attribution item 11 recorded and verified (2026-10-04):** `domain.md §5` adds freshly inspected,
 revision-pinned cuwo normal-clock code and the sleep constant's definition-only occurrence, not original
 Alpha/Steam sleeping behavior. Historical sleep units and other source research remain unresolved;
-no gameplay/live-data/checker work authorized. Verification and handoff: `todo_decide.md §E` /
-`docs/HANDOFF.md`.
+no gameplay/live-data/checker work authorized. Fresh independent source/log review found no issues;
+parent verified actual diffs and reran bounded validator/boot checks. Evidence/limits and final
+handoff/publication/stop: `todo_decide.md §E` / `docs/HANDOFF.md`.
 
 **Historical source-attribution items 8–10 recorded and verified (2026-10-04):** bounded historical evidence
 and unresolved sleep-speed units in `domain.md §5`; no gameplay change or unanswered presented proposal.

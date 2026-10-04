@@ -2,17 +2,25 @@
 
 ## Ontology walkthrough entry point (2026-10-04, source item 11)
 
-**Source-attribution item 11 recorded for documentation only; no presented unanswered proposal
+**Source-attribution item 11 recorded and verified (`dcb3cd1`); no presented unanswered proposal
 remains.** Owner: **“11: Approved; When done, handoff, commit, push”**. Canonical evidence:
 `ontology/domain.md §5`; approval, commit mapping and verification limits: `todo_decide.md §E`.
 The freshly inspected cuwo revision verifies its normal-clock calculation; its named sleep constant
 appears only at its definition. This does not resolve original Alpha/Steam sleeping behavior.
 Hybrid normal time and approved inn skip/reset/consent/payment rules remain unchanged.
 
-**Verification/publication:** commit item 11 separately, then its final verification/handoff and
-push only `fix/ontology-reconciliation`. Verify local/upstream/live remote equality and clean state,
-then stop; no merge, rewrite, implementation or new proposals. Checks/evidence/limits: §E and
-`/tmp/pixlnd-source-resume.mQxzUP/`. No gameplay, live JSON, research dumps, tests or checker changes.
+**Verification:** `/simplify`, ponytail-review, diff checks and bounded ontology validation passed.
+Fresh independent source/log review found no issues; parent confirmed exact saved/committed diff
+correspondence and reran bounded validator/boot successfully (exit 0). These check existing loaded
+data/startup, not original-game history or new enforcement; source was read, not executed. No gameplay
+suite, visual or network tests. Evidence/limits: §E and `/tmp/pixlnd-source-resume.mQxzUP/`.
+Gameplay, live JSON, research dumps, tests and checker files remain unchanged.
+
+**Authorized publication:** commit this separate final handoff and push only
+`fix/ontology-reconciliation`; verify local/upstream/live remote equality and clean state, then stop.
+No merge, rewrite, implementation or new proposals. **Pre-publication checkpoint:** clean item HEAD
+`dcb3cd1`, live remote `199cb85` confirmed with `git ls-remote`. The handoff commit follows;
+inspect actual Git state on resumption, not this checkpoint as proof of publication.
 
 **Next resume topic: Validation-contract source research/attribution (remaining research).**
 Food histories; roster/trait/affix/recipe/refining/shop/loot/population/shipped-schedule/UI/camera/
