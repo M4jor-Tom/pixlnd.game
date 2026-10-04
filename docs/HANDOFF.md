@@ -2,9 +2,10 @@
 
 ## Ontology walkthrough entry point (2026-10-04, source items 16–21)
 
-**Current task: record six approved documentation items, then parent handoff/publication and STOP.**
+**Current task: parent final review/verification, handoff/publication and STOP.**
 Owner: **“16: Approved; 17: Approved; 18: Approved; 19: Approved; 20: Approved;
-21: Approved; When handled, handoff, commit, push”**. Items 16–20 recorded; item 21 awaits recording.
+21: Approved; When handled, handoff, commit, push”**.
+Items 16–21 recorded in six separate documentation commits.
 No presented unanswered proposal remains. Older handoff-only/publication entries below are
 historical; this new invocation authorizes only this six-item recording batch.
 
@@ -13,9 +14,9 @@ and evidence: `docs/ROADMAP/todo_decide.md §E`, `/tmp/pixlnd-source-reconciliat
 All earlier decisions stand. Five existing Markdown paths only; no gameplay, JSON, research,
 tests/checker work, labels, defaults, migration or compatibility changes.
 
-**Writer checkpoint: recording in progress.** Per-item semantic/scope, `/simplify`, ponytail-review,
-diff-check and bounded validator results are saved in that scratch directory. These checks cover
-existing loaded data, not original-game behavior, prose semantics or new enforcement; saved
+**Writer checkpoint: all six items recorded and committed.** Per-item semantic/scope,
+`/simplify`, ponytail-review, diff-check and bounded validator results are saved in scratch.
+These cover existing loaded data, not original-game behavior, prose semantics or new enforcement; saved
 community source bodies are inspected, not executed or externally re-fetched by this writer.
 Fresh independent review, parent actual-commit/diff audit and fresh validator/boot checks,
 separate final verification/handoff record and publication are **PENDING**, not passed.

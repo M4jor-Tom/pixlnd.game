@@ -176,6 +176,7 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
   Item 18 attributes cotton quantities only; noncotton/weapon quantities and refining yields/ratios stay open.
   Item 19 does not complete stock/loot/probability or daily pet-food-amount research or change economy rules.
   Item 20 leaves original population censuses, undead exceptions, animal composition and accumulation cause open.
+  Item 21 leaves shipped A*/daily routes/nightly lanterns and literal dialogue histories open; no hint rewards.
   No fauna history from landscape versions or invented tags/schemas/compatibility.
 - [ ] Source item 15 (`domain.md §5`): three dated community-wiki UI patch reports do not
   complete UI/camera/static/candle/furniture/audio/dialogue histories or authorize interface work.

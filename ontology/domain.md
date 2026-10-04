@@ -2012,6 +2012,24 @@ stable timing. The retained all-human community observation is not converted int
 exhaustive rule or a demonstrated original-behavior contradiction. Existing hybrid settlements
 and safety remain unchanged; no population, encounter, source-label or live-data changes.
 
+#### Item 21 — Isolated NPC observations, not a daily schedule (owner approved, 2026-10-04)
+
+The following community-wiki reports retain item 17's source-inspection/capture/date limits:
+
+| pinned source | reported observation |
+|---|---|
+| [Trade District revision 16522](https://cubeworld.fandom.com/wiki/Trade_District?oldid=16522) | During the day **many NPCs** wander the market area. |
+| [Campsite revision 18924](https://cubeworld.fandom.com/wiki/Campsite?oldid=18924) | NPCs and even monsters **occasionally rest at campsites**. |
+| [NPCs revision 20300](https://cubeworld.fandom.com/wiki/NPCs?oldid=20300) | NPCs stop moving and face the player within **interaction proximity**; **some NPCs** offer mission/key-item hints. |
+
+These isolated descriptions do not establish a universal ordered **home → park → shops → inn**
+route, A*, numeric interaction range, exact literal dialogue, timings, nightly lantern coverage
+or shipped Alpha/Steam history. In its separately **Steam-only Clans and Lore** section, NPCs
+says **“It's theorized that reading lore helps NPCs tell the player more secret locations.”**
+That remains a hypothesis, not a promised hint reward or mechanic. No schedule, dialogue,
+hint-reward, furniture/sleep rule, source label or runtime change follows; remaining histories
+stay research, not unanswered proposals.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2213,12 +2231,15 @@ reports, not probabilities, tier restrictions or economy changes.
 
 **Validation-contract source item 20 — DECIDED 2026-10-04:** §5 distinguishes population
 observations from a census or spawn algorithm.
-Source item 21 is approved, awaiting documentation recording; fresh independent review
-and parent verification/publication of this batch remain pending (`todo_decide.md §E`).
+
+**Validation-contract source item 21 — DECIDED 2026-10-04:** §5 records isolated NPC reports
+and the lore-hint hypothesis, not a complete schedule or rewards.
+Items 16–21 are recorded in separate documentation commits at the writer checkpoint; fresh
+independent review and parent verification/publication remain pending (`todo_decide.md §E`).
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–20 recorded; item 21 approved awaiting recording; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–21 recorded; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
