@@ -1797,6 +1797,22 @@ not fresh external verification or dates for unrelated features:
 
 No controls, recipes, audio, source labels or live JSON change; remaining histories stay open.
 
+#### Item 9 — Specific historical reports, not gameplay rules (owner approved after clarification, 2026-10-04)
+
+These retained reports support only the named subfacts, not entire rosters, recipe tables or
+interfaces. No external pages/code were freshly verified; approved hybrid rules remain authoritative.
+
+| subfact | retained evidence and limit |
+|---|---|
+| Slime encounters | `research/research_creatures_quests.md §2.4` explicitly reports **Alpha slimes with Djinn in deserts** and **Steam Slime Wells**. Other habitat/roster claims receive no blanket ancestry. |
+| Slime Divide | `research/research_creatures_quests.md §9` dates the **Omega preview to 2023-06-26**. This is not confirmed Alpha/Steam functionality or shipped hybrid behavior; Omega-only splitting remains outside v1. |
+| `recipes.json#gear-weapons.metal-weapon-common` | `research/research_items.md §3.1/§3.4` reports one **Steam common metal weapon example: five iron cubes at an anvil**. It neither establishes other weapon costs nor supplies a new hybrid default; exact per-weapon counts remain a source gap. D6 and the approved 20-wood-cube wand recipe stand independently, without conflict. |
+| Shop stock | `research/research_items.md §7.2` distinguishes **Alpha identical restocked goods** from **Steam new stock each day**. Restocking and changing contents are distinct; this does not change hybrid shop/reset rules or attribute every shop/loot claim. |
+| Steam map details | `research/research_world.md §10` reports **1:4–1:256 zoom**, displayed coordinates and **player-placed star markers**. These do not date the whole map interface or establish Alpha equivalents. |
+
+No encounters, crafting costs, shops or map behavior change; exact affix histories and other
+unsupported claims remain open under item 7. No new feature or source labels are authorized.
+
 #### Item 10 — Historical sleep-speed wording (owner approved, 2026-10-04)
 
 `static-entities.json#behaviour` says sleeping advances the clock “100x”. Retained
@@ -1972,13 +1988,15 @@ Items 5–7 passed independent source review and parent verification (`todo_deci
 including check limits); historical research and enforcement remain unfinished.
 **Validation-contract source item 8 — DECIDED 2026-10-04:** §5 records additional dated
 patch reports and their limits.
+**Validation-contract source item 9 — DECIDED 2026-10-04:** §5 records the clarified
+encounter/crafting/shop/map reports with narrow limits, not new gameplay rules.
 **Validation-contract source item 10 — DECIDED 2026-10-04:** §5 qualifies historical
 sleep-speed baseline/units as unresolved; hybrid normal time and inn skip remain unchanged.
-Independent review and parent verification for items 8 and 10 remain pending.
+Independent review and parent verification for items 8–10 remain pending.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–8 and 10 recorded, not whole-topic completion; source item 9 awaits clarification/approval (`todo_decide.md §E`). Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–10 recorded; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

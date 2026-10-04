@@ -2,16 +2,22 @@
 
 ## Ontology walkthrough entry point (2026-10-04)
 
-**Source-attribution items 8 and 10 recorded.** Canonical evidence:
-`ontology/domain.md §5`; approval/application ledger: `docs/ROADMAP/todo_decide.md §E`.
-Independent review and parent verification are pending; writer evidence is in
-`/tmp/pixlnd-source-record.6o6KXJ/`. No push, merge or history rewrite is authorized.
+**Source-attribution items 8–10 recorded; no presented unanswered proposal remains.**
+Canonical evidence: `ontology/domain.md §5`; approvals/commit mapping: `docs/ROADMAP/todo_decide.md §E`.
+Independent review and parent verification are pending; writer evidence:
+`/tmp/pixlnd-source-record.6o6KXJ/`. The owner's item-9 question was clarification, not refusal.
 
-**Next unanswered proposal: source item 9**, pending clarification/approval, not refused.
-The exact proposal, owner's wand question, response and restated approval request remain in §E.
-Resume it before later research or uncertain gameplay topics; do not apply it without an answer.
-Only the five existing Markdown records may change; gameplay, live JSON, research dumps, tests
-and checker implementation remain unauthorized. Earlier approvals and exclusions stand.
+**Authorized handoff:** after fresh independent review and actual parent verification, parent
+commits final verification/handoff and pushes only `fix/ontology-reconciliation`, verifies local/
+upstream/live remote equality and clean state, then stops. No merge, rewrite or new proposals.
+Only five existing Markdown records changed; gameplay, live JSON, research, tests and checker
+work remain unauthorized. Preserve settled items 1–10 and all earlier approvals/exclusions.
+
+**Next resume topic: Validation-contract source research/attribution (remaining research).**
+Unfinished: food histories; roster/trait/affix/recipe/refining/shop/loot/population/schedule/UI/
+camera/candle/furniture/audio/dialogue histories; historical sleep-rate baseline/units (§5 item 10).
+These are not unanswered gameplay ballots; do not advance to Swamp Lands/Lion/resistance/gear HP.
+The owner requests the final response contain only the next topic title.
 
 ## Historical source-attribution items 5–7 checkpoint (2026-10-04, superseded entry point)
 

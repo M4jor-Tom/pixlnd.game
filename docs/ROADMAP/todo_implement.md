@@ -170,9 +170,9 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 - [ ] Mapping item 4 (`domain.md §5`): implement the recorded required-path/shape, bounded
   source-inheritance and layer-specific checks when separately authorized, including missing-whole-input
   negatives and cumulative errors. Require current artifact log config directly; no old decay/floor
-  alternative. Source items 7–8 record bounded mixed-container/patch findings, not whole-file labels;
-  source item 9 awaits clarification/approval in §E. Finish remaining research before affected
-  provenance checks; no fauna history from landscape versions or invented tags/schemas/compatibility.
+  alternative. Source items 7–9 record bounded mixed-container/patch findings, not whole-file labels;
+  finish remaining research before affected provenance checks (§E). No fauna history from landscape
+  versions or invented tags/schemas/compatibility.
 - [ ] Source item 10 (`domain.md §5`): verify historical sleep multiplier baseline/units from source
   code before using that wording; no replacement number, furniture rule or hybrid clock/inn change.
 
