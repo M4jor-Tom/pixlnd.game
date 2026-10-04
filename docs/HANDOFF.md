@@ -2,7 +2,7 @@
 
 ## Ontology walkthrough entry point (2026-10-04)
 
-**Source-attribution item 8 recorded; item 10 approved awaiting recording.** Canonical evidence:
+**Source-attribution items 8 and 10 recorded.** Canonical evidence:
 `ontology/domain.md §5`; approval/application ledger: `docs/ROADMAP/todo_decide.md §E`.
 Independent review and parent verification are pending; writer evidence is in
 `/tmp/pixlnd-source-record.6o6KXJ/`. No push, merge or history rewrite is authorized.

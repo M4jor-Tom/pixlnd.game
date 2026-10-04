@@ -137,10 +137,10 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Source-attribution direction (2026-10-04):** item 8 recorded; item 10 independently approved
-awaiting recording. Item 9 awaits clarification/approval, not refused; exact proposal and answer
-request below. Independent review and parent verification for this batch are pending. Resume item 9
-before later research/topics; no implementation or push authorization. Items 1–7 stand.
+**Source-attribution direction (2026-10-04):** items 8 and 10 recorded. Item 9 awaits
+clarification/approval, not refused; exact proposal and answer request below. Independent review
+and parent verification for this batch are pending. Resume item 9 before later research/topics;
+no implementation or push authorization. Items 1–7 stand.
 
 **Historical validation-contract mapping direction (2026-09-28):** items 1–4 are recorded below; item 4
 adds the detailed mapping and owner correction: undeployed game, no player data to migrate,
@@ -648,8 +648,8 @@ Traversal items 1–5 are recorded (item 4 corrected) and reviewed; evidence bel
 Books/formulas items 1–3, artifact items 1–6, Assassin item 1 and Wand item 1 are recorded below,
 not open questions. Persistence items 1–9 are recorded and reviewed above.
 World bounds / resets items 1–4 are recorded below; no presented question remains.
-Validation-contract mapping/source items 1–8 are recorded below; source item 9 awaits clarification/
-approval, item 10 is approved awaiting recording. Historical research remains open.
+Validation-contract mapping/source items 1–8 and 10 are recorded below; source item 9 awaits
+clarification/approval. Historical research remains open.
 - [ ] **Validation-contract source research/attribution (2026-09-17 contract approved):**
   required paths/shapes, bounded source inheritance and check boundaries are recorded in
   `domain.md §5`; source items 6–8 add bounded evidence, not complete histories. Unsupported
@@ -670,14 +670,19 @@ documentation only. Item 9 is pending clarification/approval, neither refused no
 
 | item | application | canonical section | commit |
 |---|---|---|---|
-| 8 — Additional dated patch evidence | [x] recorded; independent review pending | `domain.md §5` / §7 | this scoped item commit; evidence map below |
+| 8 — Additional dated patch evidence | [x] recorded; independent review pending | `domain.md §5` / §7 | 9cd1e38a1cb34825e5bf5cd3a882d689ba0efc34 |
 | 9 — Encounter, crafting, shop and map reports | [ ] pending clarification/approval | proposal below, not applied | — |
-| 10 — Historical sleep-speed wording | [ ] approved awaiting recording | — | — |
+| 10 — Historical sleep-speed wording | [x] recorded; independent review pending | `domain.md §5`, `game-clock` / `c-time-speed` / §7 | this scoped item commit; evidence map below |
 
 **Item 8 — Approval versus Refusing:** approval makes precise patch history traceable,
 including music-loop addition versus fix, without changing controls, recipes or audio.
 Refusing would leave findings unrecorded, not remove/reject features. Canonical evidence and
 limits are in §5; no fresh external verification or whole-topic completion is claimed.
+
+**Item 10 — Approval versus Refusing:** approval prevents ambiguous historical sleep units
+from becoming an implementation default; approved inn sleep is unchanged (23:00 → 07:00).
+Refusing would leave the ambiguity unresolved, not approve either interpretation. §5 records
+uncertainty, not a proven contradiction or replacement number; normal hybrid time remains 10×.
 
 #### 9. Record narrowly supported encounter, crafting, shop and map reports — pending
 

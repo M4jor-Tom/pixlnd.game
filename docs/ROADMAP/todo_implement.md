@@ -173,6 +173,8 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
   alternative. Source items 7–8 record bounded mixed-container/patch findings, not whole-file labels;
   source item 9 awaits clarification/approval in §E. Finish remaining research before affected
   provenance checks; no fauna history from landscape versions or invented tags/schemas/compatibility.
+- [ ] Source item 10 (`domain.md §5`): verify historical sleep multiplier baseline/units from source
+  code before using that wording; no replacement number, furniture rule or hybrid clock/inn change.
 
 ## Meta / tooling
 - [ ] Save-data (§3.7): nothing persists (world seed, character, discovered lands).

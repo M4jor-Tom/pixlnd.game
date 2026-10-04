@@ -321,7 +321,7 @@ Time, resets and sleep. `A S`
 | prop | value |
 |---|---|
 | speed | 10× real time (1 game min ≈ 6 s; day = 2 h 24 min real) |
-| sleep-speed | A/S reference: 100× (clock only, world does not simulate faster); hybrid inn skip below |
+| sleep-speed | A/S reference: 100× (baseline/units unresolved, §5 source item 10; clock only, world does not simulate faster); hybrid inn skip below |
 | midnight-reset | 0:00: respawn eligible monsters, regenerate daily missions, respawn deposits and wilderness plants, restock shops, re-close divine doors; hybrid cleared-enemy eligibility and occupied-site timing follow world/reset items 3–4 below (historical S exclusion uncertain) |
 | inn-reset | A/S reference: innkeeper 18:00–06:00 → set 07:00; A free; S 10 coins, also re-rolls daily missions; hybrid services below |
 | night | very dark; lanterns; stealth builds faster in darkness |
@@ -1797,6 +1797,21 @@ not fresh external verification or dates for unrelated features:
 
 No controls, recipes, audio, source labels or live JSON change; remaining histories stay open.
 
+#### Item 10 — Historical sleep-speed wording (owner approved, 2026-10-04)
+
+`static-entities.json#behaviour` says sleeping advances the clock “100x”. Retained
+`research/research_systems.md §7` cites cuwo `NORMAL_TIME_SPEED = 10`, `SLEEP_TIME_SPEED = 100`
+and approximately two game minutes per real second. These reports do not clearly establish
+whether “100x” compares against real time or normal gameplay time. **The historical multiplier's
+baseline/units remain unresolved pending source-code verification**, including actual stepping;
+100 absolute and 10 normal could be compatible, so this is not a proven numerical contradiction.
+This is retained research, not freshly inspected code; no replacement number or source tag is selected.
+
+Hybrid normal time remains **10× real time**, and approved paid/consensual inn sleep still skips
+to the **next 07:00** (23:00 → 07:00), with the existing midnight-reset rules, not fast-forwarded
+combat/status effects/cooldowns (§3.1). This qualifies history, not hybrid clock policy or furniture
+gameplay. `generators.json#time` and all other live JSON remain unchanged.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -1837,7 +1852,7 @@ No controls, recipes, audio, source labels or live JSON change; remaining histor
 | c-combo-reset | any attack with a hitbox that misses resets combo to 0, subject to the hybrid whole-channel and combo-neutral zero-damage-taunt rules in §3.3 combo-system; cap per weapon-type | runtime |
 | c-dodge-cost | dodge costs 25 stamina; requires movement; standing still M3 = class skill (S); hybrid numbers `design.defence.dodge` (D23) | runtime |
 | c-no-death-penalty | death never removes gold/items/xp; respawn at statue (A) / activated shrine (S) | runtime |
-| c-time-speed | clock 10× real while the world runs; hybrid shutdown adds no gameplay time or reset catch-up (persistence item 8, §3.1); reference sleep 100× clock-only; hybrid inn sleep skips to the next 07:00 without fast-forwarding combat/status effects/cooldowns (§3.1) | runtime (clock/save enforcement deferred) |
+| c-time-speed | clock 10× real while the world runs; hybrid shutdown adds no gameplay time or reset catch-up (persistence item 8, §3.1); reference sleep 100× clock-only (baseline/units unresolved, source item 10 above); hybrid inn sleep skips to the next 07:00 without fast-forwarding combat/status effects/cooldowns (§3.1) | runtime (clock/save enforcement deferred) |
 | c-midnight-reset | at 0:00 respawn eligible mobs, regen daily missions, deposits, plants; restock shops; hybrid defeated ordinary-dungeon/repeatable-daily enemies including bosses return, completed one-time-objective guards/boss stay cleared, and artifact/book claims never renew; preserve world improvements' existing reset rules; occupied dungeon/quest sites wait until all players leave, coalescing missed midnights into one pending refresh; the clock itself never heals/replaces living enemies or erases a fight, preserving ordinary threat/home-return rules (§3.1 world/reset items 3–4); sleep applies ordinary midnight resets once only if crossing midnight, never extra shop refreshes/mission rerolls merely for sleeping (§3.1) | runtime+save-data (deferred) |
 | c-inn-hours | hybrid: separate 10-copper sleep service only 18:00–06:00 → next 07:00; all connected players explicitly agree, initiator pays the single fee only on success; refusal blocks skip without charge; healing and setting respawn stay free at any time without agreement (§3.1) | runtime |
 | c-land-count | hybrid: exactly 1 settlement per land (approved 2026-09-27); S per land: gnomes = 4, books = 4, movement items ≤ 4, ticket items ≤ 3, key items ≤ 9, towers ≤ 5, settlements ≥ 1; A per land: settlements = 1, missions = 64 cells | generator |
@@ -1956,11 +1971,14 @@ mixed-container subfacts, dated previews and remaining uncertainty, not blanket 
 Items 5–7 passed independent source review and parent verification (`todo_decide.md §E`,
 including check limits); historical research and enforcement remain unfinished.
 **Validation-contract source item 8 — DECIDED 2026-10-04:** §5 records additional dated
-patch reports and their limits. Independent review and parent verification remain pending.
+patch reports and their limits.
+**Validation-contract source item 10 — DECIDED 2026-10-04:** §5 qualifies historical
+sleep-speed baseline/units as unresolved; hybrid normal time and inn skip remain unchanged.
+Independent review and parent verification for items 8 and 10 remain pending.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–8 recorded, not whole-topic completion; source item 9 awaits clarification/approval (`todo_decide.md §E`), item 10 approved awaiting recording. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5) stay open; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–8 and 10 recorded, not whole-topic completion; source item 9 awaits clarification/approval (`todo_decide.md §E`). Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
