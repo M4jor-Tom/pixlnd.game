@@ -137,7 +137,13 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Source-attribution direction — items 26–28 (2026-10-04):** all three approved, recorded
+**Source-attribution direction — items 29–31 (2026-10-04):** owner approved only 29–31
+(“2ç” explicitly read as 29). Item 29 recorded; 30–31 awaiting recording. Fresh independent
+recording review/parent final verification pending. **Items 32–35 were presented but remain
+unanswered**, preserved verbatim in `docs/HANDOFF.md`; next agent resumes them in this topic.
+Parent owns final verified handoff/commit/push, then STOP; no new research, proposals or implementation.
+
+**Historical source-attribution direction — items 26–28 (2026-10-04):** all three approved, recorded
 and verified in separate documentation commits. Item 28 covers Golem AND Troll. Fresh independent
 source/diff/log review found no issues; parent actual-commit/diff audit and bounded validator/boot
 reruns passed (evidence below). No presented unanswered proposal remains; earlier approvals stand.
@@ -668,12 +674,14 @@ Traversal items 1–5 are recorded (item 4 corrected) and reviewed; evidence bel
 Books/formulas items 1–3, artifact items 1–6, Assassin item 1 and Wand item 1 are recorded below,
 not open questions. Persistence items 1–9 are recorded and reviewed above.
 World bounds / resets items 1–4 are recorded below; no presented question remains.
-Validation-contract mapping/source items 1–28 are recorded and verified below;
-no presented unanswered proposal remains. Historical research, including original Alpha/Steam
-sleep-rate baseline/units (§5 items 10–11), stays open.
+Validation-contract mapping/source items 1–28 are historically recorded and verified below;
+29 is recorded, 30–31 approved awaiting recording; fresh independent recording review pending.
+**Presented but unanswered 32–35** resume in this topic; exact proposals/consequences/examples/links
+are in `docs/HANDOFF.md`. Historical research, including original Alpha/Steam sleep-rate
+baseline/units (§5 items 10–11), stays open.
 - [ ] **Validation-contract source research/attribution (2026-09-17 contract approved):**
   required paths/shapes, bounded source inheritance and check boundaries are recorded in
-  `domain.md §5`; source items 6–28 add bounded evidence, not complete histories. Unsupported
+  `domain.md §5`; recorded source items add bounded evidence, not complete histories. Unsupported
   food release histories (`pet-food`) and remaining mixed-container histories (§5 item 7) are
   research, not guessed labels or new gameplay ballots. No whole-topic completion is claimed;
   direct data correction and enforcement remain separately unauthorized, with no migration or
@@ -683,7 +691,45 @@ sleep-rate baseline/units (§5 items 10–11), stays open.
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
 
-### Validation-contract source attribution — items 26–28 (2026-10-04)
+### Validation-contract source attribution — items 29–31 (2026-10-04)
+
+**Exact owner answer:** “2ç: Approved; 30: Approved; 31: Approved; Keep the next items for
+next agents (you're already at 86% of context); Once handled, handoff, commit, push.”
+Parent explicitly read “2ç” as **29**; no approval extends to **presented but unanswered 32–35**.
+Those exact proposals, alternatives/refusal consequences, examples and URLs are preserved in
+`docs/HANDOFF.md`. All earlier approvals stand; documentation only, no whole-topic completion.
+
+| item | application | canonical section | commit evidence |
+|---|---|---|---|
+| 29 — Early sleep instructions/clock estimates | [x] recorded; fresh review pending | `domain.md §5` / §7 | `recording/item-29.sha` |
+| 30 — Alpha-focused ten food/pet reports | approved; awaiting recording | `domain.md#pet-food` / §7 | not yet committed |
+| 31 — Early Kaliptus Leaf availability report | approved; awaiting recording | `domain.md#pet-food` / §7 | not yet committed |
+
+**29 — Approval versus Refusing:** approval adds traceable sleep evidence, not controls,
+healing numbers or a clock mechanic; refusal would leave the report unrecorded, not select
+another rate or change approved free recovery/paid consensual inn services.
+
+**Writer evidence/gates:** `/tmp/pixlnd-source-next.X0mnCh/recording/` holds source inspection,
+per-item semantic/scope/source review, `/simplify`, then ponytail-review (`item-N-review.md`),
+exact binary/full-index `item-N.diff`, `item-N-staged.diff`, `item-N-committed.diff`, comparison
+logs/exits, `item-N-{diff-check,validator}.log/.exit`, full `item-N.sha`, aggregate `batch.diff`
+and `commit-map.md`. Per-item commands: `git diff --check` and
+`timeout 150 nix develop -c godot --headless -s ontology/validate.gd`; actual output/exits are
+in those logs, not old proof. Validator checks existing loaded data, not prose/history or new
+enforcement. Saved source bodies/metadata inspected, not externally re-fetched or original-build
+executed; request-start capture times are not response completion. No images, full gameplay
+suite, visual or multiplayer checks. Only five existing Markdown paths; no labels, JSON, gameplay,
+tests, checker, research, schema/defaults or compatibility changes.
+
+**Fresh independent recording review / parent final verification: pending.** Pre-approval
+research review is not post-recording review. Writer stops after the three item commits with a
+clean worktree, without pushing. Parent audits actual commits/diff correspondence and scope,
+reruns bounded validator/boot, records true verdict/limits in a small separate final verified
+handoff commit, then normal-pushes only `fix/ontology-reconciliation`, checks fresh remote /
+upstream / local equality and clean state, and STOPs. No amendments, rewrite, merge, new research
+or proposals; next agent resumes unanswered **32–35 in Validation-contract source research/attribution**.
+
+### Historical validation-contract source attribution — items 26–28 (2026-10-04)
 
 **Exact owner answers:** “26: Approved; 27: Approved; 28: Approved”, then
 “When handled, handoff, commit, push”. Evidence only; earlier approvals stand.

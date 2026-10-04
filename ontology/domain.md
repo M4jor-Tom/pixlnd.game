@@ -2158,6 +2158,24 @@ new attacks, scaling or encounters, or establishes big-weapon/Earthquake traits.
 trait histories remain research; earlier family/species approvals stand. No source label, live
 declaration or gameplay change follows; this records reports, not newly implemented traits.
 
+#### Item 29 — Early sleep instructions and clock estimates (owner approved, 2026-10-04)
+
+[Sleep revision 4042](https://cubeworld.fandom.com/wiki/Sleep?oldid=4042), edited
+**2013-07-12T06:25:26Z**, instructs approaching the **head of a bed and hitting R** and
+reports sleep's main use as **refilling HP**. It estimates **one game minute per about six
+real seconds normally**, versus **one game minute per about half a real second sleeping
+at camp**, separately describing an **inn-at-night jump straight to morning**.
+
+The saved raw revision body/metadata and capture sidecars were inspected here, not externally
+re-fetched or original-build tested. Source-scout request-start **2026-10-04T22:31:55Z** is not
+response completion; the edit date is documentary timing, not feature introduction. These are
+paired community estimates, not verified original Alpha/Steam rates or a resolution/replacement
+of the qualified **100×** reference (items 10–11/23/26). No ratio, furniture
+controls, numeric healing, combat restriction or bench/stool extension is selected. Free inn
+recovery and separate paid, consensual sleep to the **next 07:00**, with approved reset/payment
+rules (§3.1), remain unchanged. No clock/furniture declaration, source label or gameplay change;
+original sleep activation/healing/rate/baseline histories remain research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2392,11 +2410,15 @@ metal/wood/linen/cotton/silk refining chains, not quantities, silk station or re
 (elemental giant/boulder) and Troll (terrain breaking) reports, not universal family/boss traits
 or release histories. Items 26–28 passed fresh independent source/diff/log review and parent
 actual-commit/diff audit / bounded validator/boot verification (`todo_decide.md §E`, with limits).
-Remaining histories stay research, not unanswered proposals.
+Remaining histories stay research, not unanswered proposals at that historical checkpoint.
+
+**Validation-contract source item 29 — DECIDED 2026-10-04:** §5 records Sleep 4042's
+head-of-bed R/HP-refill report and paired approximate normal/camp game-minute intervals,
+not selected controls, healing or clock mechanics. Fresh independent review remains pending (§E).
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–28 recorded and verified (`todo_decide.md §E`); no presented unanswered proposal remains, not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–28 historically recorded and verified; item 29 recorded, 30–31 approved awaiting recording; fresh independent review pending (`todo_decide.md §E`). Items 32–35 are presented but unanswered, preserved exactly in `docs/HANDOFF.md`; resume those in this topic, not implementation or whole-topic completion. Unsupported food/mixed-container histories, including sleep-speed units, remain research; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

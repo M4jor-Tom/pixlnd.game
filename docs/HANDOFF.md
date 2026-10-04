@@ -1,8 +1,82 @@
 # Handoff — resume here
 
-## Ontology walkthrough entry point (2026-10-04, source items 26–28)
+## Ontology walkthrough entry point (2026-10-04, source items 29–35)
 
-**Current task: final verified handoff/publication, then STOP.**
+**Current task: record approved 29–31, hand off for fresh review/parent publication, then STOP.**
+Owner exact answer: **“2ç: Approved; 30: Approved; 31: Approved; Keep the next items for next
+agents (you're already at 86% of context); Once handled, handoff, commit, push.”**
+Parent explicitly interpreted **2ç as 29** (AZERTY 9 = ç), not broader approval.
+**Item 29 recorded; 30–31 approved awaiting recording. Items 32–35 are PRESENTED BUT UNANSWERED**,
+not refused, unpresented candidates, approved decisions or held implementation. Items 1–28 and
+all earlier hybrid approvals stand. Prior checkpoints below are historical.
+
+Canonical evidence: `ontology/domain.md §5` / `#pet-food`; compact status/deferrals:
+`docs/ROADMAP/todo_decide.md §E` / `todo_implement.md`. Binding brief and original presentation:
+`/tmp/pixlnd-source-next.X0mnCh/{approval-brief,presented-batch-29-35}.md`;
+writer source inspection, per-item semantic/scope/source checks, `/simplify`, ponytail-review,
+exact binary/full-index unstaged/staged/committed diffs, comparisons, command logs/exits and full
+commit mapping: `/tmp/pixlnd-source-next.X0mnCh/recording/`. **Independent recording review and
+parent final verification are pending**, not inherited from pre-approval research review.
+Validator checks existing loaded data, not historical truth, Markdown or new enforcement.
+Saved source bodies/metadata inspected, not externally re-fetched or original-build executed;
+no images, gameplay suite, visual or multiplayer checks. Only five existing Markdown paths may
+change; no gameplay, JSON, tests, checker, research, labels, defaults, schema or compatibility work.
+
+**Publication boundary:** writer stops after three item commits with a clean worktree; parent
+owns fresh review, actual-diff audit, bounded validator/boot reruns, a small separate final verified
+handoff commit and authorized normal push only to `fix/ontology-reconciliation`, followed by fresh
+remote/upstream/local equality and clean-state checks, then STOP. No push/publication or review
+completion is claimed here. Starting checkpoint: clean `12aea8ae49af7aba8c5248704363fa933ed78528`;
+inspect actual Git state on resumption. No amendments, rewrite, merge, new research or proposals.
+
+**Next resume topic: Validation-contract source research/attribution — unanswered items 32–35.**
+Resume the exact presented items below in the same topic; await answers before canonical recording.
+Broader unfinished histories stay research, not gameplay ballots or whole-topic completion.
+Do not advance to Swamp Lands/Lion/resistance/gear HP or implementation.
+
+### Exact PRESENTED BUT UNANSWERED items 32–35
+
+## 32. One pet-food type is not one purchasable unit
+Settled: existing shop policies and food-carry limits stand.
+Recommendation: attribute Pet Food revision 20438's exact 'one type of pet food per day' wording, without interpreting it as a one-unit shop limit or confirming Alpha/Steam scope.
+Source: https://cubeworld.fandom.com/wiki/Pet_Food?oldid=20438 . The page has stale clauses; none overrides F11 or shared Bubble Gum.
+Example: a vendor listing only Carrots says nothing here about whether one or several carrots can be bought. Numeric stock amounts remain research.
+### Approval versus Refusing
+- Approval: makes the type/quantity distinction explicit; changes no shop stock or purchases.
+- Refusing: leaves attribution incomplete; does not approve a one-unit limit or another stock rule.
+
+## 33. Slime habitat and colour reports
+Settled: current encounters and approved Slime rules stand.
+Recommendation: attribute Slime revision 19848's 'Mountain Areas' and any-colour/any-biome report, including Blue Slimes not being restricted to Snowlands.
+Source: https://cubeworld.fandom.com/wiki/Slime?oldid=19848 . Preserve 'Mountain Areas', not automatic equivalence to the named Mountains landscape.
+Example: the report permits a blue Slime outside snow; it does not guarantee every colour in every land, establish numerical rarity, or date these clauses from nearby Alpha/Steam paragraphs.
+### Approval versus Refusing
+- Approval: adds bounded habitat evidence without changing spawns.
+- Refusing: leaves it unrecorded; does not select snow-only Blue Slimes or different encounters.
+
+## 34. Three individual Runner habitat reports
+Settled: existing Runner encounters and food pairings stand.
+Recommendation: attribute Runner revision 19849: Snow Runner→Snowlands; Leaf Runner→Jungles; Desert Runner→exclusively Deserts.
+Source: https://cubeworld.fandom.com/wiki/Runner?oldid=19849 . Exclusivity is stated only for Desert Runner; no release dates or blanket family ancestry follow.
+Example: the jungle/Leaf Runner report supplies no Plain Runner→Greenlands claim or new tame-food proof.
+### Approval versus Refusing
+- Approval: makes these three reported memberships traceable; moves no species and changes no taming.
+- Refusing: leaves citations unrecorded; does not select different habitats or foods.
+
+## 35. Limited HUD description, with a placement disagreement
+Settled: approved interface/input rules, including Assassin's no-separate-key-4 exception, stand.
+Recommendation: attribute User interface revision 14709's approximate nine item/XP messages, bottom-centre HP/MP/quickbar and upper-right environmental information. Preserve its upper-right Character Details wording as a disagreement with local top-left descriptions, not a layout correction.
+Source: https://cubeworld.fandom.com/wiki/User_interface?oldid=14709 . Its 2019 edit does not identify a build or prove Steam functionality; no screenshot inspected.
+Example: 'last nine or so messages' is an approximate historical description, not a newly imposed exact nine-message cap.
+### Approval versus Refusing
+- Approval: records the descriptions and disagreement; moves no HUD element and changes no controls.
+- Refusing: leaves attribution unfinished; does not choose another layout or message limit.
+
+Answer by number 29–35: Approved, Refused, or clarification. All approvals here are documentation-only. Introduction dates, successful original-build taming, sleep verification, refining quantities, naming algorithms, population/schedules and remaining presentation histories stay research; no whole-topic completion or implementation permission is implied.
+
+## Historical source-attribution items 26–28 checkpoint (2026-10-04, superseded entry point)
+
+**Historical task: final verified handoff/publication, then STOP.**
 Owner: **“26: Approved; 27: Approved; 28: Approved”**, then **“When handled, handoff, commit, push”**.
 **Items 26–28 recorded and verified in three separate documentation commits.** Item 28 covers
 **Golem AND Troll**. No presented unanswered proposal remains; all earlier approvals stand.
