@@ -1192,6 +1192,33 @@ bait; Kaliptus Leaf remains cut**, with chronology unresolved (items 6/12–14).
 capture was retrieved 2026-10-04 and inspected here, not re-fetched or behavior-tested by this
 writer. No pairing, availability, source label or hybrid rule changes.
 
+**Validation-contract source item 30 (owner approved, 2026-10-04):** Patricia Hernandez's
+currently retrieved [Tips For Playing The Cube World Alpha](https://kotaku.com/tips-for-playing-the-cube-world-alpha-885739884)
+explicitly credits its ten pet/food reports to the
+[Cube World Wiki](http://wiki.cubeworldforum.org/index.php?title=Pets). Exact list text:
+
+> Bunny: Carrot
+> Chicken: Cereal bar
+> Hornet: Popcorn
+> Mole: Chocolate Donut
+> Monkey: Banana split
+> Peacock: Chocolate cookie
+> Sheep: Cotton candy
+> Squirrel: Strawberry Cake
+> Terrier: Waffle
+> Turtle: Cinnamon role
+
+The source's **“Cinnamon role”** is retained only as quotation, not a local name/ID correction
+or different pairing. Metadata gives publication **2013-07-23T23:00:00+00:00** and modification
+**2025-07-11T00:15:25+00:00**; this edited current body is **not an authenticated 2013 body**.
+Saved raw HTML, list/metadata and capture sidecars were inspected here; source-scout request-start
+**2026-10-04T22:31:56Z** is not response completion. No external re-fetch or original-build testing.
+An Alpha-focused pairing report is not independent per-food testing or proof of the initial
+publication's list, first appearance, obtainability or demonstrated successful taming. Generic
+enemy-drop/shop advice establishes no per-food acquisition or guaranteed stock. Existing food
+pairings, availability, prices, IDs and all hybrid rules stand; no new A/S labels or taming/stock
+mechanics follow. Individual food histories remain research.
+
 ### key-item
 `S` land-bound "special" items (A: glider & boat were bought items in the special slot).
 → `instances/key-items.json`: hang-glider, boat, reins, climbing-spikes (movement, 4/land);
@@ -2416,9 +2443,13 @@ Remaining histories stay research, not unanswered proposals at that historical c
 head-of-bed R/HP-refill report and paired approximate normal/camp game-minute intervals,
 not selected controls, healing or clock mechanics. Fresh independent review remains pending (§E).
 
+**Validation-contract source item 30 — DECIDED 2026-10-04:** §3.4 `pet-food` attributes
+the current Alpha-focused Kotaku guide's ten wiki-credited pair reports, not an authenticated
+2013 list, per-food obtainability, first appearances or demonstrated taming; no new A/S labels.
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–28 historically recorded and verified; item 29 recorded, 30–31 approved awaiting recording; fresh independent review pending (`todo_decide.md §E`). Items 32–35 are presented but unanswered, preserved exactly in `docs/HANDOFF.md`; resume those in this topic, not implementation or whole-topic completion. Unsupported food/mixed-container histories, including sleep-speed units, remain research; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–28 historically recorded and verified; items 29–30 recorded, 31 approved awaiting recording; fresh independent review pending (`todo_decide.md §E`). Items 32–35 are presented but unanswered, preserved exactly in `docs/HANDOFF.md`; resume those in this topic, not implementation or whole-topic completion. Unsupported food/mixed-container histories, including sleep-speed units, remain research; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

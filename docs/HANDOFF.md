@@ -6,7 +6,7 @@
 Owner exact answer: **“2ç: Approved; 30: Approved; 31: Approved; Keep the next items for next
 agents (you're already at 86% of context); Once handled, handoff, commit, push.”**
 Parent explicitly interpreted **2ç as 29** (AZERTY 9 = ç), not broader approval.
-**Item 29 recorded; 30–31 approved awaiting recording. Items 32–35 are PRESENTED BUT UNANSWERED**,
+**Items 29–30 recorded; 31 approved awaiting recording. Items 32–35 are PRESENTED BUT UNANSWERED**,
 not refused, unpresented candidates, approved decisions or held implementation. Items 1–28 and
 all earlier hybrid approvals stand. Prior checkpoints below are historical.
 

@@ -138,7 +138,7 @@ passed; evidence and limits below. Ontology documentation only; gameplay, live J
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
 **Source-attribution direction — items 29–31 (2026-10-04):** owner approved only 29–31
-(“2ç” explicitly read as 29). Item 29 recorded; 30–31 awaiting recording. Fresh independent
+(“2ç” explicitly read as 29). Items 29–30 recorded; 31 awaiting recording. Fresh independent
 recording review/parent final verification pending. **Items 32–35 were presented but remain
 unanswered**, preserved verbatim in `docs/HANDOFF.md`; next agent resumes them in this topic.
 Parent owns final verified handoff/commit/push, then STOP; no new research, proposals or implementation.
@@ -675,7 +675,7 @@ Books/formulas items 1–3, artifact items 1–6, Assassin item 1 and Wand item 
 not open questions. Persistence items 1–9 are recorded and reviewed above.
 World bounds / resets items 1–4 are recorded below; no presented question remains.
 Validation-contract mapping/source items 1–28 are historically recorded and verified below;
-29 is recorded, 30–31 approved awaiting recording; fresh independent recording review pending.
+29–30 are recorded, 31 approved awaiting recording; fresh independent recording review pending.
 **Presented but unanswered 32–35** resume in this topic; exact proposals/consequences/examples/links
 are in `docs/HANDOFF.md`. Historical research, including original Alpha/Steam sleep-rate
 baseline/units (§5 items 10–11), stays open.
@@ -702,12 +702,17 @@ Those exact proposals, alternatives/refusal consequences, examples and URLs are 
 | item | application | canonical section | commit evidence |
 |---|---|---|---|
 | 29 — Early sleep instructions/clock estimates | [x] recorded; fresh review pending | `domain.md §5` / §7 | `recording/item-29.sha` |
-| 30 — Alpha-focused ten food/pet reports | approved; awaiting recording | `domain.md#pet-food` / §7 | not yet committed |
+| 30 — Alpha-focused ten food/pet reports | [x] recorded; fresh review pending | `domain.md#pet-food` / §7 | `recording/item-30.sha` |
 | 31 — Early Kaliptus Leaf availability report | approved; awaiting recording | `domain.md#pet-food` / §7 | not yet committed |
 
 **29 — Approval versus Refusing:** approval adds traceable sleep evidence, not controls,
 healing numbers or a clock mechanic; refusal would leave the report unrecorded, not select
 another rate or change approved free recovery/paid consensual inn services.
+
+**30 — Approval versus Refusing:** approval improves attribution without changing obtainable
+foods or tameable pets; refusal would leave the citation unrecorded, reject no existing pairing
+and select no alternative food. Carrot/Bunny is an Alpha-focused report, not proof of carrot
+supply or demonstrated taming in a particular original build.
 
 **Writer evidence/gates:** `/tmp/pixlnd-source-next.X0mnCh/recording/` holds source inspection,
 per-item semantic/scope/source review, `/simplify`, then ponytail-review (`item-N-review.md`),
