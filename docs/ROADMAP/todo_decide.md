@@ -137,8 +137,8 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Source-attribution direction — items 33–35 (2026-10-04):** all approved; items 33–34 recorded,
-35 awaits separate recording. Independent review / parent verification pending. Item 32 alone
+**Source-attribution direction — items 33–35 (2026-10-04):** all approved and recorded in three
+separate documentation commits. Independent review / parent verification pending. Item 32 alone
 remains presented but unanswered, verbatim in `docs/HANDOFF.md`; no refusal or implementation debt.
 Parent owns final verification/handoff/last-hash finalization and authorized push, then STOP.
 
@@ -682,8 +682,7 @@ not open questions. Persistence items 1–9 are recorded and reviewed above.
 World bounds / resets items 1–4 are recorded below; no presented question remains.
 Validation-contract mapping/source items 1–28 are historically recorded and verified below;
 approved 29–31 are recorded and verified, with fresh independent review and parent checks below.
-Items 33–34 are recorded; 35 approved awaiting separate recording, independent review/parent
-verification pending. **Presented but unanswered 32 alone** resumes in this topic; its exact
+Items 33–35 are recorded; independent review/parent verification pending. **Presented but unanswered 32 alone** resumes in this topic; its exact
 proposal/consequences/example/link are in `docs/HANDOFF.md`. Historical research, including original Alpha/Steam sleep-rate
 baseline/units (§5 items 10–11), stays open.
 - [ ] **Validation-contract source research/attribution (2026-09-17 contract approved):**
@@ -709,14 +708,17 @@ checker, research, labels, defaults, schema, compatibility or migration changes.
 | item | application | canonical section | commit evidence |
 |---|---|---|---|
 | 33 — Slime habitat/colour reports | [x] recorded; review pending | `domain.md §5` / §7 | d48a3eda9faaac7936b0bb21d30364b839a998ca |
-| 34 — Individual Runner habitat reports | [x] recorded; review pending | `domain.md §5` / §7 | pending item commit; parent finalizes |
-| 35 — Limited HUD/placement disagreement | approved; awaiting recording | `domain.md §5` / §7 | pending |
+| 34 — Individual Runner habitat reports | [x] recorded; review pending | `domain.md §5` / §7 | 7ee7b2044329320edbf3cbdddbc348baad3a2882 |
+| 35 — Limited HUD/placement disagreement | [x] recorded; review pending | `domain.md §5` / §7 | pending item commit; parent finalizes |
 
 **33 — Approval versus Refusing:** approval adds bounded habitat evidence without changing
 encounters; refusal would leave it unrecorded, not select snow-only Blue Slimes.
 
 **34 — Approval versus Refusing:** approval makes individual memberships traceable, moving
 no species and changing no foods; refusal would leave citations unrecorded, not select other habitats.
+
+**35 — Approval versus Refusing:** approval records descriptions/uncertainty, changing no layout
+or controls; refusal would leave attribution unfinished, not choose an alternative layout or limit.
 
 **Writer evidence/gates:** `/tmp/pixlnd-source-resume-32-35.RySLWG/recording/` holds source
 extractions (`item-N-source.txt`, raw source paths/hashes in `source-sidecars.log`), semantic/scope

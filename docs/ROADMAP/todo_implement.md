@@ -162,6 +162,9 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
   no encounters, family/roster declarations or source labels change.
 - [ ] Source item 34 (`domain.md §5`): individual Runner habitat reports date no memberships
   or taming; Desert-only exclusivity does not extend to Snow/Leaf/family. No species or foods move.
+- [ ] Source item 35 (`domain.md §5`): UI placement disagreement remains unresolved, not a
+  HUD move; approximate messages select no exact cap, historical keys preserve Assassin’s exception.
+  No screenshot/build verification, release ancestry or interface/control changes.
 - [ ] Mapping item 1 (`domain.md §5`): taxonomy/style ID, shape and reference checks without
   invented source tags; preserve embedded historical facts and separately scoped rosters/buildings.
   Direct data correction and model/loader/validator changes await separate authorization.

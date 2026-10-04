@@ -2255,6 +2255,25 @@ timing is not release/first-introduction evidence. Existing species memberships,
 and roster declarations remain unchanged; no species moves, bait, source labels or encounters
 are selected. Per-membership release histories and other traits remain research.
 
+#### Item 35 — Limited HUD descriptions and placement disagreement (owner approved, 2026-10-04)
+
+[User interface revision 14709](https://cubeworld.fandom.com/wiki/User_interface?oldid=14709),
+edited **2019-10-30T21:31:20Z**, reports a **lower-right Message Area** with the last
+**“nine or so” item/XP messages**, **lower-centre HP/MP and Quick Slot Bar** (M1, M2,
+historical keys 1–4 and Q), and **upper-right Environment Display** (time, temperature,
+humidity, minimap and compass). It also puts **Character Details upper-right** (head, name,
+level/class, HP and current/needed XP), unlike **top-left** in `ui.json#hud.portrait` and
+`research/research_systems.md §5.1`. Preserve this textual disagreement; no HUD move or
+screenshot-based resolution follows.
+
+Saved raw revision body/metadata and capture sidecars were inspected from the prior scout's
+2026-10-04 capture, not externally re-fetched or original-build tested; **no screenshot was
+inspected**. The 2019 edit identifies no original build or feature introduction and supplies
+no blanket Alpha/Steam UI ancestry. **“Nine or so” is approximate, not an exact message cap**;
+historical keys 1–4 do not override **Assassin's approved key-3/no-key-4 exception** (§3.5).
+Existing layout, controls, message limits and live declarations remain unchanged; no source
+labels or interface work follows. Remaining UI/camera histories stay research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2510,12 +2529,14 @@ Remaining histories stay research.
 habitat/colour reports, not named-Mountains scope, numerical rarity or guaranteed distribution.
 **Validation-contract source item 34 — DECIDED 2026-10-04:** §5 attributes Snow/Leaf/Desert
 Runner memberships, with exclusivity only for Desert Runner, not release/taming proof.
-Item 35 is approved, awaiting separate recording; independent review and parent verification
+**Validation-contract source item 35 — DECIDED 2026-10-04:** §5 attributes limited HUD reports,
+preserving the Character Details placement disagreement, approximate messages and Assassin exception.
+Items 33–35 are recorded; independent review and parent verification
 are pending. Item 32 alone remains presented but unanswered, verbatim in `docs/HANDOFF.md`.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–31 recorded and verified (`todo_decide.md §E`, with evidence limits). Items 33–34 recorded; 35 approved awaiting recording, independent review/parent verification pending. Item 32 alone is presented but unanswered, preserved exactly in `docs/HANDOFF.md`; resume it in this topic, not implementation or whole-topic completion. Unsupported food/mixed-container histories, including sleep-speed units, remain research; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–31 recorded and verified (`todo_decide.md §E`, with evidence limits). Items 33–35 recorded, independent review/parent verification pending. Item 32 alone is presented but unanswered, preserved exactly in `docs/HANDOFF.md`; resume it in this topic, not implementation or whole-topic completion. Unsupported food/mixed-container histories, including sleep-speed units, remain research; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

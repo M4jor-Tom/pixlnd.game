@@ -25,8 +25,8 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `tasks/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Source-attribution items 33–35 (2026-10-04):** all approved; items 33–34 recorded, 35
-awaits separate recording. Canonical reports/limits: `domain.md §5` / §7; no encounters,
+**Source-attribution items 33–35 (2026-10-04):** all approved and recorded in three
+separate documentation commits. Canonical reports/limits: `domain.md §5` / §7; no encounters,
 layout, controls, labels or live-data change. Independent review and parent verification pending.
 **Item 32 alone remains presented but unanswered**, verbatim in `docs/HANDOFF.md`.
 Evidence/deferrals: `todo_decide.md §E` / `todo_implement.md`; parent owns final verification/
