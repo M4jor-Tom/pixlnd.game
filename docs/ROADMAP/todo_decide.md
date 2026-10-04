@@ -137,7 +137,11 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Validation-contract mapping direction (2026-09-28):** items 1–4 are recorded below; item 4
+**Source-attribution direction (2026-10-04):** items 5–7 approved; item 5 recorded, 6–7
+await recording below. No presented unanswered proposal remains. Independent review and parent
+finalization are pending; remaining source research is not the uncertain-gameplay-facts batch.
+
+**Historical validation-contract mapping direction (2026-09-28):** items 1–4 are recorded below; item 4
 adds the detailed mapping and owner correction: undeployed game, no player data to migrate,
 require current rules directly. No presented question remains. Resume remaining **Validation-contract
 source research/attribution**, not uncertain gameplay facts or implementation. Item 4 is committed
@@ -654,6 +658,34 @@ Validation-contract mapping approvals/recording are tracked below; broader mappi
   identity, Lion tameability (`null` currently means untameable), resistance meaning and the
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
+
+### Validation-contract source attribution — approved items 5–7 (2026-10-04)
+
+**Exact owner answers:** “5: Approved; 6: Define an evidence and an assumtion quickly, how
+they materialise in the ontology, then re-state the question with another example, eventually
+quote doclinks; 7: Approved”. After clarification: **“6: Approved; When done, handoff,
+commit, push”**. The clarification was not rejection or correction; all three are approved.
+Items 1–4 and their 2026-09-28 dates stand.
+
+| item | application | canonical section | commit |
+|---|---|---|---|
+| 5 — Pet-food count | [x] recorded; pending independent review | `domain.md#pet-food` / §7 | this item commit; hash finalized next item |
+| 6 — Food-history evidence and limits | [ ] approved; awaiting recording | `domain.md#pet-food` | pending |
+| 7 — Narrow mixed-source subfacts | [ ] approved; awaiting recording | `domain.md §5` | pending |
+
+**Item 5:** corrected the summary to 58 obtainable + five cut. Original JSON count and the
+older six-name research lists were inspected directly; Banana Mash is the overlap, not a missing
+cut entry. **Approval versus Refusing:** approval aligns documentation with F11; refusal would
+leave the count contradiction, not authorize cutting Banana Mash or inventing food.
+
+**Evidence and gates:** `/tmp/pixlnd-source-attribution.ADFqBg/` holds the binding
+`approval-brief.md`, `food-counts.json`, per-item `item-N-review.md` (semantic/scope inspection,
+`/simplify`, then ponytail-review), exact binary `item-N.diff`, `item-N-{diff-check,validator}.log/.exit`,
+commit output/hash and `commit-map.md`. Commands for each item: `git diff --check` and
+`timeout 150 nix develop -c godot --headless -s ontology/validate.gd`. Logs/exits record actual
+results; these checks cover existing loaded data, not prose semantics or new enforcement.
+Independent review and parent final verification/handoff/publication are pending. No tests,
+live data, research dumps or code changes are authorized; no external-source verification claimed.
 
 ### Validation-contract mapping — approved batch (2026-09-28)
 

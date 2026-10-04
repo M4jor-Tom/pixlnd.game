@@ -1095,7 +1095,13 @@ this neither assigns 19 to Skeleton Dog nor invents its unrecorded source ID. Al
 pairings and numeric identities remain unchanged; membership in `dogs` grants no bait pairing.
 One of each food carried at a time still applies, not one Bubble Gum per target species.
 Live `pet-food.tames`, model/loader and validator remain single-species; migration is deferred.
-→ `instances/pet-food.json` (58 obtainable + 6 cut `X`).
+→ `instances/pet-food.json` (58 obtainable + 5 cut `X`).
+
+**Validation-contract source item 5 (owner approved, 2026-10-04):** this count follows the
+58 `foods` and five `cut` entries. The older six-food cut lists in
+`research/research_items.md §5` / `research/research_creatures_quests.md §2.7` include Banana
+Mash; F11 keeps it obtainable for Warthogs. Correcting the summary changes no food, pairing
+or availability and supplies no missing sixth cut entry.
 
 **Validation-contract mapping item 2 (owner approved, 2026-09-28):** record provenance
 individually for each food from evidence, not a blanket family default or copied target-creature
@@ -1876,6 +1882,9 @@ verification passed (`todo_decide.md §E`, including evidence limits); implement
 records required heterogeneous paths/shapes, bounded source inheritance and check boundaries in
 §5, requiring current definitions directly for this undeployed game (§0). No presented question
 remains; source research/attribution below is unfinished. Enforcement is separately unauthorized.
+
+**Validation-contract source item 5 — DECIDED 2026-10-04:** the pet-food summary is
+corrected to 58 obtainable + five cut (§3.4), preserving F11. Source history remains unfinished.
 
 | topic | still undecided / incomplete |
 |---|---|

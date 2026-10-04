@@ -1,6 +1,24 @@
 # Handoff — resume here
 
-## Ontology walkthrough entry point (2026-09-28)
+## Ontology walkthrough entry point (2026-10-04)
+
+**Source-attribution items 5–7 approved; recording in progress.** Item 5 corrects the
+pet-food count only; items 6–7 await recording. Canonical findings: `ontology/domain.md`;
+exact approvals, item commits and evidence: `docs/ROADMAP/todo_decide.md §E`.
+No presented unanswered proposal remains. Independent review and parent finalization are pending.
+
+Only the five existing Markdown paths in `/tmp/pixlnd-source-attribution.ADFqBg/approval-brief.md`
+are authorized; no gameplay, live JSON, research dumps, tests, checker/schema or migration work.
+Parent owns final verification/handoff commit, publication of `fix/ontology-reconciliation`
+and stop. Do not push or start another topic from this writer checkpoint.
+
+**Unfinished topic:** individual food release histories and unscoped mixed-container facts
+in `domain.md §5`; items 6–7 record evidence and limits, not whole-topic completion.
+Swamp Lands identity, Lion tameability, resistance and gear HP remain later uncertain-fact work.
+Preserve F11, Bubble Gum sharing/subtype 19 from Collie only, logarithmic artifacts and the
+permanent exclusion of regional gear power loss.
+
+## Historical ontology checkpoint (2026-09-28, superseded entry point)
 
 **Validation-contract mapping — item 4 recorded and verified (2026-09-28), commit `25552b5`.**
 Owner answer: **“4: Approved; Mind that the game is not deployed, and that no data on earth

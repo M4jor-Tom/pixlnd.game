@@ -12,7 +12,7 @@ ontology/
 └── validate.gd      headless check: `nix develop -c godot --headless -s ontology/validate.gd`
 ```
 
-## Current scope and decisions (2026-09-28)
+## Current scope and decisions (2026-10-04)
 
 Hybrid v1 is alpha progression + approved Steam content; A/S source descriptions are historical
 reference, and X/cut or Omega-only content is roadmap coverage, not launch availability (item 8).
@@ -25,7 +25,12 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `tasks/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Validation-contract mapping items 1–4 recorded (2026-09-28):** `domain.md §5` now maps
+**Source-attribution batch (2026-10-04):** items 5–7 approved; item 5 records the corrected
+58 obtainable + five cut food count, preserving F11 (`domain.md#pet-food`). Items 6–7 await
+recording; independent review and parent finalization are pending. Source research remains
+unfinished; no data/code/checker work authorized. Evidence/status: `todo_decide.md §E`.
+
+**Historical validation-contract mapping items 1–4 recorded (2026-09-28):** `domain.md §5` now maps
 required heterogeneous paths/shapes, bounded source inheritance and definition/generator/runtime
 checks; items 1–3 stand. The game is undeployed, with no player data to migrate: require current
 rules directly, not legacy compatibility (§0). Per-food and unscoped mixed-container history
