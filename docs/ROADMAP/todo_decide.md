@@ -137,10 +137,11 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Source-attribution direction — items 16–21 (2026-10-04):** all six approved and
-recorded in six separate documentation commits. Items 1–15 and settled hybrid rules stand;
-no presented unanswered proposal remains. Fresh independent review, parent verification and
-publication are pending; writer stops here, then parent finalizes handoff/push and STOP.
+**Source-attribution direction — items 16–21 (2026-10-04):** all six approved, recorded
+and verified in separate documentation commits. Items 1–15 and settled hybrid rules stand;
+no presented unanswered proposal remains. Fresh independent source/diff/log review found no
+issues; parent actual-commit audit and bounded validator/boot reruns passed (evidence below).
+Final handoff/publication, then STOP; no new proposals or implementation.
 
 **Historical source-attribution direction — items 12–15 (2026-10-04):** all four approved
 and recorded for documentation only, item 15 after clarification.
@@ -676,14 +677,14 @@ sleep-rate baseline/units (§5 items 10–11), stays open.
 20: Approved; 21: Approved; When handled, handoff, commit, push”. Evidence only;
 no presented unanswered proposal remains. Canonical content is in `domain.md`.
 
-| item | application | canonical section | evidence / commit mapping |
+| item | application | canonical section | commit |
 |---|---|---|---|
-| 16 — Archived Koala report | [x] recorded | `domain.md#pet-food` / §7 | `item-16.*`; scratch `commit-map.md` |
-| 17 — Forest/Beetle reports | [x] recorded | `domain.md §5` / §7 | `item-17.*`; scratch `commit-map.md` |
-| 18 — Cotton quantities | [x] recorded | `domain.md §5` / §7 | `item-18.*`; scratch `commit-map.md` |
-| 19 — Stock/Leftovers reports | [x] recorded | `domain.md §5` / §7 | `item-19.*`; scratch `commit-map.md` |
-| 20 — Population observations | [x] recorded | `domain.md §5` / §7 | `item-20.*`; scratch `commit-map.md` |
-| 21 — Isolated NPC observations | [x] recorded | `domain.md §5` / §7 | `item-21.*`; scratch `commit-map.md` |
+| 16 — Archived Koala report | [x] recorded and verified | `domain.md#pet-food` / §7 | b320426ef3354482c64e791790308a222c6d5c26 |
+| 17 — Forest/Beetle reports | [x] recorded and verified | `domain.md §5` / §7 | 7d1f048d32f198c3450f0bffad67e948c1081b35 |
+| 18 — Cotton quantities | [x] recorded and verified | `domain.md §5` / §7 | 2b36cf22b1993beae9d1a3a8b4dd4aadfa9a9636 |
+| 19 — Stock/Leftovers reports | [x] recorded and verified | `domain.md §5` / §7 | 43f91475694a7bae8f3578e7f3d12bc93b8179fd |
+| 20 — Population observations | [x] recorded and verified | `domain.md §5` / §7 | 6690c21ec758a9d1281bb5b536b515cdac9863c0 |
+| 21 — Isolated NPC observations | [x] recorded and verified | `domain.md §5` / §7 | 5f9dcd04f6f4a812300e9633eccd60ae844cbd47 |
 
 **16 — Approval versus Refusing:** approval records a dated report with no food identity,
 without changing Koala's bait or resolving history; refusal would leave it unrecorded,
@@ -704,24 +705,37 @@ changing settlements; refusal would approve neither all-human towns nor another 
 **21 — Approval versus Refusing:** approval records isolated observations and a hypothesis boundary
 without schedules/rewards; refusal would approve neither another route nor a hint reward.
 
-**Evidence/check contract:** `/tmp/pixlnd-source-reconciliation.j0nQEI/` contains the binding
-`approval-brief.md`, inspected-source record, per-item `item-N.diff`, `item-N-review.md`
-(semantic/scope, `/simplify`, then ponytail-review), `item-N-{diff-check,validator}.log/.exit`,
-staged/committed exact-diff comparisons and actual SHA mapping in `commit-map.md`.
-Commands per item: `git diff --check` and
-`timeout 150 nix develop -c godot --headless -s ontology/validate.gd`.
-Actual exits and Godot output belong in those logs; validation covers existing loaded data,
-not prose semantics, original-game truth or new enforcement. No boot/gameplay/visual/network
-checks in the writer lane; parent reruns validator/boot later. Only five existing Markdown
-paths may change; no gameplay/JSON/research/tests/checker work, labels or compatibility.
-Captures were retrieved by source scouts on 2026-10-04; this writer inspects saved bodies,
-not fresh external retrievals or original binaries. Revision/capture dates are not release dates.
+**Per-item evidence/checks:** `/tmp/pixlnd-source-reconciliation.j0nQEI/` contains the binding
+`approval-brief.md`, inspected-source record, `item-N.diff`, `item-N-review.md` (semantic/scope,
+`/simplify`, then ponytail-review), `item-N-{diff-check,validator}.log/.exit`, exact staged/committed
+comparisons and `commit-map.md`. Each item passed `git diff --check` and
+`timeout 150 nix develop -c godot --headless -s ontology/validate.gd` (exit 0; Godot actually ran
+and reported `ontology valid`). Only five existing Markdown paths changed; no gameplay/JSON/
+research/tests/checker work, labels, migration or compatibility. Captures were retrieved by source
+scouts on 2026-10-04; recording/review inspected saved bodies, not freshly retrieved external
+sources or original binaries. Revision/capture dates are not release or introduction dates.
 
-**Writer checkpoint:** all six items recorded and committed. Fresh independent review,
-parent actual-commit/diff audit and bounded validator/boot rechecks, final handoff record and publication
-are **PENDING**. Parent alone finalizes/pushes `fix/ontology-reconciliation`, verifies equality
-and clean state, then STOP; no new proposals. Remaining research is not a presented ballot.
-**Next resume topic: Validation-contract source research/attribution (remaining research).**
+**Independent review / parent verification:** fresh read-only source/diff/log review found no
+issues (`independent-review.md`); the reviewer ran no commands or independent byte/hash comparisons.
+Parent inspected actual commits and source passages, confirmed each exact saved/committed diff and
+aggregate reviewed-diff correspondence with the five-path boundary (`parent-audit.log/.exit`,
+`parent-item-N-committed.diff`, `parent-batch.diff`), and reran:
+```
+timeout 150 nix develop -c godot --headless -s ontology/validate.gd
+timeout 150 nix develop -c godot --headless --quit
+```
+Both exited 0: `ontology valid` and normal hybrid startup (`parent-{validator,boot}.log/.exit`).
+These check existing loaded data/startup, not historical truth, prose semantics or new enforcement.
+Source inspection is not original-binary execution; no gameplay suite, visual or network tests.
+
+**Final handoff/stop:** this separate verification record follows item `5f9dcd0`. Pre-publication
+live remote `6897bb1` was confirmed (`pre-publication-remote.log/.exit`); inspect actual Git state
+on resumption. Final record receives `/simplify`, ponytail-review and bounded diff/validator/boot
+rechecks, saved as `handoff-review.md`, `handoff.diff` and `handoff-{diff-check,validator,boot}.log/.exit`.
+Commit this handoff, push only `fix/ontology-reconciliation`, verify local/upstream/fresh live remote
+equality and clean state, then STOP. No amendments, rewrite, merge or new proposals.
+Remaining research is not a presented ballot; **next resume topic: Validation-contract source
+research/attribution (remaining research)** (`docs/HANDOFF.md`).
 
 ### Historical validation-contract source attribution — items 12–15 (2026-10-04)
 

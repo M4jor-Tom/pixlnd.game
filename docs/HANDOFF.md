@@ -2,10 +2,10 @@
 
 ## Ontology walkthrough entry point (2026-10-04, source items 16–21)
 
-**Current task: parent final review/verification, handoff/publication and STOP.**
+**Current task: final verified handoff/publication, then STOP.**
 Owner: **“16: Approved; 17: Approved; 18: Approved; 19: Approved; 20: Approved;
 21: Approved; When handled, handoff, commit, push”**.
-Items 16–21 recorded in six separate documentation commits.
+**Items 16–21 recorded and verified in six separate documentation commits.**
 No presented unanswered proposal remains. Older handoff-only/publication entries below are
 historical; this new invocation authorizes only this six-item recording batch.
 
@@ -14,14 +14,20 @@ and evidence: `docs/ROADMAP/todo_decide.md §E`, `/tmp/pixlnd-source-reconciliat
 All earlier decisions stand. Five existing Markdown paths only; no gameplay, JSON, research,
 tests/checker work, labels, defaults, migration or compatibility changes.
 
-**Writer checkpoint: all six items recorded and committed.** Per-item semantic/scope,
-`/simplify`, ponytail-review, diff-check and bounded validator results are saved in scratch.
-These cover existing loaded data, not original-game behavior, prose semantics or new enforcement; saved
-community source bodies are inspected, not executed or externally re-fetched by this writer.
-Fresh independent review, parent actual-commit/diff audit and fresh validator/boot checks,
-separate final verification/handoff record and publication are **PENDING**, not passed.
-Parent alone finalizes and pushes `fix/ontology-reconciliation`, verifies local/upstream/fresh
-live remote equality and clean state, then STOP. No merge, rewrite or new proposals.
+**Verified:** each item passed semantic/scope inspection, `/simplify`, ponytail-review,
+diff checks and bounded ontology validation. Fresh independent source/diff/log review found
+no issues; parent inspected the actual six commits, confirmed exact saved/committed diff
+correspondence and the five-path boundary, then reran bounded validator and headless boot
+successfully (exit 0). Evidence/limits: §E and `/tmp/pixlnd-source-reconciliation.j0nQEI/`.
+Checks cover existing loaded data/startup, not original-game history or new enforcement;
+community source bodies were inspected, not executed or externally re-fetched during recording/review.
+No gameplay suite, visual or network tests. Gameplay, JSON, research, tests and checker files are unchanged.
+
+**Authorized publication:** commit this separate final verification/handoff after item
+`5f9dcd0`, push only `fix/ontology-reconciliation`, verify local/upstream/fresh live remote
+equality and clean state, then STOP. Pre-publication checkpoint: clean item HEAD `5f9dcd0`;
+live remote `6897bb1` confirmed. This is not a publication claim; inspect actual Git state
+on resumption. No merge, amendments, rewrite or new proposals.
 
 **Next resume topic: Validation-contract source research/attribution (remaining research).**
 Unfinished: per-food first obtainable appearances and working taming in identified original

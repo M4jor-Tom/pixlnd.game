@@ -2234,8 +2234,9 @@ observations from a census or spawn algorithm.
 
 **Validation-contract source item 21 — DECIDED 2026-10-04:** §5 records isolated NPC reports
 and the lore-hint hypothesis, not a complete schedule or rewards.
-Items 16–21 are recorded in separate documentation commits at the writer checkpoint; fresh
-independent review and parent verification/publication remain pending (`todo_decide.md §E`).
+Items 16–21 passed fresh independent source/diff/log review and parent actual-diff audit /
+bounded validator/boot verification (`todo_decide.md §E`, including evidence limits).
+Remaining histories are research, not unanswered proposals.
 
 | topic | still undecided / incomplete |
 |---|---|
