@@ -137,8 +137,8 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Source-attribution direction (2026-10-04):** items 5–7 approved; item 5 recorded, 6–7
-await recording below. No presented unanswered proposal remains. Independent review and parent
+**Source-attribution direction (2026-10-04):** items 5–7 approved; items 5–6 recorded, item 7
+awaits recording below. No presented unanswered proposal remains. Independent review and parent
 finalization are pending; remaining source research is not the uncertain-gameplay-facts batch.
 
 **Historical validation-contract mapping direction (2026-09-28):** items 1–4 are recorded below; item 4
@@ -669,14 +669,24 @@ Items 1–4 and their 2026-09-28 dates stand.
 
 | item | application | canonical section | commit |
 |---|---|---|---|
-| 5 — Pet-food count | [x] recorded; pending independent review | `domain.md#pet-food` / §7 | this item commit; hash finalized next item |
-| 6 — Food-history evidence and limits | [ ] approved; awaiting recording | `domain.md#pet-food` | pending |
+| 5 — Pet-food count | [x] recorded; pending independent review | `domain.md#pet-food` / §7 | e575f22a4c271d6f77dcc86af77d0d44c3ffd1ff |
+| 6 — Food-history evidence and limits | [x] recorded; pending independent review | `domain.md#pet-food` / §7 | this item commit; hash finalized next item |
 | 7 — Narrow mixed-source subfacts | [ ] approved; awaiting recording | `domain.md §5` | pending |
 
 **Item 5:** corrected the summary to 58 obtainable + five cut. Original JSON count and the
 older six-name research lists were inspected directly; Banana Mash is the overlap, not a missing
 cut entry. **Approval versus Refusing:** approval aligns documentation with F11; refusal would
 leave the count contradiction, not authorize cutting Banana Mash or inventing food.
+
+**Item 6 clarification and approval:** evidence supports a specific traceable claim; an
+assumption goes beyond it. Canonical `pet-food` now records sources and limits, not inferred
+A/S labels. The example distinguished Banana Mash's reported Steam-era obtainability from
+unknown first appearance. Restated question: “May I record these specific evidence findings
+and remaining uncertainties, preserving existing labels, availability and taming rules?”
+The owner approved. **Approval versus Refusing:** approval records the distinctions without
+changing foods/pets; refusal would leave findings unrecorded, not approve assumptions.
+The 47-name Alpha lead, Eucalyptus replacement and retained 10 S / five X annotations are
+recorded with limits; unsupported food histories remain research, not completed attribution.
 
 **Evidence and gates:** `/tmp/pixlnd-source-attribution.ADFqBg/` holds the binding
 `approval-brief.md`, `food-counts.json`, per-item `item-N-review.md` (semantic/scope inspection,

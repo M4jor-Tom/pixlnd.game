@@ -1112,6 +1112,23 @@ approved taming pairings, including shared Bubble Gum, availability/prices and n
 assigns no new A/S/X labels. Per-food source research remains unfinished; live-data/model/loader/
 validator migration remains separately unauthorized.
 
+**Validation-contract source item 6 (owner approved after clarification, 2026-10-04):**
+**evidence** is a traceable source supporting a specific claim, possibly incompletely;
+an **assumption** extends beyond what it establishes. Record the supported claim, source and
+limits here; unsupported release history stays unresolved, not converted into A/S labels.
+The retained research is the evidence inspected, not fresh verification of cuwo, binaries or
+external pages. Its mixed pairing table does not establish every food's A+S release presence.
+
+| foods / existing annotations | supported evidence | unresolved limits |
+|---|---|---|
+| 47 of the 48 untagged `foods` (all except `eucalyptus-candy`) | `research/research_items.md §0.2`, type 20, explicitly names these foods under its Alpha identifier-table heading, attributed to cuwo ITEM_NAMES / coremaze. Naming, not numeric range, supplies this local Alpha lead. | No proof here of working Alpha taming, introduction dates, A-only or A+S release presence; no new blanket annotation. |
+| `eucalyptus-candy` (untagged) | `research/research_items.md §5` reports replacement of unused Kaliptus Leaf; both JSON notes retain that relationship. | Not named in §0.2; replacement date and A/S history unresolved. Omission is not proof of Alpha absence. |
+| Ten existing S foods: `buckhorn`, `banana-mash`, `mineral-water`, `spring-water`, `peanut`, `chocolate-ice-cream`, `raspberry-juice`, `mixed-salad`, `radicchio-salad`, `cabbage-rolls` | Preserve `pet-food.json#foods` annotations. §5 additionally reports Banana Mash “listed obtainable by 1.0 guides”, with pooled wiki/Steam/Gamepressure citations. | This pass does not independently confirm all ten histories. Banana Mash has reported Steam-era obtainability, not an established first appearance or proof of Alpha absence; F11's approved obtainability stands. Creature tags/IDs do not date their foods. |
+| Five existing X foods: `apple-pie`, `liquid-drop`, `charred-steak`, `wasabi-sauce`, `kaliptus-leaf` | Preserve `pet-food.json#cut`; §5 and `research/research_creatures_quests.md §2.7` name these cut/unused foods (item 5 resolves their lists' Banana Mash conflict). | X does not establish a calendar date or A/S ancestry; Kaliptus Leaf's replacement chronology is undated. |
+
+No availability, pairing, taming, price, source ID, loader default or checker changes follow
+from this evidence record. Food release-history research remains incomplete.
+
 ### key-item
 `S` land-bound "special" items (A: glider & boat were bought items in the special slot).
 → `instances/key-items.json`: hang-glider, boat, reins, climbing-spikes (movement, 4/land);
@@ -1884,7 +1901,10 @@ records required heterogeneous paths/shapes, bounded source inheritance and chec
 remains; source research/attribution below is unfinished. Enforcement is separately unauthorized.
 
 **Validation-contract source item 5 — DECIDED 2026-10-04:** the pet-food summary is
-corrected to 58 obtainable + five cut (§3.4), preserving F11. Source history remains unfinished.
+corrected to 58 obtainable + five cut (§3.4), preserving F11.
+**Validation-contract source item 6 — DECIDED 2026-10-04:** §3.4 records the named-food
+Alpha lead, undated replacement and retained S/X annotations with their evidence limits;
+unsupported release histories remain unresolved, not newly assigned labels.
 
 | topic | still undecided / incomplete |
 |---|---|

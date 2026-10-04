@@ -2,9 +2,9 @@
 
 ## Ontology walkthrough entry point (2026-10-04)
 
-**Source-attribution items 5–7 approved; recording in progress.** Item 5 corrects the
-pet-food count only; items 6–7 await recording. Canonical findings: `ontology/domain.md`;
-exact approvals, item commits and evidence: `docs/ROADMAP/todo_decide.md §E`.
+**Source-attribution items 5–7 approved; recording in progress.** Items 5–6 record the
+pet-food count and food-history evidence/limits; item 7 awaits recording. Canonical findings:
+`ontology/domain.md`; approvals, commits and evidence: `docs/ROADMAP/todo_decide.md §E`.
 No presented unanswered proposal remains. Independent review and parent finalization are pending.
 
 Only the five existing Markdown paths in `/tmp/pixlnd-source-attribution.ADFqBg/approval-brief.md`
@@ -13,7 +13,7 @@ Parent owns final verification/handoff commit, publication of `fix/ontology-reco
 and stop. Do not push or start another topic from this writer checkpoint.
 
 **Unfinished topic:** individual food release histories and unscoped mixed-container facts
-in `domain.md §5`; items 6–7 record evidence and limits, not whole-topic completion.
+in `domain.md#pet-food` / §5; item 6 records evidence and limits, not complete food histories.
 Swamp Lands identity, Lion tameability, resistance and gear HP remain later uncertain-fact work.
 Preserve F11, Bubble Gum sharing/subtype 19 from Collie only, logarithmic artifacts and the
 permanent exclusion of regional gear power loss.
