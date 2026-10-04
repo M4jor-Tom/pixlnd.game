@@ -160,8 +160,8 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 - [ ] Mapping item 1 (`domain.md §5`): taxonomy/style ID, shape and reference checks without
   invented source tags; preserve embedded historical facts and separately scoped rosters/buildings.
   Direct data correction and model/loader/validator changes await separate authorization.
-- [ ] Mapping items 2/6 (`domain.md#pet-food`): finish individual food release histories beyond
-  item 6's recorded naming/replacement leads and retained S/X annotations; unsupported claims
+- [ ] Mapping/source items 2/6/12 (`domain.md#pet-food`): finish individual food release histories
+  beyond the pinned cuwo naming table, retained replacement lead and S/X annotations; unsupported claims
   stay unresolved. Data correction and model/loader/validator work need separate authorization.
   Current A+S fallback is not evidence; shared-food pairings and source IDs remain unchanged.
 - [ ] Mapping item 3 (`domain.md §5`): preserve qualified reference annotations in later

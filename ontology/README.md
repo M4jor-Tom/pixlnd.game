@@ -25,7 +25,14 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `tasks/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Source-attribution item 11 recorded and verified (2026-10-04):** `domain.md §5` adds freshly inspected,
+**Source-attribution items 12–15 approved (2026-10-04):** recorded: 12;
+Items 13–15 are approved, awaiting recording.
+Canonical findings: `domain.md#pet-food` / §5.
+No game rules, labels or live data change. Writer checks/evidence: `todo_decide.md §E`;
+fresh independent review and parent diff/validator/boot verification remain pending.
+Parent owns final handoff/publication, then STOP (`docs/HANDOFF.md`); no new proposals.
+
+**Historical source-attribution item 11 recorded and verified (2026-10-04):** `domain.md §5` adds freshly inspected,
 revision-pinned cuwo normal-clock code and the sleep constant's definition-only occurrence, not original
 Alpha/Steam sleeping behavior. Historical sleep units and other source research remain unresolved;
 no gameplay/live-data/checker work authorized. Fresh independent source/log review found no issues;

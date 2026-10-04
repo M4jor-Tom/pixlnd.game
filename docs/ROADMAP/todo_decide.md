@@ -137,11 +137,11 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Source-attribution direction (2026-10-04):** item 11 recorded and verified for documentation only;
-items 1–10 stand and no presented unanswered proposal remains. It verifies the inspected cuwo revision's
-normal-clock calculation, not historical sleeping behavior. Verification and authorized handoff/
-publication/stop: the item-11 record below and `docs/HANDOFF.md`. Resume remaining source research,
-not uncertain gameplay facts or implementation.
+**Source-attribution direction (2026-10-04):** all items 12–15 approved, item 15 after
+clarification; recorded for documentation only: 12. Items 13–15 are approved, awaiting recording.
+Items 1–11 and settled hybrid rules stand; no presented unanswered proposal remains.
+Writer evidence and pending independent review / parent verification: the current record below.
+Parent owns final handoff/publication, then STOP; no new proposals or implementation.
 
 **Historical validation-contract mapping direction (2026-09-28):** items 1–4 are recorded below; item 4
 adds the detailed mapping and owner correction: undeployed game, no player data to migrate,
@@ -649,12 +649,12 @@ Traversal items 1–5 are recorded (item 4 corrected) and reviewed; evidence bel
 Books/formulas items 1–3, artifact items 1–6, Assassin item 1 and Wand item 1 are recorded below,
 not open questions. Persistence items 1–9 are recorded and reviewed above.
 World bounds / resets items 1–4 are recorded below; no presented question remains.
-Validation-contract mapping/source items 1–11 are recorded below; no presented unanswered proposal
-remains. Historical research, including original Alpha/Steam sleep-rate baseline/units (§5 items
-10–11), stays open.
+Validation-contract mapping/source items 1–12 are recorded below; all items 12–15 approved;
+no presented unanswered proposal remains. Historical research, including original Alpha/Steam
+sleep-rate baseline/units (§5 items 10–11), stays open.
 - [ ] **Validation-contract source research/attribution (2026-09-17 contract approved):**
   required paths/shapes, bounded source inheritance and check boundaries are recorded in
-  `domain.md §5`; source items 6–11 add bounded evidence, not complete histories. Unsupported
+  `domain.md §5`; source items 6–12 add bounded evidence, not complete histories. Unsupported
   food release histories (`pet-food`) and remaining mixed-container histories (§5 item 7) are
   research, not guessed labels or new gameplay ballots. No whole-topic completion is claimed;
   direct data correction and enforcement remain separately unauthorized, with no migration or
@@ -664,7 +664,41 @@ remains. Historical research, including original Alpha/Steam sleep-rate baseline
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
 
-### Validation-contract source attribution — item 11 (2026-10-04)
+### Validation-contract source attribution — items 12–15 (2026-10-04)
+
+**Exact owner answers:** “12: Approved; 13: Approved; 14: Approved; 15: clarify”, then after
+full clarification **“15: Approved; When done, handoff, commit, push”**. All four approved;
+clarification was not refusal/correction. No presented unanswered proposal remains.
+
+| item | application | canonical section |
+|---|---|---|
+| 12 — Pinned cuwo food names | [x] recorded | `domain.md#pet-food` / §7 |
+| 13 — Conflicting Koala-food reports | approved; awaiting recording | `domain.md#pet-food` / §7 |
+| 14 — Ten existing S-food reports | approved; awaiting recording | `domain.md#pet-food` / §7 |
+| 15 — Three dated UI patch reports | approved; awaiting recording | `domain.md §5` / §7 |
+
+**12 — Approval versus Refusing:** approval strengthens item 6's naming evidence without
+changing foods/pets or Bubble Gum's approved pairing; refusal would leave the lead unchanged,
+not select different pairings or history.
+
+**Evidence/checks:** `/tmp/pixlnd-reconcile-research.7wbpsE/` holds the binding approval brief,
+source checks and per-item `item-N-review.md` (`/simplify`, then ponytail-review), exact binary
+`item-N.diff`, `item-N-{diff-check,validator}.log/.exit`, commit SHA records and `commit-map.md`.
+For each recorded item: `git diff --check` and
+`timeout 150 nix develop -c godot --headless -s ontology/validate.gd` passed (exit 0,
+Godot reported `ontology valid`). Validator success checks current loaded data, not historical
+truth, prose consistency or new enforcement. Source inspection is not original-binary execution.
+Five existing Markdown paths only; no gameplay/JSON/research/test/checker changes or new labels.
+Require current rules, not migration or legacy formats. No gameplay suite, boot, visual or network tests.
+
+**Review-pending handoff:** fresh independent source/diff/log review, parent actual-commit/saved-diff
+correspondence audit and validator/boot reruns remain pending; prior research reviews do not satisfy
+this recording gate. Parent may record actual final verification/handoff in a separate docs commit,
+then publish only `fix/ontology-reconciliation`, verify local/upstream/fresh live remote equality and
+clean state, then STOP. Writer does not push; no amendments, rewrite, merge or new proposals.
+Remaining research / next title: `docs/HANDOFF.md` — **Validation-contract source research/attribution (remaining research)**.
+
+### Historical validation-contract source attribution — item 11 (2026-10-04)
 
 **Exact owner answer:** “11: Approved; When done, handoff, commit, push”. The preceding question
 about cuwo was clarification, not refusal or correction: it is an open-source Alpha-server
@@ -709,7 +743,7 @@ Parent verified local/upstream/fresh live remote equality and clean state. Evide
 `publication-{push,remote,verified}.log/.exit` under `/tmp/pixlnd-source-resume.mQxzUP/`.
 This is a published checkpoint, not proof of future Git state. No merge or history rewrite.
 
-### Handoff review only — unpresented research (2026-10-04)
+### Historical handoff review only — then-unpresented research (2026-10-04)
 
 **Owner scope:** “Your current objective is to handoff/review handoff. I'll start a new
 reconciliation task with a new agent”. Resume/compaction notices had led to additional read-only
@@ -742,8 +776,8 @@ The reviewer inspected saved evidence, not independent Git/remote state or rerun
 Evidence: `/tmp/pixlnd-handoff-scope-review.2nuw18/` (`independent-review.md`, check logs/exits).
 No new canonical evidence claim is applied by this note.
 
-**Next agent:** independently inspect these leads and all remaining source gaps; present only
-supported new documentation proposals and wait for owner answers. No item 12 or later is approved.
+**Historical next-agent instruction (superseded):** inspect remaining source gaps and await owner
+answers before recording new proposals. At that checkpoint no item 12 or later was approved.
 Do not advance to gameplay or Swamp Lands/Lion/resistance/gear HP. No presented unanswered item
 remains; food and mixed-container histories, including original sleeping units, remain research.
 Next title: **Validation-contract source research/attribution (remaining research)**.

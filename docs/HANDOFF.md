@@ -1,8 +1,38 @@
 # Handoff — resume here
 
-## Ontology walkthrough entry point (2026-10-04, source item 11)
+## Ontology walkthrough entry point (2026-10-04, source items 12–15)
 
-**Current task: handoff/review only.** Owner: “Your current objective is to handoff/review
+**Current task: approved documentation recording, then review/handoff/publication and STOP.**
+Owner answers: **“12: Approved; 13: Approved; 14: Approved; 15: clarify”**, then after
+clarification **“15: Approved; When done, handoff, commit, push”**. The item-15 question was
+clarification, not refusal. The previous handoff-only boundary below is historical, superseded
+by this invocation. **Recorded: 12.** Items 13–15 are approved, awaiting recording.
+
+Canonical findings: `ontology/domain.md#pet-food` (12–14) / §5 (15); compact approval/status
+and evidence: `docs/ROADMAP/todo_decide.md §E`. Settled items 1–11 and all hybrid rules stand.
+Only five existing Markdown paths may change; no gameplay, JSON, research dumps, tests or
+checker work, new source labels, migration or legacy compatibility.
+
+**Writer verification / review pending:** per-item semantic/scope inspection, `/simplify`,
+ponytail-review, diff-check and bounded ontology-validator evidence is saved under
+`/tmp/pixlnd-reconcile-research.7wbpsE/`. These check current loaded data, not historical truth,
+prose consistency or new enforcement. No gameplay suite, boot, visual or network tests claimed.
+Fresh independent review and parent committed-diff audit / validator / boot reruns are **pending**.
+The writer does not push. Parent finalizes verification/handoff, publishes only
+`fix/ontology-reconciliation`, verifies local/upstream/fresh live remote equality and clean state,
+then stops. No merge, amendments, rewrite or new proposals after this handoff.
+
+**Next resume topic: Validation-contract source research/attribution (remaining research).**
+Unfinished: food first appearances, Koala replacement chronology and actual taming; roster/trait/
+affix/recipe/refining/shop/loot/population/shipped-schedule histories; other UI/camera/static/
+candle/furniture/audio/dialogue histories; original Alpha/Steam sleep activation/units/baseline.
+Wiki affix/refining/candle corroboration resolves neither A/S dates nor numeric 1:1 ratios.
+No whole-topic completion; do not advance to Swamp Lands/Lion/resistance/gear HP or gameplay.
+After parent publication, final response: next topic title only.
+
+## Historical source-attribution item 11 checkpoint (2026-10-04, superseded entry point)
+
+**Historical task: handoff/review only.** Owner: “Your current objective is to handoff/review
 handoff. I'll start a new reconciliation task with a new agent”. Resume/compaction notices do
 not authorize more reconciliation here; no new question was presented or approved.
 

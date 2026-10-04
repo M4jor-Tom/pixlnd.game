@@ -1116,8 +1116,9 @@ validator migration remains separately unauthorized.
 **evidence** is a traceable source supporting a specific claim, possibly incompletely;
 an **assumption** extends beyond what it establishes. Record the supported claim, source and
 limits here; unsupported release history stays unresolved, not converted into A/S labels.
-The retained research is the evidence inspected, not fresh verification of cuwo, binaries or
-external pages. Its mixed pairing table does not establish every food's A+S release presence.
+At item 6's historical checkpoint, retained research was the evidence inspected, not fresh
+verification of cuwo, binaries or external pages. Item 12 below adds direct cuwo inspection;
+the mixed pairing table still does not establish every food's A+S release presence.
 
 | foods / existing annotations | supported evidence | unresolved limits |
 |---|---|---|
@@ -1128,6 +1129,19 @@ external pages. Its mixed pairing table does not establish every food's A+S rele
 
 No availability, pairing, taming, price, source ID, loader default or checker changes follow
 from this evidence record. Food release-history research remains incomplete.
+
+**Validation-contract source item 12 (owner approved, 2026-10-04):** directly inspected cuwo
+revision **`240bb61ec42abb10a73d750ce72f243e04e55509`**
+[`strings.py:2758–2913`](https://github.com/matpow2/cuwo/blob/240bb61ec42abb10a73d750ce72f243e04e55509/cuwo/strings.py#L2758-L2913)
+contains specific food names at the slots of **47 of the 48 currently untagged foods**;
+Eucalyptus Candy's current subtype **89** instead says generic **`Bait`**. This strengthens
+item 6's retained naming lead by verifying this open-source server reimplementation's table,
+not original Alpha/Steam obtainability, working taming, introduction dates or release presence.
+Generic `Bait` proves neither Alpha absence, replacement timing nor unused status; numeric IDs
+alone do not date content. Source spellings such as `CinnamonRole` / `BiscuitRole` authorize no
+ID/display-name changes. No cuwo code is added to pixlnd and no new A/S labels follow.
+Existing pairings, including Bubble Gum's Collie/Skeleton Dog exception and subtype 19 anchor,
+availability and all approved rules stand.
 
 ### key-item
 `S` land-bound "special" items (A: glider & boat were bought items in the special slot).
@@ -2022,9 +2036,13 @@ sleeping behavior. Item 10's historical units remain unresolved; no gameplay or 
 Fresh independent source review and parent diff/validator/boot verification passed
 (`todo_decide.md §E`, including limits); source research and enforcement remain unfinished.
 
+**Validation-contract source item 12 — DECIDED 2026-10-04:** §3.4 `pet-food` records the
+pinned cuwo naming table and generic subtype-89 limit, not original-game food history.
+Writer checks/evidence and pending independent review: `todo_decide.md §E`.
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–11 recorded; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–12 recorded; items 13–15 approved for recording; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
