@@ -137,10 +137,10 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Source-attribution direction (2026-10-04):** items 8–10 recorded; no presented unanswered
-proposal remains. Independent review and parent verification are pending. After those gates,
-parent completes the authorized handoff/commit/push and stops (`docs/HANDOFF.md`). Resume remaining
-source research, not uncertain gameplay facts or implementation; items 1–7 stand.
+**Source-attribution direction (2026-10-04):** items 8–10 recorded and verified; no presented
+unanswered proposal remains. Fresh independent review found no issues; parent verified actual diffs
+and reran bounded validator/boot checks. Final authorized handoff/publication/stop: `docs/HANDOFF.md`.
+Resume remaining source research, not uncertain gameplay facts or implementation; items 1–7 stand.
 
 **Historical validation-contract mapping direction (2026-09-28):** items 1–4 are recorded below; item 4
 adds the detailed mapping and owner correction: undeployed game, no player data to migrate,
@@ -672,9 +672,9 @@ All three are recorded for documentation only, in commit order **8, 10, 9**; no 
 
 | item | application | canonical section | commit |
 |---|---|---|---|
-| 8 — Additional dated patch evidence | [x] recorded; independent review pending | `domain.md §5` / §7 | 9cd1e38a1cb34825e5bf5cd3a882d689ba0efc34 |
-| 9 — Encounter, crafting, shop and map reports | [x] recorded after clarification; independent review pending | `domain.md §5` / §7 | this scoped item commit; evidence map below |
-| 10 — Historical sleep-speed wording | [x] recorded; independent review pending | `domain.md §5`, `game-clock` / `c-time-speed` / §7 | f71f7ad7adc9126b8c732d4c9ecd1abcf754d913 |
+| 8 — Additional dated patch evidence | [x] recorded and verified | `domain.md §5` / §7 | 9cd1e38a1cb34825e5bf5cd3a882d689ba0efc34 |
+| 9 — Encounter, crafting, shop and map reports | [x] recorded after clarification and verified | `domain.md §5` / §7 | b33f3fa2ac3d6463147800c18d4dc9b3c63075f7 |
+| 10 — Historical sleep-speed wording | [x] recorded and verified | `domain.md §5`, `game-clock` / `c-time-speed` / §7 | f71f7ad7adc9126b8c732d4c9ecd1abcf754d913 |
 
 **Item 8 — Approval versus Refusing:** approval makes precise patch history traceable,
 including music-loop addition versus fix, without changing controls, recipes or audio.
@@ -705,16 +705,32 @@ The question was not correction/refusal; no five-cube default or wand conflict i
 `item-N-review.md` (semantic/scope inspection, `/simplify`, then ponytail-review), binary
 `item-N.diff`, `item-N-{diff-check,validator}.log/.exit`, commit records and `commit-map.md`.
 Commands: `git diff --check`; `timeout 150 nix develop -c godot --headless -s ontology/validate.gd`.
-Logs/exits, not approval, establish results. Independent review and parent verification are
-pending. Validation checks loaded data, not historical evidence, prose semantics or new enforcement.
-No gameplay suite, boot, visual, network or fresh external-source check is claimed; external cuwo
-retrieval in the preceding research timed out without a revision/payload. Gameplay, live JSON,
+All three validators ran Godot, printed `ontology valid` and exited 0; expected dirty-tree warnings
+only. Per-item diff checks passed. Writer reviews and earlier pending-item-9 notes describe their
+then-current checkpoints, superseded by the final approval and independent review below.
+
+**Independent review / parent verification:** fresh read-only source/diff/log review found no
+issues (`independent-review.md`), without rerun commands or independent Git hash comparisons.
+Parent inspected actual commits/source passages, verified each exact saved/committed diff and the
+aggregate reviewed-diff match, and confirmed only five permitted Markdown paths changed
+(`parent-audit.log/.exit`, `parent-item-N.diff`, `parent-batch.diff`). Parent reran both commands:
+```
+timeout 150 nix develop -c godot --headless -s ontology/validate.gd
+timeout 150 nix develop -c godot --headless --quit
+```
+Both exited 0: `ontology valid` and normal hybrid startup (`parent-{validator,boot}.log/.exit`).
+These check existing loaded data/startup, not historical truth, prose semantics or new enforcement.
+No gameplay suite, visual or network tests; preceding external cuwo retrieval timed out without a
+revision/payload, so no fresh external-source verification is claimed. Gameplay, live JSON,
 research dumps, tests and checker files remain unchanged; no migration/compatibility code is needed.
 
-**Handoff/stop:** parent review/verification must precede final handoff/commit/push on
-`fix/ontology-reconciliation`, then verify local/upstream/live remote equality and clean state.
-No writer push, merge, rewrite or new proposals. Exact remaining research and stop gates:
-`docs/HANDOFF.md`; next title: **Validation-contract source research/attribution (remaining research)**.
+**Final handoff/stop:** this verification record follows item `b33f3fa`. Pre-publication live remote
+`9ccffb4` was confirmed with `git ls-remote` (`pre-publication-remote.log/.exit`); inspect actual Git
+state on resumption. The final record receives `/simplify`, ponytail-review and bounded rechecks,
+saved as `handoff-review.md`, `handoff.diff` and `handoff-{diff-check,validator,boot}.log/.exit`.
+Commit the final handoff, push only `fix/ontology-reconciliation`, then verify local/upstream/live
+remote equality and clean state and stop. No merge, rewrite or new proposals. Exact remaining
+research: `docs/HANDOFF.md`; next title: **Validation-contract source research/attribution (remaining research)**.
 
 ### Historical validation-contract source attribution — approved items 5–7 (2026-10-04)
 

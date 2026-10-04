@@ -25,9 +25,10 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `tasks/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Source-attribution items 8–10 recorded (2026-10-04):** bounded historical evidence and
-unresolved sleep-speed units in `domain.md §5`; no gameplay change or unanswered presented proposal.
-Independent review and parent verification pending. Remaining research and publication/stop gates:
+**Source-attribution items 8–10 recorded and verified (2026-10-04):** bounded historical evidence
+and unresolved sleep-speed units in `domain.md §5`; no gameplay change or unanswered presented proposal.
+Fresh independent source/log review found no issues; parent verified actual diffs and reran bounded
+validator/boot checks. Remaining research, evidence limits and final publication/stop:
 `todo_decide.md §E` / `docs/HANDOFF.md`. No data/code/checker work authorized.
 
 **Historical source-attribution items 5–7 recorded (2026-10-04):** corrected food count, food-history

@@ -2,16 +2,25 @@
 
 ## Ontology walkthrough entry point (2026-10-04)
 
-**Source-attribution items 8–10 recorded; no presented unanswered proposal remains.**
-Canonical evidence: `ontology/domain.md §5`; approvals/commit mapping: `docs/ROADMAP/todo_decide.md §E`.
-Independent review and parent verification are pending; writer evidence:
-`/tmp/pixlnd-source-record.6o6KXJ/`. The owner's item-9 question was clarification, not refusal.
+**Source-attribution items 8–10 recorded and verified; no presented unanswered proposal remains.**
+Item 8: dated patch reports (`9cd1e38`); item 10: historical sleep units (`f71f7ad`); item 9:
+clarified encounter/crafting/shop/map reports (`b33f3fa`). Canonical evidence: `ontology/domain.md §5`;
+exact approvals, commit mapping and verification limits: `docs/ROADMAP/todo_decide.md §E`.
+The owner's item-9 question was clarification, not refusal.
 
-**Authorized handoff:** after fresh independent review and actual parent verification, parent
-commits final verification/handoff and pushes only `fix/ontology-reconciliation`, verifies local/
-upstream/live remote equality and clean state, then stops. No merge, rewrite or new proposals.
-Only five existing Markdown records changed; gameplay, live JSON, research, tests and checker
-work remain unauthorized. Preserve settled items 1–10 and all earlier approvals/exclusions.
+**Verification:** each item passed semantic/scope inspection, `/simplify`, ponytail-review,
+diff checks and bounded ontology validation. Fresh independent source/log review found no issues.
+Parent verified actual commits, exact saved-diff correspondence and the five-Markdown-path boundary,
+and reran bounded ontology validation and headless boot successfully (exit 0). These cover existing
+loaded data/startup, not historical truth or new enforcement. No gameplay suite, visual or network
+tests; attempted external cuwo retrieval timed out without a revision/payload. Session-local evidence:
+`/tmp/pixlnd-source-record.6o6KXJ/`. Gameplay, live JSON, research, tests and checker files are unchanged.
+
+**Authorized publication:** commit this separate final verification/handoff and push only
+`fix/ontology-reconciliation`, verify local/upstream/live remote equality and clean state, then stop.
+No merge, rewrite or new proposals. Pre-publication checkpoint: clean item HEAD `b33f3fa`; live remote
+`9ccffb4` confirmed with `git ls-remote`. The final handoff commit follows; inspect actual Git state
+on resumption, not this checkpoint as publication proof. Preserve settled items 1–10 and earlier approvals.
 
 **Next resume topic: Validation-contract source research/attribution (remaining research).**
 Unfinished: food histories; roster/trait/affix/recipe/refining/shop/loot/population/schedule/UI/

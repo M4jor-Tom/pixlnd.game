@@ -1992,7 +1992,8 @@ patch reports and their limits.
 encounter/crafting/shop/map reports with narrow limits, not new gameplay rules.
 **Validation-contract source item 10 — DECIDED 2026-10-04:** §5 qualifies historical
 sleep-speed baseline/units as unresolved; hybrid normal time and inn skip remain unchanged.
-Independent review and parent verification for items 8–10 remain pending.
+Items 8–10 passed fresh independent source review and parent diff/validator/boot verification
+(`todo_decide.md §E`, including limits); historical research and enforcement remain unfinished.
 
 | topic | still undecided / incomplete |
 |---|---|
