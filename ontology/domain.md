@@ -2069,6 +2069,22 @@ to bench/stool IDs. Free inn recovery and separate paid, consensual sleep to the
 with the approved reset/payment rules, remain unchanged (§3.1). No rate, source label or live
 furniture/clock declaration changes; original activation/healing/rate histories remain research.
 
+#### Item 24 — Candle appearance and placement reports (owner approved, 2026-10-04)
+
+[Candle revision 19929](https://cubeworld.fandom.com/wiki/Candle?oldid=19929), edited
+**2024-08-19T20:04:14Z**, reports the existing `static-entities.json#candles` descriptions:
+**red/pink candles in dungeons, palaces and castles, emitting yellow light**;
+**green candles in ruins and catacombs, emitting green light**; and **small, tall and large
+forked** sizes. These are community appearance/placement descriptions, not proof of exclusive
+locations: “found” does not mean “only found”.
+
+The saved raw revision body/metadata and extracted passage were inspected here, from the
+source-scout capture retrieved **2026-10-04**, not externally re-fetched, image-inspected or
+original-build tested by this writer. The unscoped candle clauses supply no Alpha/Steam
+introduction dates; edit/capture dates are not release dates. Pickup/activation behavior and
+release histories remain unresolved. No lighting, placement, colors, sizes, source labels or
+live declarations change.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2282,12 +2298,15 @@ rarity-prefix lists, preserving the always-named guarantee and unresolved name h
 
 **Validation-contract source item 23 — DECIDED 2026-10-04:** §5 records bed/bedroll reports
 and uncertain rates/inn wording, not furniture mechanics or a hybrid inn change.
+
+**Validation-contract source item 24 — DECIDED 2026-10-04:** §5 attributes candle appearance
+and placement reports, not exclusive locations, release dates or pickup/activation behavior.
 Writer review/check evidence: `todo_decide.md §E`; fresh independent review and parent checks pending.
-Items 24–25 are approved and await recording; remaining histories stay research.
+Item 25 is approved and awaits recording; remaining histories stay research.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–23 recorded; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–24 recorded; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

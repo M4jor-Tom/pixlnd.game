@@ -25,8 +25,8 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `tasks/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Source-attribution items 22–25 approved (2026-10-04):** items 22–23 recorded in `domain.md §5`;
-24–25 await recording. Attribution only; all earlier approvals and hybrid rules stand.
+**Source-attribution items 22–25 approved (2026-10-04):** items 22–24 recorded in `domain.md §5`;
+25 awaits recording. Attribution only; all earlier approvals and hybrid rules stand.
 Writer review/check evidence: `todo_decide.md §E`; fresh independent review and parent checks
 pending. No labels, live data or gameplay changes; histories remain research.
 Current recording boundary and remaining topic: `docs/HANDOFF.md`.

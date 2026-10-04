@@ -4,7 +4,7 @@
 
 **Current task: record only approved source-attribution items 22–25, then parent review/handoff.**
 Owner: **“22: Approved; 23: Approved; 24: Approved; 25: Approved; When done, handoff, commit, push”**.
-**Items 22–23 recorded; approved 24–25 await recording.** No presented unanswered proposal remains.
+**Items 22–24 recorded; approved 25 awaits recording.** No presented unanswered proposal remains.
 All earlier approvals stand; the previous active checkpoint below is historical.
 
 Canonical evidence: `ontology/domain.md §5`; compact ledger/deferrals:
