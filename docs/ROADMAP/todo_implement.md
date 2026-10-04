@@ -186,6 +186,8 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
   No names, naming frequency, prefixes or label changes are authorized.
 - [ ] Source item 24 (`domain.md §5`): candle release/pickup/activation histories remain research;
   appearance/placement reports prove no exclusive locations and authorize no lighting/placement changes.
+- [ ] Source item 25 (`domain.md §5`): campsite furniture/release histories remain research;
+  no mandatory contents, exact stool/bench IDs, sitting-heal effect or cooking behavior selected.
 - [ ] Source items 10–11/23 (`domain.md §5`): original Alpha/Steam furniture-sleep activation,
   healing, rate and baseline/units remain research. Pinned cuwo normal-clock code/definition-only
   sleep constant and community Sleep/Bedroll reports do not resolve them. Retain “Requires Testing”

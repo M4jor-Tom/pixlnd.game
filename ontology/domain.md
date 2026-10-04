@@ -2085,6 +2085,22 @@ introduction dates; edit/capture dates are not release dates. Pickup/activation 
 release histories remain unresolved. No lighting, placement, colors, sizes, source labels or
 live declarations change.
 
+#### Item 25 — Campsite furniture, not mandatory contents (owner approved, 2026-10-04)
+
+[Campsite revision 18924](https://cubeworld.fandom.com/wiki/Campsite?oldid=18924), edited
+**2024-08-07T07:34:17Z**, separately describes **campfires that “often” accompany campsites**,
+**chairs for sitting**, and decorative **barrels, tables, tents and wagons**. This is a community
+furnished-resting-place report, not a required complete layout for every camp. Item 21's
+occasional NPC/monster-resting observation remains distinct and unchanged.
+
+The saved raw revision body/metadata and extracted passage were inspected here, from the
+source-scout capture retrieved **2026-10-04**, not externally re-fetched, image-inspected or
+original-build tested by this writer. These unscoped furniture clauses do not inherit Steam
+from the page's separate Steam map/boss paragraph. “Often” does not mean every camp, and
+edit/capture dates supply no release chronology. No exact stool/bench IDs, sitting-heal effect,
+cooking behavior or required camp contents are selected. Furniture/release histories remain
+research; no campsite layout, sleep rule, source label or live declaration changes.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2301,12 +2317,15 @@ and uncertain rates/inn wording, not furniture mechanics or a hybrid inn change.
 
 **Validation-contract source item 24 — DECIDED 2026-10-04:** §5 attributes candle appearance
 and placement reports, not exclusive locations, release dates or pickup/activation behavior.
-Writer review/check evidence: `todo_decide.md §E`; fresh independent review and parent checks pending.
-Item 25 is approved and awaits recording; remaining histories stay research.
+
+**Validation-contract source item 25 — DECIDED 2026-10-04:** §5 attributes limited campsite
+furniture reports, not mandatory layouts, sitting-heal/cooking rules or release history.
+Items 22–25 are recorded. Writer review/check evidence: `todo_decide.md §E`;
+fresh independent review and parent checks pending. Remaining histories stay research.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–24 recorded; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–25 recorded; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
