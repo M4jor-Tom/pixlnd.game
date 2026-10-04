@@ -137,8 +137,8 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Source-attribution direction — items 16–21 (2026-10-04):** all six approved; items 16–18
-recorded, 19–21 await recording. Items 1–15 and settled hybrid rules stand; no presented
+**Source-attribution direction — items 16–21 (2026-10-04):** all six approved; items 16–19
+recorded, 20–21 await recording. Items 1–15 and settled hybrid rules stand; no presented
 unanswered proposal remains. Fresh independent review, parent verification and publication
 are pending; writer records six item commits only, then parent finalizes handoff/push and STOP.
 
@@ -655,12 +655,12 @@ Traversal items 1–5 are recorded (item 4 corrected) and reviewed; evidence bel
 Books/formulas items 1–3, artifact items 1–6, Assassin item 1 and Wand item 1 are recorded below,
 not open questions. Persistence items 1–9 are recorded and reviewed above.
 World bounds / resets items 1–4 are recorded below; no presented question remains.
-Validation-contract mapping/source items 1–18 are recorded below; 19–21 approved awaiting recording;
+Validation-contract mapping/source items 1–19 are recorded below; 20–21 approved awaiting recording;
 no presented unanswered proposal remains. Historical research, including original Alpha/Steam
 sleep-rate baseline/units (§5 items 10–11), stays open.
 - [ ] **Validation-contract source research/attribution (2026-09-17 contract approved):**
   required paths/shapes, bounded source inheritance and check boundaries are recorded in
-  `domain.md §5`; source items 6–18 add bounded evidence, not complete histories. Unsupported
+  `domain.md §5`; source items 6–19 add bounded evidence, not complete histories. Unsupported
   food release histories (`pet-food`) and remaining mixed-container histories (§5 item 7) are
   research, not guessed labels or new gameplay ballots. No whole-topic completion is claimed;
   direct data correction and enforcement remain separately unauthorized, with no migration or
@@ -681,7 +681,7 @@ no presented unanswered proposal remains. Canonical content is in `domain.md`.
 | 16 — Archived Koala report | [x] recorded | `domain.md#pet-food` / §7 | `item-16.*`; scratch `commit-map.md` |
 | 17 — Forest/Beetle reports | [x] recorded | `domain.md §5` / §7 | `item-17.*`; scratch `commit-map.md` |
 | 18 — Cotton quantities | [x] recorded | `domain.md §5` / §7 | `item-18.*`; scratch `commit-map.md` |
-| 19 — Stock/Leftovers reports | approved; awaiting recording | `domain.md §5` / §7 | pending |
+| 19 — Stock/Leftovers reports | [x] recorded | `domain.md §5` / §7 | `item-19.*`; scratch `commit-map.md` |
 | 20 — Population observations | approved; awaiting recording | `domain.md §5` / §7 | pending |
 | 21 — Isolated NPC observations | approved; awaiting recording | `domain.md §5` / §7 | pending |
 
@@ -694,6 +694,9 @@ refusal would leave attribution unrecorded, not choose an alternate roster.
 
 **18 — Approval versus Refusing:** approval attributes existing cotton quantities without new recipes;
 refusal would leave attribution unrecorded, not change crafting costs.
+
+**19 — Approval versus Refusing:** approval records narrow economy reports without changing shops/rewards;
+refusal would leave clauses unrecorded, not choose opposite economy rules.
 
 **Evidence/check contract:** `/tmp/pixlnd-source-reconciliation.j0nQEI/` contains the binding
 `approval-brief.md`, inspected-source record, per-item `item-N.diff`, `item-N-review.md`

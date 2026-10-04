@@ -1981,6 +1981,22 @@ linen or silk costs, per-weapon quantities nor a release date. The other-materia
 in `recipes.json` remains an assumption; **D6 and the approved Wand's 20 wood cubes stand
 independently and unchanged**. No recipe, station, label or live-data changes.
 
+#### Item 19 — Bounded shop-stock and Leftovers reports (owner approved, 2026-10-04)
+
+[Item Shop revision 19791](https://cubeworld.fandom.com/wiki/Item_Shop?oldid=19791)
+explicitly reports **Alpha** materials, Pet Food, Key Items and Formulas **+1..+100 in any
+class type**; its **Steam** stock passage requires **all four Supplier Gnomes** before
+legendary rings and amulets are sold. This attributes those clauses, not the complete stock
+catalog or exact daily pet-food quantity. Existing stock/reset/supplier/pricing rules stand.
+
+[Leftovers revision 14748](https://cubeworld.fandom.com/wiki/Leftovers?oldid=14748) reports
+**a chance of animal drops**, an identification fee depending on **power level and quality**,
+and **a possible one-tier-higher item**: epic → legendary is a possibility, not a guarantee.
+It supplies no drop/upgrade odds or same-colour enemy/player-tier restrictions. Neither page
+establishes release chronology beyond its explicit report scope; community/capture/date limits
+follow item 17. Existing loot/reward rules remain unchanged. No shop, pricing, loot or source-label
+changes, excluded `+` equipment proposal or regional mechanic follows.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2176,12 +2192,15 @@ and bounded Beetle reports, not roster changes or release attribution.
 
 **Validation-contract source item 18 — DECIDED 2026-10-04:** §5 attributes cotton quantities,
 not other-material/weapon costs or new recipes.
-Source items 19–21 are approved, awaiting documentation recording; fresh independent review
+
+**Validation-contract source item 19 — DECIDED 2026-10-04:** §5 records stock/Leftovers
+reports, not probabilities, tier restrictions or economy changes.
+Source items 20–21 are approved, awaiting documentation recording; fresh independent review
 and parent verification/publication of this batch remain pending (`todo_decide.md §E`).
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–18 recorded; items 19–21 approved awaiting recording; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–19 recorded; items 20–21 approved awaiting recording; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
