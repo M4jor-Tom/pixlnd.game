@@ -6,7 +6,7 @@
 Owner answers: **“12: Approved; 13: Approved; 14: Approved; 15: clarify”**, then after
 clarification **“15: Approved; When done, handoff, commit, push”**. The item-15 question was
 clarification, not refusal. The previous handoff-only boundary below is historical, superseded
-by this invocation. **Recorded: 12–14.** Item 15 is approved, awaiting recording.
+by this invocation. **Items 12–15 recorded; no presented unanswered proposal remains.**
 
 Canonical findings: `ontology/domain.md#pet-food` (12–14) / §5 (15); compact approval/status
 and evidence: `docs/ROADMAP/todo_decide.md §E`. Settled items 1–11 and all hybrid rules stand.

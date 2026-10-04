@@ -1902,6 +1902,25 @@ The code was inspected, not executed; original Alpha/Steam sleeping units remain
 No replacement sleep rate or source label is selected. Hybrid normal time, approved inn skip/reset/
 consent/payment rules and all live JSON remain unchanged; this is documentation only.
 
+#### Item 15 — Three dated UI patch reports (owner approved after clarification, 2026-10-04)
+
+Freshly retrieved **community-wiki patch transcriptions** (source-scout MediaWiki response,
+revision bodies/metadata inspected here) report only these changes:
+
+| reported patch / body release date | exact reported change |
+|---|---|
+| [0.9.2-0, 2019-09-28](https://cubeworld.fandom.com/wiki/0.9.2-0?oldid=12461) | “Removed invisible orc hairstyles from character creation.” |
+| [0.9.3-0, 2019-09-29](https://cubeworld.fandom.com/wiki/0.9.3-0?oldid=12493) | “Level of other players is now displayed when they are highlighted.” |
+| 0.9.3-0, 2019-09-29 (same revision) | “Item receipt notifications now consider plus-equipment.” |
+
+The bodies' release dates are distinct from wiki revision/edit timestamps:
+**12461: 2019-09-28T13:28:08Z**; **12493: 2019-09-30T03:46:06Z**. These are not primary
+developer posts or independently tested original behavior; they establish reported patch
+changes, not complete interface histories, first introductions or broad ancestry.
+No live UI, camera or notification work follows. Historical `+` equipment remains excluded
+from pixlnd, and regional gear power loss remains **permanently excluded** (§1); approved
+interface/game rules and all live declarations remain unchanged.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2084,9 +2103,14 @@ Koala-food community reports, preserving Eucalyptus Candy, cut Kaliptus Leaf and
 **Validation-contract source item 14 — DECIDED 2026-10-04:** §3.4 individually attributes
 ten existing S-food pair reports, not first appearances, obtainability or successful taming.
 
+**Validation-contract source item 15 — DECIDED 2026-10-04:** §5 records three revision-pinned
+community-wiki UI patch reports, not interface work or restoration of excluded `+` equipment.
+Items 12–15 have writer checks; fresh independent review and parent verification remain pending
+(`todo_decide.md §E`). Remaining histories are research, not unanswered proposals.
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–14 recorded; item 15 approved for recording; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–15 recorded; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
