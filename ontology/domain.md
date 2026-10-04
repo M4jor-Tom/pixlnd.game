@@ -1143,6 +1143,21 @@ ID/display-name changes. No cuwo code is added to pixlnd and no new A/S labels f
 Existing pairings, including Bubble Gum's Collie/Skeleton Dog exception and subtype 19 anchor,
 availability and all approved rules stand.
 
+**Validation-contract source item 13 (owner approved, 2026-10-04):** conflicting Koala-food
+reports are explicit: Steam guides [1873333729](https://steamcommunity.com/sharedfiles/filedetails/?id=1873333729),
+[1865509515](https://steamcommunity.com/sharedfiles/filedetails/?id=1865509515) and
+[1879943518](https://steamcommunity.com/sharedfiles/filedetails/?id=1879943518) name
+**Eucalyptus Candy → Koala**; [Gamepressure](https://www.gamepressure.com/cubeworld/taming-and-locating-pets/zfca65)
+says **Kaliptus Leaf → Koala**. The inspected current-body captures were retrieved
+**2026-10-04T17:17:23–25Z** in the prior session, re-inspected here, not re-fetched by this
+writer or archived original publication bodies. Displayed publication/update dates do not date
+row additions; reports are not proven independent. Guide 1865509515 retains pet-XP wording,
+so its body is not uniformly version-clean. `Unknown`, `?` and `NO` occupy biome/rideability
+columns, not taming-efficacy judgments. None establishes replacement timing, unused status or
+demonstrates working taming. **Eucalyptus Candy remains Koala's food; Kaliptus Leaf remains
+cut**. The retained replacement note stands with chronology unresolved; no guide reverses it
+or changes source labels, availability or hybrid rules.
+
 ### key-item
 `S` land-bound "special" items (A: glider & boat were bought items in the special slot).
 → `instances/key-items.json`: hang-glider, boat, reins, climbing-spikes (movement, 4/land);
@@ -2040,9 +2055,12 @@ Fresh independent source review and parent diff/validator/boot verification pass
 pinned cuwo naming table and generic subtype-89 limit, not original-game food history.
 Writer checks/evidence and pending independent review: `todo_decide.md §E`.
 
+**Validation-contract source item 13 — DECIDED 2026-10-04:** §3.4 records conflicting
+Koala-food community reports, preserving Eucalyptus Candy, cut Kaliptus Leaf and unresolved chronology.
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–12 recorded; items 13–15 approved for recording; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–13 recorded; items 14–15 approved for recording; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

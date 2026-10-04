@@ -25,8 +25,8 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `tasks/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Source-attribution items 12–15 approved (2026-10-04):** recorded: 12;
-Items 13–15 are approved, awaiting recording.
+**Source-attribution items 12–15 approved (2026-10-04):** recorded: 12–13;
+Items 14–15 are approved, awaiting recording.
 Canonical findings: `domain.md#pet-food` / §5.
 No game rules, labels or live data change. Writer checks/evidence: `todo_decide.md §E`;
 fresh independent review and parent diff/validator/boot verification remain pending.
