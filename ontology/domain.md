@@ -2095,7 +2095,6 @@ Fresh independent source review and parent diff/validator/boot verification pass
 
 **Validation-contract source item 12 — DECIDED 2026-10-04:** §3.4 `pet-food` records the
 pinned cuwo naming table and generic subtype-89 limit, not original-game food history.
-Writer checks/evidence and pending independent review: `todo_decide.md §E`.
 
 **Validation-contract source item 13 — DECIDED 2026-10-04:** §3.4 records conflicting
 Koala-food community reports, preserving Eucalyptus Candy, cut Kaliptus Leaf and unresolved chronology.
@@ -2105,8 +2104,9 @@ ten existing S-food pair reports, not first appearances, obtainability or succes
 
 **Validation-contract source item 15 — DECIDED 2026-10-04:** §5 records three revision-pinned
 community-wiki UI patch reports, not interface work or restoration of excluded `+` equipment.
-Items 12–15 have writer checks; fresh independent review and parent verification remain pending
-(`todo_decide.md §E`). Remaining histories are research, not unanswered proposals.
+Items 12–15 passed fresh independent source review and parent actual-diff audit / bounded
+validator/boot verification (`todo_decide.md §E`, including evidence limits).
+Remaining histories are research, not unanswered proposals.
 
 | topic | still undecided / incomplete |
 |---|---|

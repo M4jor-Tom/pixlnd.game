@@ -140,8 +140,9 @@ checker implementation remain unauthorized. Verification record: `7a79913`.
 **Source-attribution direction (2026-10-04):** all items 12–15 approved, item 15 after
 clarification; all four recorded for documentation only.
 Items 1–11 and settled hybrid rules stand; no presented unanswered proposal remains.
-Writer evidence and pending independent review / parent verification: the current record below.
-Parent owns final handoff/publication, then STOP; no new proposals or implementation.
+Fresh independent source/log review found no issues; parent actual-diff audit and bounded
+validator/boot reruns passed (evidence/limits below). Final handoff/publication, then STOP;
+no new proposals or implementation.
 
 **Historical validation-contract mapping direction (2026-09-28):** items 1–4 are recorded below; item 4
 adds the detailed mapping and owner correction: undeployed game, no player data to migrate,
@@ -670,12 +671,12 @@ sleep-rate baseline/units (§5 items 10–11), stays open.
 full clarification **“15: Approved; When done, handoff, commit, push”**. All four approved;
 clarification was not refusal/correction. No presented unanswered proposal remains.
 
-| item | application | canonical section |
-|---|---|---|
-| 12 — Pinned cuwo food names | [x] recorded | `domain.md#pet-food` / §7 |
-| 13 — Conflicting Koala-food reports | [x] recorded | `domain.md#pet-food` / §7 |
-| 14 — Ten existing S-food reports | [x] recorded | `domain.md#pet-food` / §7 |
-| 15 — Three dated UI patch reports | [x] recorded | `domain.md §5` / §7 |
+| item | application | canonical section | commit |
+|---|---|---|---|
+| 12 — Pinned cuwo food names | [x] recorded and verified | `domain.md#pet-food` / §7 | cf1dfdd6e5556c5c2145037a15863c56a272a8d2 |
+| 13 — Conflicting Koala-food reports | [x] recorded and verified | `domain.md#pet-food` / §7 | 9bec6abe4d4447ccaa7683059fec65dfaac25a46 |
+| 14 — Ten existing S-food reports | [x] recorded and verified | `domain.md#pet-food` / §7 | f886f61f1275b08aa41b5dac9a9d08a24c0b7f0c |
+| 15 — Three dated UI patch reports | [x] recorded and verified | `domain.md §5` / §7 | 39786bd6df451c829ce9bfe1a25f60f671e862fb |
 
 **12 — Approval versus Refusing:** approval strengthens item 6's naming evidence without
 changing foods/pets or Bubble Gum's approved pairing; refusal would leave the lead unchanged,
@@ -693,21 +694,33 @@ while all choices, F11 and shared Bubble Gum stand.
 citations, including highlighted teammate levels, without new interface work or restored `+`
 equipment; refusal would leave citations unrecorded, not remove features or enable excluded gear.
 
-**Evidence/checks:** `/tmp/pixlnd-reconcile-research.7wbpsE/` holds the binding approval brief,
-source checks and per-item `item-N-review.md` (`/simplify`, then ponytail-review), exact binary
+**Per-item evidence/checks:** `/tmp/pixlnd-reconcile-research.7wbpsE/` holds the binding approval
+brief, source checks, `item-N-review.md` (`/simplify`, then ponytail-review), exact binary
 `item-N.diff`, `item-N-{diff-check,validator}.log/.exit`, commit SHA records and `commit-map.md`.
-For each recorded item: `git diff --check` and
-`timeout 150 nix develop -c godot --headless -s ontology/validate.gd` passed (exit 0,
-Godot reported `ontology valid`). Validator success checks current loaded data, not historical
-truth, prose consistency or new enforcement. Source inspection is not original-binary execution.
-Five existing Markdown paths only; no gameplay/JSON/research/test/checker changes or new labels.
-Require current rules, not migration or legacy formats. No gameplay suite, boot, visual or network tests.
+Each item passed `git diff --check` and bounded ontology validation (exit 0, Godot actually ran
+and reported `ontology valid`). Five existing Markdown paths only; no gameplay/JSON/research/
+test/checker changes or new labels. Require current rules, not migration or legacy formats.
 
-**Review-pending handoff:** fresh independent source/diff/log review, parent actual-commit/saved-diff
-correspondence audit and validator/boot reruns remain pending; prior research reviews do not satisfy
-this recording gate. Parent may record actual final verification/handoff in a separate docs commit,
-then publish only `fix/ontology-reconciliation`, verify local/upstream/fresh live remote equality and
-clean state, then STOP. Writer does not push; no amendments, rewrite, merge or new proposals.
+**Independent review / parent verification:** fresh read-only source/diff/log review found no
+issues (`independent-review.md`); reviewer inspected saved evidence, not independent Git hash
+comparisons or rerun tests. Parent inspected actual commits/source passages, confirmed each exact
+saved/staged/committed diff match and aggregate reviewed-diff correspondence with the five-path
+boundary (`parent-audit.log/.exit`, `parent-item-N-committed.diff`, `parent-batch.diff`), and reran:
+```
+timeout 150 nix develop -c godot --headless -s ontology/validate.gd
+timeout 150 nix develop -c godot --headless --quit
+```
+Both exited 0: `ontology valid` and normal hybrid startup (`parent-{validator,boot}.log/.exit`).
+These check existing loaded data/startup, not historical truth, prose consistency or new
+enforcement. Source inspection is not original-binary execution; no gameplay suite, visual or
+network tests.
+
+**Final handoff/stop:** this separate verification record follows item `39786bd`. Pre-publication
+live remote `d9d6d50` was confirmed (`pre-publication-remote.log/.exit`); inspect actual Git state
+on resumption. Final record receives `/simplify`, ponytail-review and bounded diff/validator/boot
+rechecks, saved as `handoff-review.md`, `handoff.diff` and `handoff-{diff-check,validator,boot}.log/.exit`.
+Commit the handoff, push only `fix/ontology-reconciliation`, then verify local/upstream/fresh live
+remote equality and clean state and STOP. No amendments, rewrite, merge or new proposals.
 Remaining research / next title: `docs/HANDOFF.md` — **Validation-contract source research/attribution (remaining research)**.
 
 ### Historical validation-contract source attribution — item 11 (2026-10-04)

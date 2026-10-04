@@ -2,7 +2,7 @@
 
 ## Ontology walkthrough entry point (2026-10-04, source items 12–15)
 
-**Current task: approved documentation recording, then review/handoff/publication and STOP.**
+**Current task: final reviewed handoff/publication, then STOP.**
 Owner answers: **“12: Approved; 13: Approved; 14: Approved; 15: clarify”**, then after
 clarification **“15: Approved; When done, handoff, commit, push”**. The item-15 question was
 clarification, not refusal. The previous handoff-only boundary below is historical, superseded
@@ -13,14 +13,19 @@ and evidence: `docs/ROADMAP/todo_decide.md §E`. Settled items 1–11 and all hy
 Only five existing Markdown paths may change; no gameplay, JSON, research dumps, tests or
 checker work, new source labels, migration or legacy compatibility.
 
-**Writer verification / review pending:** per-item semantic/scope inspection, `/simplify`,
-ponytail-review, diff-check and bounded ontology-validator evidence is saved under
-`/tmp/pixlnd-reconcile-research.7wbpsE/`. These check current loaded data, not historical truth,
-prose consistency or new enforcement. No gameplay suite, boot, visual or network tests claimed.
-Fresh independent review and parent committed-diff audit / validator / boot reruns are **pending**.
-The writer does not push. Parent finalizes verification/handoff, publishes only
-`fix/ontology-reconciliation`, verifies local/upstream/fresh live remote equality and clean state,
-then stops. No merge, amendments, rewrite or new proposals after this handoff.
+**Verified:** per-item semantic/scope inspection, `/simplify`, ponytail-review, diff checks and
+bounded ontology validation passed. Fresh independent source/diff/log review found no issues;
+parent verified the actual four commits and exact saved-diff correspondence, then reran bounded
+validator and headless boot successfully (exit 0). Evidence/limits: §E and
+`/tmp/pixlnd-reconcile-research.7wbpsE/`. Checks cover existing loaded data/startup, not original-game
+behavior or new enforcement; sources were inspected, not executed. No gameplay suite, visual or
+network tests. Gameplay, live JSON, research dumps, tests and checker files remain unchanged.
+
+**Authorized publication:** commit this separate verification/handoff after item `39786bd`, push
+only `fix/ontology-reconciliation`, verify local/upstream/fresh live remote equality and clean state,
+then stop. Pre-publication checkpoint: clean item HEAD `39786bd`; live remote `d9d6d50` confirmed.
+This is not a publication claim; inspect actual Git state on resumption. No merge, amendments,
+rewrite or new proposals after this handoff.
 
 **Next resume topic: Validation-contract source research/attribution (remaining research).**
 Unfinished: food first appearances, Koala replacement chronology and actual taming; roster/trait/
