@@ -4,7 +4,7 @@
 
 **Current task: record the approved batch, then parent-reviewed handoff/publication and STOP.**
 Owner: **“26: Approved; 27: Approved; 28: Approved”**, then **“When handled, handoff, commit, push”**.
-**Item 26 recorded; items 27–28 approved, pending recording.** Item 28 covers **Golem AND Troll**.
+**Items 26–27 recorded; item 28 approved, pending recording.** Item 28 covers **Golem AND Troll**.
 Fresh independent review and parent verification remain **PENDING**, not verified or published.
 All earlier approvals stand; prior checkpoint prose/hashes below are historical.
 

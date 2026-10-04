@@ -181,6 +181,9 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 - [ ] Source item 15 (`domain.md §5`): three dated community-wiki UI patch reports do not
   complete UI/camera/static/candle/furniture/audio/dialogue histories or authorize interface work.
   Historical `+` equipment and regional gear power loss stay excluded; other research remains open.
+- [ ] Source item 27 (`domain.md §5`): qualitative refining chains establish no yields/ratios,
+  input/output counts or original Alpha/Steam recipes; current input 1 values are not verified
+  history. Silk-station history remains research; no recipe/station change or new quantity default.
 - [ ] Source item 22 (`domain.md §5`): prefix-list attribution does not resolve exact possessive-name
   or original-prefix generation/release histories; keep the always-named Epic/Legendary guarantee.
   No names, naming frequency, prefixes or label changes are authorized.

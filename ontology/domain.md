@@ -2117,6 +2117,28 @@ and separate paid, consensual sleep to the **next 07:00**, with approved reset/p
 remain unchanged (§3.1); original sleep histories and baseline/units remain research (items 10–11/23).
 No furniture/clock declaration, source label or gameplay change follows.
 
+#### Item 27 — Qualitative refining chains (owner approved, 2026-10-04)
+
+These pinned community passages attribute qualitative conversions and only explicitly named
+stations, not input/output counts or original Alpha/Steam recipes:
+
+| source / revision edit timestamp | reported conversion / station |
+|---|---|
+| [Furnace 19644](https://cubeworld.fandom.com/wiki/Furnace?oldid=19644), **2024-08-11T18:55:41Z** | Iron, Silver and Gold Nuggets → material cubes at a Furnace. |
+| [Saw 19638](https://cubeworld.fandom.com/wiki/Saw?oldid=19638), **2024-08-11T18:50:27Z** | Wood logs → Wood Cubes at a Saw. |
+| [Linen Yarn 18758](https://cubeworld.fandom.com/wiki/Linen_Yarn?oldid=18758), **2024-08-07T00:34:05Z** | Plant fibers → Linen Yarn at a Spinning Wheel. |
+| [Cotton Yarn 18783](https://cubeworld.fandom.com/wiki/Cotton_Yarn?oldid=18783), **2024-08-07T01:06:25Z** | Cotton capsules → Cotton Yarn at a Spinning Wheel. |
+| [Silk Yarn 18784](https://cubeworld.fandom.com/wiki/Silk_Yarn?oldid=18784), **2024-08-07T01:06:46Z** | Cobweb → Silk Yarn; this passage specifies **no station**. |
+
+Saved raw bodies/metadata and wikitext were inspected here from prior current-body captures
+(batch timestamp **2026-10-04T17:17:32Z**), not newly discovered, externally re-fetched or
+archival release bodies. Edit/capture dates supply no release/introduction history or demonstrated
+original-build behavior. No ratio, yield or 1:1 conversion follows; `recipes.json#refining`'s
+input **1** values are not verified history. Silk-station history and refining quantities remain
+research. The separate Spinning Wheel yarn-to-armor clause is not used to redefine stations.
+**D6 and the approved two-handed wand/boomerang costs of 20 wood cubes remain unchanged.**
+No recipe, station, source label, live-data or gameplay change follows.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2344,9 +2366,13 @@ Remaining histories stay research, not unanswered proposals.
 2013 Camp Bed report's qualitative sleep/time/health combination, not rates or demonstrated
 original behavior. Recorded; fresh independent review and parent verification pending (§E).
 
+**Validation-contract source item 27 — DECIDED 2026-10-04:** §5 attributes qualitative
+metal/wood/linen/cotton/silk refining chains, not quantities, silk station or release histories.
+Recorded; fresh independent review and parent verification pending (§E).
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–26 recorded; items 27–28 approved, pending recording (`todo_decide.md §E`); no presented unanswered proposal remains, not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–27 recorded; item 28 approved, pending recording (`todo_decide.md §E`); no presented unanswered proposal remains, not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
