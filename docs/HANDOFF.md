@@ -2,26 +2,29 @@
 
 ## Ontology walkthrough entry point (2026-10-04, source items 26–28)
 
-**Current task: fresh independent review and parent verification/handoff/publication, then STOP.**
+**Current task: final verified handoff/publication, then STOP.**
 Owner: **“26: Approved; 27: Approved; 28: Approved”**, then **“When handled, handoff, commit, push”**.
-**Items 26–28 recorded in three separate documentation commits.** Item 28 covers **Golem AND Troll**.
-Fresh independent review and parent verification remain **PENDING**, not verified or published.
-All earlier approvals stand; prior checkpoint prose/hashes below are historical.
+**Items 26–28 recorded and verified in three separate documentation commits.** Item 28 covers
+**Golem AND Troll**. No presented unanswered proposal remains; all earlier approvals stand.
+Prior checkpoint prose/hashes below are historical.
 
 Canonical evidence: `ontology/domain.md §5`; compact status/deferrals: `todo_decide.md §E` /
-`todo_implement.md`. Binding brief, actual source inspection, exact per-item saved/staged/committed
-diffs, simplify/ponytail reviews, check logs/exits and commit map:
-`/tmp/pixlnd-reconcile-source-resume.jldATd/`. Five existing Markdown paths only; no gameplay,
-JSON, tests, checker, research, labels, defaults, schema, migration or compatibility changes.
-Per-item gates and source/check limits: §E; validation covers existing loaded data, not history
-or new enforcement. No external re-fetch, original-build execution, images or full-suite claim.
+`todo_implement.md`. Binding brief, source inspection, exact per-item saved/staged/committed diffs,
+reviews, checks/exits and commit map: `/tmp/pixlnd-reconcile-source-resume.jldATd/`.
+Each item passed semantic/scope/source inspection, `/simplify`, ponytail-review, diff checks and
+bounded ontology validation. Fresh independent source/diff/log review found no issues; parent
+inspected the actual three commits, confirmed exact diff correspondence and the five-path
+boundary, then reran bounded validator/boot successfully (exit 0). Evidence/limits: §E.
+Checks cover existing loaded data/startup, not historical truth, prose or new enforcement.
+Saved source captures were inspected, not externally re-fetched or original-build executed;
+no images, full gameplay suite, visual or multiplayer checks. Only five existing Markdown paths
+changed; no gameplay, JSON, tests, checker, research, labels, defaults, schema or compatibility work.
 
-**Publication boundary:** writer makes only three separate item commits and leaves clean HEAD;
-preceding hashes enter the next item commit, last hash awaits the parent's final record, without
-amendments. Fresh read-only review and parent actual-commit/diff audit plus bounded validator/boot
-checks precede the parent's separate verification/handoff commit. Parent alone pushes only
-`fix/ontology-reconciliation`, verifies local/upstream/fresh live remote equality and clean state,
-then STOP. No fourth writer commit, push, rewrite, merge, new research or proposals.
+**Authorized publication:** commit this separate final verification/handoff after item `af91552`,
+push only `fix/ontology-reconciliation`, verify local/upstream/fresh live remote equality and
+clean state, then STOP. Pre-publication checkpoint: clean item HEAD `af91552`; live remote
+`4aaea88` confirmed. This is not a publication claim; inspect actual Git state on resumption.
+No amendments, rewrite, merge, new research or proposals.
 
 **Next resume topic: Validation-contract source research/attribution (remaining research).**
 Unfinished food/taming/Koala chronology; original sleep activation/healing/rates/baseline/units;

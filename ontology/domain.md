@@ -2383,20 +2383,20 @@ Remaining histories stay research, not unanswered proposals.
 
 **Validation-contract source item 26 — DECIDED 2026-10-04:** §5 records the archived
 2013 Camp Bed report's qualitative sleep/time/health combination, not rates or demonstrated
-original behavior. Recorded; fresh independent review and parent verification pending (§E).
+original behavior.
 
 **Validation-contract source item 27 — DECIDED 2026-10-04:** §5 attributes qualitative
 metal/wood/linen/cotton/silk refining chains, not quantities, silk station or release histories.
-Recorded; fresh independent review and parent verification pending (§E).
 
 **Validation-contract source item 28 — DECIDED 2026-10-04:** §5 attributes named Golem
 (elemental giant/boulder) and Troll (terrain breaking) reports, not universal family/boss traits
-or release histories. Items 26–28 recorded; fresh independent review and parent verification
-pending (§E); histories stay research.
+or release histories. Items 26–28 passed fresh independent source/diff/log review and parent
+actual-commit/diff audit / bounded validator/boot verification (`todo_decide.md §E`, with limits).
+Remaining histories stay research, not unanswered proposals.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–28 recorded; 26–28 pending fresh independent review and parent verification (`todo_decide.md §E`); no presented unanswered proposal remains, not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–28 recorded and verified (`todo_decide.md §E`); no presented unanswered proposal remains, not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

@@ -137,11 +137,11 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Source-attribution direction — items 26–28 (2026-10-04):** all three approved and recorded
-in separate documentation commits. Item 28 covers Golem AND Troll. Fresh independent review
-and parent verification are PENDING, not publication. No presented unanswered proposal remains;
-earlier approvals stand. Three separate docs commits, then parent handoff/publication/STOP;
-no new research, proposals or implementation. Evidence/limits below.
+**Source-attribution direction — items 26–28 (2026-10-04):** all three approved, recorded
+and verified in separate documentation commits. Item 28 covers Golem AND Troll. Fresh independent
+source/diff/log review found no issues; parent actual-commit/diff audit and bounded validator/boot
+reruns passed (evidence below). No presented unanswered proposal remains; earlier approvals stand.
+Final handoff/publication, then STOP; no new research, proposals or implementation.
 
 **Historical source-attribution direction — items 22–25 (2026-10-04):** all four approved, recorded
 and verified in separate documentation commits. Items 1–21 and all hybrid approvals stand;
@@ -668,7 +668,7 @@ Traversal items 1–5 are recorded (item 4 corrected) and reviewed; evidence bel
 Books/formulas items 1–3, artifact items 1–6, Assassin item 1 and Wand item 1 are recorded below,
 not open questions. Persistence items 1–9 are recorded and reviewed above.
 World bounds / resets items 1–4 are recorded below; no presented question remains.
-Validation-contract mapping/source items 1–28 are recorded below; 26–28 pending fresh review/parent verification;
+Validation-contract mapping/source items 1–28 are recorded and verified below;
 no presented unanswered proposal remains. Historical research, including original Alpha/Steam
 sleep-rate baseline/units (§5 items 10–11), stays open.
 - [ ] **Validation-contract source research/attribution (2026-09-17 contract approved):**
@@ -691,9 +691,9 @@ No presented unanswered proposal remains. Canonical content: `domain.md §5`, co
 
 | item | application | canonical section | commit |
 |---|---|---|---|
-| 26 — Archived camp-bed sleep report | [x] recorded; review/parent verification pending | `domain.md §5` / §7 | 5383938b1cc0902f84c6e61928629ee94166dfcb |
-| 27 — Qualitative refining chains | [x] recorded; review/parent verification pending | `domain.md §5` / §7 | ce0f13fb805f10d7782d57a1480a6ce7caac3aa6 |
-| 28 — Golem AND Troll species reports | [x] recorded; review/parent verification pending | `domain.md §5` / §7 | pending parent final record (no amendment) |
+| 26 — Archived camp-bed sleep report | [x] recorded and verified | `domain.md §5` / §7 | 5383938b1cc0902f84c6e61928629ee94166dfcb |
+| 27 — Qualitative refining chains | [x] recorded and verified | `domain.md §5` / §7 | ce0f13fb805f10d7782d57a1480a6ce7caac3aa6 |
+| 28 — Golem AND Troll species reports | [x] recorded and verified | `domain.md §5` / §7 | af91552a17798d5ef3d0a203153e33a9301ea4d6 |
 
 **26 — Approval versus Refusing:** approval adds the archived qualitative sleep/time/health
 citation only; refusal would leave it unrecorded, not approve opposite sleep mechanics.
@@ -714,16 +714,31 @@ unrecorded, not approve opposite creature behavior. Earlier family/species rules
 SHAs, `batch.diff` and `commit-map.md`. Each item passed `git diff --check` and
 `timeout 150 nix develop -c godot --headless -s ontology/validate.gd` before its commit
 (exit 0; Godot actually ran and reported `ontology valid`). Actual output/exits live in those logs.
-Validation covers existing loaded data, not prose/history or new enforcement. Source bodies/metadata inspected, not externally re-fetched or original-build
-executed; no images, full suite, visual or multiplayer claim. Five existing Markdown paths only;
-no labels, live JSON, gameplay, tests, checker, research, schemas/defaults or compatibility edits.
+Validation covers existing loaded data, not prose/history or new enforcement. Source bodies/metadata
+inspected, not externally re-fetched or original-build executed; no images, full suite, visual or
+multiplayer claim. Five existing Markdown paths only; no labels, live JSON, gameplay, tests,
+checker, research, schemas/defaults or compatibility edits.
 
-**Review / publication PENDING:** fresh read-only source/diff/log review and parent actual-commit/
-diff audit plus bounded validator/boot reruns precede the parent's separate verification/handoff
-commit. Writer leaves three item commits and clean HEAD, no fourth commit or push. Fill previous
-hashes in the next item, last hash in the parent record, never amend. Parent alone publishes
-`fix/ontology-reconciliation`, verifies local/upstream/fresh live remote equality and clean tree,
-then STOP; no rewrite, merge, new research or proposals. Next title/remaining histories:
+**Independent review / parent verification:** fresh read-only source/diff/log review found no
+issues (`independent-review.md`); the reviewer ran no commands/tests or independent byte/hash
+comparisons. Parent inspected actual commits/source passages and confirmed all saved/staged/
+committed diffs, aggregate correspondence, three item commits and the five-path boundary
+(`parent-audit.log/.exit`, `parent-item-N-committed.diff`, `parent-batch.diff`), then reran:
+```
+timeout 150 nix develop -c godot --headless -s ontology/validate.gd
+timeout 150 nix develop -c godot --headless --quit
+```
+Both exited 0: `ontology valid` and normal hybrid startup (`parent-{validator,boot}.log/.exit`).
+The parallel boot logged an ignored Nix eval-cache busy notice; Godot still ran normally.
+These checks cover existing loaded data/startup, not historical truth, prose or new enforcement.
+
+**Final handoff/stop:** this separate verification record follows item `af91552`. Pre-publication
+live remote `4aaea88` was confirmed (`pre-publication-remote.log/.exit`); inspect actual Git state
+on resumption. Final record checks/evidence: `/simplify`, ponytail-review and bounded diff/validator/
+boot rechecks (`handoff-review.md`, `handoff.diff`, `handoff-{diff-check,validator,boot}.log/.exit`).
+Commit this handoff, push only `fix/ontology-reconciliation`, verify local/upstream/fresh live
+remote equality and clean state, then STOP. No amendments, rewrite, merge, new research or proposals.
+Remaining research is not an unanswered ballot; next title and unfinished histories:
 `docs/HANDOFF.md` — **Validation-contract source research/attribution (remaining research)**.
 
 ### Historical validation-contract source attribution — items 22–25 (2026-10-04)
