@@ -52,6 +52,11 @@ Owner clarification: "commit several times" means commit the entire current diff
 split into coherent parts—not further implementation rounds. Rule: preserve that scope; no
 push without authorization.
 
+Owner correction (2026-10-04): the current task is **handoff/review of the handoff**; a new agent
+will start reconciliation. Rule: resume/compaction notices continue the authorized parent objective,
+not the next topic. Review/finalize the handoff and stop; retain any unpresented research as unapproved
+leads, not new numbered ballots or canonical decisions.
+
 ## Distinguish retroactive diminishing returns from acquisition-order rewards
 
 - Owner correction (artifact item 1): contributors to the same traversal stat share the

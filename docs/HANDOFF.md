@@ -2,6 +2,10 @@
 
 ## Ontology walkthrough entry point (2026-10-04, source item 11)
 
+**Current task: handoff/review only.** Owner: “Your current objective is to handoff/review
+handoff. I'll start a new reconciliation task with a new agent”. Resume/compaction notices do
+not authorize more reconciliation here; no new question was presented or approved.
+
 **Source-attribution item 11 recorded and verified (`dcb3cd1`); no presented unanswered proposal
 remains.** Owner: **“11: Approved; When done, handoff, commit, push”**. Canonical evidence:
 `ontology/domain.md §5`; approval, commit mapping and verification limits: `todo_decide.md §E`.
@@ -16,11 +20,18 @@ data/startup, not original-game history or new enforcement; source was read, not
 suite, visual or network tests. Evidence/limits: §E and `/tmp/pixlnd-source-resume.mQxzUP/`.
 Gameplay, live JSON, research dumps, tests and checker files remain unchanged.
 
-**Authorized publication:** commit this separate final handoff and push only
-`fix/ontology-reconciliation`; verify local/upstream/live remote equality and clean state, then stop.
-No merge, rewrite, implementation or new proposals. **Pre-publication checkpoint:** clean item HEAD
-`dcb3cd1`, live remote `199cb85` confirmed with `git ls-remote`. The handoff commit follows;
-inspect actual Git state on resumption, not this checkpoint as proof of publication.
+**Published checkpoint:** item `dcb3cd1` and its verification/handoff `eba48ac` were pushed to
+`fix/ontology-reconciliation`. Parent verified local HEAD = upstream = fresh live remote
+`eba48ac11c9dc6804c84cfabc64a60432352fe38`, with a clean worktree; publication logs are in
+`/tmp/pixlnd-source-resume.mQxzUP/`. This handoff-only correction follows that checkpoint;
+verify actual Git state on resumption. Commit/push only this reviewed handoff, then stop;
+no merge, rewrite, implementation or new proposals.
+
+**Additional research, not decisions:** two read-only scouts retrieved current food guides and
+pinned wiki pages; parent checked passages/metadata. Evidence and unpresented candidates:
+`todo_decide.md §E`'s handoff-review note. No new item number is reserved and no candidate has owner approval.
+First appearances, Koala-food replacement chronology, original-game taming verification and
+refining ratios remain research gaps; source labels and hybrid mechanics stand. No gameplay tests.
 
 **Next resume topic: Validation-contract source research/attribution (remaining research).**
 Food histories; roster/trait/affix/recipe/refining/shop/loot/population/shipped-schedule/UI/camera/

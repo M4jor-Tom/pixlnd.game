@@ -701,12 +701,50 @@ These check existing loaded data/startup, not original-game history or new enfor
 suite, visual or network tests. Fresh external verification was source inspection of the named cuwo
 revision only, not original binaries, Steam or execution of that reimplementation.
 
-**Final handoff/stop:** this separate verification record follows item `dcb3cd1`. Pre-publication
-live remote `199cb85` was confirmed with `git ls-remote` (`pre-publication-remote.log/.exit`);
-inspect actual Git state on resumption. The final record receives `/simplify`, ponytail-review and
-bounded rechecks (`handoff-review.md`, `handoff.diff`, `handoff-{diff-check,validator,boot}.log/.exit`).
-Commit it and push only `fix/ontology-reconciliation`; verify local/upstream/live remote equality and
-clean state, then stop. No merge, history rewrite or new proposals. No presented unanswered item
+**Published handoff/stop:** verification/handoff **`eba48ac11c9dc6804c84cfabc64a60432352fe38`**
+follows item `dcb3cd1`; both were pushed only to `fix/ontology-reconciliation`. `/simplify`,
+ponytail-review and bounded diff/validator/boot checks passed; actual saved/committed diffs matched.
+Parent verified local/upstream/fresh live remote equality and clean state. Evidence:
+`handoff-review.md`, `handoff{,-committed}.diff`, `handoff-{diff-check,validator,boot}.log/.exit`,
+`publication-{push,remote,verified}.log/.exit` under `/tmp/pixlnd-source-resume.mQxzUP/`.
+This is a published checkpoint, not proof of future Git state. No merge or history rewrite.
+
+### Handoff review only — unpresented research (2026-10-04)
+
+**Owner scope:** “Your current objective is to handoff/review handoff. I'll start a new
+reconciliation task with a new agent”. Resume/compaction notices had led to additional read-only
+research, not authorized application. No question was presented, answered or applied; draft scratch
+labels are not reserved ontology item numbers. This session finalizes/reviews the handoff and stops.
+
+**Research leads, not approved claims:**
+- Current Steam guide bodies list Eucalyptus Candy/Koala; the current Gamepressure article says
+  Kaliptus Leaf/Koala. None establishes replacement/unused status or its chronology; the canonical
+  retained notes and current cut status remain unchanged.
+- Current Steam guide tables specifically report Banana Mash/Warthog and the nine other existing
+  S-food pairings. These could support direct community-report attribution, not first introductions,
+  Alpha absence, demonstrated per-food obtainability or successful taming. F11 and source labels stand.
+- Fresh wiki revisions corroborate exact affix names and refining chains, but supply no new A/S
+  ancestry or numeric 1:1 ratios. No additional question was manufactured from that corroboration.
+
+**Inspect before proposing:** parent review `/tmp/pixlnd-food-source-resume.2AG0Nq/parent-source-review.md`;
+food captures `/tmp/pixlnd-food-release.gG2cXa/`; wiki captures `/tmp/pixlnd-refining-affixes.hAwsyB/`.
+Full scout reports live under
+`/home/theta/.pi-game-dev/sessions/--home-theta-repos-pixlnd--/subagent-artifacts/outputs/0bd89168-1d76-4027-914c-be2056eebd03/research/`
+(`food-release.md`, `refining-affixes.md`). URLs/passages/revisions/HTTP outcomes are recorded there.
+Steam guide IDs: `1873333729`, `1865509515`, `1879943518`; Gamepressure path:
+`https://www.gamepressure.com/cubeworld/taming-and-locating-pets/zfca65`.
+Current retrieved bodies are not archived versions; displayed post/update dates do not date row
+additions, and guides need not be independent. Wiki edit timestamps are not release dates; an empty
+2013 history response proves no absence. Parent inspected sources, not binaries or executed behavior.
+Research-only phase left the repository clean and ran no tests. Fresh independent handoff review
+found no issues; parent diff-check, bounded ontology validation and headless boot passed (exit 0).
+The reviewer inspected saved evidence, not independent Git/remote state or rerun tests.
+Evidence: `/tmp/pixlnd-handoff-scope-review.2nuw18/` (`independent-review.md`, check logs/exits).
+No new canonical evidence claim is applied by this note.
+
+**Next agent:** independently inspect these leads and all remaining source gaps; present only
+supported new documentation proposals and wait for owner answers. No item 12 or later is approved.
+Do not advance to gameplay or Swamp Lands/Lion/resistance/gear HP. No presented unanswered item
 remains; food and mixed-container histories, including original sleeping units, remain research.
 Next title: **Validation-contract source research/attribution (remaining research)**.
 
