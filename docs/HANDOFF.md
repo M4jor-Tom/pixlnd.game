@@ -1,6 +1,26 @@
 # Handoff — resume here
 
-## Ontology walkthrough entry point (2026-10-04)
+## Ontology walkthrough entry point (2026-10-04, source item 11)
+
+**Source-attribution item 11 recorded for documentation only; no presented unanswered proposal
+remains.** Owner: **“11: Approved; When done, handoff, commit, push”**. Canonical evidence:
+`ontology/domain.md §5`; approval, commit mapping and verification limits: `todo_decide.md §E`.
+The freshly inspected cuwo revision verifies its normal-clock calculation; its named sleep constant
+appears only at its definition. This does not resolve original Alpha/Steam sleeping behavior.
+Hybrid normal time and approved inn skip/reset/consent/payment rules remain unchanged.
+
+**Verification/publication:** commit item 11 separately, then its final verification/handoff and
+push only `fix/ontology-reconciliation`. Verify local/upstream/live remote equality and clean state,
+then stop; no merge, rewrite, implementation or new proposals. Checks/evidence/limits: §E and
+`/tmp/pixlnd-source-resume.mQxzUP/`. No gameplay, live JSON, research dumps, tests or checker changes.
+
+**Next resume topic: Validation-contract source research/attribution (remaining research).**
+Food histories; roster/trait/affix/recipe/refining/shop/loot/population/shipped-schedule/UI/camera/
+candle/furniture/audio/dialogue histories; original historical sleeping baseline/units (§5 items
+10–11). These are research gaps, not unanswered gameplay ballots. Do not advance to Swamp Lands/
+Lion/resistance/gear HP or reopen items 1–10. Final response: next topic title only.
+
+## Historical source-attribution items 8–10 checkpoint (2026-10-04, superseded entry point)
 
 **Source-attribution items 8–10 recorded and verified; no presented unanswered proposal remains.**
 Item 8: dated patch reports (`9cd1e38`); item 10: historical sleep units (`f71f7ad`); item 9:

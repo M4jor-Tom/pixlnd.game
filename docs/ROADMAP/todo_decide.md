@@ -137,10 +137,11 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Source-attribution direction (2026-10-04):** items 8–10 recorded and verified; no presented
-unanswered proposal remains. Fresh independent review found no issues; parent verified actual diffs
-and reran bounded validator/boot checks. Final authorized handoff/publication/stop: `docs/HANDOFF.md`.
-Resume remaining source research, not uncertain gameplay facts or implementation; items 1–7 stand.
+**Source-attribution direction (2026-10-04):** item 11 recorded for documentation only; items
+1–10 stand and no presented unanswered proposal remains. It verifies the inspected cuwo revision's
+normal-clock calculation, not historical sleeping behavior. Verification and authorized handoff/
+publication/stop: the item-11 record below and `docs/HANDOFF.md`. Resume remaining source research,
+not uncertain gameplay facts or implementation.
 
 **Historical validation-contract mapping direction (2026-09-28):** items 1–4 are recorded below; item 4
 adds the detailed mapping and owner correction: undeployed game, no player data to migrate,
@@ -648,11 +649,12 @@ Traversal items 1–5 are recorded (item 4 corrected) and reviewed; evidence bel
 Books/formulas items 1–3, artifact items 1–6, Assassin item 1 and Wand item 1 are recorded below,
 not open questions. Persistence items 1–9 are recorded and reviewed above.
 World bounds / resets items 1–4 are recorded below; no presented question remains.
-Validation-contract mapping/source items 1–10 are recorded below; no presented unanswered proposal
-remains. Historical research, including sleep-rate baseline/units (§5 item 10), stays open.
+Validation-contract mapping/source items 1–11 are recorded below; no presented unanswered proposal
+remains. Historical research, including original Alpha/Steam sleep-rate baseline/units (§5 items
+10–11), stays open.
 - [ ] **Validation-contract source research/attribution (2026-09-17 contract approved):**
   required paths/shapes, bounded source inheritance and check boundaries are recorded in
-  `domain.md §5`; source items 6–10 add bounded evidence, not complete histories. Unsupported
+  `domain.md §5`; source items 6–11 add bounded evidence, not complete histories. Unsupported
   food release histories (`pet-food`) and remaining mixed-container histories (§5 item 7) are
   research, not guessed labels or new gameplay ballots. No whole-topic completion is claimed;
   direct data correction and enforcement remain separately unauthorized, with no migration or
@@ -662,7 +664,37 @@ remains. Historical research, including sleep-rate baseline/units (§5 item 10),
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
 
-### Validation-contract source attribution — items 8–10 (2026-10-04)
+### Validation-contract source attribution — item 11 (2026-10-04)
+
+**Exact owner answer:** “11: Approved; When done, handoff, commit, push”. The preceding question
+about cuwo was clarification, not refusal or correction: it is an open-source Alpha-server
+reimplementation consulted as historical evidence, not code added to pixlnd.
+
+**11 — Verified cuwo clock code and limits:** [x] recorded in `domain.md §5` / §7.
+Original Alpha/Steam sleeping behavior and item 10's historical units remain unresolved;
+the canonical record supplies the revision, links and precise evidence limits.
+**Approval versus Refusing:** approval records stronger evidence and its limits without changing
+players' inn sleep (23:00 → 07:00); refusing would leave documentation/uncertainty unchanged and
+approve neither sleep interpretation. No replacement rate, source labels or gameplay changes follow.
+
+**Scope and evidence:** five existing Markdown paths only; no gameplay, live JSON, research dumps,
+tests or checker changes. `/tmp/pixlnd-source-resume.mQxzUP/approval-brief.md` preserves the exact
+approval/scope; `parent-source-verification.md` records direct source inspection and research reports.
+The code was inspected, not executed; existing validator/boot checks cannot prove original-game
+history or new enforcement. **Per-item checks:** semantic/scope inspection, `/simplify`, then
+ponytail-review completed; `git diff --check` and
+`timeout 150 nix develop -c godot --headless -s ontology/validate.gd` passed (exit 0,
+`ontology valid`; expected dirty-tree warning only). Evidence: `item-11-review.md` and
+`item-11-{diff-check,validator}.log/.exit` in that scratch directory. Final independent review,
+commit mapping and handoff checks follow separately.
+
+**Authorized handoff:** verify and commit item 11 separately, then commit the final handoff and
+push only `fix/ontology-reconciliation`; verify local/upstream/live remote equality and clean state,
+then stop. No merge, history rewrite or new proposals. No presented unanswered item remains;
+food and mixed-container histories, including original sleeping units, remain research.
+Next title: **Validation-contract source research/attribution (remaining research)**.
+
+### Historical validation-contract source attribution — items 8–10 (2026-10-04)
 
 **Exact owner answer:** “8: Approved; 9: Why would the five-cube example replace the
 twenty-cube wand recipe ?; 10: Approved”. After full clarification, the owner answered:

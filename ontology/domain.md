@@ -1828,6 +1828,28 @@ to the **next 07:00** (23:00 → 07:00), with the existing midnight-reset rules,
 combat/status effects/cooldowns (§3.1). This qualifies history, not hybrid clock policy or furniture
 gameplay. `generators.json#time` and all other live JSON remain unchanged.
 
+#### Item 11 — Verified cuwo clock code and its limits (owner approved, 2026-10-04)
+
+Freshly inspected cuwo revision **`240bb61ec42abb10a73d750ce72f243e04e55509`** is an
+open server reimplementation, not the original Alpha or Steam binary. Its
+[`constants.py:23–26`](https://github.com/matpow2/cuwo/blob/240bb61ec42abb10a73d750ce72f243e04e55509/cuwo/constants.py#L23-L26)
+defines `MAX_TIME = 86,400,000` game milliseconds, `NORMAL_TIME_SPEED = 10.0` and
+`SLEEP_TIME_SPEED = 100.0`.
+
+[`server.py:867–876`](https://github.com/matpow2/cuwo/blob/240bb61ec42abb10a73d750ce72f243e04e55509/cuwo/server.py#L867-L876)
+calculates elapsed clock time from the loop-time difference × `time_modifier` ×
+`NORMAL_TIME_SPEED` × 1000, plus a clock offset. With the
+[default modifier 1.0](https://github.com/matpow2/cuwo/blob/240bb61ec42abb10a73d750ce72f243e04e55509/config/base.py#L10-L11),
+this is **10,000 game milliseconds per real second**: six real seconds per game minute,
+144 real minutes per day. This establishes that revision's normal calculation, not original-game behavior.
+
+An exact-symbol search of its tracked source finds `SLEEP_TIME_SPEED` **only at its definition**,
+not in the clock calculation. This revision therefore does not establish historical sleep selection,
+speed or baseline, or justify the retained “approximately two game minutes per real second” report.
+The code was inspected, not executed; original Alpha/Steam sleeping units remain unresolved under item 10.
+No replacement sleep rate or source label is selected. Hybrid normal time, approved inn skip/reset/
+consent/payment rules and all live JSON remain unchanged; this is documentation only.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -1994,10 +2016,14 @@ encounter/crafting/shop/map reports with narrow limits, not new gameplay rules.
 sleep-speed baseline/units as unresolved; hybrid normal time and inn skip remain unchanged.
 Items 8–10 passed fresh independent source review and parent diff/validator/boot verification
 (`todo_decide.md §E`, including limits); historical research and enforcement remain unfinished.
+**Validation-contract source item 11 — DECIDED 2026-10-04:** §5 records fresh, revision-pinned
+cuwo normal-clock code and the sleep constant's definition-only occurrence, not original Alpha/Steam
+sleeping behavior. Item 10's historical units remain unresolved; no gameplay or live data change.
+Application and verification: `todo_decide.md §E`.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–10 recorded; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–11 recorded; no presented unanswered proposal remains (`todo_decide.md §E`), not whole-topic completion. Unsupported food release histories (§3.4 item 6) and remaining mixed-container histories (§5), including sleep-speed units, stay open; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
