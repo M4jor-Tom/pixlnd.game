@@ -25,7 +25,14 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `tasks/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Source-attribution items 46–52 (2026-10-05):** recorded, independently reviewed and parent-verified.
+**Current source-research checkpoint (2026-10-05):** four pages inspected; Bows/Dungeon
+citation candidates independently reviewed but **UNPRESENTED**, with no new approval or canonical
+recording. No pending selection exists. Silk/Spinning Wheel findings do not settle crafting counts.
+Current resume, private-evidence/public-extract boundary, checks and checkpoint publication status:
+`docs/HANDOFF.md` / `todo_decide.md §E`. All settled rules and source items 1–52 stand; no gameplay,
+live-data or source-label changes. Remaining histories stay research, not whole-topic completion.
+
+**Historical source-attribution items 46–52 (2026-10-05):** recorded, independently reviewed and parent-verified.
 Canonical: `domain.md §5` / §7; exact selections/commit receipts: `todo_decide.md §E`.
 No unhandled selection or unanswered proposal remains; the empty pending queue is deleted.
 No gameplay or live changes; remaining histories stay research. Evidence/limits and authorized

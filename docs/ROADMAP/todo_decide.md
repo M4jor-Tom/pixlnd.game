@@ -137,7 +137,35 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Source-attribution direction — items 46–52 (2026-10-05):** all seven approved without
+**Current source-research checkpoint (2026-10-05):** four pages inspected after owner-assisted
+Firefox access; two independently reviewed **UNPRESENTED** citation candidates, not approvals or
+already-issued ballots. Next unused item number is 53. No pending selected item remains and the
+pending-only queue is absent. Details/limits: `docs/HANDOFF.md` current entry point. Candidates:
+Bows revision 19306's generic firing/range/ammunition reports, and Dungeon revision 19603's exact
+NPC-attributed potion warning with its Conceptualized Content/preview-context caution. Unlimited
+arrows and the existing dialogue corpus are not reopened. Silk Armor 12301 and Spinning Wheel
+19647 do not resolve quantities or new refining/station rules; hold them, not refusal or opposite
+approval. Items 1–52 and all settled hybrid rules stand. No gameplay or canonical recording follows.
+
+Evidence: private `/tmp/pixlnd-reconcile-source-53.VnWRKF/`; use only `article-extracts/` for public
+quotations/provenance. Full authenticated DOM/owner save contains account/token initialization and
+must never be published. Parent retained originals/hashes privately, generated article-only extracts
+with new hashes, and passed a synthetic article-scope privacy check without external requests.
+Fresh independent review: managed `source-53/fresh-firefox-source-review.md` under run
+`4eb57475-a626-4fd1-83a4-05fcc3332313`. Three HTTP200 captures are DOM snapshots, not raw HTTP
+entities; no separately fetched pinned URLs, edit timestamps, images or original-build execution.
+The owner selected default Firefox and required privacy windows stay open; verified preservation
+and corrected setup/test failures are retained. Exact current lesson/index state: `review-current/`.
+Context percentage unavailable: conservative checkpoint before a new approval batch. Final handoff
+review found no issues (`checkpoint/handoff-review.md`); parent confirmed reviewed-draft equality
+before receipt-only additions and inspected the final delta. Fresh final whitespace, bounded
+validator/boot and article-hash checks passed, exit0, under `checkpoint/final-*`; these cover existing
+loaded data/startup, not history or new policy enforcement. Synthetic scope validation is not a
+comprehensive sanitizer guarantee. Final receipt-only rechecks passed. Actual Git state and
+`checkpoint/publication.*` establish whether this prepared checkpoint is committed/published;
+this pre-push snapshot does not claim push success. No new questions/research after checkpoint STOP.
+
+**Historical source-attribution direction — items 46–52 (2026-10-05):** all seven approved without
 amendments, recorded in separate item commits, independently reviewed and parent-verified
 below. No unhandled selection or presented unanswered proposal remains; the empty pending
 queue is deleted. Finalize the handoff, commit and normal-push only `fix/ontology-reconciliation`,
@@ -701,7 +729,10 @@ Items 33–35 are recorded and verified below; item 32's later approval is now r
 Recorded selections, canonical pointers and item 39's no-bug amendment: the 36–45 section below.
 **46–52 recorded, independently reviewed and parent-verified.** Exact selections and receipts
 are below. No unhandled selection remains; the empty pending queue is deleted.
-No presented unanswered proposal remains. Pending selected entries precede new research.
+No presented unanswered proposal remains. New Bows/Dungeon evidence is reviewed but UNPRESENTED;
+see the current source-research checkpoint above and HANDOFF. Pending selected entries precede
+any new question batch. Do not treat research candidates or held Silk/Spinning Wheel findings as
+owner selections, refusals, changed game rules or whole-topic completion.
 Context: ask by ~60%, handoff by ~85% (earlier with reserve), authorized checkpoint then STOP.
 Daily food quantities and original Alpha/Steam
 sleep-rate baseline/units (§5 items 10–11) remain research.

@@ -1,6 +1,77 @@
 # Handoff — resume here
 
-## Ontology walkthrough entry point (2026-10-05, source attribution 46–52)
+## Current entry point — authenticated source-research checkpoint (2026-10-05)
+
+**No new owner ballot or canonical decision.** Items 1–52 remain recorded; no approved-but-unhandled
+selection or presented unanswered proposal remains. `docs/todo_handle_reconciled_items.md` is absent.
+The owner supplied `/tmp/Silk_Armor_-_Cube_World_Wiki.html` and its asset folder, authorized Firefox
+remote control if details were missing, selected **`default`**, and explicitly required preserving
+remaining **`privacy`** windows. Browser corrections are recorded in `tasks/lessons.md`.
+
+**Next work: Validation-contract source research/attribution — reviewed, UNPRESENTED Bows and
+Dungeon citation candidates.** Prepare a small numbered batch with Recommended and Approval
+versus Refusing; wait for owner answers before canonical recording. Next unused number is 53,
+not an approved or already-presented item. No whole-topic completion or implementation permission.
+
+- [Bows revision 19306](https://cubeworld.fandom.com/wiki/Bows?oldid=19306): generic Description
+  reports firing in any direction/even out of combat, Bows/Crossbows reaching further than
+  Boomerangs, and unlimited arrows. Unlimited arrows already stand; this adds bounded attribution,
+  not ammunition, numerical ranges, balance, edition/first-appearance proof or new D24 behavior.
+- [Dungeon revision 19603](https://cubeworld.fandom.com/wiki/Dungeon?oldid=19603): the wiki attributes
+  **“Dungeons are a dangerous place. Don't forget to take some potions with you.”** to **“-NPCs”**.
+  This matches the existing corpus. The quote follows **Conceptualized Content** and an adjoining
+  early-2019 Instagram-preview sentence; preserve that placement without claiming the preview or
+  original builds were inspected, or a shipped speaker/trigger/edition/chronology was established.
+- **Hold, not refused:** owner-saved [Silk Armor 12301](https://cubeworld.fandom.com/wiki/Silk_Armor?oldid=12301)
+  gives Mage/Scrub/cobweb/silk corroboration, not costs. [Spinning Wheel 19647](https://cubeworld.fandom.com/wiki/Spinning_Wheel?oldid=19647)
+  gives the already-acknowledged yarn-to-equipment ambiguity, not a cobweb-to-silk output, ratio or
+  station correction. Do not duplicate items 27/36 or extrapolate cotton quantities.
+
+**Evidence and privacy:** `/tmp/pixlnd-reconcile-source-53.VnWRKF/` is a restricted private vault.
+Full owner-saved/authenticated DOM includes account/token initialization: **never publish those
+originals or attach them to repository/public reports**. Use `article-extracts/` only: four public
+article-text extracts, allowlisted provenance and their separate verified hashes. Originals and
+original hashes were retained unchanged; the owner's original `/tmp` save must also be treated
+privately. The three fresh HTTP200 captures were rendered DOM snapshots, **not raw HTTP entities**;
+revision pins came from captured metadata, not separate pinned-URL retrievals. Edit timestamps
+were unavailable; capture/save timing supplies no release date. No images, original builds or
+soundtrack assets were inspected/executed.
+
+**Verified browser/review checkpoint:** native Firefox 153 direct WebDriver BiDi, verified default
+profile and loopback-only port 9222; a dedicated source tab fetched Bows, Spinning Wheel and Dungeon.
+The source session ended without closing Firefox. Last verified: default PID 128469, privacy PID
+114308 preserved; recheck actual state before any control or shutdown, never infer it from summaries.
+Fresh independent review found the two bounded candidates presentable and the privacy finding above;
+parent applied article-only future capture, made sanitized derivatives and verified their hashes.
+`article-scope-fixture-final.log/.exit` passed (0): synthetic local DOM demonstrates full-document
+capture includes an account marker while article scope excludes it; **no external request** in that
+check. The original cached-context smoke failure, orphan-session failures and authorized default-only
+restart are retained, not erased or claimed passing. All unrelated privacy windows remained open.
+Other retained failures: Cloudflare403 stop (no bypass), executable discovery, unavailable documentation
+lookup, unsupported geckodriver capability and local archive extraction. Source capture exit was 0.
+
+Review: managed `source-53/fresh-firefox-source-review.md` under run
+`4eb57475-a626-4fd1-83a4-05fcc3332313`; current exact lesson/index evidence: `review-current/`.
+No gameplay, JSON, checker, source-label, balance, schema or compatibility changes. Remaining food,
+quantity/yield/odds, roster/trait/population/route/naming, other UI/audio/dialogue and original sleep
+histories remain research. Do not advance to uncertain-fact topics or implementation.
+
+**Verification:** final handoff review found no issues (`checkpoint/handoff-review.md`); parent
+confirmed exact reviewed-draft correspondence before receipt-only additions, then inspected that
+final delta. Fresh final whitespace check, bounded ontology validator and headless boot passed,
+exit 0 (`checkpoint/final-{diff-check,validator,boot}.*`); article-extract hashes were rechecked.
+These check existing loaded data/startup and checkpoint fidelity, not historical truth or new
+policy enforcement; no gameplay suite, visual or multiplayer tests. Synthetic scope validation is
+not a comprehensive sanitizer guarantee: publish only inspected article extracts, never raw DOM.
+
+**Context/publication checkpoint:** percentage meter unavailable; research/questions stopped
+conservatively before consuming recording/publication reserve. Commit this reviewed checkpoint and
+normal-push only `fix/ontology-reconciliation`, verify fresh remote/upstream/local equality and clean
+worktree, then STOP. Final receipt-only rechecks passed. This block records preparation before
+publication: establish completion from actual Git state and `checkpoint/publication.*`, not from
+this pre-push snapshot or historical publication instructions.
+
+## Historical completed checkpoint (2026-10-05, source attribution 46–52)
 
 Owner exact answer: **“46: Approved; 47: Approved; 48: Approved; 49: Approved; 50: Approved;
 51: Approved; 52: Approved; When handled, handoff, commit, push”**.

@@ -19,6 +19,19 @@ manually; never request credentials or automate a bypass. Shell fallback covers 
 unavailability, not access denial. Stop on unexpected redirects, error/challenge pages or unusable
 source content; retain the failure evidence rather than retrying around it.
 
+Owner correction (2026-10-05): the headed Chromium UI remained blue/unresponsive; use a
+different browser. Rule: when the owner requests a browser switch for manual access, use
+another already-installed browser rather than repeating automated retrieval or guessing at
+rendering fixes. Browser switching does not authorize challenge bypass or resumed research.
+
+Owner correction (2026-10-05): Firefox was reopened with the wrong profile.
+Rule: confirm the owner's intended logged-in profile before restarting Firefox; do not infer
+it from an existing process's `-P` argument or the default-profile flag. On a profile mismatch,
+stop automation and ask which profile to use instead of silently choosing another.
+Owner selected `default` and explicitly asked to preserve remaining `privacy` windows.
+Rule: inspect and act only on the confirmed default profile's process/lock; never close or
+kill unrelated Firefox profiles, and never delete a lock without proving no live owner holds it.
+
 ## Context-bounded reconciliation and retained selections
 
 Owner workflow update (2026-10-05): question batches must be ready at **~60% context maximum**;
