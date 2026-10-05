@@ -243,6 +243,8 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 
 - Source item 49 (`domain.md §5`): Cotton Yarn/Iron Cube report verifies no current 2+5 bill, station or release history. Recipe gaps remain research; costs/materials unchanged.
 
+- Source item 50 (`domain.md §5`): individual habitat/no-adult-grouping report proves no pack counts or Baby Elephant rule. Encounter histories stay research; no spawn change authorized.
+
 ## Meta / tooling
 - [ ] Save-data (§3.7): nothing persists (world seed, character, discovered lands).
 - [ ] Dedicated server (D5, `multiplayer-mode`): single-player only; `server.cfg` flags (pvp,

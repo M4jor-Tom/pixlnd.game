@@ -2484,6 +2484,16 @@ and confirms neither the current **2 yarn + 5 iron cubes** nor the Anvil in
 remain research; **D6 and approved hybrid recipes stand unchanged**. Source-inspection/date
 limits follow item 46; no crafting costs, materials, labels or live declarations change.
 
+#### Item 50 — Individual Baby Mammoth habitat and grouping report (owner approved, 2026-10-05)
+
+[Baby Mammoth revision 20097](https://cubeworld.fandom.com/wiki/Baby_Mammoth?oldid=20097)
+reports **Snowlands-only habitat** and that Baby Mammoths **do not group with adult Mammoths**.
+This individually attributes the retained `research_creatures_quests.md:80` report, not
+a new spawn guarantee or pack count. The source's comparison with Baby Elephant establishes
+**no new Baby Elephant grouping rule** or inherited family trait. Source-inspection/date limits
+follow item 46; no release chronology, encounters, habitats, food/mount rules, labels or live
+declarations change. Other encounter histories remain research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2788,9 +2798,11 @@ Glass bottles/sugar cubes/bombs and sometimes unnamed treat, not universal stock
 
 **Validation-contract source item 49 — DECIDED 2026-10-05:** §5 attributes Cotton Yarn/Iron Cube requirements, not the current 2+5 cost or station.
 
+**Validation-contract source item 50 — DECIDED 2026-10-05:** §5 attributes Snowlands-only/no-adult-grouping Baby Mammoth report, not pack counts or Baby Elephant rules.
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–49 recorded; 36–45 independently reviewed and parent-verified; 46–52 independent recording review/parent verification pending (`todo_decide.md §E`, with evidence limits). No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–50 recorded; 36–45 independently reviewed and parent-verified; 46–52 independent recording review/parent verification pending (`todo_decide.md §E`, with evidence limits). No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
