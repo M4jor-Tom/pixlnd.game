@@ -10,6 +10,15 @@
 - Rule: use that exact heading and describe the player-facing consequences of accepting or refusing the proposal. Refusal rejects this proposal; it does not silently approve the opposite mechanic.
 - Owner clarification (2026-09-19): a question about a mechanic is not a correction or rejection. Rule: answer it without withdrawing the proposal or recording a design-failure lesson; additional mechanics can address the concern separately.
 
+## Browser-first source retrieval
+
+Owner instruction (2026-10-05): try Playwright first; ask for manual authentication if needed;
+use bash/curl otherwise, but stop on an unwanted result.
+Rule: use Playwright before shell retrieval. Pause for the owner to handle login/access checks
+manually; never request credentials or automate a bypass. Shell fallback covers technical browser
+unavailability, not access denial. Stop on unexpected redirects, error/challenge pages or unusable
+source content; retain the failure evidence rather than retrying around it.
+
 ## Context-bounded reconciliation and retained selections
 
 Owner workflow update (2026-10-05): question batches must be ready at **~60% context maximum**;
