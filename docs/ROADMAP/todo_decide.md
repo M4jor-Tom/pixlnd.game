@@ -690,7 +690,7 @@ World bounds / resets items 1–4 are recorded below; no presented question rema
 Validation-contract mapping/source items 1–28 are historically recorded and verified below;
 approved 29–31 are recorded and verified, with fresh independent review and parent checks below.
 Items 33–35 are recorded and verified below; item 32's later approval is now recorded too.
-**Items 36–45 recorded and item-verified; fresh independent review/parent acceptance pending.** (2026-10-05)
+**Items 36–45 recorded, independently reviewed and parent-verified.** (2026-10-05)
 Exact selections, canonical pointers and item 39's no-bug amendment: `docs/reconciled.md`.
 No presented unanswered proposal remains. Pending selected entries precede new research.
 Context: ask by ~60%, handoff by ~85% (earlier with reserve), authorized checkpoint then STOP.
@@ -718,18 +718,33 @@ defaults, balance, schema, migration or compatibility changes.
 **Approval versus Refusing:** approval records the selected reports/limits without changing the
 game; refusal would leave those citations unrecorded, not select opposite mechanics.
 
-| item | application | canonical pointer | commit receipt (filled in later update) |
+| item | application | canonical pointer | item commit |
 |---|---|---|---|
-| 36 — Cobweb processing at a Spinning Wheel | [x] recorded and item-verified; review pending | `domain.md §5 item 36` / §7 | `7d7d8cec99d1abd4dea0337693455918de3ad39c` |
-| 37 — Reported Lollipop from an Emerald Deposit | [x] recorded and item-verified; review pending | `domain.md §3.4 pet-food` / §7 | `0b1a33c255b3b9045cd01cf0c2d77541f367ac4f` |
-| 38 — Six reported shop-food names | [x] recorded and item-verified; review pending | `domain.md §3.4 pet-food` / §7 | `4781cf13d387b164ceea503e42d41fbfaa8f7076` |
-| 39 — Snout Beetle traits and a visual bug report | [x] recorded and item-verified; review pending | `domain.md §5 item 39` / §7 | `86fd41245828e24db658e014edbbea28805c1d58` |
-| 40 — Undead villagers versus population speculation | [x] recorded and item-verified; review pending | `domain.md §5 item 40` / §7 | `b7d028e82fefc6281c7f4f30e8e05ba8a49b3ef8` |
-| 41 — Some mobs bring out lanterns | [x] recorded and item-verified; review pending | `domain.md §5 item 41` / §7 | `85fd5cb051f4efba5c568909e867ef4cfdb2847a` |
-| 42 — Individual dark-Alpaca habitats | [x] recorded and item-verified; review pending | `domain.md §5 item 42` / §7 | `ecda216abc2b5ba6ed12a98768b80766b31a3cd3` |
-| 43 — Possessive item-name examples | [x] recorded and item-verified; review pending | `domain.md §5 item 43` / §7 | `9684a19bb6f0ed252f278551ce16feddba8b64b7` |
-| 44 — Retrieved music catalog, not authenticated shipped soundtrack | [x] recorded and item-verified; review pending | `domain.md §5 item 44` / §7 | `a5a660e4b2e2f591ce6a072b6df84228cca29fef` |
-| 45 — Additional Item Vendor stock report | [x] recorded and item-verified; review pending | `domain.md §5 item 45` / §7 | pending later receipt |
+| 36 — Cobweb processing at a Spinning Wheel | [x] recorded, reviewed, parent-verified | `domain.md §5 item 36` / §7 | `7d7d8cec99d1abd4dea0337693455918de3ad39c` |
+| 37 — Reported Lollipop from an Emerald Deposit | [x] recorded, reviewed, parent-verified | `domain.md §3.4 pet-food` / §7 | `0b1a33c255b3b9045cd01cf0c2d77541f367ac4f` |
+| 38 — Six reported shop-food names | [x] recorded, reviewed, parent-verified | `domain.md §3.4 pet-food` / §7 | `4781cf13d387b164ceea503e42d41fbfaa8f7076` |
+| 39 — Snout Beetle traits and a visual bug report | [x] recorded, reviewed, parent-verified | `domain.md §5 item 39` / §7 | `86fd41245828e24db658e014edbbea28805c1d58` |
+| 40 — Undead villagers versus population speculation | [x] recorded, reviewed, parent-verified | `domain.md §5 item 40` / §7 | `b7d028e82fefc6281c7f4f30e8e05ba8a49b3ef8` |
+| 41 — Some mobs bring out lanterns | [x] recorded, reviewed, parent-verified | `domain.md §5 item 41` / §7 | `85fd5cb051f4efba5c568909e867ef4cfdb2847a` |
+| 42 — Individual dark-Alpaca habitats | [x] recorded, reviewed, parent-verified | `domain.md §5 item 42` / §7 | `ecda216abc2b5ba6ed12a98768b80766b31a3cd3` |
+| 43 — Possessive item-name examples | [x] recorded, reviewed, parent-verified | `domain.md §5 item 43` / §7 | `9684a19bb6f0ed252f278551ce16feddba8b64b7` |
+| 44 — Retrieved music catalog, not authenticated shipped soundtrack | [x] recorded, reviewed, parent-verified | `domain.md §5 item 44` / §7 | `a5a660e4b2e2f591ce6a072b6df84228cca29fef` |
+| 45 — Additional Item Vendor stock report | [x] recorded, reviewed, parent-verified | `domain.md §5 item 45` / §7 | `7476eb20ecc0817b1b792f970ef44dec65fa4dd7` |
+
+**Final verification checkpoint:** initial protocol/queue commit
+`6bb47a1aa603f17c35492d7023f5f10be7d7d96d`; final item HEAD `7476eb20ecc0817b1b792f970ef44dec65fa4dd7`.
+All ten selected entries are applied; no approved-but-unhandled item remains. Fresh independent
+saved-source/current-file/diff/log review found no issues (`independent-review.md`); reviewer ran
+no commands/tests or byte comparisons. Parent inspected actual commits and confirmed all eleven
+initial/item commits match saved unstaged/staged/committed binary/full-index diffs exactly
+(`parent-audit.log/.exit`, exit 0), including the reviewed three-file draft. The initial parent
+quote-count assertion missed Markdown line wrapping; failure retained, semantic assertion fixed,
+all Git comparisons unchanged. Writer's prior-canonical/scope/catalog audit also passed.
+Parent reran bounded validator and headless boot (exit 0; `parent-{validator,boot}.log/.exit`).
+Boot's ignored Nix SQLite-busy warning preceded successful Godot startup. These checks cover
+existing loaded data/startup, not historical truth or new enforcement. Final handoff/publication
+is authorized only on `fix/ontology-reconciliation`: normal push, verify fresh remote = upstream
+= local HEAD and clean worktree, then STOP. This checkpoint is not a publication claim.
 
 **Writer gates/evidence:** `/tmp/pixlnd-source-research-36.iKZQy6/recording/` contains actual
 saved-source excerpts/hashes/sidecars, per-item semantic/scope → simplify → ponytail-review notes,
@@ -738,7 +753,8 @@ saved-source excerpts/hashes/sidecars, per-item semantic/scope → simplify → 
 Queue statuses become applied only after checks. Validator covers existing loaded data, not
 Markdown, historical truth or new enforcement. No external retrieval, images/audio/original
 build execution, gameplay suite, visual or multiplayer checks. Fresh independent recording
-review and parent verification/publication remain pending. No new research or proposals.
+review and parent verification passed as recorded above; final publication must be verified.
+No new research or proposals.
 Local extractor correction was supervisor-approved; failed assumption/reproduction and corrected
 raw inspection remain in `extraction-authorization.md`, `source-extraction-failure.log/.exit`
 and `raw-wiki-inspection.json`; no external retry or source edits.

@@ -2737,7 +2737,7 @@ Glass bottles/sugar cubes/bombs and sometimes unnamed treat, not universal stock
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–45 recorded (`todo_decide.md §E`, with evidence limits); Fresh review/parent acceptance pending. No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–45 recorded; 36–45 independently reviewed and parent-verified (`todo_decide.md §E`, with evidence limits). No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

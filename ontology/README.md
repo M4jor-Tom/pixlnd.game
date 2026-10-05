@@ -25,11 +25,11 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `tasks/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Source-attribution items 36–45 (2026-10-05):** **Items 36–45 recorded and item-verified; fresh independent review/parent acceptance pending.**
+**Source-attribution items 36–45 (2026-10-05):** recorded, independently reviewed and parent-verified; no unhandled approval remains.
 Canonical: `domain.md#pet-food` / §5 / §7; selections/receipts: `docs/reconciled.md` / §E.
 No gameplay, labels or live changes; item 39's reported visual bug must not be implemented.
-Items 1–35 and hybrid rules stand; remaining histories stay research. Parent owns final
-review/verification/publication and STOP; no new research or proposals.
+Items 1–35 and hybrid rules stand; remaining histories stay research. Evidence/check limits and
+final authorized handoff/publication/STOP: `docs/HANDOFF.md` / §E. No new research or proposals.
 
 **Historical source-attribution item 32 recorded (2026-10-05):** `domain.md#pet-food` attributes
 “one type of pet food per day”, not one purchasable unit or a selected quantity. No stock,

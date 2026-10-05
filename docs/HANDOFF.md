@@ -3,18 +3,45 @@
 ## Ontology walkthrough entry point (2026-10-05, source items 36–45)
 
 Owner approved **36–45**, with item 39: **“Approved (I don't want a bug implemented)”**.
-**Items 36–45 recorded and item-verified; fresh independent review/parent acceptance pending.**
-Exact selections/canonical pointers and later receipts: **`docs/reconciled.md`** / §E.
-Resume pending **Previously selected** entries before new research, without unchanged reapproval.
-Documentation only; items 1–35 and settled hybrid mechanics stand. No gameplay, JSON, tests,
-checker, source labels or balance changes; **do not implement item 39's visual bug**.
+**All ten recorded in separate item commits, independently reviewed and parent-verified.**
+No approved-but-unhandled selection or unanswered proposal remains. Exact answers, canonical
+pointers and full item receipts: **`docs/reconciled.md`** / `todo_decide.md §E`.
+Initial protocol/queue: `6bb47a1`; final item: `7476eb20ecc0817b1b792f970ef44dec65fa4dd7`.
+Canonical evidence: `ontology/domain.md#pet-food` (37–38), §5 (36/39–45), §7 index.
+Seven Markdown paths only across initial + batch; items 1–35 and all settled rules stand.
+No gameplay, JSON, tests, checker, labels, defaults, balance, schema or compatibility changes;
+**do not implement item 39's visual bug**. F11/Bubble Gum, always-named gear and the permanent
+regional-gear-loss exclusion remain authoritative.
 
-Writer evidence: `/tmp/pixlnd-source-research-36.iKZQy6/recording/` (actual saved sources,
-per-item reviews/logs/exits and exact binary/full-index diffs/comparisons). Gates check existing
-loaded data, not prose/history or enforcement. Fresh reviewer and parent acceptance still pending.
-Context: ask by ~60%, handoff by ~85% or earlier with reserve; meter unavailable, no guessed usage.
-Preserve all remaining approvals; parent alone handles final normal push/remote equality/clean
-state and STOP. This is not a publication claim; inspect Git. No next-topic proposals.
+**Verification:** evidence root `/tmp/pixlnd-source-research-36.iKZQy6/recording/` contains raw
+source inspection/hashes/sidecars, per-item simplify → ponytail-review, bounded validator/diff
+logs/exits and exact diffs. Fresh independent saved-source/current-file/diff/log review found
+no issues (`independent-review.md`); reviewer ran no commands/tests or byte comparisons.
+Parent inspected actual commits and confirmed all eleven initial/item saved/staged/committed
+diffs exactly match Git, plus the reviewed draft (`parent-audit.log/.exit`, exit 0). Local
+extractor and parent line-wrapped-quote assertion corrections/failures remain in evidence.
+Parent reran bounded ontology validation and headless boot (exit 0; `parent-{validator,boot}.log/.exit`);
+boot had an ignored Nix SQLite-busy warning before successful Godot startup. Checks cover existing
+loaded data/startup and source-recording fidelity, not historical truth or new enforcement.
+No external re-fetch, audio/images/original-build execution, gameplay suite, visual or multiplayer tests.
+
+**Context protocol:** the installed profile `ontology-reconcile-topic` skill is updated locally:
+ask by ~60%, begin handoff by ~85% or earlier with reserve, preserve pending selections in
+`docs/reconciled.md` and show Previously selected without unchanged reapproval. Its mechanical
+contract checks and six manual scenario checks passed; no agent-pressure-trial claim. The context
+percentage meter was unavailable, so bounded delegation/early handoff were used without guessed
+percentages. Profile files are outside this game branch and are not part of its publication.
+
+**Next resume: Validation-contract source research/attribution (remaining research).**
+Food release/obtainability/taming and Leaf–Candy chronology; refining/noncotton/weapon quantities;
+daily units/odds; roster/trait/population/route histories; naming generation; other UI/camera/
+furniture/candle/dialogue and authenticated soundtrack identities. These are research gaps,
+not unanswered gameplay ballots. Do not advance to uncertain-fact topics or implementation.
+
+**Authorized publication:** commit this separate verified handoff after item `7476eb2`,
+normal-push only `fix/ontology-reconciliation`, verify fresh remote = upstream = local HEAD and
+clean worktree, then STOP. No amendment/rewrite/merge/force-push, profile publication or new
+research/proposals. This pre-publication record is not a publication claim; inspect actual Git.
 
 ## Historical ontology checkpoint (2026-10-05, source item 32)
 
