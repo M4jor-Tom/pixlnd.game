@@ -37,11 +37,11 @@ No unanswered proposal remains in this batch; approval is separate from applicat
 
 ### 41. Some mobs bring out lanterns
 - **Previously selected:** Approved. Attribute [Darkmega's guide](https://steamcommunity.com/sharedfiles/filedetails/?id=1871398574)'s dark-night observation of some mobs bringing out lanterns. No every-villager schedule, activation/put-away timing or A* route inference.
-- **Application:** Applied after item gates; fresh review pending. Canonical: `ontology/domain.md §5 item 41` / §7. Full hash evidence: `/tmp/pixlnd-source-research-36.iKZQy6/recording/item-41.sha`; commit receipt follows in a later update.
+- **Application:** Applied after item gates; fresh review pending. Canonical: `ontology/domain.md §5 item 41` / §7. Full hash evidence: `/tmp/pixlnd-source-research-36.iKZQy6/recording/item-41.sha`; commit `85fd5cb051f4efba5c568909e867ef4cfdb2847a`.
 
 ### 42. Individual dark-Alpaca habitats
 - **Previously selected:** Approved. Attribute [Alpaca (dark) revision 19843](https://cubeworld.fandom.com/wiki/Alpaca_(dark)?oldid=19843)'s Greenlands, Snowlands and plains list. Plains is descriptive, not a new biome; no exclusivity, whole-family Desert distribution or food/habitat change.
-- **Application:** Pending canonical recording and verification.
+- **Application:** Applied after item gates; fresh review pending. Canonical: `ontology/domain.md §5 item 42` / §7. Full hash evidence: `/tmp/pixlnd-source-research-36.iKZQy6/recording/item-42.sha`; commit receipt follows in a later update.
 
 ### 43. Possessive item-name examples
 - **Previously selected:** Approved. Attribute the [trading thread](https://steamcommunity.com/app/1128000/discussions/0/1735507058422798015/)'s Drakzic's Brilliant Iron Dagger+, Izaira's Brilliant Wood Boomerang+, Lorax's Exceptional Cotton Gloves+. Preserve its legendary/Exceptional disagreement and historical `+` spelling, not excluded mechanics or rarity reassignment. No recovered algorithm; always-named Epic/Legendary rule stands.

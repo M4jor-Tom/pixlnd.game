@@ -227,6 +227,8 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 
 - Source item 41 (`domain.md §5`): some mobs bringing out lanterns gives no universal nightly schedule, activation/put-away timing or A* route. Shipped schedule/lantern histories remain research; no lighting change.
 
+- Source item 42 (`domain.md §5`): individual dark-Alpaca list proves no exclusivity, new plains biome or whole-family Desert distribution. Per-membership history stays research; habitats/foods unchanged.
+
 ## Meta / tooling
 - [ ] Save-data (§3.7): nothing persists (world seed, character, discovered lands).
 - [ ] Dedicated server (D5, `multiplayer-mode`): single-player only; `server.cfg` flags (pvp,

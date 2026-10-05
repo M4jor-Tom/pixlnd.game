@@ -2373,6 +2373,19 @@ tested. Capture/publication timing is not release evidence. Adjacent inn/reset/t
 advice does not override hybrid rules. No lantern, lighting, schedule, source-label or live
 change; original schedule and lantern histories remain research.
 
+#### Item 42 — Individual dark-Alpaca habitats (owner approved, 2026-10-05)
+
+[Alpaca (dark) revision 19843](https://cubeworld.fandom.com/wiki/Alpaca_(dark)?oldid=19843),
+edited **2024-08-14T22:12:11Z**, lists **Greenlands, Snowlands and plains** for the
+individual dark Alpaca. **Plains is descriptive wording, not a newly defined biome**.
+This establishes neither exclusive distribution nor the whole Alpaca family's Desert
+presence; it does not redefine any food or habitat.
+
+Saved raw revision body/metadata and sidecars were inspected, not externally re-fetched,
+image-inspected or original-build tested. Edit/capture timing is not release/first-appearance
+evidence or blanket family ancestry. Existing species/family/roster and taming declarations
+stand; per-membership histories remain research, with no animals moved, labels or live changes.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2657,9 +2670,12 @@ Passive humanoid villagers report separated from dated thread speculation.
 **Validation-contract source item 41 — DECIDED 2026-10-05:** §5 item 41 records
 Some-mobs dark-night observation, not universal schedules or timing.
 
+**Validation-contract source item 42 — DECIDED 2026-10-05:** §5 item 42 records
+Individual Greenlands/Snowlands/plains report, not whole-family distribution.
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–41 recorded (`todo_decide.md §E`, with evidence limits); 42–45 approved, pending recording/verification in `docs/reconciled.md`. No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–42 recorded (`todo_decide.md §E`, with evidence limits); 43–45 approved, pending recording/verification in `docs/reconciled.md`. No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
