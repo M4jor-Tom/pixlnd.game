@@ -2882,11 +2882,12 @@ Glass bottles/sugar cubes/bombs and sometimes unnamed treat, not universal stock
 
 **Validation-contract source item 55 — DECIDED 2026-10-05 under standing sourcing approval:**
 §5 attributes the exact historical Steam UI/minimap key directions, not new controls, patch dates
-or whole-guide ancestry. D17's hybrid F3 debug-menu stands; independent review remains pending.
+or whole-guide ancestry. D17's hybrid F3 debug-menu stands; independent recording review found
+no issues and parent recording checks passed (`todo_decide.md §E`).
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–55 recorded; item 55 uses standing sourcing-only approval and awaits independent review/parent verification in the pending queue (`todo_decide.md §E`). Items 1–54 stand. Unsupported food/mixed-container histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics or implementation; enforcement deferred |
+| Validation-contract source research/attribution | items 1–55 recorded; item 55 uses standing sourcing-only approval, independently reviewed with no issues and parent recording-verified (`todo_decide.md §E`). No unhandled selection or unanswered ballot remains; empty pending queue deleted. Final local checkpoint/remaining research: HANDOFF; publication not authorized here. Unsupported food/mixed-container histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics or implementation; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

@@ -140,8 +140,9 @@ checker implementation remain unauthorized. Verification record: `7a79913`.
 **Current sourcing direction (2026-10-05):** owner exact standing answer:
 **“If the items are about accepting or refusing to add more precision to the sourcing of a data, auto-approve it”.**
 Only defensible sourcing precision is autoapproved, not mechanics, labels, live JSON, checker,
-code/tests or publication. Item 55 is recorded below; independent review/parent verification
-remain pending in `docs/todo_handle_reconciled_items.md`. Items 1–54 stand; no unanswered ballot.
+code/tests or publication. Item 55 is recorded below, independently reviewed with no issues
+and parent recording-verified. No unhandled selection or unanswered ballot remains; the empty
+pending queue is deleted. Items 1–54 stand.
 Remaining Validation-contract histories stay research; no topic advancement or implementation.
 The prior checkpoint's STOP belongs to that completed checkpoint. Parent owns publication of
 this new task; no push or history rewrite by the writer. Protocol: `docs/lessons.md`.
@@ -752,10 +753,11 @@ Recorded selections, canonical pointers and item 39's no-bug amendment: the 36�
 **46–52 recorded, independently reviewed and parent-verified.** Exact selections and receipts
 are below; that historical batch left no unhandled selection.
 Bows/Dungeon items 53/54 are recorded, independently reviewed and parent recording-verified.
-Item 55 is recorded under standing sourcing-only approval; independent review/parent verification
-are pending in `docs/todo_handle_reconciled_items.md`. No unanswered ballot; no new research
-within this bounded checkpoint. Held Silk/Spinning Wheel findings remain HOLD, not selections,
-refusals, new 27/36 ballots, changed game rules or whole-topic completion.
+Item 55 is recorded under standing sourcing-only approval, independently reviewed with no issues
+and parent recording-verified. No unhandled selection or unanswered ballot remains; the empty
+pending queue is deleted. No new research within this bounded checkpoint. Held Silk/Spinning
+Wheel findings remain HOLD, not selections, refusals, new 27/36 ballots, changed game rules
+or whole-topic completion.
 Context: ask by ~60%, handoff by ~85% (earlier with reserve), authorized checkpoint then STOP.
 Daily food quantities and original Alpha/Steam
 sleep-rate baseline/units (§5 items 10–11) remain research.
@@ -784,7 +786,7 @@ No unresolved dependency; D17's hybrid F3 debug-menu and all earlier rules stand
 
 | item | application | canonical pointer | commit receipt |
 |---|---|---|---|
-| 55 — Historical Steam UI/minimap controls | [x] canonically recorded; independent review/parent verification pending | `domain.md §5 item 55` / §7 | separate item commit; exact hash/parent retained in external `item-55-commit-map.txt` after commit |
+| 55 — Historical Steam UI/minimap controls | [x] recorded, independently reviewed, parent recording-verified | `domain.md §5 item 55` / §7 | `cbe5a877ed5c668f4d7065795008a21c07cc530e` (parent `04548e20de6bf49b3e995c35464d205f8a2c2924`) |
 
 **Evidence/limits:** `/tmp/pixlnd-source-precision.MIIiDU/`; exact proposal `proposed-item-55.md`,
 retained public MediaWiki body/metadata and raw revision content under `evidence/`.
@@ -800,10 +802,27 @@ or called passing. Authority is the unnormalized raw revision content, not sidec
 Per-item source/scope/semantic inspection, simplify → ponytail-review, raw diffs and command
 logs/exits are saved outside the repo. Bounded validator and boot cover existing loaded data/
 startup, not Markdown truth, historical behavior or new enforcement; results: `item-55-*` and
-`final-*` receipts. Pending queue stays until fresh independent review and commit are verified.
+`final-*` receipts. Fresh independent recording review found **no issues**: managed
+`precision/review.md` under run `04fed232-93d1-4614-a593-9078d1eb03d9`. Reviewer inspected current
+Markdown, saved public source/diffs/receipts and Git refs; ran no commands, tests, hash calculations
+or byte comparisons. Parent actual-item audit, bounded validator
+and boot passed (`parent-item-{audit,validator,boot}.log/.exit`, all 0); exact acceptance/diagnostic
+permissions: `parent-supervisor-receipts.md`.
+Finalization independently verified actual branch/HEAD/parent, seven Markdown item paths,
+matching actual/staged/committed diffs, source hashes and those receipts
+(`finalization-inspection.py/.log/.exit`, 0). Item 55 is handled, reviewed and committed; completed
+selection/standing answer/pointers/hash remain here and the empty pending-only queue is deleted.
+Final receipt/queue-deletion delta uses simplify → ponytail-review; writer checks/diffs are
+retained as `finalization-*`. Parent accepted the independent item review, inspected the actual
+final delta and reran scope/preservation audit, whitespace, bounded validator and boot
+(`parent-final-{audit,diff-check,validator,boot}.log/.exit`, all 0). This delta review was parent
+review, not a second independent review. Parent removed the redundant same-item draft HANDOFF
+block, preserving earlier checkpoints; receipt-only closure gates/local commit evidence are
+saved as `closure-*`. Inspect actual Git for the final local checkpoint commit. No push was
+authorized or attempted; publication requires separate authorization.
 No new controls, source labels, gameplay, live JSON, checker/code/tests or unrelated skill/food
 claims. Silk/Spinning Wheel remain HOLD; remaining histories stay research, not topic completion.
-Parent owns final receipt/queue handling and publication; no push or history rewrite by this writer.
+Finalization writer did not stage, commit, push or rewrite history; parent owns the local checkpoint commit.
 
 ### Validation-contract source attribution — items 53–54 (2026-10-05)
 

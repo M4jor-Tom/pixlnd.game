@@ -28,10 +28,12 @@ slice loop. A green validator proves only its implemented checks, not full ontol
 **Current source-attribution checkpoint (2026-10-05):** item 55 recorded in `domain.md §5` / §7
 under owner standing sourcing-only approval; exact quotation/selection: `todo_decide.md §E`.
 Historical Steam UI/minimap key directions only; D17's hybrid F3 debug-menu stands. Independent
-review/parent verification remain pending in `docs/todo_handle_reconciled_items.md`; no live-data,
-labels, checker or gameplay change. Items 1–54 stand; Silk/Spinning Wheel remain HOLD.
-Remaining histories stay research, not topic completion. Parent owns final publication; this
-new sourcing task supersedes the previous checkpoint's STOP, not its implementation boundary.
+recording review found no issues; parent recording audit/validator/boot passed. No unhandled
+selection or unanswered ballot remains; empty pending queue deleted. No live-data, labels,
+checker or gameplay change. Items 1–54 stand; Silk/Spinning Wheel remain HOLD.
+Remaining histories stay research, not topic completion. Parent reviewed the final receipt/
+queue-deletion delta and reran audit/validator/boot successfully; local checkpoint: `docs/HANDOFF.md`.
+No push authorized or attempted; publication needs separate authorization.
 
 **Historical source-attribution checkpoint 53–54 (2026-10-05):** approved items 53/54 recorded in
 `domain.md §5 items 53–54` / §7, independently reviewed with no issues; parent recording audit,
