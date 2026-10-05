@@ -2405,6 +2405,27 @@ Saved raw thread body/date and capture sidecars were inspected, not externally r
 original-build tested. Displayed/edit/capture timing supplies no authenticated original behavior
 or release history. No generated names, naming frequency, rarity, source labels or live changes.
 
+#### Item 44 — Retrieved music catalog, not authenticated shipped soundtrack (owner approved, 2026-10-05)
+
+The retrieved [KHInsider catalog](https://downloads.khinsider.com/game-soundtracks/album/cube-world-gamerip)
+claims **Steam/Windows**, **2019**, **Gamerip**, uploaded by **MuttMondo**, added
+**24 June 2021**, with these **28 titles** in listed order:
+
+Beach; Boss; City; Cult Of Doom; Deadlands; Desert; Druids Of Mana; Dungeon; Enchanted Forest;
+Greenlands; Home; Jungle; Maintheme; Mountains; Night; Ocean; Order Of The Light; Savannah;
+Shrine; Steel Empire; Success; Tribe; Unholy Pact; Village; Village2; Winter; Wood; Woodlands.
+
+These are **catalog claims, not authenticated build inclusion or completeness**. No audio
+was inspected: **Dungeon is not proven Bgum**, **Maintheme is not proven Explorers**, and
+**Ocean is not proven the 2017 preview**. Existing music declarations stand; the old
+`audio.json#tracks._gap` is retained live-data state, not a claim that this catalog was never
+retrieved. Item 7's full original soundtrack and identity histories remain research.
+
+Saved raw catalog header/all title cells and capture sidecars were inspected, not externally
+re-fetched, audio-downloaded/played or original-build tested. Addition/year/capture dates do
+not authenticate a build manifest or release history. No soundtrack assets, playback, track
+identity, source labels or live declarations change.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2695,9 +2716,12 @@ Individual Greenlands/Snowlands/plains report, not whole-family distribution.
 **Validation-contract source item 43 — DECIDED 2026-10-05:** §5 item 43 records
 Exact possessive spellings; rarity disagreement and excluded plus mechanics preserved.
 
+**Validation-contract source item 44 — DECIDED 2026-10-05:** §5 item 44 records
+28 catalog titles/metadata, not authenticated inclusion or preview identities.
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–43 recorded (`todo_decide.md §E`, with evidence limits); 44–45 approved, pending recording/verification in `docs/reconciled.md`. No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–44 recorded (`todo_decide.md §E`, with evidence limits); 45–45 approved, pending recording/verification in `docs/reconciled.md`. No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
