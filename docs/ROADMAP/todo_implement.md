@@ -221,6 +221,8 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 
 - Source item 38 (`domain.md#pet-food`): candy identity, daily quantities and food histories stay research; six reported names are not universal/exhaustive stock. One-coin flask price selects no food prices.
 
+- Source item 39 (`domain.md §5`): named Snout dodge/Intuition reports grant no exclusivity, family inheritance or new attacks. Charged-shot model-growth bug is historical only: **do not implement it**.
+
 ## Meta / tooling
 - [ ] Save-data (§3.7): nothing persists (world seed, character, discovered lands).
 - [ ] Dedicated server (D5, `multiplayer-mode`): single-player only; `server.cfg` flags (pvp,

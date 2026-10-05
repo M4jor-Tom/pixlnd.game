@@ -2328,6 +2328,20 @@ The saved raw guide body and capture sidecars were inspected from the retained
 executed. Source/edit/capture dates establish no release or introduction history. Refining
 quantities and original recipes remain research; no crafting, source-label or live-data change.
 
+#### Item 39 — Snout Beetle traits and a visual bug report (owner approved, 2026-10-05)
+
+[Snout Beetle revision 19194](https://cubeworld.fandom.com/wiki/Snout_Beetle?oldid=19194),
+edited **2024-08-08T23:50:27Z**, reports **dodging and Intuition**, and a bug causing a
+**charged shot's model to continuously grow until it takes up the entire screen**.
+Record only these named-species reports, not the source's **“only monsters”** exclusivity,
+Beetle-family inheritance, growing damage or new attack behavior.
+
+**Owner amendment: “Approved (I don't want a bug implemented)”. The visual bug is historical
+documentation only; do not implement it.** Saved raw revision body/metadata and capture
+sidecars were inspected, not externally re-fetched, image-inspected or original-build tested.
+Edit/capture dates do not authenticate Alpha/Steam trait or release histories. Existing combat,
+encounters and declarations stand; no attacks, bug, source labels or live-data changes.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2603,9 +2617,12 @@ Narrator acquisition report, not guaranteed drops or taming proof.
 **Validation-contract source item 38 — DECIDED 2026-10-05:** §3.4 pet-food records
 Literal six-name list with ambiguous candy; flask price is not food pricing.
 
+**Validation-contract source item 39 — DECIDED 2026-10-05:** §5 item 39 records
+Named-species traits; visual bug documentation only, never implementation.
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–38 recorded (`todo_decide.md §E`, with evidence limits); 39–45 approved, pending recording/verification in `docs/reconciled.md`. No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–39 recorded (`todo_decide.md §E`, with evidence limits); 40–45 approved, pending recording/verification in `docs/reconciled.md`. No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

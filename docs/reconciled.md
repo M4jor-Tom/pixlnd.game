@@ -25,11 +25,11 @@ No unanswered proposal remains in this batch; approval is separate from applicat
 
 ### 38. Six reported shop-food names
 - **Previously selected:** Approved. Attribute [guide 1879943518](https://steamcommunity.com/sharedfiles/filedetails/?id=1879943518)'s differing village offerings and literal list: candy, carrot, bubble gum, chocolate donut, waffle, cotton candy. Candy identity remains ambiguous; no exhaustive/universal stock or quantity rule. The one-coin price is for empty flasks, not foods.
-- **Application:** Applied after item gates; fresh review pending. Canonical: `ontology/domain.md §3.4 pet-food` / §7. Full hash evidence: `/tmp/pixlnd-source-research-36.iKZQy6/recording/item-38.sha`; commit receipt follows in a later update.
+- **Application:** Applied after item gates; fresh review pending. Canonical: `ontology/domain.md §3.4 pet-food` / §7. Full hash evidence: `/tmp/pixlnd-source-research-36.iKZQy6/recording/item-38.sha`; commit `4781cf13d387b164ceea503e42d41fbfaa8f7076`.
 
 ### 39. Snout Beetle traits and visual bug report
 - **Previously selected:** “Approved (I don't want a bug implemented)”. Attribute [Snout Beetle revision 19194](https://cubeworld.fandom.com/wiki/Snout_Beetle?oldid=19194)'s dodging, Intuition and charged-shot model growing across the screen. The last is historical visual-bug documentation **only; do not implement the bug**. No exclusivity, family inheritance, growing damage or new attack behavior.
-- **Application:** Pending canonical recording and verification.
+- **Application:** Applied after item gates; fresh review pending. Canonical: `ontology/domain.md §5 item 39` / §7. Full hash evidence: `/tmp/pixlnd-source-research-36.iKZQy6/recording/item-39.sha`; commit receipt follows in a later update.
 
 ### 40. Undead villagers versus population speculation
 - **Previously selected:** Approved. Attribute [Undead revision 18595](https://cubeworld.fandom.com/wiki/Undead?oldid=18595)'s passive humanoid Undead villagers in Deadlands/Dark Woods, not exclusively Undead towns. Qualify the [cities thread](https://steamcommunity.com/app/1128000/discussions/0/1633040337766628105/)'s displayed 10 September 2019 date, all-human OP and explicitly speculative faction/Undead reply; no tested build or biome exception. Existing populations/Skeleton Dog rules stand.
