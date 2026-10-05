@@ -2439,6 +2439,22 @@ quantities, first appearance or release chronology and selects no stock or purch
 Existing shop/reset/pricing rules and live declarations stand; stock/quantity/food histories
 remain research. No purchases, source labels, loot or gameplay changes follow.
 
+#### Item 46 — Questionable Iceflower conversion report (owner approved, 2026-10-05)
+
+[Iceflower revision 15027](https://cubeworld.fandom.com/wiki/Iceflower?oldid=15027) says
+**“The Iceflower can be used on a Campfire to receive a Heartflower.”** The immediately
+adjacent **“Something gourmet, like a steakhouse filet or a cut still on the bone.”** is
+unrelated text: retain this as a **questionable qualitative community report**, not verified
+conversion behavior. It confirms neither exactly one Heartflower nor the existing **1–3**
+yield in `ingredients.json#iceflower` / `recipes.json#refining.heartflower-from-iceflower`.
+Quantities and authenticated original-build behavior remain unresolved; no conversion changes.
+
+For items 46–52, saved raw community-wiki revision bodies/metadata and capture sidecars were
+inspected, not externally re-fetched or original-build tested. Captures are dated **2026-10-05**,
+including the retained Iron Armor/Fists response; wiki edit/capture dates are not release or
+introduction dates. These reports select no new A/S labels, live-data or gameplay changes.
+Items 1–45 and all approved hybrid rules stand; remaining histories stay research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2735,9 +2751,11 @@ Exact possessive spellings; rarity disagreement and excluded plus mechanics pres
 **Validation-contract source item 45 — DECIDED 2026-10-05:** §5 item 45 records
 Glass bottles/sugar cubes/bombs and sometimes unnamed treat, not universal stock.
 
+**Validation-contract source item 46 — DECIDED 2026-10-05:** §5 records a questionable campfire→Heartflower report, not quantity or original-build proof.
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–45 recorded; 36–45 independently reviewed and parent-verified (`todo_decide.md §E`, with evidence limits). No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–46 recorded; 36–45 independently reviewed and parent-verified; 46–52 independent recording review/parent verification pending (`todo_decide.md §E`, with evidence limits). No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

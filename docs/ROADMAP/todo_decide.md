@@ -692,7 +692,8 @@ approved 29–31 are recorded and verified, with fresh independent review and pa
 Items 33–35 are recorded and verified below; item 32's later approval is now recorded too.
 **Items 36–45 recorded, independently reviewed and parent-verified.** (2026-10-05)
 Recorded selections, canonical pointers and item 39's no-bug amendment: the 36–45 section below.
-No unhandled selection remains; `./docs/todo_handle_reconciled_items.md` is absent when empty.
+**46–52 selected:** recording underway below; independent recording review/parent verification
+pending. All seven entries remain in `./docs/todo_handle_reconciled_items.md` until those gates finish.
 No presented unanswered proposal remains. Pending selected entries precede new research.
 Context: ask by ~60%, handoff by ~85% (earlier with reserve), authorized checkpoint then STOP.
 Daily food quantities and original Alpha/Steam
@@ -708,6 +709,31 @@ sleep-rate baseline/units (§5 items 10–11) remain research.
   identity, Lion tameability (`null` currently means untameable), resistance meaning and the
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
+
+### Validation-contract source attribution — items 46–52 (2026-10-05)
+
+**Exact owner answer:** “46: Approved; 47: Approved; 48: Approved; 49: Approved; 50: Approved;
+51: Approved; 52: Approved; When handled, handoff, commit, push”. All original proposals selected
+without amendments; items 1–45 and all hybrid rules stand. Documentation attribution only:
+no gameplay, JSON, tests, checker, research dumps, labels, defaults, balance, schema, migration
+or compatibility changes. Parent owns final handoff, receipts and authorized publication.
+
+**Approval versus Refusing:** approval records bounded reports without changing the game;
+refusal would leave citations unrecorded, not select opposite mechanics.
+
+| item | application | canonical pointer | item commit |
+|---|---|---|---|
+| 46 — Questionable Iceflower conversion report | recorded; independent review/parent verification pending | `domain.md §5 item 46` / §7 | receipt pending |
+
+**Writer gates/evidence:** `/tmp/pixlnd-reconcile-next.2F5qwV/recording/`: per-item saved raw
+source/sidecar inspection, semantic/scope → local `/simplify` prompt → installed ponytail-review,
+`git diff --check`, bounded ontology validator, exact binary/full-index unstaged/staged/committed
+diffs and comparisons are required before each item commit. Validator command:
+`timeout 150 nix develop -c godot --headless -s ontology/validate.gd`.
+Checks cover existing loaded data, not Markdown semantics, historical truth or new enforcement.
+No new tests, external re-fetch, audio/images/assets/original-build execution, gameplay suite,
+visual or multiplayer checks. Independent recording review and parent verification pending;
+retain all selected queue entries. No further research or proposals.
 
 ### Validation-contract source attribution — items 36–45 (2026-10-05)
 

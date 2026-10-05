@@ -25,7 +25,11 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `tasks/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Source-attribution items 36–45 (2026-10-05):** recorded, independently reviewed and parent-verified; no unhandled approval remains.
+**Source-attribution items 46–52 (2026-10-05):** 46 recorded; 47–52 recording pending.
+Canonical: `domain.md §5` / §7; independent recording review and parent verification pending.
+Selected queue retained; evidence/limits: `todo_decide.md §E`. No gameplay or live changes.
+
+**Historical source-attribution items 36–45 (2026-10-05):** recorded, independently reviewed and parent-verified; that batch left no unhandled approval.
 Canonical: `domain.md#pet-food` / §5 / §7; completed selections/receipts: `todo_decide.md §E`.
 Pending-only queue: `./docs/todo_handle_reconciled_items.md`, absent when no unhandled item remains.
 No gameplay, labels or live changes; item 39's reported visual bug must not be implemented.

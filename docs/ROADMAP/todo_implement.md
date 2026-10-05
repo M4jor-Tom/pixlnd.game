@@ -235,6 +235,8 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 
 - Source item 45 (`domain.md §5`): vendor stock report keeps sometimes/unnamed treat; no universal stock, price, quantity or chronology, and no sugar-cube/candy mapping. Shop rules unchanged; stock histories remain research.
 
+- Source item 46 (`domain.md §5`): questionable conversion report confirms neither exactly one nor 1–3 Heartflowers. Quantities/original-build behavior stay research; conversion unchanged.
+
 ## Meta / tooling
 - [ ] Save-data (§3.7): nothing persists (world seed, character, discovered lands).
 - [ ] Dedicated server (D5, `multiplayer-mode`): single-player only; `server.cfg` flags (pvp,
