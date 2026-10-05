@@ -239,6 +239,8 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 
 - Source item 47 (`domain.md §5`): Deposit's 1–3 nuggets does not verify every gem, Ice Crystal or Sandstone yield. Per-kind counts/odds remain research; mining unchanged.
 
+- Source item 48 (`domain.md §5`): Iron Cube/non-common gem report supplies no quantities/station or cotton-to-iron proof. Noncotton recipe histories stay research; hybrid recipes unchanged.
+
 ## Meta / tooling
 - [ ] Save-data (§3.7): nothing persists (world seed, character, discovered lands).
 - [ ] Dedicated server (D5, `multiplayer-mode`): single-player only; `server.cfg` flags (pvp,

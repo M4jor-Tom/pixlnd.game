@@ -2465,6 +2465,16 @@ Sandstone. Per-kind yields/probabilities remain research, not selected ranges or
 Source-inspection/date limits follow item 46;
 mining rewards, refining rules, labels and live declarations remain unchanged.
 
+#### Item 48 — Iron armor ingredients, not quantities (owner approved, 2026-10-05)
+
+[Iron Armor revision 12983](https://cubeworld.fandom.com/wiki/Iron_Armor?oldid=12983)
+reports **Iron Cubes + required gems for non-common armor**.
+This is ingredient evidence only: no counts or crafting station are supplied. It does not
+verify iron costs from item 18's cotton table or the other-material assumption in
+`recipes.json#gear-armor-quantities`, nor generalize to linen/silk. Noncotton quantities and
+station histories remain research; **D6 and approved hybrid recipes stand unchanged**.
+Source-inspection/date limits follow item 46; no recipes, labels or live declarations change.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2765,9 +2775,11 @@ Glass bottles/sugar cubes/bombs and sometimes unnamed treat, not universal stock
 
 **Validation-contract source item 47 — DECIDED 2026-10-05:** §5 attributes 1–3 nuggets, not all-gem/deposit yields or probabilities.
 
+**Validation-contract source item 48 — DECIDED 2026-10-05:** §5 attributes Iron Cubes/non-common gems only, not counts, stations or cotton-derived costs.
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–47 recorded; 36–45 independently reviewed and parent-verified; 46–52 independent recording review/parent verification pending (`todo_decide.md §E`, with evidence limits). No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–48 recorded; 36–45 independently reviewed and parent-verified; 46–52 independent recording review/parent verification pending (`todo_decide.md §E`, with evidence limits). No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
