@@ -137,11 +137,17 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Source-attribution direction — items 33–35 (2026-10-04):** all approved, recorded and verified in
+**Source-attribution direction — item 32 (2026-10-05):** owner answered **“32: Approved;
+Once handled, handoff, commit, push”**. The report is recorded below for documentation only;
+no presented unanswered proposal remains. Broader histories stay research, not whole-topic
+completion. Verify and commit this item separately, then finalize/publish the handoff and STOP.
+No new research, proposals or implementation.
+
+**Historical source-attribution direction — items 33–35 (2026-10-04):** all approved, recorded and verified in
 three separate documentation commits. Fresh independent source/diff/log review found no issues;
 parent actual-commit/diff audit and bounded validator/boot reruns passed (evidence below).
-Item 32 alone remains presented but unanswered, verbatim in `docs/HANDOFF.md`; no refusal or
-implementation debt. Final handoff/publication, then STOP; no new research or proposals.
+Item 32 was then presented but unanswered, not refused or implementation debt; its later
+approval/status is above. That final handoff/publication/STOP checkpoint is historical.
 
 **Historical source-attribution direction — items 29–31 (2026-10-04):** owner approved only 29–31
 (“2ç” explicitly read as 29). All three recorded and verified in separate documentation commits.
@@ -683,9 +689,10 @@ not open questions. Persistence items 1–9 are recorded and reviewed above.
 World bounds / resets items 1–4 are recorded below; no presented question remains.
 Validation-contract mapping/source items 1–28 are historically recorded and verified below;
 approved 29–31 are recorded and verified, with fresh independent review and parent checks below.
-Items 33–35 are recorded and verified below. **Presented but unanswered 32 alone** resumes in
-this topic; its exact proposal/consequences/example/link are in `docs/HANDOFF.md`. Historical
-research, including original Alpha/Steam sleep-rate baseline/units (§5 items 10–11), stays open.
+Items 33–35 are recorded and verified below; item 32's later approval is now recorded too.
+**No presented unanswered proposal remains.** Resume remaining source research in this topic,
+not gameplay or whole-topic completion. Daily food quantities and original Alpha/Steam
+sleep-rate baseline/units (§5 items 10–11) remain research.
 - [ ] **Validation-contract source research/attribution (2026-09-17 contract approved):**
   required paths/shapes, bounded source inheritance and check boundaries are recorded in
   `domain.md §5`; recorded source items add bounded evidence, not complete histories. Unsupported
@@ -698,7 +705,30 @@ research, including original Alpha/Steam sleep-rate baseline/units (§5 items 10
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
 
-### Validation-contract source attribution — items 33–35 (2026-10-04)
+### Validation-contract source attribution — item 32 (2026-10-05)
+
+**Exact owner answer:** “32: Approved; Once handled, handoff, commit, push”.
+**32 — One pet-food type is not one purchasable unit:** [x] recorded in `domain.md#pet-food`
+and §7. Attribute Pet Food revision 20438's daily stocked-type wording, not a quantity limit;
+select neither one-unit purchases nor unlimited stock. Existing carrying rules, F11 Banana
+Mash and shared Bubble Gum/subtype 19 from Collie stand. Five existing Markdown paths only;
+no gameplay, JSON, tests, checker, research, labels, defaults, schema or compatibility changes.
+
+**Approval versus Refusing:** approval documents the type/quantity distinction without changing
+stock or purchases; refusal would leave attribution incomplete, not approve a one-unit limit.
+Unsupported histories stay research, not whole-topic completion or implementation permission.
+
+**Evidence and gates:** `/tmp/pixlnd-source-item-32.HS00mX/` holds the binding approval brief,
+saved-source extraction/hashes and item diff/review/check evidence. Raw Pet Food revision
+20438 body/metadata and capture sidecars were inspected, not externally re-fetched, image-inspected
+or original-build executed. Edit/capture timestamps do not prove release history. Item 32's
+scoped commit and final independent review/verification will be recorded in the final handoff below.
+Semantic/scope inspection, `/simplify` then ponytail-review, `git diff --check` and the bounded
+ontology validator passed (exit 0, `ontology valid`; `item-32-{diff-check,validator}.log/.exit`).
+Validation covers existing loaded data, not prose/history, purchase quantities or new enforcement.
+No gameplay suite, visual or multiplayer checks are claimed.
+
+### Historical validation-contract source attribution — items 33–35 (2026-10-04)
 
 **Exact owner answer:** “33: Approved; 34: Approved; 35: Approved; When handled, handoff, commit, psh”.
 Parent interprets `psh` as push; writer does not push. **32 remains PRESENTED BUT UNANSWERED**,

@@ -157,6 +157,9 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 - [ ] Item 9 — surviving logical-mob threat/order/provocation across restart; preserve normal resets and taunt termination (`ai-behavior`, `c-threat-pair`).
 
 ## Validation contract (documentation approved; implementation unauthorized)
+- [ ] Source item 32 (`domain.md#pet-food`): the daily stocked-type report selects no purchase
+  quantity or source-build attribution; daily amounts/food histories remain research. No stock,
+  purchase or carrying rule changes, label inference or data/checker/runtime work authorized.
 - [ ] Source item 33 (`domain.md §5`): Slime “Mountain Areas”/colour reports establish no
   named-Mountains scope, numerical rarity, universal colour distribution or release history;
   no encounters, family/roster declarations or source labels change.

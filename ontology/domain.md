@@ -1234,6 +1234,22 @@ history. **Eucalyptus Candy remains Koala's bait; Kaliptus Leaf remains cut** (i
 Replacement chronology, per-food obtainability and successful original taming remain research.
 No pairing, availability, source label, ID or hybrid rule change follows.
 
+**Validation-contract source item 32 (owner approved, 2026-10-05):**
+[Pet Food revision 20438](https://cubeworld.fandom.com/wiki/Pet_Food?oldid=20438), edited
+**2025-10-15T03:26:50Z**, says **“Each town has one type of pet food per day”**. This
+community report identifies a **stocked food type**, not how many units can be purchased:
+stocking only Carrots says nothing here about how many carrots can be bought. The sentence
+identifies no Alpha/Steam build or release history. It selects neither a one-unit purchase
+limit nor unlimited purchases; the separate **one-of-each-food carrying rule remains unchanged**.
+
+Saved raw revision body/metadata and capture sidecars were inspected from the prior scout's
+2026-10-04 capture, not externally re-fetched, image-inspected or original-build tested.
+Edit/capture timing is not release evidence. The page's stale Banana Mash-unused and
+single-pet-per-food clauses cannot override **F11's obtainable Banana Mash** or **shared
+Bubble Gum for Collie/Skeleton Dog**, with subtype 19 anchored to Collie. Daily quantities
+and individual food histories remain research; no stock, purchases, pairing, availability,
+prices, IDs, source labels or live declarations change.
+
 ### key-item
 `S` land-bound "special" items (A: glider & boat were bought items in the special slot).
 → `instances/key-items.json`: hang-glider, boat, reins, climbing-spikes (movement, 4/land);
@@ -2384,7 +2400,7 @@ settled or implemented. The current open questions and approval/application chec
 `docs/ROADMAP/todo_decide.md §E`; preserve those deferrals. Earlier slice approximations below
 are historical implementation stages, superseded where later decisions say so.
 
-### Current unresolved hybrid questions (2026-10-04)
+### Current unresolved hybrid questions (2026-10-05)
 
 This index mirrors the open list in `docs/ROADMAP/todo_decide.md §E`; it does not choose defaults
 or authorize implementation. Resolve each question before its affected slice.
@@ -2525,6 +2541,10 @@ Items 29–31 passed fresh independent source/diff/log review and parent actual-
 bounded validator/boot verification (`todo_decide.md §E`, with limits) at that historical checkpoint.
 Remaining histories stay research.
 
+**Validation-contract source item 32 — DECIDED 2026-10-05:** §3.4 `pet-food` attributes
+the daily stocked-type report, not a one-unit purchase limit or any selected quantity. Existing
+carrying rules, obtainable Banana Mash and shared Bubble Gum remain unchanged.
+
 **Validation-contract source item 33 — DECIDED 2026-10-04:** §5 attributes Slime
 habitat/colour reports, not named-Mountains scope, numerical rarity or guaranteed distribution.
 **Validation-contract source item 34 — DECIDED 2026-10-04:** §5 attributes Snow/Leaf/Desert
@@ -2533,11 +2553,12 @@ Runner memberships, with exclusivity only for Desert Runner, not release/taming 
 preserving the Character Details placement disagreement, approximate messages and Assassin exception.
 Items 33–35 passed fresh independent saved-source/diff/log review and parent actual-commit/diff
 comparison / bounded validator/boot verification (`todo_decide.md §E`, with evidence limits).
-Item 32 alone remains presented but unanswered, verbatim in `docs/HANDOFF.md`.
+Item 32's later approval is recorded above; verification evidence follows `todo_decide.md §E`.
+No presented unanswered proposal remains.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–31 and 33–35 recorded and verified (`todo_decide.md §E`, with evidence limits). Item 32 alone is presented but unanswered, preserved exactly in `docs/HANDOFF.md`; resume it in this topic, not implementation or whole-topic completion. Unsupported food/mixed-container histories, including sleep-speed units, remain research; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–35 recorded (`todo_decide.md §E`, with evidence limits). No presented unanswered proposal remains; unsupported food/mixed-container histories, including daily food quantities and sleep-speed units, remain research, not whole-topic completion. Resume this topic, not implementation; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

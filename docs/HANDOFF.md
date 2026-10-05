@@ -1,8 +1,27 @@
 # Handoff — resume here
 
-## Ontology walkthrough entry point (2026-10-04, source items 33–35)
+## Ontology walkthrough entry point (2026-10-05, source item 32)
 
-**Current task: publish this final verified handoff, then STOP.**
+Owner exact answer: **“32: Approved; Once handled, handoff, commit, push”**.
+**Item 32 is recorded** in `ontology/domain.md#pet-food` / §7: daily stocked food type,
+not one purchasable unit or any selected quantity. No stock/purchases, labels or live-data
+changes. Prior items 1–31/33–35 and all hybrid rules stand; no presented unanswered proposal
+remains. Evidence and item verification: `docs/ROADMAP/todo_decide.md §E` and
+`/tmp/pixlnd-source-item-32.HS00mX/`. Final verification/handoff/publication is still pending
+in this session; this is not a publication claim.
+
+**Next resume: Validation-contract source research/attribution (remaining research).**
+Daily food quantities and per-food release/obtainability/taming/Leaf–Candy chronology;
+remaining fauna/traits, naming, recipe/refining, stock/loot/population/schedule and
+UI/camera/static/furniture/audio/dialogue histories remain research. Do not treat them as
+unanswered gameplay ballots or advance to Swamp Lands/Lion/resistance/gear HP/implementation.
+For this authorized handoff: verify, commit item 32 separately, finalize/commit the handoff,
+normal-push only `fix/ontology-reconciliation`, verify publication and clean state, then STOP.
+No amendments, merge, rewrite, force-push, new research or proposals.
+
+## Historical source-attribution items 33–35 checkpoint (2026-10-04, superseded entry point)
+
+**Historical task: publish that final verified handoff, then STOP.**
 Owner exact answer: **“33: Approved; 34: Approved; 35: Approved; When handled, handoff, commit, psh”**.
 Parent reads `psh` as push. **Items 33–35 recorded and verified in three separate documentation
 commits.** Fresh independent saved-source/diff/log review found no issues; parent inspected the
@@ -29,10 +48,10 @@ clean worktree, then STOP. Pre-publication item HEAD `6687547`; live remote `655
 `handoff-{diff-check,validator,boot}.log/.exit`. This is not a publication claim; inspect actual Git
 state on resumption. No amendments, merge, rewrite, force-push, new research or proposals.
 
-**Next resume: Validation-contract source research/attribution — item 32 alone.**
-It is **PRESENTED BUT UNANSWERED**, neither refused nor approved nor implementation debt.
-Other unsupported histories remain research; do not advance to Swamp Lands/Lion/resistance/
-gear HP or implementation. Preserve this exact proposal and wait for its answer:
+**Historical next resume: Validation-contract source research/attribution — item 32 alone.**
+It was **PRESENTED BUT UNANSWERED** at this checkpoint, neither refused nor implementation
+debt; the later approval/status is above. Other unsupported histories remain research; do not
+advance to Swamp Lands/Lion/resistance/gear HP or implementation. Historical exact proposal:
 
 ### 32. One pet-food type is not one purchasable unit
 

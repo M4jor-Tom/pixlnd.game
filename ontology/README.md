@@ -12,7 +12,7 @@ ontology/
 └── validate.gd      headless check: `nix develop -c godot --headless -s ontology/validate.gd`
 ```
 
-## Current scope and decisions (2026-10-04)
+## Current scope and decisions (2026-10-05)
 
 Hybrid v1 is alpha progression + approved Steam content; A/S source descriptions are historical
 reference, and X/cut or Omega-only content is roadmap coverage, not launch availability (item 8).
@@ -25,12 +25,18 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `tasks/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Source-attribution items 33–35 recorded and verified (2026-10-04):** all approved in three
+**Source-attribution item 32 recorded (2026-10-05):** `domain.md#pet-food` attributes
+“one type of pet food per day”, not one purchasable unit or a selected quantity. No stock,
+purchases, labels or live-data changes; earlier rules stand. No presented unanswered proposal
+remains; broader histories stay research, not whole-topic completion. Verification, final
+handoff/publication and STOP: `todo_decide.md §E` / `docs/HANDOFF.md`.
+
+**Historical source-attribution items 33–35 recorded and verified (2026-10-04):** all approved in three
 separate documentation commits. Canonical reports/limits: `domain.md §5` / §7; no encounters,
 layout, controls, labels or live-data change. Fresh independent source/diff/log review found no
 issues; parent verified actual commits/diffs and reran bounded validator/boot checks.
-**Item 32 alone remains presented but unanswered**, verbatim in `docs/HANDOFF.md`.
-Evidence/deferrals: `todo_decide.md §E` / `todo_implement.md`; final handoff/publication and STOP:
+Item 32 was then unanswered; its later approval/status is above.
+Evidence/deferrals: `todo_decide.md §E` / `todo_implement.md`; historical handoff/publication and STOP:
 `docs/HANDOFF.md`. No new research or proposals.
 
 **Historical source-attribution items 29–31 recorded and verified (2026-10-04):** all three approved,
