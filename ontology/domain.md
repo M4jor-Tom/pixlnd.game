@@ -2531,12 +2531,13 @@ habitat/colour reports, not named-Mountains scope, numerical rarity or guarantee
 Runner memberships, with exclusivity only for Desert Runner, not release/taming proof.
 **Validation-contract source item 35 — DECIDED 2026-10-04:** §5 attributes limited HUD reports,
 preserving the Character Details placement disagreement, approximate messages and Assassin exception.
-Items 33–35 are recorded; independent review and parent verification
-are pending. Item 32 alone remains presented but unanswered, verbatim in `docs/HANDOFF.md`.
+Items 33–35 passed fresh independent saved-source/diff/log review and parent actual-commit/diff
+comparison / bounded validator/boot verification (`todo_decide.md §E`, with evidence limits).
+Item 32 alone remains presented but unanswered, verbatim in `docs/HANDOFF.md`.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–31 recorded and verified (`todo_decide.md §E`, with evidence limits). Items 33–35 recorded, independent review/parent verification pending. Item 32 alone is presented but unanswered, preserved exactly in `docs/HANDOFF.md`; resume it in this topic, not implementation or whole-topic completion. Unsupported food/mixed-container histories, including sleep-speed units, remain research; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–31 and 33–35 recorded and verified (`todo_decide.md §E`, with evidence limits). Item 32 alone is presented but unanswered, preserved exactly in `docs/HANDOFF.md`; resume it in this topic, not implementation or whole-topic completion. Unsupported food/mixed-container histories, including sleep-speed units, remain research; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

@@ -2,26 +2,32 @@
 
 ## Ontology walkthrough entry point (2026-10-04, source items 33–35)
 
-**Current task: independent review / parent verification, then parent handoff/publication and STOP.**
+**Current task: publish this final verified handoff, then STOP.**
 Owner exact answer: **“33: Approved; 34: Approved; 35: Approved; When handled, handoff, commit, psh”**.
-Parent reads `psh` as push; parent alone owns final verification/handoff commit, last-hash
-finalization and authorized normal push on `fix/ontology-reconciliation`, then STOP.
-**Items 33–35 recorded in separate documentation commits.** Independent review and
-parent verification are **pending**, not inherited from previous batches. Items 1–31 and all
+Parent reads `psh` as push. **Items 33–35 recorded and verified in three separate documentation
+commits.** Fresh independent saved-source/diff/log review found no issues; parent inspected the
+actual commits, confirmed exact saved/staged/committed diff correspondence and the five-path
+boundary, and reran bounded validator/boot checks successfully (exit 0). Items 1–31 and all
 settled hybrid rules stand. Previous checkpoints below are explicitly historical.
 
 Canonical evidence: `ontology/domain.md §5` / §7; approvals/commit mapping and limits:
 `docs/ROADMAP/todo_decide.md §E`; remaining research/enforcement: `todo_implement.md`.
-Binding approvals, saved-source inspection, per-item simplify → ponytail-review notes, fresh
-bounded check logs/exits and exact binary/full-index diffs/comparisons:
+Binding brief, saved-source inspection, per-item simplify → ponytail-review notes, fresh logs/exits,
+exact diffs/comparisons, `independent-review.md` and `parent-{audit,validator,boot}.log/.exit`:
 `/tmp/pixlnd-source-resume-32-35.RySLWG/recording/` (brief in its parent directory).
-Saved raw sources inspected locally, not externally re-fetched, image-inspected or original-build
-executed. Capture/edit timing is not release evidence; validator checks existing loaded data,
-not historical truth, Markdown or new enforcement. No boot, gameplay suite, visual or multiplayer
-checks by this writer. Initial local source extraction failed; supervisor authorized corrected
-field/title selection (preserved failure and reply in evidence); no external retry/re-fetch.
-Five existing Markdown paths only; no gameplay, JSON, tests, checker, research, labels, defaults,
-schema, compatibility or migration changes. No amendments, merge, rewrite, push or new proposals.
+Saved raw sources inspected, not externally re-fetched, image-inspected or original-build executed.
+Capture/edit timing is not release evidence; validator/boot cover existing loaded data/startup,
+not historical truth, Markdown or new enforcement. No gameplay suite, visual or multiplayer checks.
+Initial extraction failure and supervisor-approved local correction remain in evidence; no external
+retry/re-fetch. Five existing Markdown paths only; no gameplay, JSON, tests, checker, research,
+labels, defaults, schema, compatibility or migration changes.
+
+**Authorized publication:** this separate final verification/handoff follows item `6687547`.
+Normal-push only `fix/ontology-reconciliation`, verify fresh remote/upstream/local equality and
+clean worktree, then STOP. Pre-publication item HEAD `6687547`; live remote `655d9eb` confirmed
+(`pre-publication-remote.log/.exit`). Final record review/rechecks: `handoff-review.md`, `handoff.diff`,
+`handoff-{diff-check,validator,boot}.log/.exit`. This is not a publication claim; inspect actual Git
+state on resumption. No amendments, merge, rewrite, force-push, new research or proposals.
 
 **Next resume: Validation-contract source research/attribution — item 32 alone.**
 It is **PRESENTED BUT UNANSWERED**, neither refused nor approved nor implementation debt.

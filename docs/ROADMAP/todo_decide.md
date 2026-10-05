@@ -137,10 +137,11 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Source-attribution direction — items 33–35 (2026-10-04):** all approved and recorded in three
-separate documentation commits. Independent review / parent verification pending. Item 32 alone
-remains presented but unanswered, verbatim in `docs/HANDOFF.md`; no refusal or implementation debt.
-Parent owns final verification/handoff/last-hash finalization and authorized push, then STOP.
+**Source-attribution direction — items 33–35 (2026-10-04):** all approved, recorded and verified in
+three separate documentation commits. Fresh independent source/diff/log review found no issues;
+parent actual-commit/diff audit and bounded validator/boot reruns passed (evidence below).
+Item 32 alone remains presented but unanswered, verbatim in `docs/HANDOFF.md`; no refusal or
+implementation debt. Final handoff/publication, then STOP; no new research or proposals.
 
 **Historical source-attribution direction — items 29–31 (2026-10-04):** owner approved only 29–31
 (“2ç” explicitly read as 29). All three recorded and verified in separate documentation commits.
@@ -682,9 +683,9 @@ not open questions. Persistence items 1–9 are recorded and reviewed above.
 World bounds / resets items 1–4 are recorded below; no presented question remains.
 Validation-contract mapping/source items 1–28 are historically recorded and verified below;
 approved 29–31 are recorded and verified, with fresh independent review and parent checks below.
-Items 33–35 are recorded; independent review/parent verification pending. **Presented but unanswered 32 alone** resumes in this topic; its exact
-proposal/consequences/example/link are in `docs/HANDOFF.md`. Historical research, including original Alpha/Steam sleep-rate
-baseline/units (§5 items 10–11), stays open.
+Items 33–35 are recorded and verified below. **Presented but unanswered 32 alone** resumes in
+this topic; its exact proposal/consequences/example/link are in `docs/HANDOFF.md`. Historical
+research, including original Alpha/Steam sleep-rate baseline/units (§5 items 10–11), stays open.
 - [ ] **Validation-contract source research/attribution (2026-09-17 contract approved):**
   required paths/shapes, bounded source inheritance and check boundaries are recorded in
   `domain.md §5`; recorded source items add bounded evidence, not complete histories. Unsupported
@@ -707,9 +708,9 @@ checker, research, labels, defaults, schema, compatibility or migration changes.
 
 | item | application | canonical section | commit evidence |
 |---|---|---|---|
-| 33 — Slime habitat/colour reports | [x] recorded; review pending | `domain.md §5` / §7 | d48a3eda9faaac7936b0bb21d30364b839a998ca |
-| 34 — Individual Runner habitat reports | [x] recorded; review pending | `domain.md §5` / §7 | 7ee7b2044329320edbf3cbdddbc348baad3a2882 |
-| 35 — Limited HUD/placement disagreement | [x] recorded; review pending | `domain.md §5` / §7 | pending item commit; parent finalizes |
+| 33 — Slime habitat/colour reports | [x] recorded and verified | `domain.md §5` / §7 | d48a3eda9faaac7936b0bb21d30364b839a998ca |
+| 34 — Individual Runner habitat reports | [x] recorded and verified | `domain.md §5` / §7 | 7ee7b2044329320edbf3cbdddbc348baad3a2882 |
+| 35 — Limited HUD/placement disagreement | [x] recorded and verified | `domain.md §5` / §7 | 6687547d831c69d8a232fde0aaa219a012e4b89f |
 
 **33 — Approval versus Refusing:** approval adds bounded habitat evidence without changing
 encounters; refusal would leave it unrecorded, not select snow-only Blue Slimes.
@@ -732,9 +733,29 @@ inspected, not externally re-fetched, image-inspected or original-build executed
 is not response completion or release evidence. No boot, gameplay suite, visual or multiplayer
 checks by this writer. Initial extraction exit 5 is preserved in `source-inspection-failure.log/.exit`;
 supervisor approved corrected local content/title extraction, not an external retry or missing-UI
-inference (`extraction-authorization.md`). **Independent review and parent verification pending.**
-Parent owns the separate final verification/handoff commit, last hash and authorized normal push,
-then STOP. Item 32 alone is the next exact unanswered question; broader histories remain research.
+inference (`extraction-authorization.md`). All three pre-commit validator runs exited 0 with actual
+Godot output and `ontology valid`; saved/staged/committed comparisons also exited 0.
+
+**Fresh independent review / parent verification:** read-only inspection of actual saved source
+bodies, diffs and logs found no issues (`independent-review.md`); reviewer ran no commands, tests
+or byte comparisons. Parent inspected the actual commits and source passages, confirmed all nine
+saved/staged/committed diffs against Git, three-item order and the five-path boundary
+(`parent-audit.log/.exit`, `parent-item-N-committed.diff`, `parent-batch.diff`), then reran:
+```
+timeout 150 nix develop -c godot --headless -s ontology/validate.gd
+timeout 150 nix develop -c godot --headless --quit
+```
+Both exited 0: `ontology valid` and normal hybrid startup (`parent-{validator,boot}.log/.exit`).
+These cover existing loaded data/startup, not historical truth, prose or new enforcement.
+
+**Final handoff/stop:** this separate verification record follows item `6687547`. Pre-publication
+live remote `655d9eb` confirmed (`pre-publication-remote.log/.exit`); inspect actual Git state on
+resumption. Final record received `/simplify`, ponytail-review and bounded diff/validator/boot
+rechecks (`handoff-review.md`, `handoff.diff`, `handoff-{diff-check,validator,boot}.log/.exit`).
+Commit the final handoff, normal-push only `fix/ontology-reconciliation`, verify fresh remote /
+upstream / local equality and clean state, then STOP. No amendments, rewrite, merge, force-push,
+new research or proposals. Item 32 alone remains the next exact unanswered question; broader
+histories remain research, not whole-topic completion or implementation permission.
 
 ### Historical validation-contract source attribution — items 29–31 (2026-10-04)
 
