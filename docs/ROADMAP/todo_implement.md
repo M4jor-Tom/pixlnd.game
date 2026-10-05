@@ -245,6 +245,8 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 
 - Source item 50 (`domain.md §5`): individual habitat/no-adult-grouping report proves no pack counts or Baby Elephant rule. Encounter histories stay research; no spawn change authorized.
 
+- Source item 51 (`domain.md §5`): rapid swiping is attack-qualified/qualitative, not verified audio or unconditional ambience. Audio histories stay research; other Wraith traits unchanged.
+
 ## Meta / tooling
 - [ ] Save-data (§3.7): nothing persists (world seed, character, discovered lands).
 - [ ] Dedicated server (D5, `multiplayer-mode`): single-player only; `server.cfg` flags (pvp,

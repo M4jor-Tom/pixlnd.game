@@ -2494,6 +2494,16 @@ a new spawn guarantee or pack count. The source's comparison with Baby Elephant 
 follow item 46; no release chronology, encounters, habitats, food/mount rules, labels or live
 declarations change. Other encounter histories remain research.
 
+#### Item 51 — Wraith swiping sound when attacking (owner approved, 2026-10-05)
+
+[Wraith revision 20152](https://cubeworld.fandom.com/wiki/Wraith?oldid=20152) reports
+**rapid swiping sounds when attacking despite having no limbs**. Keep the **attack condition**:
+this is not an unconditional ambient sound rule for `audio.json#ambient.S`. **Rapid** is
+qualitative, not a measured rate or authenticated sound identity. No audio, images or assets
+were inspected; source-inspection/date limits follow item 46 and establish no new source-era tag.
+Existing pursuit, unkillability and pet-avoidance descriptions are not reopened. Audio/behavior
+histories remain research; no sounds, behavior, labels or live declarations change.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2800,9 +2810,11 @@ Glass bottles/sugar cubes/bombs and sometimes unnamed treat, not universal stock
 
 **Validation-contract source item 50 — DECIDED 2026-10-05:** §5 attributes Snowlands-only/no-adult-grouping Baby Mammoth report, not pack counts or Baby Elephant rules.
 
+**Validation-contract source item 51 — DECIDED 2026-10-05:** §5 attributes qualitative rapid swiping when attacking, not ambient timing or inspected audio assets.
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–50 recorded; 36–45 independently reviewed and parent-verified; 46–52 independent recording review/parent verification pending (`todo_decide.md §E`, with evidence limits). No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–51 recorded; 36–45 independently reviewed and parent-verified; 46–52 independent recording review/parent verification pending (`todo_decide.md §E`, with evidence limits). No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
