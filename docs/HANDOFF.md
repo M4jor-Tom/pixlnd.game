@@ -1,6 +1,20 @@
 # Handoff — resume here
 
-## Ontology walkthrough entry point (2026-10-05, source item 32)
+## Ontology walkthrough entry point (2026-10-05, source items 36–45)
+
+Owner approved **36–45**, with item 39: **“Approved (I don't want a bug implemented)”**.
+Exact selections, sources and limits are durable in **`docs/reconciled.md`**; all ten are currently
+**approved but pending canonical recording/verification**, not unanswered. Resume these selected
+items before new research; show **Previously selected** rather than asking for unchanged reapproval.
+Documentation attribution only; no gameplay, JSON, tests, checker, source labels or balance changes.
+
+The installed `ontology-reconcile-topic` skill now caps question presentation at **~60% context**
+and begins handoff by **~85%**, earlier when needed. Preserve pending selections in the queue,
+commit/push the authorized `fix/ontology-reconciliation` checkpoint, verify publication, then STOP.
+Current work is recording/review/handoff for this approved batch; no next-topic proposals.
+Inspect actual Git state; this entry is a pending checkpoint, not a publication/completion claim.
+
+## Historical ontology checkpoint (2026-10-05, source item 32)
 
 Owner exact answer: **“32: Approved; Once handled, handoff, commit, push”**.
 **Item 32 recorded and item-verified in `9453260de4c09fa3dc5d9c07a93f3e9b70c194db`:**

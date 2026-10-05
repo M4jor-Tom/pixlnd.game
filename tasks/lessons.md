@@ -10,6 +10,20 @@
 - Rule: use that exact heading and describe the player-facing consequences of accepting or refusing the proposal. Refusal rejects this proposal; it does not silently approve the opposite mechanic.
 - Owner clarification (2026-09-19): a question about a mechanic is not a correction or rejection. Rule: answer it without withdrawing the proposal or recording a design-failure lesson; additional mechanics can address the concern separately.
 
+## Context-bounded reconciliation and retained selections
+
+Owner workflow update (2026-10-05): question batches must be ready at **~60% context maximum**;
+begin handoff by **~85%**, earlier if the next item/review would consume the publication reserve.
+Rule: use bounded inspection/delegation, stop new research/questions/items at the handoff boundary,
+commit the checkpoint and push the authorized branch, verify publication, then STOP. Do not rely
+on automatic compaction or invent context percentages when the meter is unavailable.
+
+Owner instruction: preserve decided but unapplied reconciliations in **`docs/reconciled.md`**.
+Rule: save exact selections/amendments and application status before recording starts; resume pending
+entries first and show **Previously selected**, not a new ballot requiring unchanged reapproval.
+Keep canonical rules in `ontology/domain.md`; the queue tracks approval versus verified application
+and item commits. Item 39's reported visual bug is documentation only: never implement it.
+
 ## Separate settled rules from stale executable data
 
 - Owner clarification: artifact data still describing pre-logarithmic bonuses is stale checked-in data, not a new choice about the approved accumulation rule.

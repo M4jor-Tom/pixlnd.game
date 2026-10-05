@@ -690,8 +690,12 @@ World bounds / resets items 1–4 are recorded below; no presented question rema
 Validation-contract mapping/source items 1–28 are historically recorded and verified below;
 approved 29–31 are recorded and verified, with fresh independent review and parent checks below.
 Items 33–35 are recorded and verified below; item 32's later approval is now recorded too.
-**No presented unanswered proposal remains.** Resume remaining source research in this topic,
-not gameplay or whole-topic completion. Daily food quantities and original Alpha/Steam
+**Source items 36–45 are approved but pending recording/verification (2026-10-05).** Exact
+selections and item 39's no-bug-implementation amendment are in `docs/reconciled.md`; resume these
+**Previously selected** items before new research. No presented unanswered proposal remains.
+Context protocol: ask by ~60%, begin handoff by ~85% (earlier when needed), preserve pending
+selections, commit/push the authorized checkpoint and STOP (`tasks/lessons.md`, `docs/HANDOFF.md`).
+Daily food quantities and original Alpha/Steam
 sleep-rate baseline/units (§5 items 10–11) remain research.
 - [ ] **Validation-contract source research/attribution (2026-09-17 contract approved):**
   required paths/shapes, bounded source inheritance and check boundaries are recorded in
