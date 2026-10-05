@@ -247,6 +247,8 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 
 - Source item 51 (`domain.md §5`): rapid swiping is attack-qualified/qualitative, not verified audio or unconditional ambience. Audio histories stay research; other Wraith traits unchanged.
 
+- Source item 52 (`domain.md §5`): reported Steam absence supplies no census/first Alpha appearance or hybrid removal. Species histories remain research; roster/food/mount rules unchanged.
+
 ## Meta / tooling
 - [ ] Save-data (§3.7): nothing persists (world seed, character, discovered lands).
 - [ ] Dedicated server (D5, `multiplayer-mode`): single-player only; `server.cfg` flags (pvp,

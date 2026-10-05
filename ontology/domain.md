@@ -2504,6 +2504,16 @@ were inspected; source-inspection/date limits follow item 46 and establish no ne
 Existing pursuit, unkillability and pet-avoidance descriptions are not reopened. Audio/behavior
 histories remain research; no sounds, behavior, labels or live declarations change.
 
+#### Item 52 — Reported Wolf absence from Steam (owner approved, 2026-10-05)
+
+[Wolf revision 20167](https://cubeworld.fandom.com/wiki/Wolf?oldid=20167) explicitly says
+**“Wolf does not exist in the Steam Version.”** This corroborates the retained historical
+**Alpha-only** description (`research_creatures_quests.md:121`, `creatures.json#wolf`),
+not an authenticated roster census or first Alpha appearance. Source-inspection/date limits
+follow item 46; no release chronology or broader roster ancestry follows. **Wolves remain in
+the approved hybrid game**: this historical absence report selects no removal, new food/mount
+rule, source label or live-data change. Remaining species histories stay research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2812,9 +2822,11 @@ Glass bottles/sugar cubes/bombs and sometimes unnamed treat, not universal stock
 
 **Validation-contract source item 51 — DECIDED 2026-10-05:** §5 attributes qualitative rapid swiping when attacking, not ambient timing or inspected audio assets.
 
+**Validation-contract source item 52 — DECIDED 2026-10-05:** §5 attributes reported Steam absence, not a census, first Alpha appearance or hybrid Wolf removal.
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–51 recorded; 36–45 independently reviewed and parent-verified; 46–52 independent recording review/parent verification pending (`todo_decide.md §E`, with evidence limits). No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–52 recorded; 36–45 independently reviewed and parent-verified; 46–52 independent recording review/parent verification pending (`todo_decide.md §E`, with evidence limits). No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
