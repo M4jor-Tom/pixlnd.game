@@ -1,6 +1,52 @@
 # Handoff — resume here
 
-## Ontology walkthrough entry point (2026-10-05, pending-only queue handoff)
+## Ontology walkthrough entry point (2026-10-05, source attribution 46–52)
+
+Owner exact answer: **“46: Approved; 47: Approved; 48: Approved; 49: Approved; 50: Approved;
+51: Approved; 52: Approved; When handled, handoff, commit, push”**.
+**All seven recorded in separate item commits, independently reviewed and parent-verified.**
+No unhandled selection or presented unanswered proposal remains; the empty pending queue is deleted.
+Exact selections, canonical pointers and full item receipts: `docs/ROADMAP/todo_decide.md §E`.
+Canonical: `ontology/domain.md §5 items 46–52` / §7. Initial queue: `fd6e77b`; final item:
+`11474ea81ee6d565fcf9dfd7b9db42b48180760f`. Items 1–45 and all settled hybrid rules stand.
+
+**Applied versus deferred:** bounded community attributions only: questionable Iceflower
+conversion, nuggets not all-gem yields, ingredient-only iron armor/Fists, individual Baby Mammoth
+habitat/grouping, attack-qualified Wraith swiping and reported Wolf Steam absence. No gameplay,
+JSON, tests, checker, source labels, defaults, balance, schema, compatibility or migration changes.
+Iceflower's unrelated adjoining text is explicitly a quality warning, not verified conversion or
+quantity proof. No Baby Elephant rule, new sound asset or hybrid Wolf removal. Item 39's visual
+bug must never be implemented; F11/Bubble Gum, named gear and the regional-loss exclusion stand.
+
+**Verification:** evidence `/tmp/pixlnd-reconcile-next.2F5qwV/recording/` contains raw source
+snapshots/hashes/sidecars, per-item simplify → ponytail-review, seven bounded validator gates,
+exact unstaged/staged/committed diffs/comparisons and full commit map. Fresh independent recording
+review found no issues (`independent-review.md`); reviewer ran no commands/tests, hash calculations
+or byte comparisons. Parent inspected actual Git diff and reran the eight-commit/scope/source/
+preservation audit (`parent-audit.log/.exit`, exit 0), then bounded ontology validation and headless
+boot (`parent-{validator,boot}.log/.exit`, exit 0). These check existing loaded data/startup and
+recording fidelity, not historical truth or new enforcement. Research fetched six pages in two
+bounded requests; recording/review inspected saved bodies, not new external re-fetches. No
+images/audio/original-build execution, gameplay suite, visual or multiplayer tests. Original
+Nix-path/no-index gate failures and supervisor-authorized same-protocol corrections are retained;
+no validator failed. Final handoff review/rechecks: `handoff-review.md`,
+`handoff-{diff-check,validator,boot}.log/.exit`. Context percentage was unavailable; research
+stopped before asking and this approved coherent checkpoint is being handed off without new items.
+
+**Next resume: Validation-contract source research/attribution (remaining research).**
+Food release/obtainability/taming and Leaf–Candy chronology; actual refining/noncotton/weapon
+quantities and per-kind deposit yields; daily purchase units/odds; roster/trait/population/shipped
+route histories; naming generation; other UI/camera/furniture/candle/dialogue and authenticated
+soundtrack identities; original sleeping units/baseline. These are research gaps, not unanswered
+gameplay ballots. Do not advance to uncertain-fact topics or implementation without authorization.
+
+**Authorized publication:** finalize this handoff/receipt/queue-deletion commit after item
+`11474ea`; normal-push only `fix/ontology-reconciliation`, verify fresh remote = upstream = local
+HEAD and clean worktree, then STOP. No amendments, rewrite, merge, force-push, new research or
+proposals. This is a pre-publication checkpoint, not a claim that the final handoff was pushed;
+inspect actual Git on resumption. Publication evidence remains beside the checks above.
+
+## Historical pending-only queue handoff (2026-10-05, superseded entry point)
 
 **Post-batch queue cleanup:** the source batch was published at `eddc42e`; fresh remote,
 upstream and local HEAD equality was verified before this cleanup. Owner now requires only

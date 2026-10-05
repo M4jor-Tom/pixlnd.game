@@ -25,9 +25,11 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `tasks/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Source-attribution items 46–52 (2026-10-05):** 46–52 recorded.
-Canonical: `domain.md §5` / §7; independent recording review and parent verification pending.
-Selected queue retained; evidence/limits: `todo_decide.md §E`. No gameplay or live changes.
+**Source-attribution items 46–52 (2026-10-05):** recorded, independently reviewed and parent-verified.
+Canonical: `domain.md §5` / §7; exact selections/commit receipts: `todo_decide.md §E`.
+No unhandled selection or unanswered proposal remains; the empty pending queue is deleted.
+No gameplay or live changes; remaining histories stay research. Evidence/limits and authorized
+handoff/publication/STOP: `docs/HANDOFF.md` / §E. No new research or proposals.
 
 **Historical source-attribution items 36–45 (2026-10-05):** recorded, independently reviewed and parent-verified; that batch left no unhandled approval.
 Canonical: `domain.md#pet-food` / §5 / §7; completed selections/receipts: `todo_decide.md §E`.

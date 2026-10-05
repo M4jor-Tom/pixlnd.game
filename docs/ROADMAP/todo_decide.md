@@ -137,7 +137,14 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Source-attribution direction — item 32 (2026-10-05):** owner answered **“32: Approved;
+**Source-attribution direction — items 46–52 (2026-10-05):** all seven approved without
+amendments, recorded in separate item commits, independently reviewed and parent-verified
+below. No unhandled selection or presented unanswered proposal remains; the empty pending
+queue is deleted. Finalize the handoff, commit and normal-push only `fix/ontology-reconciliation`,
+verify fresh remote/upstream/local equality and clean worktree, then STOP. No new research,
+questions or implementation; this checkpoint is not a publication claim.
+
+**Historical source-attribution direction — item 32 (2026-10-05):** owner answered **“32: Approved;
 Once handled, handoff, commit, push”**. The report is recorded below for documentation only;
 no presented unanswered proposal remains. Broader histories stay research, not whole-topic
 completion. Verify and commit this item separately, then finalize/publish the handoff and STOP.
@@ -692,8 +699,8 @@ approved 29–31 are recorded and verified, with fresh independent review and pa
 Items 33–35 are recorded and verified below; item 32's later approval is now recorded too.
 **Items 36–45 recorded, independently reviewed and parent-verified.** (2026-10-05)
 Recorded selections, canonical pointers and item 39's no-bug amendment: the 36–45 section below.
-**46–52 selected:** recording underway below; independent recording review/parent verification
-pending. All seven entries remain in `./docs/todo_handle_reconciled_items.md` until those gates finish.
+**46–52 recorded, independently reviewed and parent-verified.** Exact selections and receipts
+are below. No unhandled selection remains; the empty pending queue is deleted.
 No presented unanswered proposal remains. Pending selected entries precede new research.
 Context: ask by ~60%, handoff by ~85% (earlier with reserve), authorized checkpoint then STOP.
 Daily food quantities and original Alpha/Steam
@@ -723,23 +730,40 @@ refusal would leave citations unrecorded, not select opposite mechanics.
 
 | item | application | canonical pointer | item commit |
 |---|---|---|---|
-| 46 — Questionable Iceflower conversion report | recorded; independent review/parent verification pending | `domain.md §5 item 46` / §7 | receipt pending |
-| 47 — Deposit nuggets, not a range for every gem | recorded; independent review/parent verification pending | `domain.md §5 item 47` / §7 | receipt pending |
-| 48 — Iron armor ingredients, not quantities | recorded; independent review/parent verification pending | `domain.md §5 item 48` / §7 | receipt pending |
-| 49 — Fist materials, not a crafting bill | recorded; independent review/parent verification pending | `domain.md §5 item 49` / §7 | receipt pending |
-| 50 — Individual Baby Mammoth habitat and grouping report | recorded; independent review/parent verification pending | `domain.md §5 item 50` / §7 | receipt pending |
-| 51 — Wraith swiping sound when attacking | recorded; independent review/parent verification pending | `domain.md §5 item 51` / §7 | receipt pending |
-| 52 — Reported Wolf absence from Steam | recorded; independent review/parent verification pending | `domain.md §5 item 52` / §7 | receipt pending |
+| 46 — Questionable Iceflower conversion report | [x] recorded, reviewed, parent-verified | `domain.md §5 item 46` / §7 | `05f1c24e3ca3d6ac0ccbd51758d0f4983d95799a` |
+| 47 — Deposit nuggets, not a range for every gem | [x] recorded, reviewed, parent-verified | `domain.md §5 item 47` / §7 | `3898824cbb8d22473acbd66a6954d233c18b030c` |
+| 48 — Iron armor ingredients, not quantities | [x] recorded, reviewed, parent-verified | `domain.md §5 item 48` / §7 | `5392ffe91d3ffe3d0e72f014b988fda5194ef2ba` |
+| 49 — Fist materials, not a crafting bill | [x] recorded, reviewed, parent-verified | `domain.md §5 item 49` / §7 | `581e2c7b6edb0e97a27396291104a0f28e585816` |
+| 50 — Individual Baby Mammoth habitat and grouping report | [x] recorded, reviewed, parent-verified | `domain.md §5 item 50` / §7 | `1d54f93f1318c2e02768eab5061ed1bd34b452d4` |
+| 51 — Wraith swiping sound when attacking | [x] recorded, reviewed, parent-verified | `domain.md §5 item 51` / §7 | `66eba3f4ed20aa8c1cfb8f05a6761d4117165c6a` |
+| 52 — Reported Wolf absence from Steam | [x] recorded, reviewed, parent-verified | `domain.md §5 item 52` / §7 | `11474ea81ee6d565fcf9dfd7b9db42b48180760f` |
 
-**Writer gates/evidence:** `/tmp/pixlnd-reconcile-next.2F5qwV/recording/`: per-item saved raw
-source/sidecar inspection, semantic/scope → local `/simplify` prompt → installed ponytail-review,
-`git diff --check`, bounded ontology validator, exact binary/full-index unstaged/staged/committed
-diffs and comparisons are required before each item commit. Validator command:
-`timeout 150 nix develop -c godot --headless -s ontology/validate.gd`.
-Checks cover existing loaded data, not Markdown semantics, historical truth or new enforcement.
-No new tests, external re-fetch, audio/images/assets/original-build execution, gameplay suite,
-visual or multiplayer checks. Independent recording review and parent verification pending;
-retain all selected queue entries. No further research or proposals.
+**Verified recording checkpoint:** initial queue commit `fd6e77b4de63aa54cf86974da34d3f3e7d64f84b`;
+all seven item commits above verified against saved unstaged/staged/committed binary/full-index
+diffs. Fresh independent recording review found no issues (`independent-review.md`); reviewer
+inspected actual current files, raw sources, saved diffs/logs and Git refs, but ran no commands,
+tests, hash recalculations or byte comparisons. Parent inspected the actual aggregate Git diff
+and reran the eight-commit/scope/source/preservation audit (`parent-audit.log/.exit`, exit 0),
+confirming all saved diffs exactly match Git and prior rules/approvals remain unchanged. Parent
+reran bounded validator and headless boot successfully (`parent-{validator,boot}.log/.exit`, exit 0).
+All selected entries are handled; receipts stay here and the empty pending queue is deleted.
+
+**Evidence:** `/tmp/pixlnd-reconcile-next.2F5qwV/recording/`: raw source snapshots/hashes/sidecars,
+per-item semantic/scope → local `/simplify` prompt → installed ponytail-review, seven passing
+validators, whitespace/scope/staged gates, exact diffs/comparisons and full commit map. Commands:
+```
+timeout 150 nix develop -c godot --headless -s ontology/validate.gd
+timeout 150 nix develop -c godot --headless --quit
+```
+Checks cover existing loaded data/startup, not historical truth, Markdown or new enforcement.
+Research retrieved six wiki pages in two bounded requests; recording/review used saved bodies,
+including retained Iron Armor/Fists, without external re-fetch. No audio/images/assets/original-build
+execution, gameplay suite, visual or multiplayer checks. Local Nix-path/no-index gate failures and
+supervisor-authorized same-protocol corrections remain in `setup-correction.md`; no validator failed.
+Final status/queue/HANDOFF changes receive simplify → ponytail-review and bounded rechecks
+(`handoff-review.md`, `handoff-{diff-check,validator,boot}.log/.exit`). Normal-push only the authorized
+branch, verify fresh remote/upstream/local equality and clean state, then STOP. No new research or
+proposals; unsupported histories remain research, not whole-topic completion or implementation.
 
 ### Validation-contract source attribution — items 36–45 (2026-10-05)
 
