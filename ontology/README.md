@@ -25,13 +25,14 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `tasks/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Current source-attribution recording (2026-10-05):** owner approved items 53/54 without
-amendments. Both are recorded in `domain.md §5 items 53–54` / §7 and remain in
-`docs/todo_handle_reconciled_items.md` pending post-recording independent review and final receipts.
-Current handoff, source/privacy limits and writer evidence: `docs/HANDOFF.md` / `todo_decide.md §E`.
-Items 1–52 and all settled rules stand; Silk/Spinning Wheel quantities remain HOLD, not refusal.
-No gameplay, live-data or source-label changes; histories remain research, not whole-topic completion.
-Parent retains final review, verification and publication authority; no new research or proposals.
+**Current source-attribution checkpoint (2026-10-05):** approved items 53/54 recorded in
+`domain.md §5 items 53–54` / §7, independently reviewed with no issues; parent recording audit,
+validator and boot passed. Exact selections/full item receipts and limits: `todo_decide.md §E`.
+No unhandled selection or presented unanswered proposal remains; the empty pending queue is deleted.
+Current pre-publication handoff: `docs/HANDOFF.md`; final handoff review found no issues and parent
+final gates passed. Establish commit/push completion from actual Git/publication receipts. Items 1–52 and settled rules stand; Silk/Spinning Wheel quantities stay HOLD, not refusal.
+No gameplay, live-data or source-label changes; histories stay research, not whole-topic completion.
+Parent owns final publication, then STOP; no new research, questions or implementation.
 
 **Historical source-attribution items 46–52 (2026-10-05):** recorded, independently reviewed and parent-verified.
 Canonical: `domain.md §5` / §7; exact selections/commit receipts: `todo_decide.md §E`.

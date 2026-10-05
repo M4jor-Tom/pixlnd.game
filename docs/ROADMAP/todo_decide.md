@@ -137,15 +137,17 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Current recording direction — items 53–54 (2026-10-05):** owner exact answer:
+**Current handoff direction — items 53–54 (2026-10-05):** owner exact answer:
 **“53: Approved; 54: Approved; When handled, handoff, commit, push”**. No amendments.
-Items 53/54 recorded in `domain.md §5` / §7; post-recording independent review pending. Both entries
-remain queued in `docs/todo_handle_reconciled_items.md` pending post-recording independent review,
-verified separate item commits and final receipts. No presented unanswered proposal remains.
-Parent retains final review/verification/publication; child commits items only, no push or rewrite.
+Both recorded in separate item commits (`domain.md §5` / §7), independently reviewed with no
+issues and parent recording-verified; exact selections/full receipts below. No unhandled selection
+or presented unanswered proposal remains; the empty pending-only queue is deleted.
+Final handoff review found no issues; parent final audit, whitespace, validator and boot passed.
+Parent owns the separate final handoff commit and authorized normal publication, then STOP.
+Actual Git/publication receipts establish completion, not this pre-publication snapshot.
 Items 1–52 stand; Silk/Spinning Wheel quantities remain HOLD, not refusal or new 27/36 ballots.
 No gameplay, live JSON, tests, checker, labels, schema, compatibility or migration changes.
-Handoff/limits: `docs/HANDOFF.md`; per-item evidence and pending receipts below. Stop after this
+Handoff/limits: `docs/HANDOFF.md`; per-item evidence and completion receipts below. Stop after this
 checkpoint; remaining histories are research, not whole-topic completion or new questions.
 
 **Historical source-research checkpoint (2026-10-05, superseded):** four pages inspected after owner-assisted
@@ -740,10 +742,10 @@ Items 33–35 are recorded and verified below; item 32's later approval is now r
 Recorded selections, canonical pointers and item 39's no-bug amendment: the 36–45 section below.
 **46–52 recorded, independently reviewed and parent-verified.** Exact selections and receipts
 are below; that historical batch left no unhandled selection.
-No presented unanswered proposal remains. Bows/Dungeon items 53/54 are approved and recorded;
-both await post-recording independent review/final receipts.
-Their entries remain queued. See the current checkpoint above and HANDOFF; finish only this batch,
-not new questions. Held Silk/Spinning Wheel findings are not new owner selections, refusals,
+Bows/Dungeon items 53/54 are recorded, independently reviewed and parent recording-verified.
+No unhandled selection or presented unanswered proposal remains; the empty pending queue is deleted.
+See current checkpoint/HANDOFF; final handoff review and parent gates passed. Only the authorized
+commit/publication checkpoint remains, not new questions. Held Silk/Spinning Wheel findings are not new selections, refusals,
 changed game rules or whole-topic completion.
 Context: ask by ~60%, handoff by ~85% (earlier with reserve), authorized checkpoint then STOP.
 Daily food quantities and original Alpha/Steam
@@ -764,13 +766,14 @@ sleep-rate baseline/units (§5 items 10–11) remain research.
 
 **Exact owner answer:** “53: Approved; 54: Approved; When handled, handoff, commit, push”.
 Both original proposals selected without amendments; items 1–52 and all settled hybrid rules stand.
+**Exact selections:** “53: Approved”; “54: Approved”. No amendments or refusals.
 **Approval versus Refusing:** approval adds bounded citations without changing the game;
 refusal would leave attribution unrecorded, not select opposite ammunition/range/dialogue rules.
 
 | item | application | canonical pointer | item commit receipt |
 |---|---|---|---|
-| 53 — Ranger firing and comparative range | [x] recorded, writer checks/commit verified; independent review pending | `domain.md §5 item 53` / §7 | `1a4a282204201b7745fa788f56e19f2a19fc9a82` (parent `b1b5bceeb16afaffe326abaef405a4a8503d2c2f`) |
-| 54 — NPC-attributed dungeon warning | [x] canonical recorded; independent review pending | `domain.md §5 item 54` / §7 | own hash/check receipts saved externally after commit; ledger receipt pending next authorized pass |
+| 53 — Ranger firing and comparative range | [x] recorded, independently reviewed, parent recording-verified | `domain.md §5 item 53` / §7 | `1a4a282204201b7745fa788f56e19f2a19fc9a82` (parent `b1b5bceeb16afaffe326abaef405a4a8503d2c2f`) |
+| 54 — NPC-attributed dungeon warning | [x] recorded, independently reviewed, parent recording-verified | `domain.md §5 item 54` / §7 | `553bf7253ef9f3223f31f1d3a9e130c8b71b0c07` (parent `1a4a282204201b7745fa788f56e19f2a19fc9a82`) |
 
 **Selected limits:** 53 attributes arrow-direction/out-of-combat firing and **Bows AND Crossbows
 reaching further than Boomerangs**; unlimited arrows corroborate the existing rule, not free M2,
@@ -790,13 +793,27 @@ simplify → ponytail-review, raw matching `git diff --binary --full-index` unst
 diffs, comparisons, command logs/exits and full commit map are external receipts, not history proof.
 Checks: `git diff --check`, bounded `timeout 150 nix develop -c godot --headless -s ontology/validate.gd`
 and final `timeout 150 nix develop -c godot --headless --quit`; inspect actual logs for outcomes.
-Item 53's writer whitespace/scope/staged gates and bounded validator passed, exit 0 (`ontology valid`);
-`item-53-{unstaged,staged,committed}.diff` match via `item-53-compare-*.log/.exit` (0).
-Item 54's own commit/check/hash receipts and final boot results are saved externally after this
-snapshot; final ledger receipts remain pending for the next authorized pass.
-Checks cover existing loaded data/startup, not prose history, original builds or new policy enforcement.
-No broad gameplay/browser, visual or multiplayer tests. Post-recording independent review,
-parent reruns, final receipt completion/queue removal and publication remain pending.
+Both writer whitespace/scope/staged gates and bounded validators passed, exit 0 (`ontology valid`);
+`item-{53,54}-{unstaged,staged,committed}.diff` match via `item-{53,54}-compare-*.log/.exit` (0).
+Writer final audit/boot passed (`final-{audit,boot}.log/.exit`, 0). Fresh independent recording review
+found **no issues**: managed `recording-53-54/independent-review.md` under run
+`34c2739f-548a-4cf2-9992-96e213261913`. Reviewer inspected actual current files, public sources,
+actual/saved diffs and execution receipts; ran no commands/tests/hash calculations/byte comparisons.
+Parent accepted that verdict, inspected actual aggregate Git diff, personally reran recording audit,
+bounded validator and boot, and read full logs: `parent-{audit,validator,boot}.log/.exit`, all 0;
+actual-Git evidence: `parent-actual-git/`. All selected entries are handled; completed receipts stay
+here and the empty pending-only queue is deleted with parent authorization.
+Checks cover existing loaded data/startup and recording fidelity, not prose history, original builds
+or new policy enforcement. No broad gameplay/browser, visual or multiplayer tests.
+Finalization delta uses simplify → ponytail-review and writer gates (`finalization-*`). Fresh final
+handoff review found **no issues** (`recording-53-54/handoff-review.md` under the same managed run);
+reviewer inspected current files/actual diffs/receipts, ran no commands/tests/hash/byte comparisons.
+Parent confirmed exact reviewed-draft correspondence (`parent-reviewed-handoff-comparison.*`, 0),
+inspected the delta and personally reran final scope/receipt audit, whitespace, bounded validator
+and boot (`parent-final-{audit,diff-check,validator,boot}.log/.exit`, all 0). Receipt-only final
+rechecks: `publication-ready-*`; final commit/push/equality/clean-state evidence: `publication.*`.
+This records preparation before final commit/publication after item54; inspect actual Git/receipts,
+not this snapshot as push-success proof. No new questions, research or implementation.
 
 Only public-safe `article-extracts/{bows,dungeon}.{txt,json}`, their `.txt.sha256` and `manifest.json`
 under `/tmp/pixlnd-reconcile-source-53.VnWRKF/` were authorized for inspection/reproduction.

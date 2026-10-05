@@ -15,9 +15,11 @@ data exists to migrate. Require current rules directly (`domain.md §0/§5`); da
 below means replacing checked-in stale definitions when authorized, never migration code,
 legacy-read fallbacks or obsolete-format compatibility. Implementation remains unauthorized.
 
-**Current attribution checkpoint (2026-10-05):** 53/54 approved without amendments and
-recorded, both awaiting post-recording independent review/final receipts.
-Queue/status: `docs/todo_handle_reconciled_items.md` / `todo_decide.md §E`; canonical: `domain.md §5` / §7.
+**Current attribution checkpoint (2026-10-05):** 53/54 approved without amendments, recorded,
+independently reviewed and parent recording-verified. No unhandled selection or presented unanswered
+proposal remains; empty pending queue deleted. Receipts: `todo_decide.md §E`; canonical: `domain.md §5` / §7.
+Final handoff review and parent gates passed; commit/publication checkpoint: `docs/HANDOFF.md`
+(pre-publication snapshot; inspect actual Git/receipts).
 Silk/Spinning Wheel quantities stay HOLD, not refusal or new 27/36 ballots; other histories remain
 research. No new implementation authority or whole-topic completion.
 

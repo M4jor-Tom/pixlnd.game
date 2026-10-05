@@ -1,13 +1,15 @@
 # Handoff — resume here
 
-## Current entry point — approved source-attribution recording 53–54 (2026-10-05)
+## Current entry point — verified source-attribution 53–54, pre-publication (2026-10-05)
 
 Owner exact answer: **“53: Approved; 54: Approved; When handled, handoff, commit, push”**.
-Items **53/54 recorded** in `ontology/domain.md §5 items 53–54` / §7; independent review pending.
-Both selections remain in `docs/todo_handle_reconciled_items.md` until post-recording independent
-review, verified checks and separate item commits are confirmed. Exact selections, application
-status and evidence: `docs/ROADMAP/todo_decide.md §E`; remaining research/debt: `todo_implement.md`.
-No presented unanswered proposal remains. Items 1–52 and all settled hybrid rules stand.
+Items **53/54 recorded in separate commits, independently reviewed and parent recording-verified**.
+Canonical: `ontology/domain.md §5 items 53–54` / §7; exact selections, full item hashes/parents and
+receipts: `docs/ROADMAP/todo_decide.md §E`; remaining research/debt: `todo_implement.md`.
+Item 53: `1a4a282204201b7745fa788f56e19f2a19fc9a82`; item 54:
+`553bf7253ef9f3223f31f1d3a9e130c8b71b0c07`. Both original proposals approved without amendments.
+No unhandled selection or presented unanswered proposal remains; the empty pending-only queue
+`docs/todo_handle_reconciled_items.md` is deleted. Items 1–52 and all settled hybrid rules stand.
 
 Item 53 adds generic arrow-direction/out-of-combat and **Bows AND Crossbows > Boomerangs**
 range attribution, not numerical ranges, free M2, edition or first appearance. Existing unlimited
@@ -16,12 +18,23 @@ Conceptualized Content/adjoining preview placement, without classifying the quot
 conceptual-only or claiming inspected preview, speaker, trigger, edition or release chronology.
 No dialogue delivery, potion requirement or quest is authorized.
 
-Writer evidence: `/tmp/pixlnd-reconcile-question-batch-53-54-01a10dd7/recording/` (per-item
-source/semantic/scope inspection, simplify → ponytail-review, raw full-index binary diffs,
-comparisons, bounded validator/diff logs and commit receipts). Item 53's writer validator,
-whitespace/scope gates and exact diff comparisons passed (exit 0); full hash is in §E. Item 54's
-own commit/check receipts are saved externally after this snapshot, for the next authorized pass.
-Post-recording independent review, parent reruns, final receipts and publication remain pending.
+Evidence: `/tmp/pixlnd-reconcile-question-batch-53-54-01a10dd7/recording/`: per-item
+source/semantic/scope inspection, simplify → ponytail-review, matching raw full-index binary
+unstaged/staged/committed diffs, comparisons and writer validator/boot logs (exit 0).
+Fresh independent recording review found **no issues** (`recording-53-54/independent-review.md`
+under managed run `34c2739f-548a-4cf2-9992-96e213261913`); reviewer inspected actual files,
+sources/diffs/receipts but ran no commands, tests, hash calculations or byte comparisons.
+Parent accepted that review, inspected the actual aggregate diff and personally reran the
+recording audit, bounded validator and boot: `parent-{audit,validator,boot}.log/.exit`, all 0;
+actual-Git receipts: `parent-actual-git/`. These are completed recording checks, not final-delta gates.
+Final receipt/queue-deletion delta: simplify → ponytail-review and writer rechecks saved as
+`finalization-*`. Fresh final handoff review found **no issues** (`recording-53-54/handoff-review.md`
+under the same managed run; reviewer ran no commands/tests/byte comparisons). Parent confirmed
+exact reviewed-draft correspondence, inspected the delta and reran final scope/receipt audit,
+whitespace, bounded validator and boot: `parent-final-{audit,diff-check,validator,boot}.log/.exit`, all 0.
+Receipt-only final rechecks are retained as `publication-ready-*`; publication evidence as
+`publication.*`. This records preparation before the final commit/push, not publication success;
+establish completion from actual Git and those receipts on resumption.
 Only public-safe `article-extracts/{bows,dungeon}.{txt,json}`, their `.txt.sha256` and `manifest.json`
 under `/tmp/pixlnd-reconcile-source-53.VnWRKF/` may be used. Never open/publish original authenticated
 DOM, owner HTML, tokens, account data or original hashes. Rendered-DOM article extracts are not raw
@@ -31,9 +44,10 @@ execution or browser control in recording. Checks cover existing loaded data/sta
 prose or new enforcement; no gameplay, visual or multiplayer suite.
 
 **Next checkpoint: Validation-contract source research/attribution (remaining research).**
-Finish only these two recorded selections' review/receipts, then parent final handoff/publication
-and STOP. Child may make separate item commits, **no push**; no amendment/rebase/merge, new research,
-questions, topic advancement or implementation. Context percentage unavailable; reserve maintained.
+Parent commits this reviewed receipt/handoff/queue-deletion checkpoint after item
+`553bf7253ef9f3223f31f1d3a9e130c8b71b0c07`, normal-pushes only `fix/ontology-reconciliation`,
+verifies fresh remote = upstream = local HEAD and clean worktree, then **STOPs**.
+No amendment/rebase/merge, new research/questions, topic advancement or implementation. Context percentage unavailable; reserve maintained.
 Silk/Spinning Wheel remain **HOLD**, not refusal; no duplicate 27/36 ballots, quantities or station
 correction. Other food/yield/odds/roster/trait/population/route/naming/UI/audio/dialogue/original-sleep
 histories remain research. No whole-topic completion. No gameplay, live JSON, checker/test/source-label,
