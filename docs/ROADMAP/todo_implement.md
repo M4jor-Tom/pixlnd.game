@@ -241,6 +241,8 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 
 - Source item 48 (`domain.md §5`): Iron Cube/non-common gem report supplies no quantities/station or cotton-to-iron proof. Noncotton recipe histories stay research; hybrid recipes unchanged.
 
+- Source item 49 (`domain.md §5`): Cotton Yarn/Iron Cube report verifies no current 2+5 bill, station or release history. Recipe gaps remain research; costs/materials unchanged.
+
 ## Meta / tooling
 - [ ] Save-data (§3.7): nothing persists (world seed, character, discovered lands).
 - [ ] Dedicated server (D5, `multiplayer-mode`): single-player only; `server.cfg` flags (pvp,

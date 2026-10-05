@@ -726,6 +726,7 @@ refusal would leave citations unrecorded, not select opposite mechanics.
 | 46 — Questionable Iceflower conversion report | recorded; independent review/parent verification pending | `domain.md §5 item 46` / §7 | receipt pending |
 | 47 — Deposit nuggets, not a range for every gem | recorded; independent review/parent verification pending | `domain.md §5 item 47` / §7 | receipt pending |
 | 48 — Iron armor ingredients, not quantities | recorded; independent review/parent verification pending | `domain.md §5 item 48` / §7 | receipt pending |
+| 49 — Fist materials, not a crafting bill | recorded; independent review/parent verification pending | `domain.md §5 item 49` / §7 | receipt pending |
 
 **Writer gates/evidence:** `/tmp/pixlnd-reconcile-next.2F5qwV/recording/`: per-item saved raw
 source/sidecar inspection, semantic/scope → local `/simplify` prompt → installed ponytail-review,

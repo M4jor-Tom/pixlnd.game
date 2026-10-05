@@ -2475,6 +2475,15 @@ verify iron costs from item 18's cotton table or the other-material assumption i
 station histories remain research; **D6 and approved hybrid recipes stand unchanged**.
 Source-inspection/date limits follow item 46; no recipes, labels or live declarations change.
 
+#### Item 49 — Fist materials, not a crafting bill (owner approved, 2026-10-05)
+
+[Fists revision 20017](https://cubeworld.fandom.com/wiki/Fists?oldid=20017) reports
+**Cotton Yarn and Iron Cubes** as crafting requirements. It supplies no counts or station
+and confirms neither the current **2 yarn + 5 iron cubes** nor the Anvil in
+`recipes.json#gear-weapons.fist`. Recipe quantities, station and release histories
+remain research; **D6 and approved hybrid recipes stand unchanged**. Source-inspection/date
+limits follow item 46; no crafting costs, materials, labels or live declarations change.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2777,9 +2786,11 @@ Glass bottles/sugar cubes/bombs and sometimes unnamed treat, not universal stock
 
 **Validation-contract source item 48 — DECIDED 2026-10-05:** §5 attributes Iron Cubes/non-common gems only, not counts, stations or cotton-derived costs.
 
+**Validation-contract source item 49 — DECIDED 2026-10-05:** §5 attributes Cotton Yarn/Iron Cube requirements, not the current 2+5 cost or station.
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–48 recorded; 36–45 independently reviewed and parent-verified; 46–52 independent recording review/parent verification pending (`todo_decide.md §E`, with evidence limits). No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–49 recorded; 36–45 independently reviewed and parent-verified; 46–52 independent recording review/parent verification pending (`todo_decide.md §E`, with evidence limits). No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
