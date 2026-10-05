@@ -1250,6 +1250,18 @@ Bubble Gum for Collie/Skeleton Dog**, with subtype 19 anchored to Collie. Daily 
 and individual food histories remain research; no stock, purchases, pairing, availability,
 prices, IDs, source labels or live declarations change.
 
+**Validation-contract source item 37 (owner approved, 2026-10-05):**
+[Steam guide 1879943518](https://steamcommunity.com/sharedfiles/filedetails/?id=1879943518)
+says **“For example, I found a Lollipop from an Emerald Deposit!”**. This is the narrator's
+acquisition report, not an authenticated drop table, guaranteed mining reward, drop odds,
+first appearance or demonstrated successful taming. **Lollipop → Owl remains unchanged**;
+Lollipop is not Snout Beetle's **Lolly**.
+
+The saved raw guide body/sidecars were inspected from the retained **2026-10-04T17:17:25Z**
+capture, not externally re-fetched or original-build tested. Source/edit/capture dates do not
+authenticate release history. Per-food obtainability/taming histories remain research; no loot,
+pairing, availability, prices, IDs, source labels or live declarations change.
+
 ### key-item
 `S` land-bound "special" items (A: glider & boat were bought items in the special slot).
 → `instances/key-items.json`: hang-glider, boat, reins, climbing-spikes (movement, 4/land);
@@ -2572,9 +2584,12 @@ No presented unanswered proposal remains.
 **Validation-contract source item 36 — DECIDED 2026-10-05:** §5 item 36 records
 Cobweb/cotton station lead, not output identity or quantities.
 
+**Validation-contract source item 37 — DECIDED 2026-10-05:** §3.4 pet-food records
+Narrator acquisition report, not guaranteed drops or taming proof.
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–36 recorded (`todo_decide.md §E`, with evidence limits); 37–45 approved, pending recording/verification in `docs/reconciled.md`. No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–37 recorded (`todo_decide.md §E`, with evidence limits); 38–45 approved, pending recording/verification in `docs/reconciled.md`. No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

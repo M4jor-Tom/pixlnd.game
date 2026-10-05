@@ -17,11 +17,11 @@ No unanswered proposal remains in this batch; approval is separate from applicat
 
 ### 36. Cobweb processing at a Spinning Wheel
 - **Previously selected:** Approved. Attribute [guide 1873333729](https://steamcommunity.com/sharedfiles/filedetails/?id=1873333729)'s Spinning Wheel processing cobwebs and cotton into usable materials. No output identity, quantities or one-cobweb/one-yarn inference; existing silk definition unchanged.
-- **Application:** Applied after item gates; fresh review pending. Canonical: `ontology/domain.md §5 item 36` / §7. Full hash evidence: `/tmp/pixlnd-source-research-36.iKZQy6/recording/item-36.sha`; commit receipt follows in a later update.
+- **Application:** Applied after item gates; fresh review pending. Canonical: `ontology/domain.md §5 item 36` / §7. Full hash evidence: `/tmp/pixlnd-source-research-36.iKZQy6/recording/item-36.sha`; commit `7d7d8cec99d1abd4dea0337693455918de3ad39c`.
 
 ### 37. Lollipop from an Emerald Deposit
 - **Previously selected:** Approved. Attribute [guide 1879943518](https://steamcommunity.com/sharedfiles/filedetails/?id=1879943518)'s narrator: “I found a Lollipop from an Emerald Deposit!” Preserve Lollipop/Owl pairing; no guaranteed drops, odds, first appearance or demonstrated taming. Do not confuse Lollipop with Lolly.
-- **Application:** Pending canonical recording and verification.
+- **Application:** Applied after item gates; fresh review pending. Canonical: `ontology/domain.md §3.4 pet-food` / §7. Full hash evidence: `/tmp/pixlnd-source-research-36.iKZQy6/recording/item-37.sha`; commit receipt follows in a later update.
 
 ### 38. Six reported shop-food names
 - **Previously selected:** Approved. Attribute [guide 1879943518](https://steamcommunity.com/sharedfiles/filedetails/?id=1879943518)'s differing village offerings and literal list: candy, carrot, bubble gum, chocolate donut, waffle, cotton candy. Candy identity remains ambiguous; no exhaustive/universal stock or quantity rule. The one-coin price is for empty flasks, not foods.

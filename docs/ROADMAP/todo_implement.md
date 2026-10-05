@@ -217,6 +217,8 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 
 - Source item 36 (`domain.md §5`): cobweb/Spinning Wheel report names no output or counts; item 27's silk chain stands. Original recipes/yields remain research; no station or recipe change.
 
+- Source item 37 (`domain.md#pet-food`): reported Lollipop/Emerald acquisition establishes no odds, first appearance or successful taming; Owl pairing stays, Lolly is distinct. No loot change.
+
 ## Meta / tooling
 - [ ] Save-data (§3.7): nothing persists (world seed, character, discovered lands).
 - [ ] Dedicated server (D5, `multiplayer-mode`): single-player only; `server.cfg` flags (pvp,
