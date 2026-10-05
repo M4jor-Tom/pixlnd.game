@@ -41,11 +41,11 @@ No unanswered proposal remains in this batch; approval is separate from applicat
 
 ### 42. Individual dark-Alpaca habitats
 - **Previously selected:** Approved. Attribute [Alpaca (dark) revision 19843](https://cubeworld.fandom.com/wiki/Alpaca_(dark)?oldid=19843)'s Greenlands, Snowlands and plains list. Plains is descriptive, not a new biome; no exclusivity, whole-family Desert distribution or food/habitat change.
-- **Application:** Applied after item gates; fresh review pending. Canonical: `ontology/domain.md §5 item 42` / §7. Full hash evidence: `/tmp/pixlnd-source-research-36.iKZQy6/recording/item-42.sha`; commit receipt follows in a later update.
+- **Application:** Applied after item gates; fresh review pending. Canonical: `ontology/domain.md §5 item 42` / §7. Full hash evidence: `/tmp/pixlnd-source-research-36.iKZQy6/recording/item-42.sha`; commit `ecda216abc2b5ba6ed12a98768b80766b31a3cd3`.
 
 ### 43. Possessive item-name examples
 - **Previously selected:** Approved. Attribute the [trading thread](https://steamcommunity.com/app/1128000/discussions/0/1735507058422798015/)'s Drakzic's Brilliant Iron Dagger+, Izaira's Brilliant Wood Boomerang+, Lorax's Exceptional Cotton Gloves+. Preserve its legendary/Exceptional disagreement and historical `+` spelling, not excluded mechanics or rarity reassignment. No recovered algorithm; always-named Epic/Legendary rule stands.
-- **Application:** Pending canonical recording and verification.
+- **Application:** Applied after item gates; fresh review pending. Canonical: `ontology/domain.md §5 item 43` / §7. Full hash evidence: `/tmp/pixlnd-source-research-36.iKZQy6/recording/item-43.sha`; commit receipt follows in a later update.
 
 ### 44. Retrieved music catalog, not authenticated shipped soundtrack
 - **Previously selected:** Approved. Attribute [KHInsider's catalog](https://downloads.khinsider.com/game-soundtracks/album/cube-world-gamerip)'s Steam/Windows, 2019, Gamerip, MuttMondo, added 24 June 2021 claims and 28 titles: Beach; Boss; City; Cult Of Doom; Deadlands; Desert; Druids Of Mana; Dungeon; Enchanted Forest; Greenlands; Home; Jungle; Maintheme; Mountains; Night; Ocean; Order Of The Light; Savannah; Shrine; Steel Empire; Success; Tribe; Unholy Pact; Village; Village2; Winter; Wood; Woodlands. No authenticated build inclusion/completeness or audio inspection; Dungeon is not proven Bgum, Maintheme is not proven Explorers, Ocean is not proven the 2017 preview. Existing declarations stand.

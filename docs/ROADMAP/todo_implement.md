@@ -229,6 +229,8 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 
 - Source item 42 (`domain.md §5`): individual dark-Alpaca list proves no exclusivity, new plains biome or whole-family Desert distribution. Per-membership history stays research; habitats/foods unchanged.
 
+- Source item 43 (`domain.md §5`): three possessive examples recover no generation algorithm or release history. Preserve legendary/Exceptional disagreement, historical + spelling only and always-named guarantee; no naming change.
+
 ## Meta / tooling
 - [ ] Save-data (§3.7): nothing persists (world seed, character, discovered lands).
 - [ ] Dedicated server (D5, `multiplayer-mode`): single-player only; `server.cfg` flags (pvp,

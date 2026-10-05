@@ -2386,6 +2386,25 @@ image-inspected or original-build tested. Edit/capture timing is not release/fir
 evidence or blanket family ancestry. Existing species/family/roster and taming declarations
 stand; per-membership histories remain research, with no animals moved, labels or live changes.
 
+#### Item 43 — Possessive item-name examples (owner approved, 2026-10-05)
+
+The [trading thread](https://steamcommunity.com/app/1128000/discussions/0/1735507058422798015/)
+reports these exact possessive item names:
+
+- **Drakzic's Brilliant Iron Dagger+**
+- **Izaira's Brilliant Wood Boomerang+**
+- **Lorax's Exceptional Cotton Gloves+**
+
+Its blanket **“legendary + items”** claim disagrees with the **Exceptional** prefix's
+existing rarity lists. Preserve that disagreement, not a rarity reassignment. Historical
+**`+` spelling grants no excluded mechanics** or regional gear power loss (§1).
+These examples do not recover the naming algorithm or weaken **always-named Epic/Legendary
+equipment** (§6); item 22's original generation/release histories remain research.
+
+Saved raw thread body/date and capture sidecars were inspected, not externally re-fetched or
+original-build tested. Displayed/edit/capture timing supplies no authenticated original behavior
+or release history. No generated names, naming frequency, rarity, source labels or live changes.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2673,9 +2692,12 @@ Some-mobs dark-night observation, not universal schedules or timing.
 **Validation-contract source item 42 — DECIDED 2026-10-05:** §5 item 42 records
 Individual Greenlands/Snowlands/plains report, not whole-family distribution.
 
+**Validation-contract source item 43 — DECIDED 2026-10-05:** §5 item 43 records
+Exact possessive spellings; rarity disagreement and excluded plus mechanics preserved.
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–42 recorded (`todo_decide.md §E`, with evidence limits); 43–45 approved, pending recording/verification in `docs/reconciled.md`. No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–43 recorded (`todo_decide.md §E`, with evidence limits); 44–45 approved, pending recording/verification in `docs/reconciled.md`. No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
