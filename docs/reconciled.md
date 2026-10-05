@@ -33,11 +33,11 @@ No unanswered proposal remains in this batch; approval is separate from applicat
 
 ### 40. Undead villagers versus population speculation
 - **Previously selected:** Approved. Attribute [Undead revision 18595](https://cubeworld.fandom.com/wiki/Undead?oldid=18595)'s passive humanoid Undead villagers in Deadlands/Dark Woods, not exclusively Undead towns. Qualify the [cities thread](https://steamcommunity.com/app/1128000/discussions/0/1633040337766628105/)'s displayed 10 September 2019 date, all-human OP and explicitly speculative faction/Undead reply; no tested build or biome exception. Existing populations/Skeleton Dog rules stand.
-- **Application:** Applied after item gates; fresh review pending. Canonical: `ontology/domain.md §5 item 40` / §7. Full hash evidence: `/tmp/pixlnd-source-research-36.iKZQy6/recording/item-40.sha`; commit receipt follows in a later update.
+- **Application:** Applied after item gates; fresh review pending. Canonical: `ontology/domain.md §5 item 40` / §7. Full hash evidence: `/tmp/pixlnd-source-research-36.iKZQy6/recording/item-40.sha`; commit `b7d028e82fefc6281c7f4f30e8e05ba8a49b3ef8`.
 
 ### 41. Some mobs bring out lanterns
 - **Previously selected:** Approved. Attribute [Darkmega's guide](https://steamcommunity.com/sharedfiles/filedetails/?id=1871398574)'s dark-night observation of some mobs bringing out lanterns. No every-villager schedule, activation/put-away timing or A* route inference.
-- **Application:** Pending canonical recording and verification.
+- **Application:** Applied after item gates; fresh review pending. Canonical: `ontology/domain.md §5 item 41` / §7. Full hash evidence: `/tmp/pixlnd-source-research-36.iKZQy6/recording/item-41.sha`; commit receipt follows in a later update.
 
 ### 42. Individual dark-Alpaca habitats
 - **Previously selected:** Approved. Attribute [Alpaca (dark) revision 19843](https://cubeworld.fandom.com/wiki/Alpaca_(dark)?oldid=19843)'s Greenlands, Snowlands and plains list. Plains is descriptive, not a new biome; no exclusivity, whole-family Desert distribution or food/habitat change.

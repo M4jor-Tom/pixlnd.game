@@ -690,7 +690,7 @@ World bounds / resets items 1–4 are recorded below; no presented question rema
 Validation-contract mapping/source items 1–28 are historically recorded and verified below;
 approved 29–31 are recorded and verified, with fresh independent review and parent checks below.
 Items 33–35 are recorded and verified below; item 32's later approval is now recorded too.
-**Items 36–40 recorded and item-verified; 41–45 approved, pending application.** (2026-10-05)
+**Items 36–41 recorded and item-verified; 42–45 approved, pending application.** (2026-10-05)
 Exact selections, canonical pointers and item 39's no-bug amendment: `docs/reconciled.md`.
 No presented unanswered proposal remains. Pending selected entries precede new research.
 Context: ask by ~60%, handoff by ~85% (earlier with reserve), authorized checkpoint then STOP.
@@ -724,7 +724,8 @@ game; refusal would leave those citations unrecorded, not select opposite mechan
 | 37 — Reported Lollipop from an Emerald Deposit | [x] recorded and item-verified; review pending | `domain.md §3.4 pet-food` / §7 | `0b1a33c255b3b9045cd01cf0c2d77541f367ac4f` |
 | 38 — Six reported shop-food names | [x] recorded and item-verified; review pending | `domain.md §3.4 pet-food` / §7 | `4781cf13d387b164ceea503e42d41fbfaa8f7076` |
 | 39 — Snout Beetle traits and a visual bug report | [x] recorded and item-verified; review pending | `domain.md §5 item 39` / §7 | `86fd41245828e24db658e014edbbea28805c1d58` |
-| 40 — Undead villagers versus population speculation | [x] recorded and item-verified; review pending | `domain.md §5 item 40` / §7 | pending later receipt |
+| 40 — Undead villagers versus population speculation | [x] recorded and item-verified; review pending | `domain.md §5 item 40` / §7 | `b7d028e82fefc6281c7f4f30e8e05ba8a49b3ef8` |
+| 41 — Some mobs bring out lanterns | [x] recorded and item-verified; review pending | `domain.md §5 item 41` / §7 | pending later receipt |
 
 **Writer gates/evidence:** `/tmp/pixlnd-source-research-36.iKZQy6/recording/` contains actual
 saved-source excerpts/hashes/sidecars, per-item semantic/scope → simplify → ponytail-review notes,

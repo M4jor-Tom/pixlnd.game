@@ -2359,6 +2359,20 @@ behavior or release history. The wiki report and speculative thread do not overt
 settlement populations/safety or **Skeleton Dog's separate approved dog rules**. No census,
 population algorithm, encounter, source label or live declaration is changed.
 
+#### Item 41 — Some mobs bring out lanterns (owner approved, 2026-10-05)
+
+[Darkmega's Steam guide 1871398574](https://steamcommunity.com/sharedfiles/filedetails/?id=1871398574)
+says dark nights make light sources, including **“some mobs who bring out lanterns”**,
+easier to see. This limited observation establishes neither **every villager's nightly
+schedule**, lantern activation/put-away timing nor an `A*` route; it complements item 21,
+not a complete shipped schedule.
+
+The actual retained raw `guide.body` and sidecars were inspected from the prior scout's
+**2026-10-04T21:01:17Z** capture, not externally re-fetched, image-inspected or original-build
+tested. Capture/publication timing is not release evidence. Adjacent inn/reset/traversal
+advice does not override hybrid rules. No lantern, lighting, schedule, source-label or live
+change; original schedule and lantern histories remain research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2640,9 +2654,12 @@ Named-species traits; visual bug documentation only, never implementation.
 **Validation-contract source item 40 — DECIDED 2026-10-05:** §5 item 40 records
 Passive humanoid villagers report separated from dated thread speculation.
 
+**Validation-contract source item 41 — DECIDED 2026-10-05:** §5 item 41 records
+Some-mobs dark-night observation, not universal schedules or timing.
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–40 recorded (`todo_decide.md §E`, with evidence limits); 41–45 approved, pending recording/verification in `docs/reconciled.md`. No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–41 recorded (`todo_decide.md §E`, with evidence limits); 42–45 approved, pending recording/verification in `docs/reconciled.md`. No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

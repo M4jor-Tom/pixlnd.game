@@ -225,6 +225,8 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 
 - Source item 40 (`domain.md §5`): Undead village report is not exclusive towns/census; cities-thread faction/Undead reply is speculation, with no tested build or biome exception. Populations/Skeleton Dog stand.
 
+- Source item 41 (`domain.md §5`): some mobs bringing out lanterns gives no universal nightly schedule, activation/put-away timing or A* route. Shipped schedule/lantern histories remain research; no lighting change.
+
 ## Meta / tooling
 - [ ] Save-data (§3.7): nothing persists (world seed, character, discovered lands).
 - [ ] Dedicated server (D5, `multiplayer-mode`): single-player only; `server.cfg` flags (pvp,
