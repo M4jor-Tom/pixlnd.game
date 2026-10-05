@@ -1262,6 +1262,19 @@ capture, not externally re-fetched or original-build tested. Source/edit/capture
 authenticate release history. Per-food obtainability/taming histories remain research; no loot,
 pairing, availability, prices, IDs, source labels or live declarations change.
 
+**Validation-contract source item 38 (owner approved, 2026-10-05):**
+[Steam guide 1879943518](https://steamcommunity.com/sharedfiles/filedetails/?id=1879943518)
+reports differing village offerings and gives the literal list **“candy, carrot, bubble gum,
+chocolate donut, waffle, cotton candy”**. **Candy remains ambiguous**, not a guessed Sugar
+Candy or Sugar Cube identity. The list is neither exhaustive stock nor a promise that every
+village offers all six, and supplies no purchase-quantity rule. The nearby **one-coin price
+is for empty flasks, not these foods**.
+
+Saved raw body/sidecars and capture limits follow item 37. This report does not select stock,
+prices or carrying rules or date individual foods. Existing one-of-each-food carrying,
+F11 Banana Mash, shared Bubble Gum and all pairings stand; no labels or live-data changes.
+Daily quantities, food identities and release histories remain research.
+
 ### key-item
 `S` land-bound "special" items (A: glider & boat were bought items in the special slot).
 → `instances/key-items.json`: hang-glider, boat, reins, climbing-spikes (movement, 4/land);
@@ -2587,9 +2600,12 @@ Cobweb/cotton station lead, not output identity or quantities.
 **Validation-contract source item 37 — DECIDED 2026-10-05:** §3.4 pet-food records
 Narrator acquisition report, not guaranteed drops or taming proof.
 
+**Validation-contract source item 38 — DECIDED 2026-10-05:** §3.4 pet-food records
+Literal six-name list with ambiguous candy; flask price is not food pricing.
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–37 recorded (`todo_decide.md §E`, with evidence limits); 38–45 approved, pending recording/verification in `docs/reconciled.md`. No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–38 recorded (`todo_decide.md §E`, with evidence limits); 39–45 approved, pending recording/verification in `docs/reconciled.md`. No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

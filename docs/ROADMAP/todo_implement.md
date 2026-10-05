@@ -219,6 +219,8 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 
 - Source item 37 (`domain.md#pet-food`): reported Lollipop/Emerald acquisition establishes no odds, first appearance or successful taming; Owl pairing stays, Lolly is distinct. No loot change.
 
+- Source item 38 (`domain.md#pet-food`): candy identity, daily quantities and food histories stay research; six reported names are not universal/exhaustive stock. One-coin flask price selects no food prices.
+
 ## Meta / tooling
 - [ ] Save-data (§3.7): nothing persists (world seed, character, discovered lands).
 - [ ] Dedicated server (D5, `multiplayer-mode`): single-player only; `server.cfg` flags (pvp,
