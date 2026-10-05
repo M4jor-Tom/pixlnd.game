@@ -8,7 +8,7 @@ Publication authority: finish only these two selections, then handoff, commit an
 ## Validation-contract source attribution — item 53
 
 **Previously selected:** Approved, without amendments.
-**Status:** canonical attribution recorded in `ontology/domain.md §5 item 53` / §7; post-recording independent review and final receipts pending. Separate item commit/check outcomes must be verified from `/tmp/pixlnd-reconcile-question-batch-53-54-01a10dd7/recording/item-53-*`. Entry retained until required review, checks and commit are confirmed; no publication claim.
+**Status:** canonical attribution recorded in `ontology/domain.md §5 item 53` / §7; writer checks and separate item commit verified: `1a4a282204201b7745fa788f56e19f2a19fc9a82` (parent `b1b5bceeb16afaffe326abaef405a4a8503d2c2f`). Validator/whitespace/scope/staged gates and exact saved/staged/committed diff comparisons passed, exit 0; evidence `/tmp/pixlnd-reconcile-question-batch-53-54-01a10dd7/recording/item-53-*`. Post-recording independent review and final receipts pending, so entry retained; no parent rerun or publication claim.
 
 **Original proposal:** attribute [Bows revision 19306](https://cubeworld.fandom.com/wiki/Bows?oldid=19306)'s generic reports that arrows can fire in any direction, even outside combat, and **Bows and Crossbows reach further than Boomerangs**. Unlimited ammunition and approved attacks remain unchanged. This adds bounded source evidence, not numerical ranges, free special attacks, edition or first-appearance proof. Existing MP costs and D24 movesets stand.
 
@@ -19,7 +19,7 @@ Publication authority: finish only these two selections, then handoff, commit an
 ## Validation-contract source attribution — item 54
 
 **Previously selected:** Approved, without amendments.
-**Status:** owner approval saved; canonical recording, simplify → ponytail-review, checks, separate item commit and required independent review pending.
+**Status:** canonical attribution recorded in `ontology/domain.md §5 item 54` / §7; post-recording independent review and final receipts pending. Own item commit/check outcomes and full hash are saved externally after this snapshot in `/tmp/pixlnd-reconcile-question-batch-53-54-01a10dd7/recording/item-54-*`; verify them on the next authorized pass. Entry retained until required review, checks and commit are confirmed; no publication claim.
 
 **Original proposal:** attribute [Dungeon revision 19603](https://cubeworld.fandom.com/wiki/Dungeon?oldid=19603)'s exact quotation **“Dungeons are a dangerous place. Don't forget to take some potions with you.”** to **“-NPCs”**. Preserve its placement after **Conceptualized Content** and the adjoining early-2019 Instagram-preview sentence; neither classify the quote itself as conceptual-only nor claim the preview was inspected. Existing corpus already includes the line; no potion requirement, quest, shipped speaker, dialogue trigger, edition or release date is established.
 

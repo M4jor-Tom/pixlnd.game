@@ -3,7 +3,7 @@
 ## Current entry point — approved source-attribution recording 53–54 (2026-10-05)
 
 Owner exact answer: **“53: Approved; 54: Approved; When handled, handoff, commit, push”**.
-Item **53 recorded** in `ontology/domain.md §5 item 53` / §7; **54 approved, recording pending**.
+Items **53/54 recorded** in `ontology/domain.md §5 items 53–54` / §7; independent review pending.
 Both selections remain in `docs/todo_handle_reconciled_items.md` until post-recording independent
 review, verified checks and separate item commits are confirmed. Exact selections, application
 status and evidence: `docs/ROADMAP/todo_decide.md §E`; remaining research/debt: `todo_implement.md`.
@@ -11,15 +11,17 @@ No presented unanswered proposal remains. Items 1–52 and all settled hybrid ru
 
 Item 53 adds generic arrow-direction/out-of-combat and **Bows AND Crossbows > Boomerangs**
 range attribution, not numerical ranges, free M2, edition or first appearance. Existing unlimited
-arrows, MP costs, tags and D24 movesets stand. Item 54 must preserve the exact NPC warning and
+arrows, MP costs, tags and D24 movesets stand. Item 54 records the exact NPC warning and
 Conceptualized Content/adjoining preview placement, without classifying the quote itself as
 conceptual-only or claiming inspected preview, speaker, trigger, edition or release chronology.
 No dialogue delivery, potion requirement or quest is authorized.
 
 Writer evidence: `/tmp/pixlnd-reconcile-question-batch-53-54-01a10dd7/recording/` (per-item
 source/semantic/scope inspection, simplify → ponytail-review, raw full-index binary diffs,
-comparisons, bounded validator/diff logs and commit receipts). Inspect actual logs/Git for results;
-post-recording independent review, parent reruns, final receipts and publication remain pending.
+comparisons, bounded validator/diff logs and commit receipts). Item 53's writer validator,
+whitespace/scope gates and exact diff comparisons passed (exit 0); full hash is in §E. Item 54's
+own commit/check receipts are saved externally after this snapshot, for the next authorized pass.
+Post-recording independent review, parent reruns, final receipts and publication remain pending.
 Only public-safe `article-extracts/{bows,dungeon}.{txt,json}`, their `.txt.sha256` and `manifest.json`
 under `/tmp/pixlnd-reconcile-source-53.VnWRKF/` may be used. Never open/publish original authenticated
 DOM, owner HTML, tokens, account data or original hashes. Rendered-DOM article extracts are not raw
@@ -29,7 +31,7 @@ execution or browser control in recording. Checks cover existing loaded data/sta
 prose or new enforcement; no gameplay, visual or multiplayer suite.
 
 **Next checkpoint: Validation-contract source research/attribution (remaining research).**
-Finish only these two approved recordings/review/receipts, then parent final handoff/publication
+Finish only these two recorded selections' review/receipts, then parent final handoff/publication
 and STOP. Child may make separate item commits, **no push**; no amendment/rebase/merge, new research,
 questions, topic advancement or implementation. Context percentage unavailable; reserve maintained.
 Silk/Spinning Wheel remain **HOLD**, not refusal; no duplicate 27/36 ballots, quantities or station

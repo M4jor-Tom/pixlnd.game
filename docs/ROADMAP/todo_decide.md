@@ -139,7 +139,7 @@ checker implementation remain unauthorized. Verification record: `7a79913`.
 
 **Current recording direction — items 53–54 (2026-10-05):** owner exact answer:
 **“53: Approved; 54: Approved; When handled, handoff, commit, push”**. No amendments.
-Item 53 recorded in `domain.md §5` / §7; item 54 approved, recording pending. Both entries
+Items 53/54 recorded in `domain.md §5` / §7; post-recording independent review pending. Both entries
 remain queued in `docs/todo_handle_reconciled_items.md` pending post-recording independent review,
 verified separate item commits and final receipts. No presented unanswered proposal remains.
 Parent retains final review/verification/publication; child commits items only, no push or rewrite.
@@ -740,8 +740,8 @@ Items 33–35 are recorded and verified below; item 32's later approval is now r
 Recorded selections, canonical pointers and item 39's no-bug amendment: the 36–45 section below.
 **46–52 recorded, independently reviewed and parent-verified.** Exact selections and receipts
 are below; that historical batch left no unhandled selection.
-No presented unanswered proposal remains. Bows/Dungeon items 53/54 are now approved; item 53 is
-recorded, item 54 awaits recording, and both await post-recording independent review/final receipts.
+No presented unanswered proposal remains. Bows/Dungeon items 53/54 are approved and recorded;
+both await post-recording independent review/final receipts.
 Their entries remain queued. See the current checkpoint above and HANDOFF; finish only this batch,
 not new questions. Held Silk/Spinning Wheel findings are not new owner selections, refusals,
 changed game rules or whole-topic completion.
@@ -769,8 +769,8 @@ refusal would leave attribution unrecorded, not select opposite ammunition/range
 
 | item | application | canonical pointer | item commit receipt |
 |---|---|---|---|
-| 53 — Ranger firing and comparative range | [x] canonical recorded; independent review pending | `domain.md §5 item 53` / §7 | pending after separate item commit; raw receipts in evidence root |
-| 54 — NPC-attributed dungeon warning | [ ] approved; recording/review pending | approved target: `domain.md §5 item 54` / §7 | pending |
+| 53 — Ranger firing and comparative range | [x] recorded, writer checks/commit verified; independent review pending | `domain.md §5 item 53` / §7 | `1a4a282204201b7745fa788f56e19f2a19fc9a82` (parent `b1b5bceeb16afaffe326abaef405a4a8503d2c2f`) |
+| 54 — NPC-attributed dungeon warning | [x] canonical recorded; independent review pending | `domain.md §5 item 54` / §7 | own hash/check receipts saved externally after commit; ledger receipt pending next authorized pass |
 
 **Selected limits:** 53 attributes arrow-direction/out-of-combat firing and **Bows AND Crossbows
 reaching further than Boomerangs**; unlimited arrows corroborate the existing rule, not free M2,
@@ -790,7 +790,11 @@ simplify → ponytail-review, raw matching `git diff --binary --full-index` unst
 diffs, comparisons, command logs/exits and full commit map are external receipts, not history proof.
 Checks: `git diff --check`, bounded `timeout 150 nix develop -c godot --headless -s ontology/validate.gd`
 and final `timeout 150 nix develop -c godot --headless --quit`; inspect actual logs for outcomes.
-They cover existing loaded data/startup, not prose history, original builds or new policy enforcement.
+Item 53's writer whitespace/scope/staged gates and bounded validator passed, exit 0 (`ontology valid`);
+`item-53-{unstaged,staged,committed}.diff` match via `item-53-compare-*.log/.exit` (0).
+Item 54's own commit/check/hash receipts and final boot results are saved externally after this
+snapshot; final ledger receipts remain pending for the next authorized pass.
+Checks cover existing loaded data/startup, not prose history, original builds or new policy enforcement.
 No broad gameplay/browser, visual or multiplayer tests. Post-recording independent review,
 parent reruns, final receipt completion/queue removal and publication remain pending.
 

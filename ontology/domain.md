@@ -2531,6 +2531,23 @@ URL. Modification timestamps are unavailable; the **2026-10-05** capture is not 
 date. Original authenticated DOM/owner HTML is private and must not be published. No gameplay,
 live declarations, labels, balance or checker changes follow; remaining histories stay research.
 
+#### Item 54 — NPC-attributed dungeon warning (owner approved, 2026-10-05)
+
+[Dungeon revision 19603](https://cubeworld.fandom.com/wiki/Dungeon?oldid=19603) quotes
+**“Dungeons are a dangerous place. Don't forget to take some potions with you.”** and
+attributes it to **“-NPCs”**. The quotation follows **Conceptualized Content** and the
+adjoining **“On Instagram, you can see early progress of 2019 cube world.”** sentence.
+Preserve that placement **without deciding the quotation itself is conceptual-only** or
+claiming the preview was inspected. This supplies no shipped speaker, dialogue trigger,
+edition or release chronology; the preview sentence is not an authenticated release date.
+
+The existing `npc-roles.json#dialogue-corpus.known-lines` already includes the exact line
+(`research_creatures_quests.md §4`). This records attribution, **not dialogue delivery**,
+a potion requirement or a new quest. Public-safe source/metadata inspection and date/privacy
+limits follow item 53; no preview, original build, images or assets were inspected/executed.
+Existing dialogue declarations and hybrid rules stand; other dialogue histories remain research.
+No gameplay, live declarations, source labels or checker changes follow.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2843,9 +2860,11 @@ Glass bottles/sugar cubes/bombs and sometimes unnamed treat, not universal stock
 
 **Validation-contract source item 53 — DECIDED 2026-10-05:** §5 attributes arrow-direction/out-of-combat firing and Bows/Crossbows reaching further than Boomerangs, not numerical ranges, free M2, edition or first appearance.
 
+**Validation-contract source item 54 — DECIDED 2026-10-05:** §5 attributes the exact NPC dungeon warning with Conceptualized Content/preview placement, not conceptual-only classification, shipped speaker/trigger, edition, release chronology or dialogue delivery.
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–53 recorded; 36–52 independently reviewed and parent-verified (`todo_decide.md §E`, with evidence limits). Item 53 awaits post-recording independent review; approved item 54 awaits recording/review, both retained in the pending queue. No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–54 recorded; 36–52 independently reviewed and parent-verified (`todo_decide.md §E`, with evidence limits). Items 53/54 await post-recording independent review/final receipts, both retained in the pending queue. No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

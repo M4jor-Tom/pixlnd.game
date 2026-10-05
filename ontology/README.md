@@ -26,7 +26,7 @@ Dated build notes below include superseded placeholders, not proof of current co
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
 **Current source-attribution recording (2026-10-05):** owner approved items 53/54 without
-amendments. Item 53 is recorded in `domain.md §5` / §7; item 54 awaits recording. Both remain in
+amendments. Both are recorded in `domain.md §5 items 53–54` / §7 and remain in
 `docs/todo_handle_reconciled_items.md` pending post-recording independent review and final receipts.
 Current handoff, source/privacy limits and writer evidence: `docs/HANDOFF.md` / `todo_decide.md §E`.
 Items 1–52 and all settled rules stand; Silk/Spinning Wheel quantities remain HOLD, not refusal.
