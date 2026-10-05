@@ -690,7 +690,7 @@ World bounds / resets items 1–4 are recorded below; no presented question rema
 Validation-contract mapping/source items 1–28 are historically recorded and verified below;
 approved 29–31 are recorded and verified, with fresh independent review and parent checks below.
 Items 33–35 are recorded and verified below; item 32's later approval is now recorded too.
-**Items 36–44 recorded and item-verified; 45 approved, pending application.** (2026-10-05)
+**Items 36–45 recorded and item-verified; fresh independent review/parent acceptance pending.** (2026-10-05)
 Exact selections, canonical pointers and item 39's no-bug amendment: `docs/reconciled.md`.
 No presented unanswered proposal remains. Pending selected entries precede new research.
 Context: ask by ~60%, handoff by ~85% (earlier with reserve), authorized checkpoint then STOP.
@@ -728,7 +728,8 @@ game; refusal would leave those citations unrecorded, not select opposite mechan
 | 41 — Some mobs bring out lanterns | [x] recorded and item-verified; review pending | `domain.md §5 item 41` / §7 | `85fd5cb051f4efba5c568909e867ef4cfdb2847a` |
 | 42 — Individual dark-Alpaca habitats | [x] recorded and item-verified; review pending | `domain.md §5 item 42` / §7 | `ecda216abc2b5ba6ed12a98768b80766b31a3cd3` |
 | 43 — Possessive item-name examples | [x] recorded and item-verified; review pending | `domain.md §5 item 43` / §7 | `9684a19bb6f0ed252f278551ce16feddba8b64b7` |
-| 44 — Retrieved music catalog, not authenticated shipped soundtrack | [x] recorded and item-verified; review pending | `domain.md §5 item 44` / §7 | pending later receipt |
+| 44 — Retrieved music catalog, not authenticated shipped soundtrack | [x] recorded and item-verified; review pending | `domain.md §5 item 44` / §7 | `a5a660e4b2e2f591ce6a072b6df84228cca29fef` |
+| 45 — Additional Item Vendor stock report | [x] recorded and item-verified; review pending | `domain.md §5 item 45` / §7 | pending later receipt |
 
 **Writer gates/evidence:** `/tmp/pixlnd-source-research-36.iKZQy6/recording/` contains actual
 saved-source excerpts/hashes/sidecars, per-item semantic/scope → simplify → ponytail-review notes,

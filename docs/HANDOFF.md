@@ -3,7 +3,7 @@
 ## Ontology walkthrough entry point (2026-10-05, source items 36–45)
 
 Owner approved **36–45**, with item 39: **“Approved (I don't want a bug implemented)”**.
-**Items 36–44 recorded and item-verified; 45 approved, pending application.**
+**Items 36–45 recorded and item-verified; fresh independent review/parent acceptance pending.**
 Exact selections/canonical pointers and later receipts: **`docs/reconciled.md`** / §E.
 Resume pending **Previously selected** entries before new research, without unchanged reapproval.
 Documentation only; items 1–35 and settled hybrid mechanics stand. No gameplay, JSON, tests,

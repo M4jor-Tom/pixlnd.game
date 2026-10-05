@@ -49,11 +49,11 @@ No unanswered proposal remains in this batch; approval is separate from applicat
 
 ### 44. Retrieved music catalog, not authenticated shipped soundtrack
 - **Previously selected:** Approved. Attribute [KHInsider's catalog](https://downloads.khinsider.com/game-soundtracks/album/cube-world-gamerip)'s Steam/Windows, 2019, Gamerip, MuttMondo, added 24 June 2021 claims and 28 titles: Beach; Boss; City; Cult Of Doom; Deadlands; Desert; Druids Of Mana; Dungeon; Enchanted Forest; Greenlands; Home; Jungle; Maintheme; Mountains; Night; Ocean; Order Of The Light; Savannah; Shrine; Steel Empire; Success; Tribe; Unholy Pact; Village; Village2; Winter; Wood; Woodlands. No authenticated build inclusion/completeness or audio inspection; Dungeon is not proven Bgum, Maintheme is not proven Explorers, Ocean is not proven the 2017 preview. Existing declarations stand.
-- **Application:** Applied after item gates; fresh review pending. Canonical: `ontology/domain.md §5 item 44` / §7. Full hash evidence: `/tmp/pixlnd-source-research-36.iKZQy6/recording/item-44.sha`; commit receipt follows in a later update.
+- **Application:** Applied after item gates; fresh review pending. Canonical: `ontology/domain.md §5 item 44` / §7. Full hash evidence: `/tmp/pixlnd-source-research-36.iKZQy6/recording/item-44.sha`; commit `a5a660e4b2e2f591ce6a072b6df84228cca29fef`.
 
 ### 45. Additional Item Vendor stock report
 - **Previously selected:** Approved. Attribute [guide 1873333729](https://steamcommunity.com/sharedfiles/filedetails/?id=1873333729)'s glass bottles, sugar cubes, bombs and **sometimes another pet treat**. Preserve sometimes/unnamed treat; no universal stock, prices, quantities, chronology or mapping of sugar cubes to item 38's candy.
-- **Application:** Pending canonical recording and verification.
+- **Application:** Applied after item gates; fresh review pending. Canonical: `ontology/domain.md §5 item 45` / §7. Full hash evidence: `/tmp/pixlnd-source-research-36.iKZQy6/recording/item-45.sha`; commit receipt follows in a later update.
 
 ## Session boundary
 

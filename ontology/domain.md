@@ -2426,6 +2426,19 @@ re-fetched, audio-downloaded/played or original-build tested. Addition/year/capt
 not authenticate a build manifest or release history. No soundtrack assets, playback, track
 identity, source labels or live declarations change.
 
+#### Item 45 — Additional Item Vendor stock report (owner approved, 2026-10-05)
+
+[Steam guide 1873333729](https://steamcommunity.com/sharedfiles/filedetails/?id=1873333729)
+says **“Vendor that sells glass bottles, sugar cubes, bombs, and sometimes another pet
+treat.”** Keep **sometimes** and the **unnamed treat**, not a fixed bait identity or
+universal always-available stock. Sugar cubes are not thereby item 38's ambiguous candy.
+This vendor sentence is additional to item 19's Item Shop/Leftovers evidence, not a replacement.
+
+Saved raw body/sidecars and capture limits follow item 36. The report supplies no prices,
+quantities, first appearance or release chronology and selects no stock or purchase rule.
+Existing shop/reset/pricing rules and live declarations stand; stock/quantity/food histories
+remain research. No purchases, source labels, loot or gameplay changes follow.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2719,9 +2732,12 @@ Exact possessive spellings; rarity disagreement and excluded plus mechanics pres
 **Validation-contract source item 44 — DECIDED 2026-10-05:** §5 item 44 records
 28 catalog titles/metadata, not authenticated inclusion or preview identities.
 
+**Validation-contract source item 45 — DECIDED 2026-10-05:** §5 item 45 records
+Glass bottles/sugar cubes/bombs and sometimes unnamed treat, not universal stock.
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–44 recorded (`todo_decide.md §E`, with evidence limits); 45–45 approved, pending recording/verification in `docs/reconciled.md`. No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–45 recorded (`todo_decide.md §E`, with evidence limits); Fresh review/parent acceptance pending. No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

@@ -233,6 +233,8 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 
 - Source item 44 (`domain.md §5`): retrieved 28-title catalog does not authenticate shipped soundtrack/completeness or Dungeon–Bgum/Maintheme–Explorers/Ocean–2017 identities. Audio histories remain research; declarations/assets/playback unchanged.
 
+- Source item 45 (`domain.md §5`): vendor stock report keeps sometimes/unnamed treat; no universal stock, price, quantity or chronology, and no sugar-cube/candy mapping. Shop rules unchanged; stock histories remain research.
+
 ## Meta / tooling
 - [ ] Save-data (§3.7): nothing persists (world seed, character, discovered lands).
 - [ ] Dedicated server (D5, `multiplayer-mode`): single-player only; `server.cfg` flags (pvp,
