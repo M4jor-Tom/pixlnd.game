@@ -2342,6 +2342,23 @@ sidecars were inspected, not externally re-fetched, image-inspected or original-
 Edit/capture dates do not authenticate Alpha/Steam trait or release histories. Existing combat,
 encounters and declarations stand; no attacks, bug, source labels or live-data changes.
 
+#### Item 40 — Undead villagers versus population speculation (owner approved, 2026-10-05)
+
+[Undead revision 18595](https://cubeworld.fandom.com/wiki/Undead?oldid=18595), edited
+**2024-08-06T07:14:42Z**, describes **humanoid Undead as passive villagers in Deadlands
+and Dark Woods**, not exclusively Undead towns or a population census.
+The [cities thread](https://steamcommunity.com/app/1128000/discussions/0/1633040337766628105/)
+displays **10 September 2019**: its OP says **“all cities are human”**; the reply suggests
+faction cities and conditionally Undead inhabitants, explicitly saying **“We can't say for
+sure”** and **“it's only speculation at this point”**. It identifies no tested build and
+supplies no Deadlands/Dark Woods exception.
+
+Saved raw wiki revision/metadata, thread body/date and sidecars were inspected, not externally
+re-fetched or original-build tested. Displayed/edit/capture dates do not authenticate original
+behavior or release history. The wiki report and speculative thread do not overturn item 20,
+settlement populations/safety or **Skeleton Dog's separate approved dog rules**. No census,
+population algorithm, encounter, source label or live declaration is changed.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2620,9 +2637,12 @@ Literal six-name list with ambiguous candy; flask price is not food pricing.
 **Validation-contract source item 39 — DECIDED 2026-10-05:** §5 item 39 records
 Named-species traits; visual bug documentation only, never implementation.
 
+**Validation-contract source item 40 — DECIDED 2026-10-05:** §5 item 40 records
+Passive humanoid villagers report separated from dated thread speculation.
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–39 recorded (`todo_decide.md §E`, with evidence limits); 40–45 approved, pending recording/verification in `docs/reconciled.md`. No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–40 recorded (`todo_decide.md §E`, with evidence limits); 41–45 approved, pending recording/verification in `docs/reconciled.md`. No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
