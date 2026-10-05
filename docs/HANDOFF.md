@@ -3,20 +3,37 @@
 ## Ontology walkthrough entry point (2026-10-05, source item 32)
 
 Owner exact answer: **“32: Approved; Once handled, handoff, commit, push”**.
-**Item 32 is recorded** in `ontology/domain.md#pet-food` / §7: daily stocked food type,
-not one purchasable unit or any selected quantity. No stock/purchases, labels or live-data
-changes. Prior items 1–31/33–35 and all hybrid rules stand; no presented unanswered proposal
-remains. Evidence and item verification: `docs/ROADMAP/todo_decide.md §E` and
-`/tmp/pixlnd-source-item-32.HS00mX/`. Final verification/handoff/publication is still pending
-in this session; this is not a publication claim.
+**Item 32 recorded and item-verified in `9453260de4c09fa3dc5d9c07a93f3e9b70c194db`:**
+`ontology/domain.md#pet-food` / §7 attributes a daily stocked food type, not one purchasable
+unit or any selected quantity. All source items 1–35 and settled hybrid rules stand;
+**no presented unanswered proposal remains**. Five existing Markdown paths only; no stock,
+purchases, carrying rules, gameplay, JSON, tests, checker, research dumps, labels, defaults,
+schema, compatibility or migration changes. Existing enforcement remains separately unauthorized.
+
+**Verification:** saved raw Pet Food 20438 body/metadata/sidecars inspected, not externally
+re-fetched, image-inspected or original-build executed; edit/capture dates are not release
+history. Semantic/scope inspection, `/simplify`, ponytail-review, diff checks and bounded
+ontology validation passed (exit 0, `ontology valid`). Parent confirmed exact saved/staged/
+committed diff correspondence and reran headless boot successfully (exit 0). Checks cover
+existing loaded data/startup, not prose/history, daily quantities or new enforcement. No
+gameplay suite, visual or multiplayer checks. Evidence: `todo_decide.md §E` and
+`/tmp/pixlnd-source-item-32.HS00mX/` (brief, source/diffs/review notes, command logs/exits).
+Fresh independent saved-source/diff/log review found no issues (`independent-review.md`);
+reviewer ran no commands/tests or byte comparisons. Parent confirmed the reviewed draft's
+exact diff correspondence, reran bounded validator/boot successfully (exit 0), then added only
+completion receipts (`reviewed-handoff-comparison` / `post-review-{validator,boot}.log/.exit`).
+Final record rechecks:
+`handoff-final-{diff-check,validator,boot}.log/.exit`. This is not a publication claim.
 
 **Next resume: Validation-contract source research/attribution (remaining research).**
 Daily food quantities and per-food release/obtainability/taming/Leaf–Candy chronology;
 remaining fauna/traits, naming, recipe/refining, stock/loot/population/schedule and
 UI/camera/static/furniture/audio/dialogue histories remain research. Do not treat them as
 unanswered gameplay ballots or advance to Swamp Lands/Lion/resistance/gear HP/implementation.
-For this authorized handoff: verify, commit item 32 separately, finalize/commit the handoff,
-normal-push only `fix/ontology-reconciliation`, verify publication and clean state, then STOP.
+**Authorized publication:** commit this separate final handoff following item `9453260`;
+pre-publication live remote `b7f2d1f` confirmed (`pre-publication-remote.log/.exit`). Normal-push
+only `fix/ontology-reconciliation`, verify fresh remote = upstream = local HEAD and clean
+worktree, then STOP. Inspect actual Git state on resumption, not this checkpoint as proof of push.
 No amendments, merge, rewrite, force-push, new research or proposals.
 
 ## Historical source-attribution items 33–35 checkpoint (2026-10-04, superseded entry point)

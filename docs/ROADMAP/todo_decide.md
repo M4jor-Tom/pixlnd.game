@@ -721,12 +721,24 @@ Unsupported histories stay research, not whole-topic completion or implementatio
 **Evidence and gates:** `/tmp/pixlnd-source-item-32.HS00mX/` holds the binding approval brief,
 saved-source extraction/hashes and item diff/review/check evidence. Raw Pet Food revision
 20438 body/metadata and capture sidecars were inspected, not externally re-fetched, image-inspected
-or original-build executed. Edit/capture timestamps do not prove release history. Item 32's
-scoped commit and final independent review/verification will be recorded in the final handoff below.
+or original-build executed. Edit/capture timestamps do not prove release history.
 Semantic/scope inspection, `/simplify` then ponytail-review, `git diff --check` and the bounded
 ontology validator passed (exit 0, `ontology valid`; `item-32-{diff-check,validator}.log/.exit`).
-Validation covers existing loaded data, not prose/history, purchase quantities or new enforcement.
-No gameplay suite, visual or multiplayer checks are claimed.
+
+**Item-to-commit evidence:** `9453260de4c09fa3dc5d9c07a93f3e9b70c194db` records item 32;
+`item-32.sha` stores its full hash; saved/staged/committed diffs match exactly. Parent checked
+the actual commit and five-path boundary, then reran headless boot
+successfully (exit 0; `parent-boot.log/.exit`). Fresh independent saved-source/diff/log review
+found no issues (`independent-review.md`); reviewer ran no commands/tests or byte comparisons.
+Parent confirmed the reviewed draft's exact diff correspondence, reran bounded ontology
+validation and boot (exit 0; `post-review-{validator,boot}.log/.exit`), then added only completion
+receipts to the final record.
+Final record received `/simplify`, ponytail-review and bounded diff/validator/boot rechecks
+(`handoff-review.md`, `handoff-final-{diff-check,validator,boot}.log/.exit`). Separate handoff
+commit/publication/STOP authority and next resume: `docs/HANDOFF.md`; pre-publication live
+remote `b7f2d1f` confirmed, not a publication claim. No unanswered proposal or new research.
+Checks cover existing loaded data/startup, not prose/history, purchase quantities or new
+enforcement. No gameplay suite, visual or multiplayer checks are claimed.
 
 ### Historical validation-contract source attribution — items 33–35 (2026-10-04)
 
