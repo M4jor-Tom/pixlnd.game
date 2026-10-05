@@ -237,6 +237,8 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 
 - Source item 46 (`domain.md §5`): questionable conversion report confirms neither exactly one nor 1–3 Heartflowers. Quantities/original-build behavior stay research; conversion unchanged.
 
+- Source item 47 (`domain.md §5`): Deposit's 1–3 nuggets does not verify every gem, Ice Crystal or Sandstone yield. Per-kind counts/odds remain research; mining unchanged.
+
 ## Meta / tooling
 - [ ] Save-data (§3.7): nothing persists (world seed, character, discovered lands).
 - [ ] Dedicated server (D5, `multiplayer-mode`): single-player only; `server.cfg` flags (pvp,

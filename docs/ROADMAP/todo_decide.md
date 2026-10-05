@@ -724,6 +724,7 @@ refusal would leave citations unrecorded, not select opposite mechanics.
 | item | application | canonical pointer | item commit |
 |---|---|---|---|
 | 46 — Questionable Iceflower conversion report | recorded; independent review/parent verification pending | `domain.md §5 item 46` / §7 | receipt pending |
+| 47 — Deposit nuggets, not a range for every gem | recorded; independent review/parent verification pending | `domain.md §5 item 47` / §7 | receipt pending |
 
 **Writer gates/evidence:** `/tmp/pixlnd-reconcile-next.2F5qwV/recording/`: per-item saved raw
 source/sidecar inspection, semantic/scope → local `/simplify` prompt → installed ponytail-review,

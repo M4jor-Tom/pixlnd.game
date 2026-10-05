@@ -25,7 +25,7 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `tasks/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Source-attribution items 46–52 (2026-10-05):** 46 recorded; 47–52 recording pending.
+**Source-attribution items 46–52 (2026-10-05):** 46–47 recorded; 48–52 recording pending.
 Canonical: `domain.md §5` / §7; independent recording review and parent verification pending.
 Selected queue retained; evidence/limits: `todo_decide.md §E`. No gameplay or live changes.
 

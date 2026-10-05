@@ -2455,6 +2455,16 @@ including the retained Iron Armor/Fists response; wiki edit/capture dates are no
 introduction dates. These reports select no new A/S labels, live-data or gameplay changes.
 Items 1–45 and all approved hybrid rules stand; remaining histories stay research.
 
+#### Item 47 — Deposit nuggets, not a range for every gem (owner approved, 2026-10-05)
+
+[Deposit revision 19729](https://cubeworld.fandom.com/wiki/Deposit?oldid=19729) reports
+**1–3 nuggets** when destroying deposits. Its surrounding **ore and gems** wording is
+ambiguous; the quantity's explicit noun is **nuggets**, not every gem or deposit kind.
+This does not verify §3.1 / `deposits.json`'s generic 1–3 yield for gems, Ice Crystal or
+Sandstone. Per-kind yields/probabilities remain research, not selected ranges or odds.
+Source-inspection/date limits follow item 46;
+mining rewards, refining rules, labels and live declarations remain unchanged.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2753,9 +2763,11 @@ Glass bottles/sugar cubes/bombs and sometimes unnamed treat, not universal stock
 
 **Validation-contract source item 46 — DECIDED 2026-10-05:** §5 records a questionable campfire→Heartflower report, not quantity or original-build proof.
 
+**Validation-contract source item 47 — DECIDED 2026-10-05:** §5 attributes 1–3 nuggets, not all-gem/deposit yields or probabilities.
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–46 recorded; 36–45 independently reviewed and parent-verified; 46–52 independent recording review/parent verification pending (`todo_decide.md §E`, with evidence limits). No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–47 recorded; 36–45 independently reviewed and parent-verified; 46–52 independent recording review/parent verification pending (`todo_decide.md §E`, with evidence limits). No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
