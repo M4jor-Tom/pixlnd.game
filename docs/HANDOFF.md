@@ -3,16 +3,18 @@
 ## Ontology walkthrough entry point (2026-10-05, source items 36–45)
 
 Owner approved **36–45**, with item 39: **“Approved (I don't want a bug implemented)”**.
-Exact selections, sources and limits are durable in **`docs/reconciled.md`**; all ten are currently
-**approved but pending canonical recording/verification**, not unanswered. Resume these selected
-items before new research; show **Previously selected** rather than asking for unchanged reapproval.
-Documentation attribution only; no gameplay, JSON, tests, checker, source labels or balance changes.
+**Items 36 recorded and item-verified; 37–45 approved, pending application.**
+Exact selections/canonical pointers and later receipts: **`docs/reconciled.md`** / §E.
+Resume pending **Previously selected** entries before new research, without unchanged reapproval.
+Documentation only; items 1–35 and settled hybrid mechanics stand. No gameplay, JSON, tests,
+checker, source labels or balance changes; **do not implement item 39's visual bug**.
 
-The installed `ontology-reconcile-topic` skill now caps question presentation at **~60% context**
-and begins handoff by **~85%**, earlier when needed. Preserve pending selections in the queue,
-commit/push the authorized `fix/ontology-reconciliation` checkpoint, verify publication, then STOP.
-Current work is recording/review/handoff for this approved batch; no next-topic proposals.
-Inspect actual Git state; this entry is a pending checkpoint, not a publication/completion claim.
+Writer evidence: `/tmp/pixlnd-source-research-36.iKZQy6/recording/` (actual saved sources,
+per-item reviews/logs/exits and exact binary/full-index diffs/comparisons). Gates check existing
+loaded data, not prose/history or enforcement. Fresh reviewer and parent acceptance still pending.
+Context: ask by ~60%, handoff by ~85% or earlier with reserve; meter unavailable, no guessed usage.
+Preserve all remaining approvals; parent alone handles final normal push/remote equality/clean
+state and STOP. This is not a publication claim; inspect Git. No next-topic proposals.
 
 ## Historical ontology checkpoint (2026-10-05, source item 32)
 

@@ -690,11 +690,10 @@ World bounds / resets items 1–4 are recorded below; no presented question rema
 Validation-contract mapping/source items 1–28 are historically recorded and verified below;
 approved 29–31 are recorded and verified, with fresh independent review and parent checks below.
 Items 33–35 are recorded and verified below; item 32's later approval is now recorded too.
-**Source items 36–45 are approved but pending recording/verification (2026-10-05).** Exact
-selections and item 39's no-bug-implementation amendment are in `docs/reconciled.md`; resume these
-**Previously selected** items before new research. No presented unanswered proposal remains.
-Context protocol: ask by ~60%, begin handoff by ~85% (earlier when needed), preserve pending
-selections, commit/push the authorized checkpoint and STOP (`tasks/lessons.md`, `docs/HANDOFF.md`).
+**Items 36 recorded and item-verified; 37–45 approved, pending application.** (2026-10-05)
+Exact selections, canonical pointers and item 39's no-bug amendment: `docs/reconciled.md`.
+No presented unanswered proposal remains. Pending selected entries precede new research.
+Context: ask by ~60%, handoff by ~85% (earlier with reserve), authorized checkpoint then STOP.
 Daily food quantities and original Alpha/Steam
 sleep-rate baseline/units (§5 items 10–11) remain research.
 - [ ] **Validation-contract source research/attribution (2026-09-17 contract approved):**
@@ -708,6 +707,32 @@ sleep-rate baseline/units (§5 items 10–11) remain research.
   identity, Lion tameability (`null` currently means untameable), resistance meaning and the
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
+
+### Validation-contract source attribution — items 36–45 (2026-10-05)
+
+Exact owner answers and selected boundaries: `docs/reconciled.md` (including item 39's
+**“Approved (I don't want a bug implemented)”**). Items 1–35 and all hybrid rules stand.
+Documentation attribution only; no gameplay, JSON, tests, checker, research dumps, labels,
+defaults, balance, schema, migration or compatibility changes.
+
+**Approval versus Refusing:** approval records the selected reports/limits without changing the
+game; refusal would leave those citations unrecorded, not select opposite mechanics.
+
+| item | application | canonical pointer | commit receipt (filled in later update) |
+|---|---|---|---|
+| 36 — Cobweb processing at a Spinning Wheel | [x] recorded and item-verified; review pending | `domain.md §5 item 36` / §7 | pending later receipt |
+
+**Writer gates/evidence:** `/tmp/pixlnd-source-research-36.iKZQy6/recording/` contains actual
+saved-source excerpts/hashes/sidecars, per-item semantic/scope → simplify → ponytail-review notes,
+`item-N-{diff-check,validator}.log/.exit`, exact binary/full-index `item-N.diff`,
+`item-N-staged.diff`, `item-N-committed.diff`, comparison logs/exits and full `item-N.sha`.
+Queue statuses become applied only after checks. Validator covers existing loaded data, not
+Markdown, historical truth or new enforcement. No external retrieval, images/audio/original
+build execution, gameplay suite, visual or multiplayer checks. Fresh independent recording
+review and parent verification/publication remain pending. No new research or proposals.
+Local extractor correction was supervisor-approved; failed assumption/reproduction and corrected
+raw inspection remain in `extraction-authorization.md`, `source-extraction-failure.log/.exit`
+and `raw-wiki-inspection.json`; no external retry or source edits.
 
 ### Validation-contract source attribution — item 32 (2026-10-05)
 

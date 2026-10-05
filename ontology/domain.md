@@ -2290,6 +2290,19 @@ historical keys 1–4 do not override **Assassin's approved key-3/no-key-4 excep
 Existing layout, controls, message limits and live declarations remain unchanged; no source
 labels or interface work follows. Remaining UI/camera histories stay research.
 
+#### Item 36 — Cobweb processing at a Spinning Wheel (owner approved, 2026-10-05)
+
+[Steam guide 1873333729](https://steamcommunity.com/sharedfiles/filedetails/?id=1873333729)
+says **“Spinning Wheel - Used for spinning cobwebs and cotton into usable materials/”**.
+This supplies a cobweb-processing station lead beyond item 27's station-unspecified Silk Yarn
+passage, but names **neither the output nor quantities**. It does not verify one cobweb → one
+yarn or redefine the existing silk chain, recipes or stations.
+
+The saved raw guide body and capture sidecars were inspected from the retained
+**2026-10-04T17:17:23Z** capture, not externally re-fetched, image-inspected or original-build
+executed. Source/edit/capture dates establish no release or introduction history. Refining
+quantities and original recipes remain research; no crafting, source-label or live-data change.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2556,9 +2569,12 @@ comparison / bounded validator/boot verification (`todo_decide.md §E`, with evi
 Item 32's later approval is recorded above; verification evidence follows `todo_decide.md §E`.
 No presented unanswered proposal remains.
 
+**Validation-contract source item 36 — DECIDED 2026-10-05:** §5 item 36 records
+Cobweb/cotton station lead, not output identity or quantities.
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–35 recorded (`todo_decide.md §E`, with evidence limits). No presented unanswered proposal remains; unsupported food/mixed-container histories, including daily food quantities and sleep-speed units, remain research, not whole-topic completion. Resume this topic, not implementation; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–36 recorded (`todo_decide.md §E`, with evidence limits); 37–45 approved, pending recording/verification in `docs/reconciled.md`. No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

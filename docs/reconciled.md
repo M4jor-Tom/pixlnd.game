@@ -17,7 +17,7 @@ No unanswered proposal remains in this batch; approval is separate from applicat
 
 ### 36. Cobweb processing at a Spinning Wheel
 - **Previously selected:** Approved. Attribute [guide 1873333729](https://steamcommunity.com/sharedfiles/filedetails/?id=1873333729)'s Spinning Wheel processing cobwebs and cotton into usable materials. No output identity, quantities or one-cobweb/one-yarn inference; existing silk definition unchanged.
-- **Application:** Pending canonical recording and verification.
+- **Application:** Applied after item gates; fresh review pending. Canonical: `ontology/domain.md §5 item 36` / §7. Full hash evidence: `/tmp/pixlnd-source-research-36.iKZQy6/recording/item-36.sha`; commit receipt follows in a later update.
 
 ### 37. Lollipop from an Emerald Deposit
 - **Previously selected:** Approved. Attribute [guide 1879943518](https://steamcommunity.com/sharedfiles/filedetails/?id=1879943518)'s narrator: “I found a Lollipop from an Emerald Deposit!” Preserve Lollipop/Owl pairing; no guaranteed drops, odds, first appearance or demonstrated taming. Do not confuse Lollipop with Lolly.

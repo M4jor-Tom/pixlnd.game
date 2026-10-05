@@ -215,6 +215,8 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
   demonstrated behavior. Retain “Requires Testing”
   and ambiguous inn wording; no inferred controls, healing/rate, bench/stool rule or hybrid inn change.
 
+- Source item 36 (`domain.md §5`): cobweb/Spinning Wheel report names no output or counts; item 27's silk chain stands. Original recipes/yields remain research; no station or recipe change.
+
 ## Meta / tooling
 - [ ] Save-data (§3.7): nothing persists (world seed, character, discovered lands).
 - [ ] Dedicated server (D5, `multiplayer-mode`): single-player only; `server.cfg` flags (pvp,
