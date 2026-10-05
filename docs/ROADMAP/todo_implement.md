@@ -15,6 +15,12 @@ data exists to migrate. Require current rules directly (`domain.md §0/§5`); da
 below means replacing checked-in stale definitions when authorized, never migration code,
 legacy-read fallbacks or obsolete-format compatibility. Implementation remains unauthorized.
 
+**Current attribution checkpoint (2026-10-05):** 53/54 approved without amendments; 53
+recorded, 54 recording pending, both awaiting post-recording independent review/final receipts.
+Queue/status: `docs/todo_handle_reconciled_items.md` / `todo_decide.md §E`; canonical: `domain.md §5` / §7.
+Silk/Spinning Wheel quantities stay HOLD, not refusal or new 27/36 ballots; other histories remain
+research. No new implementation authority or whole-topic completion.
+
 ## World (§3.1, slice 475e72b)
 - [ ] World/reset item 1 (`domain.md#world`, `c-world-bounds`, `gen-world`): enforce the approved
   finite 1024×1024-land grid, coordinates −512..511 on each horizontal axis, without wrapping.
@@ -214,6 +220,8 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
   paired approximate intervals do not resolve them; documentary timing is not introduction or
   demonstrated behavior. Retain “Requires Testing”
   and ambiguous inn wording; no inferred controls, healing/rate, bench/stool rule or hybrid inn change.
+
+- Source item 53 (`domain.md §5`): generic arrow firing and Bows/Crossbows > Boomerangs report gives no numerical ranges, edition or first appearance. Unlimited arrows, MP costs, tags and D24 movesets stand; no new ammunition/range implementation debt is selected.
 
 - Source item 36 (`domain.md §5`): cobweb/Spinning Wheel report names no output or counts; item 27's silk chain stands. Original recipes/yields remain research; no station or recipe change.
 

@@ -137,7 +137,18 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Current source-research checkpoint (2026-10-05):** four pages inspected after owner-assisted
+**Current recording direction — items 53–54 (2026-10-05):** owner exact answer:
+**“53: Approved; 54: Approved; When handled, handoff, commit, push”**. No amendments.
+Item 53 recorded in `domain.md §5` / §7; item 54 approved, recording pending. Both entries
+remain queued in `docs/todo_handle_reconciled_items.md` pending post-recording independent review,
+verified separate item commits and final receipts. No presented unanswered proposal remains.
+Parent retains final review/verification/publication; child commits items only, no push or rewrite.
+Items 1–52 stand; Silk/Spinning Wheel quantities remain HOLD, not refusal or new 27/36 ballots.
+No gameplay, live JSON, tests, checker, labels, schema, compatibility or migration changes.
+Handoff/limits: `docs/HANDOFF.md`; per-item evidence and pending receipts below. Stop after this
+checkpoint; remaining histories are research, not whole-topic completion or new questions.
+
+**Historical source-research checkpoint (2026-10-05, superseded):** four pages inspected after owner-assisted
 Firefox access; two independently reviewed **UNPRESENTED** citation candidates, not approvals or
 already-issued ballots. Next unused item number is 53. No pending selected item remains and the
 pending-only queue is absent. Details/limits: `docs/HANDOFF.md` current entry point. Candidates:
@@ -728,11 +739,12 @@ Items 33–35 are recorded and verified below; item 32's later approval is now r
 **Items 36–45 recorded, independently reviewed and parent-verified.** (2026-10-05)
 Recorded selections, canonical pointers and item 39's no-bug amendment: the 36–45 section below.
 **46–52 recorded, independently reviewed and parent-verified.** Exact selections and receipts
-are below. No unhandled selection remains; the empty pending queue is deleted.
-No presented unanswered proposal remains. New Bows/Dungeon evidence is reviewed but UNPRESENTED;
-see the current source-research checkpoint above and HANDOFF. Pending selected entries precede
-any new question batch. Do not treat research candidates or held Silk/Spinning Wheel findings as
-owner selections, refusals, changed game rules or whole-topic completion.
+are below; that historical batch left no unhandled selection.
+No presented unanswered proposal remains. Bows/Dungeon items 53/54 are now approved; item 53 is
+recorded, item 54 awaits recording, and both await post-recording independent review/final receipts.
+Their entries remain queued. See the current checkpoint above and HANDOFF; finish only this batch,
+not new questions. Held Silk/Spinning Wheel findings are not new owner selections, refusals,
+changed game rules or whole-topic completion.
 Context: ask by ~60%, handoff by ~85% (earlier with reserve), authorized checkpoint then STOP.
 Daily food quantities and original Alpha/Steam
 sleep-rate baseline/units (§5 items 10–11) remain research.
@@ -747,6 +759,52 @@ sleep-rate baseline/units (§5 items 10–11) remain research.
   identity, Lion tameability (`null` currently means untameable), resistance meaning and the
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
+
+### Validation-contract source attribution — items 53–54 (2026-10-05)
+
+**Exact owner answer:** “53: Approved; 54: Approved; When handled, handoff, commit, push”.
+Both original proposals selected without amendments; items 1–52 and all settled hybrid rules stand.
+**Approval versus Refusing:** approval adds bounded citations without changing the game;
+refusal would leave attribution unrecorded, not select opposite ammunition/range/dialogue rules.
+
+| item | application | canonical pointer | item commit receipt |
+|---|---|---|---|
+| 53 — Ranger firing and comparative range | [x] canonical recorded; independent review pending | `domain.md §5 item 53` / §7 | pending after separate item commit; raw receipts in evidence root |
+| 54 — NPC-attributed dungeon warning | [ ] approved; recording/review pending | approved target: `domain.md §5 item 54` / §7 | pending |
+
+**Selected limits:** 53 attributes arrow-direction/out-of-combat firing and **Bows AND Crossbows
+reaching further than Boomerangs**; unlimited arrows corroborate the existing rule, not free M2,
+numerical ranges, edition or first appearance. MP costs, tags and D24 movesets remain unchanged;
+the direction sentence is not extrapolated to unrelated weapons. 54 selects the exact
+**“Dungeons are a dangerous place. Don't forget to take some potions with you.”** / **“-NPCs”**
+warning after **Conceptualized Content** and the adjoining early-2019 Instagram-preview sentence.
+This placement does not classify the quote itself as conceptual-only or establish inspected preview,
+shipped speaker, trigger, edition, release chronology, potion requirement or new quest. The existing
+`npc-roles.json#dialogue-corpus.known-lines` already includes it; no dialogue delivery is added.
+
+**Evidence/verification boundary:** `/tmp/pixlnd-reconcile-question-batch-53-54-01a10dd7/recording/`.
+Binding brief and exact `presented-batch.md` are beside it. Queue-only parent commit:
+`b1b5bceeb16afaffe326abaef405a4a8503d2c2f`; original source baseline:
+`66c179bd8186d093daa615512987cc6890b0c9c1`. Per-item source/semantic/scope inspection,
+simplify → ponytail-review, raw matching `git diff --binary --full-index` unstaged/staged/committed
+diffs, comparisons, command logs/exits and full commit map are external receipts, not history proof.
+Checks: `git diff --check`, bounded `timeout 150 nix develop -c godot --headless -s ontology/validate.gd`
+and final `timeout 150 nix develop -c godot --headless --quit`; inspect actual logs for outcomes.
+They cover existing loaded data/startup, not prose history, original builds or new policy enforcement.
+No broad gameplay/browser, visual or multiplayer tests. Post-recording independent review,
+parent reruns, final receipt completion/queue removal and publication remain pending.
+
+Only public-safe `article-extracts/{bows,dungeon}.{txt,json}`, their `.txt.sha256` and `manifest.json`
+under `/tmp/pixlnd-reconcile-source-53.VnWRKF/` were authorized for inspection/reproduction.
+No original authenticated DOM/owner HTML, tokens, account data or original hashes may be opened or
+published. These are rendered-DOM article extracts, not raw HTTP entities; revision pins come
+from captured metadata, not separate pinned-URL retrievals. Modification timestamps unavailable;
+capture dates are not release dates. No external retrieval, browser or preview/assets/build execution.
+Six authorized Markdown paths only; no gameplay/live JSON/checker/test/source-label/schema/
+compatibility/migration changes or changelog. Silk/Spinning Wheel quantities stay HOLD, not refusal;
+no duplicate 27/36 ballot or station correction. Food/yield/odds/roster/trait/population/route/naming/
+other UI/audio/dialogue/original-sleep histories remain research. No new items or topic advancement.
+Parent owns final handoff/commit/publication and STOP; child does not push or rewrite history.
 
 ### Validation-contract source attribution — items 46–52 (2026-10-05)
 

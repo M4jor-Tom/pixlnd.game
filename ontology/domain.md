@@ -2514,6 +2514,23 @@ follow item 46; no release chronology or broader roster ancestry follows. **Wolv
 the approved hybrid game**: this historical absence report selects no removal, new food/mount
 rule, source label or live-data change. Remaining species histories stay research.
 
+#### Item 53 — Ranger firing and comparative range (owner approved, 2026-10-05)
+
+[Bows revision 19306](https://cubeworld.fandom.com/wiki/Bows?oldid=19306)'s generic
+**Description** reports that **arrows can be fired in any direction, even out of combat**,
+and that **Bows and Crossbows reach further than Boomerangs**. Its **unlimited arrow
+ammunition** corroborates the existing rule (`weapon-types.json#bow`,
+`research_classes_combat.md §4`), not free M2 attacks. The direction sentence concerns
+arrows, not unrelated weapons. This qualitative comparison supplies no numerical ranges,
+particular edition or first appearance; existing MP costs, source tags and D24 movesets stand.
+
+The saved public-safe article-text extract and allowlisted metadata were inspected, not
+externally re-fetched or original-build tested. This is rendered-DOM article text, **not raw
+HTTP bytes**; the revision pin comes from captured metadata, not a separately fetched pinned
+URL. Modification timestamps are unavailable; the **2026-10-05** capture is not a release
+date. Original authenticated DOM/owner HTML is private and must not be published. No gameplay,
+live declarations, labels, balance or checker changes follow; remaining histories stay research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2824,9 +2841,11 @@ Glass bottles/sugar cubes/bombs and sometimes unnamed treat, not universal stock
 
 **Validation-contract source item 52 — DECIDED 2026-10-05:** §5 attributes reported Steam absence, not a census, first Alpha appearance or hybrid Wolf removal.
 
+**Validation-contract source item 53 — DECIDED 2026-10-05:** §5 attributes arrow-direction/out-of-combat firing and Bows/Crossbows reaching further than Boomerangs, not numerical ranges, free M2, edition or first appearance.
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–52 recorded; 36–52 independently reviewed and parent-verified (`todo_decide.md §E`, with evidence limits). No unhandled selection or presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–53 recorded; 36–52 independently reviewed and parent-verified (`todo_decide.md §E`, with evidence limits). Item 53 awaits post-recording independent review; approved item 54 awaits recording/review, both retained in the pending queue. No presented unanswered proposal remains; unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
