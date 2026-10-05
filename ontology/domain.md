@@ -2548,6 +2548,24 @@ limits follow item 53; no preview, original build, images or assets were inspect
 Existing dialogue declarations and hybrid rules stand; other dialogue histories remain research.
 No gameplay, live declarations, source labels or checker changes follow.
 
+#### Item 55 — Historical Steam UI/minimap controls (standing sourcing approval, 2026-10-05)
+
+[How to play guide for Cube World revision 20077](https://cubeworld.fandom.com/wiki/How_to_play_guide_for_Cube_World?oldid=20077),
+under **Controls / Steam Version**, reports **F2 makes UI smaller / F3 bigger**, with each
+explicitly not affecting the minimap; **F4 hides UI**; **F5 makes the minimap smaller / F6 bigger**.
+This precisely attributes the existing historical `keybinds.json#{ui-scale,hide-ui,minimap-scale}.S`
+cells and §3.7 option descriptions. Item 8's independent-minimap-scaling patch report remains
+separate: this guide supplies no first appearance or patch date for these exact controls.
+
+The retained public MediaWiki revision body and matching extracted JSON were inspected, not
+externally re-fetched, image-inspected or original-build tested. Edited **2024-08-22T18:15:12Z**;
+prior capture sidecars record request start and response end **2026-10-05T00:38:32Z**.
+Edit/capture dates are not release dates or evidence of demonstrated original behavior.
+This is a bounded community report, not whole-guide ancestry or adoption of its unrelated skill
+cooldown/pet-food claims. **D17's hybrid F3 debug-menu binding remains unchanged**; no hybrid
+control selection, UI implementation, source label, live declaration or checker change follows.
+Other UI/control histories remain research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2862,9 +2880,13 @@ Glass bottles/sugar cubes/bombs and sometimes unnamed treat, not universal stock
 
 **Validation-contract source item 54 — DECIDED 2026-10-05:** §5 attributes the exact NPC dungeon warning with Conceptualized Content/preview placement, not conceptual-only classification, shipped speaker/trigger, edition, release chronology or dialogue delivery.
 
+**Validation-contract source item 55 — DECIDED 2026-10-05 under standing sourcing approval:**
+§5 attributes the exact historical Steam UI/minimap key directions, not new controls, patch dates
+or whole-guide ancestry. D17's hybrid F3 debug-menu stands; independent review remains pending.
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–54 recorded; 36–54 independently reviewed and parent recording checks passed (`todo_decide.md §E`, with evidence limits). No unhandled selection or presented unanswered proposal remains; the empty pending queue is deleted. Final handoff review and parent gates passed; publication checkpoint is in HANDOFF. Unsupported food/mixed-container histories, daily quantities and sleep units stay research. No new proposals or implementation; no guessed labels or reopened mechanics; enforcement deferred |
+| Validation-contract source research/attribution | items 1–55 recorded; item 55 uses standing sourcing-only approval and awaits independent review/parent verification in the pending queue (`todo_decide.md §E`). Items 1–54 stand. Unsupported food/mixed-container histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics or implementation; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

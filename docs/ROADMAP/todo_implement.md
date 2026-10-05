@@ -15,7 +15,13 @@ data exists to migrate. Require current rules directly (`domain.md §0/§5`); da
 below means replacing checked-in stale definitions when authorized, never migration code,
 legacy-read fallbacks or obsolete-format compatibility. Implementation remains unauthorized.
 
-**Current attribution checkpoint (2026-10-05):** 53/54 approved without amendments, recorded,
+**Current attribution checkpoint (2026-10-05):** source item 55 recorded under standing
+sourcing-only approval; independent review/parent verification pending in the pending queue.
+Canonical/selection: `domain.md §5` / §7 and `todo_decide.md §E`; evidence: `docs/HANDOFF.md`.
+No new implementation authority, controls, labels or live data. Items 1–54 stand; Silk/Spinning
+Wheel stay HOLD. Remaining histories stay research, not whole-topic completion.
+
+**Historical attribution checkpoint 53–54 (2026-10-05):** 53/54 approved without amendments, recorded,
 independently reviewed and parent recording-verified. No unhandled selection or presented unanswered
 proposal remains; empty pending queue deleted. Receipts: `todo_decide.md §E`; canonical: `domain.md §5` / §7.
 Final handoff review and parent gates passed; commit/publication checkpoint: `docs/HANDOFF.md`
@@ -165,6 +171,10 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 - [ ] Item 9 — surviving logical-mob threat/order/provocation across restart; preserve normal resets and taunt termination (`ai-behavior`, `c-threat-pair`).
 
 ## Validation contract (documentation approved; implementation unauthorized)
+- Source item 55 (`domain.md §5`): exact historical Steam F2/F3 UI down/up, F4 hide and F5/F6
+  minimap down/up attribution supplies no introduction/patch date or whole-guide ancestry.
+  D17's hybrid F3 debug-menu stands; no remapping or new UI/control implementation is selected.
+  Other UI/control histories remain research; no source-label/live-data/checker change authorized.
 - [ ] Source item 32 (`domain.md#pet-food`): the daily stocked-type report selects no purchase
   quantity or source-build attribution; daily amounts/food histories remain research. No stock,
   purchase or carrying rule changes, label inference or data/checker/runtime work authorized.

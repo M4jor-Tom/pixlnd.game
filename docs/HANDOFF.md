@@ -1,6 +1,38 @@
 # Handoff — resume here
 
-## Current entry point — verified source-attribution 53–54, pre-publication (2026-10-05)
+## Current entry point — source attribution 55, review pending (2026-10-05)
+
+New owner standing answer: **“If the items are about accepting or refusing to add more precision to the sourcing of a data, auto-approve it”.**
+This new sourcing-only task resumes after completed checkpoint HEAD
+`04548e20de6bf49b3e995c35464d205f8a2c2924`; its old STOP/publication authorization does not
+control this task. Parent accepted item 55 under the standing answer, not a fabricated owner
+“55: Approved”. Canonical recording: `ontology/domain.md §5 item 55` / §7; exact selected
+proposal/boundary/status: `docs/ROADMAP/todo_decide.md §E` and pending-only
+`docs/todo_handle_reconciled_items.md`. Independent review/parent verification remain pending;
+do not remove the queue until review and item commit are verified. Parent owns publication.
+
+Item 55 attributes existing historical Steam F2/F3 UI down/up (not affecting minimap), F4 hide,
+F5/F6 minimap down/up, not hybrid remapping. D17's hybrid F3 debug-menu stands. No mechanics,
+labels, live JSON, checker/code/tests, new cooldown/food claims, changelog or implementation.
+Items 1–54 stand; Silk/Spinning Wheel remain HOLD, no duplicate 27/36 ballot or station change.
+Never implement regional gear loss or item 39's visual bug. No second candidate or new research.
+
+Evidence: `/tmp/pixlnd-source-precision.MIIiDU/`, public retained guide revision 20077 under
+`evidence/`; exact proposal `proposed-item-55.md`. No external request or browser action;
+no private DOM/owner HTML opened or published. Raw JSON/extracted content match; derived
+wikitext adds exactly one terminal LF. Initial local assertion exit 1 and parent-authorized
+bounded diagnostic/comparison exits 0 are preserved, not silently erased. Exact raw diffs,
+inspection/simplify/ponytail-review, per-item validator and final boot logs/exits and item hash/
+parent map are retained outside the repo. Checks cover existing loaded data/startup, not source
+history, Markdown truth or new enforcement; no gameplay/visual/multiplayer suite.
+
+Context percentage unavailable; research stopped conservatively for review/commit reserve.
+**Next:** fresh independent review of this bounded item, parent actual-Git/check verification,
+then receipt/queue handling and separately authorized publication. Other food/yield/odds/roster/
+trait/population/route/naming/UI/audio/dialogue/original-sleep histories remain research; no
+whole-topic completion or advancement to uncertain facts/implementation.
+
+## Historical entry point — verified source-attribution 53–54, pre-publication (2026-10-05)
 
 Owner exact answer: **“53: Approved; 54: Approved; When handled, handoff, commit, push”**.
 Items **53/54 recorded in separate commits, independently reviewed and parent recording-verified**.

@@ -10,6 +10,17 @@
 - Rule: use that exact heading and describe the player-facing consequences of accepting or refusing the proposal. Refusal rejects this proposal; it does not silently approve the opposite mechanic.
 - Owner clarification (2026-09-19): a question about a mechanic is not a correction or rejection. Rule: answer it without withdrawing the proposal or recording a design-failure lesson; additional mechanics can address the concern separately.
 
+## Standing approval for sourcing precision
+
+Owner exact answer (2026-10-05): **“If the items are about accepting or refusing to add more precision to the sourcing of a data, auto-approve it”.**
+Rule: apply this only to defensible sourcing-precision refinements of existing facts, preserving
+source uncertainty and evidence limits. It grants no mechanics, source labels, live JSON,
+checker/code/test changes or publication authority. Do not fabricate per-item owner answers.
+Save exact selected items and the standing answer in the pending queue before canonical recording;
+retain them until checks, independent review and commit are verified. Genuine new mechanics or
+scope choices still require owner approval. Prior checkpoint STOP does not bar a separately
+requested sourcing task; it supplies no authority for further implementation or publication.
+
 ## Browser-first source retrieval
 
 Owner instruction (2026-10-05): try Playwright first; ask for manual authentication if needed;
@@ -68,8 +79,9 @@ interactive approach with any agent, without requiring the previous conversation
 3. Present **all known remaining questions for that topic together**, numbered, with concrete
    gamer-facing recommendations. Use **"Approval versus Refusing"** for the player consequences;
    distinguish settled rules, current behavior, temporary approximations and future risks.
-4. Wait for answers, then check them against one another and settled decisions. Refusal does not
-   choose the opposite rule; questions are not rejection. Ask a follow-up batch for ambiguous,
+4. Wait for answers (or apply the bounded standing sourcing approval above), then check them
+   against one another and settled decisions. Refusal does not choose the opposite rule;
+   questions are not rejection. Ask a follow-up batch for ambiguous,
    contradictory or newly exposed cases, adding topic items when needed. Never silently resolve
    conflicts, reopen settled choices or offer permanently rejected features.
 5. Apply only approved, internally consistent ontology corrections; verify scope, run relevant

@@ -127,7 +127,7 @@ dependent decisions. Refusal does not approve the opposite rule or immediately b
 Commit each reconciled item separately. On explicit handoff, record the next topic or unfinished
 items, commit and push, then stop; otherwise do not push (owner workflow change, 2026-09-27).
 Approval of an ontology decision is not approval to implement additional gameplay.
-The full walkthrough/resumption protocol is in `tasks/lessons.md`; the prompt
+The full walkthrough/resumption protocol is in `docs/lessons.md`; the prompt
 **"resume walking through items"** means follow it and this checkpoint, not implement a slice.
 Never propose or implement regional gear power loss in pixlnd, even for Cube World cloning
 fidelity: permanently excluded, not a deferral or alternate mode (owner, 2026-09-15).
@@ -137,7 +137,16 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Current handoff direction — items 53–54 (2026-10-05):** owner exact answer:
+**Current sourcing direction (2026-10-05):** owner exact standing answer:
+**“If the items are about accepting or refusing to add more precision to the sourcing of a data, auto-approve it”.**
+Only defensible sourcing precision is autoapproved, not mechanics, labels, live JSON, checker,
+code/tests or publication. Item 55 is recorded below; independent review/parent verification
+remain pending in `docs/todo_handle_reconciled_items.md`. Items 1–54 stand; no unanswered ballot.
+Remaining Validation-contract histories stay research; no topic advancement or implementation.
+The prior checkpoint's STOP belongs to that completed checkpoint. Parent owns publication of
+this new task; no push or history rewrite by the writer. Protocol: `docs/lessons.md`.
+
+**Historical handoff direction — items 53–54 (2026-10-05):** owner exact answer:
 **“53: Approved; 54: Approved; When handled, handoff, commit, push”**. No amendments.
 Both recorded in separate item commits (`domain.md §5` / §7), independently reviewed with no
 issues and parent recording-verified; exact selections/full receipts below. No unhandled selection
@@ -743,10 +752,10 @@ Recorded selections, canonical pointers and item 39's no-bug amendment: the 36�
 **46–52 recorded, independently reviewed and parent-verified.** Exact selections and receipts
 are below; that historical batch left no unhandled selection.
 Bows/Dungeon items 53/54 are recorded, independently reviewed and parent recording-verified.
-No unhandled selection or presented unanswered proposal remains; the empty pending queue is deleted.
-See current checkpoint/HANDOFF; final handoff review and parent gates passed. Only the authorized
-commit/publication checkpoint remains, not new questions. Held Silk/Spinning Wheel findings are not new selections, refusals,
-changed game rules or whole-topic completion.
+Item 55 is recorded under standing sourcing-only approval; independent review/parent verification
+are pending in `docs/todo_handle_reconciled_items.md`. No unanswered ballot; no new research
+within this bounded checkpoint. Held Silk/Spinning Wheel findings remain HOLD, not selections,
+refusals, new 27/36 ballots, changed game rules or whole-topic completion.
 Context: ask by ~60%, handoff by ~85% (earlier with reserve), authorized checkpoint then STOP.
 Daily food quantities and original Alpha/Steam
 sleep-rate baseline/units (§5 items 10–11) remain research.
@@ -761,6 +770,40 @@ sleep-rate baseline/units (§5 items 10–11) remain research.
   identity, Lion tameability (`null` currently means untameable), resistance meaning and the
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
+
+### Validation-contract source attribution — item 55 (2026-10-05)
+
+**Exact owner standing answer:** “If the items are about accepting or refusing to add more precision to the sourcing of a data, auto-approve it”.
+Parent accepted item 55 under that answer; no separate owner “55: Approved” was given.
+**Recommended / selected:** precisely attribute revision 20077's Steam F2 UI smaller/F3 bigger
+(each not affecting minimap), F4 hide UI, F5 minimap smaller/F6 bigger to the existing historical
+keybind cells and §3.7 option descriptions. `ui.json#options` is grouped context, not exact rows.
+**Approval versus Refusing:** approval adds precise sourcing; refusal would leave this citation
+unrecorded, not choose opposite controls. Neither changes the approved player experience.
+No unresolved dependency; D17's hybrid F3 debug-menu and all earlier rules stand.
+
+| item | application | canonical pointer | commit receipt |
+|---|---|---|---|
+| 55 — Historical Steam UI/minimap controls | [x] canonically recorded; independent review/parent verification pending | `domain.md §5 item 55` / §7 | separate item commit; exact hash/parent retained in external `item-55-commit-map.txt` after commit |
+
+**Evidence/limits:** `/tmp/pixlnd-source-precision.MIIiDU/`; exact proposal `proposed-item-55.md`,
+retained public MediaWiki body/metadata and raw revision content under `evidence/`.
+[How to play guide revision 20077](https://cubeworld.fandom.com/wiki/How_to_play_guide_for_Cube_World?oldid=20077),
+Controls / Steam Version, edited 2024-08-22T18:15:12Z; prior capture request start/response end
+2026-10-05T00:38:32Z. Community report, not a first appearance, patch date, demonstrated original
+behavior or whole-guide ancestry. No re-fetch, browser control, images or build execution.
+Raw JSON/extracted content exactly match; `.wikitext` has one additional terminal LF.
+Initial local equality assertion failed (exit 1); parent authorized bounded diagnostic/comparison
+(exit 0), retained in `initial-inspection-failure.md` / `local-{diagnostic,byte-diff}.*`, not erased
+or called passing. Authority is the unnormalized raw revision content, not sidecar byte equality.
+
+Per-item source/scope/semantic inspection, simplify → ponytail-review, raw diffs and command
+logs/exits are saved outside the repo. Bounded validator and boot cover existing loaded data/
+startup, not Markdown truth, historical behavior or new enforcement; results: `item-55-*` and
+`final-*` receipts. Pending queue stays until fresh independent review and commit are verified.
+No new controls, source labels, gameplay, live JSON, checker/code/tests or unrelated skill/food
+claims. Silk/Spinning Wheel remain HOLD; remaining histories stay research, not topic completion.
+Parent owns final receipt/queue handling and publication; no push or history rewrite by this writer.
 
 ### Validation-contract source attribution — items 53–54 (2026-10-05)
 

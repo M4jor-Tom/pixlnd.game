@@ -22,10 +22,18 @@ D1–D26 and subsequent approvals stand. `domain.md §7` indexes the remaining h
 `docs/ROADMAP/todo_decide.md §E` tracks their decisions and application status. Equipment-model
 and validation-contract policies are approved, but their broader implementation is deferred.
 Dated build notes below include superseded placeholders, not proof of current coverage. For
-"resume walking through items", follow `tasks/lessons.md` and that checkpoint, not the gameplay
+"resume walking through items", follow `docs/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Current source-attribution checkpoint (2026-10-05):** approved items 53/54 recorded in
+**Current source-attribution checkpoint (2026-10-05):** item 55 recorded in `domain.md §5` / §7
+under owner standing sourcing-only approval; exact quotation/selection: `todo_decide.md §E`.
+Historical Steam UI/minimap key directions only; D17's hybrid F3 debug-menu stands. Independent
+review/parent verification remain pending in `docs/todo_handle_reconciled_items.md`; no live-data,
+labels, checker or gameplay change. Items 1–54 stand; Silk/Spinning Wheel remain HOLD.
+Remaining histories stay research, not topic completion. Parent owns final publication; this
+new sourcing task supersedes the previous checkpoint's STOP, not its implementation boundary.
+
+**Historical source-attribution checkpoint 53–54 (2026-10-05):** approved items 53/54 recorded in
 `domain.md §5 items 53–54` / §7, independently reviewed with no issues; parent recording audit,
 validator and boot passed. Exact selections/full item receipts and limits: `todo_decide.md §E`.
 No unhandled selection or presented unanswered proposal remains; the empty pending queue is deleted.
