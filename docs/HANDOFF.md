@@ -1,11 +1,23 @@
 # Handoff — resume here
 
-## Ontology walkthrough entry point (2026-10-05, source items 36–45)
+## Ontology walkthrough entry point (2026-10-05, pending-only queue handoff)
+
+**Post-batch queue cleanup:** the source batch was published at `eddc42e`; fresh remote,
+upstream and local HEAD equality was verified before this cleanup. Owner now requires only
+unhandled selections in `./docs/todo_handle_reconciled_items.md`: remove handled entries after
+verified recording, required review and commit; delete an empty queue. All ten former entries
+were verified handled/committed, so `docs/reconciled.md` was deleted and no empty replacement
+created. Completed exact answers/amendments and commit receipts remain in `todo_decide.md §E`.
+The installed skill is version 4, updated locally; game publication does not include profile files.
+This cleanup changes five Markdown paths only, not canonical report semantics or gameplay.
+Final cleanup checks/evidence: `queue-cleanup-validator.*`, `queue-handoff-{validator,boot}.*`
+and queue publication records under the evidence root below. Inspect actual Git on resumption.
 
 Owner approved **36–45**, with item 39: **“Approved (I don't want a bug implemented)”**.
 **All ten recorded in separate item commits, independently reviewed and parent-verified.**
 No approved-but-unhandled selection or unanswered proposal remains. Exact answers, canonical
-pointers and full item receipts: **`docs/reconciled.md`** / `todo_decide.md §E`.
+pointers and full item receipts: **`todo_decide.md §E`**. The completed-only former queue was
+removed; `./docs/todo_handle_reconciled_items.md` exists only when unhandled selections remain.
 Initial protocol/queue: `6bb47a1`; final item: `7476eb20ecc0817b1b792f970ef44dec65fa4dd7`.
 Canonical evidence: `ontology/domain.md#pet-food` (37–38), §5 (36/39–45), §7 index.
 Seven Markdown paths only across initial + batch; items 1–35 and all settled rules stand.
@@ -27,7 +39,8 @@ No external re-fetch, audio/images/original-build execution, gameplay suite, vis
 
 **Context protocol:** the installed profile `ontology-reconcile-topic` skill is updated locally:
 ask by ~60%, begin handoff by ~85% or earlier with reserve, preserve pending selections in
-`docs/reconciled.md` and show Previously selected without unchanged reapproval. Its mechanical
+`./docs/todo_handle_reconciled_items.md` and show Previously selected without unchanged reapproval.
+Remove handled entries after verified recording/commit; delete the queue when empty. Its mechanical
 contract checks and six manual scenario checks passed; no agent-pressure-trial claim. The context
 percentage meter was unavailable, so bounded delegation/early handoff were used without guessed
 percentages. Profile files are outside this game branch and are not part of its publication.
@@ -38,10 +51,11 @@ daily units/odds; roster/trait/population/route histories; naming generation; ot
 furniture/candle/dialogue and authenticated soundtrack identities. These are research gaps,
 not unanswered gameplay ballots. Do not advance to uncertain-fact topics or implementation.
 
-**Authorized publication:** commit this separate verified handoff after item `7476eb2`,
-normal-push only `fix/ontology-reconciliation`, verify fresh remote = upstream = local HEAD and
-clean worktree, then STOP. No amendment/rewrite/merge/force-push, profile publication or new
-research/proposals. This pre-publication record is not a publication claim; inspect actual Git.
+**Authorized publication:** owner requested “As session is handed off (ensure it), commit, push”.
+Commit this pending-only queue cleanup/handoff after published `eddc42e`; normal-push only
+`fix/ontology-reconciliation`, verify fresh remote = upstream = local HEAD and clean worktree,
+then STOP. No amendment/rewrite/merge/force-push, profile publication or new research/proposals.
+This cleanup checkpoint is pre-publication, not a claim that its forthcoming commit was pushed.
 
 ## Historical ontology checkpoint (2026-10-05, source item 32)
 

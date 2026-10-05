@@ -26,7 +26,8 @@ Dated build notes below include superseded placeholders, not proof of current co
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
 **Source-attribution items 36–45 (2026-10-05):** recorded, independently reviewed and parent-verified; no unhandled approval remains.
-Canonical: `domain.md#pet-food` / §5 / §7; selections/receipts: `docs/reconciled.md` / §E.
+Canonical: `domain.md#pet-food` / §5 / §7; completed selections/receipts: `todo_decide.md §E`.
+Pending-only queue: `./docs/todo_handle_reconciled_items.md`, absent when no unhandled item remains.
 No gameplay, labels or live changes; item 39's reported visual bug must not be implemented.
 Items 1–35 and hybrid rules stand; remaining histories stay research. Evidence/check limits and
 final authorized handoff/publication/STOP: `docs/HANDOFF.md` / §E. No new research or proposals.

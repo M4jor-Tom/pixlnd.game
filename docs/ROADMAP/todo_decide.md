@@ -691,7 +691,8 @@ Validation-contract mapping/source items 1–28 are historically recorded and ve
 approved 29–31 are recorded and verified, with fresh independent review and parent checks below.
 Items 33–35 are recorded and verified below; item 32's later approval is now recorded too.
 **Items 36–45 recorded, independently reviewed and parent-verified.** (2026-10-05)
-Exact selections, canonical pointers and item 39's no-bug amendment: `docs/reconciled.md`.
+Recorded selections, canonical pointers and item 39's no-bug amendment: the 36–45 section below.
+No unhandled selection remains; `./docs/todo_handle_reconciled_items.md` is absent when empty.
 No presented unanswered proposal remains. Pending selected entries precede new research.
 Context: ask by ~60%, handoff by ~85% (earlier with reserve), authorized checkpoint then STOP.
 Daily food quantities and original Alpha/Steam
@@ -710,8 +711,10 @@ sleep-rate baseline/units (§5 items 10–11) remain research.
 
 ### Validation-contract source attribution — items 36–45 (2026-10-05)
 
-Exact owner answers and selected boundaries: `docs/reconciled.md` (including item 39's
-**“Approved (I don't want a bug implemented)”**). Items 1–35 and all hybrid rules stand.
+**Exact owner answers:** “36: Approved; 37: Approved; 38: Approved; 39: Approved (I don't want
+a bug implemented); 40: Approved; 41: Approved; 42: Approved; 43: Approved; 44: Approved;
+45: Approved”. Selected boundaries are recorded in the canonical sections below.
+Items 1–35 and all hybrid rules stand.
 Documentation attribution only; no gameplay, JSON, tests, checker, research dumps, labels,
 defaults, balance, schema, migration or compatibility changes.
 

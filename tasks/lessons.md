@@ -18,11 +18,13 @@ Rule: use bounded inspection/delegation, stop new research/questions/items at th
 commit the checkpoint and push the authorized branch, verify publication, then STOP. Do not rely
 on automatic compaction or invent context percentages when the meter is unavailable.
 
-Owner instruction: preserve decided but unapplied reconciliations in **`docs/reconciled.md`**.
-Rule: save exact selections/amendments and application status before recording starts; resume pending
-entries first and show **Previously selected**, not a new ballot requiring unchanged reapproval.
-Keep canonical rules in `ontology/domain.md`; the queue tracks approval versus verified application
-and item commits. Item 39's reported visual bug is documentation only: never implement it.
+Owner instruction, refined 2026-10-05: use **`./docs/todo_handle_reconciled_items.md`** only for
+decided but unhandled reconciliations, not completed history. Rule: save exact selections/amendments
+and application status before recording; resume pending **Previously selected** entries without
+unchanged reapproval. After canonical recording, checks, required review and item commit are
+verified, retain completed decisions/receipts in §E and remove the queue entry; delete the file
+when empty. The former `docs/reconciled.md` name is retired. Keep canonical rules in
+`ontology/domain.md`; item 39's visual bug remains documentation only, never implemented.
 
 ## Separate settled rules from stale executable data
 
