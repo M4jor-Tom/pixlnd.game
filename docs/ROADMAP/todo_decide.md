@@ -137,12 +137,21 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Current sourcing direction (2026-10-09):** owner exact standing answer:
+**Current sourcing direction (2026-10-09):** owner latest exact reaffirmation:
+**“For all items about accepting/refusing to increase the source precision of informations, auto-accept each of them in subagents”.**
+Items **70–74** are selected under this narrow standing sourcing-only approval, **not yet
+canonically recorded or reviewed**. Exact original selections, Previously selected status,
+sources/limits and documentation boundary: `docs/todo_handle_reconciled_items.md`.
+Use one distinct fresh serial subagent and scoped commit per item; retain each pending entry
+until its canonical recording, checks, required independent review and item commit are verified.
+No individual numbered owner answers are fabricated; current approval grants no broader authority.
+
+**Previous sourcing batch 57–69:** owner exact standing answer:
 **“Auto-accept all items which are about the topic of augmenting the precision of sourcing or not, each in one separate subagent.”**
 Supervisor selected 57–69 as proposed; no individual numbered owner answers exist. All thirteen
 are handled: separately recorded/committed, independently reviewed with no issues and parent-accepted
 after actual-Git/source/diff audit and bounded validator/boot checks. Exact original selections,
-canonical pointers and full commit/parent receipts are below; empty pending-only queue deleted.
+canonical pointers and full commit/parent receipts are below; the then-empty pending queue was deleted.
 Items 1–56 stand; remaining histories stay research, not topic completion. No mechanics, labels,
 live JSON, checker/code/tests, publication or next-topic authority. Protocol: `docs/lessons.md`.
 Closure-delta parent review remains separate from completed recording acceptance.

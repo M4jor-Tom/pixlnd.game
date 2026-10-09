@@ -15,6 +15,7 @@
 Owner prior exact answer (2026-10-05): **“If the items are about accepting or refusing to add more precision to the sourcing of a data, auto-approve it”.**
 Owner reaffirmation (2026-10-09): **“Auto-accept all items which are about the topic of augmenting the precision of sourcing or not.”**
 Owner further instruction: **“Auto-accept all items which are about the topic of augmenting the precision of sourcing or not, each in one separate subagent.”**
+Owner latest exact reaffirmation: **“For all items about accepting/refusing to increase the source precision of informations, auto-accept each of them in subagents”.**
 Rule: use a distinct fresh subagent for each selected item, sequential single writer and one
 scoped item commit; one child processing the whole batch does not satisfy this instruction.
 The narrow sourcing-only authority below is unchanged; this is not broader approval.
