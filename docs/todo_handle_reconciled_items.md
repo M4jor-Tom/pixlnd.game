@@ -4,9 +4,9 @@
 Supervisor classified **all 57–69 as proposed**, without amendments or exclusions, under this
 answer. No individual owner “57: Approved” etc. was given. Original proposals/limits are below.
 
-**Status:** all approved sourcing-only. Items 57–63 are canonically recorded; writer receipts/commit
-correspondence are in `/tmp/pixlnd-source-item-{57,58,59,60,61,62,63}/`, with independent review and parent verification
-pending. Items 64–69 await canonical recording and item checks/commits. No unresolved item dependency; settled
+**Status:** all approved sourcing-only. Items 57–64 are canonically recorded; writer receipts/commit
+correspondence are in `/tmp/pixlnd-source-item-{57,58,59,60,61,62,63,64}/`, with independent review and parent verification
+pending. Items 65–69 await canonical recording and item checks/commits. No unresolved item dependency; settled
 items 1–56 remain prerequisites, not reopened questions. Use a **distinct fresh child per item**,
 sequential single writer, with one scoped conventional commit each. Keep entries pending until
 recording, checks, required review and commit are verified; retain completed receipts in §E,
@@ -154,6 +154,8 @@ refining ratios or original editions. No new deposit/refining rule. Item 47's nu
 quantity and item 27's metal refining remain unchanged, not repeated as new selections.
 
 ## 64. Fist handedness and Dagger pairing report
+
+**Application:** recorded in `ontology/domain.md §5 item 64` / §7; review/parent acceptance pending.
 
 **Original proposal / selected:** attribute Fists 20017 (F): “Fists are a type of one-handed …
 Weapon”; “Fists are dual-wield metal weapons used by the … Rogue.”; “Daggers can also be worn

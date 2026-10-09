@@ -139,8 +139,8 @@ checker implementation remain unauthorized. Verification record: `7a79913`.
 
 **Current sourcing direction (2026-10-09):** owner exact standing answer:
 **“Auto-accept all items which are about the topic of augmenting the precision of sourcing or not, each in one separate subagent.”**
-Supervisor selected 57–69 as proposed; no individual numbered owner answers exist. Items 57–63 are
-recorded below, pending independent review and parent verification; 64–69 await separate recording.
+Supervisor selected 57–69 as proposed; no individual numbered owner answers exist. Items 57–64 are
+recorded below, pending independent review and parent verification; 65–69 await separate recording.
 Retain `docs/todo_handle_reconciled_items.md` through review/commit verification. Items 1–56 stand;
 remaining histories stay research, not topic completion. No mechanics, labels, live JSON,
 checker/code/tests, publication or next-topic authority. Protocol: `docs/lessons.md`.
@@ -754,7 +754,7 @@ Bows/Dungeon items 53/54 are recorded, independently reviewed and parent recordi
 Item 55 is recorded under standing sourcing-only approval, independently reviewed with no issues
 and parent recording-verified. Item 56 is now recorded under the standing answer, independently
 reviewed with no issues and parent recording-verified; its historical empty queue was deleted.
-Current items 57–63 are recorded, review/parent verification pending; approved 64–69 await separate recording
+Current items 57–64 are recorded, review/parent verification pending; approved 65–69 await separate recording
 in the retained pending queue. Held Silk/Spinning Wheel findings remain HOLD, not
 selections, refusals, new 27/36 ballots, changed game rules or whole-topic completion.
 Context: ask by ~60%, handoff by ~85% (earlier with reserve), authorized checkpoint then STOP.
@@ -771,6 +771,25 @@ sleep-rate baseline/units (§5 items 10–11) remain research.
   identity, Lion tameability (`null` currently means untameable), resistance meaning and the
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
+
+### Validation-contract source attribution — item 64 (2026-10-09)
+
+- [x] **Recorded:** Fists' one-handed/dual-wield Rogue description and Dagger pairing report,
+  as proposed under the exact standing answer above, not an individual numbered owner approval.
+  Canonical attribution/limits: `domain.md §5 item 64` / §7.
+- **Approval versus Refusing:** approval records the citation/uncertainty; refusal would leave
+  it unrecorded, not select the opposite mechanic. Neither changes the approved player experience.
+- **Evidence:** public Fists revision 20017, pageid 465, edited 2024-08-21T17:30:36Z;
+  `/tmp/pixlnd-source-research-36.iKZQy6/food/wiki-five.body` / `wiki-five.meta` inspected,
+  capture 2026-10-05T00:37:32Z–00:37:33Z, HTTP200/curl exit0. Raw quotation/identity checks
+  and writer receipts: `/tmp/pixlnd-source-item-64/`. No envelope-equality or release-date claim.
+- **Status:** independent review and parent acceptance pending; original selection stays queued.
+  Exact item-commit correspondence is saved outside the repo; parent records its verified hash
+  during closure. Writer whitespace/bounded validator checks cover existing loaded data, not
+  prose/history or new enforcement; no boot/gameplay/visual/multiplayer check. Items 1–63 stand,
+  including item 49; no general mixing, class/hand/stat/animation rule, edition/recipe inference,
+  equipment implementation, labels, live JSON or code change. Approved equipment model/D6/Wand
+  and Silk/Spinning Wheel HOLD stand. No external/private/assets/original-build action or push.
 
 ### Validation-contract source attribution — item 63 (2026-10-09)
 

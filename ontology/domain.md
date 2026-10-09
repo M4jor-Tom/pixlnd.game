@@ -2731,6 +2731,26 @@ these are community reports, not demonstrated original-build behavior. No extern
 image/asset or original-build inspection occurred. No new deposit/refining rule, gameplay,
 live JSON, source labels or checker changes; remaining histories and quantities stay research.
 
+#### Item 64 — Fist handedness and Dagger pairing report (standing sourcing approval, 2026-10-09)
+
+[Fists revision 20017](https://cubeworld.fandom.com/wiki/Fists?oldid=20017) (pageid **465**)
+reports “Fists are a type of one-handed Weapon in Cube World.”, “Fists are dual-wield metal
+weapons used by the Rogue.” and “Daggers can also be worn with Fists.” (wiki links rendered).
+This attributes the existing `weapon-types.json#fist` handedness/class and
+`research/research_items.md §1.1` Dagger/Fist rows, in the context of §3.3 `weapon-type` and
+§3.4 `equipment-slot`. **No off-class permission, universal weapon mixing, hand priority,
+damage/stat aggregation or animations follow from these passages.** They supply no edition,
+recipe quantities, costs or crafting station; item 49's ingredients-only record is distinct
+and unchanged. The approved equipment model, D6 and mechanically two-handed Wand stand;
+no equipment implementation or new mechanic is authorized.
+
+The retained public raw API body and capture metadata were inspected: edited
+**2024-08-21T17:30:36Z**, captured **2026-10-05T00:37:32Z–00:37:33Z**, HTTP 200/curl exit 0.
+These are documentary timestamps, not release/introduction dates; the unscoped community
+reports are not original-build tests or proof of Alpha/Steam history. No external retrieval,
+private source, image/asset or original-build inspection occurred. No live JSON, source labels,
+checker/code/tests or gameplay change; remaining equipment histories stay research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -3090,9 +3110,14 @@ rules and F11/shared Bubble Gum stand; review/parent verification pending (`todo
 not exclusive habitat, odds, all-gem behavior or edition proof. No deposit/refining rule changes;
 review/parent verification pending (`todo_decide.md §E`).
 
+**Validation-contract source item 64 — DECIDED 2026-10-09 under standing sourcing approval:**
+§5 attributes one-handed Rogue Fists and Dagger pairing, not general mixing, hand/stat/animation
+rules or edition/recipe proof. Approved equipment model and two-handed Wand stand;
+review/parent verification pending (`todo_decide.md §E`).
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–56 stand; items 57–63 recorded under standing sourcing-only approval, review/parent verification pending (`todo_decide.md §E`). Approved 64–69 await separate recording; pending queue retained. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
+| Validation-contract source research/attribution | items 1–56 stand; items 57–64 recorded under standing sourcing-only approval, review/parent verification pending (`todo_decide.md §E`). Approved 65–69 await separate recording; pending queue retained. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

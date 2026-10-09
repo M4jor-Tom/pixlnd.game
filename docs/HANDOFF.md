@@ -2,11 +2,11 @@
 
 ## Current entry point — sourcing batch 57–69, recording in progress (2026-10-09)
 
-Items 57–63 are recorded under standing sourcing-only approval: `ontology/domain.md §5 items 57–63` / §7.
+Items 57–64 are recorded under standing sourcing-only approval: `ontology/domain.md §5 items 57–64` / §7.
 Exact owner answer, selections and evidence: `docs/ROADMAP/todo_decide.md §E`;
-writer receipts: `/tmp/pixlnd-source-item-{57,58,59,60,61,62,63}/`. Independent review and parent verification
+writer receipts: `/tmp/pixlnd-source-item-{57,58,59,60,61,62,63,64}/`. Independent review and parent verification
 remain pending; retain all entries in `docs/todo_handle_reconciled_items.md` through acceptance.
-Approved 64–69 await their separate fresh item writers; no reapproval required. Parent owns delegation.
+Approved 65–69 await their separate fresh item writers; no reapproval required. Parent owns delegation.
 
 Utility/attack-key and ambiguous Mouse Wheel dodge community attribution only, not control selection,
 slot behavior, Steam skill-tree absence or combat parameters. Click/scroll remains unresolved;
@@ -17,7 +17,8 @@ and Spikes rules stand. Steam emote examples and separately unscoped `/namepet` 
 naming behavior or tags; `/sit` A? stands. Alpha hydration/XP and Steam pet-scaling reports add no
 exact mechanics, persistence, formula, Steam absence or dating proof; hybrid pet rules stand.
 Qualitative Deposit habitats/named unrefined gems add no deposit/refining rule, odds, all-gem
-or edition proof; items 27/47 stand unchanged.
+or edition proof; items 27/47 stand unchanged. Fist handedness/Dagger pairing attribution adds
+no general mixing, equipment rule or edition/recipe proof; two-handed Wand and item 49 stand.
 Items 1–56 and all hybrid rules stand; item 56's Alpha pickup R/E
 uncertainty and completed review/commit receipts remain in §E. No gameplay,
 labels, live JSON, checker/code/tests, external/private/assets/original-build action or push.
