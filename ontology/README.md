@@ -25,7 +25,7 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `docs/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Current source-attribution checkpoint (2026-10-09):** items 57–65 recorded in `domain.md §5` / §7
+**Current source-attribution checkpoint (2026-10-09):** items 57–66 recorded in `domain.md §5` / §7
 under standing sourcing-only approval; independent review and parent verification pending.
 Historical utility/attack-key descriptions, ambiguous Mouse Wheel dodge wording and Steam R's
 non-universal 30-second report, plus two bounded Steam underwater-survival reports only;
@@ -36,7 +36,8 @@ hybrid pet rules stand. Qualitative Deposit habitats and named unrefined gems ad
 refining rule or all-gem/edition proof. Fist handedness/Dagger pairing attribution adds no general
 mixing or equipment rule; two-handed Wand stands. Named Wraith habitat/pursuit/pet-avoidance
 attribution adds no chase or immunity mechanism; hybrid aggro/home-return rules stand.
-Approved 66–69 await separate recording; queue retained.
+Wolf habitat/taming attribution leaves mount/food juxtaposition unresolved; hybrid Wolf, null
+tame-food, cut Apple Pie and F2 stand. Approved 67–69 await separate recording; queue retained.
 Items 1–56 and hybrid defaults stand.
 Exact selection/evidence: `todo_decide.md §E`; current status: `docs/HANDOFF.md`.
 No gameplay, labels, live-data/checker changes or publication authority. Remaining histories and

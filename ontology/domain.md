@@ -2771,6 +2771,28 @@ These edition-unscoped community reports are not demonstrated original-build beh
 retrieval, private source, image/audio asset or original-build inspection occurred. No live JSON,
 source labels, checker/code/tests or gameplay change; remaining histories stay research.
 
+#### Item 66 — Wolf habitat and internally qualified taming/mount reports (standing sourcing approval, 2026-10-09)
+
+[Wolf revision 20167](https://cubeworld.fandom.com/wiki/Wolf?oldid=20167) (pageid **856**)
+lists **Greenlands / Forests / Snowlands** in its infobox, describes “The Wolf is an untamable
+aggressive animal”, and reports in Trivia “Apple Pie was pre-conceptualized to tame a Wolf but
+never released.” Its simultaneous infobox **`mount = [[Mount Pets|Yes]]` / `food = n/a`** remains
+an **unresolved juxtaposition**, not usable riding permission or demonstrated taming. This
+attributes `creatures.json#wolf.{lands,h,tame,notes}`, `pet-food.json#cut.apple-pie` and the
+§3.2 `creature` / §3.4 `pet-food` descriptions without resolving their taming/mount implications.
+**Forests is descriptive habitat, not a new biome**; the list establishes no exclusive habitat.
+The community report does not demonstrate cut-content/build history, release/introduction timing,
+Alpha availability or mount usability. Hybrid Wolf, null tame-food, cut Apple Pie and F2 stand.
+Item 52's settled Steam-absence attribution is unchanged, not a new selection here.
+
+The retained public raw API body and capture sidecars were inspected: edited
+**2024-08-24T18:05:46Z**, capture **start 2026-10-05T15:12:55.340355+00:00**, HTTP 200/exit 0.
+The start is not completion proof; neither timestamp dates release/introduction. These passages
+are edition-unscoped community reports, not demonstrated original-build behavior; nearby Steam
+absence wording supplies no Alpha scope. No external retrieval, private source, image/audio asset
+or original-build inspection occurred. No source labels, live JSON, checker/code/tests or gameplay
+change; remaining histories stay research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -3140,9 +3162,14 @@ review/parent verification pending (`todo_decide.md §E`).
 exclusive habitats, quantified pursuit, immunity mechanisms, inherited undead traits or edition
 proof. Hybrid aggro/home-return rules stand; review/parent verification pending (`todo_decide.md §E`).
 
+**Validation-contract source item 66 — DECIDED 2026-10-09 under standing sourcing approval:**
+§5 attributes Wolf habitats and qualified taming/Apple Pie reports, preserving the mount/food
+juxtaposition unresolved, not exclusive habitat, build history, Alpha availability or usable riding.
+Hybrid Wolf, null tame-food, cut Apple Pie and F2 stand; review/parent verification pending (`todo_decide.md §E`).
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–56 stand; items 57–65 recorded under standing sourcing-only approval, review/parent verification pending (`todo_decide.md §E`). Approved 66–69 await separate recording; pending queue retained. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
+| Validation-contract source research/attribution | items 1–56 stand; items 57–66 recorded under standing sourcing-only approval, review/parent verification pending (`todo_decide.md §E`). Approved 67–69 await separate recording; pending queue retained. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

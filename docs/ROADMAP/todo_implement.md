@@ -15,7 +15,7 @@ data exists to migrate. Require current rules directly (`domain.md §0/§5`); da
 below means replacing checked-in stale definitions when authorized, never migration code,
 legacy-read fallbacks or obsolete-format compatibility. Implementation remains unauthorized.
 
-**Current attribution checkpoint (2026-10-09):** source items 57–65 recorded under standing
+**Current attribution checkpoint (2026-10-09):** source items 57–66 recorded under standing
 sourcing-only approval; review/parent verification pending, queue retained for 57–69.
 Canonical/receipts: `domain.md §5` / §7 and `todo_decide.md §E`; status: `docs/HANDOFF.md`.
 Items 1–56 stand; no implementation, controls, labels or live-data changes. Historical utility/
@@ -29,8 +29,9 @@ Alpha hydration/XP and Steam pet-scaling reports add no progression/persistence/
 approved hybrid pet rules stand. Item 63's qualitative Deposit habitats/named unrefined gems add
 no mining/refining debt. Item 64's Fist handedness/Dagger pairing attribution adds no equipment
 or general-mixing debt; approved equipment model/Wand stand. Item 65's named Wraith reports add
-no chase, immunity or pet-behavior debt; hybrid aggro/home-return rules stand. Remaining histories/quantities
-stay research. Silk/Spinning Wheel HOLD.
+no chase, immunity or pet-behavior debt; hybrid aggro/home-return rules stand. Item 66's Wolf reports
+add no habitat/taming/mount debt; null tame-food, cut Apple Pie and F2 stand. Remaining histories/
+quantities stay research. Silk/Spinning Wheel HOLD.
 
 **Historical attribution checkpoint 53–54 (2026-10-05):** 53/54 approved without amendments, recorded,
 independently reviewed and parent recording-verified. No unhandled selection or presented unanswered
