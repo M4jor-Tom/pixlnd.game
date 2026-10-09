@@ -1,13 +1,13 @@
 # Handoff — resume here
 
-## Current entry point — source items 70–71 provisionally recorded (2026-10-09)
+## Current entry point — source items 70–72 provisionally recorded (2026-10-09)
 
-Standing sourcing-only approval applied to items 70–71: `ontology/domain.md §5` / §7.
-Map inputs, player-created POI visibility and visited-biome map centering attribution only;
-D13/D23 and earlier items stand. **Independent review and parent acceptance pending.** All
-70–74 remain queued in `docs/todo_handle_reconciled_items.md`; 72–74 await distinct serial workers.
-Exact selections/provisional receipts: `docs/ROADMAP/todo_decide.md §E`; item 71 writer evidence:
-`/tmp/pixlnd-source-item-71-G3AH0R/` (actual commit/parent recorded there after commit).
+Standing sourcing-only approval applied to items 70–72: `ontology/domain.md §5` / §7.
+Map inputs/player-created POI visibility, visited-biome centering and qualitative pet combat/recall/teleport/
+return attribution only; D13/D23, Wraith exception and prior rules stand. **Independent review
+and parent acceptance pending.** All 70–74 remain queued in `docs/todo_handle_reconciled_items.md`;
+73–74 await distinct serial workers. Selections/provisional receipts: `docs/ROADMAP/todo_decide.md §E`;
+item 72 writer evidence: `/tmp/pixlnd-source-item-72-N046fs/` (actual commit/parent after commit).
 No gameplay, live data, labels, code/checker/tests or new implementation debt. Silk/Spinning Wheel
 remain HOLD; regional loss and item 39's bug remain prohibited. No push authority or topic completion.
 

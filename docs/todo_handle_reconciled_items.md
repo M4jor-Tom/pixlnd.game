@@ -1,8 +1,8 @@
 # Pending reconciled items — source precision 70–74
 
 Queue only, not canonical attribution. Resume these **Previously selected** items before new
-research. Each is approved by the standing sourcing instruction; **70–71 are provisionally recorded,
-independent review/parent acceptance pending; 72–74 await recording**. Per-item status below;
+research. Each is approved by the standing sourcing instruction; **70–72 are provisionally recorded,
+independent review/parent acceptance pending; 73–74 await recording**. Per-item status below;
 no numbered owner answer or completed independent review is claimed.
 Use one distinct fresh serial subagent and one scoped commit per item. Retain every entry until
 canonical recording, checks, required independent review and its item commit are verified;
@@ -104,8 +104,10 @@ Writer checks/commit evidence: `/tmp/pixlnd-source-item-71-G3AH0R/`; selection r
 > Attribute pet joining the player's initial fight, T whistle recall, far-away teleport and short-time nearby return after going down. Approval versus Refusing: accepting adds sourcing to existing pet behavior; refusing declines that attribution only. Both leave pets unchanged.
 
 **Previously selected:** approved under the standing sourcing-only instruction; apply only
-the attribution above within the limits below. **Application:** not yet canonically recorded,
-checked as an item, reviewed or committed as an item. No reapproval requested.
+the attribution above within the limits below. **Application:** provisionally recorded in
+`ontology/domain.md §5 item 72` / §7; independent review and parent acceptance pending.
+Writer checks/commit evidence: `/tmp/pixlnd-source-item-72-N046fs/`; selection receipt in
+`docs/ROADMAP/todo_decide.md §E`. Retain until all gates are verified. No reapproval requested.
 
 **Sources:** Raw guide.body:1056: ‘Don't worry if the pet goes down. It'll respawn after a short time close to you.’ ‘Your pet will also try to fight whatever you initially try to fight, but if you want it to come to you so you can say, make a quick getaway with the reins hit T to blow your trusty pet whistle and call them back to you. If they're considerably far away they'll be teleported.’ Derivative guide.text:2206-2208; shared provenance above.
 

@@ -2898,6 +2898,30 @@ not byte-equal raw content. This Steam-era community report is not original-buil
 release/introduction dating or Alpha equivalence. No source labels, live JSON, checker/code/tests
 or assets change; remaining histories stay research.
 
+#### Item 72 — Qualitative pet combat, recall, teleport and return (standing sourcing approval, 2026-10-09)
+
+[Darkmega's Steam guide 1871398574](https://steamcommunity.com/sharedfiles/filedetails/?id=1871398574),
+identified in item 70, reports: “Don't worry if the pet goes down. It'll respawn after a short
+time close to you.” It continues: “Your pet will also try to fight whatever you initially try
+to fight, but if you want it to come to you so you can say, make a quick getaway with the reins
+hit T to blow your trusty pet whistle and call them back to you. If they're considerably far
+away they'll be teleported.” This attributes the existing qualitative §3.2 `pet.behaviour`,
+`abilities.json#call-pet`, `keybinds.json#pet-call` / `#hybrid.pet-call` and
+`research/research_creatures_quests.md §3` descriptions only.
+
+**“Short time” does not establish ~1 minute; “considerably far away” supplies no distance
+threshold.** The report proves no health amount, instant cage-reslot revival, never-initiate
+guarantee, target-switch algorithm or persistence. The Wraith exception (item 65), hybrid
+mounting gates and all existing pet rules stand; no new AI, controls or gameplay follows.
+
+Retained public `/tmp/pixlnd-presentation-world.I1sm3d/guide.body:1056` and URL/capture sidecars
+were inspected without re-fetching. Identity and documentary dates match item 70; its shared
+provenance limits apply, including no immutable revision and the distinct title **updated 4/10**.
+HTMLParser inspection text and `guide.text:2206–2208` locators are derivatives, not byte-equal raw
+content. This Steam-era community report is not original-build demonstration, release/introduction
+dating or Alpha equivalence. No labels, live JSON, checker/code/tests or assets change;
+remaining pet histories stay research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -3291,6 +3315,11 @@ Recording is provisional pending independent review and parent acceptance (`todo
 lifetime, coordinate precision, cross-world persistence, teleportation or regional inventory rules.
 Regional gear loss remains excluded; recording awaits independent review and parent acceptance.
 
+**Validation-contract source item 72 — DECIDED 2026-10-09 under standing sourcing approval:**
+§5 attributes qualitative initial-fight participation, T whistle recall, far-away teleport and
+short-time nearby return only, not a timer, distance threshold, cage-reslot proof or AI algorithm.
+Wraith exception and hybrid pet rules stand; independent review and parent acceptance pending.
+
 Items 57–69 are handled: independent recording review found no issues; parent accepted after
 actual-Git/source/diff audit and bounded validator/boot checks. Exact selections, full hashes/
 parents and check limits: `todo_decide.md §E`. The then-empty pending queue was deleted;
@@ -3299,7 +3328,7 @@ No publication authority or whole-topic completion.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–71 recorded; 57–69 independently reviewed and parent-accepted (`todo_decide.md §E`); 70–71 await independent review/parent acceptance, 72–74 await recording. All five remain queued. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
+| Validation-contract source research/attribution | items 1–72 recorded; 57–69 independently reviewed and parent-accepted (`todo_decide.md §E`); 70–72 await independent review/parent acceptance, 73–74 await recording. All five remain queued. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
