@@ -1,8 +1,8 @@
 # Pending reconciled items — source precision 70–74
 
 Queue only, not canonical attribution. Resume these **Previously selected** items before new
-research. Each is approved by the standing sourcing instruction; **70 is provisionally recorded,
-independent review/parent acceptance pending; 71–74 await recording**. Per-item status below;
+research. Each is approved by the standing sourcing instruction; **70–71 are provisionally recorded,
+independent review/parent acceptance pending; 72–74 await recording**. Per-item status below;
 no numbered owner answer or completed independent review is claimed.
 Use one distinct fresh serial subagent and one scoped commit per item. Retain every entry until
 canonical recording, checks, required independent review and its item commit are verified;
@@ -82,8 +82,10 @@ it is not a new owner amendment or UI rule.
 > Attribute the guide's left/right arrows centering the map view on previously visited biomes. Approval versus Refusing: accepting sharpens existing map-selector sourcing; refusing omits only this attribution. Neither changes exploration/gameplay.
 
 **Previously selected:** approved under the standing sourcing-only instruction; apply only
-the attribution above within the limits below. **Application:** not yet canonically recorded,
-checked as an item, reviewed or committed as an item. No reapproval requested.
+the attribution above within the limits below. **Application:** provisionally recorded in
+`ontology/domain.md §5 item 71` / §7; independent review and parent acceptance pending.
+Writer checks/commit evidence: `/tmp/pixlnd-source-item-71-G3AH0R/`; selection receipt in
+`docs/ROADMAP/todo_decide.md §E`. Retain until all gates are verified. No reapproval requested.
 
 **Sources:** Raw guide.body:1104: ‘When you cross over into another biome the map will actually remember the last place you were at or have been.’ ‘a pair of arrows left and right will appear in the map that allow you to center your screen on the previous biomes you've been to.’ Derivative guide.text:2673; shared provenance above.
 

@@ -25,10 +25,10 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `docs/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Current source-attribution checkpoint (2026-10-09):** item 70 provisionally recorded in
-`domain.md §5` / §7 under standing sourcing-only approval: map inputs and player-created POI
-marker visibility, not a control change. Independent review and parent acceptance remain pending;
-70–74 stay queued, 71–74 await recording. Selections/receipts: `todo_decide.md §E`.
+**Current source-attribution checkpoint (2026-10-09):** items 70–71 provisionally recorded in
+`domain.md §5` / §7 under standing sourcing-only approval: map inputs, player-created POI
+visibility and visited-biome map centering only. Independent review and parent acceptance remain
+pending; 70–74 stay queued, 72–74 await recording. Selections/receipts: `todo_decide.md §E`.
 No new implementation debt or publication authority; prior rules and HOLDs stand.
 
 **Previous source-attribution checkpoint (2026-10-09):** items 57–69 recorded in `domain.md §5` / §7
