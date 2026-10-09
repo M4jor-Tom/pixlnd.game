@@ -820,9 +820,12 @@ supervisor-authorized successful corrections. They are not retroactively initial
 and all handled queue entries are removed; the empty queue is deleted. Original queue remains in
 setup/item Git history, not as a second completed ledger. Simplify → ponytail-review and fresh
 scope/whitespace/bounded validator/boot gates, exact full-index binary diff/commit correspondence
-and final Git receipts: `/tmp/pixlnd-sourcing-closure-01a121a6/`. Parent must inspect this final
-closure delta/commit after creation; it has not received a second independent review. Validator/
-boot concern existing loaded data/startup, not historical truth, Markdown or new enforcement;
+and final Git receipts: `/tmp/pixlnd-sourcing-closure-01a121a6/`. Parent inspected closure commit
+`6272a408cf5733e71af6f9f53b05ccdaf670c416`, confirmed its exact saved/actual diff correspondence
+and reran final whitespace/validator/boot successfully (`/tmp/pixlnd-sourcing-parent-01a121a6/final-*`).
+This final-delta review is parent review, not a second independent review. The subsequent two-file
+receipt update received parent simplify → ponytail-review and fresh `receipt-*` checks there.
+Validator/boot concern existing loaded data/startup, not historical truth, Markdown or new enforcement;
 no gameplay/visual/multiplayer suite or new repository test. No new source research, private
 source/assets/build access, mechanics, JSON, labels, checker/code, publication or next-topic authority.
 

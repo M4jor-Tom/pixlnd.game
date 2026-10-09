@@ -41,8 +41,10 @@ Parent evidence `/tmp/pixlnd-sourcing-parent-01a121a6/`: exact saved/staged/comm
 correspondence for all items, scope/preservation audit and whitespace/validator/boot all exit 0.
 Thirteen distinct serial workers verified; fresh context requested by parent, not proven by manifest.
 Closure-only simplify → ponytail-review, fresh scope/whitespace/validator/boot and exact diff/commit
-receipts: `/tmp/pixlnd-sourcing-closure-01a121a6/`. Parent must review this final delta/commit;
-it has not received another independent review. Checks concern current loaded data/startup and
+receipts: `/tmp/pixlnd-sourcing-closure-01a121a6/`. Parent reviewed closure commit `6272a408`,
+confirmed exact saved/actual diff correspondence and reran final whitespace/validator/boot checks
+successfully (`/tmp/pixlnd-sourcing-parent-01a121a6/final-*`). This was parent review, not another
+independent review. Checks concern current loaded data/startup and
 recording fidelity, not prose/history or new enforcement; no gameplay/visual/multiplayer suite.
 
 **Next resume:** remaining Validation-contract source research/attribution: original-build/edition
@@ -50,8 +52,8 @@ and food/taming/Leaf–Candy histories; daily units, yields/ratios/noncotton and
 roster/trait/population/route/naming histories; unresolved controls, pet-command/scaling details,
 other UI/audio/dialogue and original-sleep activation/healing/baseline/units. These are real evidence
 gaps, not new gameplay ballots. No new items/research or implementation in this closure.
-Inspect actual Git and closure receipts for the local checkpoint following item
-`213e3c2fcedd3df93f8335cf5e4d9e12434fe9a1`. **No push authority; none attempted.** Publication
+Closure commit: `6272a408cf5733e71af6f9f53b05ccdaf670c416`; a parent-verification receipt follows it.
+Inspect actual Git for the final local checkpoint. **No push authority; none attempted.** Publication
 requires separate authorization. Context percentage unavailable; no whole-topic completion.
 
 ## Historical entry point — verified source attribution 55, local checkpoint (2026-10-05)
