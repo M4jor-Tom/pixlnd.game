@@ -4,9 +4,9 @@
 Supervisor classified **all 57–69 as proposed**, without amendments or exclusions, under this
 answer. No individual owner “57: Approved” etc. was given. Original proposals/limits are below.
 
-**Status:** all approved sourcing-only. Items 57–60 are canonically recorded; writer receipts/commit
-correspondence are in `/tmp/pixlnd-source-item-{57,58,59,60}/`, with independent review and parent verification
-pending. Items 61–69 await canonical recording and item checks/commits. No unresolved item dependency; settled
+**Status:** all approved sourcing-only. Items 57–61 are canonically recorded; writer receipts/commit
+correspondence are in `/tmp/pixlnd-source-item-{57,58,59,60,61}/`, with independent review and parent verification
+pending. Items 62–69 await canonical recording and item checks/commits. No unresolved item dependency; settled
 items 1–56 remain prerequisites, not reopened questions. Use a **distinct fresh child per item**,
 sequential single writer, with one scoped conventional commit each. Keep entries pending until
 recording, checks, required review and commit are verified; retain completed receipts in §E,
@@ -112,6 +112,8 @@ activation key, Alpha equivalent or exact timing demonstrated. Do not turn the s
 drowning/climbing and Spikes rules stand.
 
 ## 61. Steam emote examples and unscoped pet-renaming command
+
+**Application:** recorded in `ontology/domain.md §5 item 61` / §7; review/parent acceptance pending.
 
 **Original proposal / selected:** attribute G Gameplay Notes' “On Steam, a few emotes exist such
 as /sit, /wave and /dance.” Separately attribute Pets and Pet Food's “You can nickname a pet by

@@ -15,7 +15,7 @@ data exists to migrate. Require current rules directly (`domain.md §0/§5`); da
 below means replacing checked-in stale definitions when authorized, never migration code,
 legacy-read fallbacks or obsolete-format compatibility. Implementation remains unauthorized.
 
-**Current attribution checkpoint (2026-10-09):** source items 57–60 recorded under standing
+**Current attribution checkpoint (2026-10-09):** source items 57–61 recorded under standing
 sourcing-only approval; review/parent verification pending, queue retained for 57–69.
 Canonical/receipts: `domain.md §5` / §7 and `todo_decide.md §E`; status: `docs/HANDOFF.md`.
 Items 1–56 stand; no implementation, controls, labels or live-data changes. Historical utility/
@@ -24,6 +24,7 @@ Mouse Wheel dodge wording leaves click/scroll unresolved; D13/D23 dodge/zoom sta
 Steam R's broad 30-second report adds no universal-cooldown or remapping debt; individual values
 and Assassin exception stand. Two Steam underwater-survival reports add no refill, infinite
 survival or movement-mechanic debt; swimming/drowning/climbing/Spikes rules stand.
+Steam emote examples and unscoped `/namepet` add no command/chat/naming implementation debt.
 Remaining histories stay research; Silk/Spinning Wheel HOLD.
 
 **Historical attribution checkpoint 53–54 (2026-10-05):** 53/54 approved without amendments, recorded,

@@ -2669,6 +2669,25 @@ dating or whole-guide ancestry. No external retrieval occurred; no images, asset
 builds were inspected. No gameplay, live declarations, source labels or checker changes;
 other histories remain research.
 
+#### Item 61 — Steam emote examples and unscoped pet-renaming command (standing sourcing approval, 2026-10-09)
+
+[How to play guide for Cube World revision 20077](https://cubeworld.fandom.com/wiki/How_to_play_guide_for_Cube_World?oldid=20077)
+(pageid **3372**), **Gameplay Notes**, reports “On Steam, a few emotes exist such as /sit,
+/wave and /dance.” (raw line 92). **“Such as” is non-exhaustive**: this supplies no `/pet`
+proof or Alpha emote proof. Separately, **Pets and Pet Food** reports “You can nickname a pet
+by typing /namepet.” (raw line 105). That sentence is **individually edition-unscoped**;
+nearby Alpha/Steam pet descriptions do not scope it. It specifies no argument syntax, active-pet
+target or name-validation rule. Context: `slash-commands.json#{/sit,/wave,/dance,/namepet <name>}`,
+§3.7 `slash-command` and §3.2 `pet.name`. **Preserve `/sit` A? and all existing source tags**;
+this attribution does not alter the existing command declarations.
+
+Public source identity, edit/capture dates and evidence limits follow item 57: authoritative
+raw/extracted/TXT content agrees, not the envelopes; derived wikitext adds one terminal LF.
+These are community reports, not demonstrated original-build behavior, release/introduction
+dating or whole-guide ancestry. No external retrieval occurred; no images, assets or original
+builds were inspected. No new commands, chat/naming behavior, gameplay, live declarations,
+source labels or checker changes; other histories remain research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -3013,9 +3032,14 @@ review/parent verification pending (`todo_decide.md §E`).
 infinite survival, immunity, timing or new movement mechanics. Swimming/drowning/climbing and
 Spikes rules stand; review/parent verification pending (`todo_decide.md §E`).
 
+**Validation-contract source item 61 — DECIDED 2026-10-09 under standing sourcing approval:**
+§5 attributes non-exhaustive Steam emote examples and separately edition-unscoped `/namepet`,
+not `/pet` or Alpha emote proof, argument/target/name-validation specifications or new behavior.
+Existing tags including `/sit` A? stand; review/parent verification pending (`todo_decide.md §E`).
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–56 stand; items 57–60 recorded under standing sourcing-only approval, review/parent verification pending (`todo_decide.md §E`). Approved 61–69 await separate recording; pending queue retained. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
+| Validation-contract source research/attribution | items 1–56 stand; items 57–61 recorded under standing sourcing-only approval, review/parent verification pending (`todo_decide.md §E`). Approved 62–69 await separate recording; pending queue retained. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
