@@ -2751,6 +2751,26 @@ reports are not original-build tests or proof of Alpha/Steam history. No externa
 private source, image/asset or original-build inspection occurred. No live JSON, source labels,
 checker/code/tests or gameplay change; remaining equipment histories stay research.
 
+#### Item 65 — Named Wraith pursuit and pet-avoidance reports (standing sourcing approval, 2026-10-09)
+
+[Wraith revision 20152](https://cubeworld.fandom.com/wiki/Wraith?oldid=20152) (pageid **3842**)
+lists **Dark Woods / Deadlands** in its infobox and reports “The wraith will follow a player
+longer than other monsters and cannot die.” and “Pets will not attack Wraiths even if the player
+attempts to attack them.” This attributes `creatures.json#wraith.{lands,notes}` and the existing
+§3.2 `creature`, `ai-behavior.chase` and `pet.behaviour` descriptions, not a new mechanic.
+**“Longer” supplies no distance or duration; “cannot die” supplies no technical immunity
+mechanism.** These named reports establish neither exclusive habitats nor every-undead trait
+inheritance, Alpha/Steam dating or demonstrated immunity tests. Hybrid aggro/home-return rules
+stand; no new chase or pet behavior follows. Item 51's attack-conditioned sound attribution is
+already recorded and unchanged, not a new selection here.
+
+The retained public raw API body and capture sidecars were inspected: edited
+**2024-08-24T17:52:35Z**, capture **start 2026-10-05T15:12:55.340355+00:00**, HTTP 200/exit 0.
+The start is not completion proof; neither timestamp establishes release/introduction timing.
+These edition-unscoped community reports are not demonstrated original-build behavior. No external
+retrieval, private source, image/audio asset or original-build inspection occurred. No live JSON,
+source labels, checker/code/tests or gameplay change; remaining histories stay research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -3115,9 +3135,14 @@ review/parent verification pending (`todo_decide.md §E`).
 rules or edition/recipe proof. Approved equipment model and two-handed Wand stand;
 review/parent verification pending (`todo_decide.md §E`).
 
+**Validation-contract source item 65 — DECIDED 2026-10-09 under standing sourcing approval:**
+§5 attributes named Wraith habitats, longer pursuit/cannot-die and pet-avoidance reports, not
+exclusive habitats, quantified pursuit, immunity mechanisms, inherited undead traits or edition
+proof. Hybrid aggro/home-return rules stand; review/parent verification pending (`todo_decide.md §E`).
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–56 stand; items 57–64 recorded under standing sourcing-only approval, review/parent verification pending (`todo_decide.md §E`). Approved 65–69 await separate recording; pending queue retained. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
+| Validation-contract source research/attribution | items 1–56 stand; items 57–65 recorded under standing sourcing-only approval, review/parent verification pending (`todo_decide.md §E`). Approved 66–69 await separate recording; pending queue retained. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

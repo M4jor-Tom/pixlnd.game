@@ -139,8 +139,8 @@ checker implementation remain unauthorized. Verification record: `7a79913`.
 
 **Current sourcing direction (2026-10-09):** owner exact standing answer:
 **“Auto-accept all items which are about the topic of augmenting the precision of sourcing or not, each in one separate subagent.”**
-Supervisor selected 57–69 as proposed; no individual numbered owner answers exist. Items 57–64 are
-recorded below, pending independent review and parent verification; 65–69 await separate recording.
+Supervisor selected 57–69 as proposed; no individual numbered owner answers exist. Items 57–65 are
+recorded below, pending independent review and parent verification; 66–69 await separate recording.
 Retain `docs/todo_handle_reconciled_items.md` through review/commit verification. Items 1–56 stand;
 remaining histories stay research, not topic completion. No mechanics, labels, live JSON,
 checker/code/tests, publication or next-topic authority. Protocol: `docs/lessons.md`.
@@ -754,7 +754,7 @@ Bows/Dungeon items 53/54 are recorded, independently reviewed and parent recordi
 Item 55 is recorded under standing sourcing-only approval, independently reviewed with no issues
 and parent recording-verified. Item 56 is now recorded under the standing answer, independently
 reviewed with no issues and parent recording-verified; its historical empty queue was deleted.
-Current items 57–64 are recorded, review/parent verification pending; approved 65–69 await separate recording
+Current items 57–65 are recorded, review/parent verification pending; approved 66–69 await separate recording
 in the retained pending queue. Held Silk/Spinning Wheel findings remain HOLD, not
 selections, refusals, new 27/36 ballots, changed game rules or whole-topic completion.
 Context: ask by ~60%, handoff by ~85% (earlier with reserve), authorized checkpoint then STOP.
@@ -771,6 +771,26 @@ sleep-rate baseline/units (§5 items 10–11) remain research.
   identity, Lion tameability (`null` currently means untameable), resistance meaning and the
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
+
+### Validation-contract source attribution — item 65 (2026-10-09)
+
+- [x] **Recorded:** named Wraith habitats, longer pursuit/cannot-die and pet-avoidance reports,
+  as proposed under the exact standing answer above, not an individual numbered owner approval.
+  Canonical attribution/limits: `domain.md §5 item 65` / §7; hybrid aggro/home-return rules stand.
+- **Approval versus Refusing:** approval records the citation/uncertainty; refusal would leave
+  it unrecorded, not select the opposite mechanic. Neither changes the approved player experience.
+- **Evidence:** public Wraith revision 20152, pageid 3842, edited 2024-08-24T17:52:35Z;
+  `/tmp/pixlnd-reconcile-next.2F5qwV/fauna/wiki.body` / `wiki.{start,result}` inspected,
+  capture start 2026-10-05T15:12:55.340355+00:00, HTTP200/exit0, not completion/release proof.
+  Writer receipts: `/tmp/pixlnd-source-item-65/`; initial JSON-shape inspection failure retained,
+  supervisor-authorized bounded jq inspection succeeded. No raw normalization/equality claim.
+- **Status:** independent review and parent acceptance pending; original selection stays queued.
+  Exact item-commit correspondence is saved outside the repo for parent closure. Writer whitespace/
+  bounded validator checks cover current loaded data, not prose/history or new enforcement;
+  no boot/gameplay/visual/multiplayer check. Items 1–64 stand, including item 51's sound attribution.
+  No exclusive habitat, quantified pursuit, immunity mechanism, undead inheritance or A/S dating
+  inferred; no chase/pet behavior, labels, live JSON or code change. Remaining histories and
+  Silk/Spinning Wheel HOLD stand. No external/private/assets/original-build action or push.
 
 ### Validation-contract source attribution — item 64 (2026-10-09)
 
