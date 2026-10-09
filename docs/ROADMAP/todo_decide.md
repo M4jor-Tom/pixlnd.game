@@ -139,9 +139,10 @@ checker implementation remain unauthorized. Verification record: `7a79913`.
 
 **Current sourcing direction (2026-10-09):** owner latest exact reaffirmation:
 **“For all items about accepting/refusing to increase the source precision of informations, auto-accept each of them in subagents”.**
-Items **70–74** are selected under this narrow standing sourcing-only approval, **not yet
-canonically recorded or reviewed**. Exact original selections, Previously selected status,
-sources/limits and documentation boundary: `docs/todo_handle_reconciled_items.md`.
+Items **70–74** are selected under this narrow standing sourcing-only approval. **70 is
+provisionally recorded; independent review and parent acceptance pending. 71–74 await recording.**
+Exact original selections, Previously selected status, sources/limits and documentation boundary:
+`docs/todo_handle_reconciled_items.md`; all five remain queued.
 Use one distinct fresh serial subagent and scoped commit per item; retain each pending entry
 until its canonical recording, checks, required independent review and item commit are verified.
 No individual numbered owner answers are fabricated; current approval grants no broader authority.
@@ -782,6 +783,24 @@ sleep-rate baseline/units (§5 items 10–11) remain research.
   identity, Lion tameability (`null` currently means untameable), resistance meaning and the
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
+
+### Validation-contract source attribution — item 70 (2026-10-09)
+
+**Selection:** under the exact current standing answer above, not a numbered owner approval.
+Original proposal / selected option (inventory verbatim):
+
+> Attribute M-open, wheel-zoom, middle-click marker, right-click pan, left-click rotate and player markers visible on a zoomed-out minimap. Approval versus Refusing: accepting improves sourcing; refusing declines only this attribution. Both leave controls/gameplay unchanged.
+
+**Fidelity clarification:** “player markers” means player-created POIs, not player positions;
+retained queue clarification, not a new owner amendment. Canonical report/provenance/limits:
+`ontology/domain.md §5 item 70` / §7. No gameplay, labels or live-data change; no new debt.
+**Application:** provisionally recorded; independent review and parent acceptance pending.
+Keep the queue entry until those gates and the item commit are verified. Writer evidence:
+`/tmp/pixlnd-source-item-70-nAbRIi/` (source identity/hashes, self-review, raw checks/exits and exact
+unstaged/staged/committed diffs). Actual commit/parent are retained there after commit; no
+independent review or publication is claimed. Writer scope/source audit, simplify → ponytail-review,
+`git diff --check` and bounded ontology validator passed (exit 0). Validator covers loaded data,
+not historical truth; no boot or gameplay suite was needed for this documentation-only change.
 
 ### Verified sourcing batch 57–69 — closure receipts (2026-10-09)
 

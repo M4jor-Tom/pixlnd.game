@@ -1,8 +1,9 @@
 # Pending reconciled items — source precision 70–74
 
 Queue only, not canonical attribution. Resume these **Previously selected** items before new
-research. Each is approved by the standing sourcing instruction, **not yet recorded/reviewed**;
-no per-item owner answer, canonical item commit or completed check/review is claimed.
+research. Each is approved by the standing sourcing instruction; **70 is provisionally recorded,
+independent review/parent acceptance pending; 71–74 await recording**. Per-item status below;
+no numbered owner answer or completed independent review is claimed.
 Use one distinct fresh serial subagent and one scoped commit per item. Retain every entry until
 canonical recording, checks, required independent review and its item commit are verified;
 then preserve completed receipts in `docs/ROADMAP/todo_decide.md §E` and remove that entry.
@@ -13,6 +14,8 @@ Delete this file only when empty.
 Owner exact answer (applies to every item below): **“For all items about accepting/refusing to increase the source precision of informations, auto-accept each of them in subagents”.**
 Prior distinct-fresh-subagent instruction remains in `docs/lessons.md`. Approval is sourcing-only,
 not a new mechanics ballot.
+Review instruction paths: `/home/theta/.pi-game-dev/prompts/simplify.md`, then
+`/home/theta/.pi-game-dev/git/github.com/DietrichGebert/ponytail/skills/ponytail-review/SKILL.md`.
 
 ### Approval versus Refusing
 
@@ -53,8 +56,10 @@ not new 27/36 ballots. No publication authority. Remaining evidence gaps stay re
 > Attribute M-open, wheel-zoom, middle-click marker, right-click pan, left-click rotate and player markers visible on a zoomed-out minimap. Approval versus Refusing: accepting improves sourcing; refusing declines only this attribution. Both leave controls/gameplay unchanged.
 
 **Previously selected:** approved under the standing sourcing-only instruction; apply only
-the attribution above within the limits below. **Application:** not yet canonically recorded,
-checked as an item, reviewed or committed as an item. No reapproval requested.
+the attribution above within the limits below. **Application:** provisionally recorded in
+`ontology/domain.md §5 item 70` / §7; independent review and parent acceptance pending.
+Writer checks/commit evidence: `/tmp/pixlnd-source-item-70-nAbRIi/`; selection receipt in
+`docs/ROADMAP/todo_decide.md §E`. Retain this entry until all gates are verified. No reapproval requested.
 
 **Fidelity clarification:** inventory “player markers” means **player-created points of
 interest**, not player-position markers or player heads. The supervisor confirmed this reading;

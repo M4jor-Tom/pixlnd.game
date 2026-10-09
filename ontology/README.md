@@ -25,7 +25,13 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `docs/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Current source-attribution checkpoint (2026-10-09):** items 57–69 recorded in `domain.md §5` / §7
+**Current source-attribution checkpoint (2026-10-09):** item 70 provisionally recorded in
+`domain.md §5` / §7 under standing sourcing-only approval: map inputs and player-created POI
+marker visibility, not a control change. Independent review and parent acceptance remain pending;
+70–74 stay queued, 71–74 await recording. Selections/receipts: `todo_decide.md §E`.
+No new implementation debt or publication authority; prior rules and HOLDs stand.
+
+**Previous source-attribution checkpoint (2026-10-09):** items 57–69 recorded in `domain.md §5` / §7
 under standing sourcing-only approval, independently reviewed with no issues and parent-accepted
 following actual-Git/source/diff audit and bounded validator/boot checks (`todo_decide.md §E`).
 Historical utility/attack-key descriptions, ambiguous Mouse Wheel dodge wording and Steam R's

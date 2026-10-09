@@ -2849,6 +2849,32 @@ This edition-unscoped community report is not Alpha/Steam proof or a demonstrate
 No external retrieval, private source, image/audio asset or original-build inspection occurred;
 no checker/code/tests or gameplay change. Remaining histories stay research.
 
+#### Item 70 — Map inputs and player-created POI marker visibility (standing sourcing approval, 2026-10-09)
+
+[Darkmega's Steam guide 1871398574](https://steamcommunity.com/sharedfiles/filedetails/?id=1871398574),
+**How to not have a bad time: Darkmega's Ultimate Cubeworld Guide [updated 4/10]**, reports:
+“Check your map with M and zoom it in and out with the mouse wheel.” It continues:
+“You can mark points of interest with a tap of the middle click. Pan with rightclick,
+rotate/look around with left. Points of interest you make can be seen on your minimap when
+you zoom it out so you can figure out a heading of where to go.” These are **player-created
+points of interest**, not player-position markers or heads.
+
+This attributes only the existing map-input/marker descriptions in §3.7 `input-binding` /
+`hud-element`, `keybinds.json#{world-map,map-controls}`, `ui.json#screens.world-map` /
+`#camera.map` and `research/research_world.md §10`. It establishes no numeric zoom range,
+star shape or persistence. Items 9 and 57 stand; map-context middle click does **not** resolve
+item 58's dodge shorthand. **D13/D23 defaults remain unchanged**; no control or gameplay change.
+
+Retained public raw `/tmp/pixlnd-presentation-world.I1sm3d/guide.body:1056` and URL/capture
+sidecars were inspected, not re-fetched. Title/author appear at lines 610/825; lines 846–847
+display Posted **25 Sep, 2019 @ 2:24am** / Updated **3 Oct, 2019 @ 10:14am**, timezone
+unspecified. The title's **updated 4/10** is distinct, not normalized to that update date.
+Capture: **2026-10-04T21:01:17Z**; no immutable revision established. HTMLParser inspection
+text and `guide.text` locators are derivatives, not byte-equal raw content. This Steam-era
+community report is not primary developer documentation, demonstrated original-build behavior,
+release/introduction dating, Alpha equivalence or absence proof. No source labels, live JSON,
+checker/code/tests or assets change; remaining histories stay research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -3232,14 +3258,20 @@ and role stand; item 39's bug remains prohibited.
 §5 attributes Cotton/Rogue/Loom only, not Linen/Silk stations, textile ratios, further costs,
 edition/release proof or a demonstrated recipe. Item 18 and Silk/Spinning Wheel HOLD stand.
 
+**Validation-contract source item 70 — DECIDED 2026-10-09 under standing sourcing approval:**
+§5 attributes map inputs and player-created POI visibility on a zoomed-out minimap only;
+no numeric zoom, star shape, persistence, Alpha proof or dodge correction. D13/D23 stand.
+Recording is provisional pending independent review and parent acceptance (`todo_decide.md §E`).
+
 Items 57–69 are handled: independent recording review found no issues; parent accepted after
 actual-Git/source/diff audit and bounded validator/boot checks. Exact selections, full hashes/
-parents and check limits: `todo_decide.md §E`. Empty pending queue deleted; closure-delta parent
-review remains separate. No publication authority or whole-topic completion.
+parents and check limits: `todo_decide.md §E`. The then-empty pending queue was deleted;
+closure-delta parent review remains separate. 70–74 now remain queued.
+No publication authority or whole-topic completion.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–69 recorded; 57–69 independently reviewed and parent-accepted (`todo_decide.md §E`); no unhandled selection, empty queue deleted. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
+| Validation-contract source research/attribution | items 1–70 recorded; 57–69 independently reviewed and parent-accepted (`todo_decide.md §E`); 70 awaits independent review/parent acceptance, 71–74 await recording. All five remain queued. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
