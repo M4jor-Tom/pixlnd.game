@@ -14,6 +14,9 @@
 
 Owner prior exact answer (2026-10-05): **“If the items are about accepting or refusing to add more precision to the sourcing of a data, auto-approve it”.**
 Owner reaffirmation (2026-10-09): **“Auto-accept all items which are about the topic of augmenting the precision of sourcing or not.”**
+Owner further instruction: **“Auto-accept all items which are about the topic of augmenting the precision of sourcing or not, each in one separate subagent.”**
+Rule: use a distinct fresh subagent for each selected item, sequential single writer and one
+scoped item commit; one child processing the whole batch does not satisfy this instruction.
 The narrow sourcing-only authority below is unchanged; this is not broader approval.
 Rule: apply this only to defensible sourcing-precision refinements of existing facts, preserving
 source uncertainty and evidence limits. It grants no mechanics, source labels, live JSON,
@@ -51,7 +54,10 @@ Owner workflow update (2026-10-05): question batches must be ready at **~60% con
 begin handoff by **~85%**, earlier if the next item/review would consume the publication reserve.
 Rule: use bounded inspection/delegation, stop new research/questions/items at the handoff boundary,
 commit the checkpoint and push the authorized branch, verify publication, then STOP. Do not rely
-on automatic compaction or invent context percentages when the meter is unavailable.
+on automatic compaction or invent context percentages when the meter is unavailable. An unavailable
+meter alone is not an automatic one-item stop: inventory all currently defensible refinements,
+retain every selection and use bounded per-item work with review/closure reserve. Genuine evidence
+gaps remain research, not facts invented to fill a batch.
 
 Owner instruction, refined 2026-10-05: use **`./docs/todo_handle_reconciled_items.md`** only for
 decided but unhandled reconciliations, not completed history. Rule: save exact selections/amendments
