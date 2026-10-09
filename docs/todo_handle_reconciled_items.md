@@ -4,9 +4,9 @@
 Supervisor classified **all 57–69 as proposed**, without amendments or exclusions, under this
 answer. No individual owner “57: Approved” etc. was given. Original proposals/limits are below.
 
-**Status:** all approved sourcing-only. Items 57–67 are canonically recorded; writer receipts/commit
-correspondence are in `/tmp/pixlnd-source-item-{57,58,59,60,61,62,63,64,65,66,67}/`, with independent review and parent verification
-pending. Items 68–69 await canonical recording and item checks/commits. No unresolved item dependency; settled
+**Status:** all approved sourcing-only. Items 57–68 are canonically recorded; writer receipts/commit
+correspondence are in `/tmp/pixlnd-source-item-{57,58,59,60,61,62,63,64,65,66,67,68}/`, with independent review and parent verification
+pending. Item 69 awaits canonical recording and item checks/commit. No unresolved item dependency; settled
 items 1–56 remain prerequisites, not reopened questions. Use a **distinct fresh child per item**,
 sequential single writer, with one scoped conventional commit each. Keep entries pending until
 recording, checks, required review and commit are verified; retain completed receipts in §E,
@@ -211,6 +211,8 @@ Desert membership for dark Alpaca, A/S dates or food changes. Distinct from item
 individual habitat nouns; no re-proposal of Cupcake pairings/Parrot analogy.
 
 ## 68. Individual Snout Beetle habitat and ranged-hostility report
+
+**Application:** recorded in `ontology/domain.md §5 item 68` / §7; review/parent acceptance pending.
 
 **Original proposal / selected:** attribute Snout Beetle 19194's (A) infobox `biome = Greenlands,
 Hills` and “Snout Beetles are a type of aggressive ranged Beetle”.

@@ -2814,6 +2814,24 @@ original-build behavior. Existing family, habitat and food rules stand; no label
 checker/code/tests or gameplay change. No external retrieval, private source, image/audio asset
 or original-build inspection occurred; remaining histories stay research.
 
+#### Item 68 — Individual Snout Beetle habitat and ranged-hostility report (standing sourcing approval, 2026-10-09)
+
+[Snout Beetle revision 19194](https://cubeworld.fandom.com/wiki/Snout_Beetle?oldid=19194)
+(pageid **939**) lists infobox `biome = Greenlands, Hills` and reports “Snout Beetles are a
+type of aggressive ranged Beetle”. This attributes `creatures.json#snout-beetle.{lands,h,role}`
+and §3.2 `creature`, not exclusive distribution, combat distance, pack size, attack cadence or
+Beetle-family inheritance. **Hills is descriptive habitat, not a new landscape.** Existing
+habitats and role stand. Lolly, mount traits, Intuition/dodge exclusivity and item 39's visual
+bug are not new selections or taming evidence here; **never implement that bug**.
+
+The retained public raw API body and capture sidecars were inspected: edited
+**2024-08-08T23:50:27Z**, capture **start 2026-10-05T00:38:29Z**, HTTP 200/curl and jq exit 0.
+The start is not completion proof; neither timestamp establishes release/introduction timing.
+These edition-unscoped community reports do not establish Alpha/Steam dating or demonstrated
+original-build behavior. No external retrieval, private source, image/audio asset, original-build
+inspection or taming test occurred. No labels, live JSON, checker/code/tests or gameplay change;
+remaining histories stay research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -3193,9 +3211,14 @@ Hybrid Wolf, null tame-food, cut Apple Pie and F2 stand; review/parent verificat
 numerical abundance, new biomes or edition proof. Individual rosters, dark-Alpaca Desert exclusion
 and food rules stand; review/parent verification pending (`todo_decide.md §E`).
 
+**Validation-contract source item 68 — DECIDED 2026-10-09 under standing sourcing approval:**
+§5 attributes individual Snout Beetle habitat and aggressive ranged wording, not a new landscape,
+exclusive distribution, combat parameters, family inheritance or edition proof. Existing habitats
+and role stand; item 39's bug remains prohibited. Review/parent verification pending (`todo_decide.md §E`).
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–56 stand; items 57–67 recorded under standing sourcing-only approval, review/parent verification pending (`todo_decide.md §E`). Approved 68–69 await separate recording; pending queue retained. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
+| Validation-contract source research/attribution | items 1–56 stand; items 57–68 recorded under standing sourcing-only approval, review/parent verification pending (`todo_decide.md §E`). Approved 69 awaits separate recording; pending queue retained. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
