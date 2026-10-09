@@ -2627,6 +2627,26 @@ or whole-guide ancestry. No external retrieval occurred; no images, assets or or
 were inspected. No gameplay, live declarations, source labels or checker changes; other histories
 remain research.
 
+#### Item 59 — Steam R report is not a universal 30-second cooldown (standing sourcing approval, 2026-10-09)
+
+[How to play guide for Cube World revision 20077](https://cubeworld.fandom.com/wiki/How_to_play_guide_for_Cube_World?oldid=20077)
+(pageid **3372**), **Controls / Steam Version**, reports **“R” / “Special Skill” /
+“Cast a special move every 30 seconds.”** (raw line 40). This broad wording is insufficient to
+establish a universal cooldown or override skill-specific declarations;
+`research/research_classes_combat.md §4` already flags the guide's generalization. It identifies no
+particular skill, first appearance or patch date. Context: `keybinds.json#ultimate.S`,
+`abilities.json#{rock-fist,heroic-shout,shadow-shooter,quicksand-trap,fire-missiles,bubbles,camouflage,ninjutsu}`
+and `generators.json#design.abilities`. **Existing individual cooldowns, hybrid key slots and
+Assassin's key-3/no-separate-ultimate exception stand.** Item 55 excluded unrelated skill claims;
+this item attributes that sentence's limitation, never adopts its number as a common rule.
+
+Public source identity, edit/capture dates and evidence limits follow item 57: authoritative
+raw/extracted/TXT content agrees, not the envelopes; derived wikitext adds one terminal LF.
+This is a community report, not demonstrated original-build behavior, release/introduction dating
+or whole-guide ancestry. No external retrieval occurred; no images, assets or original builds
+were inspected. No balance, gameplay, live declarations, source labels or checker changes;
+other histories remain research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2961,9 +2981,14 @@ verification pending; exact selection and evidence: `todo_decide.md §E`.
 resolution, moving qualifier, numeric cost or immunity proof. D13/D23 stand; review/parent
 verification pending (`todo_decide.md §E`).
 
+**Validation-contract source item 59 — DECIDED 2026-10-09 under standing sourcing approval:**
+§5 attributes Steam R's broad 30-second report as insufficient to override individual cooldowns,
+not a universal rule or skill identity/date proof. Hybrid slots and Assassin exception stand;
+review/parent verification pending (`todo_decide.md §E`).
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–56 stand; items 57–58 recorded under standing sourcing-only approval, review/parent verification pending (`todo_decide.md §E`). Approved 59–69 await separate recording; pending queue retained. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
+| Validation-contract source research/attribution | items 1–56 stand; items 57–59 recorded under standing sourcing-only approval, review/parent verification pending (`todo_decide.md §E`). Approved 60–69 await separate recording; pending queue retained. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

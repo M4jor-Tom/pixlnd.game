@@ -4,9 +4,9 @@
 Supervisor classified **all 57–69 as proposed**, without amendments or exclusions, under this
 answer. No individual owner “57: Approved” etc. was given. Original proposals/limits are below.
 
-**Status:** all approved sourcing-only. Items 57–58 are canonically recorded; writer receipts/commit
-correspondence are in `/tmp/pixlnd-source-item-{57,58}/`, with independent review and parent verification
-pending. Items 59–69 await canonical recording and item checks/commits. No unresolved item dependency; settled
+**Status:** all approved sourcing-only. Items 57–59 are canonically recorded; writer receipts/commit
+correspondence are in `/tmp/pixlnd-source-item-{57,58,59}/`, with independent review and parent verification
+pending. Items 60–69 await canonical recording and item checks/commits. No unresolved item dependency; settled
 items 1–56 remain prerequisites, not reopened questions. Use a **distinct fresh child per item**,
 sequential single writer, with one scoped conventional commit each. Keep entries pending until
 recording, checks, required review and commit are verified; retain completed receipts in §E,
@@ -83,6 +83,8 @@ numeric stamina, i-frames, immunity exceptions or original-build verification. N
 contradiction or control correction; D13/D23 dodge/zoom stand.
 
 ## 59. Steam R report is not a universal 30-second cooldown
+
+**Application:** recorded in `ontology/domain.md §5 item 59` / §7; review/parent acceptance pending.
 
 **Original proposal / selected:** attribute G Controls / Steam Version: “R” / “Special Skill” /
 “Cast a special move every 30 seconds.” Record the broad 30-second wording as insufficient to
