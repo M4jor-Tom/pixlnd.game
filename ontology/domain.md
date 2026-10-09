@@ -2688,6 +2688,29 @@ dating or whole-guide ancestry. No external retrieval occurred; no images, asset
 builds were inspected. No new commands, chat/naming behavior, gameplay, live declarations,
 source labels or checker changes; other histories remain research.
 
+#### Item 62 — Limited edition-specific pet progression/scaling report (standing sourcing approval, 2026-10-09)
+
+[How to play guide for Cube World revision 20077](https://cubeworld.fandom.com/wiki/How_to_play_guide_for_Cube_World?oldid=20077)
+(pageid **3372**), **Pets and Pet Food**, reports (raw lines 98–99):
+- “In Alpha, pets had more features such as hydration and XP.”
+- “On Steam pets take stats based on the players equipment rating.”
+
+These individually edition-scoped reports concern §3.2 `pet` hydration/level/xp/scaling,
+`rulesets.json#ruleset-alpha.flags.{pet-hydration,pet-xp}` / `#ruleset-steam.flags`,
+`ui.json#hud.pet-panel` and `research/research_creatures_quests.md §3`. They establish no exact
+hydration drain/refill/display, XP persistence, scaling formula, numerical rating contribution,
+Steam hydration/XP absence or patch date. The generic unique-food sentence is omitted as
+item 32's already-bounded report, not proof of individual taming history or an override of
+**F11/shared Bubble Gum**. **Approved hybrid pet progression, persistence and traversal stand;
+regional gear power loss remains permanently excluded.**
+
+Public source identity, edit/capture dates and evidence limits follow item 57: authoritative
+raw/extracted/TXT content agrees, not the envelopes; derived wikitext adds one terminal LF.
+These are community reports, not demonstrated original-build behavior, release/introduction
+dating or whole-guide ancestry. No external retrieval occurred; no images, assets or original
+builds were inspected. No gameplay, live declarations, source labels or checker changes;
+other histories remain research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -3037,9 +3060,14 @@ Spikes rules stand; review/parent verification pending (`todo_decide.md §E`).
 not `/pet` or Alpha emote proof, argument/target/name-validation specifications or new behavior.
 Existing tags including `/sit` A? stand; review/parent verification pending (`todo_decide.md §E`).
 
+**Validation-contract source item 62 — DECIDED 2026-10-09 under standing sourcing approval:**
+§5 attributes Alpha hydration/XP and Steam equipment-rating scaling reports, not exact mechanics,
+persistence, formula, rating contribution, Steam hydration/XP absence or patch dating. Hybrid pet
+rules and F11/shared Bubble Gum stand; review/parent verification pending (`todo_decide.md §E`).
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–56 stand; items 57–61 recorded under standing sourcing-only approval, review/parent verification pending (`todo_decide.md §E`). Approved 62–69 await separate recording; pending queue retained. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
+| Validation-contract source research/attribution | items 1–56 stand; items 57–62 recorded under standing sourcing-only approval, review/parent verification pending (`todo_decide.md §E`). Approved 63–69 await separate recording; pending queue retained. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
