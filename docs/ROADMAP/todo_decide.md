@@ -139,8 +139,8 @@ checker implementation remain unauthorized. Verification record: `7a79913`.
 
 **Current sourcing direction (2026-10-09):** owner exact standing answer:
 **“Auto-accept all items which are about the topic of augmenting the precision of sourcing or not, each in one separate subagent.”**
-Supervisor selected 57–69 as proposed; no individual numbered owner answers exist. Item 57 is
-recorded below, pending independent review and parent verification; 58–69 await separate recording.
+Supervisor selected 57–69 as proposed; no individual numbered owner answers exist. Items 57–58 are
+recorded below, pending independent review and parent verification; 59–69 await separate recording.
 Retain `docs/todo_handle_reconciled_items.md` through review/commit verification. Items 1–56 stand;
 remaining histories stay research, not topic completion. No mechanics, labels, live JSON,
 checker/code/tests, publication or next-topic authority. Protocol: `docs/lessons.md`.
@@ -754,7 +754,7 @@ Bows/Dungeon items 53/54 are recorded, independently reviewed and parent recordi
 Item 55 is recorded under standing sourcing-only approval, independently reviewed with no issues
 and parent recording-verified. Item 56 is now recorded under the standing answer, independently
 reviewed with no issues and parent recording-verified; its historical empty queue was deleted.
-Current item 57 is recorded, review/parent verification pending; approved 58–69 await separate recording
+Current items 57–58 are recorded, review/parent verification pending; approved 59–69 await separate recording
 in the retained pending queue. Held Silk/Spinning Wheel findings remain HOLD, not
 selections, refusals, new 27/36 ballots, changed game rules or whole-topic completion.
 Context: ask by ~60%, handoff by ~85% (earlier with reserve), authorized checkpoint then STOP.
@@ -771,6 +771,25 @@ sleep-rate baseline/units (§5 items 10–11) remain research.
   identity, Lion tameability (`null` currently means untameable), resistance meaning and the
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
+
+### Validation-contract source attribution — item 58 (2026-10-09)
+
+- [x] **Recorded:** both Controls tables' exact Mouse Wheel / Dodge / stamina-cost wording,
+  as proposed under the exact standing answer above; no individual owner answer fabricated.
+  Canonical attribution/limits: `domain.md §5 item 58` / §7; selection retained in the pending queue.
+- **Approval versus Refusing:** approval records the citation/uncertainty; refusal would leave
+  it unrecorded, not select opposite controls. Neither changes the approved player experience.
+- **Evidence:** public guide revision 20077, pageid 3372, Controls / Steam Version line 42 and
+  Alpha Version line 75; `/tmp/pixlnd-source-item-58/` holds source checks and item receipts.
+  Initial diagnostic failed on a hardcoded Alpha heading index; supervisor-authorized bounded
+  inspection corrected the diagnostic to check section membership, which passed. Original failure
+  retained. Authoritative content agrees; envelopes differ and derived wikitext adds one LF.
+- **Status:** independent review and parent acceptance pending; queue retained. Exact item-commit
+  correspondence is saved outside the repo; parent records its verified hash during closure.
+  Writer whitespace/bounded validator receipts cover existing loaded data, not prose/history or
+  new enforcement; no boot/gameplay/visual/multiplayer check. No click-versus-scroll resolution,
+  moving qualifier, numeric stamina or immunity proof follows. D13/D23 and items 1–57 stand;
+  no controls, labels, live JSON or code change. Remaining histories and Silk/Spinning Wheel HOLD stand.
 
 ### Validation-contract source attribution — item 57 (2026-10-09)
 

@@ -4,9 +4,9 @@
 Supervisor classified **all 57–69 as proposed**, without amendments or exclusions, under this
 answer. No individual owner “57: Approved” etc. was given. Original proposals/limits are below.
 
-**Status:** all approved sourcing-only. Item 57 is canonically recorded; its writer receipts/commit
-correspondence are in `/tmp/pixlnd-source-item-57/`, with independent review and parent verification
-pending. Items 58–69 await canonical recording and item checks/commits. No unresolved item dependency; settled
+**Status:** all approved sourcing-only. Items 57–58 are canonically recorded; writer receipts/commit
+correspondence are in `/tmp/pixlnd-source-item-{57,58}/`, with independent review and parent verification
+pending. Items 59–69 await canonical recording and item checks/commits. No unresolved item dependency; settled
 items 1–56 remain prerequisites, not reopened questions. Use a **distinct fresh child per item**,
 sequential single writer, with one scoped conventional commit each. Keep entries pending until
 recording, checks, required review and commit are verified; retain completed receipts in §E,
@@ -69,6 +69,8 @@ rows; those are omitted. D13/D17, D20/D24 and Assassin exception stand. One grou
 attribution, not one ballot per obvious key.
 
 ## 58. Dodge's ambiguous Mouse Wheel shorthand
+
+**Application:** recorded in `ontology/domain.md §5 item 58` / §7; review/parent acceptance pending.
 
 **Original proposal / selected:** attribute both G Controls tables' exact “Mouse Wheel” /
 “Dodge” / “Roll out of the way at the cost of stamina.” Preserve its underspecification against

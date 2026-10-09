@@ -2609,6 +2609,24 @@ behavior or whole-guide ancestry. No external retrieval occurred; no images, ass
 builds were inspected. **D13/D17 defaults, D20/D24 and Assassin's key-3 exception stand**. No control
 selection, gameplay, live declarations, source labels or checker changes; other histories remain research.
 
+#### Item 58 — Dodge's ambiguous Mouse Wheel shorthand (standing sourcing approval, 2026-10-09)
+
+[How to play guide for Cube World revision 20077](https://cubeworld.fandom.com/wiki/How_to_play_guide_for_Cube_World?oldid=20077)
+(pageid **3372**), **Controls / Steam Version** and **Controls / Alpha Version**, both report
+**“Mouse Wheel” / “Dodge” / “Roll out of the way at the cost of stamina.”** (raw lines 42/75).
+The shorthand does not distinguish wheel click from scrolling or specify the moving qualifier,
+numeric stamina cost, i-frames or immunity exceptions. Preserve this underspecification beside
+`keybinds.json#{dodge,zoom}.{A,S}`, §3.3 `dodge` and `research_systems.md §5.3`'s existing
+M3-while-moving dodge / wheel zoom declarations: **no proven contradiction or control correction**
+follows, and scrolling is not remapped to dodge. **D13/D23 dodge/zoom remain unchanged.**
+
+Public source identity, edit/capture dates and evidence limits follow item 57: authoritative
+raw/extracted/TXT content agrees, not the envelopes; derived wikitext adds one terminal LF.
+This is a community report, not demonstrated original-build behavior, release/introduction dating
+or whole-guide ancestry. No external retrieval occurred; no images, assets or original builds
+were inspected. No gameplay, live declarations, source labels or checker changes; other histories
+remain research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2938,9 +2956,14 @@ review found no issues and parent recording checks/item commit were verified (`t
 not new controls, slot behavior, Steam skill-tree absence or combat parameters. Review/parent
 verification pending; exact selection and evidence: `todo_decide.md §E`.
 
+**Validation-contract source item 58 — DECIDED 2026-10-09 under standing sourcing approval:**
+§5 attributes both Controls tables' ambiguous Mouse Wheel dodge wording, not click-versus-scroll
+resolution, moving qualifier, numeric cost or immunity proof. D13/D23 stand; review/parent
+verification pending (`todo_decide.md §E`).
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–56 stand; item 57 recorded under standing sourcing-only approval, review/parent verification pending (`todo_decide.md §E`). Approved 58–69 await separate recording; pending queue retained. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
+| Validation-contract source research/attribution | items 1–56 stand; items 57–58 recorded under standing sourcing-only approval, review/parent verification pending (`todo_decide.md §E`). Approved 59–69 await separate recording; pending queue retained. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
