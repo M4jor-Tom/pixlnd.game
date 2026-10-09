@@ -2922,6 +2922,29 @@ content. This Steam-era community report is not original-build demonstration, re
 dating or Alpha equivalence. No labels, live JSON, checker/code/tests or assets change;
 remaining pet histories stay research.
 
+#### Item 73 — Near-pet T riding instruction (standing sourcing approval, 2026-10-09)
+
+[Darkmega's Steam guide 1871398574](https://steamcommunity.com/sharedfiles/filedetails/?id=1871398574),
+identified in item 70, instructs under **Key items and You → Traversal Kit → Reins**:
+“Simply hit T as if calling your pet but when you're right next to it and you'll hop on.”
+This attributes only the existing near-pet riding-control description in §3.2 `pet`,
+`abilities.json#call-pet` and `keybinds.json#pet-ride`; it complements item 72's recall report.
+
+Proximity and Reins context are essential, not permission to mount any pet unconditionally.
+**Hybrid 5 Pet Master + ≥1 Riding point + global Reins + rideable tamed pet gates stand**
+(§3.2 traversal item 1 / `c-riding`), including further-point speed benefits. Adjacent regional
+acquisition context, caterpillar anecdote, E-pickup heuristic and ambiguous “fast rate” wording
+supply no new acquisition, species or speed rule. No numeric distance/speed or Alpha correction
+is established; regional gear loss remains permanently excluded.
+
+Retained public `/tmp/pixlnd-presentation-world.I1sm3d/guide.body:1120` and URL/capture sidecars
+were inspected without re-fetching. Item 70's shared identity/date limits apply, including the
+distinct title **updated 4/10** and no immutable revision. HTMLParser inspection text and
+`guide.text:2804–2811` locators are derivatives, not byte-equal raw content. This Steam-era
+community instruction is not original-build demonstration, release/introduction dating or
+Alpha equivalence. All settled rules stand; no controls, gameplay, labels, live JSON,
+checker/code/tests or assets change. Remaining histories stay research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -3320,6 +3343,10 @@ Regional gear loss remains excluded; recording awaits independent review and par
 short-time nearby return only, not a timer, distance threshold, cage-reslot proof or AI algorithm.
 Wraith exception and hybrid pet rules stand; independent review and parent acceptance pending.
 
+**Validation-contract source item 73 — DECIDED 2026-10-09 under standing sourcing approval:**
+§5 attributes Reins-context near-pet T only; `c-riding` gates stand, with no acquisition,
+species/speed or Alpha inference. Independent review and parent acceptance pending.
+
 Items 57–69 are handled: independent recording review found no issues; parent accepted after
 actual-Git/source/diff audit and bounded validator/boot checks. Exact selections, full hashes/
 parents and check limits: `todo_decide.md §E`. The then-empty pending queue was deleted;
@@ -3328,7 +3355,7 @@ No publication authority or whole-topic completion.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–72 recorded; 57–69 independently reviewed and parent-accepted (`todo_decide.md §E`); 70–72 await independent review/parent acceptance, 73–74 await recording. All five remain queued. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
+| Validation-contract source research/attribution | items 1–73 recorded; 57–69 independently reviewed and parent-accepted (`todo_decide.md §E`); 70–73 await independent review/parent acceptance, 74 awaits recording. All five remain queued. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

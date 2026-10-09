@@ -139,8 +139,8 @@ checker implementation remain unauthorized. Verification record: `7a79913`.
 
 **Current sourcing direction (2026-10-09):** owner latest exact reaffirmation:
 **“For all items about accepting/refusing to increase the source precision of informations, auto-accept each of them in subagents”.**
-Items **70–74** are selected under this narrow standing sourcing-only approval. **70–72 are
-provisionally recorded; independent review and parent acceptance pending. 73–74 await recording.**
+Items **70–74** are selected under this narrow standing sourcing-only approval. **70–73 are
+provisionally recorded; independent review and parent acceptance pending. 74 awaits recording.**
 Exact original selections, Previously selected status, sources/limits and documentation boundary:
 `docs/todo_handle_reconciled_items.md`; all five remain queued.
 Use one distinct fresh serial subagent and scoped commit per item; retain each pending entry
@@ -783,6 +783,22 @@ sleep-rate baseline/units (§5 items 10–11) remain research.
   identity, Lion tameability (`null` currently means untameable), resistance meaning and the
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
+
+### Validation-contract source attribution — item 73 (2026-10-09)
+
+**Selection:** auto-accepted under the exact current standing answer above, not a numbered
+owner approval. Original proposal / selected option (inventory verbatim):
+
+> Attribute the Reins-context instruction to use T beside a pet to mount. Approval versus Refusing: accepting improves historical control sourcing; refusing omits this attribution. Neither changes rideability or approved mounting requirements.
+
+**Application:** provisionally recorded in `ontology/domain.md §5 item 73` / §7;
+independent review and parent acceptance pending. Retain the queue entry until all gates are
+verified. No gameplay, labels, live-data change or new implementation debt; mounting gates stand.
+Writer evidence: `/tmp/pixlnd-source-item-73-QLGPE7/` (source identity/hashes, self-review,
+raw commands/exits and exact unstaged/staged/committed diffs; actual commit/parent after commit).
+Writer source/scope audit, simplify → ponytail-review, `git diff --check` and bounded ontology
+validator passed (exit 0). Checks cover recording fidelity and existing loaded data, not historical
+truth or new enforcement; no boot/gameplay suite needed. No independent review or publication claimed.
 
 ### Validation-contract source attribution — item 72 (2026-10-09)
 

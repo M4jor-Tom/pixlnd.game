@@ -1,8 +1,8 @@
 # Pending reconciled items — source precision 70–74
 
 Queue only, not canonical attribution. Resume these **Previously selected** items before new
-research. Each is approved by the standing sourcing instruction; **70–72 are provisionally recorded,
-independent review/parent acceptance pending; 73–74 await recording**. Per-item status below;
+research. Each is approved by the standing sourcing instruction; **70–73 are provisionally recorded,
+independent review/parent acceptance pending; 74 awaits recording**. Per-item status below;
 no numbered owner answer or completed independent review is claimed.
 Use one distinct fresh serial subagent and one scoped commit per item. Retain every entry until
 canonical recording, checks, required independent review and its item commit are verified;
@@ -126,8 +126,10 @@ Writer checks/commit evidence: `/tmp/pixlnd-source-item-72-N046fs/`; selection r
 > Attribute the Reins-context instruction to use T beside a pet to mount. Approval versus Refusing: accepting improves historical control sourcing; refusing omits this attribution. Neither changes rideability or approved mounting requirements.
 
 **Previously selected:** approved under the standing sourcing-only instruction; apply only
-the attribution above within the limits below. **Application:** not yet canonically recorded,
-checked as an item, reviewed or committed as an item. No reapproval requested.
+the attribution above within the limits below. **Application:** provisionally recorded in
+`ontology/domain.md §5 item 73` / §7; independent review and parent acceptance pending.
+Writer checks/commit evidence: `/tmp/pixlnd-source-item-73-QLGPE7/`; selection receipt in
+`docs/ROADMAP/todo_decide.md §E`. Retain until all gates are verified. No reapproval requested.
 
 **Sources:** Raw guide.body:1120, Reins subsection: ‘Simply hit T as if calling your pet but when you're right next to it and you'll hop on.’ Derivative guide.text:2804-2811; shared provenance above.
 
