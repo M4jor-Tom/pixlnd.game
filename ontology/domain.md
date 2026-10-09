@@ -2580,6 +2580,35 @@ patch date or demonstrated original-build behavior. Public evidence/date limits 
 this is not whole-guide ancestry. **D13's hybrid interaction, pickup and climbing remain E**;
 no gameplay, live declarations, source labels or checker changes.
 
+#### Item 57 — Historical utility and attack-key descriptions (standing sourcing approval, 2026-10-09)
+
+[How to play guide for Cube World revision 20077](https://cubeworld.fandom.com/wiki/How_to_play_guide_for_Cube_World?oldid=20077)
+(pageid **3372**), **Controls / Alpha Version** and **Controls / Steam Version**, reports:
+
+| Control | Action | Description in both tables |
+|---|---|---|
+| W, S, A, D | Movement | “Move the player with W, S, A, D.” |
+| M | World Map | “Open the World Map.” |
+| C | Crafting | “Open crafting window.” |
+| F | Lantern | “Toggle your lantern.” |
+| M1 Left-Click | Normal Attack | “Depends on weapon and class.” |
+| M2 Right-Click | Special Attack | “Depends on weapon and class.” |
+
+The **Alpha table** separately reports **G / Special Item**: “Toggle the item equipped in
+Special.” and **X / Skills**: “Open Skills window, allocate skill points here.” This grouped
+attribution concerns `keybinds.json#{move,world-map,crafting,lamp,basic-attack,special-attack}.{A,S}`
+and `#{special-item,skills-window}.A`, with §3.7 `input-binding` / `hud-element` as context.
+It establishes no additional slot behavior, Steam skill-tree conclusion from omission, attack
+costs/movesets or cooldowns. Items 55–56's UI-scale and interaction/climbing rows are not repeated.
+
+Retained public raw revision content agrees with extracted JSON and raw TXT; the envelopes
+are not equal; derived wikitext adds one terminal LF and is not byte-equal to raw content. Edited
+**2024-08-22T18:15:12Z**; capture start/end **2026-10-05T00:38:32Z**. These are documentary dates,
+not release/introduction dates. This is a community report, not demonstrated original-build
+behavior or whole-guide ancestry. No external retrieval occurred; no images, assets or original
+builds were inspected. **D13/D17 defaults, D20/D24 and Assassin's key-3 exception stand**. No control
+selection, gameplay, live declarations, source labels or checker changes; other histories remain research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2904,9 +2933,14 @@ no issues and parent recording checks passed (`todo_decide.md §E`).
 Alpha pickup R versus `keybinds.json#pick-up.A` E remains unresolved. D13 stands; independent
 review found no issues and parent recording checks/item commit were verified (`todo_decide.md §E`).
 
+**Validation-contract source item 57 — DECIDED 2026-10-09 under standing sourcing approval:**
+§5 attributes the grouped Alpha/Steam utility and attack-key descriptions plus Alpha G/X,
+not new controls, slot behavior, Steam skill-tree absence or combat parameters. Review/parent
+verification pending; exact selection and evidence: `todo_decide.md §E`.
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–55 stand; item 56 recorded under standing sourcing-only approval, independently reviewed with no issues and parent recording-verified (`todo_decide.md §E`). Item commit verified; no unhandled selection or unanswered ballot remains; empty pending queue deleted. Current status: HANDOFF; no publication authority. Unsupported food/mixed-container histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics or implementation; enforcement deferred |
+| Validation-contract source research/attribution | items 1–56 stand; item 57 recorded under standing sourcing-only approval, review/parent verification pending (`todo_decide.md §E`). Approved 58–69 await separate recording; pending queue retained. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

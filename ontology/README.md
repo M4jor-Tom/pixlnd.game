@@ -25,14 +25,13 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `docs/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Current source-attribution checkpoint (2026-10-09):** item 56 recorded in `domain.md §5` / §7
-under standing sourcing-only approval; exact selection/check receipts: `todo_decide.md §E`.
-Historical interaction/climbing descriptions only; Alpha pickup R versus the declared E remains
-unresolved and D13's hybrid E defaults stand. Independent review found no issues; parent recording
-checks passed; item commit verified, full receipt in §E. No unhandled selection remains; empty
-pending queue deleted. Items 1–55 stand;
-no gameplay, labels, live-data/checker changes or publication authority. Remaining histories and
-Silk/Spinning Wheel HOLD stand; current parent gates: `docs/HANDOFF.md`.
+**Current source-attribution checkpoint (2026-10-09):** item 57 recorded in `domain.md §5` / §7
+under standing sourcing-only approval; independent review and parent verification pending.
+Grouped historical utility/attack-key descriptions only; no control selection. Approved 58–69
+await separate recording; pending queue retained. Items 1–56 and hybrid defaults stand.
+Exact selection/evidence: `todo_decide.md §E`; current status: `docs/HANDOFF.md`.
+No gameplay, labels, live-data/checker changes or publication authority. Remaining histories and
+Silk/Spinning Wheel HOLD stand.
 
 **Historical source-attribution checkpoint 55 (2026-10-05):** item 55 recorded in `domain.md §5` / §7
 under owner standing sourcing-only approval; exact quotation/selection: `todo_decide.md §E`.

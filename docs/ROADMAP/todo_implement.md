@@ -15,11 +15,12 @@ data exists to migrate. Require current rules directly (`domain.md §0/§5`); da
 below means replacing checked-in stale definitions when authorized, never migration code,
 legacy-read fallbacks or obsolete-format compatibility. Implementation remains unauthorized.
 
-**Current attribution checkpoint (2026-10-09):** source item 56 recorded under standing
-sourcing-only approval, independently reviewed with no issues and parent recording-verified.
-Item commit verified; no unhandled selection remains; empty pending queue deleted. Canonical/receipts: `domain.md §5` / §7 and
-`todo_decide.md §E`; parent gates: `docs/HANDOFF.md`. Items 1–55 stand; no implementation,
-controls, labels or live-data changes. Remaining histories stay research; Silk/Spinning Wheel HOLD.
+**Current attribution checkpoint (2026-10-09):** source item 57 recorded under standing
+sourcing-only approval; review/parent verification pending, queue retained for 57–69.
+Canonical/receipts: `domain.md §5` / §7 and `todo_decide.md §E`; status: `docs/HANDOFF.md`.
+Items 1–56 stand; no implementation, controls, labels or live-data changes. Historical utility/
+attack-key reports add no slot behavior, Steam skill-tree inference or combat parameters.
+Remaining histories stay research; Silk/Spinning Wheel HOLD.
 
 **Historical attribution checkpoint 53–54 (2026-10-05):** 53/54 approved without amendments, recorded,
 independently reviewed and parent recording-verified. No unhandled selection or presented unanswered

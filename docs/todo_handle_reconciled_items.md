@@ -4,8 +4,9 @@
 Supervisor classified **all 57–69 as proposed**, without amendments or exclusions, under this
 answer. No individual owner “57: Approved” etc. was given. Original proposals/limits are below.
 
-**Status of every entry:** approved sourcing-only; canonical recording, item checks/commit,
-independent batch review and parent verification pending. No unresolved item dependency; settled
+**Status:** all approved sourcing-only. Item 57 is canonically recorded; its writer receipts/commit
+correspondence are in `/tmp/pixlnd-source-item-57/`, with independent review and parent verification
+pending. Items 58–69 await canonical recording and item checks/commits. No unresolved item dependency; settled
 items 1–56 remain prerequisites, not reopened questions. Use a **distinct fresh child per item**,
 sequential single writer, with one scoped conventional commit each. Keep entries pending until
 recording, checks, required review and commit are verified; retain completed receipts in §E,
@@ -51,6 +52,8 @@ outside the repository: `/tmp/pixlnd-source-batch-57-setup/` and managed `source
   pageid 939, edited 2024-08-08T23:50:27Z; capture start 2026-10-05T00:38:29Z, HTTP200/exit0.
 
 ## 57. Remaining historical utility and attack-key descriptions
+
+**Application:** recorded in `ontology/domain.md §5 item 57` / §7; review/parent acceptance pending.
 
 **Original proposal / selected:** attribute G's Controls tables for both Alpha and Steam:
 `W, S, A, D` Movement (“Move the player with W, S, A, D.”), M World Map (“Open the World Map.”),

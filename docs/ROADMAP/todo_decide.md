@@ -138,13 +138,12 @@ passed; evidence and limits below. Ontology documentation only; gameplay, live J
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
 **Current sourcing direction (2026-10-09):** owner exact standing answer:
-**“Auto-accept all items which are about the topic of augmenting the precision of sourcing or not.”**
-Only defensible sourcing precision is autoapproved, not mechanics, labels, live JSON, checker,
-code/tests or publication. Item 56 is recorded below, independently reviewed with no issues
-and parent recording-verified; item commit verified, receipt below. No unhandled selection or
-unanswered ballot remains; empty pending queue deleted. Items 1–55 stand; remaining histories
-stay research, not topic completion. Parent owns the local receipt/queue-deletion checkpoint;
-no push authorized or attempted; no history rewrite, next topic or implementation. Protocol: `docs/lessons.md`.
+**“Auto-accept all items which are about the topic of augmenting the precision of sourcing or not, each in one separate subagent.”**
+Supervisor selected 57–69 as proposed; no individual numbered owner answers exist. Item 57 is
+recorded below, pending independent review and parent verification; 58–69 await separate recording.
+Retain `docs/todo_handle_reconciled_items.md` through review/commit verification. Items 1–56 stand;
+remaining histories stay research, not topic completion. No mechanics, labels, live JSON,
+checker/code/tests, publication or next-topic authority. Protocol: `docs/lessons.md`.
 
 **Historical handoff direction — items 53–54 (2026-10-05):** owner exact answer:
 **“53: Approved; 54: Approved; When handled, handoff, commit, push”**. No amendments.
@@ -754,8 +753,9 @@ are below; that historical batch left no unhandled selection.
 Bows/Dungeon items 53/54 are recorded, independently reviewed and parent recording-verified.
 Item 55 is recorded under standing sourcing-only approval, independently reviewed with no issues
 and parent recording-verified. Item 56 is now recorded under the standing answer, independently
-reviewed with no issues and parent recording-verified; item commit verified, empty queue deleted. No new
-research within this bounded checkpoint. Held Silk/Spinning Wheel findings remain HOLD, not
+reviewed with no issues and parent recording-verified; its historical empty queue was deleted.
+Current item 57 is recorded, review/parent verification pending; approved 58–69 await separate recording
+in the retained pending queue. Held Silk/Spinning Wheel findings remain HOLD, not
 selections, refusals, new 27/36 ballots, changed game rules or whole-topic completion.
 Context: ask by ~60%, handoff by ~85% (earlier with reserve), authorized checkpoint then STOP.
 Daily food quantities and original Alpha/Steam
@@ -771,6 +771,23 @@ sleep-rate baseline/units (§5 items 10–11) remain research.
   identity, Lion tameability (`null` currently means untameable), resistance meaning and the
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
+
+### Validation-contract source attribution — item 57 (2026-10-09)
+
+- [x] **Recorded:** grouped Alpha/Steam movement, map, crafting, lantern and M1/M2 descriptions,
+  plus Alpha G Special Item / X Skills, as proposed under the exact standing answer above.
+  Canonical wording/limits: `domain.md §5 item 57` / §7; original selection retained in the pending queue.
+- **Approval versus Refusing:** approval records this citation/uncertainty; refusal would leave
+  it unrecorded, not select opposite controls. Neither changes the approved player experience.
+- **Evidence:** revision 20077, pageid 3372; retained public guide Controls rows
+  20/22/34/38/44/46/61/63/65/69/71/73/77/79. Source identity/content inspection and item receipts:
+  `/tmp/pixlnd-source-item-57/`. Authoritative body/extracted/raw-TXT equality only; envelopes differ,
+  derived wikitext adds one LF. No external/private/assets/original-build action or release-date proof.
+- **Status:** independent review and parent acceptance pending; queue retained. Per-item commit
+  correspondence is saved outside the repo; parent records the verified hash during closure.
+  Writer whitespace/bounded validator receipts cover existing loaded data, not prose/history or
+  new enforcement; no gameplay/visual/multiplayer tests. No controls, labels, live JSON or code change.
+  Items 1–56, D13/D17, D20/D24 and Assassin exception stand; Silk/Spinning Wheel remain HOLD.
 
 ### Validation-contract source attribution — item 56 (2026-10-09)
 

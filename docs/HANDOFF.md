@@ -1,25 +1,21 @@
 # Handoff — resume here
 
-## Current entry point — verified source attribution 56, local checkpoint (2026-10-09)
+## Current entry point — sourcing batch 57–69, recording in progress (2026-10-09)
 
-Item 56 is recorded under standing sourcing-only approval: `ontology/domain.md §5 item 56` / §7;
-exact selection, review/check limits and receipts: `docs/ROADMAP/todo_decide.md §E`.
-Item commit: `39530b83d382e1021c49571bfc7d771e31a3979d`. Its staged/committed diff and parent
-were verified; no unhandled selection or unanswered ballot remains. Empty pending queue deleted.
-Interaction/climbing reports only; Alpha pickup R versus `keybinds.json#pick-up.A` E remains
-unresolved. D13's hybrid E defaults and items 1–55 stand. Fresh independent review found no issues;
-parent inspected the actual diff and verified source identity/content, scope, whitespace,
-bounded validator and boot (exit 0). Evidence: `/tmp/pixlnd-source-precision-56.bUj9em/`.
-Checks cover existing loaded data/startup and recording fidelity, not historical truth or new
-enforcement; no external/private DOM/assets/original-build action or gameplay/visual suite.
-Final receipt/queue-deletion delta is parent-reviewed, not a second independent review; final
-local gates/commit evidence: `closure-*`. Establish checkpoint completion from actual Git.
+Item 57 is recorded under standing sourcing-only approval: `ontology/domain.md §5 item 57` / §7.
+Exact owner answer, selection and evidence: `docs/ROADMAP/todo_decide.md §E`;
+writer receipts: `/tmp/pixlnd-source-item-57/`. Independent review and parent verification
+remain pending; retain all entries in `docs/todo_handle_reconciled_items.md` through acceptance.
+Approved 58–69 await their separate fresh item writers; no reapproval required. Parent owns delegation.
 
-**Next resume:** remaining Validation-contract source research/attribution under standing approval;
-no pending selection needs reapproval. Other histories and Silk/Spinning Wheel HOLD stand, not
-whole-topic completion. No gameplay/live-data/checker changes or topic advancement. Context
-percentage unavailable; walkthrough stopped at this bounded local checkpoint. No push authorized
-or attempted; publication requires separate authorization.
+Utility/attack-key community attribution only, not control selection, slot behavior, Steam skill-tree
+absence or combat parameters. Items 1–56 and all hybrid rules stand; item 56's Alpha pickup
+R/E uncertainty remains. Its completed review/commit receipts remain in §E. No gameplay,
+labels, live JSON, checker/code/tests, external/private/assets/original-build action or push.
+Writer whitespace/validator checks cover current loaded data, not prose/history or new enforcement;
+no boot/gameplay/visual/multiplayer result claimed here. Remaining histories and Silk/Spinning Wheel
+HOLD stand; regional loss is permanently excluded and item 39's bug must never be implemented.
+Context percentage unavailable; this is bounded item recording, not batch acceptance or topic completion.
 
 ## Historical entry point — verified source attribution 55, local checkpoint (2026-10-05)
 
