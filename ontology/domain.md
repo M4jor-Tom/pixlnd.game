@@ -2566,6 +2566,20 @@ cooldown/pet-food claims. **D17's hybrid F3 debug-menu binding remains unchanged
 control selection, UI implementation, source label, live declaration or checker change follows.
 Other UI/control histories remain research.
 
+#### Item 56 — Historical interaction/climbing reports (standing sourcing approval, 2026-10-09)
+
+[How to play guide for Cube World revision 20077](https://cubeworld.fandom.com/wiki/How_to_play_guide_for_Cube_World?oldid=20077),
+under **Controls / Alpha Version** and **Controls / Steam Version**, labels **Alpha R / Steam E**
+**Interact**: opening chests, talking to NPCs and picking up items. It labels **Alpha Ctrl / Steam E**
+**Climb**: climbing walls at a stamina cost.
+
+Preserve the disagreement: the Alpha guide groups pickup under **R**, while
+`keybinds.json#pick-up.A` separately declares **E**. This does not resolve that history or change
+either declaration. The guide does not establish hold, grab/Shift qualifiers, first appearance,
+patch date or demonstrated original-build behavior. Public evidence/date limits follow item 55;
+this is not whole-guide ancestry. **D13's hybrid interaction, pickup and climbing remain E**;
+no gameplay, live declarations, source labels or checker changes.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2885,9 +2899,14 @@ Glass bottles/sugar cubes/bombs and sometimes unnamed treat, not universal stock
 or whole-guide ancestry. D17's hybrid F3 debug-menu stands; independent recording review found
 no issues and parent recording checks passed (`todo_decide.md §E`).
 
+**Validation-contract source item 56 — DECIDED 2026-10-09 under standing sourcing approval:**
+§5 attributes Alpha R / Steam E Interact and Alpha Ctrl / Steam E Climb with stamina cost;
+Alpha pickup R versus `keybinds.json#pick-up.A` E remains unresolved. D13 stands; independent
+review found no issues and parent recording checks passed; item commit pending (`todo_decide.md §E`).
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–55 recorded; item 55 uses standing sourcing-only approval, independently reviewed with no issues and parent recording-verified (`todo_decide.md §E`). No unhandled selection or unanswered ballot remains; empty pending queue deleted. Final local checkpoint/remaining research: HANDOFF; publication not authorized here. Unsupported food/mixed-container histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics or implementation; enforcement deferred |
+| Validation-contract source research/attribution | items 1–55 stand; item 56 recorded under standing sourcing-only approval, independently reviewed with no issues and parent recording-verified (`todo_decide.md §E`). Item commit pending; selection retained in pending queue; no unanswered ballot. Current status: HANDOFF; no publication authority. Unsupported food/mixed-container histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics or implementation; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

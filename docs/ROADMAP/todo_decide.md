@@ -137,15 +137,14 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Current sourcing direction (2026-10-05):** owner exact standing answer:
-**“If the items are about accepting or refusing to add more precision to the sourcing of a data, auto-approve it”.**
+**Current sourcing direction (2026-10-09):** owner exact standing answer:
+**“Auto-accept all items which are about the topic of augmenting the precision of sourcing or not.”**
 Only defensible sourcing precision is autoapproved, not mechanics, labels, live JSON, checker,
-code/tests or publication. Item 55 is recorded below, independently reviewed with no issues
-and parent recording-verified. No unhandled selection or unanswered ballot remains; the empty
-pending queue is deleted. Items 1–54 stand.
-Remaining Validation-contract histories stay research; no topic advancement or implementation.
-The prior checkpoint's STOP belongs to that completed checkpoint. Parent owns publication of
-this new task; no push or history rewrite by the writer. Protocol: `docs/lessons.md`.
+code/tests or publication. Item 56 is recorded below, independently reviewed with no issues
+and parent recording-verified; item commit pending. Retain `docs/todo_handle_reconciled_items.md`; no
+unanswered ballot. Items 1–55 stand; remaining histories stay research, not topic completion.
+Parent owns the separately scoped commit/receipt and final queue removal; writer must not stage,
+commit, push or rewrite history. No next topic or implementation. Protocol: `docs/lessons.md`.
 
 **Historical handoff direction — items 53–54 (2026-10-05):** owner exact answer:
 **“53: Approved; 54: Approved; When handled, handoff, commit, push”**. No amendments.
@@ -754,10 +753,10 @@ Recorded selections, canonical pointers and item 39's no-bug amendment: the 36�
 are below; that historical batch left no unhandled selection.
 Bows/Dungeon items 53/54 are recorded, independently reviewed and parent recording-verified.
 Item 55 is recorded under standing sourcing-only approval, independently reviewed with no issues
-and parent recording-verified. No unhandled selection or unanswered ballot remains; the empty
-pending queue is deleted. No new research within this bounded checkpoint. Held Silk/Spinning
-Wheel findings remain HOLD, not selections, refusals, new 27/36 ballots, changed game rules
-or whole-topic completion.
+and parent recording-verified. Item 56 is now recorded under the standing answer, independently
+reviewed with no issues and parent recording-verified; item commit pending. Retain its queue entry. No new
+research within this bounded checkpoint. Held Silk/Spinning Wheel findings remain HOLD, not
+selections, refusals, new 27/36 ballots, changed game rules or whole-topic completion.
 Context: ask by ~60%, handoff by ~85% (earlier with reserve), authorized checkpoint then STOP.
 Daily food quantities and original Alpha/Steam
 sleep-rate baseline/units (§5 items 10–11) remain research.
@@ -772,6 +771,42 @@ sleep-rate baseline/units (§5 items 10–11) remain research.
   identity, Lion tameability (`null` currently means untameable), resistance meaning and the
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
+
+### Validation-contract source attribution — item 56 (2026-10-09)
+
+**Exact owner standing answer:** “Auto-accept all items which are about the topic of augmenting the precision of sourcing or not.”
+**Previously selected:** approve the sourcing-only refinement; no separate owner “56: Approved”
+or amendment exists. Revision 20077's Controls tables describe Alpha R / Steam E Interact
+(opening chests, talking to NPCs, picking up items) and Alpha Ctrl / Steam E Climb at a stamina
+cost. Preserve Alpha pickup R versus `keybinds.json#pick-up.A` E; do not resolve the discrepancy,
+hold/grab/Shift qualifiers, first appearance, patch date or demonstrated original-build behavior.
+**Approval versus Refusing:** approval records precise sourcing; refusal leaves this refinement
+unrecorded, not opposite keys. Neither changes D13's hybrid E interaction/pickup/climbing.
+No unresolved dependency; no gameplay, labels, live JSON, checker/code/tests or publication authority.
+
+| item | application | canonical pointer | commit receipt |
+|---|---|---|---|
+| 56 — Historical interaction/climbing reports | [x] recorded, independently reviewed, parent recording-verified; commit pending | `domain.md §5 item 56` / §7 | pending parent item commit |
+
+**Evidence/limits:** locally inspected only the retained public `dialogue-guide.body`,
+`dialogue-guide.extracted.json`, `dialogue-guide.metadata.json` and `raw-revision-content.txt`
+under `/tmp/pixlnd-source-precision.MIIiDU/evidence/`. Title/pageid 3372, revision 20077,
+edit timestamp and authoritative content matched separately; edit/capture/community-report
+limits follow item 55 below. No derived `.wikitext` byte-equality claim, raw normalization,
+external fetch, browser/private DOM/assets/original-build action or whole-guide ancestry.
+Fresh source/scope/semantic inspection, simplify → ponytail-review, diffs and bounded check
+logs/exits: `/tmp/pixlnd-source-precision-56.bUj9em/`. Source/recording audits, `git diff --check`,
+bounded validator (`validator.*`: ontology valid) and boot (`boot.*`) passed, all exit 0.
+Godot checks cover existing loaded data/startup, not Markdown truth, historical behavior or new
+enforcement; no gameplay/visual/multiplayer suite. Fresh independent review found **no issues**:
+managed `source-56/review.md`, workflow `36445ecf-5aea-4596-b543-58fb66e0bc6b`, child
+`62d3d5e4-1961-4582-b8cd-b67d45f6db07`. Reviewer inspected actual file seams, saved diffs/public
+sources and receipts; ran no commands/tests, hashes or byte comparisons, and did not regenerate
+Git diff or inspect the staged index. Parent accepted that review, inspected the actual diff and
+personally verified scope/preservation, source identity/raw-content equality, whitespace,
+bounded validator and boot (`parent-{recording-audit,source-inspection,diff-check,validator,boot}.log/.exit`, all 0).
+Retain the queue until the separately scoped item commit is verified; then record its full receipt
+here and remove the handled entry. No next topic or publication authority.
 
 ### Validation-contract source attribution — item 55 (2026-10-05)
 

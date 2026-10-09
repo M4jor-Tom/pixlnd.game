@@ -12,7 +12,9 @@
 
 ## Standing approval for sourcing precision
 
-Owner exact answer (2026-10-05): **“If the items are about accepting or refusing to add more precision to the sourcing of a data, auto-approve it”.**
+Owner prior exact answer (2026-10-05): **“If the items are about accepting or refusing to add more precision to the sourcing of a data, auto-approve it”.**
+Owner reaffirmation (2026-10-09): **“Auto-accept all items which are about the topic of augmenting the precision of sourcing or not.”**
+The narrow sourcing-only authority below is unchanged; this is not broader approval.
 Rule: apply this only to defensible sourcing-precision refinements of existing facts, preserving
 source uncertainty and evidence limits. It grants no mechanics, source labels, live JSON,
 checker/code/test changes or publication authority. Do not fabricate per-item owner answers.

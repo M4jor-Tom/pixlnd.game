@@ -1,6 +1,21 @@
 # Handoff — resume here
 
-## Current entry point — verified source attribution 55, local checkpoint (2026-10-05)
+## Current entry point — verified source attribution 56, commit pending (2026-10-09)
+
+Item 56 is recorded under standing sourcing-only approval: `ontology/domain.md §5 item 56` / §7;
+exact selection, review/check limits and receipts: `docs/ROADMAP/todo_decide.md §E`.
+Interaction/climbing reports only; Alpha pickup R versus `keybinds.json#pick-up.A` E remains
+unresolved. D13's hybrid E defaults and items 1–55 stand. Fresh independent review found no issues;
+parent inspected the actual diff and verified source identity/content, scope, whitespace,
+bounded validator and boot (exit 0). Evidence: `/tmp/pixlnd-source-precision-56.bUj9em/`.
+Checks cover existing loaded data/startup and recording fidelity, not historical truth or new
+enforcement; no external/private DOM/assets/original-build action or gameplay/visual suite.
+Separately scoped item commit pending; retain `docs/todo_handle_reconciled_items.md` until
+commit verification, then retain the full receipt in §E and remove the handled queue entry.
+No publication authority, gameplay/live-data/checker changes or next topic; remaining histories
+and Silk/Spinning Wheel HOLD stand. Context percentage unavailable; bounded local checkpoint.
+
+## Historical entry point — verified source attribution 55, local checkpoint (2026-10-05)
 
 **Resumed topic: Validation-contract source research/attribution (remaining research).**
 Items 1–55 recorded; item 55 independently reviewed with **no issues** and parent recording-verified.
