@@ -139,8 +139,8 @@ checker implementation remain unauthorized. Verification record: `7a79913`.
 
 **Current sourcing direction (2026-10-09):** owner exact standing answer:
 **“Auto-accept all items which are about the topic of augmenting the precision of sourcing or not, each in one separate subagent.”**
-Supervisor selected 57–69 as proposed; no individual numbered owner answers exist. Items 57–66 are
-recorded below, pending independent review and parent verification; 67–69 await separate recording.
+Supervisor selected 57–69 as proposed; no individual numbered owner answers exist. Items 57–67 are
+recorded below, pending independent review and parent verification; 68–69 await separate recording.
 Retain `docs/todo_handle_reconciled_items.md` through review/commit verification. Items 1–56 stand;
 remaining histories stay research, not topic completion. No mechanics, labels, live JSON,
 checker/code/tests, publication or next-topic authority. Protocol: `docs/lessons.md`.
@@ -754,7 +754,7 @@ Bows/Dungeon items 53/54 are recorded, independently reviewed and parent recordi
 Item 55 is recorded under standing sourcing-only approval, independently reviewed with no issues
 and parent recording-verified. Item 56 is now recorded under the standing answer, independently
 reviewed with no issues and parent recording-verified; its historical empty queue was deleted.
-Current items 57–66 are recorded, review/parent verification pending; approved 67–69 await separate recording
+Current items 57–67 are recorded, review/parent verification pending; approved 68–69 await separate recording
 in the retained pending queue. Held Silk/Spinning Wheel findings remain HOLD, not
 selections, refusals, new 27/36 ballots, changed game rules or whole-topic completion.
 Context: ask by ~60%, handoff by ~85% (earlier with reserve), authorized checkpoint then STOP.
@@ -771,6 +771,25 @@ sleep-rate baseline/units (§5 items 10–11) remain research.
   identity, Lion tameability (`null` currently means untameable), resistance meaning and the
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
+
+### Validation-contract source attribution — item 67 (2026-10-09)
+
+- [x] **Recorded:** general Alpaca-family habitat/abundance wording, as proposed under the exact
+  standing answer above, not an individual owner answer. Canonical attribution/limits:
+  `domain.md §5 item 67` / §7; individual rosters, dark-Alpaca Desert exclusion and food rules stand.
+  Item 42's individual habitat report and Cupcake/Parrot passages are not new selections.
+- **Approval versus Refusing:** approval records the citation/uncertainty; refusal would leave
+  it unrecorded, not select the opposite mechanic. Neither changes the approved player experience.
+- **Evidence:** public Alpacas revision 19894, pageid 1351, edited 2024-08-19T19:14:57Z;
+  `/tmp/pixlnd-source-research-36.iKZQy6/fauna/wiki.body.json` / `wiki.{start,result}` inspected,
+  capture start 2026-10-05T00:38:29Z, HTTP200/curl and jq exit0, not completion/release proof.
+  Writer receipts and exact item-commit correspondence: `/tmp/pixlnd-source-item-67/`.
+- **Status:** independent review and parent acceptance pending; original selection stays queued.
+  Writer whitespace/bounded validator checks cover current loaded data, not prose/history or new
+  enforcement; no boot/gameplay/visual/multiplayer check. Items 1–66 stand. No per-colour every-land
+  guarantee, numerical abundance, new biome or A/S chronology inferred; no labels, live JSON,
+  code or gameplay change. Remaining histories and Silk/Spinning Wheel HOLD stand.
+  No external/private/assets/original-build action or push.
 
 ### Validation-contract source attribution — item 66 (2026-10-09)
 

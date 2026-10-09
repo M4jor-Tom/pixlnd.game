@@ -2793,6 +2793,27 @@ absence wording supplies no Alpha scope. No external retrieval, private source, 
 or original-build inspection occurred. No source labels, live JSON, checker/code/tests or gameplay
 change; remaining histories stay research.
 
+#### Item 67 — Family-level Alpaca habitat wording is not individual inheritance (standing sourcing approval, 2026-10-09)
+
+[Alpacas revision 19894](https://cubeworld.fandom.com/wiki/Alpacas?oldid=19894) (pageid **1351**)
+reports “Alpacas are passive wooly animals abundant in the Snowlands, they can be found in all
+Landscapes except the Lava Lands.” and “Alpacas are very common and appear in other landscapes
+such as Greenlands, forests and plains but are most abundant in the Snowlands.” These are
+**family-level/general descriptions, not an each-colour every-land guarantee**. They attribute
+`creature-families.json#alpacas` and `creatures.json#{alpaca,brown-alpaca}.lands` without correcting
+either individual roster or granting the dark Alpaca Desert membership against its existing
+exclusion. “Very common” / “most abundant” supplies no numerical abundance; forests/plains are
+descriptive wording, not new biomes. Item 42's individual dark-Alpaca habitat report stands,
+not re-proposed; Cupcake pairings and the Parrot analogy are not additional selections here.
+
+The retained public raw API body and capture sidecars were inspected: edited
+**2024-08-19T19:14:57Z**, capture **start 2026-10-05T00:38:29Z**, HTTP 200/curl and jq exit 0.
+The start is not completion proof; neither timestamp establishes release/introduction timing.
+These edition-unscoped community reports are not Alpha/Steam chronology or demonstrated
+original-build behavior. Existing family, habitat and food rules stand; no labels, live JSON,
+checker/code/tests or gameplay change. No external retrieval, private source, image/audio asset
+or original-build inspection occurred; remaining histories stay research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -3167,9 +3188,14 @@ proof. Hybrid aggro/home-return rules stand; review/parent verification pending 
 juxtaposition unresolved, not exclusive habitat, build history, Alpha availability or usable riding.
 Hybrid Wolf, null tame-food, cut Apple Pie and F2 stand; review/parent verification pending (`todo_decide.md §E`).
 
+**Validation-contract source item 67 — DECIDED 2026-10-09 under standing sourcing approval:**
+§5 attributes general Alpaca-family habitat/abundance wording, not per-colour habitat inheritance,
+numerical abundance, new biomes or edition proof. Individual rosters, dark-Alpaca Desert exclusion
+and food rules stand; review/parent verification pending (`todo_decide.md §E`).
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–56 stand; items 57–66 recorded under standing sourcing-only approval, review/parent verification pending (`todo_decide.md §E`). Approved 67–69 await separate recording; pending queue retained. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
+| Validation-contract source research/attribution | items 1–56 stand; items 57–67 recorded under standing sourcing-only approval, review/parent verification pending (`todo_decide.md §E`). Approved 68–69 await separate recording; pending queue retained. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

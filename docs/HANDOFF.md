@@ -2,11 +2,11 @@
 
 ## Current entry point — sourcing batch 57–69, recording in progress (2026-10-09)
 
-Items 57–66 are recorded under standing sourcing-only approval: `ontology/domain.md §5 items 57–66` / §7.
+Items 57–67 are recorded under standing sourcing-only approval: `ontology/domain.md §5 items 57–67` / §7.
 Exact owner answer, selections and evidence: `docs/ROADMAP/todo_decide.md §E`;
-writer receipts: `/tmp/pixlnd-source-item-{57,58,59,60,61,62,63,64,65,66}/`. Independent review and parent verification
+writer receipts: `/tmp/pixlnd-source-item-{57,58,59,60,61,62,63,64,65,66,67}/`. Independent review and parent verification
 remain pending; retain all entries in `docs/todo_handle_reconciled_items.md` through acceptance.
-Approved 67–69 await their separate fresh item writers; no reapproval required. Parent owns delegation.
+Approved 68–69 await their separate fresh item writers; no reapproval required. Parent owns delegation.
 
 Utility/attack-key and ambiguous Mouse Wheel dodge community attribution only, not control selection,
 slot behavior, Steam skill-tree absence or combat parameters. Click/scroll remains unresolved;
@@ -22,6 +22,8 @@ no general mixing, equipment rule or edition/recipe proof; two-handed Wand and i
 Named Wraith habitat/pursuit/pet-avoidance attribution adds no chase or immunity mechanism;
 hybrid aggro/home-return rules and item 51 stand. Wolf habitat/taming attribution leaves the
 mount/food juxtaposition unresolved; hybrid Wolf, null tame-food, cut Apple Pie and F2 stand.
+General Alpaca-family habitat wording adds no per-colour inheritance or roster correction;
+dark-Alpaca Desert exclusion and food rules stand.
 Items 1–56 and all hybrid rules stand; item 56's Alpha pickup R/E
 uncertainty and completed review/commit receipts remain in §E. No gameplay,
 labels, live JSON, checker/code/tests, external/private/assets/original-build action or push.
