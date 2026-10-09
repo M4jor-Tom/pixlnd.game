@@ -4,9 +4,9 @@
 Supervisor classified **all 57–69 as proposed**, without amendments or exclusions, under this
 answer. No individual owner “57: Approved” etc. was given. Original proposals/limits are below.
 
-**Status:** all approved sourcing-only. Items 57–62 are canonically recorded; writer receipts/commit
-correspondence are in `/tmp/pixlnd-source-item-{57,58,59,60,61,62}/`, with independent review and parent verification
-pending. Items 63–69 await canonical recording and item checks/commits. No unresolved item dependency; settled
+**Status:** all approved sourcing-only. Items 57–63 are canonically recorded; writer receipts/commit
+correspondence are in `/tmp/pixlnd-source-item-{57,58,59,60,61,62,63}/`, with independent review and parent verification
+pending. Items 64–69 await canonical recording and item checks/commits. No unresolved item dependency; settled
 items 1–56 remain prerequisites, not reopened questions. Use a **distinct fresh child per item**,
 sequential single writer, with one scoped conventional commit each. Keep entries pending until
 recording, checks, required review and commit are verified; retain completed receipts in §E,
@@ -140,6 +140,8 @@ history; omit it as duplicate item 32's guard. Approved hybrid pet progression/p
 traversal remain unchanged; regional loss excluded.
 
 ## 63. Deposit habitat qualifiers and named unrefined gems
+
+**Application:** recorded in `ontology/domain.md §5 item 63` / §7; review/parent acceptance pending.
 
 **Original proposal / selected:** attribute Deposit 19729 (Q): “They are almost exclusively found
 in caves and sometimes in underwater caves.” and “Unlike Iron, Silver and Gold, Gems like Emerald,

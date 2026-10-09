@@ -2711,6 +2711,26 @@ dating or whole-guide ancestry. No external retrieval occurred; no images, asset
 builds were inspected. No gameplay, live declarations, source labels or checker changes;
 other histories remain research.
 
+#### Item 63 — Deposit habitat qualifiers and named unrefined gems (standing sourcing approval, 2026-10-09)
+
+[Deposit revision 19729](https://cubeworld.fandom.com/wiki/Deposit?oldid=19729) (pageid **1206**)
+reports “They are almost exclusively found in caves and sometimes in underwater caves.” and
+“Unlike Iron, Silver and Gold, [[Gems]] like [[Emerald]], [[Sapphire]] and [[Ruby]] do not need
+refinement for [[Crafting]].”
+**“Almost exclusively” / “sometimes” are qualitative, not exclusive habitat or numerical odds.**
+The named examples do not establish Diamond or all-gem refinement behavior. Context: §3.1
+`deposit`, `deposits.json#_doc`, `ingredients.json#{emerald,sapphire,ruby}`, `recipes.json#refining`
+and the named gem rows of `materials.json`. These passages verify no yields, respawn, boulder
+bombs, refining ratios or original editions. **Items 27 (metal refining) and 47 (nuggets-only
+quantity) stand unchanged**, not repeated selections; D6 recipes and approved Wand stand.
+
+The retained public raw API body and capture sidecars were inspected: edited
+**2024-08-11T20:49:24Z**, capture start/end **2026-10-05T15:13:10Z**, exit 0. These dates are
+documentary timing, not release/introduction dates. Neither sentence supplies Alpha/Steam scope;
+these are community reports, not demonstrated original-build behavior. No external retrieval,
+image/asset or original-build inspection occurred. No new deposit/refining rule, gameplay,
+live JSON, source labels or checker changes; remaining histories and quantities stay research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -3065,9 +3085,14 @@ Existing tags including `/sit` A? stand; review/parent verification pending (`to
 persistence, formula, rating contribution, Steam hydration/XP absence or patch dating. Hybrid pet
 rules and F11/shared Bubble Gum stand; review/parent verification pending (`todo_decide.md §E`).
 
+**Validation-contract source item 63 — DECIDED 2026-10-09 under standing sourcing approval:**
+§5 attributes qualitative cave habitats and named Emerald/Sapphire/Ruby no-refinement reports,
+not exclusive habitat, odds, all-gem behavior or edition proof. No deposit/refining rule changes;
+review/parent verification pending (`todo_decide.md §E`).
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–56 stand; items 57–62 recorded under standing sourcing-only approval, review/parent verification pending (`todo_decide.md §E`). Approved 63–69 await separate recording; pending queue retained. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
+| Validation-contract source research/attribution | items 1–56 stand; items 57–63 recorded under standing sourcing-only approval, review/parent verification pending (`todo_decide.md §E`). Approved 64–69 await separate recording; pending queue retained. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

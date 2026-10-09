@@ -25,14 +25,15 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `docs/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Current source-attribution checkpoint (2026-10-09):** items 57–62 recorded in `domain.md §5` / §7
+**Current source-attribution checkpoint (2026-10-09):** items 57–63 recorded in `domain.md §5` / §7
 under standing sourcing-only approval; independent review and parent verification pending.
 Historical utility/attack-key descriptions, ambiguous Mouse Wheel dodge wording and Steam R's
 non-universal 30-second report, plus two bounded Steam underwater-survival reports only;
 controls, individual cooldowns and swimming/drowning/climbing/Spikes rules unchanged.
 Steam emote examples and separately unscoped `/namepet` add no command/naming behavior or tags.
 Alpha hydration/XP and Steam pet-scaling reports add no formula, absence or persistence proof;
-hybrid pet rules stand. Approved 63–69 await separate recording; pending queue retained.
+hybrid pet rules stand. Qualitative Deposit habitats and named unrefined gems add no mining/
+refining rule or all-gem/edition proof. Approved 64–69 await separate recording; pending queue retained.
 Items 1–56 and hybrid defaults stand.
 Exact selection/evidence: `todo_decide.md §E`; current status: `docs/HANDOFF.md`.
 No gameplay, labels, live-data/checker changes or publication authority. Remaining histories and
