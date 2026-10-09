@@ -141,10 +141,10 @@ checker implementation remain unauthorized. Verification record: `7a79913`.
 **“Auto-accept all items which are about the topic of augmenting the precision of sourcing or not.”**
 Only defensible sourcing precision is autoapproved, not mechanics, labels, live JSON, checker,
 code/tests or publication. Item 56 is recorded below, independently reviewed with no issues
-and parent recording-verified; item commit pending. Retain `docs/todo_handle_reconciled_items.md`; no
-unanswered ballot. Items 1–55 stand; remaining histories stay research, not topic completion.
-Parent owns the separately scoped commit/receipt and final queue removal; writer must not stage,
-commit, push or rewrite history. No next topic or implementation. Protocol: `docs/lessons.md`.
+and parent recording-verified; item commit verified, receipt below. No unhandled selection or
+unanswered ballot remains; empty pending queue deleted. Items 1–55 stand; remaining histories
+stay research, not topic completion. Parent owns the local receipt/queue-deletion checkpoint;
+no push authorized or attempted; no history rewrite, next topic or implementation. Protocol: `docs/lessons.md`.
 
 **Historical handoff direction — items 53–54 (2026-10-05):** owner exact answer:
 **“53: Approved; 54: Approved; When handled, handoff, commit, push”**. No amendments.
@@ -754,7 +754,7 @@ are below; that historical batch left no unhandled selection.
 Bows/Dungeon items 53/54 are recorded, independently reviewed and parent recording-verified.
 Item 55 is recorded under standing sourcing-only approval, independently reviewed with no issues
 and parent recording-verified. Item 56 is now recorded under the standing answer, independently
-reviewed with no issues and parent recording-verified; item commit pending. Retain its queue entry. No new
+reviewed with no issues and parent recording-verified; item commit verified, empty queue deleted. No new
 research within this bounded checkpoint. Held Silk/Spinning Wheel findings remain HOLD, not
 selections, refusals, new 27/36 ballots, changed game rules or whole-topic completion.
 Context: ask by ~60%, handoff by ~85% (earlier with reserve), authorized checkpoint then STOP.
@@ -786,7 +786,7 @@ No unresolved dependency; no gameplay, labels, live JSON, checker/code/tests or 
 
 | item | application | canonical pointer | commit receipt |
 |---|---|---|---|
-| 56 — Historical interaction/climbing reports | [x] recorded, independently reviewed, parent recording-verified; commit pending | `domain.md §5 item 56` / §7 | pending parent item commit |
+| 56 — Historical interaction/climbing reports | [x] recorded, independently reviewed, parent recording-verified, committed | `domain.md §5 item 56` / §7 | `39530b83d382e1021c49571bfc7d771e31a3979d` (parent `9ff53bbe3cd428f00eacd34e9272e4373e8dec19`) |
 
 **Evidence/limits:** locally inspected only the retained public `dialogue-guide.body`,
 `dialogue-guide.extracted.json`, `dialogue-guide.metadata.json` and `raw-revision-content.txt`
@@ -805,8 +805,15 @@ sources and receipts; ran no commands/tests, hashes or byte comparisons, and did
 Git diff or inspect the staged index. Parent accepted that review, inspected the actual diff and
 personally verified scope/preservation, source identity/raw-content equality, whitespace,
 bounded validator and boot (`parent-{recording-audit,source-inspection,diff-check,validator,boot}.log/.exit`, all 0).
-Retain the queue until the separately scoped item commit is verified; then record its full receipt
-here and remove the handled entry. No next topic or publication authority.
+Parent reviewed the receipt-status delta, ran simplify → ponytail-review and reran audit,
+whitespace, bounded validator and boot (`parent-final-*`, all exit 0). Canonical §5 wording
+remained exactly the independently reviewed text; this delta review was parent review, not a
+second independent review. Exact reviewed/staged/committed diff and queue correspondence,
+full hash/parent and clean worktree were then verified (`item56-*`). The item is handled;
+selection and full receipt remain here and the empty pending queue is deleted.
+Final receipt/queue-deletion delta: parent simplify → ponytail-review and bounded local gates,
+retained as `closure-*`. Inspect actual Git for its checkpoint commit, not a publication claim.
+No push authorized or attempted; no next topic or implementation.
 
 ### Validation-contract source attribution — item 55 (2026-10-05)
 

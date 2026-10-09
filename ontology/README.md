@@ -29,7 +29,8 @@ slice loop. A green validator proves only its implemented checks, not full ontol
 under standing sourcing-only approval; exact selection/check receipts: `todo_decide.md §E`.
 Historical interaction/climbing descriptions only; Alpha pickup R versus the declared E remains
 unresolved and D13's hybrid E defaults stand. Independent review found no issues; parent recording
-checks passed. Item commit pending; selection retained in `docs/todo_handle_reconciled_items.md`. Items 1–55 stand;
+checks passed; item commit verified, full receipt in §E. No unhandled selection remains; empty
+pending queue deleted. Items 1–55 stand;
 no gameplay, labels, live-data/checker changes or publication authority. Remaining histories and
 Silk/Spinning Wheel HOLD stand; current parent gates: `docs/HANDOFF.md`.
 

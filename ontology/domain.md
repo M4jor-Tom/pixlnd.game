@@ -2902,11 +2902,11 @@ no issues and parent recording checks passed (`todo_decide.md §E`).
 **Validation-contract source item 56 — DECIDED 2026-10-09 under standing sourcing approval:**
 §5 attributes Alpha R / Steam E Interact and Alpha Ctrl / Steam E Climb with stamina cost;
 Alpha pickup R versus `keybinds.json#pick-up.A` E remains unresolved. D13 stands; independent
-review found no issues and parent recording checks passed; item commit pending (`todo_decide.md §E`).
+review found no issues and parent recording checks/item commit were verified (`todo_decide.md §E`).
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–55 stand; item 56 recorded under standing sourcing-only approval, independently reviewed with no issues and parent recording-verified (`todo_decide.md §E`). Item commit pending; selection retained in pending queue; no unanswered ballot. Current status: HANDOFF; no publication authority. Unsupported food/mixed-container histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics or implementation; enforcement deferred |
+| Validation-contract source research/attribution | items 1–55 stand; item 56 recorded under standing sourcing-only approval, independently reviewed with no issues and parent recording-verified (`todo_decide.md §E`). Item commit verified; no unhandled selection or unanswered ballot remains; empty pending queue deleted. Current status: HANDOFF; no publication authority. Unsupported food/mixed-container histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics or implementation; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

@@ -1,19 +1,25 @@
 # Handoff — resume here
 
-## Current entry point — verified source attribution 56, commit pending (2026-10-09)
+## Current entry point — verified source attribution 56, local checkpoint (2026-10-09)
 
 Item 56 is recorded under standing sourcing-only approval: `ontology/domain.md §5 item 56` / §7;
 exact selection, review/check limits and receipts: `docs/ROADMAP/todo_decide.md §E`.
+Item commit: `39530b83d382e1021c49571bfc7d771e31a3979d`. Its staged/committed diff and parent
+were verified; no unhandled selection or unanswered ballot remains. Empty pending queue deleted.
 Interaction/climbing reports only; Alpha pickup R versus `keybinds.json#pick-up.A` E remains
 unresolved. D13's hybrid E defaults and items 1–55 stand. Fresh independent review found no issues;
 parent inspected the actual diff and verified source identity/content, scope, whitespace,
 bounded validator and boot (exit 0). Evidence: `/tmp/pixlnd-source-precision-56.bUj9em/`.
 Checks cover existing loaded data/startup and recording fidelity, not historical truth or new
 enforcement; no external/private DOM/assets/original-build action or gameplay/visual suite.
-Separately scoped item commit pending; retain `docs/todo_handle_reconciled_items.md` until
-commit verification, then retain the full receipt in §E and remove the handled queue entry.
-No publication authority, gameplay/live-data/checker changes or next topic; remaining histories
-and Silk/Spinning Wheel HOLD stand. Context percentage unavailable; bounded local checkpoint.
+Final receipt/queue-deletion delta is parent-reviewed, not a second independent review; final
+local gates/commit evidence: `closure-*`. Establish checkpoint completion from actual Git.
+
+**Next resume:** remaining Validation-contract source research/attribution under standing approval;
+no pending selection needs reapproval. Other histories and Silk/Spinning Wheel HOLD stand, not
+whole-topic completion. No gameplay/live-data/checker changes or topic advancement. Context
+percentage unavailable; walkthrough stopped at this bounded local checkpoint. No push authorized
+or attempted; publication requires separate authorization.
 
 ## Historical entry point — verified source attribution 55, local checkpoint (2026-10-05)
 

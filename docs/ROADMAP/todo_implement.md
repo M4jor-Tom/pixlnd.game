@@ -17,7 +17,7 @@ legacy-read fallbacks or obsolete-format compatibility. Implementation remains u
 
 **Current attribution checkpoint (2026-10-09):** source item 56 recorded under standing
 sourcing-only approval, independently reviewed with no issues and parent recording-verified.
-Item commit pending; selection retained in pending queue; canonical/receipts: `domain.md §5` / §7 and
+Item commit verified; no unhandled selection remains; empty pending queue deleted. Canonical/receipts: `domain.md §5` / §7 and
 `todo_decide.md §E`; parent gates: `docs/HANDOFF.md`. Items 1–55 stand; no implementation,
 controls, labels or live-data changes. Remaining histories stay research; Silk/Spinning Wheel HOLD.
 
