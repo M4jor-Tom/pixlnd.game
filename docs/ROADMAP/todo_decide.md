@@ -139,8 +139,8 @@ checker implementation remain unauthorized. Verification record: `7a79913`.
 
 **Current sourcing direction (2026-10-09):** owner exact standing answer:
 **“Auto-accept all items which are about the topic of augmenting the precision of sourcing or not, each in one separate subagent.”**
-Supervisor selected 57–69 as proposed; no individual numbered owner answers exist. Items 57–59 are
-recorded below, pending independent review and parent verification; 60–69 await separate recording.
+Supervisor selected 57–69 as proposed; no individual numbered owner answers exist. Items 57–60 are
+recorded below, pending independent review and parent verification; 61–69 await separate recording.
 Retain `docs/todo_handle_reconciled_items.md` through review/commit verification. Items 1–56 stand;
 remaining histories stay research, not topic completion. No mechanics, labels, live JSON,
 checker/code/tests, publication or next-topic authority. Protocol: `docs/lessons.md`.
@@ -754,7 +754,7 @@ Bows/Dungeon items 53/54 are recorded, independently reviewed and parent recordi
 Item 55 is recorded under standing sourcing-only approval, independently reviewed with no issues
 and parent recording-verified. Item 56 is now recorded under the standing answer, independently
 reviewed with no issues and parent recording-verified; its historical empty queue was deleted.
-Current items 57–59 are recorded, review/parent verification pending; approved 60–69 await separate recording
+Current items 57–60 are recorded, review/parent verification pending; approved 61–69 await separate recording
 in the retained pending queue. Held Silk/Spinning Wheel findings remain HOLD, not
 selections, refusals, new 27/36 ballots, changed game rules or whole-topic completion.
 Context: ask by ~60%, handoff by ~85% (earlier with reserve), authorized checkpoint then STOP.
@@ -771,6 +771,24 @@ sleep-rate baseline/units (§5 items 10–11) remain research.
   identity, Lion tameability (`null` currently means untameable), resistance meaning and the
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
+
+### Validation-contract source attribution — item 60 (2026-10-09)
+
+- [x] **Recorded:** the two Steam healing-while-drowning / underwater wall-hold reports as
+  proposed under the exact standing answer above, not a fabricated individual approval.
+  Canonical attribution/limits: `domain.md §5 item 60` / §7; original selection retained in the queue.
+- **Approval versus Refusing:** approval records the citation/uncertainty; refusal would leave
+  it unrecorded, not select the opposite mechanic. Neither changes the approved player experience.
+- **Evidence:** public guide revision 20077, pageid 3372, Gameplay Notes raw lines 90–91;
+  `/tmp/pixlnd-source-item-60/` holds source checks and item receipts. Authoritative raw/extracted/TXT
+  content agrees; envelopes differ and derived wikitext adds one LF. Documentary dates are not
+  release dates; no external retrieval, original-build, image or asset inspection.
+- **Status:** independent review and parent acceptance pending; queue retained. Exact item-commit
+  correspondence is saved outside the repo; parent records its verified hash during closure.
+  Writer whitespace/bounded validator receipts cover existing loaded data, not prose/history or
+  new enforcement; no boot/gameplay/visual/multiplayer check. Items 1–59 and swimming/drowning/
+  climbing/Spikes rules stand; no refill, infinite survival or quantified movement rule adopted.
+  No gameplay, labels, live JSON or code change. Remaining histories and Silk/Spinning Wheel HOLD stand.
 
 ### Validation-contract source attribution — item 59 (2026-10-09)
 

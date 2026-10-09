@@ -4,9 +4,9 @@
 Supervisor classified **all 57–69 as proposed**, without amendments or exclusions, under this
 answer. No individual owner “57: Approved” etc. was given. Original proposals/limits are below.
 
-**Status:** all approved sourcing-only. Items 57–59 are canonically recorded; writer receipts/commit
-correspondence are in `/tmp/pixlnd-source-item-{57,58,59}/`, with independent review and parent verification
-pending. Items 60–69 await canonical recording and item checks/commits. No unresolved item dependency; settled
+**Status:** all approved sourcing-only. Items 57–60 are canonically recorded; writer receipts/commit
+correspondence are in `/tmp/pixlnd-source-item-{57,58,59,60}/`, with independent review and parent verification
+pending. Items 61–69 await canonical recording and item checks/commits. No unresolved item dependency; settled
 items 1–56 remain prerequisites, not reopened questions. Use a **distinct fresh child per item**,
 sequential single writer, with one scoped conventional commit each. Keep entries pending until
 recording, checks, required review and commit are verified; retain completed receipts in §E,
@@ -98,6 +98,8 @@ balance unchanged. Distinct from item 55's exclusion of unrelated skill claims: 
 source's limitation, not adoption.
 
 ## 60. Two Steam underwater-survival reports
+
+**Application:** recorded in `ontology/domain.md §5 item 60` / §7; review/parent acceptance pending.
 
 **Original proposal / selected:** attribute G Gameplay Notes: “On Steam, Healing while drowning
 can keep you underwater longer.” and “On Steam, Holding a wall underwater will stop diving

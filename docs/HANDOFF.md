@@ -2,18 +2,19 @@
 
 ## Current entry point — sourcing batch 57–69, recording in progress (2026-10-09)
 
-Items 57–59 are recorded under standing sourcing-only approval: `ontology/domain.md §5 items 57–59` / §7.
+Items 57–60 are recorded under standing sourcing-only approval: `ontology/domain.md §5 items 57–60` / §7.
 Exact owner answer, selections and evidence: `docs/ROADMAP/todo_decide.md §E`;
-writer receipts: `/tmp/pixlnd-source-item-{57,58,59}/`. Independent review and parent verification
+writer receipts: `/tmp/pixlnd-source-item-{57,58,59,60}/`. Independent review and parent verification
 remain pending; retain all entries in `docs/todo_handle_reconciled_items.md` through acceptance.
-Approved 60–69 await their separate fresh item writers; no reapproval required. Parent owns delegation.
+Approved 61–69 await their separate fresh item writers; no reapproval required. Parent owns delegation.
 
 Utility/attack-key and ambiguous Mouse Wheel dodge community attribution only, not control selection,
 slot behavior, Steam skill-tree absence or combat parameters. Click/scroll remains unresolved;
 D13/D23 dodge/zoom stand. Steam R's broad 30-second wording establishes no universal cooldown;
-individual cooldowns, hybrid slots and Assassin exception stand. Items 1–56 and all hybrid rules
-stand; item 56's Alpha pickup R/E uncertainty remains. Its completed review/commit receipts remain
-in §E. No gameplay,
+individual cooldowns, hybrid slots and Assassin exception stand. Two Steam underwater-survival
+reports add no refill, infinite survival or quantified movement rule; swimming/drowning/climbing
+and Spikes rules stand. Items 1–56 and all hybrid rules stand; item 56's Alpha pickup R/E
+uncertainty and completed review/commit receipts remain in §E. No gameplay,
 labels, live JSON, checker/code/tests, external/private/assets/original-build action or push.
 Writer whitespace/validator checks cover current loaded data, not prose/history or new enforcement;
 no boot/gameplay/visual/multiplayer result claimed here. Remaining histories and Silk/Spinning Wheel

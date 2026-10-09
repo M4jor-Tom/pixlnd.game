@@ -2647,6 +2647,28 @@ or whole-guide ancestry. No external retrieval occurred; no images, assets or or
 were inspected. No balance, gameplay, live declarations, source labels or checker changes;
 other histories remain research.
 
+#### Item 60 — Two Steam underwater-survival reports (standing sourcing approval, 2026-10-09)
+
+[How to play guide for Cube World revision 20077](https://cubeworld.fandom.com/wiki/How_to_play_guide_for_Cube_World?oldid=20077)
+(pageid **3372**), **Gameplay Notes**, reports (raw lines 90–91):
+- “On Steam, Healing while drowning can keep you underwater longer.”
+- “On Steam, Holding a wall underwater will stop diving stamina depletion.”
+
+These bounded Steam reports attribute the existing `abilities.json#swim.effect`,
+`stats.json#resources.diving-breath` and `status-effects.json#drowning` context, alongside
+`research/research_classes_combat.md §5` / `research/research_systems.md §7`. They demonstrate
+no refill, healing rate, infinite underwater survival, immunity, restored breath, activation
+key, Alpha equivalent or exact timing. The separate unscoped “Jumping and climbing can save
+Stamina.” supplies no quantified movement rule. **Existing swimming/drowning/climbing and
+Spikes rules stand**, including the approved skill-adjusted remaining climbing cost ×0.25.
+
+Public source identity, edit/capture dates and evidence limits follow item 57: authoritative
+raw/extracted/TXT content agrees, not the envelopes; derived wikitext adds one terminal LF.
+These are community reports, not demonstrated original-build behavior, release/introduction
+dating or whole-guide ancestry. No external retrieval occurred; no images, assets or original
+builds were inspected. No gameplay, live declarations, source labels or checker changes;
+other histories remain research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -2986,9 +3008,14 @@ verification pending (`todo_decide.md §E`).
 not a universal rule or skill identity/date proof. Hybrid slots and Assassin exception stand;
 review/parent verification pending (`todo_decide.md §E`).
 
+**Validation-contract source item 60 — DECIDED 2026-10-09 under standing sourcing approval:**
+§5 attributes two Steam healing-while-drowning / underwater wall-hold reports, not refill,
+infinite survival, immunity, timing or new movement mechanics. Swimming/drowning/climbing and
+Spikes rules stand; review/parent verification pending (`todo_decide.md §E`).
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–56 stand; items 57–59 recorded under standing sourcing-only approval, review/parent verification pending (`todo_decide.md §E`). Approved 60–69 await separate recording; pending queue retained. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
+| Validation-contract source research/attribution | items 1–56 stand; items 57–60 recorded under standing sourcing-only approval, review/parent verification pending (`todo_decide.md §E`). Approved 61–69 await separate recording; pending queue retained. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
