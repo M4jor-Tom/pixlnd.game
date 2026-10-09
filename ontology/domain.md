@@ -3175,72 +3175,71 @@ review found no issues and parent recording checks/item commit were verified (`t
 
 **Validation-contract source item 57 — DECIDED 2026-10-09 under standing sourcing approval:**
 §5 attributes the grouped Alpha/Steam utility and attack-key descriptions plus Alpha G/X,
-not new controls, slot behavior, Steam skill-tree absence or combat parameters. Review/parent
-verification pending; exact selection and evidence: `todo_decide.md §E`.
+not new controls, slot behavior, Steam skill-tree absence or combat parameters.
 
 **Validation-contract source item 58 — DECIDED 2026-10-09 under standing sourcing approval:**
 §5 attributes both Controls tables' ambiguous Mouse Wheel dodge wording, not click-versus-scroll
-resolution, moving qualifier, numeric cost or immunity proof. D13/D23 stand; review/parent
-verification pending (`todo_decide.md §E`).
+resolution, moving qualifier, numeric cost or immunity proof. D13/D23 stand.
 
 **Validation-contract source item 59 — DECIDED 2026-10-09 under standing sourcing approval:**
 §5 attributes Steam R's broad 30-second report as insufficient to override individual cooldowns,
-not a universal rule or skill identity/date proof. Hybrid slots and Assassin exception stand;
-review/parent verification pending (`todo_decide.md §E`).
+not a universal rule or skill identity/date proof. Hybrid slots and Assassin exception stand.
 
 **Validation-contract source item 60 — DECIDED 2026-10-09 under standing sourcing approval:**
 §5 attributes two Steam healing-while-drowning / underwater wall-hold reports, not refill,
 infinite survival, immunity, timing or new movement mechanics. Swimming/drowning/climbing and
-Spikes rules stand; review/parent verification pending (`todo_decide.md §E`).
+Spikes rules stand.
 
 **Validation-contract source item 61 — DECIDED 2026-10-09 under standing sourcing approval:**
 §5 attributes non-exhaustive Steam emote examples and separately edition-unscoped `/namepet`,
 not `/pet` or Alpha emote proof, argument/target/name-validation specifications or new behavior.
-Existing tags including `/sit` A? stand; review/parent verification pending (`todo_decide.md §E`).
+Existing tags including `/sit` A? stand.
 
 **Validation-contract source item 62 — DECIDED 2026-10-09 under standing sourcing approval:**
 §5 attributes Alpha hydration/XP and Steam equipment-rating scaling reports, not exact mechanics,
 persistence, formula, rating contribution, Steam hydration/XP absence or patch dating. Hybrid pet
-rules and F11/shared Bubble Gum stand; review/parent verification pending (`todo_decide.md §E`).
+rules and F11/shared Bubble Gum stand.
 
 **Validation-contract source item 63 — DECIDED 2026-10-09 under standing sourcing approval:**
 §5 attributes qualitative cave habitats and named Emerald/Sapphire/Ruby no-refinement reports,
-not exclusive habitat, odds, all-gem behavior or edition proof. No deposit/refining rule changes;
-review/parent verification pending (`todo_decide.md §E`).
+not exclusive habitat, odds, all-gem behavior or edition proof. No deposit/refining rule changes.
 
 **Validation-contract source item 64 — DECIDED 2026-10-09 under standing sourcing approval:**
 §5 attributes one-handed Rogue Fists and Dagger pairing, not general mixing, hand/stat/animation
-rules or edition/recipe proof. Approved equipment model and two-handed Wand stand;
-review/parent verification pending (`todo_decide.md §E`).
+rules or edition/recipe proof. Approved equipment model and two-handed Wand stand.
 
 **Validation-contract source item 65 — DECIDED 2026-10-09 under standing sourcing approval:**
 §5 attributes named Wraith habitats, longer pursuit/cannot-die and pet-avoidance reports, not
 exclusive habitats, quantified pursuit, immunity mechanisms, inherited undead traits or edition
-proof. Hybrid aggro/home-return rules stand; review/parent verification pending (`todo_decide.md §E`).
+proof. Hybrid aggro/home-return rules stand.
 
 **Validation-contract source item 66 — DECIDED 2026-10-09 under standing sourcing approval:**
 §5 attributes Wolf habitats and qualified taming/Apple Pie reports, preserving the mount/food
 juxtaposition unresolved, not exclusive habitat, build history, Alpha availability or usable riding.
-Hybrid Wolf, null tame-food, cut Apple Pie and F2 stand; review/parent verification pending (`todo_decide.md §E`).
+Hybrid Wolf, null tame-food, cut Apple Pie and F2 stand.
 
 **Validation-contract source item 67 — DECIDED 2026-10-09 under standing sourcing approval:**
 §5 attributes general Alpaca-family habitat/abundance wording, not per-colour habitat inheritance,
 numerical abundance, new biomes or edition proof. Individual rosters, dark-Alpaca Desert exclusion
-and food rules stand; review/parent verification pending (`todo_decide.md §E`).
+and food rules stand.
 
 **Validation-contract source item 68 — DECIDED 2026-10-09 under standing sourcing approval:**
 §5 attributes individual Snout Beetle habitat and aggressive ranged wording, not a new landscape,
 exclusive distribution, combat parameters, family inheritance or edition proof. Existing habitats
-and role stand; item 39's bug remains prohibited. Review/parent verification pending (`todo_decide.md §E`).
+and role stand; item 39's bug remains prohibited.
 
 **Validation-contract source item 69 — DECIDED 2026-10-09 under standing sourcing approval:**
 §5 attributes Cotton/Rogue/Loom only, not Linen/Silk stations, textile ratios, further costs,
-edition/release proof or a demonstrated recipe. Item 18 and Silk/Spinning Wheel HOLD stand;
-review/parent verification pending (`todo_decide.md §E`).
+edition/release proof or a demonstrated recipe. Item 18 and Silk/Spinning Wheel HOLD stand.
+
+Items 57–69 are handled: independent recording review found no issues; parent accepted after
+actual-Git/source/diff audit and bounded validator/boot checks. Exact selections, full hashes/
+parents and check limits: `todo_decide.md §E`. Empty pending queue deleted; closure-delta parent
+review remains separate. No publication authority or whole-topic completion.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–56 stand; items 57–69 recorded under standing sourcing-only approval, review/parent verification pending (`todo_decide.md §E`); pending queue retained. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
+| Validation-contract source research/attribution | items 1–69 recorded; 57–69 independently reviewed and parent-accepted (`todo_decide.md §E`); no unhandled selection, empty queue deleted. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

@@ -139,11 +139,13 @@ checker implementation remain unauthorized. Verification record: `7a79913`.
 
 **Current sourcing direction (2026-10-09):** owner exact standing answer:
 **“Auto-accept all items which are about the topic of augmenting the precision of sourcing or not, each in one separate subagent.”**
-Supervisor selected 57–69 as proposed; no individual numbered owner answers exist. Items 57–69 are
-recorded below, pending independent review and parent verification.
-Retain `docs/todo_handle_reconciled_items.md` through review/commit verification. Items 1–56 stand;
-remaining histories stay research, not topic completion. No mechanics, labels, live JSON,
-checker/code/tests, publication or next-topic authority. Protocol: `docs/lessons.md`.
+Supervisor selected 57–69 as proposed; no individual numbered owner answers exist. All thirteen
+are handled: separately recorded/committed, independently reviewed with no issues and parent-accepted
+after actual-Git/source/diff audit and bounded validator/boot checks. Exact original selections,
+canonical pointers and full commit/parent receipts are below; empty pending-only queue deleted.
+Items 1–56 stand; remaining histories stay research, not topic completion. No mechanics, labels,
+live JSON, checker/code/tests, publication or next-topic authority. Protocol: `docs/lessons.md`.
+Closure-delta parent review remains separate from completed recording acceptance.
 
 **Historical handoff direction — items 53–54 (2026-10-05):** owner exact answer:
 **“53: Approved; 54: Approved; When handled, handoff, commit, push”**. No amendments.
@@ -754,7 +756,7 @@ Bows/Dungeon items 53/54 are recorded, independently reviewed and parent recordi
 Item 55 is recorded under standing sourcing-only approval, independently reviewed with no issues
 and parent recording-verified. Item 56 is now recorded under the standing answer, independently
 reviewed with no issues and parent recording-verified; its historical empty queue was deleted.
-Current items 57–69 are recorded, review/parent verification pending; pending queue retained.
+Current items 57–69 are handled, independently reviewed and parent-accepted; empty queue deleted.
 Held Silk/Spinning Wheel findings remain HOLD, not
 selections, refusals, new 27/36 ballots, changed game rules or whole-topic completion.
 Context: ask by ~60%, handoff by ~85% (earlier with reserve), authorized checkpoint then STOP.
@@ -772,12 +774,72 @@ sleep-rate baseline/units (§5 items 10–11) remain research.
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
 
+### Verified sourcing batch 57–69 — closure receipts (2026-10-09)
+
+All thirteen selections below were accepted **as proposed**, with no amendments or unresolved
+dependencies, under the exact standing answer above. No numbered owner approvals are fabricated.
+Setup commit `a9bfa1730466b89b759505fcc418a77fb0768771` (parent
+`9afc31bb7e5c441e6abf969b95229f4a285a1ffa`) preserved them before canonical recording.
+The original selected proposal paragraphs are retained below; their material limits and declaration
+pointers remain canonical in the corresponding `ontology/domain.md §5` item, byte-unchanged by closure.
+Original source shorthand: **G** = guide 3372/20077; **Q** = Deposit/Cotton `quantity.body`;
+**F** = Fists `wiki-five.body`; **W** = Wraith/Wolf `fauna/wiki.body`; **A** = Alpacas/Snout
+`fauna/wiki.body.json`. Exact paths, revisions and capture qualifications remain in per-item evidence.
+
+| handled item | canonical pointer | verified item commit | parent |
+|---|---|---|---|
+| 57 | `ontology/domain.md §5 item 57` / §7 | `733b535515962fcf2f4dcd5ae0c3bed5428cda0a` | `a9bfa1730466b89b759505fcc418a77fb0768771` |
+| 58 | `ontology/domain.md §5 item 58` / §7 | `6617f1745f5a97842c8b7ed9db60323d2f5e9eae` | `733b535515962fcf2f4dcd5ae0c3bed5428cda0a` |
+| 59 | `ontology/domain.md §5 item 59` / §7 | `8f61059bc87e7331c7aad3a55a2dcfbaa4c59e4e` | `6617f1745f5a97842c8b7ed9db60323d2f5e9eae` |
+| 60 | `ontology/domain.md §5 item 60` / §7 | `cb7103f730215f001e298af3b8a4b271b613ef94` | `8f61059bc87e7331c7aad3a55a2dcfbaa4c59e4e` |
+| 61 | `ontology/domain.md §5 item 61` / §7 | `fda698c9af5a8107fbd5d005f98a6cca67e8af1f` | `cb7103f730215f001e298af3b8a4b271b613ef94` |
+| 62 | `ontology/domain.md §5 item 62` / §7 | `74857fffe8b562327fc749b0913099a583c5020d` | `fda698c9af5a8107fbd5d005f98a6cca67e8af1f` |
+| 63 | `ontology/domain.md §5 item 63` / §7 | `fbfe4e1095c59e7f28d05bc1528527e11be7908d` | `74857fffe8b562327fc749b0913099a583c5020d` |
+| 64 | `ontology/domain.md §5 item 64` / §7 | `88ec97be2f098ca2b46a3c0979743a209ea79778` | `fbfe4e1095c59e7f28d05bc1528527e11be7908d` |
+| 65 | `ontology/domain.md §5 item 65` / §7 | `2103d468c22eb771a9c77b9b7a6cb40b4335a038` | `88ec97be2f098ca2b46a3c0979743a209ea79778` |
+| 66 | `ontology/domain.md §5 item 66` / §7 | `2df243dbdbff99f316f34b201e81b111e3b66aef` | `2103d468c22eb771a9c77b9b7a6cb40b4335a038` |
+| 67 | `ontology/domain.md §5 item 67` / §7 | `693428c78dbd882f5158abd83a5bd8d897feec2a` | `2df243dbdbff99f316f34b201e81b111e3b66aef` |
+| 68 | `ontology/domain.md §5 item 68` / §7 | `4fc9037a3b3be0852745c300dce4444eb29116e0` | `693428c78dbd882f5158abd83a5bd8d897feec2a` |
+| 69 | `ontology/domain.md §5 item 69` / §7 | `213e3c2fcedd3df93f8335cf5e4d9e12434fe9a1` | `4fc9037a3b3be0852745c300dce4444eb29116e0` |
+
+**Recording review/acceptance:** fresh independent `source-batch/review.md` under managed run
+`bea45c91-48b4-4c06-bcc6-6ee0e5c233d2` found **no issues** (OK with notes). Reviewer inspected
+retained public raw sources, complete patches and receipts, but executed no commands/tests/hash
+calculations/byte comparisons. Parent accepted all items after its own actual-Git/source/semantic
+inspection and fresh scope/preservation/exact-diff audit, whitespace, bounded validator and boot:
+`/tmp/pixlnd-sourcing-parent-01a121a6/{audit,diff-check,validator,boot}.log/.exit`, all exit 0.
+Parent audit compares each saved full-index binary unstaged/staged/committed diff against actual Git;
+`commit-chain.txt` holds the chain. `dispatch-manifest.json` / `dispatch-serial-check.log/.exit`
+verify thirteen distinct serial completed item workers; fresh-context requests are parent-attested,
+not independently established by the manifest. All item whitespace/validator gates passed; item
+writers ran no boot/gameplay/visual/multiplayer checks. Initial diagnostic/tooling failures for
+58 (heading index), 60 (hardcoded Git path) and 65 (JSON shape) remain preserved with
+supervisor-authorized successful corrections. They are not retroactively initial successes.
+
+**Closure:** parent explicitly accepted before mutation, authorized receipt/status-only closure,
+and all handled queue entries are removed; the empty queue is deleted. Original queue remains in
+setup/item Git history, not as a second completed ledger. Simplify → ponytail-review and fresh
+scope/whitespace/bounded validator/boot gates, exact full-index binary diff/commit correspondence
+and final Git receipts: `/tmp/pixlnd-sourcing-closure-01a121a6/`. Parent must inspect this final
+closure delta/commit after creation; it has not received a second independent review. Validator/
+boot concern existing loaded data/startup, not historical truth, Markdown or new enforcement;
+no gameplay/visual/multiplayer suite or new repository test. No new source research, private
+source/assets/build access, mechanics, JSON, labels, checker/code, publication or next-topic authority.
+
+**Remaining evidence gaps:** original edition/build/release and food/taming/Leaf–Candy histories;
+daily units, per-kind yields/odds, refining ratios, noncotton/weapon costs; roster/trait/population/
+shipped-route/naming histories; unresolved controls, pet-command/scaling details, other UI/audio/
+dialogue and original-sleep activation/healing/baseline/units. Silk/Spinning Wheel remain **HOLD**,
+not new 27/36 ballots. All hybrid rules stand, including permanent regional-loss exclusion and
+item 39's no-bug instruction. These accepted attributions do not finish the topic or create new
+implementation debt. **No push authorized or attempted.**
+
 ### Validation-contract source attribution — item 69 (2026-10-09)
 
-- [x] **Recorded:** Cotton/Rogue/Loom report, as proposed under the exact standing answer above,
-  not an individual owner answer. Canonical attribution/limits: `domain.md §5 item 69` / §7.
-  No Linen/Silk station inference, ratios, further costs or demonstrated recipe; item 18's
-  quantities unchanged, not another table selection. D6/Wand and Silk/Spinning Wheel HOLD stand.
+- [x] **Handled:** original selection under the standing answer; canonical limits: `domain.md §5 item 69` / §7.
+
+**Original proposal / selected:** attribute Cotton Armor 12947's (Q) opening: “Cotton Armor is
+used by the Rogue and can be crafted at a Loom.”
 - **Approval versus Refusing:** approval records the citation/uncertainty; refusal would leave
   it unrecorded, not select the opposite mechanic. Neither changes the approved player experience.
 - **Evidence:** public Cotton Armor revision 12947, pageid 3327, edited 2019-10-01T14:48:24Z;
@@ -785,74 +847,74 @@ sleep-rate baseline/units (§5 items 10–11) remain research.
   capture start/end 2026-10-05T15:13:10Z, exit0. Timestamps prove no release/build identity;
   edition-unscoped community attribution only. Writer receipts and exact item-commit
   correspondence: `/tmp/pixlnd-source-item-69/`.
-- **Status:** independent review and parent acceptance pending; original selection stays queued.
-  Writer whitespace/bounded validator checks cover current loaded data, not prose/history or new
-  enforcement; no boot/gameplay/visual/multiplayer check. Items 1–68 stand; no station, recipe,
+- **Limits:** items 1–68 stand; no station, recipe,
   labels, live JSON, checker/code/tests or gameplay changes. Remaining histories stay research;
   regional loss excluded; never implement item 39's bug. No push.
 
 ### Validation-contract source attribution — item 68 (2026-10-09)
 
-- [x] **Recorded:** individual Snout Beetle habitat/ranged-hostility wording, as proposed under
-  the exact standing answer above, not an individual owner answer. Canonical attribution/limits:
-  `domain.md §5 item 68` / §7; existing habitats/role stand. Hills is not a new landscape;
-  Lolly, mount traits, Intuition/dodge exclusivity and item 39's prohibited bug are not new selections.
+- [x] **Handled:** original selection under the standing answer; canonical limits: `domain.md §5 item 68` / §7.
+
+**Original proposal / selected:** attribute Snout Beetle 19194's (A) infobox `biome = Greenlands,
+Hills` and “Snout Beetles are a type of aggressive ranged Beetle”.
 - **Approval versus Refusing:** approval records the citation/uncertainty; refusal would leave
   it unrecorded, not select the opposite mechanic. Neither changes the approved player experience.
 - **Evidence:** public Snout Beetle revision 19194, pageid 939, edited 2024-08-08T23:50:27Z;
   `/tmp/pixlnd-source-research-36.iKZQy6/fauna/wiki.body.json` / `wiki.{start,result}` inspected,
   capture start 2026-10-05T00:38:29Z, HTTP200/curl and jq exit0, not completion/release proof.
   Writer receipts and exact item-commit correspondence: `/tmp/pixlnd-source-item-68/`.
-- **Status:** independent review and parent acceptance pending; original selection stays queued.
-  Writer whitespace/bounded validator checks cover current loaded data, not prose/history or new
-  enforcement; no boot/gameplay/visual/multiplayer check. Items 1–67 stand. No exclusive habitat,
+- **Limits:** items 1–67 stand. No exclusive habitat,
   combat distance, pack size, cadence, family inheritance, A/S dating or taming test inferred;
   no labels, live JSON, checker/code/tests or gameplay changes. Remaining histories and
   Silk/Spinning Wheel HOLD stand; regional loss excluded; never implement item 39's bug. No push.
 
 ### Validation-contract source attribution — item 67 (2026-10-09)
 
-- [x] **Recorded:** general Alpaca-family habitat/abundance wording, as proposed under the exact
-  standing answer above, not an individual owner answer. Canonical attribution/limits:
-  `domain.md §5 item 67` / §7; individual rosters, dark-Alpaca Desert exclusion and food rules stand.
-  Item 42's individual habitat report and Cupcake/Parrot passages are not new selections.
+- [x] **Handled:** original selection under the standing answer; canonical limits: `domain.md §5 item 67` / §7.
+
+**Original proposal / selected:** attribute Alpacas 19894 (A): “Alpacas are passive wooly animals
+abundant in the Snowlands, they can be found in all Landscapes except the Lava Lands.” / “Alpacas
+are very common and appear in other landscapes such as Greenlands, forests and plains but are
+most abundant in the Snowlands.” Preserve family-level/general wording against the dark Alpaca's
+existing desert exclusion, not a correction of either individual roster.
 - **Approval versus Refusing:** approval records the citation/uncertainty; refusal would leave
   it unrecorded, not select the opposite mechanic. Neither changes the approved player experience.
 - **Evidence:** public Alpacas revision 19894, pageid 1351, edited 2024-08-19T19:14:57Z;
   `/tmp/pixlnd-source-research-36.iKZQy6/fauna/wiki.body.json` / `wiki.{start,result}` inspected,
   capture start 2026-10-05T00:38:29Z, HTTP200/curl and jq exit0, not completion/release proof.
   Writer receipts and exact item-commit correspondence: `/tmp/pixlnd-source-item-67/`.
-- **Status:** independent review and parent acceptance pending; original selection stays queued.
-  Writer whitespace/bounded validator checks cover current loaded data, not prose/history or new
-  enforcement; no boot/gameplay/visual/multiplayer check. Items 1–66 stand. No per-colour every-land
+- **Limits:** items 1–66 stand. No per-colour every-land
   guarantee, numerical abundance, new biome or A/S chronology inferred; no labels, live JSON,
   code or gameplay change. Remaining histories and Silk/Spinning Wheel HOLD stand.
   No external/private/assets/original-build action or push.
 
 ### Validation-contract source attribution — item 66 (2026-10-09)
 
-- [x] **Recorded:** Wolf habitats and qualified taming/Apple Pie reports, retaining the mount/food
-  juxtaposition unresolved, as proposed under the exact standing answer above, not an individual
-  owner answer. Canonical attribution/limits: `domain.md §5 item 66` / §7; hybrid Wolf, null
-  tame-food, cut Apple Pie and F2 stand. Item 52's Steam-absence attribution is not re-proposed.
+- [x] **Handled:** original selection under the standing answer; canonical limits: `domain.md §5 item 66` / §7.
+
+**Original proposal / selected:** attribute Wolf 20167's (W) infobox Greenlands / Forests /
+Snowlands, body “The Wolf is an untamable aggressive animal”, and Trivia “Apple Pie was
+pre-conceptualized to tame a Wolf but never released.” Preserve the source's simultaneous infobox
+`mount = ... Yes` / `food = n/a` as an unresolved juxtaposition, not riding permission or
+demonstrated taming.
 - **Approval versus Refusing:** approval records the citation/uncertainty; refusal would leave
   it unrecorded, not select the opposite mechanic. Neither changes the approved player experience.
 - **Evidence:** public Wolf revision 20167, pageid 856, edited 2024-08-24T18:05:46Z;
   `/tmp/pixlnd-reconcile-next.2F5qwV/fauna/wiki.body` / `wiki.{start,result}` inspected,
   capture start 2026-10-05T15:12:55.340355+00:00, HTTP200/exit0, not completion/release proof.
   Writer receipts and exact item-commit correspondence: `/tmp/pixlnd-source-item-66/`.
-- **Status:** independent review and parent acceptance pending; original selection stays queued.
-  Writer whitespace/bounded validator checks cover current loaded data, not prose/history or new
-  enforcement; no boot/gameplay/visual/multiplayer check. Items 1–65 stand. No exclusive habitat,
+- **Limits:** items 1–65 stand. No exclusive habitat,
   new biome, demonstrated build history, Alpha availability, successful taming or mount usability
   inferred. No labels, live JSON or code change; remaining histories and Silk/Spinning Wheel HOLD
   stand. No external/private/assets/original-build action or push.
 
 ### Validation-contract source attribution — item 65 (2026-10-09)
 
-- [x] **Recorded:** named Wraith habitats, longer pursuit/cannot-die and pet-avoidance reports,
-  as proposed under the exact standing answer above, not an individual numbered owner approval.
-  Canonical attribution/limits: `domain.md §5 item 65` / §7; hybrid aggro/home-return rules stand.
+- [x] **Handled:** original selection under the standing answer; canonical limits: `domain.md §5 item 65` / §7.
+
+**Original proposal / selected:** attribute Wraith 20152's (W) infobox Dark Woods / Deadlands
+and “The wraith will follow a player longer than other monsters and cannot die.” / “Pets will
+not attack Wraiths even if the player attempts to attack them.”
 - **Approval versus Refusing:** approval records the citation/uncertainty; refusal would leave
   it unrecorded, not select the opposite mechanic. Neither changes the approved player experience.
 - **Evidence:** public Wraith revision 20152, pageid 3842, edited 2024-08-24T17:52:35Z;
@@ -860,67 +922,60 @@ sleep-rate baseline/units (§5 items 10–11) remain research.
   capture start 2026-10-05T15:12:55.340355+00:00, HTTP200/exit0, not completion/release proof.
   Writer receipts: `/tmp/pixlnd-source-item-65/`; initial JSON-shape inspection failure retained,
   supervisor-authorized bounded jq inspection succeeded. No raw normalization/equality claim.
-- **Status:** independent review and parent acceptance pending; original selection stays queued.
-  Exact item-commit correspondence is saved outside the repo for parent closure. Writer whitespace/
-  bounded validator checks cover current loaded data, not prose/history or new enforcement;
-  no boot/gameplay/visual/multiplayer check. Items 1–64 stand, including item 51's sound attribution.
+- **Limits:** items 1–64 stand, including item 51.
   No exclusive habitat, quantified pursuit, immunity mechanism, undead inheritance or A/S dating
   inferred; no chase/pet behavior, labels, live JSON or code change. Remaining histories and
   Silk/Spinning Wheel HOLD stand. No external/private/assets/original-build action or push.
 
 ### Validation-contract source attribution — item 64 (2026-10-09)
 
-- [x] **Recorded:** Fists' one-handed/dual-wield Rogue description and Dagger pairing report,
-  as proposed under the exact standing answer above, not an individual numbered owner approval.
-  Canonical attribution/limits: `domain.md §5 item 64` / §7.
+- [x] **Handled:** original selection under the standing answer; canonical limits: `domain.md §5 item 64` / §7.
+
+**Original proposal / selected:** attribute Fists 20017 (F): “Fists are a type of one-handed …
+Weapon”; “Fists are dual-wield metal weapons used by the … Rogue.”; “Daggers can also be worn
+with Fists.”
 - **Approval versus Refusing:** approval records the citation/uncertainty; refusal would leave
   it unrecorded, not select the opposite mechanic. Neither changes the approved player experience.
 - **Evidence:** public Fists revision 20017, pageid 465, edited 2024-08-21T17:30:36Z;
   `/tmp/pixlnd-source-research-36.iKZQy6/food/wiki-five.body` / `wiki-five.meta` inspected,
   capture 2026-10-05T00:37:32Z–00:37:33Z, HTTP200/curl exit0. Raw quotation/identity checks
   and writer receipts: `/tmp/pixlnd-source-item-64/`. No envelope-equality or release-date claim.
-- **Status:** independent review and parent acceptance pending; original selection stays queued.
-  Exact item-commit correspondence is saved outside the repo; parent records its verified hash
-  during closure. Writer whitespace/bounded validator checks cover existing loaded data, not
-  prose/history or new enforcement; no boot/gameplay/visual/multiplayer check. Items 1–63 stand,
+- **Limits:** items 1–63 stand,
   including item 49; no general mixing, class/hand/stat/animation rule, edition/recipe inference,
   equipment implementation, labels, live JSON or code change. Approved equipment model/D6/Wand
   and Silk/Spinning Wheel HOLD stand. No external/private/assets/original-build action or push.
 
 ### Validation-contract source attribution — item 63 (2026-10-09)
 
-- [x] **Recorded:** Deposit's qualitative cave habitats and named Emerald/Sapphire/Ruby
-  no-refinement reports, as proposed under the exact standing answer above, not an individual
-  numbered owner approval. Canonical attribution/limits: `domain.md §5 item 63` / §7.
+- [x] **Handled:** original selection under the standing answer; canonical limits: `domain.md §5 item 63` / §7.
+
+**Original proposal / selected:** attribute Deposit 19729 (Q): “They are almost exclusively found
+in caves and sometimes in underwater caves.” and “Unlike Iron, Silver and Gold, Gems like Emerald,
+Sapphire and Ruby do not need refinement for Crafting.”
 - **Approval versus Refusing:** approval records the citation/uncertainty; refusal would leave
   it unrecorded, not select the opposite mechanic. Neither changes the approved player experience.
 - **Evidence:** public Deposit revision 19729, pageid 1206, edited 2024-08-11T20:49:24Z;
   `/tmp/pixlnd-reconcile-next.2F5qwV/items/quantity.body` and `quantity.{start,end,exit}` inspected,
   capture start/end 2026-10-05T15:13:10Z, exit 0. Raw quotations/identity checks and writer receipts:
   `/tmp/pixlnd-source-item-63/`. No derivative/envelope equality or release-date claim.
-- **Status:** independent review and parent acceptance pending; original selection stays queued.
-  Exact item-commit correspondence is saved outside the repo; parent records its verified hash
-  during closure. Writer whitespace/bounded validator receipts cover existing loaded data, not
-  prose/history or new enforcement; no boot/gameplay/visual/multiplayer check. Items 1–62 stand,
+- **Limits:** items 1–62 stand,
   including 27/47; no all-gem, quantity or edition inference, deposit/refining rule, labels,
   live JSON or code change. No external/private/assets/original-build inspection or push.
   Remaining histories/quantities and Silk/Spinning Wheel HOLD stand; D6/Wand unchanged.
 
 ### Validation-contract source attribution — item 62 (2026-10-09)
 
-- [x] **Recorded:** Alpha hydration/XP and Steam equipment-rating pet-scaling reports as proposed
-  under the exact standing answer above, not an individual numbered owner approval.
-  Canonical attribution/limits: `domain.md §5 item 62` / §7; original selection retained in the queue.
+- [x] **Handled:** original selection under the standing answer; canonical limits: `domain.md §5 item 62` / §7.
+
+**Original proposal / selected:** attribute G Pets and Pet Food: “In Alpha, pets had more features
+such as hydration and XP.” / “On Steam pets take stats based on the players equipment rating.”
 - **Approval versus Refusing:** approval records the citation/uncertainty; refusal would leave
   it unrecorded, not select the opposite mechanic. Neither changes the approved player experience.
 - **Evidence:** public guide revision 20077, pageid 3372, Pets and Pet Food raw lines 98–99;
   `/tmp/pixlnd-source-item-62/` holds source checks and item receipts. Authoritative raw/extracted/TXT
   content agrees; envelopes differ and derived wikitext adds one LF. Documentary dates are not
   release dates; no external retrieval, original-build, image or asset inspection.
-- **Status:** independent review and parent acceptance pending; queue retained. Exact item-commit
-  correspondence is saved outside the repo; parent records its verified hash during closure.
-  Writer whitespace/bounded validator receipts cover existing loaded data, not prose/history or
-  new enforcement; no boot/gameplay/visual/multiplayer check. Items 1–61 stand; no exact hydration
+- **Limits:** items 1–61 stand; no exact hydration
   drain/refill/display, XP persistence, scaling formula, numerical rating contribution, Steam
   hydration/XP absence or patch-date proof. Generic unique-food wording is not re-recorded;
   F11/shared Bubble Gum and hybrid pet progression/persistence/traversal stand, regional loss
@@ -928,65 +983,64 @@ sleep-rate baseline/units (§5 items 10–11) remain research.
 
 ### Validation-contract source attribution — item 61 (2026-10-09)
 
-- [x] **Recorded:** non-exhaustive Steam emote examples and separately edition-unscoped `/namepet`,
-  as proposed under the exact standing answer above, not an individual numbered owner approval.
-  Canonical attribution/limits: `domain.md §5 item 61` / §7; original selection retained in the queue.
+- [x] **Handled:** original selection under the standing answer; canonical limits: `domain.md §5 item 61` / §7.
+
+**Original proposal / selected:** attribute G Gameplay Notes' “On Steam, a few emotes exist such
+as /sit, /wave and /dance.” Separately attribute Pets and Pet Food's “You can nickname a pet by
+typing /namepet.”
 - **Approval versus Refusing:** approval records the citation/uncertainty; refusal would leave
   it unrecorded, not select the opposite mechanic. Neither changes the approved player experience.
 - **Evidence:** public guide revision 20077, pageid 3372, Gameplay Notes line 92 and Pets and Pet
   Food line 105; `/tmp/pixlnd-source-item-61/` holds source checks and item receipts. Authoritative
   raw/extracted/TXT content agrees; envelopes differ and derived wikitext adds one LF. Documentary
   dates are not release dates; no external retrieval, original-build, image or asset inspection.
-- **Status:** independent review and parent acceptance pending; queue retained. Exact item-commit
-  correspondence is saved outside the repo; parent records its verified hash during closure.
-  Writer whitespace/bounded validator receipts cover existing loaded data, not prose/history or
-  new enforcement; no boot/gameplay/visual/multiplayer check. Items 1–60 stand; `/sit` A? and all
+- **Limits:** items 1–60 stand; `/sit` A? and all
   existing tags preserved. No `/pet` or Alpha emote proof, rename edition/argument/active-target/
   name-validation inference, command/chat/naming behavior, live JSON or code change.
   Remaining histories and Silk/Spinning Wheel HOLD stand.
 
 ### Validation-contract source attribution — item 60 (2026-10-09)
 
-- [x] **Recorded:** the two Steam healing-while-drowning / underwater wall-hold reports as
-  proposed under the exact standing answer above, not a fabricated individual approval.
-  Canonical attribution/limits: `domain.md §5 item 60` / §7; original selection retained in the queue.
+- [x] **Handled:** original selection under the standing answer; canonical limits: `domain.md §5 item 60` / §7.
+
+**Original proposal / selected:** attribute G Gameplay Notes: “On Steam, Healing while drowning
+can keep you underwater longer.” and “On Steam, Holding a wall underwater will stop diving
+stamina depletion.”
 - **Approval versus Refusing:** approval records the citation/uncertainty; refusal would leave
   it unrecorded, not select the opposite mechanic. Neither changes the approved player experience.
 - **Evidence:** public guide revision 20077, pageid 3372, Gameplay Notes raw lines 90–91;
   `/tmp/pixlnd-source-item-60/` holds source checks and item receipts. Authoritative raw/extracted/TXT
   content agrees; envelopes differ and derived wikitext adds one LF. Documentary dates are not
   release dates; no external retrieval, original-build, image or asset inspection.
-- **Status:** independent review and parent acceptance pending; queue retained. Exact item-commit
-  correspondence is saved outside the repo; parent records its verified hash during closure.
-  Writer whitespace/bounded validator receipts cover existing loaded data, not prose/history or
-  new enforcement; no boot/gameplay/visual/multiplayer check. Items 1–59 and swimming/drowning/
+- **Limits:** items 1–59 and swimming/drowning/
   climbing/Spikes rules stand; no refill, infinite survival or quantified movement rule adopted.
   No gameplay, labels, live JSON or code change. Remaining histories and Silk/Spinning Wheel HOLD stand.
 
 ### Validation-contract source attribution — item 59 (2026-10-09)
 
-- [x] **Recorded:** Steam R / Special Skill / “Cast a special move every 30 seconds.” as a
-  broad report insufficient to override individual cooldowns, under the exact standing answer
-  above, not a fabricated individual approval. Canonical: `domain.md §5 item 59` / §7;
-  original selection retained in the pending queue.
+- [x] **Handled:** original selection under the standing answer; canonical limits: `domain.md §5 item 59` / §7.
+
+**Original proposal / selected:** attribute G Controls / Steam Version: “R” / “Special Skill” /
+“Cast a special move every 30 seconds.” Record the broad 30-second wording as insufficient to
+override skill-specific cooldown declarations.
 - **Approval versus Refusing:** approval records the citation/limitation; refusal would leave
   it unrecorded, not select the opposite mechanic. Neither changes the approved player experience.
 - **Evidence:** public guide revision 20077, pageid 3372, Controls / Steam Version raw line 40;
   `/tmp/pixlnd-source-item-59/` holds source checks and item receipts. Authoritative raw/extracted/TXT
   content agrees; envelopes differ and derived wikitext adds one LF. Dates are documentary,
   not release/introduction dates; no original build, image or asset inspection or external retrieval.
-- **Status:** independent review and parent acceptance pending; queue retained. Exact item-commit
-  correspondence is saved outside the repo; parent records its verified hash during closure.
-  Writer whitespace/bounded validator receipts cover existing loaded data, not prose/history or
-  new enforcement; no boot/gameplay/visual/multiplayer check. Items 1–58, individual cooldowns,
+- **Limits:** items 1–58, individual cooldowns,
   hybrid slots and Assassin exception stand; no balance, controls, labels, live JSON or code change.
   Remaining histories and Silk/Spinning Wheel HOLD stand.
 
 ### Validation-contract source attribution — item 58 (2026-10-09)
 
-- [x] **Recorded:** both Controls tables' exact Mouse Wheel / Dodge / stamina-cost wording,
-  as proposed under the exact standing answer above; no individual owner answer fabricated.
-  Canonical attribution/limits: `domain.md §5 item 58` / §7; selection retained in the pending queue.
+- [x] **Handled:** original selection under the standing answer; canonical limits: `domain.md §5 item 58` / §7.
+
+**Original proposal / selected:** attribute both G Controls tables' exact “Mouse Wheel” /
+“Dodge” / “Roll out of the way at the cost of stamina.” Preserve its underspecification against
+the existing M3-while-moving dodge and wheel zoom declarations rather than remapping scrolling
+to dodge.
 - **Approval versus Refusing:** approval records the citation/uncertainty; refusal would leave
   it unrecorded, not select opposite controls. Neither changes the approved player experience.
 - **Evidence:** public guide revision 20077, pageid 3372, Controls / Steam Version line 42 and
@@ -994,28 +1048,27 @@ sleep-rate baseline/units (§5 items 10–11) remain research.
   Initial diagnostic failed on a hardcoded Alpha heading index; supervisor-authorized bounded
   inspection corrected the diagnostic to check section membership, which passed. Original failure
   retained. Authoritative content agrees; envelopes differ and derived wikitext adds one LF.
-- **Status:** independent review and parent acceptance pending; queue retained. Exact item-commit
-  correspondence is saved outside the repo; parent records its verified hash during closure.
-  Writer whitespace/bounded validator receipts cover existing loaded data, not prose/history or
-  new enforcement; no boot/gameplay/visual/multiplayer check. No click-versus-scroll resolution,
+- **Limits:** no click-versus-scroll resolution,
   moving qualifier, numeric stamina or immunity proof follows. D13/D23 and items 1–57 stand;
   no controls, labels, live JSON or code change. Remaining histories and Silk/Spinning Wheel HOLD stand.
 
 ### Validation-contract source attribution — item 57 (2026-10-09)
 
-- [x] **Recorded:** grouped Alpha/Steam movement, map, crafting, lantern and M1/M2 descriptions,
-  plus Alpha G Special Item / X Skills, as proposed under the exact standing answer above.
-  Canonical wording/limits: `domain.md §5 item 57` / §7; original selection retained in the pending queue.
+- [x] **Handled:** original selection under the standing answer; canonical limits: `domain.md §5 item 57` / §7.
+
+**Original proposal / selected:** attribute G's Controls tables for both Alpha and Steam:
+`W, S, A, D` Movement (“Move the player with W, S, A, D.”), M World Map (“Open the World Map.”),
+C Crafting (“Open crafting window.”), F Lantern (“Toggle your lantern.”), M1 Left-Click Normal
+Attack / M2 Right-Click Special Attack (each “Depends on weapon and class.”). Separately attribute
+Alpha-only G Special Item (“Toggle the item equipped in Special.”) and X Skills (“Open Skills
+window, allocate skill points here.”).
 - **Approval versus Refusing:** approval records this citation/uncertainty; refusal would leave
   it unrecorded, not select opposite controls. Neither changes the approved player experience.
 - **Evidence:** revision 20077, pageid 3372; retained public guide Controls rows
   20/22/34/38/44/46/61/63/65/69/71/73/77/79. Source identity/content inspection and item receipts:
   `/tmp/pixlnd-source-item-57/`. Authoritative body/extracted/raw-TXT equality only; envelopes differ,
   derived wikitext adds one LF. No external/private/assets/original-build action or release-date proof.
-- **Status:** independent review and parent acceptance pending; queue retained. Per-item commit
-  correspondence is saved outside the repo; parent records the verified hash during closure.
-  Writer whitespace/bounded validator receipts cover existing loaded data, not prose/history or
-  new enforcement; no gameplay/visual/multiplayer tests. No controls, labels, live JSON or code change.
+- **Limits:** no controls, labels, live JSON or code change.
   Items 1–56, D13/D17, D20/D24 and Assassin exception stand; Silk/Spinning Wheel remain HOLD.
 
 ### Validation-contract source attribution — item 56 (2026-10-09)

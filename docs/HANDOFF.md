@@ -1,12 +1,13 @@
 # Handoff — resume here
 
-## Current entry point — sourcing batch 57–69, review pending (2026-10-09)
+## Current entry point — sourcing batch 57–69 accepted, local closure (2026-10-09)
 
-Items 57–69 are recorded under standing sourcing-only approval: `ontology/domain.md §5 items 57–69` / §7.
-Exact owner answer, selections and evidence: `docs/ROADMAP/todo_decide.md §E`;
-writer receipts: `/tmp/pixlnd-source-item-{57,58,59,60,61,62,63,64,65,66,67,68,69}/`. Independent review and parent verification
-remain pending; retain all entries in `docs/todo_handle_reconciled_items.md` through acceptance.
-Parent owns aggregate review and acceptance; no reapproval required.
+Items 57–69 are handled under standing sourcing-only approval: `ontology/domain.md §5 items 57–69` / §7.
+Independent recording review found **no issues**; parent accepted all thirteen after actual-Git/
+source/diff audit and fresh bounded validator/boot checks. Exact owner answer, original selections,
+full item hashes/parents, canonical pointers and evidence: `docs/ROADMAP/todo_decide.md §E`.
+All selected items are recorded/committed/verified; empty pending-only queue deleted. Items 1–56 stand.
+No pending selection or unanswered ballot needs reapproval; remaining histories are not completed.
 
 Utility/attack-key and ambiguous Mouse Wheel dodge community attribution only, not control selection,
 slot behavior, Steam skill-tree absence or combat parameters. Click/scroll remains unresolved;
@@ -30,10 +31,28 @@ item 18's quantities stand, not another table selection.
 Items 1–56 and all hybrid rules stand; item 56's Alpha pickup R/E
 uncertainty and completed review/commit receipts remain in §E. No gameplay,
 labels, live JSON, checker/code/tests, external/private/assets/original-build action or push.
-Writer whitespace/validator checks cover current loaded data, not prose/history or new enforcement;
-no boot/gameplay/visual/multiplayer result claimed here. Remaining histories and Silk/Spinning Wheel
-HOLD stand; regional loss is permanently excluded and item 39's bug must never be implemented.
-Context percentage unavailable; this is bounded item recording, not batch acceptance or topic completion.
+Silk/Spinning Wheel remain HOLD, not new 27/36 ballots; regional loss is permanently excluded
+and item 39's bug must never be implemented.
+
+**Verification:** writer receipts `/tmp/pixlnd-source-item-{57,58,59,60,61,62,63,64,65,66,67,68,69}/`;
+independent `source-batch/review.md` under managed run `bea45c91-48b4-4c06-bcc6-6ee0e5c233d2`.
+Reviewer read public sources/full patches/receipts but ran no commands, tests or byte comparisons.
+Parent evidence `/tmp/pixlnd-sourcing-parent-01a121a6/`: exact saved/staged/committed/actual-Git
+correspondence for all items, scope/preservation audit and whitespace/validator/boot all exit 0.
+Thirteen distinct serial workers verified; fresh context requested by parent, not proven by manifest.
+Closure-only simplify → ponytail-review, fresh scope/whitespace/validator/boot and exact diff/commit
+receipts: `/tmp/pixlnd-sourcing-closure-01a121a6/`. Parent must review this final delta/commit;
+it has not received another independent review. Checks concern current loaded data/startup and
+recording fidelity, not prose/history or new enforcement; no gameplay/visual/multiplayer suite.
+
+**Next resume:** remaining Validation-contract source research/attribution: original-build/edition
+and food/taming/Leaf–Candy histories; daily units, yields/ratios/noncotton and weapon quantities;
+roster/trait/population/route/naming histories; unresolved controls, pet-command/scaling details,
+other UI/audio/dialogue and original-sleep activation/healing/baseline/units. These are real evidence
+gaps, not new gameplay ballots. No new items/research or implementation in this closure.
+Inspect actual Git and closure receipts for the local checkpoint following item
+`213e3c2fcedd3df93f8335cf5e4d9e12434fe9a1`. **No push authority; none attempted.** Publication
+requires separate authorization. Context percentage unavailable; no whole-topic completion.
 
 ## Historical entry point — verified source attribution 55, local checkpoint (2026-10-05)
 

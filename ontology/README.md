@@ -26,7 +26,8 @@ Dated build notes below include superseded placeholders, not proof of current co
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
 **Current source-attribution checkpoint (2026-10-09):** items 57–69 recorded in `domain.md §5` / §7
-under standing sourcing-only approval; independent review and parent verification pending.
+under standing sourcing-only approval, independently reviewed with no issues and parent-accepted
+following actual-Git/source/diff audit and bounded validator/boot checks (`todo_decide.md §E`).
 Historical utility/attack-key descriptions, ambiguous Mouse Wheel dodge wording and Steam R's
 non-universal 30-second report, plus two bounded Steam underwater-survival reports only;
 controls, individual cooldowns and swimming/drowning/climbing/Spikes rules unchanged.
@@ -41,7 +42,8 @@ tame-food, cut Apple Pie and F2 stand. General Alpaca-family habitat wording add
 inheritance or roster correction; dark-Alpaca Desert exclusion stands. Individual Snout Beetle
 habitat/ranged-hostility wording adds no landscape, combat parameters or family inheritance;
 habitats/role stand and item 39's bug remains prohibited. Cotton/Rogue/Loom attribution adds no
-Linen/Silk station or recipe inference; item 18's quantities stand. Queue retained.
+Linen/Silk station or recipe inference; item 18's quantities stand. All selections handled;
+empty pending queue deleted. Closure-delta parent review remains separate, not independently reviewed.
 Items 1–56 and hybrid defaults stand.
 Exact selection/evidence: `todo_decide.md §E`; current status: `docs/HANDOFF.md`.
 No gameplay, labels, live-data/checker changes or publication authority. Remaining histories and

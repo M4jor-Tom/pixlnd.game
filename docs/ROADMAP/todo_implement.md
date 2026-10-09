@@ -16,7 +16,8 @@ below means replacing checked-in stale definitions when authorized, never migrat
 legacy-read fallbacks or obsolete-format compatibility. Implementation remains unauthorized.
 
 **Current attribution checkpoint (2026-10-09):** source items 57–69 recorded under standing
-sourcing-only approval; review/parent verification pending, queue retained for 57–69.
+sourcing-only approval, independently reviewed with no issues and parent-accepted after actual-Git/
+source/diff audit and bounded validator/boot checks. All selections handled; empty queue deleted.
 Canonical/receipts: `domain.md §5` / §7 and `todo_decide.md §E`; status: `docs/HANDOFF.md`.
 Items 1–56 stand; no implementation, controls, labels or live-data changes. Historical utility/
 attack-key reports add no slot behavior, Steam skill-tree inference or combat parameters.
@@ -35,7 +36,9 @@ Alpaca-family wording adds no roster/abundance/biome/food debt; dark-Alpaca Dese
 Item 68's individual Snout Beetle habitat/ranged-hostility attribution adds no landscape or combat
 debt; existing habitats/role stand and item 39's bug remains prohibited. Item 69's Cotton/Rogue/Loom
 attribution adds no station/recipe debt or Linen/Silk inference; item 18's quantities stand.
-Remaining histories/quantities stay research. Silk/Spinning Wheel HOLD.
+Remaining histories/quantities stay research. Silk/Spinning Wheel HOLD. No whole-topic completion
+or publication authority; closure-delta parent review remains separate. Existing implementation
+debt below is unchanged; this batch creates none.
 
 **Historical attribution checkpoint 53–54 (2026-10-05):** 53/54 approved without amendments, recorded,
 independently reviewed and parent recording-verified. No unhandled selection or presented unanswered
