@@ -15,7 +15,7 @@ data exists to migrate. Require current rules directly (`domain.md §0/§5`); da
 below means replacing checked-in stale definitions when authorized, never migration code,
 legacy-read fallbacks or obsolete-format compatibility. Implementation remains unauthorized.
 
-**Current attribution checkpoint (2026-10-09):** source items 57–68 recorded under standing
+**Current attribution checkpoint (2026-10-09):** source items 57–69 recorded under standing
 sourcing-only approval; review/parent verification pending, queue retained for 57–69.
 Canonical/receipts: `domain.md §5` / §7 and `todo_decide.md §E`; status: `docs/HANDOFF.md`.
 Items 1–56 stand; no implementation, controls, labels or live-data changes. Historical utility/
@@ -33,7 +33,8 @@ no chase, immunity or pet-behavior debt; hybrid aggro/home-return rules stand. I
 add no habitat/taming/mount debt; null tame-food, cut Apple Pie and F2 stand. Item 67's general
 Alpaca-family wording adds no roster/abundance/biome/food debt; dark-Alpaca Desert exclusion stands.
 Item 68's individual Snout Beetle habitat/ranged-hostility attribution adds no landscape or combat
-debt; existing habitats/role stand and item 39's bug remains prohibited.
+debt; existing habitats/role stand and item 39's bug remains prohibited. Item 69's Cotton/Rogue/Loom
+attribution adds no station/recipe debt or Linen/Silk inference; item 18's quantities stand.
 Remaining histories/quantities stay research. Silk/Spinning Wheel HOLD.
 
 **Historical attribution checkpoint 53–54 (2026-10-05):** 53/54 approved without amendments, recorded,

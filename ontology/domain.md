@@ -2832,6 +2832,23 @@ original-build behavior. No external retrieval, private source, image/audio asse
 inspection or taming test occurred. No labels, live JSON, checker/code/tests or gameplay change;
 remaining histories stay research.
 
+#### Item 69 — Cotton-specific Loom report (standing sourcing approval, 2026-10-09)
+
+[Cotton Armor revision 12947](https://cubeworld.fandom.com/wiki/Cotton_Armor?oldid=12947)
+(pageid **3327**) opens: “Cotton Armor is used by the Rogue and can be crafted at a Loom.”
+This corroborates **Cotton/Rogue/Loom only** in `materials.json#cotton.{class,station}`,
+`crafting-stations.json#loom` and §3.4 `crafting-station`, not Linen/Silk stations, textile
+ratios or further costs. Item 18's cotton quantities remain unchanged, not another table
+selection; Silk/Spinning Wheel remain **HOLD**, not new 27/36 ballots. D6 and the approved
+Wand stand; no station, recipe, source-label or live-data change.
+
+The retained public raw API body and capture sidecars were inspected: edited
+**2019-10-01T14:48:24Z**, capture start/end **2026-10-05T15:13:10Z**, exit 0.
+Neither timestamp establishes a release/introduction date or identifies an original build.
+This edition-unscoped community report is not Alpha/Steam proof or a demonstrated recipe.
+No external retrieval, private source, image/audio asset or original-build inspection occurred;
+no checker/code/tests or gameplay change. Remaining histories stay research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -3216,9 +3233,14 @@ and food rules stand; review/parent verification pending (`todo_decide.md §E`).
 exclusive distribution, combat parameters, family inheritance or edition proof. Existing habitats
 and role stand; item 39's bug remains prohibited. Review/parent verification pending (`todo_decide.md §E`).
 
+**Validation-contract source item 69 — DECIDED 2026-10-09 under standing sourcing approval:**
+§5 attributes Cotton/Rogue/Loom only, not Linen/Silk stations, textile ratios, further costs,
+edition/release proof or a demonstrated recipe. Item 18 and Silk/Spinning Wheel HOLD stand;
+review/parent verification pending (`todo_decide.md §E`).
+
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–56 stand; items 57–68 recorded under standing sourcing-only approval, review/parent verification pending (`todo_decide.md §E`). Approved 69 awaits separate recording; pending queue retained. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
+| Validation-contract source research/attribution | items 1–56 stand; items 57–69 recorded under standing sourcing-only approval, review/parent verification pending (`todo_decide.md §E`); pending queue retained. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
