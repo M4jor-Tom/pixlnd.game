@@ -25,12 +25,13 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `docs/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Current source-attribution checkpoint (2026-10-09):** items 70–74 provisionally recorded in
-`domain.md §5` / §7 under standing sourcing-only approval: map/POI, pet behavior/riding and
-qualitative crafting-book encounter reward/recipe-unlock attribution only.
-Independent review and parent acceptance remain pending; all five stay queued.
-Selections/receipts: `todo_decide.md §E`.
-No new implementation debt or publication authority; prior rules and HOLDs stand.
+**Current source-attribution checkpoint (2026-10-09):** items 70–74 recorded in `domain.md §5` / §7
+under standing sourcing-only approval: map/POI, pet behavior/riding and qualitative crafting-book
+encounter reward/recipe-unlock attribution only. Independent recording review and parent acceptance
+complete; the one stale checkpoint label was corrected. Exact selections, item commits, checks and
+limits: `todo_decide.md §E`; local checkpoint: `docs/HANDOFF.md`. All five handled; empty pending
+queue deleted. No new implementation debt or publication authority; prior rules and HOLDs stand.
+Remaining histories stay research, not whole-topic completion.
 
 **Previous source-attribution checkpoint (2026-10-09):** items 57–69 recorded in `domain.md §5` / §7
 under standing sourcing-only approval, independently reviewed with no issues and parent-accepted

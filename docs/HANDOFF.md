@@ -1,16 +1,39 @@
 # Handoff — resume here
 
-## Current entry point — source items 70–74 provisionally recorded (2026-10-09)
+## Current entry point — sourcing batch 70–74 accepted, local checkpoint (2026-10-09)
 
-Standing sourcing-only approval applied to items 70–74: `ontology/domain.md §5` / §7.
-Map/POI, pet behavior/riding and qualitative crafting-book encounter reward/recipe-unlock
-attribution only; controls, mounting gates, hybrid crafting and prior rules stand.
-**Independent review and parent acceptance pending.** All five remain queued in
-`docs/todo_handle_reconciled_items.md`; no further item awaits recording in this batch.
-Selections/provisional receipts: `docs/ROADMAP/todo_decide.md §E`;
-item 74 writer evidence: `/tmp/pixlnd-source-item-74-LDgGzB/` (actual commit/parent after commit).
-No gameplay, live data, labels, code/checker/tests or new implementation debt. Silk/Spinning Wheel
-remain HOLD; regional loss and item 39's bug remain prohibited. No push authority or topic completion.
+Items 70–74 are recorded in `ontology/domain.md §5` / §7 under standing sourcing-only approval,
+each by a distinct fresh subagent and in its own commit. Independent recording review found no
+attribution/scope problem and one stale checkpoint label; parent verified and corrected that label
+in `todo_implement.md`. Parent source/diff/actual-Git audit, bounded validator and boot passed.
+Exact answer, original selections, item hashes/parents and evidence: `docs/ROADMAP/todo_decide.md §E`.
+All five are handled; empty pending-only queue deleted. No selection needs reapproval.
+
+Map controls/player-created POIs, visited-area map centering, qualitative pet combat/recall/return,
+Reins-context T mounting and crafting-book encounters are community attributions only. No numeric
+thresholds, new control, persistence or level/tier mapping. All previous hybrid rules, mounting
+and crafting gates stand. No gameplay, labels, live data, checker/code/tests or new implementation
+debt. Silk/Spinning Wheel remain HOLD; regional loss and item 39's bug remain prohibited.
+
+Recording review: `/tmp/pixlnd-source-parent-70-74/recording-review.md`, preserved from managed run
+`57635ae4-2e91-4b83-9036-fc5aa474f6c1`; reviewer inspected sources/patches/logs but executed no
+commands/tests/byte comparisons. Parent evidence: `/tmp/pixlnd-source-parent-70-74/` (including
+retained initial overbroad audit failure and corrected passing audit). Source is the retained
+public Darkmega guide, not an immutable revision or original-build demonstration. No external
+retrieval, private DOM, assets or gameplay/visual/multiplayer checks. Gates cover existing loaded
+data/startup and recording fidelity, not historical truth or new enforcement. Follow-up closure
+review was OK with one evidence-pointer correction, applied and inspected by parent: recording
+and closure reports now have separate retained paths. Final parent checks/commit receipts:
+`closure-final-*` in that evidence directory; inspect actual Git for the local checkpoint.
+
+**Next resume:** remaining Validation-contract source research/attribution. Unscreened retained
+guide leads: flight/free-friend-travel UI, consumable movement/sitting, shrine/supplier reports;
+check canonical coverage and duplicates before selecting anything. These are not numbered or
+approved factual proposals. Food/Leaf–Candy and edition histories, daily units, refining/noncotton/
+weapon quantities, roster/trait/population/route/naming, other UI/audio/dialogue and original-sleep
+histories remain evidence gaps. No whole-topic completion. Context percentage unavailable;
+research stopped conservatively to preserve review/closure reserve. **No push authority; none
+attempted.** This is a local checkpoint after item `0c0ae7f`; publication needs separate approval.
 
 ## Previous entry point — sourcing batch 57–69 accepted, local closure (2026-10-09)
 

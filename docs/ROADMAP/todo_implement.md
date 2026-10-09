@@ -15,9 +15,15 @@ data exists to migrate. Require current rules directly (`domain.md §0/§5`); da
 below means replacing checked-in stale definitions when authorized, never migration code,
 legacy-read fallbacks or obsolete-format compatibility. Implementation remains unauthorized.
 
-**Current attribution checkpoint (2026-10-09):** source items 57–69 recorded under standing
+**Current attribution checkpoint (2026-10-09):** source items 70–74 recorded and parent-accepted
+after independent recording review and source/diff/validator/boot checks (`todo_decide.md §E`).
+Map/POI, qualitative pet behavior/riding and crafting-book reports create no new implementation
+debt; existing controls, pet gates, crafting/knowledge and persistence rules stand. Empty queue
+deleted; remaining source histories stay research. No implementation or publication authority.
+
+**Previous attribution checkpoint (2026-10-09):** source items 57–69 recorded under standing
 sourcing-only approval, independently reviewed with no issues and parent-accepted after actual-Git/
-source/diff audit and bounded validator/boot checks. All selections handled; empty queue deleted.
+source/diff audit and bounded validator/boot checks. All selections handled; then-empty queue deleted.
 Canonical/receipts: `domain.md §5` / §7 and `todo_decide.md §E`; status: `docs/HANDOFF.md`.
 Items 1–56 stand; no implementation, controls, labels or live-data changes. Historical utility/
 attack-key reports add no slot behavior, Steam skill-tree inference or combat parameters.

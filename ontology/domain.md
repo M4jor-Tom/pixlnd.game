@@ -3355,36 +3355,33 @@ edition/release proof or a demonstrated recipe. Item 18 and Silk/Spinning Wheel 
 **Validation-contract source item 70 — DECIDED 2026-10-09 under standing sourcing approval:**
 §5 attributes map inputs and player-created POI visibility on a zoomed-out minimap only;
 no numeric zoom, star shape, persistence, Alpha proof or dodge correction. D13/D23 stand.
-Recording is provisional pending independent review and parent acceptance (`todo_decide.md §E`).
 
 **Validation-contract source item 71 — DECIDED 2026-10-09 under standing sourcing approval:**
 §5 attributes left/right arrows centering the map on previously visited biomes only, not save
 lifetime, coordinate precision, cross-world persistence, teleportation or regional inventory rules.
-Regional gear loss remains excluded; recording awaits independent review and parent acceptance.
+Regional gear loss remains excluded.
 
 **Validation-contract source item 72 — DECIDED 2026-10-09 under standing sourcing approval:**
 §5 attributes qualitative initial-fight participation, T whistle recall, far-away teleport and
 short-time nearby return only, not a timer, distance threshold, cage-reslot proof or AI algorithm.
-Wraith exception and hybrid pet rules stand; independent review and parent acceptance pending.
+Wraith exception and hybrid pet rules stand.
 
 **Validation-contract source item 73 — DECIDED 2026-10-09 under standing sourcing approval:**
 §5 attributes Reins-context near-pet T only; `c-riding` gates stand, with no acquisition,
-species/speed or Alpha inference. Independent review and parent acceptance pending.
+species/speed or Alpha inference.
 
 **Validation-contract source item 74 — DECIDED 2026-10-09 under standing sourcing approval:**
 §5 attributes qualitative crafting-book encounter rewards and recipe unlocks only, not counts,
-fixed tier mapping, scope or repeatability. Hybrid knowledge, power and claim rules stand;
-independent review and parent acceptance pending.
+fixed tier mapping, scope or repeatability. Hybrid knowledge, power and claim rules stand.
 
-Items 57–69 are handled: independent recording review found no issues; parent accepted after
-actual-Git/source/diff audit and bounded validator/boot checks. Exact selections, full hashes/
-parents and check limits: `todo_decide.md §E`. The then-empty pending queue was deleted;
-closure-delta parent review remains separate. 70–74 now remain queued.
-No publication authority or whole-topic completion.
+Items 57–74 are handled: independent recording review and parent actual-Git/source/diff audit
+plus bounded validator/boot checks are recorded in `todo_decide.md §E`, with exact selections,
+full hashes/parents, findings and check limits. Empty pending queue deleted. Closure review is
+separate from recording review; no publication authority or whole-topic completion.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–74 recorded; 57–69 independently reviewed and parent-accepted (`todo_decide.md §E`); 70–74 await independent review/parent acceptance. All five remain queued. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
+| Validation-contract source research/attribution | items 1–74 recorded; 57–74 independently reviewed and parent-accepted (`todo_decide.md §E`); no unhandled selection, empty queue deleted. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

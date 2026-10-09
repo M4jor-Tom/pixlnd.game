@@ -139,13 +139,11 @@ checker implementation remain unauthorized. Verification record: `7a79913`.
 
 **Current sourcing direction (2026-10-09):** owner latest exact reaffirmation:
 **“For all items about accepting/refusing to increase the source precision of informations, auto-accept each of them in subagents”.**
-Items **70–74** are selected under this narrow standing sourcing-only approval. **All five are
-provisionally recorded; independent review and parent acceptance pending.**
-Exact original selections, Previously selected status, sources/limits and documentation boundary:
-`docs/todo_handle_reconciled_items.md`; all five remain queued.
-Use one distinct fresh serial subagent and scoped commit per item; retain each pending entry
-until its canonical recording, checks, required independent review and item commit are verified.
-No individual numbered owner answers are fabricated; current approval grants no broader authority.
+Items **70–74 are handled** under this narrow standing sourcing-only approval: each has a distinct
+fresh subagent, scoped item commit, independent recording review and parent source/diff/Git/check
+verification. Exact original selections and full receipts are below; empty pending-only queue deleted.
+No individual numbered owner answers are fabricated; approval grants no mechanics, labels, live-data,
+code/checker/test or publication authority. Remaining histories stay research, not topic completion.
 
 **Previous sourcing batch 57–69:** owner exact standing answer:
 **“Auto-accept all items which are about the topic of augmenting the precision of sourcing or not, each in one separate subagent.”**
@@ -766,7 +764,7 @@ Bows/Dungeon items 53/54 are recorded, independently reviewed and parent recordi
 Item 55 is recorded under standing sourcing-only approval, independently reviewed with no issues
 and parent recording-verified. Item 56 is now recorded under the standing answer, independently
 reviewed with no issues and parent recording-verified; its historical empty queue was deleted.
-Current items 57–69 are handled, independently reviewed and parent-accepted; empty queue deleted.
+Items 57–74 are handled, independently reviewed and parent-accepted; empty queue deleted.
 Held Silk/Spinning Wheel findings remain HOLD, not
 selections, refusals, new 27/36 ballots, changed game rules or whole-topic completion.
 Context: ask by ~60%, handoff by ~85% (earlier with reserve), authorized checkpoint then STOP.
@@ -784,6 +782,53 @@ sleep-rate baseline/units (§5 items 10–11) remain research.
   gear-HP roll formula before their respective slices. Sources: `landscapes.json#swamp-lands`,
   `creatures.json#lion`, `stats.json`. D13 hitboxes and D15 armor are already designed, not open.
 
+### Verified sourcing batch 70–74 — recording and closure receipts (2026-10-09)
+
+All five original selections below are handled without owner amendments or unresolved dependencies.
+Item 70's POI clarification preserves the quoted source meaning, not a new owner decision.
+Preparation `60a51dd5dd3ada79a60d5fe4f0b2747a1226b5fd` follows baseline
+`5df0f3b040d373a46ea8d259175c24e027bf3c7a`; each item below follows the preceding row.
+Canonical pointers: `ontology/domain.md §5 items 70–74` / §7. Completed selections stay here;
+empty pending-only queue deleted after item checks, commits, independent review and parent acceptance.
+
+| Item | Commit | Parent | Writer evidence |
+|---|---|---|---|
+| 70 | `25d9a4193cecfb37671fd0854e1491c5845302e9` | `60a51dd5dd3ada79a60d5fe4f0b2747a1226b5fd` | `/tmp/pixlnd-source-item-70-nAbRIi/` |
+| 71 | `0e391ffcd1c149d2af1cf1cf6e0aa03538325d31` | `25d9a4193cecfb37671fd0854e1491c5845302e9` | `/tmp/pixlnd-source-item-71-G3AH0R/` |
+| 72 | `d0dbbba5fe2a59bcbbf4a030a548e675fe9f1f1c` | `0e391ffcd1c149d2af1cf1cf6e0aa03538325d31` | `/tmp/pixlnd-source-item-72-N046fs/` |
+| 73 | `3014ccd93d360405c87aafb616802e99cf248cdc` | `d0dbbba5fe2a59bcbbf4a030a548e675fe9f1f1c` | `/tmp/pixlnd-source-item-73-QLGPE7/` |
+| 74 | `0c0ae7fe1c4b8522618d39b03bed811e969ef7d0` | `3014ccd93d360405c87aafb616802e99cf248cdc` | `/tmp/pixlnd-source-item-74-LDgGzB/` |
+
+Each writer inspected retained public sources and scope, performed simplify → ponytail-review,
+ran bounded ontology validation/whitespace gates (exit 0) and retained matching unstaged/staged/
+committed binary full-index diffs. Independent recording review: **OK with notes**, no P0/P1;
+one P2 stale current-checkpoint label in `todo_implement.md`, verified and corrected by parent.
+Report: `/tmp/pixlnd-source-parent-70-74/recording-review.md`, preserved from managed run
+`57635ae4-2e91-4b83-9036-fc5aa474f6c1`. Reviewer read raw sources, patches and logs but ran no
+commands/tests/hash calculations/byte comparisons. Its recording review is not closure review.
+
+Parent inspected actual aggregate changes and reran exact per-commit Git/diff/source/preservation
+audit, bounded validator and boot, all exit 0 (`/tmp/pixlnd-source-parent-70-74/{audit,validator,boot}.*`).
+Workflow receipt and retained `workflow-summary.json` confirm five distinct worker run IDs and
+requested/resolved fresh contexts (`distinct-fresh-workers.*`). Preparation's broad directory-search
+failure and item 70's guessed skill-directory failure were retained; exact-path same-protocol
+continuations were authorized. Parent `audit-initial.*` preserves an overbroad assertion that
+mistook authorized §7 status edits for changed rules; corrected audit explicitly permits only the
+three inspected status lines while preserving prior canonical rules/attributions. No failure erased.
+
+Public source: `/tmp/pixlnd-presentation-world.I1sm3d/guide.body` and URL/capture sidecars; source
+identity, dates and limits: canonical item 70. Parent checked eleven exact bounded quotes from raw
+HTML and its unchanged saved hash; derived text is not byte-equal HTML. No immutable revision,
+release chronology, Alpha equivalence or original-build demonstration is claimed. No external
+retrieval/private DOM/assets/gameplay/visual/multiplayer checks. Validator/boot cover existing loaded
+data/startup, not prose/history or new enforcement. Follow-up closure review by the retained
+reviewer (`fa84e18c-6457-4b22-9e10-43ada283b5e9`): **OK**, one evidence-pointer correction.
+Parent applied it: the original recording report is preserved separately because resumed managed
+output overwrote its previous path. Closure report: parent `closure-independent-review.md`;
+final scope/review/gate/commit receipts: `closure-final-*`. Reviewer performed no commands/tests/
+byte comparisons; parent inspected the final pointer/receipt delta. No push authority.
+Remaining unscreened leads and evidence gaps: current `docs/HANDOFF.md`; no new numbered selection.
+
 ### Validation-contract source attribution — item 74 (2026-10-09)
 
 **Selection:** auto-accepted under the exact current standing answer above, not a numbered
@@ -791,14 +836,9 @@ owner approval. Original proposal / selected option (inventory verbatim):
 
 > Attribute qualitative Crafting Kit encounters that can involve bosses or captured NPCs, reward a crafting book and unlock recipes. Approval versus Refusing: accepting adds community sourcing to existing book/mission facts; refusing rejects only the attribution. Both leave crafting/rewards unchanged.
 
-**Application:** provisionally recorded in `ontology/domain.md §5 item 74` / §7;
-independent review and parent acceptance pending. Retain the queue entry until all gates are
-verified. No gameplay, labels, live-data change or new implementation debt; hybrid crafting rules stand.
-Writer evidence: `/tmp/pixlnd-source-item-74-LDgGzB/` (source identity/hashes, self-review,
-raw commands/exits and exact unstaged/staged/committed diffs; actual commit/parent after commit).
-Writer source/scope audit, simplify → ponytail-review, `git diff --check` and bounded ontology
-validator passed (exit 0). Checks cover recording fidelity and existing loaded data, not historical
-truth or new enforcement; no boot/gameplay suite needed. No independent review or publication claimed.
+**Application:** handled in `ontology/domain.md §5 item 74` / §7; independent recording review,
+parent acceptance and full commit receipt above. No gameplay, labels, live-data change or new
+implementation debt; hybrid crafting rules stand.
 
 ### Validation-contract source attribution — item 73 (2026-10-09)
 
@@ -807,14 +847,9 @@ owner approval. Original proposal / selected option (inventory verbatim):
 
 > Attribute the Reins-context instruction to use T beside a pet to mount. Approval versus Refusing: accepting improves historical control sourcing; refusing omits this attribution. Neither changes rideability or approved mounting requirements.
 
-**Application:** provisionally recorded in `ontology/domain.md §5 item 73` / §7;
-independent review and parent acceptance pending. Retain the queue entry until all gates are
-verified. No gameplay, labels, live-data change or new implementation debt; mounting gates stand.
-Writer evidence: `/tmp/pixlnd-source-item-73-QLGPE7/` (source identity/hashes, self-review,
-raw commands/exits and exact unstaged/staged/committed diffs; actual commit/parent after commit).
-Writer source/scope audit, simplify → ponytail-review, `git diff --check` and bounded ontology
-validator passed (exit 0). Checks cover recording fidelity and existing loaded data, not historical
-truth or new enforcement; no boot/gameplay suite needed. No independent review or publication claimed.
+**Application:** handled in `ontology/domain.md §5 item 73` / §7; independent recording review,
+parent acceptance and full commit receipt above. No gameplay, labels, live-data change or new
+implementation debt; mounting gates stand.
 
 ### Validation-contract source attribution — item 72 (2026-10-09)
 
@@ -823,14 +858,9 @@ owner approval. Original proposal / selected option (inventory verbatim):
 
 > Attribute pet joining the player's initial fight, T whistle recall, far-away teleport and short-time nearby return after going down. Approval versus Refusing: accepting adds sourcing to existing pet behavior; refusing declines that attribution only. Both leave pets unchanged.
 
-**Application:** provisionally recorded in `ontology/domain.md §5 item 72` / §7;
-independent review and parent acceptance pending. Retain the queue entry until all gates are
-verified. No gameplay, labels, live-data change or new implementation debt; pet rules stand.
-Writer evidence: `/tmp/pixlnd-source-item-72-N046fs/` (source identity/hashes, self-review,
-raw commands/exits and exact unstaged/staged/committed diffs; actual commit/parent after commit).
-Writer source/scope audit, simplify → ponytail-review, `git diff --check` and bounded ontology
-validator passed (exit 0). Checks cover recording fidelity and existing loaded data, not historical
-truth or new enforcement; no boot/gameplay suite needed. No independent review or publication claimed.
+**Application:** handled in `ontology/domain.md §5 item 72` / §7; independent recording review,
+parent acceptance and full commit receipt above. No gameplay, labels, live-data change or new
+implementation debt; pet rules stand.
 
 ### Validation-contract source attribution — item 71 (2026-10-09)
 
@@ -839,15 +869,9 @@ owner approval. Original proposal / selected option (inventory verbatim):
 
 > Attribute the guide's left/right arrows centering the map view on previously visited biomes. Approval versus Refusing: accepting sharpens existing map-selector sourcing; refusing omits only this attribution. Neither changes exploration/gameplay.
 
-**Application:** provisionally recorded in `ontology/domain.md §5 item 71` / §7;
-independent review and parent acceptance pending. Keep the queue entry until all gates are
-verified. No gameplay, labels, live-data change or new implementation debt.
-Writer evidence: `/tmp/pixlnd-source-item-71-G3AH0R/` (source identity/hashes, self-review,
-raw commands/exits and exact unstaged/staged/committed diffs; actual commit/parent after commit).
-Writer source/scope audit, simplify → ponytail-review, `git diff --check` and bounded ontology
-validator passed (exit 0). No independent review or publication is claimed. Checks concern
-existing loaded data and recording fidelity, not historical truth or new enforcement;
-no boot/gameplay suite needed.
+**Application:** handled in `ontology/domain.md §5 item 71` / §7; independent recording review,
+parent acceptance and full commit receipt above. No gameplay, labels, live-data change or new
+implementation debt.
 
 ### Validation-contract source attribution — item 70 (2026-10-09)
 
@@ -859,13 +883,8 @@ Original proposal / selected option (inventory verbatim):
 **Fidelity clarification:** “player markers” means player-created POIs, not player positions;
 retained queue clarification, not a new owner amendment. Canonical report/provenance/limits:
 `ontology/domain.md §5 item 70` / §7. No gameplay, labels or live-data change; no new debt.
-**Application:** provisionally recorded; independent review and parent acceptance pending.
-Keep the queue entry until those gates and the item commit are verified. Writer evidence:
-`/tmp/pixlnd-source-item-70-nAbRIi/` (source identity/hashes, self-review, raw checks/exits and exact
-unstaged/staged/committed diffs). Actual commit/parent are retained there after commit; no
-independent review or publication is claimed. Writer scope/source audit, simplify → ponytail-review,
-`git diff --check` and bounded ontology validator passed (exit 0). Validator covers loaded data,
-not historical truth; no boot or gameplay suite was needed for this documentation-only change.
+**Application:** handled; independent recording review, parent acceptance and full commit receipt
+above.
 
 ### Verified sourcing batch 57–69 — closure receipts (2026-10-09)
 
