@@ -1,8 +1,8 @@
 # Pending reconciled items — source precision 70–74
 
 Queue only, not canonical attribution. Resume these **Previously selected** items before new
-research. Each is approved by the standing sourcing instruction; **70–73 are provisionally recorded,
-independent review/parent acceptance pending; 74 awaits recording**. Per-item status below;
+research. Each is approved by the standing sourcing instruction; **70–74 are provisionally recorded,
+independent review/parent acceptance pending**. Per-item status below;
 no numbered owner answer or completed independent review is claimed.
 Use one distinct fresh serial subagent and one scoped commit per item. Retain every entry until
 canonical recording, checks, required independent review and its item commit are verified;
@@ -148,8 +148,10 @@ Complements 72's recall clause; no code/label dependency.
 > Attribute qualitative Crafting Kit encounters that can involve bosses or captured NPCs, reward a crafting book and unlock recipes. Approval versus Refusing: accepting adds community sourcing to existing book/mission facts; refusing rejects only the attribution. Both leave crafting/rewards unchanged.
 
 **Previously selected:** approved under the standing sourcing-only instruction; apply only
-the attribution above within the limits below. **Application:** not yet canonically recorded,
-checked as an item, reviewed or committed as an item. No reapproval requested.
+the attribution above within the limits below. **Application:** provisionally recorded in
+`ontology/domain.md §5 item 74` / §7; independent review and parent acceptance pending.
+Writer checks/commit evidence: `/tmp/pixlnd-source-item-74-LDgGzB/`; selection receipt in
+`docs/ROADMAP/todo_decide.md §E`. Retain until all gates are verified. No reapproval requested.
 
 **Sources:** Raw guide.body:1128: ‘Crafting Kit encounters are similar to a combat encounter but they can involved bosses or captured npcs but they reward a book of crafting based on the level. These unlock crafting recipes that you can make for yourself.’ Derivative guide.text:2868; shared provenance above.
 

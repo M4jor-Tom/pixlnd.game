@@ -2945,6 +2945,30 @@ community instruction is not original-build demonstration, release/introduction 
 Alpha equivalence. All settled rules stand; no controls, gameplay, labels, live JSON,
 checker/code/tests or assets change. Remaining histories stay research.
 
+#### Item 74 — Crafting-book encounter reward and unlock report (standing sourcing approval, 2026-10-09)
+
+[Darkmega's Steam guide 1871398574](https://steamcommunity.com/sharedfiles/filedetails/?id=1871398574),
+identified in item 70, reports: “Crafting Kit encounters are similar to a combat encounter but
+they can involved bosses or captured npcs but they reward a book of crafting based on the level.
+These unlock crafting recipes that you can make for yourself.” This attributes the qualitative
+book reward/recipe-unlock descriptions in §3.4 `book-of-crafting`, §3.6 `mission-type` and
+`mission-types.json#steam.book-of-crafting` only.
+
+**“Can” is not required encounter composition; “based on the level” selects no fixed level/tier
+mapping.** No book count, recipe quantities/costs, hammer-icon proof, scope, repeatability or
+exclusivity is established. Adjacent plus-gear advice is not approved: plus gear and regional
+gear power loss remain excluded. Hybrid permanent character knowledge across lands/sessions/worlds,
+shared book/formula knowledge and duplicate handling, immediate book recording with power-locked
+crafting, and personal one-time source claims per saved world all stand (§3.4/§3.5/§3.7).
+
+Retained public `/tmp/pixlnd-presentation-world.I1sm3d/guide.body:1128` and URL/capture sidecars
+were inspected without re-fetching. Item 70's shared identity/date limits apply, including the
+distinct title **updated 4/10** and no immutable revision. HTMLParser inspection text and
+`guide.text:2868` are derivatives, not byte-equal raw content. This Steam-era community report
+is not original-build demonstration, release/introduction dating or Alpha equivalence.
+No crafting/reward, source-label, live JSON, checker/code/tests or assets change;
+remaining histories stay research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -3347,6 +3371,11 @@ Wraith exception and hybrid pet rules stand; independent review and parent accep
 §5 attributes Reins-context near-pet T only; `c-riding` gates stand, with no acquisition,
 species/speed or Alpha inference. Independent review and parent acceptance pending.
 
+**Validation-contract source item 74 — DECIDED 2026-10-09 under standing sourcing approval:**
+§5 attributes qualitative crafting-book encounter rewards and recipe unlocks only, not counts,
+fixed tier mapping, scope or repeatability. Hybrid knowledge, power and claim rules stand;
+independent review and parent acceptance pending.
+
 Items 57–69 are handled: independent recording review found no issues; parent accepted after
 actual-Git/source/diff audit and bounded validator/boot checks. Exact selections, full hashes/
 parents and check limits: `todo_decide.md §E`. The then-empty pending queue was deleted;
@@ -3355,7 +3384,7 @@ No publication authority or whole-topic completion.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–73 recorded; 57–69 independently reviewed and parent-accepted (`todo_decide.md §E`); 70–73 await independent review/parent acceptance, 74 awaits recording. All five remain queued. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
+| Validation-contract source research/attribution | items 1–74 recorded; 57–69 independently reviewed and parent-accepted (`todo_decide.md §E`); 70–74 await independent review/parent acceptance. All five remain queued. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
