@@ -1,39 +1,42 @@
 # Handoff — resume here
 
-## Current entry point — sourcing batch 70–74 accepted, local checkpoint (2026-10-09)
+## Current entry point — sourcing batch 75–79 accepted, local checkpoint (2026-10-10)
 
-Items 70–74 are recorded in `ontology/domain.md §5` / §7 under standing sourcing-only approval,
-each by a distinct fresh subagent and in its own commit. Independent recording review found no
-attribution/scope problem and one stale checkpoint label; parent verified and corrected that label
-in `todo_implement.md`. Parent source/diff/actual-Git audit, bounded validator and boot passed.
-Exact answer, original selections, item hashes/parents and evidence: `docs/ROADMAP/todo_decide.md §E`.
-All five are handled; empty pending-only queue deleted. No selection needs reapproval.
+Items 75–79 are handled in `ontology/domain.md §5` / §7 under standing sourcing-only approval,
+each recorded by a distinct fresh subagent in its own commit. Independent recording review passed
+source/scope with one P2: copied Oct09 batch labels. Parent confirmed and authorized their Oct10
+correction, applied in closure; historical/source/capture dates stand. Parent source/diff/actual-Git
+audit and bounded validator/boot passed. Exact answer, original selections, full item hashes/parents,
+review limits and evidence: `docs/ROADMAP/todo_decide.md §E`. Empty pending-only queue deleted;
+no selection needs reapproval. Parent separately verifies this closure before the next inventory.
 
-Map controls/player-created POIs, visited-area map centering, qualitative pet combat/recall/return,
-Reins-context T mounting and crafting-book encounters are community attributions only. No numeric
-thresholds, new control, persistence or level/tier mapping. All previous hybrid rules, mounting
-and crafting gates stand. No gameplay, labels, live data, checker/code/tests or new implementation
-debt. Silk/Spinning Wheel remain HOLD; regional loss and item 39's bug remain prohibited.
+Flight Master, free friend-flight UI/contextual duration, potion movement/sitting to eat,
+shrine/flute and supplier/shop reports are community attributions only. All hybrid rules stand;
+no gameplay, labels, live data, checker/code/tests or new implementation debt. Silk/Spinning Wheel
+remain HOLD; regional loss and item 39's bug remain prohibited. Source is the retained public
+Darkmega guide, not an immutable revision or original-build demonstration. No external retrieval,
+private DOM, assets or gameplay/visual/multiplayer checks. Gates cover existing loaded data/startup
+and recording fidelity, not historical truth or new enforcement.
 
-Recording review: `/tmp/pixlnd-source-parent-70-74/recording-review.md`, preserved from managed run
-`57635ae4-2e91-4b83-9036-fc5aa474f6c1`; reviewer inspected sources/patches/logs but executed no
-commands/tests/byte comparisons. Parent evidence: `/tmp/pixlnd-source-parent-70-74/` (including
-retained initial overbroad audit failure and corrected passing audit). Source is the retained
-public Darkmega guide, not an immutable revision or original-build demonstration. No external
-retrieval, private DOM, assets or gameplay/visual/multiplayer checks. Gates cover existing loaded
-data/startup and recording fidelity, not historical truth or new enforcement. Follow-up closure
-review was OK with one evidence-pointer correction, applied and inspected by parent: recording
-and closure reports now have separate retained paths. Final parent checks/commit receipts:
-`closure-final-*` in that evidence directory; inspect actual Git for the local checkpoint.
+**Next resume:** remaining Validation-contract source research/attribution; parent directs continued
+bounded research, not whole-topic completion or a context STOP. **Next scout must contact parent
+before research expansion/selection**, after parent inspects this closure. The prior HANDOFF's
+flight/friend-flight, consumable, shrine and supplier leads are now screened/handled. Concrete next
+leads in `/tmp/pixlnd-presentation-world.I1sm3d/guide.body`: line 1056 sleeping-bag gradual healing/
+time acceleration (duplicate-check items 8–11), NPC light-blue names/waving and quest-location
+dialogue against existing UI/NPC facts; line 1128 tower/barrier, Circle of Power and possession
+reports need duplicate screening. Other public leads: Flightmaster, Food, Shop/Armor_Shop/
+Weapon_Shop linked in `ontology/research/research_items.md:392,407`. These are unselected leads,
+not reserved item numbers. Use Playwright first for retrieval; stop/escalate on denial, no bypass.
+Daily pet-food wording does not resolve units and overlaps item 32; map/pet/book passages duplicate
+71–74. Unsupported shrine-arrival respawn reset, exact friend-click destination and glider E-failure
+remain excluded. Broader food/Leaf–Candy/edition, quantities, roster/trait/population/route/naming,
+UI/audio/dialogue and original-sleep histories remain research, not declared blocked.
 
-**Next resume:** remaining Validation-contract source research/attribution. Unscreened retained
-guide leads: flight/free-friend-travel UI, consumable movement/sitting, shrine/supplier reports;
-check canonical coverage and duplicates before selecting anything. These are not numbered or
-approved factual proposals. Food/Leaf–Candy and edition histories, daily units, refining/noncotton/
-weapon quantities, roster/trait/population/route/naming, other UI/audio/dialogue and original-sleep
-histories remain evidence gaps. No whole-topic completion. Context percentage unavailable;
-research stopped conservatively to preserve review/closure reserve. **No push authority; none
-attempted.** This is a local checkpoint after item `0c0ae7f`; publication needs separate approval.
+Context percentage unavailable; none inferred. **No push authority; none attempted.** This local
+closure follows item `14bbdb8`; inspect actual Git and `/tmp/pixlnd-source-session-01a1251a/closure-batch-1/`
+for closure receipts. Parent recording evidence: that session's `parent/` directory. Publication
+requires separate approval.
 
 ## Previous entry point — sourcing batch 57–69 accepted, local closure (2026-10-09)
 

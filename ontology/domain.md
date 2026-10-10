@@ -2969,7 +2969,7 @@ is not original-build demonstration, release/introduction dating or Alpha equiva
 No crafting/reward, source-label, live JSON, checker/code/tests or assets change;
 remaining histories stay research.
 
-#### Item 75 — Flight-master map points, repeat access and drop-off glider (standing sourcing approval, 2026-10-09)
+#### Item 75 — Flight-master map points, repeat access and drop-off glider (standing sourcing approval, 2026-10-10)
 
 [Darkmega's Steam guide 1871398574](https://steamcommunity.com/sharedfiles/filedetails/?id=1871398574),
 identified in item 70, reports under **Eagle air drops and fast travel**: “At the town you can
@@ -3003,7 +3003,7 @@ original-build demonstration, release/introduction dating or Alpha equivalence. 
 prices, controls, gameplay, source labels, live JSON, checker/code/tests or assets change;
 remaining histories stay research, with no new implementation debt.
 
-#### Item 76 — Free friend-flight UI and contextual duration report (standing sourcing approval, 2026-10-09)
+#### Item 76 — Free friend-flight UI and contextual duration report (standing sourcing approval, 2026-10-10)
 
 [Darkmega's Steam guide 1871398574](https://steamcommunity.com/sharedfiles/filedetails/?id=1871398574),
 identified in item 70, reports under **Friendly Fast Travel**: “You may or may not know this,
@@ -3034,7 +3034,7 @@ developer documentation, original-build demonstration, release/introduction dati
 equivalence. No gameplay, source labels, live JSON, checker/code/tests or assets change;
 remaining histories stay research.
 
-#### Item 77 — Potion movement versus sitting to eat (standing sourcing approval, 2026-10-09)
+#### Item 77 — Potion movement versus sitting to eat (standing sourcing approval, 2026-10-10)
 
 [Darkmega's Steam guide 1871398574](https://steamcommunity.com/sharedfiles/filedetails/?id=1871398574),
 identified in item 70, reports under **I need healing!**: “Remember that potions can be chugged
@@ -3060,7 +3060,7 @@ developer documentation, original-build demonstration, release/introduction dati
 equivalence. No gameplay, source labels, live JSON, checker/code/tests or assets change;
 remaining histories stay research.
 
-#### Item 78 — Shrine flute activation for respawn and travel (standing sourcing approval, 2026-10-09)
+#### Item 78 — Shrine flute activation for respawn and travel (standing sourcing approval, 2026-10-10)
 
 [Darkmega's Steam guide 1871398574](https://steamcommunity.com/sharedfiles/filedetails/?id=1871398574),
 identified in item 70, reports under **Shrines of Life**: “Shrines of life are angel statues in
@@ -3088,7 +3088,7 @@ developer documentation, original-build demonstration, release/introduction dati
 equivalence. No gameplay, source labels, live JSON, checker/code/tests or assets change;
 remaining histories stay research.
 
-#### Item 79 — Supplier rescue rewards and shop improvement report (standing sourcing approval, 2026-10-09)
+#### Item 79 — Supplier rescue rewards and shop improvement report (standing sourcing approval, 2026-10-10)
 
 [Darkmega's Steam guide 1871398574](https://steamcommunity.com/sharedfiles/filedetails/?id=1871398574),
 identified in item 70, describes a captured supplier gnome, then reports: “Find and defeat the
@@ -3524,44 +3524,39 @@ species/speed or Alpha inference.
 §5 attributes qualitative crafting-book encounter rewards and recipe unlocks only, not counts,
 fixed tier mapping, scope or repeatability. Hybrid knowledge, power and claim rules stand.
 
-**Validation-contract source item 75 — DECIDED 2026-10-09 under standing sourcing approval:**
+**Validation-contract source item 75 — DECIDED 2026-10-10 under standing sourcing approval:**
 §5 attributes Flight Master/perch, plus-sign flight points, repeat access and temporary drop-off
 glider reports only; no price rule, persistence lifetime, population guarantee, E-failure or
-hybrid gate exception. World bounds and personal travel records stand. Recorded; item checks,
-independent review and parent acceptance are tracked in `todo_decide.md §E` and the pending queue.
+hybrid gate exception. World bounds and personal travel records stand.
 
-**Validation-contract source item 76 — DECIDED 2026-10-09 under standing sourcing approval:**
+**Validation-contract source item 76 — DECIDED 2026-10-10 under standing sourcing approval:**
 §5 attributes free friend flights, map-head/accompanying flight-point UI and contextual
 5–30-second distance-dependent travel reporting only; no universal timing bound, destination
-policy or unlimited-world inference. Hybrid rules stand; recorded, with item checks and pending
-independent review/parent acceptance tracked in `todo_decide.md §E` and the pending queue.
+policy or unlimited-world inference. Hybrid rules stand.
 
-**Validation-contract source item 77 — DECIDED 2026-10-09 under standing sourcing approval:**
+**Validation-contract source item 77 — DECIDED 2026-10-10 under standing sourcing approval:**
 §5 attributes qualitative potion movement versus sitting to eat over a longer duration only;
 no 15-second proof, numerical healing comparison or Alpha inference. Healing, movement, timing,
-controls and current instant-use simplification stand. Recorded; item checks and pending independent
-review/parent acceptance are tracked in `todo_decide.md §E` and the pending queue.
+controls and current instant-use simplification stand.
 
-**Validation-contract source item 78 — DECIDED 2026-10-09 under standing sourcing approval:**
+**Validation-contract source item 78 — DECIDED 2026-10-10 under standing sourcing approval:**
 §5 attributes angel-shrine description and E/flute activation for current respawn and travel only;
 no arrival reset, price, acquisition, placement or lifetime inference. Hybrid activation, respawn,
-travel and persistence rules stand. Recorded; item checks and pending independent review/parent
-acceptance are tracked in `todo_decide.md §E` and the pending queue.
+travel and persistence rules stand.
 
-**Validation-contract source item 79 — DECIDED 2026-10-09 under standing sourcing approval:**
+**Validation-contract source item 79 — DECIDED 2026-10-10 under standing sourcing approval:**
 §5 attributes qualitative supplier-rescue loot and village armor/weapon stock improvement,
 with separate daily shop resupply; no exact count, rarity increment/tier mapping or reward amount
-inferred. One-time rescues and saved-world-shared persistence stand. Recorded; item checks and
-pending independent review/parent acceptance are tracked in `todo_decide.md §E` and the pending queue.
+inferred. One-time rescues and saved-world-shared persistence stand.
 
-Items 57–74 are handled: independent recording review and parent actual-Git/source/diff audit
+Items 57–79 are handled: independent recording review and parent actual-Git/source/diff audit
 plus bounded validator/boot checks are recorded in `todo_decide.md §E`, with exact selections,
-full hashes/parents, findings and check limits. Their then-empty queue was deleted. Closure review
+full hashes/parents, findings and check limits. The empty pending queue is deleted. Closure review
 is separate from recording review; no publication authority or whole-topic completion.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–79 recorded; 57–74 independently reviewed and parent-accepted (`todo_decide.md §E`); items 75–79 queued pending independent review and parent acceptance. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
+| Validation-contract source research/attribution | items 1–79 recorded; 57–79 independently reviewed and parent-accepted (`todo_decide.md §E`); no pending selection. Remaining source leads: `docs/HANDOFF.md`. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

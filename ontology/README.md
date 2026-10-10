@@ -25,12 +25,14 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `docs/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Current source-attribution items 75–79 (2026-10-09):** Flight Master map points, repeat access,
-drop-off glider, free friend-flight UI/contextual duration, qualitative potion movement versus
-sitting to eat, shrine/flute activation and supplier-rescue/shop reports recorded in `domain.md §5`
-/ §7 under standing sourcing approval. No healing, movement, price, timing, destination, activation,
-respawn, rescue/reward/stock, persistence or hybrid gate change; no new implementation debt.
-Selections/checks: `todo_decide.md §E`; queued pending independent review and parent acceptance.
+**Current source-attribution items 75–79 (2026-10-10):** Flight Master, free friend-flight
+UI/contextual duration, potion movement/sitting to eat, shrine/flute and supplier/shop reports
+recorded in `domain.md §5` / §7. Independent recording review and parent source/diff/Git/validator/
+boot acceptance complete; the new batch's incorrect Oct09 labels are corrected to Oct10.
+All five handled; empty pending queue deleted. Exact selections, item commits and check limits:
+`todo_decide.md §E`. No gameplay, live-data or hybrid rule change; no new implementation debt.
+Remaining research and next-scout parent gate: `docs/HANDOFF.md`. No publication authority or
+whole-topic completion.
 
 **Previous source-attribution checkpoint (2026-10-09):** items 70–74 recorded in `domain.md §5` / §7
 under standing sourcing-only approval: map/POI, pet behavior/riding and qualitative crafting-book

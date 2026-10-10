@@ -137,10 +137,12 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Current sourcing direction (2026-10-09):** owner exact request:
+**Current sourcing batch (2026-10-10):** owner standing request:
 **“For each item which implies approving/refusing to increase source-precision, auto-approve it in a subagent.”**
-Items **75–79** are auto-approved and recorded; retained in `docs/todo_handle_reconciled_items.md`
-pending independent review and parent acceptance. Selections, scope and item checks are below.
+Items **75–79 are handled** after independent recording review and parent source/diff/Git/check
+acceptance; the review's new-batch date correction is applied. Exact selections and full receipts
+are below; empty pending-only queue deleted. Remaining research: `docs/HANDOFF.md`; next scout
+must contact parent before expanding or selecting. No gameplay or publication authority.
 
 **Previous sourcing batch 70–74:** owner exact standing answer:
 **“For all items about accepting/refusing to increase the source precision of informations, auto-accept each of them in subagents”.**
@@ -769,7 +771,7 @@ Bows/Dungeon items 53/54 are recorded, independently reviewed and parent recordi
 Item 55 is recorded under standing sourcing-only approval, independently reviewed with no issues
 and parent recording-verified. Item 56 is now recorded under the standing answer, independently
 reviewed with no issues and parent recording-verified; its historical empty queue was deleted.
-Items 57–74 are handled, independently reviewed and parent-accepted; empty queue deleted.
+Items 57–79 are handled, independently reviewed and parent-accepted; empty queue deleted.
 Held Silk/Spinning Wheel findings remain HOLD, not
 selections, refusals, new 27/36 ballots, changed game rules or whole-topic completion.
 Context: ask by ~60%, handoff by ~85% (earlier with reserve), authorized checkpoint then STOP.
@@ -834,86 +836,102 @@ final scope/review/gate/commit receipts: `closure-final-*`. Reviewer performed n
 byte comparisons; parent inspected the final pointer/receipt delta. No push authority.
 Remaining unscreened leads and evidence gaps: current `docs/HANDOFF.md`; no new numbered selection.
 
-### Validation-contract source attribution — item 79 (2026-10-09)
+### Verified sourcing batch 75–79 — recording and closure receipts (2026-10-10)
+
+All five original selections below are handled under the exact current standing answer above,
+without amendments or unresolved dependencies. Each distinct item worker saved the selection
+before canonical recording and made its own scoped commit. Canonical pointers:
+`ontology/domain.md §5 items 75–79` / §7. Empty pending-only queue deleted after verified item
+checks/commits, independent recording review and parent acceptance.
+
+| Item | Commit | Parent | Writer evidence |
+|---|---|---|---|
+| 75 | `94007e582a5ac01581b584f44c00d2fc7a87f23f` | `858aaf7d8bbe2074d17ce582486702ee49fb54a0` | `/tmp/pixlnd-source-item-75/` |
+| 76 | `9f995441274043cff599f9efff01b5d5a29651a8` | `94007e582a5ac01581b584f44c00d2fc7a87f23f` | `/tmp/pixlnd-source-item-76/` |
+| 77 | `051b6054b270d668f005e2749673d7034b9d8612` | `9f995441274043cff599f9efff01b5d5a29651a8` | `/tmp/pixlnd-source-item-77/` |
+| 78 | `6d39cf31a0cfd2905a174d4aa4e61311a63794e0` | `051b6054b270d668f005e2749673d7034b9d8612` | `/tmp/pixlnd-source-item-78/` |
+| 79 | `14bbdb8bbc0f13bfa0705ec5c5e1df26a5bf5d55` | `6d39cf31a0cfd2905a174d4aa4e61311a63794e0` | `/tmp/pixlnd-source-item-79/` |
+
+Each writer retained source inspection, simplify → ponytail-review, passing whitespace/bounded
+validator logs/exits and matching raw full-index binary unstaged/staged/committed diffs.
+Fresh independent recording review: **OK with notes**; source/scope passed, sole **P2** was the
+new batch's copied Oct09 decision/recording labels. Parent confirmed Oct10 from actual clock/
+commit evidence and approved the minimal closure correction; prior/source/capture dates and
+historical snapshots are unchanged. Archived review and date proof:
+`/tmp/pixlnd-source-session-01a1251a/parent/{recording-review-batch-1.md,batch-date-evidence.txt}`.
+Reviewer manually compared public sources/prose/patches and read receipts; no commands, tests,
+parsers, hashes or byte comparisons. Recording review is not closure review.
+
+Parent independently inspected actual aggregate changes, all five commits/parents and three saved
+patch variants per item, 15 bounded raw-HTML-derived quotations, unchanged raw hash/identity/capture,
+prior canonical rules and exact selections/queue. Parent audit, whitespace, bounded validator and
+boot passed (exit 0): that parent directory's `audit-batch-1.*`, `diff-check-batch-1.*`,
+`validator-batch-1.*`, `boot-batch-1.*`; actual patches: `item-75-actual.diff` through
+`item-79-actual.diff`. Source remains the retained public Darkmega guide from item 70, not an
+immutable revision or demonstrated original build. No external retrieval, private DOM, assets,
+gameplay/visual/multiplayer checks or new implementation debt. Validator/boot check existing loaded
+data/startup, not historical truth, prose semantics or new enforcement.
+
+Closure-only date/status/queue/handoff review, simplify → ponytail-review, fresh scope/whitespace/
+validator/boot gates and exact diff/commit receipts: `/tmp/pixlnd-source-session-01a1251a/closure-batch-1/`.
+Parent separately verifies the closure delta before another inventory; next scout must contact
+parent before research expansion/selection. Concrete remaining leads: current `docs/HANDOFF.md`.
+No new item, whole-topic completion or publication authority.
+
+### Validation-contract source attribution — item 79 (2026-10-10)
 
 **Selection:** auto-approved as proposed under the exact current owner request above, not a
 numbered owner answer. Amendments: none. Original proposal / selected option (verbatim):
 
 > Attribute the qualitative report that freeing a captured supplier gnome by defeating enemies gives loot and improves village armor/weapon shop inventory according to freed gnomes, with separate daily shop-resupply context. Approval versus Refusing: accepting sharpens existing supplier/shop sourcing; refusing omits only this attribution. Both leave rewards, stock, rescue repeatability and persistence unchanged.
 
-**Application:** recorded in `ontology/domain.md §5 item 79` / §7; item whitespace and bounded
-ontology-validator checks passed (exit 0).
-Queued pending independent review and parent acceptance. No unresolved dependency; item 70's
-provenance limits apply; item 19's Item Shop legendary jewelry prerequisite stands independently.
-No exact count, rarity increment/tier mapping, key/cage, reward amount/location or every-shop
-inference; daily shop stock does not renew one-time rescue.
-Hybrid rewards, stock and saved-world-shared persistence stand; no gameplay, labels, live-data changes
-or new implementation debt. Public source, raw logs/exits, simplify/ponytail notes and item diff/commit
-receipts: `/tmp/pixlnd-source-item-79/`; source provenance and limits remain canonical in §5.
+**Application:** handled in `ontology/domain.md §5 item 79` / §7; independent recording review,
+parent acceptance and full commit receipt above. Source limits remain canonical; one-time rescue,
+world-shared persistence and item 19's distinct jewelry prerequisite stand. No new implementation debt.
 
-### Validation-contract source attribution — item 78 (2026-10-09)
+### Validation-contract source attribution — item 78 (2026-10-10)
 
 **Selection:** auto-approved as proposed under the exact current owner request above, not a
 numbered owner answer. Amendments: none. Original proposal / selected option (verbatim):
 
 > Attribute the guide's angel-shrine description and E-triggered flute activation making a shrine the current spawn point and opening it for travel. Approval versus Refusing: accepting adds bounded sourcing to existing shrine/flute facts; refusing declines only this attribution. Both leave activation, respawn, travel and persistence rules unchanged.
 
-**Application:** recorded in `ontology/domain.md §5 item 78` / §7; item whitespace and bounded
-ontology-validator checks passed (exit 0).
-Queued pending independent review and parent acceptance. No unresolved dependency; item 70's
-provenance limits apply, but items 70–71's map inputs/centering do not cover activation. No arrival
-reset, purple-cube/blue-dot details, free-price proof, nearest/random respawn policy, flute acquisition,
-starting placement or lifetime inference. Hybrid activation, respawn, travel and personal saved-world
-records stand; no gameplay, labels, live-data changes or new implementation debt. Public source,
-raw logs/exits, simplify/ponytail notes and item diff/commit receipts: `/tmp/pixlnd-source-item-78/`;
-source provenance and limits remain canonical in §5.
+**Application:** handled in `ontology/domain.md §5 item 78` / §7; independent recording review,
+parent acceptance and full commit receipt above. Source limits remain canonical; activation,
+respawn, travel and personal saved-world records stand. No new implementation debt.
 
-### Validation-contract source attribution — item 77 (2026-10-09)
+### Validation-contract source attribution — item 77 (2026-10-10)
 
 **Selection:** auto-approved as proposed under the exact current owner request above, not a
 numbered owner answer. Amendments: none. Original proposal / selected option (verbatim):
 
 > Attribute the qualitative report that potions can be consumed while moving whereas food is consumed sitting down over a longer duration. Approval versus Refusing: accepting improves sourcing of existing consumable-use descriptions; refusing omits this attribution only. Both leave healing, movement, timing and controls unchanged.
 
-**Application:** recorded in `ontology/domain.md §5 item 77` / §7; item whitespace and bounded
-ontology-validator checks passed (exit 0).
-Queued pending independent review and parent acceptance. No unresolved dependency; item 70's
-provenance limits apply, and item 25's furniture report is distinct. No 15-second proof, numerical
-healing comparison, interruption, chair bug, hotkey-spam or Alpha chronology inference. Hybrid
-rules and current instant-use simplification stand; no gameplay, labels, live-data changes or new
-implementation debt. Public source, raw logs/exits, simplify/ponytail notes and item diff/commit
-receipts: `/tmp/pixlnd-source-item-77/`; source provenance and limits remain canonical in §5.
+**Application:** handled in `ontology/domain.md §5 item 77` / §7; independent recording review,
+parent acceptance and full commit receipt above. Source limits remain canonical; hybrid rules and
+current instant-use simplification stand. No new implementation debt.
 
-### Validation-contract source attribution — item 76 (2026-10-09)
+### Validation-contract source attribution — item 76 (2026-10-10)
 
 **Selection:** auto-approved as proposed under the exact current owner request above, not a
 numbered owner answer. Amendments: none. Original proposal / selected option (verbatim):
 
 > Attribute free eagle rides to friends and the guide's map-head/accompanying flight-point UI at the Flight Master, with its contextual 5–30 second distance-dependent travel report. Approval versus Refusing: accepting refines existing multiplayer/travel sourcing; refusing declines only this attribution. Neither changes multiplayer, destination selection, timing or prices.
 
-**Application:** recorded in `ontology/domain.md §5 item 76` / §7; item whitespace and bounded
-ontology-validator checks passed (exit 0). Queued pending independent review and parent acceptance. No unresolved dependency; item 70's
-provenance limits apply, but its POIs, item 71's centering and item 75's purchased points are distinct.
-Timing remains a contextual report, not a universal bound or runtime requirement; no click-target
-policy, moving-target algorithm or unlimited-world inference. Hybrid rules stand. No gameplay,
-labels, live-data changes or new implementation debt. Public source, raw logs/exits,
-simplify/ponytail notes and item diff/commit receipts: `/tmp/pixlnd-source-item-76/`;
-source provenance and limits remain canonical in §5.
+**Application:** handled in `ontology/domain.md §5 item 76` / §7; independent recording review,
+parent acceptance and full commit receipt above. Source limits remain canonical; contextual timing
+is not a runtime bound and hybrid rules stand. No new implementation debt.
 
-### Validation-contract source attribution — item 75 (2026-10-09)
+### Validation-contract source attribution — item 75 (2026-10-10)
 
 **Selection:** auto-approved as proposed under the exact current owner request above, not a
 numbered owner answer. Amendments: none. Original proposal / selected option (verbatim):
 
 > Attribute the guide's Flight Master/eagle-perch encounter opening a map with plus-sign flight points, purchased points usable again, and a temporary drop-off glider even without an owned glider. Approval versus Refusing: accepting adds bounded community sourcing to existing travel descriptions; refusing omits only that attribution. Both leave travel, prices, controls and traversal gates unchanged.
 
-**Application:** recorded in `ontology/domain.md §5 item 75` / §7; item whitespace and bounded
-ontology-validator checks passed (exit 0). Queued pending independent review and parent acceptance.
-No unresolved dependency; items 70–71 cover map
-inputs/centering, not the flight service. Hybrid gliding gates, world bounds and personal travel
-records stand. No gameplay, labels, live-data changes or new implementation debt.
-Public source, raw logs/exits, simplify/ponytail notes and item diff/commit receipts:
-`/tmp/pixlnd-source-item-75/`; source provenance and limits remain canonical in §5.
+**Application:** handled in `ontology/domain.md §5 item 75` / §7; independent recording review,
+parent acceptance and full commit receipt above. Source limits remain canonical; gliding gates,
+world bounds and personal travel records stand. No new implementation debt.
 
 ### Validation-contract source attribution — item 74 (2026-10-09)
 
