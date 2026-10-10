@@ -3003,6 +3003,37 @@ original-build demonstration, release/introduction dating or Alpha equivalence. 
 prices, controls, gameplay, source labels, live JSON, checker/code/tests or assets change;
 remaining histories stay research, with no new implementation debt.
 
+#### Item 76 — Free friend-flight UI and contextual duration report (standing sourcing approval, 2026-10-09)
+
+[Darkmega's Steam guide 1871398574](https://steamcommunity.com/sharedfiles/filedetails/?id=1871398574),
+identified in item 70, reports under **Friendly Fast Travel**: “You may or may not know this,
+but you can take an eagle ride to your friends anywhere on the map for free!” It continues:
+“If your friend is off the map all you gotta do is rotate the map and look around the edges
+so you can see their "head icon" on the map screen.” “If you're at the flight master there
+should be an accompanying flight point icon that follows it around visible at any distance.”
+“Just click that and you'll be off and arrive in anywhere for 5-30 seconds based on distance.”
+
+This attributes only the existing friend-flight/map-head descriptions in §3.7 `multiplayer-mode`,
+`npc-roles.json#flight-master`, `economy.json#prices.S.flight-to-friend`,
+`ui.json#screens.world-map`, `research/research_world.md §11` and `research/research_systems.md §4.2`.
+Items 70–71's player-created POIs/map centering and item 75's purchased points are distinct.
+**5–30 seconds is a contextual community travel report, not a universal flight-time bound,
+proven measurement or runtime timing requirement.** “Anywhere” / “any distance” does not
+supersede finite hybrid world bounds. Adjacent exact-click-location advice is not selected;
+no click-target position policy, moving-target algorithm or new UI/control mechanic follows.
+Hybrid multiplayer, destination selection, timing, prices and per-character/saved-world travel
+records remain unchanged; this creates no implementation debt.
+
+Retained public `/tmp/pixlnd-presentation-world.I1sm3d/guide.body:1104`, identity and URL/capture
+sidecars were independently inspected without re-fetching. Item 70's shared title/author/date
+limits apply: Posted **25 Sep, 2019 @ 2:24am**, Updated **3 Oct, 2019 @ 10:14am** (timezone
+unspecified), capture **2026-10-04T21:01:17Z**; title **updated 4/10** remains distinct.
+No immutable revision is established. HTMLParser inspection text and `guide.text:2680–2685`
+are derivatives, not byte-equal raw content. This Steam-era community report is not primary
+developer documentation, original-build demonstration, release/introduction dating or Alpha
+equivalence. No gameplay, source labels, live JSON, checker/code/tests or assets change;
+remaining histories stay research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -3414,6 +3445,12 @@ glider reports only; no price rule, persistence lifetime, population guarantee, 
 hybrid gate exception. World bounds and personal travel records stand. Recorded; item checks,
 independent review and parent acceptance are tracked in `todo_decide.md §E` and the pending queue.
 
+**Validation-contract source item 76 — DECIDED 2026-10-09 under standing sourcing approval:**
+§5 attributes free friend flights, map-head/accompanying flight-point UI and contextual
+5–30-second distance-dependent travel reporting only; no universal timing bound, destination
+policy or unlimited-world inference. Hybrid rules stand; recorded, with item checks and pending
+independent review/parent acceptance tracked in `todo_decide.md §E` and the pending queue.
+
 Items 57–74 are handled: independent recording review and parent actual-Git/source/diff audit
 plus bounded validator/boot checks are recorded in `todo_decide.md §E`, with exact selections,
 full hashes/parents, findings and check limits. Their then-empty queue was deleted. Closure review
@@ -3421,7 +3458,7 @@ is separate from recording review; no publication authority or whole-topic compl
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–75 recorded; 57–74 independently reviewed and parent-accepted (`todo_decide.md §E`); item 75 queued pending independent review and parent acceptance. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
+| Validation-contract source research/attribution | items 1–76 recorded; 57–74 independently reviewed and parent-accepted (`todo_decide.md §E`); items 75–76 queued pending independent review and parent acceptance. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

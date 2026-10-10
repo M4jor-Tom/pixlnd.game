@@ -25,10 +25,11 @@ Dated build notes below include superseded placeholders, not proof of current co
 "resume walking through items", follow `docs/lessons.md` and that checkpoint, not the gameplay
 slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
-**Current source-attribution item 75 (2026-10-09):** Flight Master map points, repeat access and
-community drop-off glider report recorded in `domain.md §5` / §7 under standing sourcing approval.
-No price, persistence or hybrid gliding-gate change; no new implementation debt. Selection/checks:
-`todo_decide.md §E`; queued pending independent review and parent acceptance.
+**Current source-attribution items 75–76 (2026-10-09):** Flight Master map points, repeat access,
+drop-off glider and free friend-flight UI/contextual duration reports recorded in `domain.md §5` / §7
+under standing sourcing approval. No price, timing, destination, persistence or hybrid gate change;
+no new implementation debt. Selections/checks: `todo_decide.md §E`; queued pending independent
+review and parent acceptance.
 
 **Previous source-attribution checkpoint (2026-10-09):** items 70–74 recorded in `domain.md §5` / §7
 under standing sourcing-only approval: map/POI, pet behavior/riding and qualitative crafting-book

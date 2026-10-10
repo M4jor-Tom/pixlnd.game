@@ -139,8 +139,8 @@ checker implementation remain unauthorized. Verification record: `7a79913`.
 
 **Current sourcing direction (2026-10-09):** owner exact request:
 **“For each item which implies approving/refusing to increase source-precision, auto-approve it in a subagent.”**
-Item **75** is auto-approved and recorded; retained in `docs/todo_handle_reconciled_items.md`
-pending independent review and parent acceptance. Selection, scope and item checks are below.
+Items **75–76** are auto-approved and recorded; retained in `docs/todo_handle_reconciled_items.md`
+pending independent review and parent acceptance. Selections, scope and item checks are below.
 
 **Previous sourcing batch 70–74:** owner exact standing answer:
 **“For all items about accepting/refusing to increase the source precision of informations, auto-accept each of them in subagents”.**
@@ -833,6 +833,22 @@ output overwrote its previous path. Closure report: parent `closure-independent-
 final scope/review/gate/commit receipts: `closure-final-*`. Reviewer performed no commands/tests/
 byte comparisons; parent inspected the final pointer/receipt delta. No push authority.
 Remaining unscreened leads and evidence gaps: current `docs/HANDOFF.md`; no new numbered selection.
+
+### Validation-contract source attribution — item 76 (2026-10-09)
+
+**Selection:** auto-approved as proposed under the exact current owner request above, not a
+numbered owner answer. Amendments: none. Original proposal / selected option (verbatim):
+
+> Attribute free eagle rides to friends and the guide's map-head/accompanying flight-point UI at the Flight Master, with its contextual 5–30 second distance-dependent travel report. Approval versus Refusing: accepting refines existing multiplayer/travel sourcing; refusing declines only this attribution. Neither changes multiplayer, destination selection, timing or prices.
+
+**Application:** recorded in `ontology/domain.md §5 item 76` / §7; item whitespace and bounded
+ontology-validator checks passed (exit 0). Queued pending independent review and parent acceptance. No unresolved dependency; item 70's
+provenance limits apply, but its POIs, item 71's centering and item 75's purchased points are distinct.
+Timing remains a contextual report, not a universal bound or runtime requirement; no click-target
+policy, moving-target algorithm or unlimited-world inference. Hybrid rules stand. No gameplay,
+labels, live-data changes or new implementation debt. Public source, raw logs/exits,
+simplify/ponytail notes and item diff/commit receipts: `/tmp/pixlnd-source-item-76/`;
+source provenance and limits remain canonical in §5.
 
 ### Validation-contract source attribution — item 75 (2026-10-09)
 
