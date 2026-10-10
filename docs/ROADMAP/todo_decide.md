@@ -139,7 +139,7 @@ checker implementation remain unauthorized. Verification record: `7a79913`.
 
 **Current sourcing direction (2026-10-09):** owner exact request:
 **“For each item which implies approving/refusing to increase source-precision, auto-approve it in a subagent.”**
-Items **75–77** are auto-approved and recorded; retained in `docs/todo_handle_reconciled_items.md`
+Items **75–78** are auto-approved and recorded; retained in `docs/todo_handle_reconciled_items.md`
 pending independent review and parent acceptance. Selections, scope and item checks are below.
 
 **Previous sourcing batch 70–74:** owner exact standing answer:
@@ -833,6 +833,23 @@ output overwrote its previous path. Closure report: parent `closure-independent-
 final scope/review/gate/commit receipts: `closure-final-*`. Reviewer performed no commands/tests/
 byte comparisons; parent inspected the final pointer/receipt delta. No push authority.
 Remaining unscreened leads and evidence gaps: current `docs/HANDOFF.md`; no new numbered selection.
+
+### Validation-contract source attribution — item 78 (2026-10-09)
+
+**Selection:** auto-approved as proposed under the exact current owner request above, not a
+numbered owner answer. Amendments: none. Original proposal / selected option (verbatim):
+
+> Attribute the guide's angel-shrine description and E-triggered flute activation making a shrine the current spawn point and opening it for travel. Approval versus Refusing: accepting adds bounded sourcing to existing shrine/flute facts; refusing declines only this attribution. Both leave activation, respawn, travel and persistence rules unchanged.
+
+**Application:** recorded in `ontology/domain.md §5 item 78` / §7; item whitespace and bounded
+ontology-validator checks passed (exit 0).
+Queued pending independent review and parent acceptance. No unresolved dependency; item 70's
+provenance limits apply, but items 70–71's map inputs/centering do not cover activation. No arrival
+reset, purple-cube/blue-dot details, free-price proof, nearest/random respawn policy, flute acquisition,
+starting placement or lifetime inference. Hybrid activation, respawn, travel and personal saved-world
+records stand; no gameplay, labels, live-data changes or new implementation debt. Public source,
+raw logs/exits, simplify/ponytail notes and item diff/commit receipts: `/tmp/pixlnd-source-item-78/`;
+source provenance and limits remain canonical in §5.
 
 ### Validation-contract source attribution — item 77 (2026-10-09)
 

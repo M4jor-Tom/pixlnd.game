@@ -67,3 +67,26 @@ Selection persisted before canonical edits. Independent review and parent accept
 Documentation only: no gameplay, labels, live JSON, checker/code/tests or new implementation debt.
 Current instant-use simplification remains unchanged.
 Evidence: `/tmp/pixlnd-source-item-77/`; public source: `/tmp/pixlnd-presentation-world.I1sm3d/guide.body`.
+
+## Validation-contract source attribution — item 78 (2026-10-09)
+
+**Previously selected:** auto-approved as proposed under the exact owner standing answer:
+**“For each item which implies approving/refusing to increase source-precision, auto-approve it in a subagent.”**
+No numbered owner answer is fabricated. Amendments: none.
+
+**Original proposal / selected option:**
+
+> Attribute the guide's angel-shrine description and E-triggered flute activation making a shrine the current spawn point and opening it for travel. Approval versus Refusing: accepting adds bounded sourcing to existing shrine/flute facts; refusing declines only this attribution. Both leave activation, respawn, travel and persistence rules unchanged.
+
+**Eligibility/dependencies:** retained public Darkmega guide raw line 1056 independently inspected
+against existing shrine/flute descriptions. Item 70 supplies shared provenance limits; items 70–71's
+map inputs/centering do not cover activation. No unresolved dependency. No arrival-triggered respawn
+reset, purple-cube/blue-dot details, free-price proof, nearest/random respawn policy, flute acquisition,
+starting placement or activation lifetime inferred. Per-character/saved-world records stand.
+
+**Approval/application:** recorded in `ontology/domain.md §5 item 78` / §7; item whitespace and bounded
+ontology-validator checks passed (exit 0). Selection persisted before canonical edits.
+Independent review and parent acceptance pending; keep queued until those gates and the item commit
+are verified. Documentation only: no gameplay, labels, live JSON, checker/code/tests or new
+implementation debt.
+Evidence: `/tmp/pixlnd-source-item-78/`; public source: `/tmp/pixlnd-presentation-world.I1sm3d/guide.body`.
