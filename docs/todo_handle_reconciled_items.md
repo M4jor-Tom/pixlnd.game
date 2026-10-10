@@ -90,3 +90,27 @@ Independent review and parent acceptance pending; keep queued until those gates 
 are verified. Documentation only: no gameplay, labels, live JSON, checker/code/tests or new
 implementation debt.
 Evidence: `/tmp/pixlnd-source-item-78/`; public source: `/tmp/pixlnd-presentation-world.I1sm3d/guide.body`.
+
+## Validation-contract source attribution — item 79 (2026-10-09)
+
+**Previously selected:** auto-approved as proposed under the exact owner standing answer:
+**“For each item which implies approving/refusing to increase source-precision, auto-approve it in a subagent.”**
+No numbered owner answer is fabricated. Amendments: none.
+
+**Original proposal / selected option:**
+
+> Attribute the qualitative report that freeing a captured supplier gnome by defeating enemies gives loot and improves village armor/weapon shop inventory according to freed gnomes, with separate daily shop-resupply context. Approval versus Refusing: accepting sharpens existing supplier/shop sourcing; refusing omits only this attribution. Both leave rewards, stock, rescue repeatability and persistence unchanged.
+
+**Eligibility/dependencies:** retained public Darkmega guide raw line 1128 independently inspected
+against existing supplier/shop/mission descriptions. Item 70 supplies shared provenance limits;
+item 19's Item Shop legendary jewelry prerequisite is distinct and unchanged. No unresolved
+dependency. No one-rarity increment, tier mapping, exact count, key/cage requirement, reward
+amount/location or every-shop effect inferred. Daily shop
+restock does not renew one-time rescues; world-shared persistence stands. Plus gear remains excluded.
+
+**Approval/application:** recorded in `ontology/domain.md §5 item 79` / §7; item whitespace and
+bounded ontology-validator checks passed (exit 0).
+Selection persisted before canonical edits. Independent review and parent acceptance pending;
+keep queued until those gates and the item commit are verified. Documentation only: no gameplay,
+labels, live JSON, checker/code/tests or new implementation debt; existing shop simplification stands.
+Evidence: `/tmp/pixlnd-source-item-79/`; public source: `/tmp/pixlnd-presentation-world.I1sm3d/guide.body`.

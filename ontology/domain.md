@@ -3088,6 +3088,37 @@ developer documentation, original-build demonstration, release/introduction dati
 equivalence. No gameplay, source labels, live JSON, checker/code/tests or assets change;
 remaining histories stay research.
 
+#### Item 79 — Supplier rescue rewards and shop improvement report (standing sourcing approval, 2026-10-09)
+
+[Darkmega's Steam guide 1871398574](https://steamcommunity.com/sharedfiles/filedetails/?id=1871398574),
+identified in item 70, describes a captured supplier gnome, then reports: “Find and defeat the
+enemies and he'll go free, providing you with some loot while also upgrading the inventory of
+village armor and weapon shops based on the number of freed gnomes.” Separately, it says:
+“Shops resupply every day reset”. This attributes only the existing qualitative rescue/reward/
+stock descriptions in §3.4 `shop`, §3.5 `gnome-supplier`, `npc-roles.json#gnome-supplier`,
+`mission-types.json#steam.gnome-supplier`, `economy.json#shops` / `#rules`,
+`research/research_items.md §7.2` and `research/research_systems.md §2.2`.
+Item 19's Item Shop legendary rings/amulets prerequisite is distinct and unchanged.
+
+**“There is usually 4 of them to an area.” is not proof of an exact per-land count.** The report
+establishes no one-rarity-per-rescue increment, white/green/blue/purple tier mapping, key/cage
+requirement, reward amount/drop-at-feet location or every-shop effect. **Daily shop restock does
+not renew a one-time supplier rescue** (§3.1 `game-clock`, world/reset item 3); saved-world-shared
+rescue benefits and persistence remain unchanged (§3.7 `save-data`, item 4). Adjacent plus-gear
+advice is not selected; plus gear and regional gear power loss remain excluded. All hybrid
+rewards, stock and rescue rules stand. Existing shop runtime omissions are unchanged; this
+attribution creates no implementation debt.
+
+Retained public `/tmp/pixlnd-presentation-world.I1sm3d/guide.body:1128`, identity and URL/capture
+sidecars were independently inspected without re-fetching. Item 70's shared title/author/date
+limits apply: Posted **25 Sep, 2019 @ 2:24am**, Updated **3 Oct, 2019 @ 10:14am** (timezone
+unspecified), capture **2026-10-04T21:01:17Z**; title **updated 4/10** remains distinct.
+No immutable revision is established. HTMLParser inspection text and `guide.text:2873–2875`
+are derivatives, not byte-equal raw content. This Steam-era community report is not primary
+developer documentation, original-build demonstration, release/introduction dating or Alpha
+equivalence. No gameplay, source labels, live JSON, checker/code/tests or assets change;
+remaining histories stay research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -3517,6 +3548,12 @@ no arrival reset, price, acquisition, placement or lifetime inference. Hybrid ac
 travel and persistence rules stand. Recorded; item checks and pending independent review/parent
 acceptance are tracked in `todo_decide.md §E` and the pending queue.
 
+**Validation-contract source item 79 — DECIDED 2026-10-09 under standing sourcing approval:**
+§5 attributes qualitative supplier-rescue loot and village armor/weapon stock improvement,
+with separate daily shop resupply; no exact count, rarity increment/tier mapping or reward amount
+inferred. One-time rescues and saved-world-shared persistence stand. Recorded; item checks and
+pending independent review/parent acceptance are tracked in `todo_decide.md §E` and the pending queue.
+
 Items 57–74 are handled: independent recording review and parent actual-Git/source/diff audit
 plus bounded validator/boot checks are recorded in `todo_decide.md §E`, with exact selections,
 full hashes/parents, findings and check limits. Their then-empty queue was deleted. Closure review
@@ -3524,7 +3561,7 @@ is separate from recording review; no publication authority or whole-topic compl
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–78 recorded; 57–74 independently reviewed and parent-accepted (`todo_decide.md §E`); items 75–78 queued pending independent review and parent acceptance. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
+| Validation-contract source research/attribution | items 1–79 recorded; 57–74 independently reviewed and parent-accepted (`todo_decide.md §E`); items 75–79 queued pending independent review and parent acceptance. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

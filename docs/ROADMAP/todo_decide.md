@@ -139,7 +139,7 @@ checker implementation remain unauthorized. Verification record: `7a79913`.
 
 **Current sourcing direction (2026-10-09):** owner exact request:
 **“For each item which implies approving/refusing to increase source-precision, auto-approve it in a subagent.”**
-Items **75–78** are auto-approved and recorded; retained in `docs/todo_handle_reconciled_items.md`
+Items **75–79** are auto-approved and recorded; retained in `docs/todo_handle_reconciled_items.md`
 pending independent review and parent acceptance. Selections, scope and item checks are below.
 
 **Previous sourcing batch 70–74:** owner exact standing answer:
@@ -833,6 +833,23 @@ output overwrote its previous path. Closure report: parent `closure-independent-
 final scope/review/gate/commit receipts: `closure-final-*`. Reviewer performed no commands/tests/
 byte comparisons; parent inspected the final pointer/receipt delta. No push authority.
 Remaining unscreened leads and evidence gaps: current `docs/HANDOFF.md`; no new numbered selection.
+
+### Validation-contract source attribution — item 79 (2026-10-09)
+
+**Selection:** auto-approved as proposed under the exact current owner request above, not a
+numbered owner answer. Amendments: none. Original proposal / selected option (verbatim):
+
+> Attribute the qualitative report that freeing a captured supplier gnome by defeating enemies gives loot and improves village armor/weapon shop inventory according to freed gnomes, with separate daily shop-resupply context. Approval versus Refusing: accepting sharpens existing supplier/shop sourcing; refusing omits only this attribution. Both leave rewards, stock, rescue repeatability and persistence unchanged.
+
+**Application:** recorded in `ontology/domain.md §5 item 79` / §7; item whitespace and bounded
+ontology-validator checks passed (exit 0).
+Queued pending independent review and parent acceptance. No unresolved dependency; item 70's
+provenance limits apply; item 19's Item Shop legendary jewelry prerequisite stands independently.
+No exact count, rarity increment/tier mapping, key/cage, reward amount/location or every-shop
+inference; daily shop stock does not renew one-time rescue.
+Hybrid rewards, stock and saved-world-shared persistence stand; no gameplay, labels, live-data changes
+or new implementation debt. Public source, raw logs/exits, simplify/ponytail notes and item diff/commit
+receipts: `/tmp/pixlnd-source-item-79/`; source provenance and limits remain canonical in §5.
 
 ### Validation-contract source attribution — item 78 (2026-10-09)
 
