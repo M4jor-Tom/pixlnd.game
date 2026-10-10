@@ -3034,6 +3034,32 @@ developer documentation, original-build demonstration, release/introduction dati
 equivalence. No gameplay, source labels, live JSON, checker/code/tests or assets change;
 remaining histories stay research.
 
+#### Item 77 — Potion movement versus sitting to eat (standing sourcing approval, 2026-10-09)
+
+[Darkmega's Steam guide 1871398574](https://steamcommunity.com/sharedfiles/filedetails/?id=1871398574),
+identified in item 70, reports under **I need healing!**: “Remember that potions can be chugged
+on the move while food items are consumed sitting down over a longer duration.” This attributes
+only the existing qualitative consumable-use descriptions in §3.4 `consumable`,
+`consumables.json#_doc` / food and potion `use` entries, `abilities.json#quick-item`,
+`status-effects.json#healing-over-time` and `research/research_items.md §3.2/§3.6–3.7`.
+Item 25's campsite furniture attribution is distinct from this food-use report.
+
+**“Longer duration” supplies no 15-second proof, numerical comparison, heal formula or amount.**
+No interruption rule, chair-healing bug, hotkey-spam behavior or Alpha chronology is established.
+Surrounding class-healing assertions and combat advice are context, not selected claims. All
+hybrid healing, movement, timing and controls stand; the current instant-use simplification in
+`game/entities/player.gd#use_item` is unchanged. This attribution creates no implementation debt.
+
+Retained public `/tmp/pixlnd-presentation-world.I1sm3d/guide.body:1104`, identity and URL/capture
+sidecars were independently inspected without re-fetching. Item 70's shared title/author/date
+limits apply: Posted **25 Sep, 2019 @ 2:24am**, Updated **3 Oct, 2019 @ 10:14am** (timezone
+unspecified), capture **2026-10-04T21:01:17Z**; title **updated 4/10** remains distinct.
+No immutable revision is established. HTMLParser inspection text and `guide.text:2676–2677`
+are derivatives, not byte-equal raw content. This Steam-era community report is not primary
+developer documentation, original-build demonstration, release/introduction dating or Alpha
+equivalence. No gameplay, source labels, live JSON, checker/code/tests or assets change;
+remaining histories stay research.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -3451,6 +3477,12 @@ independent review and parent acceptance are tracked in `todo_decide.md §E` and
 policy or unlimited-world inference. Hybrid rules stand; recorded, with item checks and pending
 independent review/parent acceptance tracked in `todo_decide.md §E` and the pending queue.
 
+**Validation-contract source item 77 — DECIDED 2026-10-09 under standing sourcing approval:**
+§5 attributes qualitative potion movement versus sitting to eat over a longer duration only;
+no 15-second proof, numerical healing comparison or Alpha inference. Healing, movement, timing,
+controls and current instant-use simplification stand. Recorded; item checks and pending independent
+review/parent acceptance are tracked in `todo_decide.md §E` and the pending queue.
+
 Items 57–74 are handled: independent recording review and parent actual-Git/source/diff audit
 plus bounded validator/boot checks are recorded in `todo_decide.md §E`, with exact selections,
 full hashes/parents, findings and check limits. Their then-empty queue was deleted. Closure review
@@ -3458,7 +3490,7 @@ is separate from recording review; no publication authority or whole-topic compl
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–76 recorded; 57–74 independently reviewed and parent-accepted (`todo_decide.md §E`); items 75–76 queued pending independent review and parent acceptance. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
+| Validation-contract source research/attribution | items 1–77 recorded; 57–74 independently reviewed and parent-accepted (`todo_decide.md §E`); items 75–77 queued pending independent review and parent acceptance. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines

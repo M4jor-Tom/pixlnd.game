@@ -44,3 +44,26 @@ algorithm or unlimited hybrid-world inference. All hybrid rules stand.
 pending; keep queued until those gates and the item commit are verified. Documentation only:
 no gameplay, labels, live JSON, checker/code/tests or new implementation debt.
 Evidence: `/tmp/pixlnd-source-item-76/`; public source: `/tmp/pixlnd-presentation-world.I1sm3d/guide.body`.
+
+## Validation-contract source attribution — item 77 (2026-10-09)
+
+**Previously selected:** auto-approved as proposed under the exact owner standing answer:
+**“For each item which implies approving/refusing to increase source-precision, auto-approve it in a subagent.”**
+No numbered owner answer is fabricated. Amendments: none.
+
+**Original proposal / selected option:**
+
+> Attribute the qualitative report that potions can be consumed while moving whereas food is consumed sitting down over a longer duration. Approval versus Refusing: accepting improves sourcing of existing consumable-use descriptions; refusing omits this attribution only. Both leave healing, movement, timing and controls unchanged.
+
+**Eligibility/dependencies:** retained public Darkmega guide raw line 1104 independently inspected
+against existing consumable, quick-item and healing-over-time descriptions. Item 70 supplies shared
+provenance limits; item 25's campsite furniture is distinct. No unresolved dependency. Qualitative
+report only: no 15-second proof, numerical rate/heal formula, interruption, chair bug, hotkey-spam
+or Alpha chronology inference. Surrounding class-healing/combat advice is not selected.
+
+**Approval/application:** recorded in `ontology/domain.md §5 item 77` / §7; item whitespace and bounded
+ontology-validator checks passed (exit 0).
+Selection persisted before canonical edits. Independent review and parent acceptance pending.
+Documentation only: no gameplay, labels, live JSON, checker/code/tests or new implementation debt.
+Current instant-use simplification remains unchanged.
+Evidence: `/tmp/pixlnd-source-item-77/`; public source: `/tmp/pixlnd-presentation-world.I1sm3d/guide.body`.

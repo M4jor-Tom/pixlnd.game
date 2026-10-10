@@ -15,9 +15,10 @@ data exists to migrate. Require current rules directly (`domain.md §0/§5`); da
 below means replacing checked-in stale definitions when authorized, never migration code,
 legacy-read fallbacks or obsolete-format compatibility. Implementation remains unauthorized.
 
-**Current attribution items 75–76 (2026-10-09):** Flight Master and free friend-flight UI/contextual
-duration sourcing recorded, pending independent review and parent acceptance (`todo_decide.md §E`).
-No new implementation debt; hybrid travel, timing, destinations, gliding gates and prices unchanged.
+**Current attribution items 75–77 (2026-10-09):** Flight Master, free friend-flight UI/contextual
+duration and qualitative potion movement/sitting-to-eat sourcing recorded, pending independent
+review and parent acceptance (`todo_decide.md §E`). No new implementation debt; hybrid travel,
+healing, movement, timing, destinations, gliding gates and prices unchanged.
 
 **Previous attribution checkpoint (2026-10-09):** source items 70–74 recorded and parent-accepted
 after independent recording review and source/diff/validator/boot checks (`todo_decide.md §E`).
