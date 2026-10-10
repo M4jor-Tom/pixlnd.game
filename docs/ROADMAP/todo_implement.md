@@ -15,7 +15,11 @@ data exists to migrate. Require current rules directly (`domain.md §0/§5`); da
 below means replacing checked-in stale definitions when authorized, never migration code,
 legacy-read fallbacks or obsolete-format compatibility. Implementation remains unauthorized.
 
-**Current attribution checkpoint (2026-10-09):** source items 70–74 recorded and parent-accepted
+**Current attribution item 75 (2026-10-09):** Flight Master sourcing recorded, pending independent
+review and parent acceptance (`todo_decide.md §E`). No new implementation debt; hybrid travel,
+gliding gates and prices unchanged.
+
+**Previous attribution checkpoint (2026-10-09):** source items 70–74 recorded and parent-accepted
 after independent recording review and source/diff/validator/boot checks (`todo_decide.md §E`).
 Map/POI, qualitative pet behavior/riding and crafting-book reports create no new implementation
 debt; existing controls, pet gates, crafting/knowledge and persistence rules stand. Empty queue

@@ -137,7 +137,12 @@ No presented Persistence / authority question remains. Independent review and pa
 passed; evidence and limits below. Ontology documentation only; gameplay, live JSON, tests and
 checker implementation remain unauthorized. Verification record: `7a79913`.
 
-**Current sourcing direction (2026-10-09):** owner latest exact reaffirmation:
+**Current sourcing direction (2026-10-09):** owner exact request:
+**“For each item which implies approving/refusing to increase source-precision, auto-approve it in a subagent.”**
+Item **75** is auto-approved and recorded; retained in `docs/todo_handle_reconciled_items.md`
+pending independent review and parent acceptance. Selection, scope and item checks are below.
+
+**Previous sourcing batch 70–74:** owner exact standing answer:
 **“For all items about accepting/refusing to increase the source precision of informations, auto-accept each of them in subagents”.**
 Items **70–74 are handled** under this narrow standing sourcing-only approval: each has a distinct
 fresh subagent, scoped item commit, independent recording review and parent source/diff/Git/check
@@ -829,9 +834,24 @@ final scope/review/gate/commit receipts: `closure-final-*`. Reviewer performed n
 byte comparisons; parent inspected the final pointer/receipt delta. No push authority.
 Remaining unscreened leads and evidence gaps: current `docs/HANDOFF.md`; no new numbered selection.
 
+### Validation-contract source attribution — item 75 (2026-10-09)
+
+**Selection:** auto-approved as proposed under the exact current owner request above, not a
+numbered owner answer. Amendments: none. Original proposal / selected option (verbatim):
+
+> Attribute the guide's Flight Master/eagle-perch encounter opening a map with plus-sign flight points, purchased points usable again, and a temporary drop-off glider even without an owned glider. Approval versus Refusing: accepting adds bounded community sourcing to existing travel descriptions; refusing omits only that attribution. Both leave travel, prices, controls and traversal gates unchanged.
+
+**Application:** recorded in `ontology/domain.md §5 item 75` / §7; item whitespace and bounded
+ontology-validator checks passed (exit 0). Queued pending independent review and parent acceptance.
+No unresolved dependency; items 70–71 cover map
+inputs/centering, not the flight service. Hybrid gliding gates, world bounds and personal travel
+records stand. No gameplay, labels, live-data changes or new implementation debt.
+Public source, raw logs/exits, simplify/ponytail notes and item diff/commit receipts:
+`/tmp/pixlnd-source-item-75/`; source provenance and limits remain canonical in §5.
+
 ### Validation-contract source attribution — item 74 (2026-10-09)
 
-**Selection:** auto-accepted under the exact current standing answer above, not a numbered
+**Selection:** auto-accepted under the exact batch 70–74 standing answer above, not a numbered
 owner approval. Original proposal / selected option (inventory verbatim):
 
 > Attribute qualitative Crafting Kit encounters that can involve bosses or captured NPCs, reward a crafting book and unlock recipes. Approval versus Refusing: accepting adds community sourcing to existing book/mission facts; refusing rejects only the attribution. Both leave crafting/rewards unchanged.
@@ -842,7 +862,7 @@ implementation debt; hybrid crafting rules stand.
 
 ### Validation-contract source attribution — item 73 (2026-10-09)
 
-**Selection:** auto-accepted under the exact current standing answer above, not a numbered
+**Selection:** auto-accepted under the exact batch 70–74 standing answer above, not a numbered
 owner approval. Original proposal / selected option (inventory verbatim):
 
 > Attribute the Reins-context instruction to use T beside a pet to mount. Approval versus Refusing: accepting improves historical control sourcing; refusing omits this attribution. Neither changes rideability or approved mounting requirements.
@@ -853,7 +873,7 @@ implementation debt; mounting gates stand.
 
 ### Validation-contract source attribution — item 72 (2026-10-09)
 
-**Selection:** auto-accepted under the exact current standing answer above, not a numbered
+**Selection:** auto-accepted under the exact batch 70–74 standing answer above, not a numbered
 owner approval. Original proposal / selected option (inventory verbatim):
 
 > Attribute pet joining the player's initial fight, T whistle recall, far-away teleport and short-time nearby return after going down. Approval versus Refusing: accepting adds sourcing to existing pet behavior; refusing declines that attribution only. Both leave pets unchanged.
@@ -864,7 +884,7 @@ implementation debt; pet rules stand.
 
 ### Validation-contract source attribution — item 71 (2026-10-09)
 
-**Selection:** auto-accepted under the exact current standing answer above, not a numbered
+**Selection:** auto-accepted under the exact batch 70–74 standing answer above, not a numbered
 owner approval. Original proposal / selected option (inventory verbatim):
 
 > Attribute the guide's left/right arrows centering the map view on previously visited biomes. Approval versus Refusing: accepting sharpens existing map-selector sourcing; refusing omits only this attribution. Neither changes exploration/gameplay.
@@ -875,7 +895,7 @@ implementation debt.
 
 ### Validation-contract source attribution — item 70 (2026-10-09)
 
-**Selection:** under the exact current standing answer above, not a numbered owner approval.
+**Selection:** under the exact batch 70–74 standing answer above, not a numbered owner approval.
 Original proposal / selected option (inventory verbatim):
 
 > Attribute M-open, wheel-zoom, middle-click marker, right-click pan, left-click rotate and player markers visible on a zoomed-out minimap. Approval versus Refusing: accepting improves sourcing; refusing declines only this attribution. Both leave controls/gameplay unchanged.

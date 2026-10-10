@@ -2969,6 +2969,40 @@ is not original-build demonstration, release/introduction dating or Alpha equiva
 No crafting/reward, source-label, live JSON, checker/code/tests or assets change;
 remaining histories stay research.
 
+#### Item 75 — Flight-master map points, repeat access and drop-off glider (standing sourcing approval, 2026-10-09)
+
+[Darkmega's Steam guide 1871398574](https://steamcommunity.com/sharedfiles/filedetails/?id=1871398574),
+identified in item 70, reports under **Eagle air drops and fast travel**: “At the town you can
+find a person called a "Flight master" hanging out next to a giant eagle on a perch.” It continues:
+“These guy when talked to opens the map and reveals points on the map represented as large "+"
+symbols. These are flight points.” “You can buy these flight points which permanently unlocks
+them for free super fast transit to again at any time.” At arrival: “Once you reach the point
+the eagle will drop you off high in the sky and provide you with a free glider even when you
+don't have it allowing you to reach nearby areas easily.”
+
+This attributes only the existing service/map/repeat-access and temporary drop-off glider
+reports in `npc-roles.json#flight-master`, `buildings.json#buildings.flight-master`,
+`ui.json#screens.world-map`, `key-items.json#hang-glider.acquire.S`,
+`economy.json#shops.flight-master` and `research/research_world.md §10–11`.
+Items 70–71 cover map inputs/centering, not this service. **“Permanently” is retained as source
+wording, not proof of lifetime across sessions/worlds.** The drop-off report grants no owned
+glider, quantified duration or hybrid gate exception: **5 Climbing + ≥1 Hang Gliding point and
+an equipped, vendor-bought Hang Glider remain required** (`c-gliding`). Finite world bounds and
+per-character/saved-world travel records stand (§3.1 / §3.7). Adjacent “Most flight points within
+your biome and those just over are normally 100 gold a piece” establishes no universal minimum,
+price formula or currency conversion; this does not validate `economy.json#prices.S.flight-min`
+or distance scaling. No every-village population guarantee or E-failure behavior is selected.
+
+Retained public `/tmp/pixlnd-presentation-world.I1sm3d/guide.body:1096`, identity and URL/capture
+sidecars were inspected without re-fetching. Item 70's shared title/author/date limits apply:
+Posted **25 Sep, 2019 @ 2:24am**, Updated **3 Oct, 2019 @ 10:14am** (timezone unspecified),
+capture **2026-10-04T21:01:17Z**; title **updated 4/10** remains distinct. No immutable revision
+is established. HTMLParser inspection text and `guide.text:2606–2613` are derivatives, not
+byte-equal raw content. This Steam-era community report is not primary developer documentation,
+original-build demonstration, release/introduction dating or Alpha equivalence. No travel,
+prices, controls, gameplay, source labels, live JSON, checker/code/tests or assets change;
+remaining histories stay research, with no new implementation debt.
+
 ### Constraint catalog
 
 | id | rule | layer |
@@ -3374,14 +3408,20 @@ species/speed or Alpha inference.
 §5 attributes qualitative crafting-book encounter rewards and recipe unlocks only, not counts,
 fixed tier mapping, scope or repeatability. Hybrid knowledge, power and claim rules stand.
 
+**Validation-contract source item 75 — DECIDED 2026-10-09 under standing sourcing approval:**
+§5 attributes Flight Master/perch, plus-sign flight points, repeat access and temporary drop-off
+glider reports only; no price rule, persistence lifetime, population guarantee, E-failure or
+hybrid gate exception. World bounds and personal travel records stand. Recorded; item checks,
+independent review and parent acceptance are tracked in `todo_decide.md §E` and the pending queue.
+
 Items 57–74 are handled: independent recording review and parent actual-Git/source/diff audit
 plus bounded validator/boot checks are recorded in `todo_decide.md §E`, with exact selections,
-full hashes/parents, findings and check limits. Empty pending queue deleted. Closure review is
-separate from recording review; no publication authority or whole-topic completion.
+full hashes/parents, findings and check limits. Their then-empty queue was deleted. Closure review
+is separate from recording review; no publication authority or whole-topic completion.
 
 | topic | still undecided / incomplete |
 |---|---|
-| Validation-contract source research/attribution | items 1–74 recorded; 57–74 independently reviewed and parent-accepted (`todo_decide.md §E`); no unhandled selection, empty queue deleted. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
+| Validation-contract source research/attribution | items 1–75 recorded; 57–74 independently reviewed and parent-accepted (`todo_decide.md §E`); item 75 queued pending independent review and parent acceptance. Unsupported histories, daily quantities and sleep units stay research, not topic completion. No guessed labels, reopened mechanics, implementation or publication authority; enforcement deferred |
 | Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
 
 D13 already defines size-class hitboxes, D14 defines current spawn/chase numbers, and D15 defines
