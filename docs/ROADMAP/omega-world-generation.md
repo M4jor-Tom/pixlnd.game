@@ -20,7 +20,7 @@ seeds (`generators.json#world-scales`, `gen-terrain`, `gen-settlement`, `gen-dun
 - Enables realm-level lore consistency (capital, tombs, ruins placed with intent).
 
 ## Ontology hooks when picked up
-- New generator `gen-coarse-map` (already stubbed in `domain.md §6` and
+- New generator `gen-coarse-map` (already stubbed in `ontology/domain/index.md §6` and
   `generators.json#coarse-map-omega`): input land seed → graph of nodes (settlement, dungeon,
   poi, cave mouth, bridge, field, windmill) and edges (road, river, path), each with a coarse cell
   position. Output feeds `gen-terrain` (carve rivers/roads first), `gen-settlement`, `gen-poi`.

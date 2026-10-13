@@ -1,6 +1,6 @@
 ## Headless ontology check: `godot --headless -s ontology/validate.gd` (run from repo root
 ## from the repo root, no project.godot needed; toolchain: `nix develop`).
-## Exits non-zero when instances violate domain.md §5 load-time constraints.
+## Exits non-zero when instances violate domain/index.md §5 load-time constraints.
 extends SceneTree
 
 const Model := preload("res://ontology/model.gd")  # preload: class_name needs a project.godot, this does not

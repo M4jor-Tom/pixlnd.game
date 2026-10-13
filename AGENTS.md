@@ -10,14 +10,14 @@ Cube World rebuild in Godot 4.7.2 + GDScript, developed **ontology-first**. `ont
 source of truth; `game/` only consumes it and never redefines it.
 
 Three files describe the whole repo, read them in this order before doing anything:
-1. `docs/HANDOFF.md` — state of the build, the per-slice loop, the verified gotchas, next slice.
-2. `ontology/README.md` + `ontology/domain.md` — classes, relations, §5 constraints, §6 generators.
-3. `game/README.md` — folder-per-§3-section table and the full list of headless checks.
+1. `docs/HANDOFF.md` — pending continuation and active authority/blockers; empty when none remain.
+2. `ontology/README.md` + `ontology/domain/index.md` — classes, relations, §5 constraints, §6 generators.
+3. `game/README.md` — folder-per-§3-section table, slice workflow, gotchas and headless checks.
 
 ## Sync rule (step 0 of any domain-touching task)
 
 Land the change in `ontology/` first — class, relation, constraint, `generators.json#design.<topic>`,
-a `**D<n> … — DECIDED <date>**` line in `domain.md §7`, a `[x] D<n>` in `docs/ROADMAP/todo_decide.md`,
+a `**D<n> … — DECIDED <date>**` line in `ontology/domain/index.md §7`, a `[x] D<n>` in `docs/ROADMAP/todo_decide.md`,
 a status line in `ontology/README.md` — then implement by consuming it. Run the validator before coding.
 Skip only for tasks that don't touch the domain (build, tooling, debugging).
 
@@ -46,7 +46,7 @@ leaves the tree running forever. Never `pkill -f <script>`, it matches your own 
 - Engine scripts `preload("res://ontology/model.gd")`, never `CubeWorldModel` by name: headless
   Godot has no class-name cache.
 - Mutable state (world, characters, inventory) belongs to save-data (§3.7), not to the autoload.
-- `game/` folders mirror `domain.md §3`: `world/ entities/ combat/ items/ progression/ missions/ meta/`.
+- `game/` folders mirror `ontology/domain/index.md §3`: `world/ entities/ combat/ items/ progression/ missions/ meta/`.
 
 ## Gotchas beyond the two above
 

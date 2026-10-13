@@ -1,4 +1,4 @@
-## gen-world, gen-climate, gen-terrain (heightfield) and gen-name (land) from domain.md §6.
+## gen-world, gen-climate, gen-terrain (heightfield) and gen-name (land) from ontology/domain/index.md §6.
 ## Pure and seeded: same (seed, design, landscapes) → same output. Ontology axes: x, y horizontal,
 ## z up, in blocks; the mesher maps them to Godot (x, h, y). Numbers: generators.json#design (D12).
 extends RefCounted

@@ -11,7 +11,7 @@ Consumes `ontology/`; never redefines it. New gameplay = ontology first (sync ru
 - Engine scripts `preload("res://ontology/model.gd")` instead of naming `CubeWorldModel`: the
   class-name cache only exists after an editor scan, headless CI has none.
 
-## Folders follow domain.md §3 (create a folder when its first scene lands)
+## Folders follow ontology/domain/index.md §3 (create a folder when its first scene lands)
 | §3 section | folder | first pieces |
 |---|---|---|
 | 3.1 World | `world/` | **done (D12) + settlements (D22):** `world_gen.gd` gen-world/climate/terrain/name + `village_at` (placement, plateau in `height_at`), `zone_mesh.gd` heightfield mesher, `world.gd` zone streaming + trimesh collision + village streaming, `settlement.gd` ring of box buildings + NPCs, spawner skips the square; next flora, dungeons, POIs |
@@ -21,6 +21,26 @@ Consumes `ontology/`; never redefines it. New gameplay = ontology first (sync ru
 | 3.5 Progression | `progression/` | **basics (D19) + skill tree (D20):** `progression.gd` level settle (overflow, multi-level); XP per kill lives in `model.gd#xp_for_kill`, awarded by `creature.gd` to its last attacker, `player.gd#gain_xp` levels up (max HP, heal, banked skill points), HUD level/xp line; `skill_tree.gd` nodes from `model.gd#skill_tree`, spend/unlock rule, per-point multipliers; `skill_panel.gd` (X); `player.gd#use_class_skill` keys 1-4 → `combat/abilities.gd` (D21), swim speed per point; `skill_tree.gd#respec` at the class trainer (E, D22); next power-gate, artifacts |
 | 3.6 Missions | `missions/` | mission-type runtime, arena |
 | 3.7 Meta | `meta/` | `input_map.gd` builds InputMap from `keybinds.json#hybrid`; `hud.gd` HP/MP/stamina/combo/land caption (+ village, D22) + hotbar cooldown line (D21) + service toasts + block-power / stealth bars, blocking text (D23) + level-up toast pop and the buff-icon row from `design.feel` (D25; "stunned!" is now 3D stars over the head); next server/client (`godot-multiplayer`), save-data |
+
+## Authorized gameplay slices
+
+Only start a slice with separate owner authorization; ontology decisions are not implementation
+permission. Follow the sync rule in `AGENTS.md`. If instance data can drift, add a validator rule
+in `ontology/model.gd`'s `validate()` (see `c-roster-ids`). Validate before coding, then use
+`game-from-ontology` → `router` to choose the implementation skills. Add a bounded headless test
+per slice and run the boot check, then inspect windowed 3D/HUD captures. Update this folder/check
+reference and `docs/ROADMAP/todo_implement.md`; follow the repository's ponytail and changelog
+rules. Commit and push only with current owner authority.
+
+## Additional verified gotchas
+
+Other architecture/test gotchas are in `AGENTS.md`.
+- Godot front faces are **clockwise** (`world/zone_mesh.gd` emits that order).
+- Vertex colours need `vertex_color_is_srgb = true` or the palette washes out (`world/world.gd`).
+- In the original hand-written `.tscn` scenes, node-typed `@export` references did not resolve;
+  assign `world.target` in code.
+- For Markdown rewrites, escape a sed delimiter that occurs in the text; disambiguate Perl `$1`
+  as `${1}` before `[` to avoid array access.
 
 ## Checks
 ```

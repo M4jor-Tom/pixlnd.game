@@ -1,14 +1,13 @@
 # Roadmap — decisions, implementation backlog and post-v1 themes
 
-**Start with [todo_decide.md §E](todo_decide.md#e-ontology-reconciliation-2026-09-13)** for the
-interactive decision walkthrough and its resume checkpoint. D1–D26 and original fact conflicts
-are settled; additional hybrid questions remain open. Approval and implementation are separate.
+**Start with [todo_decide.md](todo_decide.md)** for unresolved game choices only.
+Approval and implementation are separate.
 [todo_implement.md](todo_implement.md) records work shipped slices postponed, not automatic
-permission to implement it. `ontology/domain.md §7` indexes remaining uncertainties; follow
+permission to implement it. `ontology/domain/index.md §7` indexes remaining uncertainties; follow
 `docs/HANDOFF.md` and `tasks/lessons.md` rather than treating a dated slice note as current scope.
 
 Decisions D3/D4 (2026-09-07): every feature tagged `X` (cut / data-only) or `Ω` (Omega, announced
-but unreleased) in `ontology/domain.md` is **not in v1**. Each theme below is a self-contained
+but unreleased) in `ontology/domain/index.md` is **not in v1**. Each theme below is a self-contained
 follow-up spec (<100 lines) with the online documentation it was reconstructed from. When a theme
 is picked up, land it in `ontology/` first (sync rule), then implement.
 
