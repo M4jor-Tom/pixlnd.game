@@ -37,9 +37,9 @@ and subsequent reconciliation approvals preserved. Ontology coverage is broader 
 availability, even if a historical flag is true. Their existing definitions and provenance remain.
 **Current-build coverage:** dated slice notes and `generators.json#design` describe approved
 implementation stages, including temporary approximations, not proof that the final target is
-implemented. Later decisions supersede earlier placeholders. Unresolved hybrid merges remain
-in `docs/ROADMAP/todo_decide.md`; this scope clarification
-does not decide them or authorize gameplay changes.
+implemented. Later decisions supersede earlier placeholders. Current decision/research status
+is indexed in [§7](7_Open_points_for_validation.md#7-open-points-for-validation);
+this scope clarification does not authorize gameplay changes.
 **Out of scope:** Picroma's engine internals (Plasma GUI runtime, DX11 renderer), the exact
 network byte layout of the 2013 protocol (kept as reference only), Steam platform integration,
 Omega content beyond what was publicly announced.

@@ -198,7 +198,7 @@ direct data correction and loader/validator/generator/runtime work remain unauth
 | c-gear-global | hybrid: an item's stats are identical in every land; key items and artifacts work everywhere once found | runtime |
 | c-climbing | hybrid: basic climbing needs neither points nor Spikes; Climbing points reduce stamina drain and global Climbing Spikes reduce consumption by 75%, not eliminate it; 5 Climbing points remain a Hang Gliding prerequisite; item 5 applies Spikes after skill reduction (remaining cost ×0.25), never additive percentage points; no skill curve/floor or artifact-combination rule inferred (§3.4/§3.5) | runtime (deferred) |
 | c-rarity-range | rarity ∈ 0..4 for generated items (5 = mythical bug, off by default) | load |
-| c-stat-roll | roll = ((attributes<<16)+modifier) mod 21 ∈ 0..20 | generator |
+| c-stat-roll | roll = ((attributes<<16)+modifier) mod 21 ∈ 0..20; normalized roll = roll/20, not rarity; hybrid gear HP is fixed under §3.4 item and independent of this roll, with no change to other stat rules | generator (hybrid HP deferred) |
 | c-loot-config | `design.loot`: every chance ∈ [0,1]; rarity-weights keys are rarities ≤ legendary with a positive sum; level-spread ≥ 0; gear-kinds and stack-cap.stackable name item-types; consumable-pool names consumables | load |
 | c-stack-rule | only `design.stack-cap.stackable` item-types stack (no cap, D6); gear (has a modifier roll) is one item per entry | runtime |
 | c-slot-accepts | an item equips only in a usable equipment-slot whose `accepts` lists its item-type and whose subtype restrictions it satisfies (§3.4 equipment-slot); weapon-type `offhand` hands → off-hand only; c-weapon-class and c-hands still apply | runtime |

@@ -14,6 +14,8 @@ Start with a class weapon and **5 life potions**.
 This slice's gear stats are **damage and armor only**, not a permanent exclusion of HP,
 regeneration, tempo or crit. Their unresolved rolls are not settled here (the written HP term
 `2 − 8r` can be negative).
+[Fixed hybrid equipment HP](fixed-gear-hp.md) later settles HP only; the slice's coverage
+and other stat rules are unchanged.
 
 Configuration: [generators.json](../instances/generators.json) `design.loot`, `design.stack-cap`,
 `design.starting-inventory`; constraints `c-loot-config`, `c-stack-rule`, `c-slot-accepts`.

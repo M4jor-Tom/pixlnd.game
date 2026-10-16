@@ -5,10 +5,10 @@ class or generator that governs it (`ontology/domain/index.md`) and, where one e
 code. Pick an item → sync rule (ontology first) → `router`. Not listed: §3 sections no slice has
 started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes in this folder.
 
-Status reconciled 2026-09-17. Resolve the affected open question in `todo_decide.md` before
-implementation; an approved policy is not implementation authorization. Historical A/S descriptions
-are not automatically hybrid targets. D4 exclusions (regional gear power loss, `+` items and worn
-degradation) are not backlog features.
+Current gameplay rules and remaining uncertainties are indexed in `ontology/domain/index.md §7`.
+Implementation remains unauthorized; Resistance still needs numerical mitigation approval before
+implementation, never an inferred formula. Historical A/S descriptions are not automatically hybrid targets. D4 exclusions
+(regional gear power loss, `+` items and worn degradation) are not backlog features.
 
 Owner clarification (2026-09-28, validation mapping item 4): the game is undeployed and no player
 data exists to migrate. Require current rules directly (`ontology/domain/index.md §0/§5`); data-correction debt
@@ -133,6 +133,10 @@ research. No new implementation authority or whole-topic completion.
   or skill reduction curve/floor is chosen; implementation remains separately unauthorized.
 
 ## Creatures (§3.2 creature + ai-behavior, D14 + D26)
+- [ ] Enforce approved [ordinary Lion untameability](../../ontology/domain/3_Classes.md#creature)
+  when taming is implemented, preserving hostile jungle/savannah encounters. Existing null
+  tame data agrees; Snow Lions, other cats, foods and riding are unchanged. Runtime/checker
+  work requires separate authorization.
 - [x] Basic melee attack both ways, death, neutral retaliation (combat slice); ranged / mage roles shooting back
   (D26, `design.creature-roles`). Heroic Shout currently provokes/retargets by a zero-damage hit.
   Still missing: aggro table, timed taunt priority, group aggro, potions at low HP, enemy combos
@@ -233,7 +237,8 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
   Current A+S fallback is not evidence; shared-food pairings and source IDs remain unchanged.
 - [ ] Mapping item 3 (`ontology/domain/index.md §5`): preserve qualified reference annotations in later
   model/loader/validator handling; current parsing strips `?`. No schema or parser change is
-  authorized now, nor content selection or a decision on Swamp Lands identity.
+  authorized now. Hybrid v1 landscape availability is settled (§3.1); historical Swamp Lands
+  identity remains research, not an implementation choice.
 - [ ] Mapping item 4 (`ontology/domain/index.md §5`): implement the recorded required-path/shape, bounded
   source-inheritance and layer-specific checks when separately authorized. Cover missing-whole-input
   negatives (including races and whole moveset blocks), both directions of class/spec references,
@@ -321,12 +326,19 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
   answers the untested XWayland-vs-native-Wayland question; `monitors/godot_threads.sh` becomes dev/CI only.
 - [ ] `design.frame-budget` (D17) is not consumed yet: set `Engine.max_physics_steps_per_frame` and
   `Engine.physics_ticks_per_second` from it in `main.gd` (`c-frame-budget`).
-- [ ] Remaining hybrid decisions and source uncertainties: `ontology/domain/index.md §7` / `todo_decide.md`.
-  D13 hitboxes and D15 armor numbers are already designed; optional fields are not unanswered facts.
+- [ ] Remaining research uncertainties and unapproved implementation parameters: `ontology/domain/index.md §7`.
+  The four selected gameplay choices are resolved, not backlog decisions; Resistance's numerical
+  mitigation is not selected. D13 hitboxes and D15 armor numbers are already designed; optional
+  fields are not unanswered facts.
 - [x] Inventory, skill-tree and shop panels keep player time running while gating gameplay input
   (item 10, `44ab0a1`); other menu policies remain outside that repair.
 
 ## Items (§3.4, slice abaded3)
+- [ ] Apply [fixed hybrid gear HP](../../ontology/domain/3_Classes.md#item) when separately
+  authorized: HP formula is settled; existing HP-bearing gear only, no modifier-roll term.
+  The disputed historical expression remains in `stats.json`; live-data correction, generation,
+  equipment/character application and checker work are deferred. No live negative-HP bug exists
+  from this unused gear rule; other stat and artifact/character rules are unchanged.
 - [ ] **Equipment implementation — deferred (item 3):** after explicit implementation approval,
   normalize live `equipment-slots.json#accepts` to item-type IDs (`light`, `special`, `weapon`),
   express subtype restrictions and pet-food placement, and align the validator/consumers with
@@ -402,6 +414,11 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 - [ ] Villagers and animals inside town are absent, so `c-hostile-in-city` only keeps wild spawns 40 blocks away.
 
 ## Combat (§3.3, slices 457c947 + D21 + D23)
+- [ ] [Resistance meaning](../../ontology/domain/3_Classes.md#stat) is settled: magical-damage
+  reduction, not general status immunity; drinks remain separate. Live JSON still includes the
+  historical immunity question. Data/checker/runtime changes need separate authorization, and
+  numerical mitigation needs owner approval before implementation: no formula/coefficient,
+  DOT/damage-type classification or stacking rule has been selected.
 - [x] Defence (D23, `player.gd` + `creature.gd` from `design.defence`): M3 dodge roll with i-frames and per-passive rewards,
   M2-held block (shield / guardian / cyclone) with block-power + MP, the stealth bar (sneak / aim fill, camouflage pins,
   decay, attack / crit / MP bonus, aggro range cut), creature hits rolling stun / knockback on the player.
@@ -431,9 +448,10 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
   flash (D25) but still no model or particles (creatures shoot the same projectiles since D26), the main scene picks the class only from `-- --class=<id>`, nothing visually
   checked; every D24 number is untuned.
 - [x] Item instances, equipment slots, armor stat (D18, `game/items/`). Still open: the modifier roll only
-  seeds the name — stats.json gives no roll term for damage/armor; gear hp/regen/tempo/crit are not
-  applied (`gen-item-stats`; the hp roll term `2 − 8r` goes negative as written, `?`), rings/amulets
-  never drop, no upgrade cubes (`item.upgrades`, `c-cube-cap`).
+  seeds the name — stats.json gives no roll term for damage/armor; gear HP/regen/tempo/crit are not
+  applied (`gen-item-stats`). Hybrid HP is now fixed and approved (Items above), not awaiting a
+  roll formula; the other stat rules are unchanged. Rings/amulets never drop; no upgrade cubes
+  (`item.upgrades`, `c-cube-cap`).
 - [x] Two-handed weapon/shield conflicts are rejected atomically in either equip order (item 10).
   Remaining equipment-model/Wand work is listed under Items above.
 - [ ] Combo only adds damage; armor piercing per combo and the per-weapon cap colours are missing

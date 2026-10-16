@@ -9,8 +9,9 @@
 - [Domain](../domain/index.md) and [instances](../instances/) remain the semantic/data source of truth.
   Obsolete live values cannot override later approved definitions.
 - Distinguish a scoped implementation approximation from a final rule or permanent exclusion.
-- [Unresolved choices](../../docs/ROADMAP/todo_decide.md) and
-  [deferred implementation](../../docs/ROADMAP/todo_implement.md) keep their existing homes.
+- [Current decision/research status](../domain/7_Open_points_for_validation.md#7-open-points-for-validation) and
+  [deferred implementation](../../docs/ROADMAP/todo_implement.md) keep their existing homes;
+  the unresolved-choice backlog is absent when empty.
 - Optional/null fields are not automatically unknown facts or undecided design.
 - Require current approved rules directly, not legacy compatibility; see
   [current-rule validation](current-rule-validation.md).

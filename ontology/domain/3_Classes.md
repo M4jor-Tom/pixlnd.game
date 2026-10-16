@@ -101,6 +101,10 @@ savannahs, wetlands, swamp-lands`?`, dark-woods, deadlands, mountains, mushroom-
 | gen | ours (D12): `relief` (height multiplier), `base` (height offset, blocks), `surface` block-type, `top`/`cliff` RGB |
 | versions | shipped in A, S, both, or `X` |
 
+Hybrid v1: **Wetlands remains playable; a separate Swamp Lands biome is excluded**.
+The historical `swamp-lands` reference remains uncertain, not an alias of Wetlands or a
+permanent all-version exclusion. No separate swamp terrain, fauna or reward rules are selected.
+
 ### terrain-feature
 Natural formation placed inside a land. `A S` → `instances/terrain-features.json`
 (mountain, plateau/cliff, valley, canyon+mesa, cave, river+waterfall, lake, lava-lake, volcano,
@@ -381,6 +385,9 @@ A non-player species (animal, insect, aquatic, monster, humanoid enemy, boss spe
 | drinks-potions | bool | ogre, mermaid, insect guard, NPCs |
 | lantern-at-night | bool | |
 | versions | | |
+
+Hybrid ordinary Lion (`lion`): **untameable**, retaining hostile jungle/savannah encounters.
+Snow Lions and other cats are unchanged; this selects no food pairing or riding permission.
 
 Source IDs (reconciliation item 6, approved 2026-09-15): the cuwo alpha reference table covers
 0..155; post-alpha additions may have larger IDs. Radishling Sprout / Mineral Water share 192,
@@ -680,7 +687,7 @@ Hybrid aggro rules (owner approved 2026-09-18/19 and 2026-09-27, documentation o
   attack can provoke it again under the pack-response rule. Arrival is individual: it does not
   clear other packmates' provocation, threat or engagement order.
 
-Unresolved subcases are tracked in §7 / `todo_decide.md`; deferred application is tracked in
+Remaining uncertainties are indexed in §7; deferred application is tracked in
 `docs/ROADMAP/todo_implement.md`.
 These documentation decisions do not authorize runtime or live-data changes.
 
@@ -711,6 +718,13 @@ power-level `A`, movement speeds (climb, swim, dive, ride, glide, sail), light-r
 Rules: armor is subtractive with a 10 % floor (D15, `design.combat.armor-floor`); combo counter
 ignores a growing share of armor; stats roughly double per rarity tier (display) vs ×2^0.25 in the
 raw curve `?`.
+
+Hybrid **Resistance means magical-damage reduction, not general status immunity**. Resistance
+alone does not prevent a magical hit's stun. Hazard-protection drinks keep their separate roles.
+This meaning selects **no numerical mitigation formula, DOT/damage-type classification,
+stacking rule or new status/hazard interaction**. Do not infer a coefficient or formula during
+implementation; numerical mitigation requires separate owner approval. Historical conflicting
+stat descriptions remain reference, not alternate hybrid behavior.
 
 ### ability
 An active or passive skill. `A S Ω` → `instances/abilities.json` (~65).
@@ -857,6 +871,21 @@ Concrete item instance (alpha `ItemData`, 88 bytes). `A S`
 | land | `land` ref | S: origin region (region lock) |
 | plus | bool | S: `+` suffix; works in adjacent lands |
 | name | derived | `item-name` generator |
+
+**Hybrid gear HP:** otherwise-identical existing HP-bearing gear has a **fixed HP bonus**,
+independent of modifier roll:
+
+`HP bonus = curve(n, rarity) × 5 × slot × (2 + materialBonus)`
+
+Use the unchanged [Alpha base curve](6_Generators.md#6-generators), with
+`n = level + 0.1 × upgrade_count`; rarity is distinct from the normalized modifier roll.
+This applies only to existing HP-bearing weapons, chest, shoulders, gloves and boots:
+`slot = 1` for chest, `0.5` for those other pieces. Material bonus is **iron 1, cotton 0.75,
+linen 0.5, otherwise 0**. No jewelry HP, random HP allocation or clamp is added.
+This new hybrid simplification removes only the disputed HP modifier-roll term, not the
+level/rarity/cube curve; it is not a recovered Alpha formula. Historical evidence, all other
+stat rules and downstream character/artifact rules remain unchanged. Gear HP application
+is deferred, not a live negative-HP bug.
 
 ### item-type
 25 alpha main types with subtypes. → `instances/item-types.json`.

@@ -1,37 +1,43 @@
 # Handoff — pending continuation
 
-## Next checkpoint: finite source-pass acceptance/publication
+## Next action: await owner direction to resume reconciliation
 
-On `fix/ontology-reconciliation`, source-status maintenance already exists in `f801166`;
-do not recreate it. Refresh actual HEAD, index and worktree, then inspect the
-[§E checkpoint and finite receipts](ROADMAP/todo_decide.md#e-ontology-reconciliation-2026-09-13).
-The fresh committed-state audit of finite 108–111, explicit parent native
-acceptance/acknowledgment and actual publication outcome are not established by this
-checkpoint. Inspect existing native evidence before repeating work; local commits and old
-prepublication prose alone prove neither acceptance nor publication.
+The walkthrough is stopped at the owner's requested handoff. Publication of this checkpoint
+does not authorize resuming canonical-rule recording.
 
-**This cleanup is local-commit-only: NO PUSH or remote Git.** The earlier conditional finite
-publication grant is recorded in §E, not renewed by this cleanup. Any publisher must have
-applicable owner authority and verified prerequisites. No merge, force-push, history rewrite,
-new research/inventory/items/decisions, gameplay, source labels, live data, checker/tests,
-assets or new debt are authorized here. A green validator checks loaded data, not prose or
-runtime compliance; cleanup checks do not replace the finite source-pass audit.
+Resume the five **Previously selected** Resistance items in the
+[pending selection queue](todo_handle_reconciled_items.md) before any new topic when the owner
+resumes reconciliation. The queue preserves each original proposal, exact approval and dependencies.
+All five are approved, not unanswered; canonical application, required checks/review and separate
+item commits remain pending. Current ontology statements that numerical mitigation is unapproved
+predate these selections and need updating during authorized recording, not renewed approval.
 
-## Later continuation — only when separately requested
+No canonical rules, decisions, instance data or gameplay were changed by this handoff. For later
+recording, inspect the current worktree and use `ontology-reconcile-topic`, `ontology` and
+`record-impactful-decision`; retain the existing Resistance decision record as the single topic
+history home. Verify each item, including `git diff --check` and the bounded validator
+(`timeout 150 nix develop -c godot --headless -s ontology/validate.gd`), before closure.
+The handoff-only change has not run that validator and establishes no runtime coverage.
 
-Topic: **Validation-contract source research/attribution (remaining research)**. Follow
-[docs/lessons.md](lessons.md) and the current `ontology-reconcile-topic` contract, not the
-gameplay slice loop. Use [§E's open topics](ROADMAP/todo_decide.md#open--decide-before-the-named-slice),
-[ontology §7](../ontology/domain/7_Open_points_for_validation.md#7-open-points-for-validation) and the
-[Validation contract backlog](ROADMAP/todo_implement.md#validation-contract-documentation-approved-implementation-unauthorized).
-No selected source item remains pending at this checkpoint; an absent pending queue is not
-source exhaustion or project termination. Retained/withdrawn leads remain UNAPPROVED, not
-reserved item numbers. Silk/Spinning Wheel quantities remain HOLD; uncertain mechanics and
-remaining food/sleep/quantity/trait/population/route/naming/UI/audio/dialogue evidence gaps
-stay at those existing locators. Do not reopen handled class/weapon/lore attributions.
+No new topic, gameplay slice or source research is authorized. Separately requested implementation
+follows [game/README.md](../game/README.md) and the
+[implementation backlog](ROADMAP/todo_implement.md), not documentation approval alone.
 
-Read §E's historical failure/recovery and restricted-source caveats before using its evidence;
-only inspected article extracts are public-safe, never authenticated DOM/account/token material.
-Documentation approval is not implementation permission. Separately authorized gameplay uses
-[game/README.md](../game/README.md) and the existing implementation backlog, not this checkpoint
-as authority to start a slice.
+## Dormant source continuation — separate owner request required
+
+The earlier finite 108–111 source-pass audit, parent native acceptance/acknowledgment and
+publication outcome remain unestablished by this gameplay checkpoint. Inspect existing native
+evidence and the prior checkpoint at
+`9b63e6e11c8c52b38183624c4fd1c43e9f09a870:docs/HANDOFF.md` before any separately authorized
+continuation. Source-status maintenance already exists in `f801166`; do not recreate it or
+restore the old §E history. Publishing gameplay documentation renews no earlier conditional
+source-pass grant and does not establish its acceptance/publication outcome.
+
+No selected source item is pending; research is not exhausted. Existing remaining evidence gaps
+stay at [§7](../ontology/domain/7_Open_points_for_validation.md#7-open-points-for-validation) and
+the [validation-contract backlog](ROADMAP/todo_implement.md#validation-contract-documentation-approved-implementation-unauthorized).
+Silk/Spinning Wheel quantities remain **HOLD**. Retained/withdrawn source leads stay **UNAPPROVED**;
+do not reopen handled class/weapon/lore attributions. Any future sourcing must follow
+[lessons](lessons.md) and the current reconciliation contract: only inspected public article
+extracts are public-safe; private authenticated DOM/account/token material is prohibited.
+This continuation note authorizes no source research, inventory, selection or publication.

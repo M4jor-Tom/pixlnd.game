@@ -1,19 +1,25 @@
 ## 7. Open points for validation
 
-### Current unresolved hybrid questions (2026-10-05)
+### Current hybrid decision status (2026-10-16)
 
-This index mirrors the open list in `docs/ROADMAP/todo_decide.md`; it does not choose defaults
-or authorize implementation. Resolve each question before its affected slice.
-| topic | still undecided / incomplete |
-|---|---|
-| Remaining uncertain facts | swamp-lands identity, Lion tameability, resistance meaning and the gear-HP roll formula |
+The four selected gameplay choices are resolved in canonical definitions:
+[landscape availability](3_Classes.md#landscape), [ordinary Lion tameability](3_Classes.md#creature),
+[Resistance meaning](3_Classes.md#stat) and [fixed gear HP](3_Classes.md#item).
+No unresolved entry remains in the game-choice backlog. Further work requires owner direction;
+see [the handoff](../../docs/HANDOFF.md).
 
+Implementation remains separately unauthorized; see
+[deferred work](../../docs/ROADMAP/todo_implement.md). Resistance's numerical mitigation formula
+is **not approved**: obtain owner approval before implementation, never infer a coefficient,
+DOT/damage-type classification or stacking rule from its settled meaning.
 
 ### Reference uncertainties, not new hybrid defaults
 
-Historical rare-zone rarity, the alpha `mana-cubes` field, species-specific chase observations,
-source stat-display comparisons and Omega engine/status reports remain research uncertainties.
+Historical Swamp Lands identity, disputed Lion tameability, conflicting Resistance descriptions
+and the disputed historical gear-HP roll expression remain research uncertainties, not alternate
+hybrid rules. Rare-zone rarity, the alpha `mana-cubes` field, species-specific chase observations,
+source stat-display comparisons and Omega engine/status reports also remain uncertain.
 They neither override designed hybrid rules nor enable cut/Omega content. Other `?` annotations
 stay attached to their source records; any unresolved implication for active hybrid behavior
 must be decided before implementation, not inferred from a historical flag or loader fallback.
-
+Research is not exhausted by resolving the selected gameplay choices.

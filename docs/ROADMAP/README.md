@@ -1,7 +1,7 @@
 # Roadmap — decisions, implementation backlog and post-v1 themes
 
-**Start with [todo_decide.md](todo_decide.md)** for unresolved game choices only.
-Approval and implementation are separate.
+**Start with [the handoff](../HANDOFF.md)** for current authority and pending work.
+No unresolved game-choice backlog remains. Approval and implementation are separate.
 [todo_implement.md](todo_implement.md) records work shipped slices postponed, not automatic
 permission to implement it. `ontology/domain/index.md §7` indexes remaining uncertainties; follow
 `docs/HANDOFF.md` and `tasks/lessons.md` rather than treating a dated slice note as current scope.
