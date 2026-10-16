@@ -20,8 +20,9 @@ Cube World cloning fidelity. It is not deferred or an alternative mode.
 D1–D26 and subsequent approvals stand. The four selected gameplay choices are resolved;
 [§7](domain/7_Open_points_for_validation.md#7-open-points-for-validation) links their current rules
 and separates research uncertainties from hybrid behavior. No unresolved entry remains in the
-game-choice backlog. Resistance's meaning is settled, but no numerical mitigation formula is
-approved or may be inferred during implementation.
+game-choice backlog. Resistance's meaning and all five approved combat selections are
+[recorded](domain/3_Classes.md#stat); authority and dependencies remain in the
+[single decision record](decisions/resistance-meaning.md).
 Implementation deferrals live in `docs/ROADMAP/todo_implement.md`; documentation approval grants
 no runtime permission. Equipment-model and validation-contract implementation is also deferred.
 Dated build notes include superseded placeholders, not proof of current coverage. For

@@ -721,10 +721,53 @@ raw curve `?`.
 
 Hybrid **Resistance means magical-damage reduction, not general status immunity**. Resistance
 alone does not prevent a magical hit's stun. Hazard-protection drinks keep their separate roles.
-This meaning selects **no numerical mitigation formula, DOT/damage-type classification,
-stacking rule or new status/hazard interaction**. Do not infer a coefficient or formula during
-implementation; numerical mitigation requires separate owner approval. Historical conflicting
-stat descriptions remain reference, not alternate hybrid behavior.
+Historical conflicting stat descriptions remain reference, not alternate hybrid behavior.
+
+**Hybrid Resistance item 1 (owner approved; recorded 2026-10-16):** subtract **1 damage per
+Resistance point**, not a percentage. A 100-damage spell against 30 Resistance becomes **70
+damage**, subject to item 2's minimum.
+
+**Hybrid Resistance item 2 (owner approved; recorded 2026-10-16):** Resistance alone cannot
+reduce a damaging hit below **10% of its original damage**, matching armor's existing floor.
+For an eligible hit with incoming damage `D ≥ 0` and Resistance `R ≥ 0`, the Resistance-stage
+result is `max(D - R, 0.1 × D)`. A 100-damage spell against 200 Resistance yields **10 damage**
+at this stage. Zero damage stays zero; fractional damage remains possible, with **no minimum-one
+rounding**. This is not a final HP-loss floor: later defences may reduce or absorb the remainder.
+
+**Hybrid Resistance item 3 (owner approved; recorded 2026-10-16):** classify the **attack**,
+not merely its attacker:
+- **Magical:** Mage weapon attacks, damaging Mage spells and enemy mage-role spells.
+- **Physical:** weapon blows, bites, arrows, thrown weapons and physical strike skills.
+
+Apply **exactly one equipment defence**: magical attacks use Resistance under items 1–2;
+physical attacks use the existing armor rules, never armor followed by Resistance. A mage's
+fireball meets Resistance; an ordinary arrow meets armor. This selects no new attack content
+or live-data migration and does not extend combo armor penetration to Resistance.
+
+**Hybrid Resistance item 4 (owner approved; recorded 2026-10-16):** damage-over-time calculated
+from a triggering hit inherits that hit's Resistance reduction **once**. Never subtract Resistance
+again on each tick. If a fire spell falls from 100 to 70 damage, burning worth 10% of that hit
+starts at **7 per tick**, not 10 followed by another Resistance subtraction.
+
+Independently sourced poison and environmental hazards gain **no Resistance protection** under
+this selection. Preserve existing status identity, application and duration, dodge exceptions,
+drinks and status-protection rules. The example selects no new tick coefficient, duration or
+cadence; no additional DOT buff timing, stacking/slot model or hazard behavior is selected.
+
+Items 1–3 determine the triggering hit's Resistance reduction; item 5 governs its defence stage.
+
+**Hybrid Resistance item 5 (owner approved; recorded 2026-10-16):** apply Resistance first,
+then existing block and damage-reduction multipliers, then absorption shields. The **10% floor
+applies only at the Resistance stage**, not to final HP loss; absorption may prevent all HP loss.
+
+Example: **100 → 70** through Resistance → **14** through blocking → **7** during Bulwark.
+Separately, a Mage's 50-point absorption shield facing that resisted 70-damage hit leaves
+**20 HP damage**.
+
+Items 1–2 define the first stage; item 3 limits its coverage. Preserve existing block
+eligibility/exhaustion, multiplier values, absorption-pool rules and status protections.
+The examples select no new block/buff strengths or shield capacities.
+Implementation and live-data/checker changes remain separately unauthorized.
 
 ### ability
 An active or passive skill. `A S Ω` → `instances/abilities.json` (~65).
@@ -848,6 +891,8 @@ scheduled poison damage is not prevented by dodge i-frames. Preserve poison's id
 tick delivery even in the current shared burning-slot approximation. This repair changes neither
 poison damage, duration or cadence nor current burning/direct-hit dodge behavior. Separate poison
 stacking, independent burning/poison slots and other runtime corrections are outside this authorization.
+
+Hit-derived DOT's Resistance handling follows [stat](#stat), item 4.
 
 ### death
 No penalty in A or S (no gold/item/XP loss). A: press R → nearest revival statue (never far), enemy

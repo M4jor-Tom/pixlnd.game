@@ -5,13 +5,13 @@
 The four selected gameplay choices are resolved in canonical definitions:
 [landscape availability](3_Classes.md#landscape), [ordinary Lion tameability](3_Classes.md#creature),
 [Resistance meaning](3_Classes.md#stat) and [fixed gear HP](3_Classes.md#item).
-No unresolved entry remains in the game-choice backlog. Further work requires owner direction;
-see [the handoff](../../docs/HANDOFF.md).
+No unresolved entry remains in the game-choice backlog. Resistance's five approved combat
+selections, including [defence order](3_Classes.md#stat), are recorded. Authority and
+dependencies remain in the [single decision record](../decisions/resistance-meaning.md).
 
 Implementation remains separately unauthorized; see
-[deferred work](../../docs/ROADMAP/todo_implement.md). Resistance's numerical mitigation formula
-is **not approved**: obtain owner approval before implementation, never infer a coefficient,
-DOT/damage-type classification or stacking rule from its settled meaning.
+[deferred work](../../docs/ROADMAP/todo_implement.md). Documentation is not runtime coverage
+or permission to invent additional rules from Resistance's meaning.
 
 ### Reference uncertainties, not new hybrid defaults
 

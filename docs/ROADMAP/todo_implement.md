@@ -6,8 +6,8 @@ code. Pick an item → sync rule (ontology first) → `router`. Not listed: §3 
 started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes in this folder.
 
 Current gameplay rules and remaining uncertainties are indexed in `ontology/domain/index.md §7`.
-Implementation remains unauthorized; Resistance still needs numerical mitigation approval before
-implementation, never an inferred formula. Historical A/S descriptions are not automatically hybrid targets. D4 exclusions
+Implementation remains unauthorized; Resistance's five approved combat selections are recorded
+and indexed in §7. Historical A/S descriptions are not automatically hybrid targets. D4 exclusions
 (regional gear power loss, `+` items and worn degradation) are not backlog features.
 
 Owner clarification (2026-09-28, validation mapping item 4): the game is undeployed and no player
@@ -327,9 +327,9 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 - [ ] `design.frame-budget` (D17) is not consumed yet: set `Engine.max_physics_steps_per_frame` and
   `Engine.physics_ticks_per_second` from it in `main.gd` (`c-frame-budget`).
 - [ ] Remaining research uncertainties and unapproved implementation parameters: `ontology/domain/index.md §7`.
-  The four selected gameplay choices are resolved, not backlog decisions; Resistance's numerical
-  mitigation is not selected. D13 hitboxes and D15 armor numbers are already designed; optional
-  fields are not unanswered facts.
+  The four selected gameplay choices are resolved, not backlog decisions; Resistance's five combat
+  selections are approved and recorded. D13 hitboxes and D15 armor
+  numbers are already designed; optional fields are not unanswered facts.
 - [x] Inventory, skill-tree and shop panels keep player time running while gating gameplay input
   (item 10, `44ab0a1`); other menu policies remain outside that repair.
 
@@ -414,11 +414,11 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 - [ ] Villagers and animals inside town are absent, so `c-hostile-in-city` only keeps wild spawns 40 blocks away.
 
 ## Combat (§3.3, slices 457c947 + D21 + D23)
-- [ ] [Resistance meaning](../../ontology/domain/3_Classes.md#stat) is settled: magical-damage
-  reduction, not general status immunity; drinks remain separate. Live JSON still includes the
-  historical immunity question. Data/checker/runtime changes need separate authorization, and
-  numerical mitigation needs owner approval before implementation: no formula/coefficient,
-  DOT/damage-type classification or stacking rule has been selected.
+- [ ] Implement the [recorded Resistance rule](../../ontology/domain/3_Classes.md#stat), including attack-based
+  equipment defence selection, hit-derived DOT's once-only Resistance inheritance (`c-resistance-dot`)
+  and defence order through block/damage-reduction multipliers to absorption shields; drinks remain separate.
+  Live JSON still includes the historical immunity question. Data/checker/runtime changes need
+  separate authorization.
 - [x] Defence (D23, `player.gd` + `creature.gd` from `design.defence`): M3 dodge roll with i-frames and per-passive rewards,
   M2-held block (shield / guardian / cyclone) with block-power + MP, the stealth bar (sneak / aim fill, camouflage pins,
   decay, attack / crit / MP bonus, aggro range cut), creature hits rolling stun / knockback on the player.

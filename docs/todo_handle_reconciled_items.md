@@ -1,107 +1,51 @@
-# Pending selected reconciliations — Resistance in combat
+# Approved selections awaiting handling
 
-## Authority and application boundary
+Owner answer, 2026-10-17:
 
-Owner's exact answer to the five numbered proposals:
+> 1: Approved; 2: Approved; Handoff, commit, push
 
-> 1: Approved; 2: Approved; 3: Approved; 4: Approved; 5: Approved; Handoff, wait for me to tell you to commit
+Authority: record these two ontology decisions, commit, finalize the pending-only handoff and
+push `fix/ontology-reconciliation`, then stop. No gameplay, live JSON, loader, validator or test
+implementation is authorized. Existing dormant source continuation remains separately restricted.
 
-All five recommended options below are **Previously selected**, with no amendments.
-Approval is established; canonical recording, consistency review, validation and the separately
-scoped item commits are **pending for every item**. No gameplay, behavior-changing JSON,
-loader/validator, tests, labels or source research is authorized by these approvals.
-The subsequent owner instruction **“commit, push”** authorizes publication of this handoff
-and queue only. The walkthrough remains stopped; canonical application awaits resumption.
-This queue is not canonical ontology; remove entries only after their required recording,
-checks, review and item commits are verified. Delete the file when no pending entry remains.
+## Repeated combat DOT applications — item 1
 
-The settled meaning remains [magical-damage reduction, not status immunity](../ontology/decisions/resistance-meaning.md).
-Existing statements that numerical rules are unapproved predate this answer: update them during
-authorized canonical recording, rather than asking the owner to approve these same choices again.
-Current entry points: [stat and status effects](../ontology/domain/3_Classes.md#stat),
-[constraints](../ontology/domain/5_Constraints.md), [generators](../ontology/domain/6_Generators.md),
-[combat deferrals](ROADMAP/todo_implement.md#combat-33-slices-457c947--d21--d23),
-[ontology overview](../ontology/README.md) and [open-point status](../ontology/domain/7_Open_points_for_validation.md).
-
-## 1. How much damage does each Resistance point prevent?
-
-**Previously selected:** approve the recommended option. Exact answer: **“1: Approved”**.
+**Previously selected:** independent burning applications. Exact answer: **“1: Approved”**.
 
 Original proposal:
 
-> Subtract **1 damage per Resistance point**, rather than treating it as a percentage.
+> Each successful application creates its **own four-second burn**, without replacing or
+> refreshing earlier burns. Each ticks every 0.5 seconds, first at 0.5 seconds and last at
+> four seconds.
 >
-> A 100-damage spell against 30 Resistance becomes **70 damage**, subject to item 2.
-> This makes Resistance stronger against repeated small hits than against huge bursts.
+> For example, burns based on 100- and 50-damage hits deal **10 and 5 per tick**, respectively,
+> while both remain active.
 
-Dependencies: item 2 supplies the minimum; item 3 selects eligible attacks; item 5 supplies
-its position among other defences. Do not infer a different coefficient or percentage curve.
+Scope: combat hit-derived burning, not environmental hazards. Existing damage coefficients,
+Resistance inheritance, dodge/status protections and aggro rules remain unchanged. Repeated
+fire hits accumulate damage; a multi-hit volley may leave several burns.
 
-## 2. Can Resistance completely negate a spell?
+Status: approved; canonical recording, verification, review and item commit pending.
+Dependencies: existing D21 burning numbers and Resistance item 4; source research and broader
+DOT buff timing are outside this selection. Runtime enforcement is separate deferred work.
 
-**Previously selected:** approve the recommended option. Exact answer: **“2: Approved”**.
+## Repeated combat DOT applications — item 2
+
+**Previously selected:** independent poison-stack lifetimes and tick schedules.
+Exact answer: **“2: Approved”**.
 
 Original proposal:
 
-> Resistance alone cannot reduce a damaging hit below **10% of its original damage**,
-> matching armor’s existing floor.
+> Every poison application has an **independent lifetime and schedule**. Dagger poison delivers
+> its existing five ticks at **one, two, three, four and five seconds after application**.
+> New applications neither refresh older stacks nor reset their next tick.
 >
-> A 100-damage spell against 200 Resistance still deals **10 damage**. Zero damage stays zero;
-> fractional damage remains possible.
+> For example, applications two seconds apart finish at seconds **five and seven**, respectively.
 
-Dependencies: combine with item 1 as `max(D - R, 0.1 × D)` for eligible non-negative incoming
-damage `D` and Resistance `R`. Under item 5 this is a Resistance-stage floor, not a final HP-loss
-floor: later defences can reduce or absorb the remainder. No minimum-one rounding rule is selected.
+Scope: combat hit-derived poison, not environmental hazards. Poison stacking, inherited hit
+damage/crit, the existing dagger total/cadence, poison's dodge exception and Resistance handling
+remain unchanged. No shared renewal or immediate tick is selected.
 
-## 3. Which attacks use Resistance instead of armor?
-
-**Previously selected:** approve the recommended option. Exact answer: **“3: Approved”**.
-
-Original proposal:
-
-> Classify the **attack**, not merely its attacker:
-> - **Magical:** Mage weapon attacks, damaging Mage spells and enemy mage-role spells.
-> - **Physical:** weapon blows, bites, arrows, thrown weapons and physical strike skills.
->
-> Apply **one equipment defence**, not armor followed by Resistance. A mage’s fireball meets
-> Resistance; an ordinary arrow meets armor.
-
-Dependencies: items 1–2 define magical mitigation; existing physical armor rules remain.
-Item 4 separately covers hit-derived damage-over-time and environmental scope. This selects no
-new attack content or live-data migration, and does not extend combo armor penetration to Resistance.
-
-## 4. What happens to burning and poison ticks?
-
-**Previously selected:** approve the recommended option. Exact answer: **“4: Approved”**.
-
-Original proposal:
-
-> Damage-over-time calculated from a triggering hit inherits that hit’s Resistance reduction
-> **once**. Do not subtract Resistance again on every tick.
->
-> If a fire spell falls from 100 to 70 damage, burning worth 10% of that hit starts at **7 per
-> tick**, not 10 followed by another Resistance subtraction. Independently sourced poison and
-> environmental hazards gain no Resistance protection under this proposal. Status application
-> and duration remain unchanged.
-
-Dependencies: items 1–3 determine the triggering hit’s Resistance reduction; item 5 governs
-its defence stage. Preserve existing status identity, dodge exceptions, drinks and status
-protection rules. The example does not approve a new tick coefficient, duration or cadence.
-No additional DOT buff timing, stacking/slot model or hazard behavior is selected.
-
-## 5. How does Resistance combine with blocking and shields?
-
-**Previously selected:** approve the recommended option. Exact answer: **“5: Approved”**.
-
-Original proposal:
-
-> Apply Resistance first, then existing block and damage-reduction multipliers, then absorption
-> shields. The 10% floor applies only at the Resistance stage.
->
-> Example: **100 → 70** through Resistance → **14** through blocking → **7** during Bulwark.
-> Separately, a Mage’s 50-point absorption shield facing that resisted 70-damage hit leaves
-> **20 HP damage**.
-
-Dependencies: items 1–2 define the first stage; item 3 limits its coverage. Preserve existing
-block eligibility/exhaustion, multiplier values, absorption-pool rules and status protections.
-Examples select no new buff strengths or shield capacities; absorption may prevent HP loss entirely.
+Status: approved; canonical recording, verification, review and item commit pending.
+Dependencies: existing D24 dagger poison and status identity; item 1 concerns a different effect,
+not a prerequisite. Runtime enforcement is separate deferred work.
