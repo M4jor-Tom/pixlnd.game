@@ -115,10 +115,6 @@ leads, not new numbered ballots or canonical decisions.
   do not invent curve constants or silently add a clamp. Preserve independent approvals while
   clarification is pending; the owner's request to reformulate is not implementation permission.
 
-## A percentage reduction is not a stamina exemption
-
-- Rule: do not infer stacking rules from a percentage.
-
 ## Explicit family assignment overrides current data
 
 - Rule: explicit owner assignment supersedes current-data classification. Conditional rarity
