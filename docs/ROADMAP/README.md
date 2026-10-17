@@ -4,7 +4,7 @@
 No unresolved game-choice backlog remains. Approval and implementation are separate.
 [todo_implement.md](todo_implement.md) records work shipped slices postponed, not automatic
 permission to implement it. `ontology/domain/index.md §7` indexes remaining uncertainties; follow
-`docs/HANDOFF.md` and `tasks/lessons.md` rather than treating a dated slice note as current scope.
+`docs/HANDOFF.md` and [lessons](../lessons.md) rather than treating a dated slice note as current scope.
 
 Decisions D3/D4 (2026-09-07): every feature tagged `X` (cut / data-only) or `Ω` (Omega, announced
 but unreleased) in `ontology/domain/index.md` is **not in v1**. Each theme below is a self-contained

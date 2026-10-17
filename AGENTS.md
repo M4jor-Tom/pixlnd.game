@@ -16,10 +16,12 @@ Three files describe the whole repo, read them in this order before doing anythi
 
 ## Sync rule (step 0 of any domain-touching task)
 
-Land the change in `ontology/` first — class, relation, constraint, `generators.json#design.<topic>`,
-a `**D<n> … — DECIDED <date>**` line in `ontology/domain/index.md §7`, a `[x] D<n>` in `docs/ROADMAP/todo_decide.md`,
-a status line in `ontology/README.md` — then implement by consuming it. Run the validator before coding.
-Skip only for tasks that don't touch the domain (build, tooling, debugging).
+Land approved necessary domain changes in `ontology/` before engine code, then implement by
+consuming it. For gameplay slices, require the repository-owned [resume workflow](skills/ontology-resume-router-slice/SKILL.md)
+and its authority/precision gate. Follow the [recording workflow](skills/record-impactful-decision/SKILL.md)
+for significant choices; reuse precise approved rules without inventing decisions or completed
+backlog entries. Run the validator before coding. Skip ontology sync only for tasks that don't
+touch the domain (build, tooling, debugging).
 
 ## Commands
 

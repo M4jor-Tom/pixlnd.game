@@ -35,9 +35,7 @@ requested sourcing task; it supplies no authority for further implementation or 
 
 ## Pending choices are not a historical ledger
 
-- Owner correction: do not double-track decisions or findings in `todo_decide.md` and their record homes.
-- Rule: `docs/ROADMAP/todo_decide.md` contains unresolved game choices only. Remove resolved entries; do not retain completed-item indexes, owner answers, approval/refusal explanations, application history, reviews, commands, logs, commits, publication instructions or execution narratives there. Delete the file when empty.
-- Rule: significant decisions belong once in `ontology/decisions/`, evidence once in `docs/findings/`, deferred implementation in `todo_implement.md`, and routine receipts in managed evidence. Parallel histories may be deleted without preserving their unique execution narratives; Git provides recovery.
+Required: follow the [repository workflow](../skills/ontology-resume-router-slice/repository-workflow.md#pending-choices-are-not-a-historical-ledger).
 
 ## Context-bounded reconciliation and retained selections
 
@@ -64,7 +62,7 @@ name is retired. Keep canonical rules in `ontology/domain/index.md`.
 
 ## Separate settled rules from stale executable data
 
-- Rule: lead with the latest canonical decision, then distinguish superseded data from missing enforcement. Hypothetical invalid output does not mean the definition permits it; do not ask to reapprove settled mechanics when proposing validation documentation.
+Required: follow the [repository workflow](../skills/ontology-resume-router-slice/repository-workflow.md#separate-settled-rules-from-stale-executable-data).
 
 ## Resume the walkthrough, not gameplay implementation
 
@@ -109,11 +107,7 @@ leads, not new numbered ballots or canonical decisions.
 
 ## Distinguish retroactive diminishing returns from acquisition-order rewards
 
-- Rule: distinguish equal sharing from the aggregate curve. Simplify proposed formulas to
-  detect cancelled balance parameters; calculate zero/first/large-count cases and check
-  monotonic totals before recording policy. Clarify units and conflicts with earlier floors;
-  do not invent curve constants or silently add a clamp. Preserve independent approvals while
-  clarification is pending; the owner's request to reformulate is not implementation permission.
+Required: follow the [repository workflow](../skills/ontology-resume-router-slice/repository-workflow.md#distinguish-retroactive-diminishing-returns-from-acquisition-order-rewards).
 
 ## Explicit family assignment overrides current data
 
@@ -127,14 +121,12 @@ leads, not new numbered ballots or canonical decisions.
 
 ## State the denominator of an encounter chance
 
-- Rule: record both the percentage and its population. An amended probability supersedes the
-  earlier proposal; do not import unapproved roll-unit or habitat assumptions. Use plain
-  encounter examples before implementation details.
+Required: follow the [repository workflow](../skills/ontology-resume-router-slice/repository-workflow.md#state-the-denominator-of-an-encounter-chance).
 
 ## Aggro decay is not forgiveness
 
-- Rule: example numbers are not approved balance values.
+Required: follow the [repository workflow](../skills/ontology-resume-router-slice/repository-workflow.md#aggro-decay-is-not-forgiveness).
 
 ## Normalize aggro gains across progression
 
-- Rule: check equal-percentage examples at different HP scales.
+Required: follow the [repository workflow](../skills/ontology-resume-router-slice/repository-workflow.md#normalize-aggro-gains-across-progression).

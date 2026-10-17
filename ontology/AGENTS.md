@@ -16,8 +16,5 @@ Paths are relative to the repository root.
 
 ## Recording rule
 
-Record significant decisions once in `ontology/decisions/` and source evidence once in
-`docs/findings/`. Do not double-track them in `todo_decide.md`, including completed-item
-indexes, approvals/refusals, application history, reviews, commands, logs, commits or
-publication/execution narratives. Routine receipts belong in managed evidence, not the
-pending-decision backlog. Delete `todo_decide.md` when no unresolved game choice remains.
+Required: follow the repository-owned [decision recording workflow](../skills/record-impactful-decision/SKILL.md)
+and its [recording guidance](../skills/record-impactful-decision/recording-guidance.md).

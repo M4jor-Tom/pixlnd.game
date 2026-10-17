@@ -1,0 +1,55 @@
+# Phase task briefs
+
+Use the installed `pi-subagents` API and available models as required by [SKILL.md](SKILL.md).
+These are task-content templates, not dispatch syntax. Parent binds each report through the native
+output field, chooses the model, supplies exact paths and obtains fresh reviews. Every worker is a
+leaf: never dispatch subagents. Include the current authorization, managed brief and source paths;
+do not depend on session history. Return full findings and truthful status/evidence, not only a pointer.
+
+## Ontology-sync implementer
+
+Read <brief> first: it is the requirements. Verify its authority, bounded scope, dependency closure
+and readiness table against current sources. BLOCKED is a stop, not a request to fill design gaps.
+Read the [recording workflow](../record-impactful-decision/SKILL.md) and required
+[repository workflow](repository-workflow.md). Apply only the brief's necessary approved ontology
+changes at its exact split-section/anchor, relation, constraint and instance/design paths.
+Reuse precise approved rules and real decision identities; no invented D-ID, §7 decision entry,
+completed backlog item or empty ontology commit. Do not select missing quantities or defaults.
+Behavior-changing data and loader/validator changes require the brief's implementation authority.
+Run the bounded validator before engine work; prove any authorized new drift check rejects a
+scratch invalid case. Failures beyond scope stop for approval. Report actual changes, checks,
+remaining gaps and PASS/BLOCKED; commit only under the brief's current authority.
+
+## Slice implementer
+
+Read <brief>, its rule/approval locators, readiness table and router-selected skills before editing.
+Require overall PASS and actual coherent-slice implementation authority. Recheck if a dependency,
+scope or authority changes. Missing domain precision stops work: do not invent rules or silently
+shrink the slice. Ordinary implementation choices within scope need no per-file owner approval.
+Consume the exact approved ontology; align stale executable values only as explicitly authorized.
+Follow repository architecture/gotchas and deliberate-cut rules by reading AGENTS.md, game/README.md
+and the brief's canonical sources. Build the specified acceptance coverage, including missing
+runtime checks; absent coverage is work to do, not by itself an undefined mechanic.
+Run slice/boot checks under timeout and report exact outcomes/limits. Update authorized check/debt
+references; commit only if authorized. Return changed files, tests, commands/results, scope or
+precision blockers, residual risks and actual commit identity if any.
+
+## Fresh slice reviewer
+
+Read <brief>, <reports>, <actual diff including new-file manifest> and canonical sources.
+Read-only; no nested agents. Return both verdicts with exact citations:
+- **Spec:** scope and authority satisfied; readiness/dependencies genuinely PASS; every selected
+  behavior and acceptance case covered; no invented rules, silently reduced scope or stale defaults.
+- **Quality:** ontology consumed correctly, drift checks and tests meaningful, canonical architecture
+  and gotchas followed, bounded execution, deliberate cuts/debt paired, evidence claims accurate.
+Distinguish missing completion coverage from missing game-design precision. A green validator
+cannot replace semantic review. Report blockers and limits; do not repair or widen scope.
+
+## Player changelog writer
+
+Read <verified slice brief>, <actual authorized code commit/diff> and
+[repository changelog conventions](../../AGENTS.md#changelogs). Write only the authorized current
+slice's player-facing changelog using the actual hash and established identity. Do not invent an ID
+or write a hash-dependent filename before the code commit exists. Describe what players can now do,
+grouped by what they touch, not implementation details or a deferred list. Do not backfill prior
+slices. Report the file and any naming/authority blocker; commit only if currently authorized.
