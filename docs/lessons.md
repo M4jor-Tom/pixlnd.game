@@ -58,7 +58,7 @@ unchanged reapproval. After canonical recording, checks, required review and ite
 verified, retain significant choices in `ontology/decisions/`, findings in `docs/findings/`
 and routine receipts in managed evidence. Remove resolved questions from `todo_decide.md`
 and the handled queue entry; delete either pending file when empty. The former `docs/reconciled.md`
-name is retired. Keep canonical rules in `ontology/domain/index.md`.
+name is retired. Keep canonical rules in `ontology/domain/index.dsl`.
 
 ## Separate settled rules from stale executable data
 

@@ -14,7 +14,7 @@ Retain that canonical skill-directory base when reading companions.
 Use for authorized panel-time or input-gating changes in pixlnd. This is verification guidance, not permission to change gameplay or unrelated menu policies.
 
 ## Procedure
-1. Read ontology/domain/3_Classes.md#hud-element and the current implementation authorization/decision record; consult todo_decide.md only if present. Trace every writer of player.ui_open and every Input read in player.gd.
+1. Read ontology/domain/3_Classes.dsl (locator=hud-element) and the current implementation authorization/decision record; consult todo_decide.md only if present. Trace every writer of player.ui_open and every Input read in player.gd.
 2. Use game/entities/test_panel_time.gd as the real-panel fixture. Drive existing panel hooks and player physics with controlled dt; initialize effects through real gameplay methods. Observe a failing assertion before changing runtime code.
 3. Assert both sides of the contract: existing DOT/cooldown/buff/dodge state progresses once per tick, while movement, jump/swim-up, dodge, held block, combat and interaction input stays unavailable. Check that closing restores input and lethal DOT stops the frame.
 4. Run the focused test under timeout 90 nix develop -c godot --headless -s game/entities/test_panel_time.gd; then every game/**/test_*.gd, ontology/validate.gd and headless boot. Capture exit codes and inspect logs for script errors.

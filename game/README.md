@@ -11,7 +11,7 @@ Consumes `ontology/`; never redefines it. New gameplay = ontology first (sync ru
 - Engine scripts `preload("res://ontology/model.gd")` instead of naming `CubeWorldModel`: the
   class-name cache only exists after an editor scan, headless CI has none.
 
-## Folders follow ontology/domain/index.md §3 (create a folder when its first scene lands)
+## Folders follow ontology/domain/3_Classes.dsl §3 (create a folder when its first scene lands)
 | §3 section | folder | first pieces |
 |---|---|---|
 | 3.1 World | `world/` | **done (D12) + settlements (D22):** `world_gen.gd` gen-world/climate/terrain/name + `village_at` (placement, plateau in `height_at`), `zone_mesh.gd` heightfield mesher, `world.gd` zone streaming + trimesh collision + village streaming, `settlement.gd` ring of box buildings + NPCs, spawner skips the square; next flora, dungeons, POIs |
@@ -24,13 +24,13 @@ Consumes `ontology/`; never redefines it. New gameplay = ontology first (sync ru
 
 ## Controls contract
 
-Consume [canonical player intentions](../ontology/domain/controls.md) and their
-[controller profiles](../ontology/domain/controller-profiles.md), not physical names from
+Consume [canonical player intentions](../ontology/domain/controls.dsl) and their
+[controller profiles](../ontology/domain/controller-profiles.dsl), not physical names from
 ability/source prose. `keybinds.json#hybrid` remains the unchanged keyboard adapter; it does
 not implement the newly separated catalog. The profile records shared inputs, aliases, raw
 camera/native UI paths and registered-only actions. Gamepad remains unselected; Android's
 [native tool stack](../ontology/decisions/android-native-touch-controls.md) and
-[touch profile](../ontology/domain/controller-profiles.md#android) have a first-slice runtime:
+[touch profile (locator=android)](../ontology/domain/controller-profiles.dsl) have a first-slice runtime:
 `android_touch.gd` injects separate native touch channels into player/camera and coordinates
 exclusive, live inventory/skills/shop panels with explicit selected-item operations.
 `main.gd` selects it only on Android; keyboard/mouse behavior is unchanged. The UI-only

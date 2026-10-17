@@ -1,12 +1,12 @@
-## Cube World rebuild — typed model derived from ontology/domain/index.md (Godot 4.7, GDScript 2.0).
+## Cube World rebuild — typed model derived from ontology/domain/index.dsl (Godot 4.7, GDScript 2.0).
 ##
 ## One inner Resource class per enumerable ontology class; enums for closed vocabularies;
 ## `Ontology.load_dir()` reads ontology/instances/*.json into typed resources and
-## `Ontology.validate()` enforces the load-time constraints of domain/index.md §5.
+## `Ontology.validate()` enforces the load-time constraints of domain/5_Constraints.dsl §5.
 ## Runtime-generated content (terrain, bosses, names…) is NOT modelled here: see §6 generators
 ## and instances/generators.json, which is loaded as a plain Dictionary.
 ##
-## Sync rule: change domain/index.md first, then this file, then instances/.
+## Sync rule: change domain/index.dsl first, then this file, then instances/.
 extends RefCounted
 class_name CubeWorldModel
 
@@ -31,7 +31,7 @@ const BLOCK_NATIVE_UNITS := 65536
 
 # --- helpers ---------------------------------------------------------------------------------
 
-## Alpha level → power (+1..+100). domain/index.md §3.5 level-formula.
+## Alpha level → power (+1..+100). domain/3_Classes.dsl §3.5 level-formula.
 static func power_for_level(level: int) -> int:
 	return int((101.0 * level - 81.0) / (level + 19.0))
 
@@ -343,7 +343,7 @@ class Ontology extends RefCounted:
 			_:
 				configs[name] = data
 
-	## domain/index.md §5 load-time constraints. Returns true when no errors were added.
+	## domain/5_Constraints.dsl §5 load-time constraints. Returns true when no errors were added.
 	## D20: the skill-tree nodes a (class, spec) pair can spend points on — the shared columns, the class
 	## column (its spec-specific rank) and the spec's ultimate — in screen order. `alpha-tree.class` wins
 	## over `owner` (sneak's owner is a per-version list).

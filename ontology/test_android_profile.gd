@@ -22,10 +22,16 @@ func _init() -> void:
 		quit(1); return
 	var profile: Dictionary = o.configs["controller-profiles"]
 	var android: Dictionary = profile["android"]
-	var controls := FileAccess.get_file_as_string("res://ontology/domain/controls.md")
+	var controls := FileAccess.get_file_as_string("res://ontology/domain/controls.dsl")
+	var anchors := RegEx.new()
+	anchors.compile('"note\\.\\d+\\.row\\.\\d+\\.anchor\\.\\d+" "([^"\\\\]+)"')
+	var canonical: Array[String] = []
+	for match in anchors.search_all(controls):
+		canonical.append(match.get_string(1))
+	check(canonical.size() == 54, "complete canonical action anchors")
 	check(android["actions"].size() == ACTIONS.size(), "exact selected action set")
 	for action in ACTIONS:
-		check(action in android["actions"] and ('id="%s"' % action) in controls, "canonical reference " + action)
+		check(action in android["actions"] and canonical.count(action) == 1, "canonical reference " + action)
 	for value in [null, [], 1, "android", {}, {"android": null}, {"android": []}]:
 		rejected(value, "malformed profile " + str(value))
 	for field in ["deadzone-ratio", "min-target-dp", "look-deg-per-safe-width", "actions"]:

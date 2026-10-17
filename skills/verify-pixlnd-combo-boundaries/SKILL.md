@@ -11,7 +11,7 @@ before combining relative references; never normalize an alias-plus-`..` path fi
 Retain that canonical skill-directory base when reading companions.
 
 ## When to Use
-Use for authorized combat changes that affect hit counting, misses, channels, caps or inactivity. Read ontology/domain/3_Classes.md#combo-system and the current authorization first.
+Use for authorized combat changes that affect hit counting, misses, channels, caps or inactivity. Read ontology/domain/3_Classes.dsl (locator=combo-system) and the current authorization first.
 
 ## Procedure
 1. Trace result ownership before editing: player._strike applies damage/statuses and returns target count; _landed applies combo/cap/timer and optionally M1 rewards. Weapon attacks, projectile volleys and abilities own their respective hit/miss boundaries. Putting gains into player._strike would double-count existing callers.

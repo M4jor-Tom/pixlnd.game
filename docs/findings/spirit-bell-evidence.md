@@ -2,7 +2,7 @@
 
 ## Claim and current-rule impact
 
-This is the substantive **item 90 / candidate-spirit-bell-attribution** finding, recorded under standing sourcing approval on **2026-10-10**, not a new major gameplay decision or a routine approval/refusal archive. Original answer timestamps are unavailable; the recording date is documented. **Current-rule impact: NONE.** The unchanged [key-item](../../ontology/domain/3_Classes.md#key-item) and [constraint catalog](../../ontology/domain/5_Constraints.md#constraint-catalog) retain **F8 / c-gate-doors: 30 seconds** and global key-item rules. The guide's approximate **45 seconds** is source testimony, not a replacement or a newly chosen duration.
+This is the substantive **item 90 / candidate-spirit-bell-attribution** finding, recorded under standing sourcing approval on **2026-10-10**, not a new major gameplay decision or a routine approval/refusal archive. Original answer timestamps are unavailable; the recording date is documented. **Current-rule impact: NONE.** The unchanged [key-item (locator=key-item)](../../ontology/domain/3_Classes.dsl) and [constraint catalog (locator=constraint-catalog)](../../ontology/domain/5_Constraints.dsl) retain **F8 / c-gate-doors: 30 seconds** and global key-item rules. The guide's approximate **45 seconds** is source testimony, not a replacement or a newly chosen duration.
 
 ## Source identity, documentary timing and retained provenance
 

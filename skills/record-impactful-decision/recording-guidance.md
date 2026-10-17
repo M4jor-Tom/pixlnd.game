@@ -7,8 +7,8 @@ Paths in backticks are relative to the repository root.
 | Information | Home |
 |---|---|
 | Gameplay definitions, effects, formulas, numbers, exclusions | Existing canonical `ontology/domain/`, stats, instances, constraints or generators as appropriate |
-| Control meanings and lifecycles | `ontology/domain/controls.md` |
-| Physical schemes, key bindings and device policy | `ontology/domain/controller-profiles.md` |
+| Control meanings and lifecycles | `ontology/domain/controls.dsl` |
+| Physical schemes, key bindings and device policy | `ontology/domain/controller-profiles.dsl` |
 | Straightforward functional control/controller/binding separation | Canonical ontology classes and relations, linked to controls/profiles |
 | Genuine engine/tool selection or non-obvious technical architecture tradeoff (e.g. performance) | Concise current technical record in `ontology/decisions/`; link domain facts rather than copy them |
 | Source evidence and qualifications for an existing current claim | `record-finding`; not a historical narrative or transcript archive |
@@ -42,11 +42,11 @@ completed-item indexes, parallel histories or a new queue when nothing is pendin
 
 ## Boundaries
 
-Canonical [domain](../../ontology/domain/index.md) and [instances](../../ontology/instances/)
+Canonical [domain](../../ontology/domain/index.dsl) and [instances](../../ontology/instances/)
 remain authoritative; stale executable values do not overturn precise approved rules.
 Distinguish scoped approximations from final rules and permanent exclusions. Optional/null
 fields are not automatically unknown facts or undecided choices. Require current rules directly;
 see [current-rule validation](../../ontology/decisions/current-rule-validation.md).
-[Open validation points](../../ontology/domain/7_Open_points_for_validation.md#7-open-points-for-validation)
+[Open validation points (locator=7-open-points-for-validation)](../../ontology/domain/7_Open_points_for_validation.dsl)
 and [implementation debt](../../docs/ROADMAP/todo_implement.md) retain their existing homes.
 A green validator proves only implemented checks, not complete consistency or runtime behavior.

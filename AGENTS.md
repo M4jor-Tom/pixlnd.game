@@ -11,7 +11,7 @@ source of truth; `game/` only consumes it and never redefines it.
 
 Three files describe the whole repo, read them in this order before doing anything:
 1. `docs/HANDOFF.md` — pending continuation and active authority/blockers; empty when none remain.
-2. `ontology/README.md` + `ontology/domain/index.md` — classes, relations, §5 constraints, §6 generators.
+2. `ontology/README.md` + `ontology/domain/index.dsl` — classes, relations, §5 constraints, §6 generators.
 3. `game/README.md` — folder-per-§3-section table, slice workflow, gotchas and headless checks.
 
 ## Sync rule (step 0 of any domain-touching task)
@@ -22,6 +22,9 @@ and its authority/precision gate. Follow the [recording workflow](skills/record-
 for significant choices; reuse precise approved rules without inventing decisions or completed
 backlog entries. Run the validator before coding. Skip ontology sync only for tasks that don't
 touch the domain (build, tooling, debugging).
+Edit named DSL records/structured cells and adjacent notes, not generated viewer docs.
+Validate DSL with `node tools/ontology.mjs export --out /tmp/ontology-export` (Java 21 and
+`STRUCTURIZR_WAR` required); locate definitions with `node tools/ontology.mjs locate <id>`.
 
 ## Commands
 
@@ -48,7 +51,7 @@ leaves the tree running forever. Never `pkill -f <script>`, it matches your own 
 - Engine scripts `preload("res://ontology/model.gd")`, never `CubeWorldModel` by name: headless
   Godot has no class-name cache.
 - Mutable state (world, characters, inventory) belongs to save-data (§3.7), not to the autoload.
-- `game/` folders mirror `ontology/domain/index.md §3`: `world/ entities/ combat/ items/ progression/ missions/ meta/`.
+- `game/` folders mirror `ontology/domain/3_Classes.dsl §3`: `world/ entities/ combat/ items/ progression/ missions/ meta/`.
 
 ## Gotchas beyond the two above
 

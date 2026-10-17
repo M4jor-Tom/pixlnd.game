@@ -1,6 +1,6 @@
 {
   "$schema": "ruleset",
-  "_controls": "../domain/controls.md#climb; climb-key-hold is a retained legacy flag name, not a physical binding or complete climb lifecycle. Profiles: ../domain/controller-profiles.md",
+  "_controls": "../domain/controls.dsl (locator=climb); climb-key-hold is a retained legacy flag name, not a physical binding or complete climb lifecycle. Profiles: ../domain/controller-profiles.dsl",
   "_doc": "Feature-flag bundles. Only ruleset-hybrid is the pixlnd target (D1); alpha/Steam bundles are historical reference, Omega is announced roadmap content, not v1 (D4). Historical true flags do not authorize hybrid availability. Regional gear power loss is permanently excluded: never propose or implement it, even for cloning fidelity. Hybrid flags describe target/configuration, not proof of implementation; unresolved merges remain in docs/ROADMAP/todo_decide.md §E.",
   "ruleset-alpha": {
     "name": "Alpha 0.1.x rules",
@@ -164,7 +164,7 @@
       "wall-jump": true,
       "steam-ability-kits": true,
       "alpha-ability-kits": true,
-      "_ability-merge": "both kits exist; alpha-removed skills (war frenzy, bulwark, aim, swiftness, mana shield, shuriken attack) return as skill-tree nodes alongside selected ultimates; activation follows ../domain/controls.md#class-skill-4 and ../domain/3_Classes.md#skill-tree-a, including Assassin's third-slot-only exception"
+      "_ability-merge": "both kits exist; alpha-removed skills (war frenzy, bulwark, aim, swiftness, mana shield, shuriken attack) return as skill-tree nodes alongside selected ultimates; activation follows ../domain/controls.dsl (locator=class-skill-4) and ../domain/3_Classes.dsl (locator=skill-tree-a), including Assassin's third-slot-only exception"
     }
   },
   "ruleset-omega": {

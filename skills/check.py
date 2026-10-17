@@ -52,7 +52,7 @@ def check_aliases():
             assert (base / "../record-impactful-decision/SKILL.md").resolve(strict=True) == SKILLS / "record-impactful-decision/SKILL.md"
             if base.name == "record-impactful-decision":
                 companion = (base / "recording-guidance.md").resolve(strict=True)
-                assert (companion.parent / "../../ontology/domain/index.md").resolve(strict=True) == ROOT / "ontology/domain/index.md"
+                assert (companion.parent / "../../ontology/domain/index.dsl").resolve(strict=True) == ROOT / "ontology/domain/index.dsl"
             assert PATH_GUIDANCE in skill.read_text(), f"missing canonical-base instruction: {alias}"
         print("PASS: 25 alias-origin entrypoints, repository/sibling/companion target identity")
 

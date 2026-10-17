@@ -7,8 +7,8 @@ and crafting stations. Nothing concrete (skill lists, tree layouts, numbers) is 
 ## What v1 already covers
 The hybrid ruleset (D1) brings back alpha XP, levels, 2 skill points/level and the skill tree,
 and merges selected specialization abilities with the alpha tree skills. Current activation
-follows the [skill tree](../../ontology/domain/3_Classes.md#skill-tree-a) and
-[canonical controls](../../ontology/domain/controls.md), not source input layouts.
+follows the [skill tree (locator=skill-tree-a)](../../ontology/domain/3_Classes.dsl) and
+[canonical controls](../../ontology/domain/controls.dsl), not source input layouts.
 So "skill trees return" is v1, not Ω.
 
 ## Announced Ω items not in v1

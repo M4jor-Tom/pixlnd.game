@@ -39,7 +39,7 @@ and numerical decision review. Paths in backticks below are relative to the repo
 
 Before any slice mutation, prepare a brief in the current managed workspace. Record the objective,
 authority locator, included/excluded behaviors and exact source locators: split
-`ontology/domain/index.md` section files and anchors, IDs, instance/design paths and decision
+`ontology/domain/index.dsl` section files and anchors, IDs, instance/design paths and decision
 references (including descriptive slugs, not just historical D-IDs). Follow relevant relations,
 generators, constraints and decision links through all selected dependencies, even outside the
 initial section range. Read the canonical §5 validation contract; do not replace it with this skill.

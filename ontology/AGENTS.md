@@ -2,7 +2,7 @@
 
 Paths are relative to the repository root.
 
-- `ontology/domain/index.md` — effective domain, relations, constraints and generators.
+- `ontology/domain/index.dsl` — effective domain, relations, constraints and generators.
 - `ontology/instances/` — current enumerable instance data and design values.
 - `ontology/decisions/AGENTS.md` — guidance for standalone decision records in `ontology/decisions/`.
 - `docs/findings/todo_dispatch_in_files.md` — historical findings snapshot dispatch queue.

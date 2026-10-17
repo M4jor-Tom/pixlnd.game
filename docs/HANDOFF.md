@@ -3,7 +3,7 @@
 ## Android touch — characterization and publication follow-up
 
 Current hardware-test status and its evidence limits live in the
-[Android profile](../ontology/domain/controller-profiles.md#android). Further device/checklist
+[Android profile (locator=android)](../ontology/domain/controller-profiles.dsl). Further device/checklist
 characterization and overlay render-cost measurement remain optional separately selected work,
 not a device-access prerequisite for the authorized combat slice. Do not infer individual
 checklist passes or install an Android SDK/ADB/export environment.
@@ -24,7 +24,7 @@ restore the old §E history. Publishing gameplay documentation renews no earlier
 source-pass grant and does not establish its acceptance/publication outcome.
 
 No selected source item is pending; research is not exhausted. Existing remaining evidence gaps
-stay at [§7](../ontology/domain/7_Open_points_for_validation.md#7-open-points-for-validation) and
+stay at [§7 (locator=7-open-points-for-validation)](../ontology/domain/7_Open_points_for_validation.dsl) and
 the [validation-contract backlog](ROADMAP/todo_implement.md#validation-contract-documentation-approved-implementation-unauthorized).
 Silk/Spinning Wheel quantities remain **HOLD**. Retained/withdrawn source leads stay **UNAPPROVED**;
 do not reopen handled class/weapon/lore attributions. Any future sourcing must follow

@@ -3,7 +3,7 @@
 **Status:** announced 2023-05-25; devlog posts May–Jun 2023 show it working for undead, zombies,
 ogres and all 8 playable races. v1 uses the alpha/1.0 approach: hand-made `.cub` part models
 (head, hair, hand, foot, body, tail, shoulder, wing) assembled per `appearance` with per-part
-scale/offset/rotation — see `ontology/domain/3_Classes.md#appearance` and `races.json` asset counts.
+scale/offset/rotation — see `ontology/domain/3_Classes.dsl (locator=appearance)` and `races.json` asset counts.
 
 ## Announced features
 - "No part of a character is hand-modeled, neither hair, face nor hands": every player, NPC,

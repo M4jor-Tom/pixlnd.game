@@ -2,7 +2,7 @@
 
 ## Claim, authority and current-rule impact
 
-This is one deduplicated source finding for **items 10/11/23/26/29/80**, not a major gameplay decision or one record per approval/run. It concerns the historical **100×** sleep reference, qualitative healing/time-flow reports and unresolved original Alpha/Steam activation/rate/baseline histories. **Current-rule impact: NONE.** [Hybrid game-clock](../../ontology/domain/3_Classes.md#game-clock) remains 10× real time with free inn recovery and separately paid, consensual next-07:00 sleep/reset/payment rules; no furniture controls, rates or new debt are chosen. [Current constraints](../../ontology/domain/5_Constraints.md#constraint-catalog) and live JSON/design values are unchanged.
+This is one deduplicated source finding for **items 10/11/23/26/29/80**, not a major gameplay decision or one record per approval/run. It concerns the historical **100×** sleep reference, qualitative healing/time-flow reports and unresolved original Alpha/Steam activation/rate/baseline histories. **Current-rule impact: NONE.** [Hybrid game-clock (locator=game-clock)](../../ontology/domain/3_Classes.dsl) remains 10× real time with free inn recovery and separately paid, consensual next-07:00 sleep/reset/payment rules; no furniture controls, rates or new debt are chosen. [Current constraints (locator=constraint-catalog)](../../ontology/domain/5_Constraints.dsl) and live JSON/design values are unchanged.
 
 ## Provenance and limits of this migration
 
@@ -133,4 +133,4 @@ original sleep activation/healing/rate histories remain research, not new implem
 
 The cuwo revision establishes its **normal** calculation (10,000 game ms per real second with modifier 1.0), not original-game sleep. Its sleep constant is definition-only. The approximately-two-minutes report, the approximately-half-second camp minute, 100×'s unspecified baseline and Bedroll's “does not pass time like an Inn” wording remain separately qualified; do not manufacture a contradiction or reconcile them into a chosen rate. Qualitative community corroboration of sleep/healing/accelerated time proves no tested original-build implementation. Uncertainty remains research, not new implementation debt or proof of absence.
 
-All six original [§5 headings](../../ontology/domain/5_Constraints.md#validation-contract-mapping-owner-approved-2026-09-28) remain as legacy source-item anchors, retaining current interpretive qualifications. Routine approvals/refusals and unique verification/commit receipts are not findings and remain where they were.
+All six original [§5 headings (locator=validation-contract-mapping-owner-approved-2026-09-28)](../../ontology/domain/5_Constraints.dsl) remain as legacy source-item anchors, retaining current interpretive qualifications. Routine approvals/refusals and unique verification/commit receipts are not findings and remain where they were.

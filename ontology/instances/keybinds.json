@@ -1,7 +1,7 @@
 {
   "$schema": "input-binding",
   "_doc": "Physical defaults only; not the canonical controls catalog. No historical binding fallback.",
-  "_controls": "../domain/controls.md",
-  "_profile": "../domain/controller-profiles.md#keyboard-and-mouse",
-  "hybrid": {"_doc": "Executable keyboard-mouse adapter only; canonical meanings: ontology/domain/controls.md; bindings, aliases, shared phases and status: ontology/domain/controller-profiles.md#keyboard-and-mouse. Tokens: Godot key name, M1/M2/M3 mouse buttons, wheel; move expands to four actions. Underscore metadata is not executable.", "move": "WASD", "jump": "Space", "sprint": "Shift", "dodge": "M3", "basic-attack": "M1", "special-attack": "M2", "class-skill-1": "1", "class-skill-2": "2", "class-skill-3": "3", "class-skill-4": "4", "ultimate": "R", "climb": "E", "interact": "E", "pick-up": "E", "quick-item": "Q", "quick-select": "Tab", "lamp": "F", "pet-call": "T", "crafting": "C", "inventory": "B", "skills-window": "X", "world-map": "M", "chat": "Enter", "menu": "Escape", "help": "F1", "debug-menu": "F3", "zoom": "wheel"}
+  "_controls": "../domain/controls.dsl",
+  "_profile": "../domain/controller-profiles.dsl (locator=keyboard-and-mouse)",
+  "hybrid": {"_doc": "Executable keyboard-mouse adapter only; canonical meanings: ontology/domain/controls.dsl; bindings, aliases, shared phases and status: ontology/domain/controller-profiles.dsl (locator=keyboard-and-mouse). Tokens: Godot key name, M1/M2/M3 mouse buttons, wheel; move expands to four actions. Underscore metadata is not executable.", "move": "WASD", "jump": "Space", "sprint": "Shift", "dodge": "M3", "basic-attack": "M1", "special-attack": "M2", "class-skill-1": "1", "class-skill-2": "2", "class-skill-3": "3", "class-skill-4": "4", "ultimate": "R", "climb": "E", "interact": "E", "pick-up": "E", "quick-item": "Q", "quick-select": "Tab", "lamp": "F", "pet-call": "T", "crafting": "C", "inventory": "B", "skills-window": "X", "world-map": "M", "chat": "Enter", "menu": "Escape", "help": "F1", "debug-menu": "F3", "zoom": "wheel"}
 }
