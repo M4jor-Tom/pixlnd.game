@@ -344,6 +344,10 @@ A saved hero. `A S`
 Hybrid locomotion (D13): base walk speed, sprint/swim multipliers, tap/hold jump heights,
 gravity and automatic step-up height use `instances/generators.json#design.movement`.
 
+Hybrid death (D15): respawn at the character's current spawn point, initially set by
+[world.spawn-rule](#world) and relocated by [inn recovery](#game-clock). Spawn-point respawn
+is the current approximation until revival statues exist (`design.combat.death`), not their exclusion.
+
 | prop | notes |
 |---|---|
 | race, gender, class, spec, appearance, name | creation |
@@ -798,6 +802,7 @@ Runtime (D21): every class node and ultimate has a `design.abilities` entry nami
 burst, buff, heal, projectile — D24: shots along the aim; a dash may `throw` shots first) with its numbers, cost (mp / stamina, a number or `all`) and cooldown; strikes apply the ability's
 `applies` through `design.status-effects` (`c-ability-runtime`). Shared-column skills have no runtime here (swimming scales
 swim speed; pet, mount, climb, glider, boat wait for their systems).
+Clone/zone effects remain scoped burst/buff approximations, not final fidelity.
 
 ### weapon-type
 Weapon family with handedness, class and moveset. `A S` → `instances/weapon-types.json` (21 alpha
@@ -828,10 +833,18 @@ and validation coverage remain separately deferred and unauthorized.
 Hybrid (D24): `design.movesets.<weapon-type>.m1|m2` gives every class weapon its runtime — melee sphere (swing / radius mults,
 spin around the player, lunge, finisher status), projectile (count, spread, speed, gravity, life, hit radius, splash, pierce,
 return), beam (instant ray) or at-cursor (sphere where the aim lands); `c-moveset-config`. Alpha m1/m2 prose stays the source.
+Crossbow bolts fly flat and fast. The live `design.movesets.crossbow` gravity of **3** does not
+override that approved trajectory; tuning alignment remains deferred, not authorized here.
+Animations/hit timing, boomerang steering, held-ray Wand M2, Bow dud shots and arrow pickup
+are outside the D24 slice, not final exclusions. Creature projectiles use D26's
+`design.creature-roles`, not the player movesets.
 
 Hybrid (D25): `design.feel.events` bundles feedback per combat event (hit-stop, camera trauma, sound, damage number,
-impact flash) — hit, crit, kill, hurt, block, dodge, shoot, impact; sounds synthesised from `design.feel.sfx` keyed by
-`audio.json#sfx-alpha-ids` until real assets exist; `c-feel-config`.
+impact flash) — hit, crit, kill, hurt, block, dodge, shoot, impact; `c-feel-config`.
+Tuning and shake, number, trail and impact behavior live in `generators.json#design.feel`.
+Real audio assets, particles beyond sphere stand-ins, animations/hit timing and a reduce-shake /
+reduce-flash accessibility screen are outside this slice, not permanent exclusions; design numbers
+are tuning knobs, not a prohibition on later accessibility UI.
 
 ### combo-system
 Hit counter near cursor; +1 per landed hit; ignores growing share of armor and adds damage; any
@@ -896,6 +909,9 @@ petrified `S`, dizzy (glider crash), drowning `S`, injured `X` (2012 devlog deat
 buffs: battle-fury, berserker-rage stacks, torrent stacks, hit-series, fire-spark, intuition,
 elusiveness-window, elixir ×4, beverage-resistance ×3, circle-of-power, mana-shield `A`, bulwark `A`,
 war-frenzy `A`, scouts-swiftness `A`, camouflage, ninjutsu, shadow-shooter clone.
+
+Hybrid (D23): creature hits on the player roll stun and knockback under
+`design.defence.enemy-hit`; blocked or dodged hits roll neither.
 
 Hybrid poison (D26; narrow runtime repair authorized in walkthrough item 10, 2026-09-17):
 scheduled poison damage is not prevented by dodge i-frames. Preserve poison's identity through
@@ -1384,8 +1400,9 @@ selection `A`, friends widget `S`. Hybrid (D17): `debug-menu` — the runtime pr
 can open without a dev environment (Godot Debug Menu add-on: FPS, frametime, CPU/GPU graphs, GPU +
 driver, OS; F3 cycles hidden/compact/full; shipped in release exports).
 
-Hybrid (D25): damage numbers, stun stars and buff icons run; sounds are synthesised from `design.feel.sfx`
-until audio assets exist.
+Hybrid (D25): floating target numbers, stars over stunned heads and buff icons with countdown fill
+use `generators.json#design.feel`. The level-up toast pops from `level-up.pop-scale` back to ×1
+over `level-up.pop-s`.
 
 Hybrid panel-time policy (walkthrough item 10, owner approved 2026-09-17): opening the inventory,
 skill-tree or shop panel does not pause time, in either solo or multiplayer. The world and player
@@ -1450,6 +1467,8 @@ runtime, live-data, model/loader/validator or test changes.
 
 ### audio
 Composer Wollay. Tracks and SFX ids → `instances/audio.json`. Races have distinct voices.
+Hybrid (D25): feedback sounds use sine + noise + pitch slide from `generators.json#design.feel.sfx`,
+keyed by `audio.json#sfx-alpha-ids`, until real audio assets exist.
 
 ### version
 → `instances/versions.json`: dated feature timeline (devlog 2011–2013, alpha patches 2013-07-05 /

@@ -8,7 +8,7 @@ Per non-friendly kill:
 
 Rarity weights are **60/25/10/4/1**; item level is creature level **±1**.
 Ground items last approximately **one game week**, pickup radius **2**, coins automatic.
-Only consumables, ingredients, coins, formulas and blocks stack, with [D6](numeric-design.md)'s no-cap rule.
+Only consumables, ingredients, coins, formulas and blocks stack, with [the uncapped inventory rule](../domain/3_Classes.md#inventory).
 Start with a class weapon and **5 life potions**.
 
 This slice's gear stats are **damage and armor only**, not a permanent exclusion of HP,

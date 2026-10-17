@@ -6,7 +6,7 @@ with diminishing marginal gains. Positive `z` is the sole curve knob; there is n
 logarithm-base knob.
 
 This rejects decreasing totals and pickup-order-dependent larger grants. It supersedes only
-[D6](numeric-design.md)'s artifact accumulation/decay/floor, not its other choices, reward
+[D6's old artifact accumulation/decay/floor](../domain/3_Classes.md#artifact), not D6's other choices, reward
 targets or the [artifact count per land](../domain/3_Classes.md#artifact). Earlier exponential and z-cancelling expressions
 are not alternate modes. [Equal shares](artifact-additive-shares.md),
 [recalculation](artifact-recalculation.md) and [no floor](artifact-no-floor.md) apply.

@@ -10,7 +10,7 @@ Melee retains its reach attack. Ranged/mage chase to `range`, back off below `ke
 require line of sight, wind up `windup-s`, fire a `shot` (speed/gravity/radius/life-s/splash),
 then wait `cooldown-s`. Damage = **creature damage × damage-mult**, through normal dodge,
 block and i-frames. A landed shot rolls its `applies` statuses and normal
-[D23](defence.md) enemy-hit stun/knockback. **Poison is never avoided by dodge**;
+[D23 enemy-hit stun/knockback](../domain/3_Classes.md#status-effect). **Poison is never avoided by dodge**;
 [canonical poison delivery](../domain/3_Classes.md#status-effect) preserves burning/direct-hit behavior.
 
 Play `sfx` from the shooter and tint by `color`; `species` may override keys per creature ID

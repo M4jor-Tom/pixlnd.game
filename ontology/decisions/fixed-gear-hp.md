@@ -17,7 +17,7 @@ HP to otherwise-identical gear, sacrificing HP-roll variety rather than guessing
 correction. This is a **new hybrid simplification, not a recovered Alpha formula**. Further
 owner reasoning was not supplied.
 
-Only the hybrid HP-roll rule is replaced. Preserve [the Alpha base-curve choice](numeric-design.md),
+Only the hybrid HP-roll rule is replaced. Preserve [the Alpha base-curve choice](../domain/6_Generators.md#6-generators),
 all other stat rules and downstream character/artifact rules. No jewelry extension, random HP
 allocation, clamp or extra constants are selected. Historical evidence is unchanged.
 

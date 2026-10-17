@@ -21,10 +21,9 @@ D1–D26 and subsequent approvals stand. The four selected gameplay choices are 
 [§7](domain/7_Open_points_for_validation.md#7-open-points-for-validation) links their current rules
 and separates research uncertainties from hybrid behavior. No unresolved entry remains in the
 game-choice backlog. Resistance's meaning and all five approved combat selections are
-[recorded](domain/3_Classes.md#stat); authority and dependencies remain in the
-[single decision record](decisions/resistance-meaning.md).
-Combat hit-derived burning and poison use [independent applications](domain/3_Classes.md#status-effect);
-their [decision record](decisions/combat-dot-applications.md) preserves the approved scope.
+[defined with their dependencies](domain/3_Classes.md#stat) and constrained by the
+[mitigation rules](domain/5_Constraints.md#constraint-catalog).
+Combat hit-derived burning and poison use [independent applications](domain/3_Classes.md#status-effect).
 Implementation deferrals live in `docs/ROADMAP/todo_implement.md`; documentation approval grants
 no runtime permission. Equipment-model and validation-contract implementation is also deferred.
 Dated build notes include superseded placeholders, not proof of current coverage. For
