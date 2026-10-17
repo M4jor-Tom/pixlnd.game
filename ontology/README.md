@@ -11,7 +11,7 @@ ontology/
 └── validate.gd      headless check: `nix develop -c godot --headless -s ontology/validate.gd`
 ```
 
-## Current scope and decisions (2026-10-16)
+## Current scope and decisions (2026-10-17)
 
 Hybrid v1 is alpha progression + approved Steam content; A/S source descriptions are historical
 reference, and X/cut or Omega-only content is roadmap coverage, not launch availability (item 8).
@@ -23,6 +23,8 @@ and separates research uncertainties from hybrid behavior. No unresolved entry r
 game-choice backlog. Resistance's meaning and all five approved combat selections are
 [recorded](domain/3_Classes.md#stat); authority and dependencies remain in the
 [single decision record](decisions/resistance-meaning.md).
+Combat hit-derived burning and poison use [independent applications](domain/3_Classes.md#status-effect);
+their [decision record](decisions/combat-dot-applications.md) preserves the approved scope.
 Implementation deferrals live in `docs/ROADMAP/todo_implement.md`; documentation approval grants
 no runtime permission. Equipment-model and validation-contract implementation is also deferred.
 Dated build notes include superseded placeholders, not proof of current coverage. For

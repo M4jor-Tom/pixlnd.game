@@ -1,6 +1,6 @@
 ## 7. Open points for validation
 
-### Current hybrid decision status (2026-10-16)
+### Current hybrid decision status (2026-10-17)
 
 The four selected gameplay choices are resolved in canonical definitions:
 [landscape availability](3_Classes.md#landscape), [ordinary Lion tameability](3_Classes.md#creature),
@@ -8,6 +8,8 @@ The four selected gameplay choices are resolved in canonical definitions:
 No unresolved entry remains in the game-choice backlog. Resistance's five approved combat
 selections, including [defence order](3_Classes.md#stat), are recorded. Authority and
 dependencies remain in the [single decision record](../decisions/resistance-meaning.md).
+Combat hit-derived burning and poison have [independent-application rules](3_Classes.md#status-effect);
+their [decision record](../decisions/combat-dot-applications.md) retains the approvals.
 
 Implementation remains separately unauthorized; see
 [deferred work](../../docs/ROADMAP/todo_implement.md). Documentation is not runtime coverage

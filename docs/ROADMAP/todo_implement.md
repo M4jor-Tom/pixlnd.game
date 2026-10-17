@@ -474,3 +474,15 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 - [ ] Remaining status coverage: taunt tint, dizzy, drowning, world/settlement effects and consumable/land buffs
   are not implemented. Stun / knockdown / knockback / burning / slow, poison (shared burning slot), class buffs,
   healing and the stealth bar already run (D21–D26). Independent poison/burning stacking remains deferred.
+- [ ] Combat DOT item 1 (`ontology/domain/3_Classes.md#status-effect`, `c-combat-burning-applications`):
+  preserve each combat hit-derived burn independently for 4 s, with eight ticks at 0.5–4 s and
+  the existing 10%-of-hit coefficient, without replacement or renewal by later applications.
+  The current shared overwrite slot does not implement this rule; live-data/checker/runtime
+  changes remain separately unauthorized. Environmental hazards and additional DOT buff timing
+  are not selected.
+- [ ] Combat DOT item 2 (`ontology/domain/3_Classes.md#status-effect`, `c-combat-poison-applications`):
+  retain each combat hit-derived poison application's own lifetime and tick schedule; dagger poison
+  ticks at 1–5 s after its application, preserving inherited hit damage/crit and its existing total.
+  New applications neither renew older stacks nor reset their next tick. The shared overwrite slot
+  lacks this behavior; live-data/checker/runtime changes remain separately unauthorized, with the
+  same environmental-hazard and additional DOT buff-timing exclusions as item 1.

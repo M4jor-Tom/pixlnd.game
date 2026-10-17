@@ -894,6 +894,26 @@ stacking, independent burning/poison slots and other runtime corrections are out
 
 Hit-derived DOT's Resistance handling follows [stat](#stat), item 4.
 
+**Hybrid combat DOT item 1 (owner approved, 2026-10-17):** each successful combat
+hit-derived burning application creates its **own four-second burn**, without replacing or
+refreshing earlier burns. Each application ticks every **0.5 seconds**, first at **0.5 seconds**
+and last at **four seconds** after its application (eight ticks). Each tick retains D21's
+**10% of the triggering hit** coefficient. Burns based on 100- and 50-damage hits therefore
+deal **10 and 5 per tick**, respectively, while both remain active; a multi-hit volley may
+leave several burns.
+
+**Hybrid combat DOT item 2 (owner approved, 2026-10-17):** every combat hit-derived poison
+application has an **independent lifetime and schedule**. Dagger poison delivers its existing
+five ticks at **one, two, three, four and five seconds after application**. New applications
+neither refresh older stacks nor reset their next tick. Applications two seconds apart finish
+at seconds **five and seven**, respectively. Preserve poison stacking, inherited hit damage/crit
+and the existing dagger total of **5 × the hit over five seconds**.
+
+These rules select application lifetimes and scheduling, not new damage coefficients, Resistance
+handling, dodge/status protections or aggro rules. Environmental hazards and additional DOT
+buff timing are outside scope. The shared overwriting runtime slot remains an approximation;
+implementation and live-data/checker changes require separate authorization.
+
 ### death
 No penalty in A or S (no gold/item/XP loss). A: press R → nearest revival statue (never far), enemy
 HP resets. S: only to an *activated* shrine of life; boss HP resets unless shrine is close.
