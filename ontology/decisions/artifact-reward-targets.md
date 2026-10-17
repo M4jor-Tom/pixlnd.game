@@ -6,6 +6,6 @@ Traversal counts matching contributors only; attack and maximum HP count **all a
 using the same [current-stat recalculation](artifact-recalculation.md).
 
 Artifacts are permanent/global, grant no character levels, bypass no traversal training/item
-gates and add no slot. [D11's land count](hybrid-gaps.md) is unchanged;
+gates and add no slot. [Artifact count per land](../domain/3_Classes.md#artifact) is unchanged;
 [personal source claims](../domain/3_Classes.md#save-data) do not renew with daily enemies.
 [Canonical lore](../domain/3_Classes.md#lore-s) governs revelation, not a new reward grant.

@@ -340,6 +340,10 @@ Holds passives and the version-specific ability kit. Player spawns as the first 
 
 ### player-character
 A saved hero. `A S`
+
+Hybrid locomotion (D13): base walk speed, sprint/swim multipliers, tap/hold jump heights,
+gravity and automatic step-up height use `instances/generators.json#design.movement`.
+
 | prop | notes |
 |---|---|
 | race, gender, class, spec, appearance, name | creation |
@@ -1223,15 +1227,20 @@ Alpha/Steam bundles are historical reference, not additional playable modes. →
 `power(lvl) = (101·lvl − 81)/(lvl + 19)` (cap +100 at lvl 1981); `xp-to-next(lvl) = int(1050 −
 1000/(0.05·(lvl−1)+1))`; `base-hp(lvl) = 2^((1 − 1/(0.05·(lvl−1)+1))·3)`; player HP = base × 2 ×
 max-hp-multiplier; class HP multipliers warrior 1.30 (guardian ×1.25 more), ranger 1.10, rogue 1.20,
-mage 1.00; 2 skill points per level; no level cap (int32). XP per kill: `design.progression` (D19).
+mage 1.00; 2 banked skill points per level for skill-tree spending; no level cap (int32).
+XP per kill: `generators.json#design.progression` (D19). About five even-level kills give a level;
+creatures 10+ levels below give zero XP. Carry overflow, allowing multiple level-ups per kill
+by subtracting each reached level's XP threshold and retaining the remainder.
+Recompute maximum HP for the new level, then refill HP.
 
 ### skill-tree `A`
 11 slots. Shared chains (5 points unlock next): pet-master → riding; climbing → hang-gliding;
 swimming → sailing. Class column: skill-1 (1 pt) → skill-2 (5 in skill-1) → skill-3 spec-specific
 (5 in skill-2). Points reduce cooldown and scale one effect: +5 % effect and −5 % cooldown per
 point, cooldown floor 25 %, uncapped (D6). Respec at class trainer.
-Hybrid (D10): a 4th `ultimate` column per class holds the Steam R skill, unlocked by 5 points in
-the spec's rank-3 skill; the six alpha-removed rank-3 skills return in their class column.
+Hybrid (D10): retain the shared chains and Alpha class column above; add an `ultimate` column
+holding the specialization's Steam R skill, unlocked by 5 points in its rank-3 skill.
+The six Alpha skills removed in Steam return in their class column.
 Assassin's single-skill exception is defined below.
 Spending (D20): one banked point per click on the X screen (`ui.json#screens.skills`, `keybinds.json#hybrid.skills-window`);
 a node opens when the previous node of its column holds `alpha-tree.needs` points (roots 0); class ranks 1–3 + ultimate
@@ -1334,9 +1343,11 @@ pairs); hosted by a Bloodaxe orc; resets daily; 18–50 coins + gear; more commo
 
 ### multiplayer-mode
 Hybrid (D5/D7): dedicated server, alpha style; max players configurable, default 4.
+Players join by IP address or DNS name; the world-generation seed is configurable in server configuration.
 Shared-clock inn sleep consent/payment follows `game-clock` item 4 (approved 2026-09-27).
+Hybrid (D11): PvP is a server-wide `server.cfg` flag `pvp`, default off; `/pvp` is dropped.
 A: dedicated `Server.exe`, TCP 12345, seed from `server.cfg`, connect by IP/DNS, 4 players (alpha-era wiki said 10),
-client-authoritative, chat + `/connect /disconnect /name /namepet /pvp` (`/pvp` dropped, D11: `server.cfg` flag `pvp`, default off), item trading by drop.
+client-authoritative, chat + `/connect /disconnect /name /namepet /pvp`, item trading by drop.
 S: Steam-friends P2P (J), shared seed, keep own position, meet via free flights to friends,
 artifacts lootable by all, ember per participant, other players' level on highlight, emotes
 `/sit /wave /dance /pet`; no PvP, no trading UI, no dedicated server.

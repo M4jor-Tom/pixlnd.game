@@ -7,7 +7,7 @@ logarithm-base knob.
 
 This rejects decreasing totals and pickup-order-dependent larger grants. It supersedes only
 [D6](numeric-design.md)'s artifact accumulation/decay/floor, not its other choices, reward
-targets or [D11](hybrid-gaps.md)'s land count. Earlier exponential and z-cancelling expressions
+targets or the [artifact count per land](../domain/3_Classes.md#artifact). Earlier exponential and z-cancelling expressions
 are not alternate modes. [Equal shares](artifact-additive-shares.md),
 [recalculation](artifact-recalculation.md) and [no floor](artifact-no-floor.md) apply.
 

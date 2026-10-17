@@ -1,8 +1,9 @@
 # D21 — Class ability runtimes
 
-Replace [D20](skill-spending.md)'s placeholder strike with designed dash, channel, burst,
-buff and heal runtimes for the class-column/ultimate skills. The 23-node design is subject
-to the later [single Camouflage investment](assassin-camouflage.md).
+Replace the placeholder strike with designed dash, channel, burst,
+buff and heal runtimes for the class-column/ultimate skills; [D20 spending rules](../domain/3_Classes.md#skill-tree-a)
+remain unchanged. The 23-node design is subject to the later
+[single Camouflage investment](../domain/3_Classes.md#skill-tree-a).
 
 - **Smash:** leap 6 blocks to the nearest enemy within 8; strike ×2 with stun;
   100 stamina, 10 s cooldown.

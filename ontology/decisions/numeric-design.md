@@ -11,4 +11,4 @@
 Tunables: [generators.json](../instances/generators.json), `design`.
 The [artifact logarithm](artifact-total-curve.md) and [floor removal](artifact-no-floor.md)
 supersede only D6's artifact accumulation/decay/floor, not this bundle or
-[D11's artifact count](hybrid-gaps.md). Existing item curves and power gates still apply.
+the [artifact count per land](../domain/3_Classes.md#artifact). Existing item curves and power gates still apply.
