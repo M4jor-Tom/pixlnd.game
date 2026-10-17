@@ -401,6 +401,14 @@ A non-player species (animal, insect, aquatic, monster, humanoid enemy, boss spe
 | lantern-at-night | bool | |
 | versions | | |
 
+Hybrid combat-role mapping (D26): from `creatures.json` `role` text, take the first matching
+keyword in priority order **any-class / ranged / mage / melee**. Absent text or no matching
+keyword leaves the role unset, distinct from the listed `none` value; spawn resolution follows §6 `gen-spawns`.
+
+A Snout Beetle charged shot's model must **not continuously grow to fill the screen**;
+this bug grants no growing damage or new attack behavior. Existing combat and encounters stand;
+D26 combat-role species overrides grant no exception.
+
 Hybrid ordinary Lion (`lion`): **untameable**, retaining hostile jungle/savannah encounters.
 Snow Lions and other cats are unchanged; this selects no food pairing or riding permission.
 
@@ -706,13 +714,18 @@ Remaining uncertainties are indexed in §7; deferred application is tracked in
 `docs/ROADMAP/todo_implement.md`.
 These documentation decisions do not authorize runtime or live-data changes.
 
-Hybrid (D26): every creature has a `combat-role` (melee, ranged, mage, any-class, none) parsed from `creatures.json`
-`role` text (humanoids may be `any-class`: one of melee/ranged/mage rolled per spawned group, weighted); melee is
-today's reach attack. ranged / mage chase to a `range`, back off below a `keep-away` distance, need line of sight,
+Hybrid (D26): `combat-role` mapping is defined under [creature](#creature), with resolution per
+spawned group in §6 `gen-spawns`; melee retains its reach attack. Ranged / mage chase to a `range`,
+back off below a `keep-away` distance, need line of sight,
 then wind up and fire a projectile (`design.creature-roles`, keyed by role and overridable per species — spitter,
 snout-beetle) that damages through the target's normal dodge / block / i-frames and rolls its `applies` statuses on a
-landed hit — poison is never avoided by dodge (§3.3 status-effects). A creature shot never damages another creature.
+landed hit, with normal D23 enemy-hit stun/knockback rolls ([status-effect](#status-effect)).
+Poison is never avoided by dodge. A creature shot never damages another creature.
 `c-creature-roles`.
+
+Aggro tables/group response, enemy combos/potions, Wizard laser/Witch ray beams, any-class humanoid
+class/equipment/appearance, Snout Beetle dodge and pathfinding are outside the D26 slice, not final bans;
+the approved AI rules above still govern the target.
 
 ### mob-strength-tier
 S enemy power colour: white (150–250 HP, farm animals) < green < blue < purple (dungeon base) <
