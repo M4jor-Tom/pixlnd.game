@@ -964,6 +964,9 @@ Concrete item instance (alpha `ItemData`, 88 bytes). `A S`
 | plus | bool | S: `+` suffix; works in adjacent lands |
 | name | derived | `item-name` generator |
 
+D18's damage/armor-only gear stats are slice coverage, not a permanent exclusion of HP,
+regeneration, tempo or crit.
+
 **Hybrid gear HP:** otherwise-identical existing HP-bearing gear has a **fixed HP bonus**,
 independent of modifier roll:
 
