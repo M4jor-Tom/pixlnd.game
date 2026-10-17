@@ -57,7 +57,8 @@ One voxel. `A S`
 | type | `block-type` ref | 5-bit id, see `instances/block-types.json` |
 | rgb | u8×3 | per-voxel colour, no palette |
 | breakable | bool | by bombs / boss terrain damage; regenerates after ~3 game days |
-Block scale: 1 block = 65536 native units (16.16 fixed). Character ≈ 2 m.
+Block scale: 1 block = 65536 native units (16.16 fixed); hybrid: 1 block = 1 m
+(`generators.json#design.terrain.block-m`). Character ≈ 2 m.
 
 ### block-type
 Enumeration of voxel kinds; alpha and 1.0 tables differ. `A S` → `instances/block-types.json`.
@@ -153,6 +154,12 @@ is the final target, not a temporary limit pending multiple settlements. Other D
 services and settlement-safety rules are unchanged. Live `rulesets.json#ruleset-hybrid.flags`
 still says `settlements-per-land: "many"`; flag migration and enforcement remain deferred.
 `design.settlement.per-land` already equals 1; the current validator only checks ≥1.
+
+D22's box-building ring and service coverage are slice approximations, not the final layout:
+districts, procedural rooms/roofs, villagers/schedules, specialization changes, sewers/dens
+and the flight master are outside that slice, not permanently banned. Layout, landscape colours,
+door NPCs, interaction range and spawn-safety tuning remain in `design.settlement` and
+`ui.json#screens.npc-service`.
 
 Hybrid village-curse state is world-shared and persistent under `save-data` item 4.
 Settlement-style records are hybrid configuration under §5 Validation-contract mapping item 1.
@@ -1179,6 +1186,10 @@ Vendor with stock rules. → `instances/economy.json#shops` (weapon, armor, item
 gem-trader `S` roaming, inn, guild, flight-master, adapter `A`). S: stock rarity capped by rescued
 gnomes; restock daily; buy-back tab; A: sales final, +1..+100 stock.
 
+Hybrid D22 stock coverage and rarity cap in `design.settlement.shop` are slice approximations.
+Once-rolled stock (`shop.restock: never`) does not supersede `game-clock` daily restocking or
+`save-data` world-shared supplier improvements.
+
 ### inventory
 The per-character bag and worn gear. `A S`
 | prop | type | notes |
@@ -1205,7 +1216,8 @@ Open-world numbers (drop chances, rarity weights, level spread, ground lifetime,
 ### 3.5 Progression
 
 ### ruleset
-Feature-flag bundle selecting alpha or steam progression. → `instances/rulesets.json`.
+Feature-flag bundle: playable hybrid uses Alpha progression plus approved Steam content (§1);
+Alpha/Steam bundles are historical reference, not additional playable modes. → `instances/rulesets.json`.
 
 ### level-formula `A`
 `power(lvl) = (101·lvl − 81)/(lvl + 19)` (cap +100 at lvl 1981); `xp-to-next(lvl) = int(1050 −
