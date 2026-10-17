@@ -48,8 +48,22 @@ cannot replace semantic review. Report blockers and limits; do not repair or wid
 ## Player changelog writer
 
 Read <verified slice brief>, <actual authorized code commit/diff> and
-[repository changelog conventions](../../AGENTS.md#changelogs). Write only the authorized current
-slice's player-facing changelog using the actual hash and established identity. Do not invent an ID
-or write a hash-dependent filename before the code commit exists. Describe what players can now do,
-grouped by what they touch, not implementation details or a deferred list. Do not backfill prior
-slices. Report the file and any naming/authority blocker; commit only if currently authorized.
+[repository changelog conventions](../../AGENTS.md#changelogs). Produce only the authorized current
+slice's player-facing changelog and short actual new-feature demonstration movie, following the
+[native movie recipe](SKILL.md#native-changelog-movie), including its capture, HUD/UI, size and
+verification gates. Use the actual code hash and established identity; do not invent an ID or write
+hash-dependent filenames before the authorized code commit exists. If commits are withheld, report
+pending hash-dependent changelog/video work. Describe what players can now do, grouped by what they
+touch, not implementation details or a deferred list. Do not backfill prior slices.
+
+The `.avi` must share the actual `.md` basename and directory and be linked relatively in the
+changelog. Include both files in the separately authorized changelog docs commit and verify the
+committed binary against the inspected footage as the recipe requires. No push without current
+authority. Capture/setup/size blockers are unfinished work, not permission to substitute screenshots,
+an idle boot or an external artifact. Stop if needed setup exceeds scope.
+
+Report explicitly:
+- Markdown and video paths (or pending naming/hash blocker).
+- New-feature behaviors and relevant HUD/UI shown; footage verification evidence and limits.
+- Actual code/docs commit identities and Git/publication status, including committed binary
+  verification, or the pending authority/capture/size blocker. Never claim an unmade commit or push.

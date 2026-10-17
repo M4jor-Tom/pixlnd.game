@@ -103,9 +103,49 @@ after compaction verify actual files/Git/evidence rather than trusting a “comp
    [AGENTS.md](../../AGENTS.md#changelogs), after an authorized code commit supplies its hash.
    Retain real decision identities; do not manufacture a D-ID to satisfy an old naming pattern.
    If naming needs an owner choice, report it. No backfilling older slices unless requested.
+   During this changelog phase, produce a short actual new-feature demonstration using the
+   [native movie recipe](#native-changelog-movie). The deliverable is a verified `.avi` in Git,
+   beside and with the same basename as the actual changelog `.md`, linked relatively from it
+   with player-facing text such as “Watch the demonstration”.
+   Include both files in the separately authorized changelog docs commit; verify the committed
+   movie blob matches the verified local binary, not merely that a path or external link exists.
    Use scoped conventional commits only when authorized, not a mandatory three-commit sequence
    or forced attribution trailer. Push only with current authority; verify publication before
-   claiming it. If commits are withheld, report pending hash-dependent changelog/publication work.
+   claiming it. If commits are withheld, report pending hash-dependent changelog/video and
+   publication work; do not invent filenames, identities or commit success.
+
+## Native changelog movie
+
+After the actual authorized code commit exists and changelog naming is settled, assign
+`changelog` to that real repository-relative `.md` path. From the project root, a bounded
+windowed Godot Movie Maker example is:
+
+```sh
+video="${changelog%.md}.avi"
+timeout 300 nix develop -c godot --write-movie "$video" --fixed-fps 30 --resolution 1280x720 --quit-after 600
+```
+
+This records native MJPEG/PCM AVI, 600 frames at 30 fps (20 seconds); relative movie paths use
+the project root. Keep duration/resolution and measured file size bounded for the Git host's
+limits. Drive real gameplay actions through existing or scoped authorized demo scenes/scripts/input
+so every new feature is visibly demonstrated; an idle boot is not a demonstration. Any setup must
+stay within current authority: no fake mechanics or production recording infrastructure.
+
+Use **windowed only**: `--headless --write-movie` crashes here. Movie Maker can omit CanvasLayer
+UI. Ensure relevant HUD/UI appears in the movie itself, using a verified Godot viewport capture
+approach where needed; separate screenshots do not satisfy this. Do not assume a workaround works.
+Exit gracefully via `--quit-after` or `get_tree().quit()`; timeout/interrupt can leave malformed AVI.
+Inspect logs and actual playback/frames, duration, nonempty file and byte size, not exit status
+alone. Report the behaviors and HUD/UI actually seen and any coverage limits. Raw frames/logs are
+managed scratch only, not substitutes for the movie. Missing UI, display/capture failures or size
+limits block completion; do not omit the movie or add LFS, transcoders, dependencies or hosting
+setup without authority.
+
+After the authorized docs commit, verify both paths are committed and compare the movie blob
+(`git rev-parse "$docs_commit:$video"`) with the inspected local binary
+(`git hash-object "$video"`); `git cat-file -s "$docs_commit:$video"` confirms committed byte size.
+Report actual code/docs identities, Markdown/video paths, behaviors shown, footage verification
+and Git/publication status, or the exact pending blocker.
 
 ## Native delegation and model routing
 
