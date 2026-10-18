@@ -51,3 +51,9 @@ Stable finger ownership supports concurrent input while preventing crossing or e
 Selected recommended option, exact item answer: `4: Approved`. Effective choice:
 [intentional release versus interruption](../domain/controller-profiles.md#android-interruption).
 Fresh-touch rearming and release-inside completion favor intentional actions over automatic resumption; committed effects keep their existing lifecycles.
+
+### 5 — Inventory, skills and shop touch interaction
+
+Selected recommended option, exact item answer: `5: Approved`. Effective choice:
+[inventory, skills and shop touch interaction](../domain/controller-profiles.md#android-panels).
+Explicit selection and confirmation separate browsing from committing operations; live-time vulnerability remains unchanged.

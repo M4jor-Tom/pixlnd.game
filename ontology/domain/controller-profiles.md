@@ -132,3 +132,17 @@ panel opening, layout changes and death clear outstanding touch requests and can
 charges. Returning never resumes them automatically. Already-fired attacks, running abilities
 and cooldowns retain their existing rules; committed effects are not undone. This selects input
 cleanup, not background simulation, pause or save policy.
+
+<a id="android-panels"></a>
+### Inventory, skills and shop touch interaction
+
+One inventory, skills or shop panel owns the screen at a time; opening another replaces it
+without leaking gameplay input. Gameplay touch controls, including look, are unavailable
+while browsing. [Time still runs and players remain vulnerable](3_Classes.md#hud-element).
+Panel transitions clear outstanding touches under the [interruption rule](#android-interruption).
+
+Tap a row to select it, then use a clearly labeled **Equip / Use / Spend / Buy / Sell** button
+for the corresponding existing operation. Scrolling or selecting alone never commits an
+operation; confirmation commits only on release inside its button. Close or Android Back
+closes the panel and consumes that input; gameplay requires fresh touches afterward.
+This selects no other menu or keyboard behavior.

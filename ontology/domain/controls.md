@@ -92,7 +92,7 @@ historical command. Unapproved source-only commands/skills gain no hybrid activa
 | <a id="ui-navigate"></a>`ui-navigate` | Move UI focus/selection | Direction or selection step | Existing panel/list selection; repeat/focus topology unselected |
 | <a id="ui-select"></a>`ui-select` | Select a UI entry or location | Selection value | Existing screen context; pointer/focus representation is profile-owned |
 | <a id="ui-activate"></a>`ui-activate` | Activate focused/selected UI entry | Trigger | Routes to entry's effect, including [use-inventory-item](#use-inventory-item) for a selected bag consumable; no new default operation |
-| <a id="ui-cancel"></a>`ui-cancel` | Cancel/close current UI interaction | Trigger | Shop close exists; other contexts' close/consumption behavior unselected; not system-menu opening |
+| <a id="ui-cancel"></a>`ui-cancel` | Cancel/close current UI interaction | Trigger | Profile owns close/consumption behavior; not system-menu opening |
 | <a id="map-rotate"></a>`map-rotate` | Rotate map view | Directional adjustment | [Map presentation](../instances/ui.json) `screens.world-map`; not camera look |
 | <a id="map-pan"></a>`map-pan` | Pan map view | 2-D adjustment | Same map context; not player movement |
 | <a id="map-zoom"></a>`map-zoom` | Change map scale | Signed scale adjustment | Same map context; not gameplay camera distance |
