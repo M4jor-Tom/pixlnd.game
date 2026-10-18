@@ -171,3 +171,12 @@ current movement/look and held defence updates, then process action requests in 
 After each request, check existing eligibility, resources and cooldowns for the next. This is
 adapter ordering, not a new exclusive-one-action rule or additional attack permission.
 No automatic retries or buffered attacks; already-committed effects are not undone.
+
+<a id="android-camera-zoom"></a>
+### Camera zoom mapping
+
+Separate **Camera nearer / Camera farther** buttons map to [zoom](controls.md#zoom). Each tap
+applies one existing `generators.json#design.camera.distance.step` toward nearer/farther within
+the existing minimum/maximum bounds; no held repetition or pinch gesture. Distance zero
+retains first-person view. Finger ownership, panel gating and trigger rules above apply;
+map zoom is distinct and remains deferred.

@@ -69,3 +69,9 @@ The first slice adapts working gameplay while retaining the full target catalog 
 Selected recommended option, exact item answer: `7: Approved`. Effective choice:
 [requests arriving together](../domain/controller-profiles.md#android-request-order).
 Arrival ordering preserves existing eligibility without retries, buffering or rollback.
+
+### 8 — Camera zoom mapping
+
+Selected recommended option, exact item answer: `8: Approved`. Effective choice:
+[camera zoom mapping](../domain/controller-profiles.md#android-camera-zoom).
+Separate tap buttons retain the existing distance step and first-person endpoint instead of adding pinch or held repetition.
