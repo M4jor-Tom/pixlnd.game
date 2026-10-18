@@ -180,3 +180,12 @@ applies one existing `generators.json#design.camera.distance.step` toward nearer
 the existing minimum/maximum bounds; no held repetition or pinch gesture. Distance zero
 retains first-person view. Finger ownership, panel gating and trigger rules above apply;
 map zoom is distinct and remains deferred.
+
+<a id="android-device-scope"></a>
+### Device switching and customization in this slice
+
+Android gameplay initially uses the touch profile only; desktop keyboard/mouse is unchanged.
+External keyboard/mouse gameplay on Android, gamepad switching, automatic device switching,
+rebinding, layout editing and saved control preferences are deferred in this slice, not
+permanently excluded or assigned future defaults. Android labels describe touch actions,
+not keyboard instructions such as “B closes”.

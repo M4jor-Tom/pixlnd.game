@@ -75,3 +75,9 @@ Arrival ordering preserves existing eligibility without retries, buffering or ro
 Selected recommended option, exact item answer: `8: Approved`. Effective choice:
 [camera zoom mapping](../domain/controller-profiles.md#android-camera-zoom).
 Separate tap buttons retain the existing distance step and first-person endpoint instead of adding pinch or held repetition.
+
+### 9 — Device switching and customization in this slice
+
+Selected recommended option, exact item answer: `9: Approved`. Effective choice:
+[device switching and customization in this slice](../domain/controller-profiles.md#android-device-scope).
+Touch-only initial delivery bounds integration work without permanently excluding peripherals or changing desktop controls.
