@@ -74,15 +74,18 @@ chosen. Native UI support alone is not a gameplay profile; do not inherit keyboa
 
 ## Android
 
-Stable profile ID: `android`. **SELECTED TOOL / UNIMPLEMENTED.** The
+Stable profile ID: `android`. **SELECTED POLICY / UNIMPLEMENTED.** The
 [selected native Godot stack](../decisions/android-native-touch-controls.md) is `VirtualJoystick`,
-`TouchScreenButton` and a dedicated touch-look region. It must serve the same
-[54-action catalog](controls.md), not a reduced or reinterpreted gameplay scheme; native widgets
-do not implement that catalog or decouple existing consumers automatically.
+`TouchScreenButton` and a dedicated touch-look region. The [touch-profile decision](../decisions/android-touch-profile.md)
+records the later owner-approved physical policy below. It serves the same [54-action catalog](controls.md),
+not a reduced or reinterpreted scheme. Widgets do not implement the catalog or decouple consumers.
+Tool and policy approval grant no runtime authority; Android behavior and device acceptance
+remain unverified. Unmapped deferred features gain no physical defaults.
 
-Touch layout/gestures, joystick mode, sensitivity/axes, finger ownership/routing, intentional
-completion versus interruption outcomes, safe-area mapping, UI integration and prompts remain
-unselected; simultaneous movement/look/action operation and Android behavior remain unverified.
-Do not make block indistinguishable from special, jump from swimming ascent, NPC interaction
-from pickup/climb or recall from mount merely to reuse an input. No automatic targeting,
-lock-on or analog speed rule is selected. Tool selection grants no runtime authority.
+<a id="android-layout"></a>
+### Landscape layout and fixed joystick
+
+Landscape in either direction; a fixed movement joystick at bottom-left, a right-side drag
+region for look, and separate action buttons. Keep controls within the screen safe area and
+each touch target at least 48 dp wide and high. Block and special have separate buttons;
+NPC Talk and Pick Up remain separate. No automatic targeting or lock-on is introduced.
