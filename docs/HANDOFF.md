@@ -1,15 +1,11 @@
 # Handoff — pending continuation
 
-## Android reconciliation — independent review pending
+## Android touch implementation — separate owner authorization required
 
-Next action: independently review the ten recorded [Android touch-profile choices](../ontology/decisions/android-touch-profile.md)
-against the [retained approved selections](todo_handle_reconciled_items.md), then obtain parent
-inspection and closure authorization before clearing that queue. All ten entries remain pending
-that review. No implementation or publication is authorized.
-
-Any later implementation requires separate bounded authority for the
-[selected native stack](../ontology/decisions/android-native-touch-controls.md) and
-[physical policy](../ontology/domain/controller-profiles.md#android), then the
+Next action: obtain separate bounded implementation authority for the
+[selected native stack](../ontology/decisions/android-native-touch-controls.md) and settled
+[physical policy](../ontology/domain/controller-profiles.md#android), limited to the
+[selected first-slice scope](../ontology/domain/controller-profiles.md#android-first-slice), then follow the
 [resume → router workflow and authority/precision gate](../skills/ontology-resume-router-slice/SKILL.md).
 Tool selection is not runtime permission. Consume the [controls contract](../ontology/domain/controls.md),
 [Android profile](../ontology/domain/controller-profiles.md#android) and
