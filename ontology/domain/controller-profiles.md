@@ -104,3 +104,15 @@ and dx/dy the right/down-positive screen deltas in the same units. Apply yaw adj
 180 degrees, with the same degrees-per-distance vertically. Preserve existing
 `generators.json#design.camera.pitch-deg` bounds; add no acceleration. This is Android-only
 response, not a change to mouse sensitivity or a selection of saved settings.
+
+<a id="android-finger-ownership"></a>
+### Finger ownership and simultaneous controls
+
+Each physical touch owns the control where it starts until release/cancellation. Movement
+and look each accept one owner; action buttons accept independent fingers. Crossing another
+control never activates it. Extra fingers on an occupied control do nothing and cannot take
+over when its owner leaves. No captured or ignored touch transfers to another control;
+activation requires a fresh touch.
+
+Movement, look and an action must work simultaneously, without overriding gameplay eligibility
+or costs. A touch must never also generate a duplicate mouse-driven action.
