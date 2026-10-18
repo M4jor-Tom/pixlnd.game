@@ -33,3 +33,9 @@ tradeoffs below describe the selected options, not invented owner reasoning.
 Selected recommended option, exact item answer: `1: Approved`. Effective choice:
 [landscape layout and fixed joystick](../domain/controller-profiles.md#android-layout).
 Fixed controls and separate buttons favor stable placement and distinct intentions over floating controls or merged buttons.
+
+### 2 — Movement response and camera sensitivity
+
+Selected recommended option, exact item answer: `2: Approved`. Effective choice:
+[movement response and camera sensitivity](../domain/controller-profiles.md#android-response).
+A neutral zone followed by full speed retains existing movement rather than adding analog slow walking; width-based look gives a fixed scale without acceleration.

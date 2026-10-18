@@ -89,3 +89,18 @@ Landscape in either direction; a fixed movement joystick at bottom-left, a right
 region for look, and separate action buttons. Keep controls within the screen safe area and
 each touch target at least 48 dp wide and high. Block and special have separate buttons;
 NPC Talk and Pick Up remain separate. No automatic targeting or lock-on is introduced.
+
+<a id="android-response"></a>
+### Movement response and camera sensitivity
+
+For joystick radius R, displacement of magnitude <= 0.15 R requests neutral. Beyond that,
+normalize the direction and request the existing full walking/swimming speed; retain existing
+movement eligibility, multipliers and costs from `generators.json#design.movement`.
+Sprint is a separate hold: no automatic sprint or new slow-walk curve.
+
+Dragging right looks right; dragging up looks up. Let W be the usable safe-area screen width
+and dx/dy the right/down-positive screen deltas in the same units. Apply yaw adjustment
+`-180 degrees * dx / W` and pitch adjustment `-180 degrees * dy / W`: a full-width drag turns
+180 degrees, with the same degrees-per-distance vertically. Preserve existing
+`generators.json#design.camera.pitch-deg` bounds; add no acceleration. This is Android-only
+response, not a change to mouse sensitivity or a selection of saved settings.
