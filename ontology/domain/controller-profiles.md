@@ -162,3 +162,12 @@ Keep the current first-consumable-stack Quick Item approximation for this slice,
 final consumable-selection or channel policy. Unimplemented climbing, pets, gliding, crafting
 and map features remain deferred, not removed from the 54-action target. Adapting working
 features does not authorize implementing missing gameplay.
+
+<a id="android-request-order"></a>
+### Requests arriving together
+
+Interruptions and UI ownership first suppress uncommitted gameplay requests. Otherwise apply
+current movement/look and held defence updates, then process action requests in arrival order.
+After each request, check existing eligibility, resources and cooldowns for the next. This is
+adapter ordering, not a new exclusive-one-action rule or additional attack permission.
+No automatic retries or buffered attacks; already-committed effects are not undone.

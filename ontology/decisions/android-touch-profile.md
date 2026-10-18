@@ -63,3 +63,9 @@ Explicit selection and confirmation separate browsing from committing operations
 Selected recommended option, exact item answer: `6: Approved`. Effective choice:
 [first implementation scope and button activation](../domain/controller-profiles.md#android-first-slice).
 The first slice adapts working gameplay while retaining the full target catalog and an explicitly temporary Quick Item approximation.
+
+### 7 — Requests arriving together
+
+Selected recommended option, exact item answer: `7: Approved`. Effective choice:
+[requests arriving together](../domain/controller-profiles.md#android-request-order).
+Arrival ordering preserves existing eligibility without retries, buffering or rollback.
