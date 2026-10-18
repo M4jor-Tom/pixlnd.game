@@ -1,5 +1,31 @@
 # Handoff — pending continuation
 
+## Android implementation — separate authority and precision gate required
+
+Next action: obtain bounded implementation authority for the
+[selected native stack](../ontology/decisions/android-native-touch-controls.md), then follow the
+[resume → router workflow and authority/precision gate](../skills/ontology-resume-router-slice/SKILL.md).
+Tool selection is not runtime permission. Consume the [controls contract](../ontology/domain/controls.md),
+[Android profile](../ontology/domain/controller-profiles.md#android) and
+[controls backlog](ROADMAP/todo_implement.md#device-independent-controls-documentation-only);
+resolve unknown material gameplay edges with the owner, not guessed defaults.
+
+Current entrypoints: [main](../game/main.gd) `_ready()` wires
+[input_map.gd](../game/meta/input_map.gd) `build()` and panels;
+[player.gd](../game/entities/player.gd) `_physics_process()`, `_defence_tick()`, `_combat_tick()`,
+`_special_tick()` and `interact_nearest()` still consume coupled keyboard actions;
+[orbit_camera.gd](../game/entities/orbit_camera.gd) `_unhandled_input()` consumes raw mouse look.
+[inventory_panel.gd](../game/items/inventory_panel.gd) and
+[skill_panel.gd](../game/progression/skill_panel.gd) use `_unhandled_input()` / `_on_activated()`;
+[shop_panel.gd](../game/items/shop_panel.gd) uses `_process()` / `_on_buy()` / `_on_sell()`.
+These native ItemList paths and independent cursor/UI ownership are not a portable touch adapter.
+
+Pending validation includes three independent movement/look/action touch streams,
+release/cancel/focus/background handling, live-time UI restrictions, no duplicate emulated
+events, safe-area/size/orientation mapping and actual Android device checks. Layout/mode,
+sensitivity/axes, ownership/routing and completion-versus-interruption outcomes remain
+unselected; see the linked contract/backlog rather than treating widget defaults as policy.
+
 ## Dormant source continuation — separate owner request required
 
 The earlier finite 108–111 source-pass audit, parent native acceptance/acknowledgment and

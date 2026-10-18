@@ -1416,7 +1416,8 @@ and effect reference. Defined once in [controls](controls.md), not inferred from
 ### controller-profile
 Device-specific bindings and their mapping status, aliases and contextual input shapes.
 [Profiles](controller-profiles.md) refer to canonical actions; keyboard/mouse is documented,
-gamepad and Android remain unselected.
+gamepad remains unselected, and Android's [native tool stack](../decisions/android-native-touch-controls.md)
+is selected but unimplemented.
 
 ### input-binding
 A physical input/shape in a controller profile referring to one or more distinct control actions.

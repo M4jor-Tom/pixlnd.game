@@ -105,10 +105,11 @@ historical command. Unapproved source-only commands/skills gain no hybrid activa
 ## Unselected boundaries
 
 This is a documentation contract, not runtime authorization or a new engine schema. Profiles
-must expose the same distinct meanings without inventing layouts. Gamepad/Android layout, tool,
-remapping/persistence, device switching, prompts, axis conventions and input interruption policy
-remain unselected. Deferred traversal/bench/map UI shapes and shared-request arbitration remain
-bounded above. Wall-flip/detach lifecycle, map travel, sleep-consent UI and source-only class-utility/chord activation have
+must expose the same distinct meanings without inventing layouts. Android's
+[native tool stack is selected](../decisions/android-native-touch-controls.md), not implemented.
+Gamepad remains unselected; Android layout/mode, remapping/persistence, device switching,
+prompts, axis conventions and input interruption policy remain unselected. Deferred
+traversal/bench/map UI shapes and shared-request arbitration remain bounded above. Wall-flip/detach lifecycle, map travel, sleep-consent UI and source-only class-utility/chord activation have
 no newly selected controls; their existing gameplay rules remain authoritative. No historical
 binding is a fallback for an unspecified present mapping. Pet unsummoning and player item-drop /
 trading activation are not selected by the current catalog; old source gestures confer no

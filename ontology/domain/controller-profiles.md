@@ -74,10 +74,15 @@ chosen. Native UI support alone is not a gameplay profile; do not inherit keyboa
 
 ## Android
 
-Stable profile ID: `android`. **Unselected / unimplemented.** Refers to the same
-[canonical action catalog](controls.md), not a reduced or reinterpreted gameplay scheme.
-Tool, touch layout/gestures, virtual controls, simultaneous movement/look/action operation,
-hold/release/interruption handling, UI routing and prompts require a later selection and
-implementation review against that catalog. Do not make block indistinguishable from special,
-jump from swimming ascent, NPC interaction from pickup/climb or recall from mount merely to
-reuse an input. No tool, package, automatic targeting, lock-on or analog speed rule is selected.
+Stable profile ID: `android`. **SELECTED TOOL / UNIMPLEMENTED.** The
+[selected native Godot stack](../decisions/android-native-touch-controls.md) is `VirtualJoystick`,
+`TouchScreenButton` and a dedicated touch-look region. It must serve the same
+[54-action catalog](controls.md), not a reduced or reinterpreted gameplay scheme; native widgets
+do not implement that catalog or decouple existing consumers automatically.
+
+Touch layout/gestures, joystick mode, sensitivity/axes, finger ownership/routing, intentional
+completion versus interruption outcomes, safe-area mapping, UI integration and prompts remain
+unselected; simultaneous movement/look/action operation and Android behavior remain unverified.
+Do not make block indistinguishable from special, jump from swimming ascent, NPC interaction
+from pickup/climb or recall from mount merely to reuse an input. No automatic targeting,
+lock-on or analog speed rule is selected. Tool selection grants no runtime authority.

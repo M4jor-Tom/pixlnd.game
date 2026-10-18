@@ -33,4 +33,5 @@ navigation, not existing gameplay effects, slot identities, balance decisions or
 [D17](runtime-profiling.md) still owns profiling-overlay behavior; its physical default belongs
 to the keyboard profile. Unknown interaction details stay bounded, not guessed. The writer
 scope is documentation and verified inert metadata; executable hybrid bindings remain intact.
-Android tool research and owner selection are later work: **no tool or layout is selected**.
+The [Android native touch decision](android-native-touch-controls.md) resolves the pending tool
+choice; layout and gameplay implementation remain unapproved.
