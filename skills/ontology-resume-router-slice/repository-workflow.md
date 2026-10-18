@@ -7,7 +7,7 @@ Paths in backticks are relative to the repository root.
 
 - Owner correction: do not double-track decisions or findings in `todo_decide.md` and their record homes.
 - Rule: `docs/ROADMAP/todo_decide.md` contains unresolved game choices only. Remove resolved entries; do not retain completed-item indexes, owner answers, approval/refusal explanations, application history, reviews, commands, logs, commits, publication instructions or execution narratives there. Delete the file when empty.
-- Rule: significant decisions belong once in `ontology/decisions/`, evidence once in `docs/findings/`, deferred implementation in `todo_implement.md`, and routine receipts in managed evidence. Parallel histories may be deleted without preserving their unique execution narratives; Git provides recovery.
+- Required: follow [current recording routes](../record-impactful-decision/recording-guidance.md), including post-record classification review and transcript-free selected-current-rule queues. Gameplay/functional requirements stay canonical; only genuine technical choices warrant records. Raw authority and receipts stay managed; findings are not history archives. Cleanup of unrelated legacy material requires authority.
 
 ## Separate settled rules from stale executable data
 

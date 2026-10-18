@@ -78,7 +78,9 @@ after compaction verify actual files/Git/evidence rather than trusting a “comp
 
 1. **Ontology sync only where necessary and approved.** Update the canonical section, relation,
    constraint or design path that actually needs changing. Follow
-   [record-impactful-decision](../record-impactful-decision/SKILL.md) for significant choices.
+   [record-impactful-decision](../record-impactful-decision/SKILL.md) for classification and
+   post-record review: gameplay/functional requirements stay canonical; only nontrivial technical
+   choices warrant records. Follow its transcript-free pending-queue guidance.
    Existing precise approved rules need neither a new decision nor an empty ontology commit.
    Behavior-changing JSON, loader/validator and runtime changes require implementation scope;
    source or documentation approval does not grant it. Validate before engine coding under
@@ -166,9 +168,9 @@ or invoke external agents. This skill supplies no additional orchestration or pu
 
 ## Handoff contract
 
-`docs/HANDOFF.md` is pending-only, not a build log. Drop handled points once progression and
-unique decisions/evidence, qualifications and failed-check caveats are visible in existing project
-records. Keep only unfinished work, its next action, active authority/blockers and links needed to
+`docs/HANDOFF.md` is pending-only, not a build log. Drop handled points once current rules/qualifications have canonical homes and required
+receipts or failed-check caveats are retained in managed evidence. Follow the primary recording
+guidance; do not archive history or owner exchanges in repository records. Keep only unfinished work, its next action, active authority/blockers and links needed to
 resume. A complete/terminated project with no continuation needs has an empty (zero-byte) handoff.
 Do not edit it while another agent owns it. Never restore completed history into an empty handoff.
 

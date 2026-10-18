@@ -6,16 +6,17 @@ HANDOFF is pending-only: unfinished continuation, not project history or permane
 Consult current roadmap, ontology, READMEs and Git records; an empty handoff is valid and must
 not trigger restoration of completed history. If another agent owns the file, defer all writes.
 
-Before dropping a handled point, verify its progression and unique approvals, qualifications,
-receipts or failed-check caveats are visible in existing project records. Record missing facts
-there first; do not create a duplicate archive. Keep unresolved/review-pending work pending.
+Before dropping a handled point, verify current rules/qualifications have canonical homes and required
+receipts or failed-check caveats are retained in managed evidence. Follow the
+[primary recording guidance](../record-impactful-decision/recording-guidance.md); do not
+archive history or owner exchanges in repository records. Keep unresolved/review-pending work pending.
 A completed reconciliation can be removed while its separately deferred implementation remains
 in the implementation backlog; link that backlog only when needed for the next action.
 
 Keep only populated sections below. Reference exact pending selections in the existing queue
 instead of copying them. State active scope/authority and blockers; link evidence needed for
-unfinished verification. Completed receipts belong in the ledger; resolved gotchas and generic
-workflows belong in existing repository instructions, lessons or READMEs.
+unfinished verification. Completed receipts belong in managed evidence; reusable workflow rules belong in their
+relevant skills, not a repository history archive.
 
 If the project is fully complete/terminated with no continuation needs, HANDOFF is empty
 (zero bytes): no title, "all done" paragraph, historical snapshot or placeholder sections.

@@ -13,6 +13,8 @@ and readiness table against current sources. BLOCKED is a stop, not a request to
 Read the [recording workflow](../record-impactful-decision/SKILL.md) and required
 [repository workflow](repository-workflow.md). Apply only the brief's necessary approved ontology
 changes at its exact split-section/anchor, relation, constraint and instance/design paths.
+Follow the primary recording guidance: canonical gameplay/functional rules, concise technical
+choices only, post-record classification review and no repository transcripts/history archives.
 Reuse precise approved rules and real decision identities; no invented D-ID, §7 decision entry,
 completed backlog item or empty ontology commit. Do not select missing quantities or defaults.
 Behavior-changing data and loader/validator changes require the brief's implementation authority.

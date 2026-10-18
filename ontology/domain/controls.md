@@ -108,7 +108,7 @@ historical command. Unapproved source-only commands/skills gain no hybrid activa
 
 This is a documentation contract, not runtime authorization or a new engine schema. Profiles
 must expose the same distinct meanings without inventing layouts. Android's
-[native tool stack](../decisions/android-native-touch-controls.md) and later
+[native tool stack](../decisions/android-native-touch-controls.md) and
 [touch-profile policy](controller-profiles.md#android) are selected, not implemented.
 Gamepad remains unselected; Android's first-slice device/customization deferrals are
 [profile-owned](controller-profiles.md#android-device-scope). Deferred traversal/bench/map UI

@@ -35,10 +35,10 @@ not the gameplay slice loop. A green validator proves only its implemented check
 [Canonical controls](domain/controls.md) define distinct device-independent intentions.
 [Controller profiles](domain/controller-profiles.md) own all physical mappings and coupling;
 gamepad remains unselected; Android's [native tool stack](decisions/android-native-touch-controls.md)
-and later [touch-profile policy](domain/controller-profiles.md#android) are selected but
+and [touch-profile policy](domain/controller-profiles.md#android) are selected but
 unimplemented; device acceptance remains pending. `keybinds.json#hybrid` is the
-unchanged keyboard adapter, not a semantic catalog. [Owner direction](decisions/device-independent-controls.md)
-authorizes documentation, not gameplay implementation.
+unchanged keyboard adapter, not a semantic catalog. The [controls contract](domain/controls.md#contract)
+is documentation, not gameplay implementation authority.
 
 ## Instance files
 

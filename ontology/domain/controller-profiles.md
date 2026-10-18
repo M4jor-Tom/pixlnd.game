@@ -76,8 +76,8 @@ chosen. Native UI support alone is not a gameplay profile; do not inherit keyboa
 
 Stable profile ID: `android`. **SELECTED POLICY / UNIMPLEMENTED.** The
 [selected native Godot stack](../decisions/android-native-touch-controls.md) is `VirtualJoystick`,
-`TouchScreenButton` and a dedicated touch-look region. The [touch-profile decision](../decisions/android-touch-profile.md)
-records the later owner-approved physical policy below. It serves the same [54-action catalog](controls.md),
+`TouchScreenButton` and a dedicated touch-look region. The physical policy below
+serves the same [54-action catalog](controls.md),
 not a reduced or reinterpreted scheme. Widgets do not implement the catalog or decouple consumers.
 Tool and policy approval grant no runtime authority; Android behavior and device acceptance
 remain unverified. Unmapped deferred features gain no physical defaults.
