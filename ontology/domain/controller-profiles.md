@@ -146,3 +146,19 @@ for the corresponding existing operation. Scrolling or selecting alone never com
 operation; confirmation commits only on release inside its button. Close or Android Back
 closes the panel and consumes that input; gameplay requires fresh touches afterward.
 This selects no other menu or keyboard behavior.
+
+<a id="android-first-slice"></a>
+### First implementation scope and button activation
+
+The first separately authorized implementation adapts currently working gameplay: movement
+and look, sprint, separate Jump / Swim Up, basic/special attacks, block, dodge, available class
+slots, separate Talk / Pick Up, Quick Item, inventory, skills, shops and camera zoom. These
+map to the existing distinct [canonical actions](controls.md), not new gameplay permissions.
+Gameplay trigger buttons fire once on touch-down, without repetition; held and charged actions
+retain their own lifecycles. [Panel confirmations](#android-panels) commit on release inside.
+Entering a new context never converts an existing hold into another action.
+
+Keep the current first-consumable-stack Quick Item approximation for this slice, not as the
+final consumable-selection or channel policy. Unimplemented climbing, pets, gliding, crafting
+and map features remain deferred, not removed from the 54-action target. Adapting working
+features does not authorize implementing missing gameplay.

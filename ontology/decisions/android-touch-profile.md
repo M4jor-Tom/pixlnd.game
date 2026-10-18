@@ -57,3 +57,9 @@ Fresh-touch rearming and release-inside completion favor intentional actions ove
 Selected recommended option, exact item answer: `5: Approved`. Effective choice:
 [inventory, skills and shop touch interaction](../domain/controller-profiles.md#android-panels).
 Explicit selection and confirmation separate browsing from committing operations; live-time vulnerability remains unchanged.
+
+### 6 — First implementation scope and button activation
+
+Selected recommended option, exact item answer: `6: Approved`. Effective choice:
+[first implementation scope and button activation](../domain/controller-profiles.md#android-first-slice).
+The first slice adapts working gameplay while retaining the full target catalog and an explicitly temporary Quick Item approximation.

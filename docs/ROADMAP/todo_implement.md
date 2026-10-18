@@ -207,6 +207,9 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 
 ## Device-independent controls (documentation only)
 
+- [ ] Implement the selected [Android first-slice scope](../../ontology/domain/controller-profiles.md#android-first-slice)
+  only with separate runtime authority. Its retained Quick Item approximation is not the final
+  consumable-selection/channel policy; deferred features remain in the full action target.
 - [ ] Consume the [canonical action catalog](../../ontology/domain/controls.md) and
   [controller profiles](../../ontology/domain/controller-profiles.md) when separately authorized.
   The current keyboard adapter still couples block/special, jump/swimming ascent and
