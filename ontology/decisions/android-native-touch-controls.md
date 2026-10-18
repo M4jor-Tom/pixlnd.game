@@ -19,8 +19,10 @@ This approves option 1 exactly:
 
 > Native Godot controls — VirtualJoystick, TouchScreenButton, dedicated touch-look region
 
-Only the tool stack is selected. No touch layout, joystick mode, targeting/lock-on, analog
-speed policy or gameplay implementation is approved.
+This historical approval selected only the tool stack. It did not approve touch layout,
+joystick mode, targeting/lock-on, analog speed policy or gameplay implementation. The later
+[Android touch-profile decision](android-touch-profile.md) records subsequent physical-policy
+approvals without expanding this earlier answer's authority.
 
 ## Rationale, alternatives and tradeoffs
 
@@ -37,14 +39,13 @@ name collision does not establish a full addon import result. Neither addon is s
 ## Consequences and effective rules
 
 The native widgets are building blocks, not an implementation of all 54 actions or a reason
-to merge them. The [controls contract](../domain/controls.md#contract) and
-[Android profile](../domain/controller-profiles.md#android) retain unresolved sensitivity/axes,
-finger ownership/routing, intentional completion versus interruption outcomes, safe-area
-mapping and UI integration. Existing effect, cost and eligibility rules are unchanged.
-Separate implementation authority, precise material gameplay rules and device validation are
-still required; see the [implementation backlog](../../docs/ROADMAP/todo_implement.md#device-independent-controls-documentation-only).
-This resolves only the earlier direction's pending Android tool choice, not its layout or
-other boundaries, and introduces no third-party addon dependency.
+to merge them. The [controls contract](../domain/controls.md#contract) remains device-independent; the
+[Android profile](../domain/controller-profiles.md#android) now records the later selected
+physical policy. Existing effect, cost and eligibility rules are unchanged. Separate bounded
+implementation authority and device validation are still required; see the
+[implementation backlog](../../docs/ROADMAP/todo_implement.md#device-independent-controls-documentation-only).
+This tool decision resolved only the earlier direction's pending Android tool choice, not
+its then-unselected layout or other boundaries, and introduced no third-party addon dependency.
 
 ## Primary references
 

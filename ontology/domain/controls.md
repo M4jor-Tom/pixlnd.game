@@ -16,7 +16,9 @@ remain in the linked gameplay definitions; later owner approvals override stale 
 - Special-attack release is an intentional completion for charged classes, not a universal
   cancellation rule. Device interruption, focus loss, interrupted holds, UI consumption and
   conflicting simultaneous requests need explicit adapter treatment; this catalog does not
-  choose their gameplay outcome or arbitration priority.
+  choose their gameplay outcome or arbitration priority. Profiles own that policy; see the
+  selected [Android interruption](controller-profiles.md#android-interruption) and
+  [request-order rules](controller-profiles.md#android-request-order).
 - Context limits meaning; it does not add eligibility or new input availability. In particular,
   inventory/skills/shop retain their [live-time and input restrictions](3_Classes.md#hud-element).
   Time/input behavior for other menus is not selected. Enemy [current-target](4_Relations.md#threat-and-current-target-hybrid)
@@ -26,7 +28,7 @@ remain in the linked gameplay definitions; later owner approvals override stale 
 
 | ID | Intention | Value / lifecycle | Context and effect owner |
 |---|---|---|---|
-| <a id="move"></a>`move` | Move horizontally | 2-D direction; neutral stops requesting movement | Camera-relative [player movement](3_Classes.md#player-character); applies to existing walking/swimming contexts, no analog speed rule selected |
+| <a id="move"></a>`move` | Move horizontally | 2-D direction; neutral stops requesting movement | Camera-relative [player movement](3_Classes.md#player-character); applies to existing walking/swimming contexts; response is profile-owned |
 | <a id="look"></a>`look` | Change view / aim direction | 2-D directional adjustment | [Camera](../instances/ui.json) `camera` and [weapon aiming](3_Classes.md#weapon-type); profile chooses physical representation, not new targeting |
 | <a id="zoom"></a>`zoom` | Adjust gameplay camera distance | Signed distance adjustment | [Camera](../instances/ui.json) `camera`, `generators.json#design.camera`; retained third/first-person transition |
 | <a id="sprint"></a>`sprint` | Sprint | Held | [Movement](3_Classes.md#player-character), not a class-utility alias |
@@ -106,10 +108,11 @@ historical command. Unapproved source-only commands/skills gain no hybrid activa
 
 This is a documentation contract, not runtime authorization or a new engine schema. Profiles
 must expose the same distinct meanings without inventing layouts. Android's
-[native tool stack is selected](../decisions/android-native-touch-controls.md), not implemented.
-Gamepad remains unselected; Android layout/mode, remapping/persistence, device switching,
-prompts, axis conventions and input interruption policy remain unselected. Deferred
-traversal/bench/map UI shapes and shared-request arbitration remain bounded above. Wall-flip/detach lifecycle, map travel, sleep-consent UI and source-only class-utility/chord activation have
+[native tool stack](../decisions/android-native-touch-controls.md) and later
+[touch-profile policy](controller-profiles.md#android) are selected, not implemented.
+Gamepad remains unselected; Android's first-slice device/customization deferrals are
+[profile-owned](controller-profiles.md#android-device-scope). Deferred traversal/bench/map UI
+shapes and other profiles' unresolved shared-request arbitration remain bounded above. Wall-flip/detach lifecycle, map travel, sleep-consent UI and source-only class-utility/chord activation have
 no newly selected controls; their existing gameplay rules remain authoritative. No historical
 binding is a fallback for an unspecified present mapping. Pet unsummoning and player item-drop /
 trading activation are not selected by the current catalog; old source gestures confer no

@@ -34,4 +34,6 @@ navigation, not existing gameplay effects, slot identities, balance decisions or
 to the keyboard profile. Unknown interaction details stay bounded, not guessed. The writer
 scope is documentation and verified inert metadata; executable hybrid bindings remain intact.
 The [Android native touch decision](android-native-touch-controls.md) resolves the pending tool
-choice; layout and gameplay implementation remain unapproved.
+choice. The later [Android touch-profile decision](android-touch-profile.md) records the
+subsequent physical-policy approvals; they were not part of this earlier direction.
+Gameplay implementation remains unauthorized.

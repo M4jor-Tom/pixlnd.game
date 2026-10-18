@@ -219,10 +219,11 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
   Raw camera/native UI input paths and shared panel cursor ownership remain documented ceilings.
   Existing input restrictions and live inventory/skills/shop time remain unchanged.
   Gamepad remains unselected. Android's [native tool stack](../../ontology/decisions/android-native-touch-controls.md)
-  is selected but unimplemented; layout/mode, sensitivity/axes, finger ownership/routing,
-  intentional completion versus interruption outcomes, safe-area mapping and UI integration
-  remain unselected and unverified; Android device acceptance is pending. This debt grants
-  no runtime/schema work.
+  and later [touch-profile policy](../../ontology/domain/controller-profiles.md#android) are
+  selected but unimplemented. Adapter, panel integration and touch labels remain work;
+  simultaneous streams, interruption cleanup, duplicate-event prevention, safe-area/size/orientation
+  mapping and Android device acceptance remain unverified. Device/customization deferrals stay
+  in the profile. This debt grants no runtime/schema work.
 
 ## Validation contract (documentation approved; implementation unauthorized)
 - [ ] Source item 32 (`ontology/domain/3_Classes.md#pet-food`): the daily stocked-type report selects no purchase

@@ -29,8 +29,9 @@ Consume [canonical player intentions](../ontology/domain/controls.md) and their
 ability/source prose. `keybinds.json#hybrid` remains the unchanged keyboard adapter; it does
 not implement the newly separated catalog. The profile records shared inputs, aliases, raw
 camera/native UI paths and registered-only actions. Gamepad remains unselected; Android's
-[native tool stack](../ontology/decisions/android-native-touch-controls.md) is selected but
-unimplemented, with layout/mode still unselected. Documentation grants no runtime authority;
+[native tool stack](../ontology/decisions/android-native-touch-controls.md) and later
+[touch-profile policy](../ontology/domain/controller-profiles.md#android) are selected but
+unimplemented; device acceptance remains pending. Documentation grants no runtime authority;
 bounded debt is in
 [the implementation backlog](../docs/ROADMAP/todo_implement.md#device-independent-controls-documentation-only).
 

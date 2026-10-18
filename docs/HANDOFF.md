@@ -1,9 +1,15 @@
 # Handoff — pending continuation
 
-## Android implementation — separate authority and precision gate required
+## Android reconciliation — independent review pending
 
-Next action: obtain bounded implementation authority for the
-[selected native stack](../ontology/decisions/android-native-touch-controls.md), then follow the
+Next action: independently review the ten recorded [Android touch-profile choices](../ontology/decisions/android-touch-profile.md)
+against the [retained approved selections](todo_handle_reconciled_items.md), then obtain parent
+inspection and closure authorization before clearing that queue. All ten entries remain pending
+that review. No implementation or publication is authorized.
+
+Any later implementation requires separate bounded authority for the
+[selected native stack](../ontology/decisions/android-native-touch-controls.md) and
+[physical policy](../ontology/domain/controller-profiles.md#android), then the
 [resume → router workflow and authority/precision gate](../skills/ontology-resume-router-slice/SKILL.md).
 Tool selection is not runtime permission. Consume the [controls contract](../ontology/domain/controls.md),
 [Android profile](../ontology/domain/controller-profiles.md#android) and
@@ -22,9 +28,9 @@ These native ItemList paths and independent cursor/UI ownership are not a portab
 
 Pending validation includes three independent movement/look/action touch streams,
 release/cancel/focus/background handling, live-time UI restrictions, no duplicate emulated
-events, safe-area/size/orientation mapping and actual Android device checks. Layout/mode,
-sensitivity/axes, ownership/routing and completion-versus-interruption outcomes remain
-unselected; see the linked contract/backlog rather than treating widget defaults as policy.
+events, safe-area/size/orientation mapping and actual Android device checks. Physical policy
+is selected in the linked profile, not verified by documentation validation. Consume it rather
+than treating widget defaults as policy; report genuine material gaps instead of guessing.
 
 ## Dormant source continuation — separate owner request required
 
