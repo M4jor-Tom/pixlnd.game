@@ -189,3 +189,12 @@ External keyboard/mouse gameplay on Android, gamepad switching, automatic device
 rebinding, layout editing and saved control preferences are deferred in this slice, not
 permanently excluded or assigned future defaults. Android labels describe touch actions,
 not keyboard instructions such as “B closes”.
+
+<a id="android-back"></a>
+### Android Back when no panel is open
+
+With a [supported panel](#android-panels) open, Back closes it and consumes the input.
+Otherwise consume Back without attacking, quitting or opening a new menu. Players can
+background the app through Android system navigation; the [touch-cleanup rule](#android-interruption)
+applies. This adds no pause, background simulation, save policy or system-menu implementation;
+future menus retain their own design requirements.

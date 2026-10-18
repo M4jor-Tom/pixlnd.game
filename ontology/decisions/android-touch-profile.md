@@ -81,3 +81,9 @@ Separate tap buttons retain the existing distance step and first-person endpoint
 Selected recommended option, exact item answer: `9: Approved`. Effective choice:
 [device switching and customization in this slice](../domain/controller-profiles.md#android-device-scope).
 Touch-only initial delivery bounds integration work without permanently excluding peripherals or changing desktop controls.
+
+### 10 — Android Back when no panel is open
+
+Selected recommended option, exact item answer: `10: Approved`. Effective choice:
+[android back when no panel is open](../domain/controller-profiles.md#android-back).
+Consuming no-panel Back avoids accidental attacks, exit or an unselected menu; system navigation remains available.
