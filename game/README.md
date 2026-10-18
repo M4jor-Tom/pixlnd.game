@@ -29,10 +29,17 @@ Consume [canonical player intentions](../ontology/domain/controls.md) and their
 ability/source prose. `keybinds.json#hybrid` remains the unchanged keyboard adapter; it does
 not implement the newly separated catalog. The profile records shared inputs, aliases, raw
 camera/native UI paths and registered-only actions. Gamepad remains unselected; Android's
-[native tool stack](../ontology/decisions/android-native-touch-controls.md) and later
-[touch-profile policy](../ontology/domain/controller-profiles.md#android) are selected but
-unimplemented; device acceptance remains pending. Documentation grants no runtime authority;
-bounded debt is in
+[native tool stack](../ontology/decisions/android-native-touch-controls.md) and
+[touch profile](../ontology/domain/controller-profiles.md#android) have a first-slice runtime:
+`android_touch.gd` injects separate native touch channels into player/camera and coordinates
+exclusive, live inventory/skills/shop panels with explicit selected-item operations.
+`main.gd` selects it only on Android; keyboard/mouse behavior is unchanged. The UI-only
+SubViewport isolates native widgets and owned panel pointers from emulated mouse gameplay.
+Safe-area/DPI metrics map to viewport coordinates; invalid metrics or a too-small layout
+reject input with a diagnostic instead of shrinking targets. Desktop synthetic regressions and
+windowed captures are not Android device acceptance: physical multitouch, both rotations,
+platform display/lifecycle/Back delivery, ergonomics and render cost remain pending.
+Broader controls work still needs separate authority; bounded debt is in
 [the implementation backlog](../docs/ROADMAP/todo_implement.md#device-independent-controls-documentation-only).
 
 ## Authorized gameplay slices
@@ -58,11 +65,14 @@ Other architecture/test gotchas are in `AGENTS.md`.
 ## Checks
 ```
 nix develop -c godot --headless -s ontology/validate.gd            # ontology constraints
+nix develop -c godot --headless -s ontology/test_android_profile.gd # required/malformed profile and canonical action-reference negatives
 nix develop -c godot --headless --quit                             # autoload + main scene boot
 nix develop -c godot --headless -s game/world/test_world_gen.gd    # gen-world invariants (seed, range, names, mesh)
 nix develop -c godot --headless -s game/world/test_settlement.gd   # village placement / plateau / layout, no spawns near the square, shop stock + prices, buy / sell, respec, inn, interact → NPC
 nix develop -c godot --headless -s game/entities/test_player.gd    # player physics (land, jump height, step-up, sprint, camera)
-nix develop -c godot --headless -s game/entities/test_panel_time.gd # inventory/skills/shop: live DOT, cooldowns, buff/dodge expiry, blocked gameplay input, close/reopen movement, lethal DOT
+nix develop -c godot --headless -s game/meta/test_android_touch.gd # real native joystick/buttons, ownership, simultaneous streams, cancel/Back/layout/dp, root screen events
+nix develop -c godot --headless -s game/entities/test_android_controls.gd # native events -> player/camera, separated controls, ordered resource/busy/UI gating, all touch panel operations/scroll, cancellation, high-DPI panels
+nix develop -c godot --headless -s game/entities/test_panel_time.gd # desktop + touch inventory/skills/shop: live DOT, cooldowns, buff/dodge expiry, blocked gameplay input, close/reopen movement, lethal DOT
 nix develop -c godot --headless -s game/entities/test_creatures.gd # gen-spawns determinism, rosters, level band, HP calibration, FSM
 nix develop -c godot --headless -s game/entities/test_creature_roles.gd   # c-creature-roles, role parsing, role per spawned group, ranged keep-away / LOS / shot, mage splash + burning, poison application/ticks through dodge, unchanged burning/direct-hit dodge, no friendly fire, blocked shot, enemy-hit roll
 nix develop -c godot --headless -s game/combat/test_combat.gd       # formulas, hit/combo/whiff, retaliation, kill, respawn

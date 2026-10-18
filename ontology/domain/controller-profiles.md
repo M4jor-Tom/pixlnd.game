@@ -2,7 +2,8 @@
 
 Profiles bind only the [canonical controls](controls.md). Physical choices, aliases, context
 multiplexing and adapter names belong here, never in action meanings. Status distinguishes a
-binding in data from a working feature. No new controller resolver or schema is implemented.
+binding in data from a working feature. No general controller resolver is implemented; the Android first-slice executable subset is in
+[`controller-profiles.json#android`](../instances/controller-profiles.json).
 
 ## Keyboard and mouse
 
@@ -74,13 +75,14 @@ chosen. Native UI support alone is not a gameplay profile; do not inherit keyboa
 
 ## Android
 
-Stable profile ID: `android`. **SELECTED POLICY / UNIMPLEMENTED.** The
+Stable profile ID: `android`. **FIRST-SLICE RUNTIME / DEVICE ACCEPTANCE PENDING.** The
 [selected native Godot stack](../decisions/android-native-touch-controls.md) is `VirtualJoystick`,
 `TouchScreenButton` and a dedicated touch-look region. The physical policy below
 serves the same [54-action catalog](controls.md),
 not a reduced or reinterpreted scheme. Widgets do not implement the catalog or decouple consumers.
-Tool and policy approval grant no runtime authority; Android behavior and device acceptance
-remain unverified. Unmapped deferred features gain no physical defaults.
+The first-slice native adapter and separated consumers have desktop synthetic regressions and
+windowed visual checks. Physical Android behavior/device acceptance remains unverified; the
+full catalog and broader implementation remain deferred. Unmapped features gain no physical defaults.
 
 <a id="android-layout"></a>
 ### Landscape layout and fixed joystick

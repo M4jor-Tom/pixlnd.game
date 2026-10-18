@@ -5,12 +5,13 @@ const Combat := preload("res://game/combat/combat.gd")
 const InventoryPanel := preload("res://game/items/inventory_panel.gd")
 const SkillPanel := preload("res://game/progression/skill_panel.gd")
 const ShopPanel := preload("res://game/items/shop_panel.gd")
+const AndroidTouch := preload("res://game/meta/android_touch.gd")
 const Feel := preload("res://game/combat/feel.gd")
 
 func _ready() -> void:
 	var o: OntologyDB.Model.Ontology = OntologyDB.data
 	var design: Dictionary = OntologyDB.design
-	InputMapBuilder.build(o.configs["keybinds"]["hybrid"])
+	if not OS.has_feature("android"): InputMapBuilder.build(o.configs["keybinds"]["hybrid"])
 	var world := $World; var player := $Player
 	world.target = player
 	world.design = design; world.creatures = o.creatures
@@ -28,9 +29,16 @@ func _ready() -> void:
 	var feel := Feel.new(); add_child(feel)                # D25: juice spawns beside us, in world space
 	feel.setup(design["feel"], player.get_node("CameraRig"))
 	player.feel = feel
-	var panel: CanvasLayer = InventoryPanel.new(); add_child(panel); panel.bind(player)
-	var skills: CanvasLayer = SkillPanel.new(); add_child(skills); skills.bind(player)
-	var shop: CanvasLayer = ShopPanel.new(); add_child(shop); shop.bind(player, world)
+	var panel: CanvasLayer = InventoryPanel.new(); add_child(panel)
+	var skills: CanvasLayer = SkillPanel.new(); add_child(skills)
+	var shop: CanvasLayer = ShopPanel.new(); add_child(shop)
+	var touch: Node = null
+	if OS.has_feature("android"):
+		touch = AndroidTouch.new(); add_child(touch)
+		touch.setup(o.configs["controller-profiles"]["android"], player, panel, skills, shop)
+	panel.bind(player, touch); skills.bind(player, touch); shop.bind(player, world, touch)
+	if touch != null:
+		touch.set_layout(touch.safe, touch.pixels_per_dp)
 	player.water_top = world.gen.sea_level + 1.0
 	player.ground_ready = world.has_ground
 	# world.spawn-rule (D22): the square of the land (0,0) village; the land centre if that land has no village (all sea)
@@ -40,6 +48,7 @@ func _ready() -> void:
 	player.position = Vector3(sq.x + 0.5, world.gen.height_at(sq.x, sq.y) + 2.0, sq.y + 0.5)
 	player.spawn_point = player.position
 	$HUD.bind(player, world)
+	if touch != null: $HUD.bind_touch(touch)
 	var land = world.gen.land_of_block(mid, mid)
 	print("pixlnd: ruleset %s, %d creatures, %d abilities; seed %d, land '%s' (%s, %s), village '%s'; %s dmg %.0f, hp %.0f, level %d" % [
 		OntologyDB.ruleset.id, o.creatures.size(), o.abilities.size(), world.world_seed, land.name, land.landscape, land.danger_tier, village.get("name", "-"),

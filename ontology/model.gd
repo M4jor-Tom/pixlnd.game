@@ -390,8 +390,30 @@ class Ontology extends RefCounted:
 		if not Color.html_is_valid(str(r.get("color", ""))): out.append("%s: color is not a valid html colour" % where)
 		return out
 
+	# c-control-references: only the selected Android first-slice input is enforced here.
+	func _validate_android() -> void:
+		var path := "controller-profiles.android"
+		var profiles: Variant = configs.get("controller-profiles")
+		if not profiles is Dictionary or not profiles.get("android") is Dictionary:
+			errors.append(path + ": required object missing or malformed"); return
+		var a: Dictionary = profiles["android"]
+		var selected := {"deadzone-ratio": 0.15, "min-target-dp": 48, "look-deg-per-safe-width": 180}
+		for field in selected:
+			var value: Variant = a.get(field)
+			var expected: float = selected[field]
+			if (not value is float and not value is int) or value != expected:
+				errors.append(path + "." + field + ": must equal selected policy " + str(expected))
+		var actions: Variant = a.get("actions")
+		var required := ["move", "look", "zoom", "sprint", "jump", "swim-ascent", "basic-attack", "special-attack", "block", "dodge", "class-skill-1", "class-skill-2", "class-skill-3", "class-skill-4", "interact", "pick-up", "quick-item", "inventory", "skills-window", "ui-cancel", "equip-item", "use-inventory-item", "spend-skill-point", "buy-item", "sell-item"]
+		if not actions is Array or actions.size() != required.size():
+			errors.append(path + ".actions: required distinct first-slice action array"); return
+		for action in required:
+			if actions.count(action) != 1:
+				errors.append(path + ".actions: required unique canonical action " + action)
+
 	func validate() -> bool:
 		var n := errors.size()
+		_validate_android()
 		for id in specs:                                                    # c-spec-of-class
 			var s: Specialization = specs[id]
 			if not classes.has(s.character_class): errors.append("spec %s: unknown class %s" % [id, s.character_class])

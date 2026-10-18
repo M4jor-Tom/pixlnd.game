@@ -35,8 +35,9 @@ not the gameplay slice loop. A green validator proves only its implemented check
 [Canonical controls](domain/controls.md) define distinct device-independent intentions.
 [Controller profiles](domain/controller-profiles.md) own all physical mappings and coupling;
 gamepad remains unselected; Android's [native tool stack](decisions/android-native-touch-controls.md)
-and [touch-profile policy](domain/controller-profiles.md#android) are selected but
-unimplemented; device acceptance remains pending. `keybinds.json#hybrid` is the
+and [touch-profile policy](domain/controller-profiles.md#android) have a bounded first-slice
+runtime and scoped profile validation; broader controls/reference enforcement remains deferred.
+Android device acceptance is pending; desktop synthetic tests do not establish it. `keybinds.json#hybrid` is the
 unchanged keyboard adapter, not a semantic catalog. The [controls contract](domain/controls.md#contract)
 is documentation, not gameplay implementation authority.
 
@@ -56,6 +57,7 @@ is documentation, not gameplay implementation authority.
 | landscapes.json, terrain-features.json, flora.json, deposits.json, block-types.json | world |
 | dungeon-types.json, poi-types.json, static-entities.json, buildings.json | structures |
 | economy.json, mission-types.json | loops |
+| controller-profiles.json | selected Android first-slice response/target constants and canonical action references |
 | keybinds.json, ui.json, slash-commands.json, audio.json | keyboard adapter / canonical control references and presentation |
 | versions.json | timeline, alpha→steam delta, reception, fan fix-list |
 | generators.json | numeric configs + invariants for every procedural system |

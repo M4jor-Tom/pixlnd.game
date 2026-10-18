@@ -4,6 +4,7 @@
 ## decaying every frame; the numbers are design.feel.shake, pushed in by combat/feel.gd#setup.
 extends Node3D
 
+var touch_only := false
 var cfg: Dictionary = {}
 var shake: Dictionary = {}                            # design.feel.shake (D25); empty = no shake
 var trauma := 0.0
@@ -25,7 +26,7 @@ func setup(camera: Dictionary, body_height: float, player: CharacterBody3D) -> v
 	rotation = Vector3(_pitch, _yaw, 0)
 
 func _ready() -> void:
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	if not touch_only and not OS.has_feature("android"): Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 ## game-feel trauma: hits ADD, they never reset; shake = trauma² so small hits barely move the frame.
 func add_trauma(amount: float) -> void:
@@ -51,7 +52,7 @@ func _process(dt: float) -> void:
 	cam.rotation.z = deg_to_rad(float(shake["max-roll-deg"])) * k * sin(_shake_t * 1.1)
 
 func _unhandled_input(e: InputEvent) -> void:
-	if cfg.is_empty():
+	if cfg.is_empty() or touch_only:
 		return
 	if e is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		var s := float(cfg["sensitivity"])
@@ -60,9 +61,20 @@ func _unhandled_input(e: InputEvent) -> void:
 		_pitch = clampf(_pitch - e.relative.y * s, deg_to_rad(float(lim[0])), deg_to_rad(float(lim[1])))
 		rotation = Vector3(_pitch, _yaw, 0)
 	elif e.is_action_pressed("zoom_in") or e.is_action_pressed("zoom_out"):
-		var d: Dictionary = cfg["distance"]
-		_dist = clampf(_dist + float(d["step"]) * (-1.0 if e.is_action_pressed("zoom_in") else 1.0), float(d["min"]), float(d["max"]))
-		arm.spring_length = _dist
-		_body.visible = _dist > 0.0                        # first person hides our own capsule
+		zoom_steps(-1 if e.is_action_pressed("zoom_in") else 1)
 	elif e.is_action_pressed("menu"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED else Input.MOUSE_MODE_CAPTURED
+
+func apply_touch_look(delta: Vector2, safe_width: float, degrees_per_width: float) -> void:
+	if cfg.is_empty() or safe_width <= 0 or get_parent().ui_open or get_parent().dead: return
+	_yaw -= deg_to_rad(degrees_per_width) * delta.x / safe_width
+	var lim: Array = cfg["pitch-deg"]
+	_pitch = clampf(_pitch - deg_to_rad(degrees_per_width) * delta.y / safe_width, deg_to_rad(float(lim[0])), deg_to_rad(float(lim[1])))
+	rotation = Vector3(_pitch, _yaw, 0)
+
+func zoom_steps(steps: int) -> void:
+	if cfg.is_empty() or (touch_only and (get_parent().ui_open or get_parent().dead)): return
+	var d: Dictionary = cfg["distance"]
+	_dist = clampf(_dist + float(d["step"]) * steps, float(d["min"]), float(d["max"]))
+	arm.spring_length = _dist
+	_body.visible = _dist > 0.0

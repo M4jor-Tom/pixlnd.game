@@ -3,14 +3,17 @@
 ## columns drawn, no tooltips, no respec; the mouse is freed while it is open.
 extends CanvasLayer
 
+var touch_ui: Node = null
+var touch_buttons: Array[Button] = []
 var player: Node
 var _panel: PanelContainer
 var _list: ItemList
 var _bank: Label
 var _rows: Array = []          # ItemList index → Ability
 
-func bind(p_player: Node) -> void:
-	player = p_player
+func bind(p_player: Node, p_touch: Node = null) -> void:
+	player = p_player; touch_ui = p_touch
+	if touch_ui != null: _bind_touch()
 	player.skills_changed.connect(_refresh)
 
 func _ready() -> void:
@@ -26,7 +29,7 @@ func _ready() -> void:
 	_list.item_activated.connect(_on_activated)
 
 func _unhandled_input(e: InputEvent) -> void:
-	if e.is_action_pressed("skills-window") and player != null:
+	if touch_ui == null and e.is_action_pressed("skills-window") and player != null:
 		_panel.visible = not _panel.visible
 		player.ui_open = _panel.visible
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if _panel.visible else Input.MOUSE_MODE_CAPTURED
@@ -38,15 +41,35 @@ func _refresh() -> void:
 		return
 	var tree = player.skill_tree
 	_bank.text = "%d skill points to spend" % player.skill_points
+	for button in touch_buttons: button.disabled = true
 	_list.clear(); _rows.clear()
 	for a in tree.nodes:
 		var t: Dictionary = a.alpha_tree
 		var where: String = "key %d" % int(t["rank"]) if str(t["column"]) == "class" else ("key 4" if str(t["column"]) == "ultimate" else str(t["column"]))
+		if touch_ui != null: where = where.replace("key ", "Skill ")
 		var line := "%-22s %-10s %2d pts" % [a.display_name, where, tree.spent(a.id)]
 		if not tree.is_open(a):
 			line += "   (needs %d in %s)" % [int(t["needs"]), tree.prerequisite(a).display_name]
 		_list.add_item(line)
 		_rows.append(a)
 
+	if touch_ui != null: touch_ui.fit_panel(self)
+
 func _on_activated(index: int) -> void:
 	player.spend_skill(_rows[index])
+
+func touch_lists() -> Array:
+	return [_list]
+
+func _bind_touch() -> void:
+	_list.item_activated.disconnect(_on_activated)
+	_panel.get_child(0).get_child(0).text = "Skills — select a skill to spend one point"
+	var button: Button = touch_ui.operation_button(self, "Spend", func():
+		var selected := _list.get_selected_items()
+		if selected.size() == 1: _on_activated(selected[0]))
+	button.disabled = true; touch_buttons.append(button)
+	_list.item_selected.connect(func(index): button.disabled = player.skill_points <= 0 or not player.skill_tree.is_open(_rows[index]))
+
+func set_touch_open(on: bool) -> void:
+	_panel.visible = on
+	if on: _refresh()

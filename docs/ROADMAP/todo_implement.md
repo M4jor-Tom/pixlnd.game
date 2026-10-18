@@ -205,25 +205,25 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 - [ ] Item 8 — save/resume world time without downtime advance or catch-up; running empty servers keep approved timers, not full distant AI (`game-clock`).
 - [ ] Item 9 — surviving logical-mob threat/order/provocation across restart; preserve normal resets and taunt termination (`ai-behavior`, `c-threat-pair`).
 
-## Device-independent controls (documentation only)
+<a id="device-independent-controls-documentation-only"></a>
+## Device-independent controls
 
-- [ ] Implement the selected [Android first-slice scope](../../ontology/domain/controller-profiles.md#android-first-slice)
-  only with separate runtime authority. Its retained Quick Item approximation is not the final
-  consumable-selection/channel policy; deferred features remain in the full action target.
-- [ ] Consume the [canonical action catalog](../../ontology/domain/controls.md) and
-  [controller profiles](../../ontology/domain/controller-profiles.md) when separately authorized.
-  The current keyboard adapter still couples block/special, jump/swimming ascent and
-  interaction/pickup; separate meanings are documented, not yet separate runtime channels.
-  Preserve the fourth-slot alias and Assassin third-slot-only Camouflage.
-- [ ] Action/profile reference enforcement and device-resolved prompts are not implemented.
-  Raw camera/native UI input paths and shared panel cursor ownership remain documented ceilings.
-  Existing input restrictions and live inventory/skills/shop time remain unchanged.
-  Gamepad remains unselected. Android's [native tool stack](../../ontology/decisions/android-native-touch-controls.md)
-  and later [touch-profile policy](../../ontology/domain/controller-profiles.md#android) are
-  selected but unimplemented. Adapter, panel integration and touch labels remain work;
-  simultaneous streams, interruption cleanup, duplicate-event prevention, safe-area/size/orientation
-  mapping and Android device acceptance remain unverified. Device/customization deferrals stay
-  in the profile. This debt grants no runtime/schema work.
+- [ ] Android first-slice device acceptance: verify actual three-finger movement/look/action,
+  safe-area/DPI targets and ergonomics in both landscape rotations, panel scrolling/inside-release
+  operations, background/focus/death/layout cleanup, no duplicate mouse actions and native Back.
+  Desktop synthetic checks and native windowed captures are not device acceptance; no Android
+  SDK/ADB/export setup is authorized by this entry.
+- [ ] Measure Android render cost of the UI-only full-size SubViewport composition
+  (`android_touch.gd` ponytail); optimize only if actual profiling warrants it.
+- [ ] Finish the deferred full [canonical action catalog](../../ontology/domain/controls.md) and
+  broader profile/reference enforcement only with separate authority. The first-slice
+  `controller-profiles.json#android` constants/actions have scoped required/malformed-data checks;
+  that is not full `c-control-references` enforcement. Gamepad remains unselected.
+- [ ] Keep Quick Item's first-stack approximation until its final consumable-selection/channel
+  slice is selected. Traversal/pets/crafting/map, other menus, external Android keyboard/mouse,
+  switching, rebinding/layout editing and persistence retain the
+  [profile deferrals](../../ontology/domain/controller-profiles.md#android-device-scope).
+  Desktop coupling/aliases and independent native panel semantics are unchanged.
 
 ## Validation contract (documentation approved; implementation unauthorized)
 - [ ] Source item 32 (`ontology/domain/3_Classes.md#pet-food`): the daily stocked-type report selects no purchase

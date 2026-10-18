@@ -36,3 +36,9 @@ static func _add(action: String, e: InputEvent) -> void:
 	if not InputMap.has_action(action):
 		InputMap.add_action(action)
 	InputMap.action_add_event(action, e)
+
+## Private native joystick channels: never bound to keyboard/mouse or canonical gameplay actions.
+static func build_android() -> void:
+	for direction in ["left", "right", "up", "down"]:
+		var action: String = "android_move_" + direction
+		if not InputMap.has_action(action): InputMap.add_action(action, 0.0)

@@ -11,6 +11,8 @@ extends CanvasLayer
 
 const Model := preload("res://ontology/model.gd")
 
+var touch_ui: Node = null
+var _margin: MarginContainer
 var player: Node
 var world: Node
 var _hp: ProgressBar
@@ -37,7 +39,7 @@ func bind(p_player: Node, p_world: Node) -> void:
 		player.leveled_up.connect(_on_level_up)
 
 func _ready() -> void:
-	var margin := MarginContainer.new()                     # full rect; the box shrinks to bottom-left
+	var margin := MarginContainer.new(); _margin = margin                     # full rect; the box shrinks to bottom-left
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	for side in ["margin_left", "margin_top", "margin_right", "margin_bottom"]:
 		margin.add_theme_constant_override(side, 16)
@@ -70,6 +72,11 @@ func _bar(parent: Control, color: Color) -> ProgressBar:
 func _process(_dt: float) -> void:
 	if player == null:
 		return
+	if touch_ui != null:
+		_land.visible = not player.ui_open; _skills.visible = not player.ui_open
+		_margin.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+		_margin.position = touch_ui.safe.position
+		_margin.size = Vector2(touch_ui.safe.size.x * .5, touch_ui.safe.size.y * .5)
 	_hp.max_value = player.max_hp; _hp.value = player.hp
 	var st_max := float(player.cfg["stamina"]["max"]) if not player.cfg.is_empty() else 100.0
 	_stamina.max_value = st_max; _stamina.value = player.stamina
@@ -158,7 +165,11 @@ func _skills_line() -> String:
 			continue
 		var cd := float(player.abilities.cooldowns.get(a.id, 0.0))
 		var state := "no points" if player.skill_tree.spent(a.id) == 0 else ("%.0fs" % cd if cd > 0.0 else "ready")
-		parts.append("%d %s: %s" % [slot, a.display_name, state])
+		parts.append(("%s: %s" % [a.display_name, state]) if touch_ui != null else "%d %s: %s" % [slot, a.display_name, state])
 	for id in player.abilities.buffs:
 		parts.append("[%s %.0fs]" % [player.o.abilities[id].display_name, player.abilities.buffs[id]["left"]])
-	return "   ".join(parts)
+	return ("\n" if touch_ui != null else "   ").join(parts)
+
+func bind_touch(adapter: Node) -> void:
+	touch_ui = adapter
+	_margin.get_child(0).size_flags_vertical = Control.SIZE_SHRINK_BEGIN

@@ -1,0 +1,34 @@
+{
+  "android": {
+    "deadzone-ratio": 0.15,
+    "min-target-dp": 48,
+    "look-deg-per-safe-width": 180,
+    "actions": [
+      "move",
+      "look",
+      "zoom",
+      "sprint",
+      "jump",
+      "swim-ascent",
+      "basic-attack",
+      "special-attack",
+      "block",
+      "dodge",
+      "class-skill-1",
+      "class-skill-2",
+      "class-skill-3",
+      "class-skill-4",
+      "interact",
+      "pick-up",
+      "quick-item",
+      "inventory",
+      "skills-window",
+      "ui-cancel",
+      "equip-item",
+      "use-inventory-item",
+      "spend-skill-point",
+      "buy-item",
+      "sell-item"
+    ]
+  }
+}

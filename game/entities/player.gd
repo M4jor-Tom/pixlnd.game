@@ -54,6 +54,9 @@ var combo := 0
 var water_top := -INF                                   # y of the water surface (sea level + 1)
 var ground_ready: Callable = func(_p: Vector3) -> bool: return true   # world: is the zone under us built?
 var spawn_point := Vector3.ZERO
+var touch_input: Node = null                            # null preserves the keyboard/mouse adapter
+var _touch_frame := {}
+var _touch_jump := false
 var ui_open := false                                    # panel owns input, not simulation time
 var stamina := 100.0
 var _stamina_idle := 0.0
@@ -248,11 +251,11 @@ func _defence_tick(dt: float, dir: Vector3, still: bool) -> void:
 		_dodge["left"] -= dt
 		if _dodge["left"] <= 0.0:
 			_dodge = {}
-	if not ui_open and Input.is_action_just_pressed("dodge"):
+	if touch_input == null and not ui_open and Input.is_action_just_pressed("dodge"):
 		dodge(dir)
 	var bl: Dictionary = defence["block"]
 	var cyc := _cyclone()
-	blocking = can_block() and block_power > 0.0 and (cyc or (not ui_open and Input.is_action_pressed("special-attack") and not stunned()))
+	blocking = can_block() and block_power > 0.0 and (cyc or (not ui_open and (Input.is_action_pressed("special-attack") if touch_input == null else _touch_frame.get("held", {}).get("block", false)) and not stunned()))
 	if not blocking or cyc:
 		block_power = minf(block_max(), block_power + float(bl["regen-per-s"]) * (float(bl["cyclone-regen-mult"]) if cyc else 1.0) * dt)
 	var sl: Dictionary = defence["stealth"]
@@ -279,9 +282,12 @@ func pick_up(ground: Node3D) -> void:
 
 ## interact (E, D22): the nearest NPC within design.settlement.npc.interact-radius wins over ground items.
 func interact_nearest() -> bool:
+	return talk_nearest() or pick_up_nearest()
+
+func talk_nearest() -> bool:
 	var npc := _nearest_in_group("npcs", float(design["settlement"]["npc"]["interact-radius"]))
 	if npc == null:
-		return pick_up_nearest()
+		return false
 	match npc.role:
 		&"class-trainer": respec()
 		&"innkeeper": rest()
@@ -341,20 +347,41 @@ func use_quick() -> bool:
 	return true
 
 func _physics_process(dt: float) -> void:
+	if touch_input != null:
+		_touch_frame = touch_input.take_frame() # Always drain, including unavailable/dead frames.
+		_touch_jump = false
 	if cfg.is_empty() or dead or not ground_ready.call(global_position):
+		if touch_input != null and _touch_frame["requests"].any(func(q): return q.action == "special-attack" and q.phase in ["release", "cancel"]):
+			_charge = -1.0 # Dropped terminal requests cancel; they must never fire or resume later.
 		return
 	var g := float(cfg["gravity"])
 	tick_statuses(dt)
 	if dead:                                               # a live DOT tick can kill us while browsing
 		return
-	var input := Vector2.ZERO if ui_open or stunned() else Input.get_vector("move_left", "move_right", "move_forward", "move_back")
+	if touch_input != null and not ui_open and not stunned():
+		if touch_input.preempt_vendor_panel(_touch_frame["requests"]):
+			_touch_frame = touch_input.take_frame()
+	if touch_input != null:
+		rig.apply_touch_look(_touch_frame["look"], _touch_frame["safe_width"], float(touch_input.profile["look-deg-per-safe-width"]))
+	var input: Vector2 = Vector2.ZERO if ui_open or stunned() else (Input.get_vector("move_left", "move_right", "move_forward", "move_back") if touch_input == null else _touch_frame["move"])
 	var dir := (Basis(Vector3.UP, rig.rotation.y) * Vector3(input.x, 0, input.y)).normalized()
 	if not defence.is_empty():
 		_defence_tick(dt, dir, input == Vector2.ZERO)
 	var swimming := global_position.y < water_top - 0.5
+	if touch_input != null:
+		if not combat.is_empty(): _combat_time_tick(dt)
+		if swimming: touch_input.retire_hold("jump")
+		else: touch_input.retire_hold("swim-ascent")
+		_touch_frame["held"] = touch_input.held.duplicate()
+		if not ui_open and not stunned():
+			for request in _touch_frame["requests"]:
+				_apply_touch_request(request, dir)
+				if ui_open: break
+		if _charge >= 0 and not ui_open and not stunned() and not abilities.busy():
+			_charge = minf(mp, _charge + float(design["special-attack"]["charge-mp-per-s"]) * abilities.mult("charge-mult") * dt)
 	var speed := float(cfg["walk"])
 	var st: Dictionary = cfg["stamina"]
-	if Input.is_action_pressed("sprint") and dir != Vector3.ZERO and stamina > 0.0 and not swimming:
+	if (Input.is_action_pressed("sprint") if touch_input == null else _touch_frame["held"].get("sprint", false)) and dir != Vector3.ZERO and stamina > 0.0 and not swimming:
 		speed *= float(cfg["sprint-mult"])
 		stamina = maxf(0.0, stamina - float(st["sprint-drain"]) * dt)
 		_stamina_idle = 0.0
@@ -368,14 +395,14 @@ func _physics_process(dt: float) -> void:
 		speed *= float(defence["block"]["move-mult"])
 	if swimming:
 		speed *= float(cfg["swim-mult"]) * (skill_tree.effect_mult(&"swimming") if skill_tree != null else 1.0)   # swimming points (D20)
-		velocity.y = float(cfg["swim-vertical"]) * (1.0 if not ui_open and Input.is_action_pressed("jump") else -0.3)
+		velocity.y = float(cfg["swim-vertical"]) * (1.0 if not ui_open and (Input.is_action_pressed("jump") if touch_input == null else _touch_frame["held"].get("swim-ascent", false)) else -0.3)
 		_fall_from = -INF                                   # water breaks the fall
 	else:
 		velocity.y -= g * dt
 		var jh: Dictionary = cfg["jump-height"]
-		if not ui_open and is_on_floor() and Input.is_action_just_pressed("jump"):
+		if not ui_open and is_on_floor() and (Input.is_action_just_pressed("jump") if touch_input == null else _touch_jump):
 			velocity.y = sqrt(2.0 * g * float(jh["hold"]))
-		elif velocity.y > 0.0 and (ui_open or not Input.is_action_pressed("jump")):
+		elif velocity.y > 0.0 and (ui_open or not (Input.is_action_pressed("jump") if touch_input == null else _touch_frame["held"].get("jump", false))):
 			velocity.y = minf(velocity.y, sqrt(2.0 * g * float(jh["tap"])))   # released early: tap height
 	velocity.x = dir.x * speed; velocity.z = dir.z * speed
 	if not _dodge.is_empty():
@@ -393,9 +420,9 @@ func _physics_process(dt: float) -> void:
 	if abilities != null:
 		abilities.after_move(dt)
 	_fall_damage(was_airborne)
-	if not combat.is_empty():
+	if touch_input == null and not combat.is_empty():
 		_combat_tick(dt)
-	if inventory != null and not ui_open:
+	if touch_input == null and inventory != null and not ui_open:
 		if Input.is_action_just_pressed("interact"):
 			interact_nearest()
 		if Input.is_action_just_pressed("quick-item"):
@@ -413,30 +440,58 @@ func _fall_damage(was_airborne: bool) -> void:
 			take_damage(max_hp * float(fd["pct-max-hp-per-block"]) / 100.0 * drop, self)
 	_fall_from = -INF
 
-func _combat_tick(dt: float) -> void:
+func _combat_time_tick(dt: float) -> void:
 	_swing_t -= dt; _combo_t -= dt
-	if _combo_t <= 0.0:
-		combo = 0
-	if abilities == null:
-		if not ui_open and Input.is_action_just_pressed("basic-attack") and _swing_t <= 0.0:
-			_swing()
-		return
+	if _combo_t <= 0.0: combo = 0
+	if abilities == null: return
 	abilities.tick(dt)
-	if stunned():                                           # D23: cannot act (abilities and cooldowns still tick)
+	if stunned():
 		_charge = -1.0
-		return
-	if mp_passive:
+	elif mp_passive:
 		mp = minf(float(design["resources"]["mp"]["max"]), mp + float(design["resources"]["mp"]["mage-regen-per-s"]) * dt)
-	if ui_open:
+
+func _combat_tick(dt: float) -> void:
+	_combat_time_tick(dt)
+	if abilities == null:
+		if not ui_open and Input.is_action_just_pressed("basic-attack") and _swing_t <= 0.0: _swing()
 		return
+	if stunned() or ui_open: return
 	for slot in 4:
 		if Input.is_action_just_pressed("class-skill-%d" % (slot + 1)) or (slot == 3 and Input.is_action_just_pressed("ultimate")):
 			use_class_skill(slot + 1)
-	if abilities.busy():
-		return
-	if Input.is_action_just_pressed("basic-attack") and _swing_t <= 0.0:
-		_swing()
+	if abilities.busy(): return
+	if Input.is_action_just_pressed("basic-attack") and _swing_t <= 0.0: _swing()
 	_special_tick(dt)
+
+func cancel_touch_requests() -> void:
+	_charge = -1.0; blocking = false; _touch_jump = false
+
+func _apply_touch_request(request: Dictionary, dir: Vector3) -> void:
+	if dead or ui_open or stunned(): return
+	var action: String = request.action
+	match action:
+		"jump":
+			if request.phase == "start" and global_position.y >= water_top - 0.5: _touch_jump = true
+		"basic-attack":
+			if _swing_t <= 0 and (abilities == null or not abilities.busy()): _swing()
+		"special-attack":
+			if request.phase == "cancel": _charge = -1.0; return
+			if abilities == null or abilities.busy():
+				if request.phase == "release": _charge = -1.0
+				return
+			if request.phase == "start" and mp >= float(design["special-attack"]["min-mp"]):
+				if special_mode == &"charged": _charge = 0.0
+				else: _special(mp)
+			elif request.phase == "release" and _charge >= 0:
+				_special(minf(mp, _charge)); _charge = -1.0
+		"dodge": dodge(dir)
+		"interact": talk_nearest()
+		"pick-up": pick_up_nearest()
+		"quick-item": use_quick()
+		"inventory", "skills-window": touch_input.open_panel(action)
+		"zoom": rig.zoom_steps(int(request["steps"]))
+		_:
+			if action.begins_with("class-skill-"): use_class_skill(int(action.right(1)))
 
 ## special-attack (M2, D21): charged classes hold to reserve MP (HUD bar pink), release to spend it; instant classes
 ## press and spend everything. Damage and stun chance grow with the MP spent.
@@ -606,6 +661,7 @@ func _strike(center: Vector3, radius: float, dmg: float, combo_bonus: bool, appl
 	return hits
 
 func _on_died() -> void:
+	if touch_input != null: touch_input.cancel_all()
 	velocity = Vector3.ZERO
 	if abilities != null:
 		abilities.reset()

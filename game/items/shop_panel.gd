@@ -5,6 +5,8 @@ extends CanvasLayer
 
 const Shop := preload("res://game/items/shop.gd")
 
+var touch_ui: Node = null
+var touch_buttons: Array[Button] = []
 var player: Node
 var world: Node
 var _panel: PanelContainer
@@ -14,8 +16,9 @@ var _bag: ItemList
 var _stock_rows: Array = []
 var _bag_rows: Array = []
 
-func bind(p_player: Node, p_world: Node) -> void:
-	player = p_player; world = p_world
+func bind(p_player: Node, p_world: Node, p_touch: Node = null) -> void:
+	player = p_player; world = p_world; touch_ui = p_touch
+	if touch_ui != null: _bind_touch()
 	player.talked.connect(_on_talked)
 	player.inventory.changed.connect(_refresh)
 
@@ -42,14 +45,16 @@ func _on_talked(npc: Node) -> void:
 		return
 	var l = world.gen.land_of_block(int(player.global_position.x), int(player.global_position.z))
 	_stock_rows = Shop.stock(npc.role, world.gen, l, world.gen.village_at(l), player.level, player.o, player.design)
-	_title.text = "%s  (E closes)" % npc.display_name
+	_title.text = npc.display_name if touch_ui != null else "%s  (E closes)" % npc.display_name
 	_open(true)
 
 func _process(_dt: float) -> void:
-	if _panel.visible and (Input.is_action_just_pressed("interact") or Input.is_action_just_pressed("menu")):
+	if touch_ui == null and _panel.visible and (Input.is_action_just_pressed("interact") or Input.is_action_just_pressed("menu")):
 		_open(false)
 
 func _open(on: bool) -> void:
+	if touch_ui != null:
+		touch_ui.open_panel("shop" if on else ""); return
 	_panel.visible = on; player.ui_open = on
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if on else Input.MOUSE_MODE_CAPTURED
 	if on:
@@ -58,6 +63,7 @@ func _open(on: bool) -> void:
 func _refresh() -> void:
 	if not _panel.visible:
 		return
+	for button in touch_buttons: button.disabled = true
 	_stock.clear()
 	for it in _stock_rows:
 		_stock.add_item("%s — %d copper" % [player.item_label(it), Shop.buy_price(it, player.o, player.design)])
@@ -67,6 +73,8 @@ func _refresh() -> void:
 		_bag.add_item("%s — %d copper" % [label, Shop.sell_price(it, player.o, player.design)])
 		_bag_rows.append(it)
 	_title.text = _title.text.get_slice("  ·", 0) + "  ·  %d copper" % player.inventory.coins
+
+	if touch_ui != null: touch_ui.fit_panel(self)
 
 func _on_buy(index: int) -> void:
 	var it = _stock_rows[index]
@@ -79,3 +87,23 @@ func _on_buy(index: int) -> void:
 
 func _on_sell(index: int) -> void:
 	Shop.sell(player, _bag_rows[index])
+
+func _bind_touch() -> void:
+	_stock.item_activated.disconnect(_on_buy); _bag.item_activated.disconnect(_on_sell)
+	_stock.get_parent().get_child(0).text = "Stock"
+	_bag.get_parent().get_child(0).text = "Your bag"
+	for data in [["Buy", _stock, _on_buy], ["Sell", _bag, _on_sell]]:
+		var list: ItemList = data[1]
+		var callback: Callable = data[2]
+		var button: Button = touch_ui.operation_button(self, data[0], func():
+			var selected := list.get_selected_items()
+			if selected.size() == 1: callback.call(selected[0]))
+		button.disabled = true; touch_buttons.append(button)
+		list.item_selected.connect(func(_i): button.disabled = false)
+
+func touch_lists() -> Array:
+	return [_stock, _bag]
+
+func set_touch_open(on: bool) -> void:
+	_panel.visible = on
+	if on: _refresh()

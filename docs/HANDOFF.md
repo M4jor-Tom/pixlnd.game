@@ -1,32 +1,24 @@
 # Handoff — pending continuation
 
-## Android touch implementation — separate owner authorization required
+## Android touch — acceptance and publication pending
 
-Next action: obtain separate bounded implementation authority for the
-[selected native stack](../ontology/decisions/android-native-touch-controls.md) and settled
-[physical policy](../ontology/domain/controller-profiles.md#android), limited to the
-[selected first-slice scope](../ontology/domain/controller-profiles.md#android-first-slice), then follow the
-[resume → router workflow and authority/precision gate](../skills/ontology-resume-router-slice/SKILL.md).
-Tool selection is not runtime permission. Consume the [controls contract](../ontology/domain/controls.md),
-[Android profile](../ontology/domain/controller-profiles.md#android) and
-[controls backlog](ROADMAP/todo_implement.md#device-independent-controls-documentation-only);
-resolve unknown material gameplay edges with the owner, not guessed defaults.
+Next action: obtain governed Android device/toolchain access and run physical acceptance
+against the [Android profile](../ontology/domain/controller-profiles.md#android),
+[controls](../ontology/domain/controls.md) and [engine checks](../game/README.md#checks).
+First-slice runtime/test/docs work is authorized; this grants no unrelated gameplay, source
+research, toolchain installation or publication work.
 
-Current entrypoints: [main](../game/main.gd) `_ready()` wires
-[input_map.gd](../game/meta/input_map.gd) `build()` and panels;
-[player.gd](../game/entities/player.gd) `_physics_process()`, `_defence_tick()`, `_combat_tick()`,
-`_special_tick()` and `interact_nearest()` still consume coupled keyboard actions;
-[orbit_camera.gd](../game/entities/orbit_camera.gd) `_unhandled_input()` consumes raw mouse look.
-[inventory_panel.gd](../game/items/inventory_panel.gd) and
-[skill_panel.gd](../game/progression/skill_panel.gd) use `_unhandled_input()` / `_on_activated()`;
-[shop_panel.gd](../game/items/shop_panel.gd) uses `_process()` / `_on_buy()` / `_on_sell()`.
-These native ItemList paths and independent cursor/UI ownership are not a portable touch adapter.
+Actual Android acceptance remains pending: physical multitouch, both landscape rotations and
+safe-area/DPI mapping, latency/ergonomics, panel confirmation/scroll, platform Back/focus/background
+and orientation cleanup, and overlay render cost. Desktop synthetic events and inspected native
+viewport PNGs do not substitute for hardware. ADB is not on PATH and no authorized runnable
+device/export environment is established. Obtain governed device/toolchain access before those
+checks; do not install dependencies or weaken the acceptance gate.
 
-Pending validation includes three independent movement/look/action touch streams,
-release/cancel/focus/background handling, live-time UI restrictions, no duplicate emulated
-events, safe-area/size/orientation mapping and actual Android device checks. Physical policy
-is selected in the linked profile, not verified by documentation validation. Consume it rather
-than treating widget defaults as policy; report genuine material gaps instead of guessing.
+Push and publication remain unauthorized. The player changelog and matching native movie
+remain pending separately authorized documentation work and a settled slice identity/naming;
+no D-ID or completed slice claim should be invented. Remaining controls scope stays in the
+[backlog](ROADMAP/todo_implement.md#device-independent-controls-documentation-only).
 
 ## Dormant source continuation — separate owner request required
 

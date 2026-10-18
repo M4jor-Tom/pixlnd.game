@@ -118,6 +118,40 @@ func _run() -> void:
 		check(p.position.x > at.x, action + ": movement works again after closing")
 		Input.action_release("move_right")
 		panel.free(); p.free()
+	# Same live-time contract through real touch panel transitions, including an unfinished charge.
+	for id in ["inventory", "skills-window", "shop"]:
+		var hero: CharacterBody3D = PLAYER.instantiate(); root.add_child(hero)
+		hero.setup(design["movement"], design["camera"], &"normal")
+		hero.setup_combat(design["combat"], design["crit"], {}, 260.0); hero.setup_items(o, design)
+		hero.set_physics_process(false); hero.skill_tree.points = {&"war-frenzy": 1}
+		var inventory := InventoryPanel.new(); var skills := SkillPanel.new(); var shop := ShopPanel.new()
+		root.add_child(inventory); root.add_child(skills); root.add_child(shop)
+		var touch := preload("res://game/meta/android_touch.gd").new(); root.add_child(touch)
+		touch.setup(o.configs["controller-profiles"]["android"], hero, inventory, skills, shop)
+		inventory.bind(hero, touch); skills.bind(hero, touch); shop.bind(hero, null, touch)
+		touch.set_layout(Rect2(0, 0, 1280, 720), Vector2.ONE)
+		await physics_frame
+		hero._physics_process(.01); hero.mp = 100
+		var event := InputEventScreenTouch.new(); event.index = 0; event.position = touch.targets["special-attack"].get_center(); event.pressed = true
+		touch.handle_touch(event); hero._physics_process(.1)
+		check(hero._charge > 0, id + " touch: unfinished charge starts")
+		check(hero.use_class_skill(3), id + " touch: committed buff starts")
+		hero.abilities.buffs[&"war-frenzy"]["left"] = .3; hero.abilities.cooldowns[&"war-frenzy"] = 1
+		hero._swing_t = .3; hero._combo_t = .3; hero.combo = 3
+		check(hero.dodge(Vector3.RIGHT), id + " touch: committed dodge starts")
+		hero.apply_status(&"poison", design["status-effects"]["poison"], 10, hero)
+		touch.open_panel(id)
+		check(hero._charge < 0 and hero.mp == 100, id + " touch: panel cancels reserved charge without spend")
+		for n in 5: hero._physics_process(.1)
+		check(is_equal_approx(hero.hp, 250), id + " touch: DOT runs")
+		check(is_equal_approx(hero.abilities.cooldowns[&"war-frenzy"], .5), id + " touch: cooldown once per tick")
+		check(not hero.abilities.buffs.has(&"war-frenzy") and hero._dodge.is_empty() and hero._iframes <= 0, id + " touch: buff/dodge expire")
+		check(hero._swing_t <= 0 and hero.combo == 0, id + " touch: swing/combo expire")
+		hero.take_damage(7, hero); check(is_equal_approx(hero.hp, 243), id + " touch: direct damage still hurts")
+		touch.back(); event.pressed = false; touch.handle_touch(event)
+		hero._physics_process(.1)
+		check(hero._charge < 0 and not hero.blocking, id + " touch: late release after close cannot fire")
+		touch.free(); hero.free()
 	# A lethal tick must stop this frame, not let a queued heal resurrect a dead player.
 	var p: CharacterBody3D = PLAYER.instantiate(); root.add_child(p)
 	p.setup(design["movement"], design["camera"], &"normal")
