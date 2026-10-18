@@ -20,5 +20,5 @@
   "green-smoothie":  {"name": "Green Smoothie", "kind": "beverage", "duration-s": 600, "effect": "poison resistance (toxic rivers)", "recipe": {"water-flask": 1, "banana": 2, "kale": 2}, "station": "anywhere", "versions": ["S"]},
   "bomb":            {"name": "Bomb", "kind": "bomb", "use": "throw/place", "alpha-subtype": 7, "effect": "spawns 100-HP fuse entity that ticks down and explodes; hit it to detonate early; chains; breaks boulders / cracked dirt; hurts players; may pop loot", "levels-a": ["+1", "+5", "+10"], "note-s": "all same strength; loot land-bound", "source": ["item vendor", "drops", "tables"], "versions": ["A","S"]},
   "water-flask":     {"name": "Water Flask", "kind": "intermediate", "recipe": {"glass-flask": 1}, "station": "standing in water", "versions": ["A","S"]},
-  "rules": {"eat-while-sitting-in-chair": "bug: consumes without healing", "hotkey-spam": "wastes potions", "npc-use": "humanoid NPCs/monsters drink potions at low HP", "potion-rarity-colours": "X (Pixxie 2015 preview, never shipped)"}
+  "rules": {"eat-while-sitting-in-chair": "bug: consumes without healing", "repeated-use": "repeated quick-item requests can waste potions (../domain/controls.md#quick-item)", "npc-use": "humanoid NPCs/monsters drink potions at low HP", "potion-rarity-colours": "X (Pixxie 2015 preview, never shipped)"}
 }

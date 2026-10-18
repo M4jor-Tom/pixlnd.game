@@ -35,6 +35,6 @@
   "cooking": {"see": "consumables.json (pineapple-slice, snowberry-mash, pumpkin-muffin, ginseng-soup, mushroom-spit)"},
   "alchemy": {"see": "consumables.json (life-potion, cactus-potion, elixir-*, lemonade, hot-chocolate, green-smoothie)"},
   "crafting-tabs-a": ["weapon (own class)", "armor (own class)", "amulet & ring (all)", "cooking", "alchemy", "ingredients"],
-  "recipe-sources": {"A": "base recipes appear as power grows; Formulas (+1..+100) from vendors/drops/dungeon tables; learn by right-click at sufficient power; duplicates not relearned", "S": "Books of Crafting (4 per land, 3-4 recipes each), land-scoped; once all 4 found no more recipes for that land"},
-  "customization": {"material-cubes": "wood on wood weapons, iron on metal; +1 cubes; +0.1 effective level each; 16 (1H) / 32 (2H, shield); dragging out of window destroys", "spirit-cubes-a": "see materials.json spirits; level window weapon-10..weapon", "fully-modded-legendary-plus-s": "+58-67 damage each (community)"}
+  "recipe-sources": {"A": "base recipes appear as power grows; Formulas (+1..+100) from vendors/drops/dungeon tables; learn-formula (../domain/controls.md#learn-formula) at sufficient power; duplicates not relearned", "S": "Books of Crafting (4 per land, 3-4 recipes each), land-scoped; once all 4 found no more recipes for that land"},
+  "customization": {"material-cubes": "wood on wood weapons, iron on metal; +1 cubes; +0.1 effective level each; 16 (1H) / 32 (2H, shield); bench-remove (../domain/controls.md#bench-remove) destroys the cube", "spirit-cubes-a": "see materials.json spirits; level window weapon-10..weapon", "fully-modded-legendary-plus-s": "+58-67 damage each (community)"}
 }

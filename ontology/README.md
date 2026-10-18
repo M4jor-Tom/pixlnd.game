@@ -30,13 +30,21 @@ Dated build notes include superseded placeholders, not proof of current coverage
 "resume walking through items", follow `docs/HANDOFF.md`, `docs/lessons.md` and any retained selections,
 not the gameplay slice loop. A green validator proves only its implemented checks, not full ontology consistency.
 
+## Controls
+
+[Canonical controls](domain/controls.md) define distinct device-independent intentions.
+[Controller profiles](domain/controller-profiles.md) own all physical mappings and coupling;
+gamepad/Android layouts and tool remain unselected. `keybinds.json#hybrid` is the unchanged
+keyboard adapter, not a semantic catalog. [Owner direction](decisions/device-independent-controls.md)
+authorizes documentation, not gameplay implementation.
+
 ## Instance files
 
 | file | contents |
 |---|---|
 | rulesets.json | chosen hybrid flags; alpha / Steam historical reference; Omega announced roadmap |
 | races.json, classes.json, specializations.json | player identity |
-| abilities.json | ~65 skills, passives, movement abilities, alpha tree positions, steam inputs |
+| abilities.json | ~65 skills, passives, movement abilities, alpha tree positions, inert canonical control references |
 | weapon-types.json, equipment-slots.json, materials.json, rarities.json, affixes.json, item-types.json | item model |
 | stats.json | resources, stats, alpha formulas (items + character) |
 | status-effects.json | debuffs, buffs, hazards |
@@ -46,7 +54,7 @@ not the gameplay slice loop. A green validator proves only its implemented check
 | landscapes.json, terrain-features.json, flora.json, deposits.json, block-types.json | world |
 | dungeon-types.json, poi-types.json, static-entities.json, buildings.json | structures |
 | economy.json, mission-types.json | loops |
-| keybinds.json, ui.json, slash-commands.json, audio.json | presentation |
+| keybinds.json, ui.json, slash-commands.json, audio.json | keyboard adapter / canonical control references and presentation |
 | versions.json | timeline, alpha→steam delta, reception, fan fix-list |
 | generators.json | numeric configs + invariants for every procedural system |
 

@@ -2,7 +2,7 @@
   "$schema": "stat",
   "resources": {
     "hp":            {"name": "Health", "regen": "none passive (potions/food/heals/beds/campsite); alpha entity default 500 x multipliers", "versions": ["A","S"]},
-    "mp":            {"name": "Mana", "range": [0, 100], "gain": "warrior hits+blocks; ranger hits (+sniper stealth); rogue hits/shuriken (+assassin stealth, ninja dodges +25); mage passive regen", "spend": "special attacks (charged amount), intercept, teleport (100), fire explosion 50, healing stream ~50, mage M2 30", "display": "bar turns pink for amount to be spent while charging", "versions": ["A","S"]},
+    "mp":            {"name": "Mana", "range": [0, 100], "gain": "warrior hits+blocks; ranger hits (+sniper stealth); rogue hits/shuriken (+assassin stealth, ninja dodges +25); mage passive regen", "spend": "special attacks (charged amount), intercept, teleport (100), fire explosion 50, healing stream ~50, mage special attack 30 (S reference; current control: ../domain/controls.md#special-attack)", "display": "bar turns pink for amount to be spent while charging", "versions": ["A","S"]},
     "stamina":       {"name": "Stamina", "spend": "dodge 25, climbing drain, glider level-off, sprint drain, cyclone 25+25/s, smash 100, kick 50, high jump 25, shuriken 25, retreat/poison vial all, wall-jump (S)", "regen": "Regeneration stat", "display": "hidden until not full (A)", "versions": ["A","S"]},
     "block-power":   {"name": "Block Power", "spend": "blocking / cyclone", "regen": "when not blocking; during cyclone", "versions": ["A","S"]},
     "stealth":       {"name": "Stealth", "effect": "up to +20% attack power, +50% crit, faster MP; near-zero aggro at full; decays when not generated", "versions": ["A","S"]},

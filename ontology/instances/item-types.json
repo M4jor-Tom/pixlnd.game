@@ -20,7 +20,7 @@
   "painting":      {"type": 16, "name": "Painting", "versions": ["X"]},
   "vase":          {"type": 17, "name": "Vase", "versions": ["X"]},
   "candle":        {"type": 18, "name": "Candle", "subtypes": {"0": "candle-a", "1": "candle-b"}, "note": "decorative light: red, pink (dungeons/castles, yellow light), green (ruins/catacombs, green light); small/tall/large forked"},
-  "pet-cage":      {"type": 19, "name": "Pet (cage)", "slot": "pet", "note": "one pet per cage; turtle cage = shell; right-click to unsummon"},
+  "pet-cage":      {"type": 19, "name": "Pet (cage)", "slot": "pet", "note": "one pet per cage; turtle cage = shell; pet UI controls: ../domain/controls.md#unselected-boundaries"},
   "pet-food":      {"type": 20, "name": "Pet food (Bait)", "subtypes": "see pet-food.json (subtype == creature id)"},
   "special-accessory": {"type": 21, "name": "Special accessories (planned quest items)", "subtypes": {"0": "amulet1", "1": "amulet2", "2": "jewel-case", "3": "key", "4": "medicine", "5": "antivenom", "6": "band-aid", "7": "crutch", "8": "bandage", "9": "salve"}, "versions": ["X"]},
   "special":       {"type": 23, "name": "Specials (key items)", "subtypes": {"0": "hang-glider", "1": "boat"}, "slot": "special"},

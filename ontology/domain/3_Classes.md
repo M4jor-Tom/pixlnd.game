@@ -1,6 +1,8 @@
 ## 3. Classes
 
 Format per class: **id** — one-line definition. `versions`. Property table. Instances file.
+Player intentions and their lifecycle live only in [controls](controls.md); physical bindings
+and current adapter coupling live only in [controller profiles](controller-profiles.md).
 
 ### 3.1 World
 
@@ -343,6 +345,8 @@ A saved hero. `A S`
 
 Hybrid locomotion (D13): base walk speed, sprint/swim multipliers, tap/hold jump heights,
 gravity and automatic step-up height use `instances/generators.json#design.movement`.
+Control meanings: [move](controls.md#move), [sprint](controls.md#sprint),
+[jump](controls.md#jump) and distinct [swimming ascent](controls.md#swim-ascent).
 
 Hybrid death (D15): respawn at the character's current spawn point, initially set by
 [world.spawn-rule](#world) and relocated by [inn recovery](#game-clock). Spawn-point respawn
@@ -517,8 +521,8 @@ A tamed creature owned by a player. `A S`
 | hydration | A: droplets under HP; drains while riding; refill in water |
 | scaling | S: from owner's weapon/armor rating incl. `+` gear |
 | boss-origin | tamed boss keeps skills, normal size; reverts to normal on reload |
-| behaviour | never initiates; attacks owner's target; recall/ride key; teleports to owner if far (S); revives ~1 min after death or on re-slot; ignores wraiths |
-| riding | A reference: pet-master 5 → riding skill; S reference: land's `reins`; hybrid gate below; dismount on attack/dodge/fall/shift/pet death/water |
+| behaviour | never initiates; attacks owner's target; [recall](controls.md#pet-call) / [mount](controls.md#pet-mount); teleports to owner if far (S); revives ~1 min after death or on re-slot; ignores wraiths |
+| riding | A reference: pet-master 5 → riding skill; S reference: land's `reins`; hybrid gate below; dismount on attack/dodge/fall/pet death/water; explicit [dismount request](controls.md#pet-dismount) has no selected physical mapping |
 
 **Hybrid traversal item 1 (owner approved, 2026-09-28):** mounting requires **5 Pet Master
 points and at least 1 Riding point**, globally acquired **Reins**, and a **rideable tamed pet**.
@@ -804,7 +808,7 @@ An active or passive skill. `A S Ω` → `instances/abilities.json` (~65).
 | kind | active \| passive \| shared-passive (alpha tree) \| movement |
 | owner | class \| specialization \| all |
 | versions | A / S / both; `removed-in-s`, `added-in-s` |
-| input | S: m1, m2, m3-still, shift, shift-m1, shift-m2, shift-space, r, e, f, t, space; A: keys 1–4 |
+| _controls | inert references to [canonical actions](controls.md); class/ultimate activation resolves through the current tree, not versioned physical inputs |
 | cost | mp / stamina / all-stamina / all-mp / none |
 | cooldown-s, duration-s | |
 | effect | structured summary + numbers (e.g. cyclone tick 0.25 s; fire missiles 4 × ≈3 SP) |
@@ -827,7 +831,7 @@ subtypes; 17 usable).
 | damage-k | alpha curve multiplier: 2 dagger/fist/shield, 4 one-handed, 8 two-handed |
 | cube-capacity | 16 (1h) / 32 (2h, shield) |
 | combo-cap | fists 50, staff 50, longsword 30, bow/crossbow 30, wand 20, bracelets 20, boomerang 80 |
-| m1 / m2 | moveset summary (e.g. bow M2 volley 4–5 arrows; dagger M2 ambush stun + poison) |
+| m1 / m2 | retained data-channel names for [basic](controls.md#basic-attack) / [special](controls.md#special-attack) moveset summaries, not physical defaults |
 | material | wood (workbench) / iron (anvil) / gold-silver (bracelets) |
 
 **Hybrid Wand item 1 (owner approved, 2026-09-28):** a wand is **mechanically two-handed**,
@@ -845,10 +849,10 @@ and validation coverage remain separately deferred and unauthorized.
 
 Hybrid (D24): `design.movesets.<weapon-type>.m1|m2` gives every class weapon its runtime — melee sphere (swing / radius mults,
 spin around the player, lunge, finisher status), projectile (count, spread, speed, gravity, life, hit radius, splash, pierce,
-return), beam (instant ray) or at-cursor (sphere where the aim lands); `c-moveset-config`. Alpha m1/m2 prose stays the source.
+return), beam (instant ray) or at-cursor (sphere where the aim lands); `c-moveset-config`. Data channels `m1`/`m2` mean basic/special attacks, never device bindings.
 Crossbow bolts fly flat and fast. The live `design.movesets.crossbow` gravity of **3** does not
 override that approved trajectory; tuning alignment remains deferred, not authorized here.
-Animations/hit timing, boomerang steering, held-ray Wand M2, Bow dud shots and arrow pickup
+Animations/hit timing, boomerang steering, held-ray Wand special attack, Bow dud shots and arrow pickup
 are outside the D24 slice, not final exclusions. Creature projectiles use D26's
 `design.creature-roles`, not the player movesets.
 
@@ -883,15 +887,18 @@ ticks never reset combo; a wholly missed damaging channel resets on normal or ea
 Zero-damage taunts remain neutral even with no targets. No other deferred work is authorized.
 
 ### special-attack
-M2. Warrior/Ranger/Mage hold to charge (MP bar turns pink for the amount to be spent; more MP =
-more damage and stun/knockdown chance); Rogue instant. Mage M2 costs 30 MP (S). `A S`
+[Special attack](controls.md#special-attack): Warrior/Ranger/Mage charge; Rogue instant.
+The MP bar turns pink for the amount to be spent; more MP means more damage and stun/knockdown
+chance. Hybrid charge/release and costs use `generators.json#design.special-attack`; no physical
+binding or historical class-cost default is defined here.
 
 ### combat-block
 Defensive action, distinct from the terrain [block](#block).
-Hold M2 with shield (Guardian: any weapon; any warrior during Cyclone); drains `block-power`,
+[Block](controls.md#block) with shield (Guardian: any weapon; any warrior during Cyclone); drains `block-power`,
 regenerates when not blocking (faster during Cyclone); successful block gives MP (D11:
 the bar specials spend); Guardian block power ×2. `A S`
-Hybrid (D23): M2 held blocks and charges the special at once; numbers `design.defence.block`.
+Hybrid (D23): numbers `design.defence.block`. Block and special attack are distinct intentions;
+the current simultaneous hold coupling belongs to the [keyboard profile](controller-profiles.md#keyboard-and-mouse).
 
 Hybrid exhaustion (walkthrough item 10, runtime repair authorized 2026-09-17): judge each hit
 using the block-power available when it arrives. An eligible hit with positive power is blocked
@@ -902,7 +909,7 @@ regeneration, Guardian and Cyclone rules. Authorization covers only this repair 
 panel-time, combo, broader slot-model and validator fixes remain separate, deferred work.
 
 ### dodge
-M3 while moving: roll with i-frames (not vs spike traps / dagger poison), costs 25 stamina (25 %),
+[Dodge](controls.md#dodge) while moving: roll with i-frames (not vs spike traps / dagger poison), costs 25 stamina (25 %),
 dismounts, negates fall damage on landing. Ninja gains +25 MP and guaranteed crit; Assassin gains
 stealth. `A S`
 Hybrid (D23): `design.defence.dodge` (roll 4 blocks in 0.4 s, i-frames 0.4 s; the crit window is not built).
@@ -955,7 +962,7 @@ buff timing are outside scope. The shared overwriting runtime slot remains an ap
 implementation and live-data/checker changes require separate authorization.
 
 ### death
-No penalty in A or S (no gold/item/XP loss). A: press R → nearest revival statue (never far), enemy
+No penalty in A or S (no gold/item/XP loss). A: respawn at nearest revival statue (never far), enemy
 HP resets. S: only to an *activated* shrine of life; boss HP resets unless shrine is close.
 `X`: 2012 "injured" debuff (reduced max HP, band-aids, cured by eating).
 
@@ -1014,7 +1021,7 @@ Name prefix per rarity tier + "of <Name>" / "<Name>'s" for epic/legendary. → `
 13 indexed entity storage positions, including reserved `unknown-0` (not usable). The 12 usable
 positions are amulet, chest, gloves, boots, shoulders, main-hand, off-hand, ring-left, ring-right,
 lamp, special and pet. Preserve every index in `instances/equipment-slots.json`; no extra slot
-or stat bonus is added. The quick consumable (Q) is separate: selecting it does not displace gear.
+or stat bonus is added. The [quick consumable](controls.md#quick-item) is separate: selecting it does not displace gear.
 
 Approved hybrid model (reconciliation item 3, 2026-09-15): `accepts` names `item-type` IDs,
 with subtype restrictions where needed:
@@ -1022,7 +1029,7 @@ with subtype restrictions where needed:
 - `special` accepts `special` (subtypes `hang-glider` or `boat`), one equipped at a time.
 - Hand slots accept `weapon`; shields are weapon subtypes, not a separate item type.
   Existing class and handedness restrictions still apply (`c-weapon-class`, `c-hands`).
-- `pet` accepts a `pet-cage` or `pet-food` during taming, without replacing the Q selection.
+- `pet` accepts a `pet-cage` or `pet-food` during taming, without replacing the quick-consumable selection.
 - Armor and jewelry retain their matching slots; `unknown-0` accepts nothing.
 
 The item-3 slot-model approval is ontology-only: normalizing live slot JSON and its consumers
@@ -1069,7 +1076,7 @@ Live-data migration and recipe-learning implementation remain deferred.
 
 ### formula
 `A` recipe scroll (item type 2) with +N level; sold by vendors, dropped by tier, on dungeon tables;
-right-click to learn once power suffices. Historically replaced in S by `book-of-crafting`;
+[Learn the formula](controls.md#learn-formula) once power suffices. Historically replaced in S by `book-of-crafting`;
 both sources remain in hybrid and share recipe knowledge/duplicate handling (`recipe`, item 2).
 
 ### book-of-crafting
@@ -1088,8 +1095,8 @@ Hybrid one-time book-source claims are personal per saved world (`save-data`, pe
 
 ### customization-bench
 Attach `material-cube`s (wood on wood, iron on metal; +0.1 effective level each; 16/32 cap) and
-`spirit-cube`s `A` at 3-D positions on the weapon model (rotate with M3, drag cubes). Removal
-destroys the cube.
+`spirit-cube`s `A` at 3-D positions on the weapon model: [rotate](controls.md#bench-rotate),
+[place](controls.md#bench-place) and [remove](controls.md#bench-remove). Removal destroys the cube.
 
 ### spirit-cube
 `A` boss drop: one per eligible non-mission boss kill, always the same type/level per boss.
@@ -1126,7 +1133,7 @@ Live `pet-food.tames`, model/loader and validator remain single-species; migrati
 `S` land-bound "special" items (A: glider & boat were bought items in the special slot).
 → `instances/key-items.json`: hang-glider, boat, reins, climbing-spikes (movement, 4/land);
 divine-harp, sky-whistle, spirit-bell (ticket, 3/land); treasure-spirit, eternal-ember,
-iron-lamp (`A` item / `S` innate F ability), dungeon keys (gold/silver/copper/boss keys), flute
+iron-lamp (`A` item / `S` innate light ability; [lamp control](controls.md#lamp)), dungeon keys (gold/silver/copper/boss keys), flute
 (auto-owned, activates shrines), alpha special-accessory data `X` (key, jewel case, medicine,
 antivenom, band-aid, crutch, bandage, salve).
 
@@ -1236,8 +1243,9 @@ The per-character bag and worn gear. `A S`
 | start | `design.starting-inventory` | D18: starter weapon equipped + 5 life potions |
 
 Stacks have no cap (D6; one of each pet food). Tabs: equipment, special `S`,
-items, ingredients, pets, artifacts `S` (A: amulets tab). S: one page per visited land. Key: B (or I `A`).
-Quick-select wheel (Tab, A/D) chooses the Q item.
+items, ingredients, pets, artifacts `S` (A: amulets tab). S: one page per visited land. [Inventory control](controls.md#inventory).
+[Quick selection](controls.md#quick-select) and [cycling](controls.md#quick-cycle) choose the
+[quick item](controls.md#quick-item); physical inputs belong to profiles.
 
 ### loot-rule
 Drops random by enemy tier ±1 (bosses +1 `S`); leftovers of player tier from same-colour
@@ -1271,24 +1279,25 @@ swimming → sailing. Class column: skill-1 (1 pt) → skill-2 (5 in skill-1) �
 (5 in skill-2). Points reduce cooldown and scale one effect: +5 % effect and −5 % cooldown per
 point, cooldown floor 25 %, uncapped (D6). Respec at class trainer.
 Hybrid (D10): retain the shared chains and Alpha class column above; add an `ultimate` column
-holding the specialization's Steam R skill, unlocked by 5 points in its rank-3 skill.
+holding the specialization's selected ultimate ability, unlocked by 5 points in its rank-3 skill.
 The six Alpha skills removed in Steam return in their class column.
 Assassin's single-skill exception is defined below.
-Spending (D20): one banked point per click on the X screen (`ui.json#screens.skills`, `keybinds.json#hybrid.skills-window`);
+Spending (D20): [spend one banked point](controls.md#spend-skill-point) on the
+[skill-tree screen](controls.md#skills-window) (`ui.json#screens.skills`);
 a node opens when the previous node of its column holds `alpha-tree.needs` points (roots 0); class ranks 1–3 + ultimate
-fire on keys 1–4 (their runtimes: `design.abilities`, D21); per-point multipliers `design.skill-point`;
+activate through [class skill slots 1–4](controls.md#class-skill-1) (their runtimes: `design.abilities`, D21); per-point multipliers `design.skill-point`;
 respec at the class trainer refunds every point to the bank for a fee (`design.settlement.trainer`, D22).
 
 **Hybrid Assassin item 1 (owner approved, 2026-09-28):** Camouflage's alpha rank-3 skill and
 Steam ultimate are **the same ability**, not separately purchased copies. After **5 Sneak
-points**, spend at least **1 Camouflage point** to use it on **key 3**. Assassin has **no
-separate fourth node or key-4 ability**, even after five Camouflage points; `also-ultimate`
+points**, spend at least **1 Camouflage point** to use it through **[third class skill](controls.md#class-skill-3)**. Assassin has **no
+separate fourth node or fourth-slot ability**, even after five Camouflage points; `also-ultimate`
 denotes the shared source identity, not another unlock. There is one point investment, one
 cooldown and one buff, with no extra charge or duplicate purchase. Keep Camouflage's existing
 effect, duration, cooldown, per-point scaling and approved stealth/threat rules unchanged.
 This is an explicit Assassin exception to D10's separate ultimate node; other specializations
 and the remaining D10/D20 rules stand. The player has three distinct class skills rather than
-paying twice for the same skill. Current key-3/no-key-4 runtime already matches; live metadata
+paying twice for the same skill. Current third-slot/no-fourth-slot runtime already matches; tree metadata
 clarification and validation coverage remain separately deferred, not authorized by this approval.
 
 Hybrid traversal item 1 (approved 2026-09-28): the riding chain also requires global Reins
@@ -1400,13 +1409,25 @@ item 6's authority over gameplay after joining cannot prove where imported progr
 and does not make portable progression cheat-proof. No provenance proof, closed economy or
 global concurrency guarantee is promised. Import validation/enforcement remains deferred.
 
+### control-action
+A distinct device-independent player intention: stable ID, meaning, value/lifecycle, context
+and effect reference. Defined once in [controls](controls.md), not inferred from a shared input.
+
+### controller-profile
+Device-specific bindings and their mapping status, aliases and contextual input shapes.
+[Profiles](controller-profiles.md) refer to canonical actions; keyboard/mouse is documented,
+gamepad and Android remain unselected.
+
 ### input-binding
-Default keys per version. → `instances/keybinds.json`. A: no remapping; S: remappable, saved.
-Hybrid defaults (D13): `keybinds.json#hybrid`, the engine builds its InputMap from it.
+A physical input/shape in a controller profile referring to one or more distinct control actions.
+Several bindings may invoke one action; one input may serve several actions with documented
+phases/context, without merging their meanings. Current executable keyboard adapter:
+`instances/keybinds.json#hybrid`; its [profile](controller-profiles.md#keyboard-and-mouse)
+explains legacy grouping, aliases and implementation gaps. Remapping/persistence is deferred.
 
 ### hud-element
 → `instances/ui.json`: portrait+name+level/class+HP+XP (A), coins + key-item bar (S), HP/MP/stamina
-bars, hotbar (M1, M2, 1–4 `A`, Q), stealth bar, pet HP/XP/hydration, message log, minimap (3-D,
+bars, hotbar ([basic](controls.md#basic-attack), [special](controls.md#special-attack), class slots and [quick item](controls.md#quick-item)), stealth bar, pet HP/XP/hydration, message log, minimap (3-D,
 rotating, scalable), compass, time/temperature/humidity, land caption, buff icons `S`, help widget
 `S`, damage numbers, combo counter, stun stars, enemy name colours + stars, chat, world map (3-D
 voxel, zoom 1:4..1:256, markers, missions, players, shrines, flight points), overview map `A`,
@@ -1414,7 +1435,7 @@ character sheet (power, HP, armor, resi, crit, haste, reg, weapon/armor rating),
 crafting window, inventory, quick-select wheel, customization bench UI, character creation, world
 selection `A`, friends widget `S`. Hybrid (D17): `debug-menu` — the runtime profiling overlay any player
 can open without a dev environment (Godot Debug Menu add-on: FPS, frametime, CPU/GPU graphs, GPU +
-driver, OS; F3 cycles hidden/compact/full; shipped in release exports).
+driver, OS; [debug-menu control](controls.md#debug-menu) cycles hidden/compact/full; shipped in release exports).
 
 Hybrid (D25): floating target numbers, stars over stunned heads and buff icons with countdown fill
 use `generators.json#design.feel`. The level-up toast pops from `level-up.pop-scale` back to ×1
@@ -1434,7 +1455,8 @@ new movement, combat or interaction input. Other runtime fixes remain separately
 ### option
 → `instances/ui.json#options`: FPS limit (default 111), invert Y, camera speed, resolution,
 windowed, render distance, AA samples (`options.cfg`), rarity display, music loop `S`, volumes,
-UI scale F2/F3, hide UI F4, minimap scale F5/F6.
+UI/minimap presentation options. No physical defaults are defined here; see
+[controller profiles](controller-profiles.md).
 
 ### save-data
 A: `Save/characters.db` (sqlite `blobs(key,value)`; character blob ≈ EntityData), per-world

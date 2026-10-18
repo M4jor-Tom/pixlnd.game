@@ -1,5 +1,7 @@
 {
   "$schema": "hud-element",
+  "_controls": "../domain/controls.md",
+  "_profiles": "../domain/controller-profiles.md",
   "hud": {
     "portrait":        {"pos": "top-left", "shows": ["head", "name", "level & class", "HP", "XP current/needed (A)"], "versions": ["A","S"]},
     "coins":           {"pos": "top-left", "versions": ["S"]},
@@ -8,7 +10,7 @@
     "environment":     {"pos": "top-right", "shows": ["time", "temperature", "humidity", "minimap (3-D, rotates with camera, revealed tiles, boss heads & quest givers)", "compass"], "versions": ["A","S"]},
     "land-caption":    {"desc": "land name fades in on entering (2012-07)", "versions": ["A","S"]},
     "bars":            {"pos": "bottom-centre", "shows": ["HP", "MP (pink while charging)", "stamina (hidden when full, A)", "stealth (rogue/sniper)"], "versions": ["A","S"]},
-    "hotbar":          {"pos": "bottom-centre", "slots": {"A": ["M1", "M2", "1", "2", "3", "4", "Q"], "S": ["M1", "M2", "Q"]}, "versions": ["A","S"]},
+    "hotbar":          {"pos": "bottom-centre", "_controls": ["../domain/controls.md#basic-attack", "../domain/controls.md#special-attack", "../domain/controls.md#class-skill-1", "../domain/controls.md#class-skill-2", "../domain/controls.md#class-skill-3", "../domain/controls.md#class-skill-4", "../domain/controls.md#quick-item"], "versions": ["A","S"]},
     "pet-panel":       {"shows": ["pet HP", "XP (A)", "hydration droplets (A)"], "versions": ["A","S"]},
     "message-log":     {"pos": "bottom-right", "shows": "last ~9 item/XP messages", "versions": ["A","S"]},
     "chat":            {"pos": "bottom-left", "versions": ["A","S"]},
@@ -16,28 +18,28 @@
     "damage-numbers":  {"desc": "floating per hit", "versions": ["A","S"]},
     "combo-counter":   {"desc": "near cursor; blue with '!' at cap", "versions": ["A","S"]},
     "stun-stars":      {"versions": ["A","S"]},
-    "crosshair":       {"desc": "no target lock (lock-on existed Nov 2011 only)", "versions": ["A","S"]},
+    "crosshair":       {"desc": "no target lock; ../domain/controls.md#look adds no lock-on", "versions": ["A","S"]},
     "enemy-names":     {"desc": "colour by relative power (A) / tier (S) + optional stars; friendly = light blue + wave; other players' level on highlight (0.9.3-0)", "versions": ["A","S"]},
-    "hp-bars-toggle":  {"key": "V", "versions": ["A"]},
+    "hp-bars-toggle":  {"versions": ["A"]},
     "item-notifications": {"desc": "receipt notifications consider + gear (0.9.3-0)", "versions": ["S"]},
     "cast-bars":       {"desc": "ability name + duration", "versions": ["Ω"]},
-    "debug-menu":      {"pos": "top-left", "shows": ["FPS", "frametime graph", "CPU/GPU time", "GPU + driver", "OS", "engine version"], "design": "D17: Godot Debug Menu add-on, F3 cycles hidden/compact/full, kept in release exports so any player can profile", "versions": ["hybrid"]}
+    "debug-menu":      {"pos": "top-left", "shows": ["FPS", "frametime graph", "CPU/GPU time", "GPU + driver", "OS", "engine version"], "design": "D17: Godot Debug Menu add-on, ../domain/controls.md#debug-menu cycles hidden/compact/full, kept in release exports so any player can profile", "versions": ["hybrid"]}
   },
   "screens": {
-    "world-map":        {"key": "M", "desc": "3-D voxel map, rotate/zoom (1:4..1:256 S); near zoom = terrain miniature (structures visible as voxels + names), far = landmarks; players as heads, missions as icons, markers, shrines as blue dots, flight points as +; A: unexplored uniform blue per land, explored trail lighter; S: full colours everywhere, white flashing current land border, land selector arrows, coordinates; move while open"},
+    "world-map":        {"_controls": ["../domain/controls.md#world-map"], "desc": "3-D voxel map, rotate/zoom (1:4..1:256 S); near zoom = terrain miniature (structures visible as voxels + names), far = landmarks; players as heads, missions as icons, markers, shrines as blue dots, flight points as +; A: unexplored uniform blue per land, explored trail lighter; S: full colours everywhere, white flashing current land border, land selector arrows, coordinates; current menu time/input boundaries: ../domain/controls.md#contract"},
     "overview-map":     {"desc": "schematic lands + levels (blue ocean, green own level, red higher, grey lower)", "versions": ["A"]},
-    "inventory":        {"key": "B", "tabs": {"A": ["equipment", "amulets", "items", "ingredients", "pets"], "S": ["equipment", "special", "items", "ingredients", "pets", "artifacts"]}, "extras": ["S per-land pages", "S weapon/armor star rating at left", "coins (A)"]},
+    "inventory":        {"_controls": ["../domain/controls.md#inventory"], "tabs": {"A": ["equipment", "amulets", "items", "ingredients", "pets"], "S": ["equipment", "special", "items", "ingredients", "pets", "artifacts"]}, "extras": ["S per-land pages", "S weapon/armor star rating at left", "coins (A)"]},
     "character-sheet":  {"stats": {"A": ["power", "hp", "attack power", "spell power", "armor", "resi", "crit", "tempo", "reg", "mana reg"], "S": ["power", "hp", "armor", "resi", "crit", "haste", "reg", "weapon rating", "armor rating"]}},
-    "skills":           {"key": "X", "desc": "skill tree, 2 points/level; hybrid (D20): the class/spec tree as a list, activate = spend one banked point", "versions": ["A","hybrid"]},
-    "npc-service":      {"key": "E", "desc": "hybrid (D22): E within design.settlement.npc.interact-radius of an NPC: vendors open a two-list shop (stock / bag; activate = buy / sell; E or Esc closes), trainer respecs, innkeeper rests — both as a HUD toast", "versions": ["hybrid"]},
-    "crafting":         {"key": "C", "tabs": ["weapon", "armor", "amulet & ring", "cooking", "alchemy", "ingredients"], "shows": "materials count + required station"},
-    "quick-select":     {"key": "Tab", "desc": "wheel of potions/food/bombs; A/D cycle; count shown"},
-    "customization-bench": {"desc": "rotate weapon M3, drag cubes onto voxel model; drag out destroys"},
+    "skills":           {"_controls": ["../domain/controls.md#skills-window"], "desc": "skill tree, 2 points/level; hybrid (D20): the class/spec tree as a list, activate = spend one banked point", "versions": ["A","hybrid"]},
+    "npc-service":      {"_controls": ["../domain/controls.md#interact"], "desc": "hybrid (D22): interact within design.settlement.npc.interact-radius of an NPC: vendors open a two-list shop (stock / bag; buy-item / sell-item; ui-cancel closes), trainer respecs, innkeeper rests — both as a HUD toast; meanings: ../domain/controls.md#interact", "versions": ["hybrid"]},
+    "crafting":         {"_controls": ["../domain/controls.md#crafting"], "tabs": ["weapon", "armor", "amulet & ring", "cooking", "alchemy", "ingredients"], "shows": "materials count + required station"},
+    "quick-select":     {"_controls": ["../domain/controls.md#quick-select"], "desc": "selector of potions/food/bombs; quick-cycle changes selection; count shown; ../domain/controls.md#quick-select"},
+    "customization-bench": {"desc": "bench-rotate changes model view; bench-place attaches cubes; bench-remove destroys them; ../domain/controls.md#bench-rotate"},
     "character-creation": {"desc": "race, gender, class, head, hair, hair colour, name; random background (A)"},
     "world-selection":  {"versions": ["A"], "desc": "character select → world select → seed entry"},
-    "friends-widget":   {"key": "J", "versions": ["S"]},
-    "esc-menu":         {"desc": "icon bar with hotkeys; help button (0.9.3-0)"},
-    "move-list":        {"key": "F1", "versions": ["S"]},
+    "friends-widget":   {"versions": ["S"]},
+    "system-menu":         {"desc": "system menu and help entry; ../domain/controls.md#menu; physical defaults and current cursor-only approximation belong to profiles"},
+    "move-list":        {"_controls": ["../domain/controls.md#help"], "versions": ["S"]},
     "item-tooltip":     {"desc": "name (rarity colour) + material + type + +N (A); stats; sell price (A, removed 0.9.1-4); red name = wrong class; stars per rarity display option"}
   },
   "options": {
@@ -55,5 +57,5 @@
     "background-refresh-reduce": {"since": "0.9.1-6"},
     "missing": ["vsync", "borderless", "FOV (zoom only)"]
   },
-  "camera": {"mode": "third person, wheel zoom; full zoom-in = first person (kept, D9)", "aim": "sniper Aim zooms (A)", "map": "rotate LMB, pan RMB"}
+  "camera": {"mode": "third person, camera zoom (../domain/controls.md#zoom); full zoom-in = first person (kept, D9)", "aim": "sniper Aim zooms (A)", "map": "../domain/controls.md#map-rotate, ../domain/controls.md#map-pan, ../domain/controls.md#map-zoom, ../domain/controls.md#map-marker, ../domain/controls.md#map-center; physical gestures unselected"}
 }

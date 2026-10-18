@@ -9,10 +9,12 @@ One row per fact type. Cardinality as `domain → range`.
 | wears-material | character-class | material | 1→1 | iron/linen/silk/cotton |
 | grants-ability | specialization ∪ character-class | ability | 1→n | versioned |
 | unlocks-next | ability | ability | 1→0..1 | alpha tree: 5 points |
-| bound-to-input | ability | input-binding | 1→1 per version | |
+| invoked-by-control | ability | control-action | n→n | active ability activation refers to [controls](controls.md), directly or through the current class slot/tree; passive effects need no binding |
+| bound-to-input | control-action | input-binding | n→n | each binding belongs to a controller profile; aliases/shared phases and context are profile-owned, not versioned ability identity |
+| has-input-binding | controller-profile | input-binding | 1→0..n | [profiles](controller-profiles.md) explicitly distinguish implemented, registered-only and unselected mappings |
 | costs | ability | resource | 1→0..n | amount per resource, scoped by ruleset |
 | applies | ability ∪ weapon-type ∪ hazard | status-effect | n→n | |
-| has-moveset | weapon-type | ability (m1, m2) | 1→2 | |
+| has-moveset | weapon-type | ability (basic, special) | 1→2 | |
 | knows-recipe | player-character | recipe | n→n | one known fact per character/recipe, shared by books and formulas (`known-recipes`), even while power-locked; knowledge alone does not grant crafting usability; recipes persist across lands/sessions/worlds (§3.7 save-data), not shared-account knowledge |
 | crafted-at | recipe | crafting-station | 1→1 | |
 | consumes | recipe | ingredient ∪ material | 1→n | with counts |
@@ -30,7 +32,7 @@ One row per fact type. Cardinality as `domain → range`.
 | guards | creature (boss) | artifact ∪ key-item ∪ gnome-supplier ∪ magic-crystal | n→n | |
 | drops | creature | item ∪ spirit-cube ∪ leftovers ∪ currency | n→n | random by tier + species list |
 | holds | inventory | item | 1→n | count per entry; c-stack-rule |
-| equips | entity | item | 1→0..12 | at most one per usable equipment-slot; reserved index 0 and separate Q selection excluded; c-slot-accepts |
+| equips | entity | item | 1→0..12 | at most one per usable equipment-slot; reserved index 0 and separate quick-consumable selection excluded; c-slot-accepts |
 | threat | entity (mob) | entity (player-character) | n→n | hybrid mob/player combat state, retained across temporary absence and surviving-mob restart (§3.2); optional per ordered pair, with one numeric `aggro-points` amount; c-threat-pair |
 | current-target | entity (mob) | entity (player-character) | 1→0..1 | hybrid mob/player target selection, separate from threat amounts; multiple mobs may select the same player; c-current-target |
 | requires-key-item | poi-type ∪ dungeon-type ∪ ability | key-item | n→n | divine door→harp, crypt gate→bell, bird statue→whistle; hybrid riding→reins (acquired, c-riding), hang-gliding→hang-glider and sailing→boat (equipped, c-gliding/c-sailing); global scope |

@@ -7,6 +7,8 @@ derived from this file and `instances/`. Nothing downstream may drift ahead of i
 - [1. Scope](1_Scope.md)
 - [2. Competency Questions](2_Competency_Questions.md)
 - [3. Classes](3_Classes.md)
+- [Controls — canonical player intentions](controls.md)
+- [Controller profiles — bindings and mapping status](controller-profiles.md)
 - [4. Relations](4_Relations.md)
 - [5. Constraints](5_Constraints.md)
 - [6. Generators](6_Generators.md)

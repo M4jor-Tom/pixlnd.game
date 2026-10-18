@@ -98,7 +98,7 @@ research. No new implementation authority or whole-topic completion.
 
 ## Player (§3.2 player-character, slice e33c991)
 - [x] Spawn = the (0,0) village square (`world.spawn-rule`, D22). Default seed 26879 spawns in deadlands (undead village).
-- [ ] Climb (E grab, wall-jump), glider, swim breath/drowning (`abilities.json` movement kind;
+- [ ] Climb (semantic grab; wall-jump lifecycle unselected), glider, swim breath/drowning (`abilities.json` movement kind;
   `flags.drowning`, `diving-breath`) — `player.gd` ponytail. Approved traversal gates/debt are below.
 - [x] Dodge roll (D23): cost, movement, i-frames and passive rewards run; see Combat for remaining passives.
 - [x] Fall damage (D13 numbers) — applied on landing; D23 clears fall tracking while rolling.
@@ -106,8 +106,8 @@ research. No new implementation authority or whole-topic completion.
   through `design.enemy-level`. Still open: see Progression below.
 - [ ] Character-creation UI for race, gender, class, spec and appearance: player remains a human capsule;
   `-- --class=<id>` already selects the class and its starting spec (`races.json#_creation`, D8 skin colour).
-- [ ] Rebinding UI + persistence (S: remappable, saved) — `input_map.gd` builds defaults only
-  (`input-binding`, `save-systems`).
+- [ ] Rebinding UI + persistence (profile contract unselected) — `input_map.gd` builds defaults only
+  ([controller profiles](../../ontology/domain/controller-profiles.md), `input-binding`, `save-systems`).
 - [ ] Camera: no follow smoothing/deadzone, `design.camera.shoulder-offset` unused, sniper Aim
   zoom (`ui.json#camera.aim`).
 - [ ] Menu: the `menu` action only toggles mouse capture; no pause/options screen (`option`).
@@ -205,14 +205,20 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 - [ ] Item 8 — save/resume world time without downtime advance or catch-up; running empty servers keep approved timers, not full distant AI (`game-clock`).
 - [ ] Item 9 — surviving logical-mob threat/order/provocation across restart; preserve normal resets and taunt termination (`ai-behavior`, `c-threat-pair`).
 
+## Device-independent controls (documentation only)
+
+- [ ] Consume the [canonical action catalog](../../ontology/domain/controls.md) and
+  [controller profiles](../../ontology/domain/controller-profiles.md) when separately authorized.
+  The current keyboard adapter still couples block/special, jump/swimming ascent and
+  interaction/pickup; separate meanings are documented, not yet separate runtime channels.
+  Preserve the fourth-slot alias and Assassin third-slot-only Camouflage.
+- [ ] Action/profile reference enforcement and device-resolved prompts are not implemented.
+  Raw camera/native UI input paths and shared panel cursor ownership remain documented ceilings.
+  Existing input restrictions and live inventory/skills/shop time remain unchanged.
+  Gamepad/Android tool/layout, hold interruption and unresolved contextual routing are unselected;
+  this debt chooses none of them and grants no runtime/schema work.
+
 ## Validation contract (documentation approved; implementation unauthorized)
-- Source item 56 (`ontology/domain/index.md §5`): interaction/climbing descriptions preserve Alpha pickup R
-  versus `keybinds.json#pick-up.A` E, without resolving hold/grab/Shift or introduction/history.
-  D13's hybrid E defaults stand; no remapping, source labels, live-data/checker or gameplay work.
-- Source item 55 (`ontology/domain/index.md §5`): exact historical Steam F2/F3 UI down/up, F4 hide and F5/F6
-  minimap down/up attribution supplies no introduction/patch date or whole-guide ancestry.
-  D17's hybrid F3 debug-menu stands; no remapping or new UI/control implementation is selected.
-  Other UI/control histories remain research; no source-label/live-data/checker change authorized.
 - [ ] Source item 32 (`ontology/domain/3_Classes.md#pet-food`): the daily stocked-type report selects no purchase
   quantity or source-build attribution; daily amounts/food histories remain research. No stock,
   purchase or carrying rule changes, label inference or data/checker/runtime work authorized.
@@ -321,8 +327,9 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
   `godot_4-export-templates-bin` if that is ever wanted.
 - [ ] Visual checks are manual (`--write-movie`); no reference-frame comparison in CI.
 - [ ] Runtime profiling overlay (D17, `hud-element` debug-menu): add the Godot Debug Menu add-on
-  (`addons/debug_menu`, MIT, Asset Library "Debug Menu"), map `keybinds.json#hybrid.debug-menu` (F3) to its
-  `cycle_debug_menu` action in `input_map.gd`, keep it in release exports. It shows GPU + driver, so it also
+  (`addons/debug_menu`, MIT, Asset Library "Debug Menu"), map
+  [debug-menu](../../ontology/domain/controls.md#debug-menu) through its controller profile to
+  `cycle_debug_menu` in `input_map.gd`, keep it in release exports. It shows GPU + driver, so it also
   answers the untested XWayland-vs-native-Wayland question; `monitors/godot_threads.sh` becomes dev/CI only.
 - [ ] `design.frame-budget` (D17) is not consumed yet: set `Engine.max_physics_steps_per_frame` and
   `Engine.physics_ticks_per_second` from it in `main.gd` (`c-frame-budget`).

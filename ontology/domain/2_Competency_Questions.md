@@ -5,7 +5,7 @@ Each must be answerable from the model + instances. Data requirement in the righ
 | # | Question | Answered by |
 |---|---|---|
 | CQ1 | What can the player be? (race, gender, class, spec, appearance) | `race`, `character-class`, `specialization`, `appearance` |
-| CQ2 | What can the player *do* in combat, with which input, at what cost/cooldown, in which version? | `ability`, `weapon-type` (moveset), `resource`, `input-binding` |
+| CQ2 | What can the player *do* in combat, through which semantic action, at what cost/cooldown, in which ruleset? | `ability`, `weapon-type` (moveset), `resource`, [controls](controls.md), `control-action` |
 | CQ3 | How much damage / HP / armor does an item or character have? | `stat`, `item` + `item-stat-formula` generator, `level-formula` |
 | CQ4 | What exists in the world and where? (biomes → flora, fauna, structures) | `landscape`, `terrain-feature`, `creature`, `flora`, `deposit`, `dungeon-type`, `poi-type`, relations `spawns-in`, `placed-in` |
 | CQ5 | How is the world laid out numerically? (block, zone, region, mission grid, seed) | `world`, `zone`, `land`, `generators.json` scales |
@@ -20,7 +20,7 @@ Each must be answerable from the model + instances. Data requirement in the righ
 | CQ14 | What is the day/night cycle, what resets, how does sleep work? | `game-clock` |
 | CQ15 | What persists between sessions and across worlds? | `save-data`, `world`, `player-character` |
 | CQ16 | How does multiplayer work in each version? | `multiplayer-mode`, `slash-command` |
-| CQ17 | What is on screen and which key does what? | `hud-element`, `input-binding`, `option` |
+| CQ17 | What is on screen, what does each control mean and how does each controller bind it? | `hud-element`, [controls](controls.md), [controller profiles](controller-profiles.md), `input-binding`, `option` |
 | CQ18 | What was in which version, and what did fans ask to fix? | `ruleset` feature flags, `instances/versions.json` |
 | CQ19 | What did Omega announce, retained as roadmap/reference rather than v1 content? | `Ω`-tagged classes/fields |
 
