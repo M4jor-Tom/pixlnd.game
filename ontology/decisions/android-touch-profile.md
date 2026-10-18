@@ -45,3 +45,9 @@ A neutral zone followed by full speed retains existing movement rather than addi
 Selected recommended option, exact item answer: `3: Approved`. Effective choice:
 [finger ownership and simultaneous controls](../domain/controller-profiles.md#android-finger-ownership).
 Stable finger ownership supports concurrent input while preventing crossing or extra fingers from activating other controls.
+
+### 4 — Intentional release versus interruption
+
+Selected recommended option, exact item answer: `4: Approved`. Effective choice:
+[intentional release versus interruption](../domain/controller-profiles.md#android-interruption).
+Fresh-touch rearming and release-inside completion favor intentional actions over automatic resumption; committed effects keep their existing lifecycles.

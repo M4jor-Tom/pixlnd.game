@@ -116,3 +116,19 @@ activation requires a fresh touch.
 
 Movement, look and an action must work simultaneously, without overriding gameplay eligibility
 or costs. A touch must never also generate a duplicate mouse-driven action.
+
+<a id="android-interruption"></a>
+### Intentional release versus interruption
+
+For [charged specials](3_Classes.md#special-attack), only a normal release by the owning finger
+inside the special button intentionally completes the charge under existing execution rules.
+Sliding outside cancels without firing or spending reserved MP; interruption never becomes
+release-to-fire. Cancellation adds no MP refund beyond not spending the reserved amount.
+Instant specials retain their trigger shape.
+
+For held buttons, sliding outside ends the request; sliding back does not restart it. The same
+physical touch cannot rearm or transfer: a fresh touch is required. Focus loss, backgrounding,
+panel opening, layout changes and death clear outstanding touch requests and cancel unfinished
+charges. Returning never resumes them automatically. Already-fired attacks, running abilities
+and cooldowns retain their existing rules; committed effects are not undone. This selects input
+cleanup, not background simulation, pause or save policy.
