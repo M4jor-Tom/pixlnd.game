@@ -1,14 +1,5 @@
 # Handoff — pending continuation
 
-## Independent combat DOT — player documentation pending
-
-Next action: settle the slice identity/naming and obtain separate documentation authorization for
-the [independent burning and poison applications](../ontology/domain/3_Classes.md#status-effect), then
-write the player changelog and matching native demonstration movie using the actual implementation
-commit and the [movie workflow](../skills/ontology-resume-router-slice/SKILL.md#native-changelog-movie).
-Do not invent a D-ID. Resistance, aggro, environmental hazards and additional DOT buff timing remain
-outside this slice; no further gameplay, source research, dependency installation or push is authorized.
-
 ## Android touch — characterization and publication follow-up
 
 Current hardware-test status and its evidence limits live in the
@@ -17,9 +8,9 @@ characterization and overlay render-cost measurement remain optional separately 
 not a device-access prerequisite for the authorized combat slice. Do not infer individual
 checklist passes or install an Android SDK/ADB/export environment.
 
-Push and publication remain unauthorized. The player changelog and matching native movie
-remain pending separately authorized documentation work and a settled slice identity/naming;
-no D-ID or completed slice claim should be invented. Remaining controls scope stays in the
+Android push, publication and changelog backfill remain unauthorized; the separately authorized
+combat DOT documentation and feature-branch push do not extend to this follow-up.
+Remaining controls scope stays in the
 [backlog](ROADMAP/todo_implement.md#device-independent-controls-documentation-only).
 
 ## Dormant source continuation — separate owner request required
