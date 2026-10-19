@@ -83,8 +83,16 @@ This is representation only, not an ontology reasoner or new gameplay authorizat
 
 Use Node (stdlib only), **Java 21**, curl and SHA-256 tools, with the consolidated
 **Structurizr 2026.09.19** WAR from the [official binaries page](https://docs.structurizr.com/binaries).
-Lite/old CLI are EOL. From the repository root, Nix users with flakes enabled can enter a shell
-providing all these prerequisites (or install them normally):
+Lite/old CLI are EOL. To launch the live entities graph from the repository root with flakes enabled:
+
+```sh
+nix run .#ontology-view
+```
+
+The flake app supplies the runtime, caches the pinned WAR outside the repository, and verifies its
+SHA-256 before use. Open <http://localhost:8080>, choose **Entities definitions**, and press Ctrl-C
+to stop the viewer. For direct export, locate, or test commands below, Nix users can enter a shell
+providing the prerequisites (or install them normally):
 
 ```sh
 nix shell nixpkgs#jdk21 nixpkgs#nodejs nixpkgs#curl nixpkgs#coreutils -c bash
