@@ -1,8 +1,8 @@
 # Android native touch controls
 
 Selected tool stack: native Godot `VirtualJoystick`, `TouchScreenButton` and a dedicated
-touch-look region. The bounded first-slice adapter is implemented; Android device validation
-remains pending. Broader controls work requires separate authority.
+touch-look region. The bounded first-slice adapter is implemented and owner hardware-tested on
+Android. Detailed device/checklist coverage is unrecorded; broader controls work requires separate authority.
 
 Native controls require no third-party addon dependency. A transparent UI-only SubViewport
 receives only owned native widget events and an explicitly owned panel pointer; world/body

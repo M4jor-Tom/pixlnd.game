@@ -36,9 +36,9 @@ exclusive, live inventory/skills/shop panels with explicit selected-item operati
 `main.gd` selects it only on Android; keyboard/mouse behavior is unchanged. The UI-only
 SubViewport isolates native widgets and owned panel pointers from emulated mouse gameplay.
 Safe-area/DPI metrics map to viewport coordinates; invalid metrics or a too-small layout
-reject input with a diagnostic instead of shrinking targets. Desktop synthetic regressions and
-windowed captures are not Android device acceptance: physical multitouch, both rotations,
-platform display/lifecycle/Back delivery, ergonomics and render cost remain pending.
+reject input with a diagnostic instead of shrinking targets. The owner has tested the game on
+Android hardware. Device/OS details, individual acceptance-check coverage and render-cost measurements
+are unrecorded; desktop synthetic regressions and windowed captures do not establish those results.
 Broader controls work still needs separate authority; bounded debt is in
 [the implementation backlog](../docs/ROADMAP/todo_implement.md#device-independent-controls-documentation-only).
 

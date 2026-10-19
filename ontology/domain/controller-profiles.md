@@ -75,14 +75,16 @@ chosen. Native UI support alone is not a gameplay profile; do not inherit keyboa
 
 ## Android
 
-Stable profile ID: `android`. **FIRST-SLICE RUNTIME / DEVICE ACCEPTANCE PENDING.** The
+Stable profile ID: `android`. **FIRST-SLICE RUNTIME / OWNER HARDWARE-TESTED.** The
 [selected native Godot stack](../decisions/android-native-touch-controls.md) is `VirtualJoystick`,
 `TouchScreenButton` and a dedicated touch-look region. The physical policy below
 serves the same [54-action catalog](controls.md),
 not a reduced or reinterpreted scheme. Widgets do not implement the catalog or decouple consumers.
 The first-slice native adapter and separated consumers have desktop synthetic regressions and
-windowed visual checks. Physical Android behavior/device acceptance remains unverified; the
-full catalog and broader implementation remain deferred. Unmapped features gain no physical defaults.
+windowed visual checks, and the owner has tested the game on Android hardware. Device/OS details,
+individual acceptance-check coverage and render-cost measurements are not recorded; this is not a
+claim that every checklist item was verified. The full catalog and broader implementation remain
+deferred. Unmapped features gain no physical defaults.
 
 <a id="android-layout"></a>
 ### Landscape layout and fixed joystick

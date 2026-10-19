@@ -37,8 +37,9 @@ not the gameplay slice loop. A green validator proves only its implemented check
 gamepad remains unselected; Android's [native tool stack](decisions/android-native-touch-controls.md)
 and [touch-profile policy](domain/controller-profiles.md#android) have a bounded first-slice
 runtime and scoped profile validation; broader controls/reference enforcement remains deferred.
-Android device acceptance is pending; desktop synthetic tests do not establish it. `keybinds.json#hybrid` is the
-unchanged keyboard adapter, not a semantic catalog. The [controls contract](domain/controls.md#contract)
+The first slice is owner hardware-tested on Android; detailed checklist coverage and render-cost
+measurements are unrecorded. Desktop synthetic tests remain separate evidence. `keybinds.json#hybrid`
+is the unchanged keyboard adapter, not a semantic catalog. The [controls contract](domain/controls.md#contract)
 is documentation, not gameplay implementation authority.
 
 ## Instance files

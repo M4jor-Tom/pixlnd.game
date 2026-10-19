@@ -1,19 +1,19 @@
 # Handoff — pending continuation
 
-## Android touch — acceptance and publication pending
+## Independent combat DOT — implementation authorized
 
-Next action: obtain governed Android device/toolchain access and run physical acceptance
-against the [Android profile](../ontology/domain/controller-profiles.md#android),
-[controls](../ontology/domain/controls.md) and [engine checks](../game/README.md#checks).
-First-slice runtime/test/docs work is authorized; this grants no unrelated gameplay, source
-research, toolchain installation or publication work.
+Next action: implement the approved [independent burning and poison applications](../ontology/domain/3_Classes.md#status-effect)
+with scoped validation, regressions and a separate local implementation commit. Preserve existing
+defences and dodge exceptions; Resistance, aggro, environmental hazards and additional DOT buff
+timing remain outside this slice. No source research, dependency installation or push is authorized.
 
-Actual Android acceptance remains pending: physical multitouch, both landscape rotations and
-safe-area/DPI mapping, latency/ergonomics, panel confirmation/scroll, platform Back/focus/background
-and orientation cleanup, and overlay render cost. Desktop synthetic events and inspected native
-viewport PNGs do not substitute for hardware. ADB is not on PATH and no authorized runnable
-device/export environment is established. Obtain governed device/toolchain access before those
-checks; do not install dependencies or weaken the acceptance gate.
+## Android touch — characterization and publication follow-up
+
+Current hardware-test status and its evidence limits live in the
+[Android profile](../ontology/domain/controller-profiles.md#android). Further device/checklist
+characterization and overlay render-cost measurement remain optional separately selected work,
+not a device-access prerequisite for the authorized combat slice. Do not infer individual
+checklist passes or install an Android SDK/ADB/export environment.
 
 Push and publication remain unauthorized. The player changelog and matching native movie
 remain pending separately authorized documentation work and a settled slice identity/naming;

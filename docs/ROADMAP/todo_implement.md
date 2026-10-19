@@ -208,11 +208,11 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 <a id="device-independent-controls-documentation-only"></a>
 ## Device-independent controls
 
-- [ ] Android first-slice device acceptance: verify actual three-finger movement/look/action,
-  safe-area/DPI targets and ergonomics in both landscape rotations, panel scrolling/inside-release
-  operations, background/focus/death/layout cleanup, no duplicate mouse actions and native Back.
-  Desktop synthetic checks and native windowed captures are not device acceptance; no Android
-  SDK/ADB/export setup is authorized by this entry.
+- [x] Android first-slice owner hardware trial. Device/OS details and individual checklist results
+  are unrecorded, not inferred passes: three-finger movement/look/action, safe-area/DPI targets and
+  ergonomics in both landscape rotations, panel scrolling/inside-release operations,
+  background/focus/death/layout cleanup, duplicate mouse actions and native Back. Further detailed
+  characterization is separate follow-up; no Android SDK/ADB/export setup is authorized here.
 - [ ] Measure Android render cost of the UI-only full-size SubViewport composition
   (`android_touch.gd` ponytail); optimize only if actual profiling warrants it.
 - [ ] Finish the deferred full [canonical action catalog](../../ontology/domain/controls.md) and
