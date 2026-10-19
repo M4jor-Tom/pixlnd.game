@@ -5,13 +5,13 @@
 The four selected gameplay choices are resolved in canonical definitions:
 [landscape availability](3_Classes.md#landscape), [ordinary Lion tameability](3_Classes.md#creature),
 [Resistance meaning](3_Classes.md#stat) and [fixed gear HP](3_Classes.md#item).
-No unresolved entry remains in the game-choice backlog. Resistance's five approved combat
-selections, including defence order and dependencies, are [defined under stat](3_Classes.md#stat)
+No unresolved entry remains in the game-choice backlog. Resistance's mitigation, defence order
+and innate creature/NPC baseline are [defined under stat](3_Classes.md#stat)
 and constrained by the [mitigation rules](5_Constraints.md#constraint-catalog).
 Combat hit-derived burning and poison have [independent-application rules](3_Classes.md#status-effect).
 
-Implementation remains separately unauthorized; see
-[deferred work](../../docs/ROADMAP/todo_implement.md). Documentation is not runtime coverage
+Implementation status and remaining deferrals are tracked in the
+[implementation backlog](../../docs/ROADMAP/todo_implement.md). Documentation is not runtime coverage
 or permission to invent additional rules from Resistance's meaning.
 
 ### Reference uncertainties, not new hybrid defaults

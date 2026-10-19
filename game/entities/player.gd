@@ -118,7 +118,7 @@ func setup_items(p_o, p_design: Dictionary, class_id: StringName = &"warrior", s
 	inventory.changed.connect(_refresh_gear)
 	_refresh_gear()
 
-## equips: main-hand item → weapon damage (gen-item-stats × attack-power-mult); armor = sum over worn gear.
+## equips: main-hand item → weapon damage; armor and Resistance sum the worn gear stats.
 func _refresh_gear() -> void:
 	var main = inventory.equipment.get(&"main-hand")
 	if main != null:
@@ -126,9 +126,10 @@ func _refresh_gear() -> void:
 		weapon = {"type": main.subtype, "damage": Items.damage(main, o) * float(combat["attack-power-mult"]),
 			"combo_cap": wt.combo_cap if wt.combo_cap > 0 else int(combat["combo"]["default-cap"])}
 		moveset = moveset_for(main.subtype)
-	armor = 0.0
+	armor = 0.0; resistance = 0.0
 	for slot in inventory.equipment:
 		armor += Items.armor(inventory.equipment[slot], o)
+		resistance += Items.resistance(inventory.equipment[slot], o)
 
 ## death of a creature we last hit → design.progression XP (D19), then level-up (c-level-up).
 func on_kill(creature_level: int) -> void:
@@ -555,20 +556,21 @@ func _swing() -> void:
 ## One attack of any moveset kind; returns the hits landed, or -1 while shots are still flying.
 func _attack(m: Dictionary, dmg: float, combo_bonus: bool, applies: Array) -> int:
 	var ba: Dictionary = combat["basic-attack"]
+	var attack_type := weapon_attack_type()
 	dmg *= float(m.get("damage-mult", 1.0))
 	var hits := 0
 	match str(m.get("kind", "melee")):
 		"projectile":
-			_fire(m, dmg, combo_bonus, applies)
+			_fire(m, dmg, combo_bonus, applies, Vector3.INF, attack_type)
 			return -1
 		"beam", "at-cursor":
-			hits = _strike(_aim_point(float(m["range"])), float(m["radius"]), dmg, combo_bonus, applies)
+			hits = _strike(_aim_point(float(m["range"])), float(m["radius"]), dmg, combo_bonus, applies, attack_type)
 		_:
 			var lunge := float(m.get("lunge", 0.0))
 			if lunge > 0.0:
 				move_and_collide((Basis(Vector3.UP, rig.rotation.y) * Vector3.FORWARD) * lunge)   # ponytail: instant lunge, no animation
 			var center: Vector3 = global_position + Vector3.UP if m.get("around", false) else _front()
-			hits = _strike(center, float(ba["hit-radius"]) * float(m.get("radius-mult", 1.0)), dmg, combo_bonus, applies)
+			hits = _strike(center, float(ba["hit-radius"]) * float(m.get("radius-mult", 1.0)), dmg, combo_bonus, applies, attack_type)
 	if hits > 0:
 		_landed(combo_bonus)
 	else:
@@ -583,12 +585,12 @@ func _aim_point(range: float) -> Vector3:
 	return hit["position"] if not hit.is_empty() else from + aim() * range
 
 ## `count` projectiles fanned by `spread` radians around the aim, sharing one attack record (projectile.gd).
-func _fire(s: Dictionary, dmg: float, combo_bonus: bool, applies: Array, from := Vector3.INF) -> Array:
+func _fire(s: Dictionary, dmg: float, combo_bonus: bool, applies: Array, from := Vector3.INF, attack_type: StringName = Combat.PHYSICAL) -> Array:
 	if from == Vector3.INF:
 		from = eye()
 	if feel != null:
 		feel.play(&"shoot")                                   # D25: once per attack, not per shot of a volley
-	return Projectile.fire(self, from, aim(), s, dmg, combo_bonus, applies)
+	return Projectile.fire(self, from, aim(), s, dmg, combo_bonus, applies, attack_type)
 
 ## A landed attack: +1 combo (capped per weapon-type), the M1 finisher counter, MP for non-mages on basic hits.
 func _landed(combo_bonus: bool) -> void:
@@ -620,10 +622,8 @@ func nearest_enemy(radius: float) -> Node3D:
 			return b
 	return null
 
-## Every live entity inside the sphere takes `dmg` (buffs, crit, stealth, armor); the combo bonus only for the basic attack;
-## `applies` = status-effect ids the hit carries (design.status-effects decides what they do). A landed hit spends the
-## stealth bar unless a stealth-full buff pins it (D23).
-func _strike(center: Vector3, radius: float, dmg: float, combo_bonus: bool, applies: Array = []) -> int:
+## Live entities take `dmg` after exactly one equipment defence; hit-derived DOT receives this adjusted hit amount.
+func _strike(center: Vector3, radius: float, dmg: float, combo_bonus: bool, applies: Array = [], attack_type: StringName = Combat.PHYSICAL) -> int:
 	var hits := 0
 	var chance: float = crit_chance + (abilities.add("crit-add") if abilities != null else 0.0)
 	var se: Dictionary = design.get("status-effects", {})
@@ -638,7 +638,7 @@ func _strike(center: Vector3, radius: float, dmg: float, combo_bonus: bool, appl
 		var d := dmg * (Combat.combo_mult(combo, combat) if combo_bonus else 1.0) * cm
 		if abilities != null:
 			d *= abilities.mult("damage-mult")
-		d = Combat.after_armor(d, float(body.get("armor")), combat)
+		d = Combat.after_defence(d, float(body.get("armor")), float(body.get("resistance")), attack_type, combat)
 		var blocked := false
 		if d > 0.0 or applies.has(&"taunt"):                   # taunt: a 0-damage hit sets the creature's target
 			var before: float = body.hp
@@ -659,6 +659,16 @@ func _strike(center: Vector3, radius: float, dmg: float, combo_bonus: bool, appl
 	if hits > 0 and not (abilities != null and abilities.flag("stealth-full")):
 		stealth = 0.0
 	return hits
+
+func weapon_attack_type() -> StringName:
+	if o == null or not weapon.has("type") or not o.weapon_types.has(weapon["type"]):
+		return Combat.PHYSICAL
+	return Combat.MAGICAL if (o.weapon_types[weapon["type"]] as Model.WeaponType).character_class == &"mage" else Combat.PHYSICAL
+
+func ability_attack_type(a) -> StringName:
+	var owner: StringName = StringName(str(a.owner)) if a.owner is String else spec
+	var source_class: StringName = o.specs[owner].character_class if o.specs.has(owner) else owner
+	return Combat.MAGICAL if source_class == &"mage" else Combat.PHYSICAL
 
 func _on_died() -> void:
 	if touch_input != null: touch_input.cancel_all()

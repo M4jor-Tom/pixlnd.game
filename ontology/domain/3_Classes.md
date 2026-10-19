@@ -799,7 +799,11 @@ Separately, a Mage's 50-point absorption shield facing that resisted 70-damage h
 Items 1–2 define the first stage; item 3 limits its coverage. Preserve existing block
 eligibility/exhaustion, multiplier values, absorption-pool rules and status protections.
 The examples select no new block/buff strengths or shield capacities.
-Implementation and live-data/checker changes remain separately unauthorized.
+
+**Hybrid Resistance item 6 (owner approved):** an unequipped creature or NPC has innate
+Resistance `R = 0`. No automatic level, species, role or family scaling applies; any equipped-item
+contribution remains separate under the existing equipment rules.
+Implementation status is tracked in `docs/ROADMAP/todo_implement.md`; this rule itself grants no implementation authority.
 
 ### ability
 An active or passive skill. `A S Ω` → `instances/abilities.json` (~65).
@@ -959,8 +963,8 @@ These rules select application lifetimes and scheduling, not new damage coeffici
 handling, dodge/status protections or aggro rules. Environmental hazards and additional DOT
 buff timing are outside scope. The runtime retains each application's damage, source, remaining
 lifetime and next tick independently, catching up due ticks only within its lifetime. Scoped
-load-time checks require the selected burning/poison design rows and numeric values; this does
-not implement the separately deferred Resistance or aggro rules.
+load-time checks require the selected burning/poison design rows and numeric values; they do
+not by themselves establish Resistance or aggro runtime coverage.
 
 ### death
 No penalty in A or S (no gold/item/XP loss). A: respawn at nearest revival statue (never far), enemy

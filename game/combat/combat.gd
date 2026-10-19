@@ -7,6 +7,15 @@ const Model := preload("res://ontology/model.gd")
 static func weapon_damage(level: int, rarity: int, k: int, combat: Dictionary) -> float:
 	return Model.stat_curve(level, rarity) * k * float(combat["attack-power-mult"])
 
+const PHYSICAL := &"physical"
+const MAGICAL := &"magical"
+
+## Apply exactly one equipment defence; resistance's floor is scoped to this stage.
+static func after_defence(attack: float, armor: float, resistance: float, attack_type: StringName, combat: Dictionary) -> float:
+	if attack_type == MAGICAL:
+		return maxf(attack - resistance, attack * float(combat["armor-floor"]))
+	return after_armor(attack, armor, combat)
+
 ## Armor is subtractive with a floor (D15).
 static func after_armor(attack: float, armor: float, combat: Dictionary) -> float:
 	return maxf(attack - armor, attack * float(combat["armor-floor"]))

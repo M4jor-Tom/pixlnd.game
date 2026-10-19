@@ -50,7 +50,7 @@ func use(a) -> bool:
 	match str(r["runtime"]):
 		"dash":
 			if r.has("throw"):
-				p._fire(r["throw"], float(p.weapon["damage"]) * float(r["throw"].get("damage-mult", 1.0)) * e, false, a.applies)
+				p._fire(r["throw"], float(p.weapon["damage"]) * float(r["throw"].get("damage-mult", 1.0)) * e, false, a.applies, Vector3.INF, p.ability_attack_type(a))
 			var d := _dash_dir(r)
 			dash = {"a": a, "r": r, "dir": d[0], "left": d[1], "origin": p.global_position, "e": e}
 		"channel":
@@ -58,7 +58,7 @@ func use(a) -> bool:
 		"burst":
 			_strike(a, r, p.global_position, e)
 		"projectile":
-			p._fire(r, float(p.weapon["damage"]) * float(r.get("damage-mult", 1.0)) * e, false, a.applies)
+			p._fire(r, float(p.weapon["damage"]) * float(r.get("damage-mult", 1.0)) * e, false, a.applies, Vector3.INF, p.ability_attack_type(a))
 			if r.has("heal-pct"):
 				_strike(a, {"heal-pct": r["heal-pct"], "heal-over-s": r.get("heal-over-s", 0.0)}, p.global_position, e)
 		"buff":
@@ -85,7 +85,7 @@ func _strike(a, r: Dictionary, at: Vector3, e: float, reset_on_miss := true) -> 
 	var hits := 0
 	var damaging := float(r.get("damage-mult", 0.0)) > 0.0
 	if damaging or not a.applies.is_empty():
-		hits = p._strike(at + Vector3.UP, float(r["radius"]), float(p.weapon["damage"]) * float(r.get("damage-mult", 0.0)) * e, false, a.applies)
+		hits = p._strike(at + Vector3.UP, float(r["radius"]), float(p.weapon["damage"]) * float(r.get("damage-mult", 0.0)) * e, false, a.applies, p.ability_attack_type(a))
 	if damaging:                                           # taunts and heals never change combo or its timer
 		if hits > 0:
 			p._landed(false)

@@ -12,6 +12,7 @@ var level := 1
 var max_hp := 100.0
 var hp := 100.0
 var armor := 0.0
+var resistance := 0.0
 var hostility: StringName = &"P"          # H hostile, N neutral, P passive, F friendly
 var dead := false
 var statuses: Dictionary = {}             # status id → timed dict, or array of independent DOT application dicts

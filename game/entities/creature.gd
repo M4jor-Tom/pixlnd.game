@@ -11,6 +11,7 @@
 extends "res://game/entities/entity.gd"
 
 const Projectile := preload("res://game/combat/projectile.gd")
+const Combat := preload("res://game/combat/combat.gd")
 
 enum State { IDLE, WANDER, CHASE, ATTACK, RETURN }
 
@@ -35,8 +36,8 @@ var _cooldown := 0.0
 var _rng := RandomNumberGenerator.new()
 var _sim_r2 := INF                      # design.spawns.ai.sim-radius², D16
 
-func setup(p_species: StringName, p_level: int, p_max_hp: float, p_damage: float, p_hostility: StringName, p_ai: Dictionary, p_atk: Dictionary, size: float, p_color: Color, seed: int) -> void:
-	species = p_species; level = p_level; max_hp = p_max_hp; hp = p_max_hp; damage = p_damage
+func setup(p_species: StringName, p_level: int, p_max_hp: float, p_damage: float, p_hostility: StringName, p_ai: Dictionary, p_atk: Dictionary, size: float, p_color: Color, seed: int, p_resistance: float = 0.0) -> void:
+	species = p_species; level = p_level; max_hp = p_max_hp; hp = p_max_hp; damage = p_damage; resistance = p_resistance
 	hostility = p_hostility; ai = p_ai; atk = p_atk; color = p_color
 	_sim_r2 = pow(float(ai["sim-radius"]), 2.0)
 	_rng.seed = seed
@@ -134,7 +135,8 @@ func _tick(dt: float) -> State:
 					_cooldown = float(role_cfg["cooldown-s"])
 					return State.CHASE
 				if can_chase and to_target <= float(atk["reach"]) * 1.25 and target.has_method("take_damage"):
-					if not target.take_damage(damage, self):
+					var d := Combat.after_defence(damage, float(target.get("armor")), float(target.get("resistance")), Combat.PHYSICAL, design.get("combat", {}))
+					if not target.take_damage(d, self):
 						_hit_statuses(target)
 				_cooldown = float(atk["cooldown-s"])
 				return State.CHASE
@@ -174,21 +176,21 @@ func _shoot() -> void:
 	dir.y += float(s.get("gravity", 0.0)) * t * t * 0.5
 	if feel != null:
 		feel.sfx(StringName(str(role_cfg["sfx"])))
-	Projectile.fire(self, from, dir.normalized(), s, damage * float(role_cfg["damage-mult"]), false, role_cfg.get("applies", []))
+	Projectile.fire(self, from, dir.normalized(), s, damage * float(role_cfg["damage-mult"]), false, role_cfg.get("applies", []), Combat.MAGICAL if role == &"mage" else Combat.PHYSICAL)
 
 ## projectile.gd damages through the shooter. Every landed shot rolls design.defence.enemy-hit and the role's
 ## `applies` statuses; the number over the target is floated by its own take_damage (D25).
-## ponytail: no crit, no combo and no armor on a creature hit — parity with the reach bite above, which ignores
-## the target's armor too (todo_implement.md).
-func _strike(center: Vector3, radius: float, dmg: float, _combo_bonus: bool, applies: Array = []) -> int:
+## ponytail: creature attacks have no crit or combo; add those only with approved creature-combat rules.
+func _strike(center: Vector3, radius: float, dmg: float, _combo_bonus: bool, applies: Array = [], attack_type: StringName = Combat.PHYSICAL) -> int:
 	var se: Dictionary = design.get("status-effects", {})
 	var hits := 0
 	for body in bodies_within(center, radius):
-		if not body.take_damage(dmg, self):
+		var d := Combat.after_defence(dmg, float(body.get("armor")), float(body.get("resistance")), attack_type, design.get("combat", {}))
+		if not body.take_damage(d, self):
 			_hit_statuses(body)
 			for id in applies:
 				if se.has(id) and body.has_method("apply_status"):
-					body.apply_status(id, se[id], dmg, self)
+					body.apply_status(id, se[id], d, self)
 		hits += 1
 	return hits
 

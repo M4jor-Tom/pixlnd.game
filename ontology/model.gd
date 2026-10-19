@@ -411,6 +411,12 @@ class Ontology extends RefCounted:
 			if actions.count(action) != 1:
 				errors.append(path + ".actions: required unique canonical action " + action)
 
+	static func _is_selected_multiplier(value: Variant, selected: float) -> bool:
+		if not value is int and not value is float:
+			return false
+		var number := float(value)
+		return not is_nan(number) and not is_inf(number) and number == selected
+
 	func validate() -> bool:
 		var n := errors.size()
 		_validate_android()
@@ -453,6 +459,33 @@ class Ontology extends RefCounted:
 		if ai.has("sim-radius") and float(ai["sim-radius"]) < float(ai.get("aggro-range", 0)) + float(ai.get("leash", 0)):   # c-sim-radius
 			errors.append("design.spawns.ai.sim-radius %s < aggro-range + leash" % ai["sim-radius"])
 		var design: Dictionary = configs.get("generators", {}).get("design", {})
+		var combat: Variant = design.get("combat")
+		if not combat is Dictionary:
+			errors.append("design.combat: required object missing or malformed")
+		else:
+			var innate_resistance: Variant = combat.get("creature-resistance")
+			if (not innate_resistance is float and not innate_resistance is int) or innate_resistance != 0:
+				errors.append("design.combat.creature-resistance: must equal selected unequipped creature/NPC innate Resistance 0")
+			if not _is_selected_multiplier(combat.get("armor-floor"), 0.1):
+				errors.append("design.combat.armor-floor: must equal selected 0.1 hit-damage floor")
+		var resistance_materials := {"iron": 0.85, "linen": 0.75, "cotton": 0.75, "silk": 1.0}
+		for id in resistance_materials:
+			if not materials.has(id) or not _is_selected_multiplier((materials[id] as MaterialDef).raw.get("resi-mult"), resistance_materials[id]):
+				errors.append("material %s.raw.resi-mult: must equal selected active multiplier %s" % [id, resistance_materials[id]])
+		var slot_multipliers := {"chest": 1.0, "gloves": 0.5, "boots": 0.5, "shoulders": 0.5}
+		var slot_config: Variant = configs.get("equipment-slots", {})
+		var equipment_slots: Variant = slot_config.get("slots", []) if slot_config is Dictionary else []
+		var found_slots: Dictionary = {}
+		if equipment_slots is Array:
+			for slot in equipment_slots:
+				if slot is Dictionary and slot_multipliers.has(str(slot.get("id", ""))):
+					var id := str(slot["id"])
+					found_slots[id] = true
+					if not _is_selected_multiplier(slot.get("hp-mult"), slot_multipliers[id]):
+						errors.append("equipment-slots.slots.%s.hp-mult: must equal selected multiplier %s" % [id, slot_multipliers[id]])
+		for id in slot_multipliers:
+			if not found_slots.has(id):
+				errors.append("equipment-slots.slots.%s: required Resistance armor slot missing" % id)
 		var loot: Dictionary = design.get("loot", {})                     # c-loot-config (D18)
 		if not loot.is_empty():
 			var item_types: Dictionary = configs.get("item-types", {})

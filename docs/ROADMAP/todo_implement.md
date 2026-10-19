@@ -6,14 +6,14 @@ code. Pick an item → sync rule (ontology first) → `router`. Not listed: §3 
 started yet (see the folder table in `game/README.md`) and the `Ω`/`X` themes in this folder.
 
 Current gameplay rules and remaining uncertainties are indexed in `ontology/domain/index.md §7`.
-Implementation remains unauthorized; Resistance's five approved combat selections are recorded
+Unchecked work requires separate implementation authority; Resistance's current rules are recorded
 and indexed in §7. Historical A/S descriptions are not automatically hybrid targets. D4 exclusions
 (regional gear power loss, `+` items and worn degradation) are not backlog features.
 
 Owner clarification (2026-09-28, validation mapping item 4): the game is undeployed and no player
 data exists to migrate. Require current rules directly (`ontology/domain/index.md §0/§5`); data-correction debt
 below means replacing checked-in stale definitions when authorized, never migration code,
-legacy-read fallbacks or obsolete-format compatibility. Implementation remains unauthorized.
+legacy-read fallbacks or obsolete-format compatibility. Unchecked debt remains separately unauthorized.
 
 **Current attribution items 75–79 (2026-10-10):** Flight Master, free friend-flight UI/contextual
 duration, potion movement/sitting-to-eat, shrine/flute and supplier/shop sourcing handled after
@@ -154,8 +154,7 @@ research. No new implementation authority or whole-topic completion.
   (`design.creature-roles` has `kind: projectile` only; `design.movesets` has the player's beam runtime).
 - [ ] An `any-class` humanoid's rolled role is the whole class: no spec, weapon, armor or appearance behind it
   (`gen-spawns.humanoid-class`, `gen-npc-appearance`) — `spawner.gd#plan` ponytail.
-- [ ] A creature hit ignores the player's armor (the reach bite and the shot both call `take_damage` raw, no
-  `Combat.after_armor`) and can never crit — `creature.gd#_strike` ponytail.
+- [ ] Creature attacks still have no crit or combo — `creature.gd#_strike` ponytail; add only with approved creature-combat rules.
 - [ ] Steering is straight-line: no A* with climbing (`ai-behavior.pathfinding`); creatures
   stall on cliffs > 1 block.
 - [ ] Capsules coloured by hostility until species models exist (`appearance`, `.cub` models →
@@ -428,11 +427,10 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 - [ ] Villagers and animals inside town are absent, so `c-hostile-in-city` only keeps wild spawns 40 blocks away.
 
 ## Combat (§3.3, slices 457c947 + D21 + D23)
-- [ ] Implement the [recorded Resistance rule](../../ontology/domain/3_Classes.md#stat), including attack-based
-  equipment defence selection, hit-derived DOT's once-only Resistance inheritance (`c-resistance-dot`)
-  and defence order through block/damage-reduction multipliers to absorption shields; drinks remain separate.
-  Live JSON still includes the historical immunity question. Data/checker/runtime changes need
-  separate authorization.
+- [x] Resistance (`game/combat/combat.gd`, `player.gd`, `creature.gd`): magical attacks use the selected Resistance stage,
+  physical attacks retain the existing armor formula, player gear contributes its selected Resistance stat,
+  and unequipped creatures use innate 0. Resistance precedes block, damage-reduction and absorption; hit-derived
+  DOT inherits the adjusted triggering hit once. Independent poison and environmental hazards remain unchanged.
 - [x] Defence (D23, `player.gd` + `creature.gd` from `design.defence`): M3 dodge roll with i-frames and per-passive rewards,
   M2-held block (shield / guardian / cyclone) with block-power + MP, the stealth bar (sneak / aim fill, camouflage pins,
   decay, attack / crit / MP bonus, aggro range cut), creature hits rolling stun / knockback on the player.

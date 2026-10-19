@@ -88,7 +88,7 @@ static func populate(parent: Node3D, plan_: Array, design: Dictionary, creatures
 			m.home = g["positions"][i]
 			parent.add_child(m)
 			m.target = target
-			m.setup(g["species"], g["level"], g["max_hp"], g["damage"], g["hostility"], spawns["ai"], design["combat"]["enemy-attack"], size, color, g["seed"] + i)
+			m.setup(g["species"], g["level"], g["max_hp"], g["damage"], g["hostility"], spawns["ai"], design["combat"]["enemy-attack"], size, color, g["seed"] + i, float(design["combat"]["creature-resistance"]))
 			m.flash_s = float(design["combat"]["hit-flash-s"]); m.design = design
 			var cr: Dictionary = design["creature-roles"]             # D26: what this role does, species override on top
 			m.role = StringName(g.get("role", cr["default"]))

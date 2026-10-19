@@ -24,14 +24,31 @@ static func damage(it: Item, o: Model.Ontology) -> float:
 
 ## gen-item-stats armor = curve × slot mult (chest 1.0, other 0.5) × material armor-mult.
 static func armor(it: Item, o: Model.Ontology) -> float:
+	return _defence_stat(it, o, "armor-mult", 1.0)
+
+static func resistance(it: Item, o: Model.Ontology) -> float:
+	return _defence_stat(it, o, "resi-mult", null)
+
+static func _defence_stat(it: Item, o: Model.Ontology, material_key: String, missing_material_default: Variant) -> float:
 	var slot := slot_id(it, o)
 	if slot == &"" or it.type == &"weapon":
 		return 0.0
-	var mult := 1.0
+	var mult := 0.0
 	for s in o.configs["equipment-slots"]["slots"]:
-		if StringName(s["id"]) == slot: mult = float(s.get("hp-mult", 0.5))
+		if StringName(s["id"]) == slot:
+			var slot_mult: Variant = s.get("hp-mult")
+			if not _valid_multiplier(slot_mult): return 0.0
+			mult = float(slot_mult)
 	var m: Model.MaterialDef = o.materials[it.material]
-	return Model.stat_curve(it.level, it.rarity) * mult * float(m.raw.get("armor-mult", 1.0))
+	var material_mult: Variant = m.raw.get(material_key, missing_material_default)
+	if not _valid_multiplier(material_mult): return 0.0
+	return Model.stat_curve(it.level, it.rarity) * mult * float(material_mult)
+
+static func _valid_multiplier(value: Variant) -> bool:
+	if not value is int and not value is float:
+		return false
+	var number := float(value)
+	return not is_nan(number) and not is_inf(number) and number >= 0.0
 
 ## consumable-heal: curve(level, rarity) × heal-mult (stats.json).
 static func heal(it: Item, o: Model.Ontology) -> float:

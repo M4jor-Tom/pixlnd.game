@@ -13,6 +13,7 @@ var shooter                             # the player or a ranged / mage creature
 var shot: Dictionary = {}               # the moveset / runtime dict (speed, gravity, radius, life-s, splash, pierce, tick-s, return)
 var vel := Vector3.ZERO
 var dmg := 0.0
+var attack_type: StringName = &"physical"
 var combo_bonus := false
 var applies: Array = []
 var attack: Dictionary = {}             # {"hits", "live"} shared by the volley
@@ -24,13 +25,13 @@ var _returning := false
 ## `count` shots fanned by `spread` radians around `dir`, sharing one attack record: the whole volley
 ## counts once for combo / MP. Any shooter with `_strike` / `bodies_within` / `_landed` / `feel` can fire
 ## (the player from `_fire`, a ranged / mage creature from `_shoot`, D26).
-static func fire(shooter, from: Vector3, dir: Vector3, s: Dictionary, dmg: float, combo_bonus: bool, applies: Array) -> Array:
+static func fire(shooter, from: Vector3, dir: Vector3, s: Dictionary, dmg: float, combo_bonus: bool, applies: Array, attack_type: StringName) -> Array:
 	var count := int(s.get("count", 1))
 	var attack := {"hits": 0, "live": count}
 	var out: Array = []
 	for i in count:
 		var pr = new()
-		pr.shooter = shooter; pr.shot = s; pr.dmg = dmg; pr.combo_bonus = combo_bonus; pr.applies = applies; pr.attack = attack
+		pr.shooter = shooter; pr.shot = s; pr.dmg = dmg; pr.attack_type = attack_type; pr.combo_bonus = combo_bonus; pr.applies = applies; pr.attack = attack
 		pr.vel = dir.rotated(Vector3.UP, float(s.get("spread", 0.0)) * (i - (count - 1) / 2.0)) * float(s["speed"])
 		shooter.get_parent().add_child(pr)
 		pr.global_position = from
@@ -71,7 +72,7 @@ func _physics_process(dt: float) -> void:
 	if shot.get("pierce", false):                          # boomerang: re-hit every tick-s, only terrain stops it
 		if _tick <= 0.0:
 			_tick = float(shot["tick-s"])
-			_hit(shooter._strike(global_position, radius, dmg, combo_bonus, applies))
+			_hit(shooter._strike(global_position, radius, dmg, combo_bonus, applies, attack_type))
 		if solid or _t >= life:
 			if solid:
 				_impact(0.0)
@@ -80,12 +81,12 @@ func _physics_process(dt: float) -> void:
 	var splash := float(shot.get("splash", 0.0))
 	if splash > 0.0:
 		if not ray.is_empty() or not shooter.bodies_within(global_position, radius).is_empty():
-			_hit(shooter._strike(global_position, splash, dmg, combo_bonus, applies))
+			_hit(shooter._strike(global_position, splash, dmg, combo_bonus, applies, attack_type))
 			_impact(splash); _end()
 		elif _t >= life:
 			_end()
 		return
-	var hits: int = shooter._strike(global_position, radius, dmg, combo_bonus, applies)
+	var hits: int = shooter._strike(global_position, radius, dmg, combo_bonus, applies, attack_type)
 	_hit(hits)
 	if hits > 0 or solid:
 		_impact(0.0)
