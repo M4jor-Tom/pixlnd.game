@@ -72,6 +72,8 @@ func _physics_process(dt: float) -> void:
 	velocity.y -= gravity * dt
 	_cooldown -= dt
 	tick_statuses(dt)
+	if dead:
+		return
 	if stunned():                                           # D21: cannot act; a knockback keeps carrying us
 		move_and_slide()
 		return

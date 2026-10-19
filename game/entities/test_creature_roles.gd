@@ -236,12 +236,13 @@ func _init() -> void:
 	hp0 = p.hp
 	var hit: int = sp._strike(p.global_position + Vector3.UP, 1.0, 10.0, false, [&"poison"])
 	check(hit == 1 and is_equal_approx(p.hp, hp0), "the dodged shot did no damage (%d hit, %.0f hp)" % [hit, p.hp])
-	check(p.statuses.has(&"burning") and is_equal_approx(float(p.statuses[&"burning"]["dmg"]), 10.0),
-		"…but the poison landed through the i-frames (%s)" % [p.statuses.keys()])
+	check(p.statuses.has(&"poison"), "…but the poison landed through the i-frames (%s)" % [p.statuses.keys()])
 	# Tick synchronously: no frame advances the dodge or introduces another attack.
 	before = _labels()
 	var bundles: int = feel.get_child_count()
-	p.tick_statuses(0.01)
+	p.tick_statuses(0.999)
+	check(is_equal_approx(p.hp, hp0) and _labels() == before, "poison waits a full second before first tick")
+	p.tick_statuses(0.001)
 	check(is_equal_approx(hp0 - p.hp, 10.0), "poison tick damages through dodge (lost %.1f, expected 10)" % (hp0 - p.hp))
 	check(_labels() == before + 1 and feel.get_child_count() == bundles, "poison tick floats one number without a hurt bundle")
 	hp0 = p.hp
@@ -251,13 +252,15 @@ func _init() -> void:
 	check(is_equal_approx(p.hp, hp0), "poison does not tick before its interval")
 	p.tick_statuses(0.5)
 	check(is_equal_approx(hp0 - p.hp, 10.0), "the next scheduled poison tick also bypasses dodge")
-	# Burning replaces poison in the current shared slot, but must not inherit its dodge exemption.
+	# Both identities coexist: burning cannot inherit poison's dodge exemption.
 	p._iframes = 0.0
 	p.apply_status(&"burning", design["status-effects"]["burning"], 10.0, sp)
 	p._iframes = 1.0; hp0 = p.hp
-	p.tick_statuses(0.01)
+	p.tick_statuses(0.5)
 	check(is_equal_approx(p.hp, hp0), "ordinary burning ticks keep their existing dodge behavior")
-	p._iframes = 0.0
+	p.tick_statuses(0.5)
+	check(is_equal_approx(hp0 - p.hp, 10.0), "coexisting poison still bypasses dodge while burning does not")
+	p._iframes = 0.0; hp0 = p.hp
 	p.tick_statuses(0.5)
 	check(is_equal_approx(hp0 - p.hp, 1.0), "burning still ticks normally after dodge")
 	p.statuses.clear(); p.hp = p.max_hp
@@ -304,7 +307,12 @@ func _init() -> void:
 		await process_frame
 	check(p.hp < hp0, "the mage splash hit the player (%.0f → %.0f)" % [hp0, p.hp])
 	check(is_equal_approx(pal.hp, whp), "the wolf inside the same splash took nothing (%.0f)" % (whp - pal.hp))
+	mg2.set_physics_process(false)
+	p.statuses.clear(); p._push = Vector3.ZERO; p._iframes = 0; p.blocking = false; p.hp = 1
+	mg2._strike(p.global_position + Vector3.UP, 1.0, 100, false, [&"poison", &"burning", &"knockback", &"slow"])
+	check(p.dead and p.hp == 0 and p.statuses.is_empty() and p._push == Vector3.ZERO, "lethal creature hit cannot re-add effects after synchronous death clear")
 	mg2.get_parent().queue_free(); pal.get_parent().queue_free()
+	await _real(float(design["combat"]["death"]["respawn-s"]) + .1)
 
 	await _real(0.5)
 	Engine.time_scale = 1.0

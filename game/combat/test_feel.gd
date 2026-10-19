@@ -201,8 +201,10 @@ func _init() -> void:
 	# --- a dot tick floats the orange number only: no hurt bundle, no second number
 	before = _count("Label3D")
 	players = feel.get_child_count()
-	p.statuses[&"burning"] = {"left": 1.0, "tick": 0.0, "tick-s": 0.5, "dmg": 3.0, "from": wolf}
-	p.tick_statuses(0.01)
+	p.apply_status(&"burning", design["status-effects"]["burning"], 30.0, wolf)
+	p.tick_statuses(0.499)
+	check(_count("Label3D") == before, "no damage number before the first due tick")
+	p.tick_statuses(0.001)
 	check(_count("Label3D") == before + 1, "a dot tick floats exactly one number (%d)" % (_count("Label3D") - before))
 	check(feel.get_child_count() == players, "a dot tick fires no hurt bundle (%d extra)" % (feel.get_child_count() - players))
 	p.statuses.clear()

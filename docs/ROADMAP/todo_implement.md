@@ -457,8 +457,7 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
   runtime (melee spin / lunge / finisher, arrows with gravity, bolts, piercing returning boomerangs, staff at-cursor bursts, wand beams,
   bracelet bolts + splash ball), fire-missiles / bubbles are projectile volleys, shuriken-attack throws 5 before the backflip, dagger
   ambush poisons. Still open: no animations or hit timing (a swing is instant; the longsword lunge is a `move_and_collide` jump), the
-  boomerang is not camera-steerable, wand M2 is one thick beam (not a held 10-hit ray), bow dud shots do not build combo, poison shares
-  the burning slot (`entity.gd`, one of the two at a time), projectiles are coloured spheres with a fading-sphere trail and an impact
+  boomerang is not camera-steerable, wand M2 is one thick beam (not a held 10-hit ray), bow dud shots do not build combo, projectiles are coloured spheres with a fading-sphere trail and an impact
   flash (D25) but still no model or particles (creatures shoot the same projectiles since D26), the main scene picks the class only from `-- --class=<id>`, nothing visually
   checked; every D24 number is untuned.
 - [x] Item instances, equipment slots, armor stat (D18, `game/items/`). Still open: the modifier roll only
@@ -486,17 +485,7 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
   buff-duration multiplier makes it start above full. Dedicated visual checks of D25's effects remain;
   the recent static HUD captures do not cover them. Every D25 number is untuned.
 - [ ] Remaining status coverage: taunt tint, dizzy, drowning, world/settlement effects and consumable/land buffs
-  are not implemented. Stun / knockdown / knockback / burning / slow, poison (shared burning slot), class buffs,
-  healing and the stealth bar already run (D21–D26). Independent poison/burning stacking remains deferred.
-- [ ] Combat DOT item 1 (`ontology/domain/3_Classes.md#status-effect`, `c-combat-burning-applications`):
-  preserve each combat hit-derived burn independently for 4 s, with eight ticks at 0.5–4 s and
-  the existing 10%-of-hit coefficient, without replacement or renewal by later applications.
-  The current shared overwrite slot does not implement this rule; live-data/checker/runtime
-  changes remain separately unauthorized. Environmental hazards and additional DOT buff timing
-  are not selected.
-- [ ] Combat DOT item 2 (`ontology/domain/3_Classes.md#status-effect`, `c-combat-poison-applications`):
-  retain each combat hit-derived poison application's own lifetime and tick schedule; dagger poison
-  ticks at 1–5 s after its application, preserving inherited hit damage/crit and its existing total.
-  New applications neither renew older stacks nor reset their next tick. The shared overwrite slot
-  lacks this behavior; live-data/checker/runtime changes remain separately unauthorized, with the
-  same environmental-hazard and additional DOT buff-timing exclusions as item 1.
+  are not implemented. Stun / knockdown / knockback / burning / slow, independent combat poison/burning
+  applications, class buffs, healing and the stealth bar already run. Combat DOT lifetime/scheduling
+  and selected-input validation follow `c-combat-burning-applications` / `c-combat-poison-applications`;
+  environmental hazards and additional DOT buff timing remain outside this implementation.

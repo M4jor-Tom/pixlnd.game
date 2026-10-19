@@ -14,7 +14,7 @@ var hp := 100.0
 var armor := 0.0
 var hostility: StringName = &"P"          # H hostile, N neutral, P passive, F friendly
 var dead := false
-var statuses: Dictionary = {}             # status id → {"left": seconds, ...}
+var statuses: Dictionary = {}             # status id → timed dict, or array of independent DOT application dicts
 var feel: Node                            # combat/feel.gd (D25), or null: every call site guards
 var dot_tick := false                     # true only while tick_statuses applies a dot: number, never a bundle
 var _stars: Node                          # the '✶ ✶ ✶' label, alive exactly as long as the stun
@@ -41,6 +41,8 @@ func take_damage(amount: float, from: Node, _status: StringName = &"") -> bool:
 
 ## ability.applies → design.status-effects[id] (`as` redirects knockdown to stun). `hit` = the damage that applied it.
 func apply_status(id: StringName, cfg: Dictionary, hit: float, from: Node) -> void:
+	if dead:
+		return
 	_learn_feel(from)
 	match StringName(str(cfg.get("as", id))):
 		&"stun":
@@ -52,31 +54,53 @@ func apply_status(id: StringName, cfg: Dictionary, hit: float, from: Node) -> vo
 			var d: Vector3 = global_position - (from as Node3D).global_position; d.y = 0.0
 			velocity += d.normalized() * float(cfg["impulse"]) + Vector3.UP * float(cfg["impulse"]) * 0.25
 		&"burning":
-			# ponytail: poison still shares this slot; retain its identity for dodge until separate stacking is built.
-			statuses[&"burning"] = {"id": id, "left": float(cfg["duration-s"]), "tick": 0.0, "tick-s": float(cfg["tick-s"]), "dmg": hit * float(cfg["pct-of-hit"]), "from": from}
+			if not statuses.has(id):
+				statuses[id] = []
+			statuses[id].append({"left": float(cfg["duration-s"]), "tick": float(cfg["tick-s"]), "tick-s": float(cfg["tick-s"]), "dmg": hit * float(cfg["pct-of-hit"]), "from": from})
 		&"slow":
 			statuses[&"slow"] = {"left": float(cfg["duration-s"]), "move-mult": float(cfg["move-mult"])}
 
 func tick_statuses(dt: float) -> void:
-	for id in statuses.keys():
-		if not statuses.has(id):                          # a tick killed us and the death handler cleared the rest
+	# Snapshot all lists and their applications before any damage callback can attach more effects.
+	var active := statuses.duplicate()
+	var applications_at_start := {}
+	for id in active:
+		if id in [&"burning", &"poison"]:
+			applications_at_start[id] = active[id].duplicate()
+	for id in active:
+		if dead:
+			return
+		if not is_same(statuses.get(id), active[id]):      # synchronous signals may clear/replace later effects
 			continue
-		var s: Dictionary = statuses[id]
-		s["left"] -= dt
-		if id == &"burning":
-			s["tick"] -= dt
-			if s["tick"] <= 0.0:
-				s["tick"] = s["tick-s"]
-				var before := hp
-				dot_tick = true                                # D25: the number only, never the hurt bundle
-				take_damage(s["dmg"], s["from"] if is_instance_valid(s["from"]) else self, s.get("id", id))
-				dot_tick = false
-				if feel != null and before > hp:
-					feel.number(head(), before - hp, &"dot")
-		if s["left"] <= 0.0:
-			statuses.erase(id)
-			if id == &"stun":
-				clear_stars()
+		if id in [&"burning", &"poison"]:
+			var applications: Array = active[id]
+			for s: Dictionary in applications_at_start[id]:
+				# Only time inside this application's lifetime can make ticks due, including the final tick.
+				s["tick"] -= minf(dt, s["left"])
+				s["left"] -= dt
+				while s["tick"] <= 1e-9:                   # tolerate floating-point subtraction at exact boundaries
+					s["tick"] += s["tick-s"]
+					var before := hp
+					dot_tick = true                       # D25: the number only, never the hurt bundle
+					take_damage(s["dmg"], s["from"] if is_instance_valid(s["from"]) else self, id)
+					dot_tick = false
+					if feel != null and before > hp:
+						feel.number(head(), before - hp, &"dot")
+					if dead or not is_same(statuses.get(id), applications):
+						break                            # never resurrect a cleared/replaced application list
+				if dead or not is_same(statuses.get(id), applications):
+					break
+				if s["left"] <= 1e-9:
+					applications.erase(s)
+			if is_same(statuses.get(id), applications) and applications.is_empty():
+				statuses.erase(id)
+		else:
+			var s: Dictionary = statuses[id]
+			s["left"] -= dt
+			if s["left"] <= 0.0:
+				statuses.erase(id)
+				if id == &"stun":
+					clear_stars()
 
 ## The stun ended (or was cleared wholesale by a death / respawn): the stars go with it.
 func clear_stars() -> void:

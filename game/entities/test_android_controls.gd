@@ -192,7 +192,8 @@ func run() -> void:
 		a.open_panel(id); await process_frame; await process_frame
 		check(p.ui_open and not a._gameplay.visible, id + " exclusive touch ownership")
 		var hp: float = p.hp; p.apply_status(&"poison", design["status-effects"].poison, 10, p); step(.1)
-		check(p.hp < hp, id + " DOT stays live"); p.statuses.clear()
+		check(is_equal_approx(p.hp, hp), id + " DOT never ticks early"); step(.9)
+		check(is_equal_approx(p.hp, hp - 10), id + " DOT stays live at one second"); p.statuses.clear()
 		p.abilities.cooldowns[&"smash"] = 1; p._swing_t = .3; p._combo_t = .3; p.combo = 2
 		step(.5)
 		check(is_equal_approx(p.abilities.cooldowns[&"smash"], .5) and p.combo == 0 and p._swing_t <= 0, id + " timers advance once")
@@ -289,7 +290,7 @@ func run() -> void:
 	touch(35, list_pos, true); drag(35, list_pos - Vector2(0, 100), Vector2(0, -100)); touch(35, list_pos - Vector2(0, 100), false)
 	check(inv._list.get_v_scroll_bar().value > 0 and p.inventory.coins == coins_before, "owned native list scrolling never commits")
 	a.back(); vendor.free()
-	p.hp = 1; tap("quick-item"); p.apply_status(&"poison", design["status-effects"].poison, 10, p); step(.1)
+	p.hp = 1; tap("quick-item"); p.apply_status(&"poison", design["status-effects"].poison, 10, p); step(1.0)
 	check(p.dead and p.hp == 0 and a.take_frame().requests.is_empty(), "death preempts queued heal and clears touches")
 	await create_timer(float(design.combat.death["respawn-s"]) + .1).timeout
 	cleanup()

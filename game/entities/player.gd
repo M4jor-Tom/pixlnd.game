@@ -188,7 +188,7 @@ func take_damage(amount: float, from: Node, status: StringName = &"") -> bool:
 ## Dodged or blocked hits carry no status (D23) — except poison, which a dodge never avoids (D26, status-effects.json);
 ## knockback goes through _push so input does not erase it next tick.
 func apply_status(id: StringName, cfg: Dictionary, hit: float, from: Node) -> void:
-	if (_iframes > 0.0 and id != &"poison") or blocks_from(from):   # D23 i-frames, D26: dodge never avoids poison
+	if dead or (_iframes > 0.0 and id != &"poison") or blocks_from(from):   # D23 i-frames, D26: dodge never avoids poison
 		return
 	if StringName(str(cfg.get("as", id))) == &"knockback":
 		var d: Vector3 = global_position - (from as Node3D).global_position; d.y = 0.0

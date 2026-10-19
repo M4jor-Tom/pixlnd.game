@@ -529,10 +529,29 @@ class Ontology extends RefCounted:
 						if float(r.get("duration-s", 0)) <= 0.0: errors.append("design.abilities.%s: duration-s must be > 0" % a.id)
 					"heal":
 						if float(r.get("cast-s", -1)) < 0.0 or float(r.get("heal-pct", 0)) <= 0.0: errors.append("design.abilities.%s: heal needs cast-s >= 0 and heal-pct > 0" % a.id)
-		var se: Dictionary = design.get("status-effects", {})
+		# c-combat-burning-applications / c-combat-poison-applications: required selected inputs.
+		var dot_config: Variant = design.get("status-effects")
+		var se: Dictionary = {}
+		if not dot_config is Dictionary:
+			errors.append("design.status-effects: required object missing or malformed")
+		else:
+			se = dot_config
+		for id in ["burning", "poison"]:
+			var path: String = "design.status-effects." + id
+			var row: Variant = se.get(id)
+			if not row is Dictionary:
+				errors.append(path + ": required object missing or malformed"); continue
+			var selected := {"duration-s": 4.0, "tick-s": 0.5, "pct-of-hit": 0.1} if id == "burning" else {"duration-s": 5.0, "tick-s": 1.0, "pct-of-hit": 1.0}
+			for field in selected:
+				var value: Variant = row.get(field)
+				if (not value is float and not value is int) or value != selected[field]:
+					errors.append(path + "." + field + ": must equal selected value " + str(selected[field]))
+			if (id == "poison" and row.get("as") != "burning") or (id == "burning" and row.has("as")):
+				errors.append(path + ".as: must route to burning DOT behavior")
 		for id in se:
 			if str(id).begins_with("_"): continue
 			if not status_effects.has(id): errors.append("design.status-effects.%s is not a status-effect" % id)
+			elif not se[id] is Dictionary: errors.append("design.status-effects.%s: malformed object" % id)
 			elif se[id].has("as") and not se.has(str(se[id]["as"])): errors.append("design.status-effects.%s: `as` %s has no entry" % [id, se[id]["as"]])
 		var mv: Dictionary = design.get("movesets", {})                    # c-moveset-config (D24)
 		if not mv.is_empty():

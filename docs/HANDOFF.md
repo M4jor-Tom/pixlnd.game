@@ -1,11 +1,13 @@
 # Handoff — pending continuation
 
-## Independent combat DOT — implementation authorized
+## Independent combat DOT — player documentation pending
 
-Next action: implement the approved [independent burning and poison applications](../ontology/domain/3_Classes.md#status-effect)
-with scoped validation, regressions and a separate local implementation commit. Preserve existing
-defences and dodge exceptions; Resistance, aggro, environmental hazards and additional DOT buff
-timing remain outside this slice. No source research, dependency installation or push is authorized.
+Next action: settle the slice identity/naming and obtain separate documentation authorization for
+the [independent burning and poison applications](../ontology/domain/3_Classes.md#status-effect), then
+write the player changelog and matching native demonstration movie using the actual implementation
+commit and the [movie workflow](../skills/ontology-resume-router-slice/SKILL.md#native-changelog-movie).
+Do not invent a D-ID. Resistance, aggro, environmental hazards and additional DOT buff timing remain
+outside this slice; no further gameplay, source research, dependency installation or push is authorized.
 
 ## Android touch — characterization and publication follow-up
 

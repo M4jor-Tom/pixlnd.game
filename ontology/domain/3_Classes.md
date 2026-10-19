@@ -935,9 +935,8 @@ Hybrid (D23): creature hits on the player roll stun and knockback under
 
 Hybrid poison (D26; narrow runtime repair authorized in walkthrough item 10, 2026-09-17):
 scheduled poison damage is not prevented by dodge i-frames. Preserve poison's identity through
-tick delivery even in the current shared burning-slot approximation. This repair changes neither
-poison damage, duration or cadence nor current burning/direct-hit dodge behavior. Separate poison
-stacking, independent burning/poison slots and other runtime corrections are outside this authorization.
+tick delivery, including when burns coexist. Ordinary burning/direct-hit dodge behavior is unchanged;
+independent applications follow the combat DOT rules below.
 
 Hit-derived DOT's Resistance handling follows [stat](#stat), item 4.
 
@@ -958,8 +957,10 @@ and the existing dagger total of **5 × the hit over five seconds**.
 
 These rules select application lifetimes and scheduling, not new damage coefficients, Resistance
 handling, dodge/status protections or aggro rules. Environmental hazards and additional DOT
-buff timing are outside scope. The shared overwriting runtime slot remains an approximation;
-implementation and live-data/checker changes require separate authorization.
+buff timing are outside scope. The runtime retains each application's damage, source, remaining
+lifetime and next tick independently, catching up due ticks only within its lifetime. Scoped
+load-time checks require the selected burning/poison design rows and numeric values; this does
+not implement the separately deferred Resistance or aggro rules.
 
 ### death
 No penalty in A or S (no gold/item/XP loss). A: respawn at nearest revival statue (never far), enemy

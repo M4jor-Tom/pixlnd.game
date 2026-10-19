@@ -141,10 +141,24 @@ func _init() -> void:
 	check(w2.stunned(), "bracelet ball knocked the wolf down")
 	# fire-missiles: 4 projectiles from the ultimate
 	w2.statuses.clear(); m.abilities.cooldowns.clear(); _clear_shots()
+	var fire_hits: Array = []
+	w2.damaged.connect(func(amount, _source): fire_hits.append(amount))
+	m.crit_chance = 1.0
 	check(m.abilities.use(o.abilities[&"fire-missiles"]), "fire-missiles used")
 	check(_shots() == 4, "fire-missiles throws 4 fireballs: %d" % _shots())
 	await _frames(40)
 	check(w2.statuses.has(&"burning") and w2.stunned(), "fireballs burn and knock down")
+	check(fire_hits.size() == 4, "all four fireballs land independent applications")
+	var direct := 0.0
+	for amount in fire_hits: direct += amount
+	check(fire_hits.all(func(amount): return is_equal_approx(amount, float(m.weapon["damage"]) * 6.0)), "fireball triggering hits inherit guaranteed x2 crit on x3 damage")
+	m.crit_chance = 0.0; hp0 = w2.hp
+	w2.tick_statuses(.499)
+	check(is_equal_approx(w2.hp, hp0), "volley burns never tick early")
+	w2.tick_statuses(.001)
+	check(is_equal_approx(hp0 - w2.hp, direct * .1), "each volley hit burns for its own crit-derived damage")
+	w2.tick_statuses(20)
+	check(is_equal_approx(hp0 - w2.hp, direct * .8), "all four burns retain eight ticks without replacement")
 
 	# --- ranger boomerang: pierces, ticks, returns
 	_equip(p, &"boomerang")
@@ -163,8 +177,18 @@ func _init() -> void:
 	var w3 := _wolf(r, Vector3(40, 1, -1.5))
 	await _frames(5); _aim_at(r, w3)
 	check(r.moveset["m1"].get("swing-mult", 1.0) < 1.0, "dagger swings faster")
+	r.crit_chance = 1.0; hp0 = w3.hp
 	await _m2(r)
-	check(w3.statuses.has(&"burning") and w3.stunned(), "dagger ambush poisons and stuns")
+	check(w3.statuses.has(&"poison") and w3.stunned(), "dagger ambush poisons and stuns")
+	var dagger_hit: float = hp0 - w3.hp
+	check(is_equal_approx(dagger_hit, float(r.weapon["damage"]) * 5), "dagger triggering hit inherits full-charge x2.5 and guaranteed x2 crit")
+	r.crit_chance = 0.0; hp0 = w3.hp
+	w3.tick_statuses(.999)
+	check(is_equal_approx(w3.hp, hp0), "real dagger poison waits a full second")
+	w3.tick_statuses(.001)
+	check(is_equal_approx(hp0 - w3.hp, dagger_hit), "dagger poison retains triggering crit after chance changes")
+	w3.tick_statuses(4)
+	check(is_equal_approx(hp0 - w3.hp, dagger_hit * 5), "dagger poison preserves all five inherited hit ticks")
 	w3.statuses.clear()
 	_equip(r, &"longsword")
 	w3.position = Vector3(40, 1, -5.5); await _frames(2)
@@ -188,5 +212,8 @@ func _init() -> void:
 	check(wa.combo == 2 and not w4.stunned(), "two slow swings, no knockdown yet")
 	await _m1(wa)
 	check(w4.stunned(), "third swing knocks down")
+	w4.statuses.clear(); w4.hp = 1.0
+	wa._strike(w4.global_position + Vector3.UP * .5, 1.0, 100, false, [&"burning", &"slow"])
+	check(w4.dead and w4.statuses.is_empty(), "lethal player strike cannot re-add attached effects")
 	print("test_projectiles: %s" % ("OK" if _failed == 0 else "%d FAILED" % _failed))
 	quit(1 if _failed > 0 else 0)
