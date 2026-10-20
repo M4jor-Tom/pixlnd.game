@@ -30,6 +30,8 @@ var enemy_hp: Dictionary            # design.enemy-hp (D14)
 var settlement: Dictionary          # design.settlement (D22); empty = no villages
 var landscapes := {}                # id → Model.Landscape, only those with a `gen` block (hybrid)
 var land_blocks: int
+var land_min: int
+var land_max: int
 var sea_level: int
 
 var _height := FastNoiseLite.new()
@@ -46,6 +48,8 @@ func _init(p_seed: int, design: Dictionary, p_landscapes: Dictionary) -> void:
 	enemy_level = design["enemy-level"]; enemy_hp = design["enemy-hp"]
 	settlement = design.get("settlement", {})
 	land_blocks = int(terrain["land-blocks"]); sea_level = int(terrain["sea-level"])
+	land_min = -int(terrain["lands-per-axis"]) / 2
+	land_max = land_min + int(terrain["lands-per-axis"]) - 1
 	for id in p_landscapes:
 		if not p_landscapes[id].gen.is_empty():
 			landscapes[id] = p_landscapes[id]
@@ -75,7 +79,19 @@ func _init(p_seed: int, design: Dictionary, p_landscapes: Dictionary) -> void:
 
 # --- lands -----------------------------------------------------------------------------------
 
+func valid_land(lc: Vector2i) -> bool:
+	return lc.x >= land_min and lc.x <= land_max and lc.y >= land_min and lc.y <= land_max
+
+func valid_block(x: float, y: float) -> bool:
+	return x >= land_min * land_blocks and x < (land_max + 1) * land_blocks and y >= land_min * land_blocks and y < (land_max + 1) * land_blocks
+
+func valid_zone(zc: Vector2i) -> bool:
+	var n: int = terrain["land-zones"]
+	return zc.x >= land_min * n and zc.x < (land_max + 1) * n and zc.y >= land_min * n and zc.y < (land_max + 1) * n
+
 func land_at(lc: Vector2i) -> Land:
+	if not valid_land(lc):
+		return null
 	if _lands.has(lc):
 		return _lands[lc]
 	var l := Land.new()
@@ -121,6 +137,8 @@ func creature_level(land: Land, party_min: int, party_max: int, rng: RandomNumbe
 	return clampi(roundi(lerpf(lo, hi, t)) + rng.randi_range(-1, 1), lo, hi)
 
 func land_of_block(x: int, y: int) -> Land:
+	if not valid_block(x, y):
+		return null
 	return land_at(Vector2i(floori(float(x) / land_blocks), floori(float(y) / land_blocks)))
 
 func _land_name(rng: RandomNumberGenerator, landscape: StringName) -> String:
@@ -139,7 +157,9 @@ func _syllables(rng: RandomNumberGenerator) -> String:
 ## gen-settlement: the land's village — the first candidate on rings of `search-step` blocks around the land centre
 ## whose column stands ≥ min-above-sea above the sea; empty when none (an all-sea land). Cached on the land.
 func village_at(l: Land) -> Dictionary:
-	if l.village_searched or settlement.is_empty():
+	if l == null or settlement.is_empty():
+		return {}
+	if l.village_searched:
 		return l.village
 	l.village_searched = true
 	var pl: Dictionary = settlement["placement"]
@@ -183,8 +203,10 @@ func _land_blend(x: int, y: int) -> Array:
 	var fy := float(y) / land_blocks - 0.5
 	var x0 := floori(fx); var y0 := floori(fy)
 	var tx := fx - x0; var ty := fy - y0
-	return [[land_at(Vector2i(x0, y0)), (1.0 - tx) * (1.0 - ty)], [land_at(Vector2i(x0 + 1, y0)), tx * (1.0 - ty)],
-		[land_at(Vector2i(x0, y0 + 1)), (1.0 - tx) * ty], [land_at(Vector2i(x0 + 1, y0 + 1)), tx * ty]]
+	return [[land_at(Vector2i(clampi(x0, land_min, land_max), clampi(y0, land_min, land_max))), (1.0 - tx) * (1.0 - ty)],
+		[land_at(Vector2i(clampi(x0 + 1, land_min, land_max), clampi(y0, land_min, land_max))), tx * (1.0 - ty)],
+		[land_at(Vector2i(clampi(x0, land_min, land_max), clampi(y0 + 1, land_min, land_max))), (1.0 - tx) * ty],
+		[land_at(Vector2i(clampi(x0 + 1, land_min, land_max), clampi(y0 + 1, land_min, land_max))), tx * ty]]
 
 ## Height of the top solid block of column (x, y): the heightfield, flattened to the village plateau within
 ## design.settlement.radius of the land's village and blended back over `blend` more (D22).

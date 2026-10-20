@@ -12,6 +12,8 @@ const Combat := preload("res://game/combat/combat.gd")
 static func plan(gen, zc: Vector2i, design: Dictionary, creatures: Dictionary, rosters: Dictionary, party_level: int) -> Array:
 	var spawns: Dictionary = design["spawns"]
 	var out: Array = []
+	if not gen.valid_zone(zc):
+		return out
 	var n: int = gen.terrain["zone-blocks"]
 	var land = gen.land_of_block(zc.x * n + n / 2, zc.y * n + n / 2)
 	var roster: Array = rosters.get(land.landscape, [])

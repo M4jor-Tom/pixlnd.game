@@ -44,6 +44,8 @@ func _on_talked(npc: Node) -> void:
 	if not Shop.is_vendor(npc.role):
 		return
 	var l = world.gen.land_of_block(int(player.global_position.x), int(player.global_position.z))
+	if l == null:
+		return
 	_stock_rows = Shop.stock(npc.role, world.gen, l, world.gen.village_at(l), player.level, player.o, player.design)
 	_title.text = npc.display_name if touch_ui != null else "%s  (E closes)" % npc.display_name
 	_open(true)

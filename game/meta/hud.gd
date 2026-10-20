@@ -101,7 +101,7 @@ func _process(_dt: float) -> void:
 		_level.text = "level %d   %d / %d xp   %d skill points" % [player.level, player.xp, Model.xp_to_next(player.level), player.skill_points]
 	if world != null and world.gen != null:
 		var l = world.gen.land_of_block(int(player.global_position.x), int(player.global_position.z))
-		_land.text = "%s  (%s, %s)" % [l.name, l.landscape, l.danger_tier]
+		_land.text = "%s  (%s, %s)" % [l.name, l.landscape, l.danger_tier] if l != null else ""
 		var v: Dictionary = world.gen.village_at(l)
 		if not v.is_empty() and Vector2(player.global_position.x - v["centre"].x, player.global_position.z - v["centre"].y).length() <= float(world.gen.settlement["radius"]):
 			_land.text += "  —  %s (village)" % v["name"]

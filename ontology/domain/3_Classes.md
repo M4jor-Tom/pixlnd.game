@@ -15,8 +15,8 @@ Hybrid saved-world identity is distinct from the generation seed (`save-data`, p
 across** (D12), giving **16,777,216 blocks / roughly 16,777 km per side**. Land coordinates
 run **−512 through 511 inclusive on each horizontal axis**. This is enormous but bounded,
 not unlimited generation or a wrapping world. Historical “infinite” / “no borders” descriptions
-do not override this hybrid limit. Boundary enforcement and live-data/checker migration remain
-deferred; the current terrain streamer does not enforce the bound.
+do not override this hybrid limit. Active generator data and terrain streaming enforce the
+finite grid; map marking and outward-travel prevention remain deferred (item 2).
 
 **Hybrid world/reset item 2 (owner approved, 2026-09-28; depends on item 1):** mark the
 outer world boundary on the map and **prevent outward travel**, including **flight and
@@ -33,7 +33,8 @@ Map/travel enforcement remains deferred and unauthorized.
 | spawn-rule | enum `near-village` | i | S 0.9.1-3: new chars spawn near a village; A: world spawn (0,0 area); hybrid (D22): the square of the land (0,0) village |
 | discovered-zones | set<zone-coord> | i | hybrid: world-shared terrain exploration (persistence item 3 below); A: shared by all visitors |
 | origin-poi | `poi-type` ref | e | S: `wollays-house` at block (0,0) |
-Instances: none (runtime). Config: `generators.json#world-scales`.
+Instances: none (runtime). Active scale: `generators.json#design.terrain.lands-per-axis`;
+`world-scales` retains historical source scales.
 
 **Hybrid persistence item 3 (owner approved, 2026-09-28):** explored terrain belongs to
 that saved world and is visible to all its visitors, including later arrivals. Seeing a place

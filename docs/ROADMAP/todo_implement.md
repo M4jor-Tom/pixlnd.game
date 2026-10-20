@@ -61,10 +61,9 @@ Silk/Spinning Wheel quantities stay HOLD, not refusal or new 27/36 ballots; othe
 research. No new implementation authority or whole-topic completion.
 
 ## World (§3.1, slice 475e72b)
-- [ ] World/reset item 1 (`ontology/domain/3_Classes.md#world`, `c-world-bounds`, `gen-world`): enforce the approved
-  finite 1024×1024-land grid, coordinates −512..511 on each horizontal axis, without wrapping.
-  Current terrain generation/streaming is unbounded; live `world-scales.invariants` still says
-  “no borders”. Direct data correction, checker and generation/runtime enforcement remain unauthorized.
+- [x] World/reset item 1 (`ontology/domain/3_Classes.md#world`, `c-world-bounds`, `gen-world`):
+  finite 1024×1024-land grid, coordinates −512..511 on each horizontal axis, without wrapping;
+  active design scales, selected checker and bounded generation/streaming implemented.
 - [ ] World/reset item 2 (`ontology/domain/3_Classes.md#world`, `c-world-bounds`): mark the outer boundary on the
   map and block outward travel including flight/teleport destinations; allow turning back, with
   no special damage/death/forced teleport. Map/travel enforcement is deferred.

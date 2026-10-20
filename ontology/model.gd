@@ -455,10 +455,28 @@ class Ontology extends RefCounted:
 		for land in rosters:                                                # c-roster-ids
 			for cid in rosters[land]:
 				if not creatures.has(cid): errors.append("roster %s: unknown creature %s" % [land, cid])
-		var ai: Dictionary = configs.get("generators", {}).get("design", {}).get("spawns", {}).get("ai", {})
+		var generator_config: Variant = configs.get("generators")
+		if not generator_config is Dictionary:
+			errors.append("generators: required object missing or malformed")
+			generator_config = {}
+		var design_input: Variant = generator_config.get("design")
+		if not design_input is Dictionary:
+			errors.append("design: required object missing or malformed")
+			design_input = {}
+		var design: Dictionary = design_input
+		var terrain_input: Variant = design.get("terrain")
+		if not terrain_input is Dictionary:
+			errors.append("design.terrain: required object missing or malformed")
+		else:
+			var scales := {"lands-per-axis": 1024, "land-blocks": 16384, "zone-blocks": 64, "land-zones": 256}
+			for field in scales:
+				if not _is_selected_multiplier(terrain_input.get(field), scales[field]):
+					errors.append("design.terrain.%s: must equal selected %s" % [field, scales[field]])
+		var spawns_input: Variant = design.get("spawns", {})
+		var ai_input: Variant = spawns_input.get("ai", {}) if spawns_input is Dictionary else {}
+		var ai: Dictionary = ai_input if ai_input is Dictionary else {}
 		if ai.has("sim-radius") and float(ai["sim-radius"]) < float(ai.get("aggro-range", 0)) + float(ai.get("leash", 0)):   # c-sim-radius
 			errors.append("design.spawns.ai.sim-radius %s < aggro-range + leash" % ai["sim-radius"])
-		var design: Dictionary = configs.get("generators", {}).get("design", {})
 		var combat: Variant = design.get("combat")
 		if not combat is Dictionary:
 			errors.append("design.combat: required object missing or malformed")

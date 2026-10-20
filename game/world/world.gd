@@ -22,9 +22,10 @@ var _land_mat := StandardMaterial3D.new()
 var _water_mat := StandardMaterial3D.new()
 
 func _ready() -> void:
+	var db := get_node("/root/OntologyDB")
 	if world_seed == 0:
-		world_seed = int(OntologyDB.design["terrain"]["seed-default"])
-	gen = WorldGen.new(world_seed, OntologyDB.design, OntologyDB.data.landscapes)
+		world_seed = int(db.design["terrain"]["seed-default"])
+	gen = WorldGen.new(world_seed, db.design, db.data.landscapes)
 	_zone_blocks = int(gen.terrain["zone-blocks"]); _view = int(gen.terrain["view-zones"])
 	for m in [_land_mat, _water_mat]:
 		m.vertex_color_use_as_albedo = true
@@ -32,7 +33,7 @@ func _ready() -> void:
 	_water_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 
 func _process(_dt: float) -> void:
-	if target == null:
+	if target == null or not gen.valid_block(target.global_position.x, target.global_position.z):
 		return
 	var c := Vector2i(floori(target.global_position.x / _zone_blocks), floori(target.global_position.z / _zone_blocks))
 	for zc in zones.keys():
@@ -44,7 +45,7 @@ func _process(_dt: float) -> void:
 	for r in _view + 1:
 		for dy in range(-r, r + 1):
 			for dx in range(-r, r + 1):
-				if maxi(absi(dx), absi(dy)) != r or zones.has(c + Vector2i(dx, dy)):
+				if maxi(absi(dx), absi(dy)) != r or not gen.valid_zone(c + Vector2i(dx, dy)) or zones.has(c + Vector2i(dx, dy)):
 					continue
 				_spawn_zone(c + Vector2i(dx, dy))
 				built += 1
@@ -52,6 +53,8 @@ func _process(_dt: float) -> void:
 					return
 
 func _spawn_zone(zc: Vector2i) -> void:
+	if not gen.valid_zone(zc):
+		return
 	var mi := MeshInstance3D.new()
 	mi.mesh = ZoneMesh.build(gen, zc)
 	mi.mesh.surface_set_material(0, _land_mat)
@@ -74,9 +77,9 @@ func _spawn_zone(zc: Vector2i) -> void:
 func _stream_village() -> void:
 	var here = gen.land_of_block(int(target.global_position.x), int(target.global_position.z))
 	var v := gen.village_at(here)
-	var want := not v.is_empty() and Vector2(target.global_position.x - v["centre"].x, target.global_position.z - v["centre"].y).length() < (_view + 1) * _zone_blocks
+	var want := here != null and not v.is_empty() and Vector2(target.global_position.x - v["centre"].x, target.global_position.z - v["centre"].y).length() < (_view + 1) * _zone_blocks
 	for lc in villages.keys():
-		if lc != here.coords or not want:
+		if not want or lc != here.coords:
 			villages[lc].queue_free(); villages.erase(lc)
 	if want and not villages.has(here.coords):
 		villages[here.coords] = Settlement.build(v, gen.settlement, ontology.configs["npc-roles"])
@@ -84,4 +87,7 @@ func _stream_village() -> void:
 
 ## True once the zone under `pos` is built (the player waits for it instead of falling through).
 func has_ground(pos: Vector3) -> bool:
-	return zones.has(Vector2i(floori(pos.x / _zone_blocks), floori(pos.z / _zone_blocks)))
+	if not gen.valid_block(pos.x, pos.z):
+		return false
+	var zc := Vector2i(floori(pos.x / _zone_blocks), floori(pos.z / _zone_blocks))
+	return gen.valid_zone(zc) and zones.has(zc)

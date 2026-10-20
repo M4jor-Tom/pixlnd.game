@@ -22,13 +22,18 @@ class Buf:
 		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 
 static func build(gen, zc: Vector2i) -> ArrayMesh:
+	var mesh := ArrayMesh.new()
+	if not gen.valid_zone(zc):
+		return mesh
 	var n: int = gen.terrain["zone-blocks"]
 	var ox := zc.x * n; var oy := zc.y * n
 	var w := n + 2                                              # heights with a 1-block border
+	var min_block: int = gen.land_min * gen.land_blocks
+	var max_block: int = (gen.land_max + 1) * gen.land_blocks - 1
 	var hs := PackedInt32Array(); hs.resize(w * w)
 	for j in w:
 		for i in w:
-			hs[j * w + i] = gen.height_at(ox + i - 1, oy + j - 1)
+			hs[j * w + i] = gen.height_at(clampi(ox + i - 1, min_block, max_block), clampi(oy + j - 1, min_block, max_block))
 	var land := Buf.new(); var water := Buf.new()
 	var sea: int = gen.sea_level
 	var water_col := Color(gen.terrain["water-color"]); water_col.a = 0.7
@@ -53,7 +58,6 @@ static func build(gen, zc: Vector2i) -> ArrayMesh:
 			if h < sea:
 				var y := float(sea + 1)
 				water.quad(water_col, Vector3.UP, Vector3(x0, y, z0), Vector3(x0, y, z0 + 1), Vector3(x0 + 1, y, z0 + 1), Vector3(x0 + 1, y, z0))
-	var mesh := ArrayMesh.new()
 	land.commit(mesh)
 	if not water.v.is_empty():
 		water.commit(mesh)                                      # surface 1 = water
