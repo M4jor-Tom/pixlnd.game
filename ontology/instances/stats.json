@@ -33,6 +33,7 @@
   },
   "alpha-item-stat-formulas": {
     "source": "coremaze/Cube-World-Weapon-Stats Stats.py (0.1.1 RE)",
+    "hp-scope": "Disputed historical Alpha expression only; hybrid HP uses domain/3_Classes.md#item and generators.json#design.gear-hp, independent of modifier roll.",
     "curve":  "2^((1 - 1/((n-1)*0.05 + 1))*3) * 2^(rarity*0.25)",
     "curve2": "curve/8",
     "n":      "level + 0.1 * upgrade_count",

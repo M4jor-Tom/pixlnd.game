@@ -468,11 +468,23 @@ class Ontology extends RefCounted:
 				errors.append("design.combat.creature-resistance: must equal selected unequipped creature/NPC innate Resistance 0")
 			if not _is_selected_multiplier(combat.get("armor-floor"), 0.1):
 				errors.append("design.combat.armor-floor: must equal selected 0.1 hit-damage floor")
+		var gear_hp: Variant = design.get("gear-hp")
+		if not gear_hp is Dictionary:
+			errors.append("design.gear-hp: required object missing or malformed")
+		else:
+			var hp_inputs := {"curve-mult": 5.0, "base": 2.0, "upgrade-step": 0.1}
+			for field in hp_inputs:
+				if not _is_selected_multiplier(gear_hp.get(field), hp_inputs[field]):
+					errors.append("design.gear-hp.%s: must equal selected %s" % [field, hp_inputs[field]])
+		var hp_materials := {"iron": 1.0, "cotton": 0.75, "linen": 0.5}
+		for id in hp_materials:
+			if not materials.has(id) or not _is_selected_multiplier((materials[id] as MaterialDef).raw.get("hp-bonus"), hp_materials[id]):
+				errors.append("material %s.raw.hp-bonus: must equal selected bonus %s" % [id, hp_materials[id]])
 		var resistance_materials := {"iron": 0.85, "linen": 0.75, "cotton": 0.75, "silk": 1.0}
 		for id in resistance_materials:
 			if not materials.has(id) or not _is_selected_multiplier((materials[id] as MaterialDef).raw.get("resi-mult"), resistance_materials[id]):
 				errors.append("material %s.raw.resi-mult: must equal selected active multiplier %s" % [id, resistance_materials[id]])
-		var slot_multipliers := {"chest": 1.0, "gloves": 0.5, "boots": 0.5, "shoulders": 0.5}
+		var slot_multipliers := {"chest": 1.0, "gloves": 0.5, "boots": 0.5, "shoulders": 0.5, "main-hand": 0.5, "off-hand": 0.5}
 		var slot_config: Variant = configs.get("equipment-slots", {})
 		var equipment_slots: Variant = slot_config.get("slots", []) if slot_config is Dictionary else []
 		var found_slots: Dictionary = {}
@@ -480,12 +492,13 @@ class Ontology extends RefCounted:
 			for slot in equipment_slots:
 				if slot is Dictionary and slot_multipliers.has(str(slot.get("id", ""))):
 					var id := str(slot["id"])
+					if found_slots.has(id): errors.append("equipment-slots.slots.%s: duplicate HP-bearing slot" % id)
 					found_slots[id] = true
 					if not _is_selected_multiplier(slot.get("hp-mult"), slot_multipliers[id]):
 						errors.append("equipment-slots.slots.%s.hp-mult: must equal selected multiplier %s" % [id, slot_multipliers[id]])
 		for id in slot_multipliers:
 			if not found_slots.has(id):
-				errors.append("equipment-slots.slots.%s: required Resistance armor slot missing" % id)
+				errors.append("equipment-slots.slots.%s: required HP-bearing slot missing" % id)
 		var loot: Dictionary = design.get("loot", {})                     # c-loot-config (D18)
 		if not loot.is_empty():
 			var item_types: Dictionary = configs.get("item-types", {})

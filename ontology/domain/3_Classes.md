@@ -1003,9 +1003,22 @@ This applies only to existing HP-bearing weapons, chest, shoulders, gloves and b
 `slot = 1` for chest, `0.5` for those other pieces. Material bonus is **iron 1, cotton 0.75,
 linen 0.5, otherwise 0**. No jewelry HP, random HP allocation or clamp is added.
 This new hybrid simplification removes only the disputed HP modifier-roll term, not the
-level/rarity/cube curve; it is not a recovered Alpha formula. Historical evidence, all other
-stat rules and downstream character/artifact rules remain unchanged. Gear HP application
-is deferred, not a live negative-HP bug.
+level/rarity/cube curve; it is not a recovered Alpha formula. Historical evidence and all other
+item-stat/artifact rules remain unchanged. Active numeric inputs are `generators.json#design.gear-hp` (`curve-mult` 5, `base` 2, `upgrade-step` 0.1),
+`materials.json#<id>.hp-bonus` for iron/cotton/linen, and the six HP-bearing
+`equipment-slots.json#slots` rows' `hp-mult`. Other materials contribute zero material bonus.
+The disputed Alpha HP expression remains historical reference, not the hybrid rule.
+
+**Equipped player HP:** maximum HP is the unchanged class-scaled base
+`curve(level, 0) × 2 × 100 × current class HP multiplier`, plus the sum of equipped eligible
+item HP bonuses, once per item (including existing off-hand equipment). Do not multiply gear
+HP by class again; bag items add nothing. After a successful equipment change, preserve absolute
+current HP, capped at the new maximum. Equipping never heals or revives; a dead player's HP
+stays zero. Rejected equipment changes leave HP unchanged, and unrelated inventory notifications
+must not change HP. Initialization, level-up and respawn/inn recovery retain their existing
+full-heal behavior, using the equipped maximum; level-up retains equipment contributions.
+Percentage-based heals, shields and fall damage continue to sample maximum HP at their existing
+times; no buff-rescaling, artifact or passive redesign is introduced.
 
 ### item-type
 25 alpha main types with subtypes. → `instances/item-types.json`.
@@ -1276,7 +1289,8 @@ mage 1.00; 2 banked skill points per level for skill-tree spending; no level cap
 XP per kill: `generators.json#design.progression` (D19). About five even-level kills give a level;
 creatures 10+ levels below give zero XP. Carry overflow, allowing multiple level-ups per kill
 by subtracting each reached level's XP threshold and retaining the remainder.
-Recompute maximum HP for the new level, then refill HP.
+Recompute maximum HP for the new level, then refill HP. Hybrid uses the
+[equipped maximum](#item), retaining gear contributions.
 
 ### skill-tree `A`
 11 slots. Shared chains (5 points unlock next): pet-master → riding; climbing → hang-gliding;
