@@ -1,5 +1,22 @@
 {
   "nodes": {
+    "nixgl": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1780323343,
+        "narHash": "sha256-TqVmAh3N0apQNMGxZgMnqVMF0jnAH0B9YfEujqK+Of8=",
+        "owner": "KeeTraxx",
+        "repo": "nixGL",
+        "rev": "51471fb4760efda2defba73bc1c264b7ba5364c2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "KeeTraxx",
+        "repo": "nixGL",
+        "rev": "51471fb4760efda2defba73bc1c264b7ba5364c2",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1788752844,
@@ -18,6 +35,7 @@
     },
     "root": {
       "inputs": {
+        "nixgl": "nixgl",
         "nixpkgs": "nixpkgs"
       }
     }

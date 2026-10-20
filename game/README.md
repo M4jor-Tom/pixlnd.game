@@ -62,8 +62,29 @@ Other architecture/test gotchas are in `AGENTS.md`.
 - For Markdown rewrites, escape a sed delimiter that occurs in the text; disambiguate Perl `$1`
   as `${1}` before `[` to avoid array access.
 
-## Checks
+## Nix launchers
+
+`nix run /path/to/pixlnd` selects the bundled game independently of the working directory.
+On an x86-64 Linux
+system using Ubuntu or another non-NixOS distribution with a loaded NVIDIA driver, use:
+
+```sh
+nix run --impure .#nvidia
+# After publication, without a checkout:
+nix run --refresh --impure github:M4jor-Tom/pixlnd.game#nvidia
 ```
+
+The optional launcher supplies matching proprietary NVIDIA userspace libraries for Vulkan
+and OpenGL; `--impure` permits host-driver detection. It does not install or replace the
+host kernel driver, and it needs a matching installer available from NVIDIA. The first run
+may download and build the userspace package; driver updates require re-evaluation.
+It does not select a different renderer or change the default app/dev shell.
+See the [technical choice](../ontology/decisions/nix-nvidia-launcher.md) for the compatibility pin.
+Arguments are forwarded unchanged, for example `nix run --impure .#nvidia -- -- --class=ranger`.
+
+## Checks
+```sh
+timeout 900 bash tests/test_flake.sh                            # pure default/platform checks; NVIDIA headless boot if a module is loaded
 nix develop -c godot --headless -s ontology/validate.gd            # ontology constraints
 nix develop -c godot --headless -s ontology/test_gear_hp_config.gd # fixed HP required/finite/exact inputs and cumulative negatives
 nix develop -c godot --headless -s ontology/test_dot_config.gd     # required/malformed DOT rows, exact selected numeric inputs and accumulated negatives
