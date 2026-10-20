@@ -116,6 +116,32 @@ after compaction verify actual files/Git/evidence rather than trusting a “comp
    claiming it. If commits are withheld, report pending hash-dependent changelog/video and
    publication work; do not invent filenames, identities or commit success.
 
+## Changelog and movie delegation contract
+
+Assign one leaf worker the authorized changelog/movie loop: scratch setup, routine debugging,
+recording, decoding and frame inspection. Within approved scope, scratch parsing errors, HUD
+rounding/cropping and ordinary capture failures are target-debugging work, not subagent
+infrastructure failures. Fix and revalidate locally without supervisor permission; retain failed
+attempts as failures. After three unsuccessful correction rounds, stop and report the blocker.
+
+Escalate missing authority/design decisions or required out-of-scope changes/dependencies before
+proceeding. Genuine subagent/provider/launch/extension/tooling-setup failures stop immediately under
+[the infrastructure-failure rule](#native-delegation-and-model-routing); the routine-debugging
+budget grants no infrastructure retry or execution-mode fallback.
+
+Keep raw logs, scripts, failed attempts and detailed inspection records in managed artifacts.
+Dispatch writer and reviewer with bound outputs and `outputMode: "file-only"`. The compact result
+contains status, deliverable paths, behaviors shown, verification results, movie hash/byte size,
+limitations/blockers and evidence references. Workflow emissions/returns contain run identifiers,
+`outputReference`/`artifactPaths` and compact verdicts, not report bodies or transcripts; do not
+forward `.output` containing full prose.
+
+A fresh read-only reviewer inspects the detailed artifacts and actual movie frames, returning a
+compact verdict with actionable findings and evidence references. Parent inspects representative
+feature frames and verifies the committed binary, consulting scoped log excerpts when needed
+rather than importing complete debugging histories. These reporting boundaries waive none of the
+[native movie gates](#native-changelog-movie), independent review or publication authority.
+
 ## Native changelog movie
 
 After the actual authorized code commit exists and changelog naming is settled, assign
@@ -160,7 +186,8 @@ Choose an available model for each dispatch: cheap-to-mid for bounded ontology s
 standard for implementation, more capable for new runtimes or broad engine changes; reviewer
 capacity scales with the diff. After three unsuccessful fix rounds, reassess the blocker and use
 a more capable available model only within current authority. Never guess provider/model names.
-Keep one writer and fresh independent reviewers, with full native results across dependency barriers.
+Keep one writer and fresh independent reviewers; retain full native results in managed evidence
+and consume their status and references at dependency barriers.
 
 On subagent infrastructure failure, STOP and preserve the actual error/run, cwd, branch/HEAD/index
 and partial diff. Request governed recovery; do not silently switch execution modes, waive review

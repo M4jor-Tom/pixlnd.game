@@ -4,7 +4,8 @@ Use the installed `pi-subagents` API and available models as required by [SKILL.
 These are task-content templates, not dispatch syntax. Parent binds each report through the native
 output field, chooses the model, supplies exact paths and obtains fresh reviews. Every worker is a
 leaf: never dispatch subagents. Include the current authorization, managed brief and source paths;
-do not depend on session history. Return full findings and truthful status/evidence, not only a pointer.
+do not depend on session history. Retain full findings and truthful evidence in the bound managed
+report; use each phase's result contract for the parent-facing summary.
 
 ## Ontology-sync implementer
 
@@ -50,11 +51,12 @@ cannot replace semantic review. Report blockers and limits; do not repair or wid
 ## Player changelog writer
 
 Read <verified slice brief>, <actual authorized code commit/diff> and
-[repository changelog conventions](../../AGENTS.md#changelogs). Produce only the authorized current
-slice's player-facing changelog and short actual new-feature demonstration movie, following the
-[native movie recipe](SKILL.md#native-changelog-movie), including its capture, HUD/UI, size and
-verification gates. Use the actual code hash and established identity; do not invent an ID or write
-hash-dependent filenames before the authorized code commit exists. If commits are withheld, report
+[repository changelog conventions](../../AGENTS.md#changelogs). Own the authorized production and
+routine-debugging loop under the [changelog/movie delegation contract](SKILL.md#changelog-and-movie-delegation-contract).
+Produce only the current slice's player-facing changelog and actual new-feature demonstration,
+following the [native movie recipe](SKILL.md#native-changelog-movie) and all capture/HUD/size gates.
+Use the actual code hash and established identity; do not invent an ID or write hash-dependent
+filenames before the authorized code commit exists. If commits are withheld, report
 pending hash-dependent changelog/video work. Describe what players can now do, grouped by what they
 touch, not implementation details or a deferred list. Do not backfill prior slices.
 
@@ -64,8 +66,6 @@ committed binary against the inspected footage as the recipe requires. No push w
 authority. Capture/setup/size blockers are unfinished work, not permission to substitute screenshots,
 an idle boot or an external artifact. Stop if needed setup exceeds scope.
 
-Report explicitly:
-- Markdown and video paths (or pending naming/hash blocker).
-- New-feature behaviors and relevant HUD/UI shown; footage verification evidence and limits.
-- Actual code/docs commit identities and Git/publication status, including committed binary
-  verification, or the pending authority/capture/size blocker. Never claim an unmade commit or push.
+Return the delegation contract's compact result; include actual code/docs identities and
+Git/publication status or the exact pending blocker. Keep full troubleshooting evidence in managed
+artifacts for the independent reviewer. Never claim an unmade commit, push or passed capture.
