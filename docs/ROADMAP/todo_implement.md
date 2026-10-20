@@ -347,11 +347,11 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
   (item 10, `44ab0a1`); other menu policies remain outside that repair.
 
 ## Items (§3.4, slice abaded3)
-- [ ] Apply [fixed hybrid gear HP](../../ontology/domain/3_Classes.md#item) when separately
-  authorized: HP formula is settled; existing HP-bearing gear only, no modifier-roll term.
-  The disputed historical expression remains in `stats.json`; live-data correction, generation,
-  equipment/character application and checker work are deferred. No live negative-HP bug exists
-  from this unused gear rule; other stat and artifact/character rules are unchanged.
+- [x] [Fixed hybrid gear HP](../../ontology/domain/3_Classes.md#item): active inputs and validation,
+  item generation and equipped maximum HP; swaps preserve absolute current HP capped down, without
+  healing or revival. Initial, level-up, inn and respawn recovery include worn gear.
+  `upgrade_count` is only a curve input; no cube acquisition/customization system is implemented.
+  The disputed historical expression remains reference-only; other stats and artifacts are unchanged.
 - [ ] **Equipment implementation — deferred (item 3):** after explicit implementation approval,
   normalize live `equipment-slots.json#accepts` to item-type IDs (`light`, `special`, `weapon`),
   express subtype restrictions and pet-food placement, and align the validator/consumers with
@@ -459,9 +459,9 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
   flash (D25) but still no model or particles (creatures shoot the same projectiles since D26), the main scene picks the class only from `-- --class=<id>`, nothing visually
   checked; every D24 number is untuned.
 - [x] Item instances, equipment slots, armor stat (D18, `game/items/`). Still open: the modifier roll only
-  seeds the name — stats.json gives no roll term for damage/armor; gear HP/regen/tempo/crit are not
-  applied (`gen-item-stats`). Hybrid HP is now fixed and approved (Items above), not awaiting a
-  roll formula; the other stat rules are unchanged. Rings/amulets never drop; no upgrade cubes
+  seeds the name — stats.json gives no roll term for damage/armor; gear regen/tempo/crit remain
+  unapplied (`gen-item-stats`) until their stat rules are selected for implementation. Fixed hybrid
+  HP is applied (Items above); the other stat rules are unchanged. Rings/amulets never drop; no upgrade cubes
   (`item.upgrades`, `c-cube-cap`).
 - [x] Two-handed weapon/shield conflicts are rejected atomically in either equip order (item 10).
   Remaining equipment-model/Wand work is listed under Items above.
