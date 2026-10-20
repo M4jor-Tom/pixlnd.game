@@ -7,6 +7,7 @@ var subtype: StringName = &""         # weapon-type id | consumable id | ingredi
 var material: StringName = &""        # material id (gear only)
 var rarity := 0                       # rarity index 0..4 (c-rarity-range)
 var level := 1                        # alpha power +1..+100
+var upgrade_count: int = 0            # HP curve input only; placed cubes are not implemented
 var modifier := 0                     # ItemData.modifier: seed of roll + name
 var minus_modifier := 0               # ItemData.minus_modifier ("attributes" in the roll)
 var count := 1                        # > 1 only for stackable types (c-stack-rule)

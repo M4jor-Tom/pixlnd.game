@@ -149,7 +149,7 @@ func _run() -> void:
 		check(guardian.combo == 4 and is_equal_approx(guardian._combo_t, 1.0), "taunt neither increments, resets nor refreshes combo")
 		check(taunted.provoked == in_range and (taunted.target == guardian if in_range else taunted.target == null) and is_equal_approx(taunted.hp, hp0), "zero damage and existing taunt targeting preserved")
 		guardian._combat_tick(0.5)
-		check(is_equal_approx(guardian.hp, 16.825), "shout heals 50% × 1.05 over 10 seconds unchanged")
+		check(is_equal_approx(guardian.hp, 17.021875), "shout heals 50% × 1.05 over 10 seconds unchanged")
 		guardian._combat_tick(0.6)
 		check(guardian.combo == 0, "taunt healing does not keep combo alive")
 	# Non-attacking buff, movement and heal paths must not become false misses.
@@ -163,7 +163,7 @@ func _run() -> void:
 	water.combo = 4; water._combo_t = 1.0; water.hp = 10.0; water.mp = 100.0
 	check(water.use_class_skill(1), "healing stream starts")
 	water.abilities.tick(1.5)
-	check(water.combo == 4 and is_equal_approx(water._combo_t, 1.0) and is_equal_approx(water.hp, 146.5), "cast heals without a false combo miss or refresh")
+	check(water.combo == 4 and is_equal_approx(water._combo_t, 1.0) and is_equal_approx(water.hp, 149.125), "cast heals without a false combo miss or refresh")
 	check(water.use_class_skill(4), "bubbles starts")
 	check(water.combo == 4 and is_equal_approx(water._combo_t, 1.0), "projectile's side heal does not resolve combo before shots")
 	# The existing volley path, not the heal, resolves its hit/miss exactly once.

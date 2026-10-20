@@ -67,6 +67,6 @@ func _init() -> void:
 	wolves[1].take_damage(1e9, p); wolves[2].take_damage(1e9, p)
 	check(p.level == 2 and p.xp == 13 and levels == [2], "three kills → level 2, 13 xp carried (levels %s)" % [levels])
 	check(p.skill_points == 2, "2 skill points banked: %d" % p.skill_points)
-	check(p.max_hp > hp1 and is_equal_approx(p.max_hp, Combat.player_max_hp(2, 1.3)) and is_equal_approx(p.hp, p.max_hp), "level-up: max hp %.0f → %.0f, healed to full (%.0f)" % [hp1, p.max_hp, p.hp])
+	check(p.max_hp > hp1 and is_equal_approx(p.max_hp, 294.563273555191) and is_equal_approx(p.hp, p.max_hp), "level-up: max hp %.0f → %.0f, healed to full (%.0f)" % [hp1, p.max_hp, p.hp])
 	print("progression ok" if _failed == 0 else "progression FAILED (%d)" % _failed)
 	quit(0 if _failed == 0 else 1)

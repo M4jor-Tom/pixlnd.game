@@ -1,6 +1,6 @@
-## §3.4 generators, pure and static: gen-item, gen-item-stats (damage + armor), gen-name for items,
-## gen-loot. Numbers: stats.json#alpha-item-stat-formulas, generators.json#design.loot|stack-cap (D18).
-## ponytail: hp/regen/tempo/crit from gear wait for their formulas (todo_implement.md).
+## §3.4 generators, pure and static: gen-item, gen-item-stats, gen-name for items, gen-loot.
+## Numbers: stats.json#alpha-item-stat-formulas, generators.json#design.gear-hp|loot|stack-cap.
+## ponytail: gear regen/tempo/crit remain unapplied; implement their stat rules when selected (todo_implement.md).
 extends RefCounted
 
 const Model := preload("res://ontology/model.gd")
@@ -28,6 +28,22 @@ static func armor(it: Item, o: Model.Ontology) -> float:
 
 static func resistance(it: Item, o: Model.Ontology) -> float:
 	return _defence_stat(it, o, "resi-mult", null)
+
+## Hybrid fixed HP: only HP-bearing slots, independent of either modifier (c-gear-hp).
+static func hp(it: Item, o: Model.Ontology) -> float:
+	if it.type not in [&"weapon", &"chest-armor", &"shoulder-armor", &"gloves", &"boots"]:
+		return 0.0
+	var slot := slot_id(it, o)
+	if slot not in [&"main-hand", &"off-hand", &"chest", &"shoulders", &"gloves", &"boots"]:
+		return 0.0
+	for s in o.configs["equipment-slots"]["slots"]:
+		if StringName(s["id"]) == slot and s.has("hp-mult"):
+			var cfg: Dictionary = o.configs["generators"]["design"]["gear-hp"]
+			var material: Model.MaterialDef = o.materials[it.material]
+			var bonus := float(material.raw["hp-bonus"]) if it.material in [&"iron", &"cotton", &"linen"] else 0.0
+			var n := it.level + float(cfg["upgrade-step"]) * it.upgrade_count
+			return Model.stat_curve(n, it.rarity) * float(cfg["curve-mult"]) * float(s["hp-mult"]) * (float(cfg["base"]) + bonus)
+	return 0.0
 
 static func _defence_stat(it: Item, o: Model.Ontology, material_key: String, missing_material_default: Variant) -> float:
 	var slot := slot_id(it, o)

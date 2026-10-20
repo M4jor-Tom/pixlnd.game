@@ -1,5 +1,5 @@
 ## player-character (§3.2) movement + §3.3 basic attack, combo, fall damage, death/respawn, class abilities on keys 1-4,
-## MP + M2 special attack (D21) + §3.4 inventory, gear (main-hand damage, armor sum), pick-up (E), quick item (Q)
+## MP + M2 special attack (D21) + §3.4 inventory, gear (damage, HP, armor, Resistance), pick-up (E), quick item (Q)
 ## + §3.5 XP, level-up, skill points (D19), skill tree spending, swim speed per point (D20).
 ## + D22: E talks to the nearest NPC (vendor → `talked`, trainer respec, inn rest) before picking up.
 ## + D23 defence (design.defence): M3 dodge roll with i-frames, M2-held block with block-power, the stealth bar, and
@@ -49,6 +49,7 @@ var mp := 0.0                                           # c-mp-range, design.res
 var mp_passive := false                                 # classes.json mp-generation "passive …" (mage)
 var special_mode: StringName = &"charged"               # classes.json special-attack-mode
 var hp_mult := 1.0                                      # class hp-mult, for max HP on level-up
+var _base_max_hp: float                                 # injected class-scaled base, without gear
 var prog: Dictionary = {}                               # design.progression
 var combo := 0
 var water_top := -INF                                   # y of the water surface (sea level + 1)
@@ -89,6 +90,7 @@ func setup(movement: Dictionary, camera: Dictionary, size_class: StringName) -> 
 
 func setup_combat(p_combat: Dictionary, p_crit: Dictionary, p_weapon: Dictionary, p_max_hp: float) -> void:
 	combat = p_combat; crit = p_crit; weapon = p_weapon
+	_base_max_hp = p_max_hp
 	max_hp = p_max_hp; hp = p_max_hp
 	if not died.is_connected(_on_died):
 		died.connect(_on_died)
@@ -117,8 +119,9 @@ func setup_items(p_o, p_design: Dictionary, class_id: StringName = &"warrior", s
 	inventory.coins = int(start["coins"])
 	inventory.changed.connect(_refresh_gear)
 	_refresh_gear()
+	hp = max_hp                                            # initialization alone starts full, including starter gear
 
-## equips: main-hand item → weapon damage; armor and Resistance sum the worn gear stats.
+## equips: main-hand damage; HP, armor and Resistance sum the worn gear stats once.
 func _refresh_gear() -> void:
 	var main = inventory.equipment.get(&"main-hand")
 	if main != null:
@@ -126,10 +129,12 @@ func _refresh_gear() -> void:
 		weapon = {"type": main.subtype, "damage": Items.damage(main, o) * float(combat["attack-power-mult"]),
 			"combo_cap": wt.combo_cap if wt.combo_cap > 0 else int(combat["combo"]["default-cap"])}
 		moveset = moveset_for(main.subtype)
-	armor = 0.0; resistance = 0.0
+	armor = 0.0; resistance = 0.0; max_hp = _base_max_hp
 	for slot in inventory.equipment:
 		armor += Items.armor(inventory.equipment[slot], o)
 		resistance += Items.resistance(inventory.equipment[slot], o)
+		max_hp += Items.hp(inventory.equipment[slot], o)
+	hp = minf(hp, max_hp)                                   # gear changes never heal or revive
 
 ## death of a creature we last hit → design.progression XP (D19), then level-up (c-level-up).
 func on_kill(creature_level: int) -> void:
@@ -144,7 +149,8 @@ func gain_xp(amount: int) -> void:
 		return
 	level = s["level"]
 	skill_points += s["gained"] * Model.SKILL_POINTS_PER_LEVEL
-	max_hp = Combat.player_max_hp(level, hp_mult)
+	_base_max_hp = Combat.player_max_hp(level, hp_mult)
+	_refresh_gear()
 	if prog["heal-on-level-up"]:
 		hp = max_hp
 	leveled_up.emit(level)

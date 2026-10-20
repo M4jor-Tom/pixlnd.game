@@ -122,7 +122,7 @@ func _run() -> void:
 	player.abilities.buffs[&"mana-shield"] = {"left": 10, "r": design.abilities["mana-shield"], "pool": 1.5}
 	player.blocking = true; player.mp = 0
 	player.tick_statuses(1.0)
-	check(is_equal_approx(player.hp, 259.5) and is_equal_approx(player.block_power, 50) and is_equal_approx(player.mp, 16), "two caught-up ticks each traverse block, buff and shield once")
+	check(is_equal_approx(player.hp, 267.0) and is_equal_approx(player.block_power, 50) and is_equal_approx(player.mp, 16), "two caught-up ticks each traverse block, buff and shield once")
 	player.free(); attacker.free()
 	# A creature killed during its real physics entry point must not finish a queued bite.
 	var prey = target()
