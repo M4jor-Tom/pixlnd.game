@@ -1,13 +1,16 @@
 ## Android-only native input/UI overlay. World simulation stays in the root viewport.
 extends CanvasLayer
+signal map_requested
 const Shop := preload("res://game/items/shop.gd")
 const InputMapBuilder := preload("res://game/meta/input_map.gd")
-const LABELS := {"sprint":"Sprint", "jump":"Jump", "swim-ascent":"Swim Up", "basic-attack":"Attack", "special-attack":"Special", "block":"Block", "dodge":"Dodge", "class-skill-1":"Skill 1", "class-skill-2":"Skill 2", "class-skill-3":"Skill 3", "class-skill-4":"Skill 4", "interact":"Talk", "pick-up":"Pick Up", "quick-item":"Quick Item", "inventory":"Inventory", "skills-window":"Skills", "nearer":"Camera\nnearer", "farther":"Camera\nfarther"}
+const LABELS := {"sprint":"Sprint", "jump":"Jump", "swim-ascent":"Swim Up", "basic-attack":"Attack", "special-attack":"Special", "block":"Block", "dodge":"Dodge", "class-skill-1":"Skill 1", "class-skill-2":"Skill 2", "class-skill-3":"Skill 3", "class-skill-4":"Skill 4", "interact":"Talk", "pick-up":"Pick Up", "quick-item":"Quick Item", "inventory":"Inventory", "skills-window":"Skills", "nearer":"Camera\nnearer", "farther":"Camera\nfarther", "world-map":"Map"}
 const HOLDS := ["sprint", "jump", "swim-ascent", "block", "special-attack"]
 var profile: Dictionary
 var player: Node
 var panels := {}
 var panel_id := ""
+var map_open := false
+var map_screen: CanvasLayer
 var view: SubViewport
 var stick: VirtualJoystick
 var stick_rect := Rect2()
@@ -63,7 +66,9 @@ func setup(p_profile: Dictionary, p_player: Node, inventory: CanvasLayer, skills
 	for id in ["inventory", "skills-window", ""]:
 		var b := Button.new(); b.text = "Close" if id == "" else LABELS[id]
 		b.pressed.connect(func():
-			if confirming: open_panel(id))
+			if confirming:
+				if id == "" and map_open: map_requested.emit()
+				else: open_panel(id))
 		_navigation.add_child(b)
 	for panel in panels.values():
 		if panel != null: panel.reparent(view)
@@ -140,7 +145,8 @@ func set_layout(rect: Rect2, dp: Vector2) -> void:
 		b.add_theme_font_size_override("font_size", int(16 * dp.y))
 	for panel in panels.values():
 		if panel != null and panel.touch_ui != null: fit_panel(panel)
-	_gameplay.visible = panel_id == "" and _layout_valid
+	if map_screen != null: map_screen.set_safe_area(rect, dp, float(profile["min-target-dp"]))
+	_gameplay.visible = panel_id == "" and not map_open and _layout_valid
 
 static func _texture(size: Vector2i, color: Color) -> ImageTexture:
 	var image := Image.create(size.x, size.y, false, Image.FORMAT_RGBA8); image.fill(color)
@@ -148,6 +154,8 @@ static func _texture(size: Vector2i, color: Color) -> ImageTexture:
 
 func _pressed(action: String) -> void:
 	if _suppress or _dispatch != action: return
+	if action == "world-map":
+		map_requested.emit(); return
 	if player != null and action in ["jump", "swim-ascent"]:
 		var swimming: bool = player.global_position.y < player.water_top - .5
 		if (action == "jump" and swimming) or (action == "swim-ascent" and not swimming): return
@@ -184,7 +192,7 @@ func handle_touch(event: InputEvent) -> void:
 		return
 	if event is InputEventScreenTouch and event.pressed:
 		if _owners.has(id): return
-		var target := _panel_target(event.position) if panel_id != "" else _target(event.position)
+		var target := _panel_target(event.position) if panel_id != "" or map_open else _target(event.position)
 		if player != null and player.dead: target = ""
 		if _occupied.has(target): target = ""
 		_owners[id] = {"target": target, "position": event.position}
@@ -250,18 +258,33 @@ func take_frame() -> Dictionary:
 	requests.clear(); look = Vector2.ZERO
 	return frame
 
+func set_map_screen(screen: CanvasLayer) -> void:
+	map_screen = screen
+	if _layout_valid: map_screen.set_safe_area(safe, pixels_per_dp, float(profile["min-target-dp"]))
+
+func set_map_open(value: bool) -> void:
+	if map_open == value: return
+	cancel_all()
+	map_open = value
+	_gameplay.visible = panel_id == "" and not map_open and _layout_valid
+	_navigation.visible = panel_id != ""
+
 func open_panel(id: String) -> void:
 	cancel_all()
 	for panel in panels.values():
 		if panel != null: panel.set_touch_open(false)
 	panel_id = id
 	if player != null: player.ui_open = id != ""
-	_gameplay.visible = id == "" and _layout_valid; _navigation.visible = id != ""
+	_gameplay.visible = id == "" and not map_open and _layout_valid; _navigation.visible = id != ""
 	if id != "" and panels.get(id) != null:
 		panels[id].set_touch_open(true)
 
 func back() -> void:
-	if view != null: open_panel("")
+	if map_open:
+		cancel_all()
+		map_requested.emit()
+	elif view != null:
+		open_panel("")
 
 func fit_panel(panel: CanvasLayer) -> void:
 	var height: float = minf(280 * pixels_per_dp.y, safe.size.y * .4)
@@ -299,6 +322,9 @@ var _pointer_list: ItemList
 var _pointer_down := false
 func _panel_target(position: Vector2) -> String:
 	if _occupied.has("pointer"): return ""
+	if map_open and map_screen != null and map_screen.close_button.get_global_rect().has_point(position):
+		_pointer_control = map_screen.close_button; _pointer_list = null
+		return "pointer"
 	_pointer_control = null; _pointer_list = null
 	for b in _navigation.get_children():
 		if b.get_global_rect().has_point(position): _pointer_control = b

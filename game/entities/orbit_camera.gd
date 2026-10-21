@@ -52,7 +52,7 @@ func _process(dt: float) -> void:
 	cam.rotation.z = deg_to_rad(float(shake["max-roll-deg"])) * k * sin(_shake_t * 1.1)
 
 func _unhandled_input(e: InputEvent) -> void:
-	if cfg.is_empty() or touch_only:
+	if cfg.is_empty() or touch_only or get_parent().map_open:
 		return
 	if e is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		var s := float(cfg["sensitivity"])
@@ -66,14 +66,14 @@ func _unhandled_input(e: InputEvent) -> void:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED else Input.MOUSE_MODE_CAPTURED
 
 func apply_touch_look(delta: Vector2, safe_width: float, degrees_per_width: float) -> void:
-	if cfg.is_empty() or safe_width <= 0 or get_parent().ui_open or get_parent().dead: return
+	if cfg.is_empty() or safe_width <= 0 or get_parent().ui_open or get_parent().map_open or get_parent().dead: return
 	_yaw -= deg_to_rad(degrees_per_width) * delta.x / safe_width
 	var lim: Array = cfg["pitch-deg"]
 	_pitch = clampf(_pitch - deg_to_rad(degrees_per_width) * delta.y / safe_width, deg_to_rad(float(lim[0])), deg_to_rad(float(lim[1])))
 	rotation = Vector3(_pitch, _yaw, 0)
 
 func zoom_steps(steps: int) -> void:
-	if cfg.is_empty() or (touch_only and (get_parent().ui_open or get_parent().dead)): return
+	if cfg.is_empty() or get_parent().map_open or (touch_only and (get_parent().ui_open or get_parent().dead)): return
 	var d: Dictionary = cfg["distance"]
 	_dist = clampf(_dist + float(d["step"]) * steps, float(d["min"]), float(d["max"]))
 	arm.spring_length = _dist

@@ -28,7 +28,8 @@
       "use-inventory-item",
       "spend-skill-point",
       "buy-item",
-      "sell-item"
+      "sell-item",
+      "world-map"
     ]
   }
 }

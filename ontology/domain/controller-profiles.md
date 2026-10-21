@@ -35,7 +35,7 @@ interpret the adapter; they do not rename or change its executable entries.
 | `crafting` | [crafting](controls.md#crafting) | Registered only |
 | `inventory` | [inventory](controls.md#inventory) press toggles | Implemented |
 | `skills-window` | [skills-window](controls.md#skills-window) press toggles | Implemented |
-| `world-map` | [world-map](controls.md#world-map) | Registered only |
+| `world-map` | [world-map](controls.md#world-map) press | Implemented: M toggles the fixed boundary/player overview |
 | `chat` | [chat](controls.md#chat) | Registered only |
 | `menu` | [menu](controls.md#menu) request; shop [ui-cancel](controls.md#ui-cancel) press | Camera currently toggles cursor capture, not a system menu; shop closes. Routing/consumption for other contexts not selected |
 | `help` | [help](controls.md#help) | Registered only |
@@ -60,7 +60,8 @@ is selected here. Inventory/skills/shop retain current input restrictions and
 canonical meaning or a decision to pause. The alias `ultimate` cannot create another skill.
 
 No executable mappings exist for separate block, swimming ascent, mount/dismount, glider/boat,
-object activation, formula learning, quick cycling or bench/map manipulation.
+object activation, formula learning, quick cycling or bench/map manipulation. The world map is
+toggled by M; map manipulation remains unselected.
 [Map operations](controls.md#screens-and-contextual-ui) have unselected physical gestures;
 obsolete source maps are not defaults. No extra inventory alias, standing dodge alias, class chord or
 UI-scale binding is inherited. Rebinding UI/persistence and device-resolved prompts are deferred.
@@ -164,7 +165,7 @@ Entering a new context never converts an existing hold into another action.
 
 Keep the current first-consumable-stack Quick Item approximation for this slice, not as the
 final consumable-selection or channel policy. Unimplemented climbing, pets, gliding, crafting
-and map features remain deferred, not removed from the 54-action target. Adapting working
+and full terrain-map features remain deferred, not removed from the 54-action target; the approved boundary/player overview is the selected map exception. Adapting working
 features does not authorize implementing missing gameplay.
 
 <a id="android-request-order"></a>
@@ -194,10 +195,20 @@ rebinding, layout editing and saved control preferences are deferred in this sli
 permanently excluded or assigned future defaults. Android labels describe touch actions,
 not keyboard instructions such as “B closes”.
 
+<a id="android-world-map"></a>
+### Android world map
+
+The approved map exception to the first-slice map deferral is a fixed boundary-and-player
+overview; it reveals no terrain and supports no map manipulation. A dedicated **Map** trigger
+opens it. **Close** and Android **Back** close it and consume the input. While open, gameplay
+touch requests are unavailable; transitions clear outstanding touches under the existing
+interruption and ownership rules. Targets retain the existing safe-area, 48 dp minimum and
+finger ownership requirements.
+
 <a id="android-back"></a>
 ### Android Back when no panel is open
 
-With a [supported panel](#android-panels) open, Back closes it and consumes the input.
+With a [supported panel](#android-panels) or the [world map](#android-world-map) open, Back closes it and consumes the input.
 Otherwise consume Back without attacking, quitting or opening a new menu. Players can
 background the app through Android system navigation; the [touch-cleanup rule](#android-interruption)
 applies. This adds no pause, background simulation, save policy or system-menu implementation;

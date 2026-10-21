@@ -19,9 +19,10 @@ remain in the linked gameplay definitions; later owner approvals override stale 
   choose their gameplay outcome or arbitration priority. Profiles own that policy; see the
   selected [Android interruption](controller-profiles.md#android-interruption) and
   [request-order rules](controller-profiles.md#android-request-order).
-- Context limits meaning; it does not add eligibility or new input availability. In particular,
-  inventory/skills/shop retain their [live-time and input restrictions](3_Classes.md#hud-element).
-  Time/input behavior for other menus is not selected. Enemy [current-target](4_Relations.md#threat-and-current-target-hybrid)
+- Context limits meaning; it does not add eligibility or new input availability. Inventory/skills/shop retain their
+  [live-time and input restrictions](3_Classes.md#hud-element). The world map separately uses
+  its approved live-time policy: world simulation continues, the player remains vulnerable, and
+  new movement/look/combat/interaction requests are blocked. Other menus remain unselected. Enemy [current-target](4_Relations.md#threat-and-current-target-hybrid)
   is not a player lock-on control; no new targeting is introduced here.
 
 ## Locomotion and view

@@ -7,6 +7,7 @@ const SkillPanel := preload("res://game/progression/skill_panel.gd")
 const ShopPanel := preload("res://game/items/shop_panel.gd")
 const AndroidTouch := preload("res://game/meta/android_touch.gd")
 const Feel := preload("res://game/combat/feel.gd")
+const WorldMap := preload("res://game/world/world_map.gd")
 
 func _ready() -> void:
 	var o: OntologyDB.Model.Ontology = OntologyDB.data
@@ -41,6 +42,10 @@ func _ready() -> void:
 		touch.set_layout(touch.safe, touch.pixels_per_dp)
 	player.water_top = world.gen.sea_level + 1.0
 	player.ground_ready = world.has_ground
+	var edge := float(world.gen.land_min * world.gen.land_blocks)
+	player.world_min = Vector2(edge, edge)
+	player.world_max = Vector2(-edge, -edge)
+	var map := WorldMap.new(); add_child(map); map.bind(player, touch)
 	# world.spawn-rule (D22): the square of the land (0,0) village; the land centre if that land has no village (all sea)
 	var mid: int = world.gen.land_blocks / 2
 	var village: Dictionary = world.gen.village_at(world.gen.land_at(Vector2i.ZERO))

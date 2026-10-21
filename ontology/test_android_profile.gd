@@ -1,7 +1,7 @@
 ## Scoped Android required-input/reference regressions; broader catalog validation is deferred.
 extends SceneTree
 const Model := preload("res://ontology/model.gd")
-const ACTIONS := ["move", "look", "zoom", "sprint", "jump", "swim-ascent", "basic-attack", "special-attack", "block", "dodge", "class-skill-1", "class-skill-2", "class-skill-3", "class-skill-4", "interact", "pick-up", "quick-item", "inventory", "skills-window", "ui-cancel", "equip-item", "use-inventory-item", "spend-skill-point", "buy-item", "sell-item"]
+const ACTIONS := ["move", "look", "zoom", "sprint", "jump", "swim-ascent", "basic-attack", "special-attack", "block", "dodge", "class-skill-1", "class-skill-2", "class-skill-3", "class-skill-4", "interact", "pick-up", "quick-item", "inventory", "skills-window", "ui-cancel", "equip-item", "use-inventory-item", "spend-skill-point", "buy-item", "sell-item", "world-map"]
 var failed := 0
 func check(ok: bool, message: String) -> void:
 	if not ok:
@@ -26,6 +26,23 @@ func _init() -> void:
 	check(android["actions"].size() == ACTIONS.size(), "exact selected action set")
 	for action in ACTIONS:
 		check(action in android["actions"] and ('id="%s"' % action) in controls, "canonical reference " + action)
+	check(android["actions"].count("world-map") == 1, "world-map action is required exactly once")
+	var missing_map: Dictionary = profile.duplicate(true)
+	missing_map["android"]["actions"].erase("world-map")
+	rejected(missing_map, "missing world-map action")
+	var missing_map_model = fresh(); missing_map_model.configs["controller-profiles"] = missing_map
+	missing_map_model.validate()
+	check("controller-profiles.android.actions: required distinct first-slice action array" in "\n".join(missing_map_model.errors), "missing world-map reports action-array diagnostic")
+	var duplicate_map: Dictionary = profile.duplicate(true)
+	duplicate_map["android"]["actions"].append("world-map")
+	rejected(duplicate_map, "duplicate world-map action")
+	var substituted_map: Dictionary = profile.duplicate(true)
+	substituted_map["android"]["actions"][ACTIONS.find("world-map")] = "block"
+	check(substituted_map["android"]["actions"].size() == ACTIONS.size(), "world-map substitution preserves array length")
+	rejected(substituted_map, "substituted world-map action")
+	var substituted_model = fresh(); substituted_model.configs["controller-profiles"] = substituted_map
+	substituted_model.validate()
+	check("controller-profiles.android.actions: required unique canonical action world-map" in "\n".join(substituted_model.errors), "substituted world-map reports required-action diagnostic")
 	for value in [null, [], 1, "android", {}, {"android": null}, {"android": []}]:
 		rejected(value, "malformed profile " + str(value))
 	for field in ["deadzone-ratio", "min-target-dp", "look-deg-per-safe-width", "actions"]:

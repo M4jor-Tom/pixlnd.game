@@ -16,13 +16,16 @@ across** (D12), giving **16,777,216 blocks / roughly 16,777 km per side**. Land 
 run **−512 through 511 inclusive on each horizontal axis**. This is enormous but bounded,
 not unlimited generation or a wrapping world. Historical “infinite” / “no borders” descriptions
 do not override this hybrid limit. Active generator data and terrain streaming enforce the
-finite grid; map marking and outward-travel prevention remain deferred (item 2).
+finite grid.
 
 **Hybrid world/reset item 2 (owner approved, 2026-09-28; depends on item 1):** mark the
-outer world boundary on the map and **prevent outward travel**, including **flight and
-teleport destinations**. Players can turn back; crossing attempts cause **no special damage,
-death or forced teleport**. This chooses no edge art, warning UI, biome or numerical buffer.
-Map/travel enforcement remains deferred and unauthorized.
+outer world boundary on a fixed overview showing only the boundary and current player position;
+terrain, exploration, pan/zoom, markers and map travel remain deferred. Prevent outward travel,
+including flight and teleport destinations, at any altitude; this slice integrates the current
+Teleport dash. The edge behaves like a wall and turn-back is allowed. Preserve current Teleport
+costs and cooldowns. Crossing attempts
+cause **no special damage, death or forced teleport**. This chooses no edge art, warning UI,
+biome or numerical buffer. The selected map/travel behavior is implemented; Android hardware-specific rendering and touch acceptance remain unverified.
 
 | prop | type | i/e | notes |
 |---|---|---|---|
@@ -1460,12 +1463,19 @@ Hybrid (D25): floating target numbers, stars over stunned heads and buff icons w
 use `generators.json#design.feel`. The level-up toast pops from `level-up.pop-scale` back to ×1
 over `level-up.pop-s`.
 
+Hybrid world-map policy: the map shows only the complete world boundary and current player
+position; it does not reveal terrain or exploration and has no pan, zoom, markers or map travel.
+Time and world simulation continue, and the player remains vulnerable. While it is open, new
+movement, look, combat and interaction requests are blocked; existing committed effects and
+movement continue under their ordinary rules. Selected physical mappings are documented in the
+[controller profiles](controller-profiles.md#keyboard-and-mouse).
+
 Hybrid panel-time policy (walkthrough item 10, owner approved 2026-09-17): opening the inventory,
 skill-tree or shop panel does not pause time, in either solo or multiplayer. The world and player
 timers continue together: enemies and projectiles remain active, damage-over-time effects tick,
 cooldowns count down, buffs expire and dodge protection ends under their existing rules. Opening
 these panels grants no immunity or extension of protection; players remain vulnerable while browsing.
-This does not decide new input availability or the behavior of other panels/menus.
+This does not decide new input availability or the behavior of other panels/menus. The world-map separately uses its approved live-time and input-gating policy above.
 Panel-time runtime authorization (walkthrough item 10, owner approved 2026-09-17): repair the
 player-only timer freeze and add regressions for these three panels. Preserve current gameplay
 input restrictions, balance and other menus; advance existing simulation rather than admitting

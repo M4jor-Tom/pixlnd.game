@@ -54,11 +54,16 @@ var prog: Dictionary = {}                               # design.progression
 var combo := 0
 var water_top := -INF                                   # y of the water surface (sea level + 1)
 var ground_ready: Callable = func(_p: Vector3) -> bool: return true   # world: is the zone under us built?
+var world_min := Vector2(-INF, -INF)
+var world_max := Vector2(INF, INF)  # exclusive; set from finite world design
+var _motion_remainder_x := 0.0
+var _motion_remainder_z := 0.0
 var spawn_point := Vector3.ZERO
 var touch_input: Node = null                            # null preserves the keyboard/mouse adapter
 var _touch_frame := {}
 var _touch_jump := false
 var ui_open := false                                    # panel owns input, not simulation time
+var map_open := false                                    # selected map gates new requests, not simulation
 var stamina := 100.0
 var _stamina_idle := 0.0
 var _swing_t := 0.0
@@ -258,11 +263,11 @@ func _defence_tick(dt: float, dir: Vector3, still: bool) -> void:
 		_dodge["left"] -= dt
 		if _dodge["left"] <= 0.0:
 			_dodge = {}
-	if touch_input == null and not ui_open and Input.is_action_just_pressed("dodge"):
+	if touch_input == null and not ui_open and not map_open and Input.is_action_just_pressed("dodge"):
 		dodge(dir)
 	var bl: Dictionary = defence["block"]
 	var cyc := _cyclone()
-	blocking = can_block() and block_power > 0.0 and (cyc or (not ui_open and (Input.is_action_pressed("special-attack") if touch_input == null else _touch_frame.get("held", {}).get("block", false)) and not stunned()))
+	blocking = can_block() and block_power > 0.0 and (cyc or (not ui_open and not map_open and (Input.is_action_pressed("special-attack") if touch_input == null else _touch_frame.get("held", {}).get("block", false)) and not stunned()))
 	if not blocking or cyc:
 		block_power = minf(block_max(), block_power + float(bl["regen-per-s"]) * (float(bl["cyclone-regen-mult"]) if cyc else 1.0) * dt)
 	var sl: Dictionary = defence["stealth"]
@@ -370,7 +375,7 @@ func _physics_process(dt: float) -> void:
 			_touch_frame = touch_input.take_frame()
 	if touch_input != null:
 		rig.apply_touch_look(_touch_frame["look"], _touch_frame["safe_width"], float(touch_input.profile["look-deg-per-safe-width"]))
-	var input: Vector2 = Vector2.ZERO if ui_open or stunned() else (Input.get_vector("move_left", "move_right", "move_forward", "move_back") if touch_input == null else _touch_frame["move"])
+	var input: Vector2 = Vector2.ZERO if ui_open or map_open or stunned() else (Input.get_vector("move_left", "move_right", "move_forward", "move_back") if touch_input == null else _touch_frame["move"])
 	var dir := (Basis(Vector3.UP, rig.rotation.y) * Vector3(input.x, 0, input.y)).normalized()
 	if not defence.is_empty():
 		_defence_tick(dt, dir, input == Vector2.ZERO)
@@ -380,11 +385,11 @@ func _physics_process(dt: float) -> void:
 		if swimming: touch_input.retire_hold("jump")
 		else: touch_input.retire_hold("swim-ascent")
 		_touch_frame["held"] = touch_input.held.duplicate()
-		if not ui_open and not stunned():
+		if not ui_open and not map_open and not stunned():
 			for request in _touch_frame["requests"]:
 				_apply_touch_request(request, dir)
 				if ui_open: break
-		if _charge >= 0 and not ui_open and not stunned() and not abilities.busy():
+		if _charge >= 0 and not ui_open and not map_open and not stunned() and not abilities.busy():
 			_charge = minf(mp, _charge + float(design["special-attack"]["charge-mp-per-s"]) * abilities.mult("charge-mult") * dt)
 	var speed := float(cfg["walk"])
 	var st: Dictionary = cfg["stamina"]
@@ -402,14 +407,14 @@ func _physics_process(dt: float) -> void:
 		speed *= float(defence["block"]["move-mult"])
 	if swimming:
 		speed *= float(cfg["swim-mult"]) * (skill_tree.effect_mult(&"swimming") if skill_tree != null else 1.0)   # swimming points (D20)
-		velocity.y = float(cfg["swim-vertical"]) * (1.0 if not ui_open and (Input.is_action_pressed("jump") if touch_input == null else _touch_frame["held"].get("swim-ascent", false)) else -0.3)
+		velocity.y = float(cfg["swim-vertical"]) * (1.0 if not ui_open and not map_open and (Input.is_action_pressed("jump") if touch_input == null else _touch_frame["held"].get("swim-ascent", false)) else -0.3)
 		_fall_from = -INF                                   # water breaks the fall
 	else:
 		velocity.y -= g * dt
 		var jh: Dictionary = cfg["jump-height"]
-		if not ui_open and is_on_floor() and (Input.is_action_just_pressed("jump") if touch_input == null else _touch_jump):
+		if not ui_open and not map_open and is_on_floor() and (Input.is_action_just_pressed("jump") if touch_input == null else _touch_jump):
 			velocity.y = sqrt(2.0 * g * float(jh["hold"]))
-		elif velocity.y > 0.0 and (ui_open or not (Input.is_action_pressed("jump") if touch_input == null else _touch_frame["held"].get("jump", false))):
+		elif velocity.y > 0.0 and (ui_open or map_open or not (Input.is_action_pressed("jump") if touch_input == null else _touch_frame["held"].get("jump", false))):
 			velocity.y = minf(velocity.y, sqrt(2.0 * g * float(jh["tap"])))   # released early: tap height
 	velocity.x = dir.x * speed; velocity.z = dir.z * speed
 	if not _dodge.is_empty():
@@ -421,21 +426,54 @@ func _physics_process(dt: float) -> void:
 	if abilities != null and not abilities.dash.is_empty():
 		var dv: Vector3 = abilities.dash_velocity()
 		velocity.x = dv.x; velocity.z = dv.z
+	_apply_world_precision(dt)
 	step_up(Vector3(velocity.x, 0, velocity.z) * dt, float(cfg["step-up"]))
 	var was_airborne := not is_on_floor()
 	move_and_slide()
+	_enforce_world_boundary()
 	if abilities != null:
 		abilities.after_move(dt)
 	_fall_damage(was_airborne)
 	if touch_input == null and not combat.is_empty():
 		_combat_tick(dt)
-	if touch_input == null and inventory != null and not ui_open:
+	if touch_input == null and inventory != null and not ui_open and not map_open:
 		if Input.is_action_just_pressed("interact"):
 			interact_nearest()
 		if Input.is_action_just_pressed("quick-item"):
 			use_quick()
 
 ## design.movement.fall-damage: % of max HP per block beyond the free height.
+## Preserve normal movement except when a far-away Vector3 cannot represent this tick's displacement.
+func _apply_world_precision(dt: float) -> void:
+	var x := _precision_axis(global_position.x, velocity.x, dt, world_min.x, world_max.x - 0.5, _motion_remainder_x)
+	var z := _precision_axis(global_position.z, velocity.z, dt, world_min.y, world_max.y - 0.5, _motion_remainder_z)
+	velocity.x = x[0]; _motion_remainder_x = x[1]
+	velocity.z = z[0]; _motion_remainder_z = z[1]
+	if (x[2] or z[2]) and abilities != null and not abilities.dash.is_empty(): abilities.dash["left"] = 0.0
+
+func _precision_axis(position: float, speed: float, dt: float, minimum: float, maximum: float, remainder: float) -> Array:
+	if speed == 0.0: return [0.0, 0.0, false]
+	var direct_displacement := float(Vector3(position + speed * dt, 0, 0).x) - position
+	if remainder == 0.0 and direct_displacement == speed * dt:
+		return [speed, 0.0, false]
+	var requested := speed * dt + remainder
+	var unbounded := position + requested
+	var target := clampf(unbounded, minimum, maximum)
+	var displacement := float(Vector3(target, 0, 0).x) - position
+	if displacement == 0.0: return [0.0, 0.0 if target != unbounded else requested, target != unbounded]
+	return [displacement / dt, 0.0 if target != unbounded else requested - displacement, target != unbounded]
+
+## Keep the player center inside the half-open horizontal world; preserve vertical motion.
+func _enforce_world_boundary() -> void:
+	var bounded := Vector2(clampf(global_position.x, world_min.x, world_max.x - 0.5), clampf(global_position.z, world_min.y, world_max.y - 0.5))
+	if global_position.x != bounded.x:
+		velocity.x = 0.0; _motion_remainder_x = 0.0
+		if abilities != null and not abilities.dash.is_empty(): abilities.dash["left"] = 0.0
+	if global_position.z != bounded.y:
+		velocity.z = 0.0; _motion_remainder_z = 0.0
+		if abilities != null and not abilities.dash.is_empty(): abilities.dash["left"] = 0.0
+	global_position.x = bounded.x; global_position.z = bounded.y
+
 func _fall_damage(was_airborne: bool) -> void:
 	if not is_on_floor():
 		_fall_from = maxf(_fall_from, global_position.y)
@@ -460,9 +498,9 @@ func _combat_time_tick(dt: float) -> void:
 func _combat_tick(dt: float) -> void:
 	_combat_time_tick(dt)
 	if abilities == null:
-		if not ui_open and Input.is_action_just_pressed("basic-attack") and _swing_t <= 0.0: _swing()
+		if not ui_open and not map_open and Input.is_action_just_pressed("basic-attack") and _swing_t <= 0.0: _swing()
 		return
-	if stunned() or ui_open: return
+	if stunned() or ui_open or map_open: return
 	for slot in 4:
 		if Input.is_action_just_pressed("class-skill-%d" % (slot + 1)) or (slot == 3 and Input.is_action_just_pressed("ultimate")):
 			use_class_skill(slot + 1)
@@ -472,9 +510,10 @@ func _combat_tick(dt: float) -> void:
 
 func cancel_touch_requests() -> void:
 	_charge = -1.0; blocking = false; _touch_jump = false
+	_motion_remainder_x = 0.0; _motion_remainder_z = 0.0
 
 func _apply_touch_request(request: Dictionary, dir: Vector3) -> void:
-	if dead or ui_open or stunned(): return
+	if dead or ui_open or map_open or stunned(): return
 	var action: String = request.action
 	match action:
 		"jump":
@@ -575,6 +614,7 @@ func _attack(m: Dictionary, dmg: float, combo_bonus: bool, applies: Array) -> in
 			var lunge := float(m.get("lunge", 0.0))
 			if lunge > 0.0:
 				move_and_collide((Basis(Vector3.UP, rig.rotation.y) * Vector3.FORWARD) * lunge)   # ponytail: instant lunge, no animation
+			_enforce_world_boundary()
 			var center: Vector3 = global_position + Vector3.UP if m.get("around", false) else _front()
 			hits = _strike(center, float(ba["hit-radius"]) * float(m.get("radius-mult", 1.0)), dmg, combo_bonus, applies, attack_type)
 	if hits > 0:
@@ -677,6 +717,7 @@ func ability_attack_type(a) -> StringName:
 	return Combat.MAGICAL if source_class == &"mage" else Combat.PHYSICAL
 
 func _on_died() -> void:
+	_motion_remainder_x = 0.0; _motion_remainder_z = 0.0
 	if touch_input != null: touch_input.cancel_all()
 	velocity = Vector3.ZERO
 	if abilities != null:

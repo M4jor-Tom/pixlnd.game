@@ -518,7 +518,7 @@ class Ontology extends RefCounted:
 			if (not value is float and not value is int) or value != expected:
 				errors.append(path + "." + field + ": must equal selected policy " + str(expected))
 		var actions: Variant = a.get("actions")
-		var required := ["move", "look", "zoom", "sprint", "jump", "swim-ascent", "basic-attack", "special-attack", "block", "dodge", "class-skill-1", "class-skill-2", "class-skill-3", "class-skill-4", "interact", "pick-up", "quick-item", "inventory", "skills-window", "ui-cancel", "equip-item", "use-inventory-item", "spend-skill-point", "buy-item", "sell-item"]
+		var required := ["move", "look", "zoom", "sprint", "jump", "swim-ascent", "basic-attack", "special-attack", "block", "dodge", "class-skill-1", "class-skill-2", "class-skill-3", "class-skill-4", "interact", "pick-up", "quick-item", "inventory", "skills-window", "ui-cancel", "equip-item", "use-inventory-item", "spend-skill-point", "buy-item", "sell-item", "world-map"]
 		if not actions is Array or actions.size() != required.size():
 			errors.append(path + ".actions: required distinct first-slice action array"); return
 		for action in required:

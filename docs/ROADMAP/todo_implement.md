@@ -64,9 +64,7 @@ research. No new implementation authority or whole-topic completion.
 - [x] World/reset item 1 (`ontology/domain/3_Classes.md#world`, `c-world-bounds`, `gen-world`):
   finite 1024×1024-land grid, coordinates −512..511 on each horizontal axis, without wrapping;
   active design scales, selected checker and bounded generation/streaming implemented.
-- [ ] World/reset item 2 (`ontology/domain/3_Classes.md#world`, `c-world-bounds`): mark the outer boundary on the
-  map and block outward travel including flight/teleport destinations; allow turning back, with
-  no special damage/death/forced teleport. Map/travel enforcement is deferred.
+- [x] World/reset item 2 (`ontology/domain/3_Classes.md#world`, `c-world-bounds`): fixed boundary/player overview and shared player travel guard are implemented; headless tests cover player paths/abilities, Teleport cost/cooldown/termination, live simulation and native gameplay-input gating, and desktop plus synthetic Android landscape/safe-area/DPI captures pass. Android hardware-specific rendering/touch acceptance remains unverified. The map deliberately omits terrain, exploration, pan/zoom, markers and map travel (`world_map.gd` ponytail); add a full map only when separately selected. Current player travel is bounded at all altitudes; no flight service exists. Preserve current Teleport costs/cooldowns, turn-back, and no special damage/death/forced teleport.
 - [ ] World/reset item 3 (`ontology/domain/3_Classes.md#game-clock`, `c-midnight-reset`): daily return of defeated
   ordinary-dungeon/repeatable-daily enemies including bosses; completed one-time guards/boss stay
   cleared, artifact/book claims never renew, world improvements keep their existing reset rules.
