@@ -225,6 +225,7 @@ Time, resets and sleep. `A S`
 | prop | value |
 |---|---|
 | speed | 10× real time (1 game min ≈ 6 s; day = 2 h 24 min real) |
+| initial-time | hybrid: 07:00 only when creating a saved world; existing worlds resume saved time under persistence item 8 below |
 | sleep-speed | A/S reference: 100× (baseline/units unresolved, §5 source item 10; clock only, world does not simulate faster); hybrid inn skip below |
 | midnight-reset | 0:00: respawn eligible monsters, regenerate daily missions, respawn deposits and wilderness plants, restock shops, re-close divine doors; hybrid cleared-enemy eligibility and occupied-site timing follow world/reset items 3–4 below (historical S exclusion uncertain) |
 | inn-reset | A/S reference: innkeeper 18:00–06:00 → set 07:00; A free; S 10 coins, also re-rolls daily missions; hybrid services below |
@@ -246,8 +247,13 @@ eligibility. **Multiple missed midnights produce one refresh**, never stacked wa
 change itself **never heals or replaces living enemies or erases an ongoing fight**; a run
 spanning midnight can finish without defeated guards respawning behind the party. Ordinary
 threat decay, targeting and home-return rules remain unchanged (`ai-behavior`): genuine mob
-death/respawn starts fresh, not a clock-triggered wipe of surviving mobs. No site radius,
-occupancy grace period or storage format is chosen. Occupancy/reset enforcement is deferred.
+death/respawn starts fresh, not a clock-triggered wipe of surviving mobs.
+For the [initial encounter families](#mission-type), occupancy uses explicit **closed
+three-dimensional playable site volumes**: dungeon rooms, corridors and entrance court;
+visibly delimited outdoor battlefields. Boundaries count as inside: every player must be
+outside every component before the pending refresh applies. Camera distance, streaming and
+simulation range do not define occupancy. Exact dimensions and storage format remain unselected;
+no extra grace delay applies. Occupancy/reset enforcement is deferred.
 
 **Hybrid settlements/inn item 2 (owner approved, 2026-09-27):** inn recovery fully heals and
 sets the respawn point **for free at any time**. A separate sleep service costs **10 copper**,
@@ -1374,6 +1380,15 @@ Per realm; lore sites ≈ +10 % each; 100 % reveals all its artifacts on the map
 4 captives per land at white/green/blue/purple missions; each rescue raises shop stock one rarity.
 Hybrid rescues benefit the saved world, not only the rescuer (`save-data`, persistence item 4).
 
+Hybrid rescue eligibility requires all designated guards/bosses defeated and the captive
+available for the rescue conversation. Talking then completes the rescue immediately, with no
+extra key. If nobody talks, complete it automatically when the last player leaves the cleared
+site, using [site occupancy](#game-clock). Both paths apply the same world-shared completion and
+existing benefit exactly once, without duplicate dialogue or rewards.
+Before completion, defeated designated rescue enemies remain daily-refresh eligible under
+occupied-site protection. Completed guards/bosses stay cleared. On last-player exit, complete
+an eligible rescue **before any pending daily refresh**, so refresh cannot undo permanent completion.
+
 ### circle-of-power `S`
 Kill restless warrior (5★) → eternal ember → light brazier → land-wide power buff (+10 % attack, +10 % max HP, D6);
 several per land; one ember per participant.
@@ -1396,6 +1411,16 @@ vaults, sky islands, lore sites, hidden treasure.
 | repeat | daily / once per land |
 | reward | see `loot-rule` |
 | structures | poi/dungeon refs |
+
+**Hybrid initial encounter-contract scope:** an ordinary multi-boss ruins dungeon, a repeatable
+daily hostile combat camp and one-time world-shared supplier-rescue sites. These are the first
+families to make concrete, not a final content limit, changed supplier count or complete generation
+specification. Existing book/supplier rules and enabled hybrid dungeon traps, vases/tables and
+multiple bosses remain unchanged.
+
+Within these families, physical sites stay fixed at their saved-world locations; eligible daily
+enemies return at those sites. Family-specific repeatability/permanent completion and other
+mission generation/reward rules are unchanged.
 
 ### arena `S`
 5 waves: W/G, W/G, G/B, B/P, P/Y boss; any species (saurian, mammoth, yeti, mana mech, spectrino
