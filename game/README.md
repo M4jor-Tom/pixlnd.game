@@ -86,6 +86,7 @@ Arguments are forwarded unchanged, for example `nix run --impure .#nvidia -- -- 
 ```sh
 timeout 900 bash tests/test_flake.sh                            # pure default/platform checks; NVIDIA headless boot if a module is loaded
 nix develop -c godot --headless -s ontology/validate.gd            # ontology constraints
+nix develop -c godot --headless -s ontology/test_equipment_config.gd # slot indices/parents, raw item-type/weapon ownership/capacity and Wand/recipe negatives + cumulative diagnostics
 nix develop -c godot --headless -s ontology/test_world_bounds_config.gd # selected finite world scales and missing/malformed parent paths
 nix develop -c godot --headless -s ontology/test_gear_hp_config.gd # fixed HP required/finite/exact inputs and cumulative negatives
 nix develop -c godot --headless -s ontology/test_dot_config.gd     # required/malformed DOT rows, exact selected numeric inputs and accumulated negatives
@@ -97,20 +98,21 @@ nix develop -c godot --headless -s game/world/test_world_gen.gd    # gen-world i
 nix develop -c godot --headless -s game/world/test_settlement.gd   # village placement / plateau / layout, no spawns near the square, shop stock + prices, buy / sell, respec, inn, interact → NPC
 nix develop -c godot --headless -s game/entities/test_player.gd    # player physics (land, jump height, step-up, sprint, camera)
 nix develop -c godot --headless -s game/meta/test_android_touch.gd # real native joystick/buttons, ownership, simultaneous streams, cancel/Back/layout/dp, root screen events
-nix develop -c godot --headless -s game/entities/test_android_controls.gd # native events -> player/camera, separated controls, ordered resource/busy/UI gating, all touch panel operations/scroll, cancellation, high-DPI panels
-nix develop -c godot --headless -s game/entities/test_panel_time.gd # desktop + touch inventory/skills/shop: live DOT, cooldowns, buff/dodge expiry, blocked gameplay input, close/reopen movement, lethal DOT
+nix develop -c godot --headless -s game/entities/test_android_controls.gd # native events -> player/camera, separated controls, ordered resource/busy/UI gating, touch inventory wrong-class red/rejection and operations/scroll, cancellation, high-DPI panels
+nix develop -c godot --headless -s game/entities/test_panel_time.gd # desktop wrong-class red/rejection + touch inventory/skills/shop: live DOT, cooldowns, buff/dodge expiry, blocked gameplay input, close/reopen movement, lethal DOT
 nix develop -c godot --headless -s game/entities/test_creatures.gd # gen-spawns determinism, rosters, level band, HP calibration, FSM
 nix develop -c godot --headless -s game/entities/test_creature_roles.gd   # c-creature-roles, role parsing, role per spawned group, ranged keep-away / LOS / shot, mage splash + burning, poison application/ticks through dodge, unchanged burning/direct-hit dodge, no friendly fire, blocked shot, enemy-hit roll
 nix develop -c godot --headless -s game/combat/test_combat.gd       # formulas, hit/combo/whiff, retaliation, kill, respawn
-nix develop -c godot --headless -s game/items/test_items.gd         # gen-item roll/stats/names, slots, atomic 2H/shield conflict rejection in either equip order, stack rule, gen-loot rates, kill → drop → pick-up → quick-item
-nix develop -c godot --headless -s game/items/test_gear_hp.gd       # literal slot/material/roll/upgrade HP, class bases, swaps/no healing, rejected equip, notifications, initial/level/respawn HP, HUD and percentage consumers
+nix develop -c godot --headless -s game/items/test_items.gd         # gen-item roll/stats/names, slots, legal loadouts, atomic 2H/shield conflict rejection in either equip order, stack rule, gen-loot rates, kill → drop → pick-up → quick-item
+nix develop -c godot --headless -s game/items/test_equipment.gd     # canonical subtype slots, class/material rejection, local bag/worn identity (including duplicate-add and malformed-bag rejection), two rings, legal 1H placement, Wand no-off-hand, atomic state and attack preservation
+nix develop -c godot --headless -s game/items/test_gear_hp.gd       # literal slot/material/roll/upgrade HP, class-valid gear, swaps/no healing, rejected equip, notifications, initial/level/respawn HP, HUD and percentage consumers
 nix develop -c godot --headless -s game/progression/test_progression.gd   # xp-to-next table, xp-for-kill gap rule, settle, c-xp-config, kills → level 2
 nix develop -c godot --headless -s game/progression/test_skill_tree.gd    # tree shape per spec, c-tree-shape, spend/unlock, per-point mults, class slots, first-slot smash + cooldown
 nix develop -c godot --headless -s game/combat/test_dot_applications.gd # independent/staggered/mixed applications, exact first/final ticks, coarse/fragmented dt, source lifetime, synchronous clear/death
 nix develop -c godot --headless -s game/combat/test_abilities.gd    # c-ability-runtime, costs, smash dash+stun, cyclone ticks, buffs, rock fist, MP per hit, special charge, burning, heal cast, shield, bulwark
 nix develop -c godot --headless -s game/combat/test_class_combos.gd # burst/dash hit/miss, whole-channel normal/early end, gains/caps/inactivity, neutral taunts/heals/buffs/movement, projectile side heal
 nix develop -c godot --headless -s game/combat/test_defence.gd      # c-defence-config, dodge cost / roll / i-frames / rewards, shield + guardian block, same-interval block exhaustion / final-hit status protection, stealth fill / aggro / hit bonus / camouflage / decay, enemy-hit stun + knockback
-nix develop -c godot --headless -s game/combat/test_resistance.gd  # c-attack-defence, c-resistance-mitigation, c-resistance-dot; equipped gear, creature baseline, ordered defence and once-only burn inheritance
+nix develop -c godot --headless -s game/combat/test_resistance.gd  # c-attack-defence, c-resistance-mitigation, c-resistance-dot; gear, attack-type/in-flight classification, creature baseline, ordered defence and once-only burn inheritance
 nix develop -c godot --headless -s game/combat/test_projectiles.gd  # c-moveset-config, bow arrow hit / arc whiff / volley, wand beam, staff at-cursor + range, bracelet knockdown, fire-missiles, boomerang ticks + return, dagger poison, longsword lunge, shuriken throw, greatsword finisher, real four-hit crit-derived burn volley, lethal hit status rejection
 nix develop -c godot --headless -s game/combat/test_feel.gd        # c-feel-config, hit-stop freeze + real-time restore + overlap, trauma decay to rest, damage number spawned / freed, kill bundle, hurt number, stun stars, projectile trail + impact, level-up, every event's synthesised sfx
 nix develop -c godot --write-movie /tmp/f.png --fixed-fps 30 --quit-after 100   # 3D frames of the real scene (the movie writer skips CanvasLayer UI)

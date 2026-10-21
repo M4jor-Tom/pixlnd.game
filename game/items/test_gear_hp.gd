@@ -47,43 +47,43 @@ func _run() -> void:
 	InputMapBuilder.build(o.configs.keybinds.hybrid)
 	_item_fixtures()
 	_extraneous_hp_fields()
-	# Same iron chest adds 15, regardless of the class base multiplier.
-	for row in [[&"warrior", 267.5, 282.5], [&"ranger", 225.0, 240.0], [&"mage", 205.0, 220.0], [&"rogue", 247.5, 262.5]]:
+	# Each class uses its canonical armor material; the HP bonus is independent of class base HP.
+	for row in [[&"warrior", &"iron", 267.5, 282.5], [&"ranger", &"linen", 225.0, 237.5], [&"mage", &"silk", 205.0, 215.0], [&"rogue", &"cotton", 247.5, 261.25]]:
 		var hero := player(row[0])
-		state(hero, row[1], row[1], "%s starts full, including starter weapon" % row[0])
-		var chest := gear(&"chest-armor", &"iron")
+		state(hero, row[2], row[2], "%s starts full, including starter weapon" % row[0])
+		var chest := gear(&"chest-armor", row[1])
 		hero.inventory.add(chest)
-		state(hero, row[1], row[1], "bag has no HP effect")
+		state(hero, row[2], row[2], "bag has no HP effect")
 		hero.hp = 80.0
 		check(hero.inventory.equip(chest), "chest equips")
-		state(hero, 80, row[2], "%s adds unscaled gear without healing" % row[0])
+		state(hero, 80, row[3], "%s adds class-valid gear without healing" % row[0])
 		hero.free()
 
 	var dressed := player(&"warrior")
-	for row in [[&"chest-armor", &"iron", &""], [&"shoulder-armor", &"cotton", &""], [&"gloves", &"linen", &""], [&"boots", &"silk", &""], [&"weapon", &"iron", &"shield"]]:
+	for row in [[&"chest-armor", &"iron", &""], [&"shoulder-armor", &"iron", &""], [&"gloves", &"iron", &""], [&"boots", &"iron", &""], [&"weapon", &"iron", &"shield"]]:
 		var it := gear(row[0], row[1], row[2])
 		dressed.inventory.add(it); check(dressed.inventory.equip(it), "HP-bearing piece equips")
-	state(dressed, 267.5, 308.125, "all six HP-bearing slots sum once")
+	state(dressed, 267.5, 312.5, "all six class-valid HP-bearing slots sum once")
 	dressed.free()
 
 	var p := player(&"warrior")
 	var chest := gear(&"chest-armor", &"iron")
-	var silk := gear(&"chest-armor", &"silk")
+	var upgraded := Items.generate(RandomNumberGenerator.new(), &"chest-armor", &"", &"iron", 2, 0)
 	var shield := gear(&"weapon", &"iron", &"shield")
 	var two := gear(&"weapon", &"iron", &"greatsword")
-	for it in [chest, silk, shield, two]: p.inventory.add(it)
+	for it in [chest, upgraded, shield, two]: p.inventory.add(it)
 	p.hp = 80
 	p.inventory.equip(chest)
 	state(p, 80, 282.5, "wounded equip")
-	p.inventory.equip(silk)
-	state(p, 80, 277.5, "replacement removes displaced HP")
-	p.hp = 277.5
+	p.inventory.equip(upgraded)
+	state(p, 80, 284.0613427051072, "class-valid replacement removes displaced HP")
+	p.hp = 284.0613427051072
 	p.inventory.unequip(&"chest")
 	state(p, 267.5, 267.5, "unequip caps down")
 	p.inventory.equip(chest)
 	state(p, 267.5, 282.5, "re-equip never fills lost HP")
 	for i in 5:
-		p.inventory.equip(silk); p.inventory.equip(chest)
+		p.inventory.equip(upgraded); p.inventory.equip(chest)
 	state(p, 267.5, 282.5, "repeated swaps never heal or accumulate")
 	p.inventory.equip(shield)
 	state(p, 267.5, 290, "valid sword plus offhand contributes once each")
@@ -117,14 +117,14 @@ func _run() -> void:
 	# Actual lethal damage enters the existing death/respawn coroutine.
 	p.take_damage(10000, p)
 	check(p.dead, "lethal damage kills")
-	p.inventory.equip(silk)
-	state(p, 0, 304.563273555191, "dead replacement stays at zero")
+	p.inventory.equip(upgraded)
+	state(p, 0, 311.124616260298, "dead replacement stays at zero")
 	check(p.dead, "equipping does not revive")
 	p.inventory.changed.emit()
-	state(p, 0, 304.563273555191, "dead notification stays at zero")
+	state(p, 0, 311.124616260298, "dead notification stays at zero")
 	await create_timer(float(design.combat.death["respawn-s"]) + .1).timeout
 	check(not p.dead, "real respawn completes")
-	state(p, 304.563273555191, 304.563273555191, "respawn refills retained equipment maximum")
+	state(p, 311.124616260298, 311.124616260298, "respawn refills retained equipment maximum")
 	hud.free(); p.free()
 	await _max_hp_consumers()
 	print("gear HP ok" if failed == 0 else "gear HP FAILED: %d" % failed)
@@ -159,8 +159,6 @@ func _extraneous_hp_fields() -> void:
 	for slot in extra.configs["equipment-slots"]["slots"]:
 		if slot["id"] not in ["chest", "shoulders", "gloves", "boots", "main-hand", "off-hand"]:
 			slot["hp-mult"] = 1.0
-		if slot["id"] == "chest":
-			slot["accepts"].append("ingredient")
 	check(extra.validate(), "extraneous HP fields remain outside selected validation")
 	for row in [[&"weapon", &"wood", &"bow", 5.0], [&"chest-armor", &"silk", &"", 10.0], [&"boots", &"gold", &"", 5.0]]:
 		check(is_equal_approx(Items.hp(gear(row[0], row[1], row[2]), extra), row[3]), "%s ignores extraneous material HP bonus" % row[1])
@@ -169,28 +167,28 @@ func _extraneous_hp_fields() -> void:
 
 func _max_hp_consumers() -> void:
 	var mage := player(&"mage")
-	var chest := gear(&"chest-armor", &"iron")
+	var chest := gear(&"chest-armor", &"silk")
 	mage.inventory.add(chest); mage.inventory.equip(chest)
 	check(mage.abilities.use(o.abilities[&"mana-shield"]), "real shield activates")
-	check(is_equal_approx(mage.abilities.buffs[&"mana-shield"]["pool"], 66), "shield samples equipped max 220 at activation")
+	check(is_equal_approx(mage.abilities.buffs[&"mana-shield"]["pool"], 64.5), "shield samples equipped max 215 at activation")
 	mage.inventory.unequip(&"chest")
-	check(is_equal_approx(mage.abilities.buffs[&"mana-shield"]["pool"], 66), "swap does not rescale existing shield")
+	check(is_equal_approx(mage.abilities.buffs[&"mana-shield"]["pool"], 64.5), "swap does not rescale existing shield")
 	mage.abilities.reset()
 	mage.mp = 100; mage.hp = 10
 	check(mage.abilities.use(o.abilities[&"healing-stream"]), "real healing cast starts")
 	mage.inventory.equip(chest)
-	state(mage, 10, 220, "equip during heal cast does not itself heal")
+	state(mage, 10, 215, "equip during heal cast does not itself heal")
 	mage.abilities.tick(1.5)
-	state(mage, 120, 220, "heal samples equipped max at cast completion")
+	state(mage, 117.5, 215, "heal samples equipped max at cast completion")
 	# Real landing collision exercises fall damage at 10 blocks above the free eight.
 	var floor := StaticBody3D.new(); var collision := CollisionShape3D.new(); var box := BoxShape3D.new()
 	box.size = Vector3(20, 1, 20); collision.shape = box; floor.add_child(collision); floor.position.y = -.5
 	root.add_child(floor)
-	mage.position = Vector3(0, .1, 0); mage.abilities.reset(); mage.hp = 220
+	mage.position = Vector3(0, .1, 0); mage.abilities.reset(); mage.hp = 215
 	await physics_frame
 	mage.velocity = Vector3(0, -10, 0); mage.move_and_slide()
 	check(mage.is_on_floor(), "fall fixture lands on real floor")
 	mage._fall_from = mage.global_position.y + 10
 	mage._fall_damage(true)
-	state(mage, 198, 220, "fall damage samples equipped max: two blocks at 5 percent")
+	state(mage, 193.5, 215, "fall damage samples equipped max: two blocks at 5 percent")
 	mage.free(); floor.free()

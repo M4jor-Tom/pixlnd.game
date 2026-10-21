@@ -351,27 +351,28 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
   healing or revival. Initial, level-up, inn and respawn recovery include worn gear.
   `upgrade_count` is only a curve input; no cube acquisition/customization system is implemented.
   The disputed historical expression remains reference-only; other stats and artifacts are unchanged.
-- [ ] **Equipment implementation — deferred (item 3):** after explicit implementation approval,
-  normalize live `equipment-slots.json#accepts` to item-type IDs (`light`, `special`, `weapon`),
-  express subtype restrictions and pet-food placement, and align the validator/consumers with
-  the approved model. Live slot JSON is deliberately unchanged: current `items.gd#slot_id`
-  consumes it directly. Approved rules are in `ontology/domain/index.md §3.4/§5`; data correction and enforcement
-  remain separately deferred.
+- [x] **Equipment legality (item 3 + Wand item 1):** live slot data uses canonical
+  item-type IDs with lamp/special subtype restrictions and conditional pet-food placement; selected
+  validator/equip enforcement and local non-stackable identity ownership are implemented.
+  Wand is 2H with the existing 32-cube limit and its common recipe uses 20 wood cubes. Wrong-class gear remains
+  carryable/red in the inventory list but cannot equip; two distinct rings reach both existing slots.
+  This is placement legality, not new off-hand combat. No crafting, customization, taming or traversal
+  runtime was added. Commit/publication choices remain pending in `docs/HANDOFF.md`.
 - [ ] Loot only from open-world kills: no dungeon chests, mission rewards, NPC weapon drops, leftovers,
   boss spirit cubes (`loot-rule`); species drops without an `ingredients.json` row (popcorn, jellies) are skipped.
 - [ ] Ground items: coloured cubes, no item mesh; auto-pickup only coins; no middle-click drop for trading;
   lifetime is real seconds (`design.loot.ground.lifetime-s`), not tied to `game-clock`.
 - [ ] Inventory panel: one list, no tabs / tooltips / drag / star rating (`screens.inventory`, `item-tooltip`);
-  no class check on equip (red names), no quick-select wheel (Q takes the first consumable, instant, no sit/channel).
+  shared equip legality rejects wrong-class/material or invalid slot/hand items and colors wrong-class inventory rows red;
+  no quick-select wheel (Q takes the first consumable, instant, no sit/channel).
 - [x] Shops (D22, `items/shop.gd`): weapon / armor / item vendors, `design.prices` buy + sell. Still open (`shop.gd` ponytail): stock
   never restocks (`c-midnight-reset`) and is re-rolled at the current level on every open; no gnome rarity unlocks, buy-back tab,
   identifier, adapter, gem trader. Item 10's native panel capture checks rendering with empty stock;
   the full vendor/stock/trade flow is not visually verified.
 - [ ] No crafting, customization bench.
-- [ ] Wand item 1 (`ontology/domain/3_Classes.md#weapon-type`, `c-hands`): correct provisional checked-in handedness to
-  2H and the common recipe from 10 to 20 wood cubes; enforce no other hand item and the existing
-  32-cube limit, preserving damage/attacks and rarity gems. Equipment/crafting/customization and
-  validation coverage require separate authorization; no live data or runtime changed.
+- [x] Wand item 1 (`ontology/domain/3_Classes.md#weapon-type`, `c-hands`): checked-in data is 2H with the common
+  recipe at 20 wood cubes; shared equipment rejects any occupied off-hand item and retains the existing 32-cube
+  limit, damage and attacks. Crafting/customization runtime and rarity-gem changes remain out of scope.
 - [ ] Books/formulas item 1 (`ontology/domain/3_Classes.md#book-of-crafting`, `c-book-recipe-persistence`): persist
   book-learned recipes with the character across lands/sessions, without relearning on travel.
   Direct data correction and crafting/save-data implementation remain unauthorized; cross-world
@@ -463,7 +464,8 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
   HP is applied (Items above); the other stat rules are unchanged. Rings/amulets never drop; no upgrade cubes
   (`item.upgrades`, `c-cube-cap`).
 - [x] Two-handed weapon/shield conflicts are rejected atomically in either equip order (item 10).
-  Remaining equipment-model/Wand work is listed under Items above.
+  Equipment legality now also covers canonical slot/subtype, class/material, legal 1H placement and Wand 2H/no-off-hand;
+  paired off-hand combat contribution and bracelet damage semantics remain intentionally unchanged.
 - [ ] Combo only adds damage; armor piercing per combo and the per-weapon cap colours are missing
   (`combo-system`).
 - [ ] Death: player respawns at the spawn point after 2 s; no revival statue / shrine, no enemy HP

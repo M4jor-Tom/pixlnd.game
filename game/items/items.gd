@@ -71,14 +71,34 @@ static func heal(it: Item, o: Model.Ontology) -> float:
 	var c: Model.Consumable = o.consumables.get(it.subtype)
 	return Model.stat_curve(it.level, it.rarity) * (c.heal_mult if c != null else 0)
 
-## equips-in: the equipment-slot whose `accepts` lists the type; weapons by hands (c-slot-accepts).
+## equips-in: canonical slot/type/subtype routing; Inventory adds class and prospective hand checks.
 static func slot_id(it: Item, o: Model.Ontology) -> StringName:
+	if it == null:
+		return &""
 	if it.type == &"weapon":
-		return &"off-hand" if (o.weapon_types[it.subtype] as Model.WeaponType).hands == Model.Hands.OFFHAND else &"main-hand"
+		if not o.weapon_types.has(it.subtype):
+			return &""
+		var wt: Model.WeaponType = o.weapon_types[it.subtype]
+		if wt.hands == Model.Hands.NONE:
+			return &""
+		return &"off-hand" if wt.hands == Model.Hands.OFFHAND else &"main-hand"
 	for s in o.configs["equipment-slots"]["slots"]:
-		if String(it.type) in s["accepts"]:
-			return StringName(s["id"])
+		if String(it.type) not in s.get("accepts", []):
+			continue
+		var restrictions: Array = s.get("accepts-subtypes", [])
+		if not restrictions.is_empty() and it.subtype not in restrictions:
+			continue
+		return StringName(s["id"])
 	return &""
+
+static func weapon_material_allowed(it: Item, o: Model.Ontology) -> bool:
+	if it == null or it.type != &"weapon" or not o.weapon_types.has(it.subtype) or not o.materials.has(it.material):
+		return false
+	var raw: String = str((o.weapon_types[it.subtype] as Model.WeaponType).raw.get("material", ""))
+	for option in raw.split("|"):
+		if it.material == StringName(option.strip_edges().split(" ")[0]):
+			return true
+	return false
 
 static func rarity_id(index: int, o: Model.Ontology) -> StringName:
 	for id in o.rarities:

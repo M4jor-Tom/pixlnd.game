@@ -54,6 +54,7 @@ func _refresh() -> void:
 	_list.clear(); _rows.clear()
 	for it in inv.entries:
 		_list.add_item(("%s ×%d" % [player.item_label(it), it.count]) if it.count > 1 else player.item_label(it))
+		if not inv.class_allowed(it): _list.set_item_custom_fg_color(_list.item_count - 1, Color.RED)
 		_rows.append(it)
 
 	if touch_ui != null: touch_ui.fit_panel(self)

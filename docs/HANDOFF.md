@@ -1,5 +1,20 @@
 # Handoff — pending continuation
 
+## Equipment correctness — changelog, native video and publication
+
+Continue on `master`. Next action: produce the player changelog and matching native AVI using the
+actual equipment code commit hash, independently review the footage, then commit the pair and
+push `master` normally. These selected release actions are owner-authorized; footage and committed
+binary checks remain required before publication. Use descriptive equipment-correctness naming;
+do not invent a D-number.
+
+The approved scope remains equipment legality, slot/class/hand enforcement and Wand data alignment,
+with current attack/damage behavior preserved; no new gameplay systems are authorized.
+Current release evidence is in native workflow `5ea920a0-3110-4b29-a5ba-af0cb44a588c`, reports
+`equipment-release/game-test-0.md`, `equipment-release/code-review-0.md` and
+`equipment-release/validation-0.md` under its managed output directory.
+This release grant does not extend to the unrelated follow-ups below.
+
 ## Android touch — characterization and publication follow-up
 
 Current hardware-test status and its evidence limits live in the

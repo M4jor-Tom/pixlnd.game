@@ -251,10 +251,13 @@ class Ontology extends RefCounted:
 					var w := WeaponType.new(); _fill(w, id, data[id])
 					w.subtype = int(data[id].get("subtype", -1) if data[id].get("subtype") != null else -1)
 					w.character_class = StringName(str(data[id].get("class", "")))
-					var h := str(data[id].get("hands", ""))
-					w.hands = Hands.TWO_HANDED if h.begins_with("2h") else Hands.OFFHAND if h == "offhand" \
-						else Hands.ONE_HANDED if h.begins_with("1h") else Hands.NONE
-					w.damage_k = int(data[id].get("damage-k", 0)); w.cube_capacity = int(data[id].get("cube-capacity", 0))
+					var raw_h: Variant = data[id].get("hands")
+					var h: String = raw_h if raw_h is String else ""
+					w.hands = Hands.TWO_HANDED if h == "2h" else Hands.OFFHAND if h == "offhand" \
+						else Hands.ONE_HANDED if h == "1h" or h == "1h dual (need two)" else Hands.NONE
+					w.damage_k = int(data[id].get("damage-k", 0))
+					var capacity: Variant = data[id].get("cube-capacity")
+					w.cube_capacity = int(capacity) if capacity is int or capacity is float else 0
 					w.combo_cap = int(data[id].get("combo-cap", -1) if data[id].get("combo-cap") != null else -1)
 					weapon_types[id] = w
 			"materials":
@@ -390,6 +393,117 @@ class Ontology extends RefCounted:
 		if not Color.html_is_valid(str(r.get("color", ""))): out.append("%s: color is not a valid html colour" % where)
 		return out
 
+	# c-slot-accepts / c-weapon-class / c-hands / c-cube-cap: selected equipment contract.
+	func _validate_equipment() -> void:
+		var slot_cfg: Variant = configs.get("equipment-slots")
+		if not slot_cfg is Dictionary: errors.append("equipment-slots: required object missing or malformed")
+		var slot_rows: Variant = slot_cfg.get("slots") if slot_cfg is Dictionary else null
+		var item_type_config: Variant = configs.get("item-types")
+		if not item_type_config is Dictionary: errors.append("item-types: required object missing or malformed")
+		var item_types: Dictionary = item_type_config if item_type_config is Dictionary else {}
+		var expected := {
+			"unknown-0": [], "amulet": ["amulet"], "chest": ["chest-armor"], "gloves": ["gloves"],
+			"boots": ["boots"], "shoulders": ["shoulder-armor"], "main-hand": ["weapon"],
+			"off-hand": ["weapon"], "ring-left": ["ring"], "ring-right": ["ring"],
+			"lamp": ["light"], "special": ["special"], "pet": ["pet-cage", "pet-food"]
+		}
+		var expected_indices := ["unknown-0", "amulet", "chest", "gloves", "boots", "shoulders", "main-hand", "off-hand", "ring-left", "ring-right", "lamp", "special", "pet"]
+		var expected_subtypes := {"lamp": ["lamp"], "special": ["hang-glider", "boat"]}
+		var seen_ids := {}; var seen_indices := {}
+		if not slot_rows is Array or slot_rows.size() != 13:
+			errors.append("equipment-slots.slots: exactly 13 slot rows required")
+		else:
+			for row in slot_rows:
+				if not row is Dictionary:
+					errors.append("equipment-slots.slots: malformed row")
+					continue
+				var id := str(row.get("id", "")); var index: Variant = row.get("index")
+				if seen_ids.has(id): errors.append("equipment-slots.slots.%s: duplicate id" % id)
+				seen_ids[id] = true
+				if (not index is int and not index is float) or (index is float and (is_nan(index) or is_inf(index) or index != floorf(index))):
+					errors.append("equipment-slots.slots.%s.index: integer required" % id)
+				else:
+					if seen_indices.has(int(index)): errors.append("equipment-slots.slots.%s: duplicate index" % id)
+					seen_indices[int(index)] = true
+					if id in expected_indices and index != expected_indices.find(id):
+						errors.append("equipment-slots.slots.%s.index: selected mapping mismatch" % id)
+				var accepts: Variant = row.get("accepts")
+				if not accepts is Array:
+					errors.append("equipment-slots.slots.%s.accepts: array required" % id)
+					continue
+				for type_id in accepts:
+					if not item_types.has(type_id): errors.append("equipment-slots.slots.%s.accepts: unknown item-type %s" % [id, type_id])
+					var type_row: Variant = item_types.get(type_id)
+					var restrictions: Variant = row.get("accepts-subtypes", [])
+					if restrictions is Array and not restrictions.is_empty() and type_row is Dictionary:
+						var catalog: Variant = type_row.get("subtypes")
+						if catalog is Dictionary:
+							for subtype in restrictions:
+								if not catalog.values().has(subtype): errors.append("equipment-slots.slots.%s: unknown subtype %s" % [id, subtype])
+						elif catalog is String:
+							errors.append("equipment-slots.slots.%s: subtype restrictions cannot resolve %s" % [id, catalog])
+				var want: Array = expected.get(id, [])
+				if accepts != want: errors.append("equipment-slots.slots.%s.accepts: selected mapping mismatch" % id)
+				if expected_subtypes.has(id) and row.get("accepts-subtypes") != expected_subtypes[id]:
+					errors.append("equipment-slots.slots.%s.accepts-subtypes: selected mapping mismatch" % id)
+				if id == "pet" and row.get("accepts-conditions") != {"pet-food": "during-taming"}:
+					errors.append("equipment-slots.slots.pet: pet-food must remain conditional during taming")
+		for id in expected:
+			if not seen_ids.has(id): errors.append("equipment-slots.slots.%s: required slot missing" % id)
+		for index in range(13):
+			if not seen_indices.has(index): errors.append("equipment-slots.slots: required index %d missing" % index)
+		var extra: Variant = slot_cfg.get("extra") if slot_cfg is Dictionary else null
+		var food_extra: Variant = extra.get("pet-food") if extra is Dictionary else null
+		if not food_extra is Dictionary or food_extra.get("accepts") != ["pet-food"]:
+			errors.append("equipment-slots.extra.pet-food: separate pet-food acceptance required")
+
+		for id in weapon_types:
+			var w: WeaponType = weapon_types[id]
+			var raw: Dictionary = w.raw
+			var class_owned := w.hands != Hands.NONE and w.character_class in classes
+			for class_id in classes:
+				if (classes[class_id] as CharacterClass).weapon_types.has(StringName(id)): class_owned = true
+			if class_owned and (not raw.get("hands") is String or raw.get("hands") not in ["1h", "2h", "offhand", "1h dual (need two)"]):
+				errors.append("weapon %s: hands must be a supported active weapon value" % id)
+			if w.hands == Hands.NONE or raw.get("usable", true) == false:
+				if class_owned: errors.append("weapon %s: active class weapon requires usable hands" % id)
+				continue
+			var owner: Variant = raw.get("class")
+			if owner is String:
+				if owner.is_empty(): errors.append("weapon %s: owning class required" % id)
+				elif owner != "any":
+					if not classes.has(owner): errors.append("weapon %s: unknown class %s" % [id, owner])
+					elif not (classes[owner] as CharacterClass).weapon_types.has(StringName(id)):
+						errors.append("weapon %s: class %s does not list weapon" % [id, owner])
+			else:
+				errors.append("weapon %s: owning class required" % id)
+			if class_owned:
+				var expected_capacity := MAX_CUBES_2H if w.hands in [Hands.TWO_HANDED, Hands.OFFHAND] else MAX_CUBES_1H
+				if not _is_selected_multiplier(raw.get("cube-capacity"), expected_capacity): errors.append("weapon %s: capacity must match hands" % id)
+				var material_text := str(raw.get("material", ""))
+				if material_text.is_empty():
+					errors.append("weapon %s: material required" % id)
+				else:
+					for option in material_text.split("|"):
+						var material_id := StringName(option.strip_edges().split(" ")[0])
+						if not materials.has(material_id): errors.append("weapon %s: unknown material %s" % [id, material_id])
+		var wand: WeaponType = weapon_types.get(&"wand")
+		if wand == null or wand.hands != Hands.TWO_HANDED or wand.cube_capacity != MAX_CUBES_2H or not (wand.raw.get("hands") is String and wand.raw["hands"] == "2h"):
+			errors.append("weapon wand: selected mechanical 2h / 32-cube definition required")
+
+		var recipe_cfg: Variant = configs.get("recipes")
+		if not recipe_cfg is Dictionary: errors.append("recipes: required object missing or malformed")
+		var gear_recipes: Variant = recipe_cfg.get("gear-weapons") if recipe_cfg is Dictionary else null
+		if not gear_recipes is Dictionary: errors.append("recipes.gear-weapons: required object missing or malformed")
+		var wand_recipe: Variant = gear_recipes.get("wand") if gear_recipes is Dictionary else null
+		if not wand_recipe is Dictionary:
+			errors.append("recipes.gear-weapons.wand: required recipe row missing")
+		else:
+			var inputs: Variant = wand_recipe.get("inputs")
+			if not inputs is Dictionary or not ((inputs.get("wood-cube") is int or inputs.get("wood-cube") is float) and float(inputs.get("wood-cube")) == 20.0):
+				errors.append("recipes.gear-weapons.wand.inputs.wood-cube: must be 20")
+			if wand_recipe.get("station") != "workbench": errors.append("recipes.gear-weapons.wand.station: must be workbench")
+
 	# c-control-references: only the selected Android first-slice input is enforced here.
 	func _validate_android() -> void:
 		var path := "controller-profiles.android"
@@ -419,6 +533,7 @@ class Ontology extends RefCounted:
 
 	func validate() -> bool:
 		var n := errors.size()
+		_validate_equipment()
 		_validate_android()
 		for id in specs:                                                    # c-spec-of-class
 			var s: Specialization = specs[id]
@@ -430,6 +545,8 @@ class Ontology extends RefCounted:
 		for id in classes:
 			for w in (classes[id] as CharacterClass).weapon_types:
 				if not weapon_types.has(w): errors.append("class %s: unknown weapon-type %s" % [id, w])
+				elif not (weapon_types[w] as WeaponType).raw.get("class") is String or (weapon_types[w] as WeaponType).raw.get("class") != str(id):
+					errors.append("class %s: weapon-type %s must belong to class" % [id, w])
 		for id in pet_foods:                                                # c-food-id + tamed-by
 			var f: PetFood = pet_foods[id]
 			if not creatures.has(f.tames): errors.append("pet-food %s tames unknown creature %s" % [id, f.tames]); continue
@@ -519,7 +636,8 @@ class Ontology extends RefCounted:
 				errors.append("equipment-slots.slots.%s: required HP-bearing slot missing" % id)
 		var loot: Dictionary = design.get("loot", {})                     # c-loot-config (D18)
 		if not loot.is_empty():
-			var item_types: Dictionary = configs.get("item-types", {})
+			var item_type_config: Variant = configs.get("item-types")
+			var item_types: Dictionary = item_type_config if item_type_config is Dictionary else {}
 			for k in ["gear-chance", "consumable-chance", "species-drop-chance"]:
 				if float(loot[k]) < 0.0 or float(loot[k]) > 1.0: errors.append("design.loot.%s out of [0,1]" % k)
 			if float(loot["coins"]["chance"]) < 0.0 or float(loot["coins"]["chance"]) > 1.0: errors.append("design.loot.coins.chance out of [0,1]")

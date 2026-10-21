@@ -847,10 +847,9 @@ Under D6's existing two-handed size class, a **common wand costs 20 wood cubes a
 (`5 × 4`), with existing rarity-gem requirements unchanged. This selects a complete two-handed
 loadout, not a one-handed pairing or a new damage/upgrade exception.
 
-Documentation only: live `weapon-types.json#wand.hands` still says `1h (2h in wiki)`, parsed
-as one-handed, and `recipes.json#gear-weapons.wand` still lists 10 wood cubes. Those provisional
-values do not override this rule. Live-data migration, equipment/crafting/customization enforcement
-and validation coverage remain separately deferred and unauthorized.
+Executable alignment: `weapon-types.json#wand.hands` is `2h` and `recipes.json#gear-weapons.wand` lists
+20 wood cubes at the existing workbench. The selected equipment validator and shared equip boundary
+consume these rules; crafting/customization runtime remains deferred.
 
 Hybrid (D24): `design.movesets.<weapon-type>.m1|m2` gives every class weapon its runtime — melee sphere (swing / radius mults,
 spin around the player, lunge, finisher status), projectile (count, spread, speed, gravity, life, hit radius, splash, pierce,
@@ -1051,21 +1050,20 @@ with subtype restrictions where needed:
 - `pet` accepts a `pet-cage` or `pet-food` during taming, without replacing the quick-consumable selection.
 - Armor and jewelry retain their matching slots; `unknown-0` accepts nothing.
 
-The item-3 slot-model approval is ontology-only: normalizing live slot JSON and its consumers
-awaits separate authorization (`docs/ROADMAP/todo_implement.md`). Wand handedness is approved
-under `weapon-type`; traversal approvals are recorded separately under `skill-tree` / `pet`.
-Gliding/sailing require the respective Hang Glider/Boat equipped in `special`, not merely bought
-(traversal items 2–3, approved 2026-09-28). They share that single slot; no dual equip or new slot.
+The item-3 slot-model approval is consumed by the selected equipment validator and shared equip boundary;
+no new slot or traversal runtime is added here. Wand handedness is approved under `weapon-type`; traversal
+approvals are recorded separately under `skill-tree` / `pet`. Gliding/sailing require the respective Hang
+Glider/Boat equipped in `special`, not merely bought (traversal items 2–3, approved 2026-09-28). They share
+that single slot; no dual equip or new slot.
 
 Hybrid hand-conflict repair (item 10, authorized 2026-09-17): reject an equip attempt that would
 pair a two-handed weapon with a shield, regardless of equip order. Leave existing equipment and
 the attempted item in the bag unchanged; do not auto-unequip, delete or duplicate either item.
-The repair uses loaded handedness classifications without changing them; it did not settle the
-then-provisional wand classification. The later Wand item 1 rule is recorded under `weapon-type`;
-its live-data migration remains deferred. Valid one-handed-plus-shield setups, two-handed weapons
-alone and non-conflicting slot replacements keep working. This authorizes only the conflict
-repair and regressions, not the broader slot model, class restrictions, dual-wield routing,
-Guardian/Cyclone blocking changes, or the later Wand item 1 migration.
+The repair uses loaded handedness classifications without changing them; the later Wand item 1 rule
+now aligns live data as `2h`. Valid one-handed-plus-shield setups, two-handed weapons
+alone and non-conflicting slot replacements keep working. This selected equipment slice also consumes
+canonical slot/subtype and class/material rules and places legal 1H pairs; it does not add off-hand combat
+attacks/damage, bracelet coefficients, Guardian/Cyclone blocking changes or traversal/taming runtime.
 
 ### consumable
 Food (sit, immobile, heal over 15 s), potion (channel while moving), elixir `S` (10 min +20 % stat),

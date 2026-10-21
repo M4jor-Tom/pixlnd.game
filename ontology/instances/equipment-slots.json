@@ -9,12 +9,12 @@
     {"id": "boots",       "index": 4,  "accepts": ["boots"], "hp-mult": 0.5},
     {"id": "shoulders",   "index": 5,  "accepts": ["shoulder-armor"], "hp-mult": 0.5},
     {"id": "main-hand",   "index": 6,  "accepts": ["weapon"], "_controls": ["../domain/controls.md#basic-attack"], "hp-mult": 0.5},
-    {"id": "off-hand",    "index": 7,  "accepts": ["weapon", "shield"], "_controls": ["../domain/controls.md#special-attack", "../domain/controls.md#block"], "hp-mult": 0.5},
+    {"id": "off-hand",    "index": 7,  "accepts": ["weapon"], "_controls": ["../domain/controls.md#special-attack", "../domain/controls.md#block"], "hp-mult": 0.5},
     {"id": "ring-left",   "index": 8,  "accepts": ["ring"]},
     {"id": "ring-right",  "index": 9,  "accepts": ["ring"]},
-    {"id": "lamp",        "index": 10, "accepts": ["lamp"], "versions": ["A"], "note": "S: innate light ability; ../domain/controls.md#lamp"},
-    {"id": "special",     "index": 11, "accepts": ["hang-glider", "boat"], "versions": ["A"], "note": "S: key items live in Special tab per land"},
-    {"id": "pet",         "index": 12, "accepts": ["pet-cage"]}
+    {"id": "lamp",        "index": 10, "accepts": ["light"], "accepts-subtypes": ["lamp"], "versions": ["A"], "note": "S: innate light ability; ../domain/controls.md#lamp"},
+    {"id": "special",     "index": 11, "accepts": ["special"], "accepts-subtypes": ["hang-glider", "boat"], "versions": ["A"], "note": "S: key items live in Special tab per land"},
+    {"id": "pet",         "index": 12, "accepts": ["pet-cage", "pet-food"], "accepts-conditions": {"pet-food": "during-taming"}, "note": "pet-food is available here only during taming; no taming runtime in this slice"}
   ],
   "extra": {
     "consumable": {"accepts": ["consumable"], "_controls": ["../domain/controls.md#quick-item"], "note": "separate EntityData.consumable field; chosen via quick-select wheel"},

@@ -270,6 +270,15 @@ func run() -> void:
 	p.inventory.add(gear); await process_frame; await process_frame
 	select_row(inv._list, inv._rows.find(gear))
 	click_control(inv.touch_buttons[0]); check(p.inventory.equipment.values().has(gear), "native Equip selected row")
+	var wrong := Item.new(); wrong.type = &"chest-armor"; wrong.material = &"silk"
+	var wrong_weapon := Item.new(); wrong_weapon.type = &"weapon"; wrong_weapon.subtype = &"wand"; wrong_weapon.material = &"wood"
+	p.inventory.add(wrong); p.inventory.add(wrong_weapon); await process_frame; await process_frame
+	var wrong_row: int = inv._rows.find(wrong); var weapon_row: int = inv._rows.find(wrong_weapon)
+	check(wrong_row >= 0 and inv._list.get_item_custom_fg_color(wrong_row) == Color.RED, "touch inventory marks wrong-class armor red")
+	check(weapon_row >= 0 and inv._list.get_item_custom_fg_color(weapon_row) == Color.RED, "touch inventory marks wrong-class weapon red")
+	select_row(inv._list, wrong_row); click_control(inv.touch_buttons[0])
+	select_row(inv._list, weapon_row); click_control(inv.touch_buttons[0])
+	check(wrong in p.inventory.entries and wrong_weapon in p.inventory.entries and not p.inventory.equipment.values().has(wrong), "native Equip rejects wrong-class gear without removal")
 	a.back()
 	vendor = NPC.new(&"item-vendor", "Item Vendor", Color.BLUE); vendor.position = p.position; root.add_child(vendor)
 	tap("interact"); step(); await process_frame; await process_frame

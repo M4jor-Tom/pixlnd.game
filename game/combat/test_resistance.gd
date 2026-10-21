@@ -58,16 +58,17 @@ func _run() -> void:
 	var hp0: float = wolf.hp
 	mage._attack(mage.moveset["m1"], 100.0, false, [])
 	check(is_equal_approx(hp0 - wolf.hp, 10.0), "Mage staff attack uses Resistance, not armor")
-	var sword = Items.generate(RandomNumberGenerator.new(), &"weapon", &"sword", &"iron", 1, 0)
-	mage.inventory.add(sword); mage.inventory.equip(sword)
-	check(mage.weapon["type"] == &"sword", "cross-class weapon remains equippable")
+	# Classify the attack's weapon at the boundary without equipping illegal cross-class gear.
+	mage.weapon["type"] = &"sword"
 	wolf.hp = wolf.max_hp; hp0 = wolf.hp
+	check(mage.weapon_attack_type() == Combat.PHYSICAL, "physical weapon classification does not inherit Mage actor class")
 	mage._attack(mage.moveset["m1"], 100.0, false, [])
-	check(is_equal_approx(hp0 - wolf.hp, 70.0), "Mage wielding physical sword uses armor")
+	check(is_equal_approx(hp0 - wolf.hp, 70.0), "Mage physical attack uses armor, not Resistance")
+	mage.weapon["type"] = &"staff"
 	mage.weapon["damage"] = 100.0
 	wolf.hp = wolf.max_hp; hp0 = wolf.hp
 	mage.abilities._strike(o.abilities[&"fire-explosion"], {"damage-mult": 1.0, "radius": 1.0}, wolf.global_position, 1.0)
-	check(is_equal_approx(hp0 - wolf.hp, 10.0), "Mage spell remains magical while holding physical sword")
+	check(is_equal_approx(hp0 - wolf.hp, 10.0), "Mage spell remains magical with a class-valid Mage weapon")
 	mage.inventory.unequip(&"main-hand")
 	var bracelet = Items.generate(RandomNumberGenerator.new(), &"weapon", &"bracelet", &"gold", 1, 0)
 	mage.inventory.add(bracelet); mage.inventory.equip(bracelet)
@@ -83,18 +84,21 @@ func _run() -> void:
 	warrior._strike(wolf2.global_position + Vector3.UP, 1.0, 100.0, false)
 	check(is_equal_approx(hp0 - wolf2.hp, 70.0), "physical weapon attack uses armor, not Resistance")
 
-	# The launch weapon sets type once; swapping to a Mage weapon must not reclassify the in-flight arrow.
+	# Inject a magical current weapon type at the classification boundary after launch; equip remains class-legal.
 	var ranger := _player(&"ranger", &"scout", Vector3(30, 1, 0)); ranger.set_physics_process(false); ranger.rig.rotation = Vector3.ZERO
 	var wolf3: CharacterBody3D = Spawner.populate(holder, [{"species": &"wolf", "level": 1, "hostility": &"P", "max_hp": 10000.0, "damage": 12.0,
 		"positions": [Vector3(30, 1, -8)], "seed": 4}], design, o.creatures, ranger, null)[0]
 	wolf3.set_physics_process(false); wolf3.armor = 30.0; wolf3.resistance = 90.0
 	hp0 = wolf3.hp
 	ranger._attack(ranger.moveset["m1"], 100.0, false, [])
-	var wand = Items.generate(RandomNumberGenerator.new(), &"weapon", &"wand", &"wood", 1, 0)
-	ranger.inventory.add(wand); ranger.inventory.equip(wand)
-	check(ranger.weapon["type"] == &"wand", "cross-class Mage weapon equips during flight")
+	var boomerang = Items.generate(RandomNumberGenerator.new(), &"weapon", &"boomerang", &"wood", 1, 0)
+	ranger.inventory.add(boomerang); ranger.inventory.equip(boomerang)
+	check(ranger.weapon["type"] == &"boomerang", "class-valid Ranger weapon equips during flight")
+	ranger.weapon["type"] = &"wand"
+	check(ranger.weapon_attack_type() == Combat.MAGICAL, "injected current Mage type is magical at classification boundary")
 	await _frames(60)
-	check(is_equal_approx(hp0 - wolf3.hp, 70.0), "in-flight arrow retains physical armor routing after Mage weapon swap")
+	check(is_equal_approx(hp0 - wolf3.hp, 70.0), "in-flight physical arrow retains launch type despite magical current weapon")
+	ranger.weapon["type"] = &"boomerang"
 
 	# A mage-role hit applies Resistance before block, damage-reduction and absorption.
 	mage.abilities.buffs[&"bulwark"] = {"left": 10.0, "r": design.abilities.bulwark}

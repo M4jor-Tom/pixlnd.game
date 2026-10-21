@@ -69,6 +69,18 @@ func _run() -> void:
 		p.apply_status(&"poison", design["status-effects"]["poison"], 10.0, p)
 		_toggle(panel, action)
 		check(p.ui_open and panel._panel.visible, action + ": actual panel opens")
+		if action == "inventory":
+			var wrong := Item.new(); wrong.type = &"chest-armor"; wrong.material = &"silk"
+			var usable := Item.new(); usable.type = &"chest-armor"; usable.material = &"iron"
+			var wrong_weapon := Item.new(); wrong_weapon.type = &"weapon"; wrong_weapon.subtype = &"wand"; wrong_weapon.material = &"wood"
+			p.inventory.add(wrong); p.inventory.add(usable); p.inventory.add(wrong_weapon)
+			var wrong_row: int = panel._rows.find(wrong); var usable_row: int = panel._rows.find(usable)
+			var weapon_row: int = panel._rows.find(wrong_weapon)
+			check(wrong_row >= 0 and panel._list.get_item_custom_fg_color(wrong_row) == Color.RED, "desktop inventory marks wrong-class armor red")
+			check(weapon_row >= 0 and panel._list.get_item_custom_fg_color(weapon_row) == Color.RED, "desktop inventory marks wrong-class weapon red")
+			check(usable_row >= 0 and panel._list.get_item_custom_fg_color(usable_row) != Color.RED, "desktop inventory retains usable gear color")
+			panel._on_activated(wrong_row); panel._on_activated(weapon_row)
+			check(wrong in p.inventory.entries and wrong_weapon in p.inventory.entries and not p.inventory.equipment.values().has(wrong), "desktop wrong-class activation leaves gear in bag")
 		p._physics_process(0.1)
 		check(is_equal_approx(p.hp, 267.5), action + ": poison waits for its first interval while browsing")
 		p.take_damage(7.0, p)

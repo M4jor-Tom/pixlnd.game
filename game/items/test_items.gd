@@ -61,20 +61,20 @@ func _init() -> void:
 	check(Items.slot_id(s1, o) == &"main-hand" and Items.slot_id(Items.generate(rng, &"weapon", &"shield", &"iron", 1, 0), o) == &"off-hand", "weapon slots by hands")
 	check(Items.slot_id(chest, o) == &"chest" and Items.slot_id(gloves, o) == &"gloves" and Items.slot_id(Item.stack(&"consumable", &"apple", 1), o) == &"", "armor slots; consumables have none")
 	# inventory: c-stack-rule, equip/swap, coins
-	var inv := Inventory.new(o, design)
+	var inv := Inventory.new(o, design, &"warrior")
 	inv.add(Item.stack(&"consumable", &"life-potion", 2)); inv.add(Item.stack(&"consumable", &"life-potion", 3))
 	check(inv.entries.size() == 1 and inv.entries[0].count == 5, "potions stack: %d entries" % inv.entries.size())
 	inv.add(s1); inv.add(s5)
 	check(inv.entries.size() == 3, "gear never stacks")
 	check(inv.equip(s1) and inv.equipment[&"main-hand"] == s1 and inv.entries.size() == 2, "equip moves to the slot")
-	check(inv.equip(s5) and inv.equipment[&"main-hand"] == s5 and s1 in inv.entries, "equip swaps the old one back")
+	check(inv.equip(s5) and inv.equipment[&"off-hand"] == s5 and inv.equipment[&"main-hand"] == s1, "second 1H occupies the legal off-hand")
 	check(not inv.equip(inv.first_consumable()), "consumables cannot be equipped")
 	inv.add(Item.stack(&"coin", &"", 12)); inv.add(Item.stack(&"coin", &"", 3))
-	check(inv.coins == 15 and inv.entries.size() == 2, "coins are a counter, not an entry")
+	check(inv.coins == 15 and inv.entries.size() == 1, "coins are a counter, not an entry")
 	# c-hands: both equip orders reject 2H + shield before displacing gear, consuming items or emitting changed.
-	for weapon_id in [&"greatsword", &"bow"]:
+	for weapon_id in [&"greatsword", &"greataxe"]:
 		for shield_first in [true, false]:
-			var hands_inv := Inventory.new(o, design)
+			var hands_inv := Inventory.new(o, design, &"warrior")
 			var two := Items.generate(rng, &"weapon", weapon_id, Items.weapon_material(o.weapon_types[weapon_id]), 1, 0)
 			var shield := Items.generate(rng, &"weapon", &"shield", &"iron", 1, 0)
 			for it in [s1, two, shield]: hands_inv.add(it)

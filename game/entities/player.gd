@@ -108,7 +108,7 @@ func setup_items(p_o, p_design: Dictionary, class_id: StringName = &"warrior", s
 	special_mode = cls.special_attack_mode
 	mp_passive = "passive" in str(cls.raw.get("mp-generation", []))
 	prog = design["progression"]; hp_mult = cls.hp_mult
-	inventory = Inventory.new(o, design)
+	inventory = Inventory.new(o, design, class_id)
 	var start: Dictionary = design["starting-inventory"]
 	var starter: Dictionary = combat["starter-weapon"]
 	var wt = o.weapon_types[cls.weapon_types[0]]
