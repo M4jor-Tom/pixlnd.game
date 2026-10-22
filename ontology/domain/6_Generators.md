@@ -2,6 +2,11 @@
 
 Procedural systems. Config + invariants in `instances/generators.json`. Seeds make output
 reproducible; each generator lists invariants that a test can assert.
+For the initial hybrid families, settlement/terrain, dungeon/mission, spawn/boss and loot
+generation must jointly satisfy the [encounter contracts](encounter-contracts.md) and
+`c-initial-encounters`, including persistent special/spirit assignments, shared rewards, safe
+renewal and the initial permanent-source exclusion. These scoped rules override generic/reference
+rows below where applicable; documentation does not authorize implementation.
 
 | id | input | output | invariants |
 |---|---|---|---|
@@ -15,7 +20,7 @@ reproducible; each generator lists invariants that a test can assert.
 | gen-poi | land | campsites, arenas, towers ≤5, circles, portals, pumps, trees, shrines, lore sites, spawner nests, hidden treasure, sky islands | counts in `c-land-count` |
 | gen-missions | land, day | A: 8×8 cell boss missions; S: typed missions with icons and tiers, daily regeneration | tier ladder white→yellow present; S: gnomes/books once per land; hybrid daily regeneration obeys [site stability](3_Classes.md#mission-type); refresh, rescue completion and source claims follow c-midnight-reset / c-supplier-rescue / §3.7 save-data |
 | gen-spawns | zone, land level/tier | creature spawns: species by landscape roster, group sizes, hostility, humanoid class/spec, `+1..+4` multipliers (A), boss-ification chance; open-world numbers `design.spawns` (D14); role per group: creature combat-role, unset resolves to `design.creature-roles.default` (melee), any-class rolled from weighted `design.creature-roles.any-class` (D26) | dungeon mobs above surface tier; farm animals white |
-| gen-boss | spawn | named, enlarged, coloured-tier variant with 1–2 random special moves; always-boss species; one fixed-type/level spirit cube per eligible non-mission boss kill (A / hybrid) | size scaling rule; terrain breaking; mission bosses, including Saurians, drop no spirit cube; normal mission rewards unchanged |
+| gen-boss | spawn | named, enlarged, coloured-tier variant; generic/reference 1–2 random special moves, but initial hybrid bosses use the [single-special profile](encounter-contracts.md#boss-specials-and-breakable-rubble); always-boss species; one fixed-type/level spirit cube per eligible non-mission boss kill (A / hybrid) | size scaling and scoped terrain breaking; mission bosses, including Saurians, drop no spirit cube; initial hybrid [guaranteed gear/spirits](encounter-contracts.md#guaranteed-boss-gear-and-spirits) preserve distinct current-boss gear level and initial-boss spirit level |
 | gen-name | seed, kind | land names (`<Name> Plains…`, syllables and landscape suffixes: `design.names`), dungeon names ("Castle ___"), realm/leader/capital names, item names (affix + material + type + of-name), boss names, NPC names, quarter names | epic/legendary items always named |
 | gen-item | tier/level, rarity roll, type, material, land (S) | `item` with modifier roll; stats via `gen-item-stats` | rarity ≤ legendary except mythical bug |
 | gen-item-stats `A` base / hybrid | item | damage/HP/armor/resi/regen/tempo/crit from coremaze base curves: `curve(n,rarity) = 2^((1 − 1/((n−1)·0.05+1))·3) · 2^(rarity·0.25)`, `curve2 = curve/8`, `n = level + 0.1·upgrade_count`; per-type k and material multipliers; hybrid HP uses `design.gear-hp` plus material/slot inputs under the fixed rule in [§3.4 item](3_Classes.md#item), other stat rules unchanged | base curve monotone in level and rarity; modifier roll ∈ 0..20, normalized roll = roll/20, distinct from rarity; modifier roll never affects hybrid gear HP |

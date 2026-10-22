@@ -30,7 +30,7 @@ One row per fact type. Cardinality as `domain → range`.
 | hosts | dungeon-type ∪ poi-type | mission-type | n→n | |
 | rewards | mission-type ∪ arena ∪ poi-type | item-type ∪ key-item ∪ artifact ∪ currency ∪ book-of-crafting | n→n | |
 | guards | creature (boss) | artifact ∪ key-item ∪ gnome-supplier ∪ magic-crystal | n→n | |
-| drops | creature | item ∪ spirit-cube ∪ leftovers ∪ currency | n→n | random by tier + species list |
+| drops | creature | item ∪ spirit-cube ∪ leftovers ∪ currency | n→n | random by tier + species list; initial hybrid [boss guarantees](encounter-contracts.md#guaranteed-boss-gear-and-spirits) are additional shared drops, not personal copies |
 | holds | inventory | item | 1→n | count per entry; c-stack-rule |
 | equips | entity | item | 1→0..12 | at most one per usable equipment-slot; reserved index 0 and separate quick-consumable selection excluded; c-slot-accepts |
 | threat | entity (mob) | entity (player-character) | n→n | hybrid mob/player combat state, retained across temporary absence and surviving-mob restart (§3.2); optional per ordered pair, with one numeric `aggro-points` amount; c-threat-pair |
@@ -41,7 +41,7 @@ One row per fact type. Cardinality as `domain → range`.
 | reveals | realm (lore 100 %) | artifact | 1→n | S |
 | bound-to-land | item ∪ key-item ∪ leftovers | land | n→1 | S region lock |
 | works-in-adjacent | item(plus) | land | n→n | S |
-| raises-stock | gnome-supplier | shop | 1→n | one rarity per rescue |
+| raises-stock | gnome-supplier | shop | 1→n | hybrid [land-shared ceiling](encounter-contracts.md#shared-mission-packages-and-supplier-shops), applied at ordinary stock generation/restock, not a rescue-triggered reroll |
 | sells | shop | item-type ∪ pet-food ∪ formula ∪ key-item | n→n | versioned |
 | offers-service | building | npc-role | 1→n | |
 | contains-station | building | crafting-station | 1→n | |

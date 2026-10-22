@@ -93,6 +93,22 @@ research. No new implementation authority or whole-topic completion.
 - [ ] Flora, deposits, dungeons, POIs, missions (`gen-flora`, `gen-dungeon`, `gen-poi`, `gen-missions`) — not started.
 - [ ] Temperature/humidity HUD (`design.climate.hud`) not shown; the land/village caption already runs (`hud-element`).
 
+## Initial encounter contracts (documentation only)
+
+- [ ] Implement the [initial six-site contract](../../ontology/domain/encounter-contracts.md)
+  only with separate authority: joint village/site/access generation, geometry and occupancy,
+  saved populations/roles/tiers, canonical targeting and boss specials, real breakable rubble,
+  spikes/props, safe coalesced renewal, nonduplicating shared rewards and supplier stock ceilings.
+  Runtime, instance/config, checker and save support are deferred; current executable checks
+  do not enforce the full contract. Preserve existing clock, defence, party-level and authority rules.
+- [ ] Add spirit collection/carrying for the [initial boss rewards](../../ontology/domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits).
+  Bench attachment and numerical spirit effects remain a separate feature with existing restrictions,
+  not a prerequisite for this initial slice or removed content.
+- [ ] Place full-land artifact and one-time book sources through a later dedicated source contract,
+  preserving [allocation and personal claims](../../ontology/domain/encounter-contracts.md#initial-permanent-source-scope).
+  The six-site exclusion does not fulfill final coverage; historical Steam book/recipe quantities
+  are not selected hybrid numbers. This later source work does not block the bounded initial slice.
+
 ## Player (§3.2 player-character, slice e33c991)
 - [x] Spawn = the (0,0) village square (`world.spawn-rule`, D22). Default seed 26879 spawns in deadlands (undead village).
 - [ ] Climb (semantic grab; wall-jump lifecycle unselected), glider, swim breath/drowning (`abilities.json` movement kind;

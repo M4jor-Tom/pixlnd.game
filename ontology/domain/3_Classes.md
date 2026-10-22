@@ -65,6 +65,7 @@ One voxel. `A S`
 | breakable | bool | by bombs / boss terrain damage; regenerates after ~3 game days |
 Block scale: 1 block = 65536 native units (16.16 fixed); hybrid: 1 block = 1 m
 (`generators.json#design.terrain.block-m`). Character ≈ 2 m.
+Initial hybrid arenas use the scoped [breakable rubble and restoration rules](encounter-contracts.md#boss-specials-and-breakable-rubble).
 
 ### block-type
 Enumeration of voxel kinds; alpha and 1.0 tables differ. `A S` → `instances/block-types.json`.
@@ -204,6 +205,7 @@ Interactive or decorative world object with orientation and open/closed/sat stat
 → `instances/static-entities.json` (78 alpha ids: doors, gates, traps, lever, chests, furniture,
 market stands, shelves, corpse, rune stone, artifact pedestal, flower boxes, street lights,
 fences, vases, campfire, tent, beach umbrella/towel, sleeping mat, 7 crafting stations).
+Initial hybrid ruins use the [spike and furnishing contract](encounter-contracts.md#spike-traps-and-furnishing-contents).
 Dynamic subset: sit-able {sleeping-mat, stool, bench, bed}; open-able {window, castle-window,
 door, big-door, chest}.
 
@@ -252,8 +254,9 @@ For the [initial encounter families](#mission-type), occupancy uses explicit **c
 three-dimensional playable site volumes**: dungeon rooms, corridors and entrance court;
 visibly delimited outdoor battlefields. Boundaries count as inside: every player must be
 outside every component before the pending refresh applies. Camera distance, streaming and
-simulation range do not define occupancy. Exact dimensions and storage format remain unselected;
-no extra grace delay applies. Occupancy/reset enforcement is deferred.
+simulation range do not define occupancy. [Initial encounter geometry](encounter-contracts.md#geometry-and-occupancy)
+defines their dimensions and playable components; storage format remains unselected. No extra
+grace delay applies. Occupancy/reset enforcement is deferred.
 
 **Hybrid settlements/inn item 2 (owner approved, 2026-09-27):** inn recovery fully heals and
 sets the respawn point **for free at any time**. A separate sleep service costs **10 copper**,
@@ -1118,6 +1121,8 @@ immediate recording and power-locked crafting follow `power-gate` item 3.
 Live-data migration and implementation remain deferred.
 
 Hybrid one-time book-source claims are personal per saved world (`save-data`, persistence item 5).
+The [initial-site source exclusion](encounter-contracts.md#initial-permanent-source-scope) defers
+source placement, not retained books or recipe knowledge; the S counts above select no hybrid quantities.
 
 ### customization-bench
 Attach `material-cube`s (wood on wood, iron on metal; +0.1 effective level each; 16/32 cap) and
@@ -1133,6 +1138,9 @@ Fire (+fire damage), wind (+attack & move speed per combo hit), ice (slows targe
 Hybrid retains the recorded alpha exception (reconciliation item 7, approved 2026-09-15):
 mission bosses, including Saurians, drop no spirit cube; their normal mission rewards are
 unchanged. Sources: `creatures.json#saurian`, `mission-types.json#alpha.boss-kill`.
+Initial hybrid [boss spirit acquisition](encounter-contracts.md#guaranteed-boss-gear-and-spirits)
+fixes type/initial level across renewal; attaching spirits and numerical effects are outside
+that slice, without removing this content or its bench restrictions.
 
 ### leftovers
 Unidentified gear drop (type 14) with tier colour and +N; identified for a fee at the identifier
@@ -1191,6 +1199,8 @@ riding/climbing/gliding bonuses were reportedly non-functional in 1.0 (functiona
 Static entity id 46 "Artifact" exists in alpha data `X`.
 
 Hybrid artifact-source claims are personal per saved world (`save-data`, persistence item 5).
+The [initial-site source exclusion](encounter-contracts.md#initial-permanent-source-scope) does
+not satisfy or replace this full-land allocation; later dedicated sources remain required.
 
 **Hybrid artifacts item 1 (owner corrected, 2026-09-28):** count contributors **separately
 for each traversal stat**, not globally across traversal kinds. All collected artifacts that
@@ -1257,7 +1267,8 @@ gnomes; restock daily; buy-back tab; A: sales final, +1..+100 stock.
 
 Hybrid D22 stock coverage and rarity cap in `design.settlement.shop` are slice approximations.
 Once-rolled stock (`shop.restock: never`) does not supersede `game-clock` daily restocking or
-`save-data` world-shared supplier improvements.
+`save-data` world-shared supplier improvements. The hybrid [supplier stock ceiling](encounter-contracts.md#shared-mission-packages-and-supplier-shops)
+governs ordinary stock generation/restock, not an immediate rescue reroll or guaranteed top-grade stock.
 
 ### inventory
 The per-character bag and worn gear. `A S`
@@ -1281,7 +1292,11 @@ mission rewards; +4 dungeon chest → mythical `A X`;
 S mission reward ≥1 class-fitting piece one rarity above quest colour + coins + 1 potion + gems;
 dropped items last ~1 game week; mission NPCs drop rewards once. → `generators.json#loot`.
 Open-world numbers (drop chances, rarity weights, level spread, ground lifetime, pickup radius):
-`generators.json#design.loot` (D18).
+`generators.json#design.loot` (D18). The initial encounter families' selected
+[ordinary kill rolls](encounter-contracts.md#ordinary-kill-loot),
+[guaranteed boss gear/spirits](encounter-contracts.md#guaranteed-boss-gear-and-spirits) and
+[shared mission packages](encounter-contracts.md#shared-mission-packages-and-supplier-shops) are
+separate rewards; personal permanent-source claims do not instance these shared drops.
 
 ### 3.5 Progression
 
@@ -1379,6 +1394,8 @@ Per realm; lore sites ≈ +10 % each; 100 % reveals all its artifacts on the map
 ### gnome-supplier `S`
 4 captives per land at white/green/blue/purple missions; each rescue raises shop stock one rarity.
 Hybrid rescues benefit the saved world, not only the rescuer (`save-data`, persistence item 4).
+Their [shared package and land-local shop ceiling](encounter-contracts.md#shared-mission-packages-and-supplier-shops)
+follow the initial encounter contract.
 
 Hybrid rescue eligibility requires all designated guards/bosses defeated and the captive
 available for the rescue conversation. Talking then completes the rescue immediately, with no
@@ -1414,9 +1431,11 @@ vaults, sky islands, lore sites, hidden treasure.
 
 **Hybrid initial encounter-contract scope:** an ordinary multi-boss ruins dungeon, a repeatable
 daily hostile combat camp and one-time world-shared supplier-rescue sites. These are the first
-families to make concrete, not a final content limit, changed supplier count or complete generation
-specification. Existing book/supplier rules and enabled hybrid dungeon traps, vases/tables and
-multiple bosses remain unchanged.
+families covered by the [initial encounter contracts](encounter-contracts.md), not a final content
+limit. That contract defines placement, access, geometry, populations, local difficulty, boss
+specials/rubble, traps/furnishings, kill/boss/mission rewards, supplier shops and bounded
+permanent-source exclusion. Full-land sources and spirit customization remain separate work,
+not removed content or requirements for this initial slice.
 
 Within these families, physical sites stay fixed at their saved-world locations; eligible daily
 enemies return at those sites. Family-specific repeatability/permanent completion and other
@@ -1550,6 +1569,8 @@ knowledge. Ordinary ground loot is unchanged; this is not a blanket all-reward i
 
 World time across shutdown follows `game-clock` item 8; surviving logical mobs
 retain threat/order/neutral provocation across restart under `ai-behavior` item 9.
+Initial-site identities, special timers, rubble, trap/prop renewal and once-only reward state
+follow the [encounter contracts](encounter-contracts.md), without choosing a save format.
 
 Documentation only: save-data and networking are unimplemented; these policies do not authorize
 runtime, live-data, model/loader/validator or test changes.

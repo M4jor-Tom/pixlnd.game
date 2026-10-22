@@ -1,5 +1,18 @@
 # Handoff — pending continuation
 
+## Initial encounter/reset contract — next-session implementation
+
+Start from the [approved encounter contract](../ontology/domain/encounter-contracts.md) and its
+[implementation backlog](ROADMAP/todo_implement.md#initial-encounter-contracts-documentation-only).
+No additional design questions are currently identified for the bounded six-site contract.
+Use the [repository resume workflow](../skills/ontology-resume-router-slice/SKILL.md) to select
+the implementation slice and pass its authority/precision/dependency gates before coding;
+documentation completeness does not certify runtime readiness.
+
+Full artifact/book-source coverage and spirit customization remain outside this initial slice,
+not newly reopened blockers or permanently removed content. Gameplay implementation is for the
+next session, not this documentation publication.
+
 ## Android touch — characterization and publication follow-up
 
 Current hardware-test status and its evidence limits live in the
