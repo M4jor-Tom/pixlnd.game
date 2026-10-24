@@ -30,6 +30,118 @@
   "key-items-s": {"rule": "spawn only if lock type exists (harp→divine door, bell→crypt gate, whistle→bird statue, boat→water)"},
   "level-formulas-alpha": "stats.json#alpha-character-formulas",
   "design": {
+    "initial-encounters": {
+      "_doc": "Initial hybrid encounter-contracts.md: required complete village/site/access generation and local populations. Layout coordinates are derived by the engine from these dimensions; no ambient roster or global stat changes.",
+      "distance-min": 192,
+      "distance-max": 215,
+      "separation": 192,
+      "apron": 8,
+      "path-width": 4,
+      "max-step": 1,
+      "dry-above-sea": 4,
+      "hub-size": 64,
+      "ruins": {
+        "room": [
+          24,
+          24
+        ],
+        "corridor": [
+          8,
+          8
+        ],
+        "court": [
+          24,
+          16
+        ],
+        "passage": [
+          8,
+          8
+        ],
+        "alcove": [
+          12,
+          8
+        ],
+        "bounds": [
+          36,
+          112
+        ],
+        "ceiling": 6,
+        "door": [
+          4,
+          5
+        ],
+        "occupancy": [
+          -1,
+          12
+        ],
+        "pack-tiers": [
+          1,
+          2,
+          3
+        ],
+        "boss-tiers": [
+          2,
+          3
+        ]
+      },
+      "camp": {
+        "size": 64,
+        "occupancy": [
+          -1,
+          16
+        ],
+        "exit-width": 8,
+        "tier": 1,
+        "packs": 2
+      },
+      "supplier": {
+        "size": 48,
+        "occupancy": [
+          -1,
+          16
+        ],
+        "exit-width": 8,
+        "tiers": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "packs": 2
+      },
+      "pack-size": 3,
+      "species": "skeleton",
+      "role-weights": {
+        "melee": 0.5,
+        "ranged": 0.3,
+        "mage": 0.2
+      },
+      "power-base-offset": 2,
+      "boss-hp-mult": 4,
+      "boss-damage-mult": 1.5,
+      "boss-height": {
+        "base": 1.7,
+        "min-mult": 1.25,
+        "growth": 0.75,
+        "max-level": 10
+      },
+      "boss-specials": {
+        "stomp": 0.5,
+        "charge": 0.5
+      },
+      "spirits": {
+        "spirit-fire": 0.25,
+        "spirit-unholy": 0.25,
+        "spirit-ice": 0.25,
+        "spirit-wind": 0.25
+      },
+      "mission-package": {"coin-per-grade": 20, "potion": "life-potion", "potion-rarity": 0, "potion-count": 1, "gems": ["emerald", "sapphire", "ruby", "diamond"], "gem-count-per-grade": 1, "rarity-shift": 1, "upgrades": 0, "delivery-height": 0.5},
+      "special-profile": {"ready-s": 3, "cooldown-s": 10, "recovery-s": 0.8, "warning-s": 1.2, "stomp": {"radius": 4, "start-height-diff": 2, "victim-height": [0, 1], "damage-mult": 1}, "charge": {"range": [4, 10], "start-height-diff": 1, "lane-width": 2, "speed": 12, "sweep-radius": 1, "damage-mult": 1.25}},
+      "rubble": {"per-arena": 8, "voxel-size": 1, "restore-world-hours": 72, "block-type": "rock-building"},
+      "spikes": {"count": 2, "footprint": [2, 2], "victim-height": [0, 1], "warning-s": 0.8, "active-s": 0.25, "cooldown-s": 2, "damage": 30, "attack-type": "physical", "warning-sfx": "block"},
+      "furnishings": {"vase": {"per-room": 2, "hp": 10, "coin-base": 1, "coin-per-level": 2}, "table": {"per-room": 1, "hp": 20, "flask": "glass-flask", "flask-count": 1, "potion": "life-potion", "potion-count": 1, "potion-rarity": 0}, "armor": 0}
+    },
+    "time": {"_doc": "Hybrid game-clock: running time only; fresh saved worlds begin at 07:00.", "speed": 10.0, "day-s": 86400.0, "initial-hour": 7.0},
     "_doc": "Owner-approved hybrid tunables, traced to dated D/F decisions in ontology/domain/index.md §7. Engine consumers read these values; presence alone does not prove implementation. Current-slice approximations are not final rules, and later approvals supersede earlier placeholders. Unresolved merges remain in docs/ROADMAP/todo_decide.md §E; do not silently resolve them from flags or reference facts. Tune in play.",
     "gear-hp": {"curve-mult": 5.0, "base": 2.0, "upgrade-step": 0.1},
     "enemy-level": {"rule": "creature level rolled in band [min-party-level - below, max-party-level + above] (solo: own level); each land rolls a danger-tier at generation that fixes where in the band it sits", "below": 3, "above": 5, "danger-tiers": {"safe": 0.0, "normal": 0.5, "dangerous": 1.0}, "tier-weights": {"safe": 0.25, "normal": 0.5, "dangerous": 0.25}, "config": "solo settings / server.cfg"},
@@ -43,7 +155,7 @@
       "war-frenzy": {"runtime": "buff", "duration-s": 10.0, "damage-mult": 1.2, "charge-mult": 2.0, "cost": {}, "cooldown-s": 20},
       "bulwark": {"runtime": "buff", "duration-s": 10.0, "damage-taken-mult": 0.5, "stun-immune": true, "cost": {}, "cooldown-s": 20},
       "rock-fist": {"runtime": "dash", "toward": "forward", "distance": 10.0, "strike": {"radius": 2.5, "damage-mult": 3.0}, "cost": {}, "cooldown-s": 20},
-      "heroic-shout": {"runtime": "burst", "radius": 5.0, "damage-mult": 0.0, "heal-pct": 0.5, "heal-over-s": 10.0, "cost": {}, "cooldown-s": 30},
+      "heroic-shout": {"taunt-s": 3.0, "runtime": "burst", "radius": 5.0, "damage-mult": 0.0, "heal-pct": 0.5, "heal-over-s": 10.0, "cost": {}, "cooldown-s": 30},
       "kick": {"runtime": "burst", "radius": 2.5, "damage-mult": 1.0, "cost": {"stamina": 50}, "cooldown-s": 10},
       "retreat": {"runtime": "dash", "toward": "back", "distance": 6.0, "cost": {"stamina": "all"}, "cooldown-s": 10},
       "aim": {"runtime": "buff", "duration-s": 10.0, "stealth-per-s": 0.3, "cost": {}, "cooldown-s": 15},
@@ -83,7 +195,7 @@
     "names": {"_doc": "D12: gen-name land rule. name = 2-3 syllables, capitalised, + suffix by landscape (generators.json#names.land shape).", "syllables": ["a", "ar", "ca", "co", "da", "du", "ga", "io", "ka", "la", "ma", "ni", "no", "ra", "ri", "sa", "tri", "va", "var", "on", "is", "ion", "mar", "lan", "san"], "land-suffix": {"greenlands": ["Plains", "Hills"], "snowlands": ["Mountains", "Hills"], "deserts": ["Plains", "Hills"], "jungles": ["Forest"], "lava-lands": ["Mountains"], "oceans": ["Islands"], "savannahs": ["Plains"], "wetlands": ["Plains"], "dark-woods": ["Forest"], "deadlands": ["Hills"], "mountains": ["Mountains"]}},
     "movement": {"_doc": "D13 (2026-09-08): player-character movement numbers, blocks and seconds; sources only say swim ≈ ½ walk and sprint ≈ mount speed. Tune in play.", "walk": 6.0, "sprint-mult": 1.8, "swim-mult": 0.5, "swim-vertical": 3.0, "jump-height": {"tap": 1.5, "hold": 3.0}, "gravity": 32.0, "step-up": 1.0, "fall-damage": {"from-blocks": 8, "pct-max-hp-per-block": 5}, "stamina": {"max": 100, "sprint-drain": 10.0, "regen": 20.0, "regen-delay-s": 1.0}, "hitbox": {"_doc": "capsule by race size-class (D13 settles the races.json stats ?): radius, height", "small": [0.35, 1.4], "normal": [0.4, 1.8], "large": [0.5, 2.2]}},
     "camera": {"_doc": "D13: third-person orbit, camera zoom (../domain/controls.md#zoom); distance 0 = first person (D9).", "distance": {"min": 0.0, "max": 12.0, "default": 6.0, "step": 1.0}, "pitch-deg": [-80, 60], "sensitivity": 0.003, "eye-height-factor": 0.9, "shoulder-offset": 0.0},
-    "spawns": {"_doc": "D14 (2026-09-08): gen-spawns numbers for the open world (dungeon and settlement spawns later). Rolled per 64² zone from (world seed, zone). Tune in play.", "groups-per-zone": [0, 2], "default-group": [1, 3], "group-spread": 4, "roster": "creature-families.json#landscape-rosters[land.landscape]; creatures.json group = group size", "skip-categories": ["static-target", "unused", "boss-species"], "aquatic-only-in-water": true, "variable-hostility": {"H": 0.5, "N": 0.5}, "ai": {"_doc": "FSM idle → wander → chase (hostile, target in aggro range) → return (past leash). sim-radius (D16): creatures farther than this many blocks from the player are frozen — no AI, no physics (c-sim-radius).", "sim-radius": 80, "aggro-range": 12, "leash": 30, "wander-radius": 8, "wander-pause-s": [1, 4], "walk": 3.0, "chase": 6.5}, "size-by-category": {"animal": 1.0, "insect": 0.5, "aquatic": 0.8, "plant-creature": 1.0, "monster": 1.8, "undead": 1.7, "demon": 2.2, "elemental": 2.0, "humanoid": 1.8}, "hostility-colors": {"H": "#c83232", "N": "#40b040", "P": "#e6e6e6", "F": "#3070e0"}},
+    "spawns": {"_doc": "D14 (2026-09-08): gen-spawns numbers for the open world (dungeon and settlement spawns later). Rolled per 64² zone from (world seed, zone). Tune in play.", "groups-per-zone": [0, 2], "default-group": [1, 3], "group-spread": 4, "roster": "creature-families.json#landscape-rosters[land.landscape]; creatures.json group = group size", "skip-categories": ["static-target", "unused", "boss-species"], "aquatic-only-in-water": true, "variable-hostility": {"H": 0.5, "N": 0.5}, "ai": {"_doc": "FSM idle → wander → chase (hostile, target in aggro range) → return (past leash). sim-radius (D16): creatures farther than this many blocks from the player are frozen — no AI, no physics (c-sim-radius).", "threat-per-full-hp": 100.0, "threat-decay-per-s": 1.0, "return-speed-mult": 2.0, "return-damage-reduction": 0.9, "sim-radius": 80, "aggro-range": 12, "leash": 30, "wander-radius": 8, "wander-pause-s": [1, 4], "walk": 3.0, "chase": 6.5}, "size-by-category": {"animal": 1.0, "insect": 0.5, "aquatic": 0.8, "plant-creature": 1.0, "monster": 1.8, "undead": 1.7, "demon": 2.2, "elemental": 2.0, "humanoid": 1.8}, "hostility-colors": {"H": "#c83232", "N": "#40b040", "P": "#e6e6e6", "F": "#3070e0"}},
     "creature-roles": {"_doc": "D26 (2026-09-11): what a creature's combat-role does (game/entities/creature.gd, game/world/spawner.gd). A creatures.json row with no role uses `default`; `any-class` rolls one of the weighted roles per spawned group from the spawn rng (humanoids may be any class; class / equipment / appearance still todo). melee = today's reach attack (design.combat.enemy-attack). ranged / mage = a projectile role: the creature chases to `range` blocks, backs off below `keep-away`, needs line of sight, then winds up `windup-s` and fires `shot` (a c-moveset-config projectile dict, damage = creature damage × damage-mult, damage through the target's normal take_damage so dodge / block / i-frames apply) and waits `cooldown-s`; `applies` are design.status-effects ids rolled onto the target on a landed shot (dodged or blocked shots carry no status, except poison, which dodge never avoids); `sfx` is the audio.json#sfx-alpha-ids sound played from the shooter, needing a design.feel.sfx entry; `color` tints the shot. `species` overrides any of those keys per creatures.json id. A creature shot never damages another creature (c-no-friendly-fire). Tune in play.",
       "default": "melee",
       "any-class": {"melee": 0.5, "ranged": 0.3, "mage": 0.2},
@@ -161,7 +273,7 @@
         "fireball":           {"hz": 220, "len-s": 0.2,  "noise": 0.5, "slide": -0.3}
       }
     },
-    "settlement": {"_doc": "D22 (2026-09-10): gen-settlement for the hybrid, the sources never gave placement or layout numbers. One village per land (alpha count, c-land-count), placed from the land seed: the first candidate on rings of `search-step` blocks around the land centre whose column is ≥ min-above-sea above sea level; the terrain is flattened to that height within `radius` and blended over `blend` more (gen-terrain, no cliffs into town). Buildings are boxes [w, h, d] on a ring of `ring-radius` around the square, coloured by settlement-style ([wall, roof]) via style-by-landscape; one NPC per service building (npc-roles) stands at its door; houses are empty. E within interact-radius of an NPC = its service (ui.json#screens.npc-service): vendors open the shop (stock rolled from (world seed, village, shop) at the creature level band of the land around the player level, rarity ≤ rarity-cap until gnomes exist, prices design.prices, sell = buy × design.prices.sell, worn gear cannot be sold), the class trainer refunds every spent point to the bank for respec-fee-per-level × level copper, the innkeeper heals fully and moves the respawn point to the inn (A: free). world.spawn-rule = near-village: new characters start on the square of the land (0,0) village. Wild spawns skip groups within no-hostiles-within blocks of the square (c-hostile-in-city). Tune in play.", "per-land": 1, "placement": {"search-step": 64, "search-rings": 8, "min-above-sea": 4}, "radius": 24, "blend": 8, "ring-radius": 15, "buildings": ["inn", "weapon-shop", "armor-shop", "item-shop", "class-trainer", "house", "house", "house", "house", "house"], "footprint": {"default": [6, 5, 6], "inn": [8, 6, 7], "house": [5, 4, 5]}, "style-by-landscape": {"greenlands": "european-framework", "snowlands": "log", "deserts": "desert", "savannahs": "desert", "jungles": "jungle", "lava-lands": "lava", "oceans": "ocean", "wetlands": "north-american-wood", "dark-woods": "undead", "deadlands": "undead", "mountains": "medieval-stone"}, "style-colors": {"european-framework": ["#d9c9a3", "#8a3b2a"], "medieval-stone": ["#8c8c88", "#4a4a55"], "north-american-wood": ["#a9743f", "#5b3a1e"], "log": ["#5a3a1e", "#e8eef5"], "desert": ["#e0c98f", "#b98a4a"], "jungle": ["#b08a5a", "#e07a2a"], "undead": ["#4a4a4a", "#2a2a2a"], "lava": ["#3a2a2a", "#c04020"], "ocean": ["#e8e2d0", "#3a70b0"]}, "npc": {"interact-radius": 3.0, "color": "#3070e0", "roles": {"inn": "innkeeper", "weapon-shop": "weapon-vendor", "armor-shop": "armor-vendor", "item-shop": "item-vendor", "class-trainer": "class-trainer"}}, "shop": {"stock": 8, "rarity-cap": "rare", "level-spread": 1, "item-shop-pool": "design.loot.consumable-pool", "restock": "never — waits for c-midnight-reset (ponytail)"}, "trainer": {"respec-fee-per-level": 5}, "inn": {"fee": 0, "heal": true, "sets-spawn": true}, "no-hostiles-within": 40}
+    "settlement": {"_doc": "D22 (2026-09-10): gen-settlement for the hybrid, the sources never gave placement or layout numbers. One village per land (alpha count, c-land-count), placed from the land seed: the first candidate on rings of `search-step` blocks around the land centre whose column is ≥ min-above-sea above sea level; the terrain is flattened to that height within `radius` and blended over `blend` more (gen-terrain, no cliffs into town). Buildings are boxes [w, h, d] on a ring of `ring-radius` around the square, coloured by settlement-style ([wall, roof]) via style-by-landscape; one NPC per service building (npc-roles) stands at its door; houses are empty. E within interact-radius of an NPC = its service (ui.json#screens.npc-service): vendors open the shop (stock rolled from (world seed, village, shop) at the creature level band of the land around the player level, land-shared supplier ceiling applied only at normal daily generation/restock, prices design.prices, sell = buy × design.prices.sell, worn gear cannot be sold), the class trainer refunds every spent point to the bank for respec-fee-per-level × level copper, the innkeeper heals fully and moves the respawn point to the inn (A: free). world.spawn-rule = near-village: new characters start on the square of the land (0,0) village. Wild spawns skip groups within no-hostiles-within blocks of the square (c-hostile-in-city). Tune in play.", "per-land": 1, "placement": {"search-step": 64, "search-rings": 8, "min-above-sea": 4}, "radius": 24, "blend": 8, "ring-radius": 15, "buildings": ["inn", "weapon-shop", "armor-shop", "item-shop", "class-trainer", "house", "house", "house", "house", "house"], "footprint": {"default": [6, 5, 6], "inn": [8, 6, 7], "house": [5, 4, 5]}, "style-by-landscape": {"greenlands": "european-framework", "snowlands": "log", "deserts": "desert", "savannahs": "desert", "jungles": "jungle", "lava-lands": "lava", "oceans": "ocean", "wetlands": "north-american-wood", "dark-woods": "undead", "deadlands": "undead", "mountains": "medieval-stone"}, "style-colors": {"european-framework": ["#d9c9a3", "#8a3b2a"], "medieval-stone": ["#8c8c88", "#4a4a55"], "north-american-wood": ["#a9743f", "#5b3a1e"], "log": ["#5a3a1e", "#e8eef5"], "desert": ["#e0c98f", "#b98a4a"], "jungle": ["#b08a5a", "#e07a2a"], "undead": ["#4a4a4a", "#2a2a2a"], "lava": ["#3a2a2a", "#c04020"], "ocean": ["#e8e2d0", "#3a70b0"]}, "npc": {"interact-radius": 3.0, "color": "#3070e0", "roles": {"inn": "innkeeper", "weapon-shop": "weapon-vendor", "armor-shop": "armor-vendor", "item-shop": "item-vendor", "class-trainer": "class-trainer"}}, "shop": {"stock": 8, "rarity-cap": "common", "level-spread": 1, "item-shop-pool": "design.loot.consumable-pool", "restock": "daily"}, "trainer": {"respec-fee-per-level": 5}, "inn": {"fee": 0, "heal": true, "sets-spawn": true}, "no-hostiles-within": 40}
   },
   "network-alpha": {"port": 12345, "protocol": "TCP", "client-version": 3, "tick-hz": 50, "compression": "zlib", "authority": "client (anticheat scripts)", "packets-c2s": {"0": "EntityUpdate", "6": "Interact", "7": "Hit", "8": "Passive", "9": "Shoot", "10": "ChatMessage", "11": "ChunkDiscovered", "12": "SectorDiscovered", "17": "ClientVersion"}, "packets-s2c": {"0": "EntityUpdate", "1": "MultipleEntityUpdate", "2": "UpdateFinished", "3": "AirshipUpdate", "4": "ServerUpdate", "5": "CurrentTime", "10": "ServerChatMessage", "15": "SeedData", "16": "JoinPacket", "17": "ServerMismatch", "18": "ServerFull"}, "max-players": 4, "max-players-configurable": true, "hit-types": {"0": "normal", "1": "block", "3": "miss", "5": "absorb"}, "interact-types": {"2": "npc", "3": "normal", "5": "pickup", "6": "drop", "8": "examine"}, "anticheat-caps": {"level": 1000, "rarity": 4, "air-time-s": 10}}
 }

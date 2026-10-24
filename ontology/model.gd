@@ -531,8 +531,73 @@ class Ontology extends RefCounted:
 		var number := float(value)
 		return not is_nan(number) and not is_inf(number) and number == selected
 
+	# Current selected encounter inputs, not a default or a legacy schema.
+	func _selected_tree(value: Variant, expected: Variant, path: String) -> void:
+		if expected is Dictionary:
+			if not value is Dictionary:
+				errors.append(path + ": required object missing or malformed"); return
+			for key in expected: _selected_tree(value.get(key),expected[key],path+"."+key)
+			for key in value:
+				if not key is String or (not key.begins_with("_") and not expected.has(key)): errors.append(path+"."+str(key)+": unknown selected field")
+		elif expected is Array:
+			if not value is Array or value.size() != expected.size():
+				errors.append(path + ": required selected array"); return
+			for i in expected.size(): _selected_tree(value[i],expected[i],path+"["+str(i)+"]")
+		elif expected is int or expected is float:
+			if not _is_selected_multiplier(value,expected): errors.append(path+": must equal selected "+str(expected))
+		elif typeof(value) != typeof(expected) or value != expected: errors.append(path+": must equal selected "+str(expected))
+
+	func _validate_playable_sites(design: Dictionary) -> void:
+		_selected_tree(design.get("initial-encounters"), {
+			"distance-min":192,"distance-max":215,"separation":192,"apron":8,"path-width":4,"max-step":1,"dry-above-sea":4,"hub-size":64,
+			"ruins":{"room":[24,24],"corridor":[8,8],"court":[24,16],"passage":[8,8],"alcove":[12,8],"bounds":[36,112],"ceiling":6,"door":[4,5],"occupancy":[-1,12],"pack-tiers":[1,2,3],"boss-tiers":[2,3]},
+			"camp":{"size":64,"occupancy":[-1,16],"exit-width":8,"tier":1,"packs":2},
+			"supplier":{"size":48,"occupancy":[-1,16],"exit-width":8,"tiers":[0,1,2,3],"packs":2},
+			"pack-size":3,"species":"skeleton","role-weights":{"melee":0.5,"ranged":0.3,"mage":0.2},"power-base-offset":2,
+			"boss-hp-mult":4,"boss-damage-mult":1.5,"boss-height":{"base":1.7,"min-mult":1.25,"growth":0.75,"max-level":10},
+			"boss-specials":{"stomp":0.5,"charge":0.5},"spirits":{"spirit-fire":0.25,"spirit-unholy":0.25,"spirit-ice":0.25,"spirit-wind":0.25},
+			"mission-package":{"coin-per-grade":20,"potion":"life-potion","potion-rarity":0,"potion-count":1,"gems":["emerald","sapphire","ruby","diamond"],"gem-count-per-grade":1,"rarity-shift":1,"upgrades":0,"delivery-height":0.5},
+			"special-profile":{"ready-s":3,"cooldown-s":10,"recovery-s":0.8,"warning-s":1.2,"stomp":{"radius":4,"start-height-diff":2,"victim-height":[0,1],"damage-mult":1},"charge":{"range":[4,10],"start-height-diff":1,"lane-width":2,"speed":12,"sweep-radius":1,"damage-mult":1.25}},
+			"rubble":{"per-arena":8,"voxel-size":1,"restore-world-hours":72,"block-type":"rock-building"},
+			"spikes":{"count":2,"footprint":[2,2],"victim-height":[0,1],"warning-s":0.8,"active-s":0.25,"cooldown-s":2,"damage":30,"attack-type":"physical","warning-sfx":"block"},
+			"furnishings":{"vase":{"per-room":2,"hp":10,"coin-base":1,"coin-per-level":2},"table":{"per-room":1,"hp":20,"flask":"glass-flask","flask-count":1,"potion":"life-potion","potion-count":1,"potion-rarity":0},"armor":0}}, "design.initial-encounters")
+		var blocks: Variant = configs.get("block-types")
+		if not blocks is Dictionary or not blocks.get("alpha") is Dictionary or not blocks.alpha.get("6") is Dictionary or not blocks.alpha["6"].get("id") is String or blocks.alpha["6"].id != "rock-building" or not blocks.alpha["6"].get("solid") is bool or not blocks.alpha["6"].solid: errors.append("initial-encounters.rubble.block-type: required stone definition")
+		if not configs.get("ingredients", {}).has("glass-flask"): errors.append("initial-encounters.furnishings.table.flask: required ingredient")
+		if not consumables.has(&"life-potion"): errors.append("initial-encounters.furnishings.table.potion: required consumable")
+		if not design.get("feel", {}).get("sfx", {}).has("block"): errors.append("initial-encounters.spikes.warning-sfx: required sound")
+		if not creatures.has(&"skeleton"): errors.append("initial-encounters.species: skeleton required")
+		for id in ["spirit-fire","spirit-unholy","spirit-ice","spirit-wind"]:
+			if not materials.has(id) or materials[id].raw.get("kind") != "spirit": errors.append("initial-encounters.spirits: missing spirit "+id)
+
+	func _validate_initial_encounter_config(design: Dictionary) -> void:
+		var settlement: Variant = design.get("settlement")
+		if not settlement is Dictionary:
+			errors.append("design.settlement: required object missing or malformed")
+		elif not _is_selected_multiplier(settlement.get("per-land"), 1.0):
+			errors.append("design.settlement.per-land: must equal selected exact count 1")
+		# Approved AI/game-clock inputs; require selected values, never runtime defaults.
+		var selected := {"time": {"speed": 10.0, "day-s": 86400.0, "initial-hour": 7.0},
+			"spawns.ai": {"threat-per-full-hp": 100.0, "threat-decay-per-s": 1.0, "return-speed-mult": 2.0, "return-damage-reduction": 0.9},
+			"abilities.heroic-shout": {"taunt-s": 3.0}}
+		for path in selected:
+			var row: Variant = design
+			for part in path.split("."):
+				row = row.get(part) if row is Dictionary else null
+			for field in selected[path]:
+				if not _is_selected_multiplier(row.get(field) if row is Dictionary else null, selected[path][field]):
+					errors.append("design." + path + "." + field + ": must equal selected " + str(selected[path][field]))
+		var hybrid: Ruleset = rulesets.get(&"ruleset-hybrid")
+		if hybrid == null:
+			errors.append("rulesets.ruleset-hybrid: required object missing or malformed")
+			return
+		var raw_flags: Variant = hybrid.raw.get("flags")
+		if not raw_flags is Dictionary:
+			errors.append("rulesets.ruleset-hybrid.flags: required object missing or malformed")
+		elif not _is_selected_multiplier(raw_flags.get("settlements-per-land"), 1.0):
+			errors.append("rulesets.ruleset-hybrid.flags.settlements-per-land: must equal selected exact count 1")
+
 	func validate() -> bool:
-		var n := errors.size()
 		_validate_equipment()
 		_validate_android()
 		for id in specs:                                                    # c-spec-of-class
@@ -581,6 +646,8 @@ class Ontology extends RefCounted:
 			errors.append("design: required object missing or malformed")
 			design_input = {}
 		var design: Dictionary = design_input
+		_validate_initial_encounter_config(design)
+		_validate_playable_sites(design)
 		var terrain_input: Variant = design.get("terrain")
 		if not terrain_input is Dictionary:
 			errors.append("design.terrain: required object missing or malformed")
@@ -634,23 +701,30 @@ class Ontology extends RefCounted:
 		for id in slot_multipliers:
 			if not found_slots.has(id):
 				errors.append("equipment-slots.slots.%s: required HP-bearing slot missing" % id)
-		var loot: Dictionary = design.get("loot", {})                     # c-loot-config (D18)
-		if not loot.is_empty():
-			var item_type_config: Variant = configs.get("item-types")
-			var item_types: Dictionary = item_type_config if item_type_config is Dictionary else {}
-			for k in ["gear-chance", "consumable-chance", "species-drop-chance"]:
-				if float(loot[k]) < 0.0 or float(loot[k]) > 1.0: errors.append("design.loot.%s out of [0,1]" % k)
-			if float(loot["coins"]["chance"]) < 0.0 or float(loot["coins"]["chance"]) > 1.0: errors.append("design.loot.coins.chance out of [0,1]")
-			if int(loot["level-spread"]) < 0: errors.append("design.loot.level-spread < 0")
-			var wsum := 0.0
-			for r in loot["rarity-weights"]:
-				if not rarities.has(r) or (rarities[r] as RarityDef).index > Rarity.LEGENDARY: errors.append("design.loot.rarity-weights: bad rarity %s" % r)
-				wsum += float(loot["rarity-weights"][r])
-			if wsum <= 0.0: errors.append("design.loot.rarity-weights sum to 0")
-			for t in loot["gear-kinds"].keys() + design.get("stack-cap", {}).get("stackable", []):
-				if not item_types.has(t): errors.append("design.loot/stack-cap: unknown item-type %s" % t)
-			for c in loot["consumable-pool"]:
-				if not consumables.has(c): errors.append("design.loot.consumable-pool: unknown consumable %s" % c)
+		var loot_start := errors.size()
+		_selected_tree(design.get("loot"), {"coins":{"chance":0.6,"base":1,"per-level":2},"gear-chance":0.2,"consumable-chance":0.15,"species-drop-chance":0.5,"level-spread":1,"boss-rarity-shift":1,"rarity-weights":{"common":60,"uncommon":25,"rare":10,"epic":4,"legendary":1},"gear-kinds":{"weapon":4,"chest-armor":2,"gloves":2,"boots":2,"shoulder-armor":2},"consumable-pool":["life-potion","apple","pineapple-slice"],"ground":{"lifetime-s":60480,"pickup-radius":2,"auto-pickup":["coin"],"scatter":1}},"design.loot")
+		if errors.size() == loot_start:
+			var loot: Dictionary = design.loot
+			for id in loot["rarity-weights"]:
+				if not rarities.has(id) or rarities[id].index > Rarity.LEGENDARY: errors.append("design.loot.rarity-weights: bad rarity "+id)
+			var types_input: Variant = configs.get("item-types")
+			var types: Dictionary = types_input if types_input is Dictionary else {}
+			for id in loot["gear-kinds"].keys()+design.get("stack-cap",{}).get("stackable",[]):
+				if not types.has(id): errors.append("design.loot/stack-cap: unknown item-type "+id)
+			for id in loot["consumable-pool"]:
+				if not consumables.has(id): errors.append("design.loot.consumable-pool: unknown consumable "+id)
+		for id in ["emerald","sapphire","ruby","diamond","glass-flask"]:
+			if not configs.get("ingredients",{}).has(id): errors.append("initial-encounters.mission-package: required ingredient "+id)
+		if classes.size() != 4: errors.append("initial-encounters.rewards: require four classes")
+		for id in ["warrior","ranger","rogue","mage"]:
+			if not classes.has(id): errors.append("initial-encounters.rewards: required class "+id); continue
+			var cls: CharacterClass = classes[id]
+			if not materials.has(cls.armor_material): errors.append("initial-encounters.rewards: illegal armor material for "+id)
+			if cls.weapon_types.is_empty(): errors.append("initial-encounters.rewards: empty weapon pool for "+id)
+			for type_id in cls.weapon_types:
+				if not weapon_types.has(type_id): continue # ownership diagnostics below
+				var raw: Variant = weapon_types[type_id].raw.get("material")
+				if not raw is String or not materials.has(raw.split(" ")[0].split("|")[0]): errors.append("initial-encounters.rewards: missing weapon material "+str(type_id))
 		var prog: Dictionary = design.get("progression", {})               # c-xp-config (D19)
 		if not prog.is_empty():
 			var kf := float(prog["kill-fraction"]); var r: Array = prog["gap-mult-range"]
@@ -678,7 +752,8 @@ class Ontology extends RefCounted:
 			if ults > 1: errors.append("skill-tree %s: %d ultimates" % [id, ults])
 			for col in roots:
 				if roots[col] != 1: errors.append("skill-tree %s: column %s has %d roots" % [id, col, roots[col]])
-		var ab: Dictionary = design.get("abilities", {})                  # c-ability-runtime (D21)
+		var ab_input: Variant = design.get("abilities")                  # c-ability-runtime (D21)
+		var ab: Dictionary = ab_input if ab_input is Dictionary else {}
 		var runtimes: Array = ab.get("runtimes", [])
 		var stamina_max := float(design.get("movement", {}).get("stamina", {}).get("max", 100))
 		var seen := {}
@@ -767,10 +842,10 @@ class Ontology extends RefCounted:
 			for cid in classes:
 				for wt in (classes[cid] as CharacterClass).weapon_types:
 					if (weapon_types[wt] as WeaponType).hands != Hands.OFFHAND and not mv.has(wt): errors.append("design.movesets: class %s weapon-type %s has no entry" % [cid, wt])
-		var st: Dictionary = design.get("settlement", {})                  # c-settlement-config (D22)
-		if not st.is_empty():
+		var st_input: Variant = design.get("settlement")                  # c-settlement-config (D22)
+		if st_input is Dictionary and not st_input.is_empty():
+			var st: Dictionary = st_input
 			var bj: Dictionary = configs.get("buildings", {}); var roles: Dictionary = configs.get("npc-roles", {})
-			if int(st["per-land"]) < 1: errors.append("design.settlement.per-land < 1")
 			if float(st["radius"]) <= float(st["blend"]) or float(st["blend"]) < 0.0: errors.append("design.settlement: need radius > blend >= 0")
 			if float(st["ring-radius"]) >= float(st["radius"]): errors.append("design.settlement.ring-radius must be < radius")
 			if float(st["no-hostiles-within"]) < float(st["radius"]): errors.append("design.settlement.no-hostiles-within < radius")
@@ -783,8 +858,7 @@ class Ontology extends RefCounted:
 				var style = st["style-by-landscape"].get(id)
 				if style == null or not bj.get("settlement-styles", {}).has(style): errors.append("design.settlement.style-by-landscape.%s: missing or unknown style %s" % [id, style])
 				elif not (st["style-colors"].get(style) is Array and (st["style-colors"][style] as Array).size() == 2): errors.append("design.settlement.style-colors.%s: need [wall, roof]" % style)
-			var cap = st["shop"]["rarity-cap"]
-			if not rarities.has(cap) or (rarities[cap] as RarityDef).index > Rarity.LEGENDARY: errors.append("design.settlement.shop.rarity-cap: bad rarity %s" % cap)
+			_selected_tree(st.get("shop"),{"stock":8,"rarity-cap":"common","level-spread":1,"item-shop-pool":"design.loot.consumable-pool","restock":"daily"},"design.settlement.shop")
 		var df: Dictionary = design.get("defence", {})                    # c-defence-config (D23)
 		if not df.is_empty():
 			var dg: Dictionary = df["dodge"]; var bl: Dictionary = df["block"]; var sl: Dictionary = df["stealth"]
@@ -880,4 +954,4 @@ class Ontology extends RefCounted:
 					errors.append_array(_role_errors(merged, "design.creature-roles.species.%s (merged)" % sid, se, alpha_sfx2, feel_sfx))
 		var defaults := rulesets.values().filter(func(r: Ruleset) -> bool: return r.is_default)
 		if defaults.size() != 1: errors.append("exactly one ruleset must be default (found %d)" % defaults.size())
-		return errors.size() == n
+		return errors.is_empty()

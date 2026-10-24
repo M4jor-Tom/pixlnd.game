@@ -15,12 +15,65 @@ Consumes `ontology/`; never redefines it. New gameplay = ontology first (sync ru
 | §3 section | folder | first pieces |
 |---|---|---|
 | 3.1 World | `world/` | **done (D12) + settlements (D22) + finite world generation (World/reset item 1) + boundary/player overview (item 2):** `world_gen.gd` gen-world/climate/terrain/name + `village_at` (placement, plateau in `height_at`), `zone_mesh.gd` heightfield mesher, `world.gd` zone streaming + trimesh collision + village streaming, `settlement.gd` ring of box buildings + NPCs, `world_map.gd` fixed outline/player view, player boundary guard, spawner skips the square; next flora, dungeons, POIs |
-| 3.2 Entities | `entities/` | **player (D13) + creatures (D14):** `entity.gd` base (HP, level, hostility, step-up), `player.{tscn,gd}` walk/sprint/jump/swim/stamina, `orbit_camera.gd` SpringArm3D orbit, `creature.{tscn,gd}` idle/wander/chase/return FSM, `world/spawner.gd` gen-spawns per zone, `npc.gd` service NPC at a door (D22, unattackable); `player.gd` dodge / block / stealth bar + statuses on the player, `creature.gd` stealth aggro range + hit statuses (D23); combat roles (D26): `spawner.gd` gives every group a `design.creature-roles` role (`any-class` humanoids roll melee / ranged / mage), `creature.gd` ranged / mage keep their distance, need line of sight, wind up and fire a `combat/projectile.gd` shot that applies statuses and never hits another creature; next villagers, pet, aggro table |
+| 3.2 Entities | `entities/` | **player (D13) + creatures (D14):** `entity.gd` base (HP, level, hostility, step-up), `player.{tscn,gd}` walk/sprint/jump/swim/stamina, `orbit_camera.gd` SpringArm3D orbit, `creature.{tscn,gd}` idle/wander/chase/return FSM, `world/spawner.gd` gen-spawns per zone, `npc.gd` service NPC at a door (D22, unattackable); `player.gd` dodge / block / stealth bar + statuses on the player, `creature.gd` stealth aggro range + hit statuses (D23); combat roles (D26): `spawner.gd` gives every group a `design.creature-roles` role (`any-class` humanoids roll melee / ranged / mage), `creature.gd` ranged / mage keep their distance, need line of sight, wind up and fire a `combat/projectile.gd` shot that applies statuses and never hits another creature; canonical logical pair/pack targeting and protected return via `combat/targeting.gd`; next villagers, pet |
 | 3.3 Combat | `combat/` | **basics (D15) + class abilities (D21):** `combat.gd` pure formulas (weapon damage, armor/Resistance defence stages, crit, combo, player/NPC HP+damage); `abilities.gd` runner (dash / channel / burst / buff / heal from `design.abilities`, cooldowns, costs, buff multipliers, absorb); MP + special attack in `player.gd`; stun / knockback / slow and independent burning/poison applications in `entity.gd`; dodge / block / stealth in `entities/player.gd` from `design.defence` (D23); `projectile.gd` shots + basic / special per weapon-type from `design.movesets` in `entities/player.gd` (D24); game feel (D25): `feel.gd` plays a `design.feel` bundle per event (hit-stop on `Engine.time_scale`, camera trauma on `orbit_camera.gd`, a synthesised `AudioStreamGenerator` blip, floating damage numbers, impact flash, projectile trail, stun stars) — hooked in `player.gd` (hit / crit / kill / hurt / block / dodge / shoot / level-up / pick-up), `entity.gd` (dot numbers, stars) and `projectile.gd`; creature shots reuse the same projectile + impact bundles (D26); next hit animations |
 | 3.4 Items | `items/` | **basics (D18):** `item.gd` instance, `items.gd` gen-item / gen-item-stats (damage, fixed HP, armor, Resistance) / item names / gen-loot + ground drops, `inventory.gd` stack + slot rules, `ground_item.{tscn,gd}` pick-up area, `inventory_panel.gd` (inventory control); `shop.gd` stock + `design.prices` buy/sell, `shop_panel.gd` (NPC interaction at a vendor, D22); next crafting, leftovers |
 | 3.5 Progression | `progression/` | **basics (D19) + skill tree (D20):** `progression.gd` level settle (overflow, multi-level); XP per kill lives in `model.gd#xp_for_kill`, awarded by `creature.gd` to its last attacker, `player.gd#gain_xp` levels up (max HP, heal, banked skill points), HUD level/xp line; `skill_tree.gd` nodes from `model.gd#skill_tree`, spend/unlock rule, per-point multipliers; `skill_panel.gd` (skills-window control); `player.gd#use_class_skill` class slots 1–4 → `combat/abilities.gd` (D21), swim speed per point; `skill_tree.gd#respec` at the class trainer (NPC interaction, D22); next power-gate, artifacts |
 | 3.6 Missions | `missions/` | mission-type runtime, arena |
-| 3.7 Meta | `meta/` | `input_map.gd` builds InputMap from `keybinds.json#hybrid`; `hud.gd` HP/MP/stamina/combo/land caption (+ village, D22) + hotbar cooldown line (D21) + service toasts + block-power / stealth bars, blocking text (D23) + level-up toast pop and the buff-icon row from `design.feel` (D25; "stunned!" is now 3D stars over the head); next server/client (`godot-multiplayer`), save-data |
+| 3.7 Meta | `meta/` | `input_map.gd` builds InputMap from `keybinds.json#hybrid`; `hud.gd` HP/MP/stamina/combo/land caption (+ village, D22) + hotbar cooldown line (D21) + service toasts + block-power / stealth bars, blocking text (D23) + level-up toast pop and the buff-icon row from `design.feel` (D25; "stunned!" is now 3D stars over the head); `world/world_state.gd` + `world/save_data.gd` retain implemented character/world state; next server/client (`godot-multiplayer`) |
+
+## Saved-world foundation
+
+`main.gd` owns mutable `WorldState` and validated atomic JSON save/load (`user://world.json`;
+`--save-path=/absolute/path.json` selects another file). A fresh save alone receives the starting kit
+and 07:00 clock. Invalid saves stop with diagnostics without overwriting the original; no legacy
+migration or offline time advancement. Lifecycle saves cover state transitions, streaming unload
+and graceful shutdown, not a promised crash-checkpoint cadence.
+
+`world.configure(ontology, design, state, party_provider)` injects connected characters; party
+min/max levels include awaiting-respawn members, and empty parties defer generation. Ambient
+logical incarnations and their independent threat/order/provocation outlive zone nodes. Midnight
+renews eligible dead ambient members, never surviving incarnations. The clock runs at design's
+10× rate independently of presentation hit-stop. `WorldState` supplies closed-volume/coalesced
+refresh and completion-before-refresh callbacks for future site owners; site owners use those callbacks for safe renewal. Boss/content state, source/cycle reward receipts, rescue completion and remaining daily vendor gear share those lifecycle saves. Delivered ground loot keeps ordinary pickup/expiry/unload retirement; undelivered payloads and pending gear classes survive restart.
+
+Either hand slot may be independently empty; removing one item leaves the other untouched.
+Existing class/slot/2H restrictions remain. New weapon-dependent requests require a main-hand
+weapon without spending on rejection, while a shield alone retains blocking and worn stats.
+Independent buffs/heals/movement/taunts and committed effects keep their existing rules.
+
+## Initial playable sites
+
+`world_gen.gd` jointly validates a seeded village, all six sites and four-wide access before
+publication. An ocean search failure yields a dry 64-square settlement hub, islands and
+collidable boardwalks. One empty house contains the village access passage; services and the
+fixed building ring remain. Failed generation reports seed/land/candidate diagnostics and publishes
+no partial land. `encounter_gen.gd` holds geometry/stable assignments; `encounter_site.gd` builds
+floors, six-high ruins, four-by-five doors and visibly bounded battlefields from the same components
+used by closed occupancy. Terrain cuts cannot protrude through access.
+
+`world.ensure_land`, `stream_sites`, `populate_site` and `refresh_site` own the actual streaming
+seam. `WorldState.lands` saves joint geography/pack roles/home positions/permanent special/spirit
+choices independently of `sites[id].mobs` current incarnations and `spirit_levels` initial boss
+levels. There are 46 skeletons (seven bosses) and four unattackable captives per land; ambient
+rosters are unchanged and authored support/access is reserved from wild generation. Genuine safe
+renewal regenerates only defeated members using the current connected-party band; surviving HP,
+positions, levels and threat remain. Save validation rejects partial sites, altered geometry,
+assignments, packs, counts and local NPC curves. Cleared suppliers complete through captive conversation or automatic last-player exit before pending refresh; completed rescues never regenerate.
+
+`boss_special.gd` executes each saved stomp/charge assignment through the real creature simulation
+and current-target authority: floor warnings, physical defence/status handling, swept charge,
+recovery/cooldown, interruptions and lifecycle cancellation. `encounter_contents.gd` builds eight
+collision-bearing stone rubble blocks per arena with actor-safe 72-world-hour restoration, two
+persisted spike phases with their distinct defence path, and direct-only furnishing HP. Each ruins
+room saves a shared creation/renewal level for new guards and furnishings; survivors retain their
+incarnations. Table pairs issue independently before break, with source/cycle delivery records.
+The focused checks below drive actual main/world nodes, damage, pickup, renewal and cold saves;
+they do not certify the separately deferred native collision issue.
+
+Site deaths issue shared ordinary rolls plus guaranteed boss gear and the two ruins bosses' fixed-type/initial-level spirits. Mission packages snapshot distinct inside classes at final death (including awaiting-respawn members), fall back to the finisher, or defer to the first later entrant. Camp completion and captive conversation/last-exit deliver once; no extra completion XP. Spirits can be carried, not attached.
+
+Weapon/armor vendors retain their generated gear and purchases across reopening/restart. Four land-shared supplier rescues raise the common ceiling through legendary at the next ordinary daily generation/restock, never an immediate rescue reroll. Consumables stay unlimited and prices/quantities unchanged. Full independent review, packaged staged/committed-input checks and native feature/HUD movie remain acceptance/publication gates; focused checkout tests do not certify the deferred native collision issue.
 
 ## Controls contract
 
@@ -83,7 +136,30 @@ See the [technical choice](../ontology/decisions/nix-nvidia-launcher.md) for the
 Arguments are forwarded unchanged, for example `nix run --impure .#nvidia -- -- --class=ranger`.
 
 ## Checks
+Persistence tests require `PIXLND_TEST_DIR` to name an existing, writable, isolated absolute scratch
+directory. They never use `user://`. Keep test saves/logs there and use a separate explicit save path
+for boot checks. Run every Godot invocation under `timeout` (including older commands below).
 ```sh
+# export PIXLND_TEST_DIR=/absolute/path/to/isolated-check-output
+timeout 150 nix develop -c godot --headless -s ontology/test_encounter_rewards_config.gd # exact required package/loot/daily shop inputs, cumulative malformed/missing parents and references
+timeout 150 nix develop -c godot --headless -s game/items/test_encounter_rewards.gd # actual death/shared pickup/expiry/unload/restart, seven boss guarantees, fixed spirits and class-legal gear
+timeout 150 nix develop -c godot --headless -s game/world/test_supplier_shops.gd # actual main vendor/captive interactions, last-exit-before-refresh, class snapshot/deferral, saved purchases/daily ceilings and exact save negatives
+timeout 150 nix develop -c godot --headless -s ontology/test_encounter_feature_config.gd # required special/rubble/spike/furnishing inputs, recursive cumulative negatives
+timeout 150 nix develop -c godot --headless -s game/combat/test_boss_special.gd # actual main stomp/charge, physical defence/sweep/rubble/walls, timer/cancel/inactive/unload/restart and saved-state negatives
+timeout 150 nix develop -c godot --headless -s game/world/test_encounter_contents.gd # actual collision/HP/pickup/independent table pairs, trap defences/phases/hitsets, safe restoration, room renewal and saved-state negatives
+timeout 150 nix develop -c godot --headless -s ontology/test_playable_site_config.gd # selected geometry/population/local-stat/assignment inputs, cumulative missing/malformed/changed negatives
+timeout 150 nix develop -c godot --headless -s game/world/test_playable_sites.gd # joint generation, determinism, all-six/counts/closed occupancy/access/bounds, all-sea hub and atomic failure
+timeout 150 nix develop -c godot --headless -s game/world/test_playable_sites_runtime.gd # real main/world geometry/collision/route-width/steps, ocean/boundary terrain, unload/renewal/restart and exact-content save negatives
+timeout 450 nix develop -c godot --headless -s game/world/test_local_frame_routes.gd -- --land=-512,-512 --ocean # actual player capsule across all dry-hub/boardwalk/site routes; omit --ocean for natural terrain, select other lands with --land=x,z
+timeout 150 nix develop -c godot --headless -s ontology/test_initial_encounter_config.gd # exact-one hybrid settlement/config negatives
+timeout 150 nix develop -c godot --headless -s ontology/test_state_targeting_config.gd # selected AI/clock/taunt inputs, missing/malformed/changed negatives
+timeout 150 nix develop -c godot --headless -s game/items/test_independent_hands.gd # shield-only/off-hand-1H lifecycle, worn stats/blocking/no attacks, independent removals and illegal loadouts
+timeout 150 nix develop -c godot --headless -s game/entities/test_unarmed.gd # all specs, no-spend rejection, independent actions and committed effects
+timeout 150 nix develop -c godot --headless -s game/entities/test_creature_ai_contract.gd # actual HP threat, ties/stealth/DOT, packs/sight/taunts, return/absence/death/finisher
+timeout 150 nix develop -c godot --headless -s game/world/test_encounter_clock.gd # closed unions, coalescence, deferred refresh, completion ordering/no offline time
+timeout 150 nix develop -c godot --headless -s game/world/test_save_data.gd # atomic character/world roundtrip, equipment/skills/spirits, invalid-save/original protection
+timeout 150 nix develop -c godot --headless -s game/world/test_saved_runtime.gd # real main/world unload/restart/midnight and empty/independent-hand lifecycle/HUD boots
+
 timeout 900 bash tests/test_flake.sh                            # pure default/platform checks; NVIDIA headless boot if a module is loaded
 nix develop -c godot --headless -s ontology/validate.gd            # ontology constraints
 nix develop -c godot --headless -s ontology/test_equipment_config.gd # slot indices/parents, raw item-type/weapon ownership/capacity and Wand/recipe negatives + cumulative diagnostics
@@ -92,7 +168,7 @@ nix develop -c godot --headless -s ontology/test_gear_hp_config.gd # fixed HP re
 nix develop -c godot --headless -s ontology/test_dot_config.gd     # required/malformed DOT rows, exact selected numeric inputs and accumulated negatives
 nix develop -c godot --headless -s ontology/test_resistance_config.gd # selected Resistance floor, active material multipliers, armor slots and fail-closed negatives
 nix develop -c godot --headless -s ontology/test_android_profile.gd # required/malformed profile and canonical action-reference negatives
-nix develop -c godot --headless --quit                             # autoload + main scene boot
+timeout 150 nix develop -c godot --headless --quit -- --save-path="${PIXLND_TEST_DIR:?set isolated output directory}/boot.json" # isolated real boot
 nix develop -c godot --headless -s game/world/test_world_bounds.gd # finite lands, edge meshes, spawn plans and streaming
 nix develop -c godot --headless -s game/world/test_world_travel.gd # true-limit edges/corners, spawn-scale wall slide, turn-back, movement paths and Teleport cost/cooldown/distance
 nix develop -c godot --headless -s game/meta/test_world_map.gd # boundary projection/toggle, live simulation, gameplay gates and synthetic Android ownership/layout

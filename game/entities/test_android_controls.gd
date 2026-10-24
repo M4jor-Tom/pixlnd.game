@@ -58,6 +58,8 @@ func run() -> void:
 	if failed: quit(1); return
 	world = Node3D.new(); world.set_script(load("res://game/world/world.gd")); root.add_child(world)
 	world.set_process(false); world.set_physics_process(false)
+	world.configure(o,design,preload("res://game/world/world_state.gd").new(design,int(design.terrain["seed-default"])),func(): return [p] if is_instance_valid(p) else [])
+	world.targeting.set_physics_process(false) # real saved vendor owner, without autonomous AI in this input fixture
 	var floor := StaticBody3D.new(); var collision := CollisionShape3D.new(); var shape := BoxShape3D.new()
 	shape.size = Vector3(100, 1, 100); collision.shape = shape; floor.add_child(collision); floor.position.y = -.5; root.add_child(floor)
 	await fixture()

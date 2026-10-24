@@ -32,6 +32,10 @@ static func combo_mult(combo: int, combat: Dictionary) -> float:
 static func player_max_hp(level: int, class_hp_mult: float) -> float:
 	return Model.stat_curve(level, 0) * 2.0 * 100.0 * class_hp_mult
 
+## NPC health curve shared by generation and saved-incarnation validation.
+static func enemy_max_hp(level: int, power_base: float) -> float:
+	return Model.stat_curve(level,0) * 200.0 * pow(2.0,power_base*0.25)
+
 ## design.combat.enemy-attack.formula
 static func enemy_damage(level: int, power_base: float, combat: Dictionary) -> float:
 	return Model.stat_curve(level, 0) * float(combat["enemy-attack"]["mult"]) * pow(2.0, power_base * 0.25)

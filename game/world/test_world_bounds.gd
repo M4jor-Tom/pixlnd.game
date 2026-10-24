@@ -4,6 +4,8 @@ const Gen := preload("res://game/world/world_gen.gd")
 const ZoneMesh := preload("res://game/world/zone_mesh.gd")
 const Spawner := preload("res://game/world/spawner.gd")
 const World := preload("res://game/world/world.gd")
+const State := preload("res://game/world/world_state.gd")
+const PLAYER := preload("res://game/entities/player.tscn")
 var failed := 0
 func check(ok: bool, label: String) -> void:
 	if not ok:
@@ -42,11 +44,12 @@ func _run() -> void:
 		check(p.x >= -512 and p.x <= 511 and p.y >= -512 and p.y <= 511, "cached land inside grid")
 	var db := preload("res://game/ontology_db.gd").new()
 	db.name = "OntologyDB"; root.add_child(db)
-	var target := Node3D.new(); target.position = Vector3(8388607, 0, 8388607)
+	var target := PLAYER.instantiate(); target.position = Vector3(8388607, 0, 8388607); target.set_physics_process(false)
 	root.add_child(target)
 	var world = World.new()
 	world.set_process(false); world.target = target; root.add_child(world)
-	world.gen = g; world._zone_blocks = 64; world._view = 2
+	world.configure(o,design,State.new(design,26879),func(): return [target])
+	world.gen = g; g.saved_lands = world.state_data.lands; world._zone_blocks = 64; world._view = 2
 	world._stream_village()
 	check(not world.has_ground(Vector3(8388608, 0, 8388607)), "outside ground unavailable")
 	for i in 5: world._process(0.0)

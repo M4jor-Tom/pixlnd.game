@@ -15,6 +15,8 @@ var _stock: ItemList
 var _bag: ItemList
 var _stock_rows: Array = []
 var _bag_rows: Array = []
+var _role: StringName
+var _land: Vector2i
 
 func bind(p_player: Node, p_world: Node, p_touch: Node = null) -> void:
 	player = p_player; world = p_world; touch_ui = p_touch
@@ -43,10 +45,11 @@ func _column(parent: Control, caption: String) -> ItemList:
 func _on_talked(npc: Node) -> void:
 	if not Shop.is_vendor(npc.role):
 		return
-	var l = world.gen.land_of_block(int(player.global_position.x), int(player.global_position.z))
+	var l = world.gen.land_of_block(floori(float(player.logical_position()[0])), floori(float(player.logical_position()[2])))
 	if l == null:
 		return
-	_stock_rows = Shop.stock(npc.role, world.gen, l, world.gen.village_at(l), player.level, player.o, player.design)
+	_role = npc.role; _land = l.coords
+	_stock_rows = world.vendor_stock(_role,player.level,_land)
 	_title.text = npc.display_name if touch_ui != null else "%s  (E closes)" % npc.display_name
 	_open(true)
 
@@ -80,11 +83,10 @@ func _refresh() -> void:
 
 func _on_buy(index: int) -> void:
 	var it = _stock_rows[index]
-	if not Shop.buy(player, it):
+	if not world.buy_vendor(_role,index,player,_land,it):
 		player.notice.emit("Not enough copper")
 		return
-	if it.type != &"consumable":
-		_stock_rows.remove_at(index)
+	_stock_rows = world.vendor_stock(_role,player.level,_land)
 	_refresh()
 
 func _on_sell(index: int) -> void:

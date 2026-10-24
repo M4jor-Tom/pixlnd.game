@@ -144,13 +144,14 @@ func _init() -> void:
 	p.global_position = Vector3(40, 1, 40)
 	a.skill_tree.points[&"sneak"] = 1; a.skill_tree.points[&"camouflage"] = 1
 	wolf.target = a
+	wolf.targeting.players = func(): return [p,a]
 	await _frames(3)
-	check(is_equal_approx(wolf._aggro_range(), float(design["spawns"]["ai"]["aggro-range"])), "no stealth: full aggro range")
+	check(is_equal_approx(wolf._aggro_range(a), float(design["spawns"]["ai"]["aggro-range"])), "no stealth: full aggro range")
 	check(a.abilities.use(o.abilities[&"sneak"]), "sneak used")
 	await _frames(30)
 	check(a.stealth > 0.1, "sneak fills the stealth bar: %.2f" % a.stealth)
 	a.stealth = 1.0; await _frames(1)
-	check(wolf._aggro_range() < float(design["spawns"]["ai"]["aggro-range"]) * 0.2, "full stealth: aggro range × ~0.1: %.1f" % wolf._aggro_range())
+	check(wolf._aggro_range(a) < float(design["spawns"]["ai"]["aggro-range"]) * 0.2, "full stealth: aggro range × ~0.1: %.1f" % wolf._aggro_range(a))
 	wolf.global_position = Vector3(0, 1, -2); await _frames(2)   # inside the basic-attack sphere, physics server synced
 	a.stealth = 1.0
 	var sl: Dictionary = df["stealth"]

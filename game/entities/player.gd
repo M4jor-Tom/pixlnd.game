@@ -29,6 +29,7 @@ signal skills_changed
 signal talked(npc: Node)                                # E at an NPC (D22); panels listen for vendor roles
 signal notice(text: String)                             # HUD toast
 
+var targeting: Node                                    # injected canonical world/party authority
 var cfg: Dictionary = {}                                # design.movement
 var combat: Dictionary = {}                             # design.combat
 var crit: Dictionary = {}                               # design.crit
@@ -58,7 +59,14 @@ var world_min := Vector2(-INF, -INF)
 var world_max := Vector2(INF, INF)  # exclusive; set from finite world design
 var _motion_remainder_x := 0.0
 var _motion_remainder_z := 0.0
-var spawn_point := Vector3.ZERO
+var relocate: Callable
+var _spawn_position := [0.0,0.0,0.0]
+var spawn_point: Vector3:
+	get: return frame.to_local(_spawn_position) if frame != null else Vector3(_spawn_position[0],_spawn_position[1],_spawn_position[2])
+	set(v): _spawn_position = frame.to_logical(v) if frame != null else [float(v.x),float(v.y),float(v.z)]
+
+func logical_respawn() -> Array: return _spawn_position.duplicate()
+func set_logical_respawn(p: Array) -> void: _spawn_position = p.duplicate()
 var touch_input: Node = null                            # null preserves the keyboard/mouse adapter
 var _touch_frame := {}
 var _touch_jump := false
@@ -129,6 +137,8 @@ func setup_items(p_o, p_design: Dictionary, class_id: StringName = &"warrior", s
 ## equips: main-hand damage; HP, armor and Resistance sum the worn gear stats once.
 func _refresh_gear() -> void:
 	var main = inventory.equipment.get(&"main-hand")
+	weapon = {}; moveset = {}
+	if main == null: _charge = -1.0
 	if main != null:
 		var wt = o.weapon_types[main.subtype]
 		weapon = {"type": main.subtype, "damage": Items.damage(main, o) * float(combat["attack-power-mult"]),
@@ -140,6 +150,7 @@ func _refresh_gear() -> void:
 		resistance += Items.resistance(inventory.equipment[slot], o)
 		max_hp += Items.hp(inventory.equipment[slot], o)
 	hp = minf(hp, max_hp)                                   # gear changes never heal or revive
+	if not can_block(): blocking = false                    # removing the last eligible item ends its stance immediately
 
 ## death of a creature we last hit → design.progression XP (D19), then level-up (c-level-up).
 func on_kill(creature_level: int) -> void:
@@ -197,6 +208,14 @@ func take_damage(amount: float, from: Node, status: StringName = &"") -> bool:
 			feel.play(&"hurt", head(), {"amount": before - hp, "kind": &"hurt"})   # what we actually lost
 	return blocked                                       # preserve this hit's result even if it emptied the bar
 
+## Spikes intentionally bypass dodge/block, then share ordinary reduction/absorption and actual HP loss.
+func take_hazard_damage(raw: float, from: Node) -> void:
+	var amount := Combat.after_defence(raw,armor,resistance,Combat.PHYSICAL,combat)
+	if abilities != null: amount = abilities.absorb(amount*abilities.mult("damage-taken-mult"))
+	var before := hp
+	super.take_damage(amount,from)
+	if feel != null and before > hp: feel.play(&"hurt",head(),{"amount":before-hp,"kind":&"hurt"})
+
 ## Dodged or blocked hits carry no status (D23) — except poison, which a dodge never avoids (D26, status-effects.json);
 ## knockback goes through _push so input does not erase it next tick.
 func apply_status(id: StringName, cfg: Dictionary, hit: float, from: Node) -> void:
@@ -224,7 +243,8 @@ func can_block() -> bool:
 	if defence.is_empty():
 		return false
 	var off = inventory.equipment.get(&"off-hand") if inventory != null else null
-	return _cyclone() or passives().has(&"barricade") or (off != null and off.subtype == &"shield")
+	var armed := not weapon.is_empty() or off != null
+	return _cyclone() or (armed and passives().has(&"barricade")) or (off != null and off.subtype == &"shield")
 
 func block_max() -> float:
 	if defence.is_empty():
@@ -342,7 +362,7 @@ func rest() -> void:
 	if inn["heal"]:
 		hp = max_hp; stamina = float(cfg["stamina"]["max"])
 	if inn["sets-spawn"]:
-		spawn_point = global_position
+		_spawn_position = logical_position()
 	notice.emit("Rested at the inn; you will respawn here")
 
 ## consumable: heal (consumable-heal) and spend one. ponytail: instant, no sit/channel time.
@@ -445,8 +465,9 @@ func _physics_process(dt: float) -> void:
 ## design.movement.fall-damage: % of max HP per block beyond the free height.
 ## Preserve normal movement except when a far-away Vector3 cannot represent this tick's displacement.
 func _apply_world_precision(dt: float) -> void:
-	var x := _precision_axis(global_position.x, velocity.x, dt, world_min.x, world_max.x - 0.5, _motion_remainder_x)
-	var z := _precision_axis(global_position.z, velocity.z, dt, world_min.y, world_max.y - 0.5, _motion_remainder_z)
+	var logical := logical_position()
+	var x := _precision_axis(global_position.x, velocity.x, dt, global_position.x+world_min.x-logical[0], global_position.x+world_max.x-0.5-logical[0], _motion_remainder_x)
+	var z := _precision_axis(global_position.z, velocity.z, dt, global_position.z+world_min.y-logical[2], global_position.z+world_max.y-0.5-logical[2], _motion_remainder_z)
 	velocity.x = x[0]; _motion_remainder_x = x[1]
 	velocity.z = z[0]; _motion_remainder_z = z[1]
 	if (x[2] or z[2]) and abilities != null and not abilities.dash.is_empty(): abilities.dash["left"] = 0.0
@@ -465,14 +486,17 @@ func _precision_axis(position: float, speed: float, dt: float, minimum: float, m
 
 ## Keep the player center inside the half-open horizontal world; preserve vertical motion.
 func _enforce_world_boundary() -> void:
-	var bounded := Vector2(clampf(global_position.x, world_min.x, world_max.x - 0.5), clampf(global_position.z, world_min.y, world_max.y - 0.5))
-	if global_position.x != bounded.x:
+	var logical := logical_position()
+	var bx := clampf(logical[0],world_min.x,world_max.x-0.5)
+	var bz := clampf(logical[2],world_min.y,world_max.y-0.5)
+	if logical[0] != bx:
 		velocity.x = 0.0; _motion_remainder_x = 0.0
 		if abilities != null and not abilities.dash.is_empty(): abilities.dash["left"] = 0.0
-	if global_position.z != bounded.y:
+	if logical[2] != bz:
 		velocity.z = 0.0; _motion_remainder_z = 0.0
 		if abilities != null and not abilities.dash.is_empty(): abilities.dash["left"] = 0.0
-	global_position.x = bounded.x; global_position.z = bounded.y
+	global_position.x += bx-float(logical[0]); global_position.z += bz-float(logical[2])
+	logical_position()
 
 func _fall_damage(was_airborne: bool) -> void:
 	if not is_on_floor():
@@ -521,6 +545,7 @@ func _apply_touch_request(request: Dictionary, dir: Vector3) -> void:
 		"basic-attack":
 			if _swing_t <= 0 and (abilities == null or not abilities.busy()): _swing()
 		"special-attack":
+			if weapon.is_empty(): return
 			if request.phase == "cancel": _charge = -1.0; return
 			if abilities == null or abilities.busy():
 				if request.phase == "release": _charge = -1.0
@@ -542,6 +567,7 @@ func _apply_touch_request(request: Dictionary, dir: Vector3) -> void:
 ## special-attack (M2, D21): charged classes hold to reserve MP (HUD bar pink), release to spend it; instant classes
 ## press and spend everything. Damage and stun chance grow with the MP spent.
 func _special_tick(dt: float) -> void:
+	if weapon.is_empty(): return
 	var sp: Dictionary = design["special-attack"]
 	if special_mode == &"charged":
 		if Input.is_action_just_pressed("special-attack") and mp >= float(sp["min-mp"]):
@@ -556,6 +582,7 @@ func _special_tick(dt: float) -> void:
 ## special-attack through the weapon's M2 moveset (D24): the charge fraction scales damage and rolls the stun, the
 ## moveset adds its own statuses (dagger poison, fist knockdown …).
 func _special(charged: float) -> void:
+	if weapon.is_empty(): return
 	var sp: Dictionary = design["special-attack"]
 	var f := charged / float(design["resources"]["mp"]["max"])
 	mp -= charged
@@ -586,6 +613,7 @@ func moveset_for(type: StringName) -> Dictionary:
 ## combo (c-combo-reset), a hit adds one (capped per weapon-type) and gives non-mages MP; a `finisher` rolls its
 ## statuses on every `every`-th landed hit. Shots report back through combat/projectile.gd.
 func _swing() -> void:
+	if weapon.is_empty(): return
 	var ba: Dictionary = combat["basic-attack"]
 	var m: Dictionary = moveset["m1"]
 	_swing_t = float(ba["swing-s"]) * float(m.get("swing-mult", 1.0)) * (abilities.mult("swing-mult") if abilities != null else 1.0)
@@ -639,8 +667,10 @@ func _fire(s: Dictionary, dmg: float, combo_bonus: bool, applies: Array, from :=
 	return Projectile.fire(self, from, aim(), s, dmg, combo_bonus, applies, attack_type)
 
 ## A landed attack: +1 combo (capped per weapon-type), the M1 finisher counter, MP for non-mages on basic hits.
-func _landed(combo_bonus: bool) -> void:
-	combo = mini(combo + 1, int(weapon["combo_cap"]))
+func _landed(combo_bonus: bool, committed_weapon: Dictionary = {}) -> void:
+	var source := weapon if committed_weapon.is_empty() else committed_weapon
+	if source.is_empty(): return
+	combo = mini(combo + 1, int(source["combo_cap"]))
 	_combo_t = float(combat["combo"]["expire-s"])
 	if not combo_bonus:
 		return
@@ -657,14 +687,14 @@ func bodies_within(center: Vector3, radius: float) -> Array:
 	var out: Array = []
 	for r in get_world_3d().direct_space_state.intersect_shape(q, 16):
 		var body: Object = r["collider"]
-		if body.has_method("take_damage") and not body.get("dead"):
+		if body.has_method("take_direct_damage") or (body.has_method("take_damage") and not body.get("dead")):
 			out.append(body)
 	out.sort_custom(func(x: Node3D, y: Node3D) -> bool: return x.global_position.distance_squared_to(global_position) < y.global_position.distance_squared_to(global_position))
 	return out
 
 func nearest_enemy(radius: float) -> Node3D:
 	for b in bodies_within(global_position + Vector3.UP, radius):
-		if b.get("hostility") != &"F":
+		if not b.has_method("take_direct_damage") and b.get("hostility") != &"F":
 			return b
 	return null
 
@@ -680,13 +710,16 @@ func _strike(center: Vector3, radius: float, dmg: float, combo_bonus: bool, appl
 	var tier := -1                                            # D25: ONE bundle per strike, the strongest tier wins
 	var tier_at := Vector3.ZERO                               # (an AoE swing must not fire 16 sounds and 16 shakes)
 	for body in bodies_within(center, radius):
+		if body.has_method("take_direct_damage"):
+			body.take_direct_damage(dmg*(abilities.mult("damage-mult") if abilities != null else 1.0),self)
+			continue
 		var cm := Combat.crit_mult(chance, _rng, crit)
 		var d := dmg * (Combat.combo_mult(combo, combat) if combo_bonus else 1.0) * cm
 		if abilities != null:
 			d *= abilities.mult("damage-mult")
 		d = Combat.after_defence(d, float(body.get("armor")), float(body.get("resistance")), attack_type, combat)
 		var blocked := false
-		if d > 0.0 or applies.has(&"taunt"):                   # taunt: a 0-damage hit sets the creature's target
+		if d > 0.0:                                          # taunts use the authority, never a fake damage hit
 			var before: float = body.hp
 			blocked = body.take_damage(d, self)
 			if feel != null and before > body.hp:              # a number per body, the bundle once
@@ -726,6 +759,7 @@ func _on_died() -> void:
 	clear_stars()                                            # the stun went with the statuses (D25)
 	block_power = block_max()
 	await get_tree().create_timer(float(combat["death"]["respawn-s"])).timeout
-	global_position = spawn_point                            # c-no-death-penalty
+	if relocate.is_valid(): relocate.call(_spawn_position)
+	else: set_logical_position(_spawn_position)                # c-no-death-penalty
 	hp = max_hp; stamina = float(cfg["stamina"]["max"]); combo = 0
 	dead = false

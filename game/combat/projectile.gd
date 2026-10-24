@@ -28,13 +28,15 @@ var _returning := false
 static func fire(shooter, from: Vector3, dir: Vector3, s: Dictionary, dmg: float, combo_bonus: bool, applies: Array, attack_type: StringName) -> Array:
 	var count := int(s.get("count", 1))
 	var attack := {"hits": 0, "live": count}
+	if shooter.get("weapon") is Dictionary: attack["weapon"] = shooter.weapon.duplicate()
 	var out: Array = []
 	for i in count:
 		var pr = new()
 		pr.shooter = shooter; pr.shot = s; pr.dmg = dmg; pr.attack_type = attack_type; pr.combo_bonus = combo_bonus; pr.applies = applies; pr.attack = attack
 		pr.vel = dir.rotated(Vector3.UP, float(s.get("spread", 0.0)) * (i - (count - 1) / 2.0)) * float(s["speed"])
+		pr.position = shooter.get_parent().to_local(from) if shooter.get_parent() is Node3D else from
 		shooter.get_parent().add_child(pr)
-		pr.global_position = from
+		if shooter.frame != null: shooter.frame.track(pr)
 		out.append(pr)
 	return out
 
@@ -102,7 +104,8 @@ func _hit(hits: int) -> void:
 	if hits <= 0:
 		return
 	if attack["hits"] == 0:
-		shooter._landed(combo_bonus)
+		if attack.has("weapon"): shooter._landed(combo_bonus,attack["weapon"])
+		else: shooter._landed(combo_bonus)
 	attack["hits"] += hits
 
 func _end() -> void:

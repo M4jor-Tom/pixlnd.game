@@ -76,6 +76,6 @@ func _draw_map() -> void:
 	map_view.draw_rect(world_rect, Color(0.35, 0.95, 1.0), false, 4.0)
 	var min_pos: Vector2 = player.world_min
 	var max_pos: Vector2 = player.world_max
-	var marker := project_position(Vector2(player.global_position.x, player.global_position.z), min_pos, max_pos, world_rect)
+	var marker := project_position(Vector2((float(player.logical_position()[0])-min_pos.x)/(max_pos.x-min_pos.x),(float(player.logical_position()[2])-min_pos.y)/(max_pos.y-min_pos.y)), Vector2.ZERO, Vector2.ONE, world_rect)
 	map_view.draw_circle(marker, 8.0, Color(1.0, 0.9, 0.15))
-	map_view.draw_string(ThemeDB.fallback_font, marker + Vector2(12, -8), "You (%.0f, %.0f)" % [player.global_position.x, player.global_position.z], HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color.WHITE)
+	map_view.draw_string(ThemeDB.fallback_font, marker + Vector2(12, -8), "You (%.0f, %.0f)" % [player.logical_position()[0], player.logical_position()[2]], HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color.WHITE)

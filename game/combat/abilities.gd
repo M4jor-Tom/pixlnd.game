@@ -41,20 +41,26 @@ func pay(cost: Dictionary) -> bool:
 			p.stamina = have - amount
 	return true
 
+## Weapon dependence follows the actual runtime payload, not a duplicate ability-id list.
+static func requires_weapon(r: Dictionary) -> bool:
+	if r.get("runtime") in ["buff","heal"]: return false # a buff's multiplier is not an immediate weapon strike
+	return r.get("runtime") == "projectile" or float(r.get("damage-mult",0.0)) > 0.0 or r.has("throw") or (r.has("strike") and requires_weapon(r["strike"]))
+
 func use(a) -> bool:
 	var r := runtime(a)
-	if r.is_empty() or not ready(a) or not pay(r.get("cost", {})):
+	if r.is_empty() or (requires_weapon(r) and p.weapon.is_empty()) or not ready(a) or not pay(r.get("cost", {})):
 		return false
 	cooldowns[a.id] = float(r["cooldown-s"]) * p.skill_tree.cooldown_mult(a.id)
 	var e: float = p.skill_tree.effect_mult(a.id)
+	var committed_weapon: Dictionary = p.weapon.duplicate()
 	match str(r["runtime"]):
 		"dash":
 			if r.has("throw"):
 				p._fire(r["throw"], float(p.weapon["damage"]) * float(r["throw"].get("damage-mult", 1.0)) * e, false, a.applies, Vector3.INF, p.ability_attack_type(a))
 			var d := _dash_dir(r)
-			dash = {"a": a, "r": r, "dir": d[0], "left": d[1], "origin": p.global_position, "e": e}
+			dash = {"a": a, "r": r, "dir": d[0], "left": d[1], "origin": p.logical_position(), "e": e, "weapon": committed_weapon}
 		"channel":
-			channel = {"a": a, "r": r, "left": float(r["duration-s"]), "tick": 0.0, "e": e, "hits": 0}
+			channel = {"a": a, "r": r, "left": float(r["duration-s"]), "tick": 0.0, "e": e, "hits": 0, "weapon": committed_weapon}
 		"burst":
 			_strike(a, r, p.global_position, e)
 		"projectile":
@@ -66,7 +72,7 @@ func use(a) -> bool:
 			if r.has("absorb-pct-hp"):
 				buffs[a.id]["pool"] = p.max_hp * float(r["absorb-pct-hp"])
 		"heal":
-			cast = {"a": a, "r": r, "left": float(r["cast-s"]), "e": e}
+			cast = {"a": a, "r": r, "left": float(r["cast-s"]), "e": e, "weapon": committed_weapon}
 	return true
 
 ## [direction, distance]: toward the nearest enemy within `range` (stop one block short), else forward / back.
@@ -81,14 +87,16 @@ func _dash_dir(r: Dictionary) -> Array:
 		return [forward, dist]
 	return [forward if str(r["toward"]) == "forward" else -forward, dist]
 
-func _strike(a, r: Dictionary, at: Vector3, e: float, reset_on_miss := true) -> int:
+func _strike(a, r: Dictionary, at: Vector3, e: float, reset_on_miss := true, committed_weapon: Dictionary = {}) -> int:
 	var hits := 0
 	var damaging := float(r.get("damage-mult", 0.0)) > 0.0
-	if damaging or not a.applies.is_empty():
-		hits = p._strike(at + Vector3.UP, float(r["radius"]), float(p.weapon["damage"]) * float(r.get("damage-mult", 0.0)) * e, false, a.applies, p.ability_attack_type(a))
+	if a.applies.has(&"taunt") and p.targeting != null:
+		p.targeting.taunt([p])
+	if damaging or (not a.applies.is_empty() and not a.applies.has(&"taunt")):
+		hits = p._strike(at + Vector3.UP, float(r["radius"]), float((p.weapon if committed_weapon.is_empty() else committed_weapon)["damage"]) * float(r.get("damage-mult", 0.0)) * e, false, a.applies, p.ability_attack_type(a))
 	if damaging:                                           # taunts and heals never change combo or its timer
 		if hits > 0:
-			p._landed(false)
+			p._landed(false,committed_weapon)
 		elif reset_on_miss:
 			p.combo = 0
 	if r.has("heal-pct"):
@@ -113,7 +121,7 @@ func after_move(dt: float) -> void:
 		var r: Dictionary = dash["r"]
 		if r.has("strike"):
 			var s: Dictionary = r["strike"]
-			_strike(dash["a"], s, dash["origin"] if str(s.get("at", "end")) == "origin" else p.global_position, dash["e"])
+			_strike(dash["a"], s, (p.frame.to_local(dash["origin"]) if p.frame != null else Vector3(dash["origin"][0],dash["origin"][1],dash["origin"][2])) if str(s.get("at", "end")) == "origin" else p.global_position, dash["e"],true,dash["weapon"])
 		dash = {}
 
 func tick(dt: float) -> void:
@@ -131,7 +139,7 @@ func tick(dt: float) -> void:
 	if not cast.is_empty():
 		cast["left"] -= dt
 		if cast["left"] <= 0.0:
-			_strike(cast["a"], cast["r"], p.global_position, cast["e"])
+			_strike(cast["a"], cast["r"], p.global_position, cast["e"],true,cast["weapon"])
 			cast = {}
 	if not channel.is_empty():
 		var r: Dictionary = channel["r"]
@@ -139,7 +147,7 @@ func tick(dt: float) -> void:
 		p.stamina = maxf(0.0, p.stamina - float(r["drain-per-s"]) * dt); p._stamina_idle = 0.0
 		if channel["tick"] <= 0.0:
 			channel["tick"] = float(r["tick-s"])
-			channel["hits"] += _strike(channel["a"], r, p.global_position, channel["e"], false)
+			channel["hits"] += _strike(channel["a"], r, p.global_position, channel["e"], false,channel["weapon"])
 		if channel["left"] <= 0.0 or p.stamina <= 0.0:
 			_end_channel()
 

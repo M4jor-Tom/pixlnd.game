@@ -110,7 +110,8 @@ static func item_name(it: Item, o: Model.Ontology, design: Dictionary) -> String
 	match it.type:
 		&"coin": return "%d copper" % it.count
 		&"consumable": return o.consumables[it.subtype].display_name
-		&"ingredient": return str(o.configs["ingredients"][it.subtype]["name"])
+		&"ingredient":
+			return o.materials[it.subtype].display_name if o.materials.has(it.subtype) and o.materials[it.subtype].raw.get("kind") == "spirit" else str(o.configs["ingredients"][it.subtype]["name"])
 	if slot_id(it, o) == &"":
 		return String(it.type)
 	var rng := RandomNumberGenerator.new(); rng.seed = it.modifier * 31 + it.minus_modifier
@@ -139,9 +140,9 @@ static func roll_rarity(rng: RandomNumberGenerator, loot: Dictionary, o: Model.O
 	return (o.rarities[StringName(_weighted(rng, loot["rarity-weights"]))] as Model.RarityDef).index
 
 ## D18 gear: kind by weight; a class rolled uniformly gives the weapon-type or the armor material.
-static func roll_gear(rng: RandomNumberGenerator, level: int, rarity: int, o: Model.Ontology, loot: Dictionary) -> Item:
+static func roll_gear(rng: RandomNumberGenerator, level: int, rarity: int, o: Model.Ontology, loot: Dictionary, class_id: StringName = &"") -> Item:
 	var kind := _weighted(rng, loot["gear-kinds"])
-	var cls: Model.CharacterClass = o.classes[o.classes.keys()[rng.randi() % o.classes.size()]]
+	var cls: Model.CharacterClass = o.classes[class_id if class_id != &"" else o.classes.keys()[rng.randi() % o.classes.size()]]
 	if kind == "weapon":
 		var wt: StringName = cls.weapon_types[rng.randi() % cls.weapon_types.size()]
 		return generate(rng, &"weapon", wt, weapon_material(o.weapon_types[wt]), level, rarity)
@@ -183,7 +184,9 @@ static func spawn_drops(parent: Node3D, pos: Vector3, items: Array, rng: RandomN
 		var color := Color.GOLD if it.type == &"coin" else Color(str(o.rarities[rarity_id(it.rarity, o)].raw.get("hex", "#ffffff")))
 		var n := GROUND.instantiate()
 		n.setup(it, item_name(it, o, design), color, ground)
+		n.position = parent.to_local(pos + Vector3(rng.randf_range(-s,s),0.5,rng.randf_range(-s,s)))
 		parent.add_child(n)
-		n.global_position = pos + Vector3(rng.randf_range(-s, s), 0.5, rng.randf_range(-s, s))
+		var frame = parent.get_meta("local_frame") if parent.has_meta("local_frame") else null
+		if frame != null: frame.track(n)
 		made.append(n)
 	return made

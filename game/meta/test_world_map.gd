@@ -120,7 +120,7 @@ func _initialize() -> void:
 	check(not p.dead, "live map does not prevent ordinary respawn")
 	key(KEY_M, true); await process_frame; key(KEY_M, false); await process_frame
 	key(KEY_B, true); await process_frame; key(KEY_B, false); await process_frame
-	inv.queue_free(); map.queue_free(); p.queue_free()
+	holder.queue_free(); inv.queue_free(); map.queue_free(); p.queue_free()
 	# Android native adapter: real touch actions reach the UI-only SubViewport and retain ownership/cancellation.
 	var android_player := player(); android_player.mp = 100.0
 	android_player.position = Vector3(-8388607.5, 0, 0)

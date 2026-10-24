@@ -23,16 +23,32 @@ static func layout(v: Dictionary, st: Dictionary) -> Array:
 			"yaw": PI / 2.0 - ang, "door": c + toward * (size.z / 2.0 + 1.0)})
 	return out
 
-static func build(v: Dictionary, st: Dictionary, roles: Dictionary) -> Node3D:
+static func build(v: Dictionary, st: Dictionary, roles: Dictionary, frame = null) -> Node3D:
 	var root := Node3D.new(); root.name = "Village"
+	var reference := [v.centre.x,0,v.centre.y]
+	root.position = frame.to_local(reference) if frame != null else Vector3(reference[0],0,reference[2])
 	var col: Array = st["style-colors"][String(v["style"])]
-	for b in layout(v, st):
+	var buildings := layout(v,st)
+	for i in buildings.size():
+		var b: Dictionary = buildings[i]
 		var m := MeshInstance3D.new()
 		var box := BoxMesh.new(); box.size = b["size"]; m.mesh = box
 		m.material_override = StandardMaterial3D.new(); m.material_override.albedo_color = Color(col[0])
-		m.position = b["centre"] + Vector3(0, b["size"].y / 2.0, 0); m.rotation.y = b["yaw"]
-		var body := StaticBody3D.new(); var cs := CollisionShape3D.new(); var sh := BoxShape3D.new()
-		sh.size = b["size"]; cs.shape = sh; body.add_child(cs); m.add_child(body)
+		m.position = Vector3(float(b.centre.x)-reference[0],float(b.centre.y)+b.size.y/2,float(b.centre.z)-reference[2]); m.rotation.y = b["yaw"]
+		if i == v.get("gate_index",-1):
+			# Required access passes through an empty house without moving services or changing the ring.
+			m.mesh = null
+			for sign_ in [-1,1]:
+				var side: float = (b.size.x-float(v.gate_width))/2-sign_*float(v.gate_offset)
+				if side <= 0: continue
+				var wall := MeshInstance3D.new(); var piece := BoxMesh.new()
+				piece.size = Vector3(side,b.size.y,b.size.z); wall.mesh = piece; wall.material_override = m.material_override
+				wall.position.x = sign_*(b.size.x/2-side/2)
+				var body := StaticBody3D.new(); var cs := CollisionShape3D.new(); var sh := BoxShape3D.new()
+				sh.size = piece.size; cs.shape = sh; body.add_child(cs); wall.add_child(body); m.add_child(wall)
+		else:
+			var body := StaticBody3D.new(); var cs := CollisionShape3D.new(); var sh := BoxShape3D.new()
+			sh.size = b["size"]; cs.shape = sh; body.add_child(cs); m.add_child(body)
 		var roof := MeshInstance3D.new(); var prism := PrismMesh.new()
 		prism.size = Vector3(b["size"].x + 1.0, 2.0, b["size"].z + 1.0); roof.mesh = prism
 		roof.material_override = StandardMaterial3D.new(); roof.material_override.albedo_color = Color(col[1])
@@ -40,6 +56,6 @@ static func build(v: Dictionary, st: Dictionary, roles: Dictionary) -> Node3D:
 		root.add_child(m)
 		if b["role"] != &"":
 			var n := NPC.new(b["role"], str(roles[b["role"]]["name"]), Color(st["npc"]["color"]))
-			n.position = b["door"]
+			n.position = Vector3(float(b.door.x)-reference[0],float(b.door.y),float(b.door.z)-reference[2])
 			root.add_child(n)
 	return root

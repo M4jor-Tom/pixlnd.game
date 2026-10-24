@@ -43,16 +43,19 @@ func _init() -> void:
 			if v.is_empty():
 				continue
 			villages += 1
-			check(v["height"] >= a.sea_level + int(st["placement"]["min-above-sea"]), "village on dry land: h %d" % v["height"])
+			check(v["height"]+1 >= a.sea_level + int(design["initial-encounters"]["dry-above-sea"]), "village dry surface (including ocean hub): h %d" % v["height"])
 			check(name_re.search(v["name"]) != null, "village name shape: '%s'" % v["name"])
 			check(o.configs["buildings"]["settlement-styles"].has(String(v["style"])), "style %s is a settlement-style" % v["style"])
-			check(a.height_at(v["centre"].x, v["centre"].y) == v["height"], "square is at the village height")
+			check(a.height_at(v["centre"].x, v["centre"].y) in [int(v.height),int(v.height)-1], "square terrain supports the actual village access surface")
 			for i in 12:
 				var ang := rng.randf() * TAU; var d := rng.randf() * (r - 1.0)
 				var p := Vector2i(v["centre"].x + roundi(cos(ang) * d), v["centre"].y + roundi(sin(ang) * d))
-				check(a.height_at(p.x, p.y) == v["height"], "plateau flat at %s (%d != %d)" % [p, a.height_at(p.x, p.y), v["height"]])
+				check(a.height_at(p.x,p.y) in ([int(v.height),int(v.height)-1] if a.reserved_ground(p.x,p.y) else [int(v.height)]), "plateau support flat except the one-block cut under physical access at %s" % p)
 			var far := Vector2i(v["centre"].x + int(r + st["blend"]) + 3, v["centre"].y)
-			check(a.height_at(far.x, far.y) == a._raw_height(far.x, far.y), "beyond radius + blend the heightfield is untouched")
+			if not a.reserved_ground(far.x,far.y):
+				check(a.height_at(far.x, far.y) == a._raw_height(far.x, far.y), "outside plateau and authored access the heightfield is untouched")
+			else:
+				check(a.height_at(far.x,far.y) >= a.sea_level, "authored village access remains dry beyond old plateau")
 	check(villages >= 30, "most of 49 lands have a village: %d" % villages)
 	var v0 := a.village_at(a.land_at(Vector2i.ZERO)); var v0c := c.village_at(c.land_at(Vector2i.ZERO))
 	check(not v0.is_empty() and (v0c.is_empty() or v0["name"] != v0c["name"]), "different seed → different village name")

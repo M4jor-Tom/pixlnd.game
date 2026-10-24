@@ -1,6 +1,4 @@
-## shop (§3.4, D22): vendor stock and design.prices, pure and static. Stock is rolled from (world seed, village, role)
-## at the land's creature level band around the player level (gen.creature_level), rarity ≤ design.settlement.shop.rarity-cap.
-## ponytail: rolled per open at the current level, never restocks (c-midnight-reset later); no buy-back, no gnome unlocks.
+## Daily saved gear ownership lives in World; this pure generator preserves ordinary pools/prices.
 extends RefCounted
 
 const Model := preload("res://ontology/model.gd")
@@ -32,7 +30,7 @@ static func buy_price(it: Item, o: Model.Ontology, design: Dictionary) -> int:
 static func sell_price(it: Item, o: Model.Ontology, design: Dictionary) -> int:
 	return maxi(1, floori(buy_price(it, o, design) * float(design["prices"]["sell"])))
 
-static func stock(role: StringName, gen, land, village: Dictionary, player_level: int, o: Model.Ontology, design: Dictionary) -> Array:
+static func stock(role: StringName, gen, land, village: Dictionary, player_level: int, o: Model.Ontology, design: Dictionary, ceiling: int = -1, day: int = 0) -> Array:
 	var st: Dictionary = design["settlement"]["shop"]
 	var out: Array = []
 	if role == &"item-vendor":                                   # unlimited consumables at the player's level
@@ -40,8 +38,8 @@ static func stock(role: StringName, gen, land, village: Dictionary, player_level
 			out.append(Item.stack(&"consumable", StringName(c), 1, maxi(1, player_level)))
 		return out
 	var rng := RandomNumberGenerator.new()
-	rng.seed = hash([gen.world_seed, village["centre"], role])
-	var cap: int = (o.rarities[StringName(st["rarity-cap"])] as Model.RarityDef).index
+	rng.seed = hash([gen.world_seed, village["centre"], role, day])
+	var cap: int = ceiling if ceiling >= 0 else (o.rarities[StringName(st["rarity-cap"])] as Model.RarityDef).index
 	var spread := int(st["level-spread"])
 	var armor_kinds: Array = design["loot"]["gear-kinds"].keys().filter(func(k: String) -> bool: return k != "weapon")
 	for i in int(st["stock"]):

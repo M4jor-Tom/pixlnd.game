@@ -21,7 +21,7 @@ if [[ "$(uname -m)" == x86_64 && -r /proc/driver/nvidia/version ]]; then
   scratch=$(mktemp -d)
   trap 'rm -rf "$scratch"' EXIT
   if ! (cd "$scratch" && timeout 600 nix run --impure "$root#nvidia" -- \
-      --headless --quit-after 1 -- --class=ranger) >"$scratch/boot.log" 2>&1 ||
+      --headless --quit-after 1 -- --class=ranger --save-path="$scratch/world.json") >"$scratch/boot.log" 2>&1 ||
       ! grep -q '^pixlnd:.*; bow dmg ' "$scratch/boot.log"; then
     cat "$scratch/boot.log"
     exit 1

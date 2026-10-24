@@ -155,7 +155,7 @@
       "inn-cost": 10,
       "spec-change": "guild-free",
       "multiplayer": "dedicated-server",
-      "settlements-per-land": "many",
+      "settlements-per-land": 1,
       "settlements-always-on-map": false,
       "map-unexplored-hidden": true,
       "seed-per-world": true,

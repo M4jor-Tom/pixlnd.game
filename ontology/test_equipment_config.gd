@@ -99,7 +99,9 @@ func _init() -> void:
 	check(o.validate(), "restored equipment data validates")
 
 	# Exercise load_dir's raw JSON boundary, not only typed Resource mutations.
-	var scratch := "user://equipment-config-negative"
+	var directory := OS.get_environment("PIXLND_TEST_DIR")
+	if not directory.is_absolute_path(): printerr("PIXLND_TEST_DIR required"); quit(1); return
+	var scratch := directory.path_join("equipment-config-negative")
 	check(DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(scratch)) == OK, "scratch directory created")
 	var source := DirAccess.open("res://ontology/instances")
 	for file in source.get_files():

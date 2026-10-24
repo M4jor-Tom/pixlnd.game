@@ -143,12 +143,14 @@ func _init() -> void:
 	var holder := Node3D.new(); root.add_child(holder)
 	var enemy_z := edge + 0.5
 	var enemy = Spawner.populate(holder, [{"species": &"wolf", "level": 1, "hostility": "H", "max_hp": 1000.0, "damage": 0.0,
-		"positions": [Vector3(0, 0, enemy_z)], "seed": 701}], design, o.creatures, rusher, null)[0]
+		"positions": [Vector3(1.5, 0, enemy_z)], "seed": 701}], design, o.creatures, rusher, null)[0]
+	enemy.set_physics_process(false) # real off-lane collider/strike target; the boundary, not an approaching actor, ends this dash
 	floor_at(0, edge + 5); place(rusher, Vector3(0, 0, edge + 2.0)); await frames(3)
 	var enemy_hp: float = enemy.hp
 	check(rusher.use_class_skill(4), "forward damaging dash starts")
 	await frames(8)
 	check(rusher.position.z >= edge and rusher.abilities.dash.is_empty(), "damaging dash stops at edge")
+	check(rusher.frame == null and rusher.position.z == edge, "frame-null damaging dash reaches exact representable minimum-z boundary")
 	check(enemy.hp < enemy_hp and rusher.hp == rusher.max_hp, "edge-stopped dash resolves its normal strike without edge damage")
 	# Instant lunge route through the real special-attack / moveset consumer.
 	var lunger := make_player(&"warrior", &"berserker"); lunger.moveset = design["movesets"]["longsword"]

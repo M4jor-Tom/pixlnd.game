@@ -3,6 +3,8 @@
 ## z up, in blocks; the mesher maps them to Godot (x, h, y). Numbers: generators.json#design (D12).
 extends RefCounted
 
+const Encounters := preload("res://game/world/encounter_gen.gd")
+
 class Land:
 	var coords: Vector2i
 	var land_seed: int
@@ -16,8 +18,9 @@ class Land:
 	var top: Color
 	var cliff: Color
 	var danger_tier: StringName        # F4: safe / normal / dangerous, rolled once per land
-	var village: Dictionary = {}        # D22: {centre: Vector2i, height, name, style}; empty = none (sea)
+	var village: Dictionary = {}        # D22 layout plus joint generation's dry hub / access gate
 	var village_searched := false
+	var encounter_plan: Dictionary = {}
 
 const FIELD_NAMES := ["temp", "humidity", "continent", "relief", "roll"]
 
@@ -33,6 +36,11 @@ var land_blocks: int
 var land_min: int
 var land_max: int
 var sea_level: int
+var encounter_config: Dictionary
+var ai_leash: float
+var saved_lands: Dictionary = {}          # injected saved geography; runtime never rerolls it
+var diagnostics: Array[String] = []
+var _patches: Dictionary = {}             # generated column cuts/supports, only for the active hub neighbourhood
 
 var _height := FastNoiseLite.new()
 var _fields := {}                   # climate field → FastNoiseLite, sampled in land units
@@ -47,6 +55,8 @@ func _init(p_seed: int, design: Dictionary, p_landscapes: Dictionary) -> void:
 	terrain = design["terrain"]; climate = design["climate"]; names = design["names"]
 	enemy_level = design["enemy-level"]; enemy_hp = design["enemy-hp"]
 	settlement = design.get("settlement", {})
+	encounter_config = design["initial-encounters"]
+	ai_leash = float(design.spawns.ai.leash)
 	land_blocks = int(terrain["land-blocks"]); sea_level = int(terrain["sea-level"])
 	land_min = -int(terrain["lands-per-axis"]) / 2
 	land_max = land_min + int(terrain["lands-per-axis"]) - 1
@@ -154,14 +164,24 @@ func _syllables(rng: RandomNumberGenerator) -> String:
 
 # --- settlements (D22) ------------------------------------------------------------------------
 
-## gen-settlement: the land's village — the first candidate on rings of `search-step` blocks around the land centre
-## whose column stands ≥ min-above-sea above the sea; empty when none (an all-sea land). Cached on the land.
+## gen-settlement: bounded seeded village search, accepted only with all six sites and access.
+## All-sea search failure receives the canonical dry hub; actual generation failure has diagnostics.
 func village_at(l: Land) -> Dictionary:
-	if l == null or settlement.is_empty():
-		return {}
-	if l.village_searched:
-		return l.village
+	if l == null or settlement.is_empty(): return {}
+	encounters_at(l)
+	return l.village
+
+## A single atomic result: village, all six sites, stable assignments and every access route.
+## The bounded village search is an implementation algorithm, not a reduced-site fallback.
+func encounters_at(l: Land) -> Dictionary:
+	if l == null or settlement.is_empty(): return {}
+	if l.village_searched: return l.encounter_plan
 	l.village_searched = true
+	var key := "%d,%d" % [l.coords.x,l.coords.y]
+	if saved_lands.has(key):
+		l.encounter_plan = saved_lands[key]
+		_set_village(l)
+		return l.encounter_plan
 	var pl: Dictionary = settlement["placement"]
 	var step := int(pl["search-step"]); var min_h: int = sea_level + int(pl["min-above-sea"])
 	var cx := l.coords.x * land_blocks + land_blocks / 2; var cy := l.coords.y * land_blocks + land_blocks / 2
@@ -170,14 +190,66 @@ func village_at(l: Land) -> Dictionary:
 		for i in 8 * r:
 			var ang := TAU * i / (8 * r)
 			candidates.append(Vector2i(cx + roundi(cos(ang) * r * step), cy + roundi(sin(ang) * r * step)))
-	for c in candidates:
-		var h := _raw_height(c.x, c.y)
-		if h >= min_h:
-			var rng := RandomNumberGenerator.new(); rng.seed = l.land_seed ^ hash("village")
-			l.village = {"centre": c, "height": h, "name": _syllables(rng),
-				"style": StringName(str(settlement["style-by-landscape"].get(String(l.landscape), "european-framework")))}
-			break
-	return l.village
+	var dry: Array = candidates.filter(func(c): return valid_block(c.x,c.y) and _raw_height(c.x,c.y) >= min_h)
+	var fallback := dry.is_empty()
+	if fallback: dry = [Vector2i(cx,cy)]
+	var reasons: Array[String] = []
+	for c in dry:
+		# A hub cannot straddle its land; reject before spending work on impossible sites/routes.
+		var half := float(encounter_config["hub-size"])/2
+		if c.x-half < l.coords.x*land_blocks or c.y-half < l.coords.y*land_blocks or c.x+half >= (l.coords.x+1)*land_blocks or c.y+half >= (l.coords.y+1)*land_blocks: continue
+		var rng := RandomNumberGenerator.new(); rng.seed = l.land_seed ^ hash("village")
+		var v := {"centre":c,"height":maxi(_raw_height(c.x,c.y),min_h-1),"name":_syllables(rng),
+			"style":StringName(str(settlement["style-by-landscape"][String(l.landscape)])),"hub":fallback}
+		var result := Encounters.plan(self,l,v,encounter_config)
+		if not result.has("error"):
+			l.encounter_plan = result
+			_set_village(l)
+			return result
+		reasons.append(str(c)+": "+str(result.error))
+	diagnostics.append("initial-encounters generation failed seed=%d land=%s candidates=%d: %s" % [world_seed,str(l.coords),dry.size(),"; ".join(reasons) if not reasons.is_empty() else "village/hub outside finite land bounds"])
+	return {}
+
+func _set_village(l: Land) -> void:
+	var v: Dictionary = l.encounter_plan.village
+	l.village = {"centre":Vector2i(v.centre[0],v.centre[1]),"height":v.height,"name":v.name,"style":StringName(v.style),"hub":v.hub,"gate_index":v.gate_index,"gate_width":v.gate_width,"gate_offset":v.gate_offset}
+
+## Rasterize the same site supports and road slabs consumed by physical geometry. Roads cut
+## underneath their lowest overlapping slab, so natural ridges cannot protrude through access.
+func _install_patches(l: Land) -> void:
+	var patches := {}
+	var plan_: Dictionary = l.encounter_plan
+	var v: Dictionary = plan_.village
+	if v.hub:
+		var half := int(encounter_config["hub-size"])/2
+		for x in range(v.centre[0]-half,v.centre[0]+half):
+			for z in range(v.centre[1]-half,v.centre[1]+half): patches[Vector2i(x,z)] = int(v.height)
+	for site in plan_.sites:
+		var minx := INF; var minz := INF; var maxx := -INF; var maxz := -INF
+		for volume in site.volumes:
+			minx = minf(minx,volume[0]); minz = minf(minz,volume[2]); maxx = maxf(maxx,volume[3]); maxz = maxf(maxz,volume[5])
+		var apron := int(encounter_config.apron)
+		for x in range(int(minx)-apron,int(maxx)+apron):
+			for z in range(int(minz)-apron,int(maxz)+apron): patches[Vector2i(x,z)] = int(site.floor)-1
+		# The physical floor owns the top block; terrain meets its underside, never a coplanar face.
+		for volume in site.volumes:
+			for x in range(int(volume[0]),int(volume[3])):
+				for z in range(int(volume[2]),int(volume[5])): patches[Vector2i(x,z)] = int(site.floor)-2
+	var roads := {}
+	for road in plan_.routes:
+		for slab in road.steps:
+			var radius: float = (slab.width+slab.length)/2+1
+			for x in range(floori(slab.x-radius),ceili(slab.x+radius)):
+				for z in range(floori(slab.z-radius),ceili(slab.z+radius)):
+					var dx: float = x+0.5-slab.x; var dz: float = z+0.5-slab.z
+					# Cover complete columns touching the slab, including rotated village-gate edges.
+					if absf(dx*slab.dx+dz*slab.dz) <= slab.length/2+1 and absf(-dx*slab.dz+dz*slab.dx) <= slab.width/2+1:
+						var cell := Vector2i(x,z)
+						# Cut ridges below the boardwalk; never fill the ocean bed into a solid causeway.
+						var cut := mini(int(patches.get(cell,_village_height(x,z,v,_raw_height(x,z)))),int(slab.top)-2)
+						roads[cell] = mini(int(roads.get(cell,cut)),cut)
+	patches.merge(roads,true)
+	_patches[l.coords] = patches
 
 # --- terrain ---------------------------------------------------------------------------------
 
@@ -208,22 +280,40 @@ func _land_blend(x: int, y: int) -> Array:
 		[land_at(Vector2i(clampi(x0, land_min, land_max), clampi(y0 + 1, land_min, land_max))), (1.0 - tx) * ty],
 		[land_at(Vector2i(clampi(x0 + 1, land_min, land_max), clampi(y0 + 1, land_min, land_max))), tx * ty]]
 
-## Height of the top solid block of column (x, y): the heightfield, flattened to the village plateau within
-## design.settlement.radius of the land's village and blended back over `blend` more (D22).
+## Terrain top block, including island supports and cuts beneath physical site/access floors.
+## Unreserved village plateau/blend retain D22; physical floors are rendered by encounter_site.gd.
 func height_at(x: int, y: int) -> int:
 	var h := _raw_height(x, y)
 	if settlement.is_empty():
 		return h
-	var v := village_at(land_of_block(x, y))
-	if v.is_empty():
-		return h
-	var d := Vector2(x - v["centre"].x, y - v["centre"].y).length()
+	var l := land_of_block(x,y)
+	var v := village_at(l)
+	if v.is_empty(): return h
+	var reach := float(encounter_config["distance-max"])+float(encounter_config.ruins.bounds[1])+float(encounter_config.apron)
+	if absf(x-v.centre.x) <= reach and absf(y-v.centre.y) <= reach:
+		if not _patches.has(l.coords): _install_patches(l)
+		if _patches[l.coords].has(Vector2i(x,y)): return _patches[l.coords][Vector2i(x,y)]
+	return _village_height(x,y,{"centre":[v.centre.x,v.centre.y],"height":v.height},h)
+
+func _village_height(x: int, y: int, v: Dictionary, h: int) -> int:
+	var d := Vector2(x-v.centre[0],y-v.centre[1]).length()
 	var r := float(settlement["radius"]); var b := float(settlement["blend"])
 	if d <= r:
 		return v["height"]
 	if d < r + b:
 		return roundi(lerpf(v["height"], h, (d - r) / b))
 	return h
+
+## Ambient rosters are unchanged; authored encounter support/access is reserved from wild populations.
+func reserved_ground(x: int, y: int) -> bool:
+	var l := land_of_block(x,y)
+	if l == null: return false
+	var v := village_at(l)
+	if v.is_empty(): return false
+	var reach := float(encounter_config["distance-max"])+float(encounter_config.ruins.bounds[1])+float(encounter_config.apron)
+	if absf(x-v.centre.x) > reach or absf(y-v.centre.y) > reach: return false
+	if not _patches.has(l.coords): _install_patches(l)
+	return _patches[l.coords].has(Vector2i(x,y))
 
 func _raw_height(x: int, y: int) -> int:
 	var c := _cell(x, y)

@@ -158,9 +158,9 @@ Village or city. `A S`
 
 **Hybrid settlements item 1 (owner approved, 2026-09-27):** exactly one settlement per land
 is the final target, not a temporary limit pending multiple settlements. Other D22 layout,
-services and settlement-safety rules are unchanged. Live `rulesets.json#ruleset-hybrid.flags`
-still says `settlements-per-land: "many"`; flag migration and enforcement remain deferred.
-`design.settlement.per-land` already equals 1; the current validator only checks ≥1.
+services and settlement-safety rules are unchanged. `rulesets.json#ruleset-hybrid.flags`
+and `design.settlement.per-land` both select 1; current scoped configuration checks require
+that exact count. Generated geography and runtime coverage remain separate checks.
 
 D22's box-building ring and service coverage are slice approximations, not the final layout:
 districts, procedural rooms/roofs, villagers/schedules, specialization changes, sewers/dens
@@ -851,6 +851,20 @@ subtypes; 17 usable).
 | m1 / m2 | retained data-channel names for [basic](controls.md#basic-attack) / [special](controls.md#special-attack) moveset summaries, not physical defaults |
 | material | wood (workbench) / iron (anvil) / gold-silver (bracelets) |
 
+**Hybrid hand occupancy and empty-handed actions:** either hand slot may independently be
+empty, including in a saved character. Removing one hand item leaves the other item untouched
+in its existing slot; there is no automatic move, swap, removal or deletion. This is an allowance,
+not a requirement to leave a hand empty. Existing class, subtype/slot and two-handed restrictions
+still apply: an off-hand-only item must be legal in that slot, and a two-handed weapon still
+excludes another hand item. A shield alone retains ordinary shield blocking and its existing
+worn HP/defence contribution. Other existing Guardian/Cyclone block eligibility is unchanged.
+Without a **main-hand weapon**, new weapon-dependent basic, special and class-skill requests
+are unavailable and consume no resources, cooldown or combo state; an off-hand weapon does
+not become an attack source. Equipping a main-hand weapon restores those requests. Independent healing, buffs, movement and taunts remain available under their
+existing rules. Already-fired projectiles and committed channel/dash effects retain their
+existing resolution; unequipping does not cancel them or substitute barehand damage, a default
+weapon or stale removed-weapon state for a new request.
+
 **Hybrid Wand item 1 (owner approved, 2026-09-28):** a wand is **mechanically two-handed**,
 even if held visually in one hand. Equip one wand with **no other hand item**, including a
 second wand or bracelet; the pose grants no off-hand capacity. Preserve its Mage restriction,
@@ -1265,9 +1279,7 @@ Vendor with stock rules. → `instances/economy.json#shops` (weapon, armor, item
 gem-trader `S` roaming, inn, guild, flight-master, adapter `A`). S: stock rarity capped by rescued
 gnomes; restock daily; buy-back tab; A: sales final, +1..+100 stock.
 
-Hybrid D22 stock coverage and rarity cap in `design.settlement.shop` are slice approximations.
-Once-rolled stock (`shop.restock: never`) does not supersede `game-clock` daily restocking or
-`save-data` world-shared supplier improvements. The hybrid [supplier stock ceiling](encounter-contracts.md#shared-mission-packages-and-supplier-shops)
+Hybrid `design.settlement.shop` selects eight gear offers, level spread 1, a common initial ceiling and daily restocking. Remaining stock/purchases and world-shared supplier progress persist under `save-data`. The hybrid [supplier stock ceiling](encounter-contracts.md#shared-mission-packages-and-supplier-shops)
 governs ordinary stock generation/restock, not an immediate rescue reroll or guaranteed top-grade stock.
 
 ### inventory

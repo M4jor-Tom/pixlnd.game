@@ -94,13 +94,14 @@ func _has_loadout(fragment: String) -> bool:
 	return false
 
 func _loadout_valid(main: Item, off: Item) -> bool:
-	if main == null:
-		return off == null
-	var main_hands: Model.Hands = (_o.weapon_types[main.subtype] as Model.WeaponType).hands
-	if off == null:
-		return main_hands != Model.Hands.OFFHAND
-	if main_hands != Model.Hands.ONE_HANDED or not _o.weapon_types.has(off.subtype):
-		return false
+	for it in [main,off]:
+		if it != null and (it.type != &"weapon" or not _o.weapon_types.has(it.subtype)):
+			return false
+	if main != null:
+		var hands: Model.Hands = (_o.weapon_types[main.subtype] as Model.WeaponType).hands
+		if hands not in [Model.Hands.ONE_HANDED,Model.Hands.TWO_HANDED]: return false
+		if off != null and hands == Model.Hands.TWO_HANDED: return false
+	if off == null: return true
 	var off_hands: Model.Hands = (_o.weapon_types[off.subtype] as Model.WeaponType).hands
 	if off_hands == Model.Hands.OFFHAND:
 		return _has_loadout("1h + shield")

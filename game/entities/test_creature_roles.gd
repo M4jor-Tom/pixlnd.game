@@ -202,6 +202,7 @@ func _init() -> void:
 	wbox.size = Vector3(20, 6, 1); wcs.shape = wbox; wall.add_child(wcs); wall.position = Vector3(0, 3, -5)
 	root.add_child(wall)
 	var sk2 := _spawn(&"skeleton", &"ranged", Vector3(0, 1, -10), p)   # inside design.spawns.ai.aggro-range
+	sk2.take_damage(sk2.max_hp*0.1,p) # ten percentage-based points outlast the blocked-sight interval
 	check(await _watch(sk2, 2.5) == 0, "no shot without line of sight")
 	check(is_equal_approx(p.hp, p.max_hp), "…and the player is untouched behind the wall")
 	wall.queue_free()

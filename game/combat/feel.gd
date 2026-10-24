@@ -14,6 +14,7 @@ extends Node
 
 const MIX_RATE := 22050.0                          # half rate is plenty for 0.05-0.4 s blips
 
+var frame
 var cfg: Dictionary = {}                           # design.feel
 var camera: Node                                   # orbit_camera.gd (add_trauma), may be null in tests
 var trail_every := 0.03                            # design.feel.trail.trail-every-s, read by projectile.gd
@@ -73,9 +74,10 @@ func number(at: Vector3, amount: float, kind: StringName = &"hit") -> Label3D:
 		l.scale *= float(nb["crit-scale"])
 	_world().add_child(l)
 	l.global_position = at
+	if frame != null: frame.track(l)
 	var life := float(nb["life-s"])
 	var tw := l.create_tween().set_ignore_time_scale(true).set_parallel(true)
-	tw.tween_property(l, "global_position", at + Vector3.UP * float(nb["rise-blocks"]), life)
+	tw.tween_property(l, "global_position:y", at.y + float(nb["rise-blocks"]), life)
 	tw.tween_property(l, "modulate:a", 0.0, life)
 	tw.chain().tween_callback(l.queue_free)
 	return l
@@ -86,6 +88,7 @@ func flash(at: Vector3, radius := 0.0) -> MeshInstance3D:
 	var m := _sphere(radius if radius > 0.0 else float(im["impact-radius"]), Color(1.0, 0.9, 0.5, 0.6))
 	_world().add_child(m)
 	m.global_position = at
+	if frame != null: frame.track(m)
 	_fade(m, float(im["impact-s"]))
 	return m
 
@@ -94,6 +97,7 @@ func trail(at: Vector3) -> MeshInstance3D:
 	var m := _sphere(0.12, Color(1.0, 0.85, 0.3, 0.5))
 	_world().add_child(m)
 	m.global_position = at
+	if frame != null: frame.track(m)
 	_fade(m, float(cfg["trail"]["trail-s"]))
 	return m
 

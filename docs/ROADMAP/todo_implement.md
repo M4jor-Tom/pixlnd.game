@@ -68,11 +68,11 @@ research. No new implementation authority or whole-topic completion.
 - [ ] World/reset item 3 (`ontology/domain/3_Classes.md#game-clock`, `c-midnight-reset`): daily return of defeated
   ordinary-dungeon/repeatable-daily enemies including bosses; completed one-time guards/boss stay
   cleared, artifact/book claims never renew, world improvements keep their existing reset rules.
-  Clock/dungeon/mission/save enforcement, direct data correction and checker work remain unauthorized.
+  Initial sites and ambient dead incarnations now consume the saved clock; broader future dungeon/mission families remain outside this implementation.
 - [ ] World/reset item 4 (`ontology/domain/3_Classes.md#game-clock`, `c-midnight-reset`): defer occupied dungeon/quest
   refresh until all players leave; coalesce missed midnights into one refresh using item 3's
   eligibility. No clock-triggered healing/replacement of survivors or ongoing-fight wipe; preserve
-  threat/home-return rules and fresh genuine respawns. Occupancy/reset enforcement is unauthorized.
+  threat/home-return rules and fresh genuine respawns. Closed-union occupancy and coalesced reset enforcement exist for the initial sites; future families must consume the same contract.
 - [ ] Zone build (~40 ms mesh + trimesh) runs on the main thread, ≤2 zones/frame; hitches on load
   and when crossing zones. Thread it (`WorkerThreadPool`) — `world.gd` ponytail.
 - [ ] Heightfield only: no caves, overhangs, rivers/waterfalls, lakes, plateaus/mesas, roads with
@@ -93,17 +93,10 @@ research. No new implementation authority or whole-topic completion.
 - [ ] Flora, deposits, dungeons, POIs, missions (`gen-flora`, `gen-dungeon`, `gen-poi`, `gen-missions`) — not started.
 - [ ] Temperature/humidity HUD (`design.climate.hud`) not shown; the land/village caption already runs (`hud-element`).
 
-## Initial encounter contracts (documentation only)
+## Initial encounter contracts
 
-- [ ] Implement the [initial six-site contract](../../ontology/domain/encounter-contracts.md)
-  only with separate authority: joint village/site/access generation, geometry and occupancy,
-  saved populations/roles/tiers, canonical targeting and boss specials, real breakable rubble,
-  spikes/props, safe coalesced renewal, nonduplicating shared rewards and supplier stock ceilings.
-  Runtime, instance/config, checker and save support are deferred; current executable checks
-  do not enforce the full contract. Preserve existing clock, defence, party-level and authority rules.
-- [ ] Add spirit collection/carrying for the [initial boss rewards](../../ontology/domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits).
-  Bench attachment and numerical spirit effects remain a separate feature with existing restrictions,
-  not a prerequisite for this initial slice or removed content.
+- [ ] Complete acceptance of the [initial six-site contract](../../ontology/domain/encounter-contracts.md): joint geography/populations, safe renewal, boss specials/rubble, traps/furnishings, nonduplicating shared ordinary/boss/mission rewards, rescue completion and saved daily supplier-dependent vendor stock are implemented with focused checks. Full independent review, final packaged-source checks and genuine native HUD feature movie remain required; preserve the separately deferred collision issue.
+- [x] Initial boss spirit collection/carrying is implemented. Bench attachment and numerical spirit effects remain a separate feature with existing restrictions, not a prerequisite for this initial slice or removed content.
 - [ ] Place full-land artifact and one-time book sources through a later dedicated source contract,
   preserving [allocation and personal claims](../../ontology/domain/encounter-contracts.md#initial-permanent-source-scope).
   The six-site exclusion does not fulfill final coverage; historical Steam book/recipe quantities
@@ -151,10 +144,9 @@ research. No new implementation authority or whole-topic completion.
   tame data agrees; Snow Lions, other cats, foods and riding are unchanged. Runtime/checker
   work requires separate authorization.
 - [x] Basic melee attack both ways, death, neutral retaliation (combat slice); ranged / mage roles shooting back
-  (D26, `design.creature-roles`). Heroic Shout currently provokes/retargets by a zero-damage hit.
-  Still missing: aggro table, timed taunt priority, group aggro, potions at low HP, enemy combos
-  (`ai-behavior`, `creature.combat-role`); approved aggro rules are in `ontology/domain/3_Classes.md#ai-behavior`.
-  All approved aggro policies remain deferred implementation, not permission to change live JSON.
+  (D26, `design.creature-roles`). Canonical pair threat, pack awareness, timed taunt and protected-return
+  foundation lives in `game/combat/targeting.gd` and is integrated with the initial sites.
+  Still missing: potions at low HP and enemy combos (`ai-behavior`, `creature.combat-role`).
 - [ ] A ranged / mage creature aims where the target *is*: no lead on a moving one, so strafing walks out of a
   slow mage bolt — `creature.gd#_shoot` ponytail.
 - [ ] Line of sight is one head-to-head ray (`entity.gd#head`, a flat 1.5 blocks up): a wall — or a body taller
@@ -200,13 +192,15 @@ research. No new implementation authority or whole-topic completion.
   `HeightMapShape3D` would cut the per-body cost if the radius ever grows — `creature.gd`, `world.gd`.
 - [ ] Creatures spawned outside `sim-radius` sit 1 block above ground until they wake, then drop
   (`gen-spawns` positions = ground + 1) — settle them on spawn or snap on wake, `spawner.gd`.
-- [ ] `sim-radius` measures distance to `creature.target` (the player, or the last attacker); with
-  `multiplayer-mode` it must be the nearest player — `creature.gd`.
 
 ## Persistence / authority (approved documentation, implementation unauthorized)
 
 Canonical rules: `ontology/domain/3_Classes.md#save-data`, `#multiplayer-mode`, `#game-clock`, `#ai-behavior`.
-No save/network implementation exists; current `main.gd` creates a new hero and starting kit.
+`main.gd` has validated atomic save/load for currently implemented character progression/equipment,
+per-world position/respawn (including legal independent hand occupancy), clock and logical ambient
+pair/incarnation state. Site callbacks/data
+seams and initial encounter content/rewards/vendor persistence exist, but portable-world import UI,
+future character systems and networking remain unfinished; the items below retain those boundaries.
 - [ ] Item 1 — portable character progression, possessions and pets including progression (`save-data`).
 - [ ] Item 2 — per-character/world position, respawn, travel and lore; separate saved-world identity from seed (`save-data`).
 - [ ] Item 3 — world-shared terrain exploration, distinct from personal shrine/flight/lore unlocks (`world.discovered-zones`).
@@ -338,7 +332,7 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 - Source item 52 (`ontology/domain/index.md §5`): reported Steam absence supplies no census/first Alpha appearance or hybrid removal. Species histories remain research; roster/food/mount rules unchanged.
 
 ## Meta / tooling
-- [ ] Save-data (§3.7): nothing persists (world seed, character, discovered lands).
+- [ ] Save-data (§3.7): implemented character/world/encounter/vendor state persists; future character systems, discovered-land exploration and portable-world import UI remain unfinished.
 - [ ] Dedicated server (D5, `multiplayer-mode`): single-player only; `server.cfg` flags (pvp,
   player cap, level band X/Y) unread.
 - [ ] Export templates missing from `flake.nix`: CI downloads its own
@@ -372,17 +366,15 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
   carryable/red in the inventory list but cannot equip; two distinct rings reach both existing slots.
   This is placement legality, not new off-hand combat. No crafting, customization, taming or traversal
   runtime was added. Commit/publication choices remain pending in `docs/HANDOFF.md`.
-- [ ] Loot only from open-world kills: no dungeon chests, mission rewards, NPC weapon drops, leftovers,
-  boss spirit cubes (`loot-rule`); species drops without an `ingredients.json` row (popcorn, jellies) are skipped.
+- [ ] Initial site ordinary/boss/mission rewards and spirit carrying exist; no dungeon chests, general NPC weapon drops or leftovers (`loot-rule`); species drops without an `ingredients.json` row (popcorn, jellies) are skipped.
 - [ ] Ground items: coloured cubes, no item mesh; auto-pickup only coins; no middle-click drop for trading;
   lifetime is real seconds (`design.loot.ground.lifetime-s`), not tied to `game-clock`.
 - [ ] Inventory panel: one list, no tabs / tooltips / drag / star rating (`screens.inventory`, `item-tooltip`);
   shared equip legality rejects wrong-class/material or invalid slot/hand items and colors wrong-class inventory rows red;
   no quick-select wheel (Q takes the first consumable, instant, no sit/channel).
-- [x] Shops (D22, `items/shop.gd`): weapon / armor / item vendors, `design.prices` buy + sell. Still open (`shop.gd` ponytail): stock
-  never restocks (`c-midnight-reset`) and is re-rolled at the current level on every open; no gnome rarity unlocks, buy-back tab,
+- [x] Shops (D22, `items/shop.gd`): weapon / armor / item vendors, `design.prices` buy + sell. Still open: no buy-back tab,
   identifier, adapter, gem trader. Item 10's native panel capture checks rendering with empty stock;
-  the full vendor/stock/trade flow is not visually verified.
+  initial native vendor/purchase frames exist; the final feature/HUD movie remains required.
 - [ ] No crafting, customization bench.
 - [x] Wand item 1 (`ontology/domain/3_Classes.md#weapon-type`, `c-hands`): checked-in data is 2H with the common
   recipe at 20 wood cubes; shared equipment rejects any occupied off-hand item and retains the existing 32-cube
@@ -420,7 +412,7 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 - [ ] HUD level/xp progression transitions still need visual checks; the static level/xp line is visible
   in item 10's windowed combo captures (see HANDOFF gotchas).
 - [ ] `power-gate` unread: any item level equips; no adaptation, no `+N` display.
-- [ ] XP only from open-world kills by the last attacker; no mission / boss XP, no party share, no pet XP
+- [ ] XP from open-world and initial site kills goes to the finishing attacker; no extra mission-completion XP, no party share, no pet XP
   (`pet-xp` flag), no message-log "+N xp" toast (`hud-element` message-log).
 - [ ] HUD shows level/xp as a text line; the portrait (head, name, class) is still missing (`hud-element` portrait).
 
@@ -483,7 +475,7 @@ No save/network implementation exists; current `main.gd` creates a new hero and 
 - [ ] Combo only adds damage; armor piercing per combo and the per-weapon cap colours are missing
   (`combo-system`).
 - [ ] Death: player respawns at the spawn point after 2 s; no revival statue / shrine, no enemy HP
-  reset, no death screen; creatures drop loot (D18) and XP (D19) but no spirit cubes or corpse (`death`).
+  reset, no death screen; creatures drop loot (D18) and XP (D19) including initial site spirit rewards, but no corpse (`death`).
 - [x] Game feel (D25, `game/combat/feel.gd` from `design.feel`): a feedback bundle per combat event — hit-stop on
   `Engine.time_scale` (up to 0.12 s on a kill), camera trauma shaking the Camera3D offsets + roll
   (`orbit_camera.gd`), a synthesised sound, floating damage numbers (crit / dot / hurt colours), impact flashes,

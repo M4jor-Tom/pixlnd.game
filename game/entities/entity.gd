@@ -8,6 +8,26 @@ extends CharacterBody3D
 signal damaged(amount: float, from: Node)
 signal died
 
+var frame                                  # main/world-owned local_frame, null in origin-zero isolated scenes
+var _logical_anchor: Array = []
+var _native_sample := Vector3.ZERO
+
+func logical_position() -> Array:
+	var native := global_position if is_inside_tree() else position
+	if frame == null: return [float(native.x),float(native.y),float(native.z)]
+	if _logical_anchor.is_empty(): _logical_anchor = frame.to_logical(native); _native_sample = native
+	for axis in 3:
+		var displacement: float = float(native[axis])-float(_native_sample[axis])
+		_logical_anchor[axis] = float(_logical_anchor[axis])+displacement
+	_native_sample = native
+	return _logical_anchor.duplicate()
+
+func set_logical_position(p: Array) -> void:
+	if frame != null: frame.place_entity(self,p,true)
+	else: global_position = Vector3(p[0],p[1],p[2])
+
+var logical_id := ""                         # stable saved-world/character identity, supplied by runtime
+var last_attacker: Node                      # finishing damage source, never inferred from current target
 var level := 1
 var max_hp := 100.0
 var hp := 100.0
@@ -33,12 +53,17 @@ func take_damage(amount: float, from: Node, _status: StringName = &"") -> bool:
 	if dead:
 		return false
 	_learn_feel(from)
-	hp = maxf(0.0, hp - amount)
-	damaged.emit(amount, from)
+	var before := hp
+	hp = maxf(0.0, hp - maxf(0.0, amount) * received_damage_mult())
+	if hp < before: last_attacker = from
+	damaged.emit(before - hp, from)             # actual post-defence loss, capped at remaining HP
 	if hp <= 0.0:
 		dead = true
 		died.emit()
 	return false
+
+func received_damage_mult() -> float:
+	return 1.0
 
 ## ability.applies → design.status-effects[id] (`as` redirects knockdown to stun). `hit` = the damage that applied it.
 func apply_status(id: StringName, cfg: Dictionary, hit: float, from: Node) -> void:
@@ -118,10 +143,20 @@ func status_move_mult() -> float:
 func stun_immune() -> bool:
 	return false
 
-## If the horizontal motion is blocked here but free `step` higher, lift the body; move_and_slide's
-## floor snap sets it down on the ledge.
+## If an obstacle blocks horizontal motion here but not `step` higher, lift the body;
+## floor-only contacts are support, not obstacles. Floor snap sets it down on the ledge.
 func step_up(motion: Vector3, step: float) -> void:
-	if not is_on_floor() or motion.is_zero_approx() or not test_move(global_transform, motion):
+	if not is_on_floor() or motion.is_zero_approx():
+		return
+	var collision := KinematicCollision3D.new()
+	if not test_move(global_transform, motion, collision):
+		return
+	var floor_only := true
+	for i in collision.get_collision_count():
+		if collision.get_angle(i, up_direction) > floor_max_angle:
+			floor_only = false
+			break
+	if floor_only:
 		return
 	var lift := Vector3.UP * (step + 0.05)
 	if not test_move(global_transform.translated(lift), motion):

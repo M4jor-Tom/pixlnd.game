@@ -135,7 +135,7 @@ func _run() -> void:
 		mage.abilities.cooldowns.clear(); mage.mp = 100.0; mage.combo = 49 if i == 0 else mage.combo; mage._combo_t = 1.0
 		check(mage.use_class_skill(1), "cap burst starts")
 		check(mage.combo == 50 and is_equal_approx(mage._combo_t, 5.0), "staff cap remains 50 for class bursts")
-	# Heroic Shout: real taunt/provocation and healing remain, with no combo effect even when no target is present.
+	# Heroic Shout cannot provoke peaceful neutrals. Healing/combo neutrality remain unchanged.
 	var guardian := _player(&"warrior", &"guardian", Vector3(80, 0, 0), {&"heroic-shout": 1})
 	var taunted := _wolf(guardian, Vector3(80, 0, -2))
 	for in_range in [true, false]:
@@ -147,11 +147,19 @@ func _run() -> void:
 		var hp0: float = taunted.hp
 		check(guardian.use_class_skill(4), "heroic shout starts")
 		check(guardian.combo == 4 and is_equal_approx(guardian._combo_t, 1.0), "taunt neither increments, resets nor refreshes combo")
-		check(taunted.provoked == in_range and (taunted.target == guardian if in_range else taunted.target == null) and is_equal_approx(taunted.hp, hp0), "zero damage and existing taunt targeting preserved")
+		guardian.targeting.flush_taunts()
+		taunted.target = guardian.targeting.select(taunted)
+		check(not taunted.provoked and taunted.target == null and is_equal_approx(taunted.hp, hp0), "peaceful neutral not provoked by zero-damage shout")
 		guardian._combat_tick(0.5)
 		check(is_equal_approx(guardian.hp, 17.021875), "shout heals 50% × 1.05 over 10 seconds unchanged")
 		guardian._combat_tick(0.6)
 		check(guardian.combo == 0, "taunt healing does not keep combo alive")
+	taunted.position.z = -2.0
+	taunted.take_damage(1.0,guardian)
+	guardian.abilities.cooldowns.clear()
+	check(guardian.use_class_skill(4), "provoked neutral shout starts")
+	guardian.targeting.flush_taunts()
+	check(guardian.targeting.select(taunted) == guardian and guardian.targeting.record(taunted).taunt_left == 3.0, "already-provoked neutral forced for unscaled three seconds")
 	# Non-attacking buff, movement and heal paths must not become false misses.
 	p.combo = 4; p._combo_t = 1.0; p.abilities.cooldowns.clear()
 	check(p.use_class_skill(3) and p.combo == 4 and is_equal_approx(p._combo_t, 1.0), "buff has no combo result")
