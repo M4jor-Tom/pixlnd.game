@@ -4,10 +4,7 @@
 
 - Owner preference: propose each decision in gamer-facing terms, as it would finally play, rather than leading with schema edits or current implementation limitations.
 - Rule: explain the player action and consequence, distinguish settled rules from each proposal, and use the topic-batched approval protocol below. Record deferrals; ontology approval alone does not authorize gameplay implementation.
-- Owner correction: include the built-game consequence of not approving each item, not only the proposed benefit.
-- Rule: every proposal states both approval and non-approval outcomes for players. Distinguish current behavior from a future risk or unresolved design; never claim declining a documentation correction immediately breaks the game or approves the opposite rule. If neither choice changes the already-approved game, say so.
-- Owner correction (2026-09-19): use **"Approval versus Refusing"**, not "Approval versus leaving it open", for future items.
-- Rule: use that exact heading and describe the player-facing consequences of accepting or refusing the proposal. Refusal rejects this proposal; it does not silently approve the opposite mechanic.
+- Required: use the current [decision response format](../skills/ontology-reconcile-topic/SKILL.md#decision-response-format), not a duplicated presentation rule here. Distinguish current behavior from future risks; an explicit refusal never silently approves the opposite mechanic.
 - Owner clarification (2026-09-19): a question about a mechanic is not a correction or rejection. Rule: answer it without withdrawing the proposal or recording a design-failure lesson; additional mechanics can address the concern separately.
 
 ## Standing approval for sourcing precision
@@ -75,7 +72,7 @@ interactive approach with any agent, without requiring the previous conversation
 2. Resume the checkpoint's unfinished topic/items; otherwise take the next open topic. Preserve
    item labels and approvals. Deferred implementation is not an unanswered design question.
 3. Present **all known remaining questions for that topic together**, numbered, with concrete
-   gamer-facing recommendations. Use **"Approval versus Refusing"** for the player consequences;
+   gamer-facing recommendations and the skill's [decision response format](../skills/ontology-reconcile-topic/SKILL.md#decision-response-format);
    distinguish settled rules, current behavior, temporary approximations and future risks.
 4. Wait for answers (or apply the bounded standing sourcing approval above), then check them
    against one another and settled decisions. Refusal does not choose the opposite rule;
