@@ -139,6 +139,11 @@ XP or enemy-hit status rolls. Each vase releases `1 + 2L` copper on destruction.
 owns one glass flask and one common life potion at level `L` per renewal, issued as loose
 pickups. Breaking the table never reissues that pair, whether its pickups remain, were taken
 or expired. `L` is the saved room guard-pack level, minimum 1, not the boss level.
+Each of the three rooms rolls and saves one shared level at creation and at every actual safe
+daily renewal, using the existing party-level and land-danger rules. Newly spawned or replacement
+guards and renewed furnishing rewards use that level; surviving guards keep their previous levels
+and state. Partial renewal may therefore leave mixed-level guards. Unloading or restarting never
+rerolls the saved room level.
 
 Props and contents renew only during the ruins' [safe daily refresh](3_Classes.md#game-clock),
 once per coalesced renewal. Reloads never refill or reroll them. Trap phase persists through
