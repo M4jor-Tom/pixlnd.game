@@ -1,0 +1,13 @@
+# ponytail: defer formatting, naming and size limits until a dedicated style cleanup.
+# Keep parse checks, duplicate loads, unused arguments and suspicious expressions.
+disable:
+  - max-line-length
+  - max-file-lines
+  - class-definitions-order
+  - function-name
+  - function-variable-name
+  - function-argument-name
+  - loop-variable-name
+  - max-returns
+  - max-public-methods
+  - function-arguments-number

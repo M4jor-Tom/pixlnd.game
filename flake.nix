@@ -47,6 +47,8 @@
             godot_4   # engine + headless validator: godot --headless -s ontology/validate.gd
             nodejs    # ontology edit/cross-ref scripts
             gdb       # native debugger (development tool only)
+            pre-commit # shared pre-push / CI gate
+            gdtoolkit_4 # GDScript lint (formatting enforcement is deferred)
             jq        # JSON sanity checks on ontology/instances
             bash      # test loops: `nix develop -c bash -c ...` (zsh does not word-split $var, see HANDOFF gotchas)
           ];

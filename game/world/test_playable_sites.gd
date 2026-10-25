@@ -41,7 +41,7 @@ func _init() -> void:
 					check(State.inside(site.volumes,[Vector3(volume[0],volume[1],volume[2])]) and State.inside(site.volumes,[Vector3(volume[3],volume[4],volume[5])]),"closed volume corners")
 				if site.family == "ruins":
 					check(site.components.size() == 8,"three rooms/two corridors/court/passage/alcove")
-					check(not State.inside(site.volumes,[Vector3(site.centre[0]+17,site.floor,site.centre[1]+50)]),"envelope void excluded (orientation checked by runtime test)") if site.turn == 0 else null
+					check(not State.inside(site.volumes,[Vector3(site.centre[0]+17,site.floor,site.centre[1]+50)]),"envelope void excluded (orientation checked by runtime test)") if site.turn == 0 else null  # gdlint: ignore=expression-not-assigned
 			check(homes == 46 and bosses == 7 and captives == 4,"46 skeletons / seven bosses / four captives")
 			for route in plan_.routes:
 				var previous: Variant = null

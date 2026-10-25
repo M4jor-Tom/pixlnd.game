@@ -1,0 +1,16 @@
+name: Quality
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: cachix/install-nix-action@75c75c31ebece974e48ebc36b4ad125bd97bd97b # 31.11.3
+      - name: Run the same checks as pre-push
+        run: nix develop --no-update-lock-file -c pre-commit run --all-files --hook-stage pre-push
