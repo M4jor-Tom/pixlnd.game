@@ -1,27 +1,5 @@
 # Handoff — pending continuation
 
-## Initial encounter/reset contract — finish the authorized features
-
-Owner direction: finish the features and retain the unresolved collision issue below for a
-separate investigation. Do not let further debugger/preservation-tool development displace this
-work, hide the issue with a physics workaround, or describe a known failing check as passing.
-
-Consume the [approved encounter contract](../ontology/domain/encounter-contracts.md) through the
-[repository resume workflow](../skills/ontology-resume-router-slice/SKILL.md). Foundation,
-persistence/targeting and joint six-site geography/populations have substantial implementation;
-this is not full acceptance. Boss/content and shared rewards/suppliers now need aggregate review
-and final acceptance, then genuine native feature/HUD demonstration and publication gates.
-[game/README.md](../game/README.md) describes the current seams and checks. Preserve the existing
-uncommitted work on `master` (original HEAD `554e9c8599bc5515b4a7b7e5893e88c0b61b5d46`);
-do not reset/stash it or infer that historical diagnostics certify the final feature revision.
-
-Final review must reverify the selected [room-level rule](../ontology/domain/encounter-contracts.md#spike-traps-and-furnishing-contents)
-in the integrated rewards/supplier implementation: new guards and renewed furnishings consume
-the saved creation/renewal room level, while survivors retain their own incarnations.
-Full artifact/book-source coverage and spirit customization remain outside this slice, not
-permanently removed content. Refresh this pending paragraph after final acceptance;
-keep the deferred bug below until separately resolved.
-
 ## Deferred Godot collision issue — investigation parked by owner
 
 ### Symptom and scope
@@ -35,9 +13,9 @@ claim. The issue remains unresolved, not an approved tolerance or gameplay rule.
 A bare `PhysicsServer3D.body_test_motion` replay reproduces the discrepancy without the player
 controller, live rebasing, AI, warm-up callbacks or original movement history. This shows those
 are unnecessary for the particular query outcomes, not that all such code is universally safe.
-The separate, justified floor-only `step_up()` correction is already in the dirty implementation;
-do not undo it or claim it solves this remaining native collision behavior. Scalar logical/native
-frame integration is also in that implementation and still needs current regression coverage.
+The separate, justified floor-only `step_up()` correction and scalar logical/native frame
+integration are already implemented and regression-checked. Preserve them without claiming that
+the passing scoped checks resolve this remaining native collision behavior.
 
 ### Reproduction and retained evidence
 
