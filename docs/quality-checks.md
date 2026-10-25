@@ -12,6 +12,15 @@ The configuration installs **pre-push only**, not a commit hook. Each `git push`
 runs the full gate, including tests, even for documentation-only changes. The hook
 enters the locked Nix environment itself, so pushing outside `nix develop` works.
 
+The full suite can take many minutes. For SSH remotes, enable keepalives so the
+connection stays open while the hook runs. If you have no custom `core.sshCommand`:
+
+```sh
+git config --local core.sshCommand 'ssh -o ServerAliveInterval=30'
+```
+
+Preserve existing SSH options if that command is already customized.
+
 ## Run manually
 
 This is also the exact command in `.github/workflows/quality.yml`:

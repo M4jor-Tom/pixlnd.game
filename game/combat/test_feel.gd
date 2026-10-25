@@ -31,9 +31,11 @@ func _frames(n: int) -> void:
 	for i in n:
 		await physics_frame
 
-## Real seconds, so a running hit-stop cannot stall the wait (Engine.time_scale scales physics_frame).
+## Wall seconds: a SceneTreeTimer can consume setup time from before its creation in the same frame.
 func _real(s: float) -> void:
-	await create_timer(s, true, false, true).timeout
+	var deadline := Time.get_ticks_usec() + int(s * 1_000_000.0)
+	while Time.get_ticks_usec() < deadline:
+		await process_frame
 	await process_frame
 
 func _player(class_id: StringName, at: Vector3) -> CharacterBody3D:
@@ -127,6 +129,8 @@ func _init() -> void:
 
 	# --- hit-stop: the real clock drops and restores the time scale, the longer bundle wins
 	var hs: Dictionary = fl["hit-stop"]
+	await process_frame
+	OS.delay_msec(150) # Setup can consume most of a frame before the real-time wait starts.
 	feel.play(&"hit")
 	check(is_equal_approx(Engine.time_scale, float(hs["time-scale"])), "hit froze the time scale (%.3f)" % Engine.time_scale)
 	await _real(float(fl["events"]["hit"]["hit-stop-s"]) + 0.05)
