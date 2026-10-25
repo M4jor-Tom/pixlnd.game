@@ -1,5 +1,5 @@
-# ponytail: defer formatting, naming and size limits until a dedicated style cleanup.
-# Keep parse checks, duplicate loads, unused arguments and suspicious expressions.
+# ponytail: defer naming and size limits until a dedicated lint cleanup.
+# gdformat enforces layout separately. Keep parse checks and suspicious-code rules.
 disable:
   - max-line-length
   - max-file-lines

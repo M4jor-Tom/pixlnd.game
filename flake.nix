@@ -48,7 +48,7 @@
             nodejs    # ontology edit/cross-ref scripts
             gdb       # native debugger (development tool only)
             pre-commit # shared pre-push / CI gate
-            gdtoolkit_4 # GDScript lint (formatting enforcement is deferred)
+            gdtoolkit_4 # GDScript formatting + lint
             jq        # JSON sanity checks on ontology/instances
             bash      # test loops: `nix develop -c bash -c ...` (zsh does not word-split $var, see HANDOFF gotchas)
           ];

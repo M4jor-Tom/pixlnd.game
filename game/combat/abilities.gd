@@ -5,26 +5,32 @@
 ## ponytail: clone and zone ultimates are bursts or buffs (todo_implement.md); no cast interruption.
 extends RefCounted
 
-var p                                # the player
-var cfg: Dictionary = {}             # design.abilities
-var cooldowns: Dictionary = {}       # ability id → seconds left
-var buffs: Dictionary = {}           # ability id → {"left", "r", "pool"?}
-var dash: Dictionary = {}            # {"a", "r", "dir", "left", "origin", "e"}
-var channel: Dictionary = {}         # {"a", "r", "left", "tick", "e", "hits"}
-var cast: Dictionary = {}            # {"a", "r", "left", "e"}
-var heals: Array = []                # [{"left", "per-s"}]
+var p  # the player
+var cfg: Dictionary = {}  # design.abilities
+var cooldowns: Dictionary = {}  # ability id → seconds left
+var buffs: Dictionary = {}  # ability id → {"left", "r", "pool"?}
+var dash: Dictionary = {}  # {"a", "r", "dir", "left", "origin", "e"}
+var channel: Dictionary = {}  # {"a", "r", "left", "tick", "e", "hits"}
+var cast: Dictionary = {}  # {"a", "r", "left", "e"}
+var heals: Array = []  # [{"left", "per-s"}]
+
 
 func _init(player, abilities: Dictionary) -> void:
-	p = player; cfg = abilities
+	p = player
+	cfg = abilities
+
 
 func runtime(a) -> Dictionary:
 	return cfg.get(a.id, {})
 
+
 func busy() -> bool:
 	return not (dash.is_empty() and channel.is_empty() and cast.is_empty())
 
+
 func ready(a) -> bool:
 	return float(cooldowns.get(a.id, 0.0)) <= 0.0 and not busy()
+
 
 ## c-mp-range / stamina: refuse without spending when short; 'all' needs cfg.all-min and empties the bar.
 func pay(cost: Dictionary) -> bool:
@@ -41,14 +47,27 @@ func pay(cost: Dictionary) -> bool:
 			p.stamina = have - amount
 	return true
 
+
 ## Weapon dependence follows the actual runtime payload, not a duplicate ability-id list.
 static func requires_weapon(r: Dictionary) -> bool:
-	if r.get("runtime") in ["buff","heal"]: return false # a buff's multiplier is not an immediate weapon strike
-	return r.get("runtime") == "projectile" or float(r.get("damage-mult",0.0)) > 0.0 or r.has("throw") or (r.has("strike") and requires_weapon(r["strike"]))
+	if r.get("runtime") in ["buff", "heal"]:
+		return false  # a buff's multiplier is not an immediate weapon strike
+	return (
+		r.get("runtime") == "projectile"
+		or float(r.get("damage-mult", 0.0)) > 0.0
+		or r.has("throw")
+		or (r.has("strike") and requires_weapon(r["strike"]))
+	)
+
 
 func use(a) -> bool:
 	var r := runtime(a)
-	if r.is_empty() or (requires_weapon(r) and p.weapon.is_empty()) or not ready(a) or not pay(r.get("cost", {})):
+	if (
+		r.is_empty()
+		or (requires_weapon(r) and p.weapon.is_empty())
+		or not ready(a)
+		or not pay(r.get("cost", {}))
+	):
 		return false
 	cooldowns[a.id] = float(r["cooldown-s"]) * p.skill_tree.cooldown_mult(a.id)
 	var e: float = p.skill_tree.effect_mult(a.id)
@@ -56,17 +75,52 @@ func use(a) -> bool:
 	match str(r["runtime"]):
 		"dash":
 			if r.has("throw"):
-				p._fire(r["throw"], float(p.weapon["damage"]) * float(r["throw"].get("damage-mult", 1.0)) * e, false, a.applies, Vector3.INF, p.ability_attack_type(a))
+				p._fire(
+					r["throw"],
+					float(p.weapon["damage"]) * float(r["throw"].get("damage-mult", 1.0)) * e,
+					false,
+					a.applies,
+					Vector3.INF,
+					p.ability_attack_type(a)
+				)
 			var d := _dash_dir(r)
-			dash = {"a": a, "r": r, "dir": d[0], "left": d[1], "origin": p.logical_position(), "e": e, "weapon": committed_weapon}
+			dash = {
+				"a": a,
+				"r": r,
+				"dir": d[0],
+				"left": d[1],
+				"origin": p.logical_position(),
+				"e": e,
+				"weapon": committed_weapon
+			}
 		"channel":
-			channel = {"a": a, "r": r, "left": float(r["duration-s"]), "tick": 0.0, "e": e, "hits": 0, "weapon": committed_weapon}
+			channel = {
+				"a": a,
+				"r": r,
+				"left": float(r["duration-s"]),
+				"tick": 0.0,
+				"e": e,
+				"hits": 0,
+				"weapon": committed_weapon
+			}
 		"burst":
 			_strike(a, r, p.global_position, e)
 		"projectile":
-			p._fire(r, float(p.weapon["damage"]) * float(r.get("damage-mult", 1.0)) * e, false, a.applies, Vector3.INF, p.ability_attack_type(a))
+			p._fire(
+				r,
+				float(p.weapon["damage"]) * float(r.get("damage-mult", 1.0)) * e,
+				false,
+				a.applies,
+				Vector3.INF,
+				p.ability_attack_type(a)
+			)
 			if r.has("heal-pct"):
-				_strike(a, {"heal-pct": r["heal-pct"], "heal-over-s": r.get("heal-over-s", 0.0)}, p.global_position, e)
+				_strike(
+					a,
+					{"heal-pct": r["heal-pct"], "heal-over-s": r.get("heal-over-s", 0.0)},
+					p.global_position,
+					e
+				)
 		"buff":
 			buffs[a.id] = {"left": float(r["duration-s"]) * e, "r": r}
 			if r.has("absorb-pct-hp"):
@@ -75,6 +129,7 @@ func use(a) -> bool:
 			cast = {"a": a, "r": r, "left": float(r["cast-s"]), "e": e, "weapon": committed_weapon}
 	return true
 
+
 ## [direction, distance]: toward the nearest enemy within `range` (stop one block short), else forward / back.
 func _dash_dir(r: Dictionary) -> Array:
 	var forward: Vector3 = Basis(Vector3.UP, p.rig.rotation.y) * Vector3.FORWARD
@@ -82,21 +137,41 @@ func _dash_dir(r: Dictionary) -> Array:
 	if str(r["toward"]) == "target":
 		var t: Node3D = p.nearest_enemy(float(r.get("range", dist)))
 		if t != null:
-			var d: Vector3 = t.global_position - p.global_position; d.y = 0.0
+			var d: Vector3 = t.global_position - p.global_position
+			d.y = 0.0
 			return [d.normalized(), minf(dist, maxf(d.length() - 1.0, 0.0))]
 		return [forward, dist]
 	return [forward if str(r["toward"]) == "forward" else -forward, dist]
 
-func _strike(a, r: Dictionary, at: Vector3, e: float, reset_on_miss := true, committed_weapon: Dictionary = {}) -> int:
+
+func _strike(
+	a,
+	r: Dictionary,
+	at: Vector3,
+	e: float,
+	reset_on_miss := true,
+	committed_weapon: Dictionary = {}
+) -> int:
 	var hits := 0
 	var damaging := float(r.get("damage-mult", 0.0)) > 0.0
 	if a.applies.has(&"taunt") and p.targeting != null:
 		p.targeting.taunt([p])
 	if damaging or (not a.applies.is_empty() and not a.applies.has(&"taunt")):
-		hits = p._strike(at + Vector3.UP, float(r["radius"]), float((p.weapon if committed_weapon.is_empty() else committed_weapon)["damage"]) * float(r.get("damage-mult", 0.0)) * e, false, a.applies, p.ability_attack_type(a))
-	if damaging:                                           # taunts and heals never change combo or its timer
+		hits = p._strike(
+			at + Vector3.UP,
+			float(r["radius"]),
+			(
+				float((p.weapon if committed_weapon.is_empty() else committed_weapon)["damage"])
+				* float(r.get("damage-mult", 0.0))
+				* e
+			),
+			false,
+			a.applies,
+			p.ability_attack_type(a)
+		)
+	if damaging:  # taunts and heals never change combo or its timer
 		if hits > 0:
-			p._landed(false,committed_weapon)
+			p._landed(false, committed_weapon)
 		elif reset_on_miss:
 			p.combo = 0
 	if r.has("heal-pct"):
@@ -108,9 +183,11 @@ func _strike(a, r: Dictionary, at: Vector3, e: float, reset_on_miss := true, com
 			p.hp = minf(p.max_hp, p.hp + total)
 	return hits
 
+
 ## Horizontal velocity the player applies this tick while dashing (Vector3.ZERO when idle).
 func dash_velocity() -> Vector3:
 	return dash["dir"] * float(cfg["dash-speed"]) if not dash.is_empty() else Vector3.ZERO
+
 
 ## After move_and_slide: the dash ends at its distance or against a wall, then strikes at its end or origin.
 func after_move(dt: float) -> void:
@@ -121,8 +198,24 @@ func after_move(dt: float) -> void:
 		var r: Dictionary = dash["r"]
 		if r.has("strike"):
 			var s: Dictionary = r["strike"]
-			_strike(dash["a"], s, (p.frame.to_local(dash["origin"]) if p.frame != null else Vector3(dash["origin"][0],dash["origin"][1],dash["origin"][2])) if str(s.get("at", "end")) == "origin" else p.global_position, dash["e"],true,dash["weapon"])
+			_strike(
+				dash["a"],
+				s,
+				(
+					(
+						p.frame.to_local(dash["origin"])
+						if p.frame != null
+						else Vector3(dash["origin"][0], dash["origin"][1], dash["origin"][2])
+					)
+					if str(s.get("at", "end")) == "origin"
+					else p.global_position
+				),
+				dash["e"],
+				true,
+				dash["weapon"]
+			)
 		dash = {}
+
 
 func tick(dt: float) -> void:
 	for id in cooldowns:
@@ -139,23 +232,33 @@ func tick(dt: float) -> void:
 	if not cast.is_empty():
 		cast["left"] -= dt
 		if cast["left"] <= 0.0:
-			_strike(cast["a"], cast["r"], p.global_position, cast["e"],true,cast["weapon"])
+			_strike(cast["a"], cast["r"], p.global_position, cast["e"], true, cast["weapon"])
 			cast = {}
 	if not channel.is_empty():
 		var r: Dictionary = channel["r"]
-		channel["left"] -= dt; channel["tick"] -= dt
-		p.stamina = maxf(0.0, p.stamina - float(r["drain-per-s"]) * dt); p._stamina_idle = 0.0
+		channel["left"] -= dt
+		channel["tick"] -= dt
+		p.stamina = maxf(0.0, p.stamina - float(r["drain-per-s"]) * dt)
+		p._stamina_idle = 0.0
 		if channel["tick"] <= 0.0:
 			channel["tick"] = float(r["tick-s"])
-			channel["hits"] += _strike(channel["a"], r, p.global_position, channel["e"], false,channel["weapon"])
+			channel["hits"] += _strike(
+				channel["a"], r, p.global_position, channel["e"], false, channel["weapon"]
+			)
 		if channel["left"] <= 0.0 or p.stamina <= 0.0:
 			_end_channel()
 
+
 ## A damaging channel misses only if the entire channel landed nothing, including early ends.
 func _end_channel() -> void:
-	if not channel.is_empty() and channel["hits"] == 0 and float(channel["r"].get("damage-mult", 0.0)) > 0.0:
+	if (
+		not channel.is_empty()
+		and channel["hits"] == 0
+		and float(channel["r"].get("damage-mult", 0.0)) > 0.0
+	):
 		p.combo = 0
 	channel = {}
+
 
 ## Product over active buffs of `key` (1 when none); `add` sums; `flag` = any buff sets it.
 func mult(key: String) -> float:
@@ -166,11 +269,13 @@ func mult(key: String) -> float:
 		m *= float(channel["r"].get("move-mult", 1.0))
 	return m
 
+
 func add(key: String) -> float:
 	var s := 0.0
 	for id in buffs:
 		s += float(buffs[id]["r"].get(key, 0.0))
 	return s
+
 
 func flag(key: String) -> bool:
 	for id in buffs:
@@ -178,14 +283,20 @@ func flag(key: String) -> bool:
 			return true
 	return false
 
+
 ## mana-shield: absorb pools eat damage first; returns what gets through.
 func absorb(amount: float) -> float:
 	for id in buffs:
 		if buffs[id].has("pool"):
 			var use := minf(buffs[id]["pool"], amount)
-			buffs[id]["pool"] -= use; amount -= use
+			buffs[id]["pool"] -= use
+			amount -= use
 	return amount
+
 
 func reset() -> void:
 	_end_channel()
-	dash = {}; cast = {}; buffs.clear(); heals.clear()
+	dash = {}
+	cast = {}
+	buffs.clear()
+	heals.clear()

@@ -20,15 +20,18 @@ var design: Dictionary
 var o
 var feel
 
+
 func check(ok: bool, what: String) -> void:
 	if not ok:
 		_failed += 1
 		printerr("  ✗ ", what)
 
+
 ## Real seconds, so a hurt bundle's hit-stop cannot stall the wait (Engine.time_scale scales physics_frame).
 func _real(s: float) -> void:
 	await create_timer(s, true, false, true).timeout
 	await process_frame
+
 
 func _player(at: Vector3) -> CharacterBody3D:
 	var p: CharacterBody3D = PLAYER.instantiate()
@@ -37,16 +40,47 @@ func _player(at: Vector3) -> CharacterBody3D:
 	p.setup(design["movement"], design["camera"], &"normal")
 	p.setup_combat(design["combat"], design["crit"], {}, Combat.player_max_hp(1, 1.0))
 	p.setup_items(o, design, &"warrior")
-	p.position = at; p.spawn_point = at
+	p.position = at
+	p.spawn_point = at
 	p.get_node("CameraRig").rotation.x = 0.0
 	p.feel = feel
 	return p
 
+
 ## One creature of `species` with `role` forced, spawned through the real spawner (so it gets `role_cfg`).
-func _spawn(species: StringName, role: StringName, at: Vector3, target: Node3D, hostility := &"H", dmg := 20.0) -> CharacterBody3D:
-	var holder := Node3D.new(); root.add_child(holder)
-	return Spawner.populate(holder, [{"species": species, "level": 1, "hostility": hostility, "max_hp": 1e6,
-		"damage": dmg, "positions": [at], "role": role, "seed": 1}], design, o.creatures, target, null)[0]
+func _spawn(
+	species: StringName,
+	role: StringName,
+	at: Vector3,
+	target: Node3D,
+	hostility := &"H",
+	dmg := 20.0
+) -> CharacterBody3D:
+	var holder := Node3D.new()
+	root.add_child(holder)
+	return (
+		Spawner
+		. populate(
+			holder,
+			[
+				{
+					"species": species,
+					"level": 1,
+					"hostility": hostility,
+					"max_hp": 1e6,
+					"damage": dmg,
+					"positions": [at],
+					"role": role,
+					"seed": 1
+				}
+			],
+			design,
+			o.creatures,
+			target,
+			null
+		)[0]
+	)
+
 
 ## Shots in flight from this creature (projectile.gd adds them beside the shooter).
 func _shots(c: Node) -> int:
@@ -55,6 +89,7 @@ func _shots(c: Node) -> int:
 		if ch != c and not ch.is_queued_for_deletion() and ch.get("shot") != null:
 			n += 1
 	return n
+
 
 ## Watch for `secs` real seconds; returns the most shots ever in flight at once (they free themselves on impact).
 func _watch(c: Node, secs: float) -> int:
@@ -65,14 +100,20 @@ func _watch(c: Node, secs: float) -> int:
 		seen = maxi(seen, _shots(c))
 	return seen
 
+
 ## Live damage numbers beside the feel node, optionally only those of one design.feel.numbers colour.
 func _labels(colour := Color.TRANSPARENT) -> int:
 	var n := 0
 	for c in root.get_children():
-		var rgb := Color(c.modulate.r, c.modulate.g, c.modulate.b) if c is Label3D else Color.BLACK   # alpha fades out
-		if c is Label3D and not c.is_queued_for_deletion() and (colour.a == 0.0 or rgb.is_equal_approx(colour)):
+		var rgb := Color(c.modulate.r, c.modulate.g, c.modulate.b) if c is Label3D else Color.BLACK  # alpha fades out
+		if (
+			c is Label3D
+			and not c.is_queued_for_deletion()
+			and (colour.a == 0.0 or rgb.is_equal_approx(colour))
+		):
 			n += 1
 	return n
+
 
 func _init() -> void:
 	o = Model.Ontology.load_dir("res://ontology/instances")
@@ -82,28 +123,38 @@ func _init() -> void:
 
 	# --- c-creature-roles: every key the engine reads is guarded
 	cr["default"] = "archer"
-	check(not o.validate(), "c-creature-roles rejects a default that is not a role"); o.errors.clear()
+	check(not o.validate(), "c-creature-roles rejects a default that is not a role")
+	o.errors.clear()
 	cr["default"] = "melee"
 	cr["any-class"]["ranged"] = -1.0
-	check(not o.validate(), "c-creature-roles rejects a negative any-class weight"); o.errors.clear()
+	check(not o.validate(), "c-creature-roles rejects a negative any-class weight")
+	o.errors.clear()
 	cr["any-class"]["ranged"] = 0.3
-	var speed = cr["ranged"]["shot"]["speed"]; cr["ranged"]["shot"]["speed"] = 0
-	check(not o.validate(), "c-creature-roles rejects a shot with speed 0"); o.errors.clear()
+	var speed = cr["ranged"]["shot"]["speed"]
+	cr["ranged"]["shot"]["speed"] = 0
+	check(not o.validate(), "c-creature-roles rejects a shot with speed 0")
+	o.errors.clear()
 	cr["ranged"]["shot"]["speed"] = speed
 	cr["mage"]["applies"] = ["nope"]
-	check(not o.validate(), "c-creature-roles rejects an applies id with no status-effect"); o.errors.clear()
+	check(not o.validate(), "c-creature-roles rejects an applies id with no status-effect")
+	o.errors.clear()
 	cr["mage"]["applies"] = ["burning"]
 	cr["ranged"]["sfx"] = "nope"
-	check(not o.validate(), "c-creature-roles rejects an sfx that is not an alpha sound"); o.errors.clear()
+	check(not o.validate(), "c-creature-roles rejects an sfx that is not an alpha sound")
+	o.errors.clear()
 	cr["ranged"]["sfx"] = "swing"
 	cr["species"]["nope"] = {"damage-mult": 2.0}
-	check(not o.validate(), "c-creature-roles rejects a species override for an unknown creature"); o.errors.clear()
+	check(not o.validate(), "c-creature-roles rejects a species override for an unknown creature")
+	o.errors.clear()
 	cr["species"].erase("nope")
 	check(o.validate(), "restored")
 
 	# --- role parsing: the first keyword in the creatures.json `role` text wins
 	check(o.creatures["djinn"].combat_role == &"mage", "'mage (bracelets)' → mage")
-	check(o.creatures["hell-demon"].combat_role == &"any-class", "'any-class melee+ranged' → any-class")
+	check(
+		o.creatures["hell-demon"].combat_role == &"any-class",
+		"'any-class melee+ranged' → any-class"
+	)
 	check(o.creatures["demon-marauder"].combat_role == &"melee", "'melee + fire magic' → melee")
 	check(o.creatures["seeker"].combat_role == &"mage", "'fire mage' → mage")
 	check(o.creatures["minotaur"].combat_role == &"melee", "'melee dual-wield' → melee")
@@ -113,10 +164,12 @@ func _init() -> void:
 
 	# --- gen-spawns: a role per group, any-class rolled, deterministic
 	var rosters: Dictionary = o.configs["creature-families"]["landscape-rosters"]
-	var skel: Dictionary = {}                                 # an any-class group
-	var plain: Dictionary = {}                                # a group of a species with no role text
-	var at_seed := 0; var at_zone := Vector2i.ZERO            # a zone whose FIRST group is any-class, with a second behind it
-	var many_seed := 0; var many_zone := Vector2i.ZERO
+	var skel: Dictionary = {}  # an any-class group
+	var plain: Dictionary = {}  # a group of a species with no role text
+	var at_seed := 0
+	var at_zone := Vector2i.ZERO  # a zone whose FIRST group is any-class, with a second behind it
+	var many_seed := 0
+	var many_zone := Vector2i.ZERO
 	for s in range(1, 60):
 		var gen := WorldGen.new(s, design, o.landscapes)
 		for zx in range(-3, 4):
@@ -125,47 +178,92 @@ func _init() -> void:
 				var p_ := Spawner.plan(gen, zc, design, o.creatures, rosters, 1)
 				for g in p_:
 					if g["species"] == &"skeleton" and skel.is_empty():
-						skel = g; at_seed = s; at_zone = zc
-					elif plain.is_empty() and str((o.creatures[g["species"]] as Model.Creature).combat_role) == "":
+						skel = g
+						at_seed = s
+						at_zone = zc
+					elif (
+						plain.is_empty()
+						and str((o.creatures[g["species"]] as Model.Creature).combat_role) == ""
+					):
 						plain = g
-				if many_seed == 0 and p_.size() >= 2 and str(p_[0]["role"]) != "melee" \
-						and str((o.creatures[p_[0]["species"]] as Model.Creature).combat_role) == "any-class":
-					many_seed = s; many_zone = zc
+				if (
+					many_seed == 0
+					and p_.size() >= 2
+					and str(p_[0]["role"]) != "melee"
+					and (
+						str((o.creatures[p_[0]["species"]] as Model.Creature).combat_role)
+						== "any-class"
+					)
+				):
+					many_seed = s
+					many_zone = zc
 		if not skel.is_empty() and not plain.is_empty() and many_seed != 0:
 			break
 	check(not skel.is_empty(), "found a skeleton (any-class) group in a plan")
-	check(str(skel.get("role", "")) in ["melee", "ranged", "mage"], "the any-class group rolled a role: %s" % skel.get("role", "-"))
-	check(not plain.is_empty() and str(plain.get("role", "")) == "melee", "a species with no role plans as melee: %s" % plain.get("role", "-"))
-	var a := Spawner.plan(WorldGen.new(at_seed, design, o.landscapes), at_zone, design, o.creatures, rosters, 1)
-	var b := Spawner.plan(WorldGen.new(at_seed, design, o.landscapes), at_zone, design, o.creatures, rosters, 1)
+	check(
+		str(skel.get("role", "")) in ["melee", "ranged", "mage"],
+		"the any-class group rolled a role: %s" % skel.get("role", "-")
+	)
+	check(
+		not plain.is_empty() and str(plain.get("role", "")) == "melee",
+		"a species with no role plans as melee: %s" % plain.get("role", "-")
+	)
+	var a := Spawner.plan(
+		WorldGen.new(at_seed, design, o.landscapes), at_zone, design, o.creatures, rosters, 1
+	)
+	var b := Spawner.plan(
+		WorldGen.new(at_seed, design, o.landscapes), at_zone, design, o.creatures, rosters, 1
+	)
 	check(var_to_str(a) == var_to_str(b), "same seed → same roles")
 
 	# --- the role roll must not touch the shared zone rng: the same zone planned with every any-class species
 	# forced to melee (no roll at all) must give byte-identical groups apart from `role`.
 	check(many_seed != 0, "found a zone with ≥ 2 groups behind an any-class first group")
-	var any_plan := Spawner.plan(WorldGen.new(many_seed, design, o.landscapes), many_zone, design, o.creatures, rosters, 1)
+	var any_plan := Spawner.plan(
+		WorldGen.new(many_seed, design, o.landscapes), many_zone, design, o.creatures, rosters, 1
+	)
 	var was: Dictionary = {}
 	for id in o.creatures:
 		if (o.creatures[id] as Model.Creature).combat_role == &"any-class":
-			was[id] = &"any-class"; (o.creatures[id] as Model.Creature).combat_role = &"melee"
-	var melee_plan := Spawner.plan(WorldGen.new(many_seed, design, o.landscapes), many_zone, design, o.creatures, rosters, 1)
+			was[id] = &"any-class"
+			(o.creatures[id] as Model.Creature).combat_role = &"melee"
+	var melee_plan := Spawner.plan(
+		WorldGen.new(many_seed, design, o.landscapes), many_zone, design, o.creatures, rosters, 1
+	)
 	for id in was:
 		(o.creatures[id] as Model.Creature).combat_role = was[id]
-	check(any_plan.size() == melee_plan.size(), "same group count with and without the role roll (%d / %d)" % [any_plan.size(), melee_plan.size()])
+	check(
+		any_plan.size() == melee_plan.size(),
+		(
+			"same group count with and without the role roll (%d / %d)"
+			% [any_plan.size(), melee_plan.size()]
+		)
+	)
 	var rolled := false
 	for i in mini(any_plan.size(), melee_plan.size()):
-		var x: Dictionary = (any_plan[i] as Dictionary).duplicate(true); var y: Dictionary = (melee_plan[i] as Dictionary).duplicate(true)
+		var x: Dictionary = (any_plan[i] as Dictionary).duplicate(true)
+		var y: Dictionary = (melee_plan[i] as Dictionary).duplicate(true)
 		rolled = rolled or str(x["role"]) != str(y["role"])
-		x.erase("role"); y.erase("role")
-		check(var_to_str(x) == var_to_str(y), "group %d: species / positions / level / hp / seed untouched by the role roll" % i)
+		x.erase("role")
+		y.erase("role")
+		check(
+			var_to_str(x) == var_to_str(y),
+			"group %d: species / positions / level / hp / seed untouched by the role roll" % i
+		)
 	check(rolled, "…and the any-class group did roll a role other than melee at this seed")
 
 	# --- runtime: flat floor, the player and creatures at distinct positions
 	InputMapBuilder.build(o.configs["keybinds"]["hybrid"])
-	var floor := StaticBody3D.new(); var cs := CollisionShape3D.new(); var box := BoxShape3D.new()
-	box.size = Vector3(400, 1, 400); cs.shape = box; floor.add_child(cs); floor.position.y = -0.5
+	var floor := StaticBody3D.new()
+	var cs := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = Vector3(400, 1, 400)
+	cs.shape = box
+	floor.add_child(cs)
+	floor.position.y = -0.5
 	root.add_child(floor)
-	feel = Feel.new(); root.add_child(feel)
+	feel = Feel.new()
+	root.add_child(feel)
 	var p := _player(Vector3(0, 1, 0))
 	feel.setup(design["feel"], p.get_node("CameraRig"))
 	await _real(0.2)
@@ -174,7 +272,10 @@ func _init() -> void:
 	var rng_cfg: Dictionary = cr["ranged"]
 	var keep := float(rng_cfg["keep-away"])
 	var sk := _spawn(&"skeleton", &"ranged", Vector3(0, 1, -10), p)
-	check(sk.role == &"ranged" and str(sk.role_cfg["kind"]) == "projectile", "the spawner injected the ranged role_cfg")
+	check(
+		sk.role == &"ranged" and str(sk.role_cfg["kind"]) == "projectile",
+		"the spawner injected the ranged role_cfg"
+	)
 	var hp0: float = p.hp
 	var nearest := 1e9
 	var flew := 0
@@ -186,29 +287,43 @@ func _init() -> void:
 	check(p.hp < hp0, "the ranged skeleton hit the player from range (%.0f → %.0f)" % [hp0, p.hp])
 	check(flew >= 1, "a shot was in flight (%d)" % flew)
 	check(_shots(sk) == 0, "the shot freed itself after landing (%d left)" % _shots(sk))
-	check(nearest >= keep - 1.0, "it never closed to melee: nearest %.1f blocks (keep-away %.0f)" % [nearest, keep])
+	check(
+		nearest >= keep - 1.0,
+		"it never closed to melee: nearest %.1f blocks (keep-away %.0f)" % [nearest, keep]
+	)
 
 	# --- too close: it backs off again
 	p.global_position = sk.global_position + Vector3(0, 0, 2)
 	await _real(2.0)
-	check(sk.global_position.distance_to(p.global_position) >= keep - 1.0,
-		"it backed off to keep-away: %.1f" % sk.global_position.distance_to(p.global_position))
+	check(
+		sk.global_position.distance_to(p.global_position) >= keep - 1.0,
+		"it backed off to keep-away: %.1f" % sk.global_position.distance_to(p.global_position)
+	)
 	sk.get_parent().queue_free()
-	p.global_position = Vector3(0, 1, 0); p.hp = p.max_hp; p.statuses.clear()
+	p.global_position = Vector3(0, 1, 0)
+	p.hp = p.max_hp
+	p.statuses.clear()
 	await _real(0.2)
 
 	# --- line of sight: a wall stops the shots, removing it lets them through
-	var wall := StaticBody3D.new(); var wcs := CollisionShape3D.new(); var wbox := BoxShape3D.new()
-	wbox.size = Vector3(20, 6, 1); wcs.shape = wbox; wall.add_child(wcs); wall.position = Vector3(0, 3, -5)
+	var wall := StaticBody3D.new()
+	var wcs := CollisionShape3D.new()
+	var wbox := BoxShape3D.new()
+	wbox.size = Vector3(20, 6, 1)
+	wcs.shape = wbox
+	wall.add_child(wcs)
+	wall.position = Vector3(0, 3, -5)
 	root.add_child(wall)
-	var sk2 := _spawn(&"skeleton", &"ranged", Vector3(0, 1, -10), p)   # inside design.spawns.ai.aggro-range
-	sk2.take_damage(sk2.max_hp*0.1,p) # ten percentage-based points outlast the blocked-sight interval
+	var sk2 := _spawn(&"skeleton", &"ranged", Vector3(0, 1, -10), p)  # inside design.spawns.ai.aggro-range
+	sk2.take_damage(sk2.max_hp * 0.1, p)  # ten percentage-based points outlast the blocked-sight interval
 	check(await _watch(sk2, 2.5) == 0, "no shot without line of sight")
 	check(is_equal_approx(p.hp, p.max_hp), "…and the player is untouched behind the wall")
 	wall.queue_free()
 	check(await _watch(sk2, 3.0) >= 1, "a shot comes once the wall is gone")
 	sk2.get_parent().queue_free()
-	p.global_position = Vector3(0, 1, 0); p.hp = p.max_hp; p.statuses.clear()
+	p.global_position = Vector3(0, 1, 0)
+	p.hp = p.max_hp
+	p.statuses.clear()
 	await _real(0.2)
 
 	# --- a mage creature: splash damage + burning, and the burning ticks orange numbers
@@ -218,34 +333,63 @@ func _init() -> void:
 	while Time.get_ticks_msec() < end and not p.statuses.has(&"burning"):
 		await process_frame
 	check(p.hp < hp0, "the mage shot hit the player (%.0f → %.0f)" % [hp0, p.hp])
-	check(p.statuses.has(&"burning"), "the mage shot set the player burning (%s)" % [p.statuses.keys()])
-	mg.set_physics_process(false)                             # no second shot while we count the dot numbers
+	check(
+		p.statuses.has(&"burning"),
+		"the mage shot set the player burning (%s)" % [p.statuses.keys()]
+	)
+	mg.set_physics_process(false)  # no second shot while we count the dot numbers
 	var dot: Array = design["feel"]["numbers"]["colours"]["dot"]
 	var before := _labels(Color(dot[0], dot[1], dot[2]))
 	await _real(float(design["status-effects"]["burning"]["tick-s"]) + 0.2)
-	check(_labels(Color(dot[0], dot[1], dot[2])) > before, "the burning ticks float orange dot numbers (%d new)" % (_labels(Color(dot[0], dot[1], dot[2])) - before))
+	check(
+		_labels(Color(dot[0], dot[1], dot[2])) > before,
+		(
+			"the burning ticks float orange dot numbers (%d new)"
+			% (_labels(Color(dot[0], dot[1], dot[2])) - before)
+		)
+	)
 	mg.get_parent().queue_free()
-	p.hp = p.max_hp; p.statuses.clear(); p.clear_stars()
+	p.hp = p.max_hp
+	p.statuses.clear()
+	p.clear_stars()
 	await _real(0.2)
 
 	# --- a spitter's poison lands through a dodge (status-effects.json: never avoided by dodge)
 	var sp := _spawn(&"spitter", &"ranged", Vector3(0, 1, -3), p)
 	sp.set_physics_process(false)
-	check(sp.role_cfg["applies"] == ["poison"], "the spitter species override applies poison (%s)" % [sp.role_cfg.get("applies")])
+	check(
+		sp.role_cfg["applies"] == ["poison"],
+		"the spitter species override applies poison (%s)" % [sp.role_cfg.get("applies")]
+	)
 	await _real(0.2)
 	p._iframes = 1.0
 	hp0 = p.hp
 	var hit: int = sp._strike(p.global_position + Vector3.UP, 1.0, 10.0, false, [&"poison"])
-	check(hit == 1 and is_equal_approx(p.hp, hp0), "the dodged shot did no damage (%d hit, %.0f hp)" % [hit, p.hp])
-	check(p.statuses.has(&"poison"), "…but the poison landed through the i-frames (%s)" % [p.statuses.keys()])
+	check(
+		hit == 1 and is_equal_approx(p.hp, hp0),
+		"the dodged shot did no damage (%d hit, %.0f hp)" % [hit, p.hp]
+	)
+	check(
+		p.statuses.has(&"poison"),
+		"…but the poison landed through the i-frames (%s)" % [p.statuses.keys()]
+	)
 	# Tick synchronously: no frame advances the dodge or introduces another attack.
 	before = _labels()
 	var bundles: int = feel.get_child_count()
 	p.tick_statuses(0.999)
-	check(is_equal_approx(p.hp, hp0) and _labels() == before, "poison waits a full second before first tick")
+	check(
+		is_equal_approx(p.hp, hp0) and _labels() == before,
+		"poison waits a full second before first tick"
+	)
 	p.tick_statuses(0.001)
-	check(is_equal_approx(hp0 - p.hp, 10.0), "poison tick damages through dodge (lost %.1f, expected 10)" % (hp0 - p.hp))
-	check(_labels() == before + 1 and feel.get_child_count() == bundles, "poison tick floats one number without a hurt bundle")
+	check(
+		is_equal_approx(hp0 - p.hp, 10.0),
+		"poison tick damages through dodge (lost %.1f, expected 10)" % (hp0 - p.hp)
+	)
+	check(
+		_labels() == before + 1 and feel.get_child_count() == bundles,
+		"poison tick floats one number without a hurt bundle"
+	)
 	hp0 = p.hp
 	p.take_damage(10.0, sp)
 	check(is_equal_approx(p.hp, hp0), "ordinary hits remain dodged after a poison tick")
@@ -256,35 +400,47 @@ func _init() -> void:
 	# Both identities coexist: burning cannot inherit poison's dodge exemption.
 	p._iframes = 0.0
 	p.apply_status(&"burning", design["status-effects"]["burning"], 10.0, sp)
-	p._iframes = 1.0; hp0 = p.hp
+	p._iframes = 1.0
+	hp0 = p.hp
 	p.tick_statuses(0.5)
 	check(is_equal_approx(p.hp, hp0), "ordinary burning ticks keep their existing dodge behavior")
 	p.tick_statuses(0.5)
-	check(is_equal_approx(hp0 - p.hp, 10.0), "coexisting poison still bypasses dodge while burning does not")
-	p._iframes = 0.0; hp0 = p.hp
+	check(
+		is_equal_approx(hp0 - p.hp, 10.0),
+		"coexisting poison still bypasses dodge while burning does not"
+	)
+	p._iframes = 0.0
+	hp0 = p.hp
 	p.tick_statuses(0.5)
 	check(is_equal_approx(hp0 - p.hp, 1.0), "burning still ticks normally after dodge")
-	p.statuses.clear(); p.hp = p.max_hp
+	p.statuses.clear()
+	p.hp = p.max_hp
 
 	# --- design.defence.enemy-hit rolls on a landed shot
 	var kb = design["defence"]["enemy-hit"]["knockback-chance"]
 	design["defence"]["enemy-hit"]["knockback-chance"] = 1.0
 	p._push = Vector3.ZERO
 	sp._strike(p.global_position + Vector3.UP, 1.0, 10.0, false, [])
-	check(p._push.length() > 0.0, "a landed shot rolls enemy-hit knockback (%.1f)" % p._push.length())
+	check(
+		p._push.length() > 0.0, "a landed shot rolls enemy-hit knockback (%.1f)" % p._push.length()
+	)
 	design["defence"]["enemy-hit"]["knockback-chance"] = kb
-	p._push = Vector3.ZERO; p.statuses.clear(); p.clear_stars(); p.hp = p.max_hp
+	p._push = Vector3.ZERO
+	p.statuses.clear()
+	p.clear_stars()
+	p.hp = p.max_hp
 
 	# --- a blocked shot carries no status
 	p.global_position = Vector3(0, 1, 0)
-	sp.global_position = Vector3(0, 1, -3)                    # in front: the rig looks down -Z
+	sp.global_position = Vector3(0, 1, -3)  # in front: the rig looks down -Z
 	await _real(0.2)
 	p.blocking = true
 	sp._strike(p.global_position + Vector3.UP, 1.0, 10.0, false, [&"burning"])
 	check(not p.statuses.has(&"burning"), "a blocked shot carries no status")
 	p.blocking = false
 	sp.get_parent().queue_free()
-	p.hp = p.max_hp; p.statuses.clear()
+	p.hp = p.max_hp
+	p.statuses.clear()
 
 	# --- no friendly fire: a wolf between the shooter and us keeps its HP (the shot never comes, or stops on it)
 	var wolf := _spawn(&"wolf", &"melee", Vector3(0, 1, -5), p, &"P")
@@ -292,9 +448,14 @@ func _init() -> void:
 	var sk3 := _spawn(&"skeleton", &"ranged", Vector3(0, 1, -10), p)
 	var whp: float = wolf.hp
 	await _real(3.0)
-	check(is_equal_approx(wolf.hp, whp), "the wolf in the line of fire took nothing (%.0f)" % (whp - wolf.hp))
-	sk3.get_parent().queue_free(); wolf.get_parent().queue_free()
-	p.hp = p.max_hp; p.statuses.clear()
+	check(
+		is_equal_approx(wolf.hp, whp),
+		"the wolf in the line of fire took nothing (%.0f)" % (whp - wolf.hp)
+	)
+	sk3.get_parent().queue_free()
+	wolf.get_parent().queue_free()
+	p.hp = p.max_hp
+	p.statuses.clear()
 	await _real(0.2)
 
 	# --- …and a mage splash that swallows a creature beside us damages only the player
@@ -307,12 +468,29 @@ func _init() -> void:
 	while Time.get_ticks_msec() < end and is_equal_approx(p.hp, hp0):
 		await process_frame
 	check(p.hp < hp0, "the mage splash hit the player (%.0f → %.0f)" % [hp0, p.hp])
-	check(is_equal_approx(pal.hp, whp), "the wolf inside the same splash took nothing (%.0f)" % (whp - pal.hp))
+	check(
+		is_equal_approx(pal.hp, whp),
+		"the wolf inside the same splash took nothing (%.0f)" % (whp - pal.hp)
+	)
 	mg2.set_physics_process(false)
-	p.statuses.clear(); p._push = Vector3.ZERO; p._iframes = 0; p.blocking = false; p.hp = 1
-	mg2._strike(p.global_position + Vector3.UP, 1.0, 100, false, [&"poison", &"burning", &"knockback", &"slow"])
-	check(p.dead and p.hp == 0 and p.statuses.is_empty() and p._push == Vector3.ZERO, "lethal creature hit cannot re-add effects after synchronous death clear")
-	mg2.get_parent().queue_free(); pal.get_parent().queue_free()
+	p.statuses.clear()
+	p._push = Vector3.ZERO
+	p._iframes = 0
+	p.blocking = false
+	p.hp = 1
+	mg2._strike(
+		p.global_position + Vector3.UP,
+		1.0,
+		100,
+		false,
+		[&"poison", &"burning", &"knockback", &"slow"]
+	)
+	check(
+		p.dead and p.hp == 0 and p.statuses.is_empty() and p._push == Vector3.ZERO,
+		"lethal creature hit cannot re-add effects after synchronous death clear"
+	)
+	mg2.get_parent().queue_free()
+	pal.get_parent().queue_free()
 	await _real(float(design["combat"]["death"]["respawn-s"]) + .1)
 
 	await _real(0.5)

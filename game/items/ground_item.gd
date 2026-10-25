@@ -8,19 +8,25 @@ var label := ""
 var _ttl := INF
 var _auto: Array = []
 
+
 func setup(p_item, p_label: String, color: Color, ground: Dictionary) -> void:
-	item = p_item; label = p_label
-	_ttl = float(ground["lifetime-s"]); _auto = ground["auto-pickup"]
+	item = p_item
+	label = p_label
+	_ttl = float(ground["lifetime-s"])
+	_auto = ground["auto-pickup"]
 	$Collision.shape.radius = float(ground["pickup-radius"])
-	$Body.material_override = StandardMaterial3D.new(); $Body.material_override.albedo_color = color
+	$Body.material_override = StandardMaterial3D.new()
+	$Body.material_override.albedo_color = color
 	add_to_group("ground-items")
 	body_entered.connect(_on_body_entered)
+
 
 func _process(dt: float) -> void:
 	rotate_y(dt)
 	_ttl -= dt
 	if _ttl <= 0.0:
 		queue_free()
+
 
 func _on_body_entered(body: Node3D) -> void:
 	if String(item.type) in _auto and body.has_method("pick_up"):

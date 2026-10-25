@@ -3,15 +3,19 @@
 ## the player owns one, the X panel and the class-skill keys consume it.
 extends RefCounted
 
-var nodes: Array = []            # Ability, screen order
-var points: Dictionary = {}      # ability id → points spent
-var sp: Dictionary = {}          # design.skill-point
+var nodes: Array = []  # Ability, screen order
+var points: Dictionary = {}  # ability id → points spent
+var sp: Dictionary = {}  # design.skill-point
+
 
 func _init(o, sp_design: Dictionary, class_id: StringName, spec_id: StringName) -> void:
-	nodes = o.skill_tree(class_id, spec_id); sp = sp_design
+	nodes = o.skill_tree(class_id, spec_id)
+	sp = sp_design
+
 
 func spent(id: StringName) -> int:
 	return int(points.get(id, 0))
+
 
 ## The node that must hold `alpha-tree.needs` points first: the previous rank of the class column, rank 3
 ## for the ultimate, the shared node whose unlocks-next is us; null for roots.
@@ -29,9 +33,11 @@ func prerequisite(a) -> Variant:
 			return b
 	return null
 
+
 func is_open(a) -> bool:
 	var pre = prerequisite(a)
 	return pre == null or spent(pre.id) >= int(a.alpha_tree["needs"])
+
 
 ## c-skill-spend: one point from the bank onto an open node; returns what is left in the bank.
 func spend(a, banked: int) -> int:
@@ -41,6 +47,7 @@ func spend(a, banked: int) -> int:
 	points[a.id] = spent(a.id) + 1
 	return banked - 1
 
+
 ## Trainer respec (D22): every point back to the bank; returns how many.
 func respec() -> int:
 	var n := 0
@@ -49,21 +56,28 @@ func respec() -> int:
 	points.clear()
 	return n
 
+
 ## D6: +effect-per-point per point, uncapped.
 func effect_mult(id: StringName) -> float:
 	return 1.0 + float(sp["effect-per-point"]) * spent(id)
+
 
 ## D6: −cooldown-per-point per point down to cooldown-floor.
 func cooldown_mult(id: StringName) -> float:
 	return maxf(float(sp["cooldown-floor"]), 1.0 - float(sp["cooldown-per-point"]) * spent(id))
 
+
 ## Keys 1-4 → class column rank 1..3, then the ultimate (D10/D20); null when the spec has none (assassin).
 func class_slot(index: int) -> Variant:
 	for b in nodes:
 		var u: Dictionary = b.alpha_tree
-		if (index <= 3 and str(u["column"]) == "class" and int(u.get("rank", 0)) == index) or (index == 4 and str(u["column"]) == "ultimate"):
+		if (
+			(index <= 3 and str(u["column"]) == "class" and int(u.get("rank", 0)) == index)
+			or (index == 4 and str(u["column"]) == "ultimate")
+		):
 			return b
 	return null
+
 
 ## The ability's own positive cooldown (S value first, then A) or -1 when the sources give none / 0.
 static func listed_cooldown(a) -> float:

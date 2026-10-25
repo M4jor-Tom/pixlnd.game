@@ -7,27 +7,45 @@ const Model := preload("res://ontology/model.gd")
 const Item := preload("res://game/items/item.gd")
 const GROUND := preload("res://game/items/ground_item.tscn")
 
+
 ## gen-item: the two modifiers are the seed of the roll (c-stat-roll) and of the name.
-static func generate(rng: RandomNumberGenerator, type: StringName, subtype: StringName, material: StringName, level: int, rarity: int) -> Item:
+static func generate(
+	rng: RandomNumberGenerator,
+	type: StringName,
+	subtype: StringName,
+	material: StringName,
+	level: int,
+	rarity: int
+) -> Item:
 	var it := Item.new()
-	it.type = type; it.subtype = subtype; it.material = material
+	it.type = type
+	it.subtype = subtype
+	it.material = material
 	it.level = maxi(level, 1)
-	it.rarity = clampi(rarity, Model.Rarity.COMMON, Model.Rarity.LEGENDARY)         # c-rarity-range
-	it.modifier = rng.randi(); it.minus_modifier = rng.randi()
+	it.rarity = clampi(rarity, Model.Rarity.COMMON, Model.Rarity.LEGENDARY)  # c-rarity-range
+	it.modifier = rng.randi()
+	it.minus_modifier = rng.randi()
 	return it
+
 
 ## gen-item-stats damage = curve(level, rarity) × weapon-type k. The roll does not touch damage.
 static func damage(it: Item, o: Model.Ontology) -> float:
 	if it.type != &"weapon":
 		return 0.0
-	return Model.stat_curve(it.level, it.rarity) * (o.weapon_types[it.subtype] as Model.WeaponType).damage_k
+	return (
+		Model.stat_curve(it.level, it.rarity)
+		* (o.weapon_types[it.subtype] as Model.WeaponType).damage_k
+	)
+
 
 ## gen-item-stats armor = curve × slot mult (chest 1.0, other 0.5) × material armor-mult.
 static func armor(it: Item, o: Model.Ontology) -> float:
 	return _defence_stat(it, o, "armor-mult", 1.0)
 
+
 static func resistance(it: Item, o: Model.Ontology) -> float:
 	return _defence_stat(it, o, "resi-mult", null)
+
 
 ## Hybrid fixed HP: only HP-bearing slots, independent of either modifier (c-gear-hp).
 static func hp(it: Item, o: Model.Ontology) -> float:
@@ -40,12 +58,24 @@ static func hp(it: Item, o: Model.Ontology) -> float:
 		if StringName(s["id"]) == slot and s.has("hp-mult"):
 			var cfg: Dictionary = o.configs["generators"]["design"]["gear-hp"]
 			var material: Model.MaterialDef = o.materials[it.material]
-			var bonus := float(material.raw["hp-bonus"]) if it.material in [&"iron", &"cotton", &"linen"] else 0.0
+			var bonus := (
+				float(material.raw["hp-bonus"])
+				if it.material in [&"iron", &"cotton", &"linen"]
+				else 0.0
+			)
 			var n := it.level + float(cfg["upgrade-step"]) * it.upgrade_count
-			return Model.stat_curve(n, it.rarity) * float(cfg["curve-mult"]) * float(s["hp-mult"]) * (float(cfg["base"]) + bonus)
+			return (
+				Model.stat_curve(n, it.rarity)
+				* float(cfg["curve-mult"])
+				* float(s["hp-mult"])
+				* (float(cfg["base"]) + bonus)
+			)
 	return 0.0
 
-static func _defence_stat(it: Item, o: Model.Ontology, material_key: String, missing_material_default: Variant) -> float:
+
+static func _defence_stat(
+	it: Item, o: Model.Ontology, material_key: String, missing_material_default: Variant
+) -> float:
 	var slot := slot_id(it, o)
 	if slot == &"" or it.type == &"weapon":
 		return 0.0
@@ -53,12 +83,15 @@ static func _defence_stat(it: Item, o: Model.Ontology, material_key: String, mis
 	for s in o.configs["equipment-slots"]["slots"]:
 		if StringName(s["id"]) == slot:
 			var slot_mult: Variant = s.get("hp-mult")
-			if not _valid_multiplier(slot_mult): return 0.0
+			if not _valid_multiplier(slot_mult):
+				return 0.0
 			mult = float(slot_mult)
 	var m: Model.MaterialDef = o.materials[it.material]
 	var material_mult: Variant = m.raw.get(material_key, missing_material_default)
-	if not _valid_multiplier(material_mult): return 0.0
+	if not _valid_multiplier(material_mult):
+		return 0.0
 	return Model.stat_curve(it.level, it.rarity) * mult * float(material_mult)
+
 
 static func _valid_multiplier(value: Variant) -> bool:
 	if not value is int and not value is float:
@@ -66,10 +99,12 @@ static func _valid_multiplier(value: Variant) -> bool:
 	var number := float(value)
 	return not is_nan(number) and not is_inf(number) and number >= 0.0
 
+
 ## consumable-heal: curve(level, rarity) × heal-mult (stats.json).
 static func heal(it: Item, o: Model.Ontology) -> float:
 	var c: Model.Consumable = o.consumables.get(it.subtype)
 	return Model.stat_curve(it.level, it.rarity) * (c.heal_mult if c != null else 0)
+
 
 ## equips-in: canonical slot/type/subtype routing; Inventory adds class and prospective hand checks.
 static func slot_id(it: Item, o: Model.Ontology) -> StringName:
@@ -91,8 +126,14 @@ static func slot_id(it: Item, o: Model.Ontology) -> StringName:
 		return StringName(s["id"])
 	return &""
 
+
 static func weapon_material_allowed(it: Item, o: Model.Ontology) -> bool:
-	if it == null or it.type != &"weapon" or not o.weapon_types.has(it.subtype) or not o.materials.has(it.material):
+	if (
+		it == null
+		or it.type != &"weapon"
+		or not o.weapon_types.has(it.subtype)
+		or not o.materials.has(it.material)
+	):
 		return false
 	var raw: String = str((o.weapon_types[it.subtype] as Model.WeaponType).raw.get("material", ""))
 	for option in raw.split("|"):
@@ -100,25 +141,45 @@ static func weapon_material_allowed(it: Item, o: Model.Ontology) -> bool:
 			return true
 	return false
 
+
 static func rarity_id(index: int, o: Model.Ontology) -> StringName:
 	for id in o.rarities:
-		if (o.rarities[id] as Model.RarityDef).index == index: return id
+		if (o.rarities[id] as Model.RarityDef).index == index:
+			return id
 	return &"common"
+
 
 ## gen-name: <prefix> <Material> <Type> [of <Name>] (affixes.json#name-forms); epic/legendary always named.
 static func item_name(it: Item, o: Model.Ontology, design: Dictionary) -> String:
 	match it.type:
-		&"coin": return "%d copper" % it.count
-		&"consumable": return o.consumables[it.subtype].display_name
+		&"coin":
+			return "%d copper" % it.count
+		&"consumable":
+			return o.consumables[it.subtype].display_name
 		&"ingredient":
-			return o.materials[it.subtype].display_name if o.materials.has(it.subtype) and o.materials[it.subtype].raw.get("kind") == "spirit" else str(o.configs["ingredients"][it.subtype]["name"])
+			return (
+				o.materials[it.subtype].display_name
+				if (
+					o.materials.has(it.subtype)
+					and o.materials[it.subtype].raw.get("kind") == "spirit"
+				)
+				else str(o.configs["ingredients"][it.subtype]["name"])
+			)
 	if slot_id(it, o) == &"":
 		return String(it.type)
-	var rng := RandomNumberGenerator.new(); rng.seed = it.modifier * 31 + it.minus_modifier
+	var rng := RandomNumberGenerator.new()
+	rng.seed = it.modifier * 31 + it.minus_modifier
 	var rid := rarity_id(it.rarity, o)
 	var prefixes: Array = o.configs["affixes"][rid]
-	var kind: String = o.weapon_types[it.subtype].display_name if it.type == &"weapon" else str(o.configs["item-types"][it.type]["name"])
-	var n := "%s %s %s" % [prefixes[rng.randi() % prefixes.size()], o.materials[it.material].display_name, kind]
+	var kind: String = (
+		o.weapon_types[it.subtype].display_name
+		if it.type == &"weapon"
+		else str(o.configs["item-types"][it.type]["name"])
+	)
+	var n := (
+		"%s %s %s"
+		% [prefixes[rng.randi() % prefixes.size()], o.materials[it.material].display_name, kind]
+	)
 	if (o.rarities[rid] as Model.RarityDef).named:
 		var syl: Array = design["names"]["syllables"]
 		var who := ""
@@ -127,37 +188,59 @@ static func item_name(it: Item, o: Model.Ontology, design: Dictionary) -> String
 		n += " of " + who.capitalize()
 	return n
 
+
 static func _weighted(rng: RandomNumberGenerator, weights: Dictionary) -> String:
 	var total := 0.0
-	for k in weights: total += float(weights[k])
+	for k in weights:
+		total += float(weights[k])
 	var x := rng.randf() * total
 	for k in weights:
 		x -= float(weights[k])
-		if x < 0.0: return str(k)
+		if x < 0.0:
+			return str(k)
 	return str(weights.keys().back())
+
 
 static func roll_rarity(rng: RandomNumberGenerator, loot: Dictionary, o: Model.Ontology) -> int:
 	return (o.rarities[StringName(_weighted(rng, loot["rarity-weights"]))] as Model.RarityDef).index
 
+
 ## D18 gear: kind by weight; a class rolled uniformly gives the weapon-type or the armor material.
-static func roll_gear(rng: RandomNumberGenerator, level: int, rarity: int, o: Model.Ontology, loot: Dictionary, class_id: StringName = &"") -> Item:
+static func roll_gear(
+	rng: RandomNumberGenerator,
+	level: int,
+	rarity: int,
+	o: Model.Ontology,
+	loot: Dictionary,
+	class_id: StringName = &""
+) -> Item:
 	var kind := _weighted(rng, loot["gear-kinds"])
-	var cls: Model.CharacterClass = o.classes[class_id if class_id != &"" else o.classes.keys()[rng.randi() % o.classes.size()]]
+	var cls: Model.CharacterClass = o.classes[
+		class_id if class_id != &"" else o.classes.keys()[rng.randi() % o.classes.size()]
+	]
 	if kind == "weapon":
 		var wt: StringName = cls.weapon_types[rng.randi() % cls.weapon_types.size()]
 		return generate(rng, &"weapon", wt, weapon_material(o.weapon_types[wt]), level, rarity)
 	return generate(rng, StringName(kind), &"", cls.armor_material, level, rarity)
 
+
 ## weapon-type.material "iron (+cotton yarn)" | "gold|silver" → first material id.
 static func weapon_material(wt: Model.WeaponType) -> StringName:
 	return StringName(str(wt.raw.get("material", "iron")).split(" ")[0].split("|")[0])
 
+
 ## gen-loot (D18): independent rolls per kill; coins are a `coin` item with a count.
-static func roll_loot(rng: RandomNumberGenerator, level: int, c: Model.Creature, o: Model.Ontology, design: Dictionary) -> Array:
+static func roll_loot(
+	rng: RandomNumberGenerator, level: int, c: Model.Creature, o: Model.Ontology, design: Dictionary
+) -> Array:
 	var loot: Dictionary = design["loot"]
 	var out: Array = []
 	if rng.randf() < float(loot["coins"]["chance"]):
-		out.append(Item.stack(&"coin", &"", int(loot["coins"]["base"]) + int(loot["coins"]["per-level"]) * level))
+		out.append(
+			Item.stack(
+				&"coin", &"", int(loot["coins"]["base"]) + int(loot["coins"]["per-level"]) * level
+			)
+		)
 	var spread := int(loot["level-spread"])
 	var lvl := maxi(1, level + rng.randi_range(-spread, spread))
 	if rng.randf() < float(loot["gear-chance"]):
@@ -166,27 +249,51 @@ static func roll_loot(rng: RandomNumberGenerator, level: int, c: Model.Creature,
 		var pool: Array = loot["consumable-pool"]
 		out.append(Item.stack(&"consumable", StringName(pool[rng.randi() % pool.size()]), 1, lvl))
 	if c != null:
-		for d in c.drops:                                   # ponytail: drops without an ingredients.json row (popcorn, jellies) are skipped
+		for d in c.drops:  # ponytail: drops without an ingredients.json row (popcorn, jellies) are skipped
 			if o.configs["ingredients"].has(d) and rng.randf() < float(loot["species-drop-chance"]):
 				out.append(Item.stack(&"ingredient", d, 1))
 	return out
 
+
 ## Creature died → roll its loot and lay it on the ground under its zone node (unloads with the zone).
 static func drop_for(m: Node3D, o: Model.Ontology, design: Dictionary) -> Array:
-	var rng := RandomNumberGenerator.new(); rng.seed = hash([m.species, m.home])
-	return spawn_drops(m.get_parent(), m.global_position, roll_loot(rng, m.level, o.creatures.get(m.species), o, design), rng, o, design)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash([m.species, m.home])
+	return spawn_drops(
+		m.get_parent(),
+		m.global_position,
+		roll_loot(rng, m.level, o.creatures.get(m.species), o, design),
+		rng,
+		o,
+		design
+	)
 
-static func spawn_drops(parent: Node3D, pos: Vector3, items: Array, rng: RandomNumberGenerator, o: Model.Ontology, design: Dictionary) -> Array:
+
+static func spawn_drops(
+	parent: Node3D,
+	pos: Vector3,
+	items: Array,
+	rng: RandomNumberGenerator,
+	o: Model.Ontology,
+	design: Dictionary
+) -> Array:
 	var ground: Dictionary = design["loot"]["ground"]
 	var s := float(ground["scatter"])
 	var made: Array = []
 	for it in items:
-		var color := Color.GOLD if it.type == &"coin" else Color(str(o.rarities[rarity_id(it.rarity, o)].raw.get("hex", "#ffffff")))
+		var color := (
+			Color.GOLD
+			if it.type == &"coin"
+			else Color(str(o.rarities[rarity_id(it.rarity, o)].raw.get("hex", "#ffffff")))
+		)
 		var n := GROUND.instantiate()
 		n.setup(it, item_name(it, o, design), color, ground)
-		n.position = parent.to_local(pos + Vector3(rng.randf_range(-s,s),0.5,rng.randf_range(-s,s)))
+		n.position = parent.to_local(
+			pos + Vector3(rng.randf_range(-s, s), 0.5, rng.randf_range(-s, s))
+		)
 		parent.add_child(n)
 		var frame = parent.get_meta("local_frame") if parent.has_meta("local_frame") else null
-		if frame != null: frame.track(n)
+		if frame != null:
+			frame.track(n)
 		made.append(n)
 	return made

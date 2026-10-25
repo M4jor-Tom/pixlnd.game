@@ -332,7 +332,7 @@ future character systems and networking remain unfinished; the items below retai
 - Source item 52 (`ontology/domain/index.md §5`): reported Steam absence supplies no census/first Alpha appearance or hybrid removal. Species histories remain research; roster/food/mount rules unchanged.
 
 ## Meta / tooling
-- [ ] Quality gate style cleanup (`gdlintrc` ponytail): formatting, naming and size/complexity limits are deferred. Enable them only after a separately selected repository-wide cleanup; essential lint, ontology and headless checks already run identically before pushes and in CI.
+- [ ] Quality gate lint cleanup (`gdlintrc` ponytail): naming and size/complexity limits are deferred. Enable them only after a separately selected cleanup; formatting, essential lint, ontology and headless checks already run identically before pushes and in CI.
 - [ ] Save-data (§3.7): implemented character/world/encounter/vendor state persists; future character systems, discovered-land exploration and portable-world import UI remain unfinished.
 - [ ] Dedicated server (D5, `multiplayer-mode`): single-player only; `server.cfg` flags (pvp,
   player cap, level band X/Y) unread.

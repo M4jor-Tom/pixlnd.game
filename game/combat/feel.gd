@@ -12,14 +12,15 @@
 ## (there are none). All in todo_implement.md.
 extends Node
 
-const MIX_RATE := 22050.0                          # half rate is plenty for 0.05-0.4 s blips
+const MIX_RATE := 22050.0  # half rate is plenty for 0.05-0.4 s blips
 
 var frame
-var cfg: Dictionary = {}                           # design.feel
-var camera: Node                                   # orbit_camera.gd (add_trauma), may be null in tests
-var trail_every := 0.03                            # design.feel.trail.trail-every-s, read by projectile.gd
-var _stop_end := -1.0                              # real seconds when the running hit-stop ends; < 0 = none
-var _pcm: Dictionary = {}                          # sfx id → PackedVector2Array, baked once in setup
+var cfg: Dictionary = {}  # design.feel
+var camera: Node  # orbit_camera.gd (add_trauma), may be null in tests
+var trail_every := 0.03  # design.feel.trail.trail-every-s, read by projectile.gd
+var _stop_end := -1.0  # real seconds when the running hit-stop ends; < 0 = none
+var _pcm: Dictionary = {}  # sfx id → PackedVector2Array, baked once in setup
+
 
 func setup(feel: Dictionary, p_camera: Node = null) -> void:
 	cfg = feel
@@ -28,8 +29,9 @@ func setup(feel: Dictionary, p_camera: Node = null) -> void:
 	if camera != null:
 		camera.shake = cfg["shake"]
 	_pcm.clear()
-	for id in cfg.get("sfx", {}):                  # bake every waveform here, never in the frame that plays it
+	for id in cfg.get("sfx", {}):  # bake every waveform here, never in the frame that plays it
 		_pcm[StringName(id)] = _bake(cfg["sfx"][id])
+
 
 ## design.feel.events[event]: hit-stop + camera trauma + sound, and — when `at` is given — a damage number
 ## (`extra.amount`, `extra.kind` picks the colour) and an impact flash (`extra.radius`, 0 = the default).
@@ -48,6 +50,7 @@ func play(event: StringName, at := Vector3.INF, extra: Dictionary = {}) -> void:
 	if extra.has("radius"):
 		flash(at, float(extra["radius"]))
 
+
 ## Freeze at design.feel.hit-stop.time-scale for `s` real seconds, capped at max-s. Overlapping bundles never
 ## stack: the later end time wins, and _process (real clock, time_scale cannot stall it) restores 1.0.
 func hit_stop(s: float) -> void:
@@ -57,14 +60,17 @@ func hit_stop(s: float) -> void:
 	_stop_end = maxf(_stop_end, _now() + minf(s, float(hs["max-s"])))
 	Engine.time_scale = float(hs["time-scale"])
 
+
 func _process(_dt: float) -> void:
 	if _stop_end >= 0.0 and _now() >= _stop_end:
 		_stop_end = -1.0
 		Engine.time_scale = 1.0
 
+
 func _exit_tree() -> void:
 	_stop_end = -1.0
 	Engine.time_scale = 1.0
+
 
 ## A floating damage number over `at` (design.feel.numbers): rises rise-blocks and fades over life-s.
 func number(at: Vector3, amount: float, kind: StringName = &"hit") -> Label3D:
@@ -74,7 +80,8 @@ func number(at: Vector3, amount: float, kind: StringName = &"hit") -> Label3D:
 		l.scale *= float(nb["crit-scale"])
 	_world().add_child(l)
 	l.global_position = at
-	if frame != null: frame.track(l)
+	if frame != null:
+		frame.track(l)
 	var life := float(nb["life-s"])
 	var tw := l.create_tween().set_ignore_time_scale(true).set_parallel(true)
 	tw.tween_property(l, "global_position:y", at.y + float(nb["rise-blocks"]), life)
@@ -82,39 +89,52 @@ func number(at: Vector3, amount: float, kind: StringName = &"hit") -> Label3D:
 	tw.chain().tween_callback(l.queue_free)
 	return l
 
+
 ## An impact sphere at `at` fading over impact-s; radius 0 = design.feel.impact.impact-radius.
 func flash(at: Vector3, radius := 0.0) -> MeshInstance3D:
 	var im: Dictionary = cfg["impact"]
-	var m := _sphere(radius if radius > 0.0 else float(im["impact-radius"]), Color(1.0, 0.9, 0.5, 0.6))
+	var m := _sphere(
+		radius if radius > 0.0 else float(im["impact-radius"]), Color(1.0, 0.9, 0.5, 0.6)
+	)
 	_world().add_child(m)
 	m.global_position = at
-	if frame != null: frame.track(m)
+	if frame != null:
+		frame.track(m)
 	_fade(m, float(im["impact-s"]))
 	return m
+
 
 ## One fading trail piece of a projectile (design.feel.trail), lives trail-s.
 func trail(at: Vector3) -> MeshInstance3D:
 	var m := _sphere(0.12, Color(1.0, 0.85, 0.3, 0.5))
 	_world().add_child(m)
 	m.global_position = at
-	if frame != null: frame.track(m)
+	if frame != null:
+		frame.track(m)
 	_fade(m, float(cfg["trail"]["trail-s"]))
 	return m
+
 
 ## '✶ ✶ ✶' over a stunned entity's head (ui.json#hud.stun-stars, D25); entity.gd frees it when the stun ends.
 func stars(e: Node3D) -> Label3D:
 	var l := _label("✶ ✶ ✶", int(cfg["numbers"]["font-size"]), Color(1.0, 0.9, 0.3))
 	var body := e.get_node_or_null("Body")
-	l.position = Vector3.UP * ((body.mesh.height if body != null and body.mesh != null else 2.0) + 0.4)
+	l.position = (
+		Vector3.UP * ((body.mesh.height if body != null and body.mesh != null else 2.0) + 0.4)
+	)
 	e.add_child(l)
-	return l                                       # the caller frees it when the stun actually ends (entity.gd)
+	return l  # the caller frees it when the stun actually ends (entity.gd)
+
 
 ## design.feel.sfx[id] → PCM, once at setup: a sine at hz whose pitch multiplies by 2^slide across the sound,
 ## mixed with white noise by `noise`, linear fade-out. ponytail: placeholder until audio assets land.
 func _bake(s: Dictionary) -> PackedVector2Array:
 	var n := int(float(s["len-s"]) * MIX_RATE)
-	var buf := PackedVector2Array(); buf.resize(n)
-	var hz := float(s["hz"]); var noise := float(s["noise"]); var slide := float(s["slide"])
+	var buf := PackedVector2Array()
+	buf.resize(n)
+	var hz := float(s["hz"])
+	var noise := float(s["noise"])
+	var slide := float(s["slide"])
 	var phase := 0.0
 	for i in n:
 		var t := float(i) / float(n)
@@ -123,10 +143,11 @@ func _bake(s: Dictionary) -> PackedVector2Array:
 		buf[i] = Vector2(v, v)
 	return buf
 
+
 ## Push the baked buffer into a throwaway player: no synthesis in the frame that plays the sound.
 func sfx(id: StringName) -> void:
 	var buf: PackedVector2Array = _pcm.get(id, PackedVector2Array())
-	if buf.is_empty() or not is_inside_tree():             # a bundle fired before the tree started: no sound
+	if buf.is_empty() or not is_inside_tree():  # a bundle fired before the tree started: no sound
 		return
 	var len_s := float(buf.size()) / MIX_RATE
 	var gen := AudioStreamGenerator.new()
@@ -137,14 +158,16 @@ func sfx(id: StringName) -> void:
 	add_child(pl)
 	pl.play()
 	var pb: AudioStreamGeneratorPlayback = pl.get_stream_playback()
-	if pb != null:                                 # null only if the audio server refused the player: silence, no crash
+	if pb != null:  # null only if the audio server refused the player: silence, no crash
 		pb.push_buffer(buf)
 	_free_after(pl, len_s + 0.15)
+
 
 func _colour(kind: StringName) -> Color:
 	var cols: Dictionary = cfg["numbers"]["colours"]
 	var c: Array = cols.get(kind, cols["hit"])
 	return Color(c[0], c[1], c[2])
+
 
 func _label(text: String, font_size: int, colour: Color) -> Label3D:
 	var l := Label3D.new()
@@ -153,12 +176,15 @@ func _label(text: String, font_size: int, colour: Color) -> Label3D:
 	l.modulate = colour
 	l.pixel_size = 0.01
 	l.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	l.no_depth_test = true                         # ponytail: juice draws over the world, never depth-sorted
+	l.no_depth_test = true  # ponytail: juice draws over the world, never depth-sorted
 	return l
+
 
 func _sphere(radius: float, colour: Color) -> MeshInstance3D:
 	var m := MeshInstance3D.new()
-	var s := SphereMesh.new(); s.radius = radius; s.height = radius * 2.0
+	var s := SphereMesh.new()
+	s.radius = radius
+	s.height = radius * 2.0
 	m.mesh = s
 	var mat := StandardMaterial3D.new()
 	mat.albedo_color = colour
@@ -167,21 +193,25 @@ func _sphere(radius: float, colour: Color) -> MeshInstance3D:
 	m.material_override = mat
 	return m
 
+
 func _fade(m: MeshInstance3D, secs: float) -> void:
 	var tw := m.create_tween().set_ignore_time_scale(true)
 	tw.tween_property(m.material_override, "albedo_color:a", 0.0, secs)
 	tw.tween_callback(m.queue_free)
 
+
 func _free_after(n: Node, secs: float) -> void:
 	await get_tree().create_timer(secs, true, false, true).timeout
-	if not is_inside_tree():                       # we were freed while the timer ran (scene exit / quit)
+	if not is_inside_tree():  # we were freed while the timer ran (scene exit / quit)
 		return
 	if is_instance_valid(n):
 		n.queue_free()
 
+
 ## Juice lives beside us in world space (main.gd's root, or the test's tree root).
 func _world() -> Node:
 	return get_parent() if get_parent() != null else self
+
 
 func _now() -> float:
 	return float(Time.get_ticks_msec()) / 1000.0

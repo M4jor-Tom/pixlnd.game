@@ -32,7 +32,7 @@ nix develop --no-update-lock-file -c pre-commit run --all-files --hook-stage pre
 `.pre-commit-config.yaml` is the shared definition. Its local hooks run:
 
 1. `tests/test_checks.sh`: regression checks for the runner's pass/fail behavior.
-2. `scripts/checks.sh`: GDScript lint, ontology validation, every
+2. `scripts/checks.sh`: GDScript formatting and lint, ontology validation, every
    `ontology/test_*.gd` and `game/*/test_*.gd`, then a headless main-scene boot.
    The map test also runs at fixed 1000 FPS to catch render/physics ordering races.
 
@@ -45,11 +45,19 @@ output all fail the gate, including when Godot exits zero.
 
 ## Scope and limits
 
-`gdlintrc` defers existing naming, size and formatting constraints. No automatic
-formatting occurs. Syntax and the remaining lint checks are enforced; one existing
-side-effectful conditional test assertion has a line-scoped gdtoolkit false-positive
-suppression. These checks do not establish full ontology consistency or resolve the
-native collision issue retained in `docs/HANDOFF.md`.
+`gdformat --check` enforces the pinned formatter's default layout without changing
+files during hooks or CI. `gdformatrc` explicitly enables parse-tree, comment and
+formatting-stability safety checks. Apply formatting locally with:
+
+```sh
+nix develop --no-update-lock-file -c gdformat game ontology
+```
+
+`gdlintrc` still defers naming and size/complexity constraints. Syntax and the
+remaining lint checks are enforced; one existing side-effectful conditional test
+assertion has a scoped gdtoolkit false-positive suppression. These checks do not
+establish full ontology consistency or resolve the native collision issue retained
+in `docs/HANDOFF.md`.
 
 Run pushes from the checked-out branch with the intended changes committed:
 pre-commit checks the local checkout/index, not an isolated archive of arbitrary

@@ -7,8 +7,9 @@ extends Node
 const Model := preload("res://ontology/model.gd")
 
 var data: Model.Ontology
-var ruleset: Model.Ruleset                 # the default ruleset (hybrid, D1)
-var design: Dictionary                     # generators.json#design: owner-designed tunables (D6/D11)
+var ruleset: Model.Ruleset  # the default ruleset (hybrid, D1)
+var design: Dictionary  # generators.json#design: owner-designed tunables (D6/D11)
+
 
 func _ready() -> void:
 	data = Model.Ontology.load_dir("res://ontology/instances")
@@ -22,6 +23,7 @@ func _ready() -> void:
 		if r.is_default:
 			ruleset = r
 	design = data.configs.get("generators", {}).get("design", {})
+
 
 func flag(name: String, default: Variant = false) -> Variant:
 	return ruleset.flags.get(name, default)

@@ -5,6 +5,7 @@ cd "$(dirname "$0")/.."
 shopt -s nullglob
 
 gdlint game ontology
+gdformat --check game ontology
 scratch=$(mktemp -d)
 trap 'rm -rf "$scratch"' EXIT
 export PIXLND_TEST_DIR="$scratch"

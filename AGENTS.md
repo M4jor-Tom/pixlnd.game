@@ -25,7 +25,7 @@ touch the domain (build, tooling, debugging).
 
 ## Commands
 
-The [quality gate](docs/quality-checks.md) runs the same essential lint, ontology and headless
+The [quality gate](docs/quality-checks.md) runs the same formatting, essential lint, ontology and headless
 checks locally before pushes and in GitHub Actions. Install once per clone with
 `nix develop --no-update-lock-file -c pre-commit install`; run manually with
 `nix develop --no-update-lock-file -c pre-commit run --all-files --hook-stage pre-push`.

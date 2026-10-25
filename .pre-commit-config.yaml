@@ -11,7 +11,7 @@ repos:
         pass_filenames: false
         always_run: true
       - id: quality
-        name: GDScript lint, ontology and headless tests
+        name: GDScript format, lint, ontology and headless tests
         # Enter the pinned toolchain even when git push runs outside nix develop.
         entry: nix develop --no-update-lock-file -c bash scripts/checks.sh
         language: system
