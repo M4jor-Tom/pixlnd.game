@@ -73,7 +73,9 @@ func _initialize() -> void:
 	var quick_before: int = p.inventory.first_consumable().count
 	var conversations: Array = []
 	p.talked.connect(func(_npc): conversations.append(true))
-	var npc: Node3D = NPC.new(&"villager", "Test", Color.WHITE); root.add_child(npc); npc.position = Vector3(0, 0, -1)
+	# Keep the interaction fixture out of the committed shot's lane at every render/physics ratio.
+	var npc: Node3D = NPC.new(&"villager", "Test", Color.WHITE); root.add_child(npc); npc.position = Vector3(1, 0, 0)
+	check(p._nearest_in_group("npcs", float(design["settlement"]["npc"]["interact-radius"])) == npc, "interaction fixture remains in reach beside the projectile lane")
 	var distance: float = p.get_node("CameraRig/Arm").spring_length
 	var class_skill = p.skill_tree.class_slot(1)
 	check(class_skill != null and p.can_block(), "class skill and held block have live desktop controls")

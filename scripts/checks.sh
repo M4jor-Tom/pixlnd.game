@@ -32,6 +32,10 @@ for script in ontology/validate.gd ontology/test_*.gd game/*/test_*.gd; do
     game/world/test_local_frame_routes.gd|game/world/test_local_frame_runtime.gd) seconds=450 ;;
   esac
   run_godot "$seconds" -s "$script"
+  if [[ "$script" == game/meta/test_world_map.gd ]]; then
+    # Many render ticks per physics tick expose fixture/input ordering races.
+    run_godot 150 --fixed-fps 1000 -s "$script"
+  fi
 done
 run_godot 150 --quit -- --save-path="$scratch/boot.json"
 printf '\nAll quality checks passed.\n'
