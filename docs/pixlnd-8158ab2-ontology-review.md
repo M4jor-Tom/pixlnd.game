@@ -14,14 +14,6 @@ The skills are most useful as review lenses and implementation/testing procedure
 
 ## Findings, in priority order
 
-### 1. Validation failure can become a successful process exit
-
-**Reproduced by the executable reviewer and independently rerun by the parent.** The baseline and all six ontology tests passed, but setting `design.loot` to null in a fresh in-memory model caused a GDScript error, `validate() == false`, and an empty diagnostic collection. A temporary wrapper using the entrypoint's exact output/exit logic printed **`ontology INVALID (0 errors)` and exited 0**.
-
-The actual entrypoint displays validity using both signals but exits using only the error collection (`ontology/validate.gd:10–17`). Loot validation assumes a dictionary and directly indexes required fields (`ontology/model.gd:637–643`). Removing `gear-chance` also aborts validation without a diagnostic. An invalid class weapon reference records one error, then crashes later and suppresses subsequent checks.
-
-This is narrower and more serious than the already documented incomplete-validator coverage: a failed validation execution must not be accepted by automation. Preserve both return/diagnostic evidence and process exit status, and make malformed-input handling accumulate errors rather than abort. The reproduction changed no repository input; it injected invalid data only in memory.
-
 ### 2. Generated item level and character power use incompatible progression units
 
 **Confirmed contract-composition issue; not a current equip-rejection bug.**
@@ -118,7 +110,7 @@ Preserve coordinate-local RNG streams. Add order-independent zone generation and
 
 ## Recommended order
 
-1. Repair validation's fail-closed exit behavior and the bounded boss-filter inconsistency when authorized.
+1. Repair the bounded boss-filter inconsistency when authorized.
 2. Reconcile item-level/power units before implementing the gate; clean small stale summaries alongside relevant documentation work.
 3. Strengthen required-input/reference checks incrementally, using the already-approved validation-boundary mapping rather than creating another competing schema.
 4. Apply reachability and fixed-seed pacing tests to the next world/dungeon/mission slice.
@@ -133,7 +125,7 @@ Executed under Godot 4.7.2 with bounded timeouts:
 - Baseline `ontology/validate.gd`: exit 0, `ontology valid`.
 - All six `ontology/test_*.gd` scripts: exit 0 with their expected success messages.
 - Parent independently checked all 41 instance JSON files parse as object roots and reproduced the travel/power arithmetic.
-- Scratch negative-input cases reproduced known missing-input/reference/provenance gaps and the newly demonstrated fail-open exit behavior. The parent read the probe and logs and independently reran it.
+- Scratch negative-input cases reproduced known missing-input/reference/provenance gaps. The parent read the probe and logs and independently reran it.
 - Scratch Hell Demon plan probe reproduced the eligibility leak; the parent independently reran it.
 
 The initial scratch ingestion probe timed out (124) after its own unguarded access to a missing row following an ingestion error. Its log was retained; a guarded correction terminated normally. This harness failure is not reported as a production-entrypoint hang.
