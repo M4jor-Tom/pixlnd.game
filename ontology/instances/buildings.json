@@ -3,7 +3,7 @@
   "districts": {
     "trade":      {"name": "Trade District / Quarter", "quarter-id": [1,1], "buildings": ["weapon-shop", "armor-shop", "item-shop", "identifier"], "decor": ["market stalls", "crates", "barrels", "square"], "versions": ["A"]},
     "crafting":   {"name": "Crafting District / Quarter", "quarter-id": [1,2], "buildings": ["smithy", "clothier", "workshop"], "versions": ["A"]},
-    "adventurer": {"name": "Adventurer District / Class Quarter", "quarter-id": [1,3], "buildings": ["class-trainer-warrior", "class-trainer-ranger", "class-trainer-rogue", "class-trainer-mage"], "versions": ["A"]},
+    "adventurer": {"name": "Adventurer District / Class Quarter", "quarter-id": [1,3], "buildings": [{"id": "class-trainer", "class": "warrior"}, {"id": "class-trainer", "class": "ranger"}, {"id": "class-trainer", "class": "rogue"}, {"id": "class-trainer", "class": "mage"}], "versions": ["A"]},
     "pet":        {"name": "Pet Quarter", "quarter-id": [1,4], "versions": ["X"]},
     "portal":     {"name": "Portal", "quarter-id": [4,0], "versions": ["A"]},
     "palace":     {"name": "Palace", "quarter-id": [5,0], "versions": ["A"]}

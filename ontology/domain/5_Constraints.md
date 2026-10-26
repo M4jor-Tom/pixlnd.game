@@ -167,8 +167,14 @@ predicates remain in the constraint catalog; no duplicate balance table is intro
 | UI/engine/assets | Canonical action/profile reference closure, binding/UI/sound/format declarations and frame-budget config; no historical control fallback. | Player-name input limits, actual RGB payloads, map/input/HUD/feedback and physics/catch-up behavior; nonexistent generated payloads are not malformed definitions. |
 
 Future regressions must exercise each predicate at its mapped boundary, including item 9's
-missing-whole-input cases. A passing current validator does not prove this mapping's enforcement;
-direct data correction and loader/validator/generator/runtime work remain unauthorized.
+missing-whole-input cases. Current bounded checks cover the required race catalog (eight playable
+race IDs, row objects, boolean `playable`, size class), required whole movesets/default/kinds and
+class-weapon entries with the existing moveset predicates, district building/class references, and
+landscape dungeon/POI references. District trainer qualification and landscape notes follow
+[the structure definitions](3_Classes.md#district); desert-ruins identity remains unresolved.
+These checks retain earlier load errors and accumulate independent failures. A passing validator
+does not prove the rest of this mapping's enforcement; further data correction and
+loader/validator/generator/runtime work need separate authority.
 
 ### Constraint catalog
 

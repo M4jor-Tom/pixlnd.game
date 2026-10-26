@@ -141,6 +141,9 @@ directory. They never use `user://`. Keep test saves/logs there and use a separa
 for boot checks. Run every Godot invocation under `timeout` (including older commands below).
 ```sh
 # export PIXLND_TEST_DIR=/absolute/path/to/isolated-check-output
+timeout 150 nix develop --no-update-lock-file -c godot --headless -s ontology/test_required_catalogs.gd # required/malformed whole races and movesets, real loader and cumulative/prior errors
+timeout 150 nix develop --no-update-lock-file -c godot --headless -s ontology/test_world_references.gd # district building/class and landscape dungeon/POI closure, malformed references and retained annotations
+timeout 150 nix develop --no-update-lock-file -c godot --headless -s game/world/test_spawner.gd # real ordinary plans exclude always-boss species regardless of category; mixed/boss-capable/category controls preserve RNG draws
 timeout 150 nix develop --no-update-lock-file -c godot --headless -s ontology/test_validation_fail_closed.gd # malformed loot/reference continuation, actual CLI exit truth table/prior load errors and OntologyDB false/empty abort; child logs stay in PIXLND_TEST_DIR
 timeout 150 nix develop -c godot --headless -s ontology/test_encounter_rewards_config.gd # exact required package/loot/daily shop inputs, cumulative malformed/missing parents and references
 timeout 150 nix develop -c godot --headless -s game/items/test_encounter_rewards.gd # actual death/shared pickup/expiry/unload/restart, seven boss guarantees, fixed spirits and class-legal gear
@@ -149,7 +152,7 @@ timeout 150 nix develop -c godot --headless -s ontology/test_encounter_feature_c
 timeout 150 nix develop -c godot --headless -s game/combat/test_boss_special.gd # actual main stomp/charge, physical defence/sweep/rubble/walls, timer/cancel/inactive/unload/restart and saved-state negatives
 timeout 150 nix develop -c godot --headless -s game/world/test_encounter_contents.gd # actual collision/HP/pickup/independent table pairs, trap defences/phases/hitsets, safe restoration, room renewal and saved-state negatives
 timeout 150 nix develop -c godot --headless -s ontology/test_playable_site_config.gd # selected geometry/population/local-stat/assignment inputs, cumulative missing/malformed/changed negatives
-timeout 150 nix develop -c godot --headless -s game/world/test_playable_sites.gd # joint generation, determinism, all-six/counts/closed occupancy/access/bounds, all-sea hub and atomic failure
+timeout 150 nix develop -c godot --headless -s game/world/test_playable_sites.gd # joint generation, cold reversed-order village/sites/routes/assignments, all-six/counts/closed occupancy/access/bounds, all-sea hub and atomic failure
 timeout 150 nix develop -c godot --headless -s game/world/test_playable_sites_runtime.gd # real main/world geometry/collision/route-width/steps, ocean/boundary terrain, unload/renewal/restart and exact-content save negatives
 timeout 450 nix develop -c godot --headless -s game/world/test_local_frame_routes.gd -- --land=-512,-512 --ocean # actual player capsule across all dry-hub/boardwalk/site routes; omit --ocean for natural terrain, select other lands with --land=x,z
 timeout 150 nix develop -c godot --headless -s ontology/test_initial_encounter_config.gd # exact-one hybrid settlement/config negatives
@@ -179,7 +182,7 @@ nix develop -c godot --headless -s game/entities/test_player.gd    # player phys
 nix develop -c godot --headless -s game/meta/test_android_touch.gd # real native joystick/buttons, ownership, simultaneous streams, cancel/Back/layout/dp, root screen events
 nix develop -c godot --headless -s game/entities/test_android_controls.gd # native events -> player/camera, separated controls, ordered resource/busy/UI gating, touch inventory wrong-class red/rejection and operations/scroll, cancellation, high-DPI panels
 nix develop -c godot --headless -s game/entities/test_panel_time.gd # desktop wrong-class red/rejection + touch inventory/skills/shop: live DOT, cooldowns, buff/dodge expiry, blocked gameplay input, close/reopen movement, lethal DOT
-nix develop -c godot --headless -s game/entities/test_creatures.gd # gen-spawns determinism, rosters, level band, HP calibration, FSM
+nix develop -c godot --headless -s game/entities/test_creatures.gd # gen-spawns cold reversed-order groups/roles/positions/stats/seeds, ordinary rosters, level band, HP calibration, FSM
 nix develop -c godot --headless -s game/entities/test_creature_roles.gd   # c-creature-roles, role parsing, role per spawned group, ranged keep-away / LOS / shot, mage splash + burning, poison application/ticks through dodge, unchanged burning/direct-hit dodge, no friendly fire, blocked shot, enemy-hit roll
 nix develop -c godot --headless -s game/combat/test_combat.gd       # formulas, hit/combo/whiff, retaliation, kill, respawn
 nix develop -c godot --headless -s game/items/test_items.gd         # gen-item roll/stats/names, slots, legal loadouts, atomic 2H/shield conflict rejection in either equip order, stack rule, gen-loot rates, kill → drop → pick-up → quick-item
@@ -188,7 +191,7 @@ nix develop -c godot --headless -s game/items/test_gear_hp.gd       # literal sl
 nix develop -c godot --headless -s game/progression/test_progression.gd   # xp-to-next table, xp-for-kill gap rule, settle, c-xp-config, kills → level 2
 nix develop -c godot --headless -s game/progression/test_skill_tree.gd    # tree shape per spec, c-tree-shape, spend/unlock, per-point mults, class slots, first-slot smash + cooldown
 nix develop -c godot --headless -s game/combat/test_dot_applications.gd # independent/staggered/mixed applications, exact first/final ticks, coarse/fragmented dt, source lifetime, synchronous clear/death
-nix develop -c godot --headless -s game/combat/test_abilities.gd    # c-ability-runtime, costs, smash dash+stun, cyclone ticks, buffs, rock fist, MP per hit, special charge, burning, heal cast, shield, bulwark
+nix develop -c godot --headless -s game/combat/test_abilities.gd    # c-ability-runtime, costs, smash dash+stun, cyclone ticks, buffs, Camouflage 6/7-point expiry/rejection/recast boundaries through real runner, rock fist, MP per hit, special charge, burning, heal cast, shield, bulwark
 nix develop -c godot --headless -s game/combat/test_class_combos.gd # burst/dash hit/miss, whole-channel normal/early end, gains/caps/inactivity, neutral taunts/heals/buffs/movement, projectile side heal
 nix develop -c godot --headless -s game/combat/test_defence.gd      # c-defence-config, dodge cost / roll / i-frames / rewards, shield + guardian block, same-interval block exhaustion / final-hit status protection, stealth fill / aggro / hit bonus / camouflage / decay, enemy-hit stun + knockback
 nix develop -c godot --headless -s game/combat/test_resistance.gd  # c-attack-defence, c-resistance-mitigation, c-resistance-dot; gear, attack-type/in-flight classification, creature baseline, ordered defence and once-only burn inheritance

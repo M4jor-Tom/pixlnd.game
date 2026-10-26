@@ -22,6 +22,13 @@ func _init() -> void:
 	var rosters: Dictionary = o.configs["creature-families"]["landscape-rosters"]
 	var a := WorldGen.new(26879, design, o.landscapes)
 	var b := WorldGen.new(26879, design, o.landscapes)
+	# Pin seed/config/rosters and solo level 1; no saved geography or mutable incarnations.
+	# Populate a distinct cold generator in the exact reverse zone order, before touching a.
+	var reversed_plans := {}
+	for zx in range(40, -41, -8):
+		for zy in range(40, -41, -8):
+			var zc := Vector2i(zx * 32, zy * 32)
+			reversed_plans[zc] = Spawner.plan(b, zc, design, o.creatures, rosters, 1)
 	var groups := 0
 	var lands_seen := {}
 	var lvl1_hostile_hp: Array = []
@@ -29,8 +36,10 @@ func _init() -> void:
 		for zy in range(-40, 41, 8):
 			var zc := Vector2i(zx * 32, zy * 32)  # spread over many lands
 			var pa := Spawner.plan(a, zc, design, o.creatures, rosters, 1)
-			var pb := Spawner.plan(b, zc, design, o.creatures, rosters, 1)
-			check(var_to_str(pa) == var_to_str(pb), "same seed → same spawns at %s" % zc)
+			check(
+				pa == reversed_plans[zc],
+				"cold reversed-order ordinary groups/roles/positions/stats/seeds at %s" % zc
+			)
 			check(pa.size() <= int(spawns["groups-per-zone"][1]), "≤ max groups per zone")
 			var land = a.land_of_block(zc.x * 64 + 32, zc.y * 64 + 32)
 			lands_seen[land.landscape] = true
@@ -42,6 +51,7 @@ func _init() -> void:
 					"%s is in the %s roster" % [g["species"], land.landscape]
 				)
 				var c: Model.Creature = o.creatures[g["species"]]
+				check(not c.boss_species, "ordinary group is not an always-boss species")
 				var gs := c.group_size if c.group_size != Vector2i(1, 1) else Vector2i(1, 3)
 				check(
 					g["positions"].size() >= 1 and g["positions"].size() <= gs.y,

@@ -22,13 +22,23 @@ func _init() -> void:
 	for seed_ in [26879, 1, 7, 9001]:
 		var a := Gen.new(seed_, d, o.landscapes)
 		var b := Gen.new(seed_, d, o.landscapes)
-		for lc in [Vector2i.ZERO, Vector2i(-512, -512), Vector2i(511, 511), Vector2i(-5, 7)]:
+		var coords := [Vector2i.ZERO, Vector2i(-512, -512), Vector2i(511, 511), Vector2i(-5, 7)]
+		# Independent cold generators, same inputs, opposite request order (not one cached plan).
+		var reverse := coords.duplicate()
+		reverse.reverse()
+		var reversed_plans := {}
+		for lc in reverse:
+			reversed_plans[lc] = b.encounters_at(b.land_at(lc)).duplicate(true)
+		for lc in coords:
 			var land = a.land_at(lc)
 			var plan_: Dictionary = a.encounters_at(land)
 			check(not plan_.is_empty(), "complete joint plan " + str([seed_, lc, a.diagnostics]))
 			if plan_.is_empty():
 				continue
-			check(plan_ == b.encounters_at(b.land_at(lc)), "seed determinism")
+			check(
+				plan_ == reversed_plans[lc],
+				"cold reversed-order village/sites/routes/assignments: %s" % str([seed_, lc])
+			)
 			check(plan_.sites.size() == 6, "all six sites")
 			var homes := 0
 			var bosses := 0

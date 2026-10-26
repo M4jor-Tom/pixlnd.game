@@ -33,6 +33,7 @@ static func plan(
 		func(id: String) -> bool:
 			return (
 				creatures.has(id)
+				and not creatures[id].boss_species
 				and not (
 					Model.CreatureCategory.keys()[creatures[id].category].to_lower().replace(
 						"_", "-"

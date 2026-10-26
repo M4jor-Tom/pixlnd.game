@@ -41,6 +41,69 @@ func _player(
 	return p
 
 
+## Advance the real runner synchronously: exact boundaries without 26-second wall-clock waits.
+func _camouflage_boundaries() -> void:
+	for row in [[6, 26.0, 28.0], [7, 27.0, 26.0]]:
+		var rank: int = row[0]
+		var duration: float = row[1]
+		var cooldown: float = row[2]
+		var p := _player(&"rogue", &"assassin", Vector3.ZERO, {&"camouflage": rank})
+		p.set_physics_process(false)
+		var runner = p.abilities
+		check(p.use_class_skill(3), "Camouflage %d: initial cast through class slot" % rank)
+		check(
+			(
+				runner.flag("stealth-full")
+				and is_equal_approx(runner.buffs[&"camouflage"].left, duration)
+				and is_equal_approx(runner.cooldowns[&"camouflage"], cooldown)
+			),
+			"Camouflage %d: literal duration/cooldown %s/%s" % [rank, duration, cooldown]
+		)
+		# A rejected use must not refresh either timer.
+		runner.tick(1.0)
+		check(not p.use_class_skill(3), "Camouflage %d: immediate recast rejected" % rank)
+		check(
+			(
+				is_equal_approx(runner.buffs[&"camouflage"].left, duration - 1.0)
+				and is_equal_approx(runner.cooldowns[&"camouflage"], cooldown - 1.0)
+			),
+			"Camouflage %d: rejected recast leaves both timers untouched" % rank
+		)
+		runner.tick(24.875)  # t=25.875: before rank-6 expiry / rank-7 cooldown
+		if rank == 6:
+			check(runner.flag("stealth-full"), "Camouflage 6: active before expiry")
+			runner.tick(0.125)
+			check(not runner.flag("stealth-full"), "Camouflage 6: expires at 26 seconds")
+			check(not p.use_class_skill(3), "Camouflage 6: two-second recast gap begins")
+			runner.tick(1.875)
+		check(not p.use_class_skill(3), "Camouflage %d: rejected just before cooldown" % rank)
+		runner.tick(0.125)
+		check(
+			runner.flag("stealth-full") == (rank == 7),
+			"Camouflage %d: overlap only at seven points" % rank
+		)
+		check(p.use_class_skill(3), "Camouflage %d: recast at exact cooldown boundary" % rank)
+		runner.tick(1.0)  # rank 7 reaches the OLD expiry; refreshed buff must survive it
+		check(
+			(
+				runner.flag("stealth-full")
+				and is_equal_approx(runner.buffs[&"camouflage"].left, duration - 1.0)
+			),
+			"Camouflage %d: recast refreshes duration, not stack/add/old expiry" % rank
+		)
+		runner.tick(duration - 1.125)
+		check(
+			runner.flag("stealth-full"), "Camouflage %d: active just before renewed expiry" % rank
+		)
+		runner.tick(0.125)
+		check(not runner.flag("stealth-full"), "Camouflage %d: renewed buff expires exactly" % rank)
+		check(
+			p.use_class_skill(3) == (rank == 7),
+			"Camouflage %d: same recast availability after renewed expiry" % rank
+		)
+		p.free()
+
+
 func _init() -> void:
 	o = Model.Ontology.load_dir("res://ontology/instances")
 	check(o.validate(), "ontology valid")
@@ -57,6 +120,7 @@ func _init() -> void:
 	ab["smash"]["cost"].erase("mp")
 	check(o.validate(), "restored")
 	InputMapBuilder.build(o.configs["keybinds"]["hybrid"])
+	_camouflage_boundaries()
 	var floor := StaticBody3D.new()
 	var cs := CollisionShape3D.new()
 	var box := BoxShape3D.new()

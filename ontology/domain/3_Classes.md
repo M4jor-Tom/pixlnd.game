@@ -172,7 +172,10 @@ Hybrid village-curse state is world-shared and persistent under `save-data` item
 Settlement-style records are hybrid configuration under §5 Validation-contract mapping item 1.
 
 ### district
-City quarter. `A` → `instances/buildings.json#districts`.
+City quarter. `A` → `instances/buildings.json#districts`. Building references are catalog IDs;
+the four adventurer-quarter trainers use `{id: "class-trainer", class: <class-id>}` to retain
+one building per class, not four invented building types. District provenance and the ranger
+master's aim-target note remain unchanged.
 
 ### building
 Functional structure in a settlement. `A S` → `instances/buildings.json` (inn, weapon-shop,
@@ -192,6 +195,13 @@ Built or natural structure that hosts a mission objective. `A S` → `instances/
 | roster | enemy faction/race set (forest dungeons: insect, animal-i, animal-ii, undead, orc, human, beetle, dwarf) |
 Alpha location table (cuwo): Village, Mountain, Forest, Lake, Ruins, Gravesite, Canyon, Valley,
 Crater, Cave, Portal, Rock, Tree, Peak, Castle, Catacombs, Palace, Temple, Pyramid, Island.
+
+Landscape `dungeons` lists dungeon-type IDs; `pois` lists POI-type IDs. Placement, frequency and
+variant descriptions remain in each landscape's raw `notes`, not embedded in IDs. Retained
+[world evidence](../../docs/research/research_world.md#32-landscape-list) describes jungle ruins
+as a variant of overworld ruins, supporting `ruins`; ocean temples are on large islands and arenas
+are more common in oceans. Desert ruins are described, but their exact catalog identity remains
+unresolved: retain that evidence in notes, not a fabricated alias or a resolved dungeon reference.
 
 ### poi-type
 Non-dungeon point of interest / event site. `A S` → `instances/poi-types.json` (campsite, arena,
@@ -334,7 +344,7 @@ Playable species (8) + NPC-only humanoids. `A S Ω` → `instances/races.json`.
 | genders | male, female |
 | size-class | small (dwarf, goblin: fit through windows) / normal / large (orc) |
 | customization | hair count M/F, head count M/F (alpha asset counts), quirks (frogman "hair" = eyes; dwarf beards/braids; orc jaws; lizard eyelashes) |
-| stats | **none** (purely cosmetic); hitbox capsule by size-class (D13, `generators.json#design.movement.hitbox`) |
+| stats | **no racial stat bonuses**; collision capsule varies by size-class (D13, `generators.json#design.movement.hitbox`) |
 | voice | race-specific groans |
 
 ### character-class
@@ -1494,7 +1504,9 @@ and effect reference. Defined once in [controls](controls.md), not inferred from
 Device-specific bindings and their mapping status, aliases and contextual input shapes.
 [Profiles](controller-profiles.md) refer to canonical actions; keyboard/mouse is documented,
 gamepad remains unselected, and Android's [native tool stack](../decisions/android-native-touch-controls.md)
-and [touch-profile policy](controller-profiles.md#android) are selected but unimplemented.
+and [touch-profile policy](controller-profiles.md#android) have a first-slice runtime tested by
+the owner on Android hardware. Device/checklist details and render-cost measurements remain
+unrecorded; broader controls implementation is deferred.
 
 ### input-binding
 A physical input/shape in a controller profile referring to one or more distinct control actions.

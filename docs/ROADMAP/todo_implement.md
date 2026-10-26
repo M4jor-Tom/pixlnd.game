@@ -231,7 +231,14 @@ future character systems and networking remain unfinished; the items below retai
   [profile deferrals](../../ontology/domain/controller-profiles.md#android-device-scope).
   Desktop coupling/aliases and independent native panel semantics are unchanged.
 
-## Validation contract (documentation approved; implementation unauthorized)
+<a id="validation-contract-documentation-approved-implementation-unauthorized"></a>
+## Validation contract (bounded checks; remaining implementation deferred)
+
+Required races and whole movesets now have missing/malformed-input regressions and cumulative
+load-error checks. Selected district building/class and landscape dungeon/POI references are checked;
+qualifiers remain raw notes. Desert-ruins identity is still unresolved, not a closed alias or new type.
+The remaining mapping below is not implemented by those finite checks.
+
 - [ ] Source item 32 (`ontology/domain/3_Classes.md#pet-food`): the daily stocked-type report selects no purchase
   quantity or source-build attribution; daily amounts/food histories remain research. No stock,
   purchase or carrying rule changes, label inference or data/checker/runtime work authorized.
@@ -259,8 +266,8 @@ future character systems and networking remain unfinished; the items below retai
   authorized now. Hybrid v1 landscape availability is settled (§3.1); historical Swamp Lands
   identity remains research, not an implementation choice.
 - [ ] Mapping item 4 (`ontology/domain/index.md §5`): implement the recorded required-path/shape, bounded
-  source-inheritance and layer-specific checks when separately authorized. Cover missing-whole-input
-  negatives (including races and whole moveset blocks), both directions of class/spec references,
+  source-inheritance and layer-specific checks beyond the bounded coverage above when separately
+  authorized. Remaining required-input negatives, both directions of class/spec references,
   spec cardinality/start index, rootless shared skill columns and handedness-specific cube capacities.
   Fail on accumulated errors; separate artifact-definition/generated-instance checks. Require current
   artifact log config directly; no old decay/floor alternative. Source items 7–9/17 record bounded mixed-container/patch/encounter reports, not whole-file labels;

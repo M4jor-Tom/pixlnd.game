@@ -279,10 +279,11 @@ class Ontology:
 			return
 		match name:
 			"races":
+				configs[name] = data  # Keep the catalog boundary, including malformed rows.
 				for id in _rows(data):
 					var r := Race.new()
 					_fill(r, id, data[id])
-					r.playable = bool(data[id].get("playable", false))
+					r.playable = data[id].get("playable") is bool and data[id]["playable"]
 					r.size_class = StringName(str(data[id].get("size-class", "normal")))
 					races[id] = r
 			"classes":
@@ -454,7 +455,12 @@ class Ontology:
 					_fill(l, id, data[id])
 					l.climate = data[id].get("climate", {})
 					l.hazards.assign(data[id].get("hazards", []))
-					l.dungeon_types.assign(data[id].get("dungeons", []))
+					var dungeons: Variant = data[id].get("dungeons", [])
+					if dungeons is Array:
+						for dungeon in dungeons:
+							if dungeon is String:
+								l.dungeon_types.append(StringName(dungeon))
+					# Malformed references stay in raw for cumulative validation.
 					l.style = str(data[id].get("style", ""))
 					l.gen = data[id].get("gen", {})
 					landscapes[id] = l
@@ -1065,7 +1071,141 @@ class Ontology:
 				)
 			)
 
+	# Guard only fields consumed by the moveset numeric/reference checks below.
+	func _moveset_fields_valid(row: Dictionary, path: String) -> bool:
+		var valid := true
+		for field in [
+			"damage-mult",
+			"swing-mult",
+			"radius-mult",
+			"lunge",
+			"range",
+			"radius",
+			"speed",
+			"life-s",
+			"count",
+			"spread",
+			"gravity",
+			"splash",
+			"tick-s",
+			"every",
+			"chance"
+		]:
+			if not row.has(field):
+				continue
+			var value: Variant = row[field]
+			if (not value is int and not value is float) or not is_finite(float(value)):
+				errors.append(path + "." + field + ": finite number required")
+				valid = false
+		if row.has("pierce") and not row["pierce"] is bool:
+			errors.append(path + ".pierce: boolean required")
+			valid = false
+		var applies: Variant = row.get("applies", [])
+		if not applies is Array:
+			errors.append(path + ".applies: status ID array required")
+			valid = false
+		else:
+			for id in applies:
+				if not id is String:
+					errors.append(path + ".applies: status ID string required")
+					valid = false
+		return valid
+
+	# Finite required identity boundary; raw metadata is not a race row.
+	func _validate_races() -> void:
+		var catalog: Variant = configs.get("races")
+		if not catalog is Dictionary:
+			errors.append("races: required catalog object missing or malformed")
+			return
+		for id in ["human", "elf", "dwarf", "goblin", "lizardman", "orc", "undead", "frogman"]:
+			if not catalog.has(id):
+				errors.append("races.%s: required playable race missing" % id)
+		for id in catalog:
+			if str(id).begins_with("$") or str(id).begins_with("_"):
+				continue
+			var path := "races." + str(id)
+			var row: Variant = catalog[id]
+			if not row is Dictionary:
+				errors.append(path + ": required row object")
+				continue
+			if not row.get("playable") is bool:
+				errors.append(path + ".playable: boolean required")
+			if row.get("size-class") not in ["small", "normal", "large"]:
+				errors.append(path + ".size-class: small, normal or large required")
+
+	# Only district buildings and landscape dungeon/POI IDs, not descriptive world strings.
+	func _validate_world_references() -> void:
+		var cfg: Variant = configs.get("buildings")
+		var buildings: Variant = cfg.get("buildings") if cfg is Dictionary else null
+		var districts: Variant = cfg.get("districts") if cfg is Dictionary else null
+		if not buildings is Dictionary:
+			errors.append("buildings.buildings: required catalog object")
+			buildings = {}
+		if not districts is Dictionary:
+			errors.append("buildings.districts: required catalog object")
+			districts = {}
+		for district in districts:
+			var row: Variant = districts[district]
+			var path := "buildings.districts." + str(district) + ".buildings"
+			if not row is Dictionary:
+				errors.append(path + ": district row object required")
+				continue
+			var refs: Variant = row.get("buildings", [])
+			if not refs is Array:
+				errors.append(path + ": array required")
+				continue
+			var trainer_classes := []
+			for ref in refs:
+				var id: Variant = ref.get("id") if ref is Dictionary else ref
+				if not id is String or not buildings.get(id) is Dictionary:
+					errors.append(path + ": unknown or malformed building ID " + str(id))
+				if ref is Dictionary:
+					var qualifier: Variant = ref.get("class")
+					if (
+						not id is String
+						or id != "class-trainer"
+						or not qualifier is String
+						or not classes.has(qualifier)
+					):
+						errors.append(
+							path + ": class qualification requires a trainer and valid class"
+						)
+					else:
+						trainer_classes.append(qualifier)
+					for key in ref:
+						if key not in ["id", "class"]:
+							errors.append(path + ": unknown qualification " + str(key))
+			if district == "adventurer":
+				for cid in ["warrior", "ranger", "rogue", "mage"]:
+					if trainer_classes.count(cid) != 1:
+						errors.append(path + ": exactly one class-trainer for " + cid + " required")
+				if refs.size() != 4:
+					errors.append(path + ": four class-qualified trainers required")
+		for land in landscapes:
+			var row: Dictionary = landscapes[land].raw
+			for field in ["dungeons", "pois"]:
+				if not row.has(field):
+					continue
+				var path: String = "landscapes." + str(land) + "." + field
+				var catalog: Variant = configs.get(
+					"dungeon-types" if field == "dungeons" else "poi-types"
+				)
+				if not catalog is Dictionary:
+					errors.append(path + ": reference catalog object required")
+					catalog = {}
+				var refs: Variant = row[field]
+				if not refs is Array:
+					errors.append(
+						path + ": array of catalog IDs required; qualifiers belong in notes"
+					)
+					continue
+				for id in refs:
+					if not id is String or not catalog.get(id) is Dictionary or id.begins_with("_"):
+						errors.append(path + ": unknown or malformed reference " + str(id))
+
 	func validate() -> bool:
+		_validate_races()
+		_validate_world_references()
 		_validate_equipment()
 		_validate_android()
 		for id in specs:  # c-spec-of-class
@@ -1464,80 +1604,103 @@ class Ontology:
 				errors.append("design.status-effects.%s: malformed object" % id)
 			elif se[id].has("as") and not se.has(str(se[id]["as"])):
 				errors.append("design.status-effects.%s: `as` %s has no entry" % [id, se[id]["as"]])
-		var mv: Dictionary = design.get("movesets", {})  # c-moveset-config (D24)
-		if not mv.is_empty():
-			var kinds: Array = mv.get("kinds", [])
-			for id in mv:
-				if str(id).begins_with("_") or str(id) == "kinds":
+		var moveset_input: Variant = design.get("movesets")  # c-moveset-config (D24)
+		var mv: Dictionary = moveset_input if moveset_input is Dictionary else {}
+		if mv.is_empty():
+			errors.append("design.movesets: required nonempty object missing or malformed")
+		if not mv.get("default") is Dictionary:
+			errors.append("design.movesets.default: required object missing or malformed")
+		var kinds_input: Variant = mv.get("kinds")
+		var kinds: Array = kinds_input if kinds_input is Array else []
+		if kinds.is_empty():
+			errors.append("design.movesets.kinds: required nonempty array")
+		for kind in kinds:
+			if kind not in ["melee", "projectile", "beam", "at-cursor"]:
+				errors.append("design.movesets.kinds: unknown or malformed kind " + str(kind))
+		for id in mv:
+			if str(id).begins_with("_") or str(id) == "kinds":
+				continue
+			if str(id) != "default" and not weapon_types.has(id):
+				errors.append("design.movesets.%s is not a weapon-type" % id)
+			if not mv[id] is Dictionary:
+				errors.append("design.movesets.%s: entry object required" % id)
+				continue
+			var m: Dictionary = mv[id]
+			if m.has("as"):
+				var target: Variant = mv.get(m["as"]) if m["as"] is String else null
+				if not target is Dictionary or target.has("as") or str(m["as"]).begins_with("_"):
+					errors.append(
+						"design.movesets.%s: `as` %s is not a plain entry" % [id, m["as"]]
+					)
+				continue
+			for slot in ["m1", "m2"]:
+				var s = m.get(slot)
+				var where := "design.movesets.%s.%s" % [id, slot]
+				if not s is Dictionary or not (str(s.get("kind")) in kinds):
+					errors.append("%s: kind must be one of %s" % [where, kinds])
 					continue
-				if str(id) != "default" and not weapon_types.has(id):
-					errors.append("design.movesets.%s is not a weapon-type" % id)
-				var m: Dictionary = mv[id]
-				if m.has("as"):
-					if not mv.has(str(m["as"])) or (mv[m["as"]] as Dictionary).has("as"):
+				if not _moveset_fields_valid(s, where):
+					continue
+				for sid in s.get("applies", []):
+					if not se.has(sid):
 						errors.append(
-							"design.movesets.%s: `as` %s is not a plain entry" % [id, m["as"]]
+							"%s: applies %s has no design.status-effects entry" % [where, sid]
 						)
-					continue
-				for slot in ["m1", "m2"]:
-					var s = m.get(slot)
-					var where := "design.movesets.%s.%s" % [id, slot]
-					if not s is Dictionary or not (str(s.get("kind")) in kinds):
-						errors.append("%s: kind must be one of %s" % [where, kinds])
-						continue
-					for sid in s.get("applies", []):
-						if not se.has(sid):
-							errors.append(
-								"%s: applies %s has no design.status-effects entry" % [where, sid]
-							)
-					if float(s.get("damage-mult", 1)) <= 0.0:
-						errors.append("%s: damage-mult must be > 0" % where)
-					match str(s["kind"]):
-						"melee":
+				if float(s.get("damage-mult", 1)) <= 0.0:
+					errors.append("%s: damage-mult must be > 0" % where)
+				match str(s["kind"]):
+					"melee":
+						if (
+							float(s.get("swing-mult", 1)) <= 0.0
+							or float(s.get("radius-mult", 1)) <= 0.0
+							or float(s.get("lunge", 0)) < 0.0
+						):
+							errors.append("%s: swing-mult, radius-mult > 0, lunge >= 0" % where)
+						if s.has("finisher"):
+							if not s["finisher"] is Dictionary:
+								errors.append(where + ": finisher object required")
+								continue
+							var f: Dictionary = s["finisher"]
+							if not _moveset_fields_valid(f, where + ".finisher"):
+								continue
 							if (
-								float(s.get("swing-mult", 1)) <= 0.0
-								or float(s.get("radius-mult", 1)) <= 0.0
-								or float(s.get("lunge", 0)) < 0.0
+								int(f.get("every", 0)) < 2
+								or float(f.get("chance", -1)) < 0.0
+								or float(f.get("chance", -1)) > 1.0
 							):
-								errors.append("%s: swing-mult, radius-mult > 0, lunge >= 0" % where)
-							if s.has("finisher"):
-								var f: Dictionary = s["finisher"]
-								if (
-									int(f.get("every", 0)) < 2
-									or float(f.get("chance", -1)) < 0.0
-									or float(f.get("chance", -1)) > 1.0
-								):
-									errors.append(
-										"%s: finisher every >= 2, chance in [0,1]" % where
-									)
-								for sid in f.get("applies", []):
-									if not se.has(sid):
-										(
-											errors
-											. append(
-												(
-													"%s: finisher applies %s has no design.status-effects entry"
-													% [where, sid]
-												)
+								errors.append("%s: finisher every >= 2, chance in [0,1]" % where)
+							for sid in f.get("applies", []):
+								if not se.has(sid):
+									(
+										errors
+										. append(
+											(
+												"%s: finisher applies %s has no design.status-effects entry"
+												% [where, sid]
 											)
 										)
-						"projectile":
-							errors.append_array(_shot_errors(s, where))
-						_:
-							if float(s.get("range", 0)) <= 0.0 or float(s.get("radius", 0)) <= 0.0:
-								errors.append("%s: range and radius must be > 0" % where)
-			for cid in classes:
-				for wt in (classes[cid] as CharacterClass).weapon_types:
-					if not weapon_types.has(wt):
-						continue  # c-weapon-class already diagnosed the missing reference.
-					if (weapon_types[wt] as WeaponType).hands != Hands.OFFHAND and not mv.has(wt):
-						errors.append(
-							"design.movesets: class %s weapon-type %s has no entry" % [cid, wt]
-						)
+									)
+					"projectile":
+						errors.append_array(_shot_errors(s, where))
+					_:
+						if float(s.get("range", 0)) <= 0.0 or float(s.get("radius", 0)) <= 0.0:
+							errors.append("%s: range and radius must be > 0" % where)
+		for cid in classes:
+			for wt in (classes[cid] as CharacterClass).weapon_types:
+				if not weapon_types.has(wt):
+					continue  # c-weapon-class already diagnosed the missing reference.
+				if (weapon_types[wt] as WeaponType).hands != Hands.OFFHAND and not mv.has(wt):
+					errors.append(
+						"design.movesets: class %s weapon-type %s has no entry" % [cid, wt]
+					)
 		var st_input: Variant = design.get("settlement")  # c-settlement-config (D22)
 		if st_input is Dictionary and not st_input.is_empty():
 			var st: Dictionary = st_input
-			var bj: Dictionary = configs.get("buildings", {})
+			var building_config: Variant = configs.get("buildings")
+			var bj: Dictionary = building_config if building_config is Dictionary else {}
+			var building_rows: Variant = bj.get("buildings")
+			if not building_rows is Dictionary:
+				building_rows = {}
 			var roles: Dictionary = configs.get("npc-roles", {})
 			if float(st["radius"]) <= float(st["blend"]) or float(st["blend"]) < 0.0:
 				errors.append("design.settlement: need radius > blend >= 0")
@@ -1546,7 +1709,7 @@ class Ontology:
 			if float(st["no-hostiles-within"]) < float(st["radius"]):
 				errors.append("design.settlement.no-hostiles-within < radius")
 			for b in st["buildings"]:
-				if not bj.get("buildings", {}).has(b):
+				if not building_rows.has(b):
 					errors.append("design.settlement.buildings: unknown building %s" % b)
 			for b in st["npc"]["roles"]:
 				if not roles.has(st["npc"]["roles"][b]):

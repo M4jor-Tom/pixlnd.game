@@ -25,7 +25,11 @@ game-choice backlog. Resistance's meaning and all five approved combat selection
 [mitigation rules](domain/5_Constraints.md#constraint-catalog).
 Combat hit-derived burning and poison use [independent applications](domain/3_Classes.md#status-effect).
 Implementation deferrals live in `docs/ROADMAP/todo_implement.md`; documentation approval grants
-no runtime permission. Equipment-model and validation-contract implementation is also deferred.
+no runtime permission. Validation-contract enforcement remains partial: required race/catalog rows,
+whole movesets and their selected shapes/references, district building/class references and landscape
+dungeon/POI references have bounded checks (`test_required_catalogs.gd`, `test_world_references.gd`).
+Landscape qualifiers remain raw notes; desert-ruins identity is unresolved, not a resolved alias.
+Broader mapping/provenance enforcement and remaining equipment behavior stay in the backlog.
 Dated build notes include superseded placeholders, not proof of current coverage. For
 "resume walking through items", follow `docs/HANDOFF.md`, `docs/lessons.md` and any retained selections,
 not the gameplay slice loop. A green validator proves only its implemented checks, not full ontology consistency.
