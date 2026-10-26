@@ -141,6 +141,7 @@ directory. They never use `user://`. Keep test saves/logs there and use a separa
 for boot checks. Run every Godot invocation under `timeout` (including older commands below).
 ```sh
 # export PIXLND_TEST_DIR=/absolute/path/to/isolated-check-output
+timeout 150 nix develop --no-update-lock-file -c godot --headless -s ontology/test_validation_fail_closed.gd # malformed loot/reference continuation, actual CLI exit truth table/prior load errors and OntologyDB false/empty abort; child logs stay in PIXLND_TEST_DIR
 timeout 150 nix develop -c godot --headless -s ontology/test_encounter_rewards_config.gd # exact required package/loot/daily shop inputs, cumulative malformed/missing parents and references
 timeout 150 nix develop -c godot --headless -s game/items/test_encounter_rewards.gd # actual death/shared pickup/expiry/unload/restart, seven boss guarantees, fixed spirits and class-legal gear
 timeout 150 nix develop -c godot --headless -s game/world/test_supplier_shops.gd # actual main vendor/captive interactions, last-exit-before-refresh, class snapshot/deferral, saved purchases/daily ceilings and exact save negatives

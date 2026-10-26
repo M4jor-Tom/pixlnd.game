@@ -11,10 +11,16 @@ var ruleset: Model.Ruleset  # the default ruleset (hybrid, D1)
 var design: Dictionary  # generators.json#design: owner-designed tunables (D6/D11)
 
 
+func _load_ontology() -> Model.Ontology:
+	return Model.Ontology.load_dir("res://ontology/instances")
+
+
 func _ready() -> void:
-	data = Model.Ontology.load_dir("res://ontology/instances")
-	data.validate()
-	if not data.errors.is_empty():
+	data = _load_ontology()
+	var ok := data.validate()
+	if not ok or not data.errors.is_empty():
+		if data.errors.is_empty():
+			push_error("ontology: validation failed without diagnostics")
 		for e in data.errors:
 			push_error("ontology: " + e)
 		get_tree().quit(1)

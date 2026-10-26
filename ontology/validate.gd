@@ -6,8 +6,12 @@ extends SceneTree
 const Model := preload("res://ontology/model.gd")  # preload: class_name needs a project.godot, this does not
 
 
+func _load_ontology() -> Model.Ontology:
+	return Model.Ontology.load_dir("res://ontology/instances")
+
+
 func _init() -> void:
-	var o := Model.Ontology.load_dir("res://ontology/instances")
+	var o := _load_ontology()
 	var ok := o.validate()
 	print(
 		(
@@ -35,4 +39,4 @@ func _init() -> void:
 			else "ontology INVALID (%d errors)" % o.errors.size()
 		)
 	)
-	quit(0 if o.errors.is_empty() else 1)
+	quit(0 if ok and o.errors.is_empty() else 1)

@@ -1284,9 +1284,17 @@ class Ontology:
 					errors.append("design.loot.rarity-weights: bad rarity " + id)
 			var types_input: Variant = configs.get("item-types")
 			var types: Dictionary = types_input if types_input is Dictionary else {}
-			for id in loot["gear-kinds"].keys() + design.get("stack-cap", {}).get("stackable", []):
+			var stack_cap: Variant = design.get("stack-cap", {})
+			if not stack_cap is Dictionary:
+				errors.append("design.stack-cap: object required")
+				stack_cap = {}
+			var stackable: Variant = stack_cap.get("stackable", [])
+			if not stackable is Array:
+				errors.append("design.stack-cap.stackable: array required")
+				stackable = []
+			for id in loot["gear-kinds"].keys() + stackable:
 				if not types.has(id):
-					errors.append("design.loot/stack-cap: unknown item-type " + id)
+					errors.append("design.loot/stack-cap: unknown item-type %s" % str(id))
 			for id in loot["consumable-pool"]:
 				if not consumables.has(id):
 					errors.append("design.loot.consumable-pool: unknown consumable " + id)
@@ -1520,6 +1528,8 @@ class Ontology:
 								errors.append("%s: range and radius must be > 0" % where)
 			for cid in classes:
 				for wt in (classes[cid] as CharacterClass).weapon_types:
+					if not weapon_types.has(wt):
+						continue  # c-weapon-class already diagnosed the missing reference.
 					if (weapon_types[wt] as WeaponType).hands != Hands.OFFHAND and not mv.has(wt):
 						errors.append(
 							"design.movesets: class %s weapon-type %s has no entry" % [cid, wt]
