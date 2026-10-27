@@ -1,148 +1,245 @@
-# Game implementation review — existing-behavior findings
+# Game review — current unresolved findings
 
-Sections 1–6 retain the original audit's evidence and source locations; they are not a fresh
-verification of the current checkout. Section 7 covers implemented item-power paths and their
-ontology inputs/checks; its game-side paths were separately source-checked at `41d5302`.
+Updated **2026-10-27** from five Sol-6.1 investigations, plan synthesis and independent review.
+Runtime probes used `33e262b9e16e033ea5830db3906d7fb1a316759f`; source was rechecked at
+`3164c08189ff78b4612a1751e07637b7befe09da`. Gameplay, ontology and engine configuration are
+unchanged between those pins. Subsequent changes only ignore local plans and adjust quality-gate timeouts.
 
-## Original audit scope and evidence
+**Nine correction groups remain.** These concern implemented behavior, not unfinished features.
+This review records evidence and proposed correction boundaries; it grants no implementation,
+new design, migration or publication authority. The original `8158ab2` audit remains in Git history.
 
-Reviewed `/home/theta/repos/pixlnd`, `master`, source baseline `8158ab2735ea5015d08338c104c3ee17f56a0f37`.
-Final verification found concurrent HEAD `f17738d1788c80a9fcd370048228f34f694c729a`, adding only `docs/pixlnd-8158ab2-ontology-review.md`. The reviewed game, ontology, tests and configuration are byte-identical to the baseline; the checkout is clean. This review made no commits or repository edits.
-Scope: errors in existing behavior against applicable ontology rules. Historical-only A/S rules and tuning preferences are excluded. This report grants no implementation authority.
+**Resolved and removed from active work:** creature collision/mesh sharing was fixed in `6730708`.
+`game/entities/creature.gd::setup` duplicates both resources before sizing. New two-size,
+factory/boss and saved-survivor rematerialization probes passed. Retain that boundary; do not add
+redundant scene-local duplication. A focused checked-in ownership regression is optional hardening.
+Rejected shop-toggle/village-distance leads are not correction tasks.
 
-## Original audit verdict
+## Fix groups and prerequisites
 
-**Not fully ontology-conformant at the reviewed baseline.** The data-driven organization is broadly sound, but focused runtime probes reproduced eight defects, grouped into topics 1–6 below. These are defects in existing behavior, not requests to finish the game. No architecture rewrite is warranted.
+The F labels match the local correction plan. Each group includes its regression and accurate
+check/status documentation; “together” means one coherent landing, not all findings in one patch.
 
-Baseline: ontology validator passed; all **28 existing tests (22 game, six ontology)** and headless main-scene boot passed with no logged errors. The baseline does not cover the reproduced cases. Test evidence: `checks.md`, `/tmp/pixlnd-game-audit-tests-1PGBsB8B/results.tsv`, and full logs in that directory.
+| Group | Fix | Additional prerequisite |
+|---|---|---|
+| F1 | Fatal-landing terminal frame boundary | None |
+| F2 | Player stun admission across input/use paths | None |
+| F3 | Creature AI motion versus knockback | None; characterize special-cancellation preservation |
+| F4 | Ordinary projectile cardinality/contact settlement | None |
+| F5 | Healing-over-time expiry integration | None |
+| F6 | Cyclone scheduling, active-time clipping and progress validation | Select exact terminal/zero-fuel convention |
+| F7 | Item-power producers and deterministic save checks | Select existing-save disposition |
+| F8 | Live character-power equip admission | None |
+| F9 | Apple healing or unsupported-use rejection | Select value/precision or rejection policy |
 
-## 1. P1 — Creature instances share mutable collision and mesh resources
+“None” means no additional design choice was identified, **not** permission to implement.
+F1/F5 are small independent starts; F2/F3/F4/F8 need not wait for F6/F7/F9 decisions.
 
-- Runtime: `game/entities/creature.tscn:5–7,13–16`; `game/entities/creature.gd:44–45`; spawning selects size at `game/world/spawner.gd:85,93`.
-- Authority: `ontology/instances/generators.json:86`, `design.spawns.size-by-category` specifies independently sized categories.
-- Reproduced: a size-1 creature initially has shape/mesh height 1. After setting up a second creature at size 1.9, the first creature's shape and mesh become approximately 1.9, while its collision-node centre remains 0.5. Shape and mesh identity comparisons are both true.
-- Consequence: loading a new group changes existing creatures' appearance and collision dimensions, with stale offsets.
-- Minimal correction: make both mutable subresources local to each scene instance (or duplicate before mutation); test two differently sized instances. Existing creature tests instantiate same-sized animals.
-- Evidence: `/tmp/pixlnd_world_review_probe.gd` and `.log`, exit 0. The probe uses differing representative sizes to establish aliasing; production config also contains differing category sizes.
+## F1 — P2: fatal landing still admits queued actions
 
-## 2. P1 — Stun does not consistently prevent action/movement
+- **Cause:** `game/entities/player.gd::_physics_process` continues after `_fall_damage`
+  synchronously sets `dead` and runs death cleanup. The desktop combat/interaction/Quick Item tail
+  remains reachable, unlike the already-guarded lethal-DOT path.
+- **Reproduced:** HP 1, lethal landing and a verified mapped Q edge yield `dead=true`, HP 200 and
+  one Potion consumed. The real callback was manually advanced: reachability, not OS timing frequency.
+- **Together:** a post-fall `dead` return and regressions for Potion **and independent attack/skill
+  admission**. An F2 item-use guard alone can hide the Potion symptom without fixing the frame tail.
+  Preserve nonlethal actions, death listeners, inventory/XP/coins, respawn and touch actions committed
+  before impact. Extend combat/panel-time preservation checks.
+- **Authority:** [death](../ontology/domain/3_Classes.md#death),
+  `generators.json#design.combat.death`; no ontology input/checker change needed.
 
-### Player input
+## F2 — P1: player stun eligibility is incomplete
 
-- Runtime: `game/entities/player.gd:405,410–411,432–436`.
-- Authority: `ontology/instances/generators.json:66`, `design.status-effects._doc`: stunned target cannot act.
-- Reproduced with mapped native key events and normal physics callbacks: a grounded stunned player jumps (vertical velocity about 13.323; y rises to 0.454); held ascent while stunned produces vertical velocity 3.0.
-- Source also shows desktop interaction/Quick Item omitting the stun guard; those two subpaths were not separately exercised in the stun probe.
-- Minimal correction: apply the existing stun eligibility to input admission consistently, without freezing timers or changing committed-ability behavior.
+- **Cause:** `player.gd::_physics_process` gates horizontal/request input but misses desktop Jump,
+  held Jump sustain and desktop/touch Swim Ascent. `talk_nearest`, `pick_up_nearest`, `use_item`
+  and desktop E/Q dispatch lack shared alive/stun admission; inventory selected Use calls `use_item` directly.
+- **Reproduced:** stunned desktop Jump rises about 0.454 blocks; desktop **and native-touch** ascent
+  set vertical velocity 3.0. Touch grounded Jump is already rejected. Held sustain and stunned
+  interaction/selected-use omissions are source-confirmed, not separately runtime-probed here.
+- **Together:** relevant vertical input consumers, shared requested-action endpoints and rejection
+  propagation through Quick Item; test keyboard, touch and selected bag use. Preserve live timers,
+  gravity, knockback and committed effects. Do not globally cancel touches, freeze the player,
+  block selected Use merely because inventory is open, or gate passive coin pickup in `pick_up`.
+  Preserve `test_panel_time.gd`, `test_android_controls.gd` and defence behavior.
+- **Authority:** `generators.json#design.status-effects._doc`,
+  [controls](../ontology/domain/controls.md), [profiles](../ontology/domain/controller-profiles.md).
+  Existing mappings/constants are sufficient; no new input policy or ontology checker is needed.
 
-### Creature locomotion
+## F3 — P1: stunned creatures retain AI-requested velocity
 
-- Runtime: `game/entities/creature.gd:78–80,230–236`; status insertion at `game/entities/entity.gd:49–53`.
-- Same authority as above; knockback is a separate effect.
-- Reproduced: a chasing wolf given pure stun, without knockback, travels about **3.25 blocks in 0.5 seconds**, retaining 6.5 blocks/s horizontal velocity while still stunned.
-- Minimal correction: remove AI-requested locomotion during stun while preserving actual knockback; do not blindly erase all displacement.
-- Existing tests mainly assert the stun flag or disable enemy physics, rather than asserting movement/input inhibition.
-- Evidence for both: `/tmp/pixlnd_input_stun_review_probe.gd` and `.log`, exit 0.
+- **Cause:** `game/entities/creature.gd::_physics_process` skips `_tick` while stunned but calls
+  `move_and_slide` with old x/z from `_move`. `entity.gd::apply_status` inserts actual knockback
+  into that same velocity; indiscriminate zeroing would erase a separate legitimate effect.
+- **Reproduced:** a pure-stunned chasing wolf travels about 3.25 blocks in 0.5s at 6.5 blocks/s.
+  A separate mixed-effect control confirms real knockback must continue moving the creature.
+- **Together:** distinguish requested locomotion from external horizontal impulse, with pure-stun,
+  both status-order, collision and expiry regressions. Preserve gravity, cooldowns, targeting,
+  protected return and simulation-radius rules; do not invent damping or persistent unstunned impulses.
+- **Coupled preservation risk, source-only:** `creature.gd::apply_status` calls base application
+  before `boss_special.gd` cancellation can zero horizontal motion. Characterize active warning/charge
+  plus knockback/stun before accepting cancellation-order changes. Extend `test_boss_special.gd`
+  alongside creature-AI/role checks; do not claim this boss path was runtime-reproduced.
+- **Authority:** existing stun/knockback separation and
+  [boss cancellation](../ontology/domain/encounter-contracts.md#boss-specials-and-breakable-rubble).
 
-## 3. P2 — Ordinary arrows behave like area attacks
+## F4 — P2: ordinary projectiles hit multiple bodies
 
-- Runtime: `game/combat/projectile.gd:89`; `game/entities/player.gd:642–662` loops over every overlapping body.
-- Authority: `ontology/instances/generators.json:110`, `design.movesets._doc`: ordinary projectile hits the **first body within radius**, with splash/pierce distinct; basic Bow has radius 0.7 and neither property.
-- Reproduced: one ordinary Bow projectile damages two adjacent wolves **40 HP each**, recording two hits.
-- Minimal correction: select one eligible target for a non-piercing/non-splash impact while reusing existing defence/status handling. Do not change all AoE strikes.
-- Gap: existing ordinary-arrow test uses one nearby target.
+- **Cause:** the ordinary branch of `game/combat/projectile.gd::_physics_process` invokes the same
+  area `_strike` used by splash/pierce. Both `player.gd::_strike` and `creature.gd::_strike` loop candidates.
+- **Reproduced:** one ordinary Bow shot damages two adjacent wolves 40 HP each, including through
+  actual stepped flight. Existing once-per-volley MP/combo settlement already works.
+- **Together:** ordinary dispatch, compatible target-selection limits in **both** shooter adapters,
+  and contact-versus-combat-hit settlement. Select one eligible body **before** damage/statuses;
+  retain current ordering and damage/defence logic. A prop consumes contact without combat rewards;
+  blocked/dodged actors retain existing counted-hit behavior. Neither spills to a second target.
+- **Regression boundary:** overlapping actors/props, blocked/lethal first contact, both shooters,
+  statuses and in-flight weapon commitment. Keep splash, pierce/return, melee, beam/cursor and
+  ability AoE unlimited. Extend projectile, creature-role, encounter-content and Resistance checks.
+- **Authority:** `generators.json#design.movesets._doc` first-body rule and
+  [furnishing direct damage](../ontology/domain/encounter-contracts.md#spike-traps-and-furnishing-contents).
+  No new ontology value/checker is required.
 
-## 4. P2 — A fatal landing still processes queued actions
+## F5 — P2: healing integrates past expiry
 
-- Runtime: `game/entities/player.gd:429–435`, after synchronous `_fall_damage`; death cleanup is at `:679–688`.
-- Authority: player death/respawn lifecycle at `ontology/domain/3_Classes.md:352–354`, `design.combat.death` in `ontology/instances/generators.json:103`.
-- Reproduced through the real physics entrypoint: player HP 1, lethal landing and a verified just-pressed Quick Item request results in **dead=true, HP=200, one potion consumed** after death cleanup.
-- The probe manually advances the real physics callback with an actual input edge; it does not establish an OS-input timing frequency. The source shows the same tail is reachable when the edge coincides with a real landing.
-- Minimal correction: return when death occurs during fall-damage resolution. Existing lethal-DOT handling already does so.
-- Gap: lethal DOT is covered; lethal landing plus queued action is not.
+- **Cause:** `game/combat/abilities.gd::tick` applies `per-s * dt` before expiring each HoT entry.
+- **Reproduced:** Heroic Shout heals 140.4375 over 10s, but 141.841875 over 9.9+0.2s;
+  Bubbles heals 69.5625 over 5s, but 70.95375 over 4.9+0.2s. Both expire in each comparison.
+- **Together:** integrate only `min(dt, remaining_lifetime)` and test both effects at exact/crossing
+  expiry, large updates, staggered entries, HP cap and reset/death. Preserve percentages, cast timing,
+  neutral combo and Bubbles' once-on-use healing. Extend ability checks; retain class-combo/unarmed checks.
+- **Authority:** `generators.json#design.abilities` selected healing amounts/durations.
+  No ontology change is needed. This fix is independent of F6 despite sharing the runner/test files.
 
-## 5. P2 — Ability timers do not respect elapsed-time boundaries
+## F6 — P2: Cyclone loses cadence and overruns active time
 
-### Cyclone cadence
+- **Cause:** `abilities.gd::tick` discards remainder, strikes at most once and deducts whole-update
+  duration/stamina before ending. Initial `tick=0` means the first positive update strikes immediately.
+- **Reproduced:** equal 1.5s yields 5/6/6/1 strikes for 15×0.1, 6×0.25, 90×1/60 and 1×1.5.
+  A channel with 0.4s remaining drains 25 stamina over a 1s update instead of 10. Fuel-crossing partitions
+  can add a late strike. These are arithmetic defects, not a measured rendering-performance problem.
+- **Safety dependency:** `ontology/model.gd` currently accepts channel `tick-s=0` and `-0.25`
+  (in-memory validator probes). A catch-up loop needs required finite `tick-s>0` and finite
+  `drain-per-s>=0` validation, including missing/raw-malformed inputs, **before** runtime adoption.
+- **Together:** remainder/catch-up, duration/fuel clipping, safe zero-drain handling, synchronous
+  reset/death interruption, loop-progress validation and regressions. Preserve committed weapon,
+  whole-channel miss/combo behavior and first-update phase; do not merely replace `if` with `while`.
+  Update bounded [constraints](../ontology/domain/5_Constraints.md#constraint-catalog) first;
+  selected cadence 0.25s, duration 5s and costs remain unchanged.
+- **Decision gate:** specify event inclusion exactly at interval/lifetime/fuel boundaries and whether
+  the first update strikes when the entry cost leaves zero stamina. Current quarter-step results and
+  the observed zero-post-cost first strike inform a least-change proposal; they are not owner-selected
+  universal semantics. Off-grid regressions already establish the unconditional defect. Do not import
+  DOT's distinct final-tick rule or block F5 while resolving this precision.
 
-- Runtime: `game/combat/abilities.gd:138–142` discards overshoot and processes at most one due strike.
-- Authority: `ontology/instances/generators.json:37,42`, channel cadence and `design.abilities.cyclone.tick-s=0.25`.
-- Reproduced at equal **1.5 seconds**: 15 × 0.1-second updates yield **5 hits / 105 damage**, while six × 0.25 (or 90 × 1/60) yield **6 hits / 126 damage**.
-- Minimal correction: retain the timer remainder and handle due strikes within active channel/stamina lifetime. Preserve existing first-tick phase; this review does not choose a new phase.
-- This proves update-partition sensitivity, not a measured rendering-performance problem. Normal engine operation has fixed physics ticks; hit-stop changes scaled time steps.
+## F7 — item-power production and save verification use source-level units
 
-### Healing-over-time expiry
+**Authority:** [hybrid item power](../ontology/domain/3_Classes.md#item) requires
+`clamp(power(source_level) + offset, 1, 100)`, converting **before** power-point spread.
+Use existing `Model.power_for_level`; preserve stat/heal/price equations, +1 starters, XP/coins,
+quantities, RNG draws and source-level records. This is now runtime-probed, not only source-derived.
 
-- Runtime: `game/combat/abilities.gd:126–130` applies a whole update before expiring the heal.
-- Authority: `ontology/instances/generators.json:46,58`, Heroic Shout/Bubbles healing amount and duration.
-- Reproduced for actual Guardian fourth-slot Heroic Shout: one 10-second update heals **140.4375**; updates of 9.9 then 0.2 seconds heal **141.841875**, although the effect lasts only 10 seconds and is expired in both cases.
-- Minimal correction: integrate healing over `min(dt, remaining_lifetime)`.
-- Gap: tests use exact intervals/intermediate healing and do not compare total effects at terminal boundaries.
+| Implemented producer | Correct source and coupled checker |
+|---|---|
+| `game/items/items.gd::roll_loot` | Defeated level → power → existing shared gear/consumable offset; coins retain source level. |
+| `game/items/encounter_rewards.gd::kill_payload` | Guaranteed gear uses current boss level; spirits use initial boss level, separately converted. |
+| `encounter_rewards.gd::package_payload` | Mission gear/Potion use saved boss level, without spread; pending class/source records stay source-valued. |
+| `game/items/shop.gd::stock` | Gear converts the actual `gen.creature_level` result before the separate stock offset; consumables convert character level. Purchased copies are not reconverted. |
+| `game/world/world.gd::stage_tables` | Convert room level for Potions; keep room/receipt levels and vase coins unchanged. `save_data.gd` reconstructs table Potions independently. |
+| `game/world/save_data.gd` | Kill/mission/vendor expectations reuse producers; all must agree, including historical delivered receipts and remaining vendor subsets. |
 
-## 6. P2 + unresolved value — Available Apples are consumed for no healing
+- **Reproduced:** ordinary L10 outputs 9/10/11 instead of 31/32/33; boss gear 10/spirit 3 instead
+  of 32/10; mission and vendor Potions 10 instead of 32; room 1981 Potion 1981 instead of 100.
+  Targeted save validation accepts an old-unit delivered kill receipt but rejects its canonical-power
+  counterpart. Constructor and item validation also accept power 101.
+- **Constructor distinction:** `Items.generate` takes **already-powered** input. Bound it to 1…100;
+  do not convert source level there or in generic `Item.stack`. That would double-convert fixed-power
+  callers. Reject invalid serialized powered gear/consumables/spirits rather than silently clamping
+  imports; do not clamp the upgraded stat curve's derived `power + 0.1*upgrades`.
+- **Checker correction:** `generators.json` loot/settlement prose has obsolete unit descriptions.
+  Existing `model.gd` numeric spread checks correctly require 1; no incorrect power equation was found
+  there. Keep those numbers/schema, align prose, and add independent generated-output assertions.
+- **Together:** all implemented producers, item bounds, deterministic save expectations, stale input
+  descriptions and affected tests. Never deploy mixed units. Cover literal anchors/clamps, non-power
+  RNG signatures, boss current/initial identity, purchased stock, pending/delivered rewards and cold
+  roundtrip/original-file protection. Extend item/reward, settlement/content/supplier and save checks.
+- **Deployment gate:** choose treatment of existing generated saves. Changed replay rejects old
+  receipts/stock, even when already delivered; saved integers do not reliably identify old source
+  provenance. No implicit migration, wipe, reroll or receipt deletion. Confirm current-only rejection
+  is acceptable or separately authorize compatibility work. Recipe/formula production and learning
+  remain [deferred](ROADMAP/todo_implement.md#items-34-slice-abaded3), not part of this correction.
 
-- Runtime: `game/items/items.gd:70–72`; `game/entities/player.gd:344–346`; item-vendor stock/buy at `game/items/shop.gd:38–41,59–65`.
-- Authority: `ontology/domain/3_Classes.md:1068–1073`; `ontology/instances/consumables.json:4` describes Apple healing; `generators.json:101` includes Apple in the active consumable pool.
-- Reproduced: buy an Apple for **two copper**, set HP to 10, use it; HP remains **10** and the Apple is removed.
-- Cause: Apple has no `heal-mult`; the loader defaults it to zero, and use still consumes the item.
-- Exact Apple healing amount is **undefined** in the inspected ontology. Do not borrow another food's coefficient or invent one. Resolve the amount in ontology before implementing it; alternatively seek approval for explicit unsupported-use rejection rather than silent consumption.
-- Gap: existing tests cover stock membership and Life Potion healing, not Apple's effect.
+## F8 — shared equip admission ignores character power
 
-Evidence for topics 3–6: `/tmp/pixlnd_combat_review_probe.gd` and `.log`, exit 0, no script errors.
+- **Cause:** `game/items/inventory.gd::equip` / `_item_allowed` validate identity, slot, class/material
+  and hands without comparing item power to live character power; panel/touch routes share this method.
+- **Reproduced:** real level 10/power 32 character equips a +40 sword, mutating bag/worn state and stats.
+- **Together:** shared pre-mutation power check, live level injection (including progression/restore),
+  every changed constructor caller and fixture/regression updates. Keep `class_allowed` structural:
+  saves and class coloring also use it. Test rejection without notifications, HP/weapon/state changes,
+  threshold acceptance and all existing class/hand restrictions with otherwise eligible items.
+- **Fixture dependency:** `test_items.gd` standalone +5 equip needs eligible character power;
+  `test_gear_hp.gd` has a +2-at-level-1 HP fixture; `test_independent_hands.gd` has +2-at-level-1
+  shield/axe fixtures. Make these legitimately eligible, not bypassed. For the latter, +1/rarity 1
+  preserves its hand-lifecycle purpose and dynamically derived stat expectations.
+- **Authority/scope:** [equipment-only requirement](../ontology/domain/3_Classes.md#power-gate-a).
+  Carry/trade, consumable use and carried spirits stay allowed. Preserve structurally legal existing
+  worn gear on restore; no retroactive eviction/save migration. Unequip then re-equip is a **new**
+  admission attempt. F8 consumes item power, never converts it again, and is independent of F7.
 
-## 7. Existing item-power errors transferred from the ontology review
+## F9 — Apple is consumed with zero healing; remedy unselected
 
-These are not additional runtime probe results. The correction scope includes stale live
-`ontology/instances/generators.json` definitions and `ontology/model.gd` checks for the
-implemented producers below; existing checks enforce old inputs, not the canonical item-power policy.
+- **Cause:** `ontology/instances/consumables.json#apple` lacks `heal-mult`; `model.gd` defaults it
+  to 0, `Items.heal` returns 0 and `player.gd::use_item` removes a unit. `use_quick` reports success.
+- **Reproduced:** buy an Apple for 2 copper; selected use leaves HP 10 and removes it. Quick Item
+  also consumes without healing. Existing Android selected-row testing even expects Apple depletion
+  without checking its effect. The [consumable contract](../ontology/domain/3_Classes.md#consumable)
+  supplies no exact Apple coefficient; the zero fallback is not an approved value.
+- **Decision gate — choose one, not both:**
+  - **Healing:** approve exact hybrid coefficient/precision, then land canonical/data/raw+loaded
+    checker agreement and selected/Quick/Android effect regressions. Integer selection may need no
+    production runtime change; fractional selection cannot be silently truncated by the current loader.
+  - **Rejection:** explicitly approve unsupported-use policy/scope, then land canonical exception,
+    shared no-consume rejection/notice and truthful Quick return together. Update the conflicting Android
+    fixture while retaining selected-versus-first-stack coverage. Do not silently broaden Apple-only
+    approval to all zero-heal items; do not reject supported Potions merely because HP is full.
+- Preserve stock/loot membership, prices, stack targeting and existing instant-use approximation.
+  Food sitting/channel behavior remains deferred. F9 is independent of F2's stun gate and F7/F8.
 
-### Generated items and saved reward checks use the wrong units
+## Evidence, continuation and limits
 
-- Authority: [hybrid item power](../ontology/domain/3_Classes.md#item) requires item power
-  `clamp(power(source_level) + offset, 1, 100)`, not the source character/creature level.
-- Existing paths: `game/items/items.gd` (`generate`, `roll_loot`),
-  `game/items/encounter_rewards.gd` (`kill_payload`, `package_payload`) and
-  `game/items/shop.gd` (`stock`) use source levels directly, with source-level spread where
-  applicable, instead of converting to item power. This covers ordinary gear/consumables,
-  guaranteed current-boss gear, initial-boss spirits, mission gear/potions and vendor gear/consumables.
-  Room/table potions in `game/world/world.gd` (`stage_tables`) likewise use room levels directly.
-  `game/world/save_data.gd` recomputes expected kill/mission payloads through those same producers
-  and separately checks table-potion payloads using the unconverted room level.
-- Consequence: ordinary source-level-10 loot uses levels 9/10/11 rather than powers 31/32/33;
-  item stat, healing and price consumers consequently receive the wrong inputs. This example
-  is derived from source and the canonical formula, not a new executed probe.
-- Correction scope: align existing item producers and saved-payload checks with the approved units;
-  preserve stat/healing/price equations, character/creature levels, source-level reward receipts,
-  XP and coins. Recipe/formula power requirements remain deferred with crafting/learning in
-  the [items backlog](ROADMAP/todo_implement.md#items-34-slice-abaded3), not an implemented-path defect.
+The seven-child Sol-6.1 workflow `0eac8375-2dba-49dc-9ec3-99f814847af5` completed five investigations,
+plan synthesis and independent review. Reports with exact commands, source traces, raw log paths,
+expected-RED cases and proposed regression details are in this machine-local directory:
 
-### The shared equip boundary accepts above-power gear
+```text
+/home/theta/.pi-game-dev/sessions/--home-theta-repos-pixlnd--/subagent-artifacts/outputs/0eac8375-2dba-49dc-9ec3-99f814847af5/
+```
 
-- Authority: [equipment-only power requirement](../ontology/domain/3_Classes.md#power-gate-a):
-  character power must reach the equipment's item power before equipping it.
-- Existing path: `game/items/inventory_panel.gd` calls `Inventory.equip`; that method and
-  `_item_allowed` in `game/items/inventory.gd` check identity, slot, class/material and hands,
-  but never compare character power with item power.
-- Correction scope: reject above-power equipment before mutating bag/worn state, retaining
-  existing legality and HP rules. Carrying/trading remains allowed; do not extend the rule to
-  consumables or spirit attachment, or infer retroactive eviction/save migration.
+- `investigations/resource-ownership.md`: resolved ownership and control probes.
+- `investigations/action-lifecycle.md`: F1–F3.
+- `investigations/combat-boundaries.md`: F4–F6.
+- `investigations/item-power-producers.md`: F7.
+- `investigations/item-use-admission.md`: F8–F9.
+- `review/grouped-fix-plan-review.md`: independent review; its missing off-hand fixture correction is included above.
 
-## Rejected or unconfirmed leads
+The detailed local plan is `docs/superpowers/plans/2026-10-27-game-review-fixes.md`.
+**That directory is Git-ignored**; this tracked review retains the correction groups/gates without
+requiring it. Preserve external evidence before moving machines. Original audit history is not
+fresh acceptance and need not be replayed just to recover an old defect count.
 
-- **Shop opens/closes on the same E press:** source review identified cross-loop handlers, but the parent normal-loop mapped-key probe observed exactly one interaction and the shop remained open. **Not accepted as a confirmed finding.** Other event phases/native windowed delivery were not exhaustively exercised.
-- **Wild individuals inside 40 blocks of village centre:** observed, but active config excludes group centres, and the actual settlement radius is 24. This is not a demonstrated settlement-safety violation.
+Thirteen final investigator logs were diagnostic-clean; the equip and conditional Apple-rejection
+RED checks deliberately exited 1. Five existing scripts (`test_class_combos`, `test_items`,
+`test_equipment`, `test_gear_hp`, `test_android_controls`) passed despite the uncovered cases.
+This document update reran **no gameplay tests**. No corrected-code GREEN, full-suite, native visual,
+new Android hardware or performance acceptance is claimed. Some interaction/boss preservation
+paths above are explicitly source-only; saved-character/receipt probes are not full cold-world tests.
 
-## Godot/gamedev assessment and limits
-
-Appropriate existing patterns include scene composition, seeded generation, separation of generated plans from rendering, injected ontology configuration, shared defence/status calculation, and real-time hit-stop restoration. Direct fixes plus focused regressions are preferable to generic new frameworks, a wholesale Resource conversion, dependency additions or broad refactors.
-
-Simplification/ponytail pass: retain those working boundaries; recommendations are local resource ownership, eligibility, target selection and bounded timer/death corrections. No style-only rewrite findings.
-
-No visual/browser/device acceptance was performed; the UI is native Godot, and this task changes no UI. Existing Android tests provide synthetic regression evidence, not new hardware acceptance. No claim of exhaustive verification is made.
-
-## Original audit execution provenance
-
-- Earlier Astra workflow `83a2efcb-edbc-4e26-81d3-0fc6fc0292d4` and same-protocol resume failed with `fetch failed`, before useful output. Preserved as failed evidence.
-- Owner approved `openai-codex/gpt-6.1-sol`; successful workflow `934d75ea-2098-492d-a33b-cdef9f757932` delivered one check report and four fresh-context reviews. Child `presentation.md` contains an unconfirmed shop candidate; this synthesis's disposition supersedes that raw candidate.
-- All focused probes are outside the repository; only in-memory runtime fixtures were changed. This review changed no canonical data, gameplay source, tests, project docs, branch, commits or remote state. The concurrent documentation-only commit described above was not created by this review.
-- Final parent verification reran the bounded ontology validator successfully, scanned all three probe logs without diagnostics, and confirmed the clean checkout and unchanged reviewed source.
+On a later authorized implementation: re-pin source, follow the repository authority/precision gate,
+land necessary ontology/checker alignment first, then run focused RED/GREEN and preservation checks.
+F1/F2 and F5/F6 are independent despite shared files; F4's shooter interfaces, F6's safe scheduling,
+F7's producer/save units and F8's constructor callers must change coherently. Serialize shared-file
+writers and obtain fresh review. Use the current [quality gate's calibrated deadlines](quality-checks.md#run-manually);
+isolate saves and inspect logs as well as exit codes.
+No C# migration, new dependencies or [parked native collision investigation](HANDOFF.md) is part of
+these fixes or authorized by this review.
