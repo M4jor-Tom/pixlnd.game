@@ -104,6 +104,116 @@ func _camouflage_boundaries() -> void:
 		p.free()
 
 
+## Commit through the real class slot; retire Bubbles shots before isolating heal arithmetic.
+func _start_hot(p, id: StringName, entries := 1) -> bool:
+	p.abilities.cooldowns.clear()
+	p.combo = 4
+	p._combo_t = 2.0
+	var used: bool = p.use_class_skill(4)
+	check(used, "%s: class slot starts" % id)
+	check(
+		p.combo == 4 and is_equal_approx(p._combo_t, 2.0),
+		"%s: committed heal is combo-neutral" % id
+	)
+	for shot in root.get_children():
+		if shot.get("shooter") == p:
+			shot.set_physics_process(false)
+			shot._end()
+			shot.free()
+	# Volley misses resolve combo separately; they must not cancel or duplicate the side heal.
+	p.combo = 4
+	check(p.abilities.heals.size() == entries, "%s: one heal committed per use" % id)
+	return used and p.abilities.heals.size() == entries
+
+
+func _hot_boundaries() -> void:
+	for row in [
+		[&"warrior", &"guardian", &"heroic-shout", 10.0, 0.525],
+		[&"mage", &"water-mage", &"bubbles", 5.0, 0.2625],
+	]:
+		var id: StringName = row[2]
+		var duration: float = row[3]
+		var p := _player(row[0], row[1], Vector3.ZERO, {id: 1})
+		p.set_physics_process(false)
+		var total: float = p.max_hp * float(row[4])  # selected heal fraction × rank-1 effect
+		for parts in [[duration], [duration - 0.1, 0.2], [duration * 2.0]]:
+			p.abilities.reset()
+			p.hp = 10.0
+			if not _start_hot(p, id):
+				continue
+			check(
+				(
+					is_equal_approx(p.abilities.heals[0]["per-s"], total / duration)
+					and is_equal_approx(p.abilities.heals[0]["left"], duration)
+					and is_equal_approx(p.hp, 10.0)
+				),
+				"%s: selected rate/duration, no immediate healing" % id
+			)
+			for dt in parts:
+				p.abilities.tick(dt)
+			check(
+				is_equal_approx(p.hp - 10.0, total),
+				"%s %s: bounded total %.6f, got %.6f" % [id, parts, total, p.hp - 10.0]
+			)
+			check(p.abilities.heals.is_empty(), "%s %s: expired" % [id, parts])
+			var hp: float = p.hp
+			p.abilities.tick(duration)
+			check(is_equal_approx(p.hp, hp), "%s: no post-expiry healing" % id)
+			check(
+				p.combo == 4 and is_equal_approx(p._combo_t, 2.0),
+				"%s: healing ticks neither resolve nor refresh combo" % id
+			)
+		# Two real uses, staggered by half a lifetime; isolate HP so the cap cannot hide excess.
+		p.hp = 10.0
+		if _start_hot(p, id):
+			p.abilities.tick(duration * 0.5)
+			check(is_equal_approx(p.hp - 10.0, total * 0.5), "%s: half-lifetime heal" % id)
+			if _start_hot(p, id, 2):
+				p.hp = 10.0
+				p.abilities.tick(duration * 0.75)
+				check(
+					is_equal_approx(p.hp - 10.0, total * 1.25),
+					"%s: staggered entries clip independently" % id
+				)
+				check(p.abilities.heals.size() == 1, "%s: only older entry expires" % id)
+				p.hp = 10.0
+				p.abilities.tick(duration)
+				check(
+					is_equal_approx(p.hp - 10.0, total * 0.25) and p.abilities.heals.is_empty(),
+					"%s: younger entry keeps only its remaining quarter" % id
+				)
+		p.abilities.reset()
+		p.hp = p.max_hp - 1.0
+		if _start_hot(p, id):
+			p.abilities.tick(duration * 0.5)
+			check(
+				p.hp == p.max_hp and p.abilities.heals.size() == 1,
+				"%s: reaching max HP does not end the lifetime early" % id
+			)
+			p.hp -= 1.0
+			p.abilities.tick(duration)
+			check(
+				p.hp == p.max_hp and p.abilities.heals.is_empty(),
+				"%s: HP cap and full lifetime preserved" % id
+			)
+		for die in [false, true]:
+			p.abilities.reset()
+			p.hp = 10.0
+			if not _start_hot(p, id):
+				continue
+			p.abilities.tick(0.1)
+			if die:
+				p.take_damage(p.max_hp * 2.0, null)
+				check(p.dead and p.hp == 0.0, "%s: actual death precondition" % id)
+			else:
+				p.abilities.reset()
+			var hp: float = p.hp
+			check(p.abilities.heals.is_empty(), "%s: reset/death clears active heal" % id)
+			p.abilities.tick(duration * 2.0)
+			check(is_equal_approx(p.hp, hp), "%s: no healing after reset/death" % id)
+		p.free()
+
+
 func _init() -> void:
 	o = Model.Ontology.load_dir("res://ontology/instances")
 	check(o.validate(), "ontology valid")
@@ -121,6 +231,8 @@ func _init() -> void:
 	check(o.validate(), "restored")
 	InputMapBuilder.build(o.configs["keybinds"]["hybrid"])
 	_camouflage_boundaries()
+	await process_frame  # HoT fixtures need ready cameras and an active tree for actual death.
+	_hot_boundaries()
 	var floor := StaticBody3D.new()
 	var cs := CollisionShape3D.new()
 	var box := BoxShape3D.new()

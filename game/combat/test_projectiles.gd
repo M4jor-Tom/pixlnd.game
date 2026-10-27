@@ -117,6 +117,183 @@ func _m2(p) -> void:
 	await _frames(1)
 
 
+## Real flight through two eligible overlapping bodies: ordinary shots must select before effects.
+func _ordinary_contacts() -> void:
+	for case in [
+		[&"bow", "m1", 0.0, 0.0, 0.0, false, false, false, 40.0],
+		[&"crossbow", "m1", 0.0, 0.0, 0.0, false, false, false, 40.0],
+		[&"crossbow", "m2", 0.0, 0.0, 0.0, false, false, false, 40.0],
+		[&"bracelet", "m1", 0.0, 0.0, 0.0, false, false, false, 40.0],
+		[&"bow", "m1", 1.0, 10.0, 900.0, false, false, false, 70.0],
+		[&"bracelet", "m1", 1.0, 900.0, 10.0, false, false, false, 70.0],
+		[&"bow", "m1", 1.0, 10.0, 900.0, true, false, false, 7.0],
+		[&"bow", "m1", 0.0, 0.0, 0.0, false, true, false, 1.0],
+		[&"bow", "m1", 0.0, 0.0, 0.0, false, false, true, 40.0],
+	]:
+		var mage: bool = case[0] == &"bracelet"
+		var p := _player(
+			&"mage" if mage else &"ranger", &"fire-mage" if mage else &"sniper", Vector3(99.8, 0, 0)
+		)
+		p.set_physics_process(false)
+		_equip(p, case[0])
+		p.weapon["damage"] = 40.0
+		p.crit_chance = case[2]
+		p.combo = 0
+		p.mp = 0
+		var a := _wolf(p, Vector3(99.9, 0, -3))
+		var b := _wolf(p, Vector3(100.1, 0, -3))
+		for body in [a, b]:
+			body.hp = 1000.0
+			body.armor = case[3]
+			body.resistance = case[4]
+		if case[5]:
+			a.state = a.State.RETURN
+		if case[6]:
+			a.hp = 1.0
+		await _frames(2)
+		var config: Dictionary = design.movesets[case[0]][case[1]]
+		var candidates: Array = p.bodies_within(Vector3(100, .5, -3), float(config.radius))
+		check(
+			candidates == [a, b], "ordinary setup: two bodies in shooter-distance order %s" % [case]
+		)
+		var ha: float = a.hp
+		var hb: float = b.hp
+		var shot = (
+			p
+			. _fire(
+				config, 40, true, [&"burning", &"slow"], Vector3(100, .5, 0), p.weapon_attack_type()
+			)[0]
+		)
+		shot.set_physics_process(false)
+		var record: Dictionary = shot.attack
+		if case[7]:
+			p.inventory.unequip(&"main-hand")
+			check(p.weapon.is_empty(), "ordinary setup: now unarmed")
+		for i in 30:
+			if shot.is_queued_for_deletion():
+				break
+			shot._physics_process(1.0 / 60.0)
+		check(
+			record.hits == 1 and record.live == 0 and shot.is_queued_for_deletion(),
+			(
+				"ordinary one contact retires %s: hits=%d total_damage=%f"
+				% [case, record.hits, ha - a.hp + hb - b.hp]
+			)
+		)
+		check(
+			is_equal_approx(ha - a.hp, case[8]) and b.hp == hb,
+			"ordinary only first receives unchanged damage %s" % [case]
+		)
+		check(b.statuses.is_empty(), "ordinary no status spill %s" % [case])
+		if case[6]:
+			check(
+				a.dead and a.statuses.is_empty(), "ordinary lethal contact cannot reattach statuses"
+			)
+		else:
+			check(
+				a.statuses.has(&"burning") and a.statuses.has(&"slow"),
+				"ordinary selected body receives statuses %s" % [case]
+			)
+			var before: float = a.hp
+			a.tick_statuses(.5)
+			check(
+				is_equal_approx(before - a.hp, float(case[8]) * .1),
+				"ordinary burn inherits defence once %s" % [case]
+			)
+		check(
+			p.combo == 1 and p.mp == (0 if mage else 8),
+			"ordinary once-per-volley reward %s" % [case]
+		)
+		_clear_shots()
+		a.get_parent().free()
+		b.get_parent().free()
+		p.free()
+		await _frames(2)
+
+
+## Splash/pierce and the other shared-strike callers must remain multi-target.
+func _multi_contacts() -> void:
+	var p := _player(&"mage", &"fire-mage", Vector3(100, 0, 0))
+	p.set_physics_process(false)
+	p.crit_chance = 0
+	p.weapon["damage"] = 40.0
+	var a := _wolf(p, Vector3(99.9, 0, -2))
+	var b := _wolf(p, Vector3(100.1, 0, -2))
+	for body in [a, b]:
+		body.armor = 0
+		body.resistance = 0
+	await _frames(2)
+	for config in [
+		design.movesets.bow.m2,
+		design.movesets.bracelet.m2,
+		design.abilities["fire-missiles"],
+		design.abilities.bubbles,
+		design.movesets.boomerang.m1,
+		design.abilities["shuriken-attack"].throw
+	]:
+		p.combo = 0
+		p.mp = 0
+		# At five blocks the outbound and return crossings both span a scheduled pierce tick.
+		a.position.z = -5 if config.has("return") else -2
+		b.position.z = a.position.z
+		await _frames(2)
+		var ha: float = a.hp
+		var hb: float = b.hp
+		var shots: Array = p._fire(config, 40, false, [], Vector3(100, .5, 0))
+		var record: Dictionary = shots[0].attack
+		var ordinary: bool = not config.has("splash") and not config.has("pierce")
+		for shot in shots:
+			shot.set_physics_process(false)
+			var before: int = record.hits
+			var outbound_hits := 0
+			var return_hits := 0
+			for i in 240:
+				if shot.is_queued_for_deletion():
+					break
+				var previous: int = record.hits
+				shot._physics_process(1.0 / 60.0)
+				if shot._returning:
+					return_hits += int(record.hits) - previous
+				else:
+					outbound_hits += int(record.hits) - previous
+			if ordinary:
+				check(
+					record.hits - before == 1, "each of five shuriken selects one overlapping body"
+				)
+			if config.has("return"):
+				check(
+					shot._returning and outbound_hits >= 2 and return_hits >= 2,
+					(
+						"boomerang returns and re-hits overlapping bodies: returning=%s hits=%d t=%f at=%s"
+						% [shot._returning, record.hits, shot._t, shot.global_position]
+					)
+				)
+		check(record.live == 0 and record.hits >= shots.size(), "volley settles all shots")
+		if not ordinary:
+			check(a.hp < ha and b.hp < hb, "splash/pierce preserve multiple targets %s" % [config])
+		check(p.combo == 1 and p.mp == 0, "multi-target volley rewards once")
+		_clear_shots()
+	a.position.z = -2
+	b.position.z = -2
+	await _frames(2)
+	for config in [design.movesets.wand.m2, design.movesets.staff.m1, design.movesets.sword.m1]:
+		p.combo = 0
+		_aim_at(p, a)
+		check(
+			p._attack(config, 40, false, []) == 2,
+			"beam/cursor/melee shared strike stays unlimited %s" % [config]
+		)
+	p.mp = 100
+	p.combo = 0
+	var ha: float = a.hp
+	var hb: float = b.hp
+	check(p.abilities.use(o.abilities[&"fire-explosion"]), "AoE ability used")
+	check(a.hp < ha and b.hp < hb and p.combo == 1, "ability AoE still hits both")
+	a.get_parent().free()
+	b.get_parent().free()
+	p.free()
+
+
 func _init() -> void:
 	o = Model.Ontology.load_dir("res://ontology/instances")
 	check(o.validate(), "ontology valid")
@@ -325,5 +502,7 @@ func _init() -> void:
 	w4.hp = 1.0
 	wa._strike(w4.global_position + Vector3.UP * .5, 1.0, 100, false, [&"burning", &"slow"])
 	check(w4.dead and w4.statuses.is_empty(), "lethal player strike cannot re-add attached effects")
+	await _ordinary_contacts()
+	await _multi_contacts()
 	print("test_projectiles: %s" % ("OK" if _failed == 0 else "%d FAILED" % _failed))
 	quit(1 if _failed > 0 else 0)

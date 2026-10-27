@@ -3,6 +3,7 @@ extends SceneTree
 const Model := preload("res://ontology/model.gd")
 const Items := preload("res://game/items/items.gd")
 const Item := preload("res://game/items/item.gd")
+const Shop := preload("res://game/items/shop.gd")
 const Combat := preload("res://game/combat/combat.gd")
 const PLAYER := preload("res://game/entities/player.tscn")
 const InputMapBuilder := preload("res://game/meta/input_map.gd")
@@ -329,5 +330,168 @@ func _init() -> void:
 		"cross-class off-hand item remains in the bag"
 	)
 
+	_power_admission()
+
 	print("equipment ok" if failed == 0 else "equipment FAILED (%d)" % failed)
 	quit(0 if failed == 0 else 1)
+
+
+# A missing/cached admission gate must fail before any shared inventory/player side effect.
+func _reject_power(p: Node, it: Item, label: String) -> void:
+	check(
+		p.inventory.entries.count(it) == 1 and p.inventory.class_allowed(it),
+		label + " eligible structure"
+	)
+	p.hp = 10
+	p._charge = 0.4
+	p.inventory.coins = 37
+	var bag: Array = p.inventory.entries.duplicate()
+	var counts: Array = bag.map(func(entry): return entry.count)
+	var worn: Dictionary = p.inventory.equipment.duplicate()
+	var slots: Array = worn.keys()
+	var maximum: float = p.max_hp
+	var weapon: Dictionary = p.weapon.duplicate(true)
+	var moveset: Dictionary = p.moveset.duplicate(true)
+	var changes := [0]
+	var count_change := func(): changes[0] += 1
+	p.inventory.changed.connect(count_change)
+	check(not p.inventory.equip(it), label + " rejects above power")
+	check(
+		(
+			p.inventory.entries == bag
+			and p.inventory.equipment == worn
+			and p.inventory.equipment.keys() == slots
+		),
+		label + " preserves bag/worn identities and order"
+	)
+	check(
+		bag.map(func(entry): return entry.count) == counts and p.inventory.coins == 37,
+		label + " preserves counts/coins"
+	)
+	check(
+		(
+			p.hp == 10
+			and p.max_hp == maximum
+			and p.weapon == weapon
+			and p.moveset == moveset
+			and p._charge == 0.4
+			and changes[0] == 0
+		),
+		label + " preserves HP/attacks/charge/signals"
+	)
+	p.inventory.changed.disconnect(count_change)
+	# Isolate the subsequent eligibility control even on the deliberately unfixed RED runtime.
+	for slot in p.inventory.equipment.keys():
+		if p.inventory.equipment[slot] == it:
+			p.inventory.unequip(slot)
+
+
+func _power_admission() -> void:
+	for cls in [&"warrior", &"ranger", &"mage", &"rogue"]:
+		var starter := player(cls)
+		check(
+			(
+				starter.level == 1
+				and starter.inventory.equipment.size() == 1
+				and starter.inventory.equipment[&"main-hand"].level == 1
+			),
+			str(cls) + " +1 starter remains legal"
+		)
+		starter.free()
+	var p := player(&"warrior")
+	var high := Items.generate(RandomNumberGenerator.new(), &"chest-armor", &"", &"iron", 2, 0)
+	p.inventory.add(high)
+	check(p.level == 1 and Model.power_for_level(p.level) == 1, "level1 power1 fixture")
+	_reject_power(p, high, "+2 at level1")
+	p.gain_xp(50)
+	p.hp = 10
+	check(p.level == 2 and Model.power_for_level(p.level) == 5, "real XP reaches level2 power5")
+	check(
+		p.inventory.equip(high) and p.hp == 10,
+		"same retained +2 becomes eligible without equip healing"
+	)
+	while p.level < 10:
+		p.gain_xp(Model.xp_to_next(p.level) - p.xp)
+	check(
+		p.level == 10 and Model.power_for_level(p.level) == 32,
+		"real progression reaches level10 power32"
+	)
+	var threshold := Items.generate(
+		RandomNumberGenerator.new(), &"chest-armor", &"", &"iron", 32, 0
+	)
+	var above := Items.generate(RandomNumberGenerator.new(), &"chest-armor", &"", &"iron", 33, 0)
+	p.inventory.add(threshold)
+	p.inventory.add(above)
+	p.hp = 10
+	check(
+		p.inventory.equip(threshold) and p.hp == 10, "power32 admits +32 unchanged units/no healing"
+	)
+	_reject_power(p, above, "+33 at level10")
+	var sword := Items.generate(RandomNumberGenerator.new(), &"weapon", &"sword", &"iron", 40, 0)
+	p.inventory.add(sword)
+	_reject_power(p, sword, "+40 at level10")
+	while p.level < 14:
+		p.gain_xp(Model.xp_to_next(p.level) - p.xp)
+	check(
+		Model.power_for_level(p.level) == 40 and p.inventory.equip(sword),
+		"retained +40 admits after real progression to power40"
+	)
+	p.free()
+
+	for mode in ["empty", "off-hand-1H", "shield", "ring-replacement"]:
+		var hero := player(&"warrior")
+		if mode == "empty":
+			hero.inventory.unequip(&"main-hand")
+		if mode == "ring-replacement":
+			for i in 2:
+				var ring := item(&"ring", &"")
+				hero.inventory.add(ring)
+				check(hero.inventory.equip(ring), "eligible ring setup")
+		var candidate := Items.generate(
+			RandomNumberGenerator.new(),
+			&"ring" if mode == "ring-replacement" else &"weapon",
+			&"" if mode == "ring-replacement" else (&"shield" if mode == "shield" else &"axe"),
+			&"iron",
+			2,
+			0
+		)
+		hero.inventory.add(candidate)
+		_reject_power(hero, candidate, mode)
+		hero.gain_xp(50)
+		check(hero.inventory.equip(candidate), mode + " otherwise legal at power5")
+		if mode in ["off-hand-1H", "shield"]:
+			check(hero.inventory.equipment.get(&"off-hand") == candidate, mode + " uses off-hand")
+		hero.free()
+
+	var trader := player(&"warrior")
+	var traded := Items.generate(RandomNumberGenerator.new(), &"weapon", &"sword", &"iron", 40, 0)
+	var price := Shop.buy_price(traded, o, design)
+	trader.inventory.coins = price
+	check(
+		(
+			Shop.buy(trader, traded)
+			and traded in trader.inventory.entries
+			and trader.inventory.coins == 0
+		),
+		"above-power gear can be bought/carried"
+	)
+	var resale := Shop.sell_price(traded, o, design)
+	Shop.sell(trader, traded)
+	check(
+		traded not in trader.inventory.entries and trader.inventory.coins == resale,
+		"above-power gear can be sold"
+	)
+	var potion: Item = Item.stack(&"consumable", &"life-potion", 2, 40)
+	var spirit: Item = Item.stack(&"ingredient", &"spirit-fire", 1, 40)
+	trader.inventory.add(potion)
+	trader.inventory.add(spirit)
+	trader.hp = 10
+	check(
+		trader.use_item(potion) and potion.count == 1 and trader.hp > 10,
+		"above-power consumable use unchanged"
+	)
+	check(
+		spirit in trader.inventory.entries and spirit.level == 40,
+		"above-power spirit remains carried"
+	)
+	trader.free()

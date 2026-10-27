@@ -225,7 +225,8 @@ func tick(dt: float) -> void:
 		if buffs[id]["left"] <= 0.0:
 			buffs.erase(id)
 	for h in heals.duplicate():
-		p.hp = minf(p.max_hp, p.hp + h["per-s"] * dt)
+		var elapsed := minf(dt, float(h["left"]))
+		p.hp = minf(p.max_hp, p.hp + h["per-s"] * elapsed)
 		h["left"] -= dt
 		if h["left"] <= 0.0:
 			heals.erase(h)

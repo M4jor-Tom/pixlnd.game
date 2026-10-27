@@ -41,6 +41,7 @@ var _windup := 0.0
 var _cooldown := 0.0
 var _rng := RandomNumberGenerator.new()
 var _sim_r2 := INF  # design.spawns.ai.sim-radius², D16
+var _stun_push := Vector3.ZERO  # actual external x/z, separate from AI; collisions consume it
 
 
 func setup(
@@ -147,8 +148,12 @@ func _physics_process(dt: float) -> void:
 	if stunned():  # D21: cannot act; a knockback keeps carrying us
 		if special != null:
 			special.advance(dt)
+		velocity.x = _stun_push.x
+		velocity.z = _stun_push.z
 		move_and_slide()
+		_stun_push = Vector3(velocity.x, 0, velocity.z)
 		return
+	_stun_push = Vector3.ZERO  # ordinary AI/special motion owns x/z again
 	if special != null:
 		_select_target()
 		if special.advance(dt):
@@ -174,11 +179,14 @@ func _can_chase() -> bool:
 
 
 func apply_status(id: StringName, cfg: Dictionary, hit: float, from: Node) -> void:
+	var knockback := not dead and StringName(str(cfg.get("as", id))) == &"knockback"
+	if special != null and knockback:
+		special.cancel()  # retire special-owned motion BEFORE the base inserts the real impulse
+	var before := velocity
 	super.apply_status(id, cfg, hit, from)
-	if (
-		special != null
-		and (stunned() or (not dead and StringName(str(cfg.get("as", id))) == &"knockback"))
-	):
+	if knockback:
+		_stun_push += Vector3(velocity.x - before.x, 0, velocity.z - before.z)
+	if special != null and stunned():
 		special.cancel()
 
 
@@ -361,11 +369,15 @@ func _strike(
 	dmg: float,
 	_combo_bonus: bool,
 	applies: Array = [],
-	attack_type: StringName = Combat.PHYSICAL
+	attack_type: StringName = Combat.PHYSICAL,
+	target_limit: int = 0
 ) -> int:
 	var se: Dictionary = design.get("status-effects", {})
 	var hits := 0
-	for body in bodies_within(center, radius):
+	var bodies := bodies_within(center, radius)
+	if target_limit > 0:
+		bodies = bodies.slice(0, target_limit)
+	for body in bodies:
 		if body.has_method("take_direct_damage"):
 			body.take_direct_damage(dmg, self)
 			continue

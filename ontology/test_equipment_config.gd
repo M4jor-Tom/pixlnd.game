@@ -302,7 +302,7 @@ func _init() -> void:
 		"missing owner and malformed capacity accumulate"
 	)
 	var inv = Inventory.new(
-		missing_owner, missing_owner.configs["generators"]["design"], &"warrior"
+		missing_owner, missing_owner.configs["generators"]["design"], &"warrior", func(): return 1
 	)
 	var wand_item = Items.generate(RandomNumberGenerator.new(), &"weapon", &"wand", &"wood", 1, 0)
 	inv.add(wand_item)

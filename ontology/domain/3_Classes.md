@@ -1435,7 +1435,9 @@ HP/no-healing rules remain unchanged.
 This selection is **equipment-only**: it adds no consumable-use restriction or
 spirit-attachment player-power gate, and selects no retroactive unequip/eviction or save
 migration behavior. Existing formula-learning and book/crafting locks below are unchanged.
-Runtime enforcement remains [deferred](../../docs/ROADMAP/todo_implement.md#progression-35-slice-d19).
+The shared runtime equip boundary enforces this requirement using live character level;
+structurally legal already-worn gear remains intact on restore. Recipe enforcement and the
+item-power display remain [deferred](../../docs/ROADMAP/todo_implement.md#progression-35-slice-d19).
 
 **Hybrid books/formulas item 3 (owner approved, 2026-09-28):** books record their unknown
 recipes **immediately, regardless of current power**. A recipe above the character's power

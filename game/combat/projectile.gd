@@ -124,11 +124,15 @@ func _physics_process(dt: float) -> void:
 		elif _t >= life:
 			_end()
 		return
-	var hits: int = shooter._strike(global_position, radius, dmg, combo_bonus, applies, attack_type)
+	# Snapshot contact before a lethal strike removes it; props consume shots without combat rewards.
+	var contact: bool = not shooter.bodies_within(global_position, radius).is_empty()
+	var hits: int = shooter._strike(
+		global_position, radius, dmg, combo_bonus, applies, attack_type, 1
+	)
 	_hit(hits)
-	if hits > 0 or solid:
+	if contact or solid:
 		_impact(0.0)
-	if hits > 0 or solid or _t >= life:
+	if contact or solid or _t >= life:
 		_end()
 
 

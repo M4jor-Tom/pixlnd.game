@@ -71,7 +71,7 @@ func run() -> void:
 	# Pure generation checks consume the same contract/pools, including all four legal classes.
 	var kinds := {}
 	for cls in o.classes:
-		var inv := Inventory.new(o, d, cls)
+		var inv := Inventory.new(o, d, cls, func(): return 1)
 		for tier in 4:
 			for seed_ in 80:
 				var package := Rewards.package_payload("probe/%d" % seed_, tier, 7, cls, o, d)

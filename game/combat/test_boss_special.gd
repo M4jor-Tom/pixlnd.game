@@ -29,6 +29,7 @@ func stop(main) -> void:
 func arm(boss, p, layout: Dictionary, kind: String, distance: float = 3.0) -> void:
 	boss.statuses.clear()
 	boss.velocity = Vector3.ZERO
+	boss._stun_push = Vector3.ZERO
 	boss.set_logical_position([layout.centre[0], layout.floor, layout.centre[1]])
 	p.set_logical_position([layout.centre[0] + distance, layout.floor, layout.centre[1]])
 	p._iframes = 0
@@ -56,6 +57,92 @@ func wall(parent, position_: Vector3) -> StaticBody3D:
 	parent.add_child(body)
 	body.global_position = position_ + Vector3.UP * 2.5
 	return body
+
+
+func interrupted_motion(boss, p, layout: Dictionary, design: Dictionary) -> void:
+	for phase in ["stomp-warning", "charge-warning", "charge"]:
+		for stun_first in [true, false]:
+			for obstructed in [false, true]:
+				var label: String = phase + "/" + str(stun_first) + "/wall=" + str(obstructed)
+				arm(
+					boss,
+					p,
+					layout,
+					"stomp" if phase == "stomp-warning" else "charge",
+					3 if phase == "stomp-warning" else 8
+				)
+				await physics_frame
+				await physics_frame
+				boss.special.advance(0)
+				if phase == "charge":
+					boss.special.advance(1.2)
+					boss.special.advance(0.02)
+				check(
+					(
+						boss.incarnation.special.phase
+						== ("charge" if phase == "charge" else "warning")
+					),
+					"active special precondition " + label
+				)
+				var obstacle: StaticBody3D
+				if obstructed:
+					obstacle = wall(boss.get_parent(), boss.global_position + Vector3(-3, 0, 0))
+					await physics_frame
+					await physics_frame
+				var before_y: float = boss.velocity.y
+				for status in [&"stun", &"knockback"] if stun_first else [&"knockback", &"stun"]:
+					boss.apply_status(status, design["status-effects"][status], 0, p)
+				check(
+					(
+						boss.incarnation.special.phase == "cooldown"
+						and boss.incarnation.special.left == 10
+						and boss.incarnation.special.recovery == 0.8
+					),
+					"interruption starts cooldown/recovery " + label
+				)
+				check(
+					(
+						is_equal_approx(boss.velocity.x, -8)
+						and is_equal_approx(boss.velocity.y - before_y, 2)
+					),
+					"cancellation preserves actual base impulse " + label
+				)
+				var at: Vector3 = boss.global_position
+				boss.set_physics_process(true)
+				for i in 6:
+					await physics_frame
+					await process_frame
+				check(
+					boss.global_position.x < at.x - 0.1,
+					"cancelled special still carries external push " + label
+				)
+				if not obstructed:
+					check(
+						is_equal_approx(boss.velocity.x, -8) and is_zero_approx(boss.velocity.z),
+						"callbacks carry exactly one horizontal impulse " + label
+					)
+				check(
+					boss.incarnation.special.left < 10 and boss.incarnation.special.recovery < 0.8,
+					"cancelled special clocks continue during stun " + label
+				)
+				if obstructed:
+					for i in 30:
+						await physics_frame
+						await process_frame
+					check(
+						boss.is_on_wall() and absf(boss.velocity.x) < 0.01,
+						"boss push blocked by wall " + label
+					)
+					at = boss.global_position
+					obstacle.free()
+					for i in 6:
+						await physics_frame
+						await process_frame
+					check(
+						absf(boss.global_position.x - at.x) < 0.01,
+						"boss never reinjects consumed wall impulse " + label
+					)
+				boss.set_physics_process(false)
 
 
 func run() -> void:
@@ -185,6 +272,7 @@ func run() -> void:
 			is_equal_approx(boss.incarnation.special.left, 9),
 			"cooldown continues during active-simulation stun"
 		)
+		await interrupted_motion(boss, p, layout, w.design)
 		arm(boss, p, layout, "charge", 8)
 		var contents = boss.special.contents
 		var rubble_key: String = contents.rubble.keys()[0]

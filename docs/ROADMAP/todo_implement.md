@@ -152,6 +152,13 @@ research. No new implementation authority or whole-topic completion.
 - [x] Basic melee attack both ways, death, neutral retaliation (combat slice); ranged / mage roles shooting back
   (D26, `design.creature-roles`). Canonical pair threat, pack awareness, timed taunt and protected-return
   foundation lives in `game/combat/targeting.gd` and is integrated with the initial sites.
+  Pure stun now stops requested chase/wander/return motion while preserving actual knockback,
+  collision-consumed residuals and gravity. Active boss cancellation preserves new external push.
+  Focused normal-physics/status-order/wall/expiry and boss-special checks pass, as do creature-AI
+  and role preservation checks; selected-group independent correction review passed.
+  The supplemental F3 failure was a fixture synchronization defect, now resolved and independently
+  reviewed; scoped integrated correction review passed (see the tracked game review).
+  No new damping or persistent unstunned push behavior was introduced.
   Still missing: potions at low HP and enemy combos (`ai-behavior`, `creature.combat-role`).
 - [ ] A ranged / mage creature aims where the target *is*: no lead on a moving one, so strafing walks out of a
   slow mage bolt — `creature.gd#_shoot` ponytail.
@@ -385,13 +392,28 @@ resolve unmapped histories or certify generated/runtime behavior.
   Wand is 2H with the existing 32-cube limit and its common recipe uses 20 wood cubes. Wrong-class gear remains
   carryable/red in the inventory list but cannot equip; two distinct rings reach both existing slots.
   This is placement legality, not new off-hand combat. No crafting, customization, taming or traversal
-  runtime was added. Commit/publication choices remain pending in `docs/HANDOFF.md`.
-- [ ] Reconcile live JSON, model/checker, generators, saved reward checks and runtime consumers with
-  [shared item-power units](../../ontology/domain/3_Classes.md#item) (`c-item-power`): ordinary gear/consumables,
-  guaranteed current-boss gear, initial-boss spirits, room/table potions, mission packages, vendor
-  gear, vendor consumables and recipe/formula requirements. Preserve the canonical source/unit boundaries
-  and equations; existing checks still enforce old inputs, not this policy.
-  Documentation only; live data/checker/runtime changes require separate authorization.
+  runtime was added. Publication uses the normal committed-checkout pre-push and remote/CI checks.
+<a id="game-review-f7"></a>
+- [ ] **F7 — item-power production and save checks** (`c-item-power`,
+  [shared item-power units](../../ontology/domain/3_Classes.md#item)): convert source level to
+  power before power-point spread in ordinary gear/consumables, current-boss gear, initial-boss
+  spirits, room/table potions, mission packages and vendor stock. Update all coupled deterministic
+  save checks together; preserve source-level records, stat/heal/price equations, RNG draws and rewards.
+  `Items.generate` already takes powered input: bound it to 1…100 without converting again; reject
+  invalid serialized power rather than clamping imports. Compatibility support is currently
+  [none](../worlds_retrocompatibility_state.md); preserving existing saves is a future policy choice.
+  No migration, deletion, silent reset, reroll or receipt removal; invalid-load original files stay
+  protected. Canonical description alignment, data/checker/runtime changes and regressions remain
+  deferred. Recipe/formula production and learning retain their separate deferrals below and must
+  consume the same units when selected. [Investigation and atomic scope](../pixlnd-8158ab2-game-review.md#f7--item-power-production-and-save-verification-use-source-level-units).
+<a id="game-review-f9"></a>
+- [ ] **F9 — Apple healing** (`consumable`, `gen-item-stats`): record and implement the selected
+  coefficient **20** in the existing curve-times-coefficient model: 20 HP for a common power-1 Apple,
+  one tenth an equal-power/equal-rarity Life Potion's nominal healing, capped by missing HP.
+  Higher power/rarity follows the existing curve; this is a delegated balance choice, not source fidelity.
+  Align canonical/data/raw+loaded checks and selected/Quick/Android effect regressions; preserve
+  stock/loot membership, prices and selected-stack targeting. Keep the instant-use approximation;
+  sitting/channeling remains deferred. No general zero-heal rejection policy is selected.
 - [ ] Initial site ordinary/boss/mission rewards and spirit carrying exist; no dungeon chests, general NPC weapon drops or leftovers (`loot-rule`); species drops without an `ingredients.json` row (popcorn, jellies) are skipped.
 - [ ] Ground items: coloured cubes, no item mesh; auto-pickup only coins; no middle-click drop for trading;
   lifetime is real seconds (`design.loot.ground.lifetime-s`), not tied to `game-clock`.
@@ -439,10 +461,13 @@ resolve unmapped histories or certify generated/runtime behavior.
   synthesised sound. Still open: no flash / particles, and no real audio asset (`audio.json`).
 - [ ] HUD level/xp progression transitions still need visual checks; the static level/xp line is visible
   in item 10's windowed combo captures (see HANDOFF gotchas).
-- [ ] [Equipment power requirement](../../ontology/domain/3_Classes.md#power-gate-a), `c-power-gate`:
-  shared equip boundary still accepts above-power gear. Enforce the linked equipment-only rule
-  using shared item-power units, preserving existing legality and HP rules. `+N` display also
-  remains absent. Runtime changes remain separately unauthorized.
+- [x] [Equipment power requirement](../../ontology/domain/3_Classes.md#power-gate-a), `c-power-gate`:
+  shared new-equip admission compares item power with live character power before mutation.
+  Focused equipment/HP/restore checks pass: thresholds, real progression, atomic rejection,
+  no healing, structurally legal worn-save retention and restored-level admission. Existing
+  class/hand/slot rules, carry/trade, consumables and spirits remain unchanged. Selected-group and
+  integrated correction reviews passed.
+- [ ] Item-power `+N` display remains absent; recipe power enforcement remains deferred above.
 - [ ] XP from open-world and initial site kills goes to the finishing attacker; no extra mission-completion XP, no party share, no pet XP
   (`pet-xp` flag), no message-log "+N xp" toast (`hud-element` message-log).
 - [ ] HUD shows level/xp as a text line; the portrait (head, name, class) is still missing (`hud-element` portrait).
@@ -471,6 +496,11 @@ resolve unmapped histories or certify generated/runtime behavior.
 - [x] Defence (D23, `player.gd` + `creature.gd` from `design.defence`): M3 dodge roll with i-frames and per-passive rewards,
   M2-held block (shield / guardian / cyclone) with block-power + MP, the stealth bar (sneak / aim fill, camouflage pins,
   decay, attack / crit / MP bonus, aggro range cut), creature hits rolling stun / knockback on the player.
+  Stun now blocks requested jump start/sustain and ascent; dead/stunned players cannot request Talk,
+  Pick Up or consumable Use through shared endpoints. Focused mapped-key/native-synthetic/panel checks
+  pass with live timers, external push and passive coin pickup preserved; selected bag Use remains
+  available while browsing when alive/unstunned. Panel-time, Android-controls and defence preservation
+  pass; selected-group and integrated correction reviews passed.
   A spitter's poison application (D26) and scheduled ticks (item 10 repair, 2026-09-17) bypass dodge;
   ordinary hits and burning retain their existing dodge behavior. Still open: the ninja crit window (`elusiveness`),
   counter-strike and hit-series passives do nothing; stealth ignores darkness / lamps (no game clock);
@@ -480,18 +510,35 @@ resolve unmapped histories or certify generated/runtime behavior.
   heal / projectile runtimes with `design.abilities` numbers; basic hits give MP to non-mages, mages regenerate it;
   M2 charged / instant special, status application, HUD MP and hotbar cooldown line run. Fire-missiles, bubbles and
   shuriken-attack throw projectiles (D24); Aim/Sneak fill the stealth bar and Camouflage pins it (D23), while
-  Ninjutsu buffs damage/swing speed. Still open (`abilities.gd` ponytail): Shadow Shooter is a damage buff (no clone);
+  Ninjutsu buffs damage/swing speed. Heroic Shout/Bubbles healing now clips each update to its remaining
+  lifetime; exact/crossing/large updates, staggered expiry, HP cap and reset/death pass focused checks,
+  with class-combo/unarmed preservation. Selected-group and integrated correction reviews passed.
+  Still open (`abilities.gd` ponytail): Shadow Shooter is a damage buff (no clone);
   Quicksand is a one-shot slow burst (no zone); no prone/aim zoom; Heroic Shout retargets by a zero-damage hit
   (no aggro table or timed taunt implementation; approved rules in `ontology/domain/3_Classes.md#ai-behavior`); Teleport is a 20-block dash (source distance unverified);
   no cast interruption (stun cancels only the M2 charge). Item 10's captures cover the HUD hit/miss counter and
   static hotbar, not every ability animation/effect; D21 numbers remain untuned.
+<a id="game-review-f6"></a>
+- [ ] **F6 — directional Cyclone** (`ability`, `design.abilities.cyclone`): replace simultaneous
+  radial pulses with rotating contacts timed by targets' activation-referenced azimuths. Duration
+  or stamina exhaustion stops the spin at its reached facing, without completing the revolution.
+  Preserve shared Berserker/Guardian availability. Angular speed and moving-target, initial-contact
+  and exact end-boundary semantics remain unresolved; the existing 0.25-second radial tick is not
+  an approved revolution period. Land the precise canonical rule before implementation, then cover
+  coarse/fragmented updates, active-time/fuel clipping, safe zero-drain handling and synchronous
+  reset/death interruption. Require finite positive cadence/progress and nonnegative finite drain
+  before any catch-up loop; preserve committed weapon, costs and whole-channel combo/miss behavior.
+  [Original arithmetic evidence and dependencies](../pixlnd-8158ab2-game-review.md#f6--p2-cyclone-loses-cadence-and-overruns-active-time).
 - [x] Class-strike combo handling (item 10, `44ab0a1`): damaging burst/dash hits and channel ticks build combo;
   only a wholly missed damaging channel resets on normal/early end. Zero-damage taunts do not change combo
   or refresh its inactivity timer. Damage, costs, cooldowns and existing combo caps/expiry are preserved.
 - [x] Movesets + projectiles (D24, `combat/projectile.gd`, `player.gd#_attack` from `design.movesets`): every class weapon-type has an M1 / M2
   runtime (melee spin / lunge / finisher, arrows with gravity, bolts, piercing returning boomerangs, staff at-cursor bursts, wand beams,
   bracelet bolts + splash ball), fire-missiles / bubbles are projectile volleys, shuriken-attack throws 5 before the backflip, dagger
-  ambush poisons. Still open: no animations or hit timing (a swing is instant; the longsword lunge is a `move_and_collide` jump), the
+  ambush poisons. Ordinary shots now select one eligible contact before damage/status through both
+  player and creature shooters; nonlethal/lethal props consume shots without combat rewards. Focused
+  overlap/block/dodge/lethal/crit/defence/unequip and multi-target preservation checks pass;
+  selected-group and integrated correction reviews passed. Still open: no animations or hit timing (a swing is instant; the longsword lunge is a `move_and_collide` jump), the
   boomerang is not camera-steerable, wand M2 is one thick beam (not a held 10-hit ray), bow dud shots do not build combo, projectiles are coloured spheres with a fading-sphere trail and an impact
   flash (D25) but still no model or particles (creatures shoot the same projectiles since D26), the main scene picks the class only from `-- --class=<id>`, nothing visually
   checked; every D24 number is untuned.

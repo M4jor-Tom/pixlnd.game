@@ -14,11 +14,13 @@ var coins := 0
 var _o
 var _stackable: Array = []
 var class_id: StringName
+var _level_provider: Callable
 
 
-func _init(o, design: Dictionary, p_class_id: StringName) -> void:
+func _init(o, design: Dictionary, p_class_id: StringName, level_provider: Callable) -> void:
 	_o = o
 	class_id = p_class_id
+	_level_provider = level_provider
 	_stackable = design["stack-cap"]["stackable"]
 
 
@@ -92,7 +94,12 @@ func _equip_slot(it: Item) -> StringName:
 
 
 func _item_allowed(it: Item, slot: StringName) -> bool:
-	return slot != &"" and it.type != &"pet-food" and class_allowed(it)
+	return (
+		slot != &""
+		and it.type != &"pet-food"
+		and class_allowed(it)
+		and it.level <= Model.power_for_level(int(_level_provider.call()))
+	)
 
 
 func class_allowed(it: Item) -> bool:

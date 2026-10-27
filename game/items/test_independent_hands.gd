@@ -41,7 +41,7 @@ func run() -> void:
 		p.logical_id = "independent-hands"
 		p.set_physics_process(false)
 		var main = p.inventory.equipment[&"main-hand"]
-		var off = Items.generate(rng, &"weapon", subtype, &"iron", 2, 1)
+		var off = Items.generate(rng, &"weapon", subtype, &"iron", 1, 1)
 		p.inventory.add(off)
 		check(p.inventory.equip(off), "initial legal pair " + str(subtype))
 		p.inventory.unequip(&"main-hand")

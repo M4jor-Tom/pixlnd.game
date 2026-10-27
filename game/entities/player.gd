@@ -153,7 +153,7 @@ func setup_items(
 	mp_passive = "passive" in str(cls.raw.get("mp-generation", []))
 	prog = design["progression"]
 	hp_mult = cls.hp_mult
-	inventory = Inventory.new(o, design, class_id)
+	inventory = Inventory.new(o, design, class_id, func(): return level)
 	var start: Dictionary = design["starting-inventory"]
 	var starter: Dictionary = combat["starter-weapon"]
 	var wt = o.weapon_types[cls.weapon_types[0]]
@@ -447,6 +447,8 @@ func interact_nearest() -> bool:
 
 
 func talk_nearest() -> bool:
+	if dead or stunned():
+		return false
 	var npc := _nearest_in_group("npcs", float(design["settlement"]["npc"]["interact-radius"]))
 	if npc == null:
 		return false
@@ -462,6 +464,8 @@ func talk_nearest() -> bool:
 
 ## pick-up (E): the nearest ground item within design.loot.ground.pickup-radius.
 func pick_up_nearest() -> bool:
+	if dead or stunned():
+		return false
 	var best := _nearest_in_group("ground-items", float(design["loot"]["ground"]["pickup-radius"]))
 	if best == null:
 		return false
@@ -509,18 +513,18 @@ func rest() -> void:
 
 
 ## consumable: heal (consumable-heal) and spend one. ponytail: instant, no sit/channel time.
-func use_item(it) -> void:
+func use_item(it) -> bool:
+	if dead or stunned():
+		return false
 	hp = minf(max_hp, hp + Items.heal(it, o))
 	inventory.remove(it)
+	return true
 
 
 ## quick-item (Q): the first consumable stack. ponytail: no quick-select wheel yet.
 func use_quick() -> bool:
 	var it = inventory.first_consumable()
-	if it == null:
-		return false
-	use_item(it)
-	return true
+	return false if it == null else use_item(it)
 
 
 func _physics_process(dt: float) -> void:
@@ -622,6 +626,7 @@ func _physics_process(dt: float) -> void:
 				if (
 					not ui_open
 					and not map_open
+					and not stunned()
 					and (
 						Input.is_action_pressed("jump")
 						if touch_input == null
@@ -638,6 +643,7 @@ func _physics_process(dt: float) -> void:
 		if (
 			not ui_open
 			and not map_open
+			and not stunned()
 			and is_on_floor()
 			and (Input.is_action_just_pressed("jump") if touch_input == null else _touch_jump)
 		):
@@ -647,6 +653,7 @@ func _physics_process(dt: float) -> void:
 			and (
 				ui_open
 				or map_open
+				or stunned()
 				or not (
 					Input.is_action_pressed("jump")
 					if touch_input == null
@@ -681,9 +688,11 @@ func _physics_process(dt: float) -> void:
 	if abilities != null:
 		abilities.after_move(dt)
 	_fall_damage(was_airborne)
+	if dead:
+		return
 	if touch_input == null and not combat.is_empty():
 		_combat_tick(dt)
-	if touch_input == null and inventory != null and not ui_open and not map_open:
+	if touch_input == null and inventory != null and not ui_open and not map_open and not stunned():
 		if Input.is_action_just_pressed("interact"):
 			interact_nearest()
 		if Input.is_action_just_pressed("quick-item"):
@@ -1084,7 +1093,8 @@ func _strike(
 	dmg: float,
 	combo_bonus: bool,
 	applies: Array = [],
-	attack_type: StringName = Combat.PHYSICAL
+	attack_type: StringName = Combat.PHYSICAL,
+	target_limit: int = 0
 ) -> int:
 	var hits := 0
 	var chance: float = crit_chance + (abilities.add("crit-add") if abilities != null else 0.0)
@@ -1096,7 +1106,10 @@ func _strike(
 		chance += stealth * float(sl["crit-add-at-full"])
 	var tier := -1  # D25: ONE bundle per strike, the strongest tier wins
 	var tier_at := Vector3.ZERO  # (an AoE swing must not fire 16 sounds and 16 shakes)
-	for body in bodies_within(center, radius):
+	var bodies := bodies_within(center, radius)
+	if target_limit > 0:
+		bodies = bodies.slice(0, target_limit)
+	for body in bodies:
 		if body.has_method("take_direct_damage"):
 			body.take_direct_damage(
 				dmg * (abilities.mult("damage-mult") if abilities != null else 1.0), self

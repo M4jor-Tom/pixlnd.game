@@ -228,7 +228,7 @@ func validate_character(c: Dictionary) -> void:
 				c.banked + spent == (c.level - 1) * Model.SKILL_POINTS_PER_LEVEL,
 				"character.skill point total"
 			)
-	var inv := Inventory.new(o, design, StringName(cls))
+	var inv := Inventory.new(o, design, StringName(cls), func(): return int(c.level))
 	if require(c.get("bag") is Array, "character.bag"):
 		for row in c.bag:
 			if validate_item(row, "character.bag"):

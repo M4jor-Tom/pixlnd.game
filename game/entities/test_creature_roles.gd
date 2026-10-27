@@ -115,6 +115,97 @@ func _labels(colour := Color.TRANSPARENT) -> int:
 	return n
 
 
+## Two eligible players in one ordinary contact; retain query order and block/dodge settlement.
+func _two_player_contacts() -> void:
+	for mode in ["normal", "block", "dodge", "lethal", "splash"]:
+		var a := _player(Vector3(99.9, 0, -3))
+		var b := _player(Vector3(100.1, 0, -3))
+		for body in [a, b]:
+			body.set_physics_process(false)
+			body.feel = null
+			body.armor = 10
+			body.resistance = 10
+			body.get_node("CameraRig").rotation.y = PI
+		var c := _spawn(
+			&"skeleton", &"mage" if mode == "splash" else &"ranged", Vector3(100, 0, 0), a, &"H", 40
+		)
+		c.set_physics_process(false)
+		c.feel = null
+		c.role_cfg = c.role_cfg.duplicate(true)
+		c.role_cfg.applies = ["burning", "slow"]
+		c.design = c.design.duplicate(true)
+		c.design.defence["enemy-hit"]["stun-chance"] = 1.0
+		c.design.defence["enemy-hit"]["knockback-chance"] = 0.0
+		await _real(.05)
+		var bodies: Array = c.bodies_within(Vector3(100, 1.5, -3), float(c.role_cfg.shot.radius))
+		check(bodies.size() == 2, "two-player contact setup " + mode)
+		if bodies.size() != 2:
+			c.get_parent().free()
+			a.free()
+			b.free()
+			continue
+		var first = bodies[0]
+		var other = bodies[1]
+		if mode == "block":
+			first.blocking = true
+			first.block_power = 25
+			check(first.blocks_from(c), "two-player first contact really blocks")
+		elif mode == "dodge":
+			first._iframes = 1.0
+		elif mode == "lethal":
+			first.hp = 1.0
+		var hp: float = first.hp
+		var other_hp: float = other.hp
+		c._shoot()
+		check(_shots(c) == 1, "two-player real creature shot created " + mode)
+		for shot in c.get_parent().get_children():
+			if shot.get("shot") == null:
+				continue
+			shot.set_physics_process(false)
+			var record: Dictionary = shot.attack
+			for i in 30:
+				if shot.is_queued_for_deletion():
+					break
+				shot._physics_process(1.0 / 60.0)
+			check(
+				record.live == 0 and shot.is_queued_for_deletion(),
+				"creature contact retires " + mode
+			)
+			check(
+				record.hits == (2 if mode == "splash" else 1),
+				"creature contact cardinality " + mode
+			)
+		var loss: float = {
+			"normal": 26.0, "block": 5.2, "dodge": 0.0, "lethal": 1.0, "splash": 34.0
+		}[mode]
+		check(
+			is_equal_approx(hp - first.hp, loss), "creature first damage/defence unchanged " + mode
+		)
+		if mode == "splash":
+			check(
+				is_equal_approx(other_hp - other.hp, 34) and other.statuses.has(&"burning"),
+				"creature splash remains multi-target"
+			)
+		else:
+			check(
+				other.hp == other_hp and other.statuses.is_empty(),
+				"creature no damage/status spill " + mode
+			)
+		if mode in ["block", "dodge", "lethal"]:
+			check(first.statuses.is_empty(), "selected protection/death rejects statuses " + mode)
+		else:
+			check(
+				first.stunned() and first.statuses.has(&"burning") and first.statuses.has(&"slow"),
+				"selected creature hit carries guaranteed effects " + mode
+			)
+		if mode == "block":
+			check(first.block_power == 0 and first.mp == 8, "last block spends/rewards once")
+		c.get_parent().free()
+		a.free()
+		b.free()
+		await _real(.05)
+
+
 func _init() -> void:
 	o = Model.Ontology.load_dir("res://ontology/instances")
 	check(o.validate(), "ontology valid")
@@ -493,6 +584,7 @@ func _init() -> void:
 	pal.get_parent().queue_free()
 	await _real(float(design["combat"]["death"]["respawn-s"]) + .1)
 
+	await _two_player_contacts()
 	await _real(0.5)
 	Engine.time_scale = 1.0
 	print("test_creature_roles: %s" % ("OK" if _failed == 0 else "%d FAILED" % _failed))

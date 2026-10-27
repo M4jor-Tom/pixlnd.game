@@ -252,5 +252,79 @@ func run() -> void:
 		),
 		"I/O failure diagnosed without replacing original"
 	)
+	_power_restore(save, loaded, q)
 	print("save data ok" if failed == 0 else "save data FAILED %d" % failed)
 	quit(0 if failed == 0 else 1)
+
+
+func _power_restore(save, original: Dictionary, p: Node) -> void:
+	var data: Dictionary = original.duplicate(true)
+	data.character.level = 10
+	data.character.xp = 0
+	data.character.banked = 18
+	data.character.points = {}
+	var sword := Items.generate(RandomNumberGenerator.new(), &"weapon", &"sword", &"iron", 40, 0)
+	var chest := Items.generate(RandomNumberGenerator.new(), &"chest-armor", &"", &"iron", 32, 0)
+	data.character.equipment["main-hand"] = Save.item_data(sword)
+	data.character.bag.append(Save.item_data(chest))
+	check(
+		save.write_atomic(path + ".power", data),
+		"structurally legal worn +40 at level10 survives validation: " + str(save.errors)
+	)
+	var loaded: Dictionary = save.load_file(path + ".power")
+	check(not loaded.is_empty(), "above-power worn disk roundtrip")
+	if loaded.is_empty():
+		return
+	save.restore_player(p, loaded.character, loaded.world)
+	var worn: Item = p.inventory.equipment[&"main-hand"]
+	check(
+		p.level == 10 and worn.level == 40 and p.hp == p.max_hp and p.weapon.type == &"sword",
+		"restore retains worn +40 and refills equipped HP"
+	)
+	var maximum: float = p.max_hp
+	p.inventory.changed.emit()
+	check(
+		p.inventory.equipment[&"main-hand"] == worn and p.max_hp == maximum and p.hp == maximum,
+		"refresh does not evict above-power worn gear"
+	)
+	var recaptured: Dictionary = save.capture(State.new(p.design, 26879), p)
+	check(
+		(
+			recaptured.character.equipment["main-hand"] == Save.item_data(sword)
+			and save.validate(recaptured)
+		),
+		"capture of retained worn +40 remains valid"
+	)
+	var eligible: Item
+	for it in p.inventory.entries:
+		if it.type == &"chest-armor" and it.level == 32:
+			eligible = it
+	check(
+		eligible != null and p.inventory.equip(eligible),
+		"new +32 equip reads restored level10, not starter level1"
+	)
+	p.inventory.unequip(&"main-hand")
+	var bag: Array = p.inventory.entries.duplicate()
+	var equipment: Dictionary = p.inventory.equipment.duplicate()
+	p.hp = 10
+	maximum = p.max_hp
+	check(not p.inventory.equip(worn), "unequipped +40 is a new rejected admission at power32")
+	check(
+		(
+			p.inventory.entries == bag
+			and p.inventory.equipment == equipment
+			and p.hp == 10
+			and p.max_hp == maximum
+		),
+		"rejected restored re-equip preserves bag/equipment/HP"
+	)
+	# Keep the later real-level eligibility control independent on the pre-fix RED runtime.
+	if p.inventory.equipment.get(&"main-hand") == worn:
+		p.inventory.unequip(&"main-hand")
+	while p.level < 14:
+		p.gain_xp(Model.xp_to_next(p.level) - p.xp)
+	check(
+		Model.power_for_level(p.level) == 40 and p.inventory.equip(worn),
+		"restored retained +40 admits after real progression"
+	)
+	check(p.inventory.class_allowed(sword), "class admission remains structural")

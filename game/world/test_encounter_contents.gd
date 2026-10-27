@@ -141,23 +141,67 @@ func run() -> void:
 		var projectile_key := "room/1/vase/0"
 		var projectile_prop = contents.props[projectile_key]
 		var shot: Dictionary = d.movesets.bow.m1
-		var shots := Projectile.fire(
-			p,
-			projectile_prop.global_position + Vector3(0, 0, 2),
-			Vector3.FORWARD,
-			shot,
-			100,
-			false,
-			[&"burning"],
-			Combat.PHYSICAL
-		)
-		shots[0].set_physics_process(false)
-		p.mp = 0
-		shots[0]._physics_process(0.1)
+		var neighbour_key := "room/1/vase/1"
+		var neighbour = contents.props[neighbour_key]
+		var neighbour_position: Vector3 = neighbour.global_position
+		neighbour.global_position = projectile_prop.global_position + Vector3(.1, 0, 0)
+		p.global_position = projectile_prop.global_position + Vector3(0, 0, 3)
+		await physics_frame
+		await physics_frame
 		check(
-			site.contents.props[projectile_key].hp == 0 and p.mp == 0,
-			"actual swept projectile breaks furnishing without combat reward/status"
+			(
+				p.bodies_within(projectile_prop.global_position, float(shot.radius))
+				== [projectile_prop, neighbour]
+			),
+			"furnishing contact setup: two eligible props in shooter-distance order"
 		)
+		var before_xp: int = p.xp
+		var neighbour_hp: float = site.contents.props[neighbour_key].hp
+		for damage in [1.0, 100.0]:
+			var shots := Projectile.fire(
+				p,
+				projectile_prop.global_position + Vector3(0, 0, 2),
+				Vector3.FORWARD,
+				shot,
+				damage,
+				true,
+				[&"burning", &"stun"],
+				Combat.PHYSICAL
+			)
+			shots[0].set_physics_process(false)
+			var record: Dictionary = shots[0].attack
+			p.combo = 4
+			p.mp = 0
+			var from: Vector3 = shots[0].global_position
+			var to := from + Vector3(0, -.016, -1.2)
+			var ray := PhysicsRayQueryParameters3D.create(from, to, 0xFFFFFFFF, [p.get_rid()])
+			check(
+				p.get_world_3d().direct_space_state.intersect_ray(ray).is_empty(),
+				"prop setup: sphere contact precedes solid ray"
+			)
+			check(
+				p.bodies_within(to, float(shot.radius)) == [projectile_prop, neighbour],
+				"prop setup: two eligible sphere contacts"
+			)
+			shots[0]._physics_process(0.04)
+			check(
+				record.hits == 0 and record.live == 0 and shots[0].is_queued_for_deletion(),
+				"nonlethal/lethal furnishing contact consumes ordinary shot without combat hit"
+			)
+			check(
+				site.contents.props[projectile_key].hp == (9 if damage == 1 else 0),
+				"actual swept projectile damages only selected furnishing"
+			)
+			check(
+				(
+					p.combo == 0
+					and p.mp == 0
+					and p.xp == before_xp
+					and site.contents.props[neighbour_key].hp == neighbour_hp
+				),
+				"prop consumes shot without combat reward/XP or second-body spill"
+			)
+		neighbour.global_position = neighbour_position
 		await process_frame
 		# The table's loose pair is unaffected by pickup/expiry before its destruction.
 		var loose: Array = get_nodes_in_group("ground-items").filter(

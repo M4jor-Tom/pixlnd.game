@@ -92,8 +92,19 @@ func _run() -> void:
 	dressed.free()
 
 	var p := player(&"warrior")
+	var above := Items.generate(RandomNumberGenerator.new(), &"chest-armor", &"", &"iron", 2, 0)
+	p.inventory.add(above)
+	p.hp = 80
+	var attack: Dictionary = p.weapon.duplicate(true)
+	check(not p.inventory.equip(above), "above-power chest rejected before HP update")
+	state(p, 80, 267.5, "above-power rejection preserves current and maximum HP")
+	check(p.weapon == attack, "above-power rejection preserves attack")
+	# Keep HP swap fixtures independent on the unfixed RED runtime.
+	if p.inventory.equipment.get(&"chest") == above:
+		p.inventory.unequip(&"chest")
 	var chest := gear(&"chest-armor", &"iron")
-	var upgraded := Items.generate(RandomNumberGenerator.new(), &"chest-armor", &"", &"iron", 2, 0)
+	var upgraded := gear(&"chest-armor", &"iron")
+	upgraded.upgrade_count = 10  # Same HP curve input n=2, with an eligible +1 requirement.
 	var shield := gear(&"weapon", &"iron", &"shield")
 	var two := gear(&"weapon", &"iron", &"greatsword")
 	for it in [chest, upgraded, shield, two]:

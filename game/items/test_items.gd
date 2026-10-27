@@ -118,7 +118,7 @@ func _init() -> void:
 		"armor slots; consumables have none"
 	)
 	# inventory: c-stack-rule, equip/swap, coins
-	var inv := Inventory.new(o, design, &"warrior")
+	var inv := Inventory.new(o, design, &"warrior", func(): return 2)
 	inv.add(Item.stack(&"consumable", &"life-potion", 2))
 	inv.add(Item.stack(&"consumable", &"life-potion", 3))
 	check(
@@ -143,7 +143,7 @@ func _init() -> void:
 	# c-hands: both equip orders reject 2H + shield before displacing gear, consuming items or emitting changed.
 	for weapon_id in [&"greatsword", &"greataxe"]:
 		for shield_first in [true, false]:
-			var hands_inv := Inventory.new(o, design, &"warrior")
+			var hands_inv := Inventory.new(o, design, &"warrior", func(): return 1)
 			var two := Items.generate(
 				rng, &"weapon", weapon_id, Items.weapon_material(o.weapon_types[weapon_id]), 1, 0
 			)
