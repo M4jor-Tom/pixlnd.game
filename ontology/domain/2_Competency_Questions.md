@@ -13,7 +13,7 @@ Each must be answerable from the model + instances. Data requirement in the righ
 | CQ7 | What is an item? (type, subtype, material, rarity, level, cubes, name) | `item`, `item-type`, `material`, `rarity`, `affix`, `item-name` generator |
 | CQ8 | How is gear obtained, crafted, upgraded, identified, sold? | `recipe`, `crafting-station`, `shop`, `formula`, `book-of-crafting`, `leftovers`, `spirit-cube`, `adaptation` |
 | CQ9 | How does the player progress, in each ruleset? | `ruleset`, `skill-tree`, `power-level`, `artifact`, `region-lock`, `lore`, `gnome-supplier` |
-| CQ10 | What tasks does the world offer and what do they reward? | `mission-type`, `arena`, relations `rewards` |
+| CQ10 | What tasks does the world offer, what do they reward, and can a fresh solo character of any class lawfully reach future required objectives and guaranteed rewards within the same saved world? | `mission-type`, `arena`; relations `hosts`, `rewards`, `requires-key-item`, `equips`, `costs`; [required-content solvability](6_Generators.md#future-required-content-solvability) |
 | CQ11 | Who lives in settlements and what services do they give? | `settlement`, `district`, `building`, `npc-role`, `shop` |
 | CQ12 | How do NPCs / enemies behave, how many aggro points does each mob hold against each player, and whom does it target? (hostility, groups, patrols, schedules, potions) | `hostility`, `ai-behavior`, `creature` fields; relations `threat`, `current-target` and relation property `aggro-points` |
 | CQ13 | What status effects exist and what applies them? | `status-effect`, relation `applies` |

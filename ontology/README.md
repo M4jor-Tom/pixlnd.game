@@ -25,11 +25,24 @@ game-choice backlog. Resistance's meaning and all five approved combat selection
 [mitigation rules](domain/5_Constraints.md#constraint-catalog).
 Combat hit-derived burning and poison use [independent applications](domain/3_Classes.md#status-effect).
 Implementation deferrals live in `docs/ROADMAP/todo_implement.md`; documentation approval grants
-no runtime permission. Validation-contract enforcement remains partial: required race/catalog rows,
+no runtime permission. Validation-contract enforcement remains partial: required identity catalogs/raw
+shapes, bidirectional class/spec ownership and ordered indices, shared skill roots/links and Assassin's
+single rank-3 Camouflage exception (`test_identity_skills.gd`); required race/catalog rows,
 whole movesets and their selected shapes/references, district building/class references and landscape
 dungeon/POI references have bounded checks (`test_required_catalogs.gd`, `test_world_references.gd`).
 Landscape qualifiers remain raw notes; desert-ruins identity is unresolved, not a resolved alias.
-Broader mapping/provenance enforcement and remaining equipment behavior stay in the backlog.
+Mapped heterogeneous catalogs/configuration, raw typed-conversion shapes, climate expressions,
+family membership and building role/station/style closure have required-input checks
+(`test_required_inputs.gd`). Historical landscape style descriptions stay verbatim; bounded
+reference resolution is distinct from the runtime `design.settlement.style-by-landscape` map.
+Qualified annotations remain exact `source_tags`, separate from confirmed `versions`. Finite
+`source_at` resolution retains explicit/envelope origin; `test_provenance.gd` checks the §5 mappings
+and malformed selected-content tags. Untagged foods no longer receive fabricated A+S history.
+Unmapped food/trait/affix/mixed-context histories remain unresolved, not complete provenance coverage.
+Artifact config/descriptions now reflect the approved logarithm and separate historical S reports;
+`test_artifact_corrections.gd` checks only that bounded correction. Artifact-specific production
+enforcement, generation/runtime, persistence and remaining precision stay in the backlog,
+alongside remaining equipment behavior.
 Dated build notes include superseded placeholders, not proof of current coverage. For
 "resume walking through items", follow `docs/HANDOFF.md`, `docs/lessons.md` and any retained selections,
 not the gameplay slice loop. A green validator proves only its implemented checks, not full ontology consistency.

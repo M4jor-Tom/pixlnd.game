@@ -90,7 +90,11 @@ research. No new implementation authority or whole-topic completion.
   animals, schedules (`gen-schedule`), lanterns, dens / sewers, watchtowers; the village node floats until its zones load;
   not visually checked beyond `--write-movie`. S settlements are hidden until discovered (reference).
   One settlement per land is the final hybrid target (approved settlement item 1), not backlog.
-- [ ] Flora, deposits, dungeons, POIs, missions (`gen-flora`, `gen-dungeon`, `gen-poi`, `gen-missions`) — not started.
+- [ ] Flora, deposits, dungeons, POIs, missions (`gen-flora`, `gen-dungeon`, `gen-poi`, `gen-missions`) — broader generation remains deferred beyond the initial encounter families.
+  Future dungeon/mission placement/generation contracts and generated-route/runtime checks must verify
+  [required-content solvability](../../ontology/domain/6_Generators.md#future-required-content-solvability)
+  (`c-required-content-solvability`) against key acquisition, training, equipment and stamina
+  dependencies, not merely key/lock presence.
 - [ ] Temperature/humidity HUD (`design.climate.hud`) not shown; the land/village caption already runs (`hud-element`).
 
 ## Initial encounter contracts
@@ -100,7 +104,9 @@ research. No new implementation authority or whole-topic completion.
 - [ ] Place full-land artifact and one-time book sources through a later dedicated source contract,
   preserving [allocation and personal claims](../../ontology/domain/encounter-contracts.md#initial-permanent-source-scope).
   The six-site exclusion does not fulfill final coverage; historical Steam book/recipe quantities
-  are not selected hybrid numbers. This later source work does not block the bounded initial slice.
+  are not selected hybrid numbers. Apply [required-content solvability](../../ontology/domain/6_Generators.md#future-required-content-solvability)
+  when those placement contracts are authorized, including generated-output/runtime checks.
+  This later source work does not block the bounded initial slice.
 
 ## Player (§3.2 player-character, slice e33c991)
 - [x] Spawn = the (0,0) village square (`world.spawn-rule`, D22). Default seed 26879 spawns in deadlands (undead village).
@@ -193,23 +199,28 @@ research. No new implementation authority or whole-topic completion.
 - [ ] Creatures spawned outside `sim-radius` sit 1 block above ground until they wake, then drop
   (`gen-spawns` positions = ground + 1) — settle them on spawn or snap on wake, `spawner.gd`.
 
-## Persistence / authority (approved documentation, implementation unauthorized)
+<a id="persistence--authority-approved-documentation-implementation-unauthorized"></a>
+## Persistence / authority
 
 Canonical rules: `ontology/domain/3_Classes.md#save-data`, `#multiplayer-mode`, `#game-clock`, `#ai-behavior`.
 `main.gd` has validated atomic save/load for currently implemented character progression/equipment,
 per-world position/respawn (including legal independent hand occupancy), clock and logical ambient
-pair/incarnation state. Site callbacks/data
-seams and initial encounter content/rewards/vendor persistence exist, but portable-world import UI,
-future character systems and networking remain unfinished; the items below retain those boundaries.
-- [ ] Item 1 — portable character progression, possessions and pets including progression (`save-data`).
-- [ ] Item 2 — per-character/world position, respawn, travel and lore; separate saved-world identity from seed (`save-data`).
+pair/incarnation state. Generated land/site assignments, site content/reward delivery records,
+supplier completion and remaining daily vendor gear are saved separately from current incarnations.
+Load/write checks reject invalid current-rule data without replacing the original; they do not
+prove earned progression. Restoring refills hero HP, not transient HP/status/cooldown state.
+Lifecycle saves are not a guaranteed crash cadence; no migration or offline advancement exists.
+Portable-world import UI, future character systems and networking remain unfinished;
+the items below retain those boundaries.
+- [ ] Item 1 — portable-world import UI and remaining character systems (recipes, artifacts, key-item acquisition, pets/progression); current level/XP, skills, coins, bag/equipment and carried spirits already save (`save-data`).
+- [ ] Item 2 — personal travel unlocks and lore; per-character/world position/respawn and independent saved-world ID already save (`save-data`).
 - [ ] Item 3 — world-shared terrain exploration, distinct from personal shrine/flight/lore unlocks (`world.discovered-zones`).
-- [ ] Item 4 — persist world-shared supplier/barrier/village-curse changes under existing reset rules (`save-data`).
+- [ ] Item 4 — remaining barriers/village curses under existing reset rules; initial supplier completion already persists (`save-data`).
 - [ ] Item 5 — personal artifact/one-time-book source claims per saved world (`c-permanent-source-claim`), preserving duplicate recipes and ordinary loot.
 - [ ] Item 6 — server validation of action requests and authoritative gameplay outcomes (`multiplayer-mode`), not Alpha client trust.
 - [ ] Item 7 — rule-valid trusted-co-op imports; explain rejection without modifying the original save (`multiplayer-mode`); no provenance guarantee.
-- [ ] Item 8 — save/resume world time without downtime advance or catch-up; running empty servers keep approved timers, not full distant AI (`game-clock`).
-- [ ] Item 9 — surviving logical-mob threat/order/provocation across restart; preserve normal resets and taunt termination (`ai-behavior`, `c-threat-pair`).
+- [ ] Item 8 — running empty-server timers when networking exists, not full distant AI; current single-player clock already saves/resumes without downtime advance or catch-up (`game-clock`).
+- [ ] Item 9 — extend saved logical-mob threat/order/provocation to future encounter families; current ambient/initial-site incarnations retain it across restart, preserving normal resets and taunt termination (`ai-behavior`, `c-threat-pair`).
 
 <a id="device-independent-controls-documentation-only"></a>
 ## Device-independent controls
@@ -234,10 +245,12 @@ future character systems and networking remain unfinished; the items below retai
 <a id="validation-contract-documentation-approved-implementation-unauthorized"></a>
 ## Validation contract (bounded checks; remaining implementation deferred)
 
-Required races and whole movesets now have missing/malformed-input regressions and cumulative
-load-error checks. Selected district building/class and landscape dungeon/POI references are checked;
-qualifiers remain raw notes. Desert-ruins identity is still unresolved, not a closed alias or new type.
-The remaining mapping below is not implemented by those finite checks.
+Bounded identity/tree, required-input/reference and finite source-envelope checks are documented in
+[§5](../../ontology/domain/5_Constraints.md#validation-contract-mapping-owner-approved-2026-09-28)
+and [the check list](../../game/README.md#checks); the entries below are remaining work only.
+Desert-ruins identity is unresolved, not a closed alias or new type. Historical Swamp Lands identity
+also remains research; hybrid v1 landscape availability is settled. Passing finite checks does not
+resolve unmapped histories or certify generated/runtime behavior.
 
 - [ ] Source item 32 (`ontology/domain/3_Classes.md#pet-food`): the daily stocked-type report selects no purchase
   quantity or source-build attribution; daily amounts/food histories remain research. No stock,
@@ -250,9 +263,9 @@ The remaining mapping below is not implemented by those finite checks.
 - [ ] Source item 35 (`ontology/domain/index.md §5`): UI placement disagreement remains unresolved, not a
   HUD move; approximate messages select no exact cap, historical keys preserve Assassin’s exception.
   No screenshot/build verification, release ancestry or interface/control changes.
-- [ ] Mapping item 1 (`ontology/domain/index.md §5`): taxonomy/style ID, shape and reference checks without
-  invented source tags; preserve embedded historical facts and separately scoped rosters/buildings.
-  Direct data correction and model/loader/validator changes await separate authorization.
+- [ ] Mapping item 1 (`ontology/domain/index.md §5`): embedded historical facts/source attribution,
+  primary/descriptive-family behavior and generated/runtime enforcement remain pending beyond
+  bounded family/style/building shape and reference checks.
 - [ ] Mapping/source items 2/6/12–14/16/30–31 (`ontology/domain/3_Classes.md#pet-food`): finish individual food release histories
   beyond pinned cuwo names, conflicting/blank Koala reports, S-food pairs and the current
   Alpha-focused Kotaku guide's wiki-credited pairs (not an authenticated 2013 list); first
@@ -260,17 +273,16 @@ The remaining mapping below is not implemented by those finite checks.
   Leaf 10086's unidentified-version unobtainability/cheat-acquisition report does not establish
   cheat-fed taming or date either bait; Candy stays Koala's bait and Leaf stays cut.
   Data correction and model/loader/validator work need separate authorization.
-  Current A+S fallback is not evidence; shared-food pairings and source IDs remain unchanged.
-- [ ] Mapping item 3 (`ontology/domain/index.md §5`): preserve qualified reference annotations in later
-  model/loader/validator handling; current parsing strips `?`. No schema or parser change is
-  authorized now. Hybrid v1 landscape availability is settled (§3.1); historical Swamp Lands
-  identity remains research, not an implementation choice.
-- [ ] Mapping item 4 (`ontology/domain/index.md §5`): implement the recorded required-path/shape, bounded
-  source-inheritance and layer-specific checks beyond the bounded coverage above when separately
-  authorized. Remaining required-input negatives, both directions of class/spec references,
-  spec cardinality/start index, rootless shared skill columns and handedness-specific cube capacities.
-  Fail on accumulated errors; separate artifact-definition/generated-instance checks. Require current
-  artifact log config directly; no old decay/floor alternative. Source items 7–9/17 record bounded mixed-container/patch/encounter reports, not whole-file labels;
+  The fabricated A+S food fallback is removed; all 48 untagged obtainable foods remain attribution
+  holds (enumerated in perimeter-4 evidence), not guessed history. Shared-food pairings and source IDs remain unchanged.
+- [ ] Mapping item 4 (`ontology/domain/index.md §5`): broader semantic/layer-specific checks beyond
+  the bounded coverage above remain pending. Global c-versions-nonempty, per-food histories,
+  embedded family/roster traits, affix prefixes, mixed recipes/shops/population/UI, unscoped
+  audio/static behaviour/candles and dialogue/examples remain unresolved. Exact A-mod/hybrid
+  context annotations stay raw (including historical A in the mixed skills record), not new
+  source tags or blanket exemptions. Artifact definition/config enforcement and generated/runtime
+  checks remain separate debt under Progression; corrected log config is not production enforcement.
+  Source items 7–9/17 record bounded mixed-container/patch/encounter reports, not whole-file labels;
   per-membership fauna histories and other embedded traits remain research, not roster corrections.
   Item 18 attributes cotton quantities only; noncotton/weapon quantities and refining yields/ratios stay open.
   Item 19 does not complete stock/loot/probability or daily pet-food-amount research or change economy rules.
@@ -374,6 +386,12 @@ The remaining mapping below is not implemented by those finite checks.
   carryable/red in the inventory list but cannot equip; two distinct rings reach both existing slots.
   This is placement legality, not new off-hand combat. No crafting, customization, taming or traversal
   runtime was added. Commit/publication choices remain pending in `docs/HANDOFF.md`.
+- [ ] Reconcile live JSON, model/checker, generators, saved reward checks and runtime consumers with
+  [shared item-power units](../../ontology/domain/3_Classes.md#item) (`c-item-power`): ordinary gear/consumables,
+  guaranteed current-boss gear, initial-boss spirits, room/table potions, mission packages, vendor
+  gear, vendor consumables and recipe/formula requirements. Preserve the canonical source/unit boundaries
+  and equations; existing checks still enforce old inputs, not this policy.
+  Documentation only; live data/checker/runtime changes require separate authorization.
 - [ ] Initial site ordinary/boss/mission rewards and spirit carrying exist; no dungeon chests, general NPC weapon drops or leftovers (`loot-rule`); species drops without an `ingredients.json` row (popcorn, jellies) are skipped.
 - [ ] Ground items: coloured cubes, no item mesh; auto-pickup only coins; no middle-click drop for trading;
   lifetime is real seconds (`design.loot.ground.lifetime-s`), not tied to `game-clock`.
@@ -400,17 +418,19 @@ The remaining mapping below is not implemented by those finite checks.
   or compensation and leave known formula scrolls unconsumed. Runtime/UI/data work is unauthorized.
 
 ## Progression (§3.5, slice D19)
-- [ ] Assassin item 1 (`ontology/domain/3_Classes.md#skill-tree-a`, `c-tree-shape`): clarify live `also-ultimate`
-  metadata and add validation coverage for the approved single rank-3 Camouflage exception
-  when separately authorized. Current key-3/no-key-4 runtime already matches; no fourth-node,
-  alternate-key or duplicate-cast implementation is requested. JSON/tests/validator unchanged.
 - [ ] Artifact items 1–6 (`ontology/domain/3_Classes.md#artifact`, `c-artifact-stat`): implement the approved
   logarithmic total (initial z=0.1), equal additive shares and current artifact-free stat basis;
   matching-only traversal counts versus all-artifact attack/maximum-HP counts. No artifact levels,
   traversal-gate bypass, old decay/floor, replacement clamp or extension to ordinary gear.
-  Live `generators.json#design.artifact`, `key-items.json#artifact` and hybrid `rulesets.json`
-  wording still carry old D6 policy; replace directly only with separate authorization. Model/loader/
-  validator support, generated rewards and runtime recalculation remain deferred and unauthorized.
+  Checked-in artifact config/descriptions are corrected; `test_artifact_corrections.gd` is only
+  bounded correction evidence, not production definition/config enforcement. Still pending:
+  model/loader/validator enforcement of the seven-kind definition and logarithmic config;
+  generated instances with exactly one traversal kind plus attack/max HP; collection and per-stat
+  counts, equal-share/current-basis recalculation and actual consumers for all seven traversal
+  effects plus attack/max HP; persistence/import and personal saved-world source claims.
+  Later `ontology-resume-router-slice` must reconcile source/gameplay precision, including the
+  unselected Spikes/artifact combination. Placement/solvability remains under the dedicated
+  future source contract above, not this correction. These systems remain deferred and unauthorized.
 - [x] Skill tree (D20, `game/progression/skill_tree.gd`, `skill_panel.gd` on X): spending, unlock rule, per-point multipliers.
   Class actives have runtimes since D21 (see Combat). Still open: shared skills other than Swimming do nothing until pets,
   mounts, climbing, glider and boat exist; spec change at the trainer (`npc-role` class-trainer, A fee) and the panel is a flat list
@@ -419,7 +439,10 @@ The remaining mapping below is not implemented by those finite checks.
   synthesised sound. Still open: no flash / particles, and no real audio asset (`audio.json`).
 - [ ] HUD level/xp progression transitions still need visual checks; the static level/xp line is visible
   in item 10's windowed combo captures (see HANDOFF gotchas).
-- [ ] `power-gate` unread: any item level equips; no adaptation, no `+N` display.
+- [ ] [Equipment power requirement](../../ontology/domain/3_Classes.md#power-gate-a), `c-power-gate`:
+  shared equip boundary still accepts above-power gear. Enforce the linked equipment-only rule
+  using shared item-power units, preserving existing legality and HP rules. `+N` display also
+  remains absent. Runtime changes remain separately unauthorized.
 - [ ] XP from open-world and initial site kills goes to the finishing attacker; no extra mission-completion XP, no party share, no pet XP
   (`pet-xp` flag), no message-log "+N xp" toast (`hud-element` message-log).
 - [ ] HUD shows level/xp as a text line; the portrait (head, name, class) is still missing (`hud-element` portrait).

@@ -1025,6 +1025,26 @@ Concrete item instance (alpha `ItemData`, 88 bytes). `A S`
 | plus | bool | S: `+` suffix; works in adjacent lands |
 | name | derived | `item-name` generator |
 
+**Hybrid item power:** the `level` field on gear, consumables, formulas and spirit cubes
+means integer item power **+1…+100**, not character/creature level. Recipe/formula power
+requirements use these same units; this selects no recipe generation, identity or output defaults.
+When producing an item from source level `L`, first compute the existing integer
+[character power](#level-formula-a), then apply any existing spread in **power points**:
+`item power = clamp(power(L) + offset, 1, 100)`. Without spread, use `power(L)` directly.
+Source levels 1/10/100/200/1981 give baseline powers 1/32/84/91/100; equal −1/0/+1
+spread gives [1,1,2] / [31,32,33] / [83,84,85] / [90,91,92] / [99,100,100].
+Starting equipment remains +1. Producer source identities are specified under
+[loot](#loot-rule), [shops](#shop) and the [encounter contracts](encounter-contracts.md).
+Character/creature levels, XP, coin income and other level-valued domains stay in their
+existing units. Stat, healing and price equations are unchanged, including fixed gear HP
+and upgrade inputs below; corrected item-power inputs can change their resulting values.
+Rarity, cube capacities, quantities, timings and the permanent regional-power-loss exclusion
+are unchanged. Live JSON, model/checker and game consumers still use unconverted source levels;
+their reconciliation is [deferred implementation](../../docs/ROADMAP/todo_implement.md#items-34-slice-abaded3),
+not an override of this canonical rule.
+
+Hybrid equipment uses item power as an [equip requirement](#power-gate-a), not weakened stats.
+
 D18's damage/armor-only gear stats are slice coverage, not a permanent exclusion of HP,
 regeneration, tempo or crit.
 
@@ -1163,7 +1183,8 @@ Hybrid retains the recorded alpha exception (reconciliation item 7, approved 202
 mission bosses, including Saurians, drop no spirit cube; their normal mission rewards are
 unchanged. Sources: `creatures.json#saurian`, `mission-types.json#alpha.boss-kill`.
 Initial hybrid [boss spirit acquisition](encounter-contracts.md#guaranteed-boss-gear-and-spirits)
-fixes type/initial level across renewal; attaching spirits and numerical effects are outside
+fixes type and item power converted from the initial boss level across renewal; the weapon/cube
+comparison above uses item-power points. Attaching spirits and numerical effects are outside
 that slice, without removing this content or its bench restrictions.
 
 ### leftovers
@@ -1273,12 +1294,14 @@ floor**. The approved logarithmic curve replaces D6's ×0.9 accumulation/decay r
 floor; there is no hidden clamp, minimum per-artifact contribution or minimum marginal gain.
 The first artifact remains 5%.
 
-Documentation only: live `generators.json#design.artifact` still stores D6's `first: 0.05`,
-`decay: 0.9`, `floor: 0.01`; `key-items.json#artifact` still mixes historical S levels with
-old D6 accumulation text, and `rulesets.json#ruleset-hybrid._rule` still says D6 bonuses are
-unchanged. These do not override the current rules above. Direct replacement of obsolete checked-in values,
-model/loader/validator support and generated-artifact/runtime enforcement remain deferred and
-unauthorized; no legacy format or migration support is required (§0).
+The checked-in `generators.json#design.artifact` now records the normalized logarithm with
+`first: 0.05` and adjustable positive `z`, initially `0.1`, without the obsolete decay/floor keys.
+`key-items.json#artifact` separates historical S reports from hybrid rules; the hybrid ruleset
+points to the approved curve. `test_artifact_corrections.gd` checks this bounded data correction,
+not production definition/config enforcement or generated/runtime behavior. Those systems,
+collection, consumers, persistence/import/personal source claims and remaining source/gameplay
+precision stay in the implementation backlog for later resume reconciliation. No legacy format
+or migration support is required (§0).
 
 ### currency
 A: copper/silver/gold (100:1), platinum (adaptation only); S: single coin counter, auto-pickup by
@@ -1289,7 +1312,13 @@ Vendor with stock rules. → `instances/economy.json#shops` (weapon, armor, item
 gem-trader `S` roaming, inn, guild, flight-master, adapter `A`). S: stock rarity capped by rescued
 gnomes; restock daily; buy-back tab; A: sales final, +1..+100 stock.
 
-Hybrid `design.settlement.shop` selects eight gear offers, level spread 1, a common initial ceiling and daily restocking. Remaining stock/purchases and world-shared supplier progress persist under `save-data`. The hybrid [supplier stock ceiling](encounter-contracts.md#shared-mission-packages-and-supplier-shops)
+Hybrid `design.settlement.shop` selects eight gear offers, power-point spread 1, a common initial
+ceiling and daily restocking. For gear, first convert the source level generated by the existing
+land-danger/character-level rule, then apply the stock spread and clamp under [item power](#item).
+Vendor consumables use the shop's character-level input converted directly, without spread;
+they remain unlimited. Buy/sell price equations use item power where they read item `level`,
+not source level; coefficients, rarity multipliers and rounding remain unchanged.
+Remaining stock/purchases and world-shared supplier progress persist under `save-data`. The hybrid [supplier stock ceiling](encounter-contracts.md#shared-mission-packages-and-supplier-shops)
 governs ordinary stock generation/restock, not an immediate rescue reroll or guaranteed top-grade stock.
 
 ### inventory
@@ -1319,6 +1348,10 @@ Open-world numbers (drop chances, rarity weights, level spread, ground lifetime,
 [guaranteed boss gear/spirits](encounter-contracts.md#guaranteed-boss-gear-and-spirits) and
 [shared mission packages](encounter-contracts.md#shared-mission-packages-and-supplier-shops) are
 separate rewards; personal permanent-source claims do not instance these shared drops.
+Hybrid ordinary gear and consumables convert the defeated creature's level before applying
+the existing shared loot spread under [item power](#item). Coin income and kill XP still use
+creature level, not converted power. Source/cycle identity and saved reward payloads remain
+stable across reloads; conversion does not authorize rerolls or re-awards.
 
 ### 3.5 Progression
 
@@ -1327,7 +1360,7 @@ Feature-flag bundle: playable hybrid uses Alpha progression plus approved Steam 
 Alpha/Steam bundles are historical reference, not additional playable modes. → `instances/rulesets.json`.
 
 ### level-formula `A`
-`power(lvl) = (101·lvl − 81)/(lvl + 19)` (cap +100 at lvl 1981); `xp-to-next(lvl) = int(1050 −
+`power(lvl) = min(100, int((101·lvl − 81)/(lvl + 19)))` (truncate to integer; +100 at lvl 1981); `xp-to-next(lvl) = int(1050 −
 1000/(0.05·(lvl−1)+1))`; `base-hp(lvl) = 2^((1 − 1/(0.05·(lvl−1)+1))·3)`; player HP = base × 2 ×
 max-hp-multiplier; class HP multipliers warrior 1.30 (guardian ×1.25 more), ranger 1.10, rogue 1.20,
 mage 1.00; 2 banked skill points per level for skill-tree spending; no level cap (int32).
@@ -1361,8 +1394,8 @@ cooldown and one buff, with no extra charge or duplicate purchase. Keep Camoufla
 effect, duration, cooldown, per-point scaling and approved stealth/threat rules unchanged.
 This is an explicit Assassin exception to D10's separate ultimate node; other specializations
 and the remaining D10/D20 rules stand. The player has three distinct class skills rather than
-paying twice for the same skill. Current third-slot/no-fourth-slot runtime already matches; tree metadata
-clarification and validation coverage remain separately deferred, not authorized by this approval.
+paying twice for the same skill. The third-slot/no-fourth-slot runtime and definition validation
+both enforce this exception; `also-ultimate: true` remains source metadata, not a fourth unlock.
 
 Hybrid traversal item 1 (approved 2026-09-28): the riding chain also requires global Reins
 and a rideable tamed pet; training and further-point speed benefits follow `pet` / `c-riding`.
@@ -1387,7 +1420,22 @@ skill reduction curve/floor. Item 5 separately applies Spikes to the remaining s
 cost (×0.25), not additive percentage points (`key-item`).
 
 ### power-gate `A`
-Item `+N` usable at full strength only if player power ≥ N; formulas learnable likewise.
+Alpha reference: item `+N` usable at full strength only if player power ≥ N; formulas learnable likewise.
+
+Hybrid non-equipment items retain the full-strength condition: item `+N` is usable at full
+strength only if player power ≥ N. This selects no below-threshold effects.
+
+**Hybrid equipment requirement:** equipment `+N` cannot be equipped until character
+[power](#level-formula-a) ≥ N, using the shared [item-power units](#item). Above-power
+equipment may still be carried, traded or kept. Once eligible and equipped, its normal
+stats apply; no reduced-strength formula is introduced. At +32 power, a +40 sword stays
+in the bag until +40. Existing class, material, slot and hand restrictions and equipped
+HP/no-healing rules remain unchanged.
+
+This selection is **equipment-only**: it adds no consumable-use restriction or
+spirit-attachment player-power gate, and selects no retroactive unequip/eviction or save
+migration behavior. Existing formula-learning and book/crafting locks below are unchanged.
+Runtime enforcement remains [deferred](../../docs/ROADMAP/todo_implement.md#progression-35-slice-d19).
 
 **Hybrid books/formulas item 3 (owner approved, 2026-09-28):** books record their unknown
 recipes **immediately, regardless of current power**. A recipe above the character's power
@@ -1596,8 +1644,21 @@ retain threat/order/neutral provocation across restart under `ai-behavior` item 
 Initial-site identities, special timers, rubble, trap/prop renewal and once-only reward state
 follow the [encounter contracts](encounter-contracts.md), without choosing a save format.
 
-Documentation only: save-data and networking are unimplemented; these policies do not authorize
-runtime, live-data, model/loader/validator or test changes.
+**Current implementation:** validated atomic JSON save/load retains the implemented hero's
+ID, class/spec, level/XP, banked/spent skill points, coins, bag and equipment (including carried
+spirits), plus per-world position/respawn. World snapshots retain independent world ID/seed,
+clock/elapsed simulation time, generated land/site assignments, ambient/site incarnations and
+combat state, site contents/reward delivery records, supplier completion and remaining daily
+vendor gear. Invalid input is rejected with diagnostics before replacing the original save;
+validation checks current rules, not whether progression was earned. Restoring the hero refills
+HP; transient player HP, statuses and cooldowns are not captured. Lifecycle saves cover meaningful
+state transitions, unload and graceful shutdown, not a guaranteed crash-checkpoint cadence.
+There is no legacy migration or offline time advancement.
+
+Portable-world import UI, recipes, artifacts/personal permanent-source claims, pets/progression,
+exploration, personal travel/lore, remaining world improvements and networking remain unfinished.
+The [persistence backlog](../../docs/ROADMAP/todo_implement.md#persistence--authority)
+tracks those boundaries. These policies grant no additional implementation authority.
 
 ### slash-command
 → `instances/slash-commands.json`.

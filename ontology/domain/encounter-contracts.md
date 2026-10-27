@@ -77,7 +77,9 @@ not unmodified player spell damage.
 
 Each ordinary kill in these sites independently rolls 60% coins worth `1 + 2 × enemy level`
 copper, 20% one gear item, 15% one consumable, and 50% for each defined species ingredient.
-Item level is `max(1, enemy level + offset)`, with equal chances for offsets −1, 0 and +1.
+Gear and consumable item power is `clamp(power(enemy level) + offset, 1, 100)`, converting
+source level first under [item power](3_Classes.md#item), with equal chances for offsets −1, 0 and +1
+power points. Coin income and kill XP still use enemy level.
 Reuse ordinary rarity weights, gear-kind and consumable pools in `generators.json#design.loot`, shared ground
 pickup and kill XP under [loot-rule](3_Classes.md#loot-rule). No extra completion XP is selected.
 Unloading or restarting cannot reroll or re-award the same kill.
@@ -136,12 +138,13 @@ No crit, stun, knockback, DOT, combat-resource gain or XP.
 Each room has two vases and one table. Vases have 10 HP and tables 20 HP, both with zero armor.
 Direct player/boss attacks damage them; DOT and traps do not. Prop hits grant no combo, MP,
 XP or enemy-hit status rolls. Each vase releases `1 + 2L` copper on destruction. Each table
-owns one glass flask and one common life potion at level `L` per renewal, issued as loose
+owns one glass flask and one common life potion at item power `power(L)` (no spread) per renewal, issued as loose
 pickups. Breaking the table never reissues that pair, whether its pickups remain, were taken
 or expired. `L` is the saved room guard-pack level, minimum 1, not the boss level.
 Each of the three rooms rolls and saves one shared level at creation and at every actual safe
 daily renewal, using the existing party-level and land-danger rules. Newly spawned or replacement
-guards and renewed furnishing rewards use that level; surviving guards keep their previous levels
+guards use that level and renewed potions convert it under [item power](3_Classes.md#item);
+flasks and vase coin income are unchanged. Surviving guards keep their previous levels
 and state. Partial renewal may therefore leave mixed-level guards. Unloading or restarting never
 rerolls the saved room level.
 
@@ -153,21 +156,21 @@ unload/restart and becomes idle on renewal. Furnishings contain no formulas, boo
 
 The two ruins bosses are non-mission bosses; the camp and four rescue bosses are mission
 bosses. All seven independently guarantee one gear item in addition to normal kill-drop rolls.
-Its rarity is one above boss tier, capped at legendary; its level is the defeated boss's saved
-level, minimum 1, and upgrade count is zero. Reuse `generators.json#design.loot` gear-kind
+Its rarity is one above boss tier, capped at legendary; its item power is `power(L)` for the
+defeated boss's current saved level `L`, minimum 1, with no spread, and upgrade count is zero. Reuse `generators.json#design.loot` gear-kind
 weights 4:2:2:2:2 for weapon/chest/gloves/boots/shoulders, four classes equally likely, and
 legal class materials/weapon choices. New genuine deaths can reroll kind, class, subtype,
 modifier and name, not tier-based rarity. Reloads cannot reroll the same death's rewards.
 
 Each ruins boss also drops one spirit cube per death. On its first logical generation,
 independently choose `spirit-fire`, `spirit-unholy`, `spirit-ice` or `spirit-wind` with 25%
-probability each. Spirit level equals that boss's initial level. The same logical site boss
-retains its assigned spirit type and level across daily renewal; guaranteed gear instead
-follows the currently defeated boss's saved level. Mission bosses give zero spirits.
+probability each. Spirit item power is `power(L)` for that boss's initial level `L`, without spread.
+The same logical site boss retains its assigned spirit type and initial-level-derived power
+across daily renewal; guaranteed gear instead converts the currently defeated boss's saved level. Mission bosses give zero spirits.
 All these rewards are shared ground drops, not per-player copies. No regional `+` gear or
 travel weakening is added.
 
-Quality means colour grade; level means item level. Spirit cubes are weapon-upgrade ingredients.
+Quality means colour grade; item level means bounded [item power](3_Classes.md#item), not boss level. Spirit cubes are weapon-upgrade ingredients.
 Initial implementation is limited to collecting and carrying them. Attaching spirits and their
 numerical combat effects remain a separate feature, not globally removed or silently added. Existing [bench restrictions](3_Classes.md#customization-bench) and
 [spirit-level restrictions](3_Classes.md#spirit-cube) remain; this selects no effect numbers.
@@ -177,8 +180,8 @@ numerical combat effects remain a separate feature, not globally removed or sile
 Each camp/rescue completion produces one shared package per completion cycle, not one per
 teammate. For site tier `t = 0..3` (white/green/blue/purple), it contains one gear item of rarity
 `t + 1`, `20 × (t + 1)` copper, one common life potion and `t + 1` matching-grade gems
-(emerald/sapphire/ruby/diamond respectively). Gear and potion use the saved mission-boss level,
-minimum 1; gear has zero upgrades. This package is additional to ordinary kill and boss drops.
+(emerald/sapphire/ruby/diamond respectively). Gear and potion use `power(L)` for the saved
+mission-boss level `L`, minimum 1, without spread; gear has zero upgrades. This package is additional to ordinary kill and boss drops.
 
 At the final designated death, snapshot the distinct classes of connected characters inside
 the site, alive or awaiting respawn, and choose uniformly among those classes. If none are

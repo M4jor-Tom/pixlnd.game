@@ -30,7 +30,7 @@ remain separately authorized work (`docs/ROADMAP/todo_implement.md`).
   definition's seven approved traversal stat kinds and approved bonus configuration at load time;
   generator/runtime checks separately verify each generated artifact has exactly one of
   those traversal bonuses plus attack and max HP. The approved accumulation curve, counts and
-  recalculation are in §3.4 `artifact`; direct data correction and enforcement remain deferred.
+  recalculation are in §3.4 `artifact`; checked-in data is corrected, but production enforcement remains deferred.
   Passing definition checks is not evidence that generated rewards or runtime behavior work.
 - **Result:** validation succeeds only when the accumulated load/validation error collection
   is empty. Earlier load errors remain failures even if a validation pass adds no new errors.
@@ -62,9 +62,10 @@ source annotations for reference records, not confirmed S/A history. These annot
 independently establish hybrid availability; explicit hybrid decisions still govern it (§1).
 An uncertain Swamp Lands reference remains useful for research without deciding its identity or
 adding a distinct shipping biome. Do not delete or reject a reference merely for its qualified
-tag, or silently promote it to confirmed history. This chooses no runtime schema/type or parser
-behavior: the current parser strips `?`; preserving the qualification in model/loader/validator
-handling remains deferred and unauthorized.
+tag, or silently promote it to confirmed history. The model retains exact `source_tags` separately
+from confirmed `versions`; qualified
+annotations do not enter confirmed enums. `test_provenance.gd` covers this bounded handling,
+not historical identity research or hybrid availability.
 
 #### Item 4 — Required inputs, source scopes and check boundaries
 
@@ -167,11 +168,25 @@ predicates remain in the constraint catalog; no duplicate balance table is intro
 | UI/engine/assets | Canonical action/profile reference closure, binding/UI/sound/format declarations and frame-budget config; no historical control fallback. | Player-name input limits, actual RGB payloads, map/input/HUD/feedback and physics/catch-up behavior; nonexistent generated payloads are not malformed definitions. |
 
 Future regressions must exercise each predicate at its mapped boundary, including item 9's
-missing-whole-input cases. Current bounded checks cover the required race catalog (eight playable
-race IDs, row objects, boolean `playable`, size class), required whole movesets/default/kinds and
+missing-whole-input cases. Current bounded checks cover required identity catalogs and raw row shapes,
+bidirectional class/spec ownership, two distinct ordered spec indices, shared-column roots/links and
+the single rank-3 Assassin Camouflage exception (`test_identity_skills.gd`); the required race catalog
+(eight playable race IDs, row objects, boolean `playable`, size class); required whole movesets/default/kinds and
 class-weapon entries with the existing moveset predicates, district building/class references, and
-landscape dungeon/POI references. District trainer qualification and landscape notes follow
+landscape dungeon/POI references. The mapped heterogeneous required catalogs/configuration,
+raw conversion guards, climate-rule parsing, family members and settlement building/service/style
+references have bounded checks (`test_required_inputs.gd`). Historical landscape style descriptors
+remain raw reference text with finite resolution; runtime style selection stays in
+`design.settlement.style-by-landscape`. Forest roster race/family tokens are shape-checked, not
+silently reinterpreted as creature IDs. District trainer qualification and landscape notes follow
 [the structure definitions](3_Classes.md#district); desert-ruins identity remains unresolved.
+Finite source resolution (`source_at`) reports exact tags and their explicit/envelope origin;
+`test_provenance.gd` covers the listed envelopes and explicit malformed-tag rejection in selected
+content families. Source-table origin is not functional availability; prose qualifiers remain raw.
+The 48 untagged obtainable foods have no fabricated A+S fallback. Unmapped histories above remain
+unresolved; the existing modded `!goto`/`!tp` row and hybrid UI debug-menu/skills/npc-service annotations
+retain their exact context, not new historical tags or wholly resolved ancestry. This does not
+complete global `c-versions-nonempty`.
 These checks retain earlier load errors and accumulate independent failures. A passing validator
 does not prove the rest of this mapping's enforcement; further data correction and
 loader/validator/generator/runtime work need separate authority.
@@ -194,8 +209,8 @@ loader/validator/generator/runtime work need separate authority.
 | c-weapon-class | equipping weapon-type/armor material requires matching class (red name otherwise) | runtime |
 | c-hands | 1H ×2 or 1H + shield or one 2H; either hand may independently be empty, with the other item untouched and still subject to class/subtype/slot/2H legality; a shield alone can block, but weapon attacks require a main-hand weapon (§3.3 weapon-type); bracelets need two for full damage; hybrid wand is mechanically 2H with no other hand item, regardless of pose | runtime |
 | c-cube-cap | upgrades ≤ 16 (1H) / 32 (2H, shield); wood cubes only on wood weapons, iron on metal | load+runtime |
-| c-spirit-level | A: weapon.level − 10 ≤ spirit.level ≤ weapon.level | runtime |
-| c-power-gate | A / hybrid: item.level ≤ power(player.level) for full strength; formula learning retains its sufficient-power requirement. Hybrid books record recipes immediately, but above-power recipes remain known and visibly locked against crafting until their requirement is reached; duplicate acquisition never removes the lock (§3.5 power-gate) | runtime (recipe enforcement deferred) |
+| c-spirit-level | A / hybrid: weapon.level − 10 ≤ spirit.level ≤ weapon.level; hybrid weapon and spirit `level` are item-power points, not source levels (§3.4 item) | runtime |
+| c-power-gate | A reference: item.level ≤ power(player.level) for full strength. Hybrid non-equipment: the same condition remains necessary for full strength; no below-threshold effects are selected. Hybrid equipment: equipping requires item.level ≤ power(player.level); above-power gear may be carried/traded/kept, with normal stats once eligible and equipped, not weakened stats. Equipment-only scope and exclusions follow [power-gate](3_Classes.md#power-gate-a). Formula learning retains its sufficient-power requirement. Hybrid books record recipes immediately, but above-power recipes remain known and visibly locked against crafting until their requirement is reached; duplicate acquisition never removes the lock (§3.5 power-gate) | runtime (equipment/recipe enforcement deferred) |
 | c-book-recipe-persistence | hybrid: book-learned recipes remain known to that character across lands and sessions, with no relearning on travel, including between worlds under persistence item 1 (§3.7 save-data) | runtime+save-data (deferred) |
 | c-permanent-source-claim | hybrid: at most one claim per character/saved-world/artifact-or-one-time-book-source; claims remain available to other characters at the source and are not renewed by leaving, restarting, returning or daily enemy resets (§3.7 save-data, item 5; §3.1 world/reset item 3); ordinary ground loot unchanged | runtime+save-data (deferred) |
 | c-recipe-learning | hybrid: books/formulas share one known-recipe set per character, including known-but-power-locked recipes; repeated learning grants nothing extra; books teach only unknown recipes without rerolls/compensation; an already-known formula remains unconsumed, without bypassing c-power-gate (§3.4 recipe) | runtime (deferred) |
@@ -206,7 +221,8 @@ loader/validator/generator/runtime work need separate authority.
 | c-rarity-range | rarity ∈ 0..4 for generated items (5 = mythical bug, off by default) | load |
 | c-stat-roll | roll = ((attributes<<16)+modifier) mod 21 ∈ 0..20; normalized roll = roll/20, not rarity; hybrid gear HP is fixed under §3.4 item and independent of this roll, with no change to other stat rules | generator |
 | c-gear-hp | hybrid fixed item HP and equipped maximum/current-HP transitions follow §3.4 item; require `design.gear-hp` object with exact finite numeric `curve-mult=5`, `base=2`, `upgrade-step=0.1`, material `hp-bonus` iron=1/cotton=0.75/linen=0.5, and unique required chest/gloves/boots/shoulders/main-hand/off-hand slot rows with `hp-mult` chest=1, others=0.5; missing/malformed/changed selected inputs accumulate errors without coercion or historical HP fallback | load (selected inputs) + generator/runtime |
-| c-loot-config | `design.loot`: every chance ∈ [0,1]; rarity-weights keys are rarities ≤ legendary with a positive sum; level-spread ≥ 0; gear-kinds and stack-cap.stackable name item-types; consumable-pool names consumables | load |
+| c-item-power | hybrid item power and recipe/formula requirements use integer +1…+100 units under [item](3_Classes.md#item): convert source level before existing power-point spread, then clamp; no spread means direct conversion. Preserve producer identities/unit boundaries under [shops](3_Classes.md#shop), [loot](3_Classes.md#loot-rule) and [encounter contracts](encounter-contracts.md); stat/price equations unchanged | generator+runtime+save-data (reconciliation deferred) |
+| c-loot-config | `design.loot`: every chance ∈ [0,1]; rarity-weights keys are rarities ≤ legendary with a positive sum; level-spread ≥ 0 (hybrid spread is in power points after source conversion, c-item-power); gear-kinds and stack-cap.stackable name item-types; consumable-pool names consumables | load |
 | c-stack-rule | only `design.stack-cap.stackable` item-types stack (no cap, D6); gear (has a modifier roll) is one item per entry | runtime |
 | c-slot-accepts | an item equips only in a usable equipment-slot whose `accepts` lists its item-type and whose subtype restrictions it satisfies (§3.4 equipment-slot); weapon-type `offhand` hands → off-hand only; c-weapon-class and c-hands still apply | load + runtime |
 | c-mp-range | mp ∈ [0, 100]; mage regenerates passively, others gain by hits/blocks/stealth/dodges; numbers `design.resources.mp` (D21) | runtime |
@@ -229,6 +245,7 @@ loader/validator/generator/runtime work need separate authority.
 | c-inn-hours | hybrid: separate 10-copper sleep service only 18:00–06:00 → next 07:00; all connected players explicitly agree, initiator pays the single fee only on success; refusal blocks skip without charge; healing and setting respawn stay free at any time without agreement (§3.1) | runtime |
 | c-land-count | hybrid: exactly 1 settlement per land (approved 2026-09-27); S per land: gnomes = 4, books = 4, movement items ≤ 4, ticket items ≤ 3, key items ≤ 9, towers ≤ 5, settlements ≥ 1; A per land: settlements = 1, missions = 64 cells | generator |
 | c-key-item-need | a key item spawns only if its lock type exists in the land | generator |
+| c-required-content-solvability | future hybrid dungeon/mission completion objectives and guaranteed rewards each have a lawful noncircular route for a fresh solo character of any class in the same saved world, under [required-content solvability](6_Generators.md#future-required-content-solvability); preserve traversal requirements and initial scope; artifact/book sources follow only with later authorized placement contracts | generator+runtime (deferred) |
 | c-initial-encounter-config | `design.initial-encounters` consumes the selected [placement, geometry, population, assignment, local stat, special timing/damage, rubble restoration, spike and furnishing inputs](encounter-contracts.md); required objects/arrays/finite numeric values match those selections with cumulative diagnostics, not executable defaults | load |
 | c-initial-encounters | initial hybrid families satisfy the [encounter contracts](encounter-contracts.md): complete village/site/access generation within bounds, persistent identities/positions/roles, protected settlement and structure, playable geometry/closed occupancy, populations/tiers/local difficulty, designated clears, boss specials/rubble, traps/furnishings, nonduplicating shared kill/boss/mission rewards and supplier ceiling; initial permanent-source exclusion does not replace final coverage; preserve c-midnight-reset, c-supplier-rescue and c-permanent-source-claim | generator+runtime+save-data (deferred) |
 | c-boss-size | A: boss size/strength from 1 at lvl 1 to full at lvl 10; S: dungeon boss size capped so it fits inside; initial hybrid bosses use the [local height rule](encounter-contracts.md#local-difficulty-and-boss-size) | generator (hybrid enforcement deferred) |
@@ -243,12 +260,12 @@ loader/validator/generator/runtime work need separate authority.
 | c-roster-ids | every id in `creature-families.json#landscape-rosters` is a creature (D14) | load |
 | c-rideable-conflict | resolved (F2): every `rideable` is a boolean, per-page value; a `?` here is a load error | load |
 | c-hostile-in-city | villagers/animals inside settlements unattackable unless possessed | runtime |
-| c-artifact-stat | definition/config and generated/runtime boundaries follow mapping item 4 above; seven traversal kinds, approved logarithmic config only, one kind plus attack/max HP per artifact and §3.4 accumulation; direct data correction/enforcement deferred | load+generator/runtime (deferred) |
+| c-artifact-stat | definition/config and generated/runtime boundaries follow mapping item 4 above; seven traversal kinds, approved logarithmic config only, one kind plus attack/max HP per artifact and §3.4 accumulation; checked-in data corrected, production enforcement deferred | load+generator/runtime (deferred) |
 | c-sim-radius | `design.spawns.ai.sim-radius` ≥ `aggro-range` + `leash`, so a creature can still notice you and walk home while you are around (D16) | load |
 | c-frame-budget | physics 60 Hz; a tick slower than its budget slows game time instead of stacking catch-up ticks: `Engine.max_physics_steps_per_frame` = `design.frame-budget.max-catch-up-steps` (D17) | engine |
 | c-xp-config | `design.progression`: kill-fraction ∈ (0,1]; gap-mult-range = [lo, hi] with 0 ≤ lo ≤ 1 ≤ hi; gap-per-level ≥ 0 (D19) | load |
 | c-level-up | level never decreases; after settling, xp < xp-to-next(level); each level gained adds exactly `skill-points-per-level` (D19) | runtime |
-| c-tree-shape | for every specialization the tree read from `abilities.json#alpha-tree` has exactly one class node per rank 1..3 and ≤ 1 ultimate; Assassin has Camouflage only at rank 3 and no separate ultimate node (§3.5, exception enforcement deferred); rank 1 and shared-column roots have `needs` 0, one root per shared column, every `unlocks-next` names a node of the same column (D20) | load |
+| c-tree-shape | for every specialization the tree read from `abilities.json#alpha-tree` has exactly one class node per rank 1..3 and ≤ 1 ultimate; Assassin has Camouflage only at rank 3 after 5 Sneak points and no separate ultimate node (§3.5); rank 1 and shared-column roots have `needs` 0, one root per shared column, every `unlocks-next` names a node of the same column (D20) | load |
 | c-skill-spend | a point is spent only from the banked pool, one at a time, on a node whose prerequisite holds `needs` points; points never leave a node outside a trainer respec (D20) | runtime |
 | c-ability-runtime | every class-column and ultimate node of every spec tree has a `design.abilities` entry whose `runtime` is in `runtimes`; cost mp ≤ 100, stamina ≤ `design.movement.stamina.max` or `all`; cooldown-s > 0; dash distance > 0, strike / burst / channel radius > 0, buff / channel duration-s > 0, heal cast-s ≥ 0, projectile / dash `throw` shots as c-moveset-config (D24); `design.status-effects` keys are status-effect ids and an `as` names another key (D21) | load |
 | c-settlement-config | `design.settlement`: per-land = 1 (exact-count configuration check; generated geography checked separately), radius > blend ≥ 0, ring-radius < radius, every `buildings` entry is a `buildings.json#buildings` id, every service role is an `npc-roles.json` id, every landscape with a `gen` block has a `style-by-landscape` entry naming a `buildings.json#settlement-styles` id with two `style-colors`, `shop.rarity-cap` is a rarity ≤ legendary, `no-hostiles-within` ≥ radius (D22) | load |

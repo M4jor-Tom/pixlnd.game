@@ -111,7 +111,7 @@
     "versions": ["A","S"],
     "default": true,
     "progression": "xp-levels-skill-points",
-    "_rule": "alpha progression + approved Steam content (D1/D3/D4 and subsequent approvals); regional gear power loss permanently excluded; artifacts do not define level, D6 bonuses unchanged; X/cut and Omega-only content remain reference/roadmap, not v1",
+    "_rule": "alpha progression + approved Steam content (D1/D3/D4 and subsequent approvals); regional gear power loss permanently excluded; artifacts do not define level, approved logarithmic bonuses follow generators.json#design.artifact and §3.4 artifact; X/cut and Omega-only content remain reference/roadmap, not v1",
     "flags": {
       "xp-and-levels": true,
       "skill-points-per-level": 2,

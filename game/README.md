@@ -27,8 +27,12 @@ Consumes `ontology/`; never redefines it. New gameplay = ontology first (sync ru
 `main.gd` owns mutable `WorldState` and validated atomic JSON save/load (`user://world.json`;
 `--save-path=/absolute/path.json` selects another file). A fresh save alone receives the starting kit
 and 07:00 clock. Invalid saves stop with diagnostics without overwriting the original; no legacy
-migration or offline time advancement. Lifecycle saves cover state transitions, streaming unload
-and graceful shutdown, not a promised crash-checkpoint cadence.
+migration or offline time advancement. Capture retains hero ID/class/spec, level/XP, banked/spent
+skills, coins, bag/equipment (including spirits) and per-world position/respawn, not transient player
+HP/statuses/cooldowns; restore refills HP. Validation establishes current-rule validity, not earned
+progression. Lifecycle saves cover state transitions, streaming unload and graceful shutdown,
+not a promised crash-checkpoint cadence. Portable-world import UI, recipes, artifacts/source claims,
+pets, exploration, personal travel/lore and networking remain unfinished.
 
 `world.configure(ontology, design, state, party_provider)` injects connected characters; party
 min/max levels include awaiting-respawn members, and empty parties defer generation. Ambient
@@ -53,7 +57,9 @@ floors, six-high ruins, four-by-five doors and visibly bounded battlefields from
 used by closed occupancy. Terrain cuts cannot protrude through access.
 
 `world.ensure_land`, `stream_sites`, `populate_site` and `refresh_site` own the actual streaming
-seam. `WorldState.lands` saves joint geography/pack roles/home positions/permanent special/spirit
+seam. Reproduction depends on relevant seed/coordinates, input data/design/configuration and
+generator/engine revision, not seed alone; saves do not pin those revisions or promise cross-version
+bit identity. Same-seed worlds have independent IDs and mutable histories. `WorldState.lands` saves joint geography/pack roles/home positions/permanent special/spirit
 choices independently of `sites[id].mobs` current incarnations and `spirit_levels` initial boss
 levels. There are 46 skeletons (seven bosses) and four unattackable captives per land; ambient
 rosters are unchanged and authored support/access is reserved from wild generation. Genuine safe
@@ -141,6 +147,10 @@ directory. They never use `user://`. Keep test saves/logs there and use a separa
 for boot checks. Run every Godot invocation under `timeout` (including older commands below).
 ```sh
 # export PIXLND_TEST_DIR=/absolute/path/to/isolated-check-output
+timeout 150 nix develop --no-update-lock-file -c godot --headless -s ontology/test_artifact_corrections.gd # bounded checked-in artifact logarithm/config and historical/hybrid description correction; not production artifact enforcement/runtime
+timeout 150 nix develop --no-update-lock-file -c godot --headless -s ontology/test_identity_skills.gd # raw identity catalogs/shapes, ordered spec ownership, shared roots/links and Assassin single rank-3 Camouflage; cumulative diagnostics
+timeout 150 nix develop --no-update-lock-file -c godot --headless -s ontology/test_provenance.gd # exact qualified tags, finite §5 source envelopes/overrides, malformed annotations and unresolved-history controls
+timeout 150 nix develop --no-update-lock-file -c godot --headless -s ontology/test_required_inputs.gd # finite §5 heterogeneous catalogs/configs, raw conversion hazards, climate/family/building/service/style closure; cumulative missing/malformed inputs
 timeout 150 nix develop --no-update-lock-file -c godot --headless -s ontology/test_required_catalogs.gd # required/malformed whole races and movesets, real loader and cumulative/prior errors
 timeout 150 nix develop --no-update-lock-file -c godot --headless -s ontology/test_world_references.gd # district building/class and landscape dungeon/POI closure, malformed references and retained annotations
 timeout 150 nix develop --no-update-lock-file -c godot --headless -s game/world/test_spawner.gd # real ordinary plans exclude always-boss species regardless of category; mixed/boss-capable/category controls preserve RNG draws
