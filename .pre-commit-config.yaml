@@ -6,12 +6,14 @@ repos:
     hooks:
       - id: quality-runner
         name: Quality runner regressions
+        verbose: true
         entry: nix develop --no-update-lock-file -c bash tests/test_checks.sh
         language: system
         pass_filenames: false
         always_run: true
       - id: quality
         name: GDScript format, lint, ontology and headless tests
+        verbose: true
         # Enter the pinned toolchain even when git push runs outside nix develop.
         entry: nix develop --no-update-lock-file -c bash scripts/checks.sh
         language: system

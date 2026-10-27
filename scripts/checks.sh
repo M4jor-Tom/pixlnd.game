@@ -11,10 +11,10 @@ trap 'rm -rf "$scratch"' EXIT
 export PIXLND_TEST_DIR="$scratch"
 
 run_godot() {
-  local seconds=$1 status
+  local seconds=$1 status TIMEFORMAT='Elapsed: %3R s'
   shift
   printf '\nChecking: godot --headless %s\n' "$*"
-  if timeout "$seconds" godot --headless "$@" > "$scratch/godot.log" 2>&1; then
+  if time timeout "$seconds" godot --headless "$@" > "$scratch/godot.log" 2>&1; then
     cat "$scratch/godot.log"
     # Godot can report script/engine errors yet exit 0; the validator can too.
     ! grep -Eq '^(SCRIPT ERROR:|ERROR:|ontology INVALID)' "$scratch/godot.log"

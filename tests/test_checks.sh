@@ -29,6 +29,12 @@ expect_failure() {
 
 format_fixture
 run_checks || { cat "$scratch/output.log"; exit 1; }
+# Every completed Godot invocation reports its own wall-clock duration.
+if [[ $(grep -Ec '^Elapsed: [0-9]+\.[0-9]{3} s$' "$scratch/output.log") != 4 ]]; then
+  printf 'FAIL: missing per-invocation timings\n' >&2
+  cat "$scratch/output.log"
+  exit 1
+fi
 # An unrelated working directory must not change the checked project.
 (cd / && bash "$scratch/scripts/checks.sh") > "$scratch/output.log" 2>&1
 printf 'extends Node\nvar value=1\n' > "$scratch/game/unformatted.gd"
