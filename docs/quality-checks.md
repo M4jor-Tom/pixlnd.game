@@ -39,7 +39,8 @@ nix develop --no-update-lock-file -c pre-commit run --all-files --hook-stage pre
 Both use the same `flake.lock`-pinned Godot, gdtoolkit and pre-commit packages.
 Nothing installs into the game's runtime. Tests use a temporary `PIXLND_TEST_DIR`
 and the boot uses an explicit scratch save; your normal save is untouched.
-Godot calls have a 150-second timeout (450 for the two long capsule traversals).
+Godot validation/tests have a 300-second timeout (450 for the two long capsule traversals).
+The headless main-scene boot has a 150-second timeout.
 Nonzero exits, timeouts, `SCRIPT ERROR`, engine `ERROR` and `ontology INVALID`
 output all fail the gate, including when Godot exits zero.
 
