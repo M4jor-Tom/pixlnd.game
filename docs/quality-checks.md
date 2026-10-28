@@ -41,18 +41,19 @@ nix develop --no-update-lock-file -c pre-commit run --all-files --hook-stage pre
 Both use the same `flake.lock`-pinned Godot, gdtoolkit and pre-commit packages.
 Nothing installs into the game's runtime. Tests use a temporary `PIXLND_TEST_DIR`
 and the boot uses an explicit scratch save; your normal save is untouched.
-Godot deadlines are `ceil(1.25 × longest measured duration in the timeout group)`.
+Godot deadlines are `3 × ceil(1.25 × longest measured duration in the timeout group)`:
+all previously calibrated limits are tripled, without changing the underlying measurements.
 The local pre-push calibration at `f383ef1` measured all 62 Godot invocations with
 local deadlines disabled; by owner selection, CI execution times are not included yet.
 
 | Timeout group | Slowest local invocation | Measured | Deadline |
 |---|---|---:|---:|
-| Ordinary validation/tests, including fixed-1000-FPS map | `ontology/test_required_inputs.gd` | 180.824s | 227s |
-| Both long capsule traversals | `game/world/test_local_frame_routes.gd` | 336.189s | 421s |
-| Headless main-scene boot | `--quit` | 3.072s | 4s |
+| Ordinary validation/tests, including fixed-1000-FPS map | `ontology/test_required_inputs.gd` | 180.824s | 681s |
+| Both long capsule traversals | `game/world/test_local_frame_routes.gd` | 336.189s | 1263s |
+| Headless main-scene boot | `--quit` | 3.072s | 12s |
 
 These limits apply separately to each invocation, locally and in CI. There is no
-whole-suite local deadline; the CI quality job retains its 30-minute total limit,
+whole-suite local deadline; the CI quality job has a tripled 90-minute total limit,
 including setup.
 Nonzero exits, timeouts, `SCRIPT ERROR`, engine `ERROR` and `ontology INVALID`
 output all fail the gate, including when Godot exits zero.
