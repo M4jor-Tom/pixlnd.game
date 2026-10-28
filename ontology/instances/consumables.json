@@ -1,7 +1,7 @@
 {
   "$schema": "consumable",
   "_doc": "use = sit (immobile) | channel (can move) | throw. heal-mult applies to alpha curve. Recipes duplicated in recipes.json under the same id.",
-  "apple":           {"name": "Apple", "kind": "food", "use": "sit", "effect": "heal over 15 s", "source": "pickup under apple trees", "versions": ["A","S"]},
+  "apple":           {"name": "Apple", "kind": "food", "use": "sit", "heal-mult": 20, "effect": "heal over 15 s", "source": "pickup under apple trees", "versions": ["A","S"]},
   "pineapple-slice": {"name": "Pineapple Slice", "kind": "food", "use": "sit", "heal-mult": 100, "alpha-subtype": 8, "recipe": {"pineapple": 1}, "station": "anywhere", "versions": ["A","S"]},
   "snowberry-mash":  {"name": "Snowberry Mash", "kind": "food", "use": "sit", "heal-mult": 200, "alpha-subtype": 5, "recipe": {"snowberry": 1}, "station": "anywhere (craftable since 0.9.1-5)", "versions": ["A","S"]},
   "pumpkin-muffin":  {"name": "Pumpkin Muffin", "kind": "food", "use": "sit", "heal-mult": 100, "alpha-subtype": 9, "recipe": {"pumpkin": 1}, "station": "campfire", "versions": ["A","S"]},

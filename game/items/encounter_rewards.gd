@@ -1,5 +1,6 @@
 ## Pure encounter payloads; source/cycle keys own rolls, never disposable nodes or player count.
 extends RefCounted
+const Model := preload("res://ontology/model.gd")
 const Items := preload("res://game/items/items.gd")
 const Item := preload("res://game/items/item.gd")
 const Targeting := preload("res://game/combat/targeting.gd")
@@ -23,7 +24,7 @@ static func kill_payload(
 		out.append(
 			Items.roll_gear(
 				rng,
-				level,
+				Model.power_for_level(level),
 				mini(
 					int(stable.tier) + int(design.loot["boss-rarity-shift"]),
 					o.rarities[&"legendary"].index
@@ -33,7 +34,14 @@ static func kill_payload(
 			)
 		)
 		if stable.spirit != "":
-			out.append(Item.stack(&"ingredient", StringName(stable.spirit), 1, spirit_level))
+			out.append(
+				Item.stack(
+					&"ingredient",
+					StringName(stable.spirit),
+					1,
+					clampi(Model.power_for_level(spirit_level), 1, 100)
+				)
+			)
 	return out
 
 
@@ -42,9 +50,10 @@ static func package_payload(
 ) -> Array:
 	var cfg: Dictionary = design["initial-encounters"]["mission-package"]
 	var grade := tier + int(cfg["rarity-shift"])
-	var gear = Items.roll_gear(rng_for(source), level, grade, o, design.loot, class_id)
+	var power := clampi(Model.power_for_level(level), 1, 100)
+	var gear = Items.roll_gear(rng_for(source), power, grade, o, design.loot, class_id)
 	gear.upgrade_count = int(cfg.upgrades)
-	var potion = Item.stack(&"consumable", StringName(cfg.potion), int(cfg["potion-count"]), level)
+	var potion = Item.stack(&"consumable", StringName(cfg.potion), int(cfg["potion-count"]), power)
 	potion.rarity = int(cfg["potion-rarity"])
 	return [
 		gear,

@@ -8,20 +8,20 @@ const Item := preload("res://game/items/item.gd")
 const GROUND := preload("res://game/items/ground_item.tscn")
 
 
-## gen-item: the two modifiers are the seed of the roll (c-stat-roll) and of the name.
+## gen-item takes already-converted power; modifiers seed the roll (c-stat-roll) and name.
 static func generate(
 	rng: RandomNumberGenerator,
 	type: StringName,
 	subtype: StringName,
 	material: StringName,
-	level: int,
+	power: int,
 	rarity: int
 ) -> Item:
 	var it := Item.new()
 	it.type = type
 	it.subtype = subtype
 	it.material = material
-	it.level = maxi(level, 1)
+	it.level = clampi(power, 1, 100)
 	it.rarity = clampi(rarity, Model.Rarity.COMMON, Model.Rarity.LEGENDARY)  # c-rarity-range
 	it.modifier = rng.randi()
 	it.minus_modifier = rng.randi()
@@ -205,10 +205,10 @@ static func roll_rarity(rng: RandomNumberGenerator, loot: Dictionary, o: Model.O
 	return (o.rarities[StringName(_weighted(rng, loot["rarity-weights"]))] as Model.RarityDef).index
 
 
-## D18 gear: kind by weight; a class rolled uniformly gives the weapon-type or the armor material.
+## Already-powered gear: kind by weight; uniform class gives weapon-type or armor material.
 static func roll_gear(
 	rng: RandomNumberGenerator,
-	level: int,
+	power: int,
 	rarity: int,
 	o: Model.Ontology,
 	loot: Dictionary,
@@ -220,8 +220,8 @@ static func roll_gear(
 	]
 	if kind == "weapon":
 		var wt: StringName = cls.weapon_types[rng.randi() % cls.weapon_types.size()]
-		return generate(rng, &"weapon", wt, weapon_material(o.weapon_types[wt]), level, rarity)
-	return generate(rng, StringName(kind), &"", cls.armor_material, level, rarity)
+		return generate(rng, &"weapon", wt, weapon_material(o.weapon_types[wt]), power, rarity)
+	return generate(rng, StringName(kind), &"", cls.armor_material, power, rarity)
 
 
 ## weapon-type.material "iron (+cotton yarn)" | "gold|silver" → first material id.
@@ -242,12 +242,12 @@ static func roll_loot(
 			)
 		)
 	var spread := int(loot["level-spread"])
-	var lvl := maxi(1, level + rng.randi_range(-spread, spread))
+	var power := clampi(Model.power_for_level(level) + rng.randi_range(-spread, spread), 1, 100)
 	if rng.randf() < float(loot["gear-chance"]):
-		out.append(roll_gear(rng, lvl, roll_rarity(rng, loot, o), o, loot))
+		out.append(roll_gear(rng, power, roll_rarity(rng, loot, o), o, loot))
 	if rng.randf() < float(loot["consumable-chance"]):
 		var pool: Array = loot["consumable-pool"]
-		out.append(Item.stack(&"consumable", StringName(pool[rng.randi() % pool.size()]), 1, lvl))
+		out.append(Item.stack(&"consumable", StringName(pool[rng.randi() % pool.size()]), 1, power))
 	if c != null:
 		for d in c.drops:  # ponytail: drops without an ingredients.json row (popcorn, jellies) are skipped
 			if o.configs["ingredients"].has(d) and rng.randf() < float(loot["species-drop-chance"]):

@@ -449,6 +449,22 @@ func run() -> void:
 			),
 			"one fresh table potion per room at renewal"
 		)
+		var renewed_powers := {17: 45, 18: 46, 19: 48, 20: 49, 21: 51, 22: 52, 23: 53}
+		var renewed_site: Dictionary = w.state_data.sites[id]
+		for room in 3:
+			var reward_key := "furnishing/1/room/%d/table/0" % room
+			if not renewed_site.rewards.has(reward_key):
+				check(false, "renewed table receipt exists: " + reward_key)
+				quit(1)
+				return
+			var reward: Dictionary = renewed_site.rewards[reward_key]
+			check(
+				(
+					reward.level == renewed_site.room_levels[room]
+					and reward.payload[1].level == renewed_powers.get(int(reward.level), -1)
+				),
+				"renewed potion converts saved room source; survivor level stays unchanged"
+			)
 		p.level = 1
 		p.skill_points = 0
 		p.xp = 0

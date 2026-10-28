@@ -10,7 +10,9 @@ var cfg: Dictionary = {}  # design.abilities
 var cooldowns: Dictionary = {}  # ability id → seconds left
 var buffs: Dictionary = {}  # ability id → {"left", "r", "pool"?}
 var dash: Dictionary = {}  # {"a", "r", "dir", "left", "origin", "e"}
-var channel: Dictionary = {}  # {"a", "r", "left", "tick", "e", "hits"}
+var channel: Dictionary = {}  # activation yaw, elapsed turns, last-hit revolution per body
+# Node3D coordinates/bases are float32; compare endpoints within roundoff, not a gameplay arc.
+const TURN_ROUNDOFF := 0.0000001
 var cast: Dictionary = {}  # {"a", "r", "left", "e"}
 var heals: Array = []  # [{"left", "per-s"}]
 
@@ -98,11 +100,14 @@ func use(a) -> bool:
 				"a": a,
 				"r": r,
 				"left": float(r["duration-s"]),
-				"tick": 0.0,
+				"yaw": p.rig.rotation.y,
+				"turn": 0.0,
+				"last-hit": {},
 				"e": e,
 				"hits": 0,
 				"weapon": committed_weapon
 			}
+			_tick_channel(0.0, true)
 		"burst":
 			_strike(a, r, p.global_position, e)
 		"projectile":
@@ -236,18 +241,83 @@ func tick(dt: float) -> void:
 			_strike(cast["a"], cast["r"], p.global_position, cast["e"], true, cast["weapon"])
 			cast = {}
 	if not channel.is_empty():
-		var r: Dictionary = channel["r"]
-		channel["left"] -= dt
-		channel["tick"] -= dt
-		p.stamina = maxf(0.0, p.stamina - float(r["drain-per-s"]) * dt)
-		p._stamina_idle = 0.0
-		if channel["tick"] <= 0.0:
-			channel["tick"] = float(r["tick-s"])
-			channel["hits"] += _strike(
-				channel["a"], r, p.global_position, channel["e"], false, channel["weapon"]
-			)
-		if channel["left"] <= 0.0 or p.stamina <= 0.0:
-			_end_channel()
+		_tick_channel(dt)
+
+
+## Sweep current relative azimuths over (old, reached], except the explicit activation contact.
+func _tick_channel(dt: float, initial := false) -> void:
+	var active := channel
+	var r: Dictionary = active["r"]
+	var speed := float(r["turns-per-s"])
+	var drain := float(r["drain-per-s"])
+	var elapsed := minf(dt, float(active["left"]))
+	if drain > 0.0:
+		elapsed = minf(elapsed, p.stamina / drain)
+	var ending: bool = (
+		elapsed >= float(active["left"]) or (drain > 0.0 and elapsed >= p.stamina / drain)
+	)
+	var first: float = active["turn"]
+	var reached := first + elapsed * speed
+	var events: Array = []
+	for body in p.bodies_within(p.global_position + Vector3.UP, float(r["radius"])):
+		var d: Vector3 = body.global_position - p.global_position
+		var phase := fposmod(atan2(d.x, -d.z) + float(active["yaw"]), TAU) / TAU
+		if phase <= TURN_ROUNDOFF or 1.0 - phase <= TURN_ROUNDOFF:
+			phase = 0.0
+		var revolution := maxi(0, int(ceil(first - phase)))
+		var contact := phase + revolution
+		if not initial and contact <= first + TURN_ROUNDOFF:
+			revolution += 1
+			contact = phase + revolution
+		while contact <= reached + TURN_ROUNDOFF:
+			if int(active["last-hit"].get(body.get_instance_id(), -1)) < revolution:
+				events.append({"turn": contact, "body": body, "rev": revolution})
+			revolution += 1
+			contact = phase + revolution
+	events.sort_custom(func(a, b): return a["turn"] < b["turn"])
+	var i := 0
+	while i < events.size():
+		var contact: float = events[i]["turn"]
+		var bodies: Array = []
+		# Collinear targets are one class strike, retaining AoE combo ownership.
+		while i < events.size() and absf(float(events[i]["turn"]) - contact) <= TURN_ROUNDOFF:
+			var event: Dictionary = events[i]
+			var body = event["body"]
+			if is_instance_valid(body) and not body.is_queued_for_deletion():
+				active["last-hit"][body.get_instance_id()] = event["rev"]
+				bodies.append(body)
+			i += 1
+		_advance_channel(active, minf(contact, reached))
+		var continuing := func(): return is_same(channel, active) and not p.dead
+		var hits: int = p._strike(
+			p.global_position + Vector3.UP,
+			float(r["radius"]),
+			float(active["weapon"]["damage"]) * float(r["damage-mult"]) * float(active["e"]),
+			false,
+			active["a"].applies,
+			p.ability_attack_type(active["a"]),
+			0,
+			bodies,
+			continuing
+		)
+		if not continuing.call():
+			return  # A synchronous target callback may reset or kill the player.
+		if hits > 0:
+			active["hits"] += hits
+			p._landed(false, active["weapon"])
+	_advance_channel(active, reached)
+	if ending:
+		_end_channel()
+
+
+func _advance_channel(active: Dictionary, reached: float) -> void:
+	var r: Dictionary = active["r"]
+	var elapsed := (reached - float(active["turn"])) / float(r["turns-per-s"])
+	active["left"] -= elapsed
+	active["turn"] = reached
+	p.stamina = maxf(0.0, p.stamina - float(r["drain-per-s"]) * elapsed)
+	p._stamina_idle = 0.0
+	p.get_node("Body").rotation.y = float(active["yaw"]) - reached * TAU
 
 
 ## A damaging channel misses only if the entire channel landed nothing, including early ends.

@@ -524,8 +524,11 @@ func run() -> void:
 	await process_frame
 	await process_frame
 	var first_count: int = p.inventory.first_consumable().count
+	p.hp = p.max_hp - 30.0
+	var hp_before: float = p.hp
 	select_row(inv._list, inv._rows.find(apple))
 	click_control(inv.touch_buttons[1])
+	check(is_equal_approx(p.hp, hp_before + 20.0), "native selected Apple Use heals 20 HP")
 	check(
 		apple.count == 1 and p.inventory.first_consumable().count == first_count,
 		"Use selects second consumable, never Quick Item target"

@@ -276,6 +276,7 @@ func validate_item(row: Variant, path: String) -> bool:
 	require(row.type in design["stack-cap"].stackable or row.count == 1, path + ".stack")
 	match str(row.type):
 		"weapon":
+			require(row.level <= 100, path + ".power")
 			require(
 				(
 					o.weapon_types.has(row.subtype)
@@ -284,10 +285,17 @@ func validate_item(row: Variant, path: String) -> bool:
 				path + ".weapon/material"
 			)
 		"chest-armor", "gloves", "boots", "shoulder-armor", "ring", "amulet":
+			require(row.level <= 100, path + ".power")
 			require(o.materials.has(row.material), path + ".material")
 		"consumable":
+			require(row.level <= 100, path + ".power")
 			require(o.consumables.has(row.subtype), path + ".consumable")
 		"ingredient":
+			if (
+				o.materials.has(row.subtype)
+				and o.materials[row.subtype].raw.get("kind") == "spirit"
+			):
+				require(row.level <= 100, path + ".power")
 			require(
 				(
 					o.configs["ingredients"].has(row.subtype)
@@ -872,7 +880,10 @@ func validate_features(site: Dictionary, layout: Dictionary, clock: float) -> vo
 		else:
 			var rules: Dictionary = cfg.furnishings.table
 			var potion = Item.stack(
-				&"consumable", StringName(rules.potion), int(rules["potion-count"]), level
+				&"consumable",
+				StringName(rules.potion),
+				int(rules["potion-count"]),
+				clampi(Model.power_for_level(level), 1, 100)
 			)
 			potion.rarity = int(rules["potion-rarity"])
 			expected = [

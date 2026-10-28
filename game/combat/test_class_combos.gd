@@ -170,7 +170,7 @@ func _run() -> void:
 			p.abilities.channel.is_empty() and p.combo == 0,
 			ending + ": wholly missed channel resets on end"
 		)
-	# Late hits and multiple ticks gain normally; later misses and early/normal ends do not undo those hits.
+	# Late directional passes gain normally; later misses and early/normal ends do not undo those hits.
 	for ending in ["duration", "stamina", "reset"]:
 		wolf.position.z = -50.0
 		await _frames(2)
@@ -184,22 +184,22 @@ func _run() -> void:
 		wolf.position.z = -2.0
 		await _frames(2)
 		var hp0: float = wolf.hp
-		p.abilities.tick(0.25)
-		p.abilities.tick(0.25)
+		p.abilities.tick(0.75)  # north was swept before entry; next pass is t=1
+		p.abilities.tick(1.0)  # second north pass at t=2
 		check(
 			p.combo == 6 and is_equal_approx(p._combo_t, 5.0),
 			ending + ": successful ticks gain and refresh normally"
 		)
 		check(
-			is_equal_approx(hp0 - wolf.hp, 42.0) and is_equal_approx(p.stamina, 56.25),
-			ending + ": two 21-damage ticks; unchanged 25 + 25/s stamina"
+			is_equal_approx(hp0 - wolf.hp, 42.0) and is_equal_approx(p.stamina, 25.0),
+			ending + ": two 21-damage passes; unchanged 25 + 25/s over 2 seconds"
 		)
 		wolf.position.z = -50.0
 		await _frames(2)
 		p._combo_t = 0.7
 		match ending:
 			"duration":
-				for i in 17:
+				for i in 12:
 					p.stamina = 100.0
 					p.abilities.tick(0.25)
 			"stamina":
@@ -236,8 +236,8 @@ func _run() -> void:
 	p.combo = 29
 	p._combo_t = 1.0
 	check(p.use_class_skill(2), "cap channel starts")
-	p.abilities.tick(0.25)
-	p.abilities.tick(0.25)
+	p._combo_t = 0.5
+	p.abilities.tick(1.0)  # next north contact refreshes even at cap
 	check(
 		p.combo == 30 and is_equal_approx(p._combo_t, 5.0),
 		"sword cap remains 30, hits at cap still refresh"

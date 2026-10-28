@@ -225,8 +225,8 @@ func _init() -> void:
 						1
 						if (
 							it.rarity > Model.Rarity.LEGENDARY
-							or it.level < 4
-							or it.level > 6
+							or it.level < 16
+							or it.level > 18
 							or Items.slot_id(it, o) == &""
 						)
 						else 0
@@ -250,7 +250,10 @@ func _init() -> void:
 	)
 	check(
 		bad == 0,
-		"every drop: coins 1+2·level, gear rarity ≤ legendary, level ±1, has a slot (%d bad)" % bad
+		(
+			"every drop: coins 1+2·level, gear rarity ≤ legendary, power17 ±1, has a slot (%d bad)"
+			% bad
+		)
 	)
 	rng.seed = 5
 	var l1 := Items.roll_loot(rng, 3, null, o, design)

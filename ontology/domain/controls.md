@@ -52,7 +52,7 @@ remain in the linked gameplay definitions; later owner approvals override stale 
 | <a id="block"></a>`block` | Defend with eligible equipment/stance | Held; end stops request | [Combat block](3_Classes.md#combat-block); Cyclone-derived automatic blocking remains an effect, not another activation |
 | <a id="dodge"></a>`dodge` | Dodge in movement direction | Trigger, uses current `move` direction | [Dodge](3_Classes.md#dodge); existing movement/eligibility restrictions |
 | <a id="class-skill-1"></a>`class-skill-1` | Activate first class skill | Trigger | [Skill tree](3_Classes.md#skill-tree-a) class rank 1; linked ability owns effect |
-| <a id="class-skill-2"></a>`class-skill-2` | Activate second class skill | Trigger | Class rank 2; a resulting channel/buff is not an activation hold |
+| <a id="class-skill-2"></a>`class-skill-2` | Activate second class skill | Trigger | Class rank 2; a resulting channel/buff is not an activation hold. [Cyclone](3_Classes.md#ability) rotates body/attack direction independently; camera, movement, blocking and subsequent attack controls keep normal ownership |
 | <a id="class-skill-3"></a>`class-skill-3` | Activate third class skill | Trigger | Class rank 3; Assassin Camouflage exists only here |
 | <a id="class-skill-4"></a>`class-skill-4` | Activate separate ultimate slot, when present | Trigger | [Skill tree](3_Classes.md#skill-tree-a) ultimate column; absent for Assassin, no fifth skill/duplicate Camouflage |
 

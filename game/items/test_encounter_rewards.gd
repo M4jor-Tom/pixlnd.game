@@ -80,11 +80,11 @@ func run() -> void:
 				check(
 					(
 						inv.class_allowed(gear)
-						and gear.level == 7
+						and gear.level == 24
 						and gear.rarity == tier + 1
 						and gear.upgrade_count == 0
 					),
-					"package gear legal/class/level/rarity/upgrades"
+					"package gear legal/class/power24/rarity/upgrades"
 				)
 				if gear.type == &"weapon":
 					check(
@@ -95,7 +95,7 @@ func run() -> void:
 					(
 						package[1].count == 20 * (tier + 1)
 						and package[2].subtype == &"life-potion"
-						and package[2].level == 7
+						and package[2].level == 24
 						and package[2].rarity == 0
 					),
 					"exact package copper and potion"
@@ -134,21 +134,21 @@ func run() -> void:
 			var gear = payload[ordinary.size()]
 			check(
 				(
-					gear.level == 13
+					gear.level == 38
 					and gear.rarity == mini(int(assignment.tier) + 1, 4)
 					and gear.upgrade_count == 0
 				),
-				"all seven boss fixed rarity/current level/zero upgrades"
+				"all seven boss fixed rarity/current-level power38/zero upgrades"
 			)
 			if assignment.spirit != "":
 				var spirit = payload[-1]
 				check(
 					(
 						spirit.subtype == StringName(assignment.spirit)
-						and spirit.level == 3
+						and spirit.level == 10
 						and spirit.count == 1
 					),
-					"permanent logical spirit keeps initial level"
+					"permanent logical spirit converts initial L3 to power10"
 				)
 				check(not Items.item_name(spirit, o, d).is_empty(), "spirit inventory name")
 				check(

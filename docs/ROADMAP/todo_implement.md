@@ -394,26 +394,21 @@ resolve unmapped histories or certify generated/runtime behavior.
   This is placement legality, not new off-hand combat. No crafting, customization, taming or traversal
   runtime was added. Publication uses the normal committed-checkout pre-push and remote/CI checks.
 <a id="game-review-f7"></a>
-- [ ] **F7 — item-power production and save checks** (`c-item-power`,
-  [shared item-power units](../../ontology/domain/3_Classes.md#item)): convert source level to
-  power before power-point spread in ordinary gear/consumables, current-boss gear, initial-boss
-  spirits, room/table potions, mission packages and vendor stock. Update all coupled deterministic
-  save checks together; preserve source-level records, stat/heal/price equations, RNG draws and rewards.
-  `Items.generate` already takes powered input: bound it to 1…100 without converting again; reject
-  invalid serialized power rather than clamping imports. Compatibility support is currently
-  [none](../worlds_retrocompatibility_state.md); preserving existing saves is a future policy choice.
-  No migration, deletion, silent reset, reroll or receipt removal; invalid-load original files stay
-  protected. Canonical description alignment, data/checker/runtime changes and regressions remain
-  deferred. Recipe/formula production and learning retain their separate deferrals below and must
-  consume the same units when selected. [Investigation and atomic scope](../pixlnd-8158ab2-game-review.md#f7--item-power-production-and-save-verification-use-source-level-units).
+- [x] **F7 — item-power production and save checks** (`c-item-power`,
+  [shared item-power units](../../ontology/domain/3_Classes.md#item)): implemented producers convert
+  source level before power-point spread; coupled reward/table/vendor save checks use the same units.
+  Source-level records, equations, RNG draws and rewards are preserved. Powered constructors stay
+  bounded to 1…100 without reconversion; invalid serialized powers are rejected, not clamped.
+  Current-rule cold roundtrips and invalid-load original-file protection are checked. Compatibility
+  support remains [none](../worlds_retrocompatibility_state.md): no migration, deletion, silent reset,
+  reroll or receipt removal. Recipe/formula production and learning remain separately deferred below.
 <a id="game-review-f9"></a>
-- [ ] **F9 — Apple healing** (`consumable`, `gen-item-stats`): record and implement the selected
-  coefficient **20** in the existing curve-times-coefficient model: 20 HP for a common power-1 Apple,
-  one tenth an equal-power/equal-rarity Life Potion's nominal healing, capped by missing HP.
-  Higher power/rarity follows the existing curve; this is a delegated balance choice, not source fidelity.
-  Align canonical/data/raw+loaded checks and selected/Quick/Android effect regressions; preserve
-  stock/loot membership, prices and selected-stack targeting. Keep the instant-use approximation;
-  sitting/channeling remains deferred. No general zero-heal rejection policy is selected.
+- [x] **F9 — Apple healing** (`consumable`, `gen-item-stats`): coefficient **20** is implemented
+  and checked through selected Use, Quick Item and synthetic Android selected-stack activation.
+  A common power-1 Apple heals 20 HP, capped by missing HP; power/rarity uses the existing curve.
+  Stock/loot membership, prices and stack targeting are unchanged. This is selected hybrid balance,
+  not source fidelity. Instant use remains; sitting/channeling is deferred. No general zero-heal
+  rejection policy was added.
 - [ ] Initial site ordinary/boss/mission rewards and spirit carrying exist; no dungeon chests, general NPC weapon drops or leftovers (`loot-rule`); species drops without an `ingredients.json` row (popcorn, jellies) are skipped.
 - [ ] Ground items: coloured cubes, no item mesh; auto-pickup only coins; no middle-click drop for trading;
   lifetime is real seconds (`design.loot.ground.lifetime-s`), not tied to `game-clock`.
@@ -519,16 +514,14 @@ resolve unmapped histories or certify generated/runtime behavior.
   no cast interruption (stun cancels only the M2 charge). Item 10's captures cover the HUD hit/miss counter and
   static hotbar, not every ability animation/effect; D21 numbers remain untuned.
 <a id="game-review-f6"></a>
-- [ ] **F6 — directional Cyclone** (`ability`, `design.abilities.cyclone`): replace simultaneous
-  radial pulses with rotating contacts timed by targets' activation-referenced azimuths. Duration
-  or stamina exhaustion stops the spin at its reached facing, without completing the revolution.
-  Preserve shared Berserker/Guardian availability. Angular speed and moving-target, initial-contact
-  and exact end-boundary semantics remain unresolved; the existing 0.25-second radial tick is not
-  an approved revolution period. Land the precise canonical rule before implementation, then cover
-  coarse/fragmented updates, active-time/fuel clipping, safe zero-drain handling and synchronous
-  reset/death interruption. Require finite positive cadence/progress and nonnegative finite drain
-  before any catch-up loop; preserve committed weapon, costs and whole-channel combo/miss behavior.
-  [Original arithmetic evidence and dependencies](../pixlnd-8158ab2-game-review.md#f6--p2-cyclone-loses-cadence-and-overruns-active-time).
+- [x] **F6 — directional Cyclone** (`ability`, `design.abilities.cyclone`): both warrior
+  specializations turn clockwise once per game second, with front-only activation and ordered
+  contacts at current activation-relative target azimuths, once per target per revolution.
+  Duration/fuel clips progress including the reached endpoint; partial facing remains on stop.
+  Body/attack facing is separate from normal camera-directed controls. Coarse/fragmented updates,
+  moving-target entry/reentry, zero drain, cancellation and required finite configuration are checked;
+  committed weapon, costs and whole-channel combo/miss behavior remain. Native ordinary-callback
+  evidence complements synchronous regression checks, not continuous-motion reconstruction.
 - [x] Class-strike combo handling (item 10, `44ab0a1`): damaging burst/dash hits and channel ticks build combo;
   only a wholly missed damaging channel resets on normal/early end. Zero-damage taunts do not change combo
   or refresh its inactivity timer. Damage, costs, cooldowns and existing combo caps/expiry are preserved.

@@ -182,8 +182,8 @@ func _init() -> void:
 	var pool: Array = design["loot"]["consumable-pool"]
 	var cons := Shop.stock(&"item-vendor", a, l0, v0, 7, o, design)
 	check(
-		cons.size() == pool.size() and cons[0].type == &"consumable" and cons[0].level == 7,
-		"item shop sells the consumable pool at the player level"
+		cons.size() == pool.size() and cons[0].type == &"consumable" and cons[0].level == 24,
+		"item shop sells the consumable pool at player L7 power24"
 	)
 	check(
 		not cons.any(func(it) -> bool: return it.subtype == &"cookie"),
@@ -242,10 +242,10 @@ func _init() -> void:
 	check(not p.interact_nearest(), "E with nothing in range does nothing")
 	var before: int = p.inventory.entries.size()
 	check(not Shop.buy(p, w1[0]) and p.inventory.entries.size() == before, "no coins → no purchase")
-	p.inventory.coins = 100
 	var price := Shop.buy_price(w1[0], o, design)
+	p.inventory.coins = price + 100
 	check(
-		Shop.buy(p, w1[0]) and p.inventory.coins == 100 - price and w1[0] in p.inventory.entries,
+		Shop.buy(p, w1[0]) and p.inventory.coins == 100 and w1[0] in p.inventory.entries,
 		"buy moves the item and charges %d" % price
 	)
 	var potion = p.inventory.first_consumable()

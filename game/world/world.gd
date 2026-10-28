@@ -1,6 +1,7 @@
 ## §3.1 world: one seed, zones streamed around `target` (gen-world neighbourhood, design.terrain.view-zones).
 extends Node3D
 
+const Model := preload("res://ontology/model.gd")
 const WorldGen := preload("res://game/world/world_gen.gd")
 const ZoneMesh := preload("res://game/world/zone_mesh.gd")
 const Spawner := preload("res://game/world/spawner.gd")
@@ -544,7 +545,10 @@ func stage_tables(site: Dictionary, layout: Dictionary, cycle: int) -> void:
 		var rules: Dictionary = cfg.furnishings.table
 		var level: int = int(site.room_levels[plan_.props[key].room])
 		var potion = Item.stack(
-			&"consumable", StringName(rules.potion), int(rules["potion-count"]), level
+			&"consumable",
+			StringName(rules.potion),
+			int(rules["potion-count"]),
+			clampi(Model.power_for_level(level), 1, 100)
 		)
 		potion.rarity = int(rules["potion-rarity"])
 		var pair := [
@@ -597,11 +601,7 @@ func restore_rubble(id: String) -> void:
 				continue
 			var species = ontology.creatures[StringName(mob.species)]
 			var category: String = (
-				preload("res://ontology/model.gd")
-				. CreatureCategory
-				. keys()[species.category]
-				. to_lower()
-				. replace("_", "-")
+				Model.CreatureCategory.keys()[species.category].to_lower().replace("_", "-")
 			)
 			var size_: float = design.spawns["size-by-category"].get(category, 1.0)
 			var live = targeting.live.get(mob_id)

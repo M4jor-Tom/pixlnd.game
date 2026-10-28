@@ -874,7 +874,7 @@ An active or passive skill. `A S Ω` → `instances/abilities.json` (~65).
 | _controls | inert references to [canonical actions](controls.md); class/ultimate activation resolves through the current tree, not versioned physical inputs |
 | cost | mp / stamina / all-stamina / all-mp / none |
 | cooldown-s, duration-s | |
-| effect | structured summary + numbers (e.g. cyclone tick 0.25 s; fire missiles 4 × ≈3 SP) |
+| effect | structured summary + numbers; historical A/S values remain separate from selected hybrid behavior |
 | alpha-tree | column, rank-needed (1 to unlock first, 5 in previous), per-point effect (D6: +5 % effect / −5 % cooldown per point, floor 25 %) |
 | alpha-ability-id | cuwo id (21 kick, 34 healing-stream, 48 intercept, 49 teleport, 50 retreat, 54 smash, 79 sneak, 86 cyclone, 88 fire-explosion, 96 shuriken, 97 camouflage, 99 aim, 100 swiftness, 101 bulwark, 102 war-frenzy, 103 mana-shield) |
 | applies | `status-effect` refs |
@@ -883,6 +883,23 @@ burst, buff, heal, projectile — D24: shots along the aim; a dash may `throw` s
 `applies` through `design.status-effects` (`c-ability-runtime`). Shared-column skills have no runtime here (swimming scales
 swim speed; pet, mount, climb, glider, boat wait for their systems).
 Clone/zone effects remain scoped burst/buff approximations, not final fidelity.
+
+**Hybrid Cyclone:** shared by Berserker and Guardian, one clockwise world-top-down revolution
+per second from activation facing (`design.abilities.cyclone.turns-per-s: 1`; clockwise decreases
+Godot Y yaw from forward −Z). Only directly-ahead contacts land immediately. Later contacts use
+current player/enemy relative positions as the rotating attack reaches their azimuth, at most once
+per enemy per activation-referenced revolution. Entering already-swept space waits for the next
+pass; leaving reach avoids a pending hit. There are no simultaneous radial pulses. The front seam
+belongs to the new revolution and is contacted only once at that boundary.
+Startup costs 25 stamina; active drain is 25/s, duration at most 5 s, cooldown 30 s with existing
+skill scaling, radius 3, damage multiplier 0.5 and movement multiplier 0.6. Advance only through
+affordable active time and remaining duration. A contact exactly at either final boundary counts
+once; nothing follows it and the body stops at the actually reached angle, never a completed turn.
+Finite positive angular progress and finite nonnegative drain are required before runtime;
+zero drain is legal and duration-bounded. Cyclone rotates the body and its attack direction,
+**not the camera**. Body yaw remains at the reached stop; movement, blocking, look and subsequent
+attacks retain normal camera-based controls. Committed weapon, whole-channel hit/miss and ordinary
+inactivity rules remain unchanged; reset/death synchronously stop further channel actions.
 
 ### weapon-type
 Weapon family with handedness, class and moveset. `A S` → `instances/weapon-types.json` (21 alpha
@@ -1075,9 +1092,9 @@ Character/creature levels, XP, coin income and other level-valued domains stay i
 existing units. Stat, healing and price equations are unchanged, including fixed gear HP
 and upgrade inputs below; corrected item-power inputs can change their resulting values.
 Rarity, cube capacities, quantities, timings and the permanent regional-power-loss exclusion
-are unchanged. Live JSON, model/checker and game consumers still use unconverted source levels;
-their reconciliation is [deferred implementation](../../docs/ROADMAP/todo_implement.md#items-34-slice-abaded3),
-not an override of this canonical rule.
+are unchanged. Producers, already-powered constructor bounds and deterministic save/import
+checks must enforce these units together, preserving source-level records. Recipe/formula
+production and learning retain their [separate deferrals](../../docs/ROADMAP/todo_implement.md#items-34-slice-abaded3).
 
 Hybrid equipment uses item power as an [equip requirement](#power-gate-a), not weakened stats.
 
@@ -1163,6 +1180,12 @@ beverage `S` (10 min hazard resistance), bomb (100-HP fuse "pet" entity, breaks 
 hurts players; A +1/+5/+10). → `instances/consumables.json` with recipes.
 Heal formula A: `item-base-hp(n, rarity) × 200` (life/cactus potion, ginseng soup, snowberry mash,
 mushroom spit) or `× 100` (pineapple slice, pumpkin muffin).
+
+**Hybrid Apple:** nominal healing is the existing `item-base-hp(power, rarity) × 20` HP:
+20 HP at common power +1, one tenth an equal-power/equal-rarity Life Potion, capped by
+missing HP. This is a hybrid balance selection, not a historical formula claim. The current
+instant-use approximation remains; sitting/channeling is deferred. Other consumables do not
+acquire a required healing coefficient or a general zero-heal use rejection rule.
 
 ### ingredient
 Gatherable, drop or refined crafting material. → `instances/ingredients.json`.

@@ -302,7 +302,7 @@ func _init() -> void:
 		not p.use_class_skill(1) and p.abilities.cooldowns[&"smash"] > 7.0,
 		"second smash blocked by the cooldown"
 	)
-	# Cyclone: channel 5 s, ticks every 0.25 s within 3 blocks, 25 + 25/s stamina, no basic attack meanwhile
+	# Cyclone: one clockwise turn/s; front hit now, next front pass at 1s; 25 + 25/s stamina.
 	p.stamina = 100.0
 	hp0 = wolf.hp
 	check(p.use_class_skill(2) and p.abilities.busy(), "cyclone channels")
@@ -310,12 +310,12 @@ func _init() -> void:
 	var ticks := int(
 		round((hp0 - wolf.hp) / Combat.after_armor(dmg * 0.5 * 1.05, wolf.armor, design["combat"]))
 	)
-	check(ticks >= 2 and ticks <= 4, "cyclone ticked %d times in 0.5 s" % ticks)
+	check(ticks == 1, "cyclone reaches front once in the first 0.5s: %d" % ticks)
 	check(
 		p.stamina < 75.0 - 10.0 and p.stamina > 75.0 - 20.0,
 		"cyclone stamina 25 + 25/s: %.1f" % p.stamina
 	)
-	p.abilities.channel = {}
+	p.abilities.reset()
 	# War Frenzy: damage buff ×1.2 for 10 × 1.05 s, basic hits give MP
 	check(
 		(

@@ -135,7 +135,7 @@ func run() -> void:
 	check(p.abilities.use(o.abilities[&"cyclone"]), "armed channel committed")
 	p.inventory.unequip(&"main-hand")
 	var hp0: float = m.hp
-	p.abilities.tick(0.25)
+	p.abilities.tick(1.0)  # next front pass, after the committed weapon was unequipped
 	check(m.hp < hp0 and p.combo > 0, "committed channel damages and lands without weapon")
 	p.abilities.reset()
 	p.stamina = 100

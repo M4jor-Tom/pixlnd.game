@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://game/entities/player.gd" id="1"]
 [ext_resource type="Script" path="res://game/entities/orbit_camera.gd" id="2"]
@@ -10,6 +10,12 @@
 [sub_resource type="StandardMaterial3D" id="mat"]
 albedo_color = Color(0.9, 0.5, 0.2, 1)
 
+[sub_resource type="BoxMesh" id="facing_mesh"]
+size = Vector3(0.25, 0.25, 0.65)
+
+[sub_resource type="StandardMaterial3D" id="facing_mat"]
+albedo_color = Color(1, 0.9, 0.3, 1)
+
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1")
 
@@ -19,6 +25,11 @@ shape = SubResource("shape")
 [node name="Body" type="MeshInstance3D" parent="."]
 mesh = SubResource("mesh")
 material_override = SubResource("mat")
+
+[node name="Facing" type="MeshInstance3D" parent="Body"]
+position = Vector3(0, 0.3, -0.45)
+mesh = SubResource("facing_mesh")
+material_override = SubResource("facing_mat")
 
 [node name="CameraRig" type="Node3D" parent="."]
 script = ExtResource("2")

@@ -53,9 +53,10 @@ static func stock(
 ) -> Array:
 	var st: Dictionary = design["settlement"]["shop"]
 	var out: Array = []
-	if role == &"item-vendor":  # unlimited consumables at the player's level
+	if role == &"item-vendor":  # unlimited consumables at the player's converted power
+		var power := clampi(Model.power_for_level(player_level), 1, 100)
 		for c in design["loot"]["consumable-pool"]:
-			out.append(Item.stack(&"consumable", StringName(c), 1, maxi(1, player_level)))
+			out.append(Item.stack(&"consumable", StringName(c), 1, power))
 		return out
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash([gen.world_seed, village["centre"], role, day])
@@ -69,12 +70,13 @@ static func stock(
 		func(k: String) -> bool: return k != "weapon"
 	)
 	for i in int(st["stock"]):
-		var lvl := maxi(
-			1,
+		var power := clampi(
 			(
-				gen.creature_level(land, player_level, player_level, rng)
+				Model.power_for_level(gen.creature_level(land, player_level, player_level, rng))
 				+ rng.randi_range(-spread, spread)
-			)
+			),
+			1,
+			100
 		)
 		var rarity := mini(Items.roll_rarity(rng, design["loot"], o), cap)
 		var cls: Model.CharacterClass = o.classes[o.classes.keys()[rng.randi() % o.classes.size()]]
@@ -82,7 +84,7 @@ static func stock(
 			var wt: StringName = cls.weapon_types[rng.randi() % cls.weapon_types.size()]
 			out.append(
 				Items.generate(
-					rng, &"weapon", wt, Items.weapon_material(o.weapon_types[wt]), lvl, rarity
+					rng, &"weapon", wt, Items.weapon_material(o.weapon_types[wt]), power, rarity
 				)
 			)
 		else:
@@ -92,7 +94,7 @@ static func stock(
 					StringName(armor_kinds[rng.randi() % armor_kinds.size()]),
 					&"",
 					cls.armor_material,
-					lvl,
+					power,
 					rarity
 				)
 			)

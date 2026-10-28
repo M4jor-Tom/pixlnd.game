@@ -595,6 +595,21 @@ class Ontology:
 				"number": "cooldown-s distance radius duration-s cast-s heal-pct stealth-per-s"
 			}
 		)
+		if row.get("runtime") == "channel":
+			for field in ["turns-per-s", "drain-per-s"]:
+				if not _input_shape(row.get(field), "number", path + "." + field):
+					valid = false
+				elif float(row[field]) < 0.0 or (field == "turns-per-s" and row[field] == 0):
+					errors.append(
+						(
+							path
+							+ "."
+							+ field
+							+ ": must be "
+							+ ("> 0" if field == "turns-per-s" else ">= 0")
+						)
+					)
+					valid = false
 		if row.get("cost") is Dictionary:
 			for key in row.cost:
 				if (
@@ -1945,6 +1960,18 @@ class Ontology:
 		_validate_equipment()
 		_validate_android()
 		_validate_provenance()
+		# c-apple-heal: selected hybrid coefficient, independently at raw and loaded boundaries.
+		var apple_input := _object(_object(configs.get("consumables")).get("apple"))
+		if not _is_selected_multiplier(apple_input.get("heal-mult"), 20):
+			errors.append("consumables.apple.heal-mult: required numeric 20")
+		var apple: Consumable = consumables.get(&"apple")
+		if apple == null:
+			errors.append("consumables.apple: required loaded consumable")
+		else:
+			if not _is_selected_multiplier(apple.raw.get("heal-mult"), 20):
+				errors.append("consumables.apple.heal-mult: loaded raw must equal numeric 20")
+			if apple.heal_mult != 20:
+				errors.append("consumables.apple.heal-mult: loaded coefficient must equal 20")
 		for id in specs:  # c-spec-of-class
 			var s: Specialization = specs[id]
 			if not classes.has(s.character_class):

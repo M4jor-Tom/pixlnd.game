@@ -397,6 +397,17 @@ func run() -> void:
 		),
 		"first later entrant resolves/delivers pending class once"
 	)
+	var resolved: Dictionary = state.sites[camp_id].rewards[mission]
+	var source_powers := {
+		1: 1, 2: 5, 3: 10, 4: 14, 5: 17, 6: 21, 7: 24, 8: 26, 9: 29, 10: 32, 11: 34, 12: 36, 13: 38
+	}
+	check(
+		(
+			resolved.payload[0].level == source_powers.get(int(resolved.level), -1)
+			and resolved.payload[2].level == source_powers.get(int(resolved.level), -1)
+		),
+		"deferred class uses saved mission source power for gear/potion after restart"
+	)
 	var count: int = (
 		w.site_views[camp_id].get_children().filter(func(n): return n.get("item") != null).size()
 	)

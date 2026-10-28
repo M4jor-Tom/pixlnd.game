@@ -1094,7 +1094,9 @@ func _strike(
 	combo_bonus: bool,
 	applies: Array = [],
 	attack_type: StringName = Combat.PHYSICAL,
-	target_limit: int = 0
+	target_limit: int = 0,
+	contacts: Variant = null,
+	continuing: Callable = Callable()
 ) -> int:
 	var hits := 0
 	var chance: float = crit_chance + (abilities.add("crit-add") if abilities != null else 0.0)
@@ -1106,15 +1108,21 @@ func _strike(
 		chance += stealth * float(sl["crit-add-at-full"])
 	var tier := -1  # D25: ONE bundle per strike, the strongest tier wins
 	var tier_at := Vector3.ZERO  # (an AoE swing must not fire 16 sounds and 16 shakes)
-	var bodies := bodies_within(center, radius)
+	var bodies: Array = bodies_within(center, radius) if contacts == null else contacts
 	if target_limit > 0:
 		bodies = bodies.slice(0, target_limit)
 	for body in bodies:
+		if continuing.is_valid() and not continuing.call():
+			break
+		if not is_instance_valid(body) or body.is_queued_for_deletion():
+			continue
 		if body.has_method("take_direct_damage"):
 			body.take_direct_damage(
 				dmg * (abilities.mult("damage-mult") if abilities != null else 1.0), self
 			)
 			continue
+		if body.get("dead"):
+			continue  # A prior contact in this same coarse sweep may have killed it.
 		var cm := Combat.crit_mult(chance, _rng, crit)
 		var d := dmg * (Combat.combo_mult(combo, combat) if combo_bonus else 1.0) * cm
 		if abilities != null:
@@ -1126,6 +1134,8 @@ func _strike(
 		if d > 0.0:  # taunts use the authority, never a fake damage hit
 			var before: float = body.hp
 			blocked = body.take_damage(d, self)
+			if continuing.is_valid() and not continuing.call():
+				return hits + 1  # Synchronous cancellation stops statuses, feedback and later contacts.
 			if feel != null and before > body.hp:  # a number per body, the bundle once
 				var kind: StringName = &"crit" if cm > 1.0 else &"hit"
 				feel.number(body.head(), before - body.hp, kind)

@@ -98,9 +98,20 @@ normal-callback chase, pure stun, real knockback and recovery have inspected nat
 stun-motion/boss-special checks pass headless and windowed. Independent F3 resolution and final
 integrated correction reviews passed with no findings. The old combined run remains failed;
 F1/F4/F5 observations compose with their passing scoped regressions rather than claiming that
-capture was a clean combined run. See the [accepted checkpoint](../docs/pixlnd-8158ab2-game-review.md#integration-checkpoint--accepted-corrections)
-for visual qualifications. Normal pre-push and remote/CI checks govern publication. Deferred
-F6/F7/F9, collision diagnostics, hardware and performance coverage are not completed by this review.
+capture was a clean combined run. The accepted checkpoint and its visual qualifications are retained
+in Git history at `4bf90b7:docs/pixlnd-8158ab2-game-review.md`. Normal pre-push and remote/CI checks
+govern publication. F6/F7/F9 subsequently passed the combined 71-invocation gate and independent implementation
+reviews. Cyclone now rotates the body clockwise once per game second, contacting targets in angular
+order and retaining partial facing at duration/fuel exhaustion; camera-directed movement, subsequent
+attacks and ordinary blocking remain independent. All implemented item producers convert source
+level to bounded item power before spread, with coupled current-rule save checks. Apple uses healing
+coefficient 20 through selected Use, Quick Item and synthetic Android input. Native main/HUD checks
+cover both warrior specializations, partial stop, ordinary controls, Apple effects, vendor purchases,
+progression-based equip admission and cold restore. These are not Android hardware, complete
+streaming/performance, legacy-save migration or parked collision-resolution acceptance. The native
+[changelog demonstration](../docs/changelogs/pre-v1/20261028164624_game-review-corrections_f5bbdba.md)
+is a staged real-state example, not exhaustive regression footage. Final media review and normal
+publication checks remain separate gates.
 
 ## Controls contract
 
@@ -170,6 +181,12 @@ Use the [current calibrated deadlines](../docs/quality-checks.md), with `timeout
 older command samples below do not override those deadlines.
 ```sh
 # export PIXLND_TEST_DIR=/absolute/path/to/isolated-check-output
+nix develop --no-update-lock-file -c timeout 681 godot --headless -s ontology/test_channel_config.gd # required raw/loaded finite angular speed and drain; zero-drain positive controls
+nix develop --no-update-lock-file -c timeout 681 godot --headless -s ontology/test_apple_healing_config.gd # exact raw/loaded Apple runtime coefficient and malformed/missing negatives
+nix develop --no-update-lock-file -c timeout 681 godot --headless -s game/combat/test_cyclone.gd # both specs, ordered directional contacts, partitions/endpoints/fuel, moving bodies, facing/camera ownership and synchronous cancellation
+nix develop --no-update-lock-file -c timeout 681 godot --headless -s game/items/test_item_power.gd # literal source-to-power producer anchors/clamps, RNG preservation, reward/vendor/table units and powered imports
+nix develop --no-update-lock-file -c timeout 681 godot --headless -s game/world/test_item_power_cold.gd # real six-site saves, pending/delivered receipts, purchased stock, bounded fresh-process restore and invalid-load original-file protection
+nix develop --no-update-lock-file -c timeout 681 godot --headless -s game/items/test_apple_healing.gd # real selected/Quick/synthetic Android Use: healing, cap, rarity/power and selected-stack consumption
 nix develop --no-update-lock-file -c timeout 227 godot --headless -s game/entities/test_stun_motion.gd # normal creature physics: pure stun stops CHASE/WANDER/protected RETURN; both knockback orders, wall/slide consumed residual, expiry/resumption, gravity/clocks and simulation/death freeze
 nix develop --no-update-lock-file -c timeout 227 godot --headless -s game/entities/test_stun_input.gd # normal-callback mapped keys/native synthetic touch: stun blocks jump/sustain/ascent; dead/stunned Talk/Pick Up/Use reject, real services and selected panels; expiry/fresh requests, passive coins and live timers/push
 nix develop --no-update-lock-file -c timeout 227 godot --headless -s game/entities/test_landing_death.gd # real-floor fatal landing stops mapped Q/basic/Smash edges; nonlethal and lethal-DOT controls, one death signal, retained items/coins/XP and equipped-max respawn
@@ -233,7 +250,7 @@ nix develop -c godot --headless -s game/combat/test_defence.gd      # c-defence-
 nix develop -c godot --headless -s game/combat/test_resistance.gd  # c-attack-defence, c-resistance-mitigation, c-resistance-dot; gear, attack-type/in-flight classification, creature baseline, ordered defence and once-only burn inheritance
 nix develop -c godot --headless -s game/combat/test_projectiles.gd  # c-moveset-config, ordinary Bow/Crossbow/Bracelet/Shuriken one-contact flight, selected crit/status/defence/return reduction/lethal/unequip, splash volleys and outbound/return Boomerang multi-target, beam/cursor/melee/ability AoE, arc whiff, dagger poison, lunge/finisher, four-hit crit-derived burn
 nix develop -c godot --headless -s game/combat/test_feel.gd        # c-feel-config, hit-stop freeze + real-time restore + overlap, trauma decay to rest, damage number spawned / freed, kill bundle, hurt number, stun stars, projectile trail + impact, level-up, every event's synthesised sfx
-nix develop -c godot --write-movie /tmp/f.png --fixed-fps 30 --quit-after 100   # 3D frames of the real scene (the movie writer skips CanvasLayer UI)
+nix develop -c timeout 300 godot --windowed --write-movie /tmp/demo.avi --fixed-fps 15 --quit-after 300 # native 3D movie; CanvasLayer HUD needs verified viewport composition
 ./monitors/godot_threads.sh                                        # while the game runs: main-thread CPU, red = physics spiral (D16)
-# HUD check: temporarily save get_viewport().get_texture().get_image() from main.gd, windowed run
+# Native HUD movie: compose real gameplay/UI in an owned SubViewport; decode and inspect the encoded HUD, not only separate PNGs
 ```
