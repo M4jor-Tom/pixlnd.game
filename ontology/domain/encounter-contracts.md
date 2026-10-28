@@ -12,7 +12,13 @@ saved-world locations stay fixed across
 visits and daily renewal under [mission-type](3_Classes.md#mission-type).
 
 Each site has a flat floor at `H = max(natural ground height, sea level + 4 blocks)` and an
-8-block terrain apron. Access paths are 4 blocks wide, with steps no higher than one block.
+8-block terrain apron. Connecting access uses the terrain-following
+[leading-object routes](3_Classes.md#hybrid-connecting-routes), with 4 blocks of unobstructed
+walkable width and steps no higher than one block. This is a clearance requirement, not a
+continuous road surface or visible edging; the route follows terrain relief between sites,
+not a flat extension of their floors. Choose connecting paths that meet this clearance on the
+existing ground, without flattening, cutting or filling terrain for the paths; site aprons and
+the ocean crossings below remain unchanged. Leading objects stay out of the required clearance.
 Enemy homes and pursuit envelopes stay outside the village's existing protected area
 ([settlement](3_Classes.md#settlement), `generators.json#design.settlement.no-hostiles-within`).
 

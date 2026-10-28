@@ -119,6 +119,42 @@ Natural formation placed inside a land. `A S` → `instances/terrain-features.js
 island, sky-island `S`, forest (generic/birch/pine, dungeon-forest), field, road+bridge+tunnel,
 oasis, cloud (no collision), giant-rock `A`, giant-tree `A`, graveyard).
 
+#### Hybrid connecting routes
+
+A connecting `road` in the hybrid is a traversable route between existing settlements,
+dungeons, camps or other destination sites, suggested by scattered **leading objects** rather
+than a continuous, visibly delimited road surface. Players find their way by observing those
+objects, with natural ground between them, not by following a plain strip or two marked edges.
+The route and its objects follow the existing terrain relief: choose the path to fit the
+natural ground, without flattening, cutting or filling terrain to create it.
+
+Each route repeats one recognizable object family, chosen for its destination away from the
+village. Orientation and condition may vary, but the family does not change along the route.
+
+| Existing destination | Leading object family |
+|---|---|
+| Ruins (`dungeon-types.json#ruins`, including overworld ruins) | Small weathered masonry stones matching the ruins' stonework, recognizable as broken building pieces rather than ordinary rocks. |
+| Camps (`poi-types.json#campsite`, including the initial skeleton camp) | Torches on rough wooden stakes. |
+| Supplier-rescue sites (`gnome-supplier`, all four initial sites) | Broken wooden supply crates; the same family for all four routes, without tier-specific marker types. |
+| Existing house/hut POIs (`poi-types.json#old-hut`, `poi-types.json#wollays-house`) | Small lanterns on short wooden posts. |
+
+These themes apply to the listed destinations whether implemented or not, without changing
+their existing availability or guaranteeing new connections. The house/hut row adds no generic
+isolated-house destination or house-building feature. Other destination families receive no
+object assignment from this selection.
+
+Existing accessibility requirements and necessary crossings, including initial ocean boardwalks,
+remain. Leading objects must not obstruct required passage. Natural-terrain preservation applies
+to connecting paths only: settlement/site platforms, 8-block site aprons, dry ocean islands/hubs,
+dungeon corridors and battlefield boundaries retain their existing rules. The
+[initial access contract](encounter-contracts.md#placement-and-access) retains its dimensions.
+Historical road, tunnel, bridge and streetlight descriptions in the instance catalogs remain
+reference material, not a requirement for a continuous hybrid road surface.
+
+This redefinition is documentation only: object assets, placement/generation, live configuration,
+save changes and validation/runtime enforcement remain unimplemented by this amendment and
+require separate authority. No object spacing, collision, interaction or reward behavior is selected.
+
 ### climate
 Continuous fields sampled per position. `A S`
 | prop | notes |
