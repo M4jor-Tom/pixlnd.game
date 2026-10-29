@@ -1,5 +1,23 @@
 # Handoff — pending continuation
 
+## Natural terrain and optional guidance — deferred native acceptance
+
+Implementation, independent source reviews and headless verification are complete; full native
+acceptance remains unestablished. The windowed family check timed out after scene cleanup and its
+completion message; the shutdown cause is unknown. Material streaming hitches and native contact/UI
+coverage limitations also remain unclassified, not established production regressions.
+
+The shutdown investigation, further windowed checks and HUD demonstration movie are deferred.
+Resume only with a separately selected scope; do not restore external connection walkability
+requirements. Keep the paired player-facing changelog pending with its movie; resolve the usual
+code-hash filename convention against the single-final-commit requirement before that follow-up.
+
+Machine-local evidence (preserve before moving machines):
+`/home/theta/.pi-game-dev/sessions/--home-theta-repos-pixlnd--/artifacts/object-guided-paths-01a181dc/`.
+Read `async-native-parent-disposition.md` and `async-native-independent-review.md`; the accepted
+headless packet is `async-final-rerun1-result.json`. Remaining work is tracked in
+[implementation debt](ROADMAP/todo_implement.md).
+
 ## Deferred Godot collision issue — investigation parked by owner
 
 ### Symptom and scope

@@ -12,21 +12,20 @@ saved-world locations stay fixed across
 visits and daily renewal under [mission-type](3_Classes.md#mission-type).
 
 Each site has a flat floor at `H = max(natural ground height, sea level + 4 blocks)` and an
-8-block terrain apron. Connecting access uses the terrain-following
-[leading-object routes](3_Classes.md#hybrid-connecting-routes), with 4 blocks of unobstructed
-walkable width and steps no higher than one block. This is a clearance requirement, not a
-continuous road surface or visible edging; the route follows terrain relief between sites,
-not a flat extension of their floors. Choose connecting paths that meet this clearance on the
-existing ground, without flattening, cutting or filling terrain for the paths; site aprons and
-the ocean crossings below remain unchanged. Leading objects stay out of the required clearance.
+8-block terrain apron. Optional terrain-following
+[leading objects](3_Classes.md#hybrid-connecting-routes) suggest destinations without guaranteeing
+walkable connections. No connecting width, step, slope or reachability test gates placement or
+publication; climbing or detours may be necessary. Guidance never reshapes terrain or adds
+supports/crossings. Internal doors, corridors and trap-free lanes retain their dimensions.
 Enemy homes and pursuit envelopes stay outside the village's existing protected area
 ([settlement](3_Classes.md#settlement), `generators.json#design.settlement.no-hostiles-within`).
 
-Ocean lands receive dry islands and boardwalks. Where village generation otherwise fails,
+Ocean lands retain dry site islands. Where village generation otherwise fails,
 provide a 64×64-block dry village hub containing the required settlement and valid village-square
-spawn, not a substitute landing. Validate the village, all six sites and access routes together,
-including finite-world bounds. Failure produces a generation diagnostic, never fewer suppliers
-or partially populated encounters.
+spawn, not a substitute landing. Validate the village and all six sites together, including
+finite-world bounds, independently of optional guidance. Required geography failure produces
+a generation diagnostic, never fewer suppliers or partially populated encounters. Guidance
+failure only omits guidance, retaining terrain, village, sites and gameplay.
 
 ## Geometry and occupancy
 

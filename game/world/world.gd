@@ -4,6 +4,7 @@ extends Node3D
 const Model := preload("res://ontology/model.gd")
 const WorldGen := preload("res://game/world/world_gen.gd")
 const ZoneMesh := preload("res://game/world/zone_mesh.gd")
+const TerrainWorker := preload("res://game/world/terrain_worker.gd")
 const Spawner := preload("res://game/world/spawner.gd")
 const Targeting := preload("res://game/combat/targeting.gd")
 const EncounterGen := preload("res://game/world/encounter_gen.gd")
@@ -25,6 +26,7 @@ signal state_changed
 signal generation_failed(diagnostic: String)
 var site_views: Dictionary = {}
 var access_views: Dictionary = {}
+var guidance: Dictionary = {}  # optional unsaved decoration; required geography never depends on it
 var generation_error := ""
 var state_data  # WorldState, owned by main/saved world, not streaming zones
 var party_provider: Callable  # connected characters, including awaiting-respawn characters
@@ -40,6 +42,10 @@ var _zone_blocks: int
 var _view: int
 var _land_mat := StandardMaterial3D.new()
 var _water_mat := StandardMaterial3D.new()
+var _terrain_worker
+var _terrain_epoch := 0
+var _pending_guidance: Array = []
+var _pending_ambient: Dictionary = {}  # loaded home zones with actors awaiting their actual tile
 
 
 func _ready() -> void:
@@ -61,6 +67,7 @@ func configure(p_ontology, p_design: Dictionary, saved_world, provider: Callable
 	rosters = ontology.configs["creature-families"]["landscape-rosters"]
 	gen = WorldGen.new(world_seed, design, ontology.landscapes)
 	gen.saved_lands = state_data.lands
+	_terrain_worker = TerrainWorker.new(world_seed, design, ontology.landscapes, state_data.lands)
 	state_data.refresh_site = refresh_site
 	state_data.complete_on_exit = complete_supplier
 	_zone_blocks = int(gen.terrain["zone-blocks"])
@@ -132,14 +139,25 @@ func populate_zone(zc: Vector2i) -> void:
 		return
 	var prefix := "%s/ambient/%d,%d" % [state_data.world_id, zc.x, zc.y]
 	var plan_: Array = Spawner.plan(gen, zc, design, creatures, rosters, levels[0], levels[1])
+	_pending_ambient.erase(zc)
 	var made := Spawner.populate(
-		zones[zc], plan_, design, creatures, target, ontology, targeting, prefix, state_data.mobs
+		zones[zc],
+		plan_,
+		design,
+		creatures,
+		target,
+		ontology,
+		targeting,
+		prefix,
+		state_data.mobs,
+		_ambient_ground_ready.bind(zc)
 	)
 	for mob in made:
 		mob.died.connect(func(): state_changed.emit())
 
 
 func _process(_dt: float) -> void:
+	_poll_terrain()
 	if (
 		gen == null
 		or target == null
@@ -160,7 +178,7 @@ func _process(_dt: float) -> void:
 			state_changed.emit()
 	# Materialize only genuinely eligible dead incarnations; loaded survivors are never replaced.
 	if state_data != null:
-		var renew := {}
+		var renew := _pending_ambient.duplicate()
 		for id in state_data.mobs:
 			var mob: Dictionary = state_data.mobs[id]
 			if not mob.dead or not mob.eligible:
@@ -170,7 +188,10 @@ func _process(_dt: float) -> void:
 			if zones.has(zc):
 				renew[zc] = true
 		for zc in renew:
-			populate_zone(zc)
+			if zones.has(zc):
+				populate_zone(zc)
+			else:
+				_pending_ambient.erase(zc)
 	if not ensure_land(
 		gen.land_of_block(
 			floori(float(target.logical_position()[0])), floori(float(target.logical_position()[2]))
@@ -179,8 +200,7 @@ func _process(_dt: float) -> void:
 		return
 	_stream_village()
 	stream_sites()
-	# ponytail: nearest ring first, ≤ 2 zones per frame on the main thread; thread it when it hitches
-	var built := 0
+	# Nearest ring first; worker requests never build terrain on this thread.
 	for r in _view + 1:
 		for dy in range(-r, r + 1):
 			for dx in range(-r, r + 1):
@@ -191,9 +211,7 @@ func _process(_dt: float) -> void:
 				):
 					continue
 				_spawn_zone(c + Vector2i(dx, dy))
-				built += 1
-				if built >= 2:
-					return
+				return
 
 
 func _spawn_zone(zc: Vector2i) -> void:
@@ -204,8 +222,101 @@ func _spawn_zone(zc: Vector2i) -> void:
 		and not ensure_land(gen.land_of_block(zc.x * _zone_blocks, zc.y * _zone_blocks))
 	):
 		return
+	var land = gen.land_of_block(zc.x * _zone_blocks, zc.y * _zone_blocks)
+	var key := "%d,%d" % [land.coords.x, land.coords.y]
+	var status: Error = _terrain_worker.request(zc, _terrain_epoch, not guidance.has(key))
+	if status != OK and status != ERR_BUSY:
+		generation_error = "terrain worker start failed: " + error_string(status)
+		generation_failed.emit(generation_error)
+
+
+func _poll_terrain() -> void:
+	if _terrain_worker == null:
+		return
+	# Even a cheap guide result is published a frame after its ready terrain.
+	var packets := _pending_guidance
+	_pending_guidance = []
+	for packet in _terrain_worker.poll():
+		if packet.kind == "guidance":
+			_pending_guidance.append(packet)
+		else:
+			packets.append(packet)
+	for packet in packets:
+		if packet.epoch != _terrain_epoch or target == null:
+			continue
+		var logical: Array = target.logical_position()
+		var here := Vector2i(
+			floori(float(logical[0]) / _zone_blocks), floori(float(logical[2]) / _zone_blocks)
+		)
+		if maxi(absi(packet.zone.x - here.x), absi(packet.zone.y - here.y)) > _view + 1:
+			continue
+		if packet.kind == "terrain":
+			if not zones.has(packet.zone):
+				_publish_zone(packet.zone, packet.surfaces)
+		else:
+			if not packet.error.is_empty():
+				push_warning("Optional guidance omitted: " + str(packet.error))
+			guidance[packet.land] = packet.routes.duplicate(true)
+
+
+func _marker_clear(marker: Dictionary, prospective: Dictionary = {}) -> bool:
+	var actors: Array = party_provider.call() if party_provider.is_valid() else []
+	if targeting != null:
+		actors.append_array(targeting.live.values())
+	for actor in actors:
+		if is_instance_valid(actor) and _marker_near(marker, actor.logical_position()):
+			return false
+	# ponytail: O(markers × saved mobs) per view publication; index by zone if large saves make this costly.
+	for mob in state_data.mobs.values():
+		if _marker_near(marker, mob.home) or _marker_near(marker, mob.position):
+			return false
+	for site in state_data.sites.values():
+		for mob in site.mobs.values():
+			if _marker_near(marker, mob.home) or _marker_near(marker, mob.position):
+				return false
+	var levels := party_levels()
+	if levels.is_empty():
+		return false
+	# Include neighbouring zone sources whose configured spread can reach the marker's actor halo.
+	var pad := 3 + int(design.spawns["group-spread"])
+	for x in range(
+		floori((marker.x - pad) / _zone_blocks), floori((marker.x + pad) / _zone_blocks) + 1
+	):
+		for z in range(
+			floori((marker.z - pad) / _zone_blocks), floori((marker.z + pad) / _zone_blocks) + 1
+		):
+			var zone := Vector2i(x, z)
+			if not gen.valid_zone(zone):
+				continue
+			if not prospective.has(zone):
+				prospective[zone] = Spawner.plan(
+					gen, zone, design, creatures, rosters, levels[0], levels[1]
+				)
+			for group in prospective[zone]:
+				for at in group.positions:
+					if _marker_near(marker, [at.x, at.y, at.z]):
+						return false
+	return true
+
+
+static func _marker_near(marker: Dictionary, at: Array) -> bool:
+	# The existing actor-sized empty halo is cosmetic placement safety, not a connecting lane.
+	return absf(float(at[0]) - marker.x) < 3 and absf(float(at[2]) - marker.z) < 3
+
+
+func _exit_tree() -> void:
+	if _terrain_worker != null:
+		_terrain_worker.stop()
+
+
+func _publish_zone(zc: Vector2i, surfaces: Array) -> void:
+	if surfaces.is_empty():
+		generation_error = "terrain generation returned no surface: " + str(zc)
+		generation_failed.emit(generation_error)
+		return
+
 	var mi := MeshInstance3D.new()
-	mi.mesh = ZoneMesh.build(gen, zc)
+	mi.mesh = ZoneMesh.from_data(surfaces)
 	mi.mesh.surface_set_material(0, _land_mat)
 	if mi.mesh.get_surface_count() > 1:
 		mi.mesh.surface_set_material(1, _water_mat)
@@ -268,12 +379,34 @@ func has_ground(pos: Vector3) -> bool:
 	var logical: Array = frame.to_logical(pos) if frame != null else [pos.x, pos.y, pos.z]
 	if target != null and frame != null:
 		logical = target.logical_position()
+	return has_terrain_at(logical)
+
+
+## Logical scalar input is authoritative: never substitute the player's ready tile for another actor.
+func has_terrain_at(logical: Array) -> bool:
 	if not gen.valid_block(logical[0], logical[2]):
 		return false
 	var zc := Vector2i(
 		floori(float(logical[0]) / _zone_blocks), floori(float(logical[2]) / _zone_blocks)
 	)
 	return gen.valid_zone(zc) and zones.has(zc)
+
+
+func _actor_ground_ready(at: Array) -> bool:
+	if has_terrain_at(at):
+		return true
+	# Built authored floors already provide support without waiting for their terrain zones.
+	for id in site_views:
+		if state_data.inside(site_layout(id).volumes, [at]):
+			return true
+	return false
+
+
+func _ambient_ground_ready(at: Array, home_zone: Vector2i) -> bool:
+	if _actor_ground_ready(at):
+		return true
+	_pending_ambient[home_zone] = true
+	return false
 
 
 ## Publish complete land data only after geography AND every incarnation have succeeded.
@@ -353,7 +486,7 @@ func populate_site(id: String) -> void:
 	for stable in layout.assignments:
 		var mob_id: String = id + "/" + stable.key
 		var saved: Dictionary = site.mobs[mob_id]
-		if saved.dead or targeting.live.has(mob_id):
+		if saved.dead or targeting.live.has(mob_id) or not _actor_ground_ready(saved.position):
 			continue
 		var size_: float = (
 			EncounterGen.height(saved.level, design["initial-encounters"])
@@ -509,9 +642,20 @@ func stream_sites() -> void:
 				)
 				<= reach + float(design["initial-encounters"]["distance-max"])
 			)
+			and guidance.has(key)
 			and not access_views.has(key)
 		):
-			access_views[key] = EncounterSite.roads(plan_, design, frame)
+			var visible: Array = []
+			var prospective := {}  # one deterministic plan per nearby zone for this publication
+			for road in guidance[key]:
+				var safe: Dictionary = road.duplicate(true)
+				safe.markers = road.markers.filter(
+					func(marker): return _marker_clear(marker, prospective)
+				)
+				visible.append(safe)
+			access_views[key] = EncounterSite.roads(
+				{"village": plan_.village, "routes": visible}, design, frame
+			)
 			add_child(access_views[key])
 			if frame != null:
 				frame.track(access_views[key])
@@ -519,6 +663,8 @@ func stream_sites() -> void:
 
 ## Discontinuous owner relocation: capture before exit; never translate an old neighborhood by a world-sized delta.
 func retire_views() -> void:
+	_terrain_epoch += 1
+	_pending_ambient.clear()
 	capture_mobs()
 	for id in site_views:
 		unload_specials(id)

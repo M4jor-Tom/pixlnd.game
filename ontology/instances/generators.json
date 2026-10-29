@@ -31,13 +31,12 @@
   "level-formulas-alpha": "stats.json#alpha-character-formulas",
   "design": {
     "initial-encounters": {
-      "_doc": "Initial hybrid encounter-contracts.md: required complete village/site/access generation and local populations. Layout coordinates are derived by the engine from these dimensions; no ambient roster or global stat changes.",
+      "_doc": "Initial hybrid encounter-contracts.md: required complete village/site generation and local populations, independent of optional leading objects. Layout coordinates are derived by the engine from these dimensions; no ambient roster or global stat changes.",
       "distance-min": 192,
       "distance-max": 215,
       "separation": 192,
       "apron": 8,
-      "path-width": 4,
-      "max-step": 1,
+      "leading-objects": {"ruins": "masonry", "camp": "stake-torch", "supplier": "broken-crate"},
       "dry-above-sea": 4,
       "hub-size": 64,
       "ruins": {

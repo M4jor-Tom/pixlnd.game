@@ -6,6 +6,8 @@ const Gen := preload("res://game/world/encounter_gen.gd")
 const Site := preload("res://game/world/encounter_site.gd")
 const World := preload("res://game/world/world.gd")
 const State := preload("res://game/world/world_state.gd")
+const MeshData := preload("res://game/world/zone_mesh.gd")
+const Settlement := preload("res://game/world/settlement.gd")
 const Save := preload("res://game/world/save_data.gd")
 const Combat := preload("res://game/combat/combat.gd")
 var failed := 0
@@ -36,43 +38,23 @@ func ray(w, from: Vector3, to: Vector3) -> Dictionary:
 	)
 
 
-func build_access_ground(w, plan_: Dictionary) -> void:
+func build_site_ground(w, plan_: Dictionary) -> void:
 	var zones := {}
-	for road in plan_.routes:
-		for step in road.steps:
-			for side in [-2.0, 2.0]:
-				zones[Vector2i(floori((step.x - step.dz * side) / 64), floori((step.z + step.dx * side) / 64))] = true
+	var v: Dictionary = plan_.village
+	var volumes: Array = [
+		[v.centre[0] - 32, 0, v.centre[1] - 32, v.centre[0] + 32, 0, v.centre[1] + 32]
+	]
+	for site in plan_.sites:
+		volumes.append_array(site.volumes)
+	for volume in volumes:
+		for x in range(floori((volume[0] - 8) / 64.0), floori((volume[3] + 8) / 64.0) + 1):
+			for z in range(floori((volume[2] - 8) / 64.0), floori((volume[5] + 8) / 64.0) + 1):
+				zones[Vector2i(x, z)] = true
+	# This fixture checks geometry/renewal, not background scheduling (test_async_generation).
 	for zone in zones:
-		w._spawn_zone(zone)
+		w._publish_zone(zone, MeshData.data(w.gen, zone))
 	for mob in w.targeting.live.values():
 		mob.set_physics_process(false)
-
-
-func walk_surface(w, plan_: Dictionary) -> void:
-	var rays := 0
-	for road in plan_.routes:
-		var previous: Variant = null
-		for slab in road.steps:
-			# Both sides as well as centre are supported; no declaration-only width/step proof.
-			for side in [-1.99, 0.0, 1.99]:
-				var p: Vector3 = w.frame.to_local(
-					[float(slab.x) - slab.dz * side, slab.top, float(slab.z) + slab.dx * side]
-				)
-				var hit := ray(w, p + Vector3.UP * 0.1, p - Vector3.UP * 0.1)
-				check(
-					not hit.is_empty() and absf(hit.position.y - slab.top) < 0.01,
-					"actual four-wide route floor collision " + str([p, slab, hit.get("position")])
-				)
-				var above := ray(w, p + Vector3.UP * 4.9, p - Vector3.UP * 0.1)
-				check(
-					not above.is_empty() and above.position.y <= slab.top + 1.01,
-					"natural terrain never blocks actual route"
-				)
-				rays += 1
-			if previous != null:
-				check(absf(slab.top - previous.top) <= 1, "actual route height step")
-			previous = slab
-	print("route floor/width rays ", rays)
 
 
 func run() -> void:
@@ -97,7 +79,7 @@ func run() -> void:
 	check(main.state_data.sites.size() == 6, "actual main registers all six atomically")
 	w.stream_sites()
 	w._stream_village()
-	build_access_ground(w, plan_)
+	build_site_ground(w, plan_)
 	for mob in w.targeting.live.values():
 		mob.set_physics_process(false)
 	await physics_frame
@@ -196,12 +178,16 @@ func run() -> void:
 					"boss does not resize shared ordinary capsules"
 				)
 	check(captives == 4 and bosses == 7, "four real friendly captives / seven physical bosses")
-	walk_surface(w, plan_)
 	# Full gate-width horizontal sweeps through the actual unchanged ring's empty-house passage.
-	var gate: Dictionary = plan_.routes[0]
+	var gate: Dictionary = Settlement.opening(
+		w.design.settlement, plan_.village.gate_index, plan_.village.gate_width
+	)
 	for side in [-1.99, 0.0, 1.99]:
-		var a: Array = gate.points[0]
-		var b: Array = gate.points[-1]
+		var a: Array = plan_.village.centre
+		var b: Array = [
+			float(a[0]) + gate.direction[0] * (gate.back + 2),
+			float(a[1]) + gate.direction[1] * (gate.back + 2)
+		]
 		var delta := Vector2(b[0] - a[0], b[1] - a[1]).normalized()
 		var shift: Vector2 = Vector2(-delta.y, delta.x) * side
 		check(
@@ -290,7 +276,8 @@ func run() -> void:
 			"count",
 			"pack",
 			"tier-stats",
-			"spirit-level"
+			"spirit-level",
+			"land-geometry"
 		]:
 			var bad: Dictionary = loaded.duplicate(true)
 			match corruption:
@@ -312,6 +299,8 @@ func run() -> void:
 					bad.world.sites[id].mobs[first].damage *= 2
 				"spirit-level":
 					bad.world.sites[id].spirit_levels = {}
+				"land-geometry":
+					bad.world.lands["0,0"].sites[0].components[0][0] += 1
 			check(
 				not main.save_data.write_atomic(path, bad) and not main.save_data.errors.is_empty(),
 				"reject exact-content " + corruption
@@ -370,7 +359,7 @@ func run() -> void:
 		),
 		"cleared rescue completes before refresh and never resurrects"
 	)
-	# Actual ocean islands, dry hub and boardwalks at both finite-world corners, with terrain collision.
+	# Actual ocean islands, dry hub at both finite-world corners, with terrain collision.
 	var restore_position: Array = second.get_node("Player").logical_position()
 	world.retire_views()  # independent saved-world fixture must not overlap the previous world's local native geometry
 	for lc in [Vector2i(-512, -512), Vector2i(511, 511), Vector2i(-512, 511), Vector2i(511, -512)]:
@@ -395,7 +384,7 @@ func run() -> void:
 		fixture.frame.place_entity(fixture.target, place, true)
 		fixture.stream_sites()
 		fixture._stream_village()
-		build_access_ground(fixture, geography)
+		build_site_ground(fixture, geography)
 		await physics_frame
 		await physics_frame
 		check(
@@ -406,7 +395,6 @@ func run() -> void:
 			),
 			"actual ocean hub settlement/all-six islands"
 		)
-		walk_surface(fixture, geography)
 		fixture.free()
 	# Restore this main's per-world position before its shutdown save (fixtures use another saved world).
 	second.frame.place_entity(second.get_node("Player"), restore_position, true)

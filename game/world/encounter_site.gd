@@ -1,4 +1,4 @@
-## Physical views of the same authored playable components/route slabs used for occupancy and access.
+## Physical views of the same authored playable components used for occupancy and optional leading objects.
 ## Logical populations belong to WorldState, never to these disposable streaming nodes.
 extends RefCounted
 const Gen := preload("res://game/world/encounter_gen.gd")
@@ -24,7 +24,7 @@ static func local_box(
 static func boxes(s: Dictionary, cfg: Dictionary) -> Array:
 	var out: Array = []
 	var rules: Dictionary = cfg[s.family]
-	var height_: float = rules.ceiling if s.family == "ruins" else cfg["max-step"]
+	var height_: float = rules.ceiling if s.family == "ruins" else 1  # authored battlefield boundary
 	var cells := {}
 	for r in s.components:
 		local_box(
@@ -175,8 +175,7 @@ static func geometry(data: Array, origin: Array, colour: Color) -> MeshInstance3
 				vertices[face[3]]
 			)
 	var mi := MeshInstance3D.new()
-	var mesh := ArrayMesh.new()
-	buf.commit(mesh)
+	var mesh := ZoneMesh.from_data([buf.arrays()])
 	mi.mesh = mesh
 	var mat := StandardMaterial3D.new()
 	mat.vertex_color_use_as_albedo = true
@@ -225,11 +224,42 @@ static func roads(plan_: Dictionary, design: Dictionary, frame = null) -> Node3D
 		if frame != null
 		else Vector3(reference[0], reference[1], reference[2])
 	)
-	var data: Array = []
 	for road in plan_.routes:
-		for s in road.steps:
-			box(data, s.x, s.top - 0.5, s.z, s.width, 1, s.length, atan2(s.dx, s.dz))
-	root.add_child(
-		geometry(data, reference, Color(design.settlement["style-colors"][plan_.village.style][0]))
-	)
+		for marker in road.markers:
+			var pieces: Array = []
+			var wood := Color("765038")
+			match marker.family:
+				"masonry":
+					# Offset dressed courses, the same square-cut stone language as the ruins.
+					box(pieces, marker.x, marker.top + 0.3, marker.z, 1.5, 0.6, 1.1)
+					box(pieces, marker.x - 0.25, marker.top + 0.8, marker.z, 0.85, 0.4, 0.9)
+					wood = Color(design.terrain["sand-color"]).darkened(0.2)
+				"stake-torch":
+					box(pieces, marker.x, marker.top + 0.9, marker.z, 0.3, 1.8, 0.3)
+					box(pieces, marker.x, marker.top + 1.55, marker.z, 0.5, 0.3, 0.5)
+				"broken-crate":
+					box(pieces, marker.x, marker.top + 0.12, marker.z, 1.5, 0.24, 1.4)
+					for side in [-1, 1]:
+						box(
+							pieces,
+							marker.x + side * 0.65,
+							marker.top + 0.5,
+							marker.z,
+							0.2,
+							0.75,
+							1.4
+						)
+					box(pieces, marker.x, marker.top + 0.55, marker.z + 0.6, 1.2, 0.85, 0.2)
+			var mesh := geometry(pieces, reference, wood)
+			mesh.name = marker.family.capitalize().replace("-", "")
+			root.add_child(mesh)
+			if marker.family == "stake-torch":
+				var flame: Array = []
+				box(flame, marker.x, marker.top + 1.95, marker.z, 0.3, 0.5, 0.3)
+				var glow := geometry(flame, reference, Color("ffae45"))
+				# Harmless emission is presentation; only the wooden stake bears collision.
+				glow.get_child(0).free()
+				glow.material_override.emission_enabled = true
+				glow.material_override.emission = Color("ff8a30")
+				root.add_child(glow)
 	return root

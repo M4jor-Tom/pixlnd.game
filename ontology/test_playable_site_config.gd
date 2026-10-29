@@ -21,6 +21,18 @@ func _init() -> void:
 	var o = fresh()
 	check(o.validate(), "shipped data valid")
 	var d: Dictionary = o.configs.generators.design
+	var natural = fresh()
+	natural.configs.generators.design["initial-encounters"].erase("path-width")
+	natural.configs.generators.design["initial-encounters"].erase("max-step")
+	check(natural.validate(), "external walkability thresholds are not required inputs")
+	# Missing whole marker input and malformed nested families must fail closed.
+	var missing = fresh()
+	missing.configs.generators.design["initial-encounters"].erase("leading-objects")
+	reject(missing, "design.initial-encounters.leading-objects")
+	for bad in [null, [], {}, {"ruins": "rocks", "camp": "stakes", "supplier": "crates"}]:
+		var malformed = fresh()
+		malformed.configs.generators.design["initial-encounters"]["leading-objects"] = bad
+		reject(malformed, "design.initial-encounters.leading-objects")
 	check(d.get("initial-encounters") is Dictionary, "required playable site configuration")
 	if d.get("initial-encounters") is Dictionary:
 		var selected: Dictionary = d["initial-encounters"]
@@ -42,8 +54,6 @@ func _init() -> void:
 			"distance-max",
 			"separation",
 			"apron",
-			"path-width",
-			"max-step",
 			"dry-above-sea",
 			"hub-size",
 			"boss-hp-mult",
@@ -65,12 +75,12 @@ func _init() -> void:
 		var combined = fresh()
 		combined.errors.append("prior error")
 		combined.configs.generators.design["initial-encounters"].erase("hub-size")
-		combined.configs.generators.design["initial-encounters"].erase("path-width")
+		combined.configs.generators.design["initial-encounters"].erase("leading-objects")
 		check(not combined.validate(), "cumulative rejection")
 		for text in [
 			"prior error",
 			"design.initial-encounters.hub-size",
-			"design.initial-encounters.path-width"
+			"design.initial-encounters.leading-objects"
 		]:
 			check(text in "\n".join(combined.errors), text + " retained")
 	print("playable site config ok" if failed == 0 else "playable site config FAILED")

@@ -4,6 +4,7 @@ const MAIN := preload("res://game/main.tscn")
 const Player := preload("res://game/entities/player.gd")
 const Targeting := preload("res://game/combat/targeting.gd")
 const Save := preload("res://game/world/save_data.gd")
+const Settlement := preload("res://game/world/settlement.gd")
 var failed := 0
 
 
@@ -107,12 +108,46 @@ func run() -> void:
 		var key := "%d,%d" % [land.x, land.y]
 		check(main.state_data.lands.has(key), "automatic main generates actual logical land")
 		var plan_: Dictionary = main.state_data.lands[key]
-		var gate: Array = plan_.routes[0].points
+		var opening := Settlement.opening(
+			w.design.settlement, plan_.village.gate_index, plan_.village.gate_width
+		)
+		var centre := [float(v.centre.x), float(v.centre.y)]
+		var boundary_distance := INF
+		for axis in 2:
+			var direction: float = opening.direction[axis]
+			if direction == 0:
+				continue
+			var boundary: float = main.frame.origin[axis]
+			if direction > 0:
+				boundary += main.frame.zone_blocks
+			boundary_distance = minf(boundary_distance, (boundary - centre[axis]) / direction)
+		# Passing the house alone need not cross a frame cell; retain two blocks beyond both.
+		var distance := maxf(float(opening.back) + 2, boundary_distance + 2)
+		var terminal := [
+			centre[0] + opening.direction[0] * distance, centre[1] + opening.direction[1] * distance
+		]
+		check(
+			(
+				distance + float(p.get_node("Collision").shape.radius) + sqrt(2.0)
+				<= float(w.design.settlement.radius)
+			),
+			"frame-crossing fixture stays within the existing town platform"
+		)
+		var local_terminal: Vector3 = main.frame.to_local([terminal[0], v.height + 1, terminal[1]])
+		check(
+			not Rect2(Vector2.ZERO, Vector2.ONE * main.frame.zone_blocks).has_point(
+				Vector2(local_terminal.x, local_terminal.z)
+			),
+			"planned automatic route actually crosses a frame cell"
+		)
+		var gate: Array = [
+			[v.centre.x, v.centre.y, v.height + 1], [terminal[0], terminal[1], v.height + 1]
+		]
 		driver.points = []
 		for point in gate:
-			driver.points.append([float(point[0]), float(v.height + 1), float(point[1])])
+			driver.points.append([float(point[0]), float(point[2]), float(point[1])])
 		for i in range(gate.size() - 1, -1, -1):
-			driver.points.append([float(gate[i][0]), float(v.height + 1), float(gate[i][1])])
+			driver.points.append([float(gate[i][0]), float(gate[i][2]), float(gate[i][1])])
 		driver.index = 0
 		driver.calls = 0
 		driver.exhausted = false

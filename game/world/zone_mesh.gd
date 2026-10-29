@@ -22,19 +22,31 @@ class Buf:
 			n.push_back(normal)
 			c.push_back(col)
 
-	func commit(mesh: ArrayMesh) -> void:
+	func arrays() -> Array:
 		var arrays := []
 		arrays.resize(Mesh.ARRAY_MAX)
 		arrays[Mesh.ARRAY_VERTEX] = v
 		arrays[Mesh.ARRAY_NORMAL] = n
 		arrays[Mesh.ARRAY_COLOR] = c
-		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+		return arrays
 
 
 static func build(gen, zc: Vector2i) -> ArrayMesh:
+	return from_data(data(gen, zc))
+
+
+## Resource creation stays on the publishing main thread.
+static func from_data(surfaces: Array) -> ArrayMesh:
 	var mesh := ArrayMesh.new()
+	for surface in surfaces:
+		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, surface)
+	return mesh
+
+
+## Worker-safe packed vertex/normal/colour arrays, no SceneTree or shared Resource mutation.
+static func data(gen, zc: Vector2i) -> Array:
 	if not gen.valid_zone(zc):
-		return mesh
+		return []
 	var n: int = gen.terrain["zone-blocks"]
 	var ox := zc.x * n
 	var oy := zc.y * n
@@ -120,7 +132,7 @@ static func build(gen, zc: Vector2i) -> ArrayMesh:
 					Vector3(x0 + 1, y, z0 + 1),
 					Vector3(x0 + 1, y, z0)
 				)
-	land.commit(mesh)
+	var surfaces := [land.arrays()]
 	if not water.v.is_empty():
-		water.commit(mesh)  # surface 1 = water
-	return mesh
+		surfaces.append(water.arrays())  # surface 1 = water
+	return surfaces

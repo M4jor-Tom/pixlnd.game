@@ -73,8 +73,13 @@ research. No new implementation authority or whole-topic completion.
   refresh until all players leave; coalesce missed midnights into one refresh using item 3's
   eligibility. No clock-triggered healing/replacement of survivors or ongoing-fight wipe; preserve
   threat/home-return rules and fresh genuine respawns. Closed-union occupancy and coalesced reset enforcement exist for the initial sites; future families must consume the same contract.
-- [ ] Zone build (~40 ms mesh + trimesh) runs on the main thread, ≤2 zones/frame; hitches on load
-  and when crossing zones. Thread it (`WorkerThreadPool`) — `world.gd` ponytail.
+- [ ] Async natural terrain / optional guidance acceptance: private background zone data and measured
+  lightweight shared-worker guides are implemented; main-thread mesh/collision publication remains.
+  Independent source reviews, the full headless gate and affected regressions pass. Native shutdown,
+  streaming-performance classification, further windowed checks and the HUD demonstration remain
+  deferred; see `docs/HANDOFF.md`. No connection walkability guarantee.
+  Guide publication currently scans saved ambient homes/positions per marker (`world.gd` ponytail);
+  add a zone index only if profiling large visited-world saves shows this is costly.
 - [ ] Heightfield only: no caves, overhangs, rivers/waterfalls, lakes, plateaus/mesas, roads with
   tunnels/bridges (`gen-terrain`, `terrain-features.json`). Needs a real voxel mesher — `zone_mesh.gd`.
 - [ ] Beach and snow lines are global thresholds (`design.terrain.beach-above-sea|snow-above`);

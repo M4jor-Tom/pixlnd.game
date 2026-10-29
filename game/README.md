@@ -52,21 +52,30 @@ Independent buffs/heals/movement/taunts and committed effects keep their existin
 
 ## Initial playable sites
 
-`world_gen.gd` jointly validates a seeded village, all six sites and four-wide access before
-publication. An ocean search failure yields a dry 64-square settlement hub, islands and
-collidable boardwalks. One empty house contains the village access passage; services and the
-fixed building ring remain. Failed generation reports seed/land/candidate diagnostics and publishes
-no partial land. `encounter_gen.gd` holds geometry/stable assignments; `encounter_site.gd` builds
-floors, six-high ruins, four-by-five doors and visibly bounded battlefields from the same components
-used by closed occupancy. Terrain cuts cannot protrude through access.
+`world_gen.gd` validates the seeded village and six sites independently of optional guidance.
+Ocean search failure retains a dry 64-square settlement hub and site islands. Connecting guidance
+never changes ground or guarantees walkability: cliffs may require climbing or detours. Required
+geography/definition failures remain errors; optional guide failure only omits decoration.
+`terrain_worker.gd` computes plain zone arrays with private samplers/caches on a native background
+thread. The main thread publishes mesh/collision at the current local origin and rejects stale
+relocation results. Measured lightweight guides share that worker, after ready terrain is handed
+off; scenery publishes on a later frame and rechecks live actors, saved ambient/site homes and positions, and
+deterministic future spawns at every view creation; optional scenery yields to mobs, never changes
+the ambient plan or compact saved identities. No guide generation occurs during
+save validation. One empty house retains its authored opening; internal doors, safe lanes, site
+geometry/populations/rewards and strict current-rule save/original-file protection remain.
+Restored creatures wait for support at their own scalar logical position, independently of the
+player's ready tile. Built site floors already provide support; exterior terrain and ambient saved
+wander destinations wait for their actual zone. Streaming retries pending members without changing
+incarnation data, compact IDs or the live world clock.
 
 `world.ensure_land`, `stream_sites`, `populate_site` and `refresh_site` own the actual streaming
 seam. Reproduction depends on relevant seed/coordinates, input data/design/configuration and
 generator/engine revision, not seed alone; saves do not pin those revisions or promise cross-version
-bit identity. Same-seed worlds have independent IDs and mutable histories. `WorldState.lands` saves joint geography/pack roles/home positions/permanent special/spirit
+bit identity. Same-seed worlds have independent IDs and mutable histories. `WorldState.lands` saves required geography/pack roles/home positions/permanent special/spirit
 choices independently of `sites[id].mobs` current incarnations and `spirit_levels` initial boss
 levels. There are 46 skeletons (seven bosses) and four unattackable captives per land; ambient
-rosters are unchanged and authored support/access is reserved from wild generation. Genuine safe
+rosters are unchanged and deterministic authored support is reserved from wild generation. Genuine safe
 renewal regenerates only defeated members using the current connected-party band; surviving HP,
 positions, levels and threat remain. Save validation rejects partial sites, altered geometry,
 assignments, packs, counts and local NPC curves. Cleared suppliers complete through captive conversation or automatic last-player exit before pending refresh; completed rescues never regenerate.
@@ -205,9 +214,18 @@ timeout 150 nix develop -c godot --headless -s ontology/test_encounter_feature_c
 timeout 150 nix develop -c godot --headless -s game/combat/test_boss_special.gd # actual main stomp/charge, both stun/knockback orders in active warnings/charge with preserved push and wall consumption, physical defence/sweep/rubble/walls, timer/cancel/inactive/unload/restart and saved-state negatives
 timeout 150 nix develop -c godot --headless -s game/world/test_encounter_contents.gd # actual collision/HP/pickup/independent table pairs, ordinary nonlethal/lethal prop-only contact retirement/no spill/no combat rewards, trap defences/phases/hitsets, safe restoration, room renewal and saved-state negatives
 timeout 150 nix develop -c godot --headless -s ontology/test_playable_site_config.gd # selected geometry/population/local-stat/assignment inputs, cumulative missing/malformed/changed negatives
-timeout 150 nix develop -c godot --headless -s game/world/test_playable_sites.gd # joint generation, cold reversed-order village/sites/routes/assignments, all-six/counts/closed occupancy/access/bounds, all-sea hub and atomic failure
-timeout 150 nix develop -c godot --headless -s game/world/test_playable_sites_runtime.gd # real main/world geometry/collision/route-width/steps, ocean/boundary terrain, unload/renewal/restart and exact-content save negatives
-timeout 450 nix develop -c godot --headless -s game/world/test_local_frame_routes.gd -- --land=-512,-512 --ocean # actual player capsule across all dry-hub/boardwalk/site routes; omit --ocean for natural terrain, select other lands with --land=x,z
+timeout 150 nix develop --no-update-lock-file -c godot --headless -s game/world/test_natural_guidance.gd # external cliffs do not reject sites; deterministic unchanged terrain and raw guidance timings
+timeout 150 nix develop --no-update-lock-file -c godot --headless -s game/world/test_async_generation.gd # actual deferred terrain/collision/clock while guides pending; nonfatal injected failure, strict saves and relocation
+nix develop --no-update-lock-file -c timeout 681 godot --headless -s game/world/test_actor_terrain_ready.gd # held TERRAIN, ready player/different actor tile; ordinary/far site and ambient restored survivors, unchanged positions/HP/IDs, live clock and real supported resumption
+nix develop --no-update-lock-file -c timeout 681 godot --headless -s game/world/test_site_guide_clearance.gd # actual generated guide versus unloaded exterior site survivor, pre-recovery capsule query, nonempty solids and fresh-process current-save restore
+nix develop --no-update-lock-file -c timeout 681 godot --headless -s game/world/test_guidance_publication.gd # successful cached-guide recreation omits collision through relocated player before recovery, keeps nonconflicting solids
+nix develop --no-update-lock-file -c timeout 681 godot --headless -s game/world/test_guidance_ambient.gd # prospective/unloaded/cold/renewed ambient identities yield no members to optional scenery; nonempty collision controls
+nix develop --no-update-lock-file -c timeout 681 godot --headless -s game/world/test_object_guides.gd # solid scenery has no targeting/interaction/damage/loot; actual strikes and projectiles
+nix develop --no-update-lock-file -c timeout 681 godot --headless -s game/world/test_settlement_opening.gd # retained local-frame house opening, independent building/NPC/capsule geometry at ordinary and far coordinates
+nix develop --no-update-lock-file -c timeout 681 godot --headless -s game/world/test_settlement_halo.gd # retained actual building/service-capsule obstacle geometry, no external access solver
+timeout 150 nix develop -c godot --headless -s game/world/test_playable_sites.gd # required geography, cold reversed-order village/sites/assignments, all-six/counts/closed occupancy/bounds, all-sea hub and atomic failure
+timeout 150 nix develop -c godot --headless -s game/world/test_playable_sites_runtime.gd # real main/world internal geometry/collision, ocean/boundary terrain, unload/renewal/restart and exact-content save negatives
+timeout 450 nix develop -c godot --headless -s game/world/test_local_frame_routes.gd -- --land=-512,-512 --ocean # actual player capsule through site interiors; omit --ocean for natural terrain, select other lands with --land=x,z
 timeout 150 nix develop -c godot --headless -s ontology/test_initial_encounter_config.gd # exact-one hybrid settlement/config negatives
 timeout 150 nix develop -c godot --headless -s ontology/test_state_targeting_config.gd # selected AI/clock/taunt inputs, missing/malformed/changed negatives
 timeout 150 nix develop -c godot --headless -s game/items/test_independent_hands.gd # shield-only/off-hand-1H lifecycle, worn stats/blocking/no attacks, independent removals and illegal loadouts

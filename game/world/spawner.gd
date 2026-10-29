@@ -145,7 +145,8 @@ static func populate(
 	ontology = null,
 	authority: Node = null,
 	prefix: String = "",
-	saved_mobs: Dictionary = {}
+	saved_mobs: Dictionary = {},
+	ready: Callable = Callable()
 ) -> Array:
 	var spawns: Dictionary = design["spawns"]
 	if authority == null:
@@ -176,9 +177,16 @@ static func populate(
 			var saved: Dictionary = saved_mobs.get(id, {})
 			if authority.live.has(id):
 				continue
+			if not saved.is_empty() and saved.dead and not saved.eligible:
+				continue
+			var at: Array = (
+				(saved.home if saved.dead else saved.position)
+				if not saved.is_empty()
+				else [g.positions[i].x, g.positions[i].y, g.positions[i].z]
+			)
+			if ready.is_valid() and not ready.call(at):
+				continue  # no incarnation/cycle changes until its actual destination has support
 			if not saved.is_empty() and saved.dead:
-				if not saved.eligible:
-					continue
 				saved = saved.duplicate(true)  # old corpse callbacks must not mutate a new incarnation
 				saved.dead = false
 				saved.eligible = false

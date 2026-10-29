@@ -19,7 +19,7 @@ class Land:
 	var top: Color
 	var cliff: Color
 	var danger_tier: StringName  # F4: safe / normal / dangerous, rolled once per land
-	var village: Dictionary = {}  # D22 layout plus joint generation's dry hub / access gate
+	var village: Dictionary = {}  # D22 layout plus dry hub / authored house opening
 	var village_searched := false
 	var encounter_plan: Dictionary = {}
 
@@ -42,7 +42,8 @@ var encounter_config: Dictionary
 var ai_leash: float
 var saved_lands: Dictionary = {}  # injected saved geography; runtime never rerolls it
 var diagnostics: Array[String] = []
-var _patches: Dictionary = {}  # generated column cuts/supports, only for the active hub neighbourhood
+var _patches: Dictionary = {}  # permitted site/hub supports only
+var _reservations: Dictionary = {}  # access/object occupancy never changes terrain
 
 var _height := FastNoiseLite.new()
 var _fields := {}  # climate field → FastNoiseLite, sampled in land units
@@ -207,7 +208,7 @@ func _syllables(rng: RandomNumberGenerator) -> String:
 # --- settlements (D22) ------------------------------------------------------------------------
 
 
-## gen-settlement: bounded seeded village search, accepted only with all six sites and access.
+## gen-settlement: bounded seeded village search, accepted only with all six sites.
 ## All-sea search failure receives the canonical dry hub; actual generation failure has diagnostics.
 func village_at(l: Land) -> Dictionary:
 	if l == null or settlement.is_empty():
@@ -216,7 +217,7 @@ func village_at(l: Land) -> Dictionary:
 	return l.village
 
 
-## A single atomic result: village, all six sites, stable assignments and every access route.
+## A single atomic result: village, all six sites, stable assignments, independent of optional guidance.
 ## The bounded village search is an implementation algorithm, not a reduced-site fallback.
 func encounters_at(l: Land) -> Dictionary:
 	if l == null or settlement.is_empty():
@@ -249,7 +250,7 @@ func encounters_at(l: Land) -> Dictionary:
 		dry = [Vector2i(cx, cy)]
 	var reasons: Array[String] = []
 	for c in dry:
-		# A hub cannot straddle its land; reject before spending work on impossible sites/routes.
+		# A hub cannot straddle its land; reject before spending work on impossible sites.
 		var half := float(encounter_config["hub-size"]) / 2
 		if (
 			c.x - half < l.coords.x * land_blocks
@@ -305,11 +306,9 @@ func _set_village(l: Land) -> void:
 	}
 
 
-## Rasterize the same site supports and road slabs consumed by physical geometry. Roads cut
-## underneath their lowest overlapping slab, so natural ridges cannot protrude through access.
-func _install_patches(l: Land) -> void:
+## Permitted supports, independent of connecting access and safe during joint candidate search.
+func support_patches(plan_: Dictionary) -> Dictionary:
 	var patches := {}
-	var plan_: Dictionary = l.encounter_plan
 	var v: Dictionary = plan_.village
 	if v.hub:
 		var half := int(encounter_config["hub-size"]) / 2
@@ -335,28 +334,13 @@ func _install_patches(l: Land) -> void:
 			for x in range(int(volume[0]), int(volume[3])):
 				for z in range(int(volume[2]), int(volume[5])):
 					patches[Vector2i(x, z)] = int(site.floor) - 2
-	var roads := {}
-	for road in plan_.routes:
-		for slab in road.steps:
-			var radius: float = (slab.width + slab.length) / 2 + 1
-			for x in range(floori(slab.x - radius), ceili(slab.x + radius)):
-				for z in range(floori(slab.z - radius), ceili(slab.z + radius)):
-					var dx: float = x + 0.5 - slab.x
-					var dz: float = z + 0.5 - slab.z
-					# Cover complete columns touching the slab, including rotated village-gate edges.
-					if (
-						absf(dx * slab.dx + dz * slab.dz) <= slab.length / 2 + 1
-						and absf(-dx * slab.dz + dz * slab.dx) <= slab.width / 2 + 1
-					):
-						var cell := Vector2i(x, z)
-						# Cut ridges below the boardwalk; never fill the ocean bed into a solid causeway.
-						var cut := mini(
-							int(patches.get(cell, _village_height(x, z, v, _raw_height(x, z)))),
-							int(slab.top) - 2
-						)
-						roads[cell] = mini(int(roads.get(cell, cut)), cut)
-	patches.merge(roads, true)
-	_patches[l.coords] = patches
+	return patches
+
+
+func _install_patches(l: Land) -> void:
+	_patches[l.coords] = support_patches(l.encounter_plan)
+	var reserved: Dictionary = _patches[l.coords].duplicate()
+	_reservations[l.coords] = reserved
 
 
 # --- terrain ---------------------------------------------------------------------------------
@@ -423,7 +407,7 @@ func _land_blend(x: int, y: int) -> Array:
 	]
 
 
-## Terrain top block, including island supports and cuts beneath physical site/access floors.
+## Terrain top block, including island supports and cuts beneath physical site floors.
 ## Unreserved village plateau/blend retain D22; physical floors are rendered by encounter_site.gd.
 func height_at(x: int, y: int) -> int:
 	var h := _raw_height(x, y)
@@ -433,16 +417,10 @@ func height_at(x: int, y: int) -> int:
 	var v := village_at(l)
 	if v.is_empty():
 		return h
-	var reach := (
-		float(encounter_config["distance-max"])
-		+ float(encounter_config.ruins.bounds[1])
-		+ float(encounter_config.apron)
-	)
-	if absf(x - v.centre.x) <= reach and absf(y - v.centre.y) <= reach:
-		if not _patches.has(l.coords):
-			_install_patches(l)
-		if _patches[l.coords].has(Vector2i(x, y)):
-			return _patches[l.coords][Vector2i(x, y)]
+	if not _patches.has(l.coords):
+		_install_patches(l)
+	if _patches[l.coords].has(Vector2i(x, y)):
+		return _patches[l.coords][Vector2i(x, y)]
 	return _village_height(x, y, {"centre": [v.centre.x, v.centre.y], "height": v.height}, h)
 
 
@@ -457,7 +435,7 @@ func _village_height(x: int, y: int, v: Dictionary, h: int) -> int:
 	return h
 
 
-## Ambient rosters are unchanged; authored encounter support/access is reserved from wild populations.
+## Ambient rosters are unchanged; only deterministic authored encounter support is reserved from wild populations.
 func reserved_ground(x: int, y: int) -> bool:
 	var l := land_of_block(x, y)
 	if l == null:
@@ -465,16 +443,9 @@ func reserved_ground(x: int, y: int) -> bool:
 	var v := village_at(l)
 	if v.is_empty():
 		return false
-	var reach := (
-		float(encounter_config["distance-max"])
-		+ float(encounter_config.ruins.bounds[1])
-		+ float(encounter_config.apron)
-	)
-	if absf(x - v.centre.x) > reach or absf(y - v.centre.y) > reach:
-		return false
 	if not _patches.has(l.coords):
 		_install_patches(l)
-	return _patches[l.coords].has(Vector2i(x, y))
+	return _reservations[l.coords].has(Vector2i(x, y))
 
 
 func _raw_height(x: int, y: int) -> int:

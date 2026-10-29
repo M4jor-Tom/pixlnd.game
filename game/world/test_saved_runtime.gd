@@ -1,5 +1,6 @@
 ## Real main/world/streaming lifecycle, isolated from user:// and driven without offline/wall time.
 extends SceneTree
+const MeshData := preload("res://game/world/zone_mesh.gd")
 const MAIN := preload("res://game/main.tscn")
 const DB := preload("res://game/ontology_db.gd")
 const Spawner := preload("res://game/world/spawner.gd")
@@ -67,7 +68,7 @@ func run() -> void:
 		if found:
 			break
 	check(found, "seed has ambient zone")
-	w._spawn_zone(zone)
+	w._publish_zone(zone, MeshData.data(w.gen, zone))
 	var mobs: Array = w.targeting.live.values()
 	for mob in mobs:
 		mob.set_physics_process(false)
@@ -90,7 +91,7 @@ func run() -> void:
 	check(not w.targeting.live.has(id), "unloaded node detached")
 	w.targeting.advance(0.001)
 	check(main.state_data.mobs[id].combat.threat[p.logical_id] < threat, "unloaded threat decay")
-	w._spawn_zone(zone)
+	w._publish_zone(zone, MeshData.data(w.gen, zone))
 	survivor = w.targeting.live[id]
 	survivor.set_physics_process(false)
 	check(
@@ -139,7 +140,7 @@ func run() -> void:
 		q.position == expected_position and q.spawn_point != q.position,
 		"real main restores position and respawn"
 	)
-	world._spawn_zone(zone)
+	world._publish_zone(zone, MeshData.data(world.gen, zone))
 	check(
 		world.targeting.live.has(id) and world.targeting.live[id].level == lvl,
 		"restart materializes saved survivor"

@@ -94,8 +94,11 @@ func _run() -> void:
 	world._view = 2
 	world._stream_village()
 	check(not world.has_ground(Vector3(8388608, 0, 8388607)), "outside ground unavailable")
-	for i in 5:
+	for i in 120:
 		world._process(0.0)
+		if not world.zones.is_empty():
+			break
+		await process_frame
 	check(world.zones.size() > 0, "valid nearby zones progress")
 	for z in world.zones:
 		check(z.x <= 131071 and z.y <= 131071, "no invalid streamed zone")

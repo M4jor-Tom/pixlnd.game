@@ -104,14 +104,17 @@ func _init() -> void:
 	check(lay.size() == st["buildings"].size(), "layout has %d buildings" % lay.size())
 	var roles := {}
 	for bd in lay:
-		var cen: Vector3 = bd["centre"]
+		var cen: Array = bd["centre"]
 		var half: float = maxf(bd["size"].x, bd["size"].z) / 2.0
 		check(
-			Vector2(cen.x - v0["centre"].x, cen.z - v0["centre"].y).length() + half < r,
+			Vector2(cen[0] - v0["centre"].x, cen[2] - v0["centre"].y).length() + half < r,
 			"building %s inside the plateau" % bd["id"]
 		)
 		check(
-			bd["door"].distance_to(cen) > bd["size"].z / 2.0,
+			(
+				Vector3(bd.door[0] - cen[0], bd.door[1] - cen[1], bd.door[2] - cen[2]).length()
+				> bd["size"].z / 2.0
+			),
 			"door of %s is outside its box" % bd["id"]
 		)
 		if bd["role"] != &"":

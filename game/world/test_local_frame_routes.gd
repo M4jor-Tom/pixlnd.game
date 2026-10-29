@@ -1,4 +1,4 @@
-## Real automatic player capsule over every authored access/interior route. Frozen AI isolates geometry only.
+## Real automatic player capsule over every authored site-internal route. Frozen AI isolates geometry only.
 extends SceneTree
 const MAIN := preload("res://game/main.tscn")
 const Gen := preload("res://game/world/encounter_gen.gd")
@@ -105,20 +105,30 @@ func run() -> void:
 	var plan_: Dictionary = w.state_data.lands["%d,%d" % [land.x, land.y]]
 	if ocean:
 		check(plan_.village.hub, "forced-ocean capsule route uses real dry village hub")
+	var interiors := 0
 	var driver := Driver.new()
 	driver.p = p
 	driver.world = w
 	driver.process_physics_priority = -2
 	root.add_child(driver)
-	for index in plan_.routes.size():
-		var road: Dictionary = plan_.routes[index]
+	for index in plan_.sites.size():
+		var layout: Dictionary = plan_.sites[index]
+		var entry := Gen.point(layout, layout.entry[0], layout.entry[1])
+		var front := Gen.rotate(0, -1, layout.turn)
+		var road := {
+			"destination": index,
+			"points":
+			[
+				[float(entry.x) + front.x * 2, float(entry.y) + front.y * 2, layout.floor],
+				[float(entry.x) - front.x * 2, float(entry.y) - front.y * 2, layout.floor]
+			]
+		}
 		driver.points = []
 		for point in road.points:
-			driver.points.append(
-				[float(point[0]), float(road.steps[0].top) + 0.05, float(point[1])]
-			)
-		if index >= 6:
-			var site: Dictionary = plan_.sites[index - 6]
+			driver.points.append([float(point[0]), float(point[2]) + 0.05, float(point[1])])
+		if road.has("destination"):
+			interiors += 1
+			var site: Dictionary = plan_.sites[road.destination]
 			if site.family == "ruins":
 				for component in site.components.slice(0, -1):
 					var point := Gen.point(
@@ -167,9 +177,10 @@ func run() -> void:
 			" goal=",
 			driver.points[mini(driver.index, driver.points.size() - 1)]
 		)
-		check(not driver.exhausted, "actual capsule completes access/interior route " + str(index))
+		check(not driver.exhausted, "actual capsule completes site-interior route " + str(index))
 		if driver.exhausted:
 			break
+	check(interiors == 6, "all six destination interiors are traversed")
 	driver.free()
 	if fixture != null:
 		fixture.free()

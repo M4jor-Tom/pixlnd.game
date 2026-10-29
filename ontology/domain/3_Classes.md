@@ -121,12 +121,14 @@ oasis, cloud (no collision), giant-rock `A`, giant-tree `A`, graveyard).
 
 #### Hybrid connecting routes
 
-A connecting `road` in the hybrid is a traversable route between existing settlements,
+A connecting `road` in the hybrid is directional guidance between existing settlements,
 dungeons, camps or other destination sites, suggested by scattered **leading objects** rather
 than a continuous, visibly delimited road surface. Players find their way by observing those
 objects, with natural ground between them, not by following a plain strip or two marked edges.
-The route and its objects follow the existing terrain relief: choose the path to fit the
-natural ground, without flattening, cutting or filling terrain to create it.
+Guidance never changes terrain: no flattening, cutting, filling or connecting supports.
+Connections need not be walkable; players may need to climb or detour around terrain.
+Do not enforce connecting width, step, slope or reachability requirements, or reroll destinations
+solely to obtain access.
 
 Each route repeats one recognizable object family, chosen for its destination away from the
 village. Orientation and condition may vary, but the family does not change along the route.
@@ -143,17 +145,22 @@ their existing availability or guaranteeing new connections. The house/hut row a
 isolated-house destination or house-building feature. Other destination families receive no
 object assignment from this selection.
 
-Existing accessibility requirements and necessary crossings, including initial ocean boardwalks,
-remain. Leading objects must not obstruct required passage. Natural-terrain preservation applies
-to connecting paths only: settlement/site platforms, 8-block site aprons, dry ocean islands/hubs,
-dungeon corridors and battlefield boundaries retain their existing rules. The
-[initial access contract](encounter-contracts.md#placement-and-access) retains its dimensions.
+Leading objects are solid, non-targetable, unbreakable scenery without interaction, loot or
+damage; torch flames are harmless. Placement must not trap actors or obstruct site-internal
+passages. Terrain generation runs in the background independently of optional guidance.
+Guidance may arrive later or be omitted on failure, without suppressing destinations or ending
+the game; pending, absent or failed guidance is valid saved-world state. Guidance uses the terrain
+worker when measured to be very light, otherwise a separate background worker.
+Natural-terrain preservation applies to connecting guidance only: settlement/site platforms,
+8-block site aprons, dry ocean islands/hubs, dungeon corridors and battlefield boundaries retain
+their existing rules under the [initial contract](encounter-contracts.md#placement-and-access).
 Historical road, tunnel, bridge and streetlight descriptions in the instance catalogs remain
 reference material, not a requirement for a continuous hybrid road surface.
 
-This redefinition is documentation only: object assets, placement/generation, live configuration,
-save changes and validation/runtime enforcement remain unimplemented by this amendment and
-require separate authority. No object spacing, collision, interaction or reward behavior is selected.
+Leading objects are solid physical obstacles outside the required passage, non-targetable and
+unbreakable. They have no interaction, loot or damage behavior. Torch flame/emission is harmless
+presentation, not fuel, a hazard or a renewable resource. Decorative spacing, size and condition
+may vary without a fixed gameplay spacing or visibility guarantee.
 
 ### climate
 Continuous fields sampled per position. `A S`

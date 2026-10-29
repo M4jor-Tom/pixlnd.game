@@ -28,8 +28,10 @@ func _init() -> void:
 		reverse.reverse()
 		var reversed_plans := {}
 		for lc in reverse:
+			print("cold reverse generation ", seed_, " ", lc)
 			reversed_plans[lc] = b.encounters_at(b.land_at(lc)).duplicate(true)
 		for lc in coords:
+			print("cold forward generation ", seed_, " ", lc)
 			var land = a.land_at(lc)
 			var plan_: Dictionary = a.encounters_at(land)
 			check(not plan_.is_empty(), "complete joint plan " + str([seed_, lc, a.diagnostics]))
@@ -125,14 +127,30 @@ func _init() -> void:
 				homes == 46 and bosses == 7 and captives == 4,
 				"46 skeletons / seven bosses / four captives"
 			)
-			for route in plan_.routes:
-				var previous: Variant = null
-				for step in route.steps:
-					check(step.width == 4, "four-wide real route slab")
-					check(a.valid_block(step.x, step.z), "route finite bounds")
-					if previous != null:
-						check(absf(step.top - previous.top) <= 1, "route steps at most one block")
-					previous = step
+			var guides: Array = Gen.Encounters.guidance(a, plan_, a.encounter_config)
+			check(guides.size() == 6, "optional guidance retains six destination identities")
+			for road in guides:
+				check(
+					(
+						road.family
+						== [
+							"masonry",
+							"stake-torch",
+							"broken-crate",
+							"broken-crate",
+							"broken-crate",
+							"broken-crate"
+						][road.destination]
+					),
+					"stable destination family"
+				)
+				for marker in road.markers:
+					check(a.valid_block(marker.x, marker.z), "guide finite bounds")
+					check(
+						marker.top == a.height_at(marker.x, marker.z) + 1,
+						"guide samples actual unchanged terrain"
+					)
+
 	# All-sea failure of the old village search must yield the actual settlement/hub, not no village.
 	var ocean := Gen.new(3, d, o.landscapes)
 	ocean._h_base = 0
@@ -147,11 +165,8 @@ func _init() -> void:
 					ocean.height_at(centre[0] + x, centre[1] + z) >= ocean.sea_level + 1,
 					"entire 64-square hub dry"
 				)
-		var boardwalk: Dictionary = sea_plan.routes[-1].steps[sea_plan.routes[-1].steps.size() / 2]
-		check(
-			ocean.height_at(roundi(boardwalk.x), roundi(boardwalk.z)) < ocean.sea_level,
-			"ocean bed remains below a real boardwalk, not a filled causeway"
-		)
+		check(not sea_plan.has("routes"), "required geography is valid without optional guidance")
+
 	# Impossible actual bounds: complete diagnostic, never a partial publication.
 	var impossible := Gen.new(3, d, o.landscapes)
 	impossible.land_blocks = 64

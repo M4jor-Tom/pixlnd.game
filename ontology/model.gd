@@ -1492,8 +1492,8 @@ class Ontology:
 				"distance-max": 215,
 				"separation": 192,
 				"apron": 8,
-				"path-width": 4,
-				"max-step": 1,
+				"leading-objects":
+				{"ruins": "masonry", "camp": "stake-torch", "supplier": "broken-crate"},
 				"dry-above-sea": 4,
 				"hub-size": 64,
 				"ruins":

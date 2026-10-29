@@ -177,76 +177,6 @@ static func assignment(
 	)
 
 
-## Route slabs are both the authored walkable surface and its physics shape, including ocean boardwalks.
-static func route(points: Array, start: float, finish: float, cfg: Dictionary) -> Dictionary:
-	var length := 0.0
-	for i in range(1, points.size()):
-		length += (points[i] - points[i - 1]).length()
-	if absf(finish - start) > floorf(length) * float(cfg["max-step"]):
-		return {}
-	var out := {"points": [], "steps": []}
-	var travelled := 0.0
-	for p in points:
-		out.points.append([p.x, p.y])
-	for i in range(1, points.size()):
-		var delta: Vector2 = points[i] - points[i - 1]
-		var dist := delta.length()
-		if dist == 0:
-			continue
-		var count := ceili(dist)
-		var unit := delta / dist
-		for n in count:
-			var t := (n + 0.5) / count
-			# Keep scalar coordinates in double precision until the mesh is made relative to its origin.
-			var px: float = points[i - 1].x + float(delta.x) * t
-			var pz: float = points[i - 1].y + float(delta.y) * t
-			var top := roundf(lerpf(start, finish, (travelled + dist * t) / length))
-			out.steps.append(
-				{
-					"x": px,
-					"z": pz,
-					"top": top,
-					"width": cfg["path-width"],
-					"length": dist / count,
-					"dx": unit.x,
-					"dz": unit.y
-				}
-			)
-		travelled += dist
-	return out
-
-
-## SAT: actual rotated service-building footprints against a four-wide straight square-to-gate route.
-static func clear_gate(v: Dictionary, settlement: Dictionary, end: Vector2, width: float) -> bool:
-	var origin := Vector2(v.centre.x, v.centre.y)
-	var delta := end - origin
-	var u := delta.normalized()
-	var side := Vector2(-u.y, u.x)
-	var buildings := Settlement.layout(v, settlement)
-	for i in buildings.size():
-		if i == v.get("gate_index", -1):
-			continue  # the physical builder cuts this empty house's walk-through
-		var building: Dictionary = buildings[i]
-		var c := Vector2(building.centre.x, building.centre.z)
-		var bx := Vector2(cos(building.yaw), -sin(building.yaw))
-		var bz := Vector2(sin(building.yaw), cos(building.yaw))
-		var separated := false
-		for axis: Vector2 in [u, side, bx, bz]:
-			var distance := absf((c - (origin + end) / 2).dot(axis))
-			var reach: float = (
-				absf(u.dot(axis)) * delta.length() / 2
-				+ absf(side.dot(axis)) * width / 2
-				+ absf(bx.dot(axis)) * building.size.x / 2
-				+ absf(bz.dot(axis)) * building.size.z / 2
-			)
-			if distance > reach:
-				separated = true
-				break
-		if not separated:
-			return false
-	return true
-
-
 static func plan(gen, land, v: Dictionary, cfg: Dictionary) -> Dictionary:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = land.land_seed ^ hash("initial-encounters")
@@ -270,61 +200,9 @@ static func plan(gen, land, v: Dictionary, cfg: Dictionary) -> Dictionary:
 			turn = 0 if offset.y > 0 else 2
 		var family := "ruins" if i == 0 else ("camp" if i == 1 else "supplier")
 		sites.append(make_site(gen, land, v.centre + offset, turn, family, maxi(0, i - 2), cfg))
-	var centre := Vector2(v.centre.x, v.centre.y)
-	var ring := (
-		float(gen.settlement["no-hostiles-within"]) + float(cfg["path-width"]) + float(cfg.apron)
-	)
-	var gate := Vector2.ZERO
-	for i in gen.settlement.buildings.size():
-		if gen.settlement.buildings[i] != "house":
-			continue
-		v.gate_index = i
-		var angle: float = TAU * i / gen.settlement.buildings.size()
-		var end := centre + Vector2(cos(angle), sin(angle)) * ring
-		if clear_gate(v, gen.settlement, end, float(cfg["path-width"])):
-			gate = end
-			break
-	if gate == Vector2.ZERO:
-		return {"error": "no four-wide collision-free village gate"}
-	var building: Dictionary = Settlement.layout(v, gen.settlement)[v.gate_index]
-	v.gate_offset = (centre - Vector2(building.centre.x, building.centre.z)).dot(
-		Vector2(cos(building.yaw), -sin(building.yaw))
-	)
-	var routes: Array = [route([centre, gate], v.height + 1, v.height + 1, cfg)]
-	# A complete square ring, outside town's protection, gives every branch a common reachable hub.
-	var corners := [
-		centre + Vector2(-ring, -ring),
-		centre + Vector2(ring, -ring),
-		centre + Vector2(ring, ring),
-		centre + Vector2(-ring, ring)
-	]
-	var corner: Vector2 = corners[0]
-	for p in corners:
-		if p.distance_squared_to(gate) < corner.distance_squared_to(gate):
-			corner = p
-	routes.append(route([gate, Vector2(corner.x, gate.y), corner], v.height + 1, v.height + 1, cfg))
-	for i in corners.size():
-		routes.append(
-			route([corners[i], corners[(i + 1) % corners.size()]], v.height + 1, v.height + 1, cfg)
-		)
-	for site in sites:
-		var entry := point(site, site.entry[0], site.entry[1])
-		var front := rotate(0, -1, site.turn)
-		var approach := entry + front * float(cfg.apron)
-		var start := (
-			centre
-			+ Vector2(
-				clampf(approach.x - centre.x, -ring, ring),
-				clampf(approach.y - centre.y, -ring, ring)
-			)
-		)
-		var bend := Vector2(approach.x, start.y) if front.y != 0 else Vector2(start.x, approach.y)
-		var road := route([start, bend, approach, entry], v.height + 1, site.floor, cfg)
-		if road.is_empty():
-			return {
-				"error": "access exceeds one-block step slope: " + site.family + str(site.ordinal)
-			}
-		routes.append(road)
+	# Retain the authored empty-house opening, not an external connection-access test.
+	var house: int = gen.settlement.buildings.find("house")
+	v.merge(Settlement.opening(gen.settlement, house, cfg.ruins.door[0]), true)
 	var out := {
 		"village":
 		{
@@ -334,14 +212,61 @@ static func plan(gen, land, v: Dictionary, cfg: Dictionary) -> Dictionary:
 			"style": str(v.style),
 			"hub": v.hub,
 			"gate_index": v.gate_index,
-			"gate_width": cfg["path-width"],
+			"gate_width": v.gate_width,
 			"gate_offset": v.gate_offset
 		},
-		"sites": sites,
-		"routes": routes
+		"sites": sites
 	}
 	var errors := validate(gen, out, cfg)
 	return out if errors.is_empty() else {"error": "; ".join(errors)}
+
+
+## Optional decoration only. All vector arithmetic is village-local, including at world limits.
+## Samples existing terrain; never searches for walkability or adds connecting supports.
+static func guidance(gen, plan_: Dictionary, cfg: Dictionary) -> Array:
+	var out: Array = []
+	var village: Array = plan_.village.centre
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash([gen.world_seed, village, "guidance"])
+	for i in plan_.sites.size():
+		var site: Dictionary = plan_.sites[i]
+		var delta := Vector2(float(site.centre[0]) - village[0], float(site.centre[1]) - village[1])
+		var distance := delta.length()
+		var unit := delta / distance
+		var family: String = cfg["leading-objects"][site.family]
+		var road := {"destination": i, "family": family, "markers": []}
+		var next := 40.0
+		while next < distance - 16:
+			var side := rng.randf_range(-5, 5)
+			var x := int(village[0]) + roundi(unit.x * next - unit.y * side)
+			var z := int(village[1]) + roundi(unit.y * next + unit.x * side)
+			next += rng.randf_range(14, 22)
+			if not gen.valid_block(x - 1, z - 1) or not gen.valid_block(x + 1, z + 1):
+				continue
+			var free := true
+			for other in plan_.sites:
+				for volume in other.volumes:
+					if (
+						x >= volume[0] - cfg.apron - 1
+						and x <= volume[3] + cfg.apron + 1
+						and z >= volume[2] - cfg.apron - 1
+						and z <= volume[5] + cfg.apron + 1
+					):
+						free = false
+			var top: int = gen.height_at(x, z) + 1
+			if not free or top <= gen.sea_level + 1:
+				continue
+			road.markers.append(
+				{
+					"x": x,
+					"z": z,
+					"top": top,
+					"family": family,
+					"bounds": [x - 0.75, z - 0.7, x + 0.75, z + 0.7]
+				}
+			)
+		out.append(road)
+	return out
 
 
 static func validate(gen, plan_: Dictionary, cfg: Dictionary) -> Array[String]:
@@ -377,18 +302,6 @@ static func validate(gen, plan_: Dictionary, cfg: Dictionary) -> Array[String]:
 				< float(gen.settlement["no-hostiles-within"])
 			):
 				errors.append("home/pursuit crosses protected village")
-	for road in plan_.routes:
-		if road.is_empty():
-			errors.append("empty route")
-			continue
-		for step in road.steps:
-			var r: float = float(step.width) / 2 + step.length / 2
-			if (
-				not gen.valid_block(step.x - r, step.z - r)
-				or not gen.valid_block(step.x + r, step.z + r)
-			):
-				errors.append("route outside finite bounds")
-				break
 	return errors
 
 
