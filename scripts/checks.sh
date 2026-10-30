@@ -6,6 +6,8 @@ shopt -s nullglob
 
 gdlint game ontology scripts
 gdformat --check game ontology scripts
+find -L game ontology scripts -type f -name '*.gd' -print0 |
+  xargs -0 python3 scripts/check_sizes.py
 scratch=$(mktemp -d)
 trap 'rm -rf "$scratch"' EXIT
 export PIXLND_TEST_DIR="$scratch"

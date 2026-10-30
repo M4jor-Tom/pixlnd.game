@@ -32,12 +32,13 @@ nix develop --no-update-lock-file -c pre-commit run --all-files --hook-stage pre
 `.pre-commit-config.yaml` is the shared definition. Its local hooks run:
 
 1. `tests/test_checks.sh`: regression checks for the runner's pass/fail behavior,
-   including cognitive-complexity boundaries, class methods and bypass prevention.
-2. `scripts/checks.sh`: GDScript formatting and lint, cognitive complexity, ontology validation, every
+   including size/complexity boundaries, class methods and bypass prevention.
+2. `scripts/checks.sh`: GDScript formatting and lint, file/function size, cognitive complexity,
+   ontology validation, every
    `ontology/test_*.gd` and `game/*/test_*.gd`, then a headless main-scene boot.
    The map test also runs at fixed 1000 FPS to catch render/physics ordering races.
    Each Godot invocation prints its own wall-clock `Elapsed:` time, excluding Nix setup,
-   lint and formatting. Hook output is visible on success locally and in CI.
+   lint, formatting and size checks. Hook output is visible on success locally and in CI.
 
 Both use the same `flake.lock`-pinned Godot, gdtoolkit and pre-commit packages.
 `flake.nix` additionally pins gdmetrics-g4 v1.6.1 by source commit and content hash,
@@ -72,6 +73,26 @@ formatting-stability safety checks. Apply formatting locally with:
 nix develop --no-update-lock-file -c gdformat game ontology scripts
 ```
 
+### File and function size
+
+`scripts/check_sizes.py` uses the pinned gdtoolkit syntax tree to enforce hard
+physical-line caps across every `.gd` file in `game/`, `ontology/` and `scripts/`,
+including tests, hidden paths and symlinked sources:
+
+| Metric | Maximum |
+|---|---:|
+| File length | 600 lines |
+| Function or method length | 100 lines |
+
+Files count all lines, including blanks and comments. Function spans run from the
+declaration through the last syntax statement, including internal blank/comment
+lines, but not following separators or trailing comments. Multiline expressions
+include their closing delimiters. Static and inner-class methods, property getters/
+setters, abstract declarations and lambdas use the same cap. A file of 600 lines or
+function of 100 lines passes; 601/101 fails with its location and measured length.
+There are no baselines or inline-lint exemptions; existing violations block the gate.
+No new package is required.
+
 ### Cognitive complexity
 
 `scripts/check_complexity.gd` enforces a **maximum per-function C-COG of 15** using
@@ -94,7 +115,8 @@ v1.6.1 otherwise mistakes inline spaces for dedents in class methods. Each detec
 function is scored separately so repeated method names cannot overwrite one another.
 The native control-flow nodes and C-COG formula are unchanged.
 
-`gdlintrc` still defers naming and file/function-size constraints. Syntax and the
+`gdlintrc` still defers naming/design style cleanup; hard sizes are enforced by
+`check_sizes.py` rather than gdlint's suppressible file-size rule. Syntax and the
 remaining lint checks are enforced; one existing side-effectful conditional test
 assertion has a scoped gdtoolkit false-positive suppression. These checks do not
 establish full ontology consistency or resolve the native collision issue retained

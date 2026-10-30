@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Catch ignored format/lint/complexity failures, failed tests, and Godot errors with exit 0.
+# Catch ignored format/lint/size/complexity failures, failed tests, and Godot errors with exit 0.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 scratch=$(mktemp -d)
@@ -37,6 +37,75 @@ if [[ $(grep -Ec '^Elapsed: [0-9]+\.[0-9]{3} s$' "$scratch/output.log") != 5 ]];
 fi
 # An unrelated working directory must not change the checked project.
 (cd / && bash "$scratch/scripts/checks.sh") > "$scratch/output.log" 2>&1
+# File caps count comments too, including hidden paths and the tooling itself.
+for fixture in game/size.gd ontology/size.gd scripts/size.gd game/.size..gd; do
+  printf 'extends Node\n' > "$scratch/$fixture"
+  for ((i = 1; i < 600; i++)); do
+    printf '# padding\n' >> "$scratch/$fixture"
+  done
+  gdformat "$scratch/$fixture" > /dev/null
+  run_checks || { cat "$scratch/output.log"; exit 1; }
+  printf '# padding\n' >> "$scratch/$fixture"
+  expect_failure "601-line file $fixture" 'file length 601 exceeds 600'
+  rm "$scratch/$fixture"
+done
+method_fixture() {
+  local kind=$1 length=$2 i indent=$'\t'
+  printf 'extends Node\n'
+  case "$kind" in
+    function) printf 'func check() -> void:\n' ;;
+    static) printf 'static func check() -> void:\n' ;;
+    method) printf 'class Nested:\n\tfunc check() -> void:\n'; indent=$'\t\t' ;;
+    getter) printf 'var value:\n\tget:\n'; indent=$'\t\t' ;;
+    setter) printf 'var value:\n\tset(_value):\n'; indent=$'\t\t' ;;
+    lambda) printf 'var callback = func():\n' ;;
+  esac
+  for ((i = 1; i < length; i++)); do
+    case "$i" in
+      50) printf '%s# internal comment\n' "$indent" ;;
+      60) printf '\n' ;;
+      *) printf '%sprint()\n' "$indent" ;;
+    esac
+  done
+}
+for kind in function static method getter setter lambda; do
+  method_fixture "$kind" 100 > "$scratch/game/size.gd"
+  printf '\n# Unrelated separator: not part of the previous function.\nfunc other() -> void:\n\tpass\n' >> "$scratch/game/size.gd"
+  format_fixture
+  run_checks || { cat "$scratch/output.log"; exit 1; }
+  method_fixture "$kind" 101 > "$scratch/game/size.gd"
+  format_fixture
+  expect_failure "101-line $kind" 'function length 101 exceeds 100'
+  rm "$scratch/game/size.gd"
+done
+# Last-statement spans must include compound bodies and multiline literals,
+# but not the following comment/separator or the next function.
+for tail in branch match string; do
+  for length in 100 101; do
+    case "$tail" in
+      branch)
+        method_fixture function "$((length - 2))" > "$scratch/game/size.gd"
+        printf '\tif true:\n\t\tpass\n' >> "$scratch/game/size.gd"
+        ;;
+      match)
+        method_fixture function "$((length - 3))" > "$scratch/game/size.gd"
+        printf '\tmatch 0:\n\t\t_:\n\t\t\tpass\n' >> "$scratch/game/size.gd"
+        ;;
+      string)
+        method_fixture function "$((length - 5))" > "$scratch/game/size.gd"
+        printf '\tprint(\n\t\t"""first\nsecond\nthird"""\n\t)\n' >> "$scratch/game/size.gd"
+        ;;
+    esac
+    printf '\n# separator\nfunc other() -> void:\n\tpass\n' >> "$scratch/game/size.gd"
+    format_fixture
+    if ((length == 100)); then
+      run_checks || { cat "$scratch/output.log"; exit 1; }
+    else
+      expect_failure "101-line function ending with $tail" 'function length 101 exceeds 100'
+    fi
+    rm "$scratch/game/size.gd"
+  done
+done
 # gdmetrics-g4 counts each of these seven root-level ifs as 2 and each
 # conditional return as 1: 15 must pass, 16 must fail (including in tests).
 complexity_fixture() {
