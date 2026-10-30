@@ -31,14 +31,17 @@ nix develop --no-update-lock-file -c pre-commit run --all-files --hook-stage pre
 
 `.pre-commit-config.yaml` is the shared definition. Its local hooks run:
 
-1. `tests/test_checks.sh`: regression checks for the runner's pass/fail behavior.
-2. `scripts/checks.sh`: GDScript formatting and lint, ontology validation, every
+1. `tests/test_checks.sh`: regression checks for the runner's pass/fail behavior,
+   including cognitive-complexity boundaries, class methods and bypass prevention.
+2. `scripts/checks.sh`: GDScript formatting and lint, cognitive complexity, ontology validation, every
    `ontology/test_*.gd` and `game/*/test_*.gd`, then a headless main-scene boot.
    The map test also runs at fixed 1000 FPS to catch render/physics ordering races.
    Each Godot invocation prints its own wall-clock `Elapsed:` time, excluding Nix setup,
    lint and formatting. Hook output is visible on success locally and in CI.
 
 Both use the same `flake.lock`-pinned Godot, gdtoolkit and pre-commit packages.
+`flake.nix` additionally pins gdmetrics-g4 v1.6.1 by source commit and content hash,
+exposed only in the development shell as `GDMETRICS_G4`.
 Nothing installs into the game's runtime. Tests use a temporary `PIXLND_TEST_DIR`
 and the boot uses an explicit scratch save; your normal save is untouched.
 Godot deadlines are `3 × ceil(1.25 × longest measured duration in the timeout group)`:
@@ -52,7 +55,8 @@ local deadlines disabled; by owner selection, CI execution times are not include
 | Both long capsule traversals | `game/world/test_local_frame_routes.gd` | 336.189s | 1263s |
 | Headless main-scene boot | `--quit` | 3.072s | 12s |
 
-These limits apply separately to each invocation, locally and in CI. There is no
+Cognitive analysis also uses the ordinary 681-second deadline; it was not part of
+that earlier calibration. These limits apply separately to each invocation, locally and in CI. There is no
 whole-suite local deadline; the CI quality job has a tripled 90-minute total limit,
 including setup.
 Nonzero exits, timeouts, `SCRIPT ERROR`, engine `ERROR` and `ontology INVALID`
@@ -65,10 +69,32 @@ files during hooks or CI. `gdformatrc` explicitly enables parse-tree, comment an
 formatting-stability safety checks. Apply formatting locally with:
 
 ```sh
-nix develop --no-update-lock-file -c gdformat game ontology
+nix develop --no-update-lock-file -c gdformat game ontology scripts
 ```
 
-`gdlintrc` still defers naming and size/complexity constraints. Syntax and the
+### Cognitive complexity
+
+`scripts/check_complexity.gd` enforces a **maximum per-function C-COG of 15** using
+[gdmetrics-g4](https://github.com/JaponBaligi/gdmetrics-g4/tree/v1.6.1)'s native tokenizer,
+control-flow detector and cognitive-complexity calculator. A score of 15 passes;
+16 or more fails, with the file, line, function and score printed. This is gdmetrics'
+C-COG metric, not cyclomatic complexity or an interchangeable Sonar score.
+
+Every `.gd` file under `game/` and `ontology/`, including tests, is analyzed in a
+temporary project without game autoloads or normal saves. A complete `find` manifest
+includes hidden paths and names containing `..`, which native discovery skips.
+No result cache, baseline,
+inline ignore or default directory exclusion exempts existing code. Empty discovery
+and analyzer errors fail the gate. Over-limit existing methods therefore block the
+gate until separately refactored; installing the check does not establish a green
+repository.
+
+The adapter supplies only leading whitespace to the native function-boundary detector:
+v1.6.1 otherwise mistakes inline spaces for dedents in class methods. Each detected
+function is scored separately so repeated method names cannot overwrite one another.
+The native control-flow nodes and C-COG formula are unchanged.
+
+`gdlintrc` still defers naming and file/function-size constraints. Syntax and the
 remaining lint checks are enforced; one existing side-effectful conditional test
 assertion has a scoped gdtoolkit false-positive suppression. These checks do not
 establish full ontology consistency or resolve the native collision issue retained

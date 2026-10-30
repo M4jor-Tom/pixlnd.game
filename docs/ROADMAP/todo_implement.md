@@ -363,7 +363,7 @@ resolve unmapped histories or certify generated/runtime behavior.
 - Source item 52 (`ontology/domain/index.md §5`): reported Steam absence supplies no census/first Alpha appearance or hybrid removal. Species histories remain research; roster/food/mount rules unchanged.
 
 ## Meta / tooling
-- [ ] Quality gate lint cleanup (`gdlintrc` ponytail): naming and size/complexity limits are deferred. Enable them only after a separately selected cleanup; formatting, essential lint, ontology and headless checks already run identically before pushes and in CI.
+- [ ] Quality gate lint cleanup (`gdlintrc` ponytail): naming and file/function-size enforcement remain deferred (selected size caps: 600 lines/file and 100 lines/function). The gdmetrics-g4 cognitive-complexity cap of 15 is enforced without baselines or exemptions; refactoring existing violations needs a separately selected cleanup. Formatting, essential lint, complexity, ontology and headless checks share the local/CI runner.
 - [ ] Save-data (§3.7): implemented character/world/encounter/vendor state persists; future character systems, discovered-land exploration and portable-world import UI remain unfinished.
 - [ ] Dedicated server (D5, `multiplayer-mode`): single-player only; `server.cfg` flags (pvp,
   player cap, level band X/Y) unread.

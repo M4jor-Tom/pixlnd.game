@@ -43,6 +43,13 @@
         });
       devShells = forAll (_system: pkgs: {
         default = pkgs.mkShell {
+          # Development-only analyzer; not an input to either shipped launcher.
+          GDMETRICS_G4 = pkgs.fetchFromGitHub {
+            owner = "JaponBaligi";
+            repo = "gdmetrics-g4";
+            rev = "52e7b62ac5fa3dad032c3d91cf629654a6441133"; # v1.6.1
+            hash = "sha256-IDERnxQumeO0egIb0oKu67rR8HhzxqjTMhPXGxj8VYc=";
+          };
           packages = with pkgs; [
             godot_4   # engine + headless validator: godot --headless -s ontology/validate.gd
             nodejs    # ontology edit/cross-ref scripts

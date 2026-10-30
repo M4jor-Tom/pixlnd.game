@@ -4,8 +4,8 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 shopt -s nullglob
 
-gdlint game ontology
-gdformat --check game ontology
+gdlint game ontology scripts
+gdformat --check game ontology scripts
 scratch=$(mktemp -d)
 trap 'rm -rf "$scratch"' EXIT
 export PIXLND_TEST_DIR="$scratch"
@@ -25,6 +25,18 @@ run_godot() {
     return "$status"
   fi
 }
+
+# Run the analyzer without this project's autoloads, saves, caches or runtime.
+metrics="$scratch/metrics"
+mkdir "$metrics"
+ln -s "${GDMETRICS_G4:?run the gate inside nix develop}/addons" "$metrics/addons"
+cp -R game ontology "$metrics/"
+cp scripts/check_complexity.gd "$metrics/"
+# Enumerate independently: gdmetrics discovery silently skips hidden and '..' names.
+(cd "$metrics" && find -L game ontology -type f -name '*.gd' -print0) |
+  jq -Rs 'split("\u0000")[:-1]' > "$metrics/files.json"
+printf 'config_version=5\n' > "$metrics/project.godot"
+run_godot 681 --path "$metrics" -s check_complexity.gd
 
 for script in ontology/validate.gd ontology/test_*.gd game/*/test_*.gd; do
   seconds=681
