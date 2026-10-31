@@ -1,5 +1,23 @@
 # Handoff — pending continuation
 
+## Pre-existing inventory read-only error paths — deferred
+
+Bounded Task 2 probes observed existing behavior when public inventory containers are
+explicitly made read-only:
+
+- A read-only equipment Dictionary makes equip report failure after the bag item has
+  already been removed, leaving it in neither bag nor equipment.
+- A read-only bag Array during replacement emits two Array errors but still reports
+  success and notifies; the new item remains in the bag and also becomes equipped, while
+  the displaced item is not returned to the bag.
+
+These error paths predate the Task 2 refactor. No ordinary mutable-container gameplay
+failure is established. Resolution is deferred under the owner's instruction and is not
+required for the refactor. Retain this pending entry; do not bundle rollback or read-only
+admission changes into the quality-gate refactoring.
+Original/candidate proof, explicit read-only setup and mutable controls:
+`/home/theta/.pi-game-dev/recovery/pixlnd-quality-gate-refactor/task2-parent-inventory-probe.QW2mE1/`.
+
 ## Natural terrain and optional guidance — deferred native acceptance
 
 Implementation, independent source reviews and headless verification are complete; full native

@@ -23,6 +23,20 @@ for significant choices; reuse precise approved rules without inventing decision
 backlog entries. Run the validator before coding. Skip ontology sync only for tasks that don't
 touch the domain (build, tooling, debugging).
 
+## Bugs found during other work
+
+All agents must record newly discovered bugs promptly in `docs/HANDOFF.md`, even while
+working on another task; do not wait until task completion. Include the affected scope,
+observed behavior, evidence or reproduction, and the next action. Respect single-writer
+ownership: read-only agents or agents without ownership of that file must notify the parent
+or owning writer immediately so the finding is recorded there.
+
+Recording a bug does not authorize fixing it. Incidental fixes during authorized work are
+welcome; actively pursuing unrelated fixes is forbidden unless necessary to execute the
+authorized workflow. Keep any necessary unblocker minimal, tested and disclosed. Keep
+HANDOFF pending-only: remove a finding after its resolution is verified, retaining detailed
+receipts in managed evidence rather than a completed-bug history.
+
 ## Commands
 
 The [quality gate](docs/quality-checks.md) runs the same formatting, essential lint, ontology and headless
