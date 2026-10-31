@@ -7,6 +7,7 @@ const Shop := preload("res://game/items/shop.gd")
 const Combat := preload("res://game/combat/combat.gd")
 const PLAYER := preload("res://game/entities/player.tscn")
 const InputMapBuilder := preload("res://game/meta/input_map.gd")
+const CommitCases := preload("res://game/items/equipment_commit_cases.gd")
 
 var failed := 0
 var o
@@ -36,10 +37,93 @@ func player(class_id: StringName) -> CharacterBody3D:
 
 
 func _init() -> void:
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--equip-commit-case="):
+			var observation := CommitCases.probe(arg.trim_prefix("--equip-commit-case="))
+			print("EQUIP_COMMIT ", JSON.stringify(observation))
+			quit()
+			return
 	o = Model.Ontology.load_dir("res://ontology/instances")
 	design = o.configs["generators"]["design"]
 	InputMapBuilder.build(o.configs["keybinds"]["hybrid"])
 	check(o.validate(), "ontology valid")
+	var food := _slot_routes()
+
+	var warrior := player(&"warrior")
+	var inv = warrior.inventory
+	var changes := [0]
+	_foreign_items(inv, changes)
+
+	preload("res://game/items/equipment_ownership_cases.gd").run(self)
+
+	_rings(warrior, changes)
+
+	_warrior_equipment(warrior, food)
+
+	_reverse_hands()
+
+	_rogue_pair()
+
+	_mage_pair()
+
+	_power_admission()
+	CommitCases.run(self)
+
+	print("equipment ok" if failed == 0 else "equipment FAILED (%d)" % failed)
+	quit(0 if failed == 0 else 1)
+
+
+# A missing/cached admission gate must fail before any shared inventory/player side effect.
+func _reject_power(p: Node, it: Item, label: String) -> void:
+	check(
+		p.inventory.entries.count(it) == 1 and p.inventory.class_allowed(it),
+		label + " eligible structure"
+	)
+	p.hp = 10
+	p._charge = 0.4
+	p.inventory.coins = 37
+	var bag: Array = p.inventory.entries.duplicate()
+	var counts: Array = bag.map(func(entry): return entry.count)
+	var worn: Dictionary = p.inventory.equipment.duplicate()
+	var slots: Array = worn.keys()
+	var maximum: float = p.max_hp
+	var weapon: Dictionary = p.weapon.duplicate(true)
+	var moveset: Dictionary = p.moveset.duplicate(true)
+	var changes := [0]
+	var count_change := func(): changes[0] += 1
+	p.inventory.changed.connect(count_change)
+	check(not p.inventory.equip(it), label + " rejects above power")
+	_rejected_state(p, bag, counts, worn, slots, maximum, weapon, moveset, changes, label)
+
+	p.inventory.changed.disconnect(count_change)
+	_clear_rejected(p, it)
+
+
+func _power_admission() -> void:
+	_starters()
+
+	var p := player(&"warrior")
+	var high := Items.generate(RandomNumberGenerator.new(), &"chest-armor", &"", &"iron", 2, 0)
+	p.inventory.add(high)
+	check(p.level == 1 and Model.power_for_level(p.level) == 1, "level1 power1 fixture")
+	_reject_power(p, high, "+2 at level1")
+	p.gain_xp(50)
+	p.hp = 10
+	check(p.level == 2 and Model.power_for_level(p.level) == 5, "real XP reaches level2 power5")
+	check(
+		p.inventory.equip(high) and p.hp == 10,
+		"same retained +2 becomes eligible without equip healing"
+	)
+	_higher_power(p)
+
+	p.free()
+
+	_power_loadouts()
+
+	_power_trade()
+
+
+func _slot_routes() -> Item:
 	var lamp := item(&"light", &"lamp")
 	var bad_lamp := item(&"light", &"not-lamp")
 	var boat := item(&"special", &"boat")
@@ -54,117 +138,11 @@ func _init() -> void:
 	)
 	var food := item(&"pet-food", &"wolf-food")
 	check(Items.slot_id(food, o) == &"pet", "pet-food declares the pet slot")
+	return food
 
-	var warrior := player(&"warrior")
+
+func _rings(warrior: Node, changes: Array) -> void:
 	var inv = warrior.inventory
-	var foreign := item(&"weapon", &"sword")
-	var bag_before: Array = inv.entries.duplicate()
-	var initially_worn: Dictionary = inv.equipment.duplicate()
-	var changes := [0]
-	inv.changed.connect(func(): changes[0] += 1)
-	check(not inv.equip(null) and not inv.equip(foreign), "null and foreign gear cannot equip")
-	check(
-		inv.entries == bag_before and inv.equipment == initially_worn and changes[0] == 0,
-		"foreign equip does not mutate or signal"
-	)
-	var starter: Item = inv.equipment[&"main-hand"]
-	check(not inv.equip(starter), "already-worn gear cannot equip twice")
-	check(
-		inv.entries == bag_before and inv.equipment == initially_worn and changes[0] == 0,
-		"repeat equip does not duplicate or signal"
-	)
-
-	var owner := player(&"warrior")
-	var owned_chest := item(&"chest-armor", &"", &"iron")
-	var owner_changes := [0]
-	owner.inventory.changed.connect(func(): owner_changes[0] += 1)
-	owner.inventory.add(owned_chest)
-	var owner_bag: Array = owner.inventory.entries.duplicate()
-	var owner_worn: Dictionary = owner.inventory.equipment.duplicate()
-	var owner_hp: float = owner.max_hp
-	var owner_damage: float = owner.weapon["damage"]
-	var owner_signals: int = owner_changes[0]
-	owner.inventory.add(owned_chest)
-	check(
-		(
-			owner.inventory.entries == owner_bag
-			and owner.inventory.equipment == owner_worn
-			and (
-				(
-					owner.inventory.entries.count(owned_chest)
-					+ owner.inventory.equipment.values().count(owned_chest)
-				)
-				== 1
-			)
-		),
-		"adding the same carried gear does not duplicate its local owner"
-	)
-	check(
-		(
-			owner_changes[0] == owner_signals
-			and owner.max_hp == owner_hp
-			and owner.weapon["damage"] == owner_damage
-		),
-		"repeated carried add does not signal or alter stats"
-	)
-	check(owner.inventory.equip(owned_chest), "single carried gear equips normally")
-	owner_bag = owner.inventory.entries.duplicate()
-	owner_worn = owner.inventory.equipment.duplicate()
-	owner_hp = owner.max_hp
-	owner_damage = owner.weapon["damage"]
-	owner_signals = owner_changes[0]
-	owner.inventory.add(owned_chest)
-	check(
-		(
-			owner.inventory.entries == owner_bag
-			and owner.inventory.equipment == owner_worn
-			and (
-				(
-					owner.inventory.entries.count(owned_chest)
-					+ owner.inventory.equipment.values().count(owned_chest)
-				)
-				== 1
-			)
-		),
-		"adding the same worn gear does not put it back in the bag"
-	)
-	check(
-		(
-			owner_changes[0] == owner_signals
-			and owner.max_hp == owner_hp
-			and owner.weapon["damage"] == owner_damage
-		),
-		"repeated worn add does not signal or alter stats"
-	)
-
-	var malformed := player(&"warrior")
-	var doubled_chest := item(&"chest-armor", &"", &"iron")
-	malformed.inventory.add(doubled_chest)
-	malformed.inventory.entries.append(doubled_chest)  # Deliberately malformed public bag, not an add() call.
-	var malformed_bag: Array = malformed.inventory.entries.duplicate()
-	var malformed_worn: Dictionary = malformed.inventory.equipment.duplicate()
-	var malformed_hp: float = malformed.max_hp
-	var malformed_damage: float = malformed.weapon["damage"]
-	var malformed_changes := [0]
-	malformed.inventory.changed.connect(func(): malformed_changes[0] += 1)
-	check(
-		not malformed.inventory.equip(doubled_chest),
-		"equip rejects duplicate references already in the bag"
-	)
-	check(
-		(
-			malformed.inventory.entries == malformed_bag
-			and malformed.inventory.equipment == malformed_worn
-			and malformed.inventory.entries.count(doubled_chest) == 2
-			and malformed_changes[0] == 0
-		),
-		"rejected malformed bag remains unchanged without signal or silent repair"
-	)
-	check(
-		malformed.max_hp == malformed_hp and malformed.weapon["damage"] == malformed_damage,
-		"rejected malformed bag preserves HP and damage"
-	)
-
 	var ring_a := item(&"ring", &"")
 	var ring_b := item(&"ring", &"")
 	var ring_c := item(&"ring", &"")
@@ -183,27 +161,10 @@ func _init() -> void:
 		),
 		"third ring replaces first"
 	)
-	check(
-		ring_a in inv.entries and ring_b not in inv.entries and ring_c not in inv.entries,
-		"ring replacement preserves bag identity"
-	)
-	for ring in [ring_a, ring_b, ring_c]:
-		check(
-			inv.entries.count(ring) + inv.equipment.values().count(ring) == 1,
-			"ring replacement conserves each item exactly once"
-		)
-	var repeated_bag: Array = inv.entries.duplicate()
-	var repeated_worn: Dictionary = inv.equipment.duplicate()
-	var repeated_changes: int = changes[0]
-	check(not inv.equip(ring_b) and not inv.equip(ring_c), "worn rings cannot be equipped again")
-	check(
-		(
-			inv.entries == repeated_bag
-			and inv.equipment == repeated_worn
-			and changes[0] == repeated_changes
-		),
-		"failed ring repeats preserve bag and signals"
-	)
+	_ring_identities(inv, changes, ring_a, ring_b, ring_c)
+
+
+func _warrior_equipment(warrior: Node, food: Item) -> void:
 	var axe := item(&"weapon", &"axe")
 	warrior.inventory.add(axe)
 	check(
@@ -224,26 +185,10 @@ func _init() -> void:
 		),
 		"rejected hand change is atomic and preserves HP/damage"
 	)
-	var mage_wand := item(&"weapon", &"wand", &"wood")
-	warrior.inventory.add(mage_wand)
-	check(
-		not warrior.inventory.equip(mage_wand) and mage_wand in warrior.inventory.entries,
-		"wrong-class Wand remains in the bag"
-	)
-	var silk_chest := item(&"chest-armor", &"", &"silk")
-	warrior.inventory.add(silk_chest)
-	var state_before: Dictionary = warrior.inventory.equipment.duplicate()
-	check(
-		not warrior.inventory.equip(silk_chest) and warrior.inventory.equipment == state_before,
-		"wrong armor material is rejected atomically"
-	)
-	var food_before: Array = warrior.inventory.entries.duplicate()
-	warrior.inventory.add(food)
-	check(
-		not warrior.inventory.equip(food) and warrior.inventory.entries == food_before + [food],
-		"pet-food is not unconditionally equipable outside taming"
-	)
+	_wrong_class(warrior, food)
 
+
+func _reverse_hands() -> void:
 	var reverse := player(&"warrior")
 	var two := item(&"weapon", &"greatsword")
 	var shield := item(&"weapon", &"shield")
@@ -270,6 +215,8 @@ func _init() -> void:
 		"2H-after-shield is rejected without mutation"
 	)
 
+
+func _rogue_pair() -> void:
 	var rogue := player(&"rogue")
 	var fist := item(&"weapon", &"fist")
 	rogue.inventory.add(fist)
@@ -286,6 +233,8 @@ func _init() -> void:
 		"Rogue permits the approved dagger/fist pair"
 	)
 
+
+func _mage_pair() -> void:
 	var mage := player(&"mage")
 	var bracelet_a := item(&"weapon", &"bracelet", &"gold")
 	var bracelet_b := item(&"weapon", &"bracelet", &"gold")
@@ -299,94 +248,52 @@ func _init() -> void:
 		),
 		"Mage can place the second bracelet off-hand"
 	)
-	var wand_damage: float = mage.weapon["damage"]
-	var wand_moveset: Dictionary = mage.moveset.duplicate(true)
-	var wand := item(&"weapon", &"wand", &"wood")
-	mage.inventory.add(wand)
-	var mage_before: Dictionary = mage.inventory.equipment.duplicate()
-	check(
-		not mage.inventory.equip(wand) and mage.inventory.equipment == mage_before,
-		"Wand rejects every occupied off-hand item"
-	)
-	check(
-		is_equal_approx(mage.weapon["damage"], wand_damage) and mage.moveset == wand_moveset,
-		"rejected Wand preserves current attacks and damage"
-	)
-	mage.inventory.unequip(&"off-hand")
-	var second_wand := item(&"weapon", &"wand", &"wood")
-	mage.inventory.add(second_wand)
+	_mage_wand(mage)
+
+
+func _power_loadouts() -> void:
+	for mode in ["empty", "off-hand-1H", "shield", "ring-replacement"]:
+		_power_loadout(mode)
+
+
+func _power_trade() -> void:
+	var trader := player(&"warrior")
+	var traded := Items.generate(RandomNumberGenerator.new(), &"weapon", &"sword", &"iron", 40, 0)
+	var price := Shop.buy_price(traded, o, design)
+	trader.inventory.coins = price
 	check(
 		(
-			mage.inventory.equip(second_wand)
-			and mage.inventory.equipment[&"main-hand"] == second_wand
-			and not mage.inventory.equipment.has(&"off-hand")
+			Shop.buy(trader, traded)
+			and traded in trader.inventory.entries
+			and trader.inventory.coins == 0
 		),
-		"second Wand cannot create an off-hand item"
+		"above-power gear can be bought/carried"
 	)
-	var mage_shield := item(&"weapon", &"shield")
-	mage.inventory.add(mage_shield)
+	var resale := Shop.sell_price(traded, o, design)
+	Shop.sell(trader, traded)
 	check(
-		not mage.inventory.equip(mage_shield) and mage_shield in mage.inventory.entries,
-		"cross-class off-hand item remains in the bag"
+		traded not in trader.inventory.entries and trader.inventory.coins == resale,
+		"above-power gear can be sold"
 	)
+	_above_power_consumables(trader)
 
-	_power_admission()
-
-	print("equipment ok" if failed == 0 else "equipment FAILED (%d)" % failed)
-	quit(0 if failed == 0 else 1)
+	trader.free()
 
 
-# A missing/cached admission gate must fail before any shared inventory/player side effect.
-func _reject_power(p: Node, it: Item, label: String) -> void:
+func _foreign_items(inv, changes: Array) -> void:
+	var foreign := item(&"weapon", &"sword")
+	var bag_before: Array = inv.entries.duplicate()
+	var initially_worn: Dictionary = inv.equipment.duplicate()
+	inv.changed.connect(func(): changes[0] += 1)
+	check(not inv.equip(null) and not inv.equip(foreign), "null and foreign gear cannot equip")
 	check(
-		p.inventory.entries.count(it) == 1 and p.inventory.class_allowed(it),
-		label + " eligible structure"
+		inv.entries == bag_before and inv.equipment == initially_worn and changes[0] == 0,
+		"foreign equip does not mutate or signal"
 	)
-	p.hp = 10
-	p._charge = 0.4
-	p.inventory.coins = 37
-	var bag: Array = p.inventory.entries.duplicate()
-	var counts: Array = bag.map(func(entry): return entry.count)
-	var worn: Dictionary = p.inventory.equipment.duplicate()
-	var slots: Array = worn.keys()
-	var maximum: float = p.max_hp
-	var weapon: Dictionary = p.weapon.duplicate(true)
-	var moveset: Dictionary = p.moveset.duplicate(true)
-	var changes := [0]
-	var count_change := func(): changes[0] += 1
-	p.inventory.changed.connect(count_change)
-	check(not p.inventory.equip(it), label + " rejects above power")
-	check(
-		(
-			p.inventory.entries == bag
-			and p.inventory.equipment == worn
-			and p.inventory.equipment.keys() == slots
-		),
-		label + " preserves bag/worn identities and order"
-	)
-	check(
-		bag.map(func(entry): return entry.count) == counts and p.inventory.coins == 37,
-		label + " preserves counts/coins"
-	)
-	check(
-		(
-			p.hp == 10
-			and p.max_hp == maximum
-			and p.weapon == weapon
-			and p.moveset == moveset
-			and p._charge == 0.4
-			and changes[0] == 0
-		),
-		label + " preserves HP/attacks/charge/signals"
-	)
-	p.inventory.changed.disconnect(count_change)
-	# Isolate the subsequent eligibility control even on the deliberately unfixed RED runtime.
-	for slot in p.inventory.equipment.keys():
-		if p.inventory.equipment[slot] == it:
-			p.inventory.unequip(slot)
+	_repeat_starter(inv, changes, bag_before, initially_worn)
 
 
-func _power_admission() -> void:
+func _starters() -> void:
 	for cls in [&"warrior", &"ranger", &"mage", &"rogue"]:
 		var starter := player(cls)
 		check(
@@ -398,18 +305,9 @@ func _power_admission() -> void:
 			str(cls) + " +1 starter remains legal"
 		)
 		starter.free()
-	var p := player(&"warrior")
-	var high := Items.generate(RandomNumberGenerator.new(), &"chest-armor", &"", &"iron", 2, 0)
-	p.inventory.add(high)
-	check(p.level == 1 and Model.power_for_level(p.level) == 1, "level1 power1 fixture")
-	_reject_power(p, high, "+2 at level1")
-	p.gain_xp(50)
-	p.hp = 10
-	check(p.level == 2 and Model.power_for_level(p.level) == 5, "real XP reaches level2 power5")
-	check(
-		p.inventory.equip(high) and p.hp == 10,
-		"same retained +2 becomes eligible without equip healing"
-	)
+
+
+func _higher_power(p: Node) -> void:
 	while p.level < 10:
 		p.gain_xp(Model.xp_to_next(p.level) - p.xp)
 	check(
@@ -436,51 +334,152 @@ func _power_admission() -> void:
 		Model.power_for_level(p.level) == 40 and p.inventory.equip(sword),
 		"retained +40 admits after real progression to power40"
 	)
-	p.free()
 
-	for mode in ["empty", "off-hand-1H", "shield", "ring-replacement"]:
-		var hero := player(&"warrior")
-		if mode == "empty":
-			hero.inventory.unequip(&"main-hand")
-		if mode == "ring-replacement":
-			for i in 2:
-				var ring := item(&"ring", &"")
-				hero.inventory.add(ring)
-				check(hero.inventory.equip(ring), "eligible ring setup")
-		var candidate := Items.generate(
-			RandomNumberGenerator.new(),
-			&"ring" if mode == "ring-replacement" else &"weapon",
-			&"" if mode == "ring-replacement" else (&"shield" if mode == "shield" else &"axe"),
-			&"iron",
-			2,
-			0
-		)
-		hero.inventory.add(candidate)
-		_reject_power(hero, candidate, mode)
-		hero.gain_xp(50)
-		check(hero.inventory.equip(candidate), mode + " otherwise legal at power5")
-		if mode in ["off-hand-1H", "shield"]:
-			check(hero.inventory.equipment.get(&"off-hand") == candidate, mode + " uses off-hand")
-		hero.free()
 
-	var trader := player(&"warrior")
-	var traded := Items.generate(RandomNumberGenerator.new(), &"weapon", &"sword", &"iron", 40, 0)
-	var price := Shop.buy_price(traded, o, design)
-	trader.inventory.coins = price
+func _clear_rejected(p: Node, it: Item) -> void:
+	# Isolate the subsequent eligibility control even on the deliberately unfixed RED runtime.
+	for slot in p.inventory.equipment.keys():
+		if p.inventory.equipment[slot] == it:
+			p.inventory.unequip(slot)
+
+
+func _rejected_state(
+	p: Node,
+	bag: Array,
+	counts: Array,
+	worn: Dictionary,
+	slots: Array,
+	maximum: float,
+	weapon: Dictionary,
+	moveset: Dictionary,
+	changes: Array,
+	label: String
+) -> void:
 	check(
 		(
-			Shop.buy(trader, traded)
-			and traded in trader.inventory.entries
-			and trader.inventory.coins == 0
+			p.inventory.entries == bag
+			and p.inventory.equipment == worn
+			and p.inventory.equipment.keys() == slots
 		),
-		"above-power gear can be bought/carried"
+		label + " preserves bag/worn identities and order"
 	)
-	var resale := Shop.sell_price(traded, o, design)
-	Shop.sell(trader, traded)
 	check(
-		traded not in trader.inventory.entries and trader.inventory.coins == resale,
-		"above-power gear can be sold"
+		bag.map(func(entry): return entry.count) == counts and p.inventory.coins == 37,
+		label + " preserves counts/coins"
 	)
+	_rejected_resources(p, maximum, weapon, moveset, changes, label)
+
+
+func _rejected_resources(
+	p: Node, maximum: float, weapon: Dictionary, moveset: Dictionary, changes: Array, label: String
+) -> void:
+	check(
+		_rejected_resources_match(p, maximum, weapon, moveset, changes),
+		label + " preserves HP/attacks/charge/signals"
+	)
+
+
+func _ring_identities(inv, changes: Array, ring_a: Item, ring_b: Item, ring_c: Item) -> void:
+	check(
+		ring_a in inv.entries and ring_b not in inv.entries and ring_c not in inv.entries,
+		"ring replacement preserves bag identity"
+	)
+	for ring in [ring_a, ring_b, ring_c]:
+		check(
+			inv.entries.count(ring) + inv.equipment.values().count(ring) == 1,
+			"ring replacement conserves each item exactly once"
+		)
+	_repeated_rings(inv, changes, ring_b, ring_c)
+
+
+func _repeated_rings(inv, changes: Array, ring_b: Item, ring_c: Item) -> void:
+	var repeated_bag: Array = inv.entries.duplicate()
+	var repeated_worn: Dictionary = inv.equipment.duplicate()
+	var repeated_changes: int = changes[0]
+	check(not inv.equip(ring_b) and not inv.equip(ring_c), "worn rings cannot be equipped again")
+	check(
+		(
+			inv.entries == repeated_bag
+			and inv.equipment == repeated_worn
+			and changes[0] == repeated_changes
+		),
+		"failed ring repeats preserve bag and signals"
+	)
+
+
+func _wrong_class(warrior: Node, food: Item) -> void:
+	var mage_wand := item(&"weapon", &"wand", &"wood")
+	warrior.inventory.add(mage_wand)
+	check(
+		not warrior.inventory.equip(mage_wand) and mage_wand in warrior.inventory.entries,
+		"wrong-class Wand remains in the bag"
+	)
+	var silk_chest := item(&"chest-armor", &"", &"silk")
+	warrior.inventory.add(silk_chest)
+	var state_before: Dictionary = warrior.inventory.equipment.duplicate()
+	check(
+		not warrior.inventory.equip(silk_chest) and warrior.inventory.equipment == state_before,
+		"wrong armor material is rejected atomically"
+	)
+	_pet_food(warrior, food)
+
+
+func _mage_wand(mage: Node) -> void:
+	var wand_damage: float = mage.weapon["damage"]
+	var wand_moveset: Dictionary = mage.moveset.duplicate(true)
+	var wand := item(&"weapon", &"wand", &"wood")
+	mage.inventory.add(wand)
+	var mage_before: Dictionary = mage.inventory.equipment.duplicate()
+	check(
+		not mage.inventory.equip(wand) and mage.inventory.equipment == mage_before,
+		"Wand rejects every occupied off-hand item"
+	)
+	check(
+		is_equal_approx(mage.weapon["damage"], wand_damage) and mage.moveset == wand_moveset,
+		"rejected Wand preserves current attacks and damage"
+	)
+	_mage_empty_offhand(mage)
+
+
+func _mage_empty_offhand(mage: Node) -> void:
+	mage.inventory.unequip(&"off-hand")
+	var second_wand := item(&"weapon", &"wand", &"wood")
+	mage.inventory.add(second_wand)
+	check(
+		(
+			mage.inventory.equip(second_wand)
+			and mage.inventory.equipment[&"main-hand"] == second_wand
+			and not mage.inventory.equipment.has(&"off-hand")
+		),
+		"second Wand cannot create an off-hand item"
+	)
+	_mage_shield(mage)
+
+
+func _power_loadout(mode: String) -> void:
+	var hero := player(&"warrior")
+	if mode == "empty":
+		hero.inventory.unequip(&"main-hand")
+	_power_rings(hero, mode)
+
+	var candidate := Items.generate(
+		RandomNumberGenerator.new(),
+		&"ring" if mode == "ring-replacement" else &"weapon",
+		&"" if mode == "ring-replacement" else (&"shield" if mode == "shield" else &"axe"),
+		&"iron",
+		2,
+		0
+	)
+	hero.inventory.add(candidate)
+	_reject_power(hero, candidate, mode)
+	hero.gain_xp(50)
+	check(hero.inventory.equip(candidate), mode + " otherwise legal at power5")
+	if mode in ["off-hand-1H", "shield"]:
+		check(hero.inventory.equipment.get(&"off-hand") == candidate, mode + " uses off-hand")
+	hero.free()
+
+
+func _above_power_consumables(trader: Node) -> void:
 	var potion: Item = Item.stack(&"consumable", &"life-potion", 2, 40)
 	var spirit: Item = Item.stack(&"ingredient", &"spirit-fire", 1, 40)
 	trader.inventory.add(potion)
@@ -494,4 +493,51 @@ func _power_admission() -> void:
 		spirit in trader.inventory.entries and spirit.level == 40,
 		"above-power spirit remains carried"
 	)
-	trader.free()
+
+
+func _repeat_starter(inv, changes: Array, bag_before: Array, initially_worn: Dictionary) -> void:
+	var starter: Item = inv.equipment[&"main-hand"]
+	check(not inv.equip(starter), "already-worn gear cannot equip twice")
+	check(
+		inv.entries == bag_before and inv.equipment == initially_worn and changes[0] == 0,
+		"repeat equip does not duplicate or signal"
+	)
+
+
+func _rejected_resources_match(
+	p: Node, maximum: float, weapon: Dictionary, moveset: Dictionary, changes: Array
+) -> bool:
+	return (
+		p.hp == 10
+		and p.max_hp == maximum
+		and p.weapon == weapon
+		and p.moveset == moveset
+		and p._charge == 0.4
+		and changes[0] == 0
+	)
+
+
+func _pet_food(warrior: Node, food: Item) -> void:
+	var food_before: Array = warrior.inventory.entries.duplicate()
+	warrior.inventory.add(food)
+	check(
+		not warrior.inventory.equip(food) and warrior.inventory.entries == food_before + [food],
+		"pet-food is not unconditionally equipable outside taming"
+	)
+
+
+func _mage_shield(mage: Node) -> void:
+	var mage_shield := item(&"weapon", &"shield")
+	mage.inventory.add(mage_shield)
+	check(
+		not mage.inventory.equip(mage_shield) and mage_shield in mage.inventory.entries,
+		"cross-class off-hand item remains in the bag"
+	)
+
+
+func _power_rings(hero: Node, mode: String) -> void:
+	if mode == "ring-replacement":
+		for i in 2:
+			var ring := item(&"ring", &"")
+			hero.inventory.add(ring)
+			check(hero.inventory.equip(ring), "eligible ring setup")

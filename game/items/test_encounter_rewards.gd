@@ -51,115 +51,44 @@ func run() -> void:
 	main.relocate_player([layout.centre[0], layout.floor, layout.centre[1]])
 	w.stream_sites()
 	stop(main)
-	var stable: Dictionary = layout.assignments[0]
-	var mob = w.targeting.live[id + "/" + stable.key]
-	mob.take_damage(1e9, p)
-	check(
-		w.state_data.sites[id].rewards.has("kill/0/" + stable.key),
-		"actual death issues shared ordinary reward"
-	)
-	check(w.has_method("deliver_rewards"), "world owns pending delivery")
-	var site: Dictionary = w.state_data.sites[id]
-	var receipt: Dictionary = site.rewards["kill/0/" + stable.key]
-	var rolled: Array = receipt.payload.duplicate(true)
-	w.site_death(id, stable, mob)
-	check(
-		receipt.payload == rolled and receipt.delivered, "duplicate callback never rerolls/reawards"
-	)
+	var site: Dictionary = _first_death(w, p, id, layout)
+
 	var o = p.o
 	var d: Dictionary = p.design
+	_packages(o, d)
+
+	_boss_payloads(w, o, d)
+
+	_completion(site, p)
+
+	_spirit_pickup(w, p, id, layout)
+
+	await _restart(main, w, p, id, site)
+
+	print("encounter rewards ok" if failed == 0 else "encounter rewards FAILED")
+	quit(0 if failed == 0 else 1)
+
+
+func _packages(o, d: Dictionary) -> void:
 	# Pure generation checks consume the same contract/pools, including all four legal classes.
 	var kinds := {}
 	for cls in o.classes:
 		var inv := Inventory.new(o, d, cls, func(): return 1)
 		for tier in 4:
 			for seed_ in 80:
-				var package := Rewards.package_payload("probe/%d" % seed_, tier, 7, cls, o, d)
-				var gear = package[0]
-				kinds[gear.type] = true
-				check(
-					(
-						inv.class_allowed(gear)
-						and gear.level == 24
-						and gear.rarity == tier + 1
-						and gear.upgrade_count == 0
-					),
-					"package gear legal/class/power24/rarity/upgrades"
-				)
-				if gear.type == &"weapon":
-					check(
-						Items.weapon_material_allowed(gear, o),
-						"package exact legal weapon material"
-					)
-				check(
-					(
-						package[1].count == 20 * (tier + 1)
-						and package[2].subtype == &"life-potion"
-						and package[2].level == 24
-						and package[2].rarity == 0
-					),
-					"exact package copper and potion"
-				)
-				check(
-					(
-						package[3].subtype == ["emerald", "sapphire", "ruby", "diamond"][tier]
-						and package[3].count == tier + 1
-					),
-					"exact grade gems"
-				)
+				_package(o, d, inv, cls, tier, seed_, kinds)
 	check(kinds.size() == 5, "all weighted gear kinds reachable")
+
+
+func _boss_payloads(w, o, d: Dictionary) -> void:
 	for state_id in w.state_data.sites:
 		for assignment in w.site_layout(state_id).assignments:
 			if not assignment.boss:
 				continue
-			var payload := Rewards.kill_payload(assignment, 0, 13, 3, o, d)
-			var ordinary := Items.roll_loot(
-				Rewards.rng_for("kill/%d/0" % int(assignment.seed)),
-				13,
-				o.creatures[&"skeleton"],
-				o,
-				d
-			)
-			check(
-				payload.size() == ordinary.size() + 1 + (1 if assignment.spirit != "" else 0),
-				"boss guarantees additional to ordinary rolls"
-			)
-			check(
-				Save.same_data(
-					payload.slice(0, ordinary.size()).map(Save.item_data),
-					ordinary.map(Save.item_data)
-				),
-				"ordinary rolls preserved exactly in combined boss payload"
-			)
-			var gear = payload[ordinary.size()]
-			check(
-				(
-					gear.level == 38
-					and gear.rarity == mini(int(assignment.tier) + 1, 4)
-					and gear.upgrade_count == 0
-				),
-				"all seven boss fixed rarity/current-level power38/zero upgrades"
-			)
-			if assignment.spirit != "":
-				var spirit = payload[-1]
-				check(
-					(
-						spirit.subtype == StringName(assignment.spirit)
-						and spirit.level == 10
-						and spirit.count == 1
-					),
-					"permanent logical spirit converts initial L3 to power10"
-				)
-				check(not Items.item_name(spirit, o, d).is_empty(), "spirit inventory name")
-				check(
-					Rewards.kill_payload(assignment, 1, 25, 3, o, d)[-1].subtype == spirit.subtype,
-					"renewed spirit assignment fixed"
-				)
-			else:
-				check(
-					not payload.any(func(it): return str(it.subtype).begins_with("spirit-")),
-					"mission bosses no spirits"
-				)
+			_boss_payload(assignment, o, d)
+
+
+func _completion(site: Dictionary, p) -> void:
 	var v: Array = site.volumes[0]
 	var point := [v[0], v[1], v[2]]
 	var party := [
@@ -176,47 +105,22 @@ func run() -> void:
 		"outsider finisher fallback"
 	)
 	check(Rewards.completion_classes([], site.volumes, null).is_empty(), "unknown class defers")
+
+
+func _spirit_pickup(w, p, id: String, layout: Dictionary) -> void:
 	# Every ruins boss is killed through the real main signal; shared spirit can be carried/saved.
 	for assignment in layout.assignments:
 		if not assignment.boss:
 			continue
 		var actor = w.targeting.live[id + "/" + assignment.key]
 		actor.take_damage(1e9, p)
-	var spirit_node
-	for node in w.site_views[id].get_children():
-		if node.get("item") != null and str(node.item.subtype).begins_with("spirit-"):
-			spirit_node = node
-			break
-	check(spirit_node != null, "actual boss death materializes spirit pickup")
-	if spirit_node != null:
-		var subtype: StringName = spirit_node.item.subtype
-		p.pick_up(spirit_node)
-		p.pick_up(spirit_node)
-		check(
-			(
-				(
-					p
-					. inventory
-					. entries
-					. filter(func(it): return it.subtype == subtype)
-					. reduce(func(n, it): return n + it.count, 0)
-				)
-				== 1
-			),
-			"two pickup attempts award once"
-		)
-	for broken in [null, [], true]:
-		var invalid: Dictionary = main.save_data.capture(w.state_data, p)
-		invalid.world.sites[id].spirit_levels = broken
-		check(
-			not main.save_data.validate(invalid),
-			"malformed spirit-level parent rejected alongside existing kill receipts"
-		)
-	check(main.save_now(), "actual rewards save: " + str(main.save_data.errors))
-	for node in w.site_views[id].get_children():
-		if node.get("item") != null and not node.is_queued_for_deletion():
-			node._ttl = 0
-			node._process(0)
+	var spirit_node = _find_spirit(w, id)
+	_pickup_spirit(p, spirit_node)
+
+
+func _restart(main, w, p, id: String, site: Dictionary) -> void:
+	_expire_rewards(main, w, p, id)
+
 	var after_expiry: Dictionary = site.rewards.duplicate(true)
 	w.deliver_rewards(id)
 	check(
@@ -251,5 +155,166 @@ func run() -> void:
 	)
 	cold.free()
 	await process_frame
-	print("encounter rewards ok" if failed == 0 else "encounter rewards FAILED")
-	quit(0 if failed == 0 else 1)
+
+
+func _first_death(w, p, id: String, layout: Dictionary) -> Dictionary:
+	var stable: Dictionary = layout.assignments[0]
+	var mob = w.targeting.live[id + "/" + stable.key]
+	mob.take_damage(1e9, p)
+	check(
+		w.state_data.sites[id].rewards.has("kill/0/" + stable.key),
+		"actual death issues shared ordinary reward"
+	)
+	check(w.has_method("deliver_rewards"), "world owns pending delivery")
+	var site: Dictionary = w.state_data.sites[id]
+	var receipt: Dictionary = site.rewards["kill/0/" + stable.key]
+	var rolled: Array = receipt.payload.duplicate(true)
+	w.site_death(id, stable, mob)
+	check(
+		receipt.payload == rolled and receipt.delivered, "duplicate callback never rerolls/reawards"
+	)
+	return site
+
+
+func _package(o, d: Dictionary, inv, cls, tier: int, seed_: int, kinds: Dictionary) -> void:
+	var package := Rewards.package_payload("probe/%d" % seed_, tier, 7, cls, o, d)
+	var gear = package[0]
+	kinds[gear.type] = true
+	check(
+		(
+			inv.class_allowed(gear)
+			and gear.level == 24
+			and gear.rarity == tier + 1
+			and gear.upgrade_count == 0
+		),
+		"package gear legal/class/power24/rarity/upgrades"
+	)
+	if gear.type == &"weapon":
+		check(Items.weapon_material_allowed(gear, o), "package exact legal weapon material")
+	_package_contents(package, tier)
+
+
+func _package_contents(package: Array, tier: int) -> void:
+	check(
+		(
+			package[1].count == 20 * (tier + 1)
+			and package[2].subtype == &"life-potion"
+			and package[2].level == 24
+			and package[2].rarity == 0
+		),
+		"exact package copper and potion"
+	)
+	_package_gems(package, tier)
+
+
+func _boss_payload(assignment: Dictionary, o, d: Dictionary) -> void:
+	var payload := Rewards.kill_payload(assignment, 0, 13, 3, o, d)
+	var ordinary := Items.roll_loot(
+		Rewards.rng_for("kill/%d/0" % int(assignment.seed)), 13, o.creatures[&"skeleton"], o, d
+	)
+	check(
+		payload.size() == ordinary.size() + 1 + (1 if assignment.spirit != "" else 0),
+		"boss guarantees additional to ordinary rolls"
+	)
+	check(
+		Save.same_data(
+			payload.slice(0, ordinary.size()).map(Save.item_data), ordinary.map(Save.item_data)
+		),
+		"ordinary rolls preserved exactly in combined boss payload"
+	)
+	var gear = payload[ordinary.size()]
+	check(
+		(
+			gear.level == 38
+			and gear.rarity == mini(int(assignment.tier) + 1, 4)
+			and gear.upgrade_count == 0
+		),
+		"all seven boss fixed rarity/current-level power38/zero upgrades"
+	)
+	_boss_spirit(assignment, payload, o, d)
+
+
+func _boss_spirit(assignment: Dictionary, payload: Array, o, d: Dictionary) -> void:
+	if assignment.spirit != "":
+		_spirit_payload(assignment, payload, o, d)
+	else:
+		check(
+			not payload.any(func(it): return str(it.subtype).begins_with("spirit-")),
+			"mission bosses no spirits"
+		)
+
+
+func _pickup_spirit(p, spirit_node) -> void:
+	check(spirit_node != null, "actual boss death materializes spirit pickup")
+	if spirit_node != null:
+		var subtype: StringName = spirit_node.item.subtype
+		p.pick_up(spirit_node)
+		p.pick_up(spirit_node)
+		check(
+			(
+				(
+					p
+					. inventory
+					. entries
+					. filter(func(it): return it.subtype == subtype)
+					. reduce(func(n, it): return n + it.count, 0)
+				)
+				== 1
+			),
+			"two pickup attempts award once"
+		)
+
+
+func _expire_rewards(main, w, p, id: String) -> void:
+	for broken in [null, [], true]:
+		var invalid: Dictionary = main.save_data.capture(w.state_data, p)
+		invalid.world.sites[id].spirit_levels = broken
+		check(
+			not main.save_data.validate(invalid),
+			"malformed spirit-level parent rejected alongside existing kill receipts"
+		)
+	check(main.save_now(), "actual rewards save: " + str(main.save_data.errors))
+	_expire_ground(w, id)
+
+
+func _find_spirit(w, id: String):
+	var spirit_node
+	for node in w.site_views[id].get_children():
+		if node.get("item") != null and str(node.item.subtype).begins_with("spirit-"):
+			spirit_node = node
+			break
+	return spirit_node
+
+
+func _package_gems(package: Array, tier: int) -> void:
+	check(
+		(
+			package[3].subtype == ["emerald", "sapphire", "ruby", "diamond"][tier]
+			and package[3].count == tier + 1
+		),
+		"exact grade gems"
+	)
+
+
+func _spirit_payload(assignment: Dictionary, payload: Array, o, d: Dictionary) -> void:
+	var spirit = payload[-1]
+	check(
+		(
+			spirit.subtype == StringName(assignment.spirit)
+			and spirit.level == 10
+			and spirit.count == 1
+		),
+		"permanent logical spirit converts initial L3 to power10"
+	)
+	check(not Items.item_name(spirit, o, d).is_empty(), "spirit inventory name")
+	check(
+		Rewards.kill_payload(assignment, 1, 25, 3, o, d)[-1].subtype == spirit.subtype,
+		"renewed spirit assignment fixed"
+	)
+
+
+func _expire_ground(w, id: String) -> void:
+	for node in w.site_views[id].get_children():
+		if node.get("item") != null and not node.is_queued_for_deletion():
+			node._ttl = 0
+			node._process(0)

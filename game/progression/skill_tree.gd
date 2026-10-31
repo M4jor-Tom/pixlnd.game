@@ -23,15 +23,22 @@ func prerequisite(a) -> Variant:
 	var t: Dictionary = a.alpha_tree
 	for b in nodes:
 		var u: Dictionary = b.alpha_tree
-		if str(t["column"]) == "class":
-			if str(u["column"]) == "class" and int(u.get("rank", 0)) == int(t["rank"]) - 1:
-				return b
-		elif str(t["column"]) == "ultimate":
-			if str(u["column"]) == "class" and int(u.get("rank", 0)) == 3:
-				return b
-		elif StringName(str(b.raw.get("unlocks-next", ""))) == a.id:
+		var matches = _is_prerequisite(a, t, b, u)
+		if matches == null:
+			return null
+		if matches:
 			return b
+
 	return null
+
+
+## A native evaluation abort returns null, not an ordinary false/non-match.
+func _is_prerequisite(a, t: Dictionary, b, u: Dictionary) -> Variant:
+	if str(t["column"]) == "class":
+		return str(u["column"]) == "class" and int(u.get("rank", 0)) == int(t["rank"]) - 1
+	if str(t["column"]) == "ultimate":
+		return str(u["column"]) == "class" and int(u.get("rank", 0)) == 3
+	return StringName(str(b.raw.get("unlocks-next", ""))) == a.id
 
 
 func is_open(a) -> bool:
@@ -71,12 +78,20 @@ func cooldown_mult(id: StringName) -> float:
 func class_slot(index: int) -> Variant:
 	for b in nodes:
 		var u: Dictionary = b.alpha_tree
-		if (
-			(index <= 3 and str(u["column"]) == "class" and int(u.get("rank", 0)) == index)
-			or (index == 4 and str(u["column"]) == "ultimate")
-		):
+		var matches = _is_class_slot(u, index)
+		if matches == null:
+			return null
+		if matches:
 			return b
 	return null
+
+
+## A native evaluation abort returns null, not an ordinary false/non-match.
+func _is_class_slot(u: Dictionary, index: int) -> Variant:
+	return (
+		(index <= 3 and str(u["column"]) == "class" and int(u.get("rank", 0)) == index)
+		or (index == 4 and str(u["column"]) == "ultimate")
+	)
 
 
 ## The ability's own positive cooldown (S value first, then A) or -1 when the sources give none / 0.

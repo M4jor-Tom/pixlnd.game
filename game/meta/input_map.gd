@@ -10,24 +10,31 @@ static func build(hybrid: Dictionary) -> void:
 		if str(action).begins_with("_"):
 			continue
 		var token: String = str(hybrid[action])
-		match token:
-			"WASD":
-				_key("move_forward", KEY_W)
-				_key("move_back", KEY_S)
-				_key("move_left", KEY_A)
-				_key("move_right", KEY_D)
-			"wheel":
-				_mouse(action + "_in", MOUSE_BUTTON_WHEEL_UP)
-				_mouse(action + "_out", MOUSE_BUTTON_WHEEL_DOWN)
-			_:
-				if MOUSE.has(token):
-					_mouse(action, MOUSE[token])
+		if not _bind_token(action, token):
+			return
+
+
+static func _bind_token(action, token: String) -> bool:
+	match token:
+		"WASD":
+			_key("move_forward", KEY_W)
+			_key("move_back", KEY_S)
+			_key("move_left", KEY_A)
+			_key("move_right", KEY_D)
+		"wheel":
+			_mouse(action + "_in", MOUSE_BUTTON_WHEEL_UP)
+			_mouse(action + "_out", MOUSE_BUTTON_WHEEL_DOWN)
+		_:
+			if MOUSE.has(token):
+				_mouse(action, MOUSE[token])
+			else:
+				var code := OS.find_keycode_from_string(token)
+				if code == KEY_NONE:
+					push_error("keybinds.json#hybrid %s: unknown key '%s'" % [action, token])
 				else:
-					var code := OS.find_keycode_from_string(token)
-					if code == KEY_NONE:
-						push_error("keybinds.json#hybrid %s: unknown key '%s'" % [action, token])
-					else:
-						_key(action, code)
+					_key(action, code)
+
+	return true
 
 
 static func _key(action: String, key: Key) -> void:

@@ -60,87 +60,14 @@ func _run() -> void:
 	InputMapBuilder.build(o.configs.keybinds.hybrid)
 	_item_fixtures()
 	_extraneous_hp_fields()
-	# Each class uses its canonical armor material; the HP bonus is independent of class base HP.
-	for row in [
-		[&"warrior", &"iron", 267.5, 282.5],
-		[&"ranger", &"linen", 225.0, 237.5],
-		[&"mage", &"silk", 205.0, 215.0],
-		[&"rogue", &"cotton", 247.5, 261.25]
-	]:
-		var hero := player(row[0])
-		state(hero, row[2], row[2], "%s starts full, including starter weapon" % row[0])
-		var chest := gear(&"chest-armor", row[1])
-		hero.inventory.add(chest)
-		state(hero, row[2], row[2], "bag has no HP effect")
-		hero.hp = 80.0
-		check(hero.inventory.equip(chest), "chest equips")
-		state(hero, 80, row[3], "%s adds class-valid gear without healing" % row[0])
-		hero.free()
-
-	var dressed := player(&"warrior")
-	for row in [
-		[&"chest-armor", &"iron", &""],
-		[&"shoulder-armor", &"iron", &""],
-		[&"gloves", &"iron", &""],
-		[&"boots", &"iron", &""],
-		[&"weapon", &"iron", &"shield"]
-	]:
-		var it := gear(row[0], row[1], row[2])
-		dressed.inventory.add(it)
-		check(dressed.inventory.equip(it), "HP-bearing piece equips")
-	state(dressed, 267.5, 312.5, "all six class-valid HP-bearing slots sum once")
-	dressed.free()
+	_starting_hp()
 
 	var p := player(&"warrior")
-	var above := Items.generate(RandomNumberGenerator.new(), &"chest-armor", &"", &"iron", 2, 0)
-	p.inventory.add(above)
-	p.hp = 80
-	var attack: Dictionary = p.weapon.duplicate(true)
-	check(not p.inventory.equip(above), "above-power chest rejected before HP update")
-	state(p, 80, 267.5, "above-power rejection preserves current and maximum HP")
-	check(p.weapon == attack, "above-power rejection preserves attack")
-	# Keep HP swap fixtures independent on the unfixed RED runtime.
-	if p.inventory.equipment.get(&"chest") == above:
-		p.inventory.unequip(&"chest")
-	var chest := gear(&"chest-armor", &"iron")
-	var upgraded := gear(&"chest-armor", &"iron")
-	upgraded.upgrade_count = 10  # Same HP curve input n=2, with an eligible +1 requirement.
-	var shield := gear(&"weapon", &"iron", &"shield")
-	var two := gear(&"weapon", &"iron", &"greatsword")
-	for it in [chest, upgraded, shield, two]:
-		p.inventory.add(it)
-	p.hp = 80
-	p.inventory.equip(chest)
-	state(p, 80, 282.5, "wounded equip")
-	p.inventory.equip(upgraded)
-	state(p, 80, 284.0613427051072, "class-valid replacement removes displaced HP")
-	p.hp = 284.0613427051072
-	p.inventory.unequip(&"chest")
-	state(p, 267.5, 267.5, "unequip caps down")
-	p.inventory.equip(chest)
-	state(p, 267.5, 282.5, "re-equip never fills lost HP")
-	for i in 5:
-		p.inventory.equip(upgraded)
-		p.inventory.equip(chest)
-	state(p, 267.5, 282.5, "repeated swaps never heal or accumulate")
-	p.inventory.equip(shield)
-	state(p, 267.5, 290, "valid sword plus offhand contributes once each")
-	var before: Dictionary = p.inventory.equipment.duplicate()
-	check(
-		not p.inventory.equip(two) and p.inventory.equipment == before,
-		"2H plus shield rejected atomically"
-	)
-	state(p, 267.5, 290, "rejected equip leaves HP unchanged")
-	p.inventory.add(Item.stack(&"coin", &"", 3))
-	var potion: Item = p.inventory.first_consumable()
-	p.inventory.remove(potion)
-	p.inventory.changed.emit()
-	state(p, 267.5, 290, "coin, removal and repeated changed notifications are idempotent")
-	p.inventory.unequip(&"off-hand")
-	p.inventory.equip(two)
-	state(p, 267.5, 282.5, "2H alone has one weapon bonus")
-	check(not p.inventory.equip(shield), "shield rejected with 2H already worn")
-	state(p, 267.5, 282.5, "reverse rejected equip leaves HP unchanged")
+	var swap_items := _swaps(p)
+	var potion: Item = swap_items[0]
+	var two: Item = swap_items[1]
+	var upgraded: Item = swap_items[2]
+
 	# L2 base 287.063273555191 + chest 15 + unchanged L1 weapon 7.5.
 	p.gain_xp(50)
 	state(p, 309.563273555191, 309.563273555191, "level-up retains gear and heals fully")
@@ -194,20 +121,7 @@ func _item_fixtures() -> void:
 		[&"wood", 10.0, 5.0],
 		[&"gold", 10.0, 5.0]
 	]:
-		for type in [&"chest-armor", &"shoulder-armor", &"gloves", &"boots", &"weapon"]:
-			var it := gear(type, row[0], &"shield" if type == &"weapon" else &"")
-			for roll in 21:
-				it.modifier = roll
-				it.minus_modifier = 0
-				check(
-					is_equal_approx(Items.hp(it, o), row[1] if type == &"chest-armor" else row[2]),
-					"fixed %s %s, roll %d" % [row[0], type, roll]
-				)
-			it.minus_modifier = 12345
-			check(
-				is_equal_approx(Items.hp(it, o), row[1] if type == &"chest-armor" else row[2]),
-				"minus modifier never affects HP"
-			)
+		_material_hp(row)
 	for type in [
 		&"ring",
 		&"amulet",
@@ -225,30 +139,7 @@ func _item_fixtures() -> void:
 			is_equal_approx(Items.hp(gear(&"weapon", &"iron", subtype), o), 7.5),
 			"%s uses half-slot HP" % subtype
 		)
-	for row in [
-		[5, 2, 3, &"chest-armor", &"iron", 30.6487173482063],
-		[2, 4, 0, &"weapon", &"iron", 16.561342705107187],
-		[1, 0, 1, &"weapon", &"iron", 7.577993848581611],
-		[100, 4, 32, &"boots", &"linen", 71.15325378128668]
-	]:
-		var it := Items.generate(
-			RandomNumberGenerator.new(),
-			row[3],
-			&"sword" if row[3] == &"weapon" else &"",
-			row[4],
-			row[0],
-			row[1]
-		)
-		it.upgrade_count = row[2]
-		check(
-			is_equal_approx(Items.hp(it, o), row[5]),
-			"level/rarity/fractional-upgrade fixture %s" % [row]
-		)
-	var sword := gear(&"weapon", &"iron", &"sword")
-	sword.upgrade_count = 3
-	check(
-		is_equal_approx(Items.damage(sword, o), 4.0), "HP upgrade input does not change other stats"
-	)
+	_upgraded_hp()
 
 
 func _extraneous_hp_fields() -> void:
@@ -319,3 +210,142 @@ func _max_hp_consumers() -> void:
 	state(mage, 193.5, 215, "fall damage samples equipped max: two blocks at 5 percent")
 	mage.free()
 	floor.free()
+
+
+func _starting_hp() -> void:
+	# Each class uses its canonical armor material; the HP bonus is independent of class base HP.
+	for row in [
+		[&"warrior", &"iron", 267.5, 282.5],
+		[&"ranger", &"linen", 225.0, 237.5],
+		[&"mage", &"silk", 205.0, 215.0],
+		[&"rogue", &"cotton", 247.5, 261.25]
+	]:
+		var hero := player(row[0])
+		state(hero, row[2], row[2], "%s starts full, including starter weapon" % row[0])
+		var chest := gear(&"chest-armor", row[1])
+		hero.inventory.add(chest)
+		state(hero, row[2], row[2], "bag has no HP effect")
+		hero.hp = 80.0
+		check(hero.inventory.equip(chest), "chest equips")
+		state(hero, 80, row[3], "%s adds class-valid gear without healing" % row[0])
+		hero.free()
+
+	var dressed := player(&"warrior")
+	for row in [
+		[&"chest-armor", &"iron", &""],
+		[&"shoulder-armor", &"iron", &""],
+		[&"gloves", &"iron", &""],
+		[&"boots", &"iron", &""],
+		[&"weapon", &"iron", &"shield"]
+	]:
+		var it := gear(row[0], row[1], row[2])
+		dressed.inventory.add(it)
+		check(dressed.inventory.equip(it), "HP-bearing piece equips")
+	state(dressed, 267.5, 312.5, "all six class-valid HP-bearing slots sum once")
+	dressed.free()
+
+
+func _swaps(p) -> Array:
+	_above_power(p)
+
+	var chest := gear(&"chest-armor", &"iron")
+	var upgraded := gear(&"chest-armor", &"iron")
+	upgraded.upgrade_count = 10  # Same HP curve input n=2, with an eligible +1 requirement.
+	var shield := gear(&"weapon", &"iron", &"shield")
+	var two := gear(&"weapon", &"iron", &"greatsword")
+	for it in [chest, upgraded, shield, two]:
+		p.inventory.add(it)
+	p.hp = 80
+	p.inventory.equip(chest)
+	state(p, 80, 282.5, "wounded equip")
+	p.inventory.equip(upgraded)
+	state(p, 80, 284.0613427051072, "class-valid replacement removes displaced HP")
+	p.hp = 284.0613427051072
+	p.inventory.unequip(&"chest")
+	state(p, 267.5, 267.5, "unequip caps down")
+	p.inventory.equip(chest)
+	state(p, 267.5, 282.5, "re-equip never fills lost HP")
+	for i in 5:
+		p.inventory.equip(upgraded)
+		p.inventory.equip(chest)
+	state(p, 267.5, 282.5, "repeated swaps never heal or accumulate")
+	p.inventory.equip(shield)
+	state(p, 267.5, 290, "valid sword plus offhand contributes once each")
+	var before: Dictionary = p.inventory.equipment.duplicate()
+	check(
+		not p.inventory.equip(two) and p.inventory.equipment == before,
+		"2H plus shield rejected atomically"
+	)
+	state(p, 267.5, 290, "rejected equip leaves HP unchanged")
+	p.inventory.add(Item.stack(&"coin", &"", 3))
+	var potion: Item = p.inventory.first_consumable()
+	p.inventory.remove(potion)
+	p.inventory.changed.emit()
+	state(p, 267.5, 290, "coin, removal and repeated changed notifications are idempotent")
+	p.inventory.unequip(&"off-hand")
+	p.inventory.equip(two)
+	state(p, 267.5, 282.5, "2H alone has one weapon bonus")
+	check(not p.inventory.equip(shield), "shield rejected with 2H already worn")
+	state(p, 267.5, 282.5, "reverse rejected equip leaves HP unchanged")
+	return [potion, two, upgraded]
+
+
+func _material_hp(row: Array) -> void:
+	for type in [&"chest-armor", &"shoulder-armor", &"gloves", &"boots", &"weapon"]:
+		var it := gear(type, row[0], &"shield" if type == &"weapon" else &"")
+		_material_type_hp(row, type, it)
+
+
+func _upgraded_hp() -> void:
+	for row in [
+		[5, 2, 3, &"chest-armor", &"iron", 30.6487173482063],
+		[2, 4, 0, &"weapon", &"iron", 16.561342705107187],
+		[1, 0, 1, &"weapon", &"iron", 7.577993848581611],
+		[100, 4, 32, &"boots", &"linen", 71.15325378128668]
+	]:
+		var it := Items.generate(
+			RandomNumberGenerator.new(),
+			row[3],
+			&"sword" if row[3] == &"weapon" else &"",
+			row[4],
+			row[0],
+			row[1]
+		)
+		it.upgrade_count = row[2]
+		check(
+			is_equal_approx(Items.hp(it, o), row[5]),
+			"level/rarity/fractional-upgrade fixture %s" % [row]
+		)
+	var sword := gear(&"weapon", &"iron", &"sword")
+	sword.upgrade_count = 3
+	check(
+		is_equal_approx(Items.damage(sword, o), 4.0), "HP upgrade input does not change other stats"
+	)
+
+
+func _above_power(p) -> void:
+	var above := Items.generate(RandomNumberGenerator.new(), &"chest-armor", &"", &"iron", 2, 0)
+	p.inventory.add(above)
+	p.hp = 80
+	var attack: Dictionary = p.weapon.duplicate(true)
+	check(not p.inventory.equip(above), "above-power chest rejected before HP update")
+	state(p, 80, 267.5, "above-power rejection preserves current and maximum HP")
+	check(p.weapon == attack, "above-power rejection preserves attack")
+	# Keep HP swap fixtures independent on the unfixed RED runtime.
+	if p.inventory.equipment.get(&"chest") == above:
+		p.inventory.unequip(&"chest")
+
+
+func _material_type_hp(row: Array, type: StringName, it: Item) -> void:
+	for roll in 21:
+		it.modifier = roll
+		it.minus_modifier = 0
+		check(
+			is_equal_approx(Items.hp(it, o), row[1] if type == &"chest-armor" else row[2]),
+			"fixed %s %s, roll %d" % [row[0], type, roll]
+		)
+	it.minus_modifier = 12345
+	check(
+		is_equal_approx(Items.hp(it, o), row[1] if type == &"chest-armor" else row[2]),
+		"minus modifier never affects HP"
+	)

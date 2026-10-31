@@ -30,8 +30,23 @@ func _init() -> void:
 	check(o.validate(), "ontology valid")
 	var design: Dictionary = o.configs["generators"]["design"]
 	var loot: Dictionary = design["loot"]
-	# gen-item: same seed = same item; roll ∈ 0..20 (c-stat-roll); rarity clamped (c-rarity-range)
+	preload("res://game/items/item_rule_cases.gd").run(self, o, design)
 	var rng := RandomNumberGenerator.new()
+	var generated := _generators(o, design, rng)
+	var s1: Item = generated[0]
+	var s5: Item = generated[1]
+
+	_inventory(o, design, s1, s5)
+
+	_hand_conflicts(o, design, rng, s1)
+
+	_loot(o, design, loot, rng)
+
+	await _scene(o, design)
+
+
+func _generators(o, design: Dictionary, rng: RandomNumberGenerator) -> Array:
+	# gen-item: same seed = same item; roll ∈ 0..20 (c-stat-roll); rarity clamped (c-rarity-range)
 	rng.seed = 7
 	var a := Items.generate(rng, &"weapon", &"sword", &"iron", 3, 2)
 	rng.seed = 7
@@ -82,41 +97,12 @@ func _init() -> void:
 		is_equal_approx(Items.armor(s1, o), 0.0) and is_equal_approx(Items.damage(chest, o), 0.0),
 		"weapons have no armor, armor no damage"
 	)
-	# gen-name: rarity prefix list; epic/legendary carry "of <Name>"
-	var n1 := Items.item_name(s1, o, design)
-	check(
-		n1.split(" ")[0] in o.configs["affixes"]["common"] and n1.ends_with("Iron Sword"),
-		"common name '<prefix> Iron Sword': %s" % n1
-	)
-	var leg := Items.generate(rng, &"weapon", &"sword", &"iron", 1, 4)
-	check(
-		" of " in Items.item_name(leg, o, design),
-		"legendary is named: %s" % Items.item_name(leg, o, design)
-	)
-	check(
-		Items.item_name(Item.stack(&"consumable", &"life-potion", 2), o, design) == "Life Potion",
-		"consumable name"
-	)
-	check(Items.item_name(Item.stack(&"coin", &"", 7), o, design) == "7 copper", "coin name")
-	# equips-in / c-slot-accepts
-	check(
-		(
-			Items.slot_id(s1, o) == &"main-hand"
-			and (
-				Items.slot_id(Items.generate(rng, &"weapon", &"shield", &"iron", 1, 0), o)
-				== &"off-hand"
-			)
-		),
-		"weapon slots by hands"
-	)
-	check(
-		(
-			Items.slot_id(chest, o) == &"chest"
-			and Items.slot_id(gloves, o) == &"gloves"
-			and Items.slot_id(Item.stack(&"consumable", &"apple", 1), o) == &""
-		),
-		"armor slots; consumables have none"
-	)
+	_names_and_slots(o, design, rng, s1, chest, gloves)
+
+	return [s1, s5]
+
+
+func _inventory(o, design: Dictionary, s1: Item, s5: Item) -> void:
 	# inventory: c-stack-rule, equip/swap, coins
 	var inv := Inventory.new(o, design, &"warrior", func(): return 2)
 	inv.add(Item.stack(&"consumable", &"life-potion", 2))
@@ -128,109 +114,27 @@ func _init() -> void:
 	inv.add(s1)
 	inv.add(s5)
 	check(inv.entries.size() == 3, "gear never stacks")
-	check(
-		inv.equip(s1) and inv.equipment[&"main-hand"] == s1 and inv.entries.size() == 2,
-		"equip moves to the slot"
-	)
-	check(
-		inv.equip(s5) and inv.equipment[&"off-hand"] == s5 and inv.equipment[&"main-hand"] == s1,
-		"second 1H occupies the legal off-hand"
-	)
-	check(not inv.equip(inv.first_consumable()), "consumables cannot be equipped")
-	inv.add(Item.stack(&"coin", &"", 12))
-	inv.add(Item.stack(&"coin", &"", 3))
-	check(inv.coins == 15 and inv.entries.size() == 1, "coins are a counter, not an entry")
+	_inventory_equip(inv, s1, s5)
+
+
+func _hand_conflicts(o, design: Dictionary, rng: RandomNumberGenerator, s1: Item) -> void:
 	# c-hands: both equip orders reject 2H + shield before displacing gear, consuming items or emitting changed.
 	for weapon_id in [&"greatsword", &"greataxe"]:
 		for shield_first in [true, false]:
-			var hands_inv := Inventory.new(o, design, &"warrior", func(): return 1)
-			var two := Items.generate(
-				rng, &"weapon", weapon_id, Items.weapon_material(o.weapon_types[weapon_id]), 1, 0
-			)
-			var shield := Items.generate(rng, &"weapon", &"shield", &"iron", 1, 0)
-			for it in [s1, two, shield]:
-				hands_inv.add(it)
-			hands_inv.coins = 15
-			check(hands_inv.equip(s1), "hand-conflict setup: one-handed weapon")
-			check(hands_inv.equip(shield if shield_first else two), "valid 1H + shield or 2H alone")
-			var bag_before := hands_inv.entries.duplicate()
-			var worn_before := hands_inv.equipment.duplicate()
-			var changes := [0]
-			hands_inv.changed.connect(func(): changes[0] += 1)
-			var label := "%s shield-first=%s" % [weapon_id, shield_first]
-			check(
-				not hands_inv.equip(two if shield_first else shield),
-				"%s: conflicting equip rejected" % label
-			)
-			check(
-				hands_inv.entries == bag_before and hands_inv.equipment == worn_before,
-				"%s: bag order and worn items unchanged" % label
-			)
-			check(
-				changes[0] == 0 and hands_inv.coins == 15,
-				"%s: no changed signal or coin mutation" % label
-			)
-			for it in [s1, two, shield]:
-				check(
-					(
-						it.count == 1
-						and (
-							hands_inv.entries.count(it) + hands_inv.equipment.values().count(it)
-							== 1
-						)
-					),
-					"%s: items retained exactly once" % label
-				)
-			if shield_first:
-				hands_inv.unequip(&"off-hand")
-				check(
-					(
-						hands_inv.equip(two)
-						and hands_inv.equipment[&"main-hand"] == two
-						and s1 in hands_inv.entries
-					),
-					"removing shield permits 2H slot replacement"
-				)
-			else:
-				check(
-					hands_inv.equip(s1) and two in hands_inv.entries,
-					"replacing 2H with 1H returns it to the bag"
-				)
-				check(hands_inv.equip(shield), "1H replacement permits shield again")
+			_hand_conflict(o, design, rng, s1, weapon_id, shield_first)
+
+
+func _loot(o, design: Dictionary, loot: Dictionary, rng: RandomNumberGenerator) -> void:
 	# gen-loot rates over many kills (D18 numbers ± 3 %)
 	rng.seed = 99
 	var kills := 4000
-	var coins := 0
-	var gear := 0
-	var cons := 0
-	var feathers := 0
-	var bad := 0
-	var cookies := 0
-	var parrot: Model.Creature = o.creatures["parrot"]
-	for i in kills:
-		for it in Items.roll_loot(rng, 5, parrot, o, design):
-			match it.type:
-				&"coin":
-					coins += 1
-					bad += 1 if it.count != 1 + 2 * 5 else 0
-				&"consumable":
-					cons += 1
-					if it.subtype == &"cookie":
-						cookies += 1
-				&"ingredient":
-					feathers += 1
-				_:
-					gear += 1
-					bad += (
-						1
-						if (
-							it.rarity > Model.Rarity.LEGENDARY
-							or it.level < 16
-							or it.level > 18
-							or Items.slot_id(it, o) == &""
-						)
-						else 0
-					)
+	var counts := _loot_counts(o, design, rng, kills)
+	var coins: int = counts[0]
+	var gear: int = counts[1]
+	var cons: int = counts[2]
+	var feathers: int = counts[3]
+	var bad: int = counts[4]
+	var cookies: int = counts[5]
 	check(
 		absf(coins / float(kills) - float(loot["coins"]["chance"])) < 0.03,
 		"coin rate ≈ %.2f: %.3f" % [loot["coins"]["chance"], coins / float(kills)]
@@ -274,6 +178,9 @@ func _init() -> void:
 	check(not o.validate(), "c-loot-config rejects a chance above 1")
 	loot["gear-chance"] = 0.2
 	o.errors.clear()
+
+
+func _scene(o, design: Dictionary) -> void:
 	# scene: player with starting inventory, wolf that always drops, pick-up, quick item
 	InputMapBuilder.build(o.configs["keybinds"]["hybrid"])
 	var floor := StaticBody3D.new()
@@ -339,6 +246,131 @@ func _init() -> void:
 		ground.size() > 0 and ground[0].get_parent() == holder,
 		"ground items live under the creature's zone node"
 	)
+	await _pickup_and_use(p, ground)
+
+	print("items ok" if _failed == 0 else "items FAILED (%d)" % _failed)
+	quit(0 if _failed == 0 else 1)
+
+
+func _names_and_slots(
+	o, design: Dictionary, rng: RandomNumberGenerator, s1: Item, chest: Item, gloves: Item
+) -> void:
+	# gen-name: rarity prefix list; epic/legendary carry "of <Name>"
+	var n1 := Items.item_name(s1, o, design)
+	check(
+		n1.split(" ")[0] in o.configs["affixes"]["common"] and n1.ends_with("Iron Sword"),
+		"common name '<prefix> Iron Sword': %s" % n1
+	)
+	var leg := Items.generate(rng, &"weapon", &"sword", &"iron", 1, 4)
+	check(
+		" of " in Items.item_name(leg, o, design),
+		"legendary is named: %s" % Items.item_name(leg, o, design)
+	)
+	check(
+		Items.item_name(Item.stack(&"consumable", &"life-potion", 2), o, design) == "Life Potion",
+		"consumable name"
+	)
+	check(Items.item_name(Item.stack(&"coin", &"", 7), o, design) == "7 copper", "coin name")
+	# equips-in / c-slot-accepts
+	check(
+		(
+			Items.slot_id(s1, o) == &"main-hand"
+			and (
+				Items.slot_id(Items.generate(rng, &"weapon", &"shield", &"iron", 1, 0), o)
+				== &"off-hand"
+			)
+		),
+		"weapon slots by hands"
+	)
+	check(
+		(
+			Items.slot_id(chest, o) == &"chest"
+			and Items.slot_id(gloves, o) == &"gloves"
+			and Items.slot_id(Item.stack(&"consumable", &"apple", 1), o) == &""
+		),
+		"armor slots; consumables have none"
+	)
+
+
+func _inventory_equip(inv, s1: Item, s5: Item) -> void:
+	check(
+		inv.equip(s1) and inv.equipment[&"main-hand"] == s1 and inv.entries.size() == 2,
+		"equip moves to the slot"
+	)
+	check(
+		inv.equip(s5) and inv.equipment[&"off-hand"] == s5 and inv.equipment[&"main-hand"] == s1,
+		"second 1H occupies the legal off-hand"
+	)
+	check(not inv.equip(inv.first_consumable()), "consumables cannot be equipped")
+	_inventory_coins(inv)
+
+
+func _hand_conflict(
+	o,
+	design: Dictionary,
+	rng: RandomNumberGenerator,
+	s1: Item,
+	weapon_id: StringName,
+	shield_first: bool
+) -> void:
+	var hands_inv := Inventory.new(o, design, &"warrior", func(): return 1)
+	var two := Items.generate(
+		rng, &"weapon", weapon_id, Items.weapon_material(o.weapon_types[weapon_id]), 1, 0
+	)
+	var shield := Items.generate(rng, &"weapon", &"shield", &"iron", 1, 0)
+	for it in [s1, two, shield]:
+		hands_inv.add(it)
+	hands_inv.coins = 15
+	check(hands_inv.equip(s1), "hand-conflict setup: one-handed weapon")
+	check(hands_inv.equip(shield if shield_first else two), "valid 1H + shield or 2H alone")
+	var bag_before := hands_inv.entries.duplicate()
+	var worn_before := hands_inv.equipment.duplicate()
+	var changes := [0]
+	hands_inv.changed.connect(func(): changes[0] += 1)
+	var label := "%s shield-first=%s" % [weapon_id, shield_first]
+	check(
+		not hands_inv.equip(two if shield_first else shield),
+		"%s: conflicting equip rejected" % label
+	)
+	_hand_rejection_state(hands_inv, bag_before, worn_before, changes, label)
+
+	_hand_identities(hands_inv, s1, two, shield, label)
+
+	_hand_replacement(hands_inv, s1, two, shield, shield_first)
+
+
+func _hand_identities(hands_inv, s1: Item, two: Item, shield: Item, label: String) -> void:
+	for it in [s1, two, shield]:
+		check(
+			(
+				it.count == 1
+				and (hands_inv.entries.count(it) + hands_inv.equipment.values().count(it) == 1)
+			),
+			"%s: items retained exactly once" % label
+		)
+
+
+func _loot_counts(o, design: Dictionary, rng: RandomNumberGenerator, kills: int) -> Array:
+	var coins := 0
+	var gear := 0
+	var cons := 0
+	var feathers := 0
+	var bad := 0
+	var cookies := 0
+	var parrot: Model.Creature = o.creatures["parrot"]
+	for i in kills:
+		for it in Items.roll_loot(rng, 5, parrot, o, design):
+			var sample := _count_drop(it, o)
+			coins += sample[0]
+			gear += sample[1]
+			cons += sample[2]
+			feathers += sample[3]
+			bad += sample[4]
+			cookies += sample[5]
+	return [coins, gear, cons, feathers, bad, cookies]
+
+
+func _pickup_and_use(p, ground: Array) -> void:
 	var before: int = p.inventory.entries.size()
 	for g in ground:
 		p.pick_up(g)
@@ -348,6 +380,62 @@ func _init() -> void:
 		"picked up: %d copper, %d entries" % [p.inventory.coins, p.inventory.entries.size()]
 	)
 	check(get_nodes_in_group("ground-items").is_empty(), "ground items gone after pick-up")
+	_quick_and_unequip(p)
+
+
+func _inventory_coins(inv) -> void:
+	inv.add(Item.stack(&"coin", &"", 12))
+	inv.add(Item.stack(&"coin", &"", 3))
+	check(inv.coins == 15 and inv.entries.size() == 1, "coins are a counter, not an entry")
+
+
+func _hand_rejection_state(
+	hands_inv, bag_before: Array, worn_before: Dictionary, changes: Array, label: String
+) -> void:
+	check(
+		hands_inv.entries == bag_before and hands_inv.equipment == worn_before,
+		"%s: bag order and worn items unchanged" % label
+	)
+	check(
+		changes[0] == 0 and hands_inv.coins == 15, "%s: no changed signal or coin mutation" % label
+	)
+
+
+func _hand_replacement(hands_inv, s1: Item, two: Item, shield: Item, shield_first: bool) -> void:
+	if shield_first:
+		hands_inv.unequip(&"off-hand")
+		_replace_shield(hands_inv, s1, two)
+	else:
+		check(
+			hands_inv.equip(s1) and two in hands_inv.entries,
+			"replacing 2H with 1H returns it to the bag"
+		)
+		check(hands_inv.equip(shield), "1H replacement permits shield again")
+
+
+func _count_drop(it, o) -> Array:
+	var coins := 0
+	var gear := 0
+	var cons := 0
+	var feathers := 0
+	var bad := 0
+	var cookies := 0
+	match it.type:
+		&"coin":
+			coins += 1
+			bad += int(it.count != 1 + 2 * 5)
+		&"consumable":
+			cons += 1
+			cookies += int(it.subtype == &"cookie")
+		&"ingredient":
+			feathers += 1
+		_:
+			gear += 1
+			bad += 1 if _invalid_gear(it, o) else 0
+	return [coins, gear, cons, feathers, bad, cookies]
+
+
+func _quick_and_unequip(p) -> void:
 	p.hp = 10.0
 	check(
 		(
@@ -361,5 +449,23 @@ func _init() -> void:
 	check(
 		p.inventory.equipment.is_empty() and is_zero_approx(p.armor), "unequip clears gear; armor 0"
 	)
-	print("items ok" if _failed == 0 else "items FAILED (%d)" % _failed)
-	quit(0 if _failed == 0 else 1)
+
+
+func _replace_shield(hands_inv, s1: Item, two: Item) -> void:
+	check(
+		(
+			hands_inv.equip(two)
+			and hands_inv.equipment[&"main-hand"] == two
+			and s1 in hands_inv.entries
+		),
+		"removing shield permits 2H slot replacement"
+	)
+
+
+func _invalid_gear(it, o) -> bool:
+	return (
+		it.rarity > Model.Rarity.LEGENDARY
+		or it.level < 16
+		or it.level > 18
+		or Items.slot_id(it, o) == &""
+	)

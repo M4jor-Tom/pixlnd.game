@@ -54,23 +54,29 @@ static func hp(it: Item, o: Model.Ontology) -> float:
 	var slot := slot_id(it, o)
 	if slot not in [&"main-hand", &"off-hand", &"chest", &"shoulders", &"gloves", &"boots"]:
 		return 0.0
+	return _hp_in_slot(it, o, slot)
+
+
+static func _hp_in_slot(it: Item, o: Model.Ontology, slot: StringName) -> float:
 	for s in o.configs["equipment-slots"]["slots"]:
 		if StringName(s["id"]) == slot and s.has("hp-mult"):
-			var cfg: Dictionary = o.configs["generators"]["design"]["gear-hp"]
-			var material: Model.MaterialDef = o.materials[it.material]
-			var bonus := (
-				float(material.raw["hp-bonus"])
-				if it.material in [&"iron", &"cotton", &"linen"]
-				else 0.0
-			)
-			var n := it.level + float(cfg["upgrade-step"]) * it.upgrade_count
-			return (
-				Model.stat_curve(n, it.rarity)
-				* float(cfg["curve-mult"])
-				* float(s["hp-mult"])
-				* (float(cfg["base"]) + bonus)
-			)
+			return _slot_hp(it, o, s)
 	return 0.0
+
+
+static func _slot_hp(it: Item, o: Model.Ontology, s) -> float:
+	var cfg: Dictionary = o.configs["generators"]["design"]["gear-hp"]
+	var material: Model.MaterialDef = o.materials[it.material]
+	var bonus := (
+		float(material.raw["hp-bonus"]) if it.material in [&"iron", &"cotton", &"linen"] else 0.0
+	)
+	var n := it.level + float(cfg["upgrade-step"]) * it.upgrade_count
+	return (
+		Model.stat_curve(n, it.rarity)
+		* float(cfg["curve-mult"])
+		* float(s["hp-mult"])
+		* (float(cfg["base"]) + bonus)
+	)
 
 
 static func _defence_stat(
@@ -79,6 +85,16 @@ static func _defence_stat(
 	var slot := slot_id(it, o)
 	if slot == &"" or it.type == &"weapon":
 		return 0.0
+	return _slot_defence(it, o, slot, material_key, missing_material_default)
+
+
+static func _slot_defence(
+	it: Item,
+	o: Model.Ontology,
+	slot: StringName,
+	material_key: String,
+	missing_material_default: Variant
+) -> float:
 	var mult := 0.0
 	for s in o.configs["equipment-slots"]["slots"]:
 		if StringName(s["id"]) == slot:
@@ -86,6 +102,16 @@ static func _defence_stat(
 			if not _valid_multiplier(slot_mult):
 				return 0.0
 			mult = float(slot_mult)
+	return _material_defence(it, o, mult, material_key, missing_material_default)
+
+
+static func _material_defence(
+	it: Item,
+	o: Model.Ontology,
+	mult: float,
+	material_key: String,
+	missing_material_default: Variant
+) -> float:
 	var m: Model.MaterialDef = o.materials[it.material]
 	var material_mult: Variant = m.raw.get(material_key, missing_material_default)
 	if not _valid_multiplier(material_mult):
@@ -96,7 +122,10 @@ static func _defence_stat(
 static func _valid_multiplier(value: Variant) -> bool:
 	if not value is int and not value is float:
 		return false
-	var number := float(value)
+	return _finite_multiplier(float(value))
+
+
+static func _finite_multiplier(number: float) -> bool:
 	return not is_nan(number) and not is_inf(number) and number >= 0.0
 
 
@@ -111,30 +140,52 @@ static func slot_id(it: Item, o: Model.Ontology) -> StringName:
 	if it == null:
 		return &""
 	if it.type == &"weapon":
-		if not o.weapon_types.has(it.subtype):
-			return &""
-		var wt: Model.WeaponType = o.weapon_types[it.subtype]
-		if wt.hands == Model.Hands.NONE:
-			return &""
-		return &"off-hand" if wt.hands == Model.Hands.OFFHAND else &"main-hand"
+		return _weapon_slot(it, o)
+	return _nonweapon_slot(it, o)
+
+
+static func _weapon_slot(it: Item, o: Model.Ontology) -> StringName:
+	if not o.weapon_types.has(it.subtype):
+		return &""
+	var wt: Model.WeaponType = o.weapon_types[it.subtype]
+	if wt.hands == Model.Hands.NONE:
+		return &""
+	return &"off-hand" if wt.hands == Model.Hands.OFFHAND else &"main-hand"
+
+
+static func _nonweapon_slot(it: Item, o: Model.Ontology) -> StringName:
 	for s in o.configs["equipment-slots"]["slots"]:
-		if String(it.type) not in s.get("accepts", []):
-			continue
-		var restrictions: Array = s.get("accepts-subtypes", [])
-		if not restrictions.is_empty() and it.subtype not in restrictions:
+		var accepted = _slot_accepts(it, s)
+		if accepted == null:
+			return &""
+		if not accepted:
 			continue
 		return StringName(s["id"])
+
 	return &""
 
 
-static func weapon_material_allowed(it: Item, o: Model.Ontology) -> bool:
-	if (
-		it == null
-		or it.type != &"weapon"
-		or not o.weapon_types.has(it.subtype)
-		or not o.materials.has(it.material)
-	):
+## A native evaluation abort returns null, not an ordinary false/non-match.
+static func _slot_accepts(it: Item, s) -> Variant:
+	if String(it.type) not in s.get("accepts", []):
 		return false
+	return _slot_subtype(it, s)
+
+
+static func _slot_subtype(it: Item, s) -> Variant:
+	var restrictions: Array = s.get("accepts-subtypes", [])
+	return not (not restrictions.is_empty() and it.subtype not in restrictions)
+
+
+static func weapon_material_allowed(it: Item, o: Model.Ontology) -> bool:
+	if it == null or it.type != &"weapon":
+		return false
+	if not o.weapon_types.has(it.subtype) or not o.materials.has(it.material):
+		return false
+	return _weapon_material_matches(it, o)
+
+
+static func _weapon_material_matches(it: Item, o: Model.Ontology) -> bool:
 	var raw: String = str((o.weapon_types[it.subtype] as Model.WeaponType).raw.get("material", ""))
 	for option in raw.split("|"):
 		if it.material == StringName(option.strip_edges().split(" ")[0]):
@@ -157,16 +208,21 @@ static func item_name(it: Item, o: Model.Ontology, design: Dictionary) -> String
 		&"consumable":
 			return o.consumables[it.subtype].display_name
 		&"ingredient":
-			return (
-				o.materials[it.subtype].display_name
-				if (
-					o.materials.has(it.subtype)
-					and o.materials[it.subtype].raw.get("kind") == "spirit"
-				)
-				else str(o.configs["ingredients"][it.subtype]["name"])
-			)
+			return _ingredient_name(it, o)
 	if slot_id(it, o) == &"":
 		return String(it.type)
+	return _gear_name(it, o, design)
+
+
+static func _ingredient_name(it: Item, o: Model.Ontology) -> String:
+	return (
+		o.materials[it.subtype].display_name
+		if (o.materials.has(it.subtype) and o.materials[it.subtype].raw.get("kind") == "spirit")
+		else str(o.configs["ingredients"][it.subtype]["name"])
+	)
+
+
+static func _gear_name(it: Item, o: Model.Ontology, design: Dictionary) -> String:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = it.modifier * 31 + it.minus_modifier
 	var rid := rarity_id(it.rarity, o)
@@ -249,9 +305,16 @@ static func roll_loot(
 		var pool: Array = loot["consumable-pool"]
 		out.append(Item.stack(&"consumable", StringName(pool[rng.randi() % pool.size()]), 1, power))
 	if c != null:
-		for d in c.drops:  # ponytail: drops without an ingredients.json row (popcorn, jellies) are skipped
-			if o.configs["ingredients"].has(d) and rng.randf() < float(loot["species-drop-chance"]):
-				out.append(Item.stack(&"ingredient", d, 1))
+		return _species_drops(rng, c, o, loot, out)
+	return out
+
+
+static func _species_drops(
+	rng: RandomNumberGenerator, c: Model.Creature, o: Model.Ontology, loot: Dictionary, out: Array
+) -> Array:
+	for d in c.drops:  # ponytail: drops without an ingredients.json row (popcorn, jellies) are skipped
+		if o.configs["ingredients"].has(d) and rng.randf() < float(loot["species-drop-chance"]):
+			out.append(Item.stack(&"ingredient", d, 1))
 	return out
 
 

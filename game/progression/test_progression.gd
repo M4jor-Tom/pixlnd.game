@@ -29,48 +29,8 @@ func _init() -> void:
 	check(o.validate(), "ontology valid")
 	var design: Dictionary = o.configs["generators"]["design"]
 	var prog: Dictionary = design["progression"]
-	# level-formula (stats.json table)
-	for pair in [[1, 50], [2, 97], [5, 216], [10, 360], [20, 537], [50, 760], [100, 881]]:
-		check(
-			Model.xp_to_next(pair[0]) == pair[1],
-			"xp-to-next L%d = %d: %d" % [pair[0], pair[1], Model.xp_to_next(pair[0])]
-		)
-	check(
-		(
-			Model.power_for_level(1) == 1
-			and Model.power_for_level(10) == 32
-			and Model.power_for_level(1981) == 100
-		),
-		"power table"
-	)
-	# xp-for-kill: even level = fraction of xp-to-next; 10 below = 0; far above capped ×2
-	check(
-		Model.xp_for_kill(2, 2, prog) == int(97 * 0.2),
-		"even kill L2 = 19: %d" % Model.xp_for_kill(2, 2, prog)
-	)
-	check(Model.xp_for_kill(1, 11, prog) == 0, "grey kill (10 below) = 0")
-	check(
-		Model.xp_for_kill(30, 1, prog) == int(Model.xp_to_next(30) * 0.2 * 2.0),
-		"far above capped at ×2"
-	)
-	check(
-		Model.xp_for_kill(3, 1, prog) > Model.xp_for_kill(3, 3, prog),
-		"higher creature than us = more xp"
-	)
-	# settle: overflow carries, several levels at once, never below current level
-	var s := Progression.settle(1, 49)
-	check(s["level"] == 1 and s["xp"] == 49 and s["gained"] == 0, "49 xp stays L1")
-	s = Progression.settle(1, 63)
-	check(
-		s["level"] == 2 and s["xp"] == 13 and s["gained"] == 1, "63 xp → L2 with 13 carried: %s" % s
-	)
-	s = Progression.settle(1, 50 + 97 + 5)
-	check(s["level"] == 3 and s["xp"] == 5 and s["gained"] == 2, "two levels in one call: %s" % s)
-	# c-xp-config fires
-	prog["kill-fraction"] = 1.5
-	check(not o.validate(), "c-xp-config rejects kill-fraction > 1")
-	prog["kill-fraction"] = 0.2
-	o.errors.clear()
+	_formulas(o, prog)
+
 	# scene: player kills three L2 wolves → 3 × 21 = 63 xp → level 2
 	InputMapBuilder.build(o.configs["keybinds"]["hybrid"])
 	var floor := StaticBody3D.new()
@@ -117,6 +77,51 @@ func _init() -> void:
 		p.level == 1 and p.xp == 21 and p.skill_points == 0,
 		"one L2 kill at L1 = 21 xp, still L1: %d xp" % p.xp
 	)
+	_level_up(p, wolves, levels, hp1)
+
+	print("progression ok" if _failed == 0 else "progression FAILED (%d)" % _failed)
+	quit(0 if _failed == 0 else 1)
+
+
+func _formulas(o, prog: Dictionary) -> void:
+	# level-formula (stats.json table)
+	for pair in [[1, 50], [2, 97], [5, 216], [10, 360], [20, 537], [50, 760], [100, 881]]:
+		check(
+			Model.xp_to_next(pair[0]) == pair[1],
+			"xp-to-next L%d = %d: %d" % [pair[0], pair[1], Model.xp_to_next(pair[0])]
+		)
+	check(
+		(
+			Model.power_for_level(1) == 1
+			and Model.power_for_level(10) == 32
+			and Model.power_for_level(1981) == 100
+		),
+		"power table"
+	)
+	# xp-for-kill: even level = fraction of xp-to-next; 10 below = 0; far above capped ×2
+	check(
+		Model.xp_for_kill(2, 2, prog) == int(97 * 0.2),
+		"even kill L2 = 19: %d" % Model.xp_for_kill(2, 2, prog)
+	)
+	check(Model.xp_for_kill(1, 11, prog) == 0, "grey kill (10 below) = 0")
+	check(
+		Model.xp_for_kill(30, 1, prog) == int(Model.xp_to_next(30) * 0.2 * 2.0),
+		"far above capped at ×2"
+	)
+	check(
+		Model.xp_for_kill(3, 1, prog) > Model.xp_for_kill(3, 3, prog),
+		"higher creature than us = more xp"
+	)
+	_settle()
+
+	# c-xp-config fires
+	prog["kill-fraction"] = 1.5
+	check(not o.validate(), "c-xp-config rejects kill-fraction > 1")
+	prog["kill-fraction"] = 0.2
+	o.errors.clear()
+
+
+func _level_up(p, wolves: Array, levels: Array, hp1: float) -> void:
 	p.hp = 10.0
 	wolves[1].take_damage(1e9, p)
 	wolves[2].take_damage(1e9, p)
@@ -133,5 +138,15 @@ func _init() -> void:
 		),
 		"level-up: max hp %.0f → %.0f, healed to full (%.0f)" % [hp1, p.max_hp, p.hp]
 	)
-	print("progression ok" if _failed == 0 else "progression FAILED (%d)" % _failed)
-	quit(0 if _failed == 0 else 1)
+
+
+func _settle() -> void:
+	# settle: overflow carries, several levels at once, never below current level
+	var s := Progression.settle(1, 49)
+	check(s["level"] == 1 and s["xp"] == 49 and s["gained"] == 0, "49 xp stays L1")
+	s = Progression.settle(1, 63)
+	check(
+		s["level"] == 2 and s["xp"] == 13 and s["gained"] == 1, "63 xp → L2 with 13 carried: %s" % s
+	)
+	s = Progression.settle(1, 50 + 97 + 5)
+	check(s["level"] == 3 and s["xp"] == 5 and s["gained"] == 2, "two levels in one call: %s" % s)

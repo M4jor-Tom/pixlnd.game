@@ -54,6 +54,25 @@ func _refresh() -> void:
 	if player == null:
 		return
 	var inv = player.inventory
+	if not _refresh_worn(inv):
+		return
+
+	if not _refresh_entries(inv):
+		return
+
+	if touch_ui != null:
+		touch_ui.fit_panel(self)
+
+
+func _refresh_entries(inv) -> bool:
+	for button in touch_buttons:
+		button.disabled = true
+	_list.clear()
+	_rows.clear()
+	return _refresh_bag(inv)
+
+
+func _refresh_worn(inv) -> bool:
 	var worn: PackedStringArray = ["%d copper" % inv.coins]
 	for slot in inv.equipment:
 		worn.append("%s: %s" % [slot, player.item_label(inv.equipment[slot])])
@@ -63,10 +82,10 @@ func _refresh() -> void:
 		for line in worn:
 			_touch_worn.add_item(line)
 			_touch_worn.set_item_selectable(_touch_worn.item_count - 1, false)
-	for button in touch_buttons:
-		button.disabled = true
-	_list.clear()
-	_rows.clear()
+	return true
+
+
+func _refresh_bag(inv) -> bool:
 	for it in inv.entries:
 		_list.add_item(
 			(
@@ -79,8 +98,7 @@ func _refresh() -> void:
 			_list.set_item_custom_fg_color(_list.item_count - 1, Color.RED)
 		_rows.append(it)
 
-	if touch_ui != null:
-		touch_ui.fit_panel(self)
+	return true
 
 
 func _on_activated(index: int) -> void:

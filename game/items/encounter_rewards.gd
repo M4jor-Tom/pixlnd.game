@@ -78,15 +78,26 @@ static func completion_classes(party: Array, volumes: Array, finisher) -> Array:
 	var classes: Array = []
 	for member in party:
 		var cls := class_of(member)
-		if (
-			cls != ""
-			and State.inside(volumes, [Targeting.position_of(member)])
-			and not cls in classes
-		):
+		var inside = _inside_class(cls, member, volumes, classes)
+		if inside == null:
+			return []
+		if inside:
 			classes.append(cls)
 	classes.sort()
 	if classes.is_empty():
-		var cls := class_of(finisher)
-		if cls != "":
-			classes.append(cls)
+		return _finisher_classes(finisher, classes)
+	return classes
+
+
+## A native evaluation abort returns null, not an ordinary false/non-match.
+static func _inside_class(cls: String, member, volumes: Array, classes: Array) -> Variant:
+	return (
+		cls != "" and State.inside(volumes, [Targeting.position_of(member)]) and not cls in classes
+	)
+
+
+static func _finisher_classes(finisher, classes: Array) -> Array:
+	var cls := class_of(finisher)
+	if cls != "":
+		classes.append(cls)
 	return classes

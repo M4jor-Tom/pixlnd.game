@@ -56,7 +56,7 @@ func _init() -> void:
 
 func run() -> void:
 	var scratch := OS.get_environment("PIXLND_TEST_DIR")
-	if not scratch.is_absolute_path() or not DirAccess.dir_exists_absolute(scratch):
+	if not _scratch_ready(scratch):
 		printerr("INFRA: existing isolated absolute PIXLND_TEST_DIR required")
 		quit(2)
 		return
@@ -68,6 +68,16 @@ func run() -> void:
 	var d: Dictionary = o.configs.generators.design
 	var save := Save.new(o, d)
 	var rng := RandomNumberGenerator.new()
+	_imports(save, rng)
+
+	_ordinary(o, d, rng)
+
+	_producers(o, d, save)
+
+	_finish(scratch)
+
+
+func _imports(save: Save, rng: RandomNumberGenerator) -> void:
 	for pair in [[0, 1], [1, 1], [32, 32], [100, 100], [101, 100]]:
 		rng.seed = 42
 		var gear = Items.generate(rng, &"weapon", &"sword", &"iron", pair[0], 0)
@@ -84,45 +94,14 @@ func run() -> void:
 		"spirit"
 	]:
 		for power in [0, 1, 100, 101]:
-			var it = Items.generate(rng, &"weapon", &"sword", &"iron", 1, 0)
-			if kind not in ["weapon", "consumable", "spirit"]:
-				it = Items.generate(rng, StringName(kind), &"", &"iron", 1, 0)
-			if kind == "consumable":
-				it = Item.stack(&"consumable", &"life-potion", 1)
-			elif kind == "spirit":
-				it = Item.stack(&"ingredient", &"spirit-fire", 1)
-			it.level = power  # serialized boundary: do not let the constructor sanitize it
-			save.errors.clear()
-			var accepted := save.validate_item(Save.item_data(it), "test.item")
-			check(
-				accepted == (power in [1, 100]),
-				"import %s power%d" % [kind, power],
-				{"accepted": accepted, "errors": save.errors.duplicate()}
-			)
+			_import(save, rng, kind, power)
+
+
+func _ordinary(o, d: Dictionary, rng: RandomNumberGenerator) -> void:
 	for anchor in [
 		[1, [1, 2]], [10, [31, 32, 33]], [100, [83, 84, 85]], [200, [90, 91, 92]], [1981, [99, 100]]
 	]:
-		var gear_powers := {}
-		var consumable_powers := {}
-		var coins := {}
-		for seed_value in range(128):
-			rng.seed = seed_value
-			var payload := Items.roll_loot(rng, anchor[0], null, o, d)
-			for it in payload:
-				if it.type == &"coin":
-					coins[it.count] = true
-				elif it.type == &"consumable":
-					consumable_powers[it.level] = true
-				else:
-					gear_powers[it.level] = true
-		var gp := gear_powers.keys()
-		var cp := consumable_powers.keys()
-		gp.sort()
-		cp.sort()
-		check(gp == anchor[1], "ordinary L%d gear powers" % anchor[0], gp)
-		check(cp == anchor[1], "ordinary L%d consumable powers" % anchor[0], cp)
-		if anchor[0] == 10:
-			check(coins.keys() == [21], "L10 coin source units unchanged", coins.keys())
+		_ordinary_band(o, d, rng, anchor)
 	# Unit conversion must not consume randomness or alter any nonpower field.
 	for seed_value in range(32):
 		rng.seed = seed_value
@@ -137,45 +116,9 @@ func run() -> void:
 		fingerprints["ordinary/%d" % seed_value] = {
 			"rng_state": str(state_after), "nonpower": nonpower(low)
 		}
-	var gen := WorldGen.new(8158, d, o.landscapes)
-	var land = gen.land_at(Vector2i.ZERO)
-	var layout := EncounterGen.make_site(
-		gen, land, Vector2i.ZERO, 0, "ruins", 0, d["initial-encounters"]
-	)
-	var stable: Dictionary = layout.assignments.filter(func(a): return a.boss and a.spirit != "")[0]
-	var kill := Rewards.kill_payload(stable, 0, 10, 3, o, d)
-	check(kill[-2].level == 32, "current boss L10 guaranteed gear32", kill[-2].level)
-	check(kill[-1].level == 10, "initial boss L3 spirit10", kill[-1].level)
-	check(
-		str(kill[-1].subtype) == str(stable.spirit) and kill[-1].count == 1,
-		"stable spirit type/count",
-		Save.item_data(kill[-1])
-	)
-	fingerprints.boss = nonpower(kill)
-	var high_boss := Rewards.kill_payload(stable, 1, 1981, 200, o, d)
-	check(
-		high_boss[-2].level == 100 and high_boss[-1].level == 91,
-		"high current/initial boss sources remain distinct",
-		[high_boss[-2].level, high_boss[-1].level]
-	)
-	for anchor in [[1, 1], [10, 32], [100, 84], [200, 91], [1981, 100]]:
-		var package := Rewards.package_payload("proof/mission", 2, anchor[0], &"warrior", o, d)
-		check(
-			package[0].level == anchor[1] and package[2].level == anchor[1],
-			"mission L%d gear/potion power%d" % anchor,
-			[package[0].level, package[2].level]
-		)
-		check(
-			(
-				package[1].count == 60
-				and package[2].count == 1
-				and package[3].count == 3
-				and package[3].subtype == &"ruby"
-			),
-			"mission unchanged coin/potion/gems",
-			package.map(Save.item_data)
-		)
-		fingerprints["package/%d" % anchor[0]] = nonpower(package)
+
+
+func _vendors(o, d: Dictionary, gen, land) -> void:
 	var trace := LevelTrace.new(gen)
 	var stock := Shop.stock(&"weapon-vendor", trace, land, {"centre": [0, 0]}, 10, o, d)
 	check(
@@ -215,13 +158,9 @@ func run() -> void:
 			high_stock.all(func(it): return it.level >= 99 and it.level <= 100),
 			"high vendor source bounded " + str(role)
 		)
-	var ordinary_ingredient = Item.stack(&"ingredient", &"wood-cube", 1, 1981)
-	save.errors.clear()
-	check(
-		save.validate_item(Save.item_data(ordinary_ingredient), "test.item"),
-		"nonpower ingredient is not source-converted or capped",
-		save.errors.duplicate()
-	)
+
+
+func _tables(d: Dictionary, save, layout: Dictionary) -> void:
 	var world := World.new()
 	world.design = d
 	var tables := {
@@ -259,15 +198,12 @@ func run() -> void:
 		"canonical power table receipt accepted by real validator",
 		save.errors.duplicate()
 	)
-	for key in tables.rewards:
-		var bad: Dictionary = tables.duplicate(true)
-		bad.rewards[key].payload[1].level = bad.rewards[key].level
-		if bad.rewards[key].level == 1:
-			continue
-		save.errors.clear()
-		save.validate_features(bad, layout, 0.0)
-		check(not save.errors.is_empty(), "old source-unit table receipt rejected " + key)
+	_old_table_powers(save, tables, layout)
+
 	world.free()
+
+
+func _historical_kill(save, stable: Dictionary, kill: Array) -> void:
 	var key := "kill/0/" + str(stable.key)
 	var site_id := "proof/site/0,0/ruins/0"
 	var site := {
@@ -320,6 +256,135 @@ func run() -> void:
 		),
 		"receipt/current/initial source records unchanged"
 	)
+
+
+func _boss(o, d: Dictionary, stable: Dictionary) -> Array:
+	var kill := Rewards.kill_payload(stable, 0, 10, 3, o, d)
+	check(kill[-2].level == 32, "current boss L10 guaranteed gear32", kill[-2].level)
+	check(kill[-1].level == 10, "initial boss L3 spirit10", kill[-1].level)
+	check(
+		str(kill[-1].subtype) == str(stable.spirit) and kill[-1].count == 1,
+		"stable spirit type/count",
+		Save.item_data(kill[-1])
+	)
+	fingerprints.boss = nonpower(kill)
+	var high_boss := Rewards.kill_payload(stable, 1, 1981, 200, o, d)
+	check(
+		high_boss[-2].level == 100 and high_boss[-1].level == 91,
+		"high current/initial boss sources remain distinct",
+		[high_boss[-2].level, high_boss[-1].level]
+	)
+	return kill
+
+
+func _packages(o, d: Dictionary) -> void:
+	for anchor in [[1, 1], [10, 32], [100, 84], [200, 91], [1981, 100]]:
+		_package(o, d, anchor)
+
+
+func _import(save: Save, rng: RandomNumberGenerator, kind: String, power: int) -> void:
+	var it = Items.generate(rng, &"weapon", &"sword", &"iron", 1, 0)
+	if kind not in ["weapon", "consumable", "spirit"]:
+		it = Items.generate(rng, StringName(kind), &"", &"iron", 1, 0)
+	if kind == "consumable":
+		it = Item.stack(&"consumable", &"life-potion", 1)
+	elif kind == "spirit":
+		it = Item.stack(&"ingredient", &"spirit-fire", 1)
+	it.level = power  # serialized boundary: do not let the constructor sanitize it
+	save.errors.clear()
+	var accepted := save.validate_item(Save.item_data(it), "test.item")
+	check(
+		accepted == (power in [1, 100]),
+		"import %s power%d" % [kind, power],
+		{"accepted": accepted, "errors": save.errors.duplicate()}
+	)
+
+
+func _ordinary_band(o, d: Dictionary, rng: RandomNumberGenerator, anchor: Array) -> void:
+	var gear_powers := {}
+	var consumable_powers := {}
+	var coins := {}
+	for seed_value in range(128):
+		rng.seed = seed_value
+		var payload := Items.roll_loot(rng, anchor[0], null, o, d)
+		for it in payload:
+			if it.type == &"coin":
+				coins[it.count] = true
+			elif it.type == &"consumable":
+				consumable_powers[it.level] = true
+			else:
+				gear_powers[it.level] = true
+	var gp := gear_powers.keys()
+	var cp := consumable_powers.keys()
+	gp.sort()
+	cp.sort()
+	check(gp == anchor[1], "ordinary L%d gear powers" % anchor[0], gp)
+	check(cp == anchor[1], "ordinary L%d consumable powers" % anchor[0], cp)
+	if anchor[0] == 10:
+		check(coins.keys() == [21], "L10 coin source units unchanged", coins.keys())
+
+
+func _old_table_powers(save, tables: Dictionary, layout: Dictionary) -> void:
+	for key in tables.rewards:
+		var bad: Dictionary = tables.duplicate(true)
+		bad.rewards[key].payload[1].level = bad.rewards[key].level
+		if bad.rewards[key].level == 1:
+			continue
+		save.errors.clear()
+		save.validate_features(bad, layout, 0.0)
+		check(not save.errors.is_empty(), "old source-unit table receipt rejected " + key)
+
+
+func _producers(o, d: Dictionary, save: Save) -> void:
+	var gen := WorldGen.new(8158, d, o.landscapes)
+	var land = gen.land_at(Vector2i.ZERO)
+	var layout := EncounterGen.make_site(
+		gen, land, Vector2i.ZERO, 0, "ruins", 0, d["initial-encounters"]
+	)
+	var stable: Dictionary = layout.assignments.filter(func(a): return a.boss and a.spirit != "")[0]
+	var kill := _boss(o, d, stable)
+
+	_packages(o, d)
+
+	_vendors(o, d, gen, land)
+
+	var ordinary_ingredient = Item.stack(&"ingredient", &"wood-cube", 1, 1981)
+	save.errors.clear()
+	check(
+		save.validate_item(Save.item_data(ordinary_ingredient), "test.item"),
+		"nonpower ingredient is not source-converted or capped",
+		save.errors.duplicate()
+	)
+	_tables(d, save, layout)
+
+	_historical_kill(save, stable, kill)
+
+
+func _package(o, d: Dictionary, anchor: Array) -> void:
+	var package := Rewards.package_payload("proof/mission", 2, anchor[0], &"warrior", o, d)
+	check(
+		package[0].level == anchor[1] and package[2].level == anchor[1],
+		"mission L%d gear/potion power%d" % anchor,
+		[package[0].level, package[2].level]
+	)
+	check(
+		(
+			package[1].count == 60
+			and package[2].count == 1
+			and package[3].count == 3
+			and package[3].subtype == &"ruby"
+		),
+		"mission unchanged coin/potion/gems",
+		package.map(Save.item_data)
+	)
+	fingerprints["package/%d" % anchor[0]] = nonpower(package)
+
+
+func _scratch_ready(scratch: String) -> bool:
+	return not (not scratch.is_absolute_path() or not DirAccess.dir_exists_absolute(scratch))
+
+
+func _finish(scratch: String) -> void:
 	var f := FileAccess.open(scratch.path_join("nonpower-baseline.json"), FileAccess.WRITE)
 	f.store_string(JSON.stringify(fingerprints, "\t"))
 	f.close()

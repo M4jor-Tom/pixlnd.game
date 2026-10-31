@@ -30,20 +30,35 @@ func add(it: Item) -> void:
 		changed.emit()
 		return
 	if String(it.type) in _stackable:
-		for e in entries:
-			if (
-				e.type == it.type
-				and e.subtype == it.subtype
-				and e.level == it.level
-				and e.rarity == it.rarity
-			):
-				e.count += it.count
-				changed.emit()
-				return
-	elif entries.has(it) or equipment.values().has(it):
+		_add_stack(it)
+		return
+	if entries.has(it) or equipment.values().has(it):
 		return
 	entries.append(it)
 	changed.emit()
+
+
+func _add_stack(it: Item) -> void:
+	for e in entries:
+		var same = _same_stack(e, it)
+		if same == null:
+			return  # Preserve add's abort boundary for malformed public bag entries.
+		if same:
+			e.count += it.count
+			changed.emit()
+			return
+	entries.append(it)
+	changed.emit()
+
+
+## A native evaluation abort returns null, not an ordinary false/non-match.
+func _same_stack(e, it: Item) -> Variant:
+	return (
+		e.type == it.type
+		and e.subtype == it.subtype
+		and e.level == it.level
+		and e.rarity == it.rarity
+	)
 
 
 func remove(it: Item, n := 1) -> void:
@@ -55,15 +70,27 @@ func remove(it: Item, n := 1) -> void:
 
 ## Moves a bag item into its prospective slot; all legality checks happen before mutation.
 func equip(it: Item) -> bool:
-	if it == null or entries.count(it) != 1 or equipment.values().has(it):
+	if not _carried_once(it):
 		return false
 	var slot := _equip_slot(it)
 	if slot == &"" or not _item_allowed(it, slot):
 		return false
+	return _equip_allowed(it, slot)
+
+
+func _equip_allowed(it: Item, slot: StringName) -> bool:
 	var next := equipment.duplicate()
 	next[slot] = it
 	if not _loadout_valid(next.get(&"main-hand"), next.get(&"off-hand")):
 		return false
+	return _commit_equip(it, slot)
+
+
+func _carried_once(it: Item) -> bool:
+	return not (it == null or entries.count(it) != 1 or equipment.values().has(it))
+
+
+func _commit_equip(it: Item, slot: StringName) -> bool:
 	if equipment.has(slot):
 		entries.append(equipment[slot])
 	entries.erase(it)
@@ -76,20 +103,31 @@ func _equip_slot(it: Item) -> StringName:
 	var slot := Items.slot_id(it, _o)
 	if slot == &"ring-left" and equipment.has(slot) and not equipment.has(&"ring-right"):
 		return &"ring-right"
+	return _hand_slot(it, slot)
+
+
+func _hand_slot(it: Item, slot: StringName) -> StringName:
 	if slot != &"main-hand" or it.type != &"weapon" or not _o.weapon_types.has(it.subtype):
 		return slot
 	var wt: Model.WeaponType = _o.weapon_types[it.subtype]
 	var current: Item = equipment.get(&"main-hand")
+	return _available_hand(wt, current)
+
+
+func _available_hand(wt: Model.WeaponType, current: Item) -> StringName:
 	if (
 		wt.hands == Model.Hands.ONE_HANDED
 		and current != null
 		and _o.weapon_types.has(current.subtype)
 	):
-		var current_hands: Model.Hands = (
-			(_o.weapon_types[current.subtype] as Model.WeaponType).hands
-		)
-		if current_hands == Model.Hands.ONE_HANDED and not equipment.has(&"off-hand"):
-			return &"off-hand"
+		return _second_hand_slot(current)
+	return &"main-hand"
+
+
+func _second_hand_slot(current: Item) -> StringName:
+	var current_hands: Model.Hands = (_o.weapon_types[current.subtype] as Model.WeaponType).hands
+	if current_hands == Model.Hands.ONE_HANDED and not equipment.has(&"off-hand"):
+		return &"off-hand"
 	return &"main-hand"
 
 
@@ -106,24 +144,42 @@ func class_allowed(it: Item) -> bool:
 	if it == null:
 		return false
 	if it.type == &"weapon":
-		if not _o.weapon_types.has(it.subtype):
-			return false
-		var wt: Model.WeaponType = _o.weapon_types[it.subtype]
-		if (
-			not _o.classes.has(class_id)
-			or not wt.raw.get("class") is String
-			or wt.raw.get("class") != str(class_id)
-			or not (_o.classes[class_id] as Model.CharacterClass).weapon_types.has(it.subtype)
-			or not Items.weapon_material_allowed(it, _o)
-		):
+		if not _weapon_class_allowed(it):
 			return false
 	if it.type in [&"chest-armor", &"gloves", &"boots", &"shoulder-armor"]:
-		if (
-			not _o.classes.has(class_id)
-			or it.material != (_o.classes[class_id] as Model.CharacterClass).armor_material
-		):
-			return false
+		return _armor_class_allowed(it)
 	return true
+
+
+func _weapon_class_allowed(it: Item) -> bool:
+	if not _o.weapon_types.has(it.subtype):
+		return false
+	var wt: Model.WeaponType = _o.weapon_types[it.subtype]
+	if not _weapon_owner_allowed(wt):
+		return false
+	return _weapon_membership_allowed(it)
+
+
+func _weapon_membership_allowed(it: Item) -> bool:
+	return not (
+		not (_o.classes[class_id] as Model.CharacterClass).weapon_types.has(it.subtype)
+		or not Items.weapon_material_allowed(it, _o)
+	)
+
+
+func _weapon_owner_allowed(wt: Model.WeaponType) -> bool:
+	return not (
+		not _o.classes.has(class_id)
+		or not wt.raw.get("class") is String
+		or wt.raw.get("class") != str(class_id)
+	)
+
+
+func _armor_class_allowed(it: Item) -> bool:
+	return not (
+		not _o.classes.has(class_id)
+		or it.material != (_o.classes[class_id] as Model.CharacterClass).armor_material
+	)
 
 
 func _has_loadout(fragment: String) -> bool:
@@ -139,12 +195,17 @@ func _loadout_valid(main: Item, off: Item) -> bool:
 	for it in [main, off]:
 		if it != null and (it.type != &"weapon" or not _o.weapon_types.has(it.subtype)):
 			return false
+	return _hand_pair_valid(main, off)
+
+
+func _hand_pair_valid(main: Item, off: Item) -> bool:
 	if main != null:
-		var hands: Model.Hands = (_o.weapon_types[main.subtype] as Model.WeaponType).hands
-		if hands not in [Model.Hands.ONE_HANDED, Model.Hands.TWO_HANDED]:
+		if not _main_hand_valid(main, off):
 			return false
-		if off != null and hands == Model.Hands.TWO_HANDED:
-			return false
+	return _off_hand_valid(off)
+
+
+func _off_hand_valid(off: Item) -> bool:
 	if off == null:
 		return true
 	var off_hands: Model.Hands = (_o.weapon_types[off.subtype] as Model.WeaponType).hands
@@ -165,3 +226,12 @@ func first_consumable() -> Item:
 		if e.type == &"consumable":
 			return e
 	return null
+
+
+func _main_hand_valid(main: Item, off: Item) -> bool:
+	var hands: Model.Hands = (_o.weapon_types[main.subtype] as Model.WeaponType).hands
+	if hands not in [Model.Hands.ONE_HANDED, Model.Hands.TWO_HANDED]:
+		return false
+	if off != null and hands == Model.Hands.TWO_HANDED:
+		return false
+	return true

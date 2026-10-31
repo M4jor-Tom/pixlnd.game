@@ -100,23 +100,41 @@ func _open(on: bool) -> void:
 func _refresh() -> void:
 	if not _panel.visible:
 		return
+	if not _refresh_lists():
+		return
+	_title.text = _title.text.get_slice("  ·", 0) + "  ·  %d copper" % player.inventory.coins
+
+	if touch_ui != null:
+		touch_ui.fit_panel(self)
+
+
+func _refresh_lists() -> bool:
 	for button in touch_buttons:
 		button.disabled = true
+	if not _refresh_stock():
+		return false
+
+	return _refresh_bag()
+
+
+func _refresh_stock() -> bool:
 	_stock.clear()
 	for it in _stock_rows:
 		_stock.add_item(
 			"%s — %d copper" % [player.item_label(it), Shop.buy_price(it, player.o, player.design)]
 		)
+	return true
+
+
+func _refresh_bag() -> bool:
 	_bag.clear()
 	_bag_rows.clear()
 	for it in player.inventory.entries:
 		var label: String = player.item_label(it) + (" ×%d" % it.count if it.count > 1 else "")
 		_bag.add_item("%s — %d copper" % [label, Shop.sell_price(it, player.o, player.design)])
 		_bag_rows.append(it)
-	_title.text = _title.text.get_slice("  ·", 0) + "  ·  %d copper" % player.inventory.coins
 
-	if touch_ui != null:
-		touch_ui.fit_panel(self)
+	return true
 
 
 func _on_buy(index: int) -> void:

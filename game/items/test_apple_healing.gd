@@ -96,44 +96,7 @@ func run() -> void:
 	check(is_equal_approx(Items.heal(apple, o), 20.0), "common power1 Apple nominal expected 20 HP")
 	check(is_equal_approx(Items.heal(potion, o), 200.0), "Life Potion nominal remains 200 HP")
 	for route in ["selected", "quick", "inventory", "android"]:
-		var bag: Array = reset_bag(route == "quick")
-		activate(route, bag[0])
-		print(
-			"EFFECT route=", route, " hp=", p.hp, " apple=", bag[0].count, " potion=", bag[1].count
-		)
-		check(is_equal_approx(p.hp, 30.0), route + " Apple increases HP by 20 (10 -> 30)")
-		check(
-			bag[0].count == 1 and p.inventory.entries.has(bag[0]),
-			route + " consumes exactly one selected Apple"
-		)
-		check(
-			bag[1].count == 5 and p.inventory.entries.has(bag[1]),
-			route + " preserves unrelated Potion stack"
-		)
-		bag = reset_bag(route == "quick")
-		p.hp = p.max_hp - 7.0
-		activate(route, bag[0])
-		check(is_equal_approx(p.hp, p.max_hp), route + " healing caps at missing 7 HP")
-		check(bag[0].count == 1 and bag[1].count == 5, route + " cap consumes one Apple only")
-		for gate in ["dead", "stunned"]:
-			bag = reset_bag(route == "quick")
-			if gate == "dead":
-				p.dead = true
-				p.hp = 0.0
-			else:
-				p.apply_status(&"stun", design["status-effects"]["stun"], 0.0, p)
-			var hp_before: float = p.hp
-			match route:
-				"selected":
-					check(not p.use_item(bag[0]), gate + " selected returns false")
-				"quick":
-					check(not p.use_quick(), gate + " Quick returns false")
-				_:
-					activate(route, bag[0])
-			check(
-				p.hp == hp_before and bag[0].count == 2 and bag[1].count == 5,
-				route + " " + gate + " preserves HP and both stacks"
-			)
+		_route(route, design)
 	var cap_control: Array = reset_bag(false)
 	p.hp = p.max_hp - 7.0
 	check(
@@ -144,6 +107,39 @@ func run() -> void:
 		cap_control[1].count == 4 and cap_control[0].count == 2,
 		"Potion cap control spends selected Potion only"
 	)
+	_curve(apple, potion)
+
+	print("Apple healing: checks=", checks, " failures=", failed)
+	touch_ui.free()
+	desktop.free()
+	p.free()
+	quit(0 if failed == 0 else 1)
+
+
+func _route(route: String, design: Dictionary) -> void:
+	var bag: Array = reset_bag(route == "quick")
+	activate(route, bag[0])
+	print("EFFECT route=", route, " hp=", p.hp, " apple=", bag[0].count, " potion=", bag[1].count)
+	check(is_equal_approx(p.hp, 30.0), route + " Apple increases HP by 20 (10 -> 30)")
+	check(
+		bag[0].count == 1 and p.inventory.entries.has(bag[0]),
+		route + " consumes exactly one selected Apple"
+	)
+	check(
+		bag[1].count == 5 and p.inventory.entries.has(bag[1]),
+		route + " preserves unrelated Potion stack"
+	)
+	_capped_route(route)
+
+	_denied_route(route, design)
+
+
+func _denied_route(route: String, design: Dictionary) -> void:
+	for gate in ["dead", "stunned"]:
+		_denied_case(route, design, gate)
+
+
+func _curve(apple, potion) -> void:
 	# Independent literals: power21 gives exponent 1.5; rare adds exponent .5.
 	for sample in [[21, 0, 56.5685424949238], [1, 2, 28.2842712474619], [21, 2, 80.0]]:
 		apple.level = sample[0]
@@ -168,8 +164,37 @@ func run() -> void:
 			bag[0].count == 1 and bag[1].count == 5,
 			"higher curve consumes Apple only " + str(sample)
 		)
-	print("Apple healing: checks=", checks, " failures=", failed)
-	touch_ui.free()
-	desktop.free()
-	p.free()
-	quit(0 if failed == 0 else 1)
+
+
+func _capped_route(route: String) -> void:
+	var bag: Array = reset_bag(route == "quick")
+	p.hp = p.max_hp - 7.0
+	activate(route, bag[0])
+	check(is_equal_approx(p.hp, p.max_hp), route + " healing caps at missing 7 HP")
+	check(bag[0].count == 1 and bag[1].count == 5, route + " cap consumes one Apple only")
+
+
+func _denied_case(route: String, design: Dictionary, gate: String) -> void:
+	var bag: Array = reset_bag(route == "quick")
+	if gate == "dead":
+		p.dead = true
+		p.hp = 0.0
+	else:
+		p.apply_status(&"stun", design["status-effects"]["stun"], 0.0, p)
+	var hp_before: float = p.hp
+	_denied_activation(route, bag, gate)
+
+	check(
+		p.hp == hp_before and bag[0].count == 2 and bag[1].count == 5,
+		route + " " + gate + " preserves HP and both stacks"
+	)
+
+
+func _denied_activation(route: String, bag: Array, gate: String) -> void:
+	match route:
+		"selected":
+			check(not p.use_item(bag[0]), gate + " selected returns false")
+		"quick":
+			check(not p.use_quick(), gate + " Quick returns false")
+		_:
+			activate(route, bag[0])

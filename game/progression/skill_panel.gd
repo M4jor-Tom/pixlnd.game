@@ -58,23 +58,39 @@ func _refresh() -> void:
 		button.disabled = true
 	_list.clear()
 	_rows.clear()
-	for a in tree.nodes:
-		var t: Dictionary = a.alpha_tree
-		var where: String = (
-			"key %d" % int(t["rank"])
-			if str(t["column"]) == "class"
-			else ("key 4" if str(t["column"]) == "ultimate" else str(t["column"]))
-		)
-		if touch_ui != null:
-			where = where.replace("key ", "Skill ")
-		var line := "%-22s %-10s %2d pts" % [a.display_name, where, tree.spent(a.id)]
-		if not tree.is_open(a):
-			line += "   (needs %d in %s)" % [int(t["needs"]), tree.prerequisite(a).display_name]
-		_list.add_item(line)
-		_rows.append(a)
+	if not _refresh_nodes(tree):
+		return
 
 	if touch_ui != null:
 		touch_ui.fit_panel(self)
+
+
+## Completion must propagate native errors instead of continuing into fit_panel.
+func _refresh_nodes(tree) -> bool:
+	for a in tree.nodes:
+		var line = _skill_line(a, tree)
+		if line == null:
+			return false
+
+		_list.add_item(line)
+		_rows.append(a)
+
+	return true
+
+
+func _skill_line(a, tree) -> Variant:
+	var t: Dictionary = a.alpha_tree
+	var where: String = (
+		"key %d" % int(t["rank"])
+		if str(t["column"]) == "class"
+		else ("key 4" if str(t["column"]) == "ultimate" else str(t["column"]))
+	)
+	if touch_ui != null:
+		where = where.replace("key ", "Skill ")
+	var line := "%-22s %-10s %2d pts" % [a.display_name, where, tree.spent(a.id)]
+	if not tree.is_open(a):
+		line += "   (needs %d in %s)" % [int(t["needs"]), tree.prerequisite(a).display_name]
+	return line
 
 
 func _on_activated(index: int) -> void:
