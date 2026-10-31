@@ -24,6 +24,17 @@ func _init() -> void:
 		config.get("total-bonus") == "B(x) = first * ln(1 + z * x) / ln(1 + z)",
 		"normalized logarithmic total recorded"
 	)
+	generator_semantics(generators, config)
+	var items := read_json("key-items.json")
+	var artifact: Dictionary = items.artifact
+	artifact_identity(artifact, items)
+	artifact_descriptions(artifact)
+	selected_ruleset()
+	print("artifact corrections: ", failed, " failures")
+	quit(1 if failed else 0)
+
+
+func generator_semantics(generators, config) -> void:
 	var semantics := str(config.get("stats", ""))
 	for term in ["z > 0", "B(0) = 0", "B(x)/x", "additive", "current artifact-free"]:
 		check(term in semantics, "config semantics: " + term)
@@ -38,37 +49,9 @@ func _init() -> void:
 		),
 		"existing per-land allocation config unchanged"
 	)
-	var items := read_json("key-items.json")
-	var artifact: Dictionary = items.artifact
-	check(
-		(
-			artifact["stat-kinds"]
-			== [
-				"climb-speed",
-				"swim-speed",
-				"diving-skill",
-				"ride-speed",
-				"glide-speed",
-				"sail-speed",
-				"light-radius"
-			]
-		),
-		"seven stable traversal kinds unchanged"
-	)
-	check(
-		artifact.versions == ["S"] and artifact["alpha-static-entity"] == 46,
-		"source identities retained"
-	)
-	check(
-		(
-			items["counts-per-land-s"].movement == 4
-			and items["counts-per-land-s"].ticket == 3
-			and items["counts-per-land-s"]["total-max"] == 9
-			and items["counts-per-land-s"]["gnome-suppliers"] == 4
-			and items["counts-per-land-s"].books == 4
-		),
-		"historical per-land counts unchanged"
-	)
+
+
+func artifact_descriptions(artifact) -> void:
 	var historical := ""
 	var hybrid := ""
 	for rule in artifact.rules:
@@ -92,6 +75,9 @@ func _init() -> void:
 		"current artifact-free"
 	]:
 		check(term in hybrid, "hybrid description: " + term)
+
+
+func selected_ruleset() -> void:
 	var rulesets := read_json("rulesets.json")
 	var selected: Dictionary = rulesets["ruleset-hybrid"]
 	check(
@@ -102,5 +88,36 @@ func _init() -> void:
 		selected.flags.artifacts and not selected.flags["artifacts-define-level"],
 		"hybrid flags unchanged"
 	)
-	print("artifact corrections: ", failed, " failures")
-	quit(1 if failed else 0)
+
+
+func artifact_identity(artifact, items) -> void:
+	check(
+		(
+			artifact["stat-kinds"]
+			== [
+				"climb-speed",
+				"swim-speed",
+				"diving-skill",
+				"ride-speed",
+				"glide-speed",
+				"sail-speed",
+				"light-radius"
+			]
+		),
+		"seven stable traversal kinds unchanged"
+	)
+	check(
+		artifact.versions == ["S"] and artifact["alpha-static-entity"] == 46,
+		"source identities retained"
+	)
+	check(historical_counts_match(items), "historical per-land counts unchanged")
+
+
+func historical_counts_match(items) -> bool:
+	return (
+		items["counts-per-land-s"].movement == 4
+		and items["counts-per-land-s"].ticket == 3
+		and items["counts-per-land-s"]["total-max"] == 9
+		and items["counts-per-land-s"]["gnome-suppliers"] == 4
+		and items["counts-per-land-s"].books == 4
+	)

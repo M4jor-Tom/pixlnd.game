@@ -59,17 +59,7 @@ func check_scopes(o) -> void:
 	}
 	for tag in scopes:
 		for path in scopes[tag].split(" ", false):
-			if path == "item-types":
-				path = "item-types.none"
-				expect_source(o, path, [tag], "item-types", "inherited")
-			else:
-				expect_source(o, path, [tag], path, "inherited")
-			# The equivalent unannotated fact outside the envelope gains no source.
-			var value: Variant = o._source_value(path)
-			o.configs["outside"] = {
-				"fact": value.duplicate(true) if value is Dictionary or value is Array else value
-			}
-			expect_source(o, "outside.fact", [], "", "unresolved")
+			scope_fact_case(o, path, tag)
 	for pair in [
 		["block-types.alpha.0", "block-types.alpha", "A"],
 		["block-types.steam.19", "block-types.steam", "S"],
@@ -120,24 +110,7 @@ func check_holds(o) -> void:
 		. split(" ")
 	):
 		expect_source(o, "creature-families." + family, [], "", "unresolved")
-	var untagged := 0
-	var tagged := 0
-	for id in o.pet_foods:
-		var food = o.pet_foods[id]
-		if food.raw.has("versions"):
-			tagged += 1
-			check(
-				food.source_tags == ["S"] and food.versions == [Model.Version.S],
-				str(id) + " sourced S food unchanged"
-			)
-		else:
-			untagged += 1
-			check(
-				food.versions.is_empty() and food.source_tags.is_empty(),
-				str(id) + " unresolved food has no invented tags"
-			)
-			expect_source(o, "pet-food.foods." + str(id), [], "", "unresolved")
-	check(untagged == 48 and tagged == 10, "all 48 unresolved and ten S foods distinguished")
+	food_annotation_controls(o)
 	check(o.pet_foods["banana-mash"].subtype == 170, "Banana Mash identity retained")
 	check(
 		o.pet_foods["bubble-gum"].subtype == 19 and o.pet_foods["biscuit-roll"].subtype == 151,
@@ -260,18 +233,7 @@ func check_raw_loading() -> void:
 		return
 	var scratch := directory.path_join("provenance")
 	check(DirAccess.make_dir_recursive_absolute(scratch) == OK, "scratch created")
-	for file in DirAccess.open("res://ontology/instances").get_files():
-		if file.ends_with(".json"):
-			check(
-				(
-					DirAccess.copy_absolute(
-						ProjectSettings.globalize_path("res://ontology/instances/" + file),
-						scratch.path_join(file)
-					)
-					== OK
-				),
-				"copied " + file
-			)
+	copy_provenance_catalogs(scratch)
 	var path := scratch.path_join("races.json")
 	var original: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(path))
 	for tags in [
@@ -288,40 +250,8 @@ func check_raw_loading() -> void:
 		["A-mod"],
 		["hybrid"]
 	]:
-		var raw := original.duplicate(true)
-		raw.human.versions = tags
-		raw.elf["nested"] = [{"versions": ["A?"]}]
-		var file := FileAccess.open(path, FileAccess.WRITE)
-		file.store_string(JSON.stringify(raw))
-		file.close()
-		var o = Model.Ontology.load_dir(scratch)
-		if (
-			tags is Array
-			and not tags.is_empty()
-			and tags[0] in ["A?", "S?", "A"]
-			and not "Q" in tags
-		):
-			check(o.validate(), "valid annotation loaded " + str(tags))
-			o.configs.races.elf.nested[0].versions = ["Q"]
-			reject(o, "races.elf.nested.0.versions")
-			check(o.races.human.source_tags == tags, "loaded exact tags " + str(tags))
-			check(
-				o.races.human.versions == Model.Entry.parse_versions(tags),
-				"loaded only confirmed enums"
-			)
-		else:
-			reject(o, "races.human.versions")
-	for tags in [["A?"], ["A", "Q"], null]:
-		var raw := original.duplicate(true)
-		raw.elf["nested"] = [{"v": tags}]
-		var nested_file := FileAccess.open(path, FileAccess.WRITE)
-		nested_file.store_string(JSON.stringify(raw))
-		nested_file.close()
-		var nested = Model.Ontology.load_dir(scratch)
-		if tags == ["A?"]:
-			check(nested.validate(), "raw nested qualified override accepted")
-		else:
-			reject(nested, "races.elf.nested.0.v")
+		raw_annotation_case(path, original, scratch, tags)
+	raw_nested_cases(path, original, scratch)
 	var file := FileAccess.open(path, FileAccess.WRITE)
 	file.store_string(JSON.stringify(original))
 	file.close()
@@ -336,28 +266,7 @@ func check_context_annotations() -> void:
 		"ui.screens.npc-service": ["hybrid"]
 	}
 	for path in contexts:
-		var o = fresh()
-		for field in ["versions", "v"]:
-			for bad in [null, true, 42, "A", {}, [], ["Q"], ["A", "Q"], [42]]:
-				o = fresh()
-				o._source_value(path)[field] = bad
-				if field == "versions":
-					o._source_value(path).v = ["A"]
-				expect_source(o, path, [], path, "invalid")
-				reject(o, path + "." + field)
-		o = fresh()
-		o._source_value(path).v = contexts[path]
-		expect_source(o, path, [], path, "invalid")
-		reject(o, path + ".v")
-		for tags in [["A"], ["S?"], ["A?", "S"]]:
-			o = fresh()
-			o._source_value(path).versions = tags
-			expect_source(o, path, tags, path, "explicit")
-			check(o.validate(), path + " strict replacement validates")
-			o = fresh()
-			o._source_value(path).v = tags
-			expect_source(o, path, contexts[path], path, "unresolved")
-			check(o.validate(), path + " original context with strict alias validates")
+		context_annotation_path(path, contexts)
 	check_context_loading(contexts)
 
 
@@ -368,6 +277,119 @@ func check_context_loading(contexts: Dictionary) -> void:
 		return
 	var scratch := directory.path_join("context-provenance")
 	check(DirAccess.make_dir_recursive_absolute(scratch) == OK, "context scratch created")
+	copy_context_catalogs(scratch)
+	for path in contexts:
+		context_loading_path(scratch, contexts, path)
+
+
+func scope_fact_case(o, path, tag) -> void:
+	if path == "item-types":
+		path = "item-types.none"
+		expect_source(o, path, [tag], "item-types", "inherited")
+	else:
+		expect_source(o, path, [tag], path, "inherited")
+	# The equivalent unannotated fact outside the envelope gains no source.
+	var value: Variant = o._source_value(path)
+	o.configs["outside"] = {
+		"fact": value.duplicate(true) if value is Dictionary or value is Array else value
+	}
+	expect_source(o, "outside.fact", [], "", "unresolved")
+
+
+func food_annotation_controls(o) -> void:
+	var untagged := 0
+	var tagged := 0
+	for id in o.pet_foods:
+		var food = o.pet_foods[id]
+		if food.raw.has("versions"):
+			tagged += 1
+			sourced_food(food, id)
+		else:
+			untagged += 1
+			unresolved_food(o, food, id)
+	check(untagged == 48 and tagged == 10, "all 48 unresolved and ten S foods distinguished")
+
+
+func copy_provenance_catalogs(scratch: String) -> void:
+	for file in DirAccess.open("res://ontology/instances").get_files():
+		if file.ends_with(".json"):
+			check(
+				(
+					DirAccess.copy_absolute(
+						ProjectSettings.globalize_path("res://ontology/instances/" + file),
+						scratch.path_join(file)
+					)
+					== OK
+				),
+				"copied " + file
+			)
+
+
+func raw_annotation_case(path, original: Dictionary, scratch: String, tags) -> void:
+	var raw := original.duplicate(true)
+	raw.human.versions = tags
+	raw.elf["nested"] = [{"versions": ["A?"]}]
+	var file := FileAccess.open(path, FileAccess.WRITE)
+	file.store_string(JSON.stringify(raw))
+	file.close()
+	var o = Model.Ontology.load_dir(scratch)
+	if tags is Array and not tags.is_empty() and tags[0] in ["A?", "S?", "A"] and not "Q" in tags:
+		check(o.validate(), "valid annotation loaded " + str(tags))
+		o.configs.races.elf.nested[0].versions = ["Q"]
+		reject(o, "races.elf.nested.0.versions")
+		check(o.races.human.source_tags == tags, "loaded exact tags " + str(tags))
+		check(
+			o.races.human.versions == Model.Entry.parse_versions(tags),
+			"loaded only confirmed enums"
+		)
+	else:
+		reject(o, "races.human.versions")
+
+
+func raw_nested_cases(path, original: Dictionary, scratch: String) -> void:
+	for tags in [["A?"], ["A", "Q"], null]:
+		var raw := original.duplicate(true)
+		raw.elf["nested"] = [{"v": tags}]
+		var nested_file := FileAccess.open(path, FileAccess.WRITE)
+		nested_file.store_string(JSON.stringify(raw))
+		nested_file.close()
+		var nested = Model.Ontology.load_dir(scratch)
+		if tags == ["A?"]:
+			check(nested.validate(), "raw nested qualified override accepted")
+		else:
+			reject(nested, "races.elf.nested.0.v")
+
+
+func context_annotation_path(path, contexts) -> void:
+	var o = fresh()
+	for field in ["versions", "v"]:
+		context_bad_fields(path, field)
+	o = fresh()
+	o._source_value(path).v = contexts[path]
+	expect_source(o, path, [], path, "invalid")
+	reject(o, path + ".v")
+	for tags in [["A"], ["S?"], ["A?", "S"]]:
+		o = fresh()
+		o._source_value(path).versions = tags
+		expect_source(o, path, tags, path, "explicit")
+		check(o.validate(), path + " strict replacement validates")
+		o = fresh()
+		o._source_value(path).v = tags
+		expect_source(o, path, contexts[path], path, "unresolved")
+		check(o.validate(), path + " original context with strict alias validates")
+
+
+func context_bad_fields(path, field) -> void:
+	for bad in [null, true, 42, "A", {}, [], ["Q"], ["A", "Q"], [42]]:
+		var o = fresh()
+		o._source_value(path)[field] = bad
+		if field == "versions":
+			o._source_value(path).v = ["A"]
+		expect_source(o, path, [], path, "invalid")
+		reject(o, path + "." + field)
+
+
+func copy_context_catalogs(scratch: String) -> void:
 	for file in DirAccess.open("res://ontology/instances").get_files():
 		if file.ends_with(".json"):
 			check(
@@ -380,41 +402,74 @@ func check_context_loading(contexts: Dictionary) -> void:
 				),
 				"context copied " + file
 			)
-	for path in contexts:
-		var parts: PackedStringArray = str(path).split(".")
-		var file_path := scratch.path_join(parts[0] + ".json")
-		var original: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(file_path))
-		for field in ["versions", "v"]:
-			for tags in (
-				[null, true, 42, "A", {}, [], ["Q"], ["A", "Q"], [42], ["A?", "S"]]
-				+ ([contexts[path]] if field == "v" else [])
-			):
-				var raw := original.duplicate(true)
-				var row: Dictionary = raw
-				for i in range(1, parts.size()):
-					row = row[parts[i]]
-				row[field] = tags
-				if field == "versions":
-					row.v = ["A"]
-				var file := FileAccess.open(file_path, FileAccess.WRITE)
-				file.store_string(JSON.stringify(raw))
-				file.close()
-				var o = Model.Ontology.load_dir(scratch)
-				if tags is Array and tags == ["A?", "S"]:
-					check(o.validate(), path + " raw strict " + field + " validates")
-					expect_source(
-						o,
-						path,
-						tags if field == "versions" else contexts[path],
-						path,
-						"explicit" if field == "versions" else "unresolved"
-					)
-				else:
-					expect_source(o, path, [], path, "invalid")
-					reject(o, path + "." + field)
-		var file := FileAccess.open(file_path, FileAccess.WRITE)
-		file.store_string(JSON.stringify(original))
-		file.close()
-		var restored = Model.Ontology.load_dir(scratch)
-		check(restored.validate(), path + " original context raw control validates")
-		expect_source(restored, path, contexts[path], path, "unresolved")
+
+
+func context_loading_path(scratch: String, contexts, path) -> void:
+	var parts: PackedStringArray = str(path).split(".")
+	var file_path := scratch.path_join(parts[0] + ".json")
+	var original: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(file_path))
+	for field in ["versions", "v"]:
+		context_loading_field(scratch, contexts, path, parts, file_path, original, field)
+	var file := FileAccess.open(file_path, FileAccess.WRITE)
+	file.store_string(JSON.stringify(original))
+	file.close()
+	var restored = Model.Ontology.load_dir(scratch)
+	check(restored.validate(), path + " original context raw control validates")
+	expect_source(restored, path, contexts[path], path, "unresolved")
+
+
+func context_loading_field(
+	scratch: String, contexts, path, parts, file_path, original: Dictionary, field
+) -> void:
+	for tags in (
+		[null, true, 42, "A", {}, [], ["Q"], ["A", "Q"], [42], ["A?", "S"]]
+		+ ([contexts[path]] if field == "v" else [])
+	):
+		context_loading_case(scratch, contexts, path, parts, file_path, original, field, tags)
+
+
+func context_loading_case(
+	scratch: String, contexts, path, parts, file_path, original: Dictionary, field, tags
+) -> void:
+	var raw := original.duplicate(true)
+	var row: Dictionary = raw
+	for i in range(1, parts.size()):
+		row = row[parts[i]]
+	row[field] = tags
+	if field == "versions":
+		row.v = ["A"]
+	var file := FileAccess.open(file_path, FileAccess.WRITE)
+	file.store_string(JSON.stringify(raw))
+	file.close()
+	var o = Model.Ontology.load_dir(scratch)
+	if tags is Array and tags == ["A?", "S"]:
+		check(o.validate(), path + " raw strict " + field + " validates")
+		strict_context_observation(o, path, tags, field, contexts)
+	else:
+		expect_source(o, path, [], path, "invalid")
+		reject(o, path + "." + field)
+
+
+func sourced_food(food, id) -> void:
+	check(
+		food.source_tags == ["S"] and food.versions == [Model.Version.S],
+		str(id) + " sourced S food unchanged"
+	)
+
+
+func unresolved_food(o, food, id) -> void:
+	check(
+		food.versions.is_empty() and food.source_tags.is_empty(),
+		str(id) + " unresolved food has no invented tags"
+	)
+	expect_source(o, "pet-food.foods." + str(id), [], "", "unresolved")
+
+
+func strict_context_observation(o, path, tags, field, contexts) -> void:
+	expect_source(
+		o,
+		path,
+		tags if field == "versions" else contexts[path],
+		path,
+		"explicit" if field == "versions" else "unresolved"
+	)

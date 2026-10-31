@@ -61,10 +61,21 @@ func _init() -> void:
 		walk(d["initial-encounters"]["mission-package"], ["initial-encounters", "mission-package"])
 	for key in ["loot"]:
 		walk(d[key], [key])
+	shop_fields()
+	reward_catalogs()
+	reward_materials()
+	print("encounter rewards config ok" if failed == 0 else "encounter rewards config FAILED")
+	quit(0 if failed == 0 else 1)
+
+
+func shop_fields() -> void:
 	for key in ["stock", "rarity-cap", "level-spread", "restock"]:
 		reject(["settlement", "shop", key], null, true)
 		for bad in [null, true, [], NAN, INF, -1, 999, "bad"]:
 			reject(["settlement", "shop", key], bad)
+
+
+func reward_catalogs() -> void:
 	var broken = fresh()
 	broken.configs.generators.design.erase("loot")
 	broken.configs.generators.design.settlement.erase("shop")
@@ -75,6 +86,9 @@ func _init() -> void:
 		broken = fresh()
 		broken.configs.ingredients.erase(gem)
 		check(not broken.validate() and gem in "\n".join(broken.errors), "required gem " + gem)
+
+
+func reward_materials() -> void:
 	var illegal = fresh()
 	illegal.classes[&"mage"].armor_material = &"unknown"
 	check(
@@ -87,5 +101,3 @@ func _init() -> void:
 		not illegal.validate() and "missing weapon material wand" in "\n".join(illegal.errors),
 		"malformed weapon material rejected"
 	)
-	print("encounter rewards config ok" if failed == 0 else "encounter rewards config FAILED")
-	quit(0 if failed == 0 else 1)

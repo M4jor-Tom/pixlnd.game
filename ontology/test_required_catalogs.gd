@@ -44,6 +44,45 @@ func _init() -> void:
 	var scratch := directory.path_join("required-catalogs")
 	check(DirAccess.make_dir_recursive_absolute(scratch) == OK, "scratch created")
 	var source := DirAccess.open("res://ontology/instances")
+	copy_catalogs(source, scratch)
+	var race_path := scratch.path_join("races.json")
+	var races: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(race_path))
+	DirAccess.remove_absolute(race_path)
+	reject(Model.Ontology.load_dir(scratch), "races")
+	var missing = fresh()
+	missing.configs.generators.design.erase("movesets")
+	reject(missing, "design.movesets")
+	var empty = fresh()
+	empty.configs.generators.design.movesets = {}
+	reject(empty, "design.movesets")
+	race_root_and_rows(race_path, scratch, races)
+	race_fields(race_path, scratch, races)
+	var raw := races.duplicate(true)
+	raw.erase("human")
+	write_json(race_path, raw)
+	reject(Model.Ontology.load_dir(scratch), "races.human")
+	write_json(race_path, races)
+	check(Model.Ontology.load_dir(scratch).validate(), "restored raw races validate")
+	moveset_parents()
+	moveset_fields()
+	var o = fresh()
+	o.configs.generators.design.movesets.kinds = [null]
+	o.configs.generators.design.movesets.default.m1.applies = ["unknown-status"]
+	reject(o, "design.movesets.kinds")
+	check(
+		"design.movesets.default.m1" in "\n".join(o.errors), "independent moveset errors accumulate"
+	)
+	# Whole-file ingestion must preserve malformed movesets for the same checker.
+	var generator_path := scratch.path_join("generators.json")
+	var generators: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(generator_path))
+	generators.design.movesets = null
+	write_json(generator_path, generators)
+	reject(Model.Ontology.load_dir(scratch), "design.movesets")
+	print("required catalogs ok" if failed == 0 else "required catalogs FAILED (%d)" % failed)
+	quit(0 if failed == 0 else 1)
+
+
+func copy_catalogs(source, scratch: String) -> void:
 	for file in source.get_files():
 		if file.ends_with(".json"):
 			check(
@@ -56,16 +95,9 @@ func _init() -> void:
 				),
 				"copied " + file
 			)
-	var race_path := scratch.path_join("races.json")
-	var races: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(race_path))
-	DirAccess.remove_absolute(race_path)
-	reject(Model.Ontology.load_dir(scratch), "races")
-	var missing = fresh()
-	missing.configs.generators.design.erase("movesets")
-	reject(missing, "design.movesets")
-	var empty = fresh()
-	empty.configs.generators.design.movesets = {}
-	reject(empty, "design.movesets")
+
+
+func race_root_and_rows(race_path, scratch: String, races: Dictionary) -> void:
 	for bad in [null, true, 42, "bad", [], {}, {"_doc": "metadata only"}]:
 		write_json(race_path, bad)
 		reject(Model.Ontology.load_dir(scratch), "races")
@@ -74,6 +106,9 @@ func _init() -> void:
 		raw.human = bad
 		write_json(race_path, raw)
 		reject(Model.Ontology.load_dir(scratch), "races.human")
+
+
+func race_fields(race_path, scratch: String, races: Dictionary) -> void:
 	for field in ["playable", "size-class"]:
 		for bad in [null, 42, [], {}, "unknown"]:
 			var raw := races.duplicate(true)
@@ -84,12 +119,9 @@ func _init() -> void:
 		raw.human.erase(field)
 		write_json(race_path, raw)
 		reject(Model.Ontology.load_dir(scratch), "races.human." + field)
-	var raw := races.duplicate(true)
-	raw.erase("human")
-	write_json(race_path, raw)
-	reject(Model.Ontology.load_dir(scratch), "races.human")
-	write_json(race_path, races)
-	check(Model.Ontology.load_dir(scratch).validate(), "restored raw races validate")
+
+
+func moveset_parents() -> void:
 	for bad in [null, true, 42, "bad", []]:
 		var o = fresh()
 		o.configs.generators.design.movesets = bad
@@ -110,6 +142,9 @@ func _init() -> void:
 		var o = fresh()
 		o.configs.generators.design.movesets.default.m1 = bad
 		reject(o, "design.movesets.default.m1")
+
+
+func moveset_fields() -> void:
 	for field in ["kind", "applies", "damage-mult", "finisher"]:
 		var o = fresh()
 		o.configs.generators.design.movesets.default.m1[field] = null
@@ -126,18 +161,3 @@ func _init() -> void:
 		var o = fresh()
 		o.configs.generators.design.movesets.bow.m1.pierce = bad
 		reject(o, "design.movesets.bow.m1")
-	var o = fresh()
-	o.configs.generators.design.movesets.kinds = [null]
-	o.configs.generators.design.movesets.default.m1.applies = ["unknown-status"]
-	reject(o, "design.movesets.kinds")
-	check(
-		"design.movesets.default.m1" in "\n".join(o.errors), "independent moveset errors accumulate"
-	)
-	# Whole-file ingestion must preserve malformed movesets for the same checker.
-	var generator_path := scratch.path_join("generators.json")
-	var generators: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(generator_path))
-	generators.design.movesets = null
-	write_json(generator_path, generators)
-	reject(Model.Ontology.load_dir(scratch), "design.movesets")
-	print("required catalogs ok" if failed == 0 else "required catalogs FAILED (%d)" % failed)
-	quit(0 if failed == 0 else 1)

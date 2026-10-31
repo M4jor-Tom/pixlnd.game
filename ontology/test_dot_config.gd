@@ -29,26 +29,7 @@ func _init() -> void:
 	)
 	for value in [null, [], "burning", 1, true]:
 		rejected(value, "design.status-effects", "malformed whole block " + str(value))
-	for id in ["burning", "poison"]:
-		var missing := se.duplicate(true)
-		missing.erase(id)
-		rejected(missing, "design.status-effects." + id, "missing " + id)
-		for value in [null, [], "burning", 1, true]:
-			var bad := se.duplicate(true)
-			bad[id] = value
-			rejected(bad, "design.status-effects." + id, "malformed row " + id + str(value))
-		for field in ["duration-s", "tick-s", "pct-of-hit"]:
-			var absent := se.duplicate(true)
-			absent[id].erase(field)
-			rejected(absent, "design.status-effects." + id + "." + field, "missing " + id + field)
-			for value in [null, [], {}, "1", true, -1, 0, 99, NAN, INF]:
-				var bad := se.duplicate(true)
-				bad[id][field] = value
-				rejected(
-					bad,
-					"design.status-effects." + id + "." + field,
-					"invalid " + id + field + str(value)
-				)
+	required_dot_rows(se)
 	var alias := se.duplicate(true)
 	alias["poison"]["as"] = "slow"
 	rejected(alias, "design.status-effects.poison.as", "misrouted poison")
@@ -67,3 +48,34 @@ func _init() -> void:
 	)
 	print("DOT config ok" if failed == 0 else "DOT config FAILED: %d" % failed)
 	quit(0 if failed == 0 else 1)
+
+
+func required_dot_rows(se: Dictionary) -> void:
+	for id in ["burning", "poison"]:
+		dot_row_cases(se, id)
+
+
+func dot_row_cases(se: Dictionary, id) -> void:
+	var missing := se.duplicate(true)
+	missing.erase(id)
+	rejected(missing, "design.status-effects." + id, "missing " + id)
+	for value in [null, [], "burning", 1, true]:
+		var bad := se.duplicate(true)
+		bad[id] = value
+		rejected(bad, "design.status-effects." + id, "malformed row " + id + str(value))
+	dot_field_cases(se, id)
+
+
+func dot_field_cases(se: Dictionary, id) -> void:
+	for field in ["duration-s", "tick-s", "pct-of-hit"]:
+		var absent := se.duplicate(true)
+		absent[id].erase(field)
+		rejected(absent, "design.status-effects." + id + "." + field, "missing " + id + field)
+		for value in [null, [], {}, "1", true, -1, 0, 99, NAN, INF]:
+			var bad := se.duplicate(true)
+			bad[id][field] = value
+			rejected(
+				bad,
+				"design.status-effects." + id + "." + field,
+				"invalid " + id + field + str(value)
+			)

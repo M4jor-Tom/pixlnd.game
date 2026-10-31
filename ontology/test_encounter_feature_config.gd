@@ -49,6 +49,13 @@ func _init() -> void:
 		check(cfg.get(key) is Dictionary, "required feature " + key)
 		if cfg.get(key) is Dictionary:
 			walk(cfg[key], ["initial-encounters", key])
+	rubble_definition()
+	cumulative_features()
+	print("encounter feature config ok" if failed == 0 else "encounter feature config FAILED")
+	quit(0 if failed == 0 else 1)
+
+
+func rubble_definition() -> void:
 	var broken = fresh()
 	broken.configs["block-types"].alpha["6"].solid = false
 	check(
@@ -58,6 +65,9 @@ func _init() -> void:
 		),
 		"non-solid rubble definition rejected"
 	)
+
+
+func cumulative_features() -> void:
 	var combined = fresh()
 	combined.errors.append("prior load error")
 	combined.configs.generators.design["initial-encounters"].erase("spikes")
@@ -69,5 +79,3 @@ func _init() -> void:
 		"design.initial-encounters.special-profile"
 	]:
 		check(path in "\n".join(combined.errors), "combined missing diagnostics retain " + path)
-	print("encounter feature config ok" if failed == 0 else "encounter feature config FAILED")
-	quit(0 if failed == 0 else 1)

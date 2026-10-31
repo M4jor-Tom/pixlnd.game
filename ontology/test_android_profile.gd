@@ -60,6 +60,14 @@ func _init() -> void:
 		quit(1)
 		return
 	var profile: Dictionary = o.configs["controller-profiles"]
+	profile_references(profile)
+	profile_shapes(profile)
+	action_substitutions(profile)
+	print("android profile ok" if failed == 0 else "android profile FAILED: %d" % failed)
+	quit(0 if failed == 0 else 1)
+
+
+func profile_references(profile: Dictionary) -> void:
 	var android: Dictionary = profile["android"]
 	var controls := FileAccess.get_file_as_string("res://ontology/domain/controls.md")
 	check(android["actions"].size() == ACTIONS.size(), "exact selected action set")
@@ -102,6 +110,9 @@ func _init() -> void:
 		),
 		"substituted world-map reports required-action diagnostic"
 	)
+
+
+func profile_shapes(profile: Dictionary) -> void:
 	for value in [null, [], 1, "android", {}, {"android": null}, {"android": []}]:
 		rejected(value, "malformed profile " + str(value))
 	for field in ["deadzone-ratio", "min-target-dp", "look-deg-per-safe-width", "actions"]:
@@ -126,6 +137,9 @@ func _init() -> void:
 		var bad := profile.duplicate(true)
 		bad["android"]["actions"] = value
 		rejected(bad, "invalid action set " + str(value))
+
+
+func action_substitutions(profile: Dictionary) -> void:
 	for substitute in ["unknown-action", "move", "special-attack/block"]:
 		var bad := profile.duplicate(true)
 		bad["android"]["actions"][ACTIONS.find("block")] = substitute
@@ -151,5 +165,3 @@ func _init() -> void:
 				),
 				"F6 duplicate Move diagnostic"
 			)
-	print("android profile ok" if failed == 0 else "android profile FAILED: %d" % failed)
-	quit(0 if failed == 0 else 1)

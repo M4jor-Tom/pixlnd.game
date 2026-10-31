@@ -30,6 +30,36 @@ func _init() -> void:
 		"hybrid settlement flag is exactly one"
 	)
 
+	settlement_parents()
+	var empty = fresh()
+	empty.configs["generators"]["design"]["settlement"] = {}
+	reject(empty, "design.settlement.per-land")
+
+	ruleset_parents()
+	var missing_count = fresh()
+	missing_count.configs["generators"]["design"]["settlement"].erase("per-land")
+	reject(missing_count, "design.settlement.per-land")
+	var missing_flag = fresh()
+	missing_flag.rulesets["ruleset-hybrid"].raw["flags"].erase("settlements-per-land")
+	reject(missing_flag, "rulesets.ruleset-hybrid.flags.settlements-per-land")
+
+	numeric_and_flag_shapes()
+	var stale = fresh()
+	stale.rulesets["ruleset-hybrid"].raw["flags"]["settlements-per-land"] = "many"
+	reject(stale, "rulesets.ruleset-hybrid.flags.settlements-per-land")
+
+	cumulative_selection()
+	print(
+		(
+			"initial encounter config ok"
+			if failed == 0
+			else "initial encounter config FAILED %d" % failed
+		)
+	)
+	quit(0 if failed == 0 else 1)
+
+
+func settlement_parents() -> void:
 	for path in ["generators", "design", "settlement"]:
 		var o = fresh()
 		if path == "generators":
@@ -40,6 +70,10 @@ func _init() -> void:
 			o.configs["generators"]["design"].erase("settlement")
 		reject(o, "design.settlement")
 
+	malformed_settlement_parents()
+
+
+func malformed_settlement_parents() -> void:
 	for path in ["generators", "design", "settlement"]:
 		for bad in [null, [], "invalid", true]:
 			var o = fresh()
@@ -51,10 +85,8 @@ func _init() -> void:
 				o.configs["generators"]["design"]["settlement"] = bad
 			reject(o, "design.settlement")
 
-	var empty = fresh()
-	empty.configs["generators"]["design"]["settlement"] = {}
-	reject(empty, "design.settlement.per-land")
 
+func ruleset_parents() -> void:
 	for path in ["rulesets", "ruleset-hybrid", "flags"]:
 		var o = fresh()
 		if path == "rulesets":
@@ -65,13 +97,8 @@ func _init() -> void:
 			o.rulesets["ruleset-hybrid"].raw.erase("flags")
 		reject(o, "rulesets.ruleset-hybrid" if path != "flags" else "rulesets.ruleset-hybrid.flags")
 
-	var missing_count = fresh()
-	missing_count.configs["generators"]["design"]["settlement"].erase("per-land")
-	reject(missing_count, "design.settlement.per-land")
-	var missing_flag = fresh()
-	missing_flag.rulesets["ruleset-hybrid"].raw["flags"].erase("settlements-per-land")
-	reject(missing_flag, "rulesets.ruleset-hybrid.flags.settlements-per-land")
 
+func numeric_and_flag_shapes() -> void:
 	for bad in [null, [], {}, "1", true, 0, 2, NAN, INF]:
 		var design = fresh()
 		design.configs["generators"]["design"]["settlement"]["per-land"] = bad
@@ -85,10 +112,8 @@ func _init() -> void:
 		malformed.rulesets["ruleset-hybrid"].raw["flags"] = bad_flags
 		reject(malformed, "rulesets.ruleset-hybrid.flags")
 
-	var stale = fresh()
-	stale.rulesets["ruleset-hybrid"].raw["flags"]["settlements-per-land"] = "many"
-	reject(stale, "rulesets.ruleset-hybrid.flags.settlements-per-land")
 
+func cumulative_selection() -> void:
 	var changed = fresh()
 	changed.configs["generators"]["design"]["settlement"]["per-land"] = 2
 	changed.rulesets["ruleset-hybrid"].raw["flags"]["settlements-per-land"] = "many"
@@ -101,11 +126,3 @@ func _init() -> void:
 		"ruleset drift diagnosed"
 	)
 	check("earlier load error" in changed.errors, "prior load diagnostic retained")
-	print(
-		(
-			"initial encounter config ok"
-			if failed == 0
-			else "initial encounter config FAILED %d" % failed
-		)
-	)
-	quit(0 if failed == 0 else 1)

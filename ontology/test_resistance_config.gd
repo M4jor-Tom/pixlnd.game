@@ -64,6 +64,34 @@ func _init() -> void:
 	var o = Model.Ontology.load_dir("res://ontology/instances")
 	check(o.validate(), "shipped ontology passes")
 	var combat: Dictionary = o.configs["generators"]["design"]["combat"]
+	creature_resistance_cases(combat)
+	var absent: Dictionary = o.configs["generators"]["design"].duplicate(true)
+	absent.erase("combat")
+	var missing_combat = Model.Ontology.load_dir("res://ontology/instances")
+	missing_combat.configs["generators"]["design"] = absent
+	check(not missing_combat.validate(), "missing combat config rejected")
+	check(
+		"design.combat: required object missing or malformed" in missing_combat.errors,
+		"missing combat config has scoped diagnostic"
+	)
+	cumulative_selected_inputs(combat)
+	for value in [null, "0.1", true, -0.1, 0.2, INF, NAN]:
+		rejected_floor(value, false, "invalid Resistance floor " + str(value))
+	rejected_floor(null, true, "missing Resistance floor")
+	resistance_materials()
+	armor_slot_values()
+	var incomplete_slots: Array = o.configs["equipment-slots"]["slots"].duplicate(true)
+	for i in range(incomplete_slots.size()):
+		if incomplete_slots[i]["id"] == "chest":
+			incomplete_slots.remove_at(i)
+			break
+	rejected_slot_config({"slots": incomplete_slots}, "missing active armor slot row")
+	rejected_slot_config([], "malformed equipment-slots config")
+	print("Resistance config ok" if failed == 0 else "Resistance config FAILED: %d" % failed)
+	quit(0 if failed == 0 else 1)
+
+
+func creature_resistance_cases(combat: Dictionary) -> void:
 	var missing := combat.duplicate(true)
 	missing.erase("creature-resistance")
 	rejected(missing, "design.combat.creature-resistance", "missing creature Resistance")
@@ -77,15 +105,9 @@ func _init() -> void:
 		)
 	for value in [null, [], "combat", 1, true]:
 		rejected(value, "design.combat", "malformed combat config " + str(value))
-	var absent: Dictionary = o.configs["generators"]["design"].duplicate(true)
-	absent.erase("combat")
-	var missing_combat = Model.Ontology.load_dir("res://ontology/instances")
-	missing_combat.configs["generators"]["design"] = absent
-	check(not missing_combat.validate(), "missing combat config rejected")
-	check(
-		"design.combat: required object missing or malformed" in missing_combat.errors,
-		"missing combat config has scoped diagnostic"
-	)
+
+
+func cumulative_selected_inputs(combat: Dictionary) -> void:
 	var multiple := combat.duplicate(true)
 	multiple.erase("creature-resistance")
 	var invalid = Model.Ontology.load_dir("res://ontology/instances")
@@ -100,25 +122,18 @@ func _init() -> void:
 		"errors accumulate across selected inputs"
 	)
 
-	for value in [null, "0.1", true, -0.1, 0.2, INF, NAN]:
-		rejected_floor(value, false, "invalid Resistance floor " + str(value))
-	rejected_floor(null, true, "missing Resistance floor")
+
+func resistance_materials() -> void:
 	var materials := {"iron": 0.85, "linen": 0.75, "cotton": 0.75, "silk": 1.0}
 	for id in materials:
 		rejected_material(id, null, true, "missing %s Resistance multiplier" % id)
 		for value in [null, "bad", true, -0.1, 0.2, INF, NAN]:
 			rejected_material(id, value, false, "invalid %s Resistance multiplier %s" % [id, value])
+
+
+func armor_slot_values() -> void:
 	var slots := {"chest": 1.0, "gloves": 0.5, "boots": 0.5, "shoulders": 0.5}
 	for id in slots:
 		rejected_slot(id, null, true, "missing %s armor slot multiplier" % id)
 		for value in [null, "bad", true, -0.1, 0.2, INF, NAN]:
 			rejected_slot(id, value, false, "invalid %s armor slot multiplier %s" % [id, value])
-	var incomplete_slots: Array = o.configs["equipment-slots"]["slots"].duplicate(true)
-	for i in range(incomplete_slots.size()):
-		if incomplete_slots[i]["id"] == "chest":
-			incomplete_slots.remove_at(i)
-			break
-	rejected_slot_config({"slots": incomplete_slots}, "missing active armor slot row")
-	rejected_slot_config([], "malformed equipment-slots config")
-	print("Resistance config ok" if failed == 0 else "Resistance config FAILED: %d" % failed)
-	quit(0 if failed == 0 else 1)

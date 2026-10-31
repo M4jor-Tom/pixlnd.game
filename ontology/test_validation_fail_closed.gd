@@ -28,33 +28,8 @@ func reject(o, path: String) -> void:
 
 
 func _init() -> void:
-	# Existing selected-tree checks must keep rejecting historical loot crash cases.
-	for bad in [null, true, 42, "bad", []]:
-		var o = fresh()
-		o.configs.generators.design.loot = bad
-		reject(o, "design.loot")
-	var missing = fresh()
-	missing.configs.generators.design.erase("loot")
-	reject(missing, "design.loot")
-	for field in [
-		"gear-chance", "coins", "rarity-weights", "gear-kinds", "consumable-pool", "ground"
-	]:
-		var o = fresh()
-		o.configs.generators.design.loot.erase(field)
-		reject(o, "design.loot." + field)
-		for bad in [null, true, 42, "bad", [], {}]:
-			o = fresh()
-			o.configs.generators.design.loot[field] = bad
-			reject(o, "design.loot." + field)
-	# The adjacent loot reference consumer must not assume stack-cap container shapes.
-	for bad in [null, true, 42, "bad", []]:
-		var o = fresh()
-		o.configs.generators.design["stack-cap"] = bad
-		reject(o, "design.stack-cap")
-	for bad in [null, true, 42, "bad", {}, [null], [42], [[]], [{}]]:
-		var o = fresh()
-		o.configs.generators.design["stack-cap"].stackable = bad
-		reject(o, "stack-cap")
+	loot_container_cases()
+	stack_container_cases()
 	for weapon in [&"unknown-weapon", &""]:
 		var o = fresh()
 		o.classes[&"mage"].weapon_types.append(weapon)
@@ -81,18 +56,7 @@ func check_cli() -> void:
 	var scratch := directory.path_join("validator-exit")
 	check(DirAccess.make_dir_recursive_absolute(scratch) == OK, "CLI scratch created")
 	var source := DirAccess.open("res://ontology/instances")
-	for file in source.get_files():
-		if file.ends_with(".json"):
-			check(
-				(
-					DirAccess.copy_absolute(
-						ProjectSettings.globalize_path("res://ontology/instances/" + file),
-						scratch.path_join(file)
-					)
-					== OK
-				),
-				"copied " + file
-			)
+	copy_cli_catalogs(source, scratch)
 	var writer := FileAccess.open(scratch.path_join("broken.json"), FileAccess.WRITE)
 	# The loader rejects a JSON null root without the parser emitting an engine error.
 	writer.store_string("null")
@@ -129,6 +93,87 @@ func _load_ontology() -> Model.Ontology:
 		)
 	)
 	writer.close()
+	cli_truth_table(fixture)
+	database_false_empty(scratch)
+
+
+func run_child(script: String, args: Array, label: String, expected_status: int) -> String:
+	var output: Array = []
+	var status := OS.execute(
+		"timeout",
+		(
+			[
+				"30",
+				OS.get_executable_path(),
+				"--headless",
+				"--path",
+				ProjectSettings.globalize_path("res://"),
+				"-s",
+				script
+			]
+			+ args
+		),
+		output,
+		true
+	)
+	var text := "\n".join(output)
+	var writer := FileAccess.open(script.get_base_dir().path_join(label + ".log"), FileAccess.WRITE)
+	writer.store_string("exit=%d\n%s" % [status, text])
+	writer.close()
+	check(status == expected_status, label + " process exit (got %d)" % status)
+	check("SCRIPT ERROR:" not in text, label + " no script exceptions")
+	return text
+
+
+func loot_container_cases() -> void:
+	# Existing selected-tree checks must keep rejecting historical loot crash cases.
+	for bad in [null, true, 42, "bad", []]:
+		var o = fresh()
+		o.configs.generators.design.loot = bad
+		reject(o, "design.loot")
+	var missing = fresh()
+	missing.configs.generators.design.erase("loot")
+	reject(missing, "design.loot")
+	for field in [
+		"gear-chance", "coins", "rarity-weights", "gear-kinds", "consumable-pool", "ground"
+	]:
+		var o = fresh()
+		o.configs.generators.design.loot.erase(field)
+		reject(o, "design.loot." + field)
+		for bad in [null, true, 42, "bad", [], {}]:
+			o = fresh()
+			o.configs.generators.design.loot[field] = bad
+			reject(o, "design.loot." + field)
+
+
+func stack_container_cases() -> void:
+	# The adjacent loot reference consumer must not assume stack-cap container shapes.
+	for bad in [null, true, 42, "bad", []]:
+		var o = fresh()
+		o.configs.generators.design["stack-cap"] = bad
+		reject(o, "design.stack-cap")
+	for bad in [null, true, 42, "bad", {}, [null], [42], [[]], [{}]]:
+		var o = fresh()
+		o.configs.generators.design["stack-cap"].stackable = bad
+		reject(o, "stack-cap")
+
+
+func copy_cli_catalogs(source, scratch: String) -> void:
+	for file in source.get_files():
+		if file.ends_with(".json"):
+			check(
+				(
+					DirAccess.copy_absolute(
+						ProjectSettings.globalize_path("res://ontology/instances/" + file),
+						scratch.path_join(file)
+					)
+					== OK
+				),
+				"copied " + file
+			)
+
+
+func cli_truth_table(fixture) -> void:
 	for case in [
 		"valid", "false-empty", "true-error", "prior-load-error", "null-loot", "unknown-weapon"
 	]:
@@ -145,8 +190,11 @@ func _load_ontology() -> Model.Ontology:
 		check(expected in text, case + " CLI diagnostic")
 		if case != "valid":
 			check("ontology INVALID" in text, case + " CLI reports failure")
+
+
+func database_false_empty(scratch: String) -> void:
 	var db_fixture := scratch.path_join("db_fixture.gd")
-	writer = FileAccess.open(db_fixture, FileAccess.WRITE)
+	var writer := FileAccess.open(db_fixture, FileAccess.WRITE)
 	(
 		writer
 		. store_string(
@@ -180,31 +228,3 @@ func run() -> void:
 	writer.close()
 	var text := run_child(db_runner, [], "db-false-empty", 1)
 	check("ontology: validation failed" in text, "OntologyDB false/empty useful diagnostic")
-
-
-func run_child(script: String, args: Array, label: String, expected_status: int) -> String:
-	var output: Array = []
-	var status := OS.execute(
-		"timeout",
-		(
-			[
-				"30",
-				OS.get_executable_path(),
-				"--headless",
-				"--path",
-				ProjectSettings.globalize_path("res://"),
-				"-s",
-				script
-			]
-			+ args
-		),
-		output,
-		true
-	)
-	var text := "\n".join(output)
-	var writer := FileAccess.open(script.get_base_dir().path_join(label + ".log"), FileAccess.WRITE)
-	writer.store_string("exit=%d\n%s" % [status, text])
-	writer.close()
-	check(status == expected_status, label + " process exit (got %d)" % status)
-	check("SCRIPT ERROR:" not in text, label + " no script exceptions")
-	return text

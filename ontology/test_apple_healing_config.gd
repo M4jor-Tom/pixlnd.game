@@ -64,6 +64,21 @@ func _init() -> void:
 		not good.configs.consumables.cookie.has("heal-mult"),
 		"control: nonhealing food remains optional"
 	)
+	catalog_boundaries()
+	raw_row_boundaries()
+	detached_config()
+	loaded_values()
+	loaded_raw()
+	var cumulative = selected_fixture()
+	cumulative.errors.append("prior load sentinel")
+	cumulative.consumables.apple.heal_mult = 0
+	rejected(cumulative, "cumulative Apple and prior load error")
+	check("prior load sentinel" in cumulative.errors, "prior load error remains")
+	print("Apple config: checks=", checks, " failures=", failed)
+	quit(0 if failed == 0 else 1)
+
+
+func catalog_boundaries() -> void:
 	var absent_catalog = selected_fixture()
 	absent_catalog.configs.erase("consumables")
 	rejected(absent_catalog, "raw absent consumables catalog")
@@ -77,12 +92,18 @@ func _init() -> void:
 	var float_control = selected_fixture()
 	float_control.configs.consumables.apple["heal-mult"] = 20.0
 	check(float_control.validate(), "exact numeric 20.0 is valid without integer coercion")
+
+
+func raw_row_boundaries() -> void:
 	raw_case("absent-row")
 	for value in [null, [], "apple", true, 20]:
 		raw_case("malformed-row", value)
 	raw_case("absent-coefficient")
 	for value in [null, [], {}, "20", true, 0, -1, 19, 200, 20.5, INF, NAN]:
 		raw_case("coefficient", value)
+
+
+func detached_config() -> void:
 	# Detach config from Entry.raw: loaded correctness must not mask invalid raw config.
 	for value in [null, [], {}, "20", true, 0, 19, 20.5, INF, NAN]:
 		var o = selected_fixture()
@@ -90,6 +111,9 @@ func _init() -> void:
 		o.configs.consumables.apple["heal-mult"] = value
 		check(o.consumables.apple.raw["heal-mult"] == 20, "loaded raw control stays valid")
 		rejected(o, "detached raw coefficient " + str(value))
+
+
+func loaded_values() -> void:
 	# Loaded catalog deletion and typed value drift are independent of the raw config.
 	var missing = selected_fixture()
 	missing.consumables.erase(&"apple")
@@ -98,6 +122,9 @@ func _init() -> void:
 		var o = selected_fixture()
 		o.consumables.apple.heal_mult = value
 		rejected(o, "loaded coefficient " + str(value))
+
+
+func loaded_raw() -> void:
 	# Detach Entry.raw, otherwise the alias changes configs and hides which boundary is checked.
 	var absent = selected_fixture()
 	absent.consumables.apple.raw = absent.consumables.apple.raw.duplicate(true)
@@ -108,10 +135,3 @@ func _init() -> void:
 		o.consumables.apple.raw = o.consumables.apple.raw.duplicate(true)
 		o.consumables.apple.raw["heal-mult"] = value
 		rejected(o, "loaded raw coefficient " + str(value))
-	var cumulative = selected_fixture()
-	cumulative.errors.append("prior load sentinel")
-	cumulative.consumables.apple.heal_mult = 0
-	rejected(cumulative, "cumulative Apple and prior load error")
-	check("prior load sentinel" in cumulative.errors, "prior load error remains")
-	print("Apple config: checks=", checks, " failures=", failed)
-	quit(0 if failed == 0 else 1)

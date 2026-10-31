@@ -30,6 +30,43 @@ func reject(o, path: String) -> void:
 func _init() -> void:
 	var baseline = fresh()
 	check(baseline.validate(), "normalized world references validate")
+	loaded_references(baseline)
+	district_cases()
+	landscape_cases()
+	var multiple = fresh()
+	multiple.configs.buildings.districts.trade.buildings = ["missing"]
+	multiple.landscapes.oceans.raw.dungeons = ["arena"]
+	reject(multiple, "buildings.districts.trade.buildings")
+	check(
+		"landscapes.oceans.dungeons" in "\n".join(multiple.errors),
+		"independent references accumulate"
+	)
+	world_parent_cases()
+	check_raw_loading()
+	print("world references ok" if failed == 0 else "world references FAILED (%d)" % failed)
+	quit(0 if failed == 0 else 1)
+
+
+func check_raw_loading() -> void:
+	var directory := OS.get_environment("PIXLND_TEST_DIR")
+	if not directory.is_absolute_path() or not DirAccess.dir_exists_absolute(directory):
+		check(false, "PIXLND_TEST_DIR must name an existing isolated absolute directory")
+		return
+	var scratch := directory.path_join("world-references")
+	check(DirAccess.make_dir_recursive_absolute(scratch) == OK, "scratch created")
+	var source := DirAccess.open("res://ontology/instances")
+	copy_world_catalogs(source, scratch)
+	var path := scratch.path_join("landscapes.json")
+	var raw: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(path))
+	for bad in [null, {}, [null, 42, {"id": "temple"}], ["arena"]]:
+		raw.oceans.dungeons = bad
+		var file := FileAccess.open(path, FileAccess.WRITE)
+		file.store_string(JSON.stringify(raw))
+		file.close()
+		reject(Model.Ontology.load_dir(scratch), "landscapes.oceans.dungeons")
+
+
+func loaded_references(baseline) -> void:
 	var buildings: Dictionary = baseline.configs.buildings
 	check(
 		(
@@ -55,6 +92,10 @@ func _init() -> void:
 	check(
 		"overworld ruins" in str(baseline.landscapes.jungles.raw.notes), "jungle variant retained"
 	)
+	ocean_and_desert_notes(baseline)
+
+
+func ocean_and_desert_notes(baseline) -> void:
 	check(
 		(
 			baseline.landscapes.oceans.dungeon_types == [&"temple", &"island"]
@@ -76,6 +117,9 @@ func _init() -> void:
 		),
 		"desert identity remains evidence, not a resolved alias"
 	)
+
+
+func district_cases() -> void:
 	for bad in [
 		"missing-building",
 		"class-trainer-warrior",
@@ -97,6 +141,9 @@ func _init() -> void:
 		"id": "class-trainer", "class": "warrior"
 	}
 	reject(duplicate, "buildings.districts.adventurer.buildings")
+
+
+func landscape_cases() -> void:
 	for field in ["dungeons", "pois"]:
 		for bad in [
 			null,
@@ -113,14 +160,9 @@ func _init() -> void:
 			var o = fresh()
 			o.landscapes.oceans.raw[field] = bad
 			reject(o, "landscapes.oceans." + field)
-	var multiple = fresh()
-	multiple.configs.buildings.districts.trade.buildings = ["missing"]
-	multiple.landscapes.oceans.raw.dungeons = ["arena"]
-	reject(multiple, "buildings.districts.trade.buildings")
-	check(
-		"landscapes.oceans.dungeons" in "\n".join(multiple.errors),
-		"independent references accumulate"
-	)
+
+
+func world_parent_cases() -> void:
 	for bad in [null, [], 42]:
 		var o = fresh()
 		o.configs.buildings = bad
@@ -132,19 +174,9 @@ func _init() -> void:
 		o = fresh()
 		o.configs.buildings.districts.adventurer.buildings = bad
 		reject(o, "buildings.districts.adventurer.buildings")
-	check_raw_loading()
-	print("world references ok" if failed == 0 else "world references FAILED (%d)" % failed)
-	quit(0 if failed == 0 else 1)
 
 
-func check_raw_loading() -> void:
-	var directory := OS.get_environment("PIXLND_TEST_DIR")
-	if not directory.is_absolute_path() or not DirAccess.dir_exists_absolute(directory):
-		check(false, "PIXLND_TEST_DIR must name an existing isolated absolute directory")
-		return
-	var scratch := directory.path_join("world-references")
-	check(DirAccess.make_dir_recursive_absolute(scratch) == OK, "scratch created")
-	var source := DirAccess.open("res://ontology/instances")
+func copy_world_catalogs(source, scratch: String) -> void:
 	for file in source.get_files():
 		if file.ends_with(".json"):
 			check(
@@ -157,11 +189,3 @@ func check_raw_loading() -> void:
 				),
 				"copied " + file
 			)
-	var path := scratch.path_join("landscapes.json")
-	var raw: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(path))
-	for bad in [null, {}, [null, 42, {"id": "temple"}], ["arena"]]:
-		raw.oceans.dungeons = bad
-		var file := FileAccess.open(path, FileAccess.WRITE)
-		file.store_string(JSON.stringify(raw))
-		file.close()
-		reject(Model.Ontology.load_dir(scratch), "landscapes.oceans.dungeons")
