@@ -57,11 +57,7 @@ func run() -> void:
 	q.shape = box
 	q.collision_mask = 1
 	var obstacles: Dictionary = {}
-	for z in range(-36, 37):
-		for x in range(-36, 37):
-			q.transform = Transform3D(Basis.IDENTITY, Vector3(x, height + 1.9, z))
-			if not space.intersect_shape(q, 1).is_empty():
-				obstacles[Vector2i(x, z)] = true
+	_scan_halo(space, q, obstacles)
 	var geometry := Settlement.obstacles(design.settlement, v)
 	check(
 		not Settlement.box_clear([0.0, -15.0], [1.0, 0.0], [2.0, 2.0], geometry),
@@ -76,3 +72,11 @@ func run() -> void:
 	await process_frame
 	print("HALO_DIAGNOSTIC_DONE height=", height, " no full-world verdict")
 	quit(0 if failed == 0 else 1)
+
+
+func _scan_halo(space, q: PhysicsShapeQueryParameters3D, obstacles: Dictionary) -> void:
+	for z in range(-36, 37):
+		for x in range(-36, 37):
+			q.transform = Transform3D(Basis.IDENTITY, Vector3(x, height + 1.9, z))
+			if not space.intersect_shape(q, 1).is_empty():
+				obstacles[Vector2i(x, z)] = true

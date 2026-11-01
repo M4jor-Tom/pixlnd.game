@@ -97,29 +97,43 @@ static func box_clear(
 	for o in obstacles_:
 		if o.building == except:
 			continue
-		var dx: float = o.centre[0] - c[0]
-		var dz: float = o.centre[1] - c[1]
-		if o.has("radius"):
-			var x := maxf(0, absf(dx * axis[0] + dz * axis[1]) - half[0])
-			var z := maxf(0, absf(-dx * axis[1] + dz * axis[0]) - half[1])
-			if x * x + z * z < o.radius * o.radius:
-				return false
-			continue
-		var separated := false
-		for n in [axis, [-axis[1], axis[0]], o.axis, [-o.axis[1], o.axis[0]]]:
-			var distance := absf(dx * n[0] + dz * n[1])
-			var reach: float = (
-				absf(axis[0] * n[0] + axis[1] * n[1]) * half[0]
-				+ absf(-axis[1] * n[0] + axis[0] * n[1]) * half[1]
-				+ absf(o.axis[0] * n[0] + o.axis[1] * n[1]) * o.half[0]
-				+ absf(-o.axis[1] * n[0] + o.axis[0] * n[1]) * o.half[1]
-			)
-			if distance >= reach:
-				separated = true
-				break
-		if not separated:
+		if not _obstacle_clear(c, axis, half, o):
 			return false
 	return true
+
+
+static func _obstacle_clear(c: Array, axis: Array, half: Array, o) -> bool:
+	var dx: float = o.centre[0] - c[0]
+	var dz: float = o.centre[1] - c[1]
+	if o.has("radius"):
+		if not _circle_clear(dx, dz, axis, half, o):
+			return false
+		return true
+	return _box_separation(dx, dz, axis, half, o)
+
+
+static func _circle_clear(dx: float, dz: float, axis: Array, half: Array, o) -> bool:
+	var x := maxf(0, absf(dx * axis[0] + dz * axis[1]) - half[0])
+	var z := maxf(0, absf(-dx * axis[1] + dz * axis[0]) - half[1])
+	if x * x + z * z < o.radius * o.radius:
+		return false
+	return true
+
+
+static func _box_separation(dx: float, dz: float, axis: Array, half: Array, o) -> bool:
+	var separated := false
+	for n in [axis, [-axis[1], axis[0]], o.axis, [-o.axis[1], o.axis[0]]]:
+		var distance := absf(dx * n[0] + dz * n[1])
+		var reach: float = (
+			absf(axis[0] * n[0] + axis[1] * n[1]) * half[0]
+			+ absf(-axis[1] * n[0] + axis[0] * n[1]) * half[1]
+			+ absf(o.axis[0] * n[0] + o.axis[1] * n[1]) * o.half[0]
+			+ absf(-o.axis[1] * n[0] + o.axis[0] * n[1]) * o.half[1]
+		)
+		if distance >= reach:
+			separated = true
+			break
+	return separated
 
 
 static func build(v: Dictionary, st: Dictionary, roles: Dictionary, frame = null) -> Node3D:

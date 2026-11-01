@@ -89,6 +89,10 @@ func _init(p_seed: int, design: Dictionary, p_landscapes: Dictionary) -> void:
 	_height.frequency = float(hf["frequency"])
 	_height.fractal_lacunarity = float(hf["lacunarity"])
 	_height.fractal_gain = float(hf["gain"])
+	_configure_climate()
+
+
+func _configure_climate() -> void:
 	var k := 1
 	for f in ["temp", "humidity", "continent", "relief"]:
 		var n := FastNoiseLite.new()
@@ -141,19 +145,8 @@ func land_at(lc: Vector2i) -> Land:
 	l.land_seed = hash(Vector3i(world_seed, lc.x, lc.y))
 	var rng := RandomNumberGenerator.new()
 	rng.seed = l.land_seed
-	var v := {}
-	for f in _fields:
-		v[f] = clampf(_fields[f].get_noise_2d(lc.x, lc.y) * 0.8 + 0.5, 0.0, 1.0)
-	v["roll"] = rng.randf()
-	l.temp = v["temp"]
-	l.humidity = v["humidity"]
-	var inputs: Array = FIELD_NAMES.map(func(n: String) -> float: return v[n])
-	for r in _rules:
-		if r[1].execute(inputs) == true and landscapes.has(r[0]):
-			l.landscape = r[0]
-			break
-	if l.landscape == &"":
-		l.landscape = &"greenlands"
+	if not _land_climate(l, rng):
+		return null
 	var g: Dictionary = landscapes[l.landscape].gen
 	l.relief = float(g["relief"])
 	l.base = float(g["base"])
@@ -164,6 +157,23 @@ func land_at(lc: Vector2i) -> Land:
 	l.danger_tier = _roll_tier(rng)
 	_lands[lc] = l
 	return l
+
+
+func _land_climate(l: Land, rng: RandomNumberGenerator) -> bool:
+	var v := {}
+	for f in _fields:
+		v[f] = clampf(_fields[f].get_noise_2d(l.coords.x, l.coords.y) * 0.8 + 0.5, 0.0, 1.0)
+	v["roll"] = rng.randf()
+	l.temp = v["temp"]
+	l.humidity = v["humidity"]
+	var inputs: Array = FIELD_NAMES.map(func(n: String) -> float: return v[n])
+	for r in _rules:
+		if r[1].execute(inputs) == true and landscapes.has(r[0]):
+			l.landscape = r[0]
+			break
+	if l.landscape == &"":
+		l.landscape = &"greenlands"
+	return true
 
 
 ## Weighted roll over design.enemy-level.tier-weights.
@@ -230,18 +240,18 @@ func encounters_at(l: Land) -> Dictionary:
 		l.encounter_plan = saved_lands[key]
 		_set_village(l)
 		return l.encounter_plan
+	return _generate_encounters(l)
+
+
+func _generate_encounters(l: Land) -> Dictionary:
 	var pl: Dictionary = settlement["placement"]
 	var step := int(pl["search-step"])
 	var min_h: int = sea_level + int(pl["min-above-sea"])
 	var cx := l.coords.x * land_blocks + land_blocks / 2
 	var cy := l.coords.y * land_blocks + land_blocks / 2
-	var candidates: Array = [Vector2i(cx, cy)]
-	for r in range(1, int(pl["search-rings"]) + 1):
-		for i in 8 * r:
-			var ang := TAU * i / (8 * r)
-			candidates.append(
-				Vector2i(cx + roundi(cos(ang) * r * step), cy + roundi(sin(ang) * r * step))
-			)
+	var candidates := _village_candidates(cx, cy, step, pl)
+	if candidates.is_empty():
+		return {}
 	var dry: Array = candidates.filter(
 		func(c): return valid_block(c.x, c.y) and _raw_height(c.x, c.y) >= min_h
 	)
@@ -249,31 +259,57 @@ func encounters_at(l: Land) -> Dictionary:
 	if fallback:
 		dry = [Vector2i(cx, cy)]
 	var reasons: Array[String] = []
+	var search := _search_villages(l, dry, min_h, fallback, reasons)
+	if search.is_empty():
+		return {}
+	if not search[0].is_empty():
+		return search[0]
+	_generation_failure(l, dry, reasons)
+	return {}
+
+
+# [] propagates a native candidate error; [{}] is a completed, unsuccessful search.
+func _search_villages(
+	l: Land, dry: Array, min_h: int, fallback: bool, reasons: Array[String]
+) -> Array:
 	for c in dry:
-		# A hub cannot straddle its land; reject before spending work on impossible sites.
-		var half := float(encounter_config["hub-size"]) / 2
-		if (
-			c.x - half < l.coords.x * land_blocks
-			or c.y - half < l.coords.y * land_blocks
-			or c.x + half >= (l.coords.x + 1) * land_blocks
-			or c.y + half >= (l.coords.y + 1) * land_blocks
-		):
+		var candidate := _candidate_village(l, c, min_h, fallback)
+		if candidate.is_empty():
+			return []
+		if candidate[0] == null:
 			continue
-		var rng := RandomNumberGenerator.new()
-		rng.seed = l.land_seed ^ hash("village")
-		var v := {
-			"centre": c,
-			"height": maxi(_raw_height(c.x, c.y), min_h - 1),
-			"name": _syllables(rng),
-			"style": StringName(str(settlement["style-by-landscape"][String(l.landscape)])),
-			"hub": fallback
-		}
+		var v: Dictionary = candidate[0]
 		var result := Encounters.plan(self, l, v, encounter_config)
-		if not result.has("error"):
-			l.encounter_plan = result
-			_set_village(l)
-			return result
-		reasons.append(str(c) + ": " + str(result.error))
+		if _accept_candidate(l, c, result, reasons):
+			return [result]
+	return [{}]
+
+
+func _accept_candidate(l: Land, c: Vector2i, result: Dictionary, reasons: Array[String]) -> bool:
+	if not result.has("error"):
+		l.encounter_plan = result
+		_set_village(l)
+		return true
+	reasons.append(str(c) + ": " + str(result.error))
+	return false
+
+
+func _candidate_village(l: Land, c: Vector2i, min_h: int, fallback: bool) -> Array:
+	var half := float(encounter_config["hub-size"]) / 2
+	if (
+		c.x - half < l.coords.x * land_blocks
+		or c.y - half < l.coords.y * land_blocks
+		or c.x + half >= (l.coords.x + 1) * land_blocks
+		or c.y + half >= (l.coords.y + 1) * land_blocks
+	):
+		return [null]
+	var v := _make_village(l, c, min_h, fallback)
+	if v.is_empty():
+		return []
+	return [v]
+
+
+func _generation_failure(l: Land, dry: Array, reasons: Array[String]) -> void:
 	diagnostics.append(
 		(
 			"initial-encounters generation failed seed=%d land=%s candidates=%d: %s"
@@ -289,7 +325,29 @@ func encounters_at(l: Land) -> Dictionary:
 			]
 		)
 	)
-	return {}
+
+
+func _make_village(l: Land, c: Vector2i, min_h: int, fallback: bool) -> Dictionary:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = l.land_seed ^ hash("village")
+	return {
+		"centre": c,
+		"height": maxi(_raw_height(c.x, c.y), min_h - 1),
+		"name": _syllables(rng),
+		"style": StringName(str(settlement["style-by-landscape"][String(l.landscape)])),
+		"hub": fallback
+	}
+
+
+func _village_candidates(cx: int, cy: int, step: int, pl: Dictionary) -> Array:
+	var candidates: Array = [Vector2i(cx, cy)]
+	for r in range(1, int(pl["search-rings"]) + 1):
+		for i in 8 * r:
+			var ang := TAU * i / (8 * r)
+			candidates.append(
+				Vector2i(cx + roundi(cos(ang) * r * step), cy + roundi(sin(ang) * r * step))
+			)
+	return candidates
 
 
 func _set_village(l: Land) -> void:
@@ -310,31 +368,47 @@ func _set_village(l: Land) -> void:
 func support_patches(plan_: Dictionary) -> Dictionary:
 	var patches := {}
 	var v: Dictionary = plan_.village
+	if not _hub_support(patches, v):
+		return {}
+	for site in plan_.sites:
+		if not _site_support(patches, site):
+			return {}
+	return patches
+
+
+func _hub_support(patches: Dictionary, v: Dictionary) -> bool:
 	if v.hub:
 		var half := int(encounter_config["hub-size"]) / 2
 		for x in range(v.centre[0] - half, v.centre[0] + half):
 			for z in range(v.centre[1] - half, v.centre[1] + half):
 				patches[Vector2i(x, z)] = int(v.height)
-	for site in plan_.sites:
-		var minx := INF
-		var minz := INF
-		var maxx := -INF
-		var maxz := -INF
-		for volume in site.volumes:
-			minx = minf(minx, volume[0])
-			minz = minf(minz, volume[2])
-			maxx = maxf(maxx, volume[3])
-			maxz = maxf(maxz, volume[5])
-		var apron := int(encounter_config.apron)
-		for x in range(int(minx) - apron, int(maxx) + apron):
-			for z in range(int(minz) - apron, int(maxz) + apron):
-				patches[Vector2i(x, z)] = int(site.floor) - 1
-		# The physical floor owns the top block; terrain meets its underside, never a coplanar face.
-		for volume in site.volumes:
-			for x in range(int(volume[0]), int(volume[3])):
-				for z in range(int(volume[2]), int(volume[5])):
-					patches[Vector2i(x, z)] = int(site.floor) - 2
-	return patches
+	return true
+
+
+func _site_support(patches: Dictionary, site) -> bool:
+	var minx := INF
+	var minz := INF
+	var maxx := -INF
+	var maxz := -INF
+	for volume in site.volumes:
+		minx = minf(minx, volume[0])
+		minz = minf(minz, volume[2])
+		maxx = maxf(maxx, volume[3])
+		maxz = maxf(maxz, volume[5])
+	var apron := int(encounter_config.apron)
+	for x in range(int(minx) - apron, int(maxx) + apron):
+		for z in range(int(minz) - apron, int(maxz) + apron):
+			patches[Vector2i(x, z)] = int(site.floor) - 1
+	return _floor_support(patches, site)
+
+
+func _floor_support(patches: Dictionary, site) -> bool:
+	# The physical floor owns the top block; terrain meets its underside, never a coplanar face.
+	for volume in site.volumes:
+		for x in range(int(volume[0]), int(volume[3])):
+			for z in range(int(volume[2]), int(volume[5])):
+				patches[Vector2i(x, z)] = int(site.floor) - 2
+	return true
 
 
 func _install_patches(l: Land) -> void:

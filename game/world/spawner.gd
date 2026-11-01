@@ -4,6 +4,7 @@
 ## Dungeon, settlement and boss generation is separate.
 extends RefCounted
 
+const SavedSpawn := preload("res://game/world/saved_spawn.gd")
 const CREATURE := preload("res://game/entities/creature.tscn")
 const Model := preload("res://ontology/model.gd")
 const Items := preload("res://game/items/items.gd")
@@ -29,7 +30,139 @@ static func plan(
 	var land = gen.land_of_block(zc.x * n + n / 2, zc.y * n + n / 2)
 	var roster: Array = rosters.get(land.landscape, [])
 	var skip: Array = spawns["skip-categories"]
-	var pool: Array = roster.filter(
+	var pool := _ordinary_pool(roster, creatures, skip)
+	if pool.is_empty():
+		return out
+	return _plan_groups(
+		gen, zc, n, land, pool, creatures, spawns, design, party_level, party_max, out
+	)
+
+
+static func _plan_groups(
+	gen,
+	zc: Vector2i,
+	n: int,
+	land,
+	pool: Array,
+	creatures: Dictionary,
+	spawns: Dictionary,
+	design: Dictionary,
+	party_level: int,
+	party_max: int,
+	out: Array
+) -> Array:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(Vector3i(gen.world_seed, zc.x, zc.y)) ^ hash("spawns")
+	for g in rng.randi_range(int(spawns["groups-per-zone"][0]), int(spawns["groups-per-zone"][1])):
+		if not _candidate_group(
+			gen, zc, n, land, pool, creatures, spawns, rng, design, party_level, party_max, out
+		):
+			return []
+	return out
+
+
+static func _candidate_group(
+	gen,
+	zc: Vector2i,
+	n: int,
+	land,
+	pool: Array,
+	creatures: Dictionary,
+	spawns: Dictionary,
+	rng: RandomNumberGenerator,
+	design: Dictionary,
+	party_level: int,
+	party_max: int,
+	out: Array
+) -> bool:
+	var c: Model.Creature = creatures[pool[rng.randi() % pool.size()]]
+	var size := (
+		c.group_size
+		if c.group_size != Vector2i(1, 1)
+		else Vector2i(int(spawns["default-group"][0]), int(spawns["default-group"][1]))
+	)
+	var count := rng.randi_range(size.x, size.y)
+	var cx := zc.x * n + rng.randi_range(4, n - 5)
+	var cy := zc.y * n + rng.randi_range(4, n - 5)
+	return _admit_group(
+		gen, land, c, spawns, rng, cx, cy, count, design, party_level, party_max, out
+	)
+
+
+static func _admit_group(
+	gen,
+	land,
+	c: Model.Creature,
+	spawns: Dictionary,
+	rng: RandomNumberGenerator,
+	cx: int,
+	cy: int,
+	count: int,
+	design: Dictionary,
+	party_level: int,
+	party_max: int,
+	out: Array
+) -> bool:
+	var v: Dictionary = gen.village_at(land)  # c-hostile-in-city (D22): no wild groups near the square
+	if (
+		not v.is_empty()
+		and (
+			Vector2(cx - v["centre"].x, cy - v["centre"].y).length()
+			< float(design.get("settlement", {}).get("no-hostiles-within", 0))
+		)
+	):
+		return true
+	return _place_group(
+		gen, land, c, spawns, rng, cx, cy, count, design, party_level, party_max, out
+	)
+
+
+static func _place_group(
+	gen,
+	land,
+	c: Model.Creature,
+	spawns: Dictionary,
+	rng: RandomNumberGenerator,
+	cx: int,
+	cy: int,
+	count: int,
+	design: Dictionary,
+	party_level: int,
+	party_max: int,
+	out: Array
+) -> bool:
+	var h: StringName = c.hostility
+	if h == &"V":
+		h = &"H" if rng.randf() < float(spawns["variable-hostility"]["H"]) else &"N"
+	var positions: Array = []
+	if not _sample_positions(gen, c, spawns, rng, cx, cy, count, positions):
+		return false
+	if positions.is_empty():
+		return true
+	return _append_group(gen, land, c, h, positions, party_level, party_max, rng, design, out)
+
+
+static func _append_group(
+	gen,
+	land,
+	c: Model.Creature,
+	h: StringName,
+	positions: Array,
+	party_level: int,
+	party_max: int,
+	rng: RandomNumberGenerator,
+	design: Dictionary,
+	out: Array
+) -> bool:
+	var group := _group(gen, land, c, h, positions, party_level, party_max, rng, design)
+	if group.is_empty():
+		return false
+	out.append(group)
+	return true
+
+
+static func _ordinary_pool(roster: Array, creatures: Dictionary, skip: Array) -> Array:
+	return roster.filter(
 		func(id: String) -> bool:
 			return (
 				creatures.has(id)
@@ -42,83 +175,90 @@ static func plan(
 				)
 			)
 	)
-	if pool.is_empty():
-		return out
-	var rng := RandomNumberGenerator.new()
-	rng.seed = hash(Vector3i(gen.world_seed, zc.x, zc.y)) ^ hash("spawns")
-	for g in rng.randi_range(int(spawns["groups-per-zone"][0]), int(spawns["groups-per-zone"][1])):
-		var c: Model.Creature = creatures[pool[rng.randi() % pool.size()]]
-		var size := (
-			c.group_size
-			if c.group_size != Vector2i(1, 1)
-			else Vector2i(int(spawns["default-group"][0]), int(spawns["default-group"][1]))
-		)
-		var count := rng.randi_range(size.x, size.y)
-		var cx := zc.x * n + rng.randi_range(4, n - 5)
-		var cy := zc.y * n + rng.randi_range(4, n - 5)
-		var v: Dictionary = gen.village_at(land)  # c-hostile-in-city (D22): no wild groups near the square
-		if (
-			not v.is_empty()
-			and (
-				Vector2(cx - v["centre"].x, cy - v["centre"].y).length()
-				< float(design.get("settlement", {}).get("no-hostiles-within", 0))
-			)
-		):
-			continue
-		var h: StringName = c.hostility
-		if h == &"V":
-			h = &"H" if rng.randf() < float(spawns["variable-hostility"]["H"]) else &"N"
-		var positions: Array = []
-		var spread := int(spawns["group-spread"])
-		for i in count:
-			var x := cx + rng.randi_range(-spread, spread)
-			var y := cy + rng.randi_range(-spread, spread)
-			if gen.reserved_ground(x, y):
-				continue
-			var ground: int = gen.height_at(x, y)
-			var in_water: bool = ground < gen.sea_level
-			if (
-				in_water != (c.category == Model.CreatureCategory.AQUATIC)
-				and spawns["aquatic-only-in-water"]
-			):
-				continue
-			positions.append(
-				Vector3(x + 0.5, (gen.sea_level if in_water else ground) + 1.0, y + 0.5)
-			)
-		if positions.is_empty():
-			continue
-		var lvl: int = gen.creature_level(
-			land, party_level, party_level if party_max < 0 else party_max, rng
-		)
-		var pb := rng.randf_range(
-			float(gen.enemy_hp["power-base"][0]), float(gen.enemy_hp["power-base"][1])
-		)
-		var max_hp := Combat.enemy_max_hp(lvl, pb)  # design.enemy-hp.formula
-		var dmg := Combat.enemy_damage(lvl, pb, design["combat"])
-		var gseed := rng.randi()  # the group seed, the last draw of the zone rng
-		var cr: Dictionary = design["creature-roles"]  # D26: one combat-role per group, off a private
-		var role := str(c.combat_role)  # rng so the shared zone stream is untouched
-		if role == "any-class":
-			var rr := RandomNumberGenerator.new()
-			rr.seed = gseed ^ hash("role")
-			role = _roll_role(cr["any-class"], rr)  # humanoids roll a class per group
-			# ponytail: the roll is the whole "class" — no spec, equipment or appearance behind it (todo_implement.md)
-		elif not cr.has(role):
-			role = str(cr["default"])  # no role in creatures.json (or `none`): melee
-		out.append(
-			{
-				"species": StringName(c.id),
-				"level": lvl,
-				"hostility": h,
-				"max_hp": max_hp,
-				"damage": dmg,
-				"power_base": pb,
-				"positions": positions,
-				"role": role,
-				"seed": gseed
-			}
-		)
-	return out
+
+
+static func _sample_positions(
+	gen,
+	c: Model.Creature,
+	spawns: Dictionary,
+	rng: RandomNumberGenerator,
+	cx: int,
+	cy: int,
+	count: int,
+	positions: Array
+) -> bool:
+	var spread := int(spawns["group-spread"])
+	for i in count:
+		if not _sample_position(gen, c, spawns, rng, cx, cy, spread, positions):
+			return false
+	return true
+
+
+static func _sample_position(
+	gen,
+	c: Model.Creature,
+	spawns: Dictionary,
+	rng: RandomNumberGenerator,
+	cx: int,
+	cy: int,
+	spread: int,
+	positions: Array
+) -> bool:
+	var x := cx + rng.randi_range(-spread, spread)
+	var y := cy + rng.randi_range(-spread, spread)
+	if gen.reserved_ground(x, y):
+		return true
+	var ground: int = gen.height_at(x, y)
+	var in_water: bool = ground < gen.sea_level
+	if (
+		in_water != (c.category == Model.CreatureCategory.AQUATIC)
+		and spawns["aquatic-only-in-water"]
+	):
+		return true
+	positions.append(Vector3(x + 0.5, (gen.sea_level if in_water else ground) + 1.0, y + 0.5))
+	return true
+
+
+static func _group(
+	gen,
+	land,
+	c: Model.Creature,
+	h: StringName,
+	positions: Array,
+	party_level: int,
+	party_max: int,
+	rng: RandomNumberGenerator,
+	design: Dictionary
+) -> Dictionary:
+	var lvl: int = gen.creature_level(
+		land, party_level, party_level if party_max < 0 else party_max, rng
+	)
+	var pb := rng.randf_range(
+		float(gen.enemy_hp["power-base"][0]), float(gen.enemy_hp["power-base"][1])
+	)
+	var max_hp := Combat.enemy_max_hp(lvl, pb)  # design.enemy-hp.formula
+	var dmg := Combat.enemy_damage(lvl, pb, design["combat"])
+	var gseed := rng.randi()  # the group seed, the last draw of the zone rng
+	var cr: Dictionary = design["creature-roles"]  # D26: one combat-role per group, off a private
+	var role := str(c.combat_role)  # rng so the shared zone stream is untouched
+	if role == "any-class":
+		var rr := RandomNumberGenerator.new()
+		rr.seed = gseed ^ hash("role")
+		role = _roll_role(cr["any-class"], rr)  # humanoids roll a class per group
+		# ponytail: the roll is the whole "class" — no spec, equipment or appearance behind it (todo_implement.md)
+	elif not cr.has(role):
+		role = str(cr["default"])  # no role in creatures.json (or `none`): melee
+	return {
+		"species": StringName(c.id),
+		"level": lvl,
+		"hostility": h,
+		"max_hp": max_hp,
+		"damage": dmg,
+		"power_base": pb,
+		"positions": positions,
+		"role": role,
+		"seed": gseed
+	}
 
 
 ## design.creature-roles.any-class: weighted pick from the group's rng (same seed → same role).
@@ -152,18 +292,39 @@ static func populate(
 	if authority == null:
 		authority = Targeting.new()
 		parent.add_child(authority)
-		# Godot diagnoses a freed Node capture before entering a lambda, even behind is_instance_valid.
-		var player_ref: WeakRef = weakref(target) if target != null else null
-		authority.configure(
-			design,
-			func():
-				var present: Node = player_ref.get_ref() if player_ref != null else null
-				return [present] if is_instance_valid(present) else []
-		)
+		_configure_authority(authority, design, target)
 	if target != null and "targeting" in target:
 		target.targeting = authority
 	if prefix == "":
 		prefix = str(parent.get_instance_id())
+	return _populate_plan(
+		parent,
+		plan_,
+		design,
+		creatures,
+		target,
+		ontology,
+		authority,
+		prefix,
+		saved_mobs,
+		ready,
+		spawns
+	)
+
+
+static func _populate_plan(
+	parent: Node3D,
+	plan_: Array,
+	design: Dictionary,
+	creatures: Dictionary,
+	target: Node3D,
+	ontology,
+	authority: Node,
+	prefix: String,
+	saved_mobs: Dictionary,
+	ready: Callable,
+	spawns: Dictionary
+) -> Array:
 	var made: Array = []
 	for group_index in plan_.size():
 		var g: Dictionary = plan_[group_index]
@@ -171,64 +332,182 @@ static func populate(
 		var cat: String = Model.CreatureCategory.keys()[c.category].to_lower().replace("_", "-")
 		var size := float(spawns["size-by-category"].get(cat, 1.0))
 		var color := Color(spawns["hostility-colors"].get(g["hostility"], "#e6e6e6"))
-		for i in g["positions"].size():
-			var id := "%s/%s/%d" % [prefix, str(group_index), i]
-			var pack := "%s/%s" % [prefix, str(group_index)]
-			var saved: Dictionary = saved_mobs.get(id, {})
-			if authority.live.has(id):
-				continue
-			if not saved.is_empty() and saved.dead and not saved.eligible:
-				continue
-			var at: Array = (
-				(saved.home if saved.dead else saved.position)
-				if not saved.is_empty()
-				else [g.positions[i].x, g.positions[i].y, g.positions[i].z]
-			)
-			if ready.is_valid() and not ready.call(at):
-				continue  # no incarnation/cycle changes until its actual destination has support
-			if not saved.is_empty() and saved.dead:
-				saved = saved.duplicate(true)  # old corpse callbacks must not mutate a new incarnation
-				saved.dead = false
-				saved.eligible = false
-				saved.cycle += 1
-				saved.level = g.level
-				saved.max_hp = g.max_hp
-				saved.hp = g.max_hp
-				saved.damage = g.damage
-				if g.has("power_base"):
-					saved.power_base = g.power_base
-				saved.position = saved.home.duplicate()
-				saved.combat = Targeting.fresh()
-				authority.records[id] = saved.combat
-			var spawn: Dictionary = (
-				saved
-				if not saved.is_empty()
-				else {
-					"species": str(g.species),
-					"level": g.level,
-					"max_hp": g.max_hp,
-					"hp": g.max_hp,
-					"damage": g.damage,
-					"hostility": str(g.hostility),
-					"role": str(g.get("role", design["creature-roles"].default)),
-					"home": [g.positions[i].x, g.positions[i].y, g.positions[i].z],
-					"position": [g.positions[i].x, g.positions[i].y, g.positions[i].z],
-					"seed": g.seed + i,
-					"pack": pack,
-					"dead": false,
-					"eligible": false,
-					"cycle": 0,
-					"combat": Targeting.fresh()
-				}
-			)
-			if g.has("power_base") and not spawn.has("power_base"):
-				spawn.power_base = g.power_base
-			saved_mobs[id] = spawn
-			var m := materialize(parent, spawn, id, design, target, authority, size, color)
-			if ontology != null:
-				m.died.connect(func() -> void: Items.drop_for(m, ontology, design))
-			made.append(m)
+		if not _populate_group(
+			parent,
+			g,
+			group_index,
+			design,
+			target,
+			ontology,
+			authority,
+			prefix,
+			saved_mobs,
+			ready,
+			size,
+			color,
+			made
+		):
+			return []
 	return made
+
+
+static func _configure_authority(authority: Node, design: Dictionary, target: Node3D) -> void:
+	# Godot diagnoses a freed Node capture before entering a lambda, even behind is_instance_valid.
+	var player_ref: WeakRef = weakref(target) if target != null else null
+	authority.configure(
+		design,
+		func():
+			var present: Node = player_ref.get_ref() if player_ref != null else null
+			return [present] if is_instance_valid(present) else []
+	)
+
+
+# Completion propagates a native preparation error to populate's original Array-return boundary.
+static func _populate_group(
+	parent: Node3D,
+	g: Dictionary,
+	group_index: int,
+	design: Dictionary,
+	target: Node3D,
+	ontology,
+	authority: Node,
+	prefix: String,
+	saved_mobs: Dictionary,
+	ready: Callable,
+	size: float,
+	color: Color,
+	made: Array
+) -> bool:
+	for i in g["positions"].size():
+		if not _populate_member(
+			parent,
+			g,
+			group_index,
+			i,
+			design,
+			target,
+			ontology,
+			authority,
+			prefix,
+			saved_mobs,
+			ready,
+			size,
+			color,
+			made
+		):
+			return false
+	return true
+
+
+static func _populate_member(
+	parent: Node3D,
+	g: Dictionary,
+	group_index: int,
+	i: int,
+	design: Dictionary,
+	target: Node3D,
+	ontology,
+	authority: Node,
+	prefix: String,
+	saved_mobs: Dictionary,
+	ready: Callable,
+	size: float,
+	color: Color,
+	made: Array
+) -> bool:
+	var id := "%s/%s/%d" % [prefix, str(group_index), i]
+	var pack := "%s/%s" % [prefix, str(group_index)]
+	var saved: Dictionary = saved_mobs.get(id, {})
+	if authority.live.has(id):
+		return true
+	if not saved.is_empty() and saved.dead and not saved.eligible:
+		return true
+	return _supported_member(
+		parent,
+		g,
+		i,
+		design,
+		target,
+		ontology,
+		authority,
+		id,
+		pack,
+		saved,
+		saved_mobs,
+		ready,
+		size,
+		color,
+		made
+	)
+
+
+static func _supported_member(
+	parent: Node3D,
+	g: Dictionary,
+	i: int,
+	design: Dictionary,
+	target: Node3D,
+	ontology,
+	authority: Node,
+	id: String,
+	pack: String,
+	saved: Dictionary,
+	saved_mobs: Dictionary,
+	ready: Callable,
+	size: float,
+	color: Color,
+	made: Array
+) -> bool:
+	var at: Array
+	if not saved.is_empty():
+		at = saved.home if saved.dead else saved.position
+	else:
+		at = [g.positions[i].x, g.positions[i].y, g.positions[i].z]
+	if ready.is_valid() and not ready.call(at):
+		return true  # no incarnation/cycle changes until its actual destination has support
+	return _materialize_member(
+		parent,
+		g,
+		i,
+		design,
+		target,
+		ontology,
+		authority,
+		id,
+		pack,
+		saved,
+		saved_mobs,
+		size,
+		color,
+		made
+	)
+
+
+static func _materialize_member(
+	parent: Node3D,
+	g: Dictionary,
+	i: int,
+	design: Dictionary,
+	target: Node3D,
+	ontology,
+	authority: Node,
+	id: String,
+	pack: String,
+	saved: Dictionary,
+	saved_mobs: Dictionary,
+	size: float,
+	color: Color,
+	made: Array
+) -> bool:
+	var spawn := SavedSpawn.prepare(saved, g, i, pack, design, authority, id)
+	if spawn.is_empty():
+		return false
+	saved_mobs[id] = spawn
+	var m := materialize(parent, spawn, id, design, target, authority, size, color)
+	if ontology != null:
+		m.died.connect(func() -> void: Items.drop_for(m, ontology, design))
+	made.append(m)
+	return true
 
 
 ## Shared physical creature factory: ambient and encounter owners supply their own logical/stat policy.

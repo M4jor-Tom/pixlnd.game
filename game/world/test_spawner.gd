@@ -47,17 +47,15 @@ func _init() -> void:
 		Spawner.plan(g, zone, d, o.creatures, rosters, 6, 10) == ordinary,
 		"mixed roster retains wolf groups, positions, role, levels, stats and RNG draws"
 	)
-	rosters[land.landscape] = ["witch"]
-	check(
-		o.creatures["witch"].boss_capable and not o.creatures["witch"].boss_species,
-		"witch control is boss-capable, not always boss"
-	)
-	var capable := Spawner.plan(g, zone, d, o.creatures, rosters, 6, 10)
-	check(capable.size() == 2, "ordinary boss-capable witch remains eligible")
-	for group in capable:
-		check(
-			group.species == &"witch" and group.role == "mage", "witch identity and role retained"
-		)
+	_capable(o, g, zone, d, rosters, land)
+	_excluded(o, g, zone, d, rosters, land, ordinary)
+	print("spawner eligibility ok" if failed == 0 else "spawner eligibility FAILED %d" % failed)
+	quit(0 if failed == 0 else 1)
+
+
+func _excluded(
+	o, g, zone: Vector2i, d: Dictionary, rosters: Dictionary, land, ordinary: Array
+) -> void:
 	# Clear only the boss flag in a copied troll: category alone must still exclude it.
 	var creatures: Dictionary = o.creatures.duplicate()
 	creatures["troll"] = o.creatures["troll"].duplicate()
@@ -73,5 +71,17 @@ func _init() -> void:
 			Spawner.plan(g, zone, d, creatures, rosters, 6, 10) == ordinary,
 			"excluded entry leaves ordinary plan unchanged: " + id
 		)
-	print("spawner eligibility ok" if failed == 0 else "spawner eligibility FAILED %d" % failed)
-	quit(0 if failed == 0 else 1)
+
+
+func _capable(o, g, zone: Vector2i, d: Dictionary, rosters: Dictionary, land) -> void:
+	rosters[land.landscape] = ["witch"]
+	check(
+		o.creatures["witch"].boss_capable and not o.creatures["witch"].boss_species,
+		"witch control is boss-capable, not always boss"
+	)
+	var capable := Spawner.plan(g, zone, d, o.creatures, rosters, 6, 10)
+	check(capable.size() == 2, "ordinary boss-capable witch remains eligible")
+	for group in capable:
+		check(
+			group.species == &"witch" and group.role == "mage", "witch identity and role retained"
+		)

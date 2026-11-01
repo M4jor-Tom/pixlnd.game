@@ -38,6 +38,43 @@ func _init() -> void:
 	var name_re := RegEx.create_from_string("^[A-Z][a-z]+$")
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 3
+	var villages := _villages(a, b, st, name_re, rng, o, design)
+	var r := float(st["radius"])
+	check(villages >= 30, "most of 49 lands have a village: %d" % villages)
+	var v0 := a.village_at(a.land_at(Vector2i.ZERO))
+	var v0c := c.village_at(c.land_at(Vector2i.ZERO))
+	check(
+		not v0.is_empty() and (v0c.is_empty() or v0["name"] != v0c["name"]),
+		"different seed → different village name"
+	)
+	_layout(v0, st, r, o)
+	_wild(a, v0, design, o, st)
+	var w1 := _stock(a, v0, o, design, st, rng)
+	# c-settlement-config fires
+	st["ring-radius"] = 99.0
+	check(not o.validate(), "c-settlement-config rejects ring-radius ≥ radius")
+	st["ring-radius"] = 15.0
+	o.errors.clear()
+	await _scene(o, design, st, w1)
+	print(
+		(
+			"settlement: village '%s' (%s) at %s h %d; %d villages in 7×7 lands"
+			% [v0["name"], v0["style"], v0["centre"], v0["height"], villages]
+		)
+	)
+	print("settlement ok" if _failed == 0 else "settlement FAILED (%d)" % _failed)
+	quit(0 if _failed == 0 else 1)
+
+
+func _villages(
+	a: WorldGen,
+	b: WorldGen,
+	st: Dictionary,
+	name_re: RegEx,
+	rng: RandomNumberGenerator,
+	o,
+	design: Dictionary
+) -> int:
 	var villages := 0
 	var r := float(st["radius"])
 	for lx in range(-3, 4):
@@ -51,74 +88,17 @@ func _init() -> void:
 			if v.is_empty():
 				continue
 			villages += 1
-			check(
-				v["height"] + 1 >= a.sea_level + int(design["initial-encounters"]["dry-above-sea"]),
-				"village dry surface (including ocean hub): h %d" % v["height"]
-			)
-			check(name_re.search(v["name"]) != null, "village name shape: '%s'" % v["name"])
-			check(
-				o.configs["buildings"]["settlement-styles"].has(String(v["style"])),
-				"style %s is a settlement-style" % v["style"]
-			)
-			check(
-				a.height_at(v["centre"].x, v["centre"].y) in [int(v.height), int(v.height) - 1],
-				"square terrain supports the actual village access surface"
-			)
-			for i in 12:
-				var ang := rng.randf() * TAU
-				var d := rng.randf() * (r - 1.0)
-				var p := Vector2i(
-					v["centre"].x + roundi(cos(ang) * d), v["centre"].y + roundi(sin(ang) * d)
-				)
-				check(
-					(
-						a.height_at(p.x, p.y)
-						in (
-							[int(v.height), int(v.height) - 1]
-							if a.reserved_ground(p.x, p.y)
-							else [int(v.height)]
-						)
-					),
-					"plateau support flat except the one-block cut under physical access at %s" % p
-				)
-			var far := Vector2i(v["centre"].x + int(r + st["blend"]) + 3, v["centre"].y)
-			if not a.reserved_ground(far.x, far.y):
-				check(
-					a.height_at(far.x, far.y) == a._raw_height(far.x, far.y),
-					"outside plateau and authored access the heightfield is untouched"
-				)
-			else:
-				check(
-					a.height_at(far.x, far.y) >= a.sea_level,
-					"authored village access remains dry beyond old plateau"
-				)
-	check(villages >= 30, "most of 49 lands have a village: %d" % villages)
-	var v0 := a.village_at(a.land_at(Vector2i.ZERO))
-	var v0c := c.village_at(c.land_at(Vector2i.ZERO))
-	check(
-		not v0.is_empty() and (v0c.is_empty() or v0["name"] != v0c["name"]),
-		"different seed → different village name"
-	)
+			_village(a, v, o, design, st, name_re, rng, r)
+	return villages
+
+
+func _layout(v0: Dictionary, st: Dictionary, r: float, o) -> void:
 	# layout: every building inside the radius, doors clear of their box, one NPC per service
 	var lay := Settlement.layout(v0, st)
 	check(lay.size() == st["buildings"].size(), "layout has %d buildings" % lay.size())
 	var roles := {}
 	for bd in lay:
-		var cen: Array = bd["centre"]
-		var half: float = maxf(bd["size"].x, bd["size"].z) / 2.0
-		check(
-			Vector2(cen[0] - v0["centre"].x, cen[2] - v0["centre"].y).length() + half < r,
-			"building %s inside the plateau" % bd["id"]
-		)
-		check(
-			(
-				Vector3(bd.door[0] - cen[0], bd.door[1] - cen[1], bd.door[2] - cen[2]).length()
-				> bd["size"].z / 2.0
-			),
-			"door of %s is outside its box" % bd["id"]
-		)
-		if bd["role"] != &"":
-			roles[bd["role"]] = true
+		_building(bd, v0, r, roles)
 	check(
 		roles.size() == st["npc"]["roles"].size(),
 		"one NPC per service building: %s" % [roles.keys()]
@@ -129,6 +109,9 @@ func _init() -> void:
 		"village node = buildings + NPCs: %d" % node.get_child_count()
 	)
 	node.free()
+
+
+func _wild(a, v0: Dictionary, design: Dictionary, o, st: Dictionary) -> void:
 	# c-hostile-in-city: no wild group within no-hostiles-within of the square, over the 3×3 zones around it
 	var zb: int = a.terrain["zone-blocks"]
 	var zc := Vector2i(floori(float(v0["centre"].x) / zb), floori(float(v0["centre"].y) / zb))
@@ -145,16 +128,13 @@ func _init() -> void:
 				1
 			):
 				groups += 1
-				for p in g["positions"]:
-					if (
-						Vector2(p.x - v0["centre"].x, p.z - v0["centre"].y).length()
-						< (
-							float(st["no-hostiles-within"])
-							- float(design["spawns"]["group-spread"]) * 1.5
-						)
-					):
-						near += 1
+				near += _near_group(g, v0, st, design)
 	check(near == 0, "no wild spawns near the square (%d of %d groups)" % [near, groups])
+
+
+func _stock(
+	a, v0: Dictionary, o, design: Dictionary, st: Dictionary, rng: RandomNumberGenerator
+) -> Array:
 	# shop stock + prices
 	var l0 = a.land_at(Vector2i.ZERO)
 	var w1 := Shop.stock(&"weapon-vendor", a, l0, v0, 3, o, design)
@@ -163,13 +143,7 @@ func _init() -> void:
 	var cap: int = o.rarities[StringName(st["shop"]["rarity-cap"])].index
 	var bad := 0
 	for i in w1.size():
-		if (
-			w1[i].type != &"weapon"
-			or w1[i].rarity > cap
-			or w1[i].level < 1
-			or Items.item_name(w1[i], o, design) != Items.item_name(w2[i], o, design)
-		):
-			bad += 1
+		bad += _bad_weapon(w1, w2, i, cap, o, design)
 	check(
 		bad == 0,
 		(
@@ -177,39 +151,11 @@ func _init() -> void:
 			% [st["shop"]["rarity-cap"], bad]
 		)
 	)
-	bad = 0
-	for it in Shop.stock(&"armor-vendor", a, l0, v0, 3, o, design):
-		if it.type == &"weapon" or Items.slot_id(it, o) == &"":
-			bad += 1
-	check(bad == 0, "armor stock is wearable armor")
-	var pool: Array = design["loot"]["consumable-pool"]
-	var cons := Shop.stock(&"item-vendor", a, l0, v0, 7, o, design)
-	check(
-		cons.size() == pool.size() and cons[0].type == &"consumable" and cons[0].level == 24,
-		"item shop sells the consumable pool at player L7 power24"
-	)
-	check(
-		not cons.any(func(it) -> bool: return it.subtype == &"cookie"),
-		"D3: item shop does not sell deferred Cookie"
-	)
-	var sword := Items.generate(rng, &"weapon", &"sword", &"iron", 1, 0)
-	var rare := Items.generate(rng, &"weapon", &"sword", &"iron", 3, Model.Rarity.RARE)
-	check(
-		Shop.buy_price(sword, o, design) == 6 and Shop.buy_price(rare, o, design) == 72,
-		(
-			"buy = base 6 × level × rarity-mult: %d, %d"
-			% [Shop.buy_price(sword, o, design), Shop.buy_price(rare, o, design)]
-		)
-	)
-	check(
-		Shop.sell_price(rare, o, design) == 18 and Shop.sell_price(cons[0], o, design) >= 1,
-		"sell = 25 %%, at least 1"
-	)
-	# c-settlement-config fires
-	st["ring-radius"] = 99.0
-	check(not o.validate(), "c-settlement-config rejects ring-radius ≥ radius")
-	st["ring-radius"] = 15.0
-	o.errors.clear()
+	_consumables_prices(a, l0, v0, o, design, rng)
+	return w1
+
+
+func _scene(o, design: Dictionary, st: Dictionary, w1: Array) -> void:
 	# scene: player next to an NPC; E resolves it; buy / sell / respec / rest
 	InputMapBuilder.build(o.configs["keybinds"]["hybrid"])
 	var floor := StaticBody3D.new()
@@ -243,6 +189,103 @@ func _init() -> void:
 	vendor.position = Vector3(20, 0, 0)
 	await _frames(2)
 	check(not p.interact_nearest(), "E with nothing in range does nothing")
+	_trade(p, w1, o, design)
+	_services(p, st)
+
+
+func _village(
+	a,
+	v: Dictionary,
+	o,
+	design: Dictionary,
+	st: Dictionary,
+	name_re: RegEx,
+	rng: RandomNumberGenerator,
+	r: float
+) -> void:
+	check(
+		v["height"] + 1 >= a.sea_level + int(design["initial-encounters"]["dry-above-sea"]),
+		"village dry surface (including ocean hub): h %d" % v["height"]
+	)
+	check(name_re.search(v["name"]) != null, "village name shape: '%s'" % v["name"])
+	check(
+		o.configs["buildings"]["settlement-styles"].has(String(v["style"])),
+		"style %s is a settlement-style" % v["style"]
+	)
+	check(
+		a.height_at(v["centre"].x, v["centre"].y) in [int(v.height), int(v.height) - 1],
+		"square terrain supports the actual village access surface"
+	)
+	_plateau(a, v, rng, r)
+	var far := Vector2i(v["centre"].x + int(r + st["blend"]) + 3, v["centre"].y)
+	if not a.reserved_ground(far.x, far.y):
+		check(
+			a.height_at(far.x, far.y) == a._raw_height(far.x, far.y),
+			"outside plateau and authored access the heightfield is untouched"
+		)
+	else:
+		check(
+			a.height_at(far.x, far.y) >= a.sea_level,
+			"authored village access remains dry beyond old plateau"
+		)
+
+
+func _plateau(a, v: Dictionary, rng: RandomNumberGenerator, r: float) -> void:
+	for i in 12:
+		var ang := rng.randf() * TAU
+		var d := rng.randf() * (r - 1.0)
+		var p := Vector2i(
+			v["centre"].x + roundi(cos(ang) * d), v["centre"].y + roundi(sin(ang) * d)
+		)
+		check(
+			(
+				a.height_at(p.x, p.y)
+				in (
+					[int(v.height), int(v.height) - 1]
+					if a.reserved_ground(p.x, p.y)
+					else [int(v.height)]
+				)
+			),
+			"plateau support flat except the one-block cut under physical access at %s" % p
+		)
+
+
+func _building(bd, v0: Dictionary, r: float, roles: Dictionary) -> void:
+	var cen: Array = bd["centre"]
+	var half: float = maxf(bd["size"].x, bd["size"].z) / 2.0
+	check(
+		Vector2(cen[0] - v0["centre"].x, cen[2] - v0["centre"].y).length() + half < r,
+		"building %s inside the plateau" % bd["id"]
+	)
+	check(
+		(
+			Vector3(bd.door[0] - cen[0], bd.door[1] - cen[1], bd.door[2] - cen[2]).length()
+			> bd["size"].z / 2.0
+		),
+		"door of %s is outside its box" % bd["id"]
+	)
+	if bd["role"] != &"":
+		roles[bd["role"]] = true
+
+
+func _consumables_prices(
+	a, l0, v0: Dictionary, o, design: Dictionary, rng: RandomNumberGenerator
+) -> void:
+	_armor_stock(a, l0, v0, o, design)
+	var pool: Array = design["loot"]["consumable-pool"]
+	var cons := Shop.stock(&"item-vendor", a, l0, v0, 7, o, design)
+	check(
+		cons.size() == pool.size() and cons[0].type == &"consumable" and cons[0].level == 24,
+		"item shop sells the consumable pool at player L7 power24"
+	)
+	check(
+		not cons.any(func(it) -> bool: return it.subtype == &"cookie"),
+		"D3: item shop does not sell deferred Cookie"
+	)
+	_prices(rng, o, design, cons)
+
+
+func _trade(p, w1: Array, o, design: Dictionary) -> void:
 	var before: int = p.inventory.entries.size()
 	check(not Shop.buy(p, w1[0]) and p.inventory.entries.size() == before, "no coins → no purchase")
 	var price := Shop.buy_price(w1[0], o, design)
@@ -261,12 +304,77 @@ func _init() -> void:
 	)
 	Shop.sell(p, w1[0])
 	check(not w1[0] in p.inventory.entries, "selling gear removes it from the bag")
+
+
+func _services(p, st: Dictionary) -> void:
 	p.skill_points = 2
 	var smash = p.skill_tree.class_slot(1)
 	p.spend_skill(smash)
 	p.spend_skill(smash)
 	p.inventory.coins = 0
 	check(not p.respec() and p.skill_tree.spent(smash.id) == 2, "respec refused without the fee")
+	_respec_paid(p, st, smash)
+	_rest(p)
+
+
+func _near_group(g, v0: Dictionary, st: Dictionary, design: Dictionary) -> int:
+	var near := 0
+	for p in g["positions"]:
+		if (
+			Vector2(p.x - v0["centre"].x, p.z - v0["centre"].y).length()
+			< (float(st["no-hostiles-within"]) - float(design["spawns"]["group-spread"]) * 1.5)
+		):
+			near += 1
+	return near
+
+
+func _bad_weapon(w1: Array, w2: Array, i: int, cap: int, o, design: Dictionary) -> int:
+	var bad := 0
+	if (
+		w1[i].type != &"weapon"
+		or w1[i].rarity > cap
+		or w1[i].level < 1
+		or Items.item_name(w1[i], o, design) != Items.item_name(w2[i], o, design)
+	):
+		bad += 1
+	return bad
+
+
+func _armor_stock(a, l0, v0: Dictionary, o, design: Dictionary) -> void:
+	var bad := 0
+	for it in Shop.stock(&"armor-vendor", a, l0, v0, 3, o, design):
+		if it.type == &"weapon" or Items.slot_id(it, o) == &"":
+			bad += 1
+	check(bad == 0, "armor stock is wearable armor")
+
+
+func _prices(rng: RandomNumberGenerator, o, design: Dictionary, cons: Array) -> void:
+	var sword := Items.generate(rng, &"weapon", &"sword", &"iron", 1, 0)
+	var rare := Items.generate(rng, &"weapon", &"sword", &"iron", 3, Model.Rarity.RARE)
+	check(
+		Shop.buy_price(sword, o, design) == 6 and Shop.buy_price(rare, o, design) == 72,
+		(
+			"buy = base 6 × level × rarity-mult: %d, %d"
+			% [Shop.buy_price(sword, o, design), Shop.buy_price(rare, o, design)]
+		)
+	)
+	check(
+		Shop.sell_price(rare, o, design) == 18 and Shop.sell_price(cons[0], o, design) >= 1,
+		"sell = 25 %%, at least 1"
+	)
+
+
+func _rest(p) -> void:
+	p.hp = 10.0
+	p.spawn_point = Vector3(50, 1, 50)
+	p.rest()
+	check(
+		is_equal_approx(p.hp, p.max_hp) and p.spawn_point.distance_to(p.global_position) < 0.01,
+		"inn heals and moves the respawn point"
+	)
+
+
+func _respec_paid(p, st: Dictionary, smash) -> void:
 	p.inventory.coins = int(st["trainer"]["respec-fee-per-level"]) * p.level
 	check(
 		(
@@ -277,18 +385,3 @@ func _init() -> void:
 		),
 		"respec refunds 2 points for the fee"
 	)
-	p.hp = 10.0
-	p.spawn_point = Vector3(50, 1, 50)
-	p.rest()
-	check(
-		is_equal_approx(p.hp, p.max_hp) and p.spawn_point.distance_to(p.global_position) < 0.01,
-		"inn heals and moves the respawn point"
-	)
-	print(
-		(
-			"settlement: village '%s' (%s) at %s h %d; %d villages in 7×7 lands"
-			% [v0["name"], v0["style"], v0["centre"], v0["height"], villages]
-		)
-	)
-	print("settlement ok" if _failed == 0 else "settlement FAILED (%d)" % _failed)
-	quit(0 if _failed == 0 else 1)

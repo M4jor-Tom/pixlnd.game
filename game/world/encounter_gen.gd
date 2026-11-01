@@ -1,6 +1,7 @@
 ## Initial encounter geography and stable assignments. Plain JSON data; no nodes or mutable incarnations.
 ## Cardinal layouts keep block geometry exact, including at the finite world's large coordinates.
 extends RefCounted
+const Guidance := preload("res://game/world/encounter_guidance.gd")
 const Settlement := preload("res://game/world/settlement.gd")
 const Spawner := preload("res://game/world/spawner.gd")
 const Combat := preload("res://game/combat/combat.gd")
@@ -47,50 +48,24 @@ static func make_site(
 	rng.seed = land.land_seed ^ hash(family + str(ordinal))
 	var rooms: Array = []
 	if family == "ruins":
-		var r: Dictionary = rules
-		var x := -float(r.bounds[0]) / 2
-		var right: float = x + r.room[0]
-		var z := -float(r.bounds[1]) / 2
-		site.components.append([x, z, right, z + r.court[1]])
-		z += r.court[1]
-		var middle: float = x + r.room[0] / 2.0
-		site.components.append(
-			[middle - r.passage[0] / 2.0, z, middle + r.passage[0] / 2.0, z + r.passage[1]]
-		)
-		z += r.passage[1]
-		for i in r["pack-tiers"].size():
-			var room := [x, z, right, z + r.room[1]]
-			rooms.append(room)
-			site.components.append(room)
-			z += r.room[1]
-			if i < r["pack-tiers"].size() - 1:
-				site.components.append(
-					[
-						middle - r.corridor[0] / 2.0,
-						z,
-						middle + r.corridor[0] / 2.0,
-						z + r.corridor[1]
-					]
-				)
-				z += r.corridor[1]
-		site.components.append(
-			[
-				right,
-				rooms[1][1] + r.room[1] / 3.0,
-				right + r.alcove[0],
-				rooms[1][1] + r.room[1] / 3.0 + r.alcove[1]
-			]
-		)
-		site.entry = [middle, -float(r.bounds[1]) / 2]
+		rooms = _ruins_layout(site, rules)
+		if rooms.is_empty():
+			return {}
 	else:
-		var half := float(rules.size) / 2
-		site.components.append([-half, -half, half, half])
-		site.entry = [0, -half]
-		rooms = [[-half, -half, 0, 0], [0, 0, half, half]]
-		site.tier = rules.tier if family == "camp" else rules.tiers[ordinal]
-		if family == "supplier":
-			var captive := point(site, 0, half / 2)
-			site.captive = [captive.x, site.floor, captive.y]
+		rooms = _square_layout(site, rules, family, ordinal)
+		if rooms.is_empty():
+			return {}
+	return _finish_site(site, rooms, rules, family, rng, cfg)
+
+
+static func _finish_site(
+	site: Dictionary,
+	rooms: Array,
+	rules: Dictionary,
+	family: String,
+	rng: RandomNumberGenerator,
+	cfg: Dictionary
+) -> Dictionary:
 	for component in site.components:
 		var b := rect(site, component)
 		site.volumes.append(
@@ -103,6 +78,70 @@ static func make_site(
 				b[3]
 			]
 		)
+	if not _guards(site, rooms, rules, family, rng, cfg):
+		return {}
+	if not _bosses(site, rooms, rules, family, rng, cfg):
+		return {}
+	return site
+
+
+static func _square_layout(
+	site: Dictionary, rules: Dictionary, family: String, ordinal: int
+) -> Array:
+	var half := float(rules.size) / 2
+	site.components.append([-half, -half, half, half])
+	site.entry = [0, -half]
+	var rooms := [[-half, -half, 0, 0], [0, 0, half, half]]
+	site.tier = rules.tier if family == "camp" else rules.tiers[ordinal]
+	if family == "supplier":
+		var captive := point(site, 0, half / 2)
+		site.captive = [captive.x, site.floor, captive.y]
+	return rooms
+
+
+static func _ruins_layout(site: Dictionary, rules: Dictionary) -> Array:
+	var rooms: Array = []
+	var r: Dictionary = rules
+	var x := -float(r.bounds[0]) / 2
+	var right: float = x + r.room[0]
+	var z := -float(r.bounds[1]) / 2
+	site.components.append([x, z, right, z + r.court[1]])
+	z += r.court[1]
+	var middle: float = x + r.room[0] / 2.0
+	site.components.append(
+		[middle - r.passage[0] / 2.0, z, middle + r.passage[0] / 2.0, z + r.passage[1]]
+	)
+	z += r.passage[1]
+	for i in r["pack-tiers"].size():
+		var room := [x, z, right, z + r.room[1]]
+		rooms.append(room)
+		site.components.append(room)
+		z += r.room[1]
+		if i < r["pack-tiers"].size() - 1:
+			site.components.append(
+				[middle - r.corridor[0] / 2.0, z, middle + r.corridor[0] / 2.0, z + r.corridor[1]]
+			)
+			z += r.corridor[1]
+	site.components.append(
+		[
+			right,
+			rooms[1][1] + r.room[1] / 3.0,
+			right + r.alcove[0],
+			rooms[1][1] + r.room[1] / 3.0 + r.alcove[1]
+		]
+	)
+	site.entry = [middle, -float(r.bounds[1]) / 2]
+	return rooms
+
+
+static func _guards(
+	site: Dictionary,
+	rooms: Array,
+	rules: Dictionary,
+	family: String,
+	rng: RandomNumberGenerator,
+	cfg: Dictionary
+) -> bool:
 	for i in rooms.size():
 		var room: Array = rooms[i]
 		var cx: float = (room[0] + room[2]) / 2
@@ -128,6 +167,17 @@ static func make_site(
 				rng,
 				cfg
 			)
+	return true
+
+
+static func _bosses(
+	site: Dictionary,
+	rooms: Array,
+	rules: Dictionary,
+	family: String,
+	rng: RandomNumberGenerator,
+	cfg: Dictionary
+) -> bool:
 	var tiers: Array = rules["boss-tiers"] if family == "ruins" else [site.tier]
 	for i in tiers.size():
 		var room: Array = rooms[i + 1] if family == "ruins" else site.components[0]
@@ -145,7 +195,7 @@ static func make_site(
 			rng,
 			cfg
 		)
-	return site
+	return true
 
 
 static func assignment(
@@ -194,12 +244,7 @@ static func plan(gen, land, v: Dictionary, cfg: Dictionary) -> Dictionary:
 	var shift := rng.randi_range(0, offsets.size() - 1)
 	var sites: Array = []
 	for i in offsets.size():
-		var offset: Vector2i = offsets[(i + shift) % offsets.size()]
-		var turn := 3 if offset.x > 0 else 1
-		if absi(offset.y) > absi(offset.x):
-			turn = 0 if offset.y > 0 else 2
-		var family := "ruins" if i == 0 else ("camp" if i == 1 else "supplier")
-		sites.append(make_site(gen, land, v.centre + offset, turn, family, maxi(0, i - 2), cfg))
+		sites.append(_destination(gen, land, v, offsets, shift, i, cfg))
 	# Retain the authored empty-house opening, not an external connection-access test.
 	var house: int = gen.settlement.buildings.find("house")
 	v.merge(Settlement.opening(gen.settlement, house, cfg.ruins.door[0]), true)
@@ -221,88 +266,94 @@ static func plan(gen, land, v: Dictionary, cfg: Dictionary) -> Dictionary:
 	return out if errors.is_empty() else {"error": "; ".join(errors)}
 
 
-## Optional decoration only. All vector arithmetic is village-local, including at world limits.
-## Samples existing terrain; never searches for walkability or adds connecting supports.
+static func _destination(
+	gen, land, v: Dictionary, offsets: Array, shift: int, i: int, cfg: Dictionary
+) -> Dictionary:
+	var offset: Vector2i = offsets[(i + shift) % offsets.size()]
+	var turn := 3 if offset.x > 0 else 1
+	if absi(offset.y) > absi(offset.x):
+		turn = 0 if offset.y > 0 else 2
+	var family := "ruins" if i == 0 else ("camp" if i == 1 else "supplier")
+	return make_site(gen, land, v.centre + offset, turn, family, maxi(0, i - 2), cfg)
+
+
+## Optional decoration only, excluded from required geography and save validity.
 static func guidance(gen, plan_: Dictionary, cfg: Dictionary) -> Array:
-	var out: Array = []
-	var village: Array = plan_.village.centre
-	var rng := RandomNumberGenerator.new()
-	rng.seed = hash([gen.world_seed, village, "guidance"])
-	for i in plan_.sites.size():
-		var site: Dictionary = plan_.sites[i]
-		var delta := Vector2(float(site.centre[0]) - village[0], float(site.centre[1]) - village[1])
-		var distance := delta.length()
-		var unit := delta / distance
-		var family: String = cfg["leading-objects"][site.family]
-		var road := {"destination": i, "family": family, "markers": []}
-		var next := 40.0
-		while next < distance - 16:
-			var side := rng.randf_range(-5, 5)
-			var x := int(village[0]) + roundi(unit.x * next - unit.y * side)
-			var z := int(village[1]) + roundi(unit.y * next + unit.x * side)
-			next += rng.randf_range(14, 22)
-			if not gen.valid_block(x - 1, z - 1) or not gen.valid_block(x + 1, z + 1):
-				continue
-			var free := true
-			for other in plan_.sites:
-				for volume in other.volumes:
-					if (
-						x >= volume[0] - cfg.apron - 1
-						and x <= volume[3] + cfg.apron + 1
-						and z >= volume[2] - cfg.apron - 1
-						and z <= volume[5] + cfg.apron + 1
-					):
-						free = false
-			var top: int = gen.height_at(x, z) + 1
-			if not free or top <= gen.sea_level + 1:
-				continue
-			road.markers.append(
-				{
-					"x": x,
-					"z": z,
-					"top": top,
-					"family": family,
-					"bounds": [x - 0.75, z - 0.7, x + 0.75, z + 0.7]
-				}
-			)
-		out.append(road)
-	return out
+	return Guidance.guidance(gen, plan_, cfg)
 
 
 static func validate(gen, plan_: Dictionary, cfg: Dictionary) -> Array[String]:
 	var errors: Array[String] = []
 	var v: Dictionary = plan_.village
 	var square := Vector2(v.centre[0], v.centre[1])
+	if not _validate_hub(gen, square, cfg, errors):
+		return []
+	for site in plan_.sites:
+		if not _validate_site(gen, plan_, cfg, site, square, errors):
+			return []
+	return errors
+
+
+static func _validate_hub(gen, square: Vector2, cfg: Dictionary, errors: Array[String]) -> bool:
 	var half := float(cfg["hub-size"]) / 2
 	if (
 		not gen.valid_block(square.x - half, square.y - half)
 		or not gen.valid_block(square.x + half, square.y + half)
 	):
 		errors.append("village hub outside finite bounds")
-	for site in plan_.sites:
-		var centre := Vector2(site.centre[0], site.centre[1])
-		var distance := centre.distance_to(square)
-		if distance < cfg["distance-min"] or distance > cfg["distance-max"]:
-			errors.append("site distance " + site.family)
-		for other in plan_.sites:
-			if (
-				other != site
-				and centre.distance_to(Vector2(other.centre[0], other.centre[1])) < cfg.separation
-			):
-				errors.append("site separation")
-		for volume in site.volumes:
-			if (
-				not gen.valid_block(volume[0] - cfg.apron, volume[2] - cfg.apron)
-				or not gen.valid_block(volume[3] + cfg.apron, volume[5] + cfg.apron)
-			):
-				errors.append("site/apron outside finite bounds")
-		for m in site.assignments:
-			if (
-				Vector2(m.home[0], m.home[2]).distance_to(square) - float(gen.ai_leash)
-				< float(gen.settlement["no-hostiles-within"])
-			):
-				errors.append("home/pursuit crosses protected village")
-	return errors
+	return true
+
+
+static func _validate_site(
+	gen, plan_: Dictionary, cfg: Dictionary, site, square: Vector2, errors: Array[String]
+) -> bool:
+	var centre := Vector2(site.centre[0], site.centre[1])
+	var distance := centre.distance_to(square)
+	if distance < cfg["distance-min"] or distance > cfg["distance-max"]:
+		errors.append("site distance " + site.family)
+	if not _site_separation(plan_, cfg, site, centre, errors):
+		return false
+	if not _site_bounds(gen, cfg, site, errors):
+		return false
+	return _site_homes(gen, site, square, errors)
+
+
+static func _site_separation(
+	plan_: Dictionary, cfg: Dictionary, site, centre: Vector2, errors: Array[String]
+) -> bool:
+	for other in plan_.sites:
+		if (
+			other != site
+			and centre.distance_to(Vector2(other.centre[0], other.centre[1])) < cfg.separation
+		):
+			errors.append("site separation")
+	return true
+
+
+static func _site_bounds(gen, cfg: Dictionary, site, errors: Array[String]) -> bool:
+	for volume in site.volumes:
+		if not _volume_bounds(gen, cfg, volume, errors):
+			return false
+	return true
+
+
+static func _volume_bounds(gen, cfg: Dictionary, volume, errors: Array[String]) -> bool:
+	if (
+		not gen.valid_block(volume[0] - cfg.apron, volume[2] - cfg.apron)
+		or not gen.valid_block(volume[3] + cfg.apron, volume[5] + cfg.apron)
+	):
+		errors.append("site/apron outside finite bounds")
+	return true
+
+
+static func _site_homes(gen, site, square: Vector2, errors: Array[String]) -> bool:
+	for m in site.assignments:
+		if (
+			Vector2(m.home[0], m.home[2]).distance_to(square) - float(gen.ai_leash)
+			< float(gen.settlement["no-hostiles-within"])
+		):
+			errors.append("home/pursuit crosses protected village")
+	return true
 
 
 static func height(level: int, cfg: Dictionary) -> float:
@@ -392,6 +443,15 @@ static func room_levels(gen, land, layout: Dictionary, levels: Array, cycle: int
 ## Authored decorations stay off the central four-wide route and all door/exit/support masks.
 static func content_plan(layout: Dictionary, cfg: Dictionary) -> Dictionary:
 	var out := {"rubble": {}, "props": {}, "traps": []}
+	if not _rubble_plan(layout, cfg, out):
+		return {}
+	if layout.family == "ruins":
+		if not _ruins_contents(layout, cfg, out):
+			return {}
+	return out
+
+
+static func _rubble_plan(layout: Dictionary, cfg: Dictionary, out: Dictionary) -> bool:
 	for stable in layout.assignments:
 		if not stable.boss:
 			continue
@@ -401,23 +461,26 @@ static func content_plan(layout: Dictionary, cfg: Dictionary) -> Dictionary:
 			out.rubble[stable.key + "/" + str(i)] = [
 				float(stable.home[0]) + offset.x, layout.floor, float(stable.home[2]) + offset.y
 			]
-	if layout.family == "ruins":
-		for room in cfg.ruins["pack-tiers"].size():
-			var r: Array = layout.components[2 + room * 2]
-			var middle: float = (r[1] + r[3]) / 2
-			for vase in int(cfg.furnishings.vase["per-room"]):
-				var p := point(layout, r[0] + 3, middle + (-8 if vase == 0 else 8))
-				out.props["room/%d/vase/%d" % [room, vase]] = {
-					"point": [p.x, layout.floor, p.y], "kind": "vase", "room": room
-				}
-			var table := point(layout, r[2] - 3, middle + 8)
-			out.props["room/%d/table/0" % room] = {
-				"point": [table.x, layout.floor, table.y], "kind": "table", "room": room
+	return true
+
+
+static func _ruins_contents(layout: Dictionary, cfg: Dictionary, out: Dictionary) -> bool:
+	for room in cfg.ruins["pack-tiers"].size():
+		var r: Array = layout.components[2 + room * 2]
+		var middle: float = (r[1] + r[3]) / 2
+		for vase in int(cfg.furnishings.vase["per-room"]):
+			var p := point(layout, r[0] + 3, middle + (-8 if vase == 0 else 8))
+			out.props["room/%d/vase/%d" % [room, vase]] = {
+				"point": [p.x, layout.floor, p.y], "kind": "vase", "room": room
 			}
-			if room < int(cfg.spikes.count):
-				var trap := point(layout, r[0] + 3, middle)
-				out.traps.append({"point": [trap.x, layout.floor, trap.y]})
-	return out
+		var table := point(layout, r[2] - 3, middle + 8)
+		out.props["room/%d/table/0" % room] = {
+			"point": [table.x, layout.floor, table.y], "kind": "table", "room": room
+		}
+		if room < int(cfg.spikes.count):
+			var trap := point(layout, r[0] + 3, middle)
+			out.traps.append({"point": [trap.x, layout.floor, trap.y]})
+	return true
 
 
 static func fresh_contents(layout: Dictionary, cfg: Dictionary) -> Dictionary:
