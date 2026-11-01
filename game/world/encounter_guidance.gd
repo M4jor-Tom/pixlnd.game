@@ -42,15 +42,17 @@ static func _guide_road(
 	return true
 
 
-static func _marker_in_bounds(gen, x: int, z: int) -> bool:
-	return not (not gen.valid_block(x - 1, z - 1) or not gen.valid_block(x + 1, z + 1))
-
-
 static func _guide_marker(
 	gen, plan_: Dictionary, cfg: Dictionary, x: int, z: int, family: String, road: Dictionary
 ) -> bool:
-	if not _marker_in_bounds(gen, x, z):
+	if not gen.valid_block(x - 1, z - 1) or not gen.valid_block(x + 1, z + 1):
 		return true
+	return _sample_marker(gen, plan_, cfg, x, z, family, road)
+
+
+static func _sample_marker(
+	gen, plan_: Dictionary, cfg: Dictionary, x: int, z: int, family: String, road: Dictionary
+) -> bool:
 	var clearance := _guide_clearance(plan_, cfg, x, z)
 	if clearance.is_empty():
 		return false

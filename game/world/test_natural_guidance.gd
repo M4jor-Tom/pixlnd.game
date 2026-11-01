@@ -13,6 +13,34 @@ class CliffGen:
 		return 140 if posmod(x + z, 2) == 0 else 110
 
 
+class Outside:
+	extends RefCounted
+	var world_seed := 1
+
+	func valid_block(_x: int, _z: int) -> bool:
+		return false
+
+
+class Open:
+	extends RefCounted
+	var world_seed := 1
+	var sea_level := 0
+
+	func valid_block(_x: int, _z: int) -> bool:
+		return true
+
+	func height_at(_x: int, _z: int) -> int:
+		return 10
+
+
+class NoHeight:
+	extends RefCounted
+	var world_seed := 1
+
+	func valid_block(_x: int, _z: int) -> bool:
+		return true
+
+
 func check(ok: bool, label: String) -> void:
 	if not ok:
 		failed += 1
@@ -20,6 +48,16 @@ func check(ok: bool, label: String) -> void:
 
 
 func _init() -> void:
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--guidance-boundary="):
+			var mode := arg.trim_prefix("--guidance-boundary=")
+			print("GUIDANCE_BOUNDARY " + JSON.stringify(_guidance_boundary(mode)))
+			quit()
+			return
+	_run()
+
+
+func _run() -> void:
 	var o = Model.Ontology.load_dir("res://ontology/instances")
 	var d: Dictionary = o.configs.generators.design.duplicate(true)
 	var g := CliffGen.new(26879, d, o.landscapes)
@@ -42,6 +80,7 @@ func _init() -> void:
 		[9001, Vector2i(-512, -512), false]
 	]:
 		_benchmark(o, fixture)
+	_boundary_cases()
 	print("natural guidance ok" if failed == 0 else "natural guidance FAILED")
 	quit(0 if failed == 0 else 1)
 
@@ -119,3 +158,109 @@ func _guide_families(guides: Array) -> void:
 			not guides[i].has("support") and not guides[i].has("corridor"),
 			"no connecting supports or walkability corridor"
 		)
+
+
+func _guidance_boundary(mode: String) -> Dictionary:
+	var gen: Variant = {"world_seed": 1}
+	match mode:
+		"outside":
+			gen = Outside.new()
+		"open":
+			gen = Open.new()
+		"missing-height":
+			gen = NoHeight.new()
+	var result := Encounters.guidance(
+		gen,
+		{
+			"village": {"centre": [0, 0]},
+			"sites": [{"centre": [100, 0], "family": "camp", "volumes": []}]
+		},
+		{"leading-objects": {"camp": "stake-torch"}}
+	)
+	return {"mode": mode, "result": result}
+
+
+func _boundary_cases() -> void:
+	var directory := OS.get_environment("PIXLND_TEST_DIR")
+	if not directory.is_absolute_path() or not DirAccess.dir_exists_absolute(directory):
+		check(false, "guidance boundaries need an existing isolated absolute PIXLND_TEST_DIR")
+		return
+	var open_markers := [
+		{
+			"x": 40,
+			"z": -4,
+			"top": 11,
+			"family": "stake-torch",
+			"bounds": [39.25, -4.7, 40.75, -3.3]
+		},
+		{"x": 61, "z": 1, "top": 11, "family": "stake-torch", "bounds": [60.25, 0.3, 61.75, 1.7]},
+		{"x": 76, "z": -5, "top": 11, "family": "stake-torch", "bounds": [75.25, -5.7, 76.75, -4.3]}
+	]
+	for sample in [
+		[
+			"missing-bounds",
+			[],
+			["SCRIPT ERROR: Invalid call. Nonexistent function 'valid_block' in base 'Dictionary'."]
+		],
+		["outside", [{"destination": 0, "family": "stake-torch", "markers": []}], []],
+		["open", [{"destination": 0, "family": "stake-torch", "markers": open_markers}], []],
+		[
+			"missing-height",
+			[],
+			[
+				"SCRIPT ERROR: Invalid call. Nonexistent function 'height_at' in base 'RefCounted (NoHeight)'."
+			]
+		]
+	]:
+		_boundary_child(directory, sample)
+
+
+func _boundary_child(directory: String, sample: Array) -> void:
+	var output: Array = []
+	var status := OS.execute(
+		"timeout",
+		[
+			"681",
+			OS.get_executable_path(),
+			"--headless",
+			"--path",
+			ProjectSettings.globalize_path("res://"),
+			"-s",
+			get_script().resource_path,
+			"--",
+			"--guidance-boundary=" + sample[0]
+		],
+		output,
+		true
+	)
+	var text := "\n".join(output)
+	var log := FileAccess.open(
+		directory.path_join("guidance-boundary-" + sample[0] + ".log"), FileAccess.WRITE
+	)
+	log.store_string("exit=%d\n%s" % [status, text])
+	log.close()
+	check(status == 0, sample[0] + " bounded guidance child exits")
+	check(
+		_boundary_headers(text) == sample[2],
+		sample[0] + " exact ordered native guidance diagnostics"
+	)
+	var observations: Array = []
+	for line in text.split("\n"):
+		if line.begins_with("GUIDANCE_BOUNDARY "):
+			observations.append(line.trim_prefix("GUIDANCE_BOUNDARY "))
+	check(
+		observations == [JSON.stringify({"mode": sample[0], "result": sample[1]})],
+		sample[0] + " independent guidance result and continuation"
+	)
+
+
+func _boundary_headers(text: String) -> Array:
+	var headers: Array = []
+	for line in text.split("\n"):
+		if (
+			line.begins_with("ERROR:")
+			or line.begins_with("SCRIPT ERROR:")
+			or line.begins_with("ontology INVALID")
+		):
+			headers.append(line)
+	return headers
