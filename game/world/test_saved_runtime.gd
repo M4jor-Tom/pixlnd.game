@@ -8,6 +8,11 @@ const Items := preload("res://game/items/items.gd")
 const Save := preload("res://game/world/save_data.gd")
 var path := ""
 var failed := 0
+var zone := Vector2i.ZERO
+var id: String
+var lvl: int
+var identity: String
+var death_id := ""
 
 
 func check(ok: bool, label: String) -> void:
@@ -50,66 +55,26 @@ func run() -> void:
 	p.inventory.coins = 777
 	p.position += Vector3(3, 0, 0)
 	p.spawn_point = p.position + Vector3(2, 0, 0)
+	_ambient(main, p, w)
+	var restart: Array = _restart(main, p, w)
+	var second = restart[0]
+	var saved: Dictionary = restart[1]
+	await _hand_lifecycles(second, saved)
+
+
+func _ambient(main, p, w) -> void:
 	# Actual seeded ambient generation/instantiation, no fake encounter mechanic.
-	var zone := Vector2i.ZERO
-	var found := false
-	for x in range(125, 136):
-		for y in range(125, 136):
-			var plan_: Array = Spawner.plan(
-				w.gen, Vector2i(x, y), w.design, w.creatures, w.rosters, p.level
-			)
-			if (
-				not plan_.is_empty()
-				and plan_.reduce(func(n, g): return n + g.positions.size(), 0) >= 2
-			):
-				zone = Vector2i(x, y)
-				found = true
-				break
-		if found:
-			break
+	zone = Vector2i.ZERO
+	var found := _find_ambient(w, p)
 	check(found, "seed has ambient zone")
 	w._publish_zone(zone, MeshData.data(w.gen, zone))
 	var mobs: Array = w.targeting.live.values()
 	for mob in mobs:
 		mob.set_physics_process(false)
-	var survivor = mobs[0]
-	var id: String = survivor.logical_id
-	check(
-		survivor.hostility in [&"H", &"N"],
-		"generated combat-capable survivor, no forced hostility fixture"
-	)
-	survivor.take_damage(1, p)
-	var threat: float = w.targeting.record(survivor).threat[p.logical_id]
-	var lvl: int = survivor.level
-	var home: Vector3 = survivor.home
-	var role: StringName = survivor.role
-	var identity: String = main.state_data.world_id
-	w.capture_mobs()
-	# Node unload does not erase logical pairs, and timers continue while unloaded.
-	w.zones[zone].free()
-	w.zones.erase(zone)
-	check(not w.targeting.live.has(id), "unloaded node detached")
-	w.targeting.advance(0.001)
-	check(main.state_data.mobs[id].combat.threat[p.logical_id] < threat, "unloaded threat decay")
-	w._publish_zone(zone, MeshData.data(w.gen, zone))
-	survivor = w.targeting.live[id]
-	survivor.set_physics_process(false)
-	check(
-		survivor.level == lvl and survivor.home == home and survivor.role == role,
-		"unload retains incarnation assignments"
-	)
-	var death = null
-	for mob in w.targeting.live.values():
-		mob.set_physics_process(false)
-		if mob != survivor:
-			death = mob
-			break
-	check(death != null, "fixture includes genuine dead and surviving members")
-	var death_id := ""
-	if death != null:
-		death_id = death.logical_id
-		death.take_damage(1e9, p)
-		check(main.state_data.mobs[death_id].dead, "genuine death saved before unload")
+	_ambient_incarnation(main, p, w, mobs)
+
+
+func _restart(main, p, w):
 	check(main.save_now(), "normal runtime atomic save: " + str(main.save_data.errors))
 	var saved := Save.new(root.get_node("OntologyDB").data, w.design).load_file(path)
 	var clock: float = main.state_data.clock
@@ -123,37 +88,18 @@ func run() -> void:
 	stop_nodes(second)
 	var q = second.get_node("Player")
 	var world = second.get_node("World")
-	check(
-		second.state_data.world_id == identity and second.state_data.clock == clock,
-		"restart identity/clock; no offline advance"
-	)
-	check(
-		(
-			q.inventory.coins == 777
-			and q.xp == expected_xp
-			and q.level == expected_level
-			and q.skill_tree.spent(&"smash") == 1
-		),
-		"real main restores progression not starter overwrites"
-	)
+	_restored_main(second, q, clock, expected_xp, expected_level)
 	check(
 		q.position == expected_position and q.spawn_point != q.position,
 		"real main restores position and respawn"
 	)
-	world._publish_zone(zone, MeshData.data(world.gen, zone))
-	check(
-		world.targeting.live.has(id) and world.targeting.live[id].level == lvl,
-		"restart materializes saved survivor"
-	)
-	check(
-		not world.targeting.record(world.targeting.live[id]).threat.is_empty(),
-		"restart preserves survivor threat"
-	)
-	if death_id != "":
-		check(
-			not world.targeting.live.has(death_id),
-			"unload/restart not a new death, no reward reroll"
-		)
+
+	_restored_ambient(world)
+	_midnight(second, q, world, expected_level)
+	return [second, saved]
+
+
+func _midnight(second, q, world, expected_level: int) -> void:
 	# Next ordinary midnight permits only dead members to renew, using current connected party levels.
 	q.level = 20
 	second.state_data.clock = 86400 - 1
@@ -187,6 +133,10 @@ func run() -> void:
 	for mob in world.targeting.live.values():
 		mob.set_physics_process(false)
 	check(second.save_now(), "renewed generation validated saved state")
+
+
+func _unarmed(second):
+	var q = second.get_node("Player")
 	q.inventory.unequip(&"main-hand")
 	check(second.save_now(), "normal main saves legal empty equipment")
 	second.free()
@@ -204,86 +154,211 @@ func run() -> void:
 		"actual main/HUD boot restores unarmed without starter leakage"
 	)
 	third.get_node("HUD")._process(0)
-	var current = third
+	return third
+
+
+func _hand_lifecycle(current, rng: RandomNumberGenerator, subtype: StringName):
+	var hero = current.get_node("Player")
+	var sword = hero.inventory.equipment.get(&"main-hand")
+	if sword == null:
+		sword = hero.inventory.entries.filter(func(it): return it.subtype == &"sword")[0]
+		check(hero.inventory.equip(sword), "lifecycle equip main before pair")
+	var off = Items.generate(rng, &"weapon", subtype, &"iron", 3, 1)
+	hero.inventory.add(off)
+	check(hero.inventory.equip(off), "lifecycle equip legal off-hand " + str(subtype))
+	hero.inventory.unequip(&"main-hand")
+	check(
+		hero.inventory.equipment[&"off-hand"] == off and hero.inventory.entries.count(sword) == 1,
+		"lifecycle removal leaves off-hand untouched"
+	)
+	var stats := [hero.max_hp, hero.armor, hero.resistance]
+	var payload := Save.item_data(off)
+	# Exercise the real changed -> request_save -> deferred atomic commit path, not only save_now().
+	await process_frame
+	await process_frame
+	var persisted: Dictionary = current.save_data.load_file(path)
+	check(
+		not persisted.is_empty() and persisted.character.equipment.keys() == ["off-hand"],
+		"lifecycle autosave accepts independently empty main " + str(subtype)
+	)
+
+	return await _offhand_restart(current, subtype, persisted, stats, payload)
+
+
+func _ambient_incarnation(main, p, w, mobs: Array) -> void:
+	var survivor = mobs[0]
+	id = survivor.logical_id
+	check(
+		survivor.hostility in [&"H", &"N"],
+		"generated combat-capable survivor, no forced hostility fixture"
+	)
+	survivor.take_damage(1, p)
+	var threat: float = w.targeting.record(survivor).threat[p.logical_id]
+	lvl = survivor.level
+	var home: Vector3 = survivor.home
+	var role: StringName = survivor.role
+	identity = main.state_data.world_id
+	w.capture_mobs()
+	# Node unload does not erase logical pairs, and timers continue while unloaded.
+	w.zones[zone].free()
+	w.zones.erase(zone)
+	check(not w.targeting.live.has(id), "unloaded node detached")
+	w.targeting.advance(0.001)
+	check(main.state_data.mobs[id].combat.threat[p.logical_id] < threat, "unloaded threat decay")
+	w._publish_zone(zone, MeshData.data(w.gen, zone))
+	survivor = w.targeting.live[id]
+	survivor.set_physics_process(false)
+	check(
+		survivor.level == lvl and survivor.home == home and survivor.role == role,
+		"unload retains incarnation assignments"
+	)
+	_ambient_death(main, p, w, survivor)
+
+
+func _ambient_death(main, p, w, survivor) -> void:
+	var death = null
+	for mob in w.targeting.live.values():
+		mob.set_physics_process(false)
+		if mob != survivor:
+			death = mob
+			break
+	check(death != null, "fixture includes genuine dead and surviving members")
+	death_id = ""
+	if death != null:
+		death_id = death.logical_id
+		death.take_damage(1e9, p)
+		check(main.state_data.mobs[death_id].dead, "genuine death saved before unload")
+
+
+func _restored_main(second, q, clock: float, expected_xp: int, expected_level: int) -> void:
+	check(
+		second.state_data.world_id == identity and second.state_data.clock == clock,
+		"restart identity/clock; no offline advance"
+	)
+	check(
+		(
+			q.inventory.coins == 777
+			and q.xp == expected_xp
+			and q.level == expected_level
+			and q.skill_tree.spent(&"smash") == 1
+		),
+		"real main restores progression not starter overwrites"
+	)
+
+
+func _find_ambient(w, p) -> bool:
+	var found := false
+	for x in range(125, 136):
+		for y in range(125, 136):
+			if _ambient_candidate(w, p, x, y):
+				zone = Vector2i(x, y)
+				found = true
+				break
+		if found:
+			break
+	return found
+
+
+func _ambient_candidate(w, p, x: int, y: int) -> bool:
+	var plan_: Array = Spawner.plan(
+		w.gen, Vector2i(x, y), w.design, w.creatures, w.rosters, p.level
+	)
+	return not plan_.is_empty() and plan_.reduce(func(n, g): return n + g.positions.size(), 0) >= 2
+
+
+func _restored_ambient(world) -> void:
+	world._publish_zone(zone, MeshData.data(world.gen, zone))
+	check(
+		world.targeting.live.has(id) and world.targeting.live[id].level == lvl,
+		"restart materializes saved survivor"
+	)
+	check(
+		not world.targeting.record(world.targeting.live[id]).threat.is_empty(),
+		"restart preserves survivor threat"
+	)
+	if death_id != "":
+		check(
+			not world.targeting.live.has(death_id),
+			"unload/restart not a new death, no reward reroll"
+		)
+
+
+func _offhand_restart(
+	current, subtype: StringName, persisted: Dictionary, stats: Array, payload: Dictionary
+):
+	current.free()
+	current = MAIN.instantiate()
+	current.save_path = path
+	root.add_child(current)
+	stop_nodes(current)
+	var hero = current.get_node("Player")
+	check(
+		hero.logical_id == persisted.character.id and current.state_data.world_id == identity,
+		"off-hand lifecycle preserves character/world identity"
+	)
+	var restored_off = hero.inventory.equipment[&"off-hand"]
+	_offhand_state(hero, restored_off, subtype, payload, stats)
+	_mainless_requests(hero)
+	current.get_node("HUD")._process(0)
+	var sword = hero.inventory.entries.filter(func(it): return it.subtype == &"sword")[0]
+	_pair_again(hero, sword, restored_off)
+	await process_frame
+	return current
+
+
+func _offhand_state(
+	hero, restored_off, subtype: StringName, payload: Dictionary, stats: Array
+) -> void:
+	check(
+		(
+			Save.item_data(restored_off) == payload
+			and [hero.max_hp, hero.armor, hero.resistance] == stats
+		),
+		"off-hand payload and worn stats survive real restart"
+	)
+	check(
+		(
+			hero.weapon.is_empty()
+			and hero.moveset.is_empty()
+			and hero.can_block() == (subtype == &"shield")
+		),
+		"real main restores only eligible off-hand block, no attacks"
+	)
+
+
+func _mainless_requests(hero) -> void:
+	hero.mp = 80
+	hero.combo = 4
+	hero._swing()
+	hero._special(50)
+	check(
+		not hero.use_class_skill(1) and hero.mp == 80 and hero.combo == 4,
+		"main-less action paths reject without spending"
+	)
+
+
+func _pair_again(hero, sword, restored_off) -> void:
+	check(
+		(
+			hero.inventory.equip(sword)
+			and hero.inventory.equipment[&"off-hand"] == restored_off
+			and not hero.weapon.is_empty()
+		),
+		"real restart equip transition preserves off-hand"
+	)
+	hero.inventory.unequip(&"off-hand")
+	check(
+		hero.inventory.equipment[&"main-hand"] == sword,
+		"reverse lifecycle unequip leaves main untouched"
+	)
+
+
+func _hand_lifecycles(second, saved: Dictionary) -> void:
+	var current = _unarmed(second)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 44
 	for subtype in [&"shield", &"axe"]:
-		var hero = current.get_node("Player")
-		var sword = hero.inventory.equipment.get(&"main-hand")
-		if sword == null:
-			sword = hero.inventory.entries.filter(func(it): return it.subtype == &"sword")[0]
-			check(hero.inventory.equip(sword), "lifecycle equip main before pair")
-		var off = Items.generate(rng, &"weapon", subtype, &"iron", 3, 1)
-		hero.inventory.add(off)
-		check(hero.inventory.equip(off), "lifecycle equip legal off-hand " + str(subtype))
-		hero.inventory.unequip(&"main-hand")
-		check(
-			(
-				hero.inventory.equipment[&"off-hand"] == off
-				and hero.inventory.entries.count(sword) == 1
-			),
-			"lifecycle removal leaves off-hand untouched"
-		)
-		var stats := [hero.max_hp, hero.armor, hero.resistance]
-		var payload := Save.item_data(off)
-		# Exercise the real changed -> request_save -> deferred atomic commit path, not only save_now().
-		await process_frame
-		await process_frame
-		var persisted: Dictionary = current.save_data.load_file(path)
-		check(
-			not persisted.is_empty() and persisted.character.equipment.keys() == ["off-hand"],
-			"lifecycle autosave accepts independently empty main " + str(subtype)
-		)
-		current.free()
-		current = MAIN.instantiate()
-		current.save_path = path
-		root.add_child(current)
-		stop_nodes(current)
-		hero = current.get_node("Player")
-		check(
-			hero.logical_id == persisted.character.id and current.state_data.world_id == identity,
-			"off-hand lifecycle preserves character/world identity"
-		)
-		var restored_off = hero.inventory.equipment[&"off-hand"]
-		check(
-			(
-				Save.item_data(restored_off) == payload
-				and [hero.max_hp, hero.armor, hero.resistance] == stats
-			),
-			"off-hand payload and worn stats survive real restart"
-		)
-		check(
-			(
-				hero.weapon.is_empty()
-				and hero.moveset.is_empty()
-				and hero.can_block() == (subtype == &"shield")
-			),
-			"real main restores only eligible off-hand block, no attacks"
-		)
-		hero.mp = 80
-		hero.combo = 4
-		hero._swing()
-		hero._special(50)
-		check(
-			not hero.use_class_skill(1) and hero.mp == 80 and hero.combo == 4,
-			"main-less action paths reject without spending"
-		)
-		current.get_node("HUD")._process(0)
-		sword = hero.inventory.entries.filter(func(it): return it.subtype == &"sword")[0]
-		check(
-			(
-				hero.inventory.equip(sword)
-				and hero.inventory.equipment[&"off-hand"] == restored_off
-				and not hero.weapon.is_empty()
-			),
-			"real restart equip transition preserves off-hand"
-		)
-		hero.inventory.unequip(&"off-hand")
-		check(
-			hero.inventory.equipment[&"main-hand"] == sword,
-			"reverse lifecycle unequip leaves main untouched"
-		)
-		await process_frame
+		current = await _hand_lifecycle(current, rng, subtype)
 	current.free()
 	check(not saved.is_empty(), "saved snapshot independently loadable")
 	print("saved runtime ok" if failed == 0 else "saved runtime FAILED %d" % failed)

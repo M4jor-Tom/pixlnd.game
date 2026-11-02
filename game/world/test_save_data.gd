@@ -1,4 +1,5 @@
 extends SceneTree
+const ContractCases := preload("res://game/world/save_data_contract_cases.gd")
 const Save := preload("res://game/world/save_data.gd")
 const State := preload("res://game/world/world_state.gd")
 const Model := preload("res://ontology/model.gd")
@@ -52,6 +53,19 @@ func run() -> void:
 	p.spawn_point = Vector3(321, 150, 654)
 	var state = State.new(d, 26879)
 	var save = Save.new(o, d)
+	var ids := _world_fixture(o, d, p, state)
+	var pair := _roundtrip(save, state, p, gear, ids[0], ids[1], o, d)
+	var loaded: Dictionary = pair[0]
+	var q = pair[1]
+	ContractCases.run(self, save, loaded, path)
+	_invalid_saves(save, loaded, state, ids[0])
+	_unarmed(save, state, p, q)
+	_power_restore(save, loaded, q)
+	print("save data ok" if failed == 0 else "save data FAILED %d" % failed)
+	quit(0 if failed == 0 else 1)
+
+
+func _world_fixture(o, d: Dictionary, p, state) -> Array:
 	var holder := Node3D.new()
 	root.add_child(holder)
 	var gen := Gen.new(26879, d, o.landscapes)
@@ -93,6 +107,12 @@ func run() -> void:
 	)
 	check(not state.issue_reward(site_id, reward_id, []), "same logical death cannot reroll")
 	p.position = Vector3(123, 125, 456)
+	return [site_id, reward_id]
+
+
+func _roundtrip(
+	save, state, p, gear, site_id: String, reward_id: String, o, d: Dictionary
+) -> Array:
 	var data: Dictionary = save.capture(state, p)
 	check(save.write_atomic(path, data), "atomic write valid state: " + str(save.errors))
 	var loaded: Dictionary = save.load_file(path)
@@ -116,26 +136,12 @@ func run() -> void:
 	q.setup_items(o, d)
 	q.set_physics_process(false)
 	save.restore_player(q, loaded.character, loaded.world)
-	check(
-		q.logical_id == p.logical_id and q.level == p.level and q.xp == p.xp,
-		"identity level XP roundtrip"
-	)
-	check(
-		q.skill_points == 1 and q.skill_tree.spent(&"smash") == 1,
-		"banked and spent skills roundtrip"
-	)
-	check(
-		q.inventory.entries.any(func(it): return it.subtype == &"spirit-fire" and it.level == 4),
-		"carried spirit payload roundtrip"
-	)
-	check(
-		q.inventory.coins == 123 and q.inventory.equipment[&"chest"].modifier == gear.modifier,
-		"coins and equipment payload roundtrip"
-	)
-	check(
-		q.position == p.position and q.spawn_point == p.spawn_point,
-		"per-world position/respawn roundtrip"
-	)
+	_restored_identity(q, p)
+	_restored_payload(q, p, gear)
+	return [loaded, q]
+
+
+func _invalid_saves(save, loaded: Dictionary, state, site_id: String) -> void:
 	var original := FileAccess.get_file_as_string(path)
 	for mutate in [
 		"count",
@@ -155,75 +161,7 @@ func run() -> void:
 		"member-count",
 		"species-role"
 	]:
-		var bad: Dictionary = loaded.duplicate(true)
-		match mutate:
-			"count":
-				bad.character.bag[0].count = -1
-			"class":
-				bad.character.class_id = "unknown"
-			"loadout":
-				bad.character.equipment["off-hand"] = bad.character.equipment["chest"].duplicate()
-			"identity":
-				bad.world.sites["foreign-site"] = {"family": "ruins"}
-			"clock":
-				bad.world.clock = -1
-			"skills":
-				bad.character.points = {"unknown": 1}
-			"site-family":
-				bad.world.sites[site_id].family = "supplier"
-			"site-ordinal":
-				var invalid: String = site_id.trim_suffix("/0") + "/99"
-				bad.world.sites[invalid] = bad.world.sites[site_id].duplicate(true)
-				bad.world.sites[invalid].id = invalid
-			"mob-id":
-				var first: String = bad.world.mobs.keys()[0]
-				bad.world.mobs[state.world_id + "/ambient/not-coordinates/0/0"] = (
-					bad.world.mobs[first].duplicate(true)
-				)
-			"mob-pack":
-				bad.world.mobs.values()[0].pack = "foreign-pack"
-			"mob-stats":
-				bad.world.mobs.values()[0].max_hp *= 2
-			"mob-order":
-				bad.world.mobs.values()[0].combat = {
-					"threat": {"hero-test": 1.0},
-					"order": {},
-					"next_order": 0,
-					"provoked": {},
-					"current": "",
-					"taunt": "",
-					"taunt_left": 0.0,
-					"returning": false
-				}
-			"missing-parent":
-				bad.world.mobs = []
-			"skill-prerequisite":
-				bad.character.points = {"cyclone": 1}
-			"species-role":
-				bad.world.mobs.values()[0].species = "wolf"
-				bad.world.mobs.values()[0].role = "mage"
-			"member-count":
-				var first: String = bad.world.mobs.keys()[0]
-				bad.world.mobs[first.get_base_dir() + "/999"] = bad.world.mobs[first].duplicate(
-					true
-				)
-		check(
-			not save.write_atomic(path, bad) and not save.errors.is_empty(),
-			"reject rule invalid " + mutate
-		)
-		check(
-			FileAccess.get_file_as_string(path) == original,
-			"invalid write preserves original " + mutate
-		)
-		var bad_path := path + ".invalid"
-		var f := FileAccess.open(bad_path, FileAccess.WRITE)
-		f.store_string(JSON.stringify(bad))
-		f.close()
-		check(
-			save.load_file(bad_path).is_empty() and not save.errors.is_empty(),
-			"invalid load rejected " + mutate
-		)
-		DirAccess.remove_absolute(bad_path)
+		_invalid_save(save, loaded, state, site_id, original, mutate)
 	var f := FileAccess.open(path + ".invalid", FileAccess.WRITE)
 	f.store_string("{broken")
 	f.close()
@@ -232,19 +170,10 @@ func run() -> void:
 	check(save.load_file(path + ".missing").is_empty(), "missing file diagnosed")
 	check(FileAccess.get_file_as_string(path) == original, "failed loads leave original untouched")
 	check(not FileAccess.file_exists(path + ".tmp"), "atomic rename consumed temp")
-	# Empty equipment is legal and restores exactly, without starter attack leakage.
-	p.inventory.unequip(&"main-hand")
-	var unarmed: Dictionary = save.capture(state, p)
-	check(save.write_atomic(path, unarmed), "legal unarmed save accepted")
-	save.restore_player(q, save.load_file(path).character, unarmed.world)
-	check(
-		(
-			not q.inventory.equipment.has(&"main-hand")
-			and q.weapon.is_empty()
-			and q.moveset.is_empty()
-		),
-		"unarmed save restores exact equipment and derived state"
-	)
+
+
+func _unarmed(save, state, p, q) -> void:
+	var unarmed := _unarmed_restore(save, state, p, q)
 	check(
 		(
 			not save.write_atomic(path.path_join("missing-parent/save.json"), unarmed)
@@ -252,9 +181,6 @@ func run() -> void:
 		),
 		"I/O failure diagnosed without replacing original"
 	)
-	_power_restore(save, loaded, q)
-	print("save data ok" if failed == 0 else "save data FAILED %d" % failed)
-	quit(0 if failed == 0 else 1)
 
 
 func _power_restore(save, original: Dictionary, p: Node) -> void:
@@ -281,6 +207,134 @@ func _power_restore(save, original: Dictionary, p: Node) -> void:
 		p.level == 10 and worn.level == 40 and p.hp == p.max_hp and p.weapon.type == &"sword",
 		"restore retains worn +40 and refills equipped HP"
 	)
+	_restored_admission(save, p, worn, sword)
+	_power_progression(p, worn, sword)
+
+
+func _invalid_save(
+	save, loaded: Dictionary, state, site_id: String, original: String, mutate: String
+) -> void:
+	var bad := _mutated_save(loaded, state, site_id, mutate)
+	check(
+		not save.write_atomic(path, bad) and not save.errors.is_empty(),
+		"reject rule invalid " + mutate
+	)
+	check(
+		FileAccess.get_file_as_string(path) == original,
+		"invalid write preserves original " + mutate
+	)
+	var bad_path := path + ".invalid"
+	var f := FileAccess.open(bad_path, FileAccess.WRITE)
+	f.store_string(JSON.stringify(bad))
+	f.close()
+	check(
+		save.load_file(bad_path).is_empty() and not save.errors.is_empty(),
+		"invalid load rejected " + mutate
+	)
+	DirAccess.remove_absolute(bad_path)
+
+
+func _mutated_save(loaded: Dictionary, state, site_id: String, mutate: String) -> Dictionary:
+	var bad: Dictionary = loaded.duplicate(true)
+	match mutate:
+		"count":
+			bad.character.bag[0].count = -1
+		"class":
+			bad.character.class_id = "unknown"
+		"loadout":
+			bad.character.equipment["off-hand"] = bad.character.equipment["chest"].duplicate()
+		"identity":
+			bad.world.sites["foreign-site"] = {"family": "ruins"}
+		"clock":
+			bad.world.clock = -1
+		"skills":
+			bad.character.points = {"unknown": 1}
+		"site-family":
+			bad.world.sites[site_id].family = "supplier"
+		"site-ordinal":
+			var invalid: String = site_id.trim_suffix("/0") + "/99"
+			bad.world.sites[invalid] = bad.world.sites[site_id].duplicate(true)
+			bad.world.sites[invalid].id = invalid
+		"missing-parent":
+			bad.world.mobs = []
+		"skill-prerequisite":
+			bad.character.points = {"cyclone": 1}
+		_:
+			_mutate_ambient(bad, state, mutate)
+	return bad
+
+
+func _restored_admission(save, p, worn: Item, sword) -> void:
+	_refresh_above_power(save, p, worn, sword)
+	var eligible: Item
+	for it in p.inventory.entries:
+		if it.type == &"chest-armor" and it.level == 32:
+			eligible = it
+	check(
+		eligible != null and p.inventory.equip(eligible),
+		"new +32 equip reads restored level10, not starter level1"
+	)
+	_rejected_reequip(p, worn)
+
+
+func _restored_identity(q, p) -> void:
+	check(
+		q.logical_id == p.logical_id and q.level == p.level and q.xp == p.xp,
+		"identity level XP roundtrip"
+	)
+	check(
+		q.skill_points == 1 and q.skill_tree.spent(&"smash") == 1,
+		"banked and spent skills roundtrip"
+	)
+	check(
+		q.inventory.entries.any(func(it): return it.subtype == &"spirit-fire" and it.level == 4),
+		"carried spirit payload roundtrip"
+	)
+
+
+func _restored_payload(q, p, gear) -> void:
+	check(
+		q.inventory.coins == 123 and q.inventory.equipment[&"chest"].modifier == gear.modifier,
+		"coins and equipment payload roundtrip"
+	)
+	check(
+		q.position == p.position and q.spawn_point == p.spawn_point,
+		"per-world position/respawn roundtrip"
+	)
+
+
+func _unarmed_restore(save, state, p, q) -> Dictionary:
+	# Empty equipment is legal and restores exactly, without starter attack leakage.
+	p.inventory.unequip(&"main-hand")
+	var unarmed: Dictionary = save.capture(state, p)
+	check(save.write_atomic(path, unarmed), "legal unarmed save accepted")
+	save.restore_player(q, save.load_file(path).character, unarmed.world)
+	check(
+		(
+			not q.inventory.equipment.has(&"main-hand")
+			and q.weapon.is_empty()
+			and q.moveset.is_empty()
+		),
+		"unarmed save restores exact equipment and derived state"
+	)
+
+	return unarmed
+
+
+func _power_progression(p, worn: Item, sword) -> void:
+	# Keep the later real-level eligibility control independent on the pre-fix RED runtime.
+	if p.inventory.equipment.get(&"main-hand") == worn:
+		p.inventory.unequip(&"main-hand")
+	while p.level < 14:
+		p.gain_xp(Model.xp_to_next(p.level) - p.xp)
+	check(
+		Model.power_for_level(p.level) == 40 and p.inventory.equip(worn),
+		"restored retained +40 admits after real progression"
+	)
+	check(p.inventory.class_allowed(sword), "class admission remains structural")
+
+
+func _refresh_above_power(save, p, worn: Item, sword) -> void:
 	var maximum: float = p.max_hp
 	p.inventory.changed.emit()
 	check(
@@ -295,19 +349,14 @@ func _power_restore(save, original: Dictionary, p: Node) -> void:
 		),
 		"capture of retained worn +40 remains valid"
 	)
-	var eligible: Item
-	for it in p.inventory.entries:
-		if it.type == &"chest-armor" and it.level == 32:
-			eligible = it
-	check(
-		eligible != null and p.inventory.equip(eligible),
-		"new +32 equip reads restored level10, not starter level1"
-	)
+
+
+func _rejected_reequip(p, worn: Item) -> void:
 	p.inventory.unequip(&"main-hand")
 	var bag: Array = p.inventory.entries.duplicate()
 	var equipment: Dictionary = p.inventory.equipment.duplicate()
 	p.hp = 10
-	maximum = p.max_hp
+	var maximum: float = p.max_hp
 	check(not p.inventory.equip(worn), "unequipped +40 is a new rejected admission at power32")
 	check(
 		(
@@ -318,13 +367,33 @@ func _power_restore(save, original: Dictionary, p: Node) -> void:
 		),
 		"rejected restored re-equip preserves bag/equipment/HP"
 	)
-	# Keep the later real-level eligibility control independent on the pre-fix RED runtime.
-	if p.inventory.equipment.get(&"main-hand") == worn:
-		p.inventory.unequip(&"main-hand")
-	while p.level < 14:
-		p.gain_xp(Model.xp_to_next(p.level) - p.xp)
-	check(
-		Model.power_for_level(p.level) == 40 and p.inventory.equip(worn),
-		"restored retained +40 admits after real progression"
-	)
-	check(p.inventory.class_allowed(sword), "class admission remains structural")
+
+
+func _mutate_ambient(bad: Dictionary, state, mutate: String) -> void:
+	match mutate:
+		"mob-id":
+			var first: String = bad.world.mobs.keys()[0]
+			bad.world.mobs[state.world_id + "/ambient/not-coordinates/0/0"] = (
+				bad.world.mobs[first].duplicate(true)
+			)
+		"mob-pack":
+			bad.world.mobs.values()[0].pack = "foreign-pack"
+		"mob-stats":
+			bad.world.mobs.values()[0].max_hp *= 2
+		"mob-order":
+			bad.world.mobs.values()[0].combat = {
+				"threat": {"hero-test": 1.0},
+				"order": {},
+				"next_order": 0,
+				"provoked": {},
+				"current": "",
+				"taunt": "",
+				"taunt_left": 0.0,
+				"returning": false
+			}
+		"species-role":
+			bad.world.mobs.values()[0].species = "wolf"
+			bad.world.mobs.values()[0].role = "mage"
+		"member-count":
+			var first: String = bad.world.mobs.keys()[0]
+			bad.world.mobs[first.get_base_dir() + "/999"] = bad.world.mobs[first].duplicate(true)

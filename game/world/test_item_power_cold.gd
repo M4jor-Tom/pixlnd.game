@@ -44,18 +44,10 @@ func run() -> void:
 		printerr("existing isolated absolute PIXLND_TEST_DIR required")
 		quit(2)
 		return
-	var o := Model.Ontology.load_dir("res://ontology/instances")
-	if not o.validate() or not o.errors.is_empty():
-		printerr("ontology invalid ", o.errors)
-		quit(2)
-		return
-	var d: Dictionary = o.configs.generators.design
-	var save := Save.new(o, d)
-	if "--read" in OS.get_cmdline_user_args():
-		cold_read(save, directory)
-		print("COLD_READ_RESULT failures=", failed)
-		quit(0 if failed == 0 else 1)
-		return
+	_with_ontology(directory)
+
+
+func _fixture(d: Dictionary, o) -> Array:
 	var p = PLAYER.instantiate()
 	root.add_child(p)
 	p.setup(d.movement, d.camera, &"normal")
@@ -102,18 +94,15 @@ func run() -> void:
 	p.set_logical_position([0, 100, 0])
 	state.advance(0, [[0, 100, 0]])
 	check(camp.cycle == 1 and not camp.cleared, "real renewal retains past completion")
-	var data := save.capture(state, p)
-	var path := directory.path_join("current-rule.json")
-	check(
-		save.write_atomic(path, data), "actual generated current-rule save", save.errors.duplicate()
-	)
+	return [p, state, layout, camp_id]
+
+
+func _replays(
+	save, data: Dictionary, layout: Dictionary, camp_id: String, directory: String, path: String
+) -> void:
 	var original := FileAccess.get_file_as_string(path)
 	var canonical: Dictionary = data.duplicate(true)
-	for key in VENDOR_POWERS:
-		var actual: Array = data.world.vendors[key].items.map(func(it): return it.level)
-		check(actual == VENDOR_POWERS[key], "saved canonical purchased subset " + key, actual)
-		for i in VENDOR_POWERS[key].size():
-			canonical.world.vendors[key].items[i].level = VENDOR_POWERS[key][i]
+	_canonical_vendors(data, canonical)
 	var mission: Dictionary = canonical.world.sites[camp_id].rewards["mission/0"]
 	check(
 		POWERS.has(int(mission.level)), "mission source in independent literal band", mission.level
@@ -128,18 +117,92 @@ func run() -> void:
 	)
 	mission.payload[0].level = POWERS[int(mission.level)]
 	mission.payload[2].level = POWERS[int(mission.level)]
-	var table_site := ""
-	var table_key := ""
-	for id in canonical.world.sites:
-		for key in canonical.world.sites[id].rewards:
-			if str(key).begins_with("furnishing/"):
-				table_site = id
-				table_key = key
-				break
-		if table_key != "":
-			break
+	var table_ids := _first_table(canonical)
+	var table_site: String = table_ids[0]
+	var table_key: String = table_ids[1]
 	var table: Dictionary = canonical.world.sites[table_site].rewards[table_key]
 	table.payload[1].level = POWERS[int(table.level)]
+	_canonical_replays(
+		save, data, canonical, camp_id, mission, table_site, table_key, table, directory
+	)
+	_invalid_imports(save, data, layout, camp_id, directory)
+	_atomic_identity(
+		save, data, path, original, table_site, table_key, table, camp_id, mission, directory
+	)
+
+
+func _cold_child(directory: String) -> void:
+	var output: Array = []
+	var status := OS.execute(
+		"timeout",
+		[
+			"681",
+			OS.get_executable_path(),
+			"--headless",
+			"--path",
+			ProjectSettings.globalize_path("res://"),
+			"-s",
+			get_script().resource_path,
+			"--",
+			"--read"
+		],
+		output,
+		true
+	)
+	var text := "\n".join(output)
+	var log := FileAccess.open(directory.path_join("cold-child.log"), FileAccess.WRITE)
+	log.store_string("exit=%d\n%s" % [status, text])
+	log.close()
+	check(
+		_clean_child(status, text), "bounded fresh-process load", {"exit": status, "output": text}
+	)
+
+
+func cold_read(save, directory: String) -> void:
+	var path := directory.path_join("current-rule.json")
+	var before := FileAccess.get_file_as_string(path)
+	var data: Dictionary = save.load_file(path)
+	check(not data.is_empty(), "cold current-rule save accepted", save.errors.duplicate())
+	var identity: Dictionary = JSON.parse_string(
+		FileAccess.get_file_as_string(directory.path_join("source-identity.json"))
+	)
+	if not data.is_empty():
+		_restored(save, data, identity)
+	check(FileAccess.get_file_as_string(path) == before, "cold current-rule original protected")
+	for name_ in [
+		"canonical-table",
+		"canonical-mission",
+		"canonical-vendor",
+		"old-unit-table",
+		"old-unit-mission",
+		"old-unit-vendor",
+		"old-unit-kill",
+		"invalid-power-weapon",
+		"invalid-power-consumable",
+		"invalid-power-spirit"
+	]:
+		path = directory.path_join(name_ + ".json")
+		before = FileAccess.get_file_as_string(path)
+		var loaded: Dictionary = save.load_file(path)
+		check(
+			loaded.is_empty() != name_.begins_with("canonical-"),
+			"cold " + name_ + " current-rule decision",
+			save.errors.duplicate()
+		)
+		check(FileAccess.get_file_as_string(path) == before, "cold " + name_ + " original intact")
+
+
+func _canonical_replays(
+	save,
+	data: Dictionary,
+	canonical: Dictionary,
+	camp_id: String,
+	mission: Dictionary,
+	table_site: String,
+	table_key: String,
+	table: Dictionary,
+	directory: String
+) -> void:
 	# Isolate each independently expected replay from all other production-generated fields.
 	for kind in ["table", "mission", "vendor"]:
 		var positive: Dictionary = data.duplicate(true)
@@ -162,18 +225,9 @@ func run() -> void:
 		else:
 			bad.world.vendors["0,0/weapon-vendor"].items[0].level = 11
 		rejects_original(save, directory, "old-unit-" + kind, bad)
-	# Full saved delivered historical boss receipt, preserving all ordinary prefix rolls.
-	var boss: Dictionary = layout.assignments.filter(func(a): return a.boss)[0]
-	var kill_key := "kill/0/" + str(boss.key)
-	var kill: Dictionary = data.world.sites[camp_id].rewards[kill_key]
-	check(
-		kill.delivered and kill.payload[-1].level == POWERS[int(kill.level)],
-		"real delivered historical boss gear",
-		kill.payload[-1]
-	)
-	var bad_kill: Dictionary = data.duplicate(true)
-	bad_kill.world.sites[camp_id].rewards[kill_key].payload[-1].level = kill.level
-	rejects_original(save, directory, "old-unit-kill", bad_kill)
+
+
+func _invalid_powers(save, data: Dictionary, directory: String) -> void:
 	for kind in ["weapon", "consumable", "spirit"]:
 		var bad := data.duplicate(true)
 		var row := {
@@ -197,6 +251,77 @@ func run() -> void:
 			row.material = ""
 		bad.character.bag.append(row)
 		rejects_original(save, directory, "invalid-power-" + kind, bad)
+
+
+func _restored(save, data: Dictionary, identity: Dictionary) -> void:
+	check(
+		(
+			data.world.world_id == identity.world_id
+			and Save.same_data(data.world.vendors, identity.vendors)
+		),
+		"cold purchase subset/world identity exact"
+	)
+	check(
+		data.world.sites[identity.site].rewards[identity.table].level == identity.source,
+		"cold table source not converted"
+	)
+	check(
+		(
+			(data.world.sites[identity.camp].rewards["mission/0"].level == identity.mission_source)
+			and data.world.sites[identity.camp].cycle == 1
+		),
+		"cold historical mission/source survives renewal"
+	)
+	var restored := State.new(save.design, 26879)
+	restored.restore(data.world)
+	check(Save.same_data(restored.snapshot(), data.world), "cold state restore/snapshot exact")
+
+
+func _write_cases(save, d: Dictionary, o, directory: String) -> void:
+	var fixture := _fixture(d, o)
+	var p = fixture[0]
+	var state = fixture[1]
+	var layout: Dictionary = fixture[2]
+	var camp_id: String = fixture[3]
+	var data: Dictionary = save.capture(state, p)
+	var path := directory.path_join("current-rule.json")
+	check(
+		save.write_atomic(path, data), "actual generated current-rule save", save.errors.duplicate()
+	)
+	_replays(save, data, layout, camp_id, directory, path)
+	_cold_child(directory)
+
+
+func _invalid_imports(
+	save, data: Dictionary, layout: Dictionary, camp_id: String, directory: String
+) -> void:
+	# Full saved delivered historical boss receipt, preserving all ordinary prefix rolls.
+	var boss: Dictionary = layout.assignments.filter(func(a): return a.boss)[0]
+	var kill_key := "kill/0/" + str(boss.key)
+	var kill: Dictionary = data.world.sites[camp_id].rewards[kill_key]
+	check(
+		kill.delivered and kill.payload[-1].level == POWERS[int(kill.level)],
+		"real delivered historical boss gear",
+		kill.payload[-1]
+	)
+	var bad_kill: Dictionary = data.duplicate(true)
+	bad_kill.world.sites[camp_id].rewards[kill_key].payload[-1].level = kill.level
+	rejects_original(save, directory, "old-unit-kill", bad_kill)
+	_invalid_powers(save, data, directory)
+
+
+func _atomic_identity(
+	save,
+	data: Dictionary,
+	path: String,
+	original: String,
+	table_site: String,
+	table_key: String,
+	table: Dictionary,
+	camp_id: String,
+	mission: Dictionary,
+	directory: String
+) -> void:
 	var bad_shape := data.duplicate(true)
 	bad_shape.character.bag[0].count = -1
 	check(not save.write_atomic(path, bad_shape), "invalid atomic write rejects")
@@ -217,93 +342,55 @@ func run() -> void:
 			"mission_source": mission.level
 		}
 	)
-	var output: Array = []
-	var status := OS.execute(
-		"timeout",
-		[
-			"681",
-			OS.get_executable_path(),
-			"--headless",
-			"--path",
-			ProjectSettings.globalize_path("res://"),
-			"-s",
-			get_script().resource_path,
-			"--",
-			"--read"
-		],
-		output,
-		true
-	)
-	var text := "\n".join(output)
-	var log := FileAccess.open(directory.path_join("cold-child.log"), FileAccess.WRITE)
-	log.store_string("exit=%d\n%s" % [status, text])
-	log.close()
-	check(
-		(
-			status == 0
-			and "SCRIPT ERROR" not in text
-			and "ERROR:" not in text
-			and "ontology INVALID" not in text
-		),
-		"bounded fresh-process load",
-		{"exit": status, "output": text}
-	)
+
+
+func _with_ontology(directory: String) -> void:
+	var o := Model.Ontology.load_dir("res://ontology/instances")
+	if not o.validate() or not o.errors.is_empty():
+		printerr("ontology invalid ", o.errors)
+		quit(2)
+		return
+	_with_valid_ontology(o, directory)
+
+
+func _canonical_vendors(data: Dictionary, canonical: Dictionary) -> void:
+	for key in VENDOR_POWERS:
+		var actual: Array = data.world.vendors[key].items.map(func(it): return it.level)
+		check(actual == VENDOR_POWERS[key], "saved canonical purchased subset " + key, actual)
+		for i in VENDOR_POWERS[key].size():
+			canonical.world.vendors[key].items[i].level = VENDOR_POWERS[key][i]
+
+
+static func _clean_child(status: int, text: String) -> bool:
+	return status == 0 and _clean_child_log(text)
+
+
+func _with_valid_ontology(o, directory: String) -> void:
+	var d: Dictionary = o.configs.generators.design
+	var save := Save.new(o, d)
+	if "--read" in OS.get_cmdline_user_args():
+		cold_read(save, directory)
+		print("COLD_READ_RESULT failures=", failed)
+		quit(0 if failed == 0 else 1)
+		return
+	_write_cases(save, d, o, directory)
 	print("COLD_WRITE_RESULT failures=", failed)
 	quit(0 if failed == 0 else 1)
 
 
-func cold_read(save, directory: String) -> void:
-	var path := directory.path_join("current-rule.json")
-	var before := FileAccess.get_file_as_string(path)
-	var data: Dictionary = save.load_file(path)
-	check(not data.is_empty(), "cold current-rule save accepted", save.errors.duplicate())
-	var identity: Dictionary = JSON.parse_string(
-		FileAccess.get_file_as_string(directory.path_join("source-identity.json"))
-	)
-	if not data.is_empty():
-		check(
-			(
-				data.world.world_id == identity.world_id
-				and Save.same_data(data.world.vendors, identity.vendors)
-			),
-			"cold purchase subset/world identity exact"
-		)
-		check(
-			data.world.sites[identity.site].rewards[identity.table].level == identity.source,
-			"cold table source not converted"
-		)
-		check(
-			(
-				(
-					data.world.sites[identity.camp].rewards["mission/0"].level
-					== identity.mission_source
-				)
-				and data.world.sites[identity.camp].cycle == 1
-			),
-			"cold historical mission/source survives renewal"
-		)
-		var restored := State.new(save.design, 26879)
-		restored.restore(data.world)
-		check(Save.same_data(restored.snapshot(), data.world), "cold state restore/snapshot exact")
-	check(FileAccess.get_file_as_string(path) == before, "cold current-rule original protected")
-	for name_ in [
-		"canonical-table",
-		"canonical-mission",
-		"canonical-vendor",
-		"old-unit-table",
-		"old-unit-mission",
-		"old-unit-vendor",
-		"old-unit-kill",
-		"invalid-power-weapon",
-		"invalid-power-consumable",
-		"invalid-power-spirit"
-	]:
-		path = directory.path_join(name_ + ".json")
-		before = FileAccess.get_file_as_string(path)
-		var loaded: Dictionary = save.load_file(path)
-		check(
-			loaded.is_empty() != name_.begins_with("canonical-"),
-			"cold " + name_ + " current-rule decision",
-			save.errors.duplicate()
-		)
-		check(FileAccess.get_file_as_string(path) == before, "cold " + name_ + " original intact")
+func _first_table(canonical: Dictionary) -> Array:
+	var table_site := ""
+	var table_key := ""
+	for id in canonical.world.sites:
+		for key in canonical.world.sites[id].rewards:
+			if str(key).begins_with("furnishing/"):
+				table_site = id
+				table_key = key
+				break
+		if table_key != "":
+			break
+	return [table_site, table_key]
+
+
+static func _clean_child_log(text: String) -> bool:
+	return "SCRIPT ERROR" not in text and "ERROR:" not in text and "ontology INVALID" not in text

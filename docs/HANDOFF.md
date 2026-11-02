@@ -177,3 +177,16 @@ do not reopen handled class/weapon/lore attributions. Any future sourcing must f
 [lessons](lessons.md) and the current reconciliation contract: only inspected public article
 extracts are public-safe; private authenticated DOM/account/token material is prohibited.
 This continuation note authorizes no source research, inventory, selection or publication.
+
+## SaveData direct malformed equipment key — pre-existing native/empty-diagnostic path
+
+An isolated BASE-versus-candidate persistence probe supplies a structurally valid ring under an
+integer equipment Dictionary key. Original `validate_character` emits a native int/String slot
+comparison error and returns with `errors` still empty; the refactor preserves that outcome and
+abort/continuation ownership. This is a malformed raw-Dictionary API case, not evidence that the
+normal capture writer or JSON loader produces integer equipment keys. The outer `validate`/atomic
+write consequence has not been separately reproduced; its errors-empty acceptance is a follow-up
+boundary to assess, not an authorized incidental fix in this pure refactor.
+Evidence: `/home/theta/.pi-game-dev/recovery/pixlnd-quality-gate-refactor/task4-7446c92/safety-extra-original.log`
+and `safety-extra-comparison.json`, `integer-equipment-key` case. Next action: separately select a
+bounded fail-closed characterization and rule/bug disposition; do not silently add a guard here.

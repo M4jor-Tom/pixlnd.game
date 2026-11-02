@@ -185,7 +185,10 @@ Arguments are forwarded unchanged, for example `nix run --impure .#nvidia -- -- 
 ## Checks
 Persistence tests require `PIXLND_TEST_DIR` to name an existing, writable, isolated absolute scratch
 directory. They never use `user://`. Keep test saves/logs there and use a separate explicit save path
-for boot checks. Run every Godot invocation under `timeout` (including older commands below).
+for boot checks. `test_save_data.gd` also runs six bounded expected-native-error children
+(`save_data_boundary_cases.gd`): their separately retained room, volume, mob,
+supplier, pending-rescue and item-stack `.log` files must match the exact expected headers and abort markers, not be classified as clean ordinary logs.
+Run every Godot invocation under `timeout` (including older commands below).
 Use the [current calibrated deadlines](../docs/quality-checks.md), with `timeout` inside Nix;
 older command samples below do not override those deadlines.
 ```sh
@@ -233,7 +236,7 @@ timeout 150 nix develop -c godot --headless -s game/items/test_independent_hands
 timeout 150 nix develop -c godot --headless -s game/entities/test_unarmed.gd # all specs, no-spend rejection, independent actions and committed effects
 timeout 150 nix develop -c godot --headless -s game/entities/test_creature_ai_contract.gd # actual HP threat, ties/stealth/DOT, packs/sight/taunts, return/absence/death/finisher
 timeout 150 nix develop -c godot --headless -s game/world/test_encounter_clock.gd # closed unions, coalescence, deferred refresh, completion ordering/no offline time
-timeout 150 nix develop -c godot --headless -s game/world/test_save_data.gd # atomic character/world roundtrip, equipment/skills/spirits, retained worn +40 at level10/refill, new +40 re-equip rejection/progression and restored +32 admission, invalid-save/original protection
+timeout 150 nix develop -c godot --headless -s game/world/test_save_data.gd # atomic character/world roundtrip, equipment/skills/spirits, retained worn +40 at level10/refill, new +40 re-equip rejection/progression and restored +32 admission, ordered family diagnostics, absolute recursive equality, validation-before-temp/original-byte protection and classified callback/native-error children
 timeout 150 nix develop -c godot --headless -s game/world/test_saved_runtime.gd # real main/world unload/restart/midnight and empty/independent-hand lifecycle/HUD boots
 
 timeout 900 bash tests/test_flake.sh                            # pure default/platform checks; NVIDIA headless boot if a module is loaded
