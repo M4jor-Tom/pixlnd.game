@@ -1,6 +1,7 @@
 ## §3.1 world: one seed, zones streamed around `target` (gen-world neighbourhood, design.terrain.view-zones).
 extends Node3D
 
+const WorldStreaming := preload("res://game/world/world_streaming.gd")
 const WorldSites := preload("res://game/world/world_sites.gd")
 const WorldRewards := preload("res://game/world/world_rewards.gd")
 const Model := preload("res://ontology/model.gd")
@@ -159,146 +160,19 @@ func populate_zone(zc: Vector2i) -> void:
 
 
 func _process(_dt: float) -> void:
-	_poll_terrain()
-	if (
-		gen == null
-		or target == null
-		or not gen.valid_block(
-			float(target.logical_position()[0]), float(target.logical_position()[2])
-		)
-	):
-		return
-	var c := Vector2i(
-		floori(float(target.logical_position()[0]) / _zone_blocks),
-		floori(float(target.logical_position()[2]) / _zone_blocks)
-	)
-	for zc in zones.keys():
-		if maxi(absi(zc.x - c.x), absi(zc.y - c.y)) > _view + 1:
-			capture_mobs()
-			zones[zc].queue_free()
-			zones.erase(zc)
-			state_changed.emit()
-	# Materialize only genuinely eligible dead incarnations; loaded survivors are never replaced.
-	if state_data != null:
-		var renew := _pending_ambient.duplicate()
-		for id in state_data.mobs:
-			var mob: Dictionary = state_data.mobs[id]
-			if not mob.dead or not mob.eligible:
-				continue
-			var parts: PackedStringArray = id.split("/")[2].split(",")
-			var zc := Vector2i(int(parts[0]), int(parts[1]))
-			if zones.has(zc):
-				renew[zc] = true
-		for zc in renew:
-			if zones.has(zc):
-				populate_zone(zc)
-			else:
-				_pending_ambient.erase(zc)
-	if not ensure_land(
-		gen.land_of_block(
-			floori(float(target.logical_position()[0])), floori(float(target.logical_position()[2]))
-		)
-	):
-		return
-	_stream_village()
-	stream_sites()
-	# Nearest ring first; worker requests never build terrain on this thread.
-	for r in _view + 1:
-		for dy in range(-r, r + 1):
-			for dx in range(-r, r + 1):
-				if (
-					maxi(absi(dx), absi(dy)) != r
-					or not gen.valid_zone(c + Vector2i(dx, dy))
-					or zones.has(c + Vector2i(dx, dy))
-				):
-					continue
-				_spawn_zone(c + Vector2i(dx, dy))
-				return
+	WorldStreaming.process(self)
 
 
 func _spawn_zone(zc: Vector2i) -> void:
-	if not gen.valid_zone(zc):
-		return
-	if (
-		state_data != null
-		and not ensure_land(gen.land_of_block(zc.x * _zone_blocks, zc.y * _zone_blocks))
-	):
-		return
-	var land = gen.land_of_block(zc.x * _zone_blocks, zc.y * _zone_blocks)
-	var key := "%d,%d" % [land.coords.x, land.coords.y]
-	var status: Error = _terrain_worker.request(zc, _terrain_epoch, not guidance.has(key))
-	if status != OK and status != ERR_BUSY:
-		generation_error = "terrain worker start failed: " + error_string(status)
-		generation_failed.emit(generation_error)
+	WorldStreaming.spawn_zone(self, zc)
 
 
 func _poll_terrain() -> void:
-	if _terrain_worker == null:
-		return
-	# Even a cheap guide result is published a frame after its ready terrain.
-	var packets := _pending_guidance
-	_pending_guidance = []
-	for packet in _terrain_worker.poll():
-		if packet.kind == "guidance":
-			_pending_guidance.append(packet)
-		else:
-			packets.append(packet)
-	for packet in packets:
-		if packet.epoch != _terrain_epoch or target == null:
-			continue
-		var logical: Array = target.logical_position()
-		var here := Vector2i(
-			floori(float(logical[0]) / _zone_blocks), floori(float(logical[2]) / _zone_blocks)
-		)
-		if maxi(absi(packet.zone.x - here.x), absi(packet.zone.y - here.y)) > _view + 1:
-			continue
-		if packet.kind == "terrain":
-			if not zones.has(packet.zone):
-				_publish_zone(packet.zone, packet.surfaces)
-		else:
-			if not packet.error.is_empty():
-				push_warning("Optional guidance omitted: " + str(packet.error))
-			guidance[packet.land] = packet.routes.duplicate(true)
+	WorldStreaming.poll_terrain(self)
 
 
 func _marker_clear(marker: Dictionary, prospective: Dictionary = {}) -> bool:
-	var actors: Array = party_provider.call() if party_provider.is_valid() else []
-	if targeting != null:
-		actors.append_array(targeting.live.values())
-	for actor in actors:
-		if is_instance_valid(actor) and _marker_near(marker, actor.logical_position()):
-			return false
-	# ponytail: O(markers × saved mobs) per view publication; index by zone if large saves make this costly.
-	for mob in state_data.mobs.values():
-		if _marker_near(marker, mob.home) or _marker_near(marker, mob.position):
-			return false
-	for site in state_data.sites.values():
-		for mob in site.mobs.values():
-			if _marker_near(marker, mob.home) or _marker_near(marker, mob.position):
-				return false
-	var levels := party_levels()
-	if levels.is_empty():
-		return false
-	# Include neighbouring zone sources whose configured spread can reach the marker's actor halo.
-	var pad := 3 + int(design.spawns["group-spread"])
-	for x in range(
-		floori((marker.x - pad) / _zone_blocks), floori((marker.x + pad) / _zone_blocks) + 1
-	):
-		for z in range(
-			floori((marker.z - pad) / _zone_blocks), floori((marker.z + pad) / _zone_blocks) + 1
-		):
-			var zone := Vector2i(x, z)
-			if not gen.valid_zone(zone):
-				continue
-			if not prospective.has(zone):
-				prospective[zone] = Spawner.plan(
-					gen, zone, design, creatures, rosters, levels[0], levels[1]
-				)
-			for group in prospective[zone]:
-				for at in group.positions:
-					if _marker_near(marker, [at.x, at.y, at.z]):
-						return false
-	return true
+	return WorldStreaming.marker_clear(self, marker, prospective)
 
 
 static func _marker_near(marker: Dictionary, at: Array) -> bool:
@@ -345,35 +219,7 @@ func _publish_zone(zc: Vector2i, surfaces: Array) -> void:
 ## gen-settlement (D22): the village of the land under the player exists while its square is within view reach;
 ## villages sit ≥ 8 km inside their land, so no other land's village can be in reach.
 func _stream_village() -> void:
-	var here = gen.land_of_block(
-		floori(float(target.logical_position()[0])), floori(float(target.logical_position()[2]))
-	)
-	var v := gen.village_at(here)
-	var want := (
-		here != null
-		and not v.is_empty()
-		and (
-			(
-				Vector2(
-					float(target.logical_position()[0]) - v["centre"].x,
-					float(target.logical_position()[2]) - v["centre"].y
-				)
-				. length()
-			)
-			< (_view + 1) * _zone_blocks
-		)
-	)
-	for lc in villages.keys():
-		if not want or lc != here.coords:
-			villages[lc].queue_free()
-			villages.erase(lc)
-	if want and not villages.has(here.coords):
-		villages[here.coords] = Settlement.build(
-			v, gen.settlement, ontology.configs["npc-roles"], frame
-		)
-		add_child(villages[here.coords])
-		if frame != null:
-			frame.track(villages[here.coords])
+	WorldStreaming.stream_village(self)
 
 
 ## True once the zone under `pos` is built (the player waits for it instead of falling through).
@@ -431,97 +277,7 @@ func refresh_site(id: String) -> bool:
 
 
 func stream_sites() -> void:
-	var reach := float((_view + 1) * _zone_blocks)
-	for id in site_views.keys():
-		var layout := site_layout(id)
-		if (
-			(
-				Vector2(
-					float(target.logical_position()[0]) - layout.centre[0],
-					float(target.logical_position()[2]) - layout.centre[1]
-				)
-				. length()
-			)
-			> reach + float(design["initial-encounters"].ruins.bounds[1])
-		):
-			capture_mobs()
-			unload_specials(id)
-			site_views[id].free()
-			site_views.erase(id)
-			state_changed.emit()
-	for id in state_data.sites:
-		var layout := site_layout(id)
-		if (
-			(
-				Vector2(
-					float(target.logical_position()[0]) - layout.centre[0],
-					float(target.logical_position()[2]) - layout.centre[1]
-				)
-				. length()
-			)
-			> reach
-		):
-			continue
-		if not site_views.has(id):
-			site_views[id] = EncounterSite.build(
-				layout, design["initial-encounters"], design, frame
-			)
-			add_child(site_views[id])
-			if frame != null:
-				frame.track(site_views[id])
-			for child in site_views[id].get_children():
-				if child.get("role") == &"captive":
-					child.set_meta("encounter_site", id)
-			var contents := Contents.new()
-			site_views[id].add_child(contents)
-			contents.setup(self, id, layout)
-		populate_site(id)
-		deliver_rewards(id)
-	for key in access_views.keys():
-		var v: Dictionary = state_data.lands[key].village
-		if (
-			(
-				Vector2(
-					float(target.logical_position()[0]) - v.centre[0],
-					float(target.logical_position()[2]) - v.centre[1]
-				)
-				. length()
-			)
-			> reach + float(design["initial-encounters"]["distance-max"])
-		):
-			access_views[key].free()
-			access_views.erase(key)
-	for key in state_data.lands:
-		var plan_: Dictionary = state_data.lands[key]
-		var v: Dictionary = plan_.village
-		if (
-			(
-				(
-					Vector2(
-						float(target.logical_position()[0]) - v.centre[0],
-						float(target.logical_position()[2]) - v.centre[1]
-					)
-					. length()
-				)
-				<= reach + float(design["initial-encounters"]["distance-max"])
-			)
-			and guidance.has(key)
-			and not access_views.has(key)
-		):
-			var visible: Array = []
-			var prospective := {}  # one deterministic plan per nearby zone for this publication
-			for road in guidance[key]:
-				var safe: Dictionary = road.duplicate(true)
-				safe.markers = road.markers.filter(
-					func(marker): return _marker_clear(marker, prospective)
-				)
-				visible.append(safe)
-			access_views[key] = EncounterSite.roads(
-				{"village": plan_.village, "routes": visible}, design, frame
-			)
-			add_child(access_views[key])
-			if frame != null:
-				frame.track(access_views[key])
+	WorldStreaming.stream_sites(self)
 
 
 ## Discontinuous owner relocation: capture before exit; never translate an old neighborhood by a world-sized delta.

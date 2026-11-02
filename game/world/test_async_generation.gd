@@ -2,6 +2,8 @@
 extends SceneTree
 const Main := preload("res://game/main.tscn")
 const MeshData := preload("res://game/world/zone_mesh.gd")
+const Model := preload("res://ontology/model.gd")
+const Transactions := preload("res://game/world/streaming_transaction_cases.gd")
 var failed := 0
 
 
@@ -33,6 +35,7 @@ func run() -> void:
 	if not directory.is_absolute_path():
 		quit(1)
 		return
+	Transactions.run(self, Model.Ontology.load_dir("res://ontology/instances"))
 	var path := directory.path_join("async-generation.json")
 	DirAccess.remove_absolute(path)
 	var main = Main.instantiate()
@@ -40,14 +43,14 @@ func run() -> void:
 	root.add_child(main)
 	var w = main.get_node("World")
 	var p = main.get_node("Player")
-	var held := HeldGuidance.new(w.world_seed, w.design, w.ontology.landscapes, w.state_data.lands)
-	w._terrain_worker = held
-	var failures: Array = []
-	w.generation_failed.connect(func(message): failures.append(message))
-	var at: Array = p.logical_position()
-	var zc := Vector2i(floori(float(at[0]) / 64), floori(float(at[2]) / 64))
-	w._spawn_zone(zc)
-	check(not w.has_ground(p.position), "zone request does not synchronously build terrain")
+	if not await _streaming_lifecycle(main, w, p, path):
+		return
+	main.free()
+	print("async generation ok" if failed == 0 else "async generation FAILED")
+	quit(0 if failed == 0 else 1)
+
+
+func _terrain_publication(main, w, p, zc: Vector2i) -> bool:
 	var clock: float = main.state_data.clock
 	var frames := 0
 	while not w.has_ground(p.position) and frames < 180:
@@ -72,6 +75,10 @@ func run() -> void:
 			actual[field] == expected[field],
 			"private worker mesh equals deterministic synchronous sampler mesh"
 		)
+	return true
+
+
+func _pending_guidance_save(main, w, p, path: String) -> bool:
 	var position_: Array = p.logical_position()
 	check(
 		not w._marker_clear({"x": position_[0], "z": position_[2]}),
@@ -92,6 +99,10 @@ func run() -> void:
 	check(
 		FileAccess.get_file_as_string(path) == original, "invalid geography preserves original file"
 	)
+	return true
+
+
+func _guidance_result(w, held, failures: Array) -> bool:
 	held.release.post()
 	for i in 120:
 		if w.guidance.has("0,0"):
@@ -105,8 +116,26 @@ func run() -> void:
 		failures.is_empty() and w.state_data.sites.size() == 6,
 		"optional failure never becomes fatal generation failure or removes destinations"
 	)
+	return true
+
+
+func _streaming_lifecycle(main, w, p, path: String) -> bool:
+	var held := HeldGuidance.new(w.world_seed, w.design, w.ontology.landscapes, w.state_data.lands)
+	w._terrain_worker = held
+	var failures: Array = []
+	w.generation_failed.connect(func(message): failures.append(message))
+	var at: Array = p.logical_position()
+	var zc := Vector2i(floori(float(at[0]) / 64), floori(float(at[2]) / 64))
+	w._spawn_zone(zc)
+	check(not w.has_ground(p.position), "zone request does not synchronously build terrain")
+	if not await _terrain_publication(main, w, p, zc):
+		return false
+	return await _pending_and_relocation(main, w, p, path, held, failures, at, zc)
+
+
+func _relocation(main, w, p, at: Array, zc: Vector2i) -> bool:
 	main.relocate_player([float(at[0]) + 1024, at[1], at[2]])
-	frames = 0
+	var frames := 0
 	while not w.has_ground(p.position) and frames < 180:
 		await physics_frame
 		frames += 1
@@ -114,6 +143,14 @@ func run() -> void:
 		w.has_ground(p.position) and not w.zones.has(zc),
 		"relocation discards stale zone jobs and publishes in current local frame"
 	)
-	main.free()
-	print("async generation ok" if failed == 0 else "async generation FAILED")
-	quit(0 if failed == 0 else 1)
+	return true
+
+
+func _pending_and_relocation(
+	main, w, p, path: String, held, failures: Array, at: Array, zc: Vector2i
+) -> bool:
+	if not _pending_guidance_save(main, w, p, path):
+		return false
+	if not await _guidance_result(w, held, failures):
+		return false
+	return await _relocation(main, w, p, at, zc)

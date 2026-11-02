@@ -73,53 +73,7 @@ func restore_and_query(path: String, metadata: Dictionary) -> void:
 		world.access_views.has("0,0"),
 		"successful nonempty whole-land guide view publishes independently of unloaded site"
 	)
-	await physics_frame
-	var near := [float(at[0]) + 20, float(at[1]) + 2, at[2]]
-	player.set_logical_position(near)  # approaching retains the already-published guide view
-	world.stream_sites()
-	for actor in world.targeting.live.values():
-		actor.set_physics_process(false)  # collision is queried before any contact recovery
-	check(
-		world.targeting.live.has(metadata.mob),
-		"same saved site survivor materializes when its site enters range"
-	)
-	if world.targeting.live.has(metadata.mob):
-		var actor = world.targeting.live[metadata.mob]
-		await physics_frame
-		check(
-			Save.same_data(actor.logical_position(), at) and not actor.is_physics_processing(),
-			"native capsule query precedes survivor movement/recovery"
-		)
-		check(
-			guide_hits(world, actor.get_node("Collision").shape, at, [actor.get_rid()]) == 0,
-			"guide collision omitted for saved unloaded site position before restore"
-		)
-		for field in ["home", "position", "hp", "level", "role", "seed", "pack"]:
-			check(
-				Save.same_data(actor.incarnation[field], metadata.record[field]),
-				"restoration preserves site survivor " + field
-			)
-		var solid := 0
-		for road in metadata.routes:
-			for marker in road.markers:
-				if (
-					guide_hits(
-						world,
-						actor.get_node("Collision").shape,
-						[marker.x, marker.top, marker.z],
-						[actor.get_rid()]
-					)
-					> 0
-				):
-					solid += 1
-		check(solid > 0, "nonconflicting guide objects retain actual solid collision")
-	check(
-		Save.same_data(world.guidance["0,0"], metadata.routes),
-		"pure successful guidance cache is unchanged"
-	)
-	check(main.save_now(), "restored exterior encounter remains strict current-save valid")
-	main.free()
-	await process_frame
+	await _finish_restore(main, world, player, metadata, at)
 
 
 func _init() -> void:
@@ -139,52 +93,83 @@ func run() -> void:
 		print("site guide cold restore ok" if failed == 0 else "site guide cold restore FAILED")
 		quit(0 if failed == 0 else 1)
 		return
+	await _warm(path, metadata_path)
+
+
+func _restored_capsule(world, metadata: Dictionary, at: Array) -> bool:
+	var actor = world.targeting.live[metadata.mob]
+	await physics_frame
+	check(
+		Save.same_data(actor.logical_position(), at) and not actor.is_physics_processing(),
+		"native capsule query precedes survivor movement/recovery"
+	)
+	check(
+		guide_hits(world, actor.get_node("Collision").shape, at, [actor.get_rid()]) == 0,
+		"guide collision omitted for saved unloaded site position before restore"
+	)
+	for field in ["home", "position", "hp", "level", "role", "seed", "pack"]:
+		check(
+			Save.same_data(actor.incarnation[field], metadata.record[field]),
+			"restoration preserves site survivor " + field
+		)
+	return _nonconflicting_solids(world, metadata, actor)
+
+
+func _select_survivor(main, world, plan_: Dictionary, routes: Array) -> Variant:
+	var metadata: Dictionary = {}
+	# Use an actual generated marker and actual guard home within the selected30-block leash.
+	for road in routes:
+		var layout: Dictionary = plan_.sites[road.destination]
+		var selected = _select_road(main, world, plan_, routes, layout, road)
+		if selected == null:
+			return null
+		metadata = selected
+		if not metadata.is_empty():
+			break
+	return metadata
+
+
+func _cold_child() -> bool:
+	var output: Array = []
+	var status := OS.execute(
+		"timeout",
+		[
+			"681",
+			OS.get_executable_path(),
+			"--headless",
+			"--path",
+			ProjectSettings.globalize_path("res://"),
+			"-s",
+			get_script().resource_path,
+			"--",
+			"--read"
+		],
+		output,
+		true
+	)
+	var text := "\n".join(output)
+	var file := FileAccess.open(directory.path_join("site-guide-cold.log"), FileAccess.WRITE)
+	file.store_string("exit=%d\n%s" % [status, text])
+	file.close()
+	print(text)
+	check(
+		status == 0 and "SCRIPT ERROR" not in text and "ERROR:" not in text,
+		"bounded fresh-process saved-site guide clearance"
+	)
+	return true
+
+
+func _warm(path: String, metadata_path: String) -> void:
 	DirAccess.remove_absolute(path)
 	var main = open_main(path)
 	var world = main.get_node("World")
 	var plan_: Dictionary = world.state_data.lands["0,0"]
 	var routes := Encounters.guidance(world.gen, plan_, world.design["initial-encounters"])
 	var metadata: Dictionary = {}
-	# Use an actual generated marker and actual guard home within the selected30-block leash.
-	for road in routes:
-		var layout: Dictionary = plan_.sites[road.destination]
-		for marker in road.markers:
-			var at := [marker.x, marker.top, marker.z]
-			if not world._marker_clear(marker):
-				continue
-			for stable in layout.assignments:
-				if (
-					stable.boss
-					or (
-						Targeting.distance_squared(at, stable.home)
-						> pow(float(world.design.spawns.ai.leash), 2)
-					)
-				):
-					continue
-				var site_id: String = world.state_data.site_id(
-					Vector2i.ZERO, layout.family, layout.ordinal
-				)
-				var mob_id: String = site_id + "/" + stable.key
-				var record: Dictionary = world.state_data.sites[site_id].mobs[mob_id]
-				record.position = at
-				record.hp -= 1
-				var vx: float = plan_.village.centre[0]
-				var vz: float = plan_.village.centre[1]
-				var delta := Vector2(layout.centre[0] - vx, layout.centre[1] - vz).normalized()
-				var far := [vx - delta.x * 200, plan_.village.height + 2, vz - delta.y * 200]
-				main.relocate_player(far)
-				metadata = {
-					"site": site_id,
-					"mob": mob_id,
-					"record": record.duplicate(true),
-					"routes": routes,
-					"far": far
-				}
-				break
-			if not metadata.is_empty():
-				break
-		if not metadata.is_empty():
-			break
+	var selected = _select_survivor(main, world, plan_, routes)
+	if selected == null:
+		return
+	metadata = selected
 	check(
 		not metadata.is_empty(),
 		"seeded guide has a legitimate exterior site-survivor overlap within leash, no forced placement"
@@ -206,33 +191,120 @@ func run() -> void:
 	file.store_string(JSON.stringify(metadata, "", true, true))
 	file.close()
 	main.free()
-	await restore_and_query(path, metadata)
-	if failed == 0:
-		var output: Array = []
-		var status := OS.execute(
-			"timeout",
-			[
-				"681",
-				OS.get_executable_path(),
-				"--headless",
-				"--path",
-				ProjectSettings.globalize_path("res://"),
-				"-s",
-				get_script().resource_path,
-				"--",
-				"--read"
-			],
-			output,
-			true
-		)
-		var text := "\n".join(output)
-		file = FileAccess.open(directory.path_join("site-guide-cold.log"), FileAccess.WRITE)
-		file.store_string("exit=%d\n%s" % [status, text])
-		file.close()
-		print(text)
-		check(
-			status == 0 and "SCRIPT ERROR" not in text and "ERROR:" not in text,
-			"bounded fresh-process saved-site guide clearance"
-		)
+	await _cold_roundtrip(path, metadata)
+
+
+func _nonconflicting_solids(world, metadata: Dictionary, actor) -> bool:
+	var solid := 0
+	for road in metadata.routes:
+		for marker in road.markers:
+			if (
+				guide_hits(
+					world,
+					actor.get_node("Collision").shape,
+					[marker.x, marker.top, marker.z],
+					[actor.get_rid()]
+				)
+				> 0
+			):
+				solid += 1
+	check(solid > 0, "nonconflicting guide objects retain actual solid collision")
+	return true
+
+
+func _approach(world, player, metadata: Dictionary, at: Array) -> bool:
+	await physics_frame
+	var near := [float(at[0]) + 20, float(at[1]) + 2, at[2]]
+	player.set_logical_position(near)  # approaching retains the already-published guide view
+	world.stream_sites()
+	for actor in world.targeting.live.values():
+		actor.set_physics_process(false)  # collision is queried before any contact recovery
+	check(
+		world.targeting.live.has(metadata.mob),
+		"same saved site survivor materializes when its site enters range"
+	)
+	if world.targeting.live.has(metadata.mob):
+		if not await _restored_capsule(world, metadata, at):
+			return false
+	return true
+
+
+func _select_road(
+	main, world, plan_: Dictionary, routes: Array, layout: Dictionary, road: Dictionary
+) -> Variant:
+	var metadata: Dictionary = {}
+	for marker in road.markers:
+		var selected = _select_marker(main, world, plan_, routes, layout, marker)
+		if selected == null:
+			return null
+		metadata = selected
+		if not metadata.is_empty():
+			break
+	return metadata
+
+
+func _select_assignment(
+	main, world, plan_: Dictionary, routes: Array, layout: Dictionary, at: Array
+) -> Variant:
+	var metadata: Dictionary = {}
+	for stable in layout.assignments:
+		if (
+			stable.boss
+			or (
+				Targeting.distance_squared(at, stable.home)
+				> pow(float(world.design.spawns.ai.leash), 2)
+			)
+		):
+			continue
+		var site_id: String = world.state_data.site_id(Vector2i.ZERO, layout.family, layout.ordinal)
+		var mob_id: String = site_id + "/" + stable.key
+		var record: Dictionary = world.state_data.sites[site_id].mobs[mob_id]
+		record.position = at
+		record.hp -= 1
+		var vx: float = plan_.village.centre[0]
+		var vz: float = plan_.village.centre[1]
+		var delta := Vector2(layout.centre[0] - vx, layout.centre[1] - vz).normalized()
+		var far := [vx - delta.x * 200, plan_.village.height + 2, vz - delta.y * 200]
+		main.relocate_player(far)
+		metadata = {
+			"site": site_id,
+			"mob": mob_id,
+			"record": record.duplicate(true),
+			"routes": routes,
+			"far": far
+		}
+		break
+	return metadata
+
+
+func _finish() -> void:
 	print("site guide clearance ok" if failed == 0 else "site guide clearance FAILED")
 	quit(0 if failed == 0 else 1)
+
+
+func _finish_restore(main, world, player, metadata: Dictionary, at: Array) -> void:
+	if not await _approach(world, player, metadata, at):
+		return
+	check(
+		Save.same_data(world.guidance["0,0"], metadata.routes),
+		"pure successful guidance cache is unchanged"
+	)
+	check(main.save_now(), "restored exterior encounter remains strict current-save valid")
+	main.free()
+	await process_frame
+
+
+func _select_marker(
+	main, world, plan_: Dictionary, routes: Array, layout: Dictionary, marker: Dictionary
+) -> Variant:
+	var at := [marker.x, marker.top, marker.z]
+	if not world._marker_clear(marker):
+		return {}
+	return _select_assignment(main, world, plan_, routes, layout, at)
+
+
+func _cold_roundtrip(path: String, metadata: Dictionary) -> void:
+	await restore_and_query(path, metadata)
+	if failed == 0 and not _cold_child():
+		return
+	_finish()

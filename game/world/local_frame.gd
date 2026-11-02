@@ -88,16 +88,46 @@ func shift_to(next: Array) -> void:
 	if next == origin:
 		return
 	var active: Array = []
-	roots = roots.filter(func(n): return is_instance_valid(n) and n.is_inside_tree())
-	for node in roots:
-		if not roots.any(func(other): return other != node and other.is_ancestor_of(node)):
-			active.append(node)
+	if not _active_roots(active):
+		return
+	_shift_active(next, active)
+
+
+func _shift_active(next: Array, active: Array) -> void:
 	var bodies: Array = []
 	var areas: Array = []
 	var entities: Array = []
 	for node in active:
 		_collect(node, bodies, areas, entities)
 	var saved: Array = []
+	if not _capture_bodies(bodies, saved):
+		return
+	_shift_native(next, active, areas, bodies, saved, entities)
+
+
+func _shift_native(
+	next: Array, active: Array, areas: Array, bodies: Array, saved: Array, entities: Array
+) -> void:
+	var delta := Vector3(float(origin[0]) - next[0], 0, float(origin[1]) - next[1])
+	if not _translate_roots(active, areas, bodies, delta):
+		return
+	if not _restore_bodies(saved, delta):
+		return
+	if not _sample_entities(entities):
+		return
+	origin = next.duplicate()
+	transactions += 1
+
+
+func _active_roots(active: Array) -> bool:
+	roots = roots.filter(func(n): return is_instance_valid(n) and n.is_inside_tree())
+	for node in roots:
+		if not roots.any(func(other): return other != node and other.is_ancestor_of(node)):
+			active.append(node)
+	return true
+
+
+func _capture_bodies(bodies: Array, saved: Array) -> bool:
 	for body in bodies:
 		var rid: RID = body.get_rid()
 		var mode := PhysicsServer3D.body_get_mode(rid)
@@ -117,7 +147,10 @@ func shift_to(next: Array) -> void:
 				"sleeping": state.sleeping
 			}
 		)
-	var delta := Vector3(float(origin[0]) - next[0], 0, float(origin[1]) - next[1])
+	return true
+
+
+func _translate_roots(active: Array, areas: Array, bodies: Array, delta: Vector3) -> bool:
 	for node in active:
 		node.position += delta
 		node.reset_physics_interpolation()
@@ -125,22 +158,35 @@ func shift_to(next: Array) -> void:
 		area.force_update_transform()
 	for body in bodies:
 		body.force_update_transform()
+	return true
+
+
+func _restore_bodies(saved: Array, delta: Vector3) -> bool:
 	for s in saved:
-		var target: Transform3D = s.T.translated(delta)
-		if s.mode == PhysicsServer3D.BODY_MODE_KINEMATIC:
-			PhysicsServer3D.body_set_mode(s.rid, PhysicsServer3D.BODY_MODE_RIGID)
-			PhysicsServer3D.body_set_mode(s.rid, PhysicsServer3D.BODY_MODE_KINEMATIC)
-			var committed: Transform3D = s.C.translated(delta)
-			PhysicsServer3D.body_set_state(s.rid, PhysicsServer3D.BODY_STATE_TRANSFORM, committed)
-			if committed != target:
-				PhysicsServer3D.body_set_state(s.rid, PhysicsServer3D.BODY_STATE_TRANSFORM, target)
-			var state = PhysicsServer3D.body_get_direct_state(s.rid)
-			state.linear_velocity = s.linear
-			state.angular_velocity = s.angular
-			state.sleeping = s.sleeping
-		else:
+		if not _restore_body(s, delta):
+			return false
+	return true
+
+
+func _restore_body(s, delta: Vector3) -> bool:
+	var target: Transform3D = s.T.translated(delta)
+	if s.mode == PhysicsServer3D.BODY_MODE_KINEMATIC:
+		PhysicsServer3D.body_set_mode(s.rid, PhysicsServer3D.BODY_MODE_RIGID)
+		PhysicsServer3D.body_set_mode(s.rid, PhysicsServer3D.BODY_MODE_KINEMATIC)
+		var committed: Transform3D = s.C.translated(delta)
+		PhysicsServer3D.body_set_state(s.rid, PhysicsServer3D.BODY_STATE_TRANSFORM, committed)
+		if committed != target:
 			PhysicsServer3D.body_set_state(s.rid, PhysicsServer3D.BODY_STATE_TRANSFORM, target)
+		var state = PhysicsServer3D.body_get_direct_state(s.rid)
+		state.linear_velocity = s.linear
+		state.angular_velocity = s.angular
+		state.sleeping = s.sleeping
+	else:
+		PhysicsServer3D.body_set_state(s.rid, PhysicsServer3D.BODY_STATE_TRANSFORM, target)
+	return true
+
+
+func _sample_entities(entities: Array) -> bool:
 	for entity in entities:
 		entity._native_sample = entity.global_position
-	origin = next.duplicate()
-	transactions += 1
+	return true

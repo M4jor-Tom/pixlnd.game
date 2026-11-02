@@ -42,6 +42,9 @@ class RouteDriver:
 			exhausted = true
 			finish()
 			return
+		_steer_route()
+
+	func _steer_route() -> void:
 		var at: Array = p.logical_position()
 		var dx: float = points[index][0] - float(at[0])
 		var dz: float = points[index][2] - float(at[2])
@@ -89,100 +92,32 @@ func run() -> void:
 	driver.p = p
 	driver.process_physics_priority = -2
 	root.add_child(driver)
-	var total_callbacks := 0
-	for land in [
-		Vector2i.ZERO,
-		Vector2i(-512, -512),
-		Vector2i(511, 511),
-		Vector2i(-512, 511),
-		Vector2i(511, -512)
-	]:
-		var v: Dictionary = w.gen.village_at(w.gen.land_at(land))
-		var spawn := [v.centre.x + 0.5, v.height + 2.0, v.centre.y + 0.5]
-		p.velocity = Vector3.ZERO
-		main.relocate_player(spawn)
-		check(p.logical_position() == spawn, "cold scalar main position " + str(land))
-		check(absf(p.position.x) < 64 and absf(p.position.z) < 64, "cold bounded main position")
-		for i in 20:
-			await physics_frame
-		var key := "%d,%d" % [land.x, land.y]
-		check(main.state_data.lands.has(key), "automatic main generates actual logical land")
-		var plan_: Dictionary = main.state_data.lands[key]
-		var opening := Settlement.opening(
-			w.design.settlement, plan_.village.gate_index, plan_.village.gate_width
-		)
-		var centre := [float(v.centre.x), float(v.centre.y)]
-		var boundary_distance := INF
-		for axis in 2:
-			var direction: float = opening.direction[axis]
-			if direction == 0:
-				continue
-			var boundary: float = main.frame.origin[axis]
-			if direction > 0:
-				boundary += main.frame.zone_blocks
-			boundary_distance = minf(boundary_distance, (boundary - centre[axis]) / direction)
-		# Passing the house alone need not cross a frame cell; retain two blocks beyond both.
-		var distance := maxf(float(opening.back) + 2, boundary_distance + 2)
-		var terminal := [
-			centre[0] + opening.direction[0] * distance, centre[1] + opening.direction[1] * distance
-		]
-		check(
-			(
-				distance + float(p.get_node("Collision").shape.radius) + sqrt(2.0)
-				<= float(w.design.settlement.radius)
-			),
-			"frame-crossing fixture stays within the existing town platform"
-		)
-		var local_terminal: Vector3 = main.frame.to_local([terminal[0], v.height + 1, terminal[1]])
-		check(
-			not Rect2(Vector2.ZERO, Vector2.ONE * main.frame.zone_blocks).has_point(
-				Vector2(local_terminal.x, local_terminal.z)
-			),
-			"planned automatic route actually crosses a frame cell"
-		)
-		var gate: Array = [
-			[v.centre.x, v.centre.y, v.height + 1], [terminal[0], terminal[1], v.height + 1]
-		]
-		driver.points = []
-		for point in gate:
-			driver.points.append([float(point[0]), float(point[2]), float(point[1])])
-		for i in range(gate.size() - 1, -1, -1):
-			driver.points.append([float(gate[i][0]), float(gate[i][2]), float(gate[i][1])])
-		driver.index = 0
-		driver.calls = 0
-		driver.exhausted = false
-		driver.died = false
-		var start_calls: int = p.calls
-		var elapsed: float = main.state_data.elapsed
-		var shifts: int = main.frame.transactions
-		driver.active = true
-		await driver.done
-		# done emits before this frame's actor callbacks; observe after their completed callback boundary.
-		await process_frame
-		check(
-			not driver.exhausted and not driver.died,
-			"real automatic town/gate/reversal route completes " + str(land)
-		)
-		check(
-			p.calls > start_calls and main.state_data.elapsed > elapsed,
-			"normal actor AND World clock callbacks enabled"
-		)
-		check(main.frame.transactions > shifts, "occupied live frame crossings occur")
-		total_callbacks += p.calls - start_calls
-		print(
-			"automatic main land=",
-			land,
-			" route_callbacks=",
-			driver.calls,
-			" frame_transactions=",
-			main.frame.transactions - shifts,
-			" index=",
-			driver.index,
-			" position=",
-			p.logical_position(),
-			" goal=",
-			driver.points[mini(driver.index, driver.points.size() - 1)]
-		)
+	var total_callbacks = await _live_routes(main, w, p, driver)
+	if total_callbacks == null:
+		return
+	if not _save_and_restart(main, w, p, driver, path):
+		return
+	_finish(total_callbacks)
+
+
+func _town_route(main, w, p, driver, land: Vector2i) -> Variant:
+	var v: Dictionary = w.gen.village_at(w.gen.land_at(land))
+	var spawn := [v.centre.x + 0.5, v.height + 2.0, v.centre.y + 0.5]
+	p.velocity = Vector3.ZERO
+	main.relocate_player(spawn)
+	check(p.logical_position() == spawn, "cold scalar main position " + str(land))
+	check(absf(p.position.x) < 64 and absf(p.position.z) < 64, "cold bounded main position")
+	for i in 20:
+		await physics_frame
+	var key := "%d,%d" % [land.x, land.y]
+	check(main.state_data.lands.has(key), "automatic main generates actual logical land")
+	var plan_: Dictionary = main.state_data.lands[key]
+	if not _town_points(main, w, p, driver, v, plan_):
+		return null
+	return await _drive_town(main, p, driver, land)
+
+
+func _logical_party(main, w, p) -> bool:
 	# Connected logical records do not require a native view and have no four-member truncation.
 	var members: Array = []
 	for i in 6:
@@ -212,34 +147,10 @@ func run() -> void:
 	main.state_data.advance(0, members.map(func(m): return m.position))
 	check(site.pending, "no-view awaiting member on closed boundary protects occupancy")
 	# A logical living target survives absence of its physical view; positive threat does not require detection.
-	var mob = null
-	for candidate in w.targeting.live.values():
-		if not candidate.dead and candidate.hostility == &"H":
-			mob = candidate
-			break
-	if mob != null:
-		var r: Dictionary = w.targeting.record(mob)
-		r.returning = false
-		r.threat = {"member0": 4.0}
-		r.order = {"member0": 0}
-		r.next_order = 1
-		var selected = w.targeting.select(mob)
-		check(
-			selected != null and Targeting.identity(selected) == "member0",
-			"no-view logical threat target retained"
-		)
-		members[0].position = mob.logical_position()
-		w.targeting.taunt([members[0]])
-		w.targeting.flush_taunts()
-		check(
-			r.taunt == "member0" and r.taunt_left == 3.0,
-			"scalar-only taunt reach and winner retained"
-		)
-	else:
-		# Old neighborhood was legitimately retired; its surviving pair records are still logical members.
-		check(not w.targeting.records.is_empty(), "retired-view logical pair records remain")
-	w.party_provider = main.connected_party
-	w.targeting.players = w.party_provider
+	return _logical_target(w, members)
+
+
+func _fractional_save(main, w, p, path: String) -> Variant:
 	# Explicit fractional saved position/respawn, with no native movement allowed during serialization.
 	main.set_physics_process(false)
 	p.set_physics_process(false)
@@ -283,12 +194,82 @@ func run() -> void:
 		),
 		"exactly one real player callback per native frame"
 	)
-	w.party_provider = main.connected_party
-	w.targeting.players = w.party_provider
-	print("fraction/provider assertions completed; retiring first main")
-	driver.free()
-	main.free()
-	print("first main retired; cold restarting")
+	return {"exact": exact, "loaded": loaded}
+
+
+func _town_points(main, w, p, driver, v: Dictionary, plan_: Dictionary) -> bool:
+	var opening := Settlement.opening(
+		w.design.settlement, plan_.village.gate_index, plan_.village.gate_width
+	)
+	var centre := [float(v.centre.x), float(v.centre.y)]
+	var boundary_distance = _boundary_distance(main, opening, centre)
+	if boundary_distance == null:
+		return false
+	# Passing the house alone need not cross a frame cell; retain two blocks beyond both.
+	var distance := maxf(float(opening.back) + 2, boundary_distance + 2)
+	var terminal := [
+		centre[0] + opening.direction[0] * distance, centre[1] + opening.direction[1] * distance
+	]
+	check(
+		(
+			distance + float(p.get_node("Collision").shape.radius) + sqrt(2.0)
+			<= float(w.design.settlement.radius)
+		),
+		"frame-crossing fixture stays within the existing town platform"
+	)
+	var local_terminal: Vector3 = main.frame.to_local([terminal[0], v.height + 1, terminal[1]])
+	check(
+		not Rect2(Vector2.ZERO, Vector2.ONE * main.frame.zone_blocks).has_point(
+			Vector2(local_terminal.x, local_terminal.z)
+		),
+		"planned automatic route actually crosses a frame cell"
+	)
+	var gate: Array = [
+		[v.centre.x, v.centre.y, v.height + 1], [terminal[0], terminal[1], v.height + 1]
+	]
+	driver.points = []
+	for point in gate:
+		driver.points.append([float(point[0]), float(point[2]), float(point[1])])
+	for i in range(gate.size() - 1, -1, -1):
+		driver.points.append([float(gate[i][0]), float(gate[i][2]), float(gate[i][1])])
+	return true
+
+
+func _logical_target(w, members: Array) -> bool:
+	var selected = _logical_candidate(w)
+	if selected == null:
+		return false
+	var mob = selected[0]
+	if mob != null:
+		if not _no_view_threat(w, members, mob):
+			return false
+	else:
+		# Old neighborhood was legitimately retired; its surviving pair records are still logical members.
+		check(not w.targeting.records.is_empty(), "retired-view logical pair records remain")
+	return true
+
+
+func _no_view_threat(w, members: Array, mob) -> bool:
+	var r: Dictionary = w.targeting.record(mob)
+	r.returning = false
+	r.threat = {"member0": 4.0}
+	r.order = {"member0": 0}
+	r.next_order = 1
+	var selected = w.targeting.select(mob)
+	check(
+		selected != null and Targeting.identity(selected) == "member0",
+		"no-view logical threat target retained"
+	)
+	members[0].position = mob.logical_position()
+	w.targeting.taunt([members[0]])
+	w.targeting.flush_taunts()
+	check(
+		r.taunt == "member0" and r.taunt_left == 3.0, "scalar-only taunt reach and winner retained"
+	)
+	return true
+
+
+func _cold_restore(path: String, exact: Array, loaded: Dictionary) -> bool:
 	var second = MAIN.instantiate()
 	second.save_path = path
 	root.add_child(second)
@@ -302,6 +283,105 @@ func run() -> void:
 		"actual main cold reload preserves respawn"
 	)
 	second.free()
+	return true
+
+
+func _drive_town(main, p, driver, land: Vector2i) -> Variant:
+	driver.index = 0
+	driver.calls = 0
+	driver.exhausted = false
+	driver.died = false
+	var start_calls: int = p.calls
+	var elapsed: float = main.state_data.elapsed
+	var shifts: int = main.frame.transactions
+	driver.active = true
+	await driver.done
+	# done emits before this frame's actor callbacks; observe after their completed callback boundary.
+	await process_frame
+	check(
+		not driver.exhausted and not driver.died,
+		"real automatic town/gate/reversal route completes " + str(land)
+	)
+	check(
+		p.calls > start_calls and main.state_data.elapsed > elapsed,
+		"normal actor AND World clock callbacks enabled"
+	)
+	check(main.frame.transactions > shifts, "occupied live frame crossings occur")
+	print(
+		"automatic main land=",
+		land,
+		" route_callbacks=",
+		driver.calls,
+		" frame_transactions=",
+		main.frame.transactions - shifts,
+		" index=",
+		driver.index,
+		" position=",
+		p.logical_position(),
+		" goal=",
+		driver.points[mini(driver.index, driver.points.size() - 1)]
+	)
+	return p.calls - start_calls
+
+
+func _boundary_distance(main, opening: Dictionary, centre: Array) -> Variant:
+	var boundary_distance := INF
+	for axis in 2:
+		var direction: float = opening.direction[axis]
+		if direction == 0:
+			continue
+		var boundary: float = main.frame.origin[axis]
+		if direction > 0:
+			boundary += main.frame.zone_blocks
+		boundary_distance = minf(boundary_distance, (boundary - centre[axis]) / direction)
+	return boundary_distance
+
+
+func _logical_candidate(w) -> Variant:
+	var mob = null
+	for candidate in w.targeting.live.values():
+		if not candidate.dead and candidate.hostility == &"H":
+			mob = candidate
+			break
+	return [mob]
+
+
+func _live_routes(main, w, p, driver) -> Variant:
+	var total_callbacks := 0
+	for land in [
+		Vector2i.ZERO,
+		Vector2i(-512, -512),
+		Vector2i(511, 511),
+		Vector2i(-512, 511),
+		Vector2i(511, -512)
+	]:
+		var callbacks = await _town_route(main, w, p, driver, land)
+		if callbacks == null:
+			return null
+		total_callbacks += callbacks
+	if not _logical_party(main, w, p):
+		return null
+	w.party_provider = main.connected_party
+	w.targeting.players = w.party_provider
+	return total_callbacks
+
+
+func _save_and_restart(main, w, p, driver, path: String) -> bool:
+	var fraction = _fractional_save(main, w, p, path)
+	if fraction == null:
+		return false
+	var exact: Array = fraction.exact
+	var loaded: Dictionary = fraction.loaded
+	w.party_provider = main.connected_party
+	w.targeting.players = w.party_provider
+	print("fraction/provider assertions completed; retiring first main")
+	driver.free()
+	main.free()
+	print("first main retired; cold restarting")
+	return _cold_restore(path, exact, loaded)
+
+
+func _finish(total_callbacks: int) -> void:
 	print(
 		(
 			"local frame automatic runtime ok callbacks=" + str(total_callbacks)

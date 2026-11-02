@@ -48,84 +48,9 @@ func run() -> void:
 	var families := [
 		"masonry", "stake-torch", "broken-crate", "broken-crate", "broken-crate", "broken-crate"
 	]
-	var checked := 0
-	for road in plan_.routes:
-		check(
-			road.family == families[road.destination],
-			"destination identity, no tier-specific family"
-		)
-		check(
-			road.markers.size() >= 2,
-			"nonempty repeated dry-terrain guides " + str(road.destination)
-		)
-		for marker in road.markers:
-			check(marker.family == road.family, "one guide family per branch")
-			var at: Vector3 = frame.to_local([marker.x, marker.top, marker.z])
-			var hit := space.intersect_ray(
-				PhysicsRayQueryParameters3D.create(at + Vector3.UP * 2, at + Vector3.UP * 0.01)
-			)
-			check(
-				not hit.is_empty() and hit.position.y > marker.top,
-				"actual guide solid art/collision"
-			)
-			if hit.is_empty():
-				continue
-			var body = hit.collider
-			check(
-				(
-					not body.has_method("take_damage")
-					and not body.has_method("take_direct_damage")
-					and not body.has_method("interact")
-				),
-				"guide has no combat or interaction entry points"
-			)
-			check(
-				body.get_groups().is_empty() and body.get_script() == null,
-				"guide has no target, pickup, reward or damage registration"
-			)
-			# Ordinary player strike and real projectile contact cannot turn scenery into a rewarding target.
-			p.position = at + Vector3(0, 0, 3)
-			var xp: int = p.xp
-			var coins: int = p.inventory.coins
-			var hp: float = p.hp
-			var drops := get_nodes_in_group("ground-items").size()
-			check(
-				p._strike(at + Vector3.UP * 0.12, 1, 10000, true, [&"burning"]) == 0,
-				"direct guide strike hits no target"
-			)
-			var shots := Projectile.fire(
-				p,
-				at + Vector3(0, 0.12, 2),
-				Vector3.FORWARD,
-				d.movesets.bow.m1,
-				10000,
-				true,
-				[],
-				&"physical"
-			)
-			var shot = shots[0]
-			shot.set_physics_process(false)
-			var record: Dictionary = shot.attack
-			shot._physics_process(0.1)
-			check(
-				shot.is_queued_for_deletion() and record.hits == 0,
-				"real projectile stops at solid guide without a combat hit"
-			)
-			check(
-				(
-					p.xp == xp
-					and p.inventory.coins == coins
-					and p.hp == hp
-					and get_nodes_in_group("ground-items").size() == drops
-				),
-				"attacks/contact grant no rewards, damage or drops"
-			)
-			check(
-				is_instance_valid(body) and not body.is_queued_for_deletion(),
-				"guide is unbreakable"
-			)
-			checked += 1
-			await process_frame
+	var checked = await _routes(plan_, families, frame, space, p, d)
+	if checked == null:
+		return
 	check(checked >= 6, "real physical negative checks cover every destination")
 	p.free()
 	view.free()
@@ -137,3 +62,122 @@ func run() -> void:
 		)
 	)
 	quit(0 if failed == 0 else 1)
+
+
+func _guide_markers(road: Dictionary, frame, space, p, d: Dictionary) -> Variant:
+	var checked := 0
+	for marker in road.markers:
+		var count = await _guide_marker(road, marker, frame, space, p, d)
+		if count == null:
+			return null
+		checked += count
+	return checked
+
+
+func _guide_attacks(p, hit: Dictionary, at: Vector3, d: Dictionary) -> bool:
+	var body = _guide_body(hit)
+	if typeof(body) == TYPE_NIL:
+		return false
+	check(
+		body.get_groups().is_empty() and body.get_script() == null,
+		"guide has no target, pickup, reward or damage registration"
+	)
+	if not _guide_contact(p, at, d):
+		return false
+	check(is_instance_valid(body) and not body.is_queued_for_deletion(), "guide is unbreakable")
+	return true
+
+
+func _routes(plan_: Dictionary, families: Array, frame, space, p, d: Dictionary) -> Variant:
+	var checked := 0
+	for road in plan_.routes:
+		check(
+			road.family == families[road.destination],
+			"destination identity, no tier-specific family"
+		)
+		check(
+			road.markers.size() >= 2,
+			"nonempty repeated dry-terrain guides " + str(road.destination)
+		)
+		var count = await _guide_markers(road, frame, space, p, d)
+		if count == null:
+			return null
+		checked += count
+	return checked
+
+
+func _guide_marker(road: Dictionary, marker: Dictionary, frame, space, p, d: Dictionary) -> Variant:
+	check(marker.family == road.family, "one guide family per branch")
+	var at: Vector3 = frame.to_local([marker.x, marker.top, marker.z])
+	var hit: Dictionary = space.intersect_ray(
+		PhysicsRayQueryParameters3D.create(at + Vector3.UP * 2, at + Vector3.UP * 0.01)
+	)
+	check(not hit.is_empty() and hit.position.y > marker.top, "actual guide solid art/collision")
+	if hit.is_empty():
+		return 0
+	if not _guide_attacks(p, hit, at, d):
+		return null
+	await process_frame
+	return 1
+
+
+func _projectile_contact(p, at: Vector3, d: Dictionary) -> bool:
+	var shots := Projectile.fire(
+		p,
+		at + Vector3(0, 0.12, 2),
+		Vector3.FORWARD,
+		d.movesets.bow.m1,
+		10000,
+		true,
+		[],
+		&"physical"
+	)
+	var shot = shots[0]
+	shot.set_physics_process(false)
+	var record: Dictionary = shot.attack
+	shot._physics_process(0.1)
+	check(
+		shot.is_queued_for_deletion() and record.hits == 0,
+		"real projectile stops at solid guide without a combat hit"
+	)
+	return true
+
+
+func _harmless_rewards(p, xp: int, coins: int, hp: float, drops: int) -> bool:
+	check(
+		(
+			p.xp == xp
+			and p.inventory.coins == coins
+			and p.hp == hp
+			and get_nodes_in_group("ground-items").size() == drops
+		),
+		"attacks/contact grant no rewards, damage or drops"
+	)
+	return true
+
+
+func _guide_body(hit) -> Variant:
+	var body = hit.collider
+	var actual = (
+		not body.has_method("take_damage")
+		and not body.has_method("take_direct_damage")
+		and not body.has_method("interact")
+	)
+	check(actual, "guide has no combat or interaction entry points")
+	return body
+
+
+func _guide_contact(p, at: Vector3, d: Dictionary) -> bool:
+	# Ordinary player strike and real projectile contact cannot turn scenery into a rewarding target.
+	p.position = at + Vector3(0, 0, 3)
+	var xp: int = p.xp
+	var coins: int = p.inventory.coins
+	var hp: float = p.hp
+	var drops := get_nodes_in_group("ground-items").size()
+	check(
+		p._strike(at + Vector3.UP * 0.12, 1, 10000, true, [&"burning"]) == 0,
+		"direct guide strike hits no target"
+	)
+	if not _projectile_contact(p, at, d):
+		return false
+	return _harmless_rewards(p, xp, coins, hp, drops)

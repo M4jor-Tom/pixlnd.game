@@ -51,6 +51,64 @@ func run() -> void:
 	var world = main.get_node("World")
 	var player = main.get_node("Player")
 	player.set_physics_process(false)
+	if not await _successful_guidance(main, world, player):
+		return
+	main.free()
+	print("guidance cached publication ok" if failed == 0 else "guidance cached publication FAILED")
+	quit(0 if failed == 0 else 1)
+
+
+func _cached_recreation(main, world, player) -> bool:
+	var marker: Dictionary = {}
+	var selected = _first_solid(world, player)
+	if selected == null:
+		return false
+	marker = selected
+	check(
+		not marker.is_empty(), "nonempty cached guide has real capsule-overlapping solid collision"
+	)
+	if not marker.is_empty():
+		return await _relocated_query(main, world, player, marker)
+	return true
+
+
+func _relocated_query(main, world, player, marker: Dictionary) -> bool:
+	var cached: Array = world.guidance["0,0"].duplicate(true)
+	print("CACHED_MARKER ", JSON.stringify(marker))
+	main.relocate_player([marker.x, marker.top, marker.z])
+	# Retired bodies are removed before recreating the cache. The player's physics stays disabled.
+	await process_frame
+	await physics_frame
+	world.stream_sites()
+	freeze(world)
+	await physics_frame
+	var at: Array = player.logical_position()
+	print(
+		"PUBLICATION_QUERY_POSITION ",
+		JSON.stringify(at),
+		" physics_enabled=",
+		player.is_physics_processing()
+	)
+	check(
+		(
+			float(at[0]) == float(marker.x)
+			and float(at[1]) == float(marker.top)
+			and float(at[2]) == float(marker.z)
+		),
+		"query precedes player movement or contact recovery"
+	)
+	check(
+		guide_hits(world, player, marker) == 0,
+		"cached recreation omits solid guide through relocated player capsule"
+	)
+	check(
+		world.guidance["0,0"] == cached,
+		"actor safety does not destructively edit pure cached guidance"
+	)
+	return _nonconflicting_cache(world, player, cached)
+
+
+func _successful_guidance(main, world, player) -> bool:
 	for i in 180:
 		if world.access_views.has("0,0"):
 			break
@@ -63,58 +121,37 @@ func run() -> void:
 	if not world.access_views.has("0,0"):
 		main.free()
 		quit(1)
-		return
+		return false
 	await physics_frame
+	return await _cached_recreation(main, world, player)
+
+
+func _first_solid(world, player) -> Variant:
 	var marker: Dictionary = {}
 	for road in world.guidance["0,0"]:
-		for candidate in road.markers:
-			if guide_hits(world, player, candidate) > 0:
-				marker = candidate.duplicate(true)
-				break
+		var selected = _solid_in_road(world, player, road)
+		if selected == null:
+			return null
+		marker = selected
 		if not marker.is_empty():
 			break
-	check(
-		not marker.is_empty(), "nonempty cached guide has real capsule-overlapping solid collision"
-	)
-	if not marker.is_empty():
-		var cached: Array = world.guidance["0,0"].duplicate(true)
-		print("CACHED_MARKER ", JSON.stringify(marker))
-		main.relocate_player([marker.x, marker.top, marker.z])
-		# Retired bodies are removed before recreating the cache. The player's physics stays disabled.
-		await process_frame
-		await physics_frame
-		world.stream_sites()
-		freeze(world)
-		await physics_frame
-		var at: Array = player.logical_position()
-		print(
-			"PUBLICATION_QUERY_POSITION ",
-			JSON.stringify(at),
-			" physics_enabled=",
-			player.is_physics_processing()
-		)
-		check(
-			(
-				float(at[0]) == float(marker.x)
-				and float(at[1]) == float(marker.top)
-				and float(at[2]) == float(marker.z)
-			),
-			"query precedes player movement or contact recovery"
-		)
-		check(
-			guide_hits(world, player, marker) == 0,
-			"cached recreation omits solid guide through relocated player capsule"
-		)
-		check(
-			world.guidance["0,0"] == cached,
-			"actor safety does not destructively edit pure cached guidance"
-		)
-		var control := 0
-		for road in cached:
-			for other in road.markers:
-				if guide_hits(world, player, other) > 0:
-					control += 1
-		check(control > 0, "nonconflicting cached guides still publish real solid scenery")
-	main.free()
-	print("guidance cached publication ok" if failed == 0 else "guidance cached publication FAILED")
-	quit(0 if failed == 0 else 1)
+	return marker
+
+
+func _nonconflicting_cache(world, player, cached: Array) -> bool:
+	var control := 0
+	for road in cached:
+		for other in road.markers:
+			if guide_hits(world, player, other) > 0:
+				control += 1
+	check(control > 0, "nonconflicting cached guides still publish real solid scenery")
+	return true
+
+
+func _solid_in_road(world, player, road) -> Variant:
+	var marker: Dictionary = {}
+	for candidate in road.markers:
+		if guide_hits(world, player, candidate) > 0:
+			marker = candidate.duplicate(true)
+			break
+	return marker

@@ -24,33 +24,12 @@ func run() -> void:
 		p.free()
 		quit(1)
 		return
-	var d: Dictionary = (
-		Model.Ontology.load_dir("res://ontology/instances").configs.generators.design
-	)
-	p.setup(d.movement, d.camera, &"normal")
-	var frame = load("res://game/world/local_frame.gd").new(int(d.terrain["zone-blocks"]))
-	var exact := [8380416.123456789, 100.25, -8380416.234567891]
-	frame.set_origin(exact)
-	frame.place_entity(p, exact, true)
-	check(p.logical_position() == exact, "cold placement retains fractional scalar anchor")
-	check(absf(p.global_position.x) < 64 and absf(p.global_position.z) < 64, "bounded native pose")
-	var rid: RID = p.get_rid()
-	for i in 20:
-		frame.shift_to([frame.origin[0] + (64 if i % 2 == 0 else -64), frame.origin[1]])
-		check(p.logical_position() == exact, "no-motion frame change never rounds scalar anchor")
-		check(p.get_rid() == rid, "frame change keeps native RID")
-	var before: Vector3 = p.global_position
-	p.position.x += 0.125
-	check(
-		p.logical_position()[0] == exact[0] + float(p.global_position.x) - float(before.x),
-		"only measured native displacement changes anchor"
-	)
-	var q: Array = p.logical_position()
-	frame.place_entity(p, [-0.125, q[1], 0.25], true)
-	frame.prepare(p)
-	check(frame.origin == [-64, 0], "negative fractional zone uses floor")
-	check(p.logical_position() == [-0.125, q[1], 0.25], "explicit discontinuous placement")
-	# A live pending target is distinct from its committed native pose; translation preserves both.
+	if not await _frame_cases(p):
+		return
+	_finish()
+
+
+func _pending_native(p, frame, rid: RID) -> bool:
 	var native = PhysicsServer3D.body_get_direct_state(rid)
 	PhysicsServer3D.body_set_state(
 		rid, PhysicsServer3D.BODY_STATE_LINEAR_VELOCITY, Vector3(2, 0, 0)
@@ -95,6 +74,50 @@ func run() -> void:
 		PhysicsServer3D.body_get_direct_state(rid).linear_velocity == Vector3(2, 0, 0),
 		"constant native velocity remains distinct on subsequent callbacks"
 	)
-	p.free()
+	return true
+
+
+func _scalar_anchor(p, frame) -> Variant:
+	var exact := [8380416.123456789, 100.25, -8380416.234567891]
+	frame.set_origin(exact)
+	frame.place_entity(p, exact, true)
+	check(p.logical_position() == exact, "cold placement retains fractional scalar anchor")
+	check(absf(p.global_position.x) < 64 and absf(p.global_position.z) < 64, "bounded native pose")
+	var rid: RID = p.get_rid()
+	for i in 20:
+		frame.shift_to([frame.origin[0] + (64 if i % 2 == 0 else -64), frame.origin[1]])
+		check(p.logical_position() == exact, "no-motion frame change never rounds scalar anchor")
+		check(p.get_rid() == rid, "frame change keeps native RID")
+	var before: Vector3 = p.global_position
+	p.position.x += 0.125
+	check(
+		p.logical_position()[0] == exact[0] + float(p.global_position.x) - float(before.x),
+		"only measured native displacement changes anchor"
+	)
+	var q: Array = p.logical_position()
+	frame.place_entity(p, [-0.125, q[1], 0.25], true)
+	frame.prepare(p)
+	check(frame.origin == [-64, 0], "negative fractional zone uses floor")
+	check(p.logical_position() == [-0.125, q[1], 0.25], "explicit discontinuous placement")
+	return rid
+
+
+func _finish() -> void:
 	print("local frame ok" if not failed else "local frame FAILED")
 	quit(0 if not failed else 1)
+
+
+func _frame_cases(p) -> bool:
+	var d: Dictionary = (
+		Model.Ontology.load_dir("res://ontology/instances").configs.generators.design
+	)
+	p.setup(d.movement, d.camera, &"normal")
+	var frame = load("res://game/world/local_frame.gd").new(int(d.terrain["zone-blocks"]))
+	var rid = _scalar_anchor(p, frame)
+	if rid == null:
+		return false
+	# A live pending target is distinct from its committed native pose; translation preserves both.
+	if not await _pending_native(p, frame, rid):
+		return false
+	p.free()
+	return true

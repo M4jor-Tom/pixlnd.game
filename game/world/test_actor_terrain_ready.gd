@@ -83,45 +83,11 @@ func site_fixture(main, land: Vector2i) -> Dictionary:
 func ambient_fixture(main) -> Dictionary:
 	var world = main.get_node("World")
 	for x in range(125, 132):
-		for z in range(125, 132):
-			var zone := Vector2i(x, z)
-			var plan_: Array = Spawner.plan(
-				world.gen, zone, world.design, world.creatures, world.rosters, 1
-			)
-			for group_index in plan_.size():
-				for member in plan_[group_index].positions.size():
-					var home: Vector3 = plan_[group_index].positions[member]
-					var px := (
-						(zone.x * 64 - 2.5)
-						if home.x - zone.x * 64 < 32
-						else ((zone.x + 1) * 64 + 2.5)
-					)
-					var at := [
-						px, world.gen.height_at(floori(px), floori(home.z)) + 1, float(home.z)
-					]
-					if (
-						Targeting.distance_squared(at, [home.x, home.y, home.z])
-						>= pow(float(world.design.spawns.ai.leash), 2)
-					):
-						continue
-					var inside := false
-					for site in world.state_data.sites.values():
-						inside = inside or world.state_data.inside(site.volumes, [at])
-					if inside:
-						continue
-					world._publish_zone(zone, MeshData.data(world.gen, zone))
-					var id := (
-						"%s/ambient/%d,%d/%d/%d"
-						% [world.state_data.world_id, x, z, group_index, member]
-					)
-					var actor = world.targeting.live[id]
-					actor.set_logical_position(at)
-					actor.hp -= 1
-					actor.incarnation.combat.returning = true
-					world.capture_mobs()
-					var record: Dictionary = world.state_data.mobs[id].duplicate(true)
-					main.relocate_player([float(home.x), home.y + 2, float(home.z)])
-					return {"id": id, "at": at, "record": record, "home_zone": zone}
+		var fixture = _ambient_column(main, world, x)
+		if fixture == null:
+			return {}
+		if not fixture.is_empty():
+			return fixture
 	return {}
 
 
@@ -137,26 +103,28 @@ func run_case(label: String, land: Vector2i, ambient: bool) -> void:
 	check(main.save_now(), label + " exterior survivor passes strict current-save validation")
 	main.free()
 	main = open_main(path)
-	var world = main.get_node("World")
-	var player = main.get_node("Player")
-	var at: Array = fixture.at
-	var missing := zone_at(at)
-	var player_zone := zone_at(player.logical_position())
-	check(missing != player_zone, label + " actor tile differs from ready player tile")
-	world._publish_zone(player_zone, MeshData.data(world.gen, player_zone))
-	if ambient and fixture.home_zone != player_zone:
-		world._publish_zone(fixture.home_zone, MeshData.data(world.gen, fixture.home_zone))
-	var held := HeldTerrain.new(
-		world.world_seed, world.design, world.ontology.landscapes, world.state_data.lands
-	)
-	world._terrain_worker = held
-	world._spawn_zone(missing)
-	world.stream_sites()
-	world.set_process(true)
-	check(
-		world.has_ground(player.position) and not world.zones.has(missing),
-		label + " positive player support cannot stand in for missing actor support"
-	)
+	await _support_case(main, fixture, label, ambient)
+
+
+func _init() -> void:
+	call_deferred("run")
+
+
+func run() -> void:
+	directory = OS.get_environment("PIXLND_TEST_DIR")
+	if not directory.is_absolute_path():
+		quit(2)
+		return
+	await run_case("site", Vector2i.ZERO, false)
+	await run_case("ambient", Vector2i.ZERO, true)
+	await run_case("far-site", Vector2i(-512, 511), false)
+	print("actor terrain readiness ok" if failed == 0 else "actor terrain readiness FAILED")
+	quit(0 if failed == 0 else 1)
+
+
+func _held_support(
+	world, fixture: Dictionary, label: String, at: Array, missing: Vector2i, held
+) -> bool:
 	var clock: float = world.state_data.clock
 	for i in 30:
 		await physics_frame
@@ -188,6 +156,144 @@ func run_case(label: String, land: Vector2i, ambient: bool) -> void:
 		world.state_data.clock > clock,
 		label + " logical world clock remains live while support is pending"
 	)
+	return true
+
+
+func _released_support(
+	world, fixture: Dictionary, label: String, at: Array, missing: Vector2i, held
+) -> bool:
+	if not await _await_actor(world, fixture, label, missing, held):
+		return false
+	if world.targeting.live.has(fixture.id):
+		if not await _supported_actor(world, fixture, label, at):
+			return false
+	return true
+
+
+func _supported_actor(world, fixture: Dictionary, label: String, at: Array) -> bool:
+	var actor = world.targeting.live[fixture.id]
+	check(
+		actor.is_physics_processing(),
+		label + " tested creature runs normal physics, never a fixture freeze"
+	)
+	check(
+		(
+			actor.logical_id == fixture.id
+			and actor.hp == fixture.record.hp
+			and actor.level == fixture.record.level
+			and actor.role == StringName(fixture.record.role)
+		),
+		label + " actual survivor HP/ID/level/role preserved"
+	)
+	var query := PhysicsRayQueryParameters3D.create(
+		world.frame.to_local([at[0], float(at[1]) + 2, at[2]]),
+		world.frame.to_local([at[0], float(at[1]) - 2, at[2]]),
+		1,
+		[actor.get_rid()]
+	)
+	check(
+		not world.get_world_3d().direct_space_state.intersect_ray(query).is_empty(),
+		label + " newly published support has real collision"
+	)
+	return await _return_motion(actor, label)
+
+
+func _ambient_member(
+	main, world, zone: Vector2i, plan_: Array, x: int, z: int, group_index: int, member: int
+) -> Variant:
+	var home: Vector3 = plan_[group_index].positions[member]
+	var px := (zone.x * 64 - 2.5) if home.x - zone.x * 64 < 32 else ((zone.x + 1) * 64 + 2.5)
+	var at := [px, world.gen.height_at(floori(px), floori(home.z)) + 1, float(home.z)]
+	if (
+		Targeting.distance_squared(at, [home.x, home.y, home.z])
+		>= pow(float(world.design.spawns.ai.leash), 2)
+	):
+		return {}
+	var inside := false
+	for site in world.state_data.sites.values():
+		inside = inside or world.state_data.inside(site.volumes, [at])
+	if inside:
+		return {}
+	world._publish_zone(zone, MeshData.data(world.gen, zone))
+	var id := "%s/ambient/%d,%d/%d/%d" % [world.state_data.world_id, x, z, group_index, member]
+	var actor = world.targeting.live[id]
+	actor.set_logical_position(at)
+	actor.hp -= 1
+	actor.incarnation.combat.returning = true
+	world.capture_mobs()
+	var record: Dictionary = world.state_data.mobs[id].duplicate(true)
+	main.relocate_player([float(home.x), home.y + 2, float(home.z)])
+	return {"id": id, "at": at, "record": record, "home_zone": zone}
+
+
+func _ambient_zone(main, world, x: int, z: int) -> Variant:
+	var zone := Vector2i(x, z)
+	var plan_: Array = Spawner.plan(
+		world.gen, zone, world.design, world.creatures, world.rosters, 1
+	)
+	for group_index in plan_.size():
+		var fixture = _ambient_group(main, world, zone, plan_, x, z, group_index)
+		if fixture == null or not fixture.is_empty():
+			return fixture
+	return {}
+
+
+func _ambient_column(main, world, x: int) -> Variant:
+	for z in range(125, 132):
+		var fixture = _ambient_zone(main, world, x, z)
+		if fixture == null or not fixture.is_empty():
+			return fixture
+	return {}
+
+
+func _ambient_group(
+	main, world, zone: Vector2i, plan_: Array, x: int, z: int, group_index: int
+) -> Variant:
+	for member in plan_[group_index].positions.size():
+		var fixture = _ambient_member(main, world, zone, plan_, x, z, group_index, member)
+		if fixture == null or not fixture.is_empty():
+			return fixture
+	return {}
+
+
+func _support_case(main, fixture: Dictionary, label: String, ambient: bool) -> void:
+	var world = main.get_node("World")
+	var player = main.get_node("Player")
+	var at: Array = fixture.at
+	var missing := zone_at(at)
+	var player_zone := zone_at(player.logical_position())
+	check(missing != player_zone, label + " actor tile differs from ready player tile")
+	world._publish_zone(player_zone, MeshData.data(world.gen, player_zone))
+	if ambient and fixture.home_zone != player_zone:
+		world._publish_zone(fixture.home_zone, MeshData.data(world.gen, fixture.home_zone))
+	var held := HeldTerrain.new(
+		world.world_seed, world.design, world.ontology.landscapes, world.state_data.lands
+	)
+	world._terrain_worker = held
+	world._spawn_zone(missing)
+	world.stream_sites()
+	world.set_process(true)
+	check(
+		world.has_ground(player.position) and not world.zones.has(missing),
+		label + " positive player support cannot stand in for missing actor support"
+	)
+	await _wait_support(main, world, fixture, label, at, missing, held)
+
+
+func _wait_support(
+	main, world, fixture: Dictionary, label: String, at: Array, missing: Vector2i, held
+) -> void:
+	if not await _held_support(world, fixture, label, at, missing, held):
+		return
+	if not await _released_support(world, fixture, label, at, missing, held):
+		return
+	world.set_process(false)
+	held.stop()
+	main.free()
+	await process_frame
+
+
+func _await_actor(world, fixture: Dictionary, label: String, missing: Vector2i, held) -> bool:
 	held.release.post()
 	for i in 240:
 		if world.zones.has(missing) and world.targeting.live.has(fixture.id):
@@ -198,58 +304,18 @@ func run_case(label: String, land: Vector2i, ambient: bool) -> void:
 		world.zones.has(missing) and world.targeting.live.has(fixture.id),
 		label + " actor automatically materializes/resumes after actual terrain publication"
 	)
-	if world.targeting.live.has(fixture.id):
-		var actor = world.targeting.live[fixture.id]
-		check(
-			actor.is_physics_processing(),
-			label + " tested creature runs normal physics, never a fixture freeze"
-		)
-		check(
-			(
-				actor.logical_id == fixture.id
-				and actor.hp == fixture.record.hp
-				and actor.level == fixture.record.level
-				and actor.role == StringName(fixture.record.role)
-			),
-			label + " actual survivor HP/ID/level/role preserved"
-		)
-		var query := PhysicsRayQueryParameters3D.create(
-			world.frame.to_local([at[0], float(at[1]) + 2, at[2]]),
-			world.frame.to_local([at[0], float(at[1]) - 2, at[2]]),
-			1,
-			[actor.get_rid()]
-		)
-		check(
-			not world.get_world_3d().direct_space_state.intersect_ray(query).is_empty(),
-			label + " newly published support has real collision"
-		)
-		var origin: Array = actor.logical_position()
-		var floor_seen: bool = actor.is_on_floor()
-		for i in 10:
-			await physics_frame
-			await process_frame
-			floor_seen = floor_seen or actor.is_on_floor()
-		check(
-			floor_seen and actor.logical_position() != origin,
-			label + " normal supported return motion resumes"
-		)
-	world.set_process(false)
-	held.stop()
-	main.free()
-	await process_frame
+	return true
 
 
-func _init() -> void:
-	call_deferred("run")
-
-
-func run() -> void:
-	directory = OS.get_environment("PIXLND_TEST_DIR")
-	if not directory.is_absolute_path():
-		quit(2)
-		return
-	await run_case("site", Vector2i.ZERO, false)
-	await run_case("ambient", Vector2i.ZERO, true)
-	await run_case("far-site", Vector2i(-512, 511), false)
-	print("actor terrain readiness ok" if failed == 0 else "actor terrain readiness FAILED")
-	quit(0 if failed == 0 else 1)
+func _return_motion(actor, label: String) -> bool:
+	var origin: Array = actor.logical_position()
+	var floor_seen: bool = actor.is_on_floor()
+	for i in 10:
+		await physics_frame
+		await process_frame
+		floor_seen = floor_seen or actor.is_on_floor()
+	check(
+		floor_seen and actor.logical_position() != origin,
+		label + " normal supported return motion resumes"
+	)
+	return true
