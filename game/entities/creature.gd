@@ -12,6 +12,7 @@
 extends "res://game/entities/entity.gd"
 
 const Projectile := preload("res://game/combat/projectile.gd")
+const CreatureCombat := preload("res://game/entities/creature_combat.gd")
 const Targeting := preload("res://game/combat/targeting.gd")
 const Combat := preload("res://game/combat/combat.gd")
 
@@ -98,12 +99,8 @@ func _on_damaged(amount: float, from: Node) -> void:
 func _on_died() -> void:
 	if special != null:
 		special.cancel()
-	if (
-		last_attacker != null
-		and is_instance_valid(last_attacker)
-		and last_attacker.has_method("on_kill")
-	):
-		last_attacker.on_kill(level)
+	if not _reward_finisher():
+		return
 	if targeting != null:
 		targeting.died(self)
 	if not incarnation.is_empty():
@@ -121,61 +118,31 @@ func _physics_process(dt: float) -> void:
 	if ai.is_empty():
 		return
 	# Authority timers run independently, including unloaded logical survivors.
-	if targeting != null:
-		var near := false
-		for p in targeting.party():
-			if (
-				Targeting.valid_member(p)
-				and (
-					Targeting.distance_squared(logical_position(), Targeting.position_of(p))
-					<= _sim_r2
-				)
-			):
-				near = true
-		if not near:
-			return
-	elif (
-		target != null
-		and is_instance_valid(target)
-		and Targeting.distance_squared(logical_position(), Targeting.position_of(target)) > _sim_r2
-	):
+	if not _simulation_active():
 		return
 	velocity.y -= gravity * dt
 	_cooldown -= dt
 	tick_statuses(dt)
 	if dead:
 		return
-	if stunned():  # D21: cannot act; a knockback keeps carrying us
-		if special != null:
-			special.advance(dt)
-		velocity.x = _stun_push.x
-		velocity.z = _stun_push.z
-		move_and_slide()
-		_stun_push = Vector3(velocity.x, 0, velocity.z)
+	if stunned():
+		_stunned_motion(dt)
 		return
-	_stun_push = Vector3.ZERO  # ordinary AI/special motion owns x/z again
-	if special != null:
-		_select_target()
-		if special.advance(dt):
-			velocity.x = 0
-			velocity.z = 0
-			move_and_slide()
-			return
-	var next := _tick(dt)
-	if next != state:
-		state = next
-		_wait = _rng.randf_range(float(ai["wander-pause-s"][0]), float(ai["wander-pause-s"][1]))
-		_windup = float(role_cfg["windup-s"]) if _shoots() else float(atk["windup-s"])
-	move_and_slide()
+	_active_motion(dt)
 
 
 func _can_chase() -> bool:
-	return (
-		target != null
-		and Targeting.valid_member(target)
-		and not target.get("dead")
-		and (targeting != null or hostility == &"H" or (hostility == &"N" and provoked))
-	)
+	if target == null:
+		return false
+	if not Targeting.valid_member(target):
+		return false
+	if target.get("dead"):
+		return false
+	return _chase_hostility()
+
+
+func _chase_hostility() -> bool:
+	return targeting != null or hostility == &"H" or (hostility == &"N" and provoked)
 
 
 func apply_status(id: StringName, cfg: Dictionary, hit: float, from: Node) -> void:
@@ -191,24 +158,13 @@ func apply_status(id: StringName, cfg: Dictionary, hit: float, from: Node) -> vo
 
 
 func _select_target() -> void:
-	if targeting != null:
-		if state == State.RETURN or targeting.record(self).returning:
-			state = State.RETURN
-			targeting.start_return(self)
-		elif (
-			state in [State.CHASE, State.ATTACK]
-			and (
-				sqrt(Targeting.distance_squared(logical_position(), _home_point()))
-				> float(ai["leash"])
-			)
-		):
-			targeting.start_return(self)
-			state = State.RETURN
-		else:
-			target = targeting.select(self)
-			if target == null and state in [State.CHASE, State.ATTACK]:
-				targeting.start_return(self)
-				state = State.RETURN
+	if targeting == null:
+		return
+	if state == State.RETURN or targeting.record(self).returning:
+		state = State.RETURN
+		targeting.start_return(self)
+	else:
+		_select_chase_target()
 
 
 ## Returns the state for the next frame; movement intent is applied to velocity.x/z here.
@@ -222,93 +178,15 @@ func _tick(dt: float) -> State:
 	)
 	match state:
 		State.IDLE:
-			_move([], 0.0)
-			if can_chase and (targeting != null or to_target < _aggro_range()):
-				return State.CHASE
-			_wait -= dt
-			if _wait <= 0.0:
-				var r := float(ai["wander-radius"])
-				_goal = _home_point()
-				_goal[0] += _rng.randf_range(-r, r)
-				_goal[2] += _rng.randf_range(-r, r)
-				return State.WANDER
+			return _tick_idle(dt, can_chase, to_target)
 		State.WANDER:
-			if can_chase and (targeting != null or to_target < _aggro_range()):
-				return State.CHASE
-			if _move(_goal, float(ai["walk"])):
-				return State.IDLE
+			return _tick_wander(can_chase, to_target)
 		State.CHASE:
-			if (
-				not can_chase
-				or (
-					sqrt(Targeting.distance_squared(logical_position(), _home_point()))
-					> float(ai["leash"])
-				)
-			):
-				return State.RETURN
-			# ponytail: `design.spawns.ai.aggro-range` decides when we notice a target whatever our role, so a
-			# role `range` beyond it only applies once we are already chasing (todo_implement.md)
-			if _shoots():  # D26: hold the gap, shoot when we can see them
-				var keep := float(role_cfg["keep-away"])
-				if to_target < keep:
-					var here := logical_position()
-					var there := Targeting.position_of(target)
-					var away := (
-						(
-							Vector3(float(here[0]) - there[0], 0, float(here[2]) - there[2])
-							. normalized()
-						)
-						* keep
-					)
-					_move(
-						[float(here[0]) + away.x, here[1], float(here[2]) + away.z],
-						float(ai["chase"])
-					)
-				elif to_target <= float(role_cfg["range"]) and _cooldown <= 0.0 and _los():
-					return State.ATTACK
-				else:
-					_move(Targeting.position_of(target), float(ai["chase"]))
-				return state
-			if to_target <= float(atk["reach"]) and _cooldown <= 0.0:
-				return State.ATTACK
-			_move(Targeting.position_of(target), float(ai["chase"]))
+			return _tick_chase(can_chase, to_target)
 		State.ATTACK:
-			_move([], 0.0)
-			_windup -= dt
-			if _windup <= 0.0:
-				if _shoots():
-					if can_chase and to_target <= float(role_cfg["range"]) and _los():  # they may have stepped behind cover
-						_shoot()
-					_cooldown = float(role_cfg["cooldown-s"])
-					return State.CHASE
-				if (
-					can_chase
-					and to_target <= float(atk["reach"]) * 1.25
-					and Targeting.view_of(target) != null
-					and Targeting.view_of(target).has_method("take_damage")
-				):
-					var victim = Targeting.view_of(target)
-					if special != null:
-						for body in bodies_within(victim.global_position, float(atk["reach"])):
-							if body.has_method("take_direct_damage"):
-								body.take_direct_damage(damage, self)
-					var d := Combat.after_defence(
-						damage,
-						float(victim.get("armor")),
-						float(victim.get("resistance")),
-						Combat.PHYSICAL,
-						design.get("combat", {})
-					)
-					if not victim.take_damage(d, self):
-						_hit_statuses(victim)
-				_cooldown = float(atk["cooldown-s"])
-				return State.CHASE
+			return _tick_attack(dt, can_chase, to_target)
 		State.RETURN:
-			if _move(_home_point(), float(ai["chase"]) * float(ai["return-speed-mult"])):
-				if targeting != null:
-					targeting.arrive(self)
-				provoked = false
-				return State.IDLE
+			return _tick_return()
 	return state
 
 
@@ -337,27 +215,7 @@ func _target_head() -> Vector3:
 ## One shot of `role_cfg.shot` at the target's head, aimed high by the drop it takes over the flight
 ## (ponytail: no lead on a moving target). Damage and statuses come back through `_strike`.
 func _shoot() -> void:
-	var s: Dictionary = (role_cfg["shot"] as Dictionary).duplicate()
-	s["color"] = role_cfg["color"]  # projectile.gd tints the sphere from the shot dict
-	var from := head()
-	var dir: Vector3 = _target_head() - from
-	var d := dir.length()
-	if d < 0.01:
-		return
-	var t := d / float(s["speed"])
-	dir.y += float(s.get("gravity", 0.0)) * t * t * 0.5
-	if feel != null:
-		feel.sfx(StringName(str(role_cfg["sfx"])))
-	Projectile.fire(
-		self,
-		from,
-		dir.normalized(),
-		s,
-		damage * float(role_cfg["damage-mult"]),
-		false,
-		role_cfg.get("applies", []),
-		Combat.MAGICAL if role == &"mage" else Combat.PHYSICAL
-	)
+	CreatureCombat._shoot(self)
 
 
 ## projectile.gd damages through the shooter. Every landed shot rolls design.defence.enemy-hit and the role's
@@ -372,52 +230,14 @@ func _strike(
 	attack_type: StringName = Combat.PHYSICAL,
 	target_limit: int = 0
 ) -> int:
-	var se: Dictionary = design.get("status-effects", {})
-	var hits := 0
-	var bodies := bodies_within(center, radius)
-	if target_limit > 0:
-		bodies = bodies.slice(0, target_limit)
-	for body in bodies:
-		if body.has_method("take_direct_damage"):
-			body.take_direct_damage(dmg, self)
-			continue
-		var d := Combat.after_defence(
-			dmg,
-			float(body.get("armor")),
-			float(body.get("resistance")),
-			attack_type,
-			design.get("combat", {})
-		)
-		if not body.take_damage(d, self):
-			_hit_statuses(body)
-			for id in applies:
-				if se.has(id) and body.has_method("apply_status"):
-					body.apply_status(id, se[id], d, self)
-		hits += 1
-	return hits
+	return CreatureCombat._strike(
+		self, center, radius, dmg, _combo_bonus, applies, attack_type, target_limit
+	)
 
 
 ## Live damageable bodies in the sphere that are not creatures: a creature shot never hits a creature.
 func bodies_within(center: Vector3, radius: float) -> Array:
-	var shape := SphereShape3D.new()
-	shape.radius = radius
-	var q := PhysicsShapeQueryParameters3D.new()
-	q.shape = shape
-	q.transform = Transform3D(Basis(), center)
-	q.exclude = [get_rid()]
-	var out: Array = []
-	for r in get_world_3d().direct_space_state.intersect_shape(q, 16):
-		var body: Object = r["collider"]
-		if (
-			(special != null and body.has_method("take_direct_damage"))
-			or (
-				body.has_method("take_damage")
-				and not body.get("dead")
-				and body.get("species") == null
-			)
-		):
-			out.append(body)
-	return out
+	return CreatureCombat.bodies_within(self, center, radius)
 
 
 ## The player's combo / MP bookkeeping; a creature keeps none.
@@ -501,3 +321,170 @@ func detects(p) -> bool:
 	var q := PhysicsRayQueryParameters3D.create(head(), end, 0xFFFFFFFF, [get_rid()])
 	var hit: Dictionary = get_world_3d().direct_space_state.intersect_ray(q)
 	return hit.is_empty() or hit.collider == Targeting.view_of(p)
+
+
+func _reward_finisher() -> bool:
+	if (
+		last_attacker != null
+		and is_instance_valid(last_attacker)
+		and last_attacker.has_method("on_kill")
+	):
+		last_attacker.on_kill(level)
+	return true
+
+
+func _simulation_active() -> bool:
+	if targeting != null:
+		return _party_nearby()
+	if target == null:
+		return true
+	if not is_instance_valid(target):
+		return true
+	if Targeting.distance_squared(logical_position(), Targeting.position_of(target)) > _sim_r2:
+		return false
+	return true
+
+
+func _party_nearby() -> bool:
+	var near := false
+	for p in targeting.party():
+		if not Targeting.valid_member(p):
+			continue
+		if Targeting.distance_squared(logical_position(), Targeting.position_of(p)) <= _sim_r2:
+			near = true
+	return near
+
+
+func _tick_idle(dt, can_chase, to_target) -> State:
+	_move([], 0.0)
+	if can_chase and (targeting != null or to_target < _aggro_range()):
+		return State.CHASE
+	_wait -= dt
+	if _wait <= 0.0:
+		var r := float(ai["wander-radius"])
+		_goal = _home_point()
+		_goal[0] += _rng.randf_range(-r, r)
+		_goal[2] += _rng.randf_range(-r, r)
+		return State.WANDER
+	return state
+
+
+func _tick_wander(can_chase, to_target) -> State:
+	if can_chase and (targeting != null or to_target < _aggro_range()):
+		return State.CHASE
+	if _move(_goal, float(ai["walk"])):
+		return State.IDLE
+	return state
+
+
+func _tick_chase(can_chase, to_target) -> State:
+	if (
+		not can_chase
+		or (
+			sqrt(Targeting.distance_squared(logical_position(), _home_point())) > float(ai["leash"])
+		)
+	):
+		return State.RETURN
+	# ponytail: `design.spawns.ai.aggro-range` decides when we notice a target whatever our role, so a
+	# role `range` beyond it only applies once we are already chasing (todo_implement.md)
+	if _shoots():  # D26: hold the gap, shoot when we can see them
+		return _chase_ranged(to_target)
+	return _chase_melee(to_target)
+
+
+func _tick_attack(dt, can_chase, to_target) -> State:
+	_move([], 0.0)
+	_windup -= dt
+	if _windup <= 0.0:
+		return _attack_ready(can_chase, to_target)
+	return state
+
+
+func _tick_return() -> State:
+	if _move(_home_point(), float(ai["chase"]) * float(ai["return-speed-mult"])):
+		if targeting != null:
+			targeting.arrive(self)
+		provoked = false
+		return State.IDLE
+	return state
+
+
+func _chase_ranged(to_target: float) -> State:
+	var keep := float(role_cfg["keep-away"])
+	if to_target < keep:
+		var here := logical_position()
+		var there := Targeting.position_of(target)
+		var away := (
+			(Vector3(float(here[0]) - there[0], 0, float(here[2]) - there[2]).normalized()) * keep
+		)
+		_move([float(here[0]) + away.x, here[1], float(here[2]) + away.z], float(ai["chase"]))
+	elif to_target <= float(role_cfg["range"]) and _cooldown <= 0.0 and _los():
+		return State.ATTACK
+	else:
+		_move(Targeting.position_of(target), float(ai["chase"]))
+	return state
+
+
+func _stunned_motion(dt: float) -> void:
+	if special != null:
+		special.advance(dt)
+	velocity.x = _stun_push.x
+	velocity.z = _stun_push.z
+	move_and_slide()
+	_stun_push = Vector3(velocity.x, 0, velocity.z)
+
+
+func _attack_ready(can_chase, to_target) -> State:
+	if _shoots():
+		if can_chase and to_target <= float(role_cfg["range"]) and _los():  # they may have stepped behind cover
+			_shoot()
+		_cooldown = float(role_cfg["cooldown-s"])
+		return State.CHASE
+	return _attack_melee(can_chase, to_target)
+
+
+func _active_motion(dt: float) -> void:
+	_stun_push = Vector3.ZERO  # ordinary AI/special motion owns x/z again
+	if special != null:
+		_select_target()
+		if special.advance(dt):
+			velocity.x = 0
+			velocity.z = 0
+			move_and_slide()
+			return
+	var next := _tick(dt)
+	if next != state:
+		state = next
+		_wait = _rng.randf_range(float(ai["wander-pause-s"][0]), float(ai["wander-pause-s"][1]))
+		_windup = float(role_cfg["windup-s"]) if _shoots() else float(atk["windup-s"])
+	move_and_slide()
+
+
+func _chase_melee(to_target) -> State:
+	if to_target <= float(atk["reach"]) and _cooldown <= 0.0:
+		return State.ATTACK
+	_move(Targeting.position_of(target), float(ai["chase"]))
+	return state
+
+
+func _attack_melee(can_chase, to_target) -> State:
+	if not CreatureCombat._try_bite(self, can_chase, to_target):
+		return State.IDLE
+	_cooldown = float(atk["cooldown-s"])
+	return State.CHASE
+
+
+func _select_chase_target() -> void:
+	if (
+		state in [State.CHASE, State.ATTACK]
+		and (
+			sqrt(Targeting.distance_squared(logical_position(), _home_point())) > float(ai["leash"])
+		)
+	):
+		targeting.start_return(self)
+		state = State.RETURN
+	else:
+		target = targeting.select(self)
+		if target == null and state in [State.CHASE, State.ATTACK]:
+			targeting.start_return(self)
+			state = State.RETURN

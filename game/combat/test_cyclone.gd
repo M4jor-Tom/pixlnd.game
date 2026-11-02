@@ -130,29 +130,7 @@ func equal_static_time() -> void:
 		["90x1/60", sixty],
 		["1x1.5", [1.5]]
 	]:
-		start()
-		for dt in row[1]:
-			p.abilities.tick(float(dt))
-		print(
-			"STATIC ",
-			p.spec,
-			" ",
-			row[0],
-			" contacts=",
-			contacts,
-			" damage=",
-			damage(0),
-			" stamina=",
-			p.stamina
-		)
-		check(
-			contacts == [0, 0] and is_equal_approx(damage(0), 42.0),
-			str(row[0]) + ": literal two north passes in 1.5s"
-		)
-		check(
-			is_equal_approx(p.stamina, 37.5) and not p.abilities.channel.is_empty(),
-			str(row[0]) + ": independent literal fuel/lifetime"
-		)
+		_static_partition(row)
 
 
 func clipped_boundaries() -> void:
@@ -177,42 +155,8 @@ func clipped_boundaries() -> void:
 	)
 	p.abilities.tick(1.0)
 	check(contacts == [0], "no duplicate exact final contact")
-	# Five fuel buys .2 seconds; east at .25 must not land under either partition.
-	for parts in [[0.01, 0.30], [0.01, 0.19, 0.11]]:
-		start(30.0)
-		for dt in parts:
-			p.abilities.tick(dt)
-		check(
-			contacts.is_empty() and p.abilities.channel.is_empty() and is_zero_approx(p.stamina),
-			"five fuel stops at .2s, never late east: " + str(parts)
-		)
-		check(
-			body_forward().is_equal_approx(Vector3(0.95105652, 0, -0.30901699)),
-			"five fuel stops Body at 72 degrees under either partition"
-		)
-	# Zero drain is legal: duration still bounds progress, with exact final north seam.
-	await layout([Vector3(0, 0, -2)])
-	start(25.0, 0.0)
-	p.abilities.tick(9.0)
-	check(
-		contacts == [0, 0, 0, 0, 0, 0] and is_equal_approx(damage(0), 126.0),
-		"zero drain reaches five turns and includes exact final seam once"
-	)
-	check(
-		p.abilities.channel.is_empty() and is_zero_approx(p.stamina),
-		"zero drain still ends at five seconds"
-	)
-	p.abilities.tick(1.0)
-	check(contacts.size() == 6, "zero-drain final seam not repeated after end")
-	# Non-seam exact duration boundary is inclusive, not only full turns.
-	await layout([Vector3(-2, 0, 0), Vector3(0, 0, -2)])
-	start()
-	p.abilities.channel.left = 0.75
-	p.abilities.tick(2.0)
-	check(
-		contacts == [1, 0] and is_equal_approx(p.stamina, 56.25),
-		"exact .75 duration reaches west once and never next north"
-	)
+	await _partial_fuel()
+	await _zero_drain_and_terminal()
 
 
 func moving_contacts() -> void:
@@ -320,24 +264,7 @@ func facing_and_camera() -> void:
 		body_forward().is_equal_approx(Vector3.BACK),
 		"offset exact endpoint stops actual Body south"
 	)
-	# Look remains live and camera-owned; it cannot retarget the activation-referenced channel.
-	start()
-	p.rig._yaw = 0.0
-	p.rig.apply_touch_look(Vector2(45, 0), 180.0, 180.0)
-	p.abilities.channel.left = 0.25
-	p.abilities.tick(1.0)
-	check(
-		(
-			body_forward().is_equal_approx(Vector3.RIGHT)
-			and is_equal_approx(p.rig.rotation.y, -PI / 4)
-		),
-		"live look changes camera, not Cyclone reference or exact stop"
-	)
-	check(
-		p._front().x > 0.0 and p._front().z < 0.0, "ordinary front aim still follows changed camera"
-	)
-	p.rig._yaw = 0.0
-	p.rig.rotation.y = 0.0
+	await _live_look()
 
 
 func dead_target_no_rehit() -> void:
@@ -365,6 +292,139 @@ func cancellation() -> void:
 		contacts.is_empty() and p.combo == 0,
 		"synchronous reset stops remaining contacts and settles wholly missed channel"
 	)
+	await _activation_cancellation()
+	await layout([Vector3(2, 0, 0), Vector3(0, 0, 2)])
+	for mode in ["reset", "death"]:
+		_cancellation_mode(mode)
+
+
+func _run() -> void:
+	if not _configure():
+		return
+	for spec in [&"berserker", &"guardian"]:
+		if not await _spec(spec):
+			return
+	_finish()
+
+
+func _static_partition(row) -> void:
+	start()
+	for dt in row[1]:
+		p.abilities.tick(float(dt))
+	print(
+		"STATIC ",
+		p.spec,
+		" ",
+		row[0],
+		" contacts=",
+		contacts,
+		" damage=",
+		damage(0),
+		" stamina=",
+		p.stamina
+	)
+	check(
+		contacts == [0, 0] and is_equal_approx(damage(0), 42.0),
+		str(row[0]) + ": literal two north passes in 1.5s"
+	)
+	check(
+		is_equal_approx(p.stamina, 37.5) and not p.abilities.channel.is_empty(),
+		str(row[0]) + ": independent literal fuel/lifetime"
+	)
+
+
+func _zero_drain_and_terminal() -> void:
+	# Zero drain is legal: duration still bounds progress, with exact final north seam.
+	await layout([Vector3(0, 0, -2)])
+	start(25.0, 0.0)
+	p.abilities.tick(9.0)
+	check(
+		contacts == [0, 0, 0, 0, 0, 0] and is_equal_approx(damage(0), 126.0),
+		"zero drain reaches five turns and includes exact final seam once"
+	)
+	check(
+		p.abilities.channel.is_empty() and is_zero_approx(p.stamina),
+		"zero drain still ends at five seconds"
+	)
+	p.abilities.tick(1.0)
+	check(contacts.size() == 6, "zero-drain final seam not repeated after end")
+	# Non-seam exact duration boundary is inclusive, not only full turns.
+	await layout([Vector3(-2, 0, 0), Vector3(0, 0, -2)])
+	start()
+	p.abilities.channel.left = 0.75
+	p.abilities.tick(2.0)
+	check(
+		contacts == [1, 0] and is_equal_approx(p.stamina, 56.25),
+		"exact .75 duration reaches west once and never next north"
+	)
+
+
+func _partial_fuel() -> void:
+	# Five fuel buys .2 seconds; east at .25 must not land under either partition.
+	for parts in [[0.01, 0.30], [0.01, 0.19, 0.11]]:
+		start(30.0)
+		for dt in parts:
+			p.abilities.tick(dt)
+		check(
+			contacts.is_empty() and p.abilities.channel.is_empty() and is_zero_approx(p.stamina),
+			"five fuel stops at .2s, never late east: " + str(parts)
+		)
+		check(
+			body_forward().is_equal_approx(Vector3(0.95105652, 0, -0.30901699)),
+			"five fuel stops Body at 72 degrees under either partition"
+		)
+
+
+func _live_look() -> void:
+	# Look remains live and camera-owned; it cannot retarget the activation-referenced channel.
+	start()
+	p.rig._yaw = 0.0
+	p.rig.apply_touch_look(Vector2(45, 0), 180.0, 180.0)
+	p.abilities.channel.left = 0.25
+	p.abilities.tick(1.0)
+	check(
+		(
+			body_forward().is_equal_approx(Vector3.RIGHT)
+			and is_equal_approx(p.rig.rotation.y, -PI / 4)
+		),
+		"live look changes camera, not Cyclone reference or exact stop"
+	)
+	check(
+		p._front().x > 0.0 and p._front().z < 0.0, "ordinary front aim still follows changed camera"
+	)
+	p.rig._yaw = 0.0
+	p.rig.rotation.y = 0.0
+
+
+func _cancellation_mode(mode) -> void:
+	start()
+	var cancel := func(_amount, _from):
+		if mode == "reset":
+			p.abilities.reset()
+		else:
+			p.take_damage(1e9, p)
+	wolves[0].damaged.connect(cancel, CONNECT_ONE_SHOT)
+	p.abilities.tick(1.0)
+	check(
+		contacts == [0] and p.abilities.channel.is_empty(),
+		"reentrant " + mode + " stops within coarse sweep"
+	)
+	check(p.combo == 0, "reentrant " + mode + " cannot resurrect combo after reset")
+	check(is_equal_approx(p.stamina, 68.75), "reentrant " + mode + " stops drain at .25 contact")
+	check(
+		body_forward().is_equal_approx(Vector3.RIGHT),
+		"reentrant " + mode + " stops Body at actual quarter-turn contact"
+	)
+	p.abilities.tick(1.0)
+	check(
+		contacts == [0] and body_forward().is_equal_approx(Vector3.RIGHT),
+		"reentrant " + mode + " cannot restart old channel or rotate Body"
+	)
+	if mode == "death":
+		check(p.dead, "actual lethal damage synchronously cancels runner")
+
+
+func _activation_cancellation() -> void:
 	await layout([Vector3(0, 0, -2), Vector3(0, 0, -2.5)])
 	wolves[0].damaged.connect(func(_amount, _from): p.abilities.reset(), CONNECT_ONE_SHOT)
 	start()
@@ -381,110 +441,96 @@ func cancellation() -> void:
 		),
 		"activation cancellation never drains or rotates past initial contact"
 	)
-	await layout([Vector3(2, 0, 0), Vector3(0, 0, 2)])
-	for mode in ["reset", "death"]:
-		start()
-		var cancel := func(_amount, _from):
-			if mode == "reset":
-				p.abilities.reset()
-			else:
-				p.take_damage(1e9, p)
-		wolves[0].damaged.connect(cancel, CONNECT_ONE_SHOT)
-		p.abilities.tick(1.0)
-		check(
-			contacts == [0] and p.abilities.channel.is_empty(),
-			"reentrant " + mode + " stops within coarse sweep"
-		)
-		check(p.combo == 0, "reentrant " + mode + " cannot resurrect combo after reset")
-		check(
-			is_equal_approx(p.stamina, 68.75), "reentrant " + mode + " stops drain at .25 contact"
-		)
-		check(
-			body_forward().is_equal_approx(Vector3.RIGHT),
-			"reentrant " + mode + " stops Body at actual quarter-turn contact"
-		)
-		p.abilities.tick(1.0)
-		check(
-			contacts == [0] and body_forward().is_equal_approx(Vector3.RIGHT),
-			"reentrant " + mode + " cannot restart old channel or rotate Body"
-		)
-		if mode == "death":
-			check(p.dead, "actual lethal damage synchronously cancels runner")
 
 
-func _run() -> void:
+func _spec(spec) -> bool:
+	p = PLAYER.instantiate()
+	root.add_child(p)
+	p.setup(design.movement, design.camera, &"normal")
+	p.setup_combat(design.combat, design.crit, {}, 260.0)
+	p.setup_items(o, design, &"warrior", spec)
+	p.skill_tree.points = {&"cyclone": 1}
+	p.weapon.damage = 40.0
+	p.crit_chance = 0.0
+	p.mp = 0.0
+	p.set_physics_process(false)
+	holder = Node3D.new()
+	root.add_child(holder)
+	wolves = Spawner.populate(
+		holder,
+		[
+			{
+				"species": &"wolf",
+				"level": 1,
+				"hostility": &"N",
+				"max_hp": 1e6,
+				"damage": 0.0,
+				"positions":
+				[Vector3(0, 0, -2), Vector3(2, 0, 0), Vector3(0, 0, 2), Vector3(-2, 0, 0)],
+				"seed": 1
+			}
+		],
+		design,
+		o.creatures,
+		p,
+		null
+	)
+	_bind_contacts()
+	await frames()
+	if not _verify_spec(spec):
+		quit(2)
+		return false
+	await ordered_contacts()
+	await same_azimuth_combo()
+	await equal_static_time()
+	await clipped_boundaries()
+	await moving_contacts()
+	await facing_and_camera()
+	await dead_target_no_rehit()
+	await cancellation()
+	p.free()
+	holder.free()
+	return true
+
+
+func _finish() -> void:
+	print(
+		"Cyclone SUMMARY checks=%d failures=%d preconditions=%d" % [checks, failures, preconditions]
+	)
+	quit(2 if preconditions > 0 else (1 if failures > 0 else 0))
+
+
+func _bind_contacts() -> void:
+	for i in wolves.size():
+		wolves[i].set_physics_process(false)
+		wolves[i].armor = 0.0
+		wolves[i].resistance = 0.0
+		wolves[i].damaged.connect(
+			func(_amount, _from):
+				contacts.append(i)
+				contact_facings.append(body_forward())
+		)
+
+
+func _configure() -> bool:
 	var scratch := OS.get_environment("PIXLND_TEST_DIR")
 	if not require(
 		scratch.is_absolute_path() and DirAccess.dir_exists_absolute(scratch),
 		"existing isolated absolute PIXLND_TEST_DIR"
 	):
 		quit(2)
-		return
+		return false
 	o = Model.Ontology.load_dir("res://ontology/instances")
 	if not require(o.validate(), "canonical ontology valid: " + str(o.errors)):
 		quit(2)
-		return
+		return false
 	design = o.configs.generators.design
 	InputMapBuilder.build(o.configs.keybinds.hybrid)
-	for spec in [&"berserker", &"guardian"]:
-		p = PLAYER.instantiate()
-		root.add_child(p)
-		p.setup(design.movement, design.camera, &"normal")
-		p.setup_combat(design.combat, design.crit, {}, 260.0)
-		p.setup_items(o, design, &"warrior", spec)
-		p.skill_tree.points = {&"cyclone": 1}
-		p.weapon.damage = 40.0
-		p.crit_chance = 0.0
-		p.mp = 0.0
-		p.set_physics_process(false)
-		holder = Node3D.new()
-		root.add_child(holder)
-		wolves = Spawner.populate(
-			holder,
-			[
-				{
-					"species": &"wolf",
-					"level": 1,
-					"hostility": &"N",
-					"max_hp": 1e6,
-					"damage": 0.0,
-					"positions":
-					[Vector3(0, 0, -2), Vector3(2, 0, 0), Vector3(0, 0, 2), Vector3(-2, 0, 0)],
-					"seed": 1
-				}
-			],
-			design,
-			o.creatures,
-			p,
-			null
-		)
-		for i in wolves.size():
-			wolves[i].set_physics_process(false)
-			wolves[i].armor = 0.0
-			wolves[i].resistance = 0.0
-			wolves[i].damaged.connect(
-				func(_amount, _from):
-					contacts.append(i)
-					contact_facings.append(body_forward())
-			)
-		await frames()
-		if not require(
-			not p.weapon.is_empty() and not p.dead and p.bodies_within(Vector3.UP, 3.0).size() == 4,
-			str(spec) + ": real armed player and four physical contacts"
-		):
-			quit(2)
-			return
-		await ordered_contacts()
-		await same_azimuth_combo()
-		await equal_static_time()
-		await clipped_boundaries()
-		await moving_contacts()
-		await facing_and_camera()
-		await dead_target_no_rehit()
-		await cancellation()
-		p.free()
-		holder.free()
-	print(
-		"Cyclone SUMMARY checks=%d failures=%d preconditions=%d" % [checks, failures, preconditions]
+	return true
+
+
+func _verify_spec(spec) -> bool:
+	return require(
+		not p.weapon.is_empty() and not p.dead and p.bodies_within(Vector3.UP, 3.0).size() == 4,
+		str(spec) + ": real armed player and four physical contacts"
 	)
-	quit(2 if preconditions > 0 else (1 if failures > 0 else 0))

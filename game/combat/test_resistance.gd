@@ -31,27 +31,7 @@ func _run() -> void:
 	o = Model.Ontology.load_dir("res://ontology/instances")
 	check(o.validate(), "ontology valid")
 	design = o.configs.generators.design
-	var combat: Dictionary = design.combat
-	check(
-		is_equal_approx(Combat.after_defence(100, 0, 30, Combat.MAGICAL, combat), 70),
-		"magical: subtract Resistance"
-	)
-	check(
-		is_equal_approx(Combat.after_defence(100, 200, 200, Combat.MAGICAL, combat), 10),
-		"magical: 10% Resistance floor, no armor"
-	)
-	check(
-		is_equal_approx(Combat.after_defence(0, 0, 200, Combat.MAGICAL, combat), 0),
-		"zero damage stays zero"
-	)
-	check(
-		is_equal_approx(Combat.after_defence(2, 0, 1.95, Combat.MAGICAL, combat), .2),
-		"fractional result retains 10% floor"
-	)
-	check(
-		is_equal_approx(Combat.after_defence(100, 30, 90, Combat.PHYSICAL, combat), 70),
-		"physical: armor only"
-	)
+	_formulas()
 
 	var floor := StaticBody3D.new()
 	var collision := CollisionShape3D.new()
@@ -64,25 +44,7 @@ func _run() -> void:
 	var mage := _player(&"mage", &"fire-mage", Vector3.ZERO)
 	mage.set_physics_process(false)
 	mage.rig.rotation = Vector3.ZERO
-	var chest = Items.generate(RandomNumberGenerator.new(), &"chest-armor", &"", &"silk", 1, 0)
-	mage.inventory.add(chest)
-	mage.inventory.equip(chest)
-	var expected_r: float = Model.stat_curve(1, 0)
-	check(
-		(
-			is_equal_approx(mage.resistance, expected_r)
-			and is_equal_approx(Items.resistance(chest, o), expected_r)
-		),
-		"equipped silk chest contributes Resistance"
-	)
-	check(
-		is_equal_approx(mage.armor, Items.armor(chest, o)) and mage.armor != mage.resistance,
-		"gear keeps armor and Resistance separate"
-	)
-	mage.inventory.unequip(&"chest")
-	check(is_zero_approx(mage.resistance), "unequip refreshes Resistance")
-	mage.inventory.equip(chest)
-	mage.resistance = expected_r
+	_gear(mage)
 
 	var holder := Node3D.new()
 	root.add_child(holder)
@@ -107,6 +69,75 @@ func _run() -> void:
 			null
 		)[0]
 	)
+	_mage_types(mage, wolf)
+
+	await _physical(holder)
+
+	await _flight(holder)
+
+	await _creature_defence(mage, holder)
+
+	print("Resistance combat ok" if failed == 0 else "Resistance combat FAILED: %d" % failed)
+	quit(1 if failed > 0 else 0)
+
+
+func _player(class_id: StringName, spec: StringName, at: Vector3) -> CharacterBody3D:
+	var p: CharacterBody3D = PLAYER.instantiate()
+	root.add_child(p)
+	p.setup(design.movement, design.camera, &"normal")
+	p.setup_combat(design.combat, design.crit, {}, Combat.player_max_hp(1, 1.0))
+	p.setup_items(o, design, class_id, spec)
+	p.position = at
+	return p
+
+
+func _formulas() -> void:
+	var combat: Dictionary = design.combat
+	check(
+		is_equal_approx(Combat.after_defence(100, 0, 30, Combat.MAGICAL, combat), 70),
+		"magical: subtract Resistance"
+	)
+	check(
+		is_equal_approx(Combat.after_defence(100, 200, 200, Combat.MAGICAL, combat), 10),
+		"magical: 10% Resistance floor, no armor"
+	)
+	check(
+		is_equal_approx(Combat.after_defence(0, 0, 200, Combat.MAGICAL, combat), 0),
+		"zero damage stays zero"
+	)
+	check(
+		is_equal_approx(Combat.after_defence(2, 0, 1.95, Combat.MAGICAL, combat), .2),
+		"fractional result retains 10% floor"
+	)
+	check(
+		is_equal_approx(Combat.after_defence(100, 30, 90, Combat.PHYSICAL, combat), 70),
+		"physical: armor only"
+	)
+
+
+func _gear(mage) -> void:
+	var chest = Items.generate(RandomNumberGenerator.new(), &"chest-armor", &"", &"silk", 1, 0)
+	mage.inventory.add(chest)
+	mage.inventory.equip(chest)
+	var expected_r: float = Model.stat_curve(1, 0)
+	check(
+		(
+			is_equal_approx(mage.resistance, expected_r)
+			and is_equal_approx(Items.resistance(chest, o), expected_r)
+		),
+		"equipped silk chest contributes Resistance"
+	)
+	check(
+		is_equal_approx(mage.armor, Items.armor(chest, o)) and mage.armor != mage.resistance,
+		"gear keeps armor and Resistance separate"
+	)
+	mage.inventory.unequip(&"chest")
+	check(is_zero_approx(mage.resistance), "unequip refreshes Resistance")
+	mage.inventory.equip(chest)
+	mage.resistance = expected_r
+
+
+func _mage_types(mage, wolf) -> void:
 	wolf.set_physics_process(false)
 	check(
 		is_zero_approx(wolf.resistance), "spawned unequipped creature receives selected innate zero"
@@ -158,6 +189,8 @@ func _run() -> void:
 		"physical strike skill uses armor with Mage weapon (damage 40, armor 30, Resistance 90)"
 	)
 
+
+func _physical(holder) -> void:
 	var warrior := _player(&"warrior", &"berserker", Vector3(10, 1, 0))
 	warrior.set_physics_process(false)
 	var wolf2: CharacterBody3D = (
@@ -184,12 +217,14 @@ func _run() -> void:
 	wolf2.set_physics_process(false)
 	wolf2.armor = 30.0
 	wolf2.resistance = 90.0
-	hp0 = wolf2.hp
+	var hp0: float = wolf2.hp
 	warrior._strike(wolf2.global_position + Vector3.UP, 1.0, 100.0, false)
 	check(
 		is_equal_approx(hp0 - wolf2.hp, 70.0), "physical weapon attack uses armor, not Resistance"
 	)
 
+
+func _flight(holder) -> void:
 	# Inject a magical current weapon type at the classification boundary after launch; equip remains class-legal.
 	var ranger := _player(&"ranger", &"scout", Vector3(30, 1, 0))
 	ranger.set_physics_process(false)
@@ -218,7 +253,7 @@ func _run() -> void:
 	wolf3.set_physics_process(false)
 	wolf3.armor = 30.0
 	wolf3.resistance = 90.0
-	hp0 = wolf3.hp
+	var hp0: float = wolf3.hp
 	ranger._attack(ranger.moveset["m1"], 100.0, false, [])
 	var boomerang = Items.generate(
 		RandomNumberGenerator.new(), &"weapon", &"boomerang", &"wood", 1, 0
@@ -238,6 +273,8 @@ func _run() -> void:
 	)
 	ranger.weapon["type"] = &"boomerang"
 
+
+func _creature_defence(mage, holder) -> void:
 	# A mage-role hit applies Resistance before block, damage-reduction and absorption.
 	mage.abilities.buffs[&"bulwark"] = {"left": 10.0, "r": design.abilities.bulwark}
 	mage.abilities.buffs[&"mana-shield"] = {
@@ -271,7 +308,7 @@ func _run() -> void:
 	mage.block_power = 100.0
 	mage.armor = 200.0
 	mage.resistance = 30.0
-	hp0 = mage.hp
+	var hp0: float = mage.hp
 	enemy._strike(mage.global_position + Vector3.UP, 1.0, 100.0, false, [], Combat.MAGICAL)
 	check(
 		is_equal_approx(hp0 - mage.hp, 4.0), "Resistance 100→70, then block 14, Bulwark 7, shield 3"
@@ -323,16 +360,3 @@ func _run() -> void:
 	hp0 = mage.hp
 	enemy._tick(0.0)
 	check(is_equal_approx(hp0 - mage.hp, 70.0), "creature bite uses the physical armor stage")
-
-	print("Resistance combat ok" if failed == 0 else "Resistance combat FAILED: %d" % failed)
-	quit(1 if failed > 0 else 0)
-
-
-func _player(class_id: StringName, spec: StringName, at: Vector3) -> CharacterBody3D:
-	var p: CharacterBody3D = PLAYER.instantiate()
-	root.add_child(p)
-	p.setup(design.movement, design.camera, &"normal")
-	p.setup_combat(design.combat, design.crit, {}, Combat.player_max_hp(1, 1.0))
-	p.setup_items(o, design, class_id, spec)
-	p.position = at
-	return p

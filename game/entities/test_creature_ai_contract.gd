@@ -68,6 +68,46 @@ func run() -> void:
 		m.pack_id != neutral.pack_id,
 		"pack identity uses generation ordinal, not a possibly colliding random seed"
 	)
+	_selection_sequence(authority, m, a, b)
+	await _sight_and_zero_ties(authority, m, mate, neutral, a, b, c)
+	await _threat_and_taunts(authority, m, mate, a, b, c, d)
+	var losses = _actual_losses(a, m)
+	_neutral_taunts(authority, neutral, m, a, b)
+	_return_and_absence(authority, m, a, b, players, d)
+	_finisher(m, a, c, losses)
+	await _fallback(groups, d, o)
+	print("creature AI contract ok" if failed == 0 else "creature AI contract FAILED %d" % failed)
+	quit(0 if failed == 0 else 1)
+
+
+func _selection_sequence(authority, m, a, b) -> void:
+	var state: int = authority._rng.state
+	var seed: int = authority._rng.seed
+	authority._rng.seed = 42
+	var picks: Array = []
+	for i in 8:
+		authority.record(m).current = ""
+		picks.append(Authority.identity(authority.select(m)))
+	check(
+		picks == ["c", "b", "c", "b", "b", "a", "b", "b"],
+		"seeded nearest ties keep party/draw order"
+	)
+	check(authority._rng.state == -8220126423168320612, "nearest ties retain exact final RNG state")
+	var after: int = authority._rng.state
+	authority.record(m).threat = {"a": 1.0, "b": 1.0}
+	authority.record(m).order = {"a": 1, "b": 0}
+	authority.record(m).current = ""
+	check(authority.select(m) == b, "positive threat tie takes earliest order")
+	check(authority._rng.state == after, "positive tie consumes no RNG")
+	authority.record(m).current = "a"
+	check(authority.select(m) == a, "current positive tie precedes order")
+	check(authority._rng.state == after, "retained tie consumes no RNG")
+	authority.arrive(m)
+	authority._rng.seed = seed
+	authority._rng.state = state
+
+
+func _sight_and_zero_ties(authority, m, mate, neutral, a, b, c) -> void:
 	# Current pack sightings can reach around cover, but never persist or provoke a separate neutral pack.
 	a.position = Vector3(10, 0, 0)
 	b.position = Vector3(100, 0, 100)
@@ -95,17 +135,10 @@ func run() -> void:
 	check(authority.select(m) == null, "pack sighting disappears when final observer loses it")
 	wall.free()
 	await physics_frame
-	a.position = Vector3(-2, 0, 0)
-	b.position = Vector3(2, 0, 0)
-	authority.record(m).current = ""
-	var zero_target = authority.select(m)
-	check(zero_target in [a, b], "equal nearest zero-threat fallback")
-	var other = b if zero_target == a else a
-	other.position = Vector3(0, 0, 0.5)
-	check(
-		authority.select(m) == zero_target and authority.record(m).order.is_empty(),
-		"zero-threat target retained without reroll or engagement order"
-	)
+	_zero_ties(authority, m, a, b)
+
+
+func _threat_and_taunts(authority, m, mate, a, b, c, d) -> void:
 	a.position = Vector3.ZERO
 	b.position = Vector3.ZERO
 	c.position = Vector3.ZERO
@@ -164,6 +197,9 @@ func run() -> void:
 		"later non-full-stealth DOT tick earns its actual loss"
 	)
 	m.statuses.clear()
+
+
+func _actual_losses(a, m):
 	# Block positive loss, absorption zero, overkill clamp at the shared damage seam.
 	var losses: Array = []
 	a.damaged.connect(func(amount, _from): losses.append(amount))
@@ -191,6 +227,10 @@ func run() -> void:
 	a.take_damage(10, m)
 	check(losses.size() == count, "dodged zero HP loss")
 	a._iframes = 0
+	return losses
+
+
+func _neutral_taunts(authority, neutral, m, a, b) -> void:
 	neutral.take_damage(1, a)
 	check(
 		(
@@ -213,6 +253,9 @@ func run() -> void:
 	authority.taunt([a, b])
 	authority.flush_taunts()
 	check(authority.record(m).taunt in ["a", "b"], "simultaneous eligible winner")
+
+
+func _return_and_absence(authority, m, a, b, players, d) -> void:
 	m.position = Vector3(31, 0, 0)
 	m.state = m.State.CHASE
 	m._tick(0)
@@ -247,6 +290,9 @@ func run() -> void:
 	players.append(b)
 	b.take_damage(1e9, m)
 	check(not authority.record(m).threat.has("b"), "player death immediate world-wide wipe")
+
+
+func _finisher(m, a, c, losses) -> void:
 	# Finisher receives XP independently of current target.
 	var final_losses: Array = []
 	m.damaged.connect(func(loss, _source): final_losses.append(loss))
@@ -257,6 +303,9 @@ func run() -> void:
 	check(final_losses[-1] == 1, "overkill reports only remaining HP removed")
 	check(c.xp > xp0 and m.last_attacker == c, "finisher not selected target receives XP")
 	check(losses.all(func(x): return x >= 0), "nonnegative actual damage")
+
+
+func _fallback(groups, d, o) -> void:
 	# The fallback authority may outlive a departed player; a captured freed Node is not a safe guard.
 	var gone = PLAYER.instantiate()
 	root.add_child(gone)
@@ -274,5 +323,17 @@ func run() -> void:
 	await physics_frame
 	await physics_frame
 	fallback_holder.free()
-	print("creature AI contract ok" if failed == 0 else "creature AI contract FAILED %d" % failed)
-	quit(0 if failed == 0 else 1)
+
+
+func _zero_ties(authority, m, a, b) -> void:
+	a.position = Vector3(-2, 0, 0)
+	b.position = Vector3(2, 0, 0)
+	authority.record(m).current = ""
+	var zero_target = authority.select(m)
+	check(zero_target in [a, b], "equal nearest zero-threat fallback")
+	var other = b if zero_target == a else a
+	other.position = Vector3(0, 0, 0.5)
+	check(
+		authority.select(m) == zero_target and authority.record(m).order.is_empty(),
+		"zero-threat target retained without reroll or engagement order"
+	)

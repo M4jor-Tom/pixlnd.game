@@ -93,6 +93,17 @@ func _init() -> void:
 	var p := _player(&"warrior", &"berserker", Vector3(0, 1, 0))
 	var wolf := _wolf(p, Vector3(0, 1, -3))  # in front: the rig looks down -Z
 	await _frames(5)
+	await _dodge(p, wolf, df)
+	await _blocking(p, wolf, df)
+	await _enemy_statuses(p, wolf, df)
+	await _guardian(df["block"])
+	var a = await _stealth(p, wolf, df)
+	await _dodge_rewards(a, df["dodge"])
+	print("test_defence: %s" % ("FAILED (%d)" % _failed if _failed > 0 else "ok"))
+	quit(1 if _failed > 0 else 0)
+
+
+func _dodge(p, wolf, df) -> void:
 	# --- dodge
 	var dg: Dictionary = df["dodge"]
 	check(not p.dodge(Vector3.ZERO) and is_equal_approx(p.stamina, 100.0), "dodge needs movement")
@@ -118,6 +129,9 @@ func _init() -> void:
 		rolled >= float(dg["distance"]) * 0.8, "rolled ~%d blocks: %.1f" % [dg["distance"], rolled]
 	)
 	check(p._iframes <= 0.0 and p._dodge.is_empty(), "dodge over")
+
+
+func _blocking(p, wolf, df) -> void:
 	# --- block with a shield
 	var shield = Items.generate(RandomNumberGenerator.new(), &"weapon", &"shield", &"iron", 1, 0)
 	check(not p.can_block(), "berserker without shield cannot block")
@@ -134,7 +148,7 @@ func _init() -> void:
 	Input.action_press("special-attack")
 	await _frames(3)
 	check(p.blocking, "M2 held = blocking")
-	hp0 = p.hp
+	var hp0: float = p.hp
 	p.take_damage(100.0, wolf)
 	check(
 		is_equal_approx(hp0 - p.hp, 100.0 * (1.0 - float(bl["damage-reduction"]))),
@@ -149,59 +163,7 @@ func _init() -> void:
 	df["enemy-hit"]["knockback-chance"] = 1.0
 	wolf._hit_statuses(p)
 	check(not p.stunned() and p._push == Vector3.ZERO, "a blocked hit carries no status")
-	# No await between hits: the final valid block keeps its statuses out; the next hit gets no free block.
-	var old_damage: float = wolf.damage
-	wolf.damage = 100.0
-	wolf.hostility = &"H"
-	wolf.global_position = Vector3(0, 1, -1)
-	for shot in [false, true]:
-		for power in [25.0, 1.0]:  # positive power still blocks even below one hit's cost
-			p.hp = 1000.0
-			p.mp = 0.0
-			p.block_power = power
-			p.blocking = true
-			p.statuses.clear()
-			p._push = Vector3.ZERO
-			p.velocity = Vector3.ZERO
-			for hit in 2:
-				hp0 = p.hp
-				if shot:
-					wolf._strike(p.global_position + Vector3.UP, 0.5, 100.0, false, [&"slow"])
-				else:
-					wolf.state = wolf.State.ATTACK
-					wolf._windup = 0.0
-					wolf._tick(0.0)
-				var label := "exhaustion shot=%s power=%s hit=%d" % [shot, power, hit + 1]
-				check(
-					is_equal_approx(hp0 - p.hp, 20.0 if hit == 0 else 100.0),
-					"%s: damage %.1f" % [label, hp0 - p.hp]
-				)
-				check(is_zero_approx(p.block_power), "%s: power empty" % label)
-				check(
-					is_equal_approx(p.mp, 8.0),
-					"%s: MP only for the valid block, got %.1f" % [label, p.mp]
-				)
-				if hit == 0:
-					check(
-						p.statuses.is_empty() and p._push == Vector3.ZERO,
-						"%s: final valid block stops all attached statuses" % label
-					)
-				else:
-					check(
-						p.stunned() and p._push.length() > 0.0,
-						"%s: next hit can stun and push" % label
-					)
-					if shot:
-						check(
-							p.statuses.has(&"slow"), "%s: next shot applies its role status" % label
-						)
-	wolf.damage = old_damage
-	wolf.hostility = &"P"
-	p.hp = p.max_hp
-	p.block_power = float(bl["max"]) - float(bl["power-per-hit"])
-	p.statuses.clear()
-	p._push = Vector3.ZERO
-	p.velocity = Vector3.ZERO
+	_block_exhaustion(p, wolf, bl)
 	wolf.global_position = Vector3(0, 1, 3)  # behind
 	hp0 = p.hp
 	p.take_damage(100.0, wolf)
@@ -213,6 +175,9 @@ func _init() -> void:
 	Input.action_release("special-attack")
 	await _frames(30)
 	check(p.block_power > 0.0, "block-power regenerates while not blocking: %.0f" % p.block_power)
+
+
+func _enemy_statuses(p, wolf, df) -> void:
 	# --- enemy-hit statuses land when not blocking
 	p.hp = p.max_hp
 	wolf._hit_statuses(p)
@@ -228,6 +193,9 @@ func _init() -> void:
 	p._push = Vector3.ZERO
 	df["enemy-hit"]["stun-chance"] = 0.05
 	df["enemy-hit"]["knockback-chance"] = 0.15
+
+
+func _guardian(bl) -> void:
 	# --- guardian blocks bare-handed with double power
 	var g := _player(&"warrior", &"guardian", Vector3(20, 1, 0))
 	await _frames(3)
@@ -239,6 +207,9 @@ func _init() -> void:
 		"guardian: any weapon, block-power ×%d" % bl["guardian-mult"]
 	)
 	g.queue_free()
+
+
+func _stealth(p, wolf, df):
 	# --- stealth: assassin sneak
 	var a := _player(&"rogue", &"assassin", Vector3(0, 1, 0))
 	p.global_position = Vector3(40, 1, 40)
@@ -291,6 +262,10 @@ func _init() -> void:
 	a.abilities.buffs.clear()
 	await _frames(30)
 	check(a.stealth < 1.0, "stealth decays without a source: %.2f" % a.stealth)
+	return a
+
+
+func _dodge_rewards(a, dg) -> void:
 	# --- dodge rewards per passive: assassin stealth, ninja MP
 	a.stealth = 0.0
 	a.stamina = 100.0
@@ -311,5 +286,63 @@ func _init() -> void:
 		),
 		"ninja dodge gives MP: %.0f" % n.mp
 	)
-	print("test_defence: %s" % ("FAILED (%d)" % _failed if _failed > 0 else "ok"))
-	quit(1 if _failed > 0 else 0)
+
+
+func _block_exhaustion(p, wolf, bl) -> void:
+	# No await between hits: the final valid block keeps its statuses out; the next hit gets no free block.
+	var old_damage: float = wolf.damage
+	wolf.damage = 100.0
+	wolf.hostility = &"H"
+	wolf.global_position = Vector3(0, 1, -1)
+	for shot in [false, true]:
+		for power in [25.0, 1.0]:  # positive power still blocks even below one hit's cost
+			_exhaustion_case(p, wolf, shot, power)
+	wolf.damage = old_damage
+	wolf.hostility = &"P"
+	p.hp = p.max_hp
+	p.block_power = float(bl["max"]) - float(bl["power-per-hit"])
+	p.statuses.clear()
+	p._push = Vector3.ZERO
+	p.velocity = Vector3.ZERO
+
+
+func _exhaustion_case(p, wolf, shot, power) -> void:
+	p.hp = 1000.0
+	p.mp = 0.0
+	p.block_power = power
+	p.blocking = true
+	p.statuses.clear()
+	p._push = Vector3.ZERO
+	p.velocity = Vector3.ZERO
+	for hit in 2:
+		_exhaustion_hit(p, wolf, shot, power, hit)
+
+
+func _exhaustion_hit(p, wolf, shot, power, hit) -> void:
+	var hp0: float = p.hp
+	if shot:
+		wolf._strike(p.global_position + Vector3.UP, 0.5, 100.0, false, [&"slow"])
+	else:
+		wolf.state = wolf.State.ATTACK
+		wolf._windup = 0.0
+		wolf._tick(0.0)
+	var label := "exhaustion shot=%s power=%s hit=%d" % [shot, power, hit + 1]
+	_block_hit_result(p, hp0, hit, label, shot)
+
+
+func _block_hit_result(p, hp0, hit, label, shot) -> void:
+	check(
+		is_equal_approx(hp0 - p.hp, 20.0 if hit == 0 else 100.0),
+		"%s: damage %.1f" % [label, hp0 - p.hp]
+	)
+	check(is_zero_approx(p.block_power), "%s: power empty" % label)
+	check(is_equal_approx(p.mp, 8.0), "%s: MP only for the valid block, got %.1f" % [label, p.mp])
+	if hit == 0:
+		check(
+			p.statuses.is_empty() and p._push == Vector3.ZERO,
+			"%s: final valid block stops all attached statuses" % label
+		)
+	else:
+		check(p.stunned() and p._push.length() > 0.0, "%s: next hit can stun and push" % label)
+		if shot:
+			check(p.statuses.has(&"slow"), "%s: next shot applies its role status" % label)

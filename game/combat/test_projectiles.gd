@@ -130,85 +130,7 @@ func _ordinary_contacts() -> void:
 		[&"bow", "m1", 0.0, 0.0, 0.0, false, true, false, 1.0],
 		[&"bow", "m1", 0.0, 0.0, 0.0, false, false, true, 40.0],
 	]:
-		var mage: bool = case[0] == &"bracelet"
-		var p := _player(
-			&"mage" if mage else &"ranger", &"fire-mage" if mage else &"sniper", Vector3(99.8, 0, 0)
-		)
-		p.set_physics_process(false)
-		_equip(p, case[0])
-		p.weapon["damage"] = 40.0
-		p.crit_chance = case[2]
-		p.combo = 0
-		p.mp = 0
-		var a := _wolf(p, Vector3(99.9, 0, -3))
-		var b := _wolf(p, Vector3(100.1, 0, -3))
-		for body in [a, b]:
-			body.hp = 1000.0
-			body.armor = case[3]
-			body.resistance = case[4]
-		if case[5]:
-			a.state = a.State.RETURN
-		if case[6]:
-			a.hp = 1.0
-		await _frames(2)
-		var config: Dictionary = design.movesets[case[0]][case[1]]
-		var candidates: Array = p.bodies_within(Vector3(100, .5, -3), float(config.radius))
-		check(
-			candidates == [a, b], "ordinary setup: two bodies in shooter-distance order %s" % [case]
-		)
-		var ha: float = a.hp
-		var hb: float = b.hp
-		var shot = (
-			p
-			. _fire(
-				config, 40, true, [&"burning", &"slow"], Vector3(100, .5, 0), p.weapon_attack_type()
-			)[0]
-		)
-		shot.set_physics_process(false)
-		var record: Dictionary = shot.attack
-		if case[7]:
-			p.inventory.unequip(&"main-hand")
-			check(p.weapon.is_empty(), "ordinary setup: now unarmed")
-		for i in 30:
-			if shot.is_queued_for_deletion():
-				break
-			shot._physics_process(1.0 / 60.0)
-		check(
-			record.hits == 1 and record.live == 0 and shot.is_queued_for_deletion(),
-			(
-				"ordinary one contact retires %s: hits=%d total_damage=%f"
-				% [case, record.hits, ha - a.hp + hb - b.hp]
-			)
-		)
-		check(
-			is_equal_approx(ha - a.hp, case[8]) and b.hp == hb,
-			"ordinary only first receives unchanged damage %s" % [case]
-		)
-		check(b.statuses.is_empty(), "ordinary no status spill %s" % [case])
-		if case[6]:
-			check(
-				a.dead and a.statuses.is_empty(), "ordinary lethal contact cannot reattach statuses"
-			)
-		else:
-			check(
-				a.statuses.has(&"burning") and a.statuses.has(&"slow"),
-				"ordinary selected body receives statuses %s" % [case]
-			)
-			var before: float = a.hp
-			a.tick_statuses(.5)
-			check(
-				is_equal_approx(before - a.hp, float(case[8]) * .1),
-				"ordinary burn inherits defence once %s" % [case]
-			)
-		check(
-			p.combo == 1 and p.mp == (0 if mage else 8),
-			"ordinary once-per-volley reward %s" % [case]
-		)
-		_clear_shots()
-		a.get_parent().free()
-		b.get_parent().free()
-		p.free()
-		await _frames(2)
+		await _ordinary_contact(case)
 
 
 ## Splash/pierce and the other shared-strike callers must remain multi-target.
@@ -223,56 +145,7 @@ func _multi_contacts() -> void:
 		body.armor = 0
 		body.resistance = 0
 	await _frames(2)
-	for config in [
-		design.movesets.bow.m2,
-		design.movesets.bracelet.m2,
-		design.abilities["fire-missiles"],
-		design.abilities.bubbles,
-		design.movesets.boomerang.m1,
-		design.abilities["shuriken-attack"].throw
-	]:
-		p.combo = 0
-		p.mp = 0
-		# At five blocks the outbound and return crossings both span a scheduled pierce tick.
-		a.position.z = -5 if config.has("return") else -2
-		b.position.z = a.position.z
-		await _frames(2)
-		var ha: float = a.hp
-		var hb: float = b.hp
-		var shots: Array = p._fire(config, 40, false, [], Vector3(100, .5, 0))
-		var record: Dictionary = shots[0].attack
-		var ordinary: bool = not config.has("splash") and not config.has("pierce")
-		for shot in shots:
-			shot.set_physics_process(false)
-			var before: int = record.hits
-			var outbound_hits := 0
-			var return_hits := 0
-			for i in 240:
-				if shot.is_queued_for_deletion():
-					break
-				var previous: int = record.hits
-				shot._physics_process(1.0 / 60.0)
-				if shot._returning:
-					return_hits += int(record.hits) - previous
-				else:
-					outbound_hits += int(record.hits) - previous
-			if ordinary:
-				check(
-					record.hits - before == 1, "each of five shuriken selects one overlapping body"
-				)
-			if config.has("return"):
-				check(
-					shot._returning and outbound_hits >= 2 and return_hits >= 2,
-					(
-						"boomerang returns and re-hits overlapping bodies: returning=%s hits=%d t=%f at=%s"
-						% [shot._returning, record.hits, shot._t, shot.global_position]
-					)
-				)
-		check(record.live == 0 and record.hits >= shots.size(), "volley settles all shots")
-		if not ordinary:
-			check(a.hp < ha and b.hp < hb, "splash/pierce preserve multiple targets %s" % [config])
-		check(p.combo == 1 and p.mp == 0, "multi-target volley rewards once")
-		_clear_shots()
+	await _volleys(p, a, b)
 	a.position.z = -2
 	b.position.z = -2
 	await _frames(2)
@@ -323,6 +196,20 @@ func _init() -> void:
 	floor.position.y = -0.5
 	root.add_child(floor)
 
+	var pair = await _bow()
+	var p = pair[0]
+	var wolf = pair[1]
+	await _mage()
+	await _boomerang(p, wolf)
+	await _rogue()
+	await _warrior()
+	await _ordinary_contacts()
+	await _multi_contacts()
+	print("test_projectiles: %s" % ("OK" if _failed == 0 else "%d FAILED" % _failed))
+	quit(1 if _failed > 0 else 0)
+
+
+func _bow():
 	# --- ranger: bow arrow
 	var p := _player(&"ranger", &"sniper", Vector3(0, 1, 0))
 	var wolf := _wolf(p, Vector3(0, 1, -4))
@@ -360,14 +247,17 @@ func _init() -> void:
 	check(_shots() == 4, "bow M2 volley of 4: %d" % _shots())
 	await _frames(120)
 	check(_shots() == 0, "volley resolved")
+	return [p, wolf]
 
+
+func _mage() -> void:
 	# --- mage: wand beam and staff at cursor are instant
 	var m := _player(&"mage", &"fire-mage", Vector3(20, 1, 0))
 	var w2 := _wolf(m, Vector3(20, 1, -8))
 	await _frames(5)
 	_aim_at(m, w2)
 	_equip(m, &"wand")
-	hp0 = w2.hp
+	var hp0: float = w2.hp
 	await _m1(m)
 	check(w2.hp < hp0 and m.combo == 1, "wand beam hits at 8 blocks instantly")
 	_equip(m, &"staff")
@@ -424,13 +314,15 @@ func _init() -> void:
 		"all four burns retain eight ticks without replacement"
 	)
 
+
+func _boomerang(p, wolf) -> void:
 	# --- ranger boomerang: pierces, ticks, returns
 	_equip(p, &"boomerang")
 	wolf.position = Vector3(0, 1, -3)
 	await _frames(2)
 	_aim_at(p, wolf)
 	_clear_shots()
-	hp0 = wolf.hp
+	var hp0: float = wolf.hp
 	await _m1(p)
 	await _frames(35)
 	var ticks: float = (hp0 - wolf.hp) / (float(p.weapon["damage"]) * 0.5)
@@ -439,6 +331,8 @@ func _init() -> void:
 	await _frames(150)
 	check(_shots() == 0, "boomerang came back and vanished")
 
+
+func _rogue() -> void:
 	# --- rogue: dagger M2 poison, longsword lunge
 	var r := _player(&"rogue", &"ninja", Vector3(40, 1, 0))
 	var w3 := _wolf(r, Vector3(40, 1, -1.5))
@@ -446,7 +340,7 @@ func _init() -> void:
 	_aim_at(r, w3)
 	check(r.moveset["m1"].get("swing-mult", 1.0) < 1.0, "dagger swings faster")
 	r.crit_chance = 1.0
-	hp0 = w3.hp
+	var hp0: float = w3.hp
 	await _m2(r)
 	check(w3.statuses.has(&"poison") and w3.stunned(), "dagger ambush poisons and stuns")
 	var dagger_hit: float = hp0 - w3.hp
@@ -487,6 +381,8 @@ func _init() -> void:
 	)
 	await _frames(60)
 
+
+func _warrior() -> void:
 	# --- warrior: greatsword finisher every 3rd hit
 	var wa := _player(&"warrior", &"berserker", Vector3(60, 1, 0))
 	var w4 := _wolf(wa, Vector3(60, 1, -2))
@@ -502,7 +398,163 @@ func _init() -> void:
 	w4.hp = 1.0
 	wa._strike(w4.global_position + Vector3.UP * .5, 1.0, 100, false, [&"burning", &"slow"])
 	check(w4.dead and w4.statuses.is_empty(), "lethal player strike cannot re-add attached effects")
-	await _ordinary_contacts()
-	await _multi_contacts()
-	print("test_projectiles: %s" % ("OK" if _failed == 0 else "%d FAILED" % _failed))
-	quit(1 if _failed > 0 else 0)
+
+
+func _ordinary_contact(case) -> void:
+	var mage: bool = case[0] == &"bracelet"
+	var p := _player(
+		&"mage" if mage else &"ranger", &"fire-mage" if mage else &"sniper", Vector3(99.8, 0, 0)
+	)
+	p.set_physics_process(false)
+	_equip(p, case[0])
+	p.weapon["damage"] = 40.0
+	p.crit_chance = case[2]
+	p.combo = 0
+	p.mp = 0
+	var a := _wolf(p, Vector3(99.9, 0, -3))
+	var b := _wolf(p, Vector3(100.1, 0, -3))
+	_ordinary_fixture(a, b, case)
+	await _frames(2)
+	var config: Dictionary = design.movesets[case[0]][case[1]]
+	var candidates: Array = p.bodies_within(Vector3(100, .5, -3), float(config.radius))
+	check(candidates == [a, b], "ordinary setup: two bodies in shooter-distance order %s" % [case])
+	var ha: float = a.hp
+	var hb: float = b.hp
+	var shot = (
+		p
+		. _fire(
+			config, 40, true, [&"burning", &"slow"], Vector3(100, .5, 0), p.weapon_attack_type()
+		)[0]
+	)
+	shot.set_physics_process(false)
+	var record: Dictionary = shot.attack
+	if case[7]:
+		p.inventory.unequip(&"main-hand")
+		check(p.weapon.is_empty(), "ordinary setup: now unarmed")
+	for i in 30:
+		if shot.is_queued_for_deletion():
+			break
+		shot._physics_process(1.0 / 60.0)
+	_ordinary_result(p, a, b, shot, record, case, mage, ha, hb)
+	_clear_shots()
+	a.get_parent().free()
+	b.get_parent().free()
+	p.free()
+	await _frames(2)
+
+
+func _volleys(p, a, b) -> void:
+	for config in [
+		design.movesets.bow.m2,
+		design.movesets.bracelet.m2,
+		design.abilities["fire-missiles"],
+		design.abilities.bubbles,
+		design.movesets.boomerang.m1,
+		design.abilities["shuriken-attack"].throw
+	]:
+		await _volley(p, a, b, config)
+
+
+func _volley(p, a, b, config) -> void:
+	p.combo = 0
+	p.mp = 0
+	# At five blocks the outbound and return crossings both span a scheduled pierce tick.
+	a.position.z = -5 if config.has("return") else -2
+	b.position.z = a.position.z
+	await _frames(2)
+	var ha: float = a.hp
+	var hb: float = b.hp
+	var shots: Array = p._fire(config, 40, false, [], Vector3(100, .5, 0))
+	var record: Dictionary = shots[0].attack
+	var ordinary: bool = not config.has("splash") and not config.has("pierce")
+	_volley_flight(shots, record, ordinary, config)
+	_volley_result(p, a, b, record, shots, ordinary, config, ha, hb)
+
+
+func _volley_flight(shots, record, ordinary, config) -> void:
+	for shot in shots:
+		_shot_flight(shot, record, ordinary, config)
+
+
+func _shot_flight(shot, record, ordinary, config) -> void:
+	shot.set_physics_process(false)
+	var before: int = record.hits
+	var outbound_hits := 0
+	var return_hits := 0
+	for i in 240:
+		if shot.is_queued_for_deletion():
+			break
+		var previous: int = record.hits
+		shot._physics_process(1.0 / 60.0)
+		if shot._returning:
+			return_hits += int(record.hits) - previous
+		else:
+			outbound_hits += int(record.hits) - previous
+	_shot_result(shot, record, ordinary, config, before, outbound_hits, return_hits)
+
+
+func _ordinary_result(p, a, b, shot, record, case, mage, ha, hb) -> void:
+	check(
+		record.hits == 1 and record.live == 0 and shot.is_queued_for_deletion(),
+		(
+			"ordinary one contact retires %s: hits=%d total_damage=%f"
+			% [case, record.hits, ha - a.hp + hb - b.hp]
+		)
+	)
+	check(
+		is_equal_approx(ha - a.hp, case[8]) and b.hp == hb,
+		"ordinary only first receives unchanged damage %s" % [case]
+	)
+	check(b.statuses.is_empty(), "ordinary no status spill %s" % [case])
+	_ordinary_status(a, case)
+	check(
+		p.combo == 1 and p.mp == (0 if mage else 8), "ordinary once-per-volley reward %s" % [case]
+	)
+
+
+func _volley_result(p, a, b, record, shots, ordinary, config, ha, hb) -> void:
+	check(record.live == 0 and record.hits >= shots.size(), "volley settles all shots")
+	if not ordinary:
+		check(a.hp < ha and b.hp < hb, "splash/pierce preserve multiple targets %s" % [config])
+	check(p.combo == 1 and p.mp == 0, "multi-target volley rewards once")
+	_clear_shots()
+
+
+func _ordinary_fixture(a, b, case) -> void:
+	for body in [a, b]:
+		body.hp = 1000.0
+		body.armor = case[3]
+		body.resistance = case[4]
+	if case[5]:
+		a.state = a.State.RETURN
+	if case[6]:
+		a.hp = 1.0
+
+
+func _shot_result(shot, record, ordinary, config, before, outbound_hits, return_hits) -> void:
+	if ordinary:
+		check(record.hits - before == 1, "each of five shuriken selects one overlapping body")
+	if config.has("return"):
+		check(
+			shot._returning and outbound_hits >= 2 and return_hits >= 2,
+			(
+				"boomerang returns and re-hits overlapping bodies: returning=%s hits=%d t=%f at=%s"
+				% [shot._returning, record.hits, shot._t, shot.global_position]
+			)
+		)
+
+
+func _ordinary_status(a, case) -> void:
+	if case[6]:
+		check(a.dead and a.statuses.is_empty(), "ordinary lethal contact cannot reattach statuses")
+	else:
+		check(
+			a.statuses.has(&"burning") and a.statuses.has(&"slow"),
+			"ordinary selected body receives statuses %s" % [case]
+		)
+		var before: float = a.hp
+		a.tick_statuses(.5)
+		check(
+			is_equal_approx(before - a.hp, float(case[8]) * .1),
+			"ordinary burn inherits defence once %s" % [case]
+		)

@@ -1,5 +1,46 @@
 # Handoff — pending continuation
 
+## Mutation harness caller budget — before future reuse
+
+The standalone mutation harness can run three 681-second Godot commands per selected row
+plus Nix overhead. A successful 900-second outer invocation is not a worst-case ownership
+guarantee. Before any separately selected reuse, budget the whole owned unit and retain
+actual child wait/cleanup evidence; do not lose the Python waiter as in the archived batch.
+No further mutation batch is required for the current refactor. Original failed/unknown
+receipts and the owner-accepted boss-exit disposition are retained outside tracked source at
+`/home/theta/.pi-game-dev/recovery/pixlnd-quality-gate-refactor/task5-boss-test-rebuild.frtFvi/owner-exit-disposition.08xs3F/`.
+
+## External headed-comparison wrapper — optional result metadata failure
+
+The capture child completed and its saved report/images remain usable, but the external
+ignored `task5-headed-retry-workflow.js` then failed `state.set('capture-result')` because
+`outputPathMapping` was undefined rather than a JSON value. This is orchestration bookkeeping,
+not a failed game capture or a fix for the original headless nonexit. The failed workflow
+receipt remains unchanged; actual final images/logs were independently inspected by parent.
+Evidence: `/home/theta/.pi-game-dev/recovery/pixlnd-quality-gate-refactor/task5-headed-compare.iqIM96/retry-1/wrapper-failure/`.
+Before reusing that script, separately correct/check optional-field serialization (omit absent
+fields or normalize them to JSON values). No capture replay, gameplay change or Task5 acceptance
+is authorized by recording this finding.
+
+## Boss-exit capture — unmodified-target integration remains unqualified
+
+The current external recorder requires a cooperating harmless fixture to publish startup
+readiness and wait for registration. That protocol is not present in unmodified Godot;
+do not add it to game code or treat fixture qualification as game capture readiness.
+Loss before spawn/ready notification, initial ownership failure and unprovable adoption
+remain unqualified; rejecting an unsafe signal does not guarantee descendant cleanup.
+
+Before any game reuse, separately select and verify an unmodified-target ownership,
+registration and bounded-cleanup path. A trace of an actual failing game thread and a
+matched discriminator for its origin are still missing. The original two 681-second
+failures, earlier unknown result and later natural exits remain distinct and unresolved.
+No further fixture/game run, gameplay remedy or Task 5 acceptance follows from this note.
+
+Scope, residual limits and the qualified external-tool evidence are preserved in:
+`/home/theta/.pi-game-dev/sessions/--home-theta-repos-pixlnd--/subagent-artifacts/outputs/c2911a8f-6bce-4d35-b946-218ca7fe723a/task5-recorder-r1-finalized/`.
+Keep prior executed versions and failed receipts immutable; do not reuse an older recorder
+merely because the newer cooperating-fixture paths have separate qualification.
+
 ## Pre-existing inventory read-only error paths — deferred
 
 Bounded Task 2 probes observed existing behavior when public inventory containers are

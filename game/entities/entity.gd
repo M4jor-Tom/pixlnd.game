@@ -86,10 +86,7 @@ func apply_status(id: StringName, cfg: Dictionary, hit: float, from: Node) -> vo
 	_learn_feel(from)
 	match StringName(str(cfg.get("as", id))):
 		&"stun":
-			if not statuses.has(&"stun") and not stun_immune():  # c-stun-immunity
-				statuses[&"stun"] = {"left": float(cfg["duration-s"])}
-				if feel != null:
-					_stars = feel.stars(self)  # ui.json#hud.stun-stars (D25)
+			_apply_stun(cfg)
 		&"knockback":
 			var d: Vector3 = global_position - (from as Node3D).global_position
 			d.y = 0.0
@@ -97,17 +94,7 @@ func apply_status(id: StringName, cfg: Dictionary, hit: float, from: Node) -> vo
 				d.normalized() * float(cfg["impulse"]) + Vector3.UP * float(cfg["impulse"]) * 0.25
 			)
 		&"burning":
-			if not statuses.has(id):
-				statuses[id] = []
-			statuses[id].append(
-				{
-					"left": float(cfg["duration-s"]),
-					"tick": float(cfg["tick-s"]),
-					"tick-s": float(cfg["tick-s"]),
-					"dmg": hit * float(cfg["pct-of-hit"]),
-					"from": from
-				}
-			)
+			_apply_dot(id, cfg, hit, from)
 		&"slow":
 			statuses[&"slow"] = {
 				"left": float(cfg["duration-s"]), "move-mult": float(cfg["move-mult"])
@@ -118,43 +105,9 @@ func tick_statuses(dt: float) -> void:
 	# Snapshot all lists and their applications before any damage callback can attach more effects.
 	var active := statuses.duplicate()
 	var applications_at_start := {}
-	for id in active:
-		if id in [&"burning", &"poison"]:
-			applications_at_start[id] = active[id].duplicate()
-	for id in active:
-		if dead:
-			return
-		if not is_same(statuses.get(id), active[id]):  # synchronous signals may clear/replace later effects
-			continue
-		if id in [&"burning", &"poison"]:
-			var applications: Array = active[id]
-			for s: Dictionary in applications_at_start[id]:
-				# Only time inside this application's lifetime can make ticks due, including the final tick.
-				s["tick"] -= minf(dt, s["left"])
-				s["left"] -= dt
-				while s["tick"] <= 1e-9:  # tolerate floating-point subtraction at exact boundaries
-					s["tick"] += s["tick-s"]
-					var before := hp
-					dot_tick = true  # D25: the number only, never the hurt bundle
-					take_damage(s["dmg"], s["from"] if is_instance_valid(s["from"]) else self, id)
-					dot_tick = false
-					if feel != null and before > hp:
-						feel.number(head(), before - hp, &"dot")
-					if dead or not is_same(statuses.get(id), applications):
-						break  # never resurrect a cleared/replaced application list
-				if dead or not is_same(statuses.get(id), applications):
-					break
-				if s["left"] <= 1e-9:
-					applications.erase(s)
-			if is_same(statuses.get(id), applications) and applications.is_empty():
-				statuses.erase(id)
-		else:
-			var s: Dictionary = statuses[id]
-			s["left"] -= dt
-			if s["left"] <= 0.0:
-				statuses.erase(id)
-				if id == &"stun":
-					clear_stars()
+	if not _snapshot_applications(active, applications_at_start):
+		return
+	_advance_statuses(active, applications_at_start, dt)
 
 
 ## The stun ended (or was cleared wholesale by a death / respawn): the stars go with it.
@@ -184,6 +137,72 @@ func step_up(motion: Vector3, step: float) -> void:
 	var collision := KinematicCollision3D.new()
 	if not test_move(global_transform, motion, collision):
 		return
+	_step_contacts(collision, motion, step)
+
+
+func _tick_applications(id, applications: Array, snapshot, dt: float) -> bool:
+	for s: Dictionary in snapshot:
+		var outcome := _advance_application(id, applications, s, dt)
+		if outcome == 0:
+			return false
+		if outcome == 2:
+			break
+	return _retire_applications(id, applications)
+
+
+func _tick_application(id, applications: Array, s: Dictionary, dt: float) -> bool:
+	s["tick"] -= minf(dt, s["left"])
+	s["left"] -= dt
+	while s["tick"] <= 1e-9:  # tolerate floating-point subtraction at exact boundaries
+		var active = _dot_damage(id, applications, s)
+		if active == null:
+			return false
+		if not active:
+			break  # never resurrect a cleared/replaced application list
+	return true
+
+
+func _apply_stun(cfg: Dictionary) -> void:
+	if not statuses.has(&"stun") and not stun_immune():  # c-stun-immunity
+		statuses[&"stun"] = {"left": float(cfg["duration-s"])}
+		if feel != null:
+			_stars = feel.stars(self)  # ui.json#hud.stun-stars (D25)
+
+
+func _apply_dot(id: StringName, cfg: Dictionary, hit: float, from: Node) -> void:
+	if not statuses.has(id):
+		statuses[id] = []
+	statuses[id].append(
+		{
+			"left": float(cfg["duration-s"]),
+			"tick": float(cfg["tick-s"]),
+			"tick-s": float(cfg["tick-s"]),
+			"dmg": hit * float(cfg["pct-of-hit"]),
+			"from": from
+		}
+	)
+
+
+func _tick_timed_status(id, dt: float) -> bool:
+	var s: Dictionary = statuses[id]
+	s["left"] -= dt
+	if s["left"] <= 0.0:
+		statuses.erase(id)
+		if id == &"stun":
+			clear_stars()
+	return true
+
+
+func _advance_status(id, active: Dictionary, applications_at_start: Dictionary, dt: float) -> bool:
+	if not is_same(statuses.get(id), active[id]):  # synchronous signals may clear/replace later effects
+		return true
+	if id in [&"burning", &"poison"]:
+		var applications: Array = active[id]
+		return _tick_applications(id, applications, applications_at_start[id], dt)
+	return _tick_timed_status(id, dt)
+
+
+func _step_contacts(collision: KinematicCollision3D, motion: Vector3, step: float) -> void:
 	var floor_only := true
 	for i in collision.get_collision_count():
 		if collision.get_angle(i, up_direction) > floor_max_angle:
@@ -194,3 +213,54 @@ func step_up(motion: Vector3, step: float) -> void:
 	var lift := Vector3.UP * (step + 0.05)
 	if not test_move(global_transform.translated(lift), motion):
 		global_position += lift
+
+
+func _dot_damage(id, applications: Array, s: Dictionary):
+	s["tick"] += s["tick-s"]
+	var before := hp
+	dot_tick = true  # D25: the number only, never the hurt bundle
+	take_damage(s["dmg"], s["from"] if is_instance_valid(s["from"]) else self, id)
+	dot_tick = false
+	if feel != null and before > hp:
+		feel.number(head(), before - hp, &"dot")
+	return _applications_active(id, applications)
+
+
+# Identity alone is not enough: synchronous death also stops a retained application list.
+func _applications_active(id, applications: Array) -> bool:
+	return not dead and is_same(statuses.get(id), applications)
+
+
+func _snapshot_applications(active: Dictionary, applications_at_start: Dictionary) -> bool:
+	for id in active:
+		if id in [&"burning", &"poison"]:
+			applications_at_start[id] = active[id].duplicate()
+	return true
+
+
+func _advance_statuses(active: Dictionary, applications_at_start: Dictionary, dt: float) -> void:
+	for id in active:
+		if dead:
+			return
+		if not _advance_status(id, active, applications_at_start, dt):
+			return
+
+
+# 0 = native noncompletion, 1 = continue, 2 = original list break after a callback.
+func _advance_application(id, applications: Array, s: Dictionary, dt: float) -> int:
+	# Only time inside this application's lifetime can make ticks due, including the final tick.
+	if not _tick_application(id, applications, s, dt):
+		return 0
+	if not _applications_active(id, applications):
+		return 2
+	if s["left"] <= 1e-9:
+		applications.erase(s)
+	return 1
+
+
+func _retire_applications(id, applications: Array) -> bool:
+	if not is_same(statuses.get(id), applications):
+		return true
+	if applications.is_empty():
+		statuses.erase(id)
+	return true

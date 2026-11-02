@@ -79,20 +79,7 @@ func sight(p) -> bool:
 func can_start(p) -> bool:
 	if p == null or not Targeting.valid_member(p) or p.get("dead"):
 		return false
-	var a: Array = boss.logical_position()
-	var b := Targeting.position_of(p)
-	var distance := Vector2(float(b[0]) - a[0], float(b[2]) - a[2]).length()
-	var profile: Dictionary = cfg[kind]
-	if absf(float(b[1]) - a[1]) > float(profile["start-height-diff"]):
-		return false
-	if kind == "stomp" and distance > float(profile.radius):
-		return false
-	if (
-		kind == "charge"
-		and (distance <= float(profile.range[0]) or distance > float(profile.range[1]))
-	):
-		return false
-	return sight(p)
+	return _start_geometry(p)
 
 
 func start(p) -> void:
@@ -144,49 +131,32 @@ func advance(dt: float) -> bool:
 	var unable: bool = boss.stunned() or returning
 	if unable:
 		cancel()
-	var remaining := dt
+	return _advance_phases(dt, unable)
+
+
+# Local [remaining, result] packets: null continues; bool returns suppression; [] is native failure.
+func _advance_phases(remaining: float, unable: bool) -> bool:
 	while true:
-		match saved.phase:
-			"ready", "cooldown":
-				if saved.phase == "ready":
-					if boss.target == null:
-						return false
-					saved.engaged = true
-				var step := minf(remaining, float(saved.left))
-				saved.left = maxf(0, saved.left - step)
-				saved.recovery = maxf(0, saved.recovery - step)
-				remaining -= step
-				if saved.left > 1e-9:
-					return float(saved.recovery) > 0
-				saved.left = 0.0
-				if unable or not can_start(boss.target):
-					return float(saved.recovery) > 0
-				start(boss.target)
-			"warning":
-				var p = victim()
-				if p == null or not sight(p):
-					finish()
-					return true
-				var step := minf(remaining, float(saved.left))
-				saved.left = maxf(0, saved.left - step)
-				remaining -= step
-				if saved.left > 1e-9:
-					return true
-				saved.left = 0.0
-				clear_warning()
-				if kind == "stomp":
-					stomp()
-					finish()
-				else:
-					saved.phase = "charge"
-			"charge":
-				if victim() == null:
-					finish()
-					return true
-				remaining -= charge(remaining)
+		var result := _phase(remaining, unable)
+		if result.is_empty():
+			return false
+		remaining = result[0]
+		if result[1] != null:
+			return result[1]
 		if remaining <= 1e-9:
 			break
-	return saved.phase in ["warning", "charge"] or float(saved.recovery) > 0
+	return _suppressed()
+
+
+func _phase(remaining: float, unable: bool) -> Array:
+	match saved.phase:
+		"ready", "cooldown":
+			return _cooldown_phase(remaining, unable)
+		"warning":
+			return _warning_phase(remaining)
+		"charge":
+			return _charge_phase(remaining)
+	return [remaining, null]
 
 
 func hit_player(view, multiplier: float) -> void:
@@ -206,22 +176,8 @@ func stomp() -> void:
 	var origin: Array = saved.origin
 	var rules: Dictionary = cfg.stomp
 	for p in boss.targeting.party():
-		var point := Targeting.position_of(p)
-		var view = Targeting.view_of(p)
-		if p.get("dead") or view == null:
-			continue
-		if (
-			Vector2(float(point[0]) - origin[0], float(point[2]) - origin[2]).length()
-			> float(rules.radius)
-		):
-			continue
-		if (
-			point[1] < origin[1] + rules["victim-height"][0]
-			or point[1] > origin[1] + rules["victim-height"][1]
-		):
-			continue
-		if sight(p):
-			hit_player(view, float(rules["damage-mult"]))
+		if not _stomp_player(p, origin, rules):
+			return
 	contents.shatter_stomp(
 		origin, float(rules.radius), boss.damage * float(rules["damage-mult"]), boss
 	)
@@ -253,37 +209,172 @@ func charge(dt: float) -> float:
 	sweep.target_position = motion
 	for rid in _passed:
 		sweep.add_exception_rid(rid)
+	return _charge_contacts(sweep, rules, from, motion, distance, delta, dt)
+
+
+func _start_geometry(p) -> bool:
+	var a: Array = boss.logical_position()
+	var b := Targeting.position_of(p)
+	var distance := Vector2(float(b[0]) - a[0], float(b[2]) - a[2]).length()
+	var profile: Dictionary = cfg[kind]
+	if absf(float(b[1]) - a[1]) > float(profile["start-height-diff"]):
+		return false
+	return _start_range(p, profile, distance)
+
+
+func _stomp_player(p, origin: Array, rules: Dictionary) -> bool:
+	var point := Targeting.position_of(p)
+	var view = Targeting.view_of(p)
+	if p.get("dead") or view == null:
+		return true
+	if (
+		Vector2(float(point[0]) - origin[0], float(point[2]) - origin[2]).length()
+		> float(rules.radius)
+	):
+		return true
+	if (
+		point[1] < origin[1] + rules["victim-height"][0]
+		or point[1] > origin[1] + rules["victim-height"][1]
+	):
+		return true
+	if sight(p):
+		hit_player(view, float(rules["damage-mult"]))
+	return true
+
+
+func _charge_contacts(
+	sweep: ShapeCast3D,
+	rules: Dictionary,
+	from: Vector3,
+	motion: Vector3,
+	distance: float,
+	delta: Vector3,
+	dt: float
+) -> float:
 	var fraction := 1.0
 	var stopped := false
 	while true:
 		sweep.force_shapecast_update()
-		var body
-		for i in sweep.get_collision_count():
-			# The native cast collects all contacts at impact, including supporting floor contacts.
-			# Only a contact opposing this horizontal attack can obstruct it.
-			if sweep.get_collision_normal(i).dot(motion) < 0:
-				body = sweep.get_collider(i)
-				break
+		var body = _first_obstacle(sweep, motion)
 		if body == null:
 			break
 		fraction = sweep.get_closest_collision_safe_fraction()
-		var rid: RID = body.get_rid()
-		if body.has_meta("rubble"):
-			contents.break_rubble(body.get_meta("rubble"))
-			sweep.add_exception_rid(rid)
-			_passed.append(rid)
+		var result := _charge_contact(sweep, body, rules)
+		if result == 0:
+			return 0.0
+		if result == 1:
 			fraction = 1.0
 			continue
-		if body.has_method("take_direct_damage"):
-			body.take_direct_damage(boss.damage * float(rules["damage-mult"]), boss)
-			sweep.add_exception_rid(rid)
-			_passed.append(rid)
-			fraction = 1.0
-			continue
-		if boss.targeting.party().any(func(p): return Targeting.view_of(p) == body):
-			hit_player(body, float(rules["damage-mult"]))
 		stopped = true
 		break
+	return _finish_charge_motion(sweep, from, motion, fraction, distance, rules, stopped, delta, dt)
+
+
+func _cooldown_phase(remaining: float, unable: bool) -> Array:
+	if saved.phase == "ready":
+		if boss.target == null:
+			return [remaining, false]
+		saved.engaged = true
+	var step := minf(remaining, float(saved.left))
+	saved.left = maxf(0, saved.left - step)
+	saved.recovery = maxf(0, saved.recovery - step)
+	remaining -= step
+	if saved.left > 1e-9:
+		return [remaining, float(saved.recovery) > 0]
+	saved.left = 0.0
+	return _cooldown_ready(remaining, unable)
+
+
+func _warning_phase(remaining: float) -> Array:
+	var p = victim()
+	if p == null or not sight(p):
+		finish()
+		return [remaining, true]
+	var step := minf(remaining, float(saved.left))
+	saved.left = maxf(0, saved.left - step)
+	remaining -= step
+	if saved.left > 1e-9:
+		return [remaining, true]
+	saved.left = 0.0
+	clear_warning()
+	if kind == "stomp":
+		stomp()
+		finish()
+	else:
+		saved.phase = "charge"
+	return [remaining, null]
+
+
+func _charge_phase(remaining: float) -> Array:
+	if victim() == null:
+		finish()
+		return [remaining, true]
+	remaining -= charge(remaining)
+	return [remaining, null]
+
+
+func _start_range(p, profile: Dictionary, distance: float) -> bool:
+	if kind == "stomp" and distance > float(profile.radius):
+		return false
+	if (
+		kind == "charge"
+		and (distance <= float(profile.range[0]) or distance > float(profile.range[1]))
+	):
+		return false
+	return sight(p)
+
+
+func _first_obstacle(sweep: ShapeCast3D, motion: Vector3):
+	var body
+	for i in sweep.get_collision_count():
+		# The native cast collects all contacts at impact, including supporting floor contacts.
+		# Only a contact opposing this horizontal attack can obstruct it.
+		if sweep.get_collision_normal(i).dot(motion) < 0:
+			body = sweep.get_collider(i)
+			break
+	return body
+
+
+# 0 = native noncompletion, 1 = passed rubble/prop, 2 = original blocking contact.
+func _charge_contact(sweep: ShapeCast3D, body, rules: Dictionary) -> int:
+	var rid: RID = body.get_rid()
+	if body.has_meta("rubble"):
+		contents.break_rubble(body.get_meta("rubble"))
+		sweep.add_exception_rid(rid)
+		_passed.append(rid)
+		return 1
+	if body.has_method("take_direct_damage"):
+		body.take_direct_damage(boss.damage * float(rules["damage-mult"]), boss)
+		sweep.add_exception_rid(rid)
+		_passed.append(rid)
+		return 1
+	if boss.targeting.party().any(func(p): return Targeting.view_of(p) == body):
+		hit_player(body, float(rules["damage-mult"]))
+	return 2
+
+
+func _suppressed() -> bool:
+	return saved.phase in ["warning", "charge"] or float(saved.recovery) > 0
+
+
+func _cooldown_ready(remaining: float, unable: bool) -> Array:
+	if unable or not can_start(boss.target):
+		return [remaining, float(saved.recovery) > 0]
+	start(boss.target)
+	return [remaining, null]
+
+
+func _finish_charge_motion(
+	sweep: ShapeCast3D,
+	from: Vector3,
+	motion: Vector3,
+	fraction: float,
+	distance: float,
+	rules: Dictionary,
+	stopped: bool,
+	delta: Vector3,
+	dt: float
+) -> float:
 	sweep.free()
 	boss.global_position = from + motion * fraction
 	boss.velocity.x = 0

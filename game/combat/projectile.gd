@@ -76,64 +76,13 @@ func _ready() -> void:
 
 
 func _physics_process(dt: float) -> void:
-	if shooter == null or not is_instance_valid(shooter) or shooter.dead:
+	var alive = _shooter_alive()
+	if alive == null:
+		return
+	if not alive:
 		_end()
 		return
-	var life := float(shot["life-s"])
-	_t += dt
-	_tick -= dt
-	_trail -= dt
-	var f = shooter.feel
-	if f != null and _trail <= 0.0:
-		_trail = f.trail_every
-		f.trail(global_position)
-	if shot.get("return", false) and not _returning and _t >= life * 0.5:
-		_returning = true
-	if _returning:
-		var to: Vector3 = shooter.global_position + Vector3.UP - global_position
-		if to.length() < 1.0:
-			_end()
-			return
-		vel = to.normalized() * float(shot["speed"])
-	else:
-		vel.y -= float(shot.get("gravity", 0.0)) * dt
-	var prev := global_position
-	var next := prev + vel * dt
-	var q := PhysicsRayQueryParameters3D.create(prev, next, 0xFFFFFFFF, [shooter.get_rid()])
-	var ray: Dictionary = shooter.get_world_3d().direct_space_state.intersect_ray(q)
-	var solid: bool = (
-		not ray.is_empty() and not (ray["collider"] as Object).has_method("take_damage")
-	)
-	global_position = ray["position"] if not ray.is_empty() else next
-	var radius := float(shot["radius"])
-	if shot.get("pierce", false):  # boomerang: re-hit every tick-s, only terrain stops it
-		if _tick <= 0.0:
-			_tick = float(shot["tick-s"])
-			_hit(shooter._strike(global_position, radius, dmg, combo_bonus, applies, attack_type))
-		if solid or _t >= life:
-			if solid:
-				_impact(0.0)
-			_end()
-		return
-	var splash := float(shot.get("splash", 0.0))
-	if splash > 0.0:
-		if not ray.is_empty() or not shooter.bodies_within(global_position, radius).is_empty():
-			_hit(shooter._strike(global_position, splash, dmg, combo_bonus, applies, attack_type))
-			_impact(splash)
-			_end()
-		elif _t >= life:
-			_end()
-		return
-	# Snapshot contact before a lethal strike removes it; props consume shots without combat rewards.
-	var contact: bool = not shooter.bodies_within(global_position, radius).is_empty()
-	var hits: int = shooter._strike(
-		global_position, radius, dmg, combo_bonus, applies, attack_type, 1
-	)
-	_hit(hits)
-	if contact or solid:
-		_impact(0.0)
-	if contact or solid or _t >= life:
-		_end()
+	_advance_flight(dt)
 
 
 ## D25 `impact` bundle where the shot landed; radius 0 = design.feel.impact.impact-radius.
@@ -155,14 +104,116 @@ func _hit(hits: int) -> void:
 
 func _end() -> void:
 	if not attack.is_empty():
-		attack["live"] -= 1
-		if (
-			attack["live"] <= 0
-			and attack["hits"] == 0
-			and shooter != null
-			and is_instance_valid(shooter)
-			and shooter.get("combo") != null
-		):
-			shooter.combo = 0  # c-combo-reset: the whole attack whiffed
+		if not _retire_attack():
+			return
 		attack = {}
 	queue_free()
+
+
+func _motion(dt: float, life: float) -> bool:
+	if shot.get("return", false) and not _returning and _t >= life * 0.5:
+		_returning = true
+	if _returning:
+		var to: Vector3 = shooter.global_position + Vector3.UP - global_position
+		if to.length() < 1.0:
+			_end()
+			return false
+		vel = to.normalized() * float(shot["speed"])
+	else:
+		vel.y -= float(shot.get("gravity", 0.0)) * dt
+	return true
+
+
+func _pierce_contact(radius: float, solid: bool, life: float) -> void:
+	if _tick <= 0.0:
+		_tick = float(shot["tick-s"])
+		_hit(shooter._strike(global_position, radius, dmg, combo_bonus, applies, attack_type))
+	if solid or _t >= life:
+		if solid:
+			_impact(0.0)
+		_end()
+
+
+func _splash_contact(radius: float, splash: float, ray: Dictionary, life: float) -> void:
+	if not ray.is_empty() or not shooter.bodies_within(global_position, radius).is_empty():
+		_hit(shooter._strike(global_position, splash, dmg, combo_bonus, applies, attack_type))
+		_impact(splash)
+		_end()
+	elif _t >= life:
+		_end()
+
+
+func _ordinary_contact(radius: float, solid: bool, life: float) -> void:
+	# Snapshot contact before a lethal strike removes it; props consume shots without combat rewards.
+	var contact: bool = not shooter.bodies_within(global_position, radius).is_empty()
+	var hits: int = shooter._strike(
+		global_position, radius, dmg, combo_bonus, applies, attack_type, 1
+	)
+	_hit(hits)
+	if contact or solid:
+		_impact(0.0)
+	if contact or solid or _t >= life:
+		_end()
+
+
+func _retire_attack() -> bool:
+	attack["live"] -= 1
+	if (
+		attack["live"] <= 0
+		and attack["hits"] == 0
+		and shooter != null
+		and is_instance_valid(shooter)
+		and shooter.get("combo") != null
+	):
+		shooter.combo = 0  # c-combo-reset: the whole attack whiffed
+	return true
+
+
+func _contacts(dt: float, life: float) -> void:
+	var prev := global_position
+	var next := prev + vel * dt
+	var q := PhysicsRayQueryParameters3D.create(prev, next, 0xFFFFFFFF, [shooter.get_rid()])
+	var ray: Dictionary = shooter.get_world_3d().direct_space_state.intersect_ray(q)
+	var solid: bool = (
+		not ray.is_empty() and not (ray["collider"] as Object).has_method("take_damage")
+	)
+	global_position = ray["position"] if not ray.is_empty() else next
+	var radius := float(shot["radius"])
+	_contact_family(radius, solid, life, ray)
+
+
+func _timers(dt: float) -> bool:
+	_t += dt
+	_tick -= dt
+	_trail -= dt
+	var f = shooter.feel
+	if f != null and _trail <= 0.0:
+		_trail = f.trail_every
+		f.trail(global_position)
+	return true
+
+
+func _contact_family(radius: float, solid: bool, life: float, ray: Dictionary) -> void:
+	if shot.get("pierce", false):
+		_pierce_contact(radius, solid, life)
+		return
+	var splash := float(shot.get("splash", 0.0))
+	if splash > 0.0:
+		_splash_contact(radius, splash, ray, life)
+		return
+	_ordinary_contact(radius, solid, life)
+
+
+func _shooter_alive():
+	if shooter == null or not is_instance_valid(shooter):
+		return false
+	return not shooter.dead
+
+
+func _advance_flight(dt: float) -> void:
+	var life := float(shot["life-s"])
+	if not _timers(dt):
+		return
+	if not _motion(dt, life):
+		return
+	_contacts(dt, life)

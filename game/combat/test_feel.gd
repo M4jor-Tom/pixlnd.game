@@ -109,13 +109,7 @@ func _count(type: String) -> int:
 func _spheres(radius: float) -> int:
 	var n := 0
 	for c in root.get_children():
-		if (
-			c is MeshInstance3D
-			and not c.is_queued_for_deletion()
-			and c.mesh is SphereMesh
-			and is_equal_approx(c.mesh.radius, radius)
-		):
-			n += 1
+		n += _count_sphere(c, radius)
 	return n
 
 
@@ -133,6 +127,44 @@ func _init() -> void:
 	design = o.configs["generators"]["design"]
 	var fl: Dictionary = design["feel"]
 
+	_config(fl)
+	InputMapBuilder.build(o.configs["keybinds"]["hybrid"])
+	var floor := StaticBody3D.new()
+	var cs := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = Vector3(400, 1, 400)
+	cs.shape = box
+	floor.add_child(cs)
+	floor.position.y = -0.5
+	root.add_child(floor)
+
+	feel = Feel.new()
+	root.add_child(feel)
+	var p := _player(&"warrior", Vector3(0, 1, 0))
+	feel.setup(fl, p.get_node("CameraRig"))
+	var rig := p.get_node("CameraRig")
+	var cam: Camera3D = rig.get_node("Arm/Camera")
+	var hud: CanvasLayer = HUD.new()
+	root.add_child(hud)
+	hud.bind(p, null)
+
+	await _hit_stop(fl)
+	await _trauma(fl, rig, cam)
+	var wolf = await _melee_number(p, fl)
+	await _kill(p, fl, rig)
+	await _aoe(p, fl)
+	await _hurt(p, wolf, fl)
+	await _dot(p, wolf, fl)
+	await _stun_stars(p, wolf)
+	await _bow(fl)
+	await _hud(p, hud, fl)
+	await _sfx(fl)
+	Engine.time_scale = 1.0
+	print("test_feel: %s" % ("OK" if _failed == 0 else "%d FAILED" % _failed))
+	quit(1 if _failed > 0 else 0)
+
+
+func _config(fl) -> void:
 	# --- c-feel-config
 	fl["events"]["hit"]["sfx"] = "nope"
 	check(not o.validate(), "c-feel-config rejects an sfx id that is not an alpha sound")
@@ -163,26 +195,8 @@ func _init() -> void:
 	fl["sfx"]["hit"]["slide"] = slide
 	check(o.validate(), "restored")
 
-	InputMapBuilder.build(o.configs["keybinds"]["hybrid"])
-	var floor := StaticBody3D.new()
-	var cs := CollisionShape3D.new()
-	var box := BoxShape3D.new()
-	box.size = Vector3(400, 1, 400)
-	cs.shape = box
-	floor.add_child(cs)
-	floor.position.y = -0.5
-	root.add_child(floor)
 
-	feel = Feel.new()
-	root.add_child(feel)
-	var p := _player(&"warrior", Vector3(0, 1, 0))
-	feel.setup(fl, p.get_node("CameraRig"))
-	var rig := p.get_node("CameraRig")
-	var cam: Camera3D = rig.get_node("Arm/Camera")
-	var hud: CanvasLayer = HUD.new()
-	root.add_child(hud)
-	hud.bind(p, null)
-
+func _hit_stop(fl) -> void:
 	# --- hit-stop: the real clock drops and restores the time scale, the longer bundle wins
 	var hs: Dictionary = fl["hit-stop"]
 	await process_frame
@@ -204,6 +218,8 @@ func _init() -> void:
 	await _real(float(fl["events"]["kill"]["hit-stop-s"]))
 	check(Engine.time_scale == 1.0, "the later end time released the stop")
 
+
+func _trauma(fl, rig, cam) -> void:
 	# --- trauma decays to rest
 	check(rig.trauma > 0.0, "the bundles left camera trauma (%.2f)" % rig.trauma)
 	await _real(1.0 / float(fl["shake"]["decay-per-s"]) + 0.4)
@@ -213,6 +229,8 @@ func _init() -> void:
 		"the camera rests at exactly 0 offsets"
 	)
 
+
+func _melee_number(p, fl):
 	# --- a melee hit floats one number, freed after life-s
 	var wolf := _wolf(p, Vector3(0, 1, -1.5))
 	await _frames(5)
@@ -228,7 +246,10 @@ func _init() -> void:
 		_count("Label3D") == before,
 		"the number was freed after life-s (%d left)" % _count("Label3D")
 	)
+	return wolf
 
+
+func _kill(p, fl, rig) -> void:
 	# --- a kill fires the kill bundle: more trauma than a hit
 	rig.trauma = 0.0
 	feel.play(&"hit")
@@ -245,12 +266,14 @@ func _init() -> void:
 	)
 	await _real(float(fl["events"]["kill"]["hit-stop-s"]) + 0.1)
 
+
+func _aoe(p, fl) -> void:
 	# --- one AoE strike: a number per body, but exactly ONE bundle (one sfx player)
 	var pack: Array = []
 	for i in 3:
 		pack.append(_wolf(p, Vector3(-0.6 + 0.6 * i, 1, -1.2)))
 	await _frames(4)
-	before = _count("Label3D")
+	var before := _count("Label3D")
 	var players: int = feel.get_child_count()
 	var swept: int = p._strike(p.global_position + Vector3.UP, 3.0, 20.0, false)
 	check(swept >= 3, "the sweep reached the whole pack (%d)" % swept)
@@ -266,8 +289,10 @@ func _init() -> void:
 		w.queue_free()
 	await _real(float(fl["numbers"]["life-s"]) + 0.3)
 
+
+func _hurt(p, wolf, fl) -> void:
 	# --- a creature hit on the player: hurt bundle + a red number of the HP actually lost
-	before = _count("Label3D")
+	var before := _count("Label3D")
 	wolf.damage = 10.0
 	wolf.target = p
 	var hp0: float = p.hp
@@ -276,26 +301,16 @@ func _init() -> void:
 		p.hp < hp0 and _count("Label3D") == before + 1,
 		"hurt bundle floats a number over the player"
 	)
-	p.hp = 4.0  # a killing blow reports the HP lost, not the raw damage
-	p.take_damage(1000.0, wolf)
-	var last: Label3D = null
-	for c in root.get_children():
-		if c is Label3D and not c.is_queued_for_deletion():
-			last = c
-	check(
-		last != null and last.text == "4",
-		(
-			"the hurt number is what we lost, not the raw hit (%s)"
-			% (last.text if last != null else "-")
-		)
-	)
+	_fatal_hurt_number(p, wolf)
 	p.dead = false
 	p.hp = p.max_hp
 	await _real(float(fl["numbers"]["life-s"]) + 0.3)
 
+
+func _dot(p, wolf, fl) -> void:
 	# --- a dot tick floats the orange number only: no hurt bundle, no second number
-	before = _count("Label3D")
-	players = feel.get_child_count()
+	var before := _count("Label3D")
+	var players: int = feel.get_child_count()
 	p.apply_status(&"burning", design["status-effects"]["burning"], 30.0, wolf)
 	p.tick_statuses(0.499)
 	check(_count("Label3D") == before, "no damage number before the first due tick")
@@ -311,6 +326,8 @@ func _init() -> void:
 	p.statuses.clear()
 	await _real(float(fl["numbers"]["life-s"]) + 0.3)
 
+
+func _stun_stars(p, wolf) -> void:
 	# --- stun stars over the wolf's head, gone the moment the stun ends
 	var se: Dictionary = design["status-effects"]
 	wolf.apply_status(&"stun", se["stun"], 10.0, p)
@@ -321,13 +338,15 @@ func _init() -> void:
 	await _frames(2)
 	check(_stars_on(wolf) == 0, "the stars went with the stun (%d left)" % _stars_on(wolf))
 
+
+func _bow(fl) -> void:
 	# --- a bow shot leaves trail pieces AND an impact flash of impact-radius
 	var flash_r := float(fl["impact"]["impact-radius"])
 	var r := _player(&"ranger", Vector3(30, 1, 0))
 	var w2 := _wolf(r, Vector3(30, 1, -5))
 	await _frames(5)
 	_aim_at(r, w2)
-	before = _count("MeshInstance3D")
+	var before := _count("MeshInstance3D")
 	check(_spheres(flash_r) == 0, "no impact flash before the shot")
 	await _m1(r)
 	await _frames(6)
@@ -343,6 +362,8 @@ func _init() -> void:
 	check(flashes >= 1, "the hit left an impact flash of impact-radius (%d)" % flashes)
 	await _real(float(fl["events"]["hit"]["hit-stop-s"]) + 0.05)
 
+
+func _hud(p, hud, fl) -> void:
 	# --- the HUD: level-up toast text, then one buff icon that goes when the buff expires
 	p.gain_xp(100000)
 	check(p.level > 1, "leveled up (level %d)" % p.level)
@@ -366,8 +387,10 @@ func _init() -> void:
 		"the icon went with the buff (%d left)" % hud._buffs.get_child_count()
 	)
 
+
+func _sfx(fl) -> void:
 	# --- every event id plays exactly one sfx player, freed again after len-s
-	players = feel.get_child_count()
+	var players: int = feel.get_child_count()
 	var played := 0
 	for id in fl["events"]:
 		feel.play(StringName(id))
@@ -383,6 +406,34 @@ func _init() -> void:
 	)
 	check(Engine.time_scale == 1.0, "every event bundle played and the time scale is back to 1.0")
 
-	Engine.time_scale = 1.0
-	print("test_feel: %s" % ("OK" if _failed == 0 else "%d FAILED" % _failed))
-	quit(1 if _failed > 0 else 0)
+
+func _count_sphere(c, radius: float) -> int:
+	if (
+		c is MeshInstance3D
+		and not c.is_queued_for_deletion()
+		and c.mesh is SphereMesh
+		and is_equal_approx(c.mesh.radius, radius)
+	):
+		return 1
+	return 0
+
+
+func _fatal_hurt_number(p, wolf) -> void:
+	p.hp = 4.0  # a killing blow reports the HP lost, not the raw damage
+	p.take_damage(1000.0, wolf)
+	var last: Label3D = _last_hurt_label()
+	check(
+		last != null and last.text == "4",
+		(
+			"the hurt number is what we lost, not the raw hit (%s)"
+			% (last.text if last != null else "-")
+		)
+	)
+
+
+func _last_hurt_label() -> Label3D:
+	var last: Label3D = null
+	for c in root.get_children():
+		if c is Label3D and not c.is_queued_for_deletion():
+			last = c
+	return last

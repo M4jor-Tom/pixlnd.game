@@ -81,13 +81,7 @@ func pure_stun(mode: int) -> void:
 		var hp: float = w.hp
 		w.take_damage(10, source)
 		check(is_equal_approx(hp - w.hp, 1), "stunned return retains damage reduction")
-	for i in 150:
-		if not w.stunned():
-			break
-		await frames(1)
-	await frames(2)
-	check(not w.stunned() and w.velocity.x > 1, "ordinary AI resumes on expiry " + str(mode))
-	w.free()
+	await _pure_stun_resume(w, mode)
 
 
 func mixed_status(stun_first: bool, obstruction: String) -> void:
@@ -107,46 +101,8 @@ func mixed_status(stun_first: bool, obstruction: String) -> void:
 	var at: Vector3 = w.position
 	await frames(6)
 	check(w.position.x < at.x - 0.1, "legitimate push opposes previous AI " + label)
-	if obstruction == "open":
-		check(
-			is_equal_approx(w.velocity.x, -8), "only external horizontal impulse carried " + label
-		)
-	else:
-		var touched_wall: bool = w.is_on_wall()
-		for i in 24:
-			await frames(1)
-			touched_wall = touched_wall or w.is_on_wall()
-		check(
-			touched_wall and absf(w.velocity.x) < 0.01, "wall consumes blocked component " + label
-		)
-		var stopped: Vector3 = w.position
-		obstacle.free()
-		await frames(12)
-		check(
-			absf(w.position.x - stopped.x) < 0.01,
-			"no reinjected push or reverse AI after wall removal " + label
-		)
-		if obstruction == "slide":
-			check(w.position.z > stopped.z + 0.1, "unblocked slide component survives " + label)
-		else:
-			check(
-				absf(w.position.z - stopped.z) < 0.01, "head-on wall has no sideways drift " + label
-			)
-	# Ordinary ownership must retire old impulse, not revive it on a later pure stun.
-	for i in 150:
-		if not w.stunned():
-			break
-		await frames(1)
-	await frames(3)
-	check(not w.stunned() and w.velocity.x > 1, "post-push chase resumes " + label)
-	w.apply_status(&"stun", design["status-effects"].stun, 0, source)
-	at = w.position
-	await frames(6)
-	check(
-		absf(w.position.x - at.x) < 0.01 and absf(w.position.z - at.z) < 0.01,
-		"later pure stun has no stale impulse " + label
-	)
-	w.free()
+	await _obstructed_push(w, obstacle, obstruction, label)
+	await _retire_push(w, label)
 
 
 func inactive_and_dead() -> void:
@@ -169,13 +125,7 @@ func inactive_and_dead() -> void:
 		w.position.x < at.x - 0.1 and w.statuses[&"stun"].left < left,
 		"reentering simulation resumes actual push and clock"
 	)
-	w.take_damage(w.max_hp, source)
-	at = w.position
-	await frames(2)
-	check(
-		w.dead and w.position == at and not w.is_physics_processing(), "dead creature stops physics"
-	)
-	w.free()
+	await _death_freeze(w)
 
 
 func run() -> void:
@@ -200,3 +150,73 @@ func run() -> void:
 	await frames(2)
 	print("stun motion ok" if failed == 0 else "stun motion FAILED " + str(failed))
 	quit(0 if failed == 0 else 1)
+
+
+func _pure_stun_resume(w, mode) -> void:
+	for i in 150:
+		if not w.stunned():
+			break
+		await frames(1)
+	await frames(2)
+	check(not w.stunned() and w.velocity.x > 1, "ordinary AI resumes on expiry " + str(mode))
+	w.free()
+
+
+func _retire_push(w, label) -> void:
+	# Ordinary ownership must retire old impulse, not revive it on a later pure stun.
+	for i in 150:
+		if not w.stunned():
+			break
+		await frames(1)
+	await frames(3)
+	check(not w.stunned() and w.velocity.x > 1, "post-push chase resumes " + label)
+	await _later_pure_stun(w, label)
+
+
+func _obstructed_push(w, obstacle, obstruction, label) -> void:
+	if obstruction == "open":
+		check(
+			is_equal_approx(w.velocity.x, -8), "only external horizontal impulse carried " + label
+		)
+	else:
+		await _wall_component(w, obstacle, obstruction, label)
+
+
+func _death_freeze(w) -> void:
+	w.take_damage(w.max_hp, source)
+	var at: Vector3 = w.position
+	await frames(2)
+	check(
+		w.dead and w.position == at and not w.is_physics_processing(), "dead creature stops physics"
+	)
+	w.free()
+
+
+func _later_pure_stun(w, label) -> void:
+	w.apply_status(&"stun", design["status-effects"].stun, 0, source)
+	var at: Vector3 = w.position
+	await frames(6)
+	check(
+		absf(w.position.x - at.x) < 0.01 and absf(w.position.z - at.z) < 0.01,
+		"later pure stun has no stale impulse " + label
+	)
+	w.free()
+
+
+func _wall_component(w, obstacle, obstruction, label) -> void:
+	var touched_wall: bool = w.is_on_wall()
+	for i in 24:
+		await frames(1)
+		touched_wall = touched_wall or w.is_on_wall()
+	check(touched_wall and absf(w.velocity.x) < 0.01, "wall consumes blocked component " + label)
+	var stopped: Vector3 = w.position
+	obstacle.free()
+	await frames(12)
+	check(
+		absf(w.position.x - stopped.x) < 0.01,
+		"no reinjected push or reverse AI after wall removal " + label
+	)
+	if obstruction == "slide":
+		check(w.position.z > stopped.z + 0.1, "unblocked slide component survives " + label)
+	else:
+		check(absf(w.position.z - stopped.z) < 0.01, "head-on wall has no sideways drift " + label)

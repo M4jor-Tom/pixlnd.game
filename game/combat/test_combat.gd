@@ -33,20 +33,7 @@ func _init() -> void:
 	check(o.validate(), "ontology valid")
 	var design: Dictionary = o.configs["generators"]["design"]
 	var cb: Dictionary = design["combat"]
-	check(
-		is_equal_approx(Combat.weapon_damage(1, 0, 4, cb), 40.0),
-		"level-1 common sword = 40: %.1f" % Combat.weapon_damage(1, 0, 4, cb)
-	)
-	check(is_equal_approx(Combat.after_armor(40.0, 100.0, cb), 4.0), "armor floor 10 %")
-	var rng := RandomNumberGenerator.new()
-	rng.seed = 1
-	check(
-		is_equal_approx(Combat.crit_mult(1.5, rng, design["crit"]), 2.5),
-		"crit overflow: chance 1.5 → ×2.5"
-	)
-	check(is_equal_approx(Combat.combo_mult(10, cb), 1.2), "combo 10 → ×1.2")
-	check(is_equal_approx(Combat.player_max_hp(1, 1.3), 260.0), "warrior level 1 = 260 HP")
-	check(is_equal_approx(Combat.enemy_damage(1, 0.0, cb), 12.0), "level-1 mob hits for 12")
+	_formulas(cb, design)
 	InputMapBuilder.build(o.configs["keybinds"]["hybrid"])
 	var floor := StaticBody3D.new()
 	var cs := CollisionShape3D.new()
@@ -96,7 +83,30 @@ func _init() -> void:
 	var hp_before: float = p.hp
 	await _frames(150)
 	check(p.hp < hp_before, "wolf retaliates: player hp %.0f → %.0f" % [hp_before, p.hp])
-	var wid := wolf.get_instance_id()
+	await _death_and_respawn(p, wolf, cb)
+	print("combat ok" if _failed == 0 else "combat FAILED (%d)" % _failed)
+	quit(0 if _failed == 0 else 1)
+
+
+func _formulas(cb, design) -> void:
+	check(
+		is_equal_approx(Combat.weapon_damage(1, 0, 4, cb), 40.0),
+		"level-1 common sword = 40: %.1f" % Combat.weapon_damage(1, 0, 4, cb)
+	)
+	check(is_equal_approx(Combat.after_armor(40.0, 100.0, cb), 4.0), "armor floor 10 %")
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 1
+	check(
+		is_equal_approx(Combat.crit_mult(1.5, rng, design["crit"]), 2.5),
+		"crit overflow: chance 1.5 → ×2.5"
+	)
+	check(is_equal_approx(Combat.combo_mult(10, cb), 1.2), "combo 10 → ×1.2")
+	check(is_equal_approx(Combat.player_max_hp(1, 1.3), 260.0), "warrior level 1 = 260 HP")
+	check(is_equal_approx(Combat.enemy_damage(1, 0.0, cb), 12.0), "level-1 mob hits for 12")
+
+
+func _death_and_respawn(p, wolf, cb) -> void:
+	var wid: int = wolf.get_instance_id()
 	for i in 8:
 		await _frames(35)
 		await _tap("basic-attack")
@@ -106,6 +116,10 @@ func _init() -> void:
 	await _tap("basic-attack")
 	await _frames(2)
 	check(p.combo == 0, "whiff resets combo: %d" % p.combo)
+	await _respawn(p, cb)
+
+
+func _respawn(p, cb) -> void:
 	p.take_damage(p.hp + 1.0, p)
 	check(p.dead, "player dies at 0 hp")
 	await _frames(int(float(cb["death"]["respawn-s"]) * 60) + 20)
@@ -117,5 +131,3 @@ func _init() -> void:
 		),
 		"respawns full at the spawn point (c-no-death-penalty)"
 	)
-	print("combat ok" if _failed == 0 else "combat FAILED (%d)" % _failed)
-	quit(0 if _failed == 0 else 1)

@@ -22,54 +22,9 @@ func _init() -> void:
 	var rosters: Dictionary = o.configs["creature-families"]["landscape-rosters"]
 	var a := WorldGen.new(26879, design, o.landscapes)
 	var b := WorldGen.new(26879, design, o.landscapes)
-	# Pin seed/config/rosters and solo level 1; no saved geography or mutable incarnations.
-	# Populate a distinct cold generator in the exact reverse zone order, before touching a.
-	var reversed_plans := {}
-	for zx in range(40, -41, -8):
-		for zy in range(40, -41, -8):
-			var zc := Vector2i(zx * 32, zy * 32)
-			reversed_plans[zc] = Spawner.plan(b, zc, design, o.creatures, rosters, 1)
-	var groups := 0
-	var lands_seen := {}
-	var lvl1_hostile_hp: Array = []
-	for zx in range(-40, 41, 8):
-		for zy in range(-40, 41, 8):
-			var zc := Vector2i(zx * 32, zy * 32)  # spread over many lands
-			var pa := Spawner.plan(a, zc, design, o.creatures, rosters, 1)
-			check(
-				pa == reversed_plans[zc],
-				"cold reversed-order ordinary groups/roles/positions/stats/seeds at %s" % zc
-			)
-			check(pa.size() <= int(spawns["groups-per-zone"][1]), "≤ max groups per zone")
-			var land = a.land_of_block(zc.x * 64 + 32, zc.y * 64 + 32)
-			lands_seen[land.landscape] = true
-			check(land.danger_tier in ["safe", "normal", "dangerous"], "land has a danger tier")
-			for g in pa:
-				groups += 1
-				check(
-					g["species"] in rosters[land.landscape],
-					"%s is in the %s roster" % [g["species"], land.landscape]
-				)
-				var c: Model.Creature = o.creatures[g["species"]]
-				check(not c.boss_species, "ordinary group is not an always-boss species")
-				var gs := c.group_size if c.group_size != Vector2i(1, 1) else Vector2i(1, 3)
-				check(
-					g["positions"].size() >= 1 and g["positions"].size() <= gs.y,
-					"group size within %s: %d" % [gs, g["positions"].size()]
-				)
-				check(
-					g["level"] >= 1 and g["level"] <= 6,
-					"level in the solo band 1..6: %d" % g["level"]
-				)
-				check(
-					g["hostility"] in ["H", "N", "P", "F"],
-					"hostility resolved: %s" % g["hostility"]
-				)
-				if g["level"] == 1:
-					lvl1_hostile_hp.append(g["max_hp"])
-	check(groups > 20, "spawns exist: %d groups" % groups)
-	for hpv in lvl1_hostile_hp:
-		check(hpv >= 150.0 and hpv <= 250.0, "level-1 HP calibrated 150–250: %.0f" % hpv)
+	var summary = _plans(a, b, design, o, spawns, rosters)
+	var groups: int = summary[0]
+	var lands_seen: Dictionary = summary[1]
 	# FSM on a flat floor: a hostile chases a target inside aggro range, a passive one does not
 	var floor := StaticBody3D.new()
 	var cs := CollisionShape3D.new()
@@ -151,3 +106,57 @@ func _init() -> void:
 	)
 	print("creatures ok" if _failed == 0 else "creatures FAILED (%d)" % _failed)
 	quit(0 if _failed == 0 else 1)
+
+
+func _plans(a, b, design, o, spawns, rosters):
+	# Pin seed/config/rosters and solo level 1; no saved geography or mutable incarnations.
+	# Populate a distinct cold generator in the exact reverse zone order, before touching a.
+	var reversed_plans := {}
+	for zx in range(40, -41, -8):
+		for zy in range(40, -41, -8):
+			var zc := Vector2i(zx * 32, zy * 32)
+			reversed_plans[zc] = Spawner.plan(b, zc, design, o.creatures, rosters, 1)
+	var groups := 0
+	var lands_seen := {}
+	var lvl1_hostile_hp: Array = []
+	for zx in range(-40, 41, 8):
+		for zy in range(-40, 41, 8):
+			var zc := Vector2i(zx * 32, zy * 32)  # spread over many lands
+			var pa := Spawner.plan(a, zc, design, o.creatures, rosters, 1)
+			check(
+				pa == reversed_plans[zc],
+				"cold reversed-order ordinary groups/roles/positions/stats/seeds at %s" % zc
+			)
+			check(pa.size() <= int(spawns["groups-per-zone"][1]), "≤ max groups per zone")
+			var land = a.land_of_block(zc.x * 64 + 32, zc.y * 64 + 32)
+			lands_seen[land.landscape] = true
+			check(land.danger_tier in ["safe", "normal", "dangerous"], "land has a danger tier")
+			for g in pa:
+				groups += 1
+				_group(g, rosters, land, o, lvl1_hostile_hp)
+	_plan_summary(groups, lvl1_hostile_hp)
+	return [groups, lands_seen]
+
+
+func _group(g, rosters, land, o, lvl1_hostile_hp) -> void:
+	check(
+		g["species"] in rosters[land.landscape],
+		"%s is in the %s roster" % [g["species"], land.landscape]
+	)
+	var c: Model.Creature = o.creatures[g["species"]]
+	check(not c.boss_species, "ordinary group is not an always-boss species")
+	var gs := c.group_size if c.group_size != Vector2i(1, 1) else Vector2i(1, 3)
+	check(
+		g["positions"].size() >= 1 and g["positions"].size() <= gs.y,
+		"group size within %s: %d" % [gs, g["positions"].size()]
+	)
+	check(g["level"] >= 1 and g["level"] <= 6, "level in the solo band 1..6: %d" % g["level"])
+	check(g["hostility"] in ["H", "N", "P", "F"], "hostility resolved: %s" % g["hostility"])
+	if g["level"] == 1:
+		lvl1_hostile_hp.append(g["max_hp"])
+
+
+func _plan_summary(groups, lvl1_hostile_hp) -> void:
+	check(groups > 20, "spawns exist: %d groups" % groups)
+	for hpv in lvl1_hostile_hp:
+		check(hpv >= 150.0 and hpv <= 250.0, "level-1 HP calibrated 150–250: %.0f" % hpv)
