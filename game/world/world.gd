@@ -1,6 +1,8 @@
 ## §3.1 world: one seed, zones streamed around `target` (gen-world neighbourhood, design.terrain.view-zones).
 extends Node3D
 
+const WorldSites := preload("res://game/world/world_sites.gd")
+const WorldRewards := preload("res://game/world/world_rewards.gd")
 const Model := preload("res://ontology/model.gd")
 const WorldGen := preload("res://game/world/world_gen.gd")
 const ZoneMesh := preload("res://game/world/zone_mesh.gd")
@@ -411,160 +413,21 @@ func _ambient_ground_ready(at: Array, home_zone: Vector2i) -> bool:
 
 ## Publish complete land data only after geography AND every incarnation have succeeded.
 func ensure_land(land) -> bool:
-	if land == null:
-		return false
-	var key := "%d,%d" % [land.coords.x, land.coords.y]
-	if state_data.lands.has(key):
-		return true
-	var levels := party_levels()
-	if levels.is_empty():
-		return false
-	var plan_: Dictionary = gen.encounters_at(land)
-	if plan_.is_empty():
-		generation_error = "\n".join(gen.diagnostics)
-		generation_failed.emit(generation_error)
-		return false
-	var staged := {}
-	for layout in plan_.sites:
-		var id: String = state_data.site_id(land.coords, layout.family, layout.ordinal)
-		var site := {
-			"id": id,
-			"family": layout.family,
-			"volumes": layout.volumes.duplicate(true),
-			"pending": false,
-			"cleared": false,
-			"completed": false,
-			"cycle": 0,
-			"mobs": {},
-			"rewards": {},
-			"spirit_levels": {},
-			"room_levels": EncounterGen.room_levels(gen, land, layout, levels, 0),
-			"contents": EncounterGen.fresh_contents(layout, design["initial-encounters"])
-		}
-		for stable in layout.assignments:
-			var mob_id: String = id + "/" + stable.key
-			site.mobs[mob_id] = EncounterGen.incarnation(
-				gen,
-				land,
-				stable,
-				mob_id,
-				levels,
-				design,
-				0,
-				(
-					int(site.room_levels[int(stable.pack)])
-					if layout.family == "ruins" and not stable.boss
-					else 0
-				)
-			)
-			if layout.family == "ruins" and not stable.boss:
-				site.mobs[mob_id].room_cycle = 0
-			if stable.spirit != "":
-				site.spirit_levels[stable.key] = site.mobs[mob_id].level
-		stage_tables(site, layout, 0)
-		staged[id] = site
-	state_data.lands[key] = plan_.duplicate(true)
-	state_data.sites.merge(staged)
-	for site in staged.values():
-		bind_saved_mobs(site.mobs)
-	state_changed.emit()
-	return true
+	return WorldSites.ensure_land(self, land)
 
 
 func site_layout(id: String) -> Dictionary:
-	var parts := id.split("/")
-	var plan_: Dictionary = state_data.lands[parts[2]]
-	for layout in plan_.sites:
-		if layout.family == parts[3] and layout.ordinal == int(parts[4]):
-			return layout
-	return {}
+	return WorldSites.site_layout(self, id)
 
 
 func populate_site(id: String) -> void:
-	var site: Dictionary = state_data.sites[id]
-	var layout := site_layout(id)
-	for stable in layout.assignments:
-		var mob_id: String = id + "/" + stable.key
-		var saved: Dictionary = site.mobs[mob_id]
-		if saved.dead or targeting.live.has(mob_id) or not _actor_ground_ready(saved.position):
-			continue
-		var size_: float = (
-			EncounterGen.height(saved.level, design["initial-encounters"])
-			if stable.boss
-			else float(design.spawns["size-by-category"].undead)
-		)
-		var colour := Color.WHITE
-		for rarity in ontology.rarities.values():
-			if rarity.index == int(stable.tier):
-				colour = Color(rarity.raw.hex)
-				break
-		var mob := Spawner.materialize(
-			site_views[id], saved, mob_id, design, target, targeting, size_, colour
-		)
-		mob.set_meta("encounter_site", id)
-		mob.set_meta("assignment", stable.key)
-		if stable.boss:
-			mob.special = BossSpecial.new()
-			mob.special.kind = stable.special
-			mob.special.setup(
-				mob,
-				saved.special,
-				design["initial-encounters"]["special-profile"],
-				site_views[id].get_node("Contents")
-			)
-		mob.died.connect(site_death.bind(id, stable, mob))
+	WorldSites.populate_site(self, id)
 
 
 ## Safe daily refresh is invoked by WorldState only when the entire closed union is empty.
 ## Completion-before-refresh is shared by conversation and automatic last-player exit.
 func refresh_site(id: String) -> bool:
-	var site: Dictionary = state_data.sites[id]
-	if site.family == "supplier" and (site.completed or site.cleared):
-		return false
-	var levels := party_levels()
-	if levels.is_empty():
-		return false
-	var layout := site_layout(id)
-	var parts := id.split("/")[2].split(",")
-	var land = gen.land_at(Vector2i(int(parts[0]), int(parts[1])))
-	site.room_levels = EncounterGen.room_levels(gen, land, layout, levels, int(site.cycle) + 1)
-	# Rubble uses independent 72-hour deadlines, never daily furnishing renewal.
-	var fresh_contents := EncounterGen.fresh_contents(layout, design["initial-encounters"])
-	site.contents.props = fresh_contents.props
-	site.contents.traps = fresh_contents.traps
-	stage_tables(site, layout, int(site.cycle) + 1)
-	if site_views.has(id):
-		var contents = site_views[id].get_node("Contents")
-		contents.saved = site.contents
-		contents.sync_views()
-		# WorldState increments the coalesced cycle only after this callback returns.
-		contents.call_deferred("deliver_furnishings")
-	for stable in layout.assignments:
-		var mob_id: String = id + "/" + stable.key
-		var old: Dictionary = site.mobs[mob_id]
-		if not old.dead:
-			continue
-		var fresh := EncounterGen.incarnation(
-			gen,
-			land,
-			stable,
-			mob_id,
-			levels,
-			design,
-			int(old.cycle) + 1,
-			(
-				int(site.room_levels[int(stable.pack)])
-				if layout.family == "ruins" and not stable.boss
-				else 0
-			)
-		)
-		if layout.family == "ruins" and not stable.boss:
-			fresh.room_cycle = int(site.cycle) + 1
-		site.mobs[mob_id] = fresh
-		targeting.records[mob_id] = fresh.combat
-		targeting.members[mob_id] = {"pack": fresh.pack, "hostility": fresh.hostility}
-	site.cleared = false
-	return true
+	return WorldSites.refresh_site(self, id)
 
 
 func stream_sites() -> void:
@@ -676,222 +539,33 @@ func retire_views() -> void:
 
 
 func unload_specials(id: String) -> void:
-	for mob_id in state_data.sites[id].mobs:
-		var mob = targeting.live.get(mob_id)
-		if is_instance_valid(mob) and mob.special != null:
-			mob.special.unload()
+	WorldSites.unload_specials(self, id)
 
 
 func stage_tables(site: Dictionary, layout: Dictionary, cycle: int) -> void:
-	var cfg: Dictionary = design["initial-encounters"]
-	var plan_ := EncounterGen.content_plan(layout, cfg)
-	for key in plan_.props:
-		if plan_.props[key].kind != "table":
-			continue
-		var rules: Dictionary = cfg.furnishings.table
-		var level: int = int(site.room_levels[plan_.props[key].room])
-		var potion = Item.stack(
-			&"consumable",
-			StringName(rules.potion),
-			int(rules["potion-count"]),
-			clampi(Model.power_for_level(level), 1, 100)
-		)
-		potion.rarity = int(rules["potion-rarity"])
-		var pair := [
-			Item.stack(&"ingredient", StringName(rules.flask), int(rules["flask-count"])), potion
-		]
-		site.rewards["furnishing/%d/%s" % [cycle, key]] = {
-			"payload": pair.map(Save.item_data), "delivered": false, "level": level
-		}
+	WorldRewards.stage_tables(self, site, layout, cycle)
 
 
 ## World-clock restoration also runs for unloaded sites, with saved actors included.
 func restore_rubble(id: String) -> void:
-	var site: Dictionary = state_data.sites[id]
-	if not site.contents.rubble.values().any(
-		func(r): return r.broken and state_data.clock >= r.restore_at
-	):
-		return
-	var positions: Array = party_provider.call().map(Targeting.position_of)
-	if state_data.inside(site.volumes, positions):
-		return
-	var layout := site_layout(id)
-	var plan_ := EncounterGen.content_plan(layout, design["initial-encounters"])
-	var changed := false
-	for key in site.contents.rubble:
-		var record: Dictionary = site.contents.rubble[key]
-		if not record.broken or state_data.clock < record.restore_at:
-			continue
-		var point: Array = plan_.rubble[key]
-		var occupied := false
-		for mob_id in site.mobs:
-			var mob: Dictionary = site.mobs[mob_id]
-			if mob.dead:
-				continue
-			var live = targeting.live.get(mob_id)
-			var p: Array = live.logical_position() if is_instance_valid(live) else mob.position
-			var stable: Dictionary = layout.assignments.filter(func(a): return id + "/" + a.key == mob_id)[0]
-			var height_: float = (
-				EncounterGen.height(mob.level, design["initial-encounters"])
-				if stable.boss
-				else float(design.spawns["size-by-category"].undead)
-			)
-			if overlaps_voxel(point, p, height_ * 0.25, height_):
-				occupied = true
-		if layout.has("captive") and overlaps_voxel(point, layout.captive, 0.4, 1.8):
-			occupied = true
-		# Unloaded ambient incarnations can overlap a due block too.
-		for mob_id in state_data.mobs:
-			var mob: Dictionary = state_data.mobs[mob_id]
-			if mob.dead:
-				continue
-			var species = ontology.creatures[StringName(mob.species)]
-			var category: String = (
-				Model.CreatureCategory.keys()[species.category].to_lower().replace("_", "-")
-			)
-			var size_: float = design.spawns["size-by-category"].get(category, 1.0)
-			var live = targeting.live.get(mob_id)
-			var p: Array = live.logical_position() if is_instance_valid(live) else mob.position
-			if overlaps_voxel(point, p, size_ * 0.25, size_):
-				occupied = true
-		# Physical actors include wanderers from outside the saved site's designated roster.
-		if is_inside_tree():
-			var q := PhysicsShapeQueryParameters3D.new()
-			var box_ := BoxShape3D.new()
-			box_.size = Vector3.ONE
-			q.shape = box_
-			q.transform.origin = (
-				frame.to_local(point) if frame != null else Vector3(point[0], point[1], point[2])
-			)
-			q.transform.origin.y += 0.5
-			for hit in get_world_3d().direct_space_state.intersect_shape(q, 128):
-				if hit.collider is CharacterBody3D or hit.collider.is_in_group("npcs"):
-					occupied = true
-		if occupied:
-			continue
-		record.broken = false
-		record.restore_at = 0.0
-		changed = true
-	if changed:
-		if site_views.has(id):
-			site_views[id].get_node("Contents").sync_views()
-		state_changed.emit()
+	WorldSites.restore_rubble(self, id)
 
 
 static func overlaps_voxel(point: Array, feet: Array, radius: float, height_: float) -> bool:
-	return (
-		absf(float(point[0]) - feet[0]) <= 0.5 + radius
-		and absf(float(point[2]) - feet[2]) <= 0.5 + radius
-		and feet[1] <= point[1] + 1
-		and feet[1] + height_ >= point[1]
-	)
+	return WorldSites.overlaps_voxel(point, feet, radius, height_)
 
 
 ## Creature's own died handler commits incarnation/finisher XP before this connected callback.
 func site_death(id: String, stable: Dictionary, mob: Node3D) -> void:
-	var site: Dictionary = state_data.sites[id]
-	var saved: Dictionary = mob.incarnation
-	var key := "kill/%d/%s" % [saved.cycle, stable.key]
-	if site.rewards.has(key):
-		return
-	var spirit_level: int = int(site.spirit_levels[stable.key]) if stable.spirit != "" else 0
-	var payload := Rewards.kill_payload(
-		stable, int(saved.cycle), int(saved.level), spirit_level, ontology, design
-	)
-	state_data.issue_reward(id, key, payload.map(Save.item_data))
-	site.rewards[key].level = int(saved.level)
-	site.rewards[key].position = mob.logical_position()
-	site.cleared = site.mobs.values().all(func(m): return m.dead)
-	if site.cleared and site.family != "ruins":
-		var layout := site_layout(id)
-		var boss: Dictionary = layout.assignments.filter(func(a): return a.boss)[0]
-		var mission := "mission/%d" % site.cycle
-		var classes := Rewards.completion_classes(
-			party_provider.call(), site.volumes, mob.last_attacker
-		)
-		var cls: String = (
-			classes[Rewards.rng_for(id + "/" + mission + "/class").randi_range(
-				0, classes.size() - 1
-			)]
-			if not classes.is_empty()
-			else ""
-		)
-		site.rewards[mission] = {
-			"payload": [],
-			"delivered": false,
-			"level": int(site.mobs[id + "/" + boss.key].level),
-			"classes": classes,
-			"class_id": cls
-		}
-		resolve_package(id, mission)
-	deliver_rewards(id)
-	state_changed.emit()
+	WorldRewards.site_death(self, id, stable, mob)
 
 
 func resolve_package(id: String, key: String) -> void:
-	var record: Dictionary = state_data.sites[id].rewards[key]
-	if record.class_id == "" or not record.payload.is_empty():
-		return
-	var layout := site_layout(id)
-	record.payload = (
-		Rewards
-		. package_payload(
-			id + "/" + key,
-			int(layout.tier),
-			int(record.level),
-			StringName(record.class_id),
-			ontology,
-			design
-		)
-		. map(Save.item_data)
-	)
+	WorldRewards.resolve_package(self, id, key)
 
 
 func deliver_rewards(id: String) -> void:
-	var site: Dictionary = state_data.sites[id]
-	for key in site.rewards:
-		if key.begins_with("furnishing/"):
-			continue
-		var record: Dictionary = site.rewards[key]
-		if record.delivered:
-			continue
-		var point: Array
-		if key.begins_with("mission/"):
-			if record.class_id == "":
-				for member in party_provider.call():
-					if state_data.inside(site.volumes, [Targeting.position_of(member)]):
-						record.class_id = Rewards.class_of(member)
-						resolve_package(id, key)
-						state_changed.emit()
-						break
-			if record.class_id == "" or (site.family == "supplier" and not site.completed):
-				continue
-			var layout := site_layout(id)
-			point = (
-				layout.captive.duplicate()
-				if site.family == "supplier"
-				else [layout.centre[0], layout.floor, layout.centre[1]]
-			)
-			point[1] += (
-				float(design["initial-encounters"]["mission-package"]["delivery-height"]) - 0.5
-			)  # spawn_drops supplies its usual half block
-		else:
-			point = record.position
-		if not site_views.has(id) or not site_views[id].is_inside_tree():
-			continue
-		record.delivered = true  # durable before callbacks expose shared ordinary pickups
-		var pos: Vector3 = (
-			frame.to_local(point) if frame != null else Vector3(point[0], point[1], point[2])
-		)
-		Items.spawn_drops(
-			site_views[id],
-			pos,
-			record.payload.map(Save.item_from),
-			Rewards.rng_for(id + "/" + key + "/scatter"),
-			ontology,
-			design
-		)
-		state_changed.emit()
+	WorldRewards.deliver_rewards(self, id)
 
 
 func on_talked(npc: Node) -> void:
@@ -900,80 +574,20 @@ func on_talked(npc: Node) -> void:
 
 
 func complete_supplier(id: String) -> bool:
-	var site: Dictionary = state_data.sites[id]
-	if (
-		site.family != "supplier"
-		or site.completed
-		or not site.cleared
-		or not site_layout(id).has("captive")
-	):
-		return false
-	site.completed = true
-	site.pending = false
-	deliver_rewards(id)
-	state_changed.emit()
-	return true
+	return WorldRewards.complete_supplier(self, id)
 
 
 func supplier_ceiling(coords: Vector2i) -> int:
-	var count := int(ontology.rarities[StringName(design.settlement.shop["rarity-cap"])].index)
-	for ordinal in design["initial-encounters"].supplier.tiers.size():
-		var id: String = state_data.site_id(coords, "supplier", ordinal)
-		if state_data.sites.has(id) and state_data.sites[id].completed:
-			count += 1
-	return count
+	return WorldRewards.supplier_ceiling(self, coords)
 
 
 func vendor_stock(role: StringName, player_level: int, coords: Vector2i) -> Array:
-	var land = gen.land_at(coords)
-	if not Shop.is_vendor(role) or not ensure_land(land):
-		return []
-	if role == &"item-vendor":
-		return Shop.stock(role, gen, land, gen.village_at(land), player_level, ontology, design)
-	var key := "%d,%d/%s" % [coords.x, coords.y, role]
-	var day := floori(state_data.clock / float(design.time["day-s"]))
-	if not state_data.vendors.has(key) or state_data.vendors[key].day != day:
-		var cap := supplier_ceiling(coords)
-		var items := Shop.stock(
-			role, gen, land, gen.village_at(land), player_level, ontology, design, cap, day
-		)
-		state_data.vendors[key] = {
-			"day": day, "ceiling": cap, "level": player_level, "items": items.map(Save.item_data)
-		}
-		state_changed.emit()
-	return state_data.vendors[key].items.map(Save.item_from)
+	return WorldRewards.vendor_stock(self, role, player_level, coords)
 
 
 func buy_vendor(role: StringName, index: int, player, coords: Vector2i, expected = null) -> bool:
-	var stock := vendor_stock(role, player.level, coords)
-	if (
-		index < 0
-		or index >= stock.size()
-		or (
-			expected != null
-			and not Save.same_data(Save.item_data(expected), Save.item_data(stock[index]))
-		)
-	):
-		return false
-	# Remove authoritative gear BEFORE Inventory.changed can expose/save the purchase.
-	var key := "%d,%d/%s" % [coords.x, coords.y, role]
-	if player.inventory.coins < Shop.buy_price(stock[index], ontology, design):
-		return false
-	if role != &"item-vendor":
-		state_data.vendors[key].items.remove_at(index)
-	Shop.buy(player, stock[index])
-	state_changed.emit()
-	return true
+	return WorldRewards.buy_vendor(self, role, index, player, coords, expected)
 
 
 func restock_vendors() -> void:
-	var levels := party_levels()
-	if levels.is_empty():
-		return
-	var day := floori(state_data.clock / float(design.time["day-s"]))
-	for key in state_data.vendors.keys():
-		if state_data.vendors[key].day == day:
-			continue
-		var parts: PackedStringArray = key.split("/")
-		var xy: PackedStringArray = parts[0].split(",")
-		vendor_stock(StringName(parts[1]), int(levels[0]), Vector2i(int(xy[0]), int(xy[1])))
+	WorldRewards.restock_vendors(self)

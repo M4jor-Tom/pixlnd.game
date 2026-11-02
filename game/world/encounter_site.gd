@@ -26,64 +26,21 @@ static func boxes(s: Dictionary, cfg: Dictionary) -> Array:
 	var rules: Dictionary = cfg[s.family]
 	var height_: float = rules.ceiling if s.family == "ruins" else 1  # authored battlefield boundary
 	var cells := {}
-	for r in s.components:
-		local_box(
-			out, s, (r[0] + r[2]) / 2, s.floor - 0.5, (r[1] + r[3]) / 2, r[2] - r[0], 1, r[3] - r[1]
-		)
-		if s.family == "ruins":
-			local_box(
-				out,
-				s,
-				(r[0] + r[2]) / 2,
-				s.floor + height_ + 0.5,
-				(r[1] + r[3]) / 2,
-				r[2] - r[0],
-				1,
-				r[3] - r[1]
-			)
-		for x in range(int(r[0]), int(r[2])):
-			for z in range(int(r[1]), int(r[3])):
-				cells[Vector2i(x, z)] = true
+	if not _component_floors(out, s, height_, cells):
+		return []
+	return _finish_boxes(out, s, rules, height_, cells)
+
+
+static func _finish_boxes(
+	out: Array, s: Dictionary, rules: Dictionary, height_: float, cells: Dictionary
+) -> Array:
 	var exit_width: float = rules.door[0] if s.family == "ruins" else rules["exit-width"]
 	var first_z: float = s.components[0][1]
 	var last_z: float = s.components[0][3]
-	for cell: Vector2i in cells:
-		for dir: Vector2i in [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]:
-			if cells.has(cell + dir):
-				continue
-			var x := cell.x + 0.5
-			var z := cell.y + 0.5
-			var open_front: bool = (
-				dir.y == -1 and cell.y == first_z and absf(x - s.entry[0]) < exit_width / 2
-			)
-			var open_back: bool = (
-				s.family != "ruins"
-				and dir.y == 1
-				and cell.y + 1 == last_z
-				and absf(x) < exit_width / 2
-			)
-			if open_front or open_back:
-				if s.family == "ruins":
-					local_box(
-						out,
-						s,
-						x,
-						s.floor + rules.door[1] + (height_ - rules.door[1]) / 2,
-						cell.y,
-						1,
-						height_ - rules.door[1],
-						1
-					)
-				continue
-			local_box(out, s, x + dir.x, s.floor + height_ / 2, z + dir.y, 1, height_, 1)
-	if s.family == "ruins":
-		# Narrow each passage/corridor join to the approved four-by-five doorway.
-		for index in [1, 3, 5]:
-			var r: Array = s.components[index]
-			for z in [r[1], r[3]]:
-				doorway(out, s, (r[0] + r[2]) / 2, z, r[2] - r[0], rules, false)
-		var alcove: Array = s.components[-1]
-		doorway(out, s, (alcove[1] + alcove[3]) / 2, alcove[0], alcove[3] - alcove[1], rules, true)
+	if not _boundary_boxes(out, s, rules, height_, cells, exit_width, first_z, last_z):
+		return []
+	if not _ruins_boxes(out, s, rules):
+		return []
 	return out
 
 
@@ -224,42 +181,174 @@ static func roads(plan_: Dictionary, design: Dictionary, frame = null) -> Node3D
 		if frame != null
 		else Vector3(reference[0], reference[1], reference[2])
 	)
+	if not _road_views(root, plan_, reference, design):
+		return null
+	return root
+
+
+static func _component_boxes(
+	out: Array, s: Dictionary, r, height_: float, cells: Dictionary
+) -> bool:
+	local_box(
+		out, s, (r[0] + r[2]) / 2, s.floor - 0.5, (r[1] + r[3]) / 2, r[2] - r[0], 1, r[3] - r[1]
+	)
+	if s.family == "ruins":
+		local_box(
+			out,
+			s,
+			(r[0] + r[2]) / 2,
+			s.floor + height_ + 0.5,
+			(r[1] + r[3]) / 2,
+			r[2] - r[0],
+			1,
+			r[3] - r[1]
+		)
+	for x in range(int(r[0]), int(r[2])):
+		for z in range(int(r[1]), int(r[3])):
+			cells[Vector2i(x, z)] = true
+	return true
+
+
+static func _boundary_edge(
+	out: Array,
+	s: Dictionary,
+	rules: Dictionary,
+	height_: float,
+	cells: Dictionary,
+	exit_width: float,
+	first_z: float,
+	last_z: float,
+	cell: Vector2i,
+	dir: Vector2i
+) -> bool:
+	if cells.has(cell + dir):
+		return true
+	var x := cell.x + 0.5
+	var z := cell.y + 0.5
+	var open_front = _front_open(s, exit_width, first_z, cell, dir, x)
+	if open_front == null:
+		return false
+	var open_back: bool = (
+		s.family != "ruins" and dir.y == 1 and cell.y + 1 == last_z and absf(x) < exit_width / 2
+	)
+	return _edge_wall(out, s, rules, height_, cell, dir, x, z, open_front, open_back)
+
+
+static func _passage_boxes(out: Array, s: Dictionary, rules: Dictionary) -> bool:
+	# Narrow each passage/corridor join to the approved four-by-five doorway.
+	for index in [1, 3, 5]:
+		var r: Array = s.components[index]
+		for z in [r[1], r[3]]:
+			doorway(out, s, (r[0] + r[2]) / 2, z, r[2] - r[0], rules, false)
+	var alcove: Array = s.components[-1]
+	doorway(out, s, (alcove[1] + alcove[3]) / 2, alcove[0], alcove[3] - alcove[1], rules, true)
+	return true
+
+
+static func _road_marker(root: Node3D, marker, reference: Array, design: Dictionary) -> bool:
+	var pieces: Array = []
+	var wood := Color("765038")
+	match marker.family:
+		"masonry":
+			# Offset dressed courses, the same square-cut stone language as the ruins.
+			box(pieces, marker.x, marker.top + 0.3, marker.z, 1.5, 0.6, 1.1)
+			box(pieces, marker.x - 0.25, marker.top + 0.8, marker.z, 0.85, 0.4, 0.9)
+			wood = Color(design.terrain["sand-color"]).darkened(0.2)
+		"stake-torch":
+			box(pieces, marker.x, marker.top + 0.9, marker.z, 0.3, 1.8, 0.3)
+			box(pieces, marker.x, marker.top + 1.55, marker.z, 0.5, 0.3, 0.5)
+		"broken-crate":
+			box(pieces, marker.x, marker.top + 0.12, marker.z, 1.5, 0.24, 1.4)
+			for side in [-1, 1]:
+				box(pieces, marker.x + side * 0.65, marker.top + 0.5, marker.z, 0.2, 0.75, 1.4)
+			box(pieces, marker.x, marker.top + 0.55, marker.z + 0.6, 1.2, 0.85, 0.2)
+	var mesh := geometry(pieces, reference, wood)
+	mesh.name = marker.family.capitalize().replace("-", "")
+	root.add_child(mesh)
+	if marker.family == "stake-torch":
+		var flame: Array = []
+		box(flame, marker.x, marker.top + 1.95, marker.z, 0.3, 0.5, 0.3)
+		var glow := geometry(flame, reference, Color("ffae45"))
+		# Harmless emission is presentation; only the wooden stake bears collision.
+		glow.get_child(0).free()
+		glow.material_override.emission_enabled = true
+		glow.material_override.emission = Color("ff8a30")
+		root.add_child(glow)
+	return true
+
+
+static func _boundary_boxes(
+	out: Array,
+	s: Dictionary,
+	rules: Dictionary,
+	height_: float,
+	cells: Dictionary,
+	exit_width: float,
+	first_z: float,
+	last_z: float
+) -> bool:
+	for cell: Vector2i in cells:
+		for dir: Vector2i in [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]:
+			if not _boundary_edge(
+				out, s, rules, height_, cells, exit_width, first_z, last_z, cell, dir
+			):
+				return false
+	return true
+
+
+static func _road_views(
+	root: Node3D, plan_: Dictionary, reference: Array, design: Dictionary
+) -> bool:
 	for road in plan_.routes:
 		for marker in road.markers:
-			var pieces: Array = []
-			var wood := Color("765038")
-			match marker.family:
-				"masonry":
-					# Offset dressed courses, the same square-cut stone language as the ruins.
-					box(pieces, marker.x, marker.top + 0.3, marker.z, 1.5, 0.6, 1.1)
-					box(pieces, marker.x - 0.25, marker.top + 0.8, marker.z, 0.85, 0.4, 0.9)
-					wood = Color(design.terrain["sand-color"]).darkened(0.2)
-				"stake-torch":
-					box(pieces, marker.x, marker.top + 0.9, marker.z, 0.3, 1.8, 0.3)
-					box(pieces, marker.x, marker.top + 1.55, marker.z, 0.5, 0.3, 0.5)
-				"broken-crate":
-					box(pieces, marker.x, marker.top + 0.12, marker.z, 1.5, 0.24, 1.4)
-					for side in [-1, 1]:
-						box(
-							pieces,
-							marker.x + side * 0.65,
-							marker.top + 0.5,
-							marker.z,
-							0.2,
-							0.75,
-							1.4
-						)
-					box(pieces, marker.x, marker.top + 0.55, marker.z + 0.6, 1.2, 0.85, 0.2)
-			var mesh := geometry(pieces, reference, wood)
-			mesh.name = marker.family.capitalize().replace("-", "")
-			root.add_child(mesh)
-			if marker.family == "stake-torch":
-				var flame: Array = []
-				box(flame, marker.x, marker.top + 1.95, marker.z, 0.3, 0.5, 0.3)
-				var glow := geometry(flame, reference, Color("ffae45"))
-				# Harmless emission is presentation; only the wooden stake bears collision.
-				glow.get_child(0).free()
-				glow.material_override.emission_enabled = true
-				glow.material_override.emission = Color("ff8a30")
-				root.add_child(glow)
-	return root
+			if not _road_marker(root, marker, reference, design):
+				return false
+	return true
+
+
+static func _edge_wall(
+	out: Array,
+	s: Dictionary,
+	rules: Dictionary,
+	height_: float,
+	cell: Vector2i,
+	dir: Vector2i,
+	x: float,
+	z: float,
+	open_front: bool,
+	open_back: bool
+) -> bool:
+	if open_front or open_back:
+		if s.family == "ruins":
+			local_box(
+				out,
+				s,
+				x,
+				s.floor + rules.door[1] + (height_ - rules.door[1]) / 2,
+				cell.y,
+				1,
+				height_ - rules.door[1],
+				1
+			)
+		return true
+	local_box(out, s, x + dir.x, s.floor + height_ / 2, z + dir.y, 1, height_, 1)
+	return true
+
+
+static func _component_floors(out: Array, s: Dictionary, height_: float, cells: Dictionary) -> bool:
+	for r in s.components:
+		if not _component_boxes(out, s, r, height_, cells):
+			return false
+	return true
+
+
+static func _front_open(
+	s: Dictionary, exit_width: float, first_z: float, cell: Vector2i, dir: Vector2i, x: float
+) -> Variant:
+	return dir.y == -1 and cell.y == first_z and absf(x - s.entry[0]) < exit_width / 2
+
+
+static func _ruins_boxes(out: Array, s: Dictionary, rules: Dictionary) -> bool:
+	if s.family == "ruins":
+		return _passage_boxes(out, s, rules)
+	return true

@@ -25,53 +25,12 @@ func setup(owner_world, id: String, site_layout: Dictionary) -> void:
 	saved = world.state_data.sites[id].contents
 	plan = Gen.content_plan(layout, cfg)
 	name = "Contents"
-	for key in plan.rubble:
-		var body := StaticBody3D.new()
-		body.set_meta("rubble", key)
-		add_body(
-			body, plan.rubble[key], Vector3.ONE * float(cfg.rubble["voxel-size"]), Color.SLATE_GRAY
-		)
-		rubble[key] = body
-	for key in plan.props:
-		var body := Prop.new()
-		body.contents = self
-		body.key = key
-		var table: bool = plan.props[key].kind == "table"
-		add_body(
-			body,
-			plan.props[key].point,
-			Vector3(2, 1, 1) if table else Vector3(0.7, 1, 0.7),
-			Color.SADDLE_BROWN if table else Color.SANDY_BROWN
-		)
-		props[key] = body
-	for trap in plan.traps:
-		var mi := MeshInstance3D.new()
-		var mesh_ := BoxMesh.new()
-		mesh_.size = Vector3(cfg.spikes.footprint[0], 0.04, cfg.spikes.footprint[1])
-		mi.mesh = mesh_
-		mi.material_override = StandardMaterial3D.new()
-		add_child(mi)
-		mi.global_position = native(trap.point) + Vector3.UP * 0.025
-		var spikes := Node3D.new()
-		spikes.name = "Spikes"
-		mi.add_child(spikes)
-		for x in [-0.5, 0.5]:
-			for z in [-0.5, 0.5]:
-				var spike := MeshInstance3D.new()
-				var cone := CylinderMesh.new()
-				cone.top_radius = 0
-				cone.bottom_radius = 0.25
-				cone.height = float(cfg.spikes["victim-height"][1])
-				spike.mesh = cone
-				spike.material_override = StandardMaterial3D.new()
-				spike.material_override.albedo_color = Color.SILVER
-				spike.position = Vector3(
-					x * cfg.spikes.footprint[0] / 2,
-					cone.height / 2,
-					z * cfg.spikes.footprint[1] / 2
-				)
-				spikes.add_child(spike)
-		traps.append(mi)
+	if not _build_rubble():
+		return
+	if not _build_props():
+		return
+	if not _build_traps():
+		return
 	sync_views()
 	deliver_furnishings()
 
@@ -103,20 +62,11 @@ func add_body(body: StaticBody3D, point: Array, size_: Vector3, colour: Color) -
 
 
 func sync_views() -> void:
-	for key in rubble:
-		rubble[key].visible = not saved.rubble[key].broken
-		rubble[key].collision_layer = 0 if saved.rubble[key].broken else 1
-	for key in props:
-		props[key].visible = saved.props[key].hp > 0
-		props[key].collision_layer = 1 if saved.props[key].hp > 0 else 0
-	for i in traps.size():
-		var phase: String = saved.traps[i].phase
-		traps[i].material_override.albedo_color = (
-			Color.RED
-			if phase == "active"
-			else (Color.ORANGE if phase == "warning" else Color.DIM_GRAY)
-		)
-		traps[i].get_node("Spikes").visible = phase == "active"
+	if not _sync_rubble():
+		return
+	if not _sync_props():
+		return
+	_sync_traps()
 
 
 func _physics_process(dt: float) -> void:
@@ -158,56 +108,14 @@ func hit_trap(i: int) -> void:
 
 func advance(dt: float) -> void:
 	for i in traps.size():
-		var record: Dictionary = saved.traps[i]
-		var remaining := dt
-		while true:
-			if record.phase == "idle":
-				if not world.party_provider.call().any(func(p): return eligible(plan.traps[i], p)):
-					break
-				record.phase = "warning"
-				record.left = float(cfg.spikes["warning-s"])
-				record.hit = []
-				for p in world.party_provider.call():
-					var view = Targeting.view_of(p)
-					if view != null and view.feel != null:
-						view.feel.sfx(StringName(cfg.spikes["warning-sfx"]))
-						break
-			if record.phase == "active":
-				hit_trap(i)
-			var step := minf(remaining, float(record.left))
-			record.left = maxf(0, record.left - step)
-			remaining -= step
-			if record.left > 0:
-				break
-			match record.phase:
-				"warning":
-					record.phase = "active"
-					record.left = float(cfg.spikes["active-s"])
-					hit_trap(i)
-				"active":
-					record.phase = "cooldown"
-					record.left = float(cfg.spikes["cooldown-s"])
-				"cooldown":
-					record.phase = "idle"
-					record.left = 0.0
-					record.hit = []
-			if remaining <= 0:
-				break
-		sync_views()
+		if not _advance_trap(i, dt):
+			return
 
 
 func deliver_furnishings() -> void:
 	if not is_inside_tree() or not is_instance_valid(world):
 		return  # deferred renewal may outlive a retired view
-	var site: Dictionary = world.state_data.sites[site_id]
-	for id in site.rewards:
-		if not id.begins_with("furnishing/"):
-			continue
-		var key := "/".join(id.split("/").slice(2))
-		var point: Array = plan.props[key].point.duplicate()
-		if plan.props[key].kind == "table":
-			point[1] += props[key].get_node("Collision").shape.size.y
-		deliver(id, point)
+	_deliver_furnishings()
 
 
 ## Minimal furnishing delivery seam; later shared rewards may consume the same plain issued payload.
@@ -233,25 +141,7 @@ func deliver(id: String, point: Array) -> bool:
 func damage_prop(key: String, amount: float, from: Node) -> void:
 	if from == null or (not from.has_method("on_kill") and from.get("special") == null):
 		return
-	var record: Dictionary = saved.props[key]
-	if record.hp <= 0 or amount <= 0:
-		return
-	record.hp = maxf(0, record.hp - amount)
-	if record.hp == 0 and plan.props[key].kind == "vase":
-		var site: Dictionary = world.state_data.sites[site_id]
-		var rules: Dictionary = cfg.furnishings.vase
-		var count := (
-			int(rules["coin-base"])
-			+ int(rules["coin-per-level"]) * int(site.room_levels[plan.props[key].room])
-		)
-		var id := "furnishing/%d/%s" % [site.cycle, key]
-		world.state_data.issue_reward(
-			site_id, id, [Save.item_data(Item.stack(&"coin", &"", count))]
-		)
-		site.rewards[id].level = int(site.room_levels[plan.props[key].room])
-		deliver(id, plan.props[key].point)
-	sync_views()
-	world.state_changed.emit()
+	_damage_record(key, amount)
 
 
 func break_rubble(key: String) -> void:
@@ -278,3 +168,220 @@ func shatter_stomp(point: Array, radius: float, damage: float, from: Node) -> vo
 func restore_due() -> void:
 	world.restore_rubble(site_id)
 	sync_views()
+
+
+func _build_rubble() -> bool:
+	for key in plan.rubble:
+		var body := StaticBody3D.new()
+		body.set_meta("rubble", key)
+		add_body(
+			body, plan.rubble[key], Vector3.ONE * float(cfg.rubble["voxel-size"]), Color.SLATE_GRAY
+		)
+		rubble[key] = body
+	return true
+
+
+func _build_props() -> bool:
+	for key in plan.props:
+		var body := Prop.new()
+		body.contents = self
+		body.key = key
+		var table: bool = plan.props[key].kind == "table"
+		add_body(
+			body,
+			plan.props[key].point,
+			Vector3(2, 1, 1) if table else Vector3(0.7, 1, 0.7),
+			Color.SADDLE_BROWN if table else Color.SANDY_BROWN
+		)
+		props[key] = body
+	return true
+
+
+func _build_traps() -> bool:
+	for trap in plan.traps:
+		var mi := MeshInstance3D.new()
+		var mesh_ := BoxMesh.new()
+		mesh_.size = Vector3(cfg.spikes.footprint[0], 0.04, cfg.spikes.footprint[1])
+		mi.mesh = mesh_
+		mi.material_override = StandardMaterial3D.new()
+		add_child(mi)
+		mi.global_position = native(trap.point) + Vector3.UP * 0.025
+		var spikes := Node3D.new()
+		spikes.name = "Spikes"
+		mi.add_child(spikes)
+		for x in [-0.5, 0.5]:
+			for z in [-0.5, 0.5]:
+				var spike := MeshInstance3D.new()
+				var cone := CylinderMesh.new()
+				cone.top_radius = 0
+				cone.bottom_radius = 0.25
+				cone.height = float(cfg.spikes["victim-height"][1])
+				spike.mesh = cone
+				spike.material_override = StandardMaterial3D.new()
+				spike.material_override.albedo_color = Color.SILVER
+				spike.position = Vector3(
+					x * cfg.spikes.footprint[0] / 2,
+					cone.height / 2,
+					z * cfg.spikes.footprint[1] / 2
+				)
+				spikes.add_child(spike)
+		traps.append(mi)
+	return true
+
+
+func _sync_rubble() -> bool:
+	for key in rubble:
+		rubble[key].visible = not saved.rubble[key].broken
+		rubble[key].collision_layer = 0 if saved.rubble[key].broken else 1
+	return true
+
+
+func _sync_props() -> bool:
+	for key in props:
+		props[key].visible = saved.props[key].hp > 0
+		props[key].collision_layer = 1 if saved.props[key].hp > 0 else 0
+	return true
+
+
+func _sync_traps() -> bool:
+	for i in traps.size():
+		var phase: String = saved.traps[i].phase
+		traps[i].material_override.albedo_color = (
+			Color.RED
+			if phase == "active"
+			else (Color.ORANGE if phase == "warning" else Color.DIM_GRAY)
+		)
+		traps[i].get_node("Spikes").visible = phase == "active"
+	return true
+
+
+func _deliver_furnishing(id) -> bool:
+	var key := "/".join(id.split("/").slice(2))
+	var point: Array = plan.props[key].point.duplicate()
+	if plan.props[key].kind == "table":
+		point[1] += props[key].get_node("Collision").shape.size.y
+	deliver(id, point)
+	return true
+
+
+func _break_vase(key: String) -> bool:
+	var site: Dictionary = world.state_data.sites[site_id]
+	var rules: Dictionary = cfg.furnishings.vase
+	var count := (
+		int(rules["coin-base"])
+		+ int(rules["coin-per-level"]) * int(site.room_levels[plan.props[key].room])
+	)
+	var id := "furnishing/%d/%s" % [site.cycle, key]
+	world.state_data.issue_reward(site_id, id, [Save.item_data(Item.stack(&"coin", &"", count))])
+	site.rewards[id].level = int(site.room_levels[plan.props[key].room])
+	deliver(id, plan.props[key].point)
+	return true
+
+
+func _advance_trap(i: int, dt: float) -> bool:
+	var record: Dictionary = saved.traps[i]
+	var remaining := dt
+	while true:
+		var next = _step_trap(i, record, remaining)
+		if next == null:
+			return false
+		if next is bool:
+			break
+		remaining = next
+	sync_views()
+	return true
+
+
+func _warn_trap(i: int, record: Dictionary) -> Variant:
+	if not world.party_provider.call().any(func(p): return eligible(plan.traps[i], p)):
+		return false
+	record.phase = "warning"
+	record.left = float(cfg.spikes["warning-s"])
+	record.hit = []
+	for p in world.party_provider.call():
+		var view = Targeting.view_of(p)
+		if view != null and view.feel != null:
+			view.feel.sfx(StringName(cfg.spikes["warning-sfx"]))
+			break
+	return true
+
+
+func _transition_trap(i: int, record: Dictionary) -> bool:
+	match record.phase:
+		"warning":
+			record.phase = "active"
+			record.left = float(cfg.spikes["active-s"])
+			hit_trap(i)
+		"active":
+			record.phase = "cooldown"
+			record.left = float(cfg.spikes["cooldown-s"])
+		"cooldown":
+			record.phase = "idle"
+			record.left = 0.0
+			record.hit = []
+	return true
+
+
+func _deliver_furnishings() -> void:
+	var site: Dictionary = world.state_data.sites[site_id]
+	for id in site.rewards:
+		if not _furnishing_record(id):
+			return
+
+
+func _prop_destroyed(key: String, record: Dictionary) -> bool:
+	if record.hp == 0 and plan.props[key].kind == "vase":
+		return _break_vase(key)
+	return true
+
+
+## false ends this interval; a float carries remaining time; null propagates the original native abort.
+func _step_trap(i: int, record: Dictionary, remaining: float) -> Variant:
+	var prepared = _prepare_trap(i, record)
+	if prepared == null:
+		return null
+	if not prepared:
+		return false
+	return _elapse_trap(i, record, remaining)
+
+
+func _prepare_trap(i: int, record: Dictionary) -> Variant:
+	if record.phase == "idle":
+		var warned = _warn_trap(i, record)
+		if warned == null:
+			return null
+		if not warned:
+			return false
+	if record.phase == "active":
+		hit_trap(i)
+	return true
+
+
+func _elapse_trap(i: int, record: Dictionary, remaining: float) -> Variant:
+	var step := minf(remaining, float(record.left))
+	record.left = maxf(0, record.left - step)
+	remaining -= step
+	if record.left > 0:
+		return false
+	if not _transition_trap(i, record):
+		return null
+	if remaining <= 0:
+		return false
+	return remaining
+
+
+func _damage_record(key: String, amount: float) -> void:
+	var record: Dictionary = saved.props[key]
+	if record.hp <= 0 or amount <= 0:
+		return
+	record.hp = maxf(0, record.hp - amount)
+	if not _prop_destroyed(key, record):
+		return
+	sync_views()
+	world.state_changed.emit()
+
+
+func _furnishing_record(id) -> bool:
+	if not id.begins_with("furnishing/"):
+		return true
+	return _deliver_furnishing(id)

@@ -47,17 +47,33 @@ func register_site(id: String, family: String, volumes: Array) -> Dictionary:
 static func inside(volumes: Array, positions: Array) -> bool:
 	for point in positions:
 		var p: Array = [point.x, point.y, point.z] if point is Vector3 else point
-		for v: Array in volumes:
-			if (
-				p[0] >= v[0]
-				and p[1] >= v[1]
-				and p[2] >= v[2]
-				and p[0] <= v[3]
-				and p[1] <= v[4]
-				and p[2] <= v[5]
-			):
-				return true
+		var contained = _inside_volumes(volumes, p)
+		if contained == null:
+			return false
+		if contained:
+			return true
 	return false
+
+
+static func _inside_volumes(volumes: Array, p: Array) -> Variant:
+	for v: Array in volumes:
+		var contained = _contains(v, p)
+		if contained == null:
+			return null
+		if contained:
+			return true
+	return false
+
+
+static func _contains(v: Array, p: Array) -> Variant:
+	return (
+		p[0] >= v[0]
+		and p[1] >= v[1]
+		and p[2] >= v[2]
+		and p[0] <= v[3]
+		and p[1] <= v[4]
+		and p[2] <= v[5]
+	)
 
 
 func advance(dt: float, positions: Array) -> void:
@@ -65,32 +81,57 @@ func advance(dt: float, positions: Array) -> void:
 	var dirty := false
 	var day := floori(clock / float(time["day-s"]))
 	clock += dt * float(time["speed"])
-	if floori(clock / float(time["day-s"])) > day:
-		dirty = true
-		for site: Dictionary in sites.values():
-			site.pending = true
-		for mob: Dictionary in mobs.values():
-			if mob.dead:
-				mob.eligible = true
+	var midnight = _mark_midnight(day)
+	if midnight == null:
+		return
+	dirty = midnight
 	for id in sites:
-		var site: Dictionary = sites[id]
-		if inside(site.volumes, positions):
-			continue
-		if site.family == "supplier" and site.cleared and not site.completed:
-			if not complete_on_exit.is_valid():
-				continue
-			complete_on_exit.call(id)
-			dirty = true
-			if not site.completed:
-				continue
-		if site.completed and site.family == "supplier":
-			site.pending = false
-		elif site.pending and refresh_site.is_valid() and refresh_site.call(id) == true:
-			site.pending = false
-			site.cycle += 1
+		var advanced = _advance_site(id, positions)
+		if advanced == null:
+			return
+		if advanced:
 			dirty = true
 	if dirty:
 		changed.emit()
+
+
+## null preserves advance's native-abort ownership; false means an ordinary unchanged site.
+func _advance_site(id, positions: Array) -> Variant:
+	var site: Dictionary = sites[id]
+	if inside(site.volumes, positions):
+		return false
+	var completion = _needs_completion(site)
+	if completion == null:
+		return null
+	if completion:
+		return _complete_empty_site(id, site)
+	return _refresh_empty_site(id, site)
+
+
+func _needs_completion(site: Dictionary) -> Variant:
+	return site.family == "supplier" and site.cleared and not site.completed
+
+
+func _complete_empty_site(id, site: Dictionary) -> Variant:
+	if not complete_on_exit.is_valid():
+		return false
+	complete_on_exit.call(id)
+	if not site.completed:
+		return true
+	var refreshed = _refresh_empty_site(id, site)
+	if refreshed == null:
+		return null
+	return true
+
+
+func _refresh_empty_site(id, site: Dictionary) -> Variant:
+	if site.completed and site.family == "supplier":
+		site.pending = false
+	elif site.pending and refresh_site.is_valid() and refresh_site.call(id) == true:
+		site.pending = false
+		site.cycle += 1
+		return true
+	return false
 
 
 ## Write the immutable rolled payload before any pickup is exposed. Same logical death/renewal never rerolls.
@@ -127,3 +168,14 @@ func restore(data: Dictionary) -> void:
 	sites = data.sites.duplicate(true)
 	mobs = data.mobs.duplicate(true)
 	characters = data.characters.duplicate(true)
+
+
+func _mark_midnight(day: int) -> Variant:
+	if floori(clock / float(time["day-s"])) > day:
+		for site: Dictionary in sites.values():
+			site.pending = true
+		for mob: Dictionary in mobs.values():
+			if mob.dead:
+				mob.eligible = true
+		return true
+	return false
