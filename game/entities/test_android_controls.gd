@@ -1,5 +1,6 @@
 ## Native screen-event -> real player/camera/panel integration, not request injection.
 extends SceneTree
+const PanelCases := preload("res://game/entities/android_controls_panel_cases.gd")
 const Model := preload("res://ontology/model.gd")
 const PLAYER := preload("res://game/entities/player.tscn")
 const Touch := preload("res://game/meta/android_touch.gd")
@@ -115,26 +116,84 @@ func run() -> void:
 	if failed:
 		quit(1)
 		return
-	world = Node3D.new()
-	world.set_script(load("res://game/world/world.gd"))
-	root.add_child(world)
-	world.set_process(false)
-	world.set_physics_process(false)
-	world.configure(
-		o,
-		design,
-		preload("res://game/world/world_state.gd").new(design, int(design.terrain["seed-default"])),
-		func(): return [p] if is_instance_valid(p) else []
+	if not (_world_fixture() and await _movement_controls() and await _combat_controls()):
+		return
+	_finish()
+
+
+func _movement_controls() -> bool:
+	if not await _walk_controls():
+		return false
+	var rig = p.get_node("CameraRig")
+	return (
+		await _look_controls(rig)
+		and await _zoom_controls(rig)
+		and await _jump_controls()
+		and await _desktop_controls()
 	)
-	world.targeting.set_physics_process(false)  # real saved vendor owner, without autonomous AI in this input fixture
-	var floor := StaticBody3D.new()
-	var collision := CollisionShape3D.new()
-	var shape := BoxShape3D.new()
-	shape.size = Vector3(100, 1, 100)
-	collision.shape = shape
-	floor.add_child(collision)
-	floor.position.y = -.5
-	root.add_child(floor)
+
+
+func _combat_controls() -> bool:
+	if not await _charged_controls():
+		return false
+	await fixture(&"warrior", &"guardian")
+	var rig = p.get_node("CameraRig")
+	return await _combat_order() and await _water_items() and await _panel_controls(rig)
+
+
+func _combat_order() -> bool:
+	return (
+		await _guardian_controls()
+		and await PanelCases.batch_preemption(self)
+		and await _unavailable_controls()
+		and await _competing_controls()
+		and await PanelCases.vendor_preemption(self)
+	)
+
+
+func _water_items() -> bool:
+	return await _swim_controls() and await _context_controls() and await _pickup_controls()
+
+
+func _panel_controls(rig) -> bool:
+	if not await PanelCases.run(self, rig):
+		return false
+	if not await _death_controls() or not await _assassin_controls():
+		return false
+	await _reentrant_confirmation()
+	return true
+
+
+func InputMapBuilder_setup() -> void:
+	load("res://game/meta/input_map.gd").build(o.configs.keybinds.hybrid)
+
+
+func _reentrant_confirmation() -> void:
+	await fixture()
+	a.open_panel("skills-window")
+	p.skill_points = 2
+	skills._refresh()
+	await process_frame
+	await process_frame
+	select_row(skills._list, 0)
+	var observed := []
+	p.skills_changed.connect(
+		func():
+			observed.append(a.confirming)
+			a.open_panel("inventory")
+	)
+	click_control(skills.touch_buttons[0])
+	check(observed == [true], "T8 confirmation remains true during synchronous panel callback")
+	check(
+		p.skill_points == 1 and a.panel_id == "inventory",
+		"T8 callback commits once then changes panel"
+	)
+	if not _confirmation_flags():
+		return
+	cleanup()
+
+
+func _walk_controls() -> bool:
 	await fixture()
 	var center: Vector2 = a.stick_rect.get_center()
 	touch(0, center, true)
@@ -150,7 +209,10 @@ func run() -> void:
 	a.cancel_all()
 	touch(0, center, false)
 	up("sprint", 1)
-	var rig = p.get_node("CameraRig")
+	return true
+
+
+func _look_controls(rig) -> bool:
 	var yaw: float = rig.rotation.y
 	touch(2, Vector2(800, 200), true)
 	drag(2, Vector2(1440, 100), Vector2(640, -100))
@@ -186,6 +248,10 @@ func run() -> void:
 			is_equal_approx(rig.rotation.x, deg_to_rad(60 if delta.y < 0 else -80)),
 			"touch pitch clamps to design bounds"
 		)
+	return true
+
+
+func _zoom_controls(rig) -> bool:
 	for i in 6:
 		tap("nearer")
 		step()
@@ -205,6 +271,10 @@ func run() -> void:
 		is_equal_approx(rig._dist, 12) and p.get_node("Body").visible,
 		"far zoom clamps and restores body"
 	)
+	return true
+
+
+func _jump_controls() -> bool:
 	# Native Jump enters the existing grounded jump, release cuts sustain to tap velocity.
 	p.position = Vector3.ZERO
 	p.velocity = Vector3.ZERO
@@ -223,6 +293,10 @@ func run() -> void:
 	p.velocity = Vector3.ZERO
 	await physics_frame
 	step()
+	return true
+
+
+func _desktop_controls() -> bool:
 	# Raw desktop input never supplies Android movement/attacks.
 	InputMapBuilder_setup()
 	Input.action_press("move_right")
@@ -233,6 +307,10 @@ func run() -> void:
 	)
 	Input.action_release("move_right")
 	Input.action_release("basic-attack")
+	return true
+
+
+func _charged_controls() -> bool:
 	# Distinct charged cancellation and intentional completion for all charged classes.
 	cleanup()
 	for cls in [&"warrior", &"ranger", &"mage"]:
@@ -261,8 +339,10 @@ func run() -> void:
 	step()
 	up("special-attack")
 	cleanup()
-	await fixture(&"warrior", &"guardian")
-	rig = p.get_node("CameraRig")
+	return true
+
+
+func _guardian_controls() -> bool:
 	p.mp = 100
 	down("block")
 	step()
@@ -295,16 +375,10 @@ func run() -> void:
 		p._swing_t > 0 and p.abilities.busy(),
 		"basic committed first does not invent skill exclusion"
 	)
-	p.abilities.reset()
-	p.abilities.cooldowns.clear()
-	p.stamina = 100
-	p._swing_t = 0
-	for order in [["basic-attack", "inventory"], ["inventory", "basic-attack"]]:
-		for action in order:
-			tap(action, 12)
-		step()
-		check(p.ui_open and p._swing_t <= 0, "panel preempts ALL queued gameplay " + str(order))
-		a.back()
+	return true
+
+
+func _unavailable_controls() -> bool:
 	# Drop unready requests, do not replay after eligibility returns.
 	p.ground_ready = func(_pos): return false
 	tap("basic-attack")
@@ -313,71 +387,24 @@ func run() -> void:
 	step()
 	check(p._swing_t <= 0, "unavailable frame drains trigger")
 	for terminal in ["release", "cancel", "slide"]:
-		p.mp = 100
-		down("special-attack")
-		step(.1)
-		check(p._charge > 0, "F2 charge starts before unavailable " + terminal)
-		p.ground_ready = func(_pos): return false
-		step(.1)
-		check(p._charge > 0, "F2 ordinary held charge retained while unavailable " + terminal)
-		if terminal == "slide":
-			drag(10, Vector2.ZERO, Vector2(-100, -100))
-		else:
-			up("special-attack", 10, terminal == "cancel")
-		step(.1)
-		check(
-			p._charge < 0 and is_equal_approx(p.mp, 100),
-			"F2 unavailable terminal cancels without fire/spend " + terminal
-		)
-		p.ground_ready = func(_pos): return true
-		step(.1)
-		step(.1)
-		check(
-			p._charge < 0 and is_equal_approx(p.mp, 100),
-			"F2 charge never resumes/replays after readiness " + terminal
-		)
-		if terminal == "slide":
-			up("special-attack")
+		if not _unavailable_terminal(terminal):
+			return false
+	return true
+
+
+func _competing_controls() -> bool:
 	# Competing requests recheck resources in arrival order, using current movement.
 	for order in [["class-skill-1", "dodge"], ["dodge", "class-skill-1"]]:
-		p.abilities.reset()
-		p.abilities.cooldowns.clear()
-		p.stamina = 100
-		p._dodge = {}
-		p._dodge_cd = 0
-		touch(0, a.stick_rect.get_center(), true)
-		drag(0, a.stick_rect.get_center() + Vector2(60, 0), Vector2(60, 0))
-		for action in order:
-			tap(action)
-		step()
-		check(
-			(
-				(p.abilities.busy() and p._dodge.is_empty() and p.stamina == 0)
-				if order[0] == "class-skill-1"
-				else (not p.abilities.busy() and not p._dodge.is_empty() and p.stamina == 75)
-			),
-			"arrival resource recheck " + str(order)
-		)
-		a.cancel_all()
-		touch(0, Vector2.ZERO, false)
+		if not _competing_request(order):
+			return false
+
 	p.abilities.reset()
 	p._dodge = {}
 	p._dodge_cd = 0
-	# A panel opened by actual vendor Talk also suppresses all pending combat.
-	var vendor := NPC.new(&"item-vendor", "Item Vendor", Color.BLUE)
-	vendor.position = p.position + Vector3(1, 0, 0)
-	root.add_child(vendor)
-	for order in [["basic-attack", "interact"], ["interact", "basic-attack"]]:
-		p._swing_t = 0
-		for action in order:
-			tap(action)
-		step()
-		check(
-			a.panel_id == "shop" and p._swing_t <= 0,
-			"vendor panel preempts pending attacks " + str(order)
-		)
-		a.back()
-	vendor.free()
+	return true
+
+
+func _swim_controls() -> bool:
 	# Separate Jump/Swim Up, and holds cannot convert across water/land.
 	p.position = Vector3(0, 2, 0)
 	p.water_top = 100
@@ -399,6 +426,10 @@ func run() -> void:
 	check(p.velocity.y < 0, "ascent context exit retires touch")
 	up("swim-ascent")
 	p.water_top = -INF
+	return true
+
+
+func _context_controls() -> bool:
 	# Starting in the wrong context cannot convert even between two physics ticks.
 	p.position.y = 0
 	p.water_top = 100
@@ -415,6 +446,10 @@ func run() -> void:
 	check(p.velocity.y < 0, "land ascent down cannot convert before first consuming frame")
 	up("swim-ascent")
 	p.water_top = -INF
+	return true
+
+
+func _pickup_controls() -> bool:
 	# Distinct Talk, pickup and one first-stack Quick Item.
 	var ground := Area3D.new()
 	ground.set_script(load("res://game/items/ground_item.gd"))
@@ -439,289 +474,10 @@ func run() -> void:
 		p.inventory.first_consumable().count == count - 1,
 		"Quick Item once on down, first stack retained"
 	)
-	# All real native panels: selection/scroll do not commit, operations commit only on inside release.
-	for id in ["inventory", "skills-window", "shop"]:
-		a.open_panel(id)
-		await process_frame
-		await process_frame
-		check(p.ui_open and not a._gameplay.visible, id + " exclusive touch ownership")
-		var hp: float = p.hp
-		p.apply_status(&"poison", design["status-effects"].poison, 10, p)
-		step(.1)
-		check(is_equal_approx(p.hp, hp), id + " DOT never ticks early")
-		step(.9)
-		check(is_equal_approx(p.hp, hp - 10), id + " DOT stays live at one second")
-		p.statuses.clear()
-		p.abilities.cooldowns[&"smash"] = 1
-		p._swing_t = .3
-		p._combo_t = .3
-		p.combo = 2
-		step(.5)
-		check(
-			(
-				is_equal_approx(p.abilities.cooldowns[&"smash"], .5)
-				and p.combo == 0
-				and p._swing_t <= 0
-			),
-			id + " timers advance once"
-		)
-		var before_yaw: float = rig.rotation.y
-		tap("basic-attack")
-		step()
-		check(
-			p._swing_t <= 0 and is_equal_approx(rig.rotation.y, before_yaw),
-			id + " no gameplay leakage"
-		)
-		a.back()
-		check(not p.ui_open, id + " Back closes")
-	a.open_panel("skills-window")
-	p.skill_points = 2
-	skills._refresh()
-	await process_frame
-	await process_frame
-	select_row(skills._list, 0)
-	check(p.skill_points == 2, "selection alone never spends")
-	click_control(skills.touch_buttons[0])
-	check(p.skill_points == 1, "native Spend inside release once")
-	var pos: Vector2 = skills.touch_buttons[0].get_global_rect().get_center()
-	touch(30, pos, true)
-	drag(30, Vector2.ZERO, -pos)
-	drag(30, pos, pos)
-	touch(30, pos, false)
-	check(p.skill_points == 1, "confirmation slide out/back terminal cancel")
-	for interruption in ["focus", "layout", "back"]:
-		select_row(skills._list, 0)
-		var bank_before: int = p.skill_points
-		pos = skills.touch_buttons[0].get_global_rect().get_center()
-		touch(30, pos, true)
-		match interruption:
-			"focus":
-				a._notification(Node.NOTIFICATION_APPLICATION_FOCUS_OUT)
-			"layout":
-				a.set_layout(a.safe, a.pixels_per_dp)
-			"back":
-				a.back()
-		touch(30, pos, false)
-		check(p.skill_points == bank_before, "native confirmation canceled by " + interruption)
-		a.open_panel("skills-window")
-		await process_frame
-		await process_frame
-	a.open_panel("inventory")
-	await process_frame
-	await process_frame
-	var potion_row := -1
-	for i in inv._rows.size():
-		if inv._rows[i].type == &"consumable":
-			potion_row = i
-			break
-	select_row(inv._list, potion_row)
-	var selected = inv._rows[potion_row]
-	count = selected.count
-	click_control(inv.touch_buttons[1])
-	check(selected.count == count - 1, "native Use selected bag row")
-	var apple = Item.stack(&"consumable", &"apple", 2)
-	p.inventory.add(apple)
-	await process_frame
-	await process_frame
-	var first_count: int = p.inventory.first_consumable().count
-	p.hp = p.max_hp - 30.0
-	var hp_before: float = p.hp
-	select_row(inv._list, inv._rows.find(apple))
-	click_control(inv.touch_buttons[1])
-	check(is_equal_approx(p.hp, hp_before + 20.0), "native selected Apple Use heals 20 HP")
-	check(
-		apple.count == 1 and p.inventory.first_consumable().count == first_count,
-		"Use selects second consumable, never Quick Item target"
-	)
-	# Populate every slot supported by existing equip routing, not an injected equipment dictionary.
-	for definition in [
-		[&"weapon", &"shield"],
-		[&"chest-armor", &""],
-		[&"gloves", &""],
-		[&"boots", &""],
-		[&"shoulder-armor", &""],
-		[&"amulet", &""],
-		[&"ring", &""]
-	]:
-		var worn := Item.new()
-		worn.type = definition[0]
-		worn.subtype = definition[1]
-		worn.material = &"iron"
-		worn.rarity = 4
-		p.inventory.add(worn)
-		check(p.inventory.equip(worn), "F3 real equip " + str(definition[0]))
-	check(p.inventory.equipment.size() == 8, "F3 normally populated supported equipment")
-	# Layout under a high-DPI phone's logical viewport: every panel operation stays safe and >=48dp.
-	for id in ["inventory", "skills-window", "shop"]:
-		a.set_layout(Rect2(0, 0, 1280, 720), Vector2(2, 2))
-		a.open_panel(id)
-		await process_frame
-		await process_frame
-		var panel = a.panels[id]
-		check(
-			a.safe.encloses(panel._panel.get_global_rect()),
-			id + " high-DPI panel remains in safe area"
-		)
-		for button in panel.touch_buttons:
-			var rect: Rect2 = button.get_global_rect()
-			check(
-				a.safe.encloses(rect) and rect.size.x >= 96 and rect.size.y >= 96,
-				id + " high-DPI confirmation safe >=48dp"
-			)
-	a.open_panel("inventory")
-	await process_frame
-	await process_frame
-	var bag_rect: Rect2 = inv._list.get_global_rect()
-	var bag_row: Rect2 = inv._list.get_item_rect(0)
-	check(
-		(
-			bag_rect.size.y >= 96
-			and a.safe.encloses(bag_rect)
-			and bag_row.size.y >= 96
-			and bag_row.end.y <= bag_rect.size.y
-		),
-		"F3 filled inventory has a safe accessible >=48dp bag row"
-	)
-	var potion_before: int = p.inventory.first_consumable().count
-	pos = bag_rect.position + bag_row.get_center()
-	touch(36, pos, true)
-	touch(36, pos, false)
-	click_control(inv.touch_buttons[1], 37)
-	check(
-		p.inventory.first_consumable().count == potion_before - 1,
-		"F3 filled high-DPI bag selection and Use are reachable"
-	)
-	await process_frame
-	await process_frame
-	var worn_list: ItemList = inv._touch_worn
-	check(
-		(
-			worn_list.item_count == p.inventory.equipment.size() + 1
-			and a.safe.encloses(worn_list.get_global_rect())
-		),
-		"F3 all worn information retained in safe native scroller"
-	)
-	for slot in p.inventory.equipment:
-		var line := "%s: %s" % [slot, p.item_label(p.inventory.equipment[slot])]
-		check(
-			range(worn_list.item_count).any(func(i): return worn_list.get_item_text(i) == line),
-			"F3 full worn line retained " + str(slot)
-		)
-	pos = worn_list.get_global_rect().get_center()
-	touch(38, pos, true)
-	drag(38, pos - Vector2(0, 2000), Vector2(0, -2000))
-	touch(38, pos - Vector2(0, 2000), false)
-	var scroll: VScrollBar = worn_list.get_v_scroll_bar()
-	check(
-		(
-			scroll.value > 0
-			and is_equal_approx(scroll.value, scroll.max_value - scroll.page)
-			and p.inventory.first_consumable().count == potion_before - 1
-		),
-		"F3 owned worn scroll reaches last equipment without committing"
-	)
-	for button in a._navigation.get_children():
-		var rect: Rect2 = button.get_global_rect()
-		check(
-			a.safe.encloses(rect) and rect.size.x >= 96 and rect.size.y >= 96,
-			"F3 filled inventory navigation safe >=48dp"
-		)
-	a.set_layout(Rect2(0, 0, 1280, 720), Vector2.ONE)
-	a.open_panel("inventory")
-	await process_frame
-	await process_frame
-	# Equip uses the selected row; Buy and Sell go through real native confirmation.
-	var gear := Item.new()
-	gear.type = &"weapon"
-	gear.subtype = &"sword"
-	gear.material = &"iron"
-	p.inventory.add(gear)
-	await process_frame
-	await process_frame
-	select_row(inv._list, inv._rows.find(gear))
-	click_control(inv.touch_buttons[0])
-	check(p.inventory.equipment.values().has(gear), "native Equip selected row")
-	var wrong := Item.new()
-	wrong.type = &"chest-armor"
-	wrong.material = &"silk"
-	var wrong_weapon := Item.new()
-	wrong_weapon.type = &"weapon"
-	wrong_weapon.subtype = &"wand"
-	wrong_weapon.material = &"wood"
-	p.inventory.add(wrong)
-	p.inventory.add(wrong_weapon)
-	await process_frame
-	await process_frame
-	var wrong_row: int = inv._rows.find(wrong)
-	var weapon_row: int = inv._rows.find(wrong_weapon)
-	check(
-		wrong_row >= 0 and inv._list.get_item_custom_fg_color(wrong_row) == Color.RED,
-		"touch inventory marks wrong-class armor red"
-	)
-	check(
-		weapon_row >= 0 and inv._list.get_item_custom_fg_color(weapon_row) == Color.RED,
-		"touch inventory marks wrong-class weapon red"
-	)
-	select_row(inv._list, wrong_row)
-	click_control(inv.touch_buttons[0])
-	select_row(inv._list, weapon_row)
-	click_control(inv.touch_buttons[0])
-	check(
-		(
-			wrong in p.inventory.entries
-			and wrong_weapon in p.inventory.entries
-			and not p.inventory.equipment.values().has(wrong)
-		),
-		"native Equip rejects wrong-class gear without removal"
-	)
-	a.back()
-	vendor = NPC.new(&"item-vendor", "Item Vendor", Color.BLUE)
-	vendor.position = p.position
-	root.add_child(vendor)
-	tap("interact")
-	step()
-	await process_frame
-	await process_frame
-	check(
-		a.panel_id == "shop" and shop._stock_rows.size() > 0,
-		"actual Talk opens generated vendor shop"
-	)
-	p.inventory.coins = 1000
-	shop._refresh()
-	await process_frame
-	await process_frame
-	var coins: int = p.inventory.coins
-	select_row(shop._stock, 0)
-	check(p.inventory.coins == coins, "stock selection does not buy")
-	click_control(shop.touch_buttons[0])
-	check(p.inventory.coins < coins, "native Buy selected stock")
-	await process_frame
-	await process_frame
-	coins = p.inventory.coins
-	select_row(shop._bag, 1)
-	click_control(shop.touch_buttons[1])
-	check(p.inventory.coins > coins, "native Sell selected bag entry")
-	# Long native lists scroll under an owned drag without committing any operation.
-	for i in 30:
-		var extra := Item.new()
-		extra.type = &"weapon"
-		extra.subtype = &"sword"
-		extra.material = &"iron"
-		p.inventory.add(extra)
-	a.open_panel("inventory")
-	await process_frame
-	await process_frame
-	var coins_before: int = p.inventory.coins
-	var list_pos: Vector2 = inv._list.get_global_rect().get_center()
-	touch(35, list_pos, true)
-	drag(35, list_pos - Vector2(0, 100), Vector2(0, -100))
-	touch(35, list_pos - Vector2(0, 100), false)
-	check(
-		inv._list.get_v_scroll_bar().value > 0 and p.inventory.coins == coins_before,
-		"owned native list scrolling never commits"
-	)
-	a.back()
-	vendor.free()
+	return true
+
+
+func _death_controls() -> bool:
 	p.hp = 1
 	tap("quick-item")
 	p.apply_status(&"poison", design["status-effects"].poison, 10, p)
@@ -732,19 +488,111 @@ func run() -> void:
 	)
 	await create_timer(float(design.combat.death["respawn-s"]) + .1).timeout
 	cleanup()
+	return true
+
+
+func _assassin_controls() -> bool:
 	await fixture(&"rogue", &"assassin")
+	var assassin_slots = (
+		not a.buttons.has("class-skill-4")
+		and a.buttons.has("class-skill-3")
+		and not a.buttons.has("ultimate")
+	)
+	check(assassin_slots, "Assassin has only third-slot Camouflage, no fifth alias")
+	cleanup()
+	return true
+
+
+# Owner-approved complexity deferral; follow docs/HANDOFF.md.
+# @cognitive-defer arrival-resource-recheck
+func _competing_request(order) -> bool:
+	p.abilities.reset()
+	p.abilities.cooldowns.clear()
+	p.stamina = 100
+	p._dodge = {}
+	p._dodge_cd = 0
+	touch(0, a.stick_rect.get_center(), true)
+	drag(0, a.stick_rect.get_center() + Vector2(60, 0), Vector2(60, 0))
+	for action in order:
+		tap(action)
+	step()
 	check(
 		(
-			not a.buttons.has("class-skill-4")
-			and a.buttons.has("class-skill-3")
-			and not a.buttons.has("ultimate")
+			(p.abilities.busy() and p._dodge.is_empty() and p.stamina == 0)
+			if order[0] == "class-skill-1"
+			else (not p.abilities.busy() and not p._dodge.is_empty() and p.stamina == 75)
 		),
-		"Assassin has only third-slot Camouflage, no fifth alias"
+		"arrival resource recheck " + str(order)
 	)
-	cleanup()
+	a.cancel_all()
+	touch(0, Vector2.ZERO, false)
+	return true
+
+
+func _world_fixture() -> bool:
+	world = Node3D.new()
+	world.set_script(load("res://game/world/world.gd"))
+	root.add_child(world)
+	world.set_process(false)
+	world.set_physics_process(false)
+	world.configure(
+		o,
+		design,
+		preload("res://game/world/world_state.gd").new(design, int(design.terrain["seed-default"])),
+		func(): return [p] if is_instance_valid(p) else []
+	)
+	world.targeting.set_physics_process(false)  # real saved vendor owner, without autonomous AI in this input fixture
+	var floor := StaticBody3D.new()
+	var collision := CollisionShape3D.new()
+	var shape := BoxShape3D.new()
+	shape.size = Vector3(100, 1, 100)
+	collision.shape = shape
+	floor.add_child(collision)
+	floor.position.y = -.5
+	root.add_child(floor)
+	return true
+
+
+func _unavailable_terminal(terminal: String) -> bool:
+	p.mp = 100
+	down("special-attack")
+	step(.1)
+	check(p._charge > 0, "F2 charge starts before unavailable " + terminal)
+	p.ground_ready = func(_pos): return false
+	step(.1)
+	check(p._charge > 0, "F2 ordinary held charge retained while unavailable " + terminal)
+	if terminal == "slide":
+		drag(10, Vector2.ZERO, Vector2(-100, -100))
+	else:
+		up("special-attack", 10, terminal == "cancel")
+	step(.1)
+	check(
+		p._charge < 0 and is_equal_approx(p.mp, 100),
+		"F2 unavailable terminal cancels without fire/spend " + terminal
+	)
+	p.ground_ready = func(_pos): return true
+	step(.1)
+	step(.1)
+	check(
+		p._charge < 0 and is_equal_approx(p.mp, 100),
+		"F2 charge never resumes/replays after readiness " + terminal
+	)
+	if terminal == "slide":
+		up("special-attack")
+	return true
+
+
+func _confirmation_flags() -> bool:
+	check(not a.confirming, "T8 confirmation clears after callback")
+	check(a._pointer_control == null, "T8 pointer control clears after callback")
+	check(not a._pointer_down, "T8 pointer button clears after callback")
+	check(
+		a._occupied.is_empty() and a._owners.is_empty(),
+		"T8 synchronous cancellation retires released pointer"
+	)
+	return true
+
+
+func _finish() -> void:
 	print("android controls ok" if failed == 0 else "android controls FAILED %d" % failed)
 	quit(0 if failed == 0 else 1)
-
-
-func InputMapBuilder_setup() -> void:
-	load("res://game/meta/input_map.gd").build(o.configs.keybinds.hybrid)

@@ -1,5 +1,68 @@
 # Handoff — pending continuation
 
+## Staged native touch panel/HUD overlap — follow-up deferred
+
+Parent inspected all24 composed Task8 panel captures and observed HP/MP/stamina
+bars over the left title/first rows of touch inventory, skills and shop in open
+and live-expired phases. `native-ui/captures/touch-inventory-open.png` obscures
+Inventory title/coins near y280–345 in the1600×900 viewport (own PID3233826).
+Origin and applicability to ordinary gameplay are unknown: this may be staged
+fixture/layout behavior, not a proven Task8 regression or Android hardware issue.
+No fix, replay or additional comparison is selected; retain a separately scoped
+follow-up after source/image disposition. These manual-physics captures prove
+composed rendering, not natural simulation clock rate; do not claim visual issues
+absent or the complete native group passed.
+
+## Native windowed fresh-jump assertions — demonstrated before refactor, fix deferred
+
+The windowed stun/input test fails `desktop fresh grounded jump succeeds` and
+`native fresh grounded jump succeeds` under the sampled native conditions. The
+owner-selected single reproduction also demonstrated both failures using the
+actual latest pre-entire-refactor `origin/master`, queried2026-11-03T15:58:33+01:00:
+`7a940d2b5e985ec4315da7d63278ad5831c6c718` (2026-10-29, async terrain/optional
+guides), before the quality-gate and source-refactor commits. Do not confuse this
+with pre-Task8 `9b6fc626`, which already includes Tasks1–7.
+
+All332 historical source entries and the original test body were preserved; the
+external executed copy adds only the same own-PID/backend print as prior controls.
+Original flake/lock/project and pinned stock Godot4.7.2 ELF were verified. The run
+used X11/Vulkan1.4.329/NVIDIA MX450, isolated saves and unchanged681s deadline,
+exited1 after250.270s with exactly those two failures and `stun input FAILED (2)`,
+without script/engine diagnostics (own Godot PID3336655). Actual1 remains failed,
+not a native pass. Earlier current/pre-Task8 controls also remain failed receipts.
+
+Cause is undiagnosed; this does not identify the parked collision issue, prove
+universal reproducibility or establish Android hardware behavior. Per the owner,
+record the demonstrated pre-refactor occurrence, defer its fix and continue the
+refactor's next steps without a physics/timing/tolerance/assertion remedy. No
+blanket failure waiver follows; the separate staged HUD overlap stays unclassified.
+Evidence: Task8 `reconnect-20261103/tail-c735-20261103/origin-baseline/`
+(`remote-query.log`, original archive/source proof, toolchain and real
+`run/{result,classification}.json`, `run/native.log`). Host-only simulated PID-1
+preflight output is separate and is not reproduction evidence.
+
+## Deferred cognitive complexity: arrival-resource-recheck
+
+Owner-approved Task 8 exception: defer reducing the arrival-order resource check to
+native cognitive complexity **15**. Keep both class-skill/dodge arrival orders, expected
+remaining stamina **0 / 75**, busy/dodge states, check coverage and cleanup. Test-equivalence
+may follow the real `Abilities.busy() -> bool` interface; production behavior is unchanged.
+
+Required searchable escape flag: `# @cognitive-defer arrival-resource-recheck`, immediately
+before `game/entities/test_android_controls.gd::_competing_request`. The narrow shared-checker
+support and flag placement are implemented in the current refactor: the root-level case
+currently measures **30**, visibly reported as deferred. No whole-file, whole-runner or
+production exemption is authorized. All other cognitive limits, **600**
+lines/file and **100** lines/callable remain enforced. The checker must report the deferred
+score visibly; this is not an unconditional under-15 result.
+
+- [ ] Refactor this specific check/case to native cognitive complexity **15 or less**, preserving
+  the original scenarios, independent expected values and supported interface/read/error/check/
+  cleanup behavior; do not resume arbitrary temporary-object workaround experiments by default.
+- [ ] Remove its flag and the corresponding narrow checker exception after verification; run
+  the escape-marker regressions, affected tests and full quality gate. Remove this pending
+  entry only once resolution is verified.
+
 ## Mutation harness caller budget — before future reuse
 
 The standalone mutation harness can run three 681-second Godot commands per selected row

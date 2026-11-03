@@ -58,8 +58,8 @@ func _case(mode: String, action: String) -> void:
 	p.position = Vector3(0, 1, -5)
 	await physics_frame
 	await process_frame
-	for other in ["quick-item", "basic-attack", "class-skill-1"]:
-		check(not Input.is_action_just_pressed(other), label + ": no stale " + other + " edge")
+	if not _fresh_edges(label):
+		return
 	p._physics_process(0.01)
 	check(not p.is_on_floor(), label + ": airborne precondition")
 	p.position.y = 0.05
@@ -78,6 +78,30 @@ func _case(mode: String, action: String) -> void:
 	check(equipped_max > 260.0, label + ": equipped HP precondition")
 	var deaths := {"count": 0}
 	p.died.connect(func(): deaths["count"] += 1)
+	await _action_frame(
+		p, mode, action, label, potion, count, entries, equipment, coins, equipped_max, deaths
+	)
+
+
+func _fresh_edges(label: String) -> bool:
+	for other in ["quick-item", "basic-attack", "class-skill-1"]:
+		check(not Input.is_action_just_pressed(other), label + ": no stale " + other + " edge")
+	return true
+
+
+func _action_frame(
+	p,
+	mode: String,
+	action: String,
+	label: String,
+	potion,
+	count: int,
+	entries: Array,
+	equipment: Dictionary,
+	coins: int,
+	equipped_max: float,
+	deaths: Dictionary
+) -> void:
 	await process_frame
 	# Use the actual mapped key/mouse event, not action_press across an await.
 	var event = InputMap.action_get_events(action)[0].duplicate()
@@ -92,59 +116,153 @@ func _case(mode: String, action: String) -> void:
 	Input.parse_input_event(release)
 	Input.flush_buffered_events()
 	print("  ", label, ": edge=", edge, " floor=", p.is_on_floor(), " dead=", p.dead)
+	await _verify_landing(
+		p, mode, action, label, potion, count, entries, equipment, coins, equipped_max, deaths
+	)
+
+
+func _verify_landing(
+	p,
+	mode: String,
+	action: String,
+	label: String,
+	potion,
+	count: int,
+	entries: Array,
+	equipment: Dictionary,
+	coins: int,
+	equipped_max: float,
+	deaths: Dictionary
+) -> void:
 	if mode == "nonlethal landing":
-		check(p.is_on_floor() and not p.dead and deaths["count"] == 0, label + ": lands alive")
-		match action:
-			"quick-item":
-				check(potion.count == count - 1 and p.hp > 100.0, label + ": potion still works")
-			"basic-attack":
-				check(p._swing_t > 0.0, label + ": swing still works")
-			"class-skill-1":
-				check(
-					(
-						not p.abilities.dash.is_empty()
-						and p.abilities.cooldowns.has(&"smash")
-						and p.stamina < 100.0
-					),
-					label + ": learned Smash still works"
-				)
+		if not _surviving_landing(p, action, label, potion, count, deaths):
+			return
 	else:
-		if mode == "fatal landing":
-			check(p.is_on_floor(), label + ": actual landing collision")
-		else:
-			check(not p.is_on_floor(), label + ": DOT terminates before movement")
-		check(p.dead and p.hp == 0.0, label + ": terminal zero HP")
-		check(potion.count == count, label + ": no post-death consumption")
-		check(p._swing_t == 0.0, label + ": no post-death swing or combat clock")
-		check(
-			(
-				p.abilities.dash.is_empty()
-				and p.abilities.channel.is_empty()
-				and p.abilities.cast.is_empty()
-				and p.abilities.cooldowns.is_empty()
-			),
-			label + ": no post-death skill or cooldown"
-		)
-		check(p.stamina == 100.0 and p.mp == 100.0, label + ": no post-death spend")
-		check(p.velocity == Vector3.ZERO, label + ": death cleanup retained")
-		p.take_damage(10.0, p)
-		p._physics_process(0.01)
-		await create_timer(0.05).timeout
-		check(p.dead and p.hp == 0.0, label + ": stays dead before respawn delay")
-		check(deaths["count"] == 1, label + ": death emitted once")
-		await create_timer(float(design["combat"]["death"]["respawn-s"]) + 0.1).timeout
-		check(
-			not p.dead and p.hp == equipped_max and p.position == p.spawn_point,
-			label + ": ordinary respawn at equipped maximum"
-		)
-		check(
-			(
-				p.inventory.entries == entries
-				and p.inventory.equipment == equipment
-				and potion.count == count
-				and p.inventory.coins == coins
-				and p.xp == 7
-			),
-			label + ": items, equipment, coins and XP survive"
-		)
+		if not await _fatal_landing(
+			p, mode, label, potion, count, entries, equipment, coins, equipped_max, deaths
+		):
+			return
 	p.free()
+
+
+func _surviving_landing(
+	p, action: String, label: String, potion, count: int, deaths: Dictionary
+) -> bool:
+	check(p.is_on_floor() and not p.dead and deaths["count"] == 0, label + ": lands alive")
+	return _landing_action(p, action, label, potion, count)
+
+
+func _fatal_landing(
+	p,
+	mode: String,
+	label: String,
+	potion,
+	count: int,
+	entries: Array,
+	equipment: Dictionary,
+	coins: int,
+	equipped_max: float,
+	deaths: Dictionary
+) -> bool:
+	if not _terminal_landing(p, mode, label, potion, count):
+		return false
+	if not await _pre_respawn(p, label, deaths):
+		return false
+	if not await _respawn(p, label, equipped_max):
+		return false
+	return _retained_items(p, label, potion, count, entries, equipment, coins)
+
+
+func _dead_actions(p, label: String) -> bool:
+	check(
+		(
+			p.abilities.dash.is_empty()
+			and p.abilities.channel.is_empty()
+			and p.abilities.cast.is_empty()
+			and p.abilities.cooldowns.is_empty()
+		),
+		label + ": no post-death skill or cooldown"
+	)
+	return true
+
+
+func _dead_resources(p, label: String) -> bool:
+	check(p.stamina == 100.0 and p.mp == 100.0, label + ": no post-death spend")
+	check(p.velocity == Vector3.ZERO, label + ": death cleanup retained")
+	return true
+
+
+func _retained_items(
+	p, label: String, potion, count: int, entries: Array, equipment: Dictionary, coins: int
+) -> bool:
+	var retained_items = (
+		p.inventory.entries == entries
+		and p.inventory.equipment == equipment
+		and potion.count == count
+		and p.inventory.coins == coins
+		and p.xp == 7
+	)
+	check(retained_items, label + ": items, equipment, coins and XP survive")
+	return true
+
+
+func _potion_landing(p, label: String, potion, count: int) -> bool:
+	check(potion.count == count - 1 and p.hp > 100.0, label + ": potion still works")
+	return true
+
+
+func _swing_landing(p, label: String) -> bool:
+	check(p._swing_t > 0.0, label + ": swing still works")
+	return true
+
+
+func _smash_landing(p, label: String) -> bool:
+	check(
+		(
+			not p.abilities.dash.is_empty()
+			and p.abilities.cooldowns.has(&"smash")
+			and p.stamina < 100.0
+		),
+		label + ": learned Smash still works"
+	)
+	return true
+
+
+func _landing_action(p, action: String, label: String, potion, count: int) -> bool:
+	match action:
+		"quick-item":
+			return _potion_landing(p, label, potion, count)
+		"basic-attack":
+			return _swing_landing(p, label)
+		"class-skill-1":
+			return _smash_landing(p, label)
+	return true
+
+
+func _terminal_landing(p, mode: String, label: String, potion, count: int) -> bool:
+	if mode == "fatal landing":
+		check(p.is_on_floor(), label + ": actual landing collision")
+	else:
+		check(not p.is_on_floor(), label + ": DOT terminates before movement")
+	check(p.dead and p.hp == 0.0, label + ": terminal zero HP")
+	check(potion.count == count, label + ": no post-death consumption")
+	check(p._swing_t == 0.0, label + ": no post-death swing or combat clock")
+	return _dead_actions(p, label) and _dead_resources(p, label)
+
+
+func _pre_respawn(p, label: String, deaths: Dictionary) -> bool:
+	p.take_damage(10.0, p)
+	p._physics_process(0.01)
+	await create_timer(0.05).timeout
+	check(p.dead and p.hp == 0.0, label + ": stays dead before respawn delay")
+	check(deaths["count"] == 1, label + ": death emitted once")
+	return true
+
+
+func _respawn(p, label: String, equipped_max: float) -> bool:
+	await create_timer(float(design["combat"]["death"]["respawn-s"]) + 0.1).timeout
+	check(
+		not p.dead and p.hp == equipped_max and p.position == p.spawn_point,
+		label + ": ordinary respawn at equipped maximum"
+	)
+	return true

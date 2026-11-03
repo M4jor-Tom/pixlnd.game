@@ -164,4 +164,5 @@ printf 'extends SceneTree\nfunc _init() -> void:\n\tprint("ontology INVALID (0 e
 printf 'extends SceneTree\nfunc _init() -> void:\n\tquit(0)\n' > "$scratch/ontology/test_fixture.gd"
 format_fixture
 expect_failure 'invalid ontology with exit 0' 'ontology INVALID'
+bash tests/test_cognitive_defer.sh
 printf 'Quality runner checks passed.\n'

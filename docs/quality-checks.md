@@ -104,11 +104,30 @@ C-COG metric, not cyclomatic complexity or an interchangeable Sonar score.
 Every `.gd` file under `game/` and `ontology/`, including tests, is analyzed in a
 temporary project without game autoloads or normal saves. A complete `find` manifest
 includes hidden paths and names containing `..`, which native discovery skips.
-No result cache, baseline,
-inline ignore or default directory exclusion exempts existing code. Empty discovery
-and analyzer errors fail the gate. Over-limit existing methods therefore block the
+No result cache, baseline or default directory exclusion exempts existing code. Empty discovery
+and analyzer errors fail the gate. One owner-approved test-only deferral is described below;
+all unflagged functions and all other identities still fail above 15. Over-limit existing methods therefore block the
 gate until separately refactored; installing the check does not establish a green
 repository.
+
+### One owner-approved pending test deferral
+
+Only `game/entities/test_android_controls.gd::_competing_request` may carry the exact root-level
+comment `# @cognitive-defer arrival-resource-recheck`, immediately before its declaration.
+The checker still calculates and visibly reports its actual score as `DEFERRED`, with a deferred
+count and `docs/HANDOFF.md` reference. Reducing this one cohesive arrival-resource case to 15 is
+pending, not completed; its original scenarios and independent stamina expectations 0 / 75 remain.
+Test equivalence follows the real Player / `Abilities.busy() -> bool` interface; production
+behavior and native-error ownership are not relaxed.
+
+Unknown, malformed, duplicate, misplaced, wrong-identity, nested, missing-callable and stale
+(15-or-less) flags fail. Marker text inside string literals is not an annotation. Without the
+flag even this exact function fails above 15. No whole-file/run/production exemption, CLI or
+environment bypass exists. Size 600/100, lint, formatting, discovery, analyzer errors, runtime
+checks and deadlines remain independent. `tests/test_cognitive_defer.sh`, also called by the
+runner regressions, covers these boundaries. The pending HANDOFF task requires removing both
+flag and narrow exception after the deferred refactor is verified. A passing final gate therefore
+uses this disclosed single-exception policy, not unconditional native-15 compliance.
 
 The adapter supplies only leading whitespace to the native function-boundary detector:
 v1.6.1 otherwise mistakes inline spaces for dedents in class methods. Each detected

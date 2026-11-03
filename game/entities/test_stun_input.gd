@@ -2,6 +2,7 @@
 ## Native screen events here are desktop synthetic evidence, not Android hardware acceptance.
 extends SceneTree
 
+const ServiceCases := preload("res://game/entities/stun_service_cases.gd")
 const Model := preload("res://ontology/model.gd")
 const InputMapBuilder := preload("res://game/meta/input_map.gd")
 const PLAYER := preload("res://game/entities/player.tscn")
@@ -226,9 +227,7 @@ func run() -> void:
 		await endpoints(mode)
 		await selected_use(mode, false)
 		await selected_use(mode, true)
-		for role in [&"item-vendor", &"class-trainer", &"innkeeper", &"captive"]:
-			for keyboard in [false, true]:
-				await service(mode, role, keyboard)
+		await _services(mode)
 	await native_requests()
 	await live_effects()
 	world.free()
@@ -240,70 +239,8 @@ func run() -> void:
 func vertical(native: bool) -> void:
 	var label := "native" if native else "desktop"
 	await fixture(native)
-	stun()
-	if native:
-		button("jump", true)
-		check(touch_ui.held.get("jump", false), label + " jump hold delivered")
-		await frames(3)
-	else:
-		await key_frame("jump")
-	check(
-		p.stunned() and p.position.y < 0.05 and p.velocity.y <= 0,
-		label + " stunned grounded jump rejected"
-	)
-	if native:
-		button("jump", false)
-	# Expiry uses normal callbacks; rejected trigger must not replay.
-	await create_timer(2.1).timeout
-	await frames()
-	check(not p.stunned() and p.is_on_floor(), label + " expiry without buffered jump")
-	if native:
-		button("jump", true)
-	else:
-		key_driver.edge = false
-		key_driver.action = "jump"
-	await frames(2 if not native else 1)
-	if not native:
-		check(key_driver.edge, label + " fresh jump edge")
-	check(p.velocity.y > 13.0, label + " fresh grounded jump succeeds")
-	stun()
-	await frames()
-	check(
-		p.velocity.y > 0.0 and p.velocity.y <= sqrt(96.0) + 0.001,
-		label + " stun interrupts held sustain, not gravity"
-	)
-	if native:
-		button("jump", false)
-	else:
-		key("jump", false)
-	p.position = Vector3(0, 2, 0)
-	p.velocity = Vector3.ZERO
-	p.water_top = 100
-	if native:
-		button("swim-ascent", true)
-		check(touch_ui.held.get("swim-ascent", false), label + " ascent hold delivered")
-	else:
-		key("jump", true)
-		check(Input.is_action_pressed("jump"), label + " ascent key held")
-	await frames(3)
-	check(p.stunned() and p.velocity.y < 0.0, label + " stunned ascent sinks")
-	if native:
-		button("swim-ascent", false)
-	else:
-		key("jump", false)
-	await create_timer(2.1).timeout
-	if native:
-		button("swim-ascent", true)
-	else:
-		key("jump", true)
-	await frames(3)
-	check(
-		not p.stunned() and is_equal_approx(p.velocity.y, 3.0), label + " fresh ascent after expiry"
-	)
-	if native:
-		button("swim-ascent", false)
-	else:
-		key("jump", false)
+	if not await _vertical_cases(native, label):
+		return
 	cleanup()
 
 
@@ -342,56 +279,7 @@ func endpoints(mode: String) -> void:
 
 
 func service(mode: String, role: StringName, keyboard: bool) -> void:
-	await fixture()
-	world.state_data.sites[supplier_id].completed = false
-	var npc := NPC.new(role, str(role), Color.BLUE)
-	npc.position = Vector3(1.5, 0, 0)
-	if role == &"captive":
-		npc.set_meta("encounter_site", supplier_id)
-	root.add_child(npc)
-	check(p._nearest_in_group("npcs", 3.0) == npc, "precondition: real service target " + role)
-	reject_state(mode)
-	var before := snapshot()
-	if keyboard:
-		await key_frame("interact")
-	else:
-		check(not p.talk_nearest(), mode + " direct Talk rejects " + role)
-	check(snapshot() == before, mode + " service unchanged " + role + " keyboard=" + str(keyboard))
-	p.dead = false
-	p.statuses.clear()
-	p.inventory.coins = 100
-	p.skill_tree.points = {&"smash": 1}
-	p.skill_points = 0
-	p.hp = 50.0
-	p.spawn_point = Vector3(9, 0, 9)
-	world.state_data.sites[supplier_id].completed = false
-	shop_panel._open(false)
-	await key_frame("interact")
-	match role:
-		&"item-vendor":
-			check(shop_panel._panel.visible and signals.talk > 0, "fresh E opens vendor")
-		&"class-trainer":
-			check(
-				(
-					p.inventory.coins == 95
-					and p.skill_tree.points.is_empty()
-					and p.skill_points == 1
-					and signals.skills > 0
-				),
-				"fresh E respecs at trainer"
-			)
-		&"innkeeper":
-			check(
-				p.hp == p.max_hp and p.spawn_point != Vector3(9, 0, 9) and signals.notice > 0,
-				"fresh E rests at inn"
-			)
-		&"captive":
-			check(
-				world.state_data.sites[supplier_id].completed and signals.talk > 0,
-				"fresh E completes cleared rescue"
-			)
-	npc.free()
-	cleanup()
+	await ServiceCases.service(self, mode, role, keyboard)
 
 
 func selected_use(mode: String, native: bool) -> void:
@@ -419,26 +307,7 @@ func selected_use(mode: String, native: bool) -> void:
 	var before := snapshot()
 	await activate_selected(second, native)
 	check(snapshot() == before, mode + " selected panel Use preserves state native=" + str(native))
-	p.dead = false
-	p.statuses.clear()
-	p.hp = 1.0
-	var first_count: int = first.count
-	var second_count: int = second.count
-	await activate_selected(second, native)
-	check(
-		(
-			p.ui_open
-			and p.hp > 1.0
-			and second.count == second_count - 1
-			and first.count == first_count
-		),
-		"unstunned open-panel Use selects second stack native=" + str(native)
-	)
-	check(
-		p.use_quick() and first.count == first_count - 1 and second.count == second_count - 1,
-		"Quick still uses first stack"
-	)
-	cleanup()
+	await _selected_positive(native, first, second)
 
 
 func activate_selected(it, native: bool) -> void:
@@ -545,3 +414,124 @@ func live_effects() -> void:
 	)
 	source.free()
 	cleanup()
+
+
+func _services(mode: String) -> void:
+	for role in [&"item-vendor", &"class-trainer", &"innkeeper", &"captive"]:
+		for keyboard in [false, true]:
+			await service(mode, role, keyboard)
+
+
+func _grounded_stun(native: bool, label: String) -> bool:
+	stun()
+	if native:
+		button("jump", true)
+		check(touch_ui.held.get("jump", false), label + " jump hold delivered")
+		await frames(3)
+	else:
+		await key_frame("jump")
+	check(
+		p.stunned() and p.position.y < 0.05 and p.velocity.y <= 0,
+		label + " stunned grounded jump rejected"
+	)
+	if native:
+		button("jump", false)
+	# Expiry uses normal callbacks; rejected trigger must not replay.
+	await create_timer(2.1).timeout
+	await frames()
+	check(not p.stunned() and p.is_on_floor(), label + " expiry without buffered jump")
+	return true
+
+
+func _fresh_jump(native: bool, label: String) -> bool:
+	if native:
+		button("jump", true)
+	else:
+		key_driver.edge = false
+		key_driver.action = "jump"
+	await frames(2 if not native else 1)
+	if not native:
+		check(key_driver.edge, label + " fresh jump edge")
+	check(p.velocity.y > 13.0, label + " fresh grounded jump succeeds")
+	return true
+
+
+func _airborne_stun(native: bool, label: String) -> bool:
+	stun()
+	await frames()
+	check(
+		p.velocity.y > 0.0 and p.velocity.y <= sqrt(96.0) + 0.001,
+		label + " stun interrupts held sustain, not gravity"
+	)
+	if native:
+		button("jump", false)
+	else:
+		key("jump", false)
+	return true
+
+
+func _swimming_stun(native: bool, label: String) -> bool:
+	p.position = Vector3(0, 2, 0)
+	p.velocity = Vector3.ZERO
+	p.water_top = 100
+	if native:
+		button("swim-ascent", true)
+		check(touch_ui.held.get("swim-ascent", false), label + " ascent hold delivered")
+	else:
+		key("jump", true)
+		check(Input.is_action_pressed("jump"), label + " ascent key held")
+	await frames(3)
+	check(p.stunned() and p.velocity.y < 0.0, label + " stunned ascent sinks")
+	_ascent_button(native, false)
+	await create_timer(2.1).timeout
+	_ascent_button(native, true)
+	await frames(3)
+	check(
+		not p.stunned() and is_equal_approx(p.velocity.y, 3.0), label + " fresh ascent after expiry"
+	)
+	_ascent_button(native, false)
+	return true
+
+
+func _selected_positive(native: bool, first, second) -> bool:
+	p.dead = false
+	p.statuses.clear()
+	p.hp = 1.0
+	var first_count: int = first.count
+	var second_count: int = second.count
+	await activate_selected(second, native)
+	check(
+		(
+			p.ui_open
+			and p.hp > 1.0
+			and second.count == second_count - 1
+			and first.count == first_count
+		),
+		"unstunned open-panel Use selects second stack native=" + str(native)
+	)
+	return _selected_quick(first, second, first_count, second_count)
+
+
+func _selected_quick(first, second, first_count: int, second_count: int) -> bool:
+	check(
+		p.use_quick() and first.count == first_count - 1 and second.count == second_count - 1,
+		"Quick still uses first stack"
+	)
+	cleanup()
+	return true
+
+
+func _vertical_cases(native: bool, label: String) -> bool:
+	return (
+		await _grounded_stun(native, label)
+		and await _fresh_jump(native, label)
+		and await _airborne_stun(native, label)
+		and await _swimming_stun(native, label)
+	)
+
+
+func _ascent_button(native: bool, down: bool) -> void:
+	if native:
+		button("swim-ascent", down)
+	else:
+		key("jump", down)
