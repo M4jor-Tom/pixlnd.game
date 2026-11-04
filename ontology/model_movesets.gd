@@ -136,7 +136,8 @@ static func slot_fields(o, s: Variant, where: String, kinds: Array) -> bool:
 	return o._moveset_fields_valid(s, where)
 
 
-static func melee_slot(o, s: Dictionary, where: String, se: Dictionary) -> void:
+# Completion, not validity: ordinary invalid/shape-rejected finishers still reach later slots.
+static func melee_slot(o, s: Dictionary, where: String, se: Dictionary) -> bool:
 	if (
 		float(s.get("swing-mult", 1)) <= 0.0
 		or float(s.get("radius-mult", 1)) <= 0.0
@@ -144,27 +145,30 @@ static func melee_slot(o, s: Dictionary, where: String, se: Dictionary) -> void:
 	):
 		o.errors.append("%s: swing-mult, radius-mult > 0, lunge >= 0" % where)
 	if s.has("finisher"):
-		finisher(o, s["finisher"], where, se)
+		return finisher(o, s["finisher"], where, se)
+	return true
 
 
-static func finisher(o, value: Variant, where: String, se: Dictionary) -> void:
+static func finisher(o, value: Variant, where: String, se: Dictionary) -> bool:
 	if not value is Dictionary:
 		o.errors.append(where + ": finisher object required")
-		return
+		return true
 	var f: Dictionary = value
 	if not o._moveset_fields_valid(f, where + ".finisher"):
-		return
-	finisher_bounds(o, f, where)
-	finisher_statuses(o, f, where, se)
+		return true
+	if not finisher_bounds(o, f, where):
+		return false
+	return finisher_statuses(o, f, where, se)
 
 
-static func finisher_bounds(o, f: Dictionary, where: String) -> void:
+static func finisher_bounds(o, f: Dictionary, where: String) -> bool:
 	if (
 		int(f.get("every", 0)) < 2
 		or float(f.get("chance", -1)) < 0.0
 		or float(f.get("chance", -1)) > 1.0
 	):
 		o.errors.append("%s: finisher every >= 2, chance in [0,1]" % where)
+	return true
 
 
 # Array tails discard only this original shot-local result on a native abort.
@@ -201,9 +205,10 @@ static func moveset_weapon_reference(o, id) -> void:
 		o.errors.append("design.movesets.%s is not a weapon-type" % id)
 
 
-static func finisher_statuses(o, f: Dictionary, where: String, se: Dictionary) -> void:
+static func finisher_statuses(o, f: Dictionary, where: String, se: Dictionary) -> bool:
 	for id in f.get("applies", []):
 		if not se.has(id):
 			o.errors.append(
 				"%s: finisher applies %s has no design.status-effects entry" % [where, id]
 			)
+	return true

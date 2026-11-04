@@ -309,7 +309,7 @@ func _validate_runtime_dash(a, r: Dictionary) -> bool:
 func _validate_moveset_kind(s: Dictionary, where: String, se: Dictionary) -> bool:
 	match str(s["kind"]):
 		"melee":
-			Movesets.melee_slot(self, s, where, se)
+			return Movesets.melee_slot(self, s, where, se)
 		"projectile":
 			errors.append_array(_shot_errors(s, where))
 		_:

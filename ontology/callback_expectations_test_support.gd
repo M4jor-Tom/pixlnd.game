@@ -261,10 +261,24 @@ static func expected_group(first: int, prefix: String) -> Array:
 
 
 static func observations(text: String, prefix: String) -> Array:
+	if prefix == "SCRIPT ERROR:":
+		return diagnostics(text)
 	var out: Array = []
 	for line in text.split("\n"):
 		if line.begins_with(prefix):
-			out.append(line.trim_prefix(prefix) if prefix != "SCRIPT ERROR:" else line)
+			out.append(line.trim_prefix(prefix))
+	return out
+
+
+static func diagnostics(text: String) -> Array:
+	var out: Array = []
+	for line in text.split("\n"):
+		if (
+			line.begins_with("SCRIPT ERROR:")
+			or line.begins_with("ERROR:")
+			or line.begins_with("ontology INVALID")
+		):
+			out.append(line)
 	return out
 
 

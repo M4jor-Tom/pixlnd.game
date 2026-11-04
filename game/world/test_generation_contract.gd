@@ -196,6 +196,7 @@ func _init() -> void:
 	supports(o, d)
 	contacts()
 	mesh_columns()
+	preload("res://game/world/zone_mesh_boundary_cases.gd").verify(self)
 	population(o, d)
 	print("generation contract ok" if failed == 0 else "generation contract FAILED")
 	quit(0 if failed == 0 else 1)

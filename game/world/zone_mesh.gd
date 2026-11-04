@@ -53,8 +53,8 @@ static func data(gen, zc: Vector2i) -> Array:
 	var w := n + 2  # heights with a 1-block border
 	var min_block: int = gen.land_min * gen.land_blocks
 	var max_block: int = (gen.land_max + 1) * gen.land_blocks - 1
-	var hs := _heights(gen, w, ox, oy, min_block, max_block)
-	if hs.is_empty():
+	var hs: Variant = _heights(gen, w, ox, oy, min_block, max_block)
+	if hs == null:
 		return []
 	return _emit_data(gen, hs, w, ox, oy, n)
 
@@ -154,9 +154,7 @@ static func _column(
 	return true
 
 
-static func _heights(
-	gen, w: int, ox: int, oy: int, min_block: int, max_block: int
-) -> PackedInt32Array:
+static func _heights(gen, w: int, ox: int, oy: int, min_block: int, max_block: int) -> Variant:
 	var hs := PackedInt32Array()
 	hs.resize(w * w)
 	for j in w:

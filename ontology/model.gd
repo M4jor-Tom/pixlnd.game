@@ -351,7 +351,7 @@ class Ontology:
 	func _validate_identity_trees() -> bool:
 		for id in abilities:
 			var a: Ability = abilities[id]
-			Identity.identity_tree(self, id, a.alpha_tree, a.owner)
+			Identity.identity_tree(self, id, a.alpha_tree, a)
 		return true
 
 	func validate() -> bool:

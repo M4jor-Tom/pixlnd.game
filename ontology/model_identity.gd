@@ -289,11 +289,11 @@ static func tree_roots(o, id, roots: Dictionary) -> void:
 			o.errors.append("skill-tree %s: column %s has %d roots" % [id, column, roots[column]])
 
 
-static func identity_tree(o, id, tree: Dictionary, owner: Variant) -> void:
+static func identity_tree(o, id, tree: Dictionary, ability) -> void:
 	if tree.is_empty():
 		return
 	o.errors.append_array(o._tree_field_errors(tree, "abilities." + str(id) + ".alpha-tree"))
-	var tree_owner: Variant = tree.get("class", owner)
+	var tree_owner: Variant = ability.alpha_tree.get("class", ability.owner)
 	if not known_tree_owner(o, tree_owner):
 		o.errors.append("abilities.%s.alpha-tree.class: known tree owner required" % id)
 

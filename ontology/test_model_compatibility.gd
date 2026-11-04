@@ -75,6 +75,9 @@ func _init() -> void:
 	check_field_group_order()
 	check_unused_kind_keys()
 	check_ability_callbacks()
+	preload("res://ontology/identity_late_read_cases.gd").run(self)
+	preload("res://ontology/completion_boundary_cases.gd").verify(self)
+	preload("res://ontology/diagnostic_header_cases.gd").run(self)
 	check_schema_abort_and_continuation()
 	check_callback_boundaries()
 	check_species_completion_boundaries()
@@ -433,7 +436,16 @@ func check_schema_abort_and_continuation() -> void:
 		)
 		file.store_string("exit=%d\n%s" % [status, text])
 	check(status == 0, "schema probe child completes")
-	check(text.count("SCRIPT ERROR:") == 2, "only active malformed kinds reach native boundary")
+	check(
+		(
+			CallbackCases.observations(text, "SCRIPT ERROR:")
+			== [
+				"SCRIPT ERROR: Invalid type in function '_input_shape' in base 'RefCounted (ShapeSpy)'. Cannot convert argument 2 from Object to String.",
+				"SCRIPT ERROR: Invalid type in function '_input_shape' in base 'RefCounted (ShapeSpy)'. Cannot convert argument 2 from Object to String."
+			]
+		),
+		"only exact active malformed kinds reach native boundary"
+	)
 	check(actual == expected, "schema abort, continuation and callback observations")
 
 

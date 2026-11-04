@@ -122,7 +122,8 @@ static func validate_defence_dodge(
 		"design.defence.dodge",
 		{"number": "stamina distance duration-s iframe-s", "object": "on-dodge"}
 	):
-		dodge_values(o, dg, stamina_max)
+		if not dodge_values(o, dg, stamina_max):
+			return false
 		return o._validate_dodge_passives(design, ab, stamina_max, se, df, dg)
 	return validate_defence_block(o, design, ab, se, df)
 
@@ -130,10 +131,13 @@ static func validate_defence_dodge(
 static func validate_defence_block(
 	o, design: Dictionary, ab: Dictionary, se: Dictionary, df: Dictionary
 ) -> bool:
-	block_rules(o, df)
-	stealth_rules(o, df)
+	if not block_rules(o, df):
+		return false
+	if not stealth_rules(o, df):
+		return false
 	enemy_hit_rules(o, df)
-	stealth_ability_rules(o, ab)
+	if not stealth_ability_rules(o, ab):
+		return false
 	return Presentation.validate_feel(o, design, se)
 
 
@@ -276,17 +280,18 @@ static func runtime_costs(o, a, r: Dictionary, stamina_max: float) -> bool:
 	return true
 
 
-static func block_rules(o, df: Dictionary) -> void:
+static func block_rules(o, df: Dictionary) -> bool:
 	var bl = o._object(df.get("block"))
 	if o._fields_valid(
 		df.get("block"),
 		"design.defence.block",
 		{"number": "max power-per-hit damage-reduction front-dot regen-per-s guardian-mult"}
 	):
-		block_values(o, bl)
+		return block_values(o, bl)
+	return true
 
 
-static func stealth_rules(o, df: Dictionary) -> void:
+static func stealth_rules(o, df: Dictionary) -> bool:
 	var sl = o._object(df.get("stealth"))
 	if o._fields_valid(
 		df.get("stealth"), "design.defence.stealth", {"number": "decay-per-s still-mult aggro-cut"}
@@ -295,6 +300,7 @@ static func stealth_rules(o, df: Dictionary) -> void:
 			o.errors.append("design.defence.stealth: decay-per-s >= 0, still-mult >= 1")
 		if float(sl["aggro-cut"]) < 0.0 or float(sl["aggro-cut"]) > 1.0:
 			o.errors.append("design.defence.stealth.aggro-cut outside [0,1]")
+	return true
 
 
 static func enemy_hit_rules(o, df: Dictionary) -> void:
@@ -307,9 +313,11 @@ static func enemy_hit_rules(o, df: Dictionary) -> void:
 			o.errors.append("design.defence.enemy-hit.%s outside [0,1]" % k)
 
 
-static func stealth_ability_rules(o, ab: Dictionary) -> void:
+static func stealth_ability_rules(o, ab: Dictionary) -> bool:
 	for id in ab:
-		stealth_ability_row(o, id, ab[id])
+		if not stealth_ability_row(o, id, ab):
+			return false
+	return true
 
 
 static func role_presentation(
@@ -332,7 +340,8 @@ static func runtime_cooldown(o, a, r: Dictionary) -> bool:
 	return true
 
 
-static func dodge_values(o, dg: Dictionary, stamina_max: float) -> void:
+# True is completed work (also invalid data); native failure alone stops validate().
+static func dodge_values(o, dg: Dictionary, stamina_max: float) -> bool:
 	if float(dg["stamina"]) <= 0.0 or float(dg["stamina"]) > stamina_max:
 		o.errors.append("design.defence.dodge.stamina outside (0, %d]" % stamina_max)
 	if (
@@ -341,6 +350,7 @@ static func dodge_values(o, dg: Dictionary, stamina_max: float) -> void:
 		or float(dg["iframe-s"]) < 0.0
 	):
 		o.errors.append("design.defence.dodge: distance / duration-s > 0, iframe-s >= 0")
+	return true
 
 
 static func channel_result(o, outside: bool, path: String, field: String, valid: bool) -> bool:
@@ -397,7 +407,7 @@ static func runtime_heal(o, a, r: Dictionary) -> bool:
 	return true
 
 
-static func block_values(o, bl: Dictionary) -> void:
+static func block_values(o, bl: Dictionary) -> bool:
 	if float(bl["max"]) <= 0.0 or float(bl["power-per-hit"]) <= 0.0:
 		o.errors.append("design.defence.block: max / power-per-hit must be > 0")
 	if float(bl["damage-reduction"]) < 0.0 or float(bl["damage-reduction"]) > 1.0:
@@ -406,18 +416,20 @@ static func block_values(o, bl: Dictionary) -> void:
 		o.errors.append("design.defence.block.front-dot outside [-1,1]")
 	if float(bl["regen-per-s"]) < 0.0 or float(bl["guardian-mult"]) < 1.0:
 		o.errors.append("design.defence.block: regen-per-s >= 0, guardian-mult >= 1")
+	return true
 
 
-static func stealth_ability_row(o, id, raw: Variant) -> void:
+static func stealth_ability_row(o, id, ab: Dictionary) -> bool:
 	if (
-		raw is Dictionary
-		and raw.has("stealth-per-s")
+		ab[id] is Dictionary
+		and ab[id].has("stealth-per-s")
 		and o._input_shape(
-			raw["stealth-per-s"], "number", "design.abilities." + str(id) + ".stealth-per-s"
+			ab[id]["stealth-per-s"], "number", "design.abilities." + str(id) + ".stealth-per-s"
 		)
-		and raw["stealth-per-s"] < 0
+		and ab[id]["stealth-per-s"] < 0
 	):
 		o.errors.append("design.abilities.%s.stealth-per-s < 0" % id)
+	return true
 
 
 # True means processed/skipped normally; native failure alone stops the old validate scope.
