@@ -88,12 +88,32 @@ func _bar(parent: Control, color: Color) -> ProgressBar:
 func _process(_dt: float) -> void:
 	if player == null:
 		return
+	_display()
+
+
+# Completion flags stop new phase failures without promoting existing callee failures.
+func _display() -> bool:
+	return (
+		_touch_layout()
+		and _resources()
+		and _combat_display()
+		and _defence_display()
+		and _progress_display()
+		and _land_display()
+	)
+
+
+func _touch_layout() -> bool:
 	if touch_ui != null:
 		_land.visible = not player.ui_open
 		_skills.visible = not player.ui_open
 		_margin.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
 		_margin.position = touch_ui.safe.position
 		_margin.size = Vector2(touch_ui.safe.size.x * .5, touch_ui.safe.size.y * .5)
+	return true
+
+
+func _resources() -> bool:
 	_hp.max_value = player.max_hp
 	_hp.value = player.hp
 	var st_max := float(player.cfg["stamina"]["max"]) if not player.cfg.is_empty() else 100.0
@@ -108,6 +128,10 @@ func _process(_dt: float) -> void:
 		)
 		_skills.text = _skills_line()
 		_buff_icons()
+	return true
+
+
+func _combat_display() -> bool:
 	var line: PackedStringArray = []
 	if player.combo > 0:
 		line.append("combo %d" % player.combo)
@@ -116,6 +140,10 @@ func _process(_dt: float) -> void:
 	if player.get("blocking"):
 		line.append("blocking")
 	_combo.text = "   ".join(line)
+	return true
+
+
+func _defence_display() -> bool:
 	if player.get("defence") != null and not player.defence.is_empty():
 		_block.max_value = player.block_max()
 		_block.value = player.block_power
@@ -123,6 +151,10 @@ func _process(_dt: float) -> void:
 		_stealth.max_value = 1.0
 		_stealth.value = player.stealth
 		_stealth.visible = player.stealth > 0.0
+	return true
+
+
+func _progress_display() -> bool:
 	if player.get("inventory") != null:
 		_coins.text = "%d copper" % player.inventory.coins
 	if player.get("xp") != null:
@@ -130,26 +162,19 @@ func _process(_dt: float) -> void:
 			"level %d   %d / %d xp   %d skill points"
 			% [player.level, player.xp, Model.xp_to_next(player.level), player.skill_points]
 		)
+	return true
+
+
+func _land_display() -> bool:
 	if world != null and world.gen != null:
 		var l = world.gen.land_of_block(
 			floori(float(player.logical_position()[0])), floori(float(player.logical_position()[2]))
 		)
 		_land.text = "%s  (%s, %s)" % [l.name, l.landscape, l.danger_tier] if l != null else ""
 		var v: Dictionary = world.gen.village_at(l)
-		if (
-			not v.is_empty()
-			and (
-				(
-					Vector2(
-						float(player.logical_position()[0]) - v["centre"].x,
-						float(player.logical_position()[2]) - v["centre"].y
-					)
-					. length()
-				)
-				<= float(world.gen.settlement["radius"])
-			)
-		):
-			_land.text += "  —  %s (village)" % v["name"]
+		if not v.is_empty():
+			return _village_caption(v)
+	return true
 
 
 func _on_picked_up(label: String) -> void:
@@ -227,19 +252,10 @@ func _skills_line() -> String:
 		var a = player.skill_tree.class_slot(slot)
 		if a == null:
 			continue
-		var cd := float(player.abilities.cooldowns.get(a.id, 0.0))
-		var state := (
-			"no points"
-			if player.skill_tree.spent(a.id) == 0
-			else ("%.0fs" % cd if cd > 0.0 else "ready")
-		)
-		parts.append(
-			(
-				("%s: %s" % [a.display_name, state])
-				if touch_ui != null
-				else "%d %s: %s" % [slot, a.display_name, state]
-			)
-		)
+		var part = _class_skill_line(slot, a)
+		if part == null:
+			return ""
+		parts.append(part)
 	for id in player.abilities.buffs:
 		parts.append(
 			"[%s %.0fs]" % [player.o.abilities[id].display_name, player.abilities.buffs[id]["left"]]
@@ -250,3 +266,33 @@ func _skills_line() -> String:
 func bind_touch(adapter: Node) -> void:
 	touch_ui = adapter
 	_margin.get_child(0).size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+
+
+# Untyped return distinguishes a native abort (null) from successful text.
+func _class_skill_line(slot, a):
+	var cd := float(player.abilities.cooldowns.get(a.id, 0.0))
+	var state := (
+		"no points"
+		if player.skill_tree.spent(a.id) == 0
+		else ("%.0fs" % cd if cd > 0.0 else "ready")
+	)
+	return (
+		("%s: %s" % [a.display_name, state])
+		if touch_ui != null
+		else "%d %s: %s" % [slot, a.display_name, state]
+	)
+
+
+func _village_caption(v) -> bool:
+	if (
+		(
+			Vector2(
+				float(player.logical_position()[0]) - v["centre"].x,
+				float(player.logical_position()[2]) - v["centre"].y
+			)
+			. length()
+		)
+		<= float(world.gen.settlement["radius"])
+	):
+		_land.text += "  —  %s (village)" % v["name"]
+	return true

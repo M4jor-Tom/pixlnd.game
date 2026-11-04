@@ -251,6 +251,7 @@ timeout 150 nix develop -c godot --headless --quit -- --save-path="${PIXLND_TEST
 nix develop -c godot --headless -s game/world/test_world_bounds.gd # finite lands, edge meshes, spawn plans and streaming
 nix develop -c godot --headless -s game/world/test_world_travel.gd # true-limit edges/corners, spawn-scale wall slide, turn-back, movement paths and Teleport cost/cooldown/distance
 nix develop -c godot --headless -s game/meta/test_world_map.gd # boundary projection/toggle, live simulation, gameplay gates and synthetic Android ownership/layout
+nix develop --no-update-lock-file -c timeout 681 godot --headless -s game/meta/test_display_contract.gd # literal HUD resources/hotbar/cache and camera/map ownership; captured-cursor controls require a separately executed windowed run
 nix develop -c godot --headless -s game/world/test_world_gen.gd    # gen-world invariants (seed, range, names, mesh)
 nix develop -c godot --headless -s game/world/test_settlement.gd   # village placement / plateau / layout, no spawns near the square, shop stock + prices, buy / sell, respec, inn, interact → NPC
 nix develop -c godot --headless -s game/entities/test_player.gd    # player physics (land, jump height, step-up, sprint, camera)

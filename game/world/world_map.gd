@@ -64,13 +64,7 @@ func set_open(value: bool) -> void:
 		player.cancel_touch_requests()
 		player._charge = -1.0
 	if touch == null:
-		if open:
-			_restore_cursor = Input.mouse_mode == Input.MOUSE_MODE_CAPTURED
-			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-		elif _restore_cursor:
-			if not player.ui_open:
-				Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-			_restore_cursor = false
+		_update_cursor()
 	else:
 		touch.set_map_open(open)
 
@@ -126,3 +120,13 @@ func _draw_map() -> void:
 		16,
 		Color.WHITE
 	)
+
+
+func _update_cursor() -> void:
+	if open:
+		_restore_cursor = Input.mouse_mode == Input.MOUSE_MODE_CAPTURED
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	elif _restore_cursor:
+		if not player.ui_open:
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		_restore_cursor = false

@@ -69,6 +69,14 @@ func _initialize() -> void:
 	check(o.validate(), "current ontology validates")
 	design = o.configs["generators"]["design"]
 	InputMapBuilder.build(o.configs["keybinds"]["hybrid"])
+	if await _map_cases():
+		print(
+			"world map acceptance ok" if failed == 0 else "world map acceptance FAILED: %d" % failed
+		)
+		quit(0 if failed == 0 else 1)
+
+
+func _projection() -> bool:
 	# Full extent and player projection map all four boundaries and the origin to the intended fixed square.
 	var extent := 8388608.0
 	var rect := Rect2(100, 50, 400, 400)
@@ -117,6 +125,10 @@ func _initialize() -> void:
 		),
 		"origin projects to overview center"
 	)
+	return true
+
+
+func _desktop() -> bool:
 	# Desktop InputEvent M toggles the live map; headless tests keep the Close-button cursor visible.
 	var p := player(&"warrior", &"guardian")
 	var map: CanvasLayer = WorldMap.new()
@@ -182,7 +194,11 @@ func _initialize() -> void:
 	await process_frame
 	key(KEY_M, false)
 	await process_frame
-	var yaw := camera.rotation.y
+	return await _desktop_inputs(p, map, holder, enemy, enemy_start, enemy_hp_before, camera)
+
+
+func _desktop_inputs(p, map, holder, enemy, enemy_start, enemy_hp_before, camera) -> bool:
+	var yaw: float = camera.rotation.y
 	var quick_before: int = p.inventory.first_consumable().count
 	var conversations: Array = []
 	p.talked.connect(func(_npc): conversations.append(true))
@@ -218,20 +234,36 @@ func _initialize() -> void:
 	mouse.relative = Vector2(20, 20)
 	Input.parse_input_event(mouse)
 	await frames(3)
+	if not _desktop_gated(
+		p, camera, yaw, distance, skill_cooldowns_before, quick_before, conversations
+	):
+		return false
+	Input.action_release("move_right")
+	Input.action_release("basic-attack")
+	Input.action_release("special-attack")
+	Input.action_release("class-skill-1")
+	Input.action_release("interact")
+	Input.action_release("quick-item")
+	zoom.pressed = false
+	Input.parse_input_event(zoom)
+	return await _desktop_live(p, map, holder, enemy, enemy_start, enemy_hp_before)
+
+
+func _desktop_gated(
+	p, camera, yaw, distance, skill_cooldowns_before, quick_before, conversations
+) -> bool:
 	check(
 		is_zero_approx(p.position.x) and is_zero_approx(p.position.z),
 		"movement input is gated while map is open"
 	)
 	check(p._swing_t <= 0.0, "basic attack input is gated")
 	check(p._charge < 0.0 and p.mp == 100.0, "special press/release input is gated")
-	check(
-		(
-			not p.blocking
-			and p.abilities.cooldowns.size() == skill_cooldowns_before
-			and not p.abilities.busy()
-		),
-		"held block and class skill requests are gated"
-	)
+	if not _held_combat_gates(p, skill_cooldowns_before):
+		return false
+	return _desktop_other_gates(p, camera, yaw, distance, quick_before, conversations)
+
+
+func _desktop_other_gates(p, camera, yaw, distance, quick_before, conversations) -> bool:
 	check(
 		p.hp == p.max_hp and p.inventory.first_consumable().count == quick_before,
 		"quick item input is gated"
@@ -241,14 +273,10 @@ func _initialize() -> void:
 		camera.rotation.y == yaw and p.get_node("CameraRig/Arm").spring_length == distance,
 		"look and camera zoom are gated"
 	)
-	Input.action_release("move_right")
-	Input.action_release("basic-attack")
-	Input.action_release("special-attack")
-	Input.action_release("class-skill-1")
-	Input.action_release("interact")
-	Input.action_release("quick-item")
-	zoom.pressed = false
-	Input.parse_input_event(zoom)
+	return true
+
+
+func _desktop_live(p, map, holder, enemy, enemy_start, enemy_hp_before) -> bool:
 	# Existing panel ownership survives map closure; live DOT, cooldowns, enemy simulation continue.
 	p.ui_open = true
 	p.abilities.cooldowns[&"smash"] = 5.0
@@ -257,10 +285,8 @@ func _initialize() -> void:
 	p.apply_status(&"burning", design["status-effects"]["burning"], 100.0, p)
 	await frames(35)
 	check(p.hp < 100.0, "map does not protect from ordinary DOT")
-	check(
-		p.abilities.cooldowns[&"smash"] < 5.0 and p.abilities.buffs[&"war-frenzy"]["left"] < 5.0,
-		"cooldowns and buffs continue under map"
-	)
+	if not _live_timers(p):
+		return false
 	check(enemy.position != enemy_start, "enemy world simulation continues under map")
 	check(enemy.hp < enemy_hp_before, "already-fired projectile continues and hits under map")
 	# A concurrent inventory remains owner; map closure cannot recapture its visible cursor.
@@ -276,16 +302,8 @@ func _initialize() -> void:
 	await process_frame
 	key(KEY_M, false)
 	await process_frame
-	check(
-		(
-			not map.open
-			and not p.map_open
-			and p.ui_open
-			and inv._panel.visible
-			and Input.mouse_mode == Input.MOUSE_MODE_VISIBLE
-		),
-		"map closure preserves another panel and its cursor ownership"
-	)
+	if not _desktop_cursor(map, p, inv):
+		return false
 	key(KEY_M, true)
 	await process_frame
 	key(KEY_M, false)
@@ -308,6 +326,10 @@ func _initialize() -> void:
 	inv.queue_free()
 	map.queue_free()
 	p.queue_free()
+	return true
+
+
+func _android() -> bool:
 	# Android native adapter: real touch actions reach the UI-only SubViewport and retain ownership/cancellation.
 	var android_player := player()
 	android_player.mp = 100.0
@@ -319,20 +341,8 @@ func _initialize() -> void:
 	var android_map: CanvasLayer = WorldMap.new()
 	root.add_child(android_map)
 	android_map.bind(android_player, android)
-	check(
-		(
-			android._layout_valid
-			and (
-				android.targets["world-map"].size.x
-				>= float(android.profile["min-target-dp"]) * android.pixels_per_dp.x
-			)
-			and (
-				android.targets["world-map"].size.y
-				>= float(android.profile["min-target-dp"]) * android.pixels_per_dp.y
-			)
-		),
-		"Map target meets safe-area 48dp minimum"
-	)
+	if not _map_target(android):
+		return false
 	# Concurrent movement, look and charged hold are retired when Map opens; old streams cannot resume.
 	var stick_center: Vector2 = android.stick_rect.get_center()
 	await screen(1, stick_center, true)
@@ -346,17 +356,12 @@ func _initialize() -> void:
 		android_player._motion_remainder_x != 0.0,
 		"native movement at true scale accumulates sub-ULP motion"
 	)
-	check(
-		(
-			android._owners.has(1)
-			and android._owners.has(2)
-			and android._owners.has(3)
-			and android._owners[1].target == "move"
-			and android._owners[2].target == "look"
-			and android_player._charge >= 0.0
-		),
-		"native movement/look/charge streams are active before map"
-	)
+	if not _active_touch_streams(android, android_player):
+		return false
+	return await _android_open(android_player, android, android_map, stick_center)
+
+
+func _android_open(android_player, android, android_map, stick_center) -> bool:
 	var map_center: Vector2 = android.targets["world-map"].get_center()
 	await screen(4, map_center, true)
 	await frames(1)
@@ -364,30 +369,22 @@ func _initialize() -> void:
 		android_map.open and android_player.map_open and android_player._charge < 0.0,
 		"native Map opens and cancels uncommitted charge"
 	)
-	check(
-		(
-			android._owners[1].target == ""
-			and android._owners[2].target == ""
-			and android._owners[3].target == ""
-			and android.held.is_empty()
-			and android_player._motion_remainder_x == 0.0
-		),
-		"opening map retires old touches and cancels pending sub-ULP movement"
-	)
-	var close_rect: Rect2 = android_map.close_button.get_global_rect()
-	check(
-		(
-			close_rect.size.x >= float(android.profile["min-target-dp"]) * android.pixels_per_dp.x
-			and (
-				close_rect.size.y
-				>= float(android.profile["min-target-dp"]) * android.pixels_per_dp.y
-			)
-			and android.safe.encloses(close_rect)
-		),
-		"native Close is safe-area contained and >=48dp"
-	)
+	if not _retired_touch_streams(android, android_player):
+		return false
+	return await _android_close_area(android_player, android, android_map, stick_center)
+
+
+func _android_close_area(android_player, android, android_map, stick_center) -> bool:
+	# Read Close after the existing release yield settles deferred Container layout.
 	await screen(1, stick_center + Vector2(80, 0), false)
-	var close_center := close_rect.get_center()
+	var close_rect: Rect2 = android_map.close_button.get_global_rect()
+	if not _close_target(android, close_rect):
+		return false
+	return await _android_close(android_player, android, android_map, close_rect)
+
+
+func _android_close(android_player, android, android_map, close_rect) -> bool:
+	var close_center: Vector2 = close_rect.get_center()
 	await screen(5, close_center, true)
 	await screen(5, close_center, false)
 	await frames(2)
@@ -410,6 +407,10 @@ func _initialize() -> void:
 	await frames(30)
 	check(android_player.position != retired_position, "fresh touch after map close can move")
 	await screen(6, fresh_stick_center + Vector2(80, 0), false)
+	return await _android_back(android_player, android, android_map)
+
+
+func _android_back(android_player, android, android_map) -> bool:
 	# Back is delivered through the actual Android notification path and consumes the map context.
 	var map_center2: Vector2 = android.targets["world-map"].get_center()
 	await screen(7, map_center2, true)
@@ -426,5 +427,101 @@ func _initialize() -> void:
 	android.queue_free()
 	android_map.queue_free()
 	android_player.queue_free()
-	print("world map acceptance ok" if failed == 0 else "world map acceptance FAILED: %d" % failed)
-	quit(0 if failed == 0 else 1)
+	return true
+
+
+func _held_combat_gates(p, skill_cooldowns_before) -> bool:
+	var actual = (
+		not p.blocking
+		and p.abilities.cooldowns.size() == skill_cooldowns_before
+		and not p.abilities.busy()
+	)
+	check(actual, "held block and class skill requests are gated")
+	return true
+
+
+func _desktop_cursor(map, p, inv) -> bool:
+	check(
+		(
+			_map_closed(map, p)
+			and p.ui_open
+			and inv._panel.visible
+			and Input.mouse_mode == Input.MOUSE_MODE_VISIBLE
+		),
+		"map closure preserves another panel and its cursor ownership"
+	)
+	return true
+
+
+func _active_touch_streams(android, android_player) -> bool:
+	var actual = (
+		android._owners.has(1)
+		and android._owners.has(2)
+		and android._owners.has(3)
+		and android._owners[1].target == "move"
+		and android._owners[2].target == "look"
+		and android_player._charge >= 0.0
+	)
+	check(actual, "native movement/look/charge streams are active before map")
+	return true
+
+
+func _retired_touch_streams(android, android_player) -> bool:
+	var actual = (
+		android._owners[1].target == ""
+		and android._owners[2].target == ""
+		and android._owners[3].target == ""
+		and android.held.is_empty()
+		and android_player._motion_remainder_x == 0.0
+	)
+	check(actual, "opening map retires old touches and cancels pending sub-ULP movement")
+	return true
+
+
+func _map_closed(map, p) -> bool:
+	return not map.open and not p.map_open
+
+
+func _map_cases() -> bool:
+	return _projection() and await _desktop() and await _android()
+
+
+func _live_timers(p) -> bool:
+	check(
+		p.abilities.cooldowns[&"smash"] < 5.0 and p.abilities.buffs[&"war-frenzy"]["left"] < 5.0,
+		"cooldowns and buffs continue under map"
+	)
+	return true
+
+
+func _map_target(android) -> bool:
+	check(
+		(
+			android._layout_valid
+			and (
+				android.targets["world-map"].size.x
+				>= float(android.profile["min-target-dp"]) * android.pixels_per_dp.x
+			)
+			and (
+				android.targets["world-map"].size.y
+				>= float(android.profile["min-target-dp"]) * android.pixels_per_dp.y
+			)
+		),
+		"Map target meets safe-area 48dp minimum"
+	)
+	return true
+
+
+func _close_target(android, close_rect) -> bool:
+	check(
+		(
+			close_rect.size.x >= float(android.profile["min-target-dp"]) * android.pixels_per_dp.x
+			and (
+				close_rect.size.y
+				>= float(android.profile["min-target-dp"]) * android.pixels_per_dp.y
+			)
+			and android.safe.encloses(close_rect)
+		),
+		"native Close is safe-area contained and >=48dp"
+	)
+	return true

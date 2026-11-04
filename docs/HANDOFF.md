@@ -1,5 +1,72 @@
 # Handoff — pending continuation
 
+## Task9 composed native capture interval — unclassified follow-up
+
+The new external real-main capture helper exited **1** with exactly
+`world advances naturally under map` false, no script/engine diagnostics. All
+bootstrap/HUD/cursor/map/inventory checks and four actual1280×720 composed PNG
+writes completed; this is a failed combined capture, not a passed native group.
+Own Godot PID586228 (timeout586227), X11/Vulkan1.4.329/NVIDIA MX450, 6.717s,
+2026-11-04T12:09:09+01:00. Candidate396 source manifest
+`b7504182b8805d596825fc02e8085457cec097e9cc0e3f3723322b1e7b42c416`
+was unchanged before/after. The helper reads elapsed, waits an ignore-time-scale
+0.2s timer, then tests elapsed increase; actual clock/callback chronology was
+not captured. No engine/collision/clock cause or production regression is
+established, and no wait/tolerance/physics remedy is authorized.
+
+Evidence: `/home/theta/.pi-game-dev/recovery/pixlnd-quality-gate-refactor/task9-7446c92.Or5BJ5/usage-continuation-20261104T111714/final/`:
+`capture-result.json`, `composed-native/native.log`, all four PNGs,
+`capture-failure*`, source pins and actual collected wait. A separately selected
+print-only observation preserved all original checks/waits and completed actual0
+(own Godot594138, 6.751s): physics frames32→40, elapsed0.5166667→0.65,
+process frames3→4, 202398µs wall interval, time_scale1, physics enabled/can-process,
+same main/world state identity. New four composed PNGs and raw records are in
+sibling `clock-observation/`. The failed interval was not reproduced, so no cause
+or fix is established and its actual1 remains failed/unclassified. Parent allowed
+progression with this bounded positive evidence, not a general reliability claim,
+ordinary-error waiver or acceptance of the residual. Next action: separately
+selected capture-interval disposition if needed; no further capture/observer/
+clock remedy is selected during this refactor.
+
+## Task9 composed capture visual traces — unclassified follow-up
+
+Parent opened all four actual1280×720 composed PNGs from the failed capture above.
+`inventory-after-map.png` and `closed-hud.png` show diagonal/repeated white
+status/terrain-text traces at the left around x0–190/y450–515; `boot-hud.png`
+shows initially incomplete terrain/pop-in. HUD bars/hotbar, map outline/You
+marker/Close, inventory and composed world are visible. Origin and ordinary-game
+applicability of the traces remain unclassified, not a proven Task9 regression,
+GPU diagnosis or Android hardware result. No redraw/layout/physics or other
+unrelated remedy is authorized. Next action: separately selected visual/source
+disposition if needed; preserve these PNGs and parent inspection receipt. Existing
+staged touch/HUD overlap and optional native guidance scopes remain separate.
+
+## Task9 original native map respawn observation — unclassified follow-up
+
+An actual Task9 BASE `edbc67ea0cf841af7e86717af252a61fb4470e40` native map run
+failed `live map does not prevent ordinary respawn`, alongside a separately
+corrected Close fixture failure. A print-only BASE observation repeated both
+failures. No script/engine diagnostics; own Godot PIDs556064/564633, actual1 at
+40.390s/42.077s on pinned Godot4.7.2, X11/Vulkan1.4.329/NVIDIA MX450, unchanged681s.
+The test waits35 physics frames after lethal DOT, then an ignore-time-scale2.2s
+timer; Player's respawn uses the existing default scaled2.0s timer. Actual clock
+state/completion chronology and cause were not measured; no clock/timing/tolerance
+remedy is authorized. This demonstrates occurrence before Task9, not before the
+whole refactor or universal reproduction.
+
+Later H2 and corrected original/current native runs did not fail respawn, but
+those passes do not retroactively resolve/classify the earlier failures. Preserve
+all failed receipts; no additional native/ordinary gate exemption follows. Next
+action: separately selected bounded disposition/characterization if required;
+do not actively pursue it during this refactor.
+
+Evidence root: `/home/theta/.pi-game-dev/recovery/pixlnd-quality-gate-refactor/task9-7446c92.Or5BJ5/usage-continuation-20261104T111714/`.
+Original raw logs: `native-close-original/native.log` and
+`original-close-observation/native.log`; source/engine/actual waits in their
+`original-native-*` / `original-close-observation-*` records. Later native
+observations are in `corrected-fixture/green-results.json`, not a retrospective
+waiver of these failures.
+
 ## Staged native touch panel/HUD overlap — follow-up deferred
 
 Parent inspected all24 composed Task8 panel captures and observed HP/MP/stamina

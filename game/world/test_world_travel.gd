@@ -4,6 +4,7 @@ const Model := preload("res://ontology/model.gd")
 const Combat := preload("res://game/combat/combat.gd")
 const Spawner := preload("res://game/world/spawner.gd")
 const InputMapBuilder := preload("res://game/meta/input_map.gd")
+const BoundaryCases := preload("res://game/world/world_travel_boundary_cases.gd")
 const PLAYER := preload("res://game/entities/player.tscn")
 var failed := 0
 var design: Dictionary
@@ -68,155 +69,13 @@ func _init() -> void:
 	var edge := -float(terrain["lands-per-axis"]) * float(terrain["land-blocks"]) / 2.0
 	var p := make_player(&"warrior", &"berserker", {&"smash": 5, &"rock-fist": 1})
 	var edge_floors: Array[StaticBody3D] = []
-	for edge_case in [
-		[Vector3(edge + 0.5, 0, 0), "move_left", "move_right", "min-x"],
-		[Vector3(-edge - 0.5, 0, 0), "move_right", "move_left", "max-x"],
-		[Vector3(0, 0, edge + 0.5), "move_forward", "move_back", "min-z"],
-		[Vector3(0, 0, -edge - 0.5), "move_back", "move_forward", "max-z"]
-	]:
-		var pos: Vector3 = edge_case[0]
-		edge_floors.append(floor_at(pos.x, pos.z))
-		place(p, pos)
-		await frames(3)
-		var hp_before: float = p.hp
-		Input.action_press(edge_case[1])
-		await frames(60)
-		Input.action_release(edge_case[1])
-		check(
-			(
-				p.position.x >= edge
-				and p.position.x < -edge
-				and p.position.z >= edge
-				and p.position.z < -edge
-			),
-			"%s outward walk remains inside bounds" % edge_case[3]
-		)
-		check(
-			p.hp == hp_before and not p.dead,
-			"%s edge causes no special damage/death" % edge_case[3]
-		)
-		place(p, pos)
-		await frames(3)
-		Input.action_press(edge_case[2])
-		await frames(60)
-		Input.action_release(edge_case[2])
-		var progressed := absf(p.position.x - pos.x) + absf(p.position.z - pos.z)
-		check(
-			absf(progressed - float(design["movement"]["walk"])) < 1.0,
-			"%s inward turn preserves ordinary 60Hz walk distance" % edge_case[3]
-		)
-		check(
-			(
-				p.position.x >= edge
-				and p.position.x < -edge
-				and p.position.z >= edge
-				and p.position.z < -edge
-			),
-			"%s inward walk stays in bounds" % edge_case[3]
-		)
-	# Give each boundary fixture an independent player/floor and a settled physics transform.
-	p.queue_free()
-	for body in edge_floors:
-		body.queue_free()
-	await frames(2)
-	# All four true-scale corners block outward diagonals and retain normalized inward progress.
-	for corner_case in [
-		[
-			Vector3(edge + 0.5, 0, edge + 0.5),
-			"move_left",
-			"move_forward",
-			"move_right",
-			"move_back",
-			"min/min"
-		],
-		[
-			Vector3(edge + 0.5, 0, -edge - 0.5),
-			"move_left",
-			"move_back",
-			"move_right",
-			"move_forward",
-			"min/max"
-		],
-		[
-			Vector3(-edge - 0.5, 0, edge + 0.5),
-			"move_right",
-			"move_forward",
-			"move_left",
-			"move_back",
-			"max/min"
-		],
-		[
-			Vector3(-edge - 0.5, 0, -edge - 0.5),
-			"move_right",
-			"move_back",
-			"move_left",
-			"move_forward",
-			"max/max"
-		]
-	]:
-		var corner: Vector3 = corner_case[0]
-		var floor_offset := Vector3(-10 if corner.x > 0.0 else 10, 0, -10 if corner.z > 0.0 else 10)
-		var corner_floor := floor_at(
-			corner.x + floor_offset.x, corner.z + floor_offset.z, Vector2(40, 40)
-		)
-		var corner_player := make_player(&"warrior", &"berserker")
-		place(corner_player, corner)
-		await frames(3)
-		Input.action_press(corner_case[1])
-		Input.action_press(corner_case[2])
-		await frames(60)
-		Input.action_release(corner_case[1])
-		Input.action_release(corner_case[2])
-		var stop_x := edge if corner.x < 0.0 else -edge - 0.5
-		var stop_z := edge if corner.z < 0.0 else -edge - 0.5
-		check(
-			(
-				corner_player.position.x >= edge
-				and corner_player.position.x < -edge
-				and corner_player.position.z >= edge
-				and corner_player.position.z < -edge
-			),
-			"%s corner outward diagonal remains within half-open bounds" % corner_case[5]
-		)
-		check(
-			(
-				absf(corner_player.position.x - stop_x) <= 0.01
-				and absf(corner_player.position.z - stop_z) <= 0.01
-			),
-			"%s corner outward diagonal stops within 0.01 block of exact boundary" % corner_case[5]
-		)
-		corner_player.queue_free()
-		await frames(2)
-		var return_player := make_player(&"warrior", &"berserker")
-		place(return_player, corner)
-		await frames(3)
-		Input.action_press(corner_case[3])
-		Input.action_press(corner_case[4])
-		await frames(60)
-		Input.action_release(corner_case[3])
-		Input.action_release(corner_case[4])
-		var expected_axis := float(design["movement"]["walk"]) / sqrt(2.0)
-		check(
-			(
-				absf(absf(return_player.position.x - corner.x) - expected_axis) < 0.75
-				and absf(absf(return_player.position.z - corner.z) - expected_axis) < 0.75
-			),
-			"%s corner inward turn preserves normalized 60Hz movement" % corner_case[5]
-		)
-		check(
-			(
-				return_player.position.x >= edge
-				and return_player.position.x < -edge
-				and return_player.position.z >= edge
-				and return_player.position.z < -edge
-			),
-			"%s corner inward movement remains in bounds" % corner_case[5]
-		)
-		return_player.queue_free()
-		corner_floor.queue_free()
-		await frames(2)
+	if await _travel(p, edge, edge_floors):
+		print("world travel paths ok" if failed == 0 else "world travel paths FAILED: %d" % failed)
+		quit(0 if failed == 0 else 1)
+
+
+func _tangent(p, edge) -> bool:
 	# Tangent movement at an edge works, then remains stopped after input release.
-	p = make_player(&"warrior", &"berserker")
 	var tangent := Vector3(-edge - 0.5, 0, 0)
 	floor_at(tangent.x, tangent.z)
 	place(p, tangent)
@@ -238,6 +97,10 @@ func _init() -> void:
 		Vector2(p.position.x, p.position.z) == tangent_stop,
 		"sub-ULP remainder is discarded when input stops"
 	)
+	return true
+
+
+func _wall() -> bool:
 	# Ordinary spawn-scale physical wall keeps native tangent sliding and cannot replay through it.
 	var wall_player := make_player(&"warrior", &"berserker")
 	var wall_start := Vector3(8192, 0, 8192)
@@ -272,6 +135,10 @@ func _init() -> void:
 		Vector2(wall_player.position.x, wall_player.position.z) == wall_stop,
 		"ordinary-wall remainder cannot replay after release"
 	)
+	return true
+
+
+func _respawn(edge) -> bool:
 	# A real death/respawn clears any sub-ULP remainder instead of carrying it to spawn.
 	var respawner := make_player(&"warrior", &"berserker")
 	place(respawner, Vector3(-edge - 0.5, 0, 0))
@@ -296,6 +163,10 @@ func _init() -> void:
 		),
 		"respawn does not replay prior movement remainder"
 	)
+	return true
+
+
+func _sprint(p, edge) -> bool:
 	# Sprint at the edge retains its normal stamina drain.
 	place(p, Vector3(edge + 0.5, 0, 0))
 	await frames(3)
@@ -309,6 +180,10 @@ func _init() -> void:
 		p.position.x >= edge and p.position.x < -edge and sprint_stamina - p.stamina > 9.0,
 		"blocked sprint remains bounded and pays ordinary stamina cost"
 	)
+	return true
+
+
+func _air_water(p, edge) -> bool:
 	# Airborne and swimming motion use the same horizontal guard.
 	place(p, Vector3(-edge - 0.5, 0, 0))
 	await frames(3)
@@ -329,6 +204,10 @@ func _init() -> void:
 	Input.action_release("move_right")
 	check(p.position.x >= edge and p.position.x < -edge, "swimming movement remains in bounds")
 	p.water_top = -INF
+	return true
+
+
+func _dodge_knockback(p, edge) -> bool:
 	# Dodge and status knockback are already-committed travel; neither may cross or hurt at the edge.
 	place(p, Vector3(-edge - 0.5, 0, 0))
 	await frames(3)
@@ -351,11 +230,15 @@ func _init() -> void:
 		p.position.x <= -edge - 0.5 and p.hp == hp_before,
 		"outward knockback remains bounded without special damage"
 	)
+	return true
+
+
+func _damaging_dash(edge) -> bool:
 	# A damaging active dash hits normally but terminates at the boundary.
 	var rusher := make_player(&"warrior", &"berserker", {&"rock-fist": 1})
 	var holder := Node3D.new()
 	root.add_child(holder)
-	var enemy_z := edge + 0.5
+	var enemy_z: float = edge + 0.5
 	var enemy = (
 		Spawner
 		. populate(
@@ -396,6 +279,10 @@ func _init() -> void:
 		enemy.hp < enemy_hp and rusher.hp == rusher.max_hp,
 		"edge-stopped dash resolves its normal strike without edge damage"
 	)
+	return true
+
+
+func _lunge(edge) -> bool:
 	# Instant lunge route through the real special-attack / moveset consumer.
 	var lunger := make_player(&"warrior", &"berserker")
 	lunger.moveset = design["movesets"]["longsword"]
@@ -408,6 +295,10 @@ func _init() -> void:
 		lunger.position.z >= edge and lunger.mp == 0,
 		"instant weapon lunge stays in bounds and keeps ordinary MP cost"
 	)
+	return true
+
+
+func _teleports(edge) -> bool:
 	# Current Teleport: all four outward headings stop without refund or cooldown changes.
 	var mage := make_player(&"mage", &"fire-mage", {&"teleport": 5})
 	for edge_case in [
@@ -416,37 +307,36 @@ func _init() -> void:
 		[Vector3(edge + 0.5, 0, 0), PI / 2.0, "min-x"],
 		[Vector3(-edge - 0.5, 0, 0), -PI / 2.0, "max-x"]
 	]:
-		var pos: Vector3 = edge_case[0]
-		floor_at(pos.x + (5.0 if pos.x != 0 else 0.0), pos.z + (5.0 if pos.z != 0 else 0.0))
-		place(mage, pos)
-		mage.get_node("CameraRig").rotation.y = edge_case[1]
-		mage.mp = 100.0
-		mage.abilities.cooldowns.erase(&"teleport")
-		await frames(3)
-		check(mage.use_class_skill(3), "%s Teleport cast" % edge_case[2])
-		var expected_cooldown: float = 10.0 * mage.skill_tree.cooldown_mult(&"teleport")
-		check(
-			(
-				mage.mp == 0
-				and is_equal_approx(mage.abilities.cooldowns[&"teleport"], expected_cooldown)
-			),
-			"%s Teleport retains MP cost and cooldown" % edge_case[2]
-		)
-		await frames(8)
-		check(
-			(
-				mage.position.x >= edge
-				and mage.position.x < -edge
-				and mage.position.z >= edge
-				and mage.position.z < -edge
-				and mage.abilities.dash.is_empty()
-			),
-			"%s outward Teleport stops inside world" % edge_case[2]
-		)
-		check(
-			mage.mp < 1.0 and mage.abilities.cooldowns[&"teleport"] > expected_cooldown - 0.5,
-			"%s edge stop does not refund or clear costs" % edge_case[2]
-		)
+		if not await _teleport_case(mage, edge, edge_case):
+			return false
+	return true
+
+
+func _teleport_case(mage, edge, edge_case) -> bool:
+	var pos: Vector3 = edge_case[0]
+	floor_at(pos.x + (5.0 if pos.x != 0 else 0.0), pos.z + (5.0 if pos.z != 0 else 0.0))
+	place(mage, pos)
+	mage.get_node("CameraRig").rotation.y = edge_case[1]
+	mage.mp = 100.0
+	mage.abilities.cooldowns.erase(&"teleport")
+	await frames(3)
+	check(mage.use_class_skill(3), "%s Teleport cast" % edge_case[2])
+	var expected_cooldown: float = 10.0 * mage.skill_tree.cooldown_mult(&"teleport")
+	check(
+		mage.mp == 0 and is_equal_approx(mage.abilities.cooldowns[&"teleport"], expected_cooldown),
+		"%s Teleport retains MP cost and cooldown" % edge_case[2]
+	)
+	await frames(8)
+	if not _teleport_bounds(mage, edge, edge_case):
+		return false
+	check(
+		mage.mp < 1.0 and mage.abilities.cooldowns[&"teleport"] > expected_cooldown - 0.5,
+		"%s edge stop does not refund or clear costs" % edge_case[2]
+	)
+	return true
+
+
+func _inward_teleports(edge) -> bool:
 	var inward := make_player(&"mage", &"fire-mage", {&"teleport": 5})
 	inward.mp = 100
 	var inward_start := Vector3(-edge - 20.5, 0, 0)
@@ -474,5 +364,93 @@ func _init() -> void:
 		absf(inside.position.z + 20.0) < 0.1 and inside.abilities.dash.is_empty(),
 		"interior Teleport retains 20-block dash"
 	)
-	print("world travel paths ok" if failed == 0 else "world travel paths FAILED: %d" % failed)
-	quit(0 if failed == 0 else 1)
+	return true
+
+
+func _teleport_bounds(mage, edge, edge_case) -> bool:
+	var actual = (
+		mage.position.x >= edge
+		and mage.position.x < -edge
+		and mage.position.z >= edge
+		and mage.position.z < -edge
+		and mage.abilities.dash.is_empty()
+	)
+	check(actual, "%s outward Teleport stops inside world" % edge_case[2])
+	return true
+
+
+func _travel(p, edge, edge_floors) -> bool:
+	if not await BoundaryCases.edges(self, p, edge, edge_floors):
+		return false
+	# Give each boundary fixture an independent player/floor and a settled physics transform.
+	p.queue_free()
+	for body in edge_floors:
+		body.queue_free()
+	await frames(2)
+	if not await BoundaryCases.corners(self, edge):
+		return false
+	p = make_player(&"warrior", &"berserker")
+	return await _physical_paths(p, edge) and await _committed_paths(p, edge)
+
+
+func _physical_paths(p, edge) -> bool:
+	return (
+		await _tangent(p, edge)
+		and await _wall()
+		and await _respawn(edge)
+		and await _sprint(p, edge)
+		and await _air_water(p, edge)
+	)
+
+
+func _committed_paths(p, edge) -> bool:
+	return (
+		await _dodge_knockback(p, edge)
+		and await _damaging_dash(edge)
+		and await _lunge(edge)
+		and await _teleports(edge)
+		and await _inward_teleports(edge)
+	)
+
+
+func _edge_inward(p, edge, edge_case, pos) -> bool:
+	place(p, pos)
+	await frames(3)
+	Input.action_press(edge_case[2])
+	await frames(60)
+	Input.action_release(edge_case[2])
+	var progressed := absf(p.position.x - pos.x) + absf(p.position.z - pos.z)
+	check(
+		absf(progressed - float(design["movement"]["walk"])) < 1.0,
+		"%s inward turn preserves ordinary 60Hz walk distance" % edge_case[3]
+	)
+	if not BoundaryCases._inward_edge_bounds(self, p, edge, edge_case):
+		return false
+	return true
+
+
+func _corner_inward(edge, corner_case, corner, corner_floor, corner_player) -> bool:
+	corner_player.queue_free()
+	await frames(2)
+	var return_player: CharacterBody3D = make_player(&"warrior", &"berserker")
+	place(return_player, corner)
+	await frames(3)
+	Input.action_press(corner_case[3])
+	Input.action_press(corner_case[4])
+	await frames(60)
+	Input.action_release(corner_case[3])
+	Input.action_release(corner_case[4])
+	var expected_axis := float(design["movement"]["walk"]) / sqrt(2.0)
+	check(
+		(
+			absf(absf(return_player.position.x - corner.x) - expected_axis) < 0.75
+			and absf(absf(return_player.position.z - corner.z) - expected_axis) < 0.75
+		),
+		"%s corner inward turn preserves normalized 60Hz movement" % corner_case[5]
+	)
+	if not BoundaryCases._corner_inward_bounds(self, return_player, edge, corner_case):
+		return false
+	return_player.queue_free()
+	corner_floor.queue_free()
+	await frames(2)
+	return true

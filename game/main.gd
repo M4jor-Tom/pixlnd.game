@@ -31,14 +31,11 @@ func _ready() -> void:
 		InputMapBuilder.build(o.configs["keybinds"]["hybrid"])
 	var world := $World
 	var player := $Player
-	_hero = player
-	_world = world
-	frame = LocalFrame.new(int(design.terrain["zone-blocks"]))
-	set_meta("local_frame", frame)
-	world.frame = frame
-	player.frame = frame
-	player.relocate = relocate_player
-	process_physics_priority = -1
+	if _prepare_frame(world, player, design):
+		_load_and_start(db, o, design, world, player)
+
+
+func _load_and_start(db, o, design, world, player) -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--save-path="):
 			save_path = arg.trim_prefix("--save-path=")
@@ -50,10 +47,34 @@ func _ready() -> void:
 			printerr("Save rejected; original untouched: ", save_data.errors)
 			get_tree().quit(1)
 			return
+	_restore_and_start(db, o, design, loaded, world, player)
+
+
+func _restore_and_start(db, o, design, loaded, world, player) -> bool:
 	var world_seed: int = int(design.terrain["seed-default"])
 	state_data = WorldState.new(design, world_seed)
 	if not loaded.is_empty():
 		state_data.restore(loaded.world)
+	return (
+		_setup_player(o, design, loaded, player)
+		and _configure_world(o, design, world, player)
+		and _start_interface(db, o, design, loaded, world, player)
+	)
+
+
+func _prepare_frame(world, player, design) -> bool:
+	_hero = player
+	_world = world
+	frame = LocalFrame.new(int(design.terrain["zone-blocks"]))
+	set_meta("local_frame", frame)
+	world.frame = frame
+	player.frame = frame
+	player.relocate = relocate_player
+	process_physics_priority = -1
+	return true
+
+
+func _setup_player(o, design, loaded, player) -> bool:
 	# Character creation/import UI is separate. Only a genuinely fresh save receives the starting kit.
 	var class_id := &"warrior"
 	for arg in OS.get_cmdline_user_args():
@@ -61,6 +82,10 @@ func _ready() -> void:
 			class_id = StringName(arg.trim_prefix("--class="))
 	if not loaded.is_empty():
 		class_id = StringName(loaded.character.class_id)
+	return _configure_player(o, design, loaded, player, class_id)
+
+
+func _configure_player(o, design, loaded, player, class_id) -> bool:
 	var cls: Model.CharacterClass = o.classes[class_id]
 	player.setup(design["movement"], design["camera"], o.races["human"].size_class)
 	player.setup_combat(
@@ -70,6 +95,10 @@ func _ready() -> void:
 		o, design, cls.id, StringName(loaded.character.spec) if not loaded.is_empty() else &""
 	)  # starting inventory → weapon / armor
 	player.logical_id = Crypto.new().generate_random_bytes(16).hex_encode()
+	return true
+
+
+func _configure_world(o, design, world, player) -> bool:
 	world.target = player
 	world.configure(o, design, state_data, connected_party)
 	world.generation_failed.connect(
@@ -78,6 +107,10 @@ func _ready() -> void:
 			get_tree().quit(1)
 	)
 	player.targeting = world.targeting
+	return true
+
+
+func _start_interface(db, o, design, loaded, world, player: Node) -> bool:
 	var feel := Feel.new()
 	add_child(feel)  # D25: juice spawns beside us, in world space
 	feel.setup(design["feel"], player.get_node("CameraRig"))
@@ -108,13 +141,19 @@ func _ready() -> void:
 	var map := WorldMap.new()
 	add_child(map)
 	map.bind(player, touch)
-	# Joint generation guarantees the real village square, including an all-sea dry hub.
 	var mid: int = world.gen.land_blocks / 2
+	# Joint generation guarantees the real village square, including an all-sea dry hub.
 	var village: Dictionary = world.gen.village_at(world.gen.land_at(Vector2i.ZERO))
 	if village.is_empty():
 		printerr("\n".join(world.gen.diagnostics))
 		get_tree().quit(1)
-		return
+		return false
+	if not _place_player(loaded, world, player, village):
+		return false
+	return _finish_startup(db, o, loaded, world, player, touch, mid, village)
+
+
+func _place_player(loaded, world, player, village: Dictionary) -> bool:
 	var sq: Vector2i = village.centre
 	if loaded.is_empty():
 		var spawn := [sq.x + 0.5, village.height + 2.0, sq.y + 0.5]
@@ -129,7 +168,11 @@ func _ready() -> void:
 			floori(float(player.logical_position()[0])), floori(float(player.logical_position()[2]))
 		)
 	):
-		return
+		return false
+	return true
+
+
+func _finish_startup(db, o, loaded, world, player, touch, mid, village) -> bool:
 	player.inventory.changed.connect(request_save)
 	player.skills_changed.connect(request_save)
 	player.died.connect(request_save)
@@ -165,6 +208,7 @@ func _ready() -> void:
 			]
 		)
 	)
+	return true
 
 
 ## A bound lookup, not a captured Node: a departed character is absent, never an invalid lambda capture.

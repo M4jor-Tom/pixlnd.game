@@ -62,22 +62,7 @@ func _process(dt: float) -> void:
 func _unhandled_input(e: InputEvent) -> void:
 	if cfg.is_empty() or touch_only or get_parent().map_open:
 		return
-	if e is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-		var s := float(cfg["sensitivity"])
-		var lim: Array = cfg["pitch-deg"]
-		_yaw -= e.relative.x * s
-		_pitch = clampf(
-			_pitch - e.relative.y * s, deg_to_rad(float(lim[0])), deg_to_rad(float(lim[1]))
-		)
-		rotation = Vector3(_pitch, _yaw, 0)
-	elif e.is_action_pressed("zoom_in") or e.is_action_pressed("zoom_out"):
-		zoom_steps(-1 if e.is_action_pressed("zoom_in") else 1)
-	elif e.is_action_pressed("menu"):
-		Input.mouse_mode = (
-			Input.MOUSE_MODE_VISIBLE
-			if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED
-			else Input.MOUSE_MODE_CAPTURED
-		)
+	_desktop_input(e)
 
 
 func apply_touch_look(delta: Vector2, safe_width: float, degrees_per_width: float) -> void:
@@ -110,3 +95,29 @@ func zoom_steps(steps: int) -> void:
 	_dist = clampf(_dist + float(d["step"]) * steps, float(d["min"]), float(d["max"]))
 	arm.spring_length = _dist
 	_body.visible = _dist > 0.0
+
+
+func _mouse_look(e: InputEventMouseMotion) -> void:
+	var s := float(cfg["sensitivity"])
+	var lim: Array = cfg["pitch-deg"]
+	_yaw -= e.relative.x * s
+	_pitch = clampf(_pitch - e.relative.y * s, deg_to_rad(float(lim[0])), deg_to_rad(float(lim[1])))
+	rotation = Vector3(_pitch, _yaw, 0)
+
+
+func _desktop_input(e: InputEvent) -> void:
+	if e is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+		_mouse_look(e)
+	else:
+		_button_input(e)
+
+
+func _button_input(e: InputEvent) -> void:
+	if e.is_action_pressed("zoom_in") or e.is_action_pressed("zoom_out"):
+		zoom_steps(-1 if e.is_action_pressed("zoom_in") else 1)
+	elif e.is_action_pressed("menu"):
+		Input.mouse_mode = (
+			Input.MOUSE_MODE_VISIBLE
+			if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED
+			else Input.MOUSE_MODE_CAPTURED
+		)
