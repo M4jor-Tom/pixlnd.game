@@ -1,0 +1,477 @@
+id: https://w3id.org/pixlnd/relations
+name: pixlnd-relations
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+slots:
+  grants-ability:
+    slot_uri: pixlnd:grants-ability
+    alias: grants-ability
+    range: ability
+    required: true
+    multivalued: true
+    domain: specialization-or-character-class
+    description: Cardinality 1→n. Applicability follows the linked canonical rules.
+    see_also:
+    - ../domain/4_Relations.md
+    minimum_cardinality: 1
+  invoked-by-control:
+    slot_uri: pixlnd:invoked-by-control
+    alias: invoked-by-control
+    range: control-action
+    multivalued: true
+    domain: ability
+    description: Cardinality n→n. active ability activation refers to [controls](controls.md), directly
+      or through the current class slot/tree; passive effects need no binding
+    see_also:
+    - ../domain/4_Relations.md
+  bound-to-input:
+    slot_uri: pixlnd:bound-to-input
+    alias: bound-to-input
+    range: input-binding
+    multivalued: true
+    domain: control-action
+    description: Cardinality n→n. each binding belongs to a controller profile; aliases/shared phases
+      and context are profile-owned, not ability identity
+    see_also:
+    - ../domain/4_Relations.md
+  has-input-binding:
+    slot_uri: pixlnd:has-input-binding
+    alias: has-input-binding
+    range: input-binding
+    multivalued: true
+    domain: controller-profile
+    description: Cardinality 1→0..n. [profiles](controller-profiles.md) explicitly distinguish implemented,
+      registered-only and unselected mappings
+    see_also:
+    - ../domain/4_Relations.md
+  costs:
+    slot_uri: pixlnd:costs
+    alias: costs
+    range: resource
+    multivalued: true
+    domain: ability
+    description: Cardinality 1→0..n. amount per resource, scoped by ruleset
+    see_also:
+    - ../domain/4_Relations.md
+  has-moveset:
+    slot_uri: pixlnd:has-moveset
+    alias: has-moveset
+    range: ability
+    required: true
+    multivalued: true
+    domain: weapon-type
+    description: Cardinality 1→2.
+    see_also:
+    - ../domain/4_Relations.md
+    minimum_cardinality: 2
+    maximum_cardinality: 2
+  crafted-at:
+    slot_uri: pixlnd:crafted-at
+    alias: crafted-at
+    range: crafting-station
+    required: true
+    domain: recipe
+    description: Cardinality 1→1.
+    see_also:
+    - ../domain/4_Relations.md
+  consumes:
+    slot_uri: pixlnd:consumes
+    alias: consumes
+    range: ingredient-or-material
+    required: true
+    multivalued: true
+    domain: recipe
+    description: Cardinality 1→n. with counts
+    see_also:
+    - ../domain/4_Relations.md
+    minimum_cardinality: 1
+  produces:
+    slot_uri: pixlnd:produces
+    alias: produces
+    range: item-type-or-consumable
+    required: true
+    domain: recipe
+    description: Cardinality 1→1.
+    see_also:
+    - ../domain/4_Relations.md
+  refines-to:
+    slot_uri: pixlnd:refines-to
+    alias: refines-to
+    range: ingredient
+    required: true
+    domain: ingredient
+    description: Cardinality 1→1. nugget→cube, fiber→yarn, log→wood cube
+    see_also:
+    - ../domain/4_Relations.md
+  yields:
+    slot_uri: pixlnd:yields
+    alias: yields
+    range: ingredient
+    required: true
+    multivalued: true
+    domain: flora-or-deposit-or-creature
+    description: Cardinality 1→n. count range
+    see_also:
+    - ../domain/4_Relations.md
+    minimum_cardinality: 1
+  spawns-in:
+    slot_uri: pixlnd:spawns-in
+    alias: spawns-in
+    range: landscape-or-terrain-feature-or-dungeon-type-or-poi-type
+    multivalued: true
+    domain: creature-or-flora-or-deposit
+    description: Cardinality n→n.
+    see_also:
+    - ../domain/4_Relations.md
+  placed-in:
+    slot_uri: pixlnd:placed-in
+    alias: placed-in
+    range: landscape
+    multivalued: true
+    domain: dungeon-type-or-poi-type-or-settlement
+    description: Cardinality n→n.
+    see_also:
+    - ../domain/4_Relations.md
+  belongs-to-faction:
+    slot_uri: pixlnd:belongs-to-faction
+    alias: belongs-to-faction
+    range: faction
+    multivalued: true
+    domain: creature-or-npc-role
+    description: Cardinality n→n.
+    see_also:
+    - ../domain/4_Relations.md
+  hosts:
+    slot_uri: pixlnd:hosts
+    alias: hosts
+    range: mission-type
+    multivalued: true
+    domain: dungeon-type-or-poi-type
+    description: Cardinality n→n.
+    see_also:
+    - ../domain/4_Relations.md
+  rewards:
+    slot_uri: pixlnd:rewards
+    alias: rewards
+    range: item-type-or-key-item-or-artifact-or-currency-or-book-of-crafting
+    multivalued: true
+    domain: mission-type-or-arena-or-poi-type
+    description: Cardinality n→n.
+    see_also:
+    - ../domain/4_Relations.md
+  guards:
+    slot_uri: pixlnd:guards
+    alias: guards
+    range: artifact-or-key-item-or-gnome-supplier-or-magic-crystal
+    multivalued: true
+    domain: creature
+    description: Cardinality n→n.
+    see_also:
+    - ../domain/4_Relations.md
+  drops:
+    slot_uri: pixlnd:drops
+    alias: drops
+    range: item-or-spirit-cube-or-leftovers-or-currency
+    multivalued: true
+    domain: creature
+    description: Cardinality n→n. random by tier + species list; initial hybrid [boss guarantees](encounter-contracts.md#guaranteed-boss-gear-and-spirits)
+      are additional shared drops, not personal copies
+    see_also:
+    - ../domain/4_Relations.md
+  holds:
+    slot_uri: pixlnd:holds
+    alias: holds
+    range: item
+    required: true
+    multivalued: true
+    domain: inventory
+    description: Cardinality 1→n. count per entry; c-stack-rule
+    see_also:
+    - ../domain/4_Relations.md
+    minimum_cardinality: 1
+  equips:
+    slot_uri: pixlnd:equips
+    alias: equips
+    range: item
+    multivalued: true
+    domain: entity
+    description: Cardinality 1→0..12. at most one per usable equipment-slot; reserved index 0 and separate
+      quick-consumable selection excluded; c-slot-accepts
+    see_also:
+    - ../domain/4_Relations.md
+    maximum_cardinality: 12
+  threat:
+    slot_uri: pixlnd:threat
+    alias: threat
+    range: player-character
+    multivalued: true
+    domain: entity
+    description: Cardinality n→n. hybrid mob/player combat state, retained across temporary absence and
+      surviving-mob restart (§3.2); optional per ordered pair, with one numeric `aggro-points` amount;
+      c-threat-pair Numeric association properties are represented by threat-pair.
+    see_also:
+    - ../domain/4_Relations.md
+  current-target:
+    slot_uri: pixlnd:current-target
+    alias: current-target
+    range: player-character
+    domain: entity
+    description: Cardinality 1→0..1. hybrid mob/player target selection, separate from threat amounts;
+      multiple mobs may select the same player; c-current-target
+    see_also:
+    - ../domain/4_Relations.md
+  requires-key-item:
+    slot_uri: pixlnd:requires-key-item
+    alias: requires-key-item
+    range: key-item
+    multivalued: true
+    domain: poi-type-or-dungeon-type-or-ability
+    description: Cardinality n→n. divine door→harp, crypt gate→bell, bird statue→whistle; hybrid riding→reins
+      (acquired, c-riding), hang-gliding→hang-glider and sailing→boat (equipped, c-gliding/c-sailing);
+      global scope
+    see_also:
+    - ../domain/4_Relations.md
+  located-in:
+    slot_uri: pixlnd:located-in
+    alias: located-in
+    range: land
+    required: true
+    domain: settlement-or-dungeon-or-poi
+    description: Cardinality n→1.
+    see_also:
+    - ../domain/4_Relations.md
+  owned-by-realm:
+    slot_uri: pixlnd:owned-by-realm
+    alias: owned-by-realm
+    range: realm
+    required: true
+    domain: land
+    description: Cardinality n→1. Realm ownership; applicability follows the linked canonical rules.
+    see_also:
+    - ../domain/4_Relations.md
+  reveals:
+    slot_uri: pixlnd:reveals
+    alias: reveals
+    range: artifact
+    required: true
+    multivalued: true
+    domain: realm
+    description: Cardinality 1→n. Full realm lore; eligibility follows the linked canonical rules.
+    see_also:
+    - ../domain/4_Relations.md
+    minimum_cardinality: 1
+  bound-to-land:
+    slot_uri: pixlnd:bound-to-land
+    alias: bound-to-land
+    range: land
+    required: true
+    domain: item-or-key-item-or-leftovers
+    description: Cardinality n→1. Region-lock relation; applicability follows the linked canonical rules.
+    see_also:
+    - ../domain/4_Relations.md
+  works-in-adjacent:
+    slot_uri: pixlnd:works-in-adjacent
+    alias: works-in-adjacent
+    range: land
+    multivalued: true
+    domain: item
+    description: Cardinality n→n. Plus-item adjacency; applicability follows the linked canonical rules.
+    see_also:
+    - ../domain/4_Relations.md
+  raises-stock:
+    slot_uri: pixlnd:raises-stock
+    alias: raises-stock
+    range: shop
+    required: true
+    multivalued: true
+    domain: gnome-supplier
+    description: Cardinality 1→n. hybrid [land-shared ceiling](encounter-contracts.md#shared-mission-packages-and-supplier-shops),
+      applied at ordinary stock generation/restock, not a rescue-triggered reroll
+    see_also:
+    - ../domain/4_Relations.md
+    minimum_cardinality: 1
+  sells:
+    slot_uri: pixlnd:sells
+    alias: sells
+    range: item-type-or-pet-food-or-formula-or-key-item
+    multivalued: true
+    domain: shop
+    description: Cardinality n→n. Applicability follows the linked canonical rules.
+    see_also:
+    - ../domain/4_Relations.md
+  offers-service:
+    slot_uri: pixlnd:offers-service
+    alias: offers-service
+    range: npc-role
+    required: true
+    multivalued: true
+    domain: building
+    description: Cardinality 1→n.
+    see_also:
+    - ../domain/4_Relations.md
+    minimum_cardinality: 1
+  contains-station:
+    slot_uri: pixlnd:contains-station
+    alias: contains-station
+    range: crafting-station
+    required: true
+    multivalued: true
+    domain: building
+    description: Cardinality 1→n.
+    see_also:
+    - ../domain/4_Relations.md
+    minimum_cardinality: 1
+  in-district:
+    slot_uri: pixlnd:in-district
+    alias: in-district
+    range: district
+    required: true
+    domain: building
+    description: Cardinality n→1. District membership; applicability follows the linked canonical rules.
+    see_also:
+    - ../domain/4_Relations.md
+  styled-by:
+    slot_uri: pixlnd:styled-by
+    alias: styled-by
+    range: landscape
+    required: true
+    domain: settlement
+    description: Cardinality n→1. architecture theme
+    see_also:
+    - ../domain/4_Relations.md
+  equips-in:
+    slot_uri: pixlnd:equips-in
+    alias: equips-in
+    range: equipment-slot
+    multivalued: true
+    domain: item-type
+    description: Cardinality n→n. permitted slots, not simultaneous copies of an item; rings and weapons
+      have multiple eligible positions, subject to c-slot-accepts
+    see_also:
+    - ../domain/4_Relations.md
+  restricted-to-class:
+    slot_uri: pixlnd:restricted-to-class
+    alias: restricted-to-class
+    range: character-class
+    domain: weapon-type-or-material
+    description: Cardinality n→0..1.
+    see_also:
+    - ../domain/4_Relations.md
+  has-hazard:
+    slot_uri: pixlnd:has-hazard
+    alias: has-hazard
+    range: status-effect
+    multivalued: true
+    domain: landscape-or-terrain-feature
+    description: Cardinality n→n. cold-water, toxic, lava
+    see_also:
+    - ../domain/4_Relations.md
+  countered-by:
+    slot_uri: pixlnd:countered-by
+    alias: countered-by
+    range: consumable
+    multivalued: true
+    domain: status-effect
+    description: Cardinality n→n. hot chocolate, green smoothie, lemonade
+    see_also:
+    - ../domain/4_Relations.md
+  raises-stat:
+    slot_uri: pixlnd:raises-stat
+    alias: raises-stat
+    range: stat
+    multivalued: true
+    domain: artifact-or-ability-or-spirit-cube-or-elixir
+    description: 'Cardinality n→n. hybrid artifacts: exactly one traversal stat plus attack and max HP;
+      per-stat counting and recalculation follow §3.4 artifact / c-artifact-stat'
+    see_also:
+    - ../domain/4_Relations.md
+  mounts:
+    slot_uri: pixlnd:mounts
+    alias: mounts
+    range: pet
+    domain: player-character
+    description: 'Cardinality 1→0..1. hybrid training + global Reins + rideable tamed pet: c-riding'
+    see_also:
+    - ../domain/4_Relations.md
+  owns:
+    slot_uri: pixlnd:owns
+    alias: owns
+    range: pet
+    required: true
+    multivalued: true
+    domain: player-character
+    description: Cardinality 1→n. cages
+    see_also:
+    - ../domain/4_Relations.md
+    minimum_cardinality: 1
+  possesses:
+    slot_uri: pixlnd:possesses
+    alias: possesses
+    range: npc-role-or-creature
+    required: true
+    multivalued: true
+    domain: poi-type
+    description: Cardinality 1→n. Demon-portal possession; applicability follows the linked canonical rules.
+    see_also:
+    - ../domain/4_Relations.md
+    minimum_cardinality: 1
+  petrifies:
+    slot_uri: pixlnd:petrifies
+    alias: petrifies
+    range: settlement
+    required: true
+    domain: creature
+    description: Cardinality 1→1. Witch-boss curse; applicability follows the linked canonical rules.
+    see_also:
+    - ../domain/4_Relations.md
+  scales-with:
+    slot_uri: pixlnd:scales-with
+    alias: scales-with
+    range: stat
+    required: true
+    multivalued: true
+    domain: pet
+    description: Cardinality 1→2. Weapon-rating and armor-rating; applicability follows the linked canonical rules.
+    see_also:
+    - ../domain/4_Relations.md
+    minimum_cardinality: 2
+    maximum_cardinality: 2
+  adjacent-to:
+    slot_uri: pixlnd:adjacent-to
+    alias: adjacent-to
+    range: land
+    multivalued: true
+    domain: land
+    description: Cardinality n→n. derived from grid
+    see_also:
+    - ../domain/4_Relations.md
+  enabled-by:
+    slot_uri: pixlnd:enabled-by
+    alias: enabled-by
+    range: ruleset
+    multivalued: true
+    domain: ability-or-item-type-or-mechanic
+    description: Cardinality n→n. feature flags
+    see_also:
+    - ../domain/4_Relations.md
+  threat-mob:
+    slot_uri: pixlnd:threat-mob
+    alias: mob
+    range: entity
+    required: true
+  threat-player:
+    slot_uri: pixlnd:threat-player
+    alias: player
+    range: player-character
+    required: true
+  aggro-points:
+    slot_uri: pixlnd:aggro-points
+    alias: aggro-points
+    range: float
+    required: true
+    minimum_value: 0

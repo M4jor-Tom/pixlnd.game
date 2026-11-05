@@ -1,0 +1,401 @@
+id: https://w3id.org/pixlnd/identity
+name: pixlnd-identity
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+  xsd: http://www.w3.org/2001/XMLSchema#
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+classes:
+  race:
+    class_uri: pixlnd:race
+    see_also: &id003
+    - ../domain/3_Classes.md#race
+    slots:
+    - id
+    - race-playable
+    - race-size-class
+    - race-genders
+  character-class:
+    class_uri: pixlnd:character-class
+    see_also: &id001
+    - ../domain/3_Classes.md#character-class
+    slots:
+    - id
+    - character-class-name
+    - character-class-id-number
+    - character-class-special-attack-mode
+    - character-class-hp-mult
+    - has-specialization
+    - uses-weapon
+    - wears-material
+  specialization:
+    class_uri: pixlnd:specialization
+    see_also: &id002
+    - ../domain/3_Classes.md#specialization
+    slots:
+    - id
+    - specialization-name
+    - specialization-class
+    - specialization-index
+    unique_keys:
+      class-index:
+        unique_key_slots:
+        - specialization-class
+        - specialization-index
+  npc-role:
+    class_uri: pixlnd:npc-role
+    see_also:
+    - ../domain/3_Classes.md#npc-role
+    slots:
+    - id
+  creature:
+    class_uri: pixlnd:creature
+    see_also: &id004
+    - ../domain/3_Classes.md#creature
+    slots:
+    - id
+    - creature-alpha-entity-id
+    - creature-category
+    - creature-hostility-default
+    - creature-rideable
+    - creature-boss-species
+    - creature-boss-capable
+    - creature-breaks-terrain
+    - creature-drinks-potions
+    - creature-lantern-at-night
+    - creature-combat-role
+    - creature-pet-types
+    - creature-landscapes
+    - creature-group-size
+    - tamed-by
+    - member-of-family
+    - descriptive-member-of-family
+  creature-family:
+    class_uri: pixlnd:creature-family
+    see_also: &id005
+    - ../domain/3_Classes.md#creature-family
+    slots:
+    - id
+    - creature-family-members
+  faction:
+    class_uri: pixlnd:faction
+    see_also:
+    - ../domain/3_Classes.md#faction
+    slots:
+    - id
+slots:
+  id:
+    slot_uri: pixlnd:id
+    alias: id
+    range: string
+    required: true
+    pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
+    identifier: true
+    description: Stable instance identity under the canonical kebab-case convention; numeric source tables
+      have separate unresolved namespace mappings.
+  character-class-name:
+    slot_uri: pixlnd:character-class/name
+    alias: name
+    range: string
+    required: true
+    see_also: *id001
+  character-class-id-number:
+    slot_uri: pixlnd:character-class/id-number
+    alias: id-number
+    range: integer
+    required: true
+    see_also: *id001
+    minimum_value: 1
+    maximum_value: 4
+  character-class-special-attack-mode:
+    slot_uri: pixlnd:character-class/special-attack-mode
+    alias: special-attack-mode
+    range: attack-mode
+    required: true
+    see_also: *id001
+  character-class-hp-mult:
+    slot_uri: pixlnd:character-class/hp-mult
+    alias: hp-mult
+    range: float
+    required: true
+    see_also: *id001
+  specialization-name:
+    slot_uri: pixlnd:specialization/name
+    alias: name
+    range: string
+    required: true
+    see_also: *id002
+  specialization-class:
+    slot_uri: pixlnd:specialization/class
+    alias: class
+    range: character-class
+    required: true
+    see_also: *id002
+  specialization-index:
+    slot_uri: pixlnd:specialization/index
+    alias: index
+    range: integer
+    required: true
+    minimum_value: 0
+    maximum_value: 1
+    see_also: *id002
+  race-playable:
+    slot_uri: pixlnd:race/playable
+    alias: playable
+    range: boolean
+    required: true
+    see_also: *id003
+  race-size-class:
+    slot_uri: pixlnd:race/size-class
+    alias: size-class
+    range: size-class
+    required: true
+    see_also: *id003
+  race-genders:
+    slot_uri: pixlnd:race/genders
+    alias: genders
+    range: gender
+    required: true
+    multivalued: true
+    see_also: *id003
+  creature-alpha-entity-id:
+    slot_uri: pixlnd:creature-alpha-entity-id
+    alias: aid
+    range: integer
+    see_also:
+    - ../domain/3_Classes.md#creature
+  creature-category:
+    slot_uri: pixlnd:creature/category
+    alias: cat
+    range: creature-category
+    required: true
+    see_also: *id004
+  creature-hostility-default:
+    slot_uri: pixlnd:creature/hostility-default
+    alias: h
+    range: hostility-default
+    required: true
+    see_also: *id004
+  creature-rideable:
+    slot_uri: pixlnd:creature/rideable
+    alias: ride
+    range: boolean
+    required: true
+    see_also: *id004
+  creature-boss-species:
+    slot_uri: pixlnd:creature/boss-species
+    alias: boss
+    range: boolean
+    required: true
+    see_also: *id004
+  creature-boss-capable:
+    slot_uri: pixlnd:creature/boss-capable
+    alias: bossable
+    range: boolean
+    required: true
+    see_also: *id004
+  creature-breaks-terrain:
+    slot_uri: pixlnd:creature/breaks-terrain
+    alias: breaks-terrain
+    range: boolean
+    required: true
+    see_also: *id004
+  creature-drinks-potions:
+    slot_uri: pixlnd:creature/drinks-potions
+    alias: drinks-potions
+    range: boolean
+    required: true
+    see_also: *id004
+  creature-lantern-at-night:
+    slot_uri: pixlnd:creature/lantern-at-night
+    alias: lantern-at-night
+    range: boolean
+    required: true
+    see_also: *id004
+  creature-combat-role:
+    slot_uri: pixlnd:creature/combat-role
+    alias: role
+    range: combat-role
+    description: Absent/unmatched role remains unset, distinct from the enum value none; mapping is canonical
+      prose.
+    see_also: *id004
+  creature-pet-types:
+    slot_uri: pixlnd:creature/pet-types
+    alias: pet-types
+    range: pet-type
+    required: true
+    multivalued: true
+    see_also: *id004
+  creature-landscapes:
+    slot_uri: pixlnd:creature/landscapes
+    alias: lands
+    range: landscape
+    required: true
+    multivalued: true
+    see_also: *id004
+  creature-group-size:
+    slot_uri: pixlnd:creature/group-size
+    alias: group
+    range: integer
+    required: true
+    multivalued: true
+    minimum_cardinality: 2
+    maximum_cardinality: 2
+    see_also: *id004
+  creature-family-members:
+    slot_uri: pixlnd:creature-family/members
+    alias: members
+    range: creature
+    required: true
+    multivalued: true
+    see_also: *id005
+  has-specialization:
+    slot_uri: pixlnd:has-specialization
+    alias: specializations
+    range: specialization
+    required: true
+    multivalued: true
+    domain: character-class
+    description: Cardinality 1→2.
+    see_also:
+    - ../domain/4_Relations.md
+    minimum_cardinality: 2
+    maximum_cardinality: 2
+  uses-weapon:
+    slot_uri: pixlnd:uses-weapon
+    alias: weapon-types
+    range: weapon-type
+    multivalued: true
+    domain: character-class
+    description: Cardinality 1→3 families. The three-family requirement is not a three-subtype-ID limit;
+      family grouping is unspecified.
+    see_also:
+    - ../domain/4_Relations.md
+    required: true
+  wears-material:
+    slot_uri: pixlnd:wears-material
+    alias: armor-material
+    range: material
+    required: true
+    domain: character-class
+    description: Cardinality 1→1. iron/linen/silk/cotton
+    see_also:
+    - ../domain/4_Relations.md
+  tamed-by:
+    slot_uri: pixlnd:tamed-by
+    alias: tame
+    range: pet-food
+    domain: creature
+    description: 'Cardinality 1→0..1. stable ID pairing; one food may serve multiple explicitly approved
+      species (Bubble Gum: Collie and Skeleton Dog); numeric identity follows c-food-id, not family inheritance'
+    see_also:
+    - ../domain/4_Relations.md
+  member-of-family:
+    slot_uri: pixlnd:member-of-family
+    alias: family
+    range: creature-family
+    domain: creature
+    description: Cardinality 1→0..1. optional primary balancing family (`creature.family`); sole source
+      of family stat modifiers
+    see_also:
+    - ../domain/4_Relations.md
+  descriptive-member-of-family:
+    slot_uri: pixlnd:descriptive-member-of-family
+    alias: descriptive-families
+    range: creature-family
+    multivalued: true
+    domain: creature
+    description: Cardinality 1→0..n. descriptive memberships only (`creature.descriptive-families`); never
+      supply or stack stat modifiers
+    see_also:
+    - ../domain/4_Relations.md
+    list_elements_unique: true
+types:
+  uint32:
+    typeof: integer
+    uri: xsd:integer
+    minimum_value: 0
+    maximum_value: 4294967295
+  u8:
+    typeof: integer
+    uri: xsd:integer
+    minimum_value: 0
+    maximum_value: 255
+  i8:
+    typeof: integer
+    uri: xsd:integer
+    minimum_value: -128
+    maximum_value: 127
+  i16:
+    typeof: integer
+    uri: xsd:integer
+    minimum_value: -32768
+    maximum_value: 32767
+enums:
+  hostility:
+    enum_uri: pixlnd:hostility
+    permissible_values:
+      hostile: {}
+      neutral: {}
+      friendly: {}
+      friendly-player: {}
+      named-friendly: {}
+      target: {}
+  gender:
+    enum_uri: pixlnd:gender
+    permissible_values:
+      male: {}
+      female: {}
+  size-class:
+    enum_uri: pixlnd:size-class
+    permissible_values:
+      small: {}
+      normal: {}
+      large: {}
+  attack-mode:
+    enum_uri: pixlnd:attack-mode
+    permissible_values:
+      charged: {}
+      instant: {}
+  creature-category:
+    enum_uri: pixlnd:creature-category
+    permissible_values:
+      animal: {}
+      insect: {}
+      aquatic: {}
+      plant-creature: {}
+      monster: {}
+      undead: {}
+      demon: {}
+      elemental: {}
+      humanoid: {}
+      boss-species: {}
+      static-target: {}
+      unused: {}
+  hostility-default:
+    enum_uri: pixlnd:hostility-default
+    permissible_values:
+      hostile: {}
+      neutral: {}
+      passive: {}
+      friendly: {}
+      variable: {}
+  combat-role:
+    enum_uri: pixlnd:combat-role
+    permissible_values:
+      melee: {}
+      ranged: {}
+      mage: {}
+      any-class: {}
+      none: {}
+  pet-type:
+    enum_uri: pixlnd:pet-type
+    permissible_values:
+      melee: {}
+      ranged: {}
+      tank: {}
+      healer: {}
+      mount: {}

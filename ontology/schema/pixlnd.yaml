@@ -1,0 +1,23 @@
+id: https://w3id.org/pixlnd/pixlnd
+name: pixlnd
+title: Pixlnd structural ontology
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- items
+- combat
+- world
+- meta
+- relations
+- entities
+- relation-types
+description: Structural definitions linked to canonical domain prose. Catalog species are distinct from
+  logical entity instances; ownership, eligibility and lifecycle are defined by the linked rules.
+see_also:
+- ../domain/index.md
+- ../domain/2_Competency_Questions.md
+- ../domain/5_Constraints.md

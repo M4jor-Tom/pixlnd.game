@@ -1,0 +1,261 @@
+id: https://w3id.org/pixlnd/entities
+name: pixlnd-entities
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+classes:
+  entity:
+    class_uri: pixlnd:entity
+    see_also: &id001
+    - ../domain/3_Classes.md#entity
+    slots:
+    - id
+    - entity-hostility
+    - entity-species
+    - entity-level
+    - entity-xp
+    - entity-power-base
+    - entity-appearance
+    - entity-mana-cubes
+    - entity-skills
+    - entity-parent-owner
+  race-or-creature:
+    class_uri: pixlnd:race-or-creature
+    see_also:
+    - ../domain/3_Classes.md#entity
+    slots:
+    - id
+    union_of:
+    - race
+    - creature
+    description: Species definition reference to race or creature.
+  appearance:
+    class_uri: pixlnd:appearance
+    see_also:
+    - ../domain/3_Classes.md#appearance
+    slots:
+    - id
+  player-character:
+    class_uri: pixlnd:player-character
+    see_also: &id002
+    - ../domain/3_Classes.md#player-character
+    slots:
+    - id
+    - player-character-appearance
+    - player-character-race
+    - player-character-gender
+    - player-character-class
+    - player-character-spec
+    - player-character-name
+    - player-character-level
+    - player-character-xp
+    - player-character-coins
+    - player-character-inventory
+    - player-character-skills
+    - player-character-artifacts
+    - knows-recipe
+  pet:
+    class_uri: pixlnd:pet
+    see_also: &id003
+    - ../domain/3_Classes.md#pet
+    slots:
+    - id
+    - pet-species
+    - pet-name
+    - pet-cage
+    - pet-level
+    - pet-xp
+slots:
+  entity-hostility:
+    slot_uri: pixlnd:entity/hostility
+    alias: hostility
+    range: hostility
+    required: true
+    inlined: false
+    see_also: *id001
+  entity-species:
+    slot_uri: pixlnd:entity/species
+    alias: species
+    range: race-or-creature
+    required: true
+    inlined: false
+    see_also: *id001
+  entity-level:
+    slot_uri: pixlnd:entity/level
+    alias: level
+    range: integer
+    required: true
+    inlined: false
+    see_also: *id001
+  entity-xp:
+    slot_uri: pixlnd:entity/xp
+    alias: xp
+    range: integer
+    required: true
+    inlined: false
+    see_also: *id001
+  entity-power-base:
+    slot_uri: pixlnd:entity/power-base
+    alias: power-base
+    range: u8
+    required: true
+    inlined: false
+    see_also: *id001
+  entity-appearance:
+    slot_uri: pixlnd:entity/appearance
+    alias: appearance
+    range: appearance
+    required: true
+    inlined: true
+    see_also: *id001
+  entity-mana-cubes:
+    slot_uri: pixlnd:entity/mana-cubes
+    alias: mana-cubes
+    range: uint32
+    required: true
+    inlined: false
+    see_also: *id001
+  entity-skills:
+    slot_uri: pixlnd:entity/skills
+    alias: skills
+    range: uint32
+    required: true
+    multivalued: true
+    minimum_cardinality: 11
+    maximum_cardinality: 11
+    see_also: *id001
+  entity-parent-owner:
+    slot_uri: pixlnd:entity/parent-owner
+    alias: parent-owner
+    range: entity
+    description: Applies to pets, clones and bombs; owner-reference identity is distinct from species
+      identity.
+    see_also: *id001
+  player-character-appearance:
+    slot_uri: pixlnd:player-character/appearance
+    alias: appearance
+    range: appearance
+    required: true
+    inlined: true
+    see_also: *id002
+  player-character-race:
+    slot_uri: pixlnd:player-character/race
+    alias: race
+    range: race
+    required: true
+    see_also: *id002
+  player-character-gender:
+    slot_uri: pixlnd:player-character/gender
+    alias: gender
+    range: gender
+    required: true
+    see_also: *id002
+  player-character-class:
+    slot_uri: pixlnd:player-character/class
+    alias: class
+    range: character-class
+    required: true
+    see_also: *id002
+  player-character-spec:
+    slot_uri: pixlnd:player-character/spec
+    alias: spec
+    range: specialization
+    required: true
+    see_also: *id002
+  player-character-name:
+    slot_uri: pixlnd:player-character/name
+    alias: name
+    range: string
+    required: true
+    pattern: ^[\x20-\x7e]{2,16}$
+    see_also: *id002
+  player-character-level:
+    slot_uri: pixlnd:player-character/level
+    alias: level
+    range: integer
+    required: true
+    inlined: false
+    see_also: *id002
+  player-character-xp:
+    slot_uri: pixlnd:player-character/xp
+    alias: xp
+    range: integer
+    required: true
+    inlined: false
+    see_also: *id002
+  player-character-coins:
+    slot_uri: pixlnd:player-character/coins
+    alias: coins
+    range: uint32
+    required: true
+    inlined: false
+    see_also: *id002
+  player-character-inventory:
+    slot_uri: pixlnd:player-character/inventory
+    alias: inventory
+    range: inventory
+    required: true
+    inlined: true
+    see_also: *id002
+  player-character-skills:
+    slot_uri: pixlnd:player-character/skills
+    alias: skills
+    range: uint32
+    required: true
+    multivalued: true
+    minimum_cardinality: 11
+    maximum_cardinality: 11
+    see_also: *id002
+  player-character-artifacts:
+    slot_uri: pixlnd:player-character/artifacts
+    alias: artifacts
+    range: artifact
+    required: true
+    multivalued: true
+    see_also: *id002
+  pet-species:
+    slot_uri: pixlnd:pet/species
+    alias: species
+    range: creature
+    required: true
+    see_also: *id003
+  pet-name:
+    slot_uri: pixlnd:pet/name
+    alias: name
+    range: string
+    required: true
+    see_also: *id003
+  pet-cage:
+    slot_uri: pixlnd:pet/cage
+    alias: cage
+    range: item
+    required: true
+    see_also: *id003
+  pet-level:
+    slot_uri: pixlnd:pet/level
+    alias: level
+    range: integer
+    required: true
+    see_also: *id003
+  pet-xp:
+    slot_uri: pixlnd:pet/xp
+    alias: xp
+    range: integer
+    required: true
+    see_also: *id003
+  knows-recipe:
+    slot_uri: pixlnd:knows-recipe
+    alias: known-recipes
+    range: recipe
+    multivalued: true
+    domain: player-character
+    description: Cardinality n→n. one known fact per character/recipe, shared by books and formulas (`known-recipes`),
+      even while power-locked; knowledge alone does not grant crafting usability; recipes persist across
+      lands/sessions/worlds (§3.7 save-data), not shared-account knowledge
+    see_also:
+    - ../domain/4_Relations.md
+    list_elements_unique: true

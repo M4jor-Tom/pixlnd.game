@@ -363,6 +363,14 @@ resolve unmapped histories or certify generated/runtime behavior.
 - Source item 52 (`ontology/domain/index.md §5`): reported Steam absence supplies no census/first Alpha appearance or hybrid removal. Species histories remain research; roster/food/mount rules unchanged.
 
 ## Meta / tooling
+- [ ] LinkML structural cutover: `ontology/schema/pixlnd.yaml` is a candidate only; canonical
+  Markdown and the existing runtime remain authoritative. Resolve the remaining structural shapes
+  in §3 (notably appearance parts, realm leader/capital, ability payloads, qualified raw catalog
+  values and coordinate/storage layouts) and the three-weapon-family grouping in §4 before claiming
+  complete representation. Logical relation declarations and nominal targets are not full record
+  schemas. Full §5 heterogeneous config/save coverage, keyed-ID agreement, reference existence,
+  inverse/compound/set integrity, conditional applicability and lifecycle enforcement still need
+  qualification; bounded schema regressions do not supply a production loader or authorize C# work.
 - [ ] Quality gate lint cleanup (`gdlintrc` ponytail): naming/design lint cleanup and refactoring existing violations need a separately selected cleanup. Hard caps of 600 lines/file, 100 lines/function and native gdmetrics-g4 cognitive complexity 15 are enforced without baselines or exemptions. Formatting, essential lint, sizes, complexity, ontology and headless checks share the local/CI runner.
 - [ ] Save-data (§3.7): implemented character/world/encounter/vendor state persists; future character systems, discovered-land exploration and portable-world import UI remain unfinished.
 - [ ] Dedicated server (D5, `multiplayer-mode`): single-player only; `server.cfg` flags (pvp,

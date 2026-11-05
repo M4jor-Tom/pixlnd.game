@@ -1,0 +1,136 @@
+id: https://w3id.org/pixlnd/combat
+name: pixlnd-combat
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+classes:
+  resource:
+    class_uri: pixlnd:resource
+    see_also:
+    - ../domain/3_Classes.md#resource
+    slots:
+    - id
+  stat:
+    class_uri: pixlnd:stat
+    see_also:
+    - ../domain/3_Classes.md#stat
+    slots:
+    - id
+  ability:
+    class_uri: pixlnd:ability
+    see_also: &id001
+    - ../domain/3_Classes.md#ability
+    slots:
+    - id
+    - ability-kind
+    - ability-alpha-ability-id
+    - ability-_controls
+    - unlocks-next
+    - applies
+  weapon-type:
+    class_uri: pixlnd:weapon-type
+    see_also: &id002
+    - ../domain/3_Classes.md#weapon-type
+    slots:
+    - id
+    - weapon-type-class
+    - weapon-type-hands
+    - weapon-type-damage-k
+    - weapon-type-cube-capacity
+    - weapon-type-combo-cap
+  status-effect:
+    class_uri: pixlnd:status-effect
+    see_also:
+    - ../domain/3_Classes.md#status-effect
+    slots:
+    - id
+  mob-strength-tier:
+    class_uri: pixlnd:mob-strength-tier
+    see_also:
+    - ../domain/3_Classes.md#mob-strength-tier
+    slots:
+    - id
+slots:
+  ability-kind:
+    slot_uri: pixlnd:ability/kind
+    alias: kind
+    range: ability-kind
+    required: true
+    see_also: *id001
+  ability-alpha-ability-id:
+    slot_uri: pixlnd:ability/alpha-ability-id
+    alias: alpha-ability-id
+    range: integer
+    see_also: *id001
+  ability-_controls:
+    slot_uri: pixlnd:ability/_controls
+    alias: _controls
+    range: control-action
+    multivalued: true
+    see_also: *id001
+  weapon-type-class:
+    slot_uri: pixlnd:weapon-type/class
+    alias: class
+    range: character-class
+    required: true
+    see_also: *id002
+  weapon-type-hands:
+    slot_uri: pixlnd:weapon-type/hands
+    alias: hands
+    range: hands
+    required: true
+    see_also: *id002
+  weapon-type-damage-k:
+    slot_uri: pixlnd:weapon-type/damage-k
+    alias: damage-k
+    range: float
+    required: true
+    see_also: *id002
+  weapon-type-cube-capacity:
+    slot_uri: pixlnd:weapon-type/cube-capacity
+    alias: cube-capacity
+    range: integer
+    required: true
+    see_also: *id002
+  weapon-type-combo-cap:
+    slot_uri: pixlnd:weapon-type/combo-cap
+    alias: combo-cap
+    range: integer
+    required: true
+    see_also: *id002
+  unlocks-next:
+    slot_uri: pixlnd:unlocks-next
+    alias: unlocks-next
+    range: ability
+    domain: ability
+    description: 'Cardinality 1→0..1. skill tree: 5 points'
+    see_also:
+    - ../domain/4_Relations.md
+  applies:
+    slot_uri: pixlnd:applies
+    alias: applies
+    range: status-effect
+    multivalued: true
+    domain: ability-or-weapon-type-or-hazard
+    description: Cardinality n→n.
+    see_also:
+    - ../domain/4_Relations.md
+enums:
+  ability-kind:
+    enum_uri: pixlnd:ability-kind
+    permissible_values:
+      active: {}
+      passive: {}
+      shared-passive: {}
+      movement: {}
+  hands:
+    enum_uri: pixlnd:hands
+    permissible_values:
+      1h-dual: {}
+      1h-with-shield: {}
+      2h: {}
+      offhand: {}

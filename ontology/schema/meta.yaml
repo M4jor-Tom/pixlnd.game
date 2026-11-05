@@ -1,0 +1,83 @@
+id: https://w3id.org/pixlnd/meta
+name: pixlnd-meta
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+classes:
+  ruleset:
+    class_uri: pixlnd:ruleset
+    see_also:
+    - ../domain/3_Classes.md#ruleset
+    slots:
+    - id
+  control-action:
+    class_uri: pixlnd:control-action
+    see_also:
+    - ../domain/3_Classes.md#control-action
+    slots:
+    - id
+  controller-profile:
+    class_uri: pixlnd:controller-profile
+    see_also:
+    - ../domain/3_Classes.md#controller-profile
+    slots:
+    - id
+  input-binding:
+    class_uri: pixlnd:input-binding
+    see_also:
+    - ../domain/3_Classes.md#input-binding
+    slots:
+    - id
+  hud-element:
+    class_uri: pixlnd:hud-element
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    slots:
+    - id
+  option:
+    class_uri: pixlnd:option
+    see_also:
+    - ../domain/3_Classes.md#option
+    slots:
+    - id
+  slash-command:
+    class_uri: pixlnd:slash-command
+    see_also:
+    - ../domain/3_Classes.md#slash-command
+    slots:
+    - id
+  audio:
+    class_uri: pixlnd:audio
+    see_also:
+    - ../domain/3_Classes.md#audio
+    slots:
+    - id
+  mission-type:
+    class_uri: pixlnd:mission-type
+    see_also:
+    - ../domain/3_Classes.md#mission-type
+    slots:
+    - id
+  arena:
+    class_uri: pixlnd:arena
+    see_also:
+    - ../domain/3_Classes.md#arena-s
+    slots:
+    - id
+  gnome-supplier:
+    class_uri: pixlnd:gnome-supplier
+    see_also:
+    - ../domain/3_Classes.md#gnome-supplier-s
+    slots:
+    - id
+  circle-of-power:
+    class_uri: pixlnd:circle-of-power
+    see_also:
+    - ../domain/3_Classes.md#circle-of-power-s
+    slots:
+    - id
+slots: {}

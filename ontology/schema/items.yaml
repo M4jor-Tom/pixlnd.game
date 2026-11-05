@@ -1,0 +1,365 @@
+id: https://w3id.org/pixlnd/items
+name: pixlnd-items
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+classes:
+  item:
+    class_uri: pixlnd:item
+    see_also: &id001
+    - ../domain/3_Classes.md#item
+    slots:
+    - id
+    - item-type
+    - item-sub-type
+    - item-modifier
+    - item-minus-modifier
+    - item-rarity
+    - item-material
+    - item-flags
+    - item-level
+    - item-upgrade-count
+    - item-upgrades
+  item-type:
+    class_uri: pixlnd:item-type
+    see_also:
+    - ../domain/3_Classes.md#item-type
+    slots:
+    - id
+  material:
+    class_uri: pixlnd:material
+    see_also:
+    - ../domain/3_Classes.md#material
+    slots:
+    - id
+  rarity:
+    class_uri: pixlnd:rarity
+    see_also:
+    - ../domain/3_Classes.md#rarity
+    slots:
+    - id
+  affix:
+    class_uri: pixlnd:affix
+    see_also:
+    - ../domain/3_Classes.md#affix
+    slots:
+    - id
+  equipment-slot:
+    class_uri: pixlnd:equipment-slot
+    see_also: &id004
+    - ../domain/3_Classes.md#equipment-slot
+    slots:
+    - id
+    - equipment-slot-index
+    - equipment-slot-accepts
+  consumable:
+    class_uri: pixlnd:consumable
+    see_also:
+    - ../domain/3_Classes.md#consumable
+    slots:
+    - id
+  ingredient:
+    class_uri: pixlnd:ingredient
+    see_also:
+    - ../domain/3_Classes.md#ingredient
+    slots:
+    - id
+  recipe:
+    class_uri: pixlnd:recipe
+    see_also:
+    - ../domain/3_Classes.md#recipe
+    slots:
+    - id
+  crafting-station:
+    class_uri: pixlnd:crafting-station
+    see_also:
+    - ../domain/3_Classes.md#crafting-station
+    slots:
+    - id
+  formula:
+    class_uri: pixlnd:formula
+    see_also:
+    - ../domain/3_Classes.md#formula
+    slots:
+    - id
+  book-of-crafting:
+    class_uri: pixlnd:book-of-crafting
+    see_also:
+    - ../domain/3_Classes.md#book-of-crafting
+    slots:
+    - id
+  spirit-cube:
+    class_uri: pixlnd:spirit-cube
+    see_also:
+    - ../domain/3_Classes.md#spirit-cube
+    slots:
+    - id
+  leftovers:
+    class_uri: pixlnd:leftovers
+    see_also:
+    - ../domain/3_Classes.md#leftovers
+    slots:
+    - id
+  pet-food:
+    class_uri: pixlnd:pet-food
+    see_also: &id003
+    - ../domain/3_Classes.md#pet-food
+    slots:
+    - id
+    - pet-food-tames
+  key-item:
+    class_uri: pixlnd:key-item
+    see_also:
+    - ../domain/3_Classes.md#key-item
+    slots:
+    - id
+  artifact:
+    class_uri: pixlnd:artifact
+    see_also:
+    - ../domain/3_Classes.md#artifact
+    slots:
+    - id
+  currency:
+    class_uri: pixlnd:currency
+    see_also:
+    - ../domain/3_Classes.md#currency
+    slots:
+    - id
+  shop:
+    class_uri: pixlnd:shop
+    see_also:
+    - ../domain/3_Classes.md#shop
+    slots:
+    - id
+  inventory:
+    class_uri: pixlnd:inventory
+    see_also: &id006
+    - ../domain/3_Classes.md#inventory
+    slots:
+    - id
+    - inventory-entries
+    - inventory-coins
+    - inventory-equipment
+  item-upgrade:
+    class_uri: pixlnd:item-upgrade
+    see_also: &id002
+    - ../domain/3_Classes.md#item
+    slots:
+    - item-upgrade-x
+    - item-upgrade-y
+    - item-upgrade-z
+    - item-upgrade-material
+  inventory-entry:
+    class_uri: pixlnd:inventory-entry
+    see_also: &id005
+    - ../domain/3_Classes.md#inventory
+    slots:
+    - inventory-entry-item
+    - inventory-entry-count
+  equipment-assignment:
+    class_uri: pixlnd:equipment-assignment
+    see_also: &id007
+    - ../domain/3_Classes.md#inventory
+    slots:
+    - equipment-assignment-slot
+    - equipment-assignment-item
+    unique_keys:
+      slot:
+        unique_key_slots:
+        - equipment-assignment-slot
+slots:
+  item-type:
+    slot_uri: pixlnd:item/type
+    alias: type
+    range: item-type
+    required: true
+    see_also: *id001
+  item-sub-type:
+    slot_uri: pixlnd:item/sub-type
+    alias: sub-type
+    range: item-type
+    required: true
+    see_also: *id001
+  item-modifier:
+    slot_uri: pixlnd:item/modifier
+    alias: modifier
+    range: uint32
+    required: true
+    see_also: *id001
+  item-minus-modifier:
+    slot_uri: pixlnd:item/minus-modifier
+    alias: minus-modifier
+    range: uint32
+    required: true
+    see_also: *id001
+  item-rarity:
+    slot_uri: pixlnd:item/rarity
+    alias: rarity
+    range: rarity
+    required: true
+    see_also: *id001
+  item-material:
+    slot_uri: pixlnd:item/material
+    alias: material
+    range: material
+    required: true
+    see_also: *id001
+  item-flags:
+    slot_uri: pixlnd:item/flags
+    alias: flags
+    range: u8
+    required: true
+    see_also: *id001
+  item-level:
+    slot_uri: pixlnd:item/level
+    alias: level
+    range: i16
+    required: true
+    see_also:
+    - ../domain/3_Classes.md#item
+    minimum_value: 1
+    maximum_value: 100
+  item-upgrade-count:
+    slot_uri: pixlnd:item/upgrade-count
+    alias: upgrade-count
+    range: uint32
+    required: true
+    see_also: *id001
+  item-upgrade-x:
+    slot_uri: pixlnd:item-upgrade/x
+    alias: x
+    range: i8
+    required: true
+    see_also: *id002
+  item-upgrade-y:
+    slot_uri: pixlnd:item-upgrade/y
+    alias: y
+    range: i8
+    required: true
+    see_also: *id002
+  item-upgrade-z:
+    slot_uri: pixlnd:item-upgrade/z
+    alias: z
+    range: i8
+    required: true
+    see_also: *id002
+  item-upgrade-material:
+    slot_uri: pixlnd:item-upgrade/material
+    alias: material
+    range: material
+    required: true
+    see_also: *id002
+  item-upgrades:
+    slot_uri: pixlnd:item/upgrades
+    alias: upgrades
+    range: item-upgrade
+    required: true
+    multivalued: true
+    maximum_cardinality: 32
+    inlined: true
+    inlined_as_list: true
+    description: Up to 32 placed cubes; tighter weapon capacities and count agreement are canonical coupled
+      rules.
+    see_also: *id001
+  pet-food-tames:
+    slot_uri: pixlnd:pet-food/tames
+    alias: tames
+    range: creature
+    required: true
+    multivalued: true
+    minimum_cardinality: 1
+    description: Explicit species pairings; Bubble Gum may name Collie and Skeleton Dog. Numeric source
+      identity remains separate.
+    see_also: *id003
+  equipment-slot-index:
+    slot_uri: pixlnd:equipment-slot/index
+    alias: index
+    range: integer
+    required: true
+    minimum_value: 0
+    maximum_value: 12
+    see_also: *id004
+  equipment-slot-accepts:
+    slot_uri: pixlnd:equipment-slot/accepts
+    alias: accepts
+    range: item-type
+    required: true
+    multivalued: true
+    description: Reserved unknown-0 accepts nothing. Usable-slot and subtype restrictions remain canonical.
+    see_also: *id004
+  inventory-entry-item:
+    slot_uri: pixlnd:inventory-entry/item
+    alias: item
+    range: item
+    required: true
+    inlined: true
+    see_also: *id005
+  inventory-entry-count:
+    slot_uri: pixlnd:inventory-entry/count
+    alias: count
+    range: integer
+    required: true
+    minimum_value: 1
+    see_also: *id005
+  inventory-entries:
+    slot_uri: pixlnd:inventory/entries
+    alias: entries
+    range: inventory-entry
+    required: true
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+    see_also: *id006
+  inventory-coins:
+    slot_uri: pixlnd:inventory/coins
+    alias: coins
+    range: uint32
+    required: true
+    see_also: *id006
+  equipment-assignment-slot:
+    slot_uri: pixlnd:equipment-assignment/slot
+    alias: slot
+    range: equipment-slot
+    required: true
+    see_also: *id007
+  equipment-assignment-item:
+    slot_uri: pixlnd:equipment-assignment/item
+    alias: item
+    range: item
+    required: true
+    inlined: true
+    see_also: *id007
+  inventory-equipment:
+    slot_uri: pixlnd:inventory/equipment
+    alias: equipment
+    range: equipment-assignment
+    required: true
+    multivalued: true
+    maximum_cardinality: 12
+    inlined: true
+    inlined_as_list: true
+    description: Logical slot/item associations, not a selected persisted JSON map encoding; uniqueness
+      and slot legality need extra validation.
+    see_also: *id006
+  item-land:
+    slot_uri: pixlnd:item/land
+    alias: land
+    range: land
+    required: true
+    domain: item
+    see_also:
+    - ../domain/3_Classes.md#item
+    description: Context-qualified declaration; applicability is defined by canonical prose.
+  item-plus:
+    slot_uri: pixlnd:item/plus
+    alias: plus
+    range: boolean
+    required: true
+    domain: item
+    see_also:
+    - ../domain/3_Classes.md#item
+    description: Context-qualified declaration; applicability is defined by canonical prose.

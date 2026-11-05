@@ -1,0 +1,499 @@
+id: https://w3id.org/pixlnd/world
+name: pixlnd-world
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+classes:
+  world:
+    class_uri: pixlnd:world
+    see_also: &id001
+    - ../domain/3_Classes.md#world
+    slots:
+    - id
+    - world-seed
+    - world-day
+    - world-time-ms
+    - world-spawn-rule
+  zone:
+    class_uri: pixlnd:zone
+    see_also: &id002
+    - ../domain/3_Classes.md#zone
+    slots:
+    - id
+    - zone-size-blocks
+    - zone-static-entities
+  block:
+    class_uri: pixlnd:block
+    see_also: &id003
+    - ../domain/3_Classes.md#block
+    slots:
+    - id
+    - block-type
+    - block-rgb
+    - block-breakable
+  block-type:
+    class_uri: pixlnd:block-type
+    see_also:
+    - ../domain/3_Classes.md#block-type
+    slots:
+    - id
+  land:
+    class_uri: pixlnd:land
+    see_also: &id004
+    - ../domain/3_Classes.md#land
+    slots:
+    - id
+    - land-name
+    - land-landscape
+    - land-level
+    - land-danger-tier
+    - land-coords
+    - land-settlements
+  landscape:
+    class_uri: pixlnd:landscape
+    see_also: &id005
+    - ../domain/3_Classes.md#landscape
+    slots:
+    - id
+    - landscape-flora
+    - landscape-fauna
+    - landscape-dungeons
+    - landscape-pois
+    - landscape-gen
+  terrain-feature:
+    class_uri: pixlnd:terrain-feature
+    see_also:
+    - ../domain/3_Classes.md#terrain-feature
+    slots:
+    - id
+  climate:
+    class_uri: pixlnd:climate
+    see_also: &id007
+    - ../domain/3_Classes.md#climate
+    slots:
+    - id
+    - climate-temperature-c
+    - climate-humidity-pct
+  flora:
+    class_uri: pixlnd:flora
+    see_also:
+    - ../domain/3_Classes.md#flora
+    slots:
+    - id
+  deposit:
+    class_uri: pixlnd:deposit
+    see_also:
+    - ../domain/3_Classes.md#deposit
+    slots:
+    - id
+  settlement:
+    class_uri: pixlnd:settlement
+    see_also: &id008
+    - ../domain/3_Classes.md#settlement
+    slots:
+    - id
+    - settlement-districts
+    - settlement-buildings
+    - settlement-petrified
+    - settlement-possessed
+  district:
+    class_uri: pixlnd:district
+    see_also:
+    - ../domain/3_Classes.md#district
+    slots:
+    - id
+  building:
+    class_uri: pixlnd:building
+    see_also:
+    - ../domain/3_Classes.md#building
+    slots:
+    - id
+  dungeon-type:
+    class_uri: pixlnd:dungeon-type
+    see_also:
+    - ../domain/3_Classes.md#dungeon-type
+    slots:
+    - id
+  poi-type:
+    class_uri: pixlnd:poi-type
+    see_also:
+    - ../domain/3_Classes.md#poi-type
+    slots:
+    - id
+  static-entity:
+    class_uri: pixlnd:static-entity
+    see_also:
+    - ../domain/3_Classes.md#static-entity
+    slots:
+    - id
+  realm:
+    class_uri: pixlnd:realm
+    see_also: &id009
+    - ../domain/3_Classes.md#realm
+    slots:
+    - id
+    - realm-kind
+    - realm-name
+    - realm-magic-or-technology
+  landscape-generation:
+    class_uri: pixlnd:landscape-generation
+    see_also: &id006
+    - ../domain/3_Classes.md#landscape
+    slots:
+    - landscape-generation-relief
+    - landscape-generation-base
+    - landscape-generation-surface
+    - landscape-generation-top
+    - landscape-generation-cliff
+slots:
+  world-seed:
+    slot_uri: pixlnd:world/seed
+    alias: seed
+    range: uint32
+    required: true
+    see_also: *id001
+  world-day:
+    slot_uri: pixlnd:world/day
+    alias: day
+    range: integer
+    required: true
+    see_also: *id001
+  world-time-ms:
+    slot_uri: pixlnd:world/time-ms
+    alias: time-ms
+    range: integer
+    required: true
+    see_also: *id001
+    minimum_value: 0
+    maximum_value: 86400000
+  world-spawn-rule:
+    slot_uri: pixlnd:world/spawn-rule
+    alias: spawn-rule
+    range: spawn-rule
+    required: true
+    see_also: *id001
+  zone-size-blocks:
+    slot_uri: pixlnd:zone/size-blocks
+    alias: size-blocks
+    range: integer
+    required: true
+    see_also: *id002
+  zone-static-entities:
+    slot_uri: pixlnd:zone/static-entities
+    alias: static-entities
+    range: static-entity
+    required: true
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+    see_also: *id002
+  block-type:
+    slot_uri: pixlnd:block/type
+    alias: type
+    range: block-type
+    required: true
+    see_also: *id003
+  block-rgb:
+    slot_uri: pixlnd:block/rgb
+    alias: rgb
+    range: u8
+    required: true
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+    see_also: *id003
+  block-breakable:
+    slot_uri: pixlnd:block/breakable
+    alias: breakable
+    range: boolean
+    required: true
+    see_also: *id003
+  land-name:
+    slot_uri: pixlnd:land/name
+    alias: name
+    range: string
+    required: true
+    see_also: *id004
+  land-landscape:
+    slot_uri: pixlnd:land/landscape
+    alias: landscape
+    range: landscape
+    required: true
+    see_also: *id004
+  land-level:
+    slot_uri: pixlnd:land/level
+    alias: level
+    range: integer
+    required: true
+    see_also: *id004
+  land-danger-tier:
+    slot_uri: pixlnd:land/danger-tier
+    alias: danger-tier
+    range: danger-tier
+    required: true
+    see_also: *id004
+  land-coords:
+    slot_uri: pixlnd:land/coords
+    alias: coords
+    range: integer
+    required: true
+    multivalued: true
+    minimum_value: -512
+    maximum_value: 511
+    minimum_cardinality: 2
+    maximum_cardinality: 2
+    see_also: *id004
+  land-settlements:
+    slot_uri: pixlnd:land/settlements
+    alias: settlements
+    range: settlement
+    required: true
+    multivalued: true
+    minimum_cardinality: 1
+    maximum_cardinality: 1
+    see_also: *id004
+  landscape-flora:
+    slot_uri: pixlnd:landscape/flora
+    alias: flora
+    range: flora
+    multivalued: true
+    see_also: *id005
+  landscape-fauna:
+    slot_uri: pixlnd:landscape/fauna
+    alias: fauna
+    range: creature
+    multivalued: true
+    see_also: *id005
+  landscape-dungeons:
+    slot_uri: pixlnd:landscape/dungeons
+    alias: dungeons
+    range: dungeon-type
+    multivalued: true
+    see_also: *id005
+  landscape-pois:
+    slot_uri: pixlnd:landscape/pois
+    alias: pois
+    range: poi-type
+    multivalued: true
+    see_also: *id005
+  landscape-generation-relief:
+    slot_uri: pixlnd:landscape-generation/relief
+    alias: relief
+    range: float
+    required: true
+    see_also: *id006
+  landscape-generation-base:
+    slot_uri: pixlnd:landscape-generation/base
+    alias: base
+    range: float
+    required: true
+    see_also: *id006
+  landscape-generation-surface:
+    slot_uri: pixlnd:landscape-generation/surface
+    alias: surface
+    range: block-type
+    required: true
+    see_also: *id006
+  landscape-generation-top:
+    slot_uri: pixlnd:landscape-generation/top
+    alias: top
+    range: string
+    required: true
+    pattern: ^#[0-9a-fA-F]{6}$
+    see_also: *id006
+  landscape-generation-cliff:
+    slot_uri: pixlnd:landscape-generation/cliff
+    alias: cliff
+    range: string
+    required: true
+    pattern: ^#[0-9a-fA-F]{6}$
+    see_also: *id006
+  landscape-gen:
+    slot_uri: pixlnd:landscape/gen
+    alias: gen
+    range: landscape-generation
+    inlined: true
+    see_also: *id005
+  climate-temperature-c:
+    slot_uri: pixlnd:climate/temperature-c
+    alias: temperature-c
+    range: float
+    required: true
+    see_also: *id007
+  climate-humidity-pct:
+    slot_uri: pixlnd:climate/humidity-pct
+    alias: humidity-pct
+    range: float
+    required: true
+    see_also: *id007
+  settlement-districts:
+    slot_uri: pixlnd:settlement/districts
+    alias: districts
+    range: district
+    required: true
+    multivalued: true
+    see_also: *id008
+  settlement-buildings:
+    slot_uri: pixlnd:settlement/buildings
+    alias: buildings
+    range: building
+    required: true
+    multivalued: true
+    see_also: *id008
+  settlement-petrified:
+    slot_uri: pixlnd:settlement/petrified
+    alias: petrified
+    range: boolean
+    description: Curse state; shared-world persistence policy is linked in the canonical settlement definition.
+    see_also: *id008
+  settlement-possessed:
+    slot_uri: pixlnd:settlement/possessed
+    alias: possessed
+    range: boolean
+    description: Curse state; shared-world persistence policy is linked in the canonical settlement definition.
+    see_also: *id008
+  realm-kind:
+    slot_uri: pixlnd:realm/kind
+    alias: kind
+    range: realm-kind
+    required: true
+    see_also: *id009
+  realm-name:
+    slot_uri: pixlnd:realm/name
+    alias: name
+    range: string
+    required: true
+    see_also: *id009
+  realm-magic-or-technology:
+    slot_uri: pixlnd:realm/magic-or-technology
+    alias: magic-or-technology
+    range: string
+    required: true
+    see_also: *id009
+  world-name:
+    slot_uri: pixlnd:world/name
+    alias: name
+    range: string
+    required: true
+    domain: world
+    see_also:
+    - ../domain/3_Classes.md#world
+    description: Context-qualified declaration; applicability is defined by canonical prose.
+  world-origin-poi:
+    slot_uri: pixlnd:world/origin-poi
+    alias: origin-poi
+    range: poi-type
+    required: true
+    domain: world
+    see_also:
+    - ../domain/3_Classes.md#world
+    description: Context-qualified declaration; applicability is defined by canonical prose.
+  land-tier-range:
+    slot_uri: pixlnd:land/tier-range
+    alias: tier-range
+    range: mob-strength-tier
+    required: true
+    multivalued: true
+    domain: land
+    see_also:
+    - ../domain/3_Classes.md#land
+    description: Context-qualified declaration; applicability is defined by canonical prose.
+  land-rarity:
+    slot_uri: pixlnd:land/rarity
+    alias: rarity
+    range: integer
+    required: true
+    domain: land
+    see_also:
+    - ../domain/3_Classes.md#land
+    description: Context-qualified declaration; applicability is defined by canonical prose.
+    minimum_value: 0
+    maximum_value: 4
+  land-realm:
+    slot_uri: pixlnd:land/realm
+    alias: realm
+    range: realm
+    required: true
+    domain: land
+    see_also:
+    - ../domain/3_Classes.md#land
+    description: Context-qualified declaration; applicability is defined by canonical prose.
+  land-key-items:
+    slot_uri: pixlnd:land/key-items
+    alias: key-items
+    range: key-item
+    required: true
+    multivalued: true
+    domain: land
+    see_also:
+    - ../domain/3_Classes.md#land
+    description: Context-qualified declaration; applicability is defined by canonical prose.
+    maximum_cardinality: 9
+  land-gnome-suppliers:
+    slot_uri: pixlnd:land/gnome-suppliers
+    alias: gnome-suppliers
+    range: gnome-supplier
+    required: true
+    multivalued: true
+    domain: land
+    see_also:
+    - ../domain/3_Classes.md#land
+    description: Context-qualified declaration; applicability is defined by canonical prose.
+    minimum_cardinality: 4
+    maximum_cardinality: 4
+  land-books-of-crafting:
+    slot_uri: pixlnd:land/books-of-crafting
+    alias: books-of-crafting
+    range: book-of-crafting
+    required: true
+    multivalued: true
+    domain: land
+    see_also:
+    - ../domain/3_Classes.md#land
+    description: Context-qualified declaration; applicability is defined by canonical prose.
+    minimum_cardinality: 4
+    maximum_cardinality: 4
+  land-circles-of-power:
+    slot_uri: pixlnd:land/circles-of-power
+    alias: circles-of-power
+    range: circle-of-power
+    required: true
+    multivalued: true
+    domain: land
+    see_also:
+    - ../domain/3_Classes.md#land
+    description: Context-qualified declaration; applicability is defined by canonical prose.
+    minimum_cardinality: 1
+  land-artifacts:
+    slot_uri: pixlnd:land/artifacts
+    alias: artifacts
+    range: artifact
+    required: true
+    multivalued: true
+    domain: land
+    see_also:
+    - ../domain/3_Classes.md#land
+    description: Context-qualified declaration; applicability is defined by canonical prose.
+    minimum_cardinality: 1
+enums:
+  danger-tier:
+    enum_uri: pixlnd:danger-tier
+    permissible_values:
+      safe: {}
+      normal: {}
+      dangerous: {}
+  spawn-rule:
+    enum_uri: pixlnd:spawn-rule
+    permissible_values:
+      near-village: {}
+  realm-kind:
+    enum_uri: pixlnd:realm-kind
+    permissible_values:
+      kingdom: {}
+      realm: {}
+      cult: {}
+      tribe: {}
