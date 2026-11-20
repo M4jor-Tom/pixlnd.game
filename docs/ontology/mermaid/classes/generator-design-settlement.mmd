@@ -1,0 +1,36 @@
+ classDiagram
+    class `Generator-design-settlement`
+    click `Generator-design-settlement` href "../Generator-design-settlement"
+      `Generator-design-settlement` : blend
+      `Generator-design-settlement` : buildings
+        `Generator-design-settlement` --> "1..*" `Building` : buildings
+        click `Building` href "../Building"
+      `Generator-design-settlement` : doc
+      `Generator-design-settlement` : footprint
+        `Generator-design-settlement` --> "1" `Generator-design-settlement-footprint` : footprint
+        click `Generator-design-settlement-footprint` href "../Generator-design-settlement-footprint"
+      `Generator-design-settlement` : inn
+        `Generator-design-settlement` --> "1" `Generator-design-settlement-inn` : inn
+        click `Generator-design-settlement-inn` href "../Generator-design-settlement-inn"
+      `Generator-design-settlement` : no_hostiles_within
+      `Generator-design-settlement` : npc
+        `Generator-design-settlement` --> "1" `Generator-design-settlement-npc` : npc
+        click `Generator-design-settlement-npc` href "../Generator-design-settlement-npc"
+      `Generator-design-settlement` : per_land
+      `Generator-design-settlement` : placement
+        `Generator-design-settlement` --> "1" `Generator-design-settlement-placement` : placement
+        click `Generator-design-settlement-placement` href "../Generator-design-settlement-placement"
+      `Generator-design-settlement` : radius
+      `Generator-design-settlement` : ring_radius
+      `Generator-design-settlement` : shop
+        `Generator-design-settlement` --> "1" `Generator-design-settlement-shop` : shop
+        click `Generator-design-settlement-shop` href "../Generator-design-settlement-shop"
+      `Generator-design-settlement` : style_by_landscape
+        `Generator-design-settlement` --> "1" `Generator-design-settlement-style-by-landscape` : style_by_landscape
+        click `Generator-design-settlement-style-by-landscape` href "../Generator-design-settlement-style-by-landscape"
+      `Generator-design-settlement` : style_colors
+        `Generator-design-settlement` --> "1" `Generator-design-settlement-style-colors` : style_colors
+        click `Generator-design-settlement-style-colors` href "../Generator-design-settlement-style-colors"
+      `Generator-design-settlement` : trainer
+        `Generator-design-settlement` --> "1" `Generator-design-settlement-trainer` : trainer
+        click `Generator-design-settlement-trainer` href "../Generator-design-settlement-trainer"

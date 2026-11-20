@@ -1,0 +1,14 @@
+ classDiagram
+    class `Generator-source-dungeon`
+    click `Generator-source-dungeon` href "../Generator-source-dungeon"
+      `Generator-source-dungeon` : alpha_layout
+      `Generator-source-dungeon` : artifact_s
+      `Generator-source-dungeon` : boss
+        `Generator-source-dungeon` --> "1" `Generator-source-dungeon-boss` : boss
+        click `Generator-source-dungeon-boss` href "../Generator-source-dungeon-boss"
+      `Generator-source-dungeon` : group_size
+      `Generator-source-dungeon` : mob_tier
+      `Generator-source-dungeon` : size_cap_s
+      `Generator-source-dungeon` : steam_layout
+      `Generator-source-dungeon` : traps_alpha
+      `Generator-source-dungeon` : traps_data_x

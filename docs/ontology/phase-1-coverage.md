@@ -1046,3 +1046,216 @@ actual unchanged root predicates. The latest directory lint remains the unchange
 Historical A/S, X/cut, uncertainty and finite §5 source inheritance remain canonical;
 untagged histories gain no default tags. Regional gear weakening is permanently
 excluded, not deferred. No runtime, save, raw source or generator defaults change.
+
+## Task6 generator and selected design contracts (candidate, not acceptance)
+
+This extends only generator/design coverage. No runtime, generator, save-format,
+backend adoption or Markdown handoff is established by these checks. All original
+`generators.json` values, A/S/X/Omega qualifications and excluded regional gear
+weakening remain unchanged. `design-world.yaml` and `design-items.yaml` complete
+explicit source envelopes; the entry imports them alongside combat/progression.
+The source contract is bound, not direct raw-wire admission: local `{key,value}`
+entries, declared positional tuples and the one literal-null marker preserve the
+whole document with inverse equality. IDs are not fabricated model attributes.
+
+| Scoped canonical anchor/source | Explicit YAML destination | Source-named checks |
+|---|---|---|
+| §5 required-inputs; complete generators source, historical siblings and all design groups | `design-items.yaml:generators-source`, `generator-design`; `design-world.yaml:generator-source-*` and `generator-design-*`; existing `design-combat.yaml` / `design-progression.yaml` | `test_ontology_schema_generators.GeneratorSourceTests`; `test_required_whole_source_and_every_design_group`; `FullInputContracts.test_whole_generators_source` |
+| §5 c-world-bounds/c-zone-size/c-time-speed/c-sim-radius; terrain/climate/name/spawn pairs | `design-world.yaml:generator-design-{terrain,time,climate,names,spawns}`, `generator-climate-rule`, `generator-design-spawns.ai` | complete source/roundtrip, climate collection, selected bounds, coupling scalar/native-ceiling methods |
+| §5 c-ability-runtime/c-moveset-config; resource/special/status configuration | `design-combat.yaml:ability-runtime`, `runtime-cost`, `runtime-strike`, `runtime-projectile`, `generator-design-{abilities,resources,special-attack,status-effects,movesets}`, `generator-status-entry` | declaration oracle, exact selected/Boolean/projectile boundaries, status map and closed moveset tests |
+| §5 c-progression-config/c-gear-hp/c-artifact-stat | `design-progression.yaml:generator-design-progression`, `generator-progression-gap`, `gear-hp-design`, `artifact-design` | complete source, selected bounds, retained ability/progression projection |
+| §5 c-defence-config/c-feel-config/c-creature-roles/c-design-color-syntax | `design-combat.yaml:generator-design-{movement,defence,feel,creature-roles,frame-budget}`, `generator-projectile-role`, `generator-role-override`, `generator-rgb-entry`; parent-context fields in `design-items.yaml:generator-design`, `generators-source` | literal raw/get/induced contexts, scalar/native-ceiling tests, seven strict string-colour locations, RGB map/role overrides |
+| §5 c-loot-config/c-encounter-rewards-config/c-settlement-config | `design-items.yaml:generator-design-{loot,prices,starting-inventory,settlement}`, selected loot map entries/shop/footprint/style/service children | selected loot/shop/AI inputs, map/default/reference tests, exact bounds and actual-YAML selected-input loss |
+| §5 c-initial-encounter-config; encounter-contracts placement/geometry/populations/local difficulty/specials/rubble/traps/furnishings/rewards | `design-items.yaml:generator-design-initial-encounters` and named children; retained `world.yaml` initial placement/assembly/population/special/reward profiles | complete source and literal independent selected geometry/tier/colour/weighted-profile declarations; inherited dungeon evidence stays qualified |
+| §6 gen-world/climate/terrain/coarse-map | `design-world.yaml:generator-source-{world-scales,seed,climate,terrain,coarse-map-omega}`, active terrain/climate designs | full-source and climate tuple/type/order-preservation checks, not world generation |
+| §6 gen-flora/dungeon/poi/missions | retained earlier flora/dungeon/POI roots; `generator-source-{land,dungeon}`, initial-encounter config | prior family receipts and affected dungeon selector; no fabricated generators.flora/poi fields |
+| §6 gen-settlement/spawns/boss/name | historical `generator-source-{settlement,spawns,boss,names}`, active settlement/spawn/name/role config | real-source positives, arena bound-carrier literal and map/reference checks; no RNG/placement proof |
+| §6 gen-item/gen-item-stats/gen-loot | `generator-source-item`, `generators-source.loot` STRING, active loot/gear-HP/item-stat-curve fields | complete source and selected scalar/map/pool tests; formulae remain canonical |
+| §6 gen-realm/npc-appearance/schedule/key-items | corresponding `generator-source-*` owners | complete source envelopes; historical/availability/source qualifications retained |
+
+`ontology_generator_expectations.py` holds independent literal obligations, not a
+second schema. `declaration_oracle` applies them before SDK construction, then
+checks get/induced facets and real emitted closed roots. The SAME oracle validates
+unchanged baselines and each actual-YAML loss/broadening mutant. Original10cases
+remain; correction adds6coupling/context and8selected-input cases. Each asserts
+actual source bytes changed; mutation-specific expected-output rewriting is absent.
+The declaration context test explicitly executes NO expression/evaluator/rule engine.
+
+### Precise predicates and deliberately retained boundaries
+
+- Settlement keeps integer radius minimum1/blend0/no-hostiles0 and three separate
+  typed completed-object predicates. Negative ring-radius remains legal where
+  ring<radius. No new tunable, epsilon or ring minimum is inferred.
+- Simulation and ranged/mage comparisons use complete existing objects and literal
+  raw keys, not assumed underscore normalization or later sibling bindings. Feel
+  compares all eleven REQUIRED durations with the configured maximum; dodge cost
+  compares with the configured stamina maximum. The failure carrier is outside
+  the required object range. Static support is not end-to-end rule execution.
+- The five sample-sorted enemy-HP/spawn/camera pairs retain their2item types and
+  cardinalities, but NO unapproved ordering predicate. Shape-valid reversed
+  examples are not called canonical violations. Overnight inn-hours is unchanged.
+- Arena equality describes the bound positional dictionaries, preserving original
+  raw arrays/order. Supplier and True literals remain. Redundant iframe equality
+  is removed while its numeric minimum remains.
+- Exact selected loot/shop/AI/taunt inputs are explicit, without freezing unrelated
+  tunables. Optional nested projectile multiplier excludes0WHEN PRESENT; omission
+  and the real shuriken-attack.6 fixture remain valid. Generic burst/taunt0damage
+  remains legal. The callers are ability throw, projectile role shot and optional
+  species shot override; retained projections are dependency-qualified, not whole
+  unchanged metadata claims.
+- Status entries correlate six known keys with six closed payload variants, while
+  only burning/poison have selected required-member declarations. Numeric feedback
+  colours require only hit plus RGB3[0,1]; footprints require only default plus
+  building overrides. Maps preserve repeated building references and scalar types.
+- Seven selected string-colour fields use mandatory# plus exactly6or8hex digits
+  with exact end/case-insensitivity; optional override omission is valid, null is
+  not. Numeric RGB maps are separate. No raw colour value or runtime parser changes.
+- Artifact text remains string-typed with canonical logarithm/contributor/state
+  semantics; no spelling freeze or ln/climate evaluation. Variable mixed numeric/
+  `all` stamina costs, merged roles, configured-key/alias/source-style/audio joins,
+  FK existence, lifecycle/RNG/physics/solvability remain precisely retained rules,
+  not automatically certified by native JSON Schema.
+
+Native scalar bounds/cardinalities/closed known payloads are construct-specific:
+the V1seven-call qualification rejects common59(min60), weapon3(min4) and Heroic
+Shout taunt2(min3) through emitted numeric/nested-slot postconditions. It admits
+pool reorder/duplicates and missing heroic membership. Class-range status
+postconditions remain a separately observed ceiling; do not infer all correlations
+are ignored. Copied bound negative fixtures in the selected-input/coupling methods
+reuse one actual-source binding/inverse equality/native positive each, not a raw
+roundtrip per negative. Exact logical keys select weighted-map/ability mutations.
+These admissions are backend observations, not secretly accepted domain rules. Deprecated ReferenceValidator source hazards remain unexecuted and unfixed.
+No SDK evaluation or custom grammar/interpreter is part of the suite.
+
+### Evidence frontier
+
+The correction's semantic RED starts with the real declared settlement root and
+positive fixture: all three scalar-1negatives were admitted (3intentional failures,
+1method52.396body/67.469owned seconds), not missing-class/setup errors. Final
+selected declaration/value/mutation/lint/cap receipts and their source pins belong
+in the managed cumulative Task6review package; this test map does not itself claim
+review acceptance. Existing full-source3method evidence remains at its actual
+pins (295.463owned vs267.973body). Fresh real-source affected-owner fragments compose
+with explicit unchanged source/binding/alias/tuple/order/method bridges; unrelated
+changed `$defs` are never called byte-identical whole schemas. Changed boundary,
+status, declaration and oracle methods are excluded from old-green bridges.
+
+The last qualified directory frontier is184save diagnostics (26errors/158warnings),
+zero Task6/new diagnostics, not global clean. Exact Counter/five-protected-source
+comparison remains required. The single `at-cursor` naming exception preserves its
+literal/enum identity and has native positive/five-negative policy controls; its
+name match is global, not enum/file-scoped. No later-family repair is selected.
+
+
+### Task6 review-fix round1 qualification boundary
+
+The prior unchanged-result bridge for
+`test_remaining_config_facets_and_required_weapon_entries` is WITHDRAWN: its old
+zero-spread positive contradicted the selected exact1source bound. The corrected
+method retains1positive,0/-1/Boolean negatives and all later scalar/map/weapon
+cases. Native results at final fix pins are recorded separately in managed evidence;
+unchanged method text alone never qualifies a changed dependency.
+
+The existing ability-runtime projectile conditional now owns strict-positive
+speed/life facets; generic global optional/minimum0and burst damage0remain unchanged.
+Configured runtime/kind membership joins remain explicit canonical cross-collection
+rules, not frozen sample lists or a rule interpreter. Level-up text is nonempty
+without a single-line restriction. One concrete `generator-feel-event` replaces
+only the eleven identical new child types: all11parent slot identities and all3
+payload aliases/types/bounds/requiredness remain. Child type/slot IRIs intentionally
+consolidate; old metadata bytes are not claimed equal. Full-source tests reuse the
+unchanged validate_source roundtrip once; no separate duplicate traversal remains.
+
+
+#### Preserved VRpartitions after timeout
+
+The original remaining-config monolith timed out at330seconds with unknown
+reachability. Its legacy selector now denotes scalar partition A ONLY; the new
+map-shape/malformed and required-weapon-membership selectors are partitions B/C.
+Their mechanical ASTcase/assertion union preserves all28scalar validations,3map
+shape assertions/5raw malformed owner-bound fixtures and15logical-key omissions.
+Each repeats necessary real-source bind/inverse/native-positive setup and flushes
+monotonic phase labels. Complete former-method coverage requires all three actual
+results; no old monolith pass or historical reachability is inferred.
+
+#### Projectile anonymous-condition wire aliases
+
+The first full VN qualification failed four zero-admission assertions: both real
+projectile abilities admitted speed0 and life-s0. A single full-source copied-graph
+qualification then established the attachment cause: anonymous conditions emitted
+internal slot names instead of runtime/speed/radius/life-s. Equals-number0 was
+present in the emitted not/const branch; it was not dropped as a falsey value.
+Four explicit aliases on that projectile rule alone attach its existing predicate
+and strict-positive postconditions to the actual wire properties. The copied
+candidate rejected all four zeros while retaining the complete-source positive,
+nonprojectile optional speed0/life-s0 and generic burst damage0 controls. The real
+schema consumes exactly those four aliases; values/mutation tests remain unchanged.
+Fresh declaration/VN/full-C/mutation outcomes at these new pins are pending until
+recorded in managed evidence; prior metadata passes do not certify native effect.
+
+The other five ability-runtime rules still emit internal anonymous condition keys.
+Their attachment risk is outside this selected correction and is disclosed to the
+parent; no additional rule repair or enforcement claim follows. Full C passed at
+its earlier actual pins with all15 omissions,332.179833887owned/298.955body seconds;
+its exact scoped normal timeout is1248native/1278wait/1308caller. A/B retain their
+actual earlier pins. Old failed330/139receipts, the original Dpreflight gap and exact
+helper restoration remain separate qualifications, never relabeled clean evidence.
+
+#### Review-fix qualification at final implementation pins
+
+The four projectile anonymous aliases were qualified on a real copied graph and
+then consumed by the schema before strengthening the independent raw/get/induced/
+emitted wire-key oracle. Fresh complete D, unchanged VN, full C, SG, SC and all
+10/6/8/4 actual-YAML mutation targets passed at those source pins. VN's original
+four zero admissions are now intended conditional rejections; nonprojectile
+optional0/0 and burst0 remain legal. Required-weapon/registry/status/reference
+and completed-object expression limitations remain precise backend ceilings,
+not domain permission or universal conditional enforcement. The other five
+ability-runtime rule attachments remain separately disclosed, outside this fix.
+
+The final cap-only adjustment changes M3's positive-fixture selection to a literal
+local two-override lookup with the same default object. Whole-module/corpus/assert/
+native-call preservation and actual four-label value AND object-identity equality
+were proved before native. The same seven-path600/100/15 gate now passes; the
+same full four-case M3 native qualification also passes. Its old16cap failure is
+retained. No unrelated successful row was replayed. M0/M1/M2, D/VN/C/SG/SC and the
+exact184save-diagnostic directory frontier retain their actual qualified inputs;
+the test-only selection and this documentation have no schema/binding/fixture/
+native-validation dependency for those methods. Managed evidence distinguishes
+these bridges from fresh M3/CAPS results. Whole cumulative source/Markdown review
+and application acceptance remain parent gates; no overlay is applied here.
+
+### Task6 review round2 phase A (qualification only)
+
+A combined full-source regression now covers18required runtime field contexts
+(omission/null/Boolean),13fractional numeric domains,coherent radius0.5and a legal
+negative ring radius. Current-source semantic REDobserved37specific failures
+(12omissions,10nulls,13fractional fields and2geometry cases),after healthy complete
+bind/inverse/native-positive baselines. Exactly17wire aliases,eight scoped numeric
+all_of conjuncts and13integer-to-number restorations consume the existing rules.
+Counts/exact constants and all older16values/28mutation intentions stay unchanged.
+The same new five-method class passes with33real-YAML loss/native-effect checks
+against the SAME independent raw/get/induced/emitted/root oracle. This is not a
+full old-suite pass or source acceptance. Phase B's affected qualification and
+complete fresh review/package remain pending; no domain overlay is applied.
+
+### Task6 review round2 phase B (source still unaccepted)
+
+Selected fresh D(5methods),VN(1),M0(2/10targets),M1(1/6),M2(1/8),M3(1/4)
+pass at the repaired source. M3zero-exclusion removals still broaden despite the
+new nonnull conjuncts. Configured directory lint exits2normally; complete raw
+output is byte-identical to the accepted184diagnostic frontier(26errors,
+158warnings,five frozen save owners),not globally clean. A first external
+one-line Counter parser failed on header-formatted diagnostics; that failure
+remains preserved, with separate parent-approved complete-byte comparison and
+no lint replay. New five-method/33target evidence remains Phase A's actual run,
+not a reporting rerun. Full old-suite/engine/native relational enforcement is
+not claimed; source/package acceptance and actual Markdown application remain
+separate parent gates.
+
+## Godot frame-budget adapter association
+
+The Godot adapter maps `design.frame-budget.max-catch-up-steps` to
+`Engine.max_physics_steps_per_frame`. Schema validation does not execute or verify
+that engine assignment; the domain's timing rule and configuration facets remain
+separate from this consumer-specific association.

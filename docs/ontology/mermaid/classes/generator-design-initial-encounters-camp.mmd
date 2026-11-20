@@ -1,0 +1,10 @@
+ classDiagram
+    class `Generator-design-initial-encounters-camp`
+    click `Generator-design-initial-encounters-camp` href "../Generator-design-initial-encounters-camp"
+      `Generator-design-initial-encounters-camp` : exit_width
+      `Generator-design-initial-encounters-camp` : occupancy
+        `Generator-design-initial-encounters-camp` --> "1" `Generator-selected-initial-encounters-camp-occupancy` : occupancy
+        click `Generator-selected-initial-encounters-camp-occupancy` href "../Generator-selected-initial-encounters-camp-occupancy"
+      `Generator-design-initial-encounters-camp` : packs
+      `Generator-design-initial-encounters-camp` : size
+      `Generator-design-initial-encounters-camp` : tier

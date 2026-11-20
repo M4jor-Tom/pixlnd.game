@@ -1,0 +1,9 @@
+ classDiagram
+    class `Generator-design-initial-encounters-special-profile-stomp`
+    click `Generator-design-initial-encounters-special-profile-stomp` href "../Generator-design-initial-encounters-special-profile-stomp"
+      `Generator-design-initial-encounters-special-profile-stomp` : damage_mult
+      `Generator-design-initial-encounters-special-profile-stomp` : radius
+      `Generator-design-initial-encounters-special-profile-stomp` : start_height_diff
+      `Generator-design-initial-encounters-special-profile-stomp` : victim_height
+        `Generator-design-initial-encounters-special-profile-stomp` --> "1" `Generator-selected-initial-encounters-special-profile-stomp-victim-height` : victim_height
+        click `Generator-selected-initial-encounters-special-profile-stomp-victim-height` href "../Generator-selected-initial-encounters-special-profile-stomp-victim-height"

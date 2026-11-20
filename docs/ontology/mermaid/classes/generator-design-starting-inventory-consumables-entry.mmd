@@ -1,0 +1,7 @@
+ classDiagram
+    class `Generator-design-starting-inventory-consumables-entry`
+    click `Generator-design-starting-inventory-consumables-entry` href "../Generator-design-starting-inventory-consumables-entry"
+      `Generator-design-starting-inventory-consumables-entry` : key
+        `Generator-design-starting-inventory-consumables-entry` --> "1" `Consumable` : key
+        click `Consumable` href "../Consumable"
+      `Generator-design-starting-inventory-consumables-entry` : value

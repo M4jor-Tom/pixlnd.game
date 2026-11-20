@@ -1,0 +1,12 @@
+ classDiagram
+    class `Generator-design-climate`
+    click `Generator-design-climate` href "../Generator-design-climate"
+      `Generator-design-climate` : doc
+      `Generator-design-climate` : field_frequency_lands
+      `Generator-design-climate` : field_octaves
+      `Generator-design-climate` : hud
+        `Generator-design-climate` --> "1" `Generator-design-climate-hud` : hud
+        click `Generator-design-climate-hud` href "../Generator-design-climate-hud"
+      `Generator-design-climate` : rules
+        `Generator-design-climate` --> "1..*" `Generator-climate-rule` : rules
+        click `Generator-climate-rule` href "../Generator-climate-rule"

@@ -1,0 +1,10 @@
+ classDiagram
+    class `Generator-design-initial-encounters-furnishings`
+    click `Generator-design-initial-encounters-furnishings` href "../Generator-design-initial-encounters-furnishings"
+      `Generator-design-initial-encounters-furnishings` : armor
+      `Generator-design-initial-encounters-furnishings` : table
+        `Generator-design-initial-encounters-furnishings` --> "1" `Generator-design-initial-encounters-furnishings-table` : table
+        click `Generator-design-initial-encounters-furnishings-table` href "../Generator-design-initial-encounters-furnishings-table"
+      `Generator-design-initial-encounters-furnishings` : vase
+        `Generator-design-initial-encounters-furnishings` --> "1" `Generator-design-initial-encounters-furnishings-vase` : vase
+        click `Generator-design-initial-encounters-furnishings-vase` href "../Generator-design-initial-encounters-furnishings-vase"

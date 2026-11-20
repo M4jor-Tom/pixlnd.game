@@ -21,6 +21,11 @@ On commits touching `ontology/schema/`, the pre-commit hook regenerates the
 [ontology Mermaid diagrams](ontology/mermaid/overview.mmd). If they change, the commit fails:
 `git add docs/ontology/mermaid` and commit again.
 
+The overview shows the `world`, `entity`, `item`, `ability` and `generators-source` core
+with one-hop references; complete per-class views remain unfiltered in `classes/`.
+The existing generator runs `tests/test_ontology_mermaid.py` to enforce the 50,000-character
+budget and core/detail coverage in normal hooks and CI.
+
 The full suite can take many minutes, which is why it no longer runs inside `git push`
 (a long pre-push hook held the SSH connection open until the server timed out).
 

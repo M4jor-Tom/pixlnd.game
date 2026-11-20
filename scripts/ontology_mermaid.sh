@@ -11,11 +11,15 @@ gen() { uv run --locked --project tools/ontology "$@" ontology/schema/pixlnd.yam
 quote() { sed -E "s/(^| )([A-Z][A-Za-z0-9-]*)/\1$1\2$1/g" "${@:2}"; }
 rm -rf "$out" # also drops diagrams of classes removed from the schema
 mkdir -p "$out"
-# Attributes live in classes/: with them the ER text exceeds Mermaid's 50,000-char render limit.
-gen gen-erdiagram --exclude-attributes -f mermaid | quote '"' >"$out/overview.mmd" &
+# Keep the overview within Mermaid's 50,000-char budget: core roots and one-hop references.
+# Complete attributes and every class remain in the separate, unfiltered classes/ views.
+gen gen-erdiagram --exclude-attributes -f mermaid \
+  --classes world --classes entity --classes item --classes ability --classes generators-source \
+  --follow-references --max-hops 1 | quote '"' >"$out/overview.mmd" &
 er=$!
 gen gen-mermaid-class-diagram -d "$out/classes"
 # It only writes fenced Markdown: drop the ``` fences and blank lines into plain .mmd files.
 for f in "$out"/classes/*.md; do sed -E '/^```|^\s*$/d' "$f" | quote '`' >"${f%.md}.mmd"; done
 rm "$out"/classes/*.md
 wait "$er"
+python3 tests/test_ontology_mermaid.py

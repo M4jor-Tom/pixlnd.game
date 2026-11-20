@@ -1,0 +1,26 @@
+ classDiagram
+    class `Generator-source-network-alpha`
+    click `Generator-source-network-alpha` href "../Generator-source-network-alpha"
+      `Generator-source-network-alpha` : anticheat_caps
+        `Generator-source-network-alpha` --> "1" `Generator-source-network-alpha-anticheat-caps` : anticheat_caps
+        click `Generator-source-network-alpha-anticheat-caps` href "../Generator-source-network-alpha-anticheat-caps"
+      `Generator-source-network-alpha` : authority
+      `Generator-source-network-alpha` : client_version
+      `Generator-source-network-alpha` : compression
+      `Generator-source-network-alpha` : hit_types
+        `Generator-source-network-alpha` --> "1" `Generator-source-network-alpha-hit-types` : hit_types
+        click `Generator-source-network-alpha-hit-types` href "../Generator-source-network-alpha-hit-types"
+      `Generator-source-network-alpha` : interact_types
+        `Generator-source-network-alpha` --> "1" `Generator-source-network-alpha-interact-types` : interact_types
+        click `Generator-source-network-alpha-interact-types` href "../Generator-source-network-alpha-interact-types"
+      `Generator-source-network-alpha` : max_players
+      `Generator-source-network-alpha` : max_players_configurable
+      `Generator-source-network-alpha` : packets_c2s
+        `Generator-source-network-alpha` --> "1" `Generator-source-network-alpha-packets-c2s` : packets_c2s
+        click `Generator-source-network-alpha-packets-c2s` href "../Generator-source-network-alpha-packets-c2s"
+      `Generator-source-network-alpha` : packets_s2c
+        `Generator-source-network-alpha` --> "1" `Generator-source-network-alpha-packets-s2c` : packets_s2c
+        click `Generator-source-network-alpha-packets-s2c` href "../Generator-source-network-alpha-packets-s2c"
+      `Generator-source-network-alpha` : port
+      `Generator-source-network-alpha` : protocol
+      `Generator-source-network-alpha` : tick_hz

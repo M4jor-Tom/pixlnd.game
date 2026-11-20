@@ -6,6 +6,9 @@ rescues. Documentation is not runtime coverage or implementation permission.
 
 ## Placement and access
 
+The corresponding required source inputs are [`generator-design-initial-encounters (distance/separation/apron/dry/hub fields), generator-design-settlement.no-hostiles-within`](../schema/design-items.yaml).
+These input structures do not replace the logical occurrences or the procedures below.
+
 Each land has one ruins dungeon, one daily camp and four supplier sites. Site centres are
 land-seeded; [`initial-site-placement-profile`](../schema/world.yaml) declares the inclusive
 village-distance thresholds and minimum separation (`minimum-village-distance-blocks`,
@@ -36,6 +39,9 @@ failure only omits guidance, retaining terrain, village, sites and gameplay.
 
 ## Geometry and occupancy
 
+The corresponding required source inputs are [`generator-design-initial-encounters-ruins, generator-design-initial-encounters-camp, generator-design-initial-encounters-supplier`](../schema/design-items.yaml).
+These input structures do not replace the logical occurrences or the procedures below.
+
 All dimensions are in blocks. Ruins' structural layout, exact component dimensions/counts,
 overall bounds, ceiling/door sizes and trap-free lane are declared by
 [`initial-ruins-assembly`, `ruins-room-volume`, `ruins-corridor-volume`, `ruins-court-volume`,
@@ -60,6 +66,9 @@ and opposite exits. [Closed-volume occupancy](3_Classes.md#game-clock) still cou
 inside and requires all players outside every component, without extra grace.
 
 ## Populations, tiers and clear conditions
+
+The corresponding required source inputs are [`generator-design-initial-encounters.species, .pack-size, .role-weights and the ruins/camp/supplier tier fields`](../schema/design-items.yaml).
+These input structures do not replace the logical occurrences or the procedures below.
 
 Enemies are skeletons (`creatures.json#skeleton`), including at the ruined skeleton encampment;
 this does not add skeletons to unrelated ambient biome rosters. Site identity/allocation and the
@@ -98,6 +107,9 @@ enemies retain their daily refresh eligibility; completed one-time rescues stay 
 
 ## Local difficulty and boss size
 
+The corresponding required source inputs are [`generator-design-initial-encounters.power-base-offset, .boss-hp-mult, .boss-damage-mult, .boss-height`](../schema/design-items.yaml).
+These input structures do not replace the logical occurrences or the procedures below.
+
 The fixed local difficulty and spawn facets are [`initial-site-local-difficulty-profile`,
 `initial-site-hostile-spawn`, and `initial-site-boss-spawn`](../schema/world.yaml), covered by
 `test_initial_site_local_difficulty_contracts`, `test_initial_site_local_difficulty_values`, and
@@ -118,6 +130,9 @@ rules, not global ordinary-creature or player changes. Specials use the [boss pr
 not unmodified player spell damage.
 
 ## Ordinary kill loot
+
+The corresponding required source inputs are [`generator-design-loot and its coins, rarity-weights, gear-kinds, consumable-pool and ground children`](../schema/design-items.yaml).
+These input structures do not replace the logical occurrences or the procedures below.
 
 The structural roll facets are [`ordinary-site-kill-loot-profile`](../schema/world.yaml), covered
 by `test_gear_loot_profiles` in `test_ontology_schema_world_rewards.py`.
@@ -141,6 +156,9 @@ and [mission packages](#shared-mission-packages-and-supplier-shops), not replace
 [Personal source claims](3_Classes.md#save-data) are not blanket all-reward instancing.
 
 ## Boss specials and breakable rubble
+
+The corresponding required source inputs are [`generator-design-initial-encounters-boss-specials, generator-design-initial-encounters-special-profile and its stomp/charge children, generator-design-initial-encounters-rubble`](../schema/design-items.yaml).
+These input structures do not replace the logical occurrences or the procedures below.
 
 Each boss independently receives one permanent special according to [`boss-special-profile.assignment-probability`](../schema/world.yaml): ground stomp or charge. Fixed
 parameter shapes are [`boss-special-profile`, `boss-stomp-profile`, and `boss-charge-profile`](../schema/world.yaml),
@@ -181,6 +199,9 @@ overlap an actor. [World-clock/save rules](3_Classes.md#game-clock) apply.
 
 ## Spike traps and furnishing contents
 
+The corresponding required source inputs are [`generator-design-initial-encounters-spikes and generator-design-initial-encounters-furnishings with vase/table children`](../schema/design-items.yaml).
+These input structures do not replace the logical occurrences or the procedures below.
+
 The trap count, closed footprint, inclusive player-feet trigger interval, phase durations and
 physical damage are declared by [`spike-trap-profile`, `spike-trap-profile.count-per-ruins-site`, `spike-trap-profile.footprint-width-blocks`,
 `spike-trap-profile.footprint-depth-blocks`, `spike-trap-profile.trigger-min-feet-above-floor-blocks`, `spike-trap-profile.trigger-max-feet-above-floor-blocks`,
@@ -202,7 +223,7 @@ per-renewal quantities/rarity/spread are declared by [`vase-profile.count-per-ru
 `table-profile.life-potion-power-spread`](../schema/world.yaml), covered by
 `test_furnishing_profiles`. Direct player/boss
 attacks damage props; DOT and traps do not. Prop hits grant no combo, MP, XP or enemy-hit status
-rolls. Vase payout is `1 + 2L` copper on destruction; table contents are issued as loose pickups.
+rolls. Vase payout on destruction is `copper-base + copper-per-room-guard-level × L` using the named `vase-profile` facets above; table contents are issued as loose pickups.
 Breaking a table never reissues its pair, whether the pickups remain, were taken or expired. `L`
 is the saved room guard-pack level (`minimum-room-guard-level`), not the boss level.
 Each of the three rooms rolls and saves one shared level at creation and at every actual safe
@@ -217,6 +238,9 @@ once per coalesced renewal. Reloads never refill or reroll them. Trap phase pers
 unload/restart and becomes idle on renewal. Furnishings contain no formulas, books or artifacts.
 
 ## Guaranteed boss gear and spirits
+
+The corresponding required source inputs are [`generator-design-loot-gear-kinds, generator-design-initial-encounters-spirits`](../schema/design-items.yaml).
+These input structures do not replace the logical occurrences or the procedures below.
 
 The fixed reward structures are [`guaranteed-boss-gear-profile` and `initial-spirit-profile`](../schema/world.yaml),
 covered by `test_gear_loot_profiles` in `test_ontology_schema_world_rewards.py` and
@@ -255,6 +279,9 @@ numerical combat effects remain a separate feature, not globally removed or sile
 [spirit-level restrictions](3_Classes.md#spirit-cube) remain; this selects no effect numbers.
 
 ## Shared mission packages and supplier shops
+
+The corresponding required source inputs are [`generator-design-initial-encounters-mission-package, generator-design-settlement-shop`](../schema/design-items.yaml).
+These input structures do not replace the logical occurrences or the procedures below.
 
 The shared package and completion declarations are [`encounter-shared-package` and
 `shared-mission-completion-profile`](../schema/world.yaml), covered by
@@ -318,4 +345,4 @@ These rules are documentation only. Runtime, instance/config, checker, generator
 changes require separate authority; a passing current validator does not enforce this contract.
 Implementation dependencies include canonical targeting/defence, site generation/occupancy,
 world-clock/renewal, shared rewards/shops and saved logical identities. Deferred work is in the
-[implementation backlog](../../docs/ROADMAP/todo_implement.md#initial-encounter-contracts-documentation-only).
+[implementation backlog](../../docs/ROADMAP/todo_implement.md#initial-encounter-contracts).

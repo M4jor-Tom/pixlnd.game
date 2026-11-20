@@ -25,6 +25,15 @@ def assert_root(test: unittest.TestCase, name: str, properties: set[str],
 
 
 class FullInputContracts(unittest.TestCase):
+    def test_whole_generators_source(self):
+        from ontology_generator_expectations import SOURCE_FIELDS
+        from ontology_source_contracts import validate_source
+        from test_ontology_schema_authoring import catalog
+
+        assert_root(self, "generators-source", SOURCE_FIELDS, SOURCE_FIELDS)
+        row = catalog("generators")
+        validate_source("generators", row)
+
     def test_whole_races_source(self):
         from ontology_source_contracts import bind_source, unbind_source, validate_source
         from test_ontology_schema_authoring import catalog

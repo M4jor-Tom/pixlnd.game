@@ -1,0 +1,9 @@
+ classDiagram
+    class `Generator-ability-entry`
+    click `Generator-ability-entry` href "../Generator-ability-entry"
+      `Generator-ability-entry` : key
+        `Generator-ability-entry` --> "1" `Ability` : key
+        click `Ability` href "../Ability"
+      `Generator-ability-entry` : value
+        `Generator-ability-entry` --> "1" `Ability-runtime` : value
+        click `Ability-runtime` href "../Ability-runtime"

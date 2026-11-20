@@ -1,0 +1,22 @@
+ classDiagram
+    class `Generator-design-creature-roles`
+    click `Generator-design-creature-roles` href "../Generator-design-creature-roles"
+      `Generator-design-creature-roles` : any_class
+        `Generator-design-creature-roles` --> "1" `Generator-design-creature-roles-any-class` : any_class
+        click `Generator-design-creature-roles-any-class` href "../Generator-design-creature-roles-any-class"
+      `Generator-design-creature-roles` : default
+        `Generator-design-creature-roles` --> "1" `GeneratorRole` : default
+        click `GeneratorRole` href "../GeneratorRole"
+      `Generator-design-creature-roles` : doc
+      `Generator-design-creature-roles` : mage
+        `Generator-design-creature-roles` --> "1" `Generator-projectile-role` : mage
+        click `Generator-projectile-role` href "../Generator-projectile-role"
+      `Generator-design-creature-roles` : melee
+        `Generator-design-creature-roles` --> "1" `Generator-design-creature-roles-melee` : melee
+        click `Generator-design-creature-roles-melee` href "../Generator-design-creature-roles-melee"
+      `Generator-design-creature-roles` : ranged
+        `Generator-design-creature-roles` --> "1" `Generator-projectile-role` : ranged
+        click `Generator-projectile-role` href "../Generator-projectile-role"
+      `Generator-design-creature-roles` : species
+        `Generator-design-creature-roles` --> "1" `Generator-role-species` : species
+        click `Generator-role-species` href "../Generator-role-species"

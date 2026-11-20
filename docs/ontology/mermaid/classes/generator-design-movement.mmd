@@ -1,0 +1,22 @@
+ classDiagram
+    class `Generator-design-movement`
+    click `Generator-design-movement` href "../Generator-design-movement"
+      `Generator-design-movement` : doc
+      `Generator-design-movement` : fall_damage
+        `Generator-design-movement` --> "1" `Generator-design-movement-fall-damage` : fall_damage
+        click `Generator-design-movement-fall-damage` href "../Generator-design-movement-fall-damage"
+      `Generator-design-movement` : gravity
+      `Generator-design-movement` : hitbox
+        `Generator-design-movement` --> "1" `Generator-design-movement-hitbox` : hitbox
+        click `Generator-design-movement-hitbox` href "../Generator-design-movement-hitbox"
+      `Generator-design-movement` : jump_height
+        `Generator-design-movement` --> "1" `Generator-design-movement-jump-height` : jump_height
+        click `Generator-design-movement-jump-height` href "../Generator-design-movement-jump-height"
+      `Generator-design-movement` : sprint_mult
+      `Generator-design-movement` : stamina
+        `Generator-design-movement` --> "1" `Generator-design-movement-stamina` : stamina
+        click `Generator-design-movement-stamina` href "../Generator-design-movement-stamina"
+      `Generator-design-movement` : step_up
+      `Generator-design-movement` : swim_mult
+      `Generator-design-movement` : swim_vertical
+      `Generator-design-movement` : walk

@@ -1,0 +1,11 @@
+ classDiagram
+    class `Generator-source-settlement`
+    click `Generator-source-settlement` href "../Generator-source-settlement"
+      `Generator-source-settlement` : alpha_count
+      `Generator-source-settlement` : buildings_procedural
+      `Generator-source-settlement` : districts_alpha
+      `Generator-source-settlement` : inn
+        `Generator-source-settlement` --> "1" `Generator-source-settlement-inn` : inn
+        click `Generator-source-settlement-inn` href "../Generator-source-settlement-inn"
+      `Generator-source-settlement` : steam_count
+      `Generator-source-settlement` : style_by_landscape

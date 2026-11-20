@@ -1,0 +1,9 @@
+ classDiagram
+    class `Generator-design-defence-dodge-on-dodge-entry`
+    click `Generator-design-defence-dodge-on-dodge-entry` href "../Generator-design-defence-dodge-on-dodge-entry"
+      `Generator-design-defence-dodge-on-dodge-entry` : key
+        `Generator-design-defence-dodge-on-dodge-entry` --> "1" `Ability` : key
+        click `Ability` href "../Ability"
+      `Generator-design-defence-dodge-on-dodge-entry` : value
+        `Generator-design-defence-dodge-on-dodge-entry` --> "1" `Generator-dodge-gain` : value
+        click `Generator-dodge-gain` href "../Generator-dodge-gain"

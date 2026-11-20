@@ -1,0 +1,23 @@
+ classDiagram
+    class `Generator-design-combat`
+    click `Generator-design-combat` href "../Generator-design-combat"
+      `Generator-design-combat` : armor_floor
+      `Generator-design-combat` : attack_power_mult
+      `Generator-design-combat` : basic_attack
+        `Generator-design-combat` --> "1" `Generator-design-combat-basic-attack` : basic_attack
+        click `Generator-design-combat-basic-attack` href "../Generator-design-combat-basic-attack"
+      `Generator-design-combat` : combo
+        `Generator-design-combat` --> "1" `Generator-design-combat-combo` : combo
+        click `Generator-design-combat-combo` href "../Generator-design-combat-combo"
+      `Generator-design-combat` : creature_resistance
+      `Generator-design-combat` : death
+        `Generator-design-combat` --> "1" `Generator-design-combat-death` : death
+        click `Generator-design-combat-death` href "../Generator-design-combat-death"
+      `Generator-design-combat` : doc
+      `Generator-design-combat` : enemy_attack
+        `Generator-design-combat` --> "1" `Generator-design-combat-enemy-attack` : enemy_attack
+        click `Generator-design-combat-enemy-attack` href "../Generator-design-combat-enemy-attack"
+      `Generator-design-combat` : hit_flash_s
+      `Generator-design-combat` : starter_weapon
+        `Generator-design-combat` --> "1" `Generator-design-combat-starter-weapon` : starter_weapon
+        click `Generator-design-combat-starter-weapon` href "../Generator-design-combat-starter-weapon"

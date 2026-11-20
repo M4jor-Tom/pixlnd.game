@@ -1,0 +1,10 @@
+ classDiagram
+    class `Generator-design-progression`
+    click `Generator-design-progression` href "../Generator-design-progression"
+      `Generator-design-progression` : doc
+      `Generator-design-progression` : gap_mult_range
+        `Generator-design-progression` --> "1" `Generator-progression-gap` : gap_mult_range
+        click `Generator-progression-gap` href "../Generator-progression-gap"
+      `Generator-design-progression` : gap_per_level
+      `Generator-design-progression` : heal_on_level_up
+      `Generator-design-progression` : kill_fraction

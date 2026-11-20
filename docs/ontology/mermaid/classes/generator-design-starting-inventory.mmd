@@ -1,0 +1,8 @@
+ classDiagram
+    class `Generator-design-starting-inventory`
+    click `Generator-design-starting-inventory` href "../Generator-design-starting-inventory"
+      `Generator-design-starting-inventory` : coins
+      `Generator-design-starting-inventory` : consumables
+        `Generator-design-starting-inventory` --> "1" `Generator-design-starting-inventory-consumables` : consumables
+        click `Generator-design-starting-inventory-consumables` href "../Generator-design-starting-inventory-consumables"
+      `Generator-design-starting-inventory` : doc

@@ -3,20 +3,63 @@
 ## Phase-1 continuation authority
 
 Work directly in `/home/theta/repos/pixlnd`, branch `feat/linkml-schema-authoring`.
-**STOP before Task6, including preparation/scouting, until a separate owner request.**
-The owner selected Task5 only. Its implementation, exact structural handoff and generated
-views have passed fresh source/quality/applied-equivalence/generated-payload reviews.
-No further implementation or gameplay/runtime/save/raw-instance change is selected.
+Owner request: “Task 5 is done. Execute task 6, and wait before executing task 7”.
+**Task6 only is selected. STOP before Task7, including preparation/scouting.**
+Task6 completes generator/design schema contracts and their reviewed incremental Markdown
+handoff; no gameplay/runtime/save/raw-instance change or later-family repair is selected.
 
-Only the separately sealed Task5 publication and its final audits may remain:
-`task5-active/final-publication-1/parent-publication-approval.md` in the evidence root below.
-Check its actual commit/push receipts, live feature ref and final parent audit before
-continuing; if already verified, **do not repeat staging, commit, push or successful checks**.
-After verified publication there is no selected continuation. Task4's published base is
-`4a73d605713d43225baad8b1dfd78d26fea62d1c`; do not replay it. Current contracts/reviews
-and publication evidence remain under `task5-active/`, with final delivery workflow
-`f7e3f306-988d-450e-a655-f323cc7333b9`. An infrastructure failure requires diagnosis,
-not CLI/foreground fallback, bypass, force or an ambiguous publication retry.
+Task5 is verified published at `612bb80eb56e2222ab3d03eb7f3ab2acb08ef938`.
+Its final acceptance and independent publication audit are under
+`task5-active/final-publication-1/`; do not repeat its staging, commit, push or successful
+checks. Task6 starts from that clean primary base. Current Task6 contract/evidence belongs
+under `task6-active/` in the evidence root below; parent owns acceptance and exact publication
+approval. Preserve accepted earlier families and their qualified evidence. An infrastructure
+failure requires diagnosis, not CLI/foreground fallback, bypass, force or an ambiguous retry.
+
+### Task6 — source and structural handoff accepted; publication pending
+
+Parent accepted the source and qualified selected gates after all R2 reviews returned
+zero findings; all52 structural handoff spans and the exact pair19 companion are applied
+and independently accepted, including the approved existing backlog-fragment correction.
+No further source work is selected. STOP before Task7, including preparation/scouting.
+
+Accepted source/evidence: `task6-active/review-round-1.fCDI8SZH/fix-round-2/phase-b/review-package/`.
+Source acceptance: `task6-active/review-round-2-20261120/`.
+Applied bytes/references/acceptance: `task6-active/handoff-application-20261120/`.
+Historical failures, actual receipts and dependency-qualified earlier results remain immutable
+there; they are not pending regressions or a completed-bug history in this file.
+
+Pending gate: parent fresh final-fix review and separately sealed exact publication approval.
+Current generated/status/payload/hook evidence is under
+`task6-active/publication-20261120/overview-fix-1/`; the original preparation/review evidence
+remains immutable under `task6-active/publication-20261120/prep/`.
+No further source work or staging is selected. Exact paths/blobs/subject must be approved
+before any normal commit or feature push. No commit/push success, Task6completion or
+Task7authority is implied.
+
+Qualification is construct-specific: configured directory lint retains exactly184diagnostics
+(26errors/158warnings) across five frozen save owners, with no owned/new diagnostic—not global
+clean. Required scalar/type/kind checks do not establish expression evaluation, native
+configured membership/FK/status-key correlation, pool ordering/uniqueness, runtime or save
+conformance. Preserve the actual same-oracle mutation evidence and qualified old-method
+fixture/binder/native bridges; do not replay successful checks for reporting or weaken roots.
+
+Pending consumer alignment: canonical configuration colours require mandatory# and exactly
+6or8hex digits; all25scoped source values conform unchanged. Existing consumer checks accept
+broader forms. Consumer/runtime/parser alignment remains separately selectable deferred debt;
+no raw-data change follows.
+
+Pending interpreter characterization: avoid asynchronous faulthandler sampling on the pinned
+interpreter; its retained diagnostic core faulted in the dump thread, not a diagnosed schema
+failure. Underlying cause remains unselected/unresolved. Evidence:
+`task6-active/review-round-0.MFzAgn2m/fix-round-1/vr-partition-1/cold-baseline-diagnostic-1/parent-crash-correlation.md`.
+No instrumentation, SDK or interpreter repair is selected.
+
+Installed deprecated `ReferenceValidator` also has source-only hazards: class slot conditions
+sit inside its `is_a` branch, and numeric equality uses a loop variable while skipping zero by
+truthiness (`referencevalidator.py:958–1001`). No executable reproduction or current JSON Schema/
+gameplay failure is claimed. Evidence: the recovery's `expressions-and-candidates.md` and pinned
+consumer sources. No SDK repair/probe is selected; qualify separately before future use.
 
 Canonical `land.border` remains `polygon (map only)`: internal borders are dotted map
 lines, not physical walls. The outer-world travel boundary is a separate rule. There
@@ -83,6 +126,13 @@ Only actual publication receipts/live-ref/clean-state audits can close that gate
   receipts/pins. Preserve prior snapshot qualifications and accepted world/Item checks;
   ongoing changes require affected verification or precise dependency bridges, not a
   blanket pass.
+- Task6 required non-offhand class-weapon moveset membership is authored as15 precise
+  predicates and survives get/induced metadata; the pinned JSON Schema backend emits only
+  repeated empty `entries` checks and admits all15 missing-weapon witnesses. The accepted
+  same-oracle deletion/no-effect regression and coverage are complete at their qualified pins:
+  `task6-active/review-round-1.fCDI8SZH/fix-round-2/phase-b/review-package/`, fresh D/M0
+  and retained full-source C evidence. Keep the declaration/canonical rule; native membership/FK
+  enforcement remains a measured ceiling, not gameplay permission or a custom-admission mandate.
 - Native exploration uniqueness is declared but unenforced. Preserve raw JSON,
   source signedness/ABI distinctions, symbolic values and overhang qualifications.
 - `deposits.json#sandstone-deposit.yields` names missing ingredient `sandstone`.

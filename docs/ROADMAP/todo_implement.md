@@ -264,6 +264,11 @@ Desert-ruins identity is unresolved, not a closed alias or new type. Historical 
 also remains research; hybrid v1 landscape availability is settled. Passing finite checks does not
 resolve unmapped histories or certify generated/runtime behavior.
 
+- [ ] Align existing configuration/loader colour checks with
+  [`c-design-color-syntax`](../../ontology/domain/5_Constraints.md#constraint-catalog).
+  The existing role-colour check accepts additional shorthand/prefix-free forms; the schema
+  contract is separate from consumer enforcement. No loader/parser/runtime change is selected
+  by schema authoring; preserve existing source colour values and other colour representations.
 - [ ] Source item 32 (`ontology/domain/3_Classes.md#pet-food`): the daily stocked-type report selects no purchase
   quantity or source-build attribution; daily amounts/food histories remain research. No stock,
   purchase or carrying rule changes, label inference or data/checker/runtime work authorized.

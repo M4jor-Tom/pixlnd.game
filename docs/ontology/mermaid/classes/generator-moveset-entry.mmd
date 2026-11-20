@@ -1,0 +1,7 @@
+ classDiagram
+    class `Generator-moveset-entry`
+    click `Generator-moveset-entry` href "../Generator-moveset-entry"
+      `Generator-moveset-entry` : key
+        `Generator-moveset-entry` --> "1" `Weapon-type` : key
+        click `Weapon-type` href "../Weapon-type"
+      `Generator-moveset-entry` : value

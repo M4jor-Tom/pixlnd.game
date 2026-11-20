@@ -1,0 +1,11 @@
+ classDiagram
+    class `Generator-design-initial-encounters-special-profile-charge`
+    click `Generator-design-initial-encounters-special-profile-charge` href "../Generator-design-initial-encounters-special-profile-charge"
+      `Generator-design-initial-encounters-special-profile-charge` : damage_mult
+      `Generator-design-initial-encounters-special-profile-charge` : lane_width
+      `Generator-design-initial-encounters-special-profile-charge` : range
+        `Generator-design-initial-encounters-special-profile-charge` --> "1" `Generator-selected-initial-encounters-special-profile-charge-range` : range
+        click `Generator-selected-initial-encounters-special-profile-charge-range` href "../Generator-selected-initial-encounters-special-profile-charge-range"
+      `Generator-design-initial-encounters-special-profile-charge` : speed
+      `Generator-design-initial-encounters-special-profile-charge` : start_height_diff
+      `Generator-design-initial-encounters-special-profile-charge` : sweep_radius

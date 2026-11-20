@@ -1,0 +1,10 @@
+ classDiagram
+    class `Generator-design-initial-encounters-supplier`
+    click `Generator-design-initial-encounters-supplier` href "../Generator-design-initial-encounters-supplier"
+      `Generator-design-initial-encounters-supplier` : exit_width
+      `Generator-design-initial-encounters-supplier` : occupancy
+        `Generator-design-initial-encounters-supplier` --> "1" `Generator-selected-initial-encounters-supplier-occupancy` : occupancy
+        click `Generator-selected-initial-encounters-supplier-occupancy` href "../Generator-selected-initial-encounters-supplier-occupancy"
+      `Generator-design-initial-encounters-supplier` : packs
+      `Generator-design-initial-encounters-supplier` : size
+      `Generator-design-initial-encounters-supplier` : tiers

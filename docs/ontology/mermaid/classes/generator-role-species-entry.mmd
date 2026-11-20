@@ -1,0 +1,9 @@
+ classDiagram
+    class `Generator-role-species-entry`
+    click `Generator-role-species-entry` href "../Generator-role-species-entry"
+      `Generator-role-species-entry` : key
+        `Generator-role-species-entry` --> "1" `Creature` : key
+        click `Creature` href "../Creature"
+      `Generator-role-species-entry` : value
+        `Generator-role-species-entry` --> "1" `Generator-role-override` : value
+        click `Generator-role-override` href "../Generator-role-override"

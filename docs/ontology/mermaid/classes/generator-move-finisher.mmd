@@ -1,0 +1,8 @@
+ classDiagram
+    class `Generator-move-finisher`
+    click `Generator-move-finisher` href "../Generator-move-finisher"
+      `Generator-move-finisher` : applies
+        `Generator-move-finisher` --> "1..*" `Status-effect` : applies
+        click `Status-effect` href "../Status-effect"
+      `Generator-move-finisher` : chance
+      `Generator-move-finisher` : every

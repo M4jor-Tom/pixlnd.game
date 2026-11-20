@@ -1,0 +1,25 @@
+ classDiagram
+    class `Generator-design-terrain`
+    click `Generator-design-terrain` href "../Generator-design-terrain"
+      `Generator-design-terrain` : beach_above_sea
+      `Generator-design-terrain` : block_m
+      `Generator-design-terrain` : cliff_slope
+      `Generator-design-terrain` : doc
+      `Generator-design-terrain` : height
+        `Generator-design-terrain` --> "1" `Generator-design-terrain-height` : height
+        click `Generator-design-terrain-height` href "../Generator-design-terrain-height"
+      `Generator-design-terrain` : heightfield
+        `Generator-design-terrain` --> "1" `Generator-design-terrain-heightfield` : heightfield
+        click `Generator-design-terrain-heightfield` href "../Generator-design-terrain-heightfield"
+      `Generator-design-terrain` : land_blend
+      `Generator-design-terrain` : land_blocks
+      `Generator-design-terrain` : land_zones
+      `Generator-design-terrain` : lands_per_axis
+      `Generator-design-terrain` : sand_color
+      `Generator-design-terrain` : sea_level
+      `Generator-design-terrain` : seed_default
+      `Generator-design-terrain` : snow_above
+      `Generator-design-terrain` : snow_color
+      `Generator-design-terrain` : view_zones
+      `Generator-design-terrain` : water_color
+      `Generator-design-terrain` : zone_blocks

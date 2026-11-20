@@ -1,0 +1,13 @@
+ classDiagram
+    class `Generator-design-enemy-level`
+    click `Generator-design-enemy-level` href "../Generator-design-enemy-level"
+      `Generator-design-enemy-level` : above
+      `Generator-design-enemy-level` : below
+      `Generator-design-enemy-level` : config
+      `Generator-design-enemy-level` : danger_tiers
+        `Generator-design-enemy-level` --> "1" `Generator-design-enemy-level-danger-tiers` : danger_tiers
+        click `Generator-design-enemy-level-danger-tiers` href "../Generator-design-enemy-level-danger-tiers"
+      `Generator-design-enemy-level` : rule
+      `Generator-design-enemy-level` : tier_weights
+        `Generator-design-enemy-level` --> "1" `Generator-design-enemy-level-tier-weights` : tier_weights
+        click `Generator-design-enemy-level-tier-weights` href "../Generator-design-enemy-level-tier-weights"

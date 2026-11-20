@@ -1,0 +1,12 @@
+ classDiagram
+    class `Generator-design-abilities`
+    click `Generator-design-abilities` href "../Generator-design-abilities"
+      `Generator-design-abilities` : all_min
+      `Generator-design-abilities` : dash_speed
+      `Generator-design-abilities` : doc
+      `Generator-design-abilities` : entries
+        `Generator-design-abilities` --> "1..*" `Generator-ability-entry` : entries
+        click `Generator-ability-entry` href "../Generator-ability-entry"
+      `Generator-design-abilities` : runtimes
+        `Generator-design-abilities` --> "1..*" `Ability-runtime-kind` : runtimes
+        click `Ability-runtime-kind` href "../Ability-runtime-kind"

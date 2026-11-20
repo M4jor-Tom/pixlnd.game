@@ -1,0 +1,8 @@
+ classDiagram
+    class `Generator-design-stack-cap`
+    click `Generator-design-stack-cap` href "../Generator-design-stack-cap"
+      `Generator-design-stack-cap` : cap
+      `Generator-design-stack-cap` : doc
+      `Generator-design-stack-cap` : stackable
+        `Generator-design-stack-cap` --> "1..*" `Item-type` : stackable
+        click `Item-type` href "../Item-type"

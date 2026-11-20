@@ -1,0 +1,13 @@
+ classDiagram
+    class `Generator-design-initial-encounters-special-profile`
+    click `Generator-design-initial-encounters-special-profile` href "../Generator-design-initial-encounters-special-profile"
+      `Generator-design-initial-encounters-special-profile` : charge
+        `Generator-design-initial-encounters-special-profile` --> "1" `Generator-design-initial-encounters-special-profile-charge` : charge
+        click `Generator-design-initial-encounters-special-profile-charge` href "../Generator-design-initial-encounters-special-profile-charge"
+      `Generator-design-initial-encounters-special-profile` : cooldown_s
+      `Generator-design-initial-encounters-special-profile` : ready_s
+      `Generator-design-initial-encounters-special-profile` : recovery_s
+      `Generator-design-initial-encounters-special-profile` : stomp
+        `Generator-design-initial-encounters-special-profile` --> "1" `Generator-design-initial-encounters-special-profile-stomp` : stomp
+        click `Generator-design-initial-encounters-special-profile-stomp` href "../Generator-design-initial-encounters-special-profile-stomp"
+      `Generator-design-initial-encounters-special-profile` : warning_s

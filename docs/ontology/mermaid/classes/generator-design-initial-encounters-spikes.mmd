@@ -1,0 +1,16 @@
+ classDiagram
+    class `Generator-design-initial-encounters-spikes`
+    click `Generator-design-initial-encounters-spikes` href "../Generator-design-initial-encounters-spikes"
+      `Generator-design-initial-encounters-spikes` : active_s
+      `Generator-design-initial-encounters-spikes` : attack_type
+      `Generator-design-initial-encounters-spikes` : cooldown_s
+      `Generator-design-initial-encounters-spikes` : count
+      `Generator-design-initial-encounters-spikes` : damage
+      `Generator-design-initial-encounters-spikes` : footprint
+        `Generator-design-initial-encounters-spikes` --> "1" `Generator-selected-initial-encounters-spikes-footprint` : footprint
+        click `Generator-selected-initial-encounters-spikes-footprint` href "../Generator-selected-initial-encounters-spikes-footprint"
+      `Generator-design-initial-encounters-spikes` : victim_height
+        `Generator-design-initial-encounters-spikes` --> "1" `Generator-selected-initial-encounters-spikes-victim-height` : victim_height
+        click `Generator-selected-initial-encounters-spikes-victim-height` href "../Generator-selected-initial-encounters-spikes-victim-height"
+      `Generator-design-initial-encounters-spikes` : warning_s
+      `Generator-design-initial-encounters-spikes` : warning_sfx

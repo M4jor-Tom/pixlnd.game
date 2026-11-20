@@ -96,3 +96,5 @@ rules:
       - bench-rotate
       - bench-place
       - bench-remove
+      # Source-literal move kind; this exact exclusion is global across element kinds.
+      - at-cursor

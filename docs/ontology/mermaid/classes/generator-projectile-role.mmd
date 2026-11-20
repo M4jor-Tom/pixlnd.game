@@ -1,0 +1,17 @@
+ classDiagram
+    class `Generator-projectile-role`
+    click `Generator-projectile-role` href "../Generator-projectile-role"
+      `Generator-projectile-role` : applies
+        `Generator-projectile-role` --> "1..*" `Status-effect` : applies
+        click `Status-effect` href "../Status-effect"
+      `Generator-projectile-role` : color
+      `Generator-projectile-role` : cooldown_s
+      `Generator-projectile-role` : damage_mult
+      `Generator-projectile-role` : keep_away
+      `Generator-projectile-role` : kind
+      `Generator-projectile-role` : range
+      `Generator-projectile-role` : sfx
+      `Generator-projectile-role` : shot
+        `Generator-projectile-role` --> "1" `Runtime-projectile` : shot
+        click `Runtime-projectile` href "../Runtime-projectile"
+      `Generator-projectile-role` : windup_s

@@ -1,0 +1,13 @@
+ classDiagram
+    class `Generator-source-boss`
+    click `Generator-source-boss` href "../Generator-source-boss"
+      `Generator-source-boss` : alpha_size_scaling
+      `Generator-source-boss` : alpha_spirit_drop
+      `Generator-source-boss` : arena_waves
+        `Generator-source-boss` --> "1..*" `Generator-source-boss-arena-waves-pair` : arena_waves
+        click `Generator-source-boss-arena-waves-pair` href "../Generator-source-boss-arena-waves-pair"
+      `Generator-source-boss` : chance
+      `Generator-source-boss` : coins_s
+      `Generator-source-boss` : special_pool
+      `Generator-source-boss` : steam_loot
+      `Generator-source-boss` : traits

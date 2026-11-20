@@ -1,0 +1,28 @@
+ classDiagram
+    class `Generator-design-feel`
+    click `Generator-design-feel` href "../Generator-design-feel"
+      `Generator-design-feel` : doc
+      `Generator-design-feel` : events
+        `Generator-design-feel` --> "1" `Generator-design-feel-events` : events
+        click `Generator-design-feel-events` href "../Generator-design-feel-events"
+      `Generator-design-feel` : hit_stop
+        `Generator-design-feel` --> "1" `Generator-design-feel-hit-stop` : hit_stop
+        click `Generator-design-feel-hit-stop` href "../Generator-design-feel-hit-stop"
+      `Generator-design-feel` : impact
+        `Generator-design-feel` --> "1" `Generator-design-feel-impact` : impact
+        click `Generator-design-feel-impact` href "../Generator-design-feel-impact"
+      `Generator-design-feel` : level_up
+        `Generator-design-feel` --> "1" `Generator-design-feel-level-up` : level_up
+        click `Generator-design-feel-level-up` href "../Generator-design-feel-level-up"
+      `Generator-design-feel` : numbers
+        `Generator-design-feel` --> "1" `Generator-design-feel-numbers` : numbers
+        click `Generator-design-feel-numbers` href "../Generator-design-feel-numbers"
+      `Generator-design-feel` : sfx
+        `Generator-design-feel` --> "1" `Generator-feel-sounds` : sfx
+        click `Generator-feel-sounds` href "../Generator-feel-sounds"
+      `Generator-design-feel` : shake
+        `Generator-design-feel` --> "1" `Generator-design-feel-shake` : shake
+        click `Generator-design-feel-shake` href "../Generator-design-feel-shake"
+      `Generator-design-feel` : trail
+        `Generator-design-feel` --> "1" `Generator-design-feel-trail` : trail
+        click `Generator-design-feel-trail` href "../Generator-design-feel-trail"

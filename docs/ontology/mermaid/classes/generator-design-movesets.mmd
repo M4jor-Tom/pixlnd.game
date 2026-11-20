@@ -1,0 +1,13 @@
+ classDiagram
+    class `Generator-design-movesets`
+    click `Generator-design-movesets` href "../Generator-design-movesets"
+      `Generator-design-movesets` : default
+        `Generator-design-movesets` --> "1" `Generator-moveset-plain` : default
+        click `Generator-moveset-plain` href "../Generator-moveset-plain"
+      `Generator-design-movesets` : doc
+      `Generator-design-movesets` : entries
+        `Generator-design-movesets` --> "1..*" `Generator-moveset-entry` : entries
+        click `Generator-moveset-entry` href "../Generator-moveset-entry"
+      `Generator-design-movesets` : kinds
+        `Generator-design-movesets` --> "1..*" `GeneratorMoveKind` : kinds
+        click `GeneratorMoveKind` href "../GeneratorMoveKind"

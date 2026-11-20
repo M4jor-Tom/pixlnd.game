@@ -210,6 +210,12 @@ def _walk_map_union(slot, raw, alias, inverse):
     return True
 
 
+def _tuple_slot(slot, value, positions, inverse):
+    if slot.multivalued and isinstance(value, list):
+        return [_tuple(member, positions, inverse) for member in value]
+    return _tuple(value, positions, inverse)
+
+
 def _children(owner, raw, inverse):
     for slot in inline_slots(owner):
         alias = slot.alias or slot.name
@@ -225,7 +231,7 @@ def _children(owner, raw, inverse):
             continue
         positions = _annotation(slot, "source-tuple-positions").split()
         if positions:
-            raw[alias] = _tuple(raw[alias], positions, inverse)
+            raw[alias] = _tuple_slot(slot, raw[alias], positions, inverse)
         elif slot.inlined and slot.range in source_view().all_classes():
             raw[alias] = _walk_inline(slot, raw[alias], inverse)
     return raw

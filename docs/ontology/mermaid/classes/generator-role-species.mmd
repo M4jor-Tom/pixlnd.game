@@ -1,0 +1,6 @@
+ classDiagram
+    class `Generator-role-species`
+    click `Generator-role-species` href "../Generator-role-species"
+      `Generator-role-species` : entries
+        `Generator-role-species` --> "1..*" `Generator-role-species-entry` : entries
+        click `Generator-role-species-entry` href "../Generator-role-species-entry"

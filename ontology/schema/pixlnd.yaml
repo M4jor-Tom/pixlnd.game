@@ -22,6 +22,8 @@ imports:
 - save-content
 - design-combat
 - design-progression
+- design-world
+- design-items
 - save-geography
 - save-world
 - catalog-properties

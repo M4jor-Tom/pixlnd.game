@@ -1,0 +1,7 @@
+ classDiagram
+    class `Generator-design-settlement-footprint`
+    click `Generator-design-settlement-footprint` href "../Generator-design-settlement-footprint"
+      `Generator-design-settlement-footprint` : default
+      `Generator-design-settlement-footprint` : entries
+        `Generator-design-settlement-footprint` --> "1..*" `Generator-footprint-entry` : entries
+        click `Generator-footprint-entry` href "../Generator-footprint-entry"

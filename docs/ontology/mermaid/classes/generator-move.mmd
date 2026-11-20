@@ -1,0 +1,28 @@
+ classDiagram
+    class `Generator-move`
+    click `Generator-move` href "../Generator-move"
+      `Generator-move` : applies
+        `Generator-move` --> "*" `Status-effect` : applies
+        click `Status-effect` href "../Status-effect"
+      `Generator-move` : around
+      `Generator-move` : count
+      `Generator-move` : damage_mult
+      `Generator-move` : finisher
+        `Generator-move` --> "0..1" `Generator-move-finisher` : finisher
+        click `Generator-move-finisher` href "../Generator-move-finisher"
+      `Generator-move` : gravity
+      `Generator-move` : kind
+        `Generator-move` --> "1" `GeneratorMoveKind` : kind
+        click `GeneratorMoveKind` href "../GeneratorMoveKind"
+      `Generator-move` : life_s
+      `Generator-move` : lunge
+      `Generator-move` : pierce
+      `Generator-move` : radius
+      `Generator-move` : radius_mult
+      `Generator-move` : range
+      `Generator-move` : return
+      `Generator-move` : speed
+      `Generator-move` : splash
+      `Generator-move` : spread
+      `Generator-move` : swing_mult
+      `Generator-move` : tick_s

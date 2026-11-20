@@ -1,0 +1,16 @@
+ classDiagram
+    class `Generator-design-defence`
+    click `Generator-design-defence` href "../Generator-design-defence"
+      `Generator-design-defence` : block
+        `Generator-design-defence` --> "1" `Generator-design-defence-block` : block
+        click `Generator-design-defence-block` href "../Generator-design-defence-block"
+      `Generator-design-defence` : doc
+      `Generator-design-defence` : dodge
+        `Generator-design-defence` --> "1" `Generator-design-defence-dodge` : dodge
+        click `Generator-design-defence-dodge` href "../Generator-design-defence-dodge"
+      `Generator-design-defence` : enemy_hit
+        `Generator-design-defence` --> "1" `Generator-design-defence-enemy-hit` : enemy_hit
+        click `Generator-design-defence-enemy-hit` href "../Generator-design-defence-enemy-hit"
+      `Generator-design-defence` : stealth
+        `Generator-design-defence` --> "1" `Generator-design-defence-stealth` : stealth
+        click `Generator-design-defence-stealth` href "../Generator-design-defence-stealth"

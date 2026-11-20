@@ -1,0 +1,54 @@
+ classDiagram
+    class `Generator-design-initial-encounters`
+    click `Generator-design-initial-encounters` href "../Generator-design-initial-encounters"
+      `Generator-design-initial-encounters` : apron
+      `Generator-design-initial-encounters` : boss_damage_mult
+      `Generator-design-initial-encounters` : boss_height
+        `Generator-design-initial-encounters` --> "1" `Generator-design-initial-encounters-boss-height` : boss_height
+        click `Generator-design-initial-encounters-boss-height` href "../Generator-design-initial-encounters-boss-height"
+      `Generator-design-initial-encounters` : boss_hp_mult
+      `Generator-design-initial-encounters` : boss_specials
+        `Generator-design-initial-encounters` --> "1" `Generator-design-initial-encounters-boss-specials` : boss_specials
+        click `Generator-design-initial-encounters-boss-specials` href "../Generator-design-initial-encounters-boss-specials"
+      `Generator-design-initial-encounters` : camp
+        `Generator-design-initial-encounters` --> "1" `Generator-design-initial-encounters-camp` : camp
+        click `Generator-design-initial-encounters-camp` href "../Generator-design-initial-encounters-camp"
+      `Generator-design-initial-encounters` : distance_max
+      `Generator-design-initial-encounters` : distance_min
+      `Generator-design-initial-encounters` : doc
+      `Generator-design-initial-encounters` : dry_above_sea
+      `Generator-design-initial-encounters` : furnishings
+        `Generator-design-initial-encounters` --> "1" `Generator-design-initial-encounters-furnishings` : furnishings
+        click `Generator-design-initial-encounters-furnishings` href "../Generator-design-initial-encounters-furnishings"
+      `Generator-design-initial-encounters` : hub_size
+      `Generator-design-initial-encounters` : leading_objects
+        `Generator-design-initial-encounters` --> "1" `Generator-design-initial-encounters-leading-objects` : leading_objects
+        click `Generator-design-initial-encounters-leading-objects` href "../Generator-design-initial-encounters-leading-objects"
+      `Generator-design-initial-encounters` : mission_package
+        `Generator-design-initial-encounters` --> "1" `Generator-design-initial-encounters-mission-package` : mission_package
+        click `Generator-design-initial-encounters-mission-package` href "../Generator-design-initial-encounters-mission-package"
+      `Generator-design-initial-encounters` : pack_size
+      `Generator-design-initial-encounters` : power_base_offset
+      `Generator-design-initial-encounters` : role_weights
+        `Generator-design-initial-encounters` --> "1" `Generator-design-initial-encounters-role-weights` : role_weights
+        click `Generator-design-initial-encounters-role-weights` href "../Generator-design-initial-encounters-role-weights"
+      `Generator-design-initial-encounters` : rubble
+        `Generator-design-initial-encounters` --> "1" `Generator-design-initial-encounters-rubble` : rubble
+        click `Generator-design-initial-encounters-rubble` href "../Generator-design-initial-encounters-rubble"
+      `Generator-design-initial-encounters` : ruins
+        `Generator-design-initial-encounters` --> "1" `Generator-design-initial-encounters-ruins` : ruins
+        click `Generator-design-initial-encounters-ruins` href "../Generator-design-initial-encounters-ruins"
+      `Generator-design-initial-encounters` : separation
+      `Generator-design-initial-encounters` : special_profile
+        `Generator-design-initial-encounters` --> "1" `Generator-design-initial-encounters-special-profile` : special_profile
+        click `Generator-design-initial-encounters-special-profile` href "../Generator-design-initial-encounters-special-profile"
+      `Generator-design-initial-encounters` : species
+      `Generator-design-initial-encounters` : spikes
+        `Generator-design-initial-encounters` --> "1" `Generator-design-initial-encounters-spikes` : spikes
+        click `Generator-design-initial-encounters-spikes` href "../Generator-design-initial-encounters-spikes"
+      `Generator-design-initial-encounters` : spirits
+        `Generator-design-initial-encounters` --> "1" `Generator-design-initial-encounters-spirits` : spirits
+        click `Generator-design-initial-encounters-spirits` href "../Generator-design-initial-encounters-spirits"
+      `Generator-design-initial-encounters` : supplier
+        `Generator-design-initial-encounters` --> "1" `Generator-design-initial-encounters-supplier` : supplier
+        click `Generator-design-initial-encounters-supplier` href "../Generator-design-initial-encounters-supplier"

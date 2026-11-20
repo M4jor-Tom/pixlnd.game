@@ -1,0 +1,10 @@
+ classDiagram
+    class `Generator-design-skill-point`
+    click `Generator-design-skill-point` href "../Generator-design-skill-point"
+      `Generator-design-skill-point` : cap
+        `Generator-design-skill-point` --> "1" `Generator-null-cap` : cap
+        click `Generator-null-cap` href "../Generator-null-cap"
+      `Generator-design-skill-point` : cooldown_floor
+      `Generator-design-skill-point` : cooldown_per_point
+      `Generator-design-skill-point` : doc
+      `Generator-design-skill-point` : effect_per_point

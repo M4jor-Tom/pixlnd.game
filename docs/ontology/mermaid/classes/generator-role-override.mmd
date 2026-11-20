@@ -1,0 +1,16 @@
+ classDiagram
+    class `Generator-role-override`
+    click `Generator-role-override` href "../Generator-role-override"
+      `Generator-role-override` : applies
+        `Generator-role-override` --> "*" `Status-effect` : applies
+        click `Status-effect` href "../Status-effect"
+      `Generator-role-override` : color
+      `Generator-role-override` : cooldown_s
+      `Generator-role-override` : damage_mult
+      `Generator-role-override` : keep_away
+      `Generator-role-override` : range
+      `Generator-role-override` : sfx
+      `Generator-role-override` : shot
+        `Generator-role-override` --> "0..1" `Runtime-projectile` : shot
+        click `Runtime-projectile` href "../Runtime-projectile"
+      `Generator-role-override` : windup_s

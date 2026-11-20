@@ -1,0 +1,22 @@
+ classDiagram
+    class `Generator-design-spawns`
+    click `Generator-design-spawns` href "../Generator-design-spawns"
+      `Generator-design-spawns` : ai
+        `Generator-design-spawns` --> "1" `Generator-design-spawns-ai` : ai
+        click `Generator-design-spawns-ai` href "../Generator-design-spawns-ai"
+      `Generator-design-spawns` : aquatic_only_in_water
+      `Generator-design-spawns` : default_group
+      `Generator-design-spawns` : doc
+      `Generator-design-spawns` : group_spread
+      `Generator-design-spawns` : groups_per_zone
+      `Generator-design-spawns` : hostility_colors
+        `Generator-design-spawns` --> "1" `Generator-design-spawns-hostility-colors` : hostility_colors
+        click `Generator-design-spawns-hostility-colors` href "../Generator-design-spawns-hostility-colors"
+      `Generator-design-spawns` : roster
+      `Generator-design-spawns` : size_by_category
+        `Generator-design-spawns` --> "1" `Generator-design-spawns-size-by-category` : size_by_category
+        click `Generator-design-spawns-size-by-category` href "../Generator-design-spawns-size-by-category"
+      `Generator-design-spawns` : skip_categories
+      `Generator-design-spawns` : variable_hostility
+        `Generator-design-spawns` --> "1" `Generator-design-spawns-variable-hostility` : variable_hostility
+        click `Generator-design-spawns-variable-hostility` href "../Generator-design-spawns-variable-hostility"

@@ -1,0 +1,24 @@
+ classDiagram
+    class `Generator-design-loot`
+    click `Generator-design-loot` href "../Generator-design-loot"
+      `Generator-design-loot` : boss_rarity_shift
+      `Generator-design-loot` : coins
+        `Generator-design-loot` --> "1" `Generator-design-loot-coins` : coins
+        click `Generator-design-loot-coins` href "../Generator-design-loot-coins"
+      `Generator-design-loot` : consumable_chance
+      `Generator-design-loot` : consumable_pool
+        `Generator-design-loot` --> "1..*" `Consumable` : consumable_pool
+        click `Consumable` href "../Consumable"
+      `Generator-design-loot` : doc
+      `Generator-design-loot` : gear_chance
+      `Generator-design-loot` : gear_kinds
+        `Generator-design-loot` --> "1" `Generator-design-loot-gear-kinds` : gear_kinds
+        click `Generator-design-loot-gear-kinds` href "../Generator-design-loot-gear-kinds"
+      `Generator-design-loot` : ground
+        `Generator-design-loot` --> "1" `Generator-design-loot-ground` : ground
+        click `Generator-design-loot-ground` href "../Generator-design-loot-ground"
+      `Generator-design-loot` : level_spread
+      `Generator-design-loot` : rarity_weights
+        `Generator-design-loot` --> "1" `Generator-design-loot-rarity-weights` : rarity_weights
+        click `Generator-design-loot-rarity-weights` href "../Generator-design-loot-rarity-weights"
+      `Generator-design-loot` : species_drop_chance

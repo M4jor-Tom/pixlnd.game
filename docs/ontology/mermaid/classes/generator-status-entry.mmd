@@ -1,0 +1,7 @@
+ classDiagram
+    class `Generator-status-entry`
+    click `Generator-status-entry` href "../Generator-status-entry"
+      `Generator-status-entry` : key
+        `Generator-status-entry` --> "1" `Status-effect` : key
+        click `Status-effect` href "../Status-effect"
+      `Generator-status-entry` : value

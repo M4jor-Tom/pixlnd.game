@@ -1,0 +1,17 @@
+ classDiagram
+    class `Generator-source-world-scales`
+    click `Generator-source-world-scales` href "../Generator-source-world-scales"
+      `Generator-source-world-scales` : alpha
+        `Generator-source-world-scales` --> "1" `Generator-source-world-scales-alpha` : alpha
+        click `Generator-source-world-scales-alpha` href "../Generator-source-world-scales-alpha"
+      `Generator-source-world-scales` : block_native_units
+      `Generator-source-world-scales` : full_mask
+      `Generator-source-world-scales` : generation_neighbourhood
+        `Generator-source-world-scales` --> "1" `Generator-source-world-scales-generation-neighbourhood` : generation_neighbourhood
+        click `Generator-source-world-scales-generation-neighbourhood` href "../Generator-source-world-scales-generation-neighbourhood"
+      `Generator-source-world-scales` : invariants
+      `Generator-source-world-scales` : position_type
+      `Generator-source-world-scales` : server_chunk_retire_s
+      `Generator-source-world-scales` : steam
+        `Generator-source-world-scales` --> "1" `Generator-source-world-scales-steam` : steam
+        click `Generator-source-world-scales-steam` href "../Generator-source-world-scales-steam"

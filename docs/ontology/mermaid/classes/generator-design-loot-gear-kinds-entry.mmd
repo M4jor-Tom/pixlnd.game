@@ -1,0 +1,7 @@
+ classDiagram
+    class `Generator-design-loot-gear-kinds-entry`
+    click `Generator-design-loot-gear-kinds-entry` href "../Generator-design-loot-gear-kinds-entry"
+      `Generator-design-loot-gear-kinds-entry` : key
+        `Generator-design-loot-gear-kinds-entry` --> "1" `Item-type` : key
+        click `Item-type` href "../Item-type"
+      `Generator-design-loot-gear-kinds-entry` : value

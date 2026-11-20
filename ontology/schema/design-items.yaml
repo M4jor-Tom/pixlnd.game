@@ -1,0 +1,3613 @@
+{
+  "id": "https://w3id.org/pixlnd/design-items",
+  "name": "pixlnd-design-items",
+  "prefixes": {
+    "pixlnd": "https://w3id.org/pixlnd/",
+    "linkml": "https://w3id.org/linkml/"
+  },
+  "default_prefix": "pixlnd",
+  "default_range": "string",
+  "imports": [
+    "linkml:types",
+    "identity",
+    "items",
+    "combat",
+    "world-catalog",
+    "design-combat",
+    "design-progression",
+    "design-world"
+  ],
+  "classes": {
+    "generator-design-settlement-style-by-landscape-entry": {
+      "class_uri": "pixlnd:generator-design-settlement-style-by-landscape-entry",
+      "description": "Configuration component generator-design-settlement-style-by-landscape-entry; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "key": {
+          "alias": "key",
+          "slot_uri": "pixlnd:generator-design-settlement-style-by-landscape-entry/key",
+          "description": "Source key of generator-design-settlement-style-by-landscape-entry.",
+          "required": true,
+          "range": "landscape"
+        },
+        "value": {
+          "alias": "value",
+          "slot_uri": "pixlnd:generator-design-settlement-style-by-landscape-entry/value",
+          "description": "Source value of generator-design-settlement-style-by-landscape-entry.",
+          "required": true,
+          "range": "string"
+        }
+      }
+    },
+    "generator-design-settlement-style-by-landscape": {
+      "class_uri": "pixlnd:generator-design-settlement-style-by-landscape",
+      "description": "Configuration component generator-design-settlement-style-by-landscape; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "entries": {
+          "alias": "entries",
+          "slot_uri": "pixlnd:generator-design-settlement-style-by-landscape/entries",
+          "description": "Source entries of generator-design-settlement-style-by-landscape.",
+          "required": true,
+          "range": "generator-design-settlement-style-by-landscape-entry",
+          "inlined": true,
+          "multivalued": true,
+          "minimum_cardinality": 0,
+          "inlined_as_list": true
+        }
+      },
+      "annotations": {
+        "source-map-entries": "entries"
+      }
+    },
+    "generator-design-settlement-style-colors-entry": {
+      "class_uri": "pixlnd:generator-design-settlement-style-colors-entry",
+      "description": "Configuration component generator-design-settlement-style-colors-entry; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "key": {
+          "alias": "key",
+          "slot_uri": "pixlnd:generator-design-settlement-style-colors-entry/key",
+          "description": "Source key of generator-design-settlement-style-colors-entry.",
+          "required": true,
+          "range": "string"
+        },
+        "value": {
+          "alias": "value",
+          "slot_uri": "pixlnd:generator-design-settlement-style-colors-entry/value",
+          "description": "Source value of generator-design-settlement-style-colors-entry.",
+          "required": true,
+          "range": "string",
+          "pattern": "^#[0-9a-fA-F]{6}(?:[0-9a-fA-F]{2})?(?![\\s\\S])",
+          "multivalued": true,
+          "minimum_cardinality": 2,
+          "maximum_cardinality": 2
+        }
+      }
+    },
+    "generator-design-settlement-style-colors": {
+      "class_uri": "pixlnd:generator-design-settlement-style-colors",
+      "description": "Configuration component generator-design-settlement-style-colors; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "entries": {
+          "alias": "entries",
+          "slot_uri": "pixlnd:generator-design-settlement-style-colors/entries",
+          "description": "Source entries of generator-design-settlement-style-colors.",
+          "required": true,
+          "range": "generator-design-settlement-style-colors-entry",
+          "inlined": true,
+          "multivalued": true,
+          "minimum_cardinality": 0,
+          "inlined_as_list": true
+        }
+      },
+      "annotations": {
+        "source-map-entries": "entries"
+      }
+    },
+    "generator-design-settlement-npc-roles-entry": {
+      "class_uri": "pixlnd:generator-design-settlement-npc-roles-entry",
+      "description": "Configuration component generator-design-settlement-npc-roles-entry; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "key": {
+          "alias": "key",
+          "slot_uri": "pixlnd:generator-design-settlement-npc-roles-entry/key",
+          "description": "Source key of generator-design-settlement-npc-roles-entry.",
+          "required": true,
+          "range": "string"
+        },
+        "value": {
+          "alias": "value",
+          "slot_uri": "pixlnd:generator-design-settlement-npc-roles-entry/value",
+          "description": "Source value of generator-design-settlement-npc-roles-entry.",
+          "required": true,
+          "range": "npc-role"
+        }
+      }
+    },
+    "generator-design-settlement-npc-roles": {
+      "class_uri": "pixlnd:generator-design-settlement-npc-roles",
+      "description": "Configuration component generator-design-settlement-npc-roles; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "entries": {
+          "alias": "entries",
+          "slot_uri": "pixlnd:generator-design-settlement-npc-roles/entries",
+          "description": "Source entries of generator-design-settlement-npc-roles.",
+          "required": true,
+          "range": "generator-design-settlement-npc-roles-entry",
+          "inlined": true,
+          "multivalued": true,
+          "minimum_cardinality": 0,
+          "inlined_as_list": true
+        }
+      },
+      "annotations": {
+        "source-map-entries": "entries"
+      }
+    },
+    "generator-design-starting-inventory-consumables-entry": {
+      "class_uri": "pixlnd:generator-design-starting-inventory-consumables-entry",
+      "description": "Configuration component generator-design-starting-inventory-consumables-entry; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "key": {
+          "alias": "key",
+          "slot_uri": "pixlnd:generator-design-starting-inventory-consumables-entry/key",
+          "description": "Source key of generator-design-starting-inventory-consumables-entry.",
+          "required": true,
+          "range": "consumable"
+        },
+        "value": {
+          "alias": "value",
+          "slot_uri": "pixlnd:generator-design-starting-inventory-consumables-entry/value",
+          "description": "Source value of generator-design-starting-inventory-consumables-entry.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 1
+        }
+      }
+    },
+    "generator-design-starting-inventory-consumables": {
+      "class_uri": "pixlnd:generator-design-starting-inventory-consumables",
+      "description": "Configuration component generator-design-starting-inventory-consumables; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "entries": {
+          "alias": "entries",
+          "slot_uri": "pixlnd:generator-design-starting-inventory-consumables/entries",
+          "description": "Source entries of generator-design-starting-inventory-consumables.",
+          "required": true,
+          "range": "generator-design-starting-inventory-consumables-entry",
+          "inlined": true,
+          "multivalued": true,
+          "minimum_cardinality": 0,
+          "inlined_as_list": true
+        }
+      },
+      "annotations": {
+        "source-map-entries": "entries"
+      }
+    },
+    "generator-design-loot-rarity-weights-entry": {
+      "class_uri": "pixlnd:generator-design-loot-rarity-weights-entry",
+      "description": "Configuration component generator-design-loot-rarity-weights-entry; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "key": {
+          "alias": "key",
+          "slot_uri": "pixlnd:generator-design-loot-rarity-weights-entry/key",
+          "description": "Source key of generator-design-loot-rarity-weights-entry.",
+          "required": true,
+          "range": "GeneratorRarity"
+        },
+        "value": {
+          "alias": "value",
+          "slot_uri": "pixlnd:generator-design-loot-rarity-weights-entry/value",
+          "description": "Source value of generator-design-loot-rarity-weights-entry.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 0
+        }
+      },
+      "rules": [
+        {
+          "preconditions": {
+            "slot_conditions": {
+              "key": {
+                "equals_string": "common"
+              }
+            }
+          },
+          "postconditions": {
+            "slot_conditions": {
+              "value": {
+                "range": "double",
+                "minimum_value": 60,
+                "maximum_value": 60
+              }
+            }
+          }
+        },
+        {
+          "preconditions": {
+            "slot_conditions": {
+              "key": {
+                "equals_string": "uncommon"
+              }
+            }
+          },
+          "postconditions": {
+            "slot_conditions": {
+              "value": {
+                "range": "double",
+                "minimum_value": 25,
+                "maximum_value": 25
+              }
+            }
+          }
+        },
+        {
+          "preconditions": {
+            "slot_conditions": {
+              "key": {
+                "equals_string": "rare"
+              }
+            }
+          },
+          "postconditions": {
+            "slot_conditions": {
+              "value": {
+                "range": "double",
+                "minimum_value": 10,
+                "maximum_value": 10
+              }
+            }
+          }
+        },
+        {
+          "preconditions": {
+            "slot_conditions": {
+              "key": {
+                "equals_string": "epic"
+              }
+            }
+          },
+          "postconditions": {
+            "slot_conditions": {
+              "value": {
+                "range": "double",
+                "minimum_value": 4,
+                "maximum_value": 4
+              }
+            }
+          }
+        },
+        {
+          "preconditions": {
+            "slot_conditions": {
+              "key": {
+                "equals_string": "legendary"
+              }
+            }
+          },
+          "postconditions": {
+            "slot_conditions": {
+              "value": {
+                "range": "double",
+                "minimum_value": 1,
+                "maximum_value": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "generator-design-loot-rarity-weights": {
+      "class_uri": "pixlnd:generator-design-loot-rarity-weights",
+      "description": "Configuration component generator-design-loot-rarity-weights; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "entries": {
+          "alias": "entries",
+          "slot_uri": "pixlnd:generator-design-loot-rarity-weights/entries",
+          "description": "Source entries of generator-design-loot-rarity-weights.",
+          "required": true,
+          "range": "generator-design-loot-rarity-weights-entry",
+          "inlined": true,
+          "multivalued": true,
+          "minimum_cardinality": 5,
+          "inlined_as_list": true,
+          "has_member": {
+            "range_expression": {
+              "slot_conditions": {
+                "value": {
+                  "range": "double",
+                  "minimum_value": 0,
+                  "none_of": [
+                    {
+                      "range": "double",
+                      "equals_number": 0
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "maximum_cardinality": 5
+        }
+      },
+      "annotations": {
+        "source-map-entries": "entries"
+      }
+    },
+    "generator-design-loot-gear-kinds-entry": {
+      "class_uri": "pixlnd:generator-design-loot-gear-kinds-entry",
+      "description": "Configuration component generator-design-loot-gear-kinds-entry; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "key": {
+          "alias": "key",
+          "slot_uri": "pixlnd:generator-design-loot-gear-kinds-entry/key",
+          "description": "Source key of generator-design-loot-gear-kinds-entry.",
+          "required": true,
+          "range": "item-type",
+          "equals_string_in": [
+            "weapon",
+            "chest-armor",
+            "gloves",
+            "boots",
+            "shoulder-armor"
+          ]
+        },
+        "value": {
+          "alias": "value",
+          "slot_uri": "pixlnd:generator-design-loot-gear-kinds-entry/value",
+          "description": "Source value of generator-design-loot-gear-kinds-entry.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 0
+        }
+      },
+      "rules": [
+        {
+          "preconditions": {
+            "slot_conditions": {
+              "key": {
+                "equals_string": "weapon"
+              }
+            }
+          },
+          "postconditions": {
+            "slot_conditions": {
+              "value": {
+                "range": "double",
+                "minimum_value": 4,
+                "maximum_value": 4
+              }
+            }
+          }
+        },
+        {
+          "preconditions": {
+            "slot_conditions": {
+              "key": {
+                "equals_string": "chest-armor"
+              }
+            }
+          },
+          "postconditions": {
+            "slot_conditions": {
+              "value": {
+                "range": "double",
+                "minimum_value": 2,
+                "maximum_value": 2
+              }
+            }
+          }
+        },
+        {
+          "preconditions": {
+            "slot_conditions": {
+              "key": {
+                "equals_string": "gloves"
+              }
+            }
+          },
+          "postconditions": {
+            "slot_conditions": {
+              "value": {
+                "range": "double",
+                "minimum_value": 2,
+                "maximum_value": 2
+              }
+            }
+          }
+        },
+        {
+          "preconditions": {
+            "slot_conditions": {
+              "key": {
+                "equals_string": "boots"
+              }
+            }
+          },
+          "postconditions": {
+            "slot_conditions": {
+              "value": {
+                "range": "double",
+                "minimum_value": 2,
+                "maximum_value": 2
+              }
+            }
+          }
+        },
+        {
+          "preconditions": {
+            "slot_conditions": {
+              "key": {
+                "equals_string": "shoulder-armor"
+              }
+            }
+          },
+          "postconditions": {
+            "slot_conditions": {
+              "value": {
+                "range": "double",
+                "minimum_value": 2,
+                "maximum_value": 2
+              }
+            }
+          }
+        }
+      ]
+    },
+    "generator-design-loot-gear-kinds": {
+      "class_uri": "pixlnd:generator-design-loot-gear-kinds",
+      "description": "Configuration component generator-design-loot-gear-kinds; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "entries": {
+          "alias": "entries",
+          "slot_uri": "pixlnd:generator-design-loot-gear-kinds/entries",
+          "description": "Source entries of generator-design-loot-gear-kinds.",
+          "required": true,
+          "range": "generator-design-loot-gear-kinds-entry",
+          "inlined": true,
+          "multivalued": true,
+          "minimum_cardinality": 5,
+          "inlined_as_list": true,
+          "maximum_cardinality": 5
+        }
+      },
+      "annotations": {
+        "source-map-entries": "entries"
+      }
+    },
+    "generator-design-prices-base-entry": {
+      "class_uri": "pixlnd:generator-design-prices-base-entry",
+      "description": "Configuration component generator-design-prices-base-entry; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "key": {
+          "alias": "key",
+          "slot_uri": "pixlnd:generator-design-prices-base-entry/key",
+          "description": "Source key of generator-design-prices-base-entry.",
+          "required": true,
+          "range": "string"
+        },
+        "value": {
+          "alias": "value",
+          "slot_uri": "pixlnd:generator-design-prices-base-entry/value",
+          "description": "Source value of generator-design-prices-base-entry.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 0
+        }
+      }
+    },
+    "generator-design-prices-base": {
+      "class_uri": "pixlnd:generator-design-prices-base",
+      "description": "Configuration component generator-design-prices-base; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "entries": {
+          "alias": "entries",
+          "slot_uri": "pixlnd:generator-design-prices-base/entries",
+          "description": "Source entries of generator-design-prices-base.",
+          "required": true,
+          "range": "generator-design-prices-base-entry",
+          "inlined": true,
+          "multivalued": true,
+          "minimum_cardinality": 0,
+          "inlined_as_list": true
+        }
+      },
+      "annotations": {
+        "source-map-entries": "entries"
+      }
+    },
+    "generator-design-initial-encounters-leading-objects": {
+      "class_uri": "pixlnd:generator-design-initial-encounters-leading-objects",
+      "description": "Configuration component generator-design-initial-encounters-leading-objects; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "ruins": {
+          "alias": "ruins",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-leading-objects/ruins",
+          "description": "Source ruins of generator-design-initial-encounters-leading-objects.",
+          "required": true,
+          "range": "string",
+          "equals_string": "masonry"
+        },
+        "camp": {
+          "alias": "camp",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-leading-objects/camp",
+          "description": "Source camp of generator-design-initial-encounters-leading-objects.",
+          "required": true,
+          "range": "string",
+          "equals_string": "stake-torch"
+        },
+        "supplier": {
+          "alias": "supplier",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-leading-objects/supplier",
+          "description": "Source supplier of generator-design-initial-encounters-leading-objects.",
+          "required": true,
+          "range": "string",
+          "equals_string": "broken-crate"
+        }
+      }
+    },
+    "generator-design-initial-encounters-ruins": {
+      "class_uri": "pixlnd:generator-design-initial-encounters-ruins",
+      "description": "Configuration component generator-design-initial-encounters-ruins; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "room": {
+          "alias": "room",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-ruins/room",
+          "description": "Source room of generator-design-initial-encounters-ruins.",
+          "required": true,
+          "range": "generator-selected-initial-encounters-ruins-room",
+          "inlined": true,
+          "annotations": {
+            "source-tuple-positions": "first second"
+          }
+        },
+        "corridor": {
+          "alias": "corridor",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-ruins/corridor",
+          "description": "Source corridor of generator-design-initial-encounters-ruins.",
+          "required": true,
+          "range": "generator-selected-initial-encounters-ruins-corridor",
+          "inlined": true,
+          "annotations": {
+            "source-tuple-positions": "first second"
+          }
+        },
+        "court": {
+          "alias": "court",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-ruins/court",
+          "description": "Source court of generator-design-initial-encounters-ruins.",
+          "required": true,
+          "range": "generator-selected-initial-encounters-ruins-court",
+          "inlined": true,
+          "annotations": {
+            "source-tuple-positions": "first second"
+          }
+        },
+        "passage": {
+          "alias": "passage",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-ruins/passage",
+          "description": "Source passage of generator-design-initial-encounters-ruins.",
+          "required": true,
+          "range": "generator-selected-initial-encounters-ruins-passage",
+          "inlined": true,
+          "annotations": {
+            "source-tuple-positions": "first second"
+          }
+        },
+        "alcove": {
+          "alias": "alcove",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-ruins/alcove",
+          "description": "Source alcove of generator-design-initial-encounters-ruins.",
+          "required": true,
+          "range": "generator-selected-initial-encounters-ruins-alcove",
+          "inlined": true,
+          "annotations": {
+            "source-tuple-positions": "first second"
+          }
+        },
+        "bounds": {
+          "alias": "bounds",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-ruins/bounds",
+          "description": "Source bounds of generator-design-initial-encounters-ruins.",
+          "required": true,
+          "range": "generator-selected-initial-encounters-ruins-bounds",
+          "inlined": true,
+          "annotations": {
+            "source-tuple-positions": "first second"
+          }
+        },
+        "ceiling": {
+          "alias": "ceiling",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-ruins/ceiling",
+          "description": "Source ceiling of generator-design-initial-encounters-ruins.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 6,
+          "maximum_value": 6
+        },
+        "door": {
+          "alias": "door",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-ruins/door",
+          "description": "Source door of generator-design-initial-encounters-ruins.",
+          "required": true,
+          "range": "generator-selected-initial-encounters-ruins-door",
+          "inlined": true,
+          "annotations": {
+            "source-tuple-positions": "first second"
+          }
+        },
+        "occupancy": {
+          "alias": "occupancy",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-ruins/occupancy",
+          "description": "Source occupancy of generator-design-initial-encounters-ruins.",
+          "required": true,
+          "range": "generator-selected-initial-encounters-ruins-occupancy",
+          "inlined": true,
+          "annotations": {
+            "source-tuple-positions": "first second"
+          }
+        },
+        "pack-tiers": {
+          "alias": "pack-tiers",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-ruins/pack-tiers",
+          "description": "Source pack-tiers of generator-design-initial-encounters-ruins.",
+          "required": true,
+          "range": "generator-selected-initial-encounters-ruins-pack-tiers",
+          "inlined": true,
+          "annotations": {
+            "source-tuple-positions": "first second third"
+          }
+        },
+        "boss-tiers": {
+          "alias": "boss-tiers",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-ruins/boss-tiers",
+          "description": "Source boss-tiers of generator-design-initial-encounters-ruins.",
+          "required": true,
+          "range": "generator-selected-initial-encounters-ruins-boss-tiers",
+          "inlined": true,
+          "annotations": {
+            "source-tuple-positions": "first second"
+          }
+        }
+      }
+    },
+    "generator-design-initial-encounters-camp": {
+      "class_uri": "pixlnd:generator-design-initial-encounters-camp",
+      "description": "Configuration component generator-design-initial-encounters-camp; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "size": {
+          "alias": "size",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-camp/size",
+          "description": "Source size of generator-design-initial-encounters-camp.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 64,
+          "maximum_value": 64
+        },
+        "occupancy": {
+          "alias": "occupancy",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-camp/occupancy",
+          "description": "Source occupancy of generator-design-initial-encounters-camp.",
+          "required": true,
+          "range": "generator-selected-initial-encounters-camp-occupancy",
+          "inlined": true,
+          "annotations": {
+            "source-tuple-positions": "first second"
+          }
+        },
+        "exit-width": {
+          "alias": "exit-width",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-camp/exit-width",
+          "description": "Source exit-width of generator-design-initial-encounters-camp.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 8,
+          "maximum_value": 8
+        },
+        "tier": {
+          "alias": "tier",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-camp/tier",
+          "description": "Source tier of generator-design-initial-encounters-camp.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 1,
+          "maximum_value": 1
+        },
+        "packs": {
+          "alias": "packs",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-camp/packs",
+          "description": "Source packs of generator-design-initial-encounters-camp.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 2,
+          "maximum_value": 2
+        }
+      }
+    },
+    "generator-design-initial-encounters-supplier": {
+      "class_uri": "pixlnd:generator-design-initial-encounters-supplier",
+      "description": "Configuration component generator-design-initial-encounters-supplier; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "size": {
+          "alias": "size",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-supplier/size",
+          "description": "Source size of generator-design-initial-encounters-supplier.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 48,
+          "maximum_value": 48
+        },
+        "occupancy": {
+          "alias": "occupancy",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-supplier/occupancy",
+          "description": "Source occupancy of generator-design-initial-encounters-supplier.",
+          "required": true,
+          "range": "generator-selected-initial-encounters-supplier-occupancy",
+          "inlined": true,
+          "annotations": {
+            "source-tuple-positions": "first second"
+          }
+        },
+        "exit-width": {
+          "alias": "exit-width",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-supplier/exit-width",
+          "description": "Source exit-width of generator-design-initial-encounters-supplier.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 8,
+          "maximum_value": 8
+        },
+        "tiers": {
+          "alias": "tiers",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-supplier/tiers",
+          "description": "Ordered supplier tier indices, white through purple.",
+          "required": true,
+          "range": "integer",
+          "multivalued": true,
+          "minimum_cardinality": 4,
+          "maximum_cardinality": 4,
+          "minimum_value": 0,
+          "maximum_value": 3,
+          "equals_expression": "[0, 1, 2, 3]"
+        },
+        "packs": {
+          "alias": "packs",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-supplier/packs",
+          "description": "Source packs of generator-design-initial-encounters-supplier.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 2,
+          "maximum_value": 2
+        }
+      }
+    },
+    "generator-design-initial-encounters-role-weights": {
+      "class_uri": "pixlnd:generator-design-initial-encounters-role-weights",
+      "description": "Configuration component generator-design-initial-encounters-role-weights; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "melee": {
+          "alias": "melee",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-role-weights/melee",
+          "description": "Source melee of generator-design-initial-encounters-role-weights.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 0.5,
+          "maximum_value": 0.5
+        },
+        "ranged": {
+          "alias": "ranged",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-role-weights/ranged",
+          "description": "Source ranged of generator-design-initial-encounters-role-weights.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 0.3,
+          "maximum_value": 0.3
+        },
+        "mage": {
+          "alias": "mage",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-role-weights/mage",
+          "description": "Source mage of generator-design-initial-encounters-role-weights.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 0.2,
+          "maximum_value": 0.2
+        }
+      }
+    },
+    "generator-design-initial-encounters-boss-height": {
+      "class_uri": "pixlnd:generator-design-initial-encounters-boss-height",
+      "description": "Configuration component generator-design-initial-encounters-boss-height; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "base": {
+          "alias": "base",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-boss-height/base",
+          "description": "Source base of generator-design-initial-encounters-boss-height.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 1.7,
+          "maximum_value": 1.7
+        },
+        "min-mult": {
+          "alias": "min-mult",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-boss-height/min-mult",
+          "description": "Source min-mult of generator-design-initial-encounters-boss-height.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 1.25,
+          "maximum_value": 1.25
+        },
+        "growth": {
+          "alias": "growth",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-boss-height/growth",
+          "description": "Source growth of generator-design-initial-encounters-boss-height.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 0.75,
+          "maximum_value": 0.75
+        },
+        "max-level": {
+          "alias": "max-level",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-boss-height/max-level",
+          "description": "Source max-level of generator-design-initial-encounters-boss-height.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 10,
+          "maximum_value": 10
+        }
+      }
+    },
+    "generator-design-initial-encounters-boss-specials": {
+      "class_uri": "pixlnd:generator-design-initial-encounters-boss-specials",
+      "description": "Configuration component generator-design-initial-encounters-boss-specials; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "stomp": {
+          "alias": "stomp",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-boss-specials/stomp",
+          "description": "Source stomp of generator-design-initial-encounters-boss-specials.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 0.5,
+          "maximum_value": 0.5
+        },
+        "charge": {
+          "alias": "charge",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-boss-specials/charge",
+          "description": "Source charge of generator-design-initial-encounters-boss-specials.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 0.5,
+          "maximum_value": 0.5
+        }
+      }
+    },
+    "generator-design-initial-encounters-spirits": {
+      "class_uri": "pixlnd:generator-design-initial-encounters-spirits",
+      "description": "Configuration component generator-design-initial-encounters-spirits; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "spirit-fire": {
+          "alias": "spirit-fire",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-spirits/spirit-fire",
+          "description": "Source spirit-fire of generator-design-initial-encounters-spirits.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 0.25,
+          "maximum_value": 0.25
+        },
+        "spirit-unholy": {
+          "alias": "spirit-unholy",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-spirits/spirit-unholy",
+          "description": "Source spirit-unholy of generator-design-initial-encounters-spirits.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 0.25,
+          "maximum_value": 0.25
+        },
+        "spirit-ice": {
+          "alias": "spirit-ice",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-spirits/spirit-ice",
+          "description": "Source spirit-ice of generator-design-initial-encounters-spirits.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 0.25,
+          "maximum_value": 0.25
+        },
+        "spirit-wind": {
+          "alias": "spirit-wind",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-spirits/spirit-wind",
+          "description": "Source spirit-wind of generator-design-initial-encounters-spirits.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 0.25,
+          "maximum_value": 0.25
+        }
+      }
+    },
+    "generator-design-initial-encounters-mission-package": {
+      "class_uri": "pixlnd:generator-design-initial-encounters-mission-package",
+      "description": "Configuration component generator-design-initial-encounters-mission-package; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "coin-per-grade": {
+          "alias": "coin-per-grade",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-mission-package/coin-per-grade",
+          "description": "Source coin-per-grade of generator-design-initial-encounters-mission-package.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 20,
+          "maximum_value": 20
+        },
+        "potion": {
+          "alias": "potion",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-mission-package/potion",
+          "description": "Source potion of generator-design-initial-encounters-mission-package.",
+          "required": true,
+          "range": "string",
+          "equals_string": "life-potion"
+        },
+        "potion-rarity": {
+          "alias": "potion-rarity",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-mission-package/potion-rarity",
+          "description": "Source potion-rarity of generator-design-initial-encounters-mission-package.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 0,
+          "maximum_value": 0
+        },
+        "potion-count": {
+          "alias": "potion-count",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-mission-package/potion-count",
+          "description": "Source potion-count of generator-design-initial-encounters-mission-package.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 1,
+          "maximum_value": 1
+        },
+        "gems": {
+          "alias": "gems",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-mission-package/gems",
+          "description": "Source gems of generator-design-initial-encounters-mission-package.",
+          "required": true,
+          "range": "generator-selected-initial-encounters-mission-package-gems",
+          "inlined": true,
+          "annotations": {
+            "source-tuple-positions": "first second third fourth"
+          }
+        },
+        "gem-count-per-grade": {
+          "alias": "gem-count-per-grade",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-mission-package/gem-count-per-grade",
+          "description": "Source gem-count-per-grade of generator-design-initial-encounters-mission-package.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 1,
+          "maximum_value": 1
+        },
+        "rarity-shift": {
+          "alias": "rarity-shift",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-mission-package/rarity-shift",
+          "description": "Source rarity-shift of generator-design-initial-encounters-mission-package.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 1,
+          "maximum_value": 1
+        },
+        "upgrades": {
+          "alias": "upgrades",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-mission-package/upgrades",
+          "description": "Source upgrades of generator-design-initial-encounters-mission-package.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 0,
+          "maximum_value": 0
+        },
+        "delivery-height": {
+          "alias": "delivery-height",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-mission-package/delivery-height",
+          "description": "Source delivery-height of generator-design-initial-encounters-mission-package.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 0.5,
+          "maximum_value": 0.5
+        }
+      }
+    },
+    "generator-design-initial-encounters-special-profile-stomp": {
+      "class_uri": "pixlnd:generator-design-initial-encounters-special-profile-stomp",
+      "description": "Configuration component generator-design-initial-encounters-special-profile-stomp; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "radius": {
+          "alias": "radius",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-special-profile-stomp/radius",
+          "description": "Source radius of generator-design-initial-encounters-special-profile-stomp.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 4,
+          "maximum_value": 4
+        },
+        "start-height-diff": {
+          "alias": "start-height-diff",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-special-profile-stomp/start-height-diff",
+          "description": "Source start-height-diff of generator-design-initial-encounters-special-profile-stomp.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 2,
+          "maximum_value": 2
+        },
+        "victim-height": {
+          "alias": "victim-height",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-special-profile-stomp/victim-height",
+          "description": "Source victim-height of generator-design-initial-encounters-special-profile-stomp.",
+          "required": true,
+          "range": "generator-selected-initial-encounters-special-profile-stomp-victim-height",
+          "inlined": true,
+          "annotations": {
+            "source-tuple-positions": "first second"
+          }
+        },
+        "damage-mult": {
+          "alias": "damage-mult",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-special-profile-stomp/damage-mult",
+          "description": "Source damage-mult of generator-design-initial-encounters-special-profile-stomp.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 1,
+          "maximum_value": 1
+        }
+      }
+    },
+    "generator-design-initial-encounters-special-profile-charge": {
+      "class_uri": "pixlnd:generator-design-initial-encounters-special-profile-charge",
+      "description": "Configuration component generator-design-initial-encounters-special-profile-charge; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "range": {
+          "alias": "range",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-special-profile-charge/range",
+          "description": "Source range of generator-design-initial-encounters-special-profile-charge.",
+          "required": true,
+          "range": "generator-selected-initial-encounters-special-profile-charge-range",
+          "inlined": true,
+          "annotations": {
+            "source-tuple-positions": "first second"
+          }
+        },
+        "start-height-diff": {
+          "alias": "start-height-diff",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-special-profile-charge/start-height-diff",
+          "description": "Source start-height-diff of generator-design-initial-encounters-special-profile-charge.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 1,
+          "maximum_value": 1
+        },
+        "lane-width": {
+          "alias": "lane-width",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-special-profile-charge/lane-width",
+          "description": "Source lane-width of generator-design-initial-encounters-special-profile-charge.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 2,
+          "maximum_value": 2
+        },
+        "speed": {
+          "alias": "speed",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-special-profile-charge/speed",
+          "description": "Source speed of generator-design-initial-encounters-special-profile-charge.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 12,
+          "maximum_value": 12
+        },
+        "sweep-radius": {
+          "alias": "sweep-radius",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-special-profile-charge/sweep-radius",
+          "description": "Source sweep-radius of generator-design-initial-encounters-special-profile-charge.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 1,
+          "maximum_value": 1
+        },
+        "damage-mult": {
+          "alias": "damage-mult",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-special-profile-charge/damage-mult",
+          "description": "Source damage-mult of generator-design-initial-encounters-special-profile-charge.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 1.25,
+          "maximum_value": 1.25
+        }
+      }
+    },
+    "generator-design-initial-encounters-special-profile": {
+      "class_uri": "pixlnd:generator-design-initial-encounters-special-profile",
+      "description": "Configuration component generator-design-initial-encounters-special-profile; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "ready-s": {
+          "alias": "ready-s",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-special-profile/ready-s",
+          "description": "Source ready-s of generator-design-initial-encounters-special-profile.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 3,
+          "maximum_value": 3
+        },
+        "cooldown-s": {
+          "alias": "cooldown-s",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-special-profile/cooldown-s",
+          "description": "Source cooldown-s of generator-design-initial-encounters-special-profile.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 10,
+          "maximum_value": 10
+        },
+        "recovery-s": {
+          "alias": "recovery-s",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-special-profile/recovery-s",
+          "description": "Source recovery-s of generator-design-initial-encounters-special-profile.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 0.8,
+          "maximum_value": 0.8
+        },
+        "warning-s": {
+          "alias": "warning-s",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-special-profile/warning-s",
+          "description": "Source warning-s of generator-design-initial-encounters-special-profile.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 1.2,
+          "maximum_value": 1.2
+        },
+        "stomp": {
+          "alias": "stomp",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-special-profile/stomp",
+          "description": "Source stomp of generator-design-initial-encounters-special-profile.",
+          "required": true,
+          "range": "generator-design-initial-encounters-special-profile-stomp",
+          "inlined": true
+        },
+        "charge": {
+          "alias": "charge",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-special-profile/charge",
+          "description": "Source charge of generator-design-initial-encounters-special-profile.",
+          "required": true,
+          "range": "generator-design-initial-encounters-special-profile-charge",
+          "inlined": true
+        }
+      }
+    },
+    "generator-design-initial-encounters-rubble": {
+      "class_uri": "pixlnd:generator-design-initial-encounters-rubble",
+      "description": "Configuration component generator-design-initial-encounters-rubble; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "per-arena": {
+          "alias": "per-arena",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-rubble/per-arena",
+          "description": "Source per-arena of generator-design-initial-encounters-rubble.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 8,
+          "maximum_value": 8
+        },
+        "voxel-size": {
+          "alias": "voxel-size",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-rubble/voxel-size",
+          "description": "Source voxel-size of generator-design-initial-encounters-rubble.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 1,
+          "maximum_value": 1
+        },
+        "restore-world-hours": {
+          "alias": "restore-world-hours",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-rubble/restore-world-hours",
+          "description": "Source restore-world-hours of generator-design-initial-encounters-rubble.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 72,
+          "maximum_value": 72
+        },
+        "block-type": {
+          "alias": "block-type",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-rubble/block-type",
+          "description": "Source block-type of generator-design-initial-encounters-rubble.",
+          "required": true,
+          "range": "string",
+          "equals_string": "rock-building"
+        }
+      }
+    },
+    "generator-design-initial-encounters-spikes": {
+      "class_uri": "pixlnd:generator-design-initial-encounters-spikes",
+      "description": "Configuration component generator-design-initial-encounters-spikes; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "count": {
+          "alias": "count",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-spikes/count",
+          "description": "Source count of generator-design-initial-encounters-spikes.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 2,
+          "maximum_value": 2
+        },
+        "footprint": {
+          "alias": "footprint",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-spikes/footprint",
+          "description": "Source footprint of generator-design-initial-encounters-spikes.",
+          "required": true,
+          "range": "generator-selected-initial-encounters-spikes-footprint",
+          "inlined": true,
+          "annotations": {
+            "source-tuple-positions": "first second"
+          }
+        },
+        "victim-height": {
+          "alias": "victim-height",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-spikes/victim-height",
+          "description": "Source victim-height of generator-design-initial-encounters-spikes.",
+          "required": true,
+          "range": "generator-selected-initial-encounters-spikes-victim-height",
+          "inlined": true,
+          "annotations": {
+            "source-tuple-positions": "first second"
+          }
+        },
+        "warning-s": {
+          "alias": "warning-s",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-spikes/warning-s",
+          "description": "Source warning-s of generator-design-initial-encounters-spikes.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 0.8,
+          "maximum_value": 0.8
+        },
+        "active-s": {
+          "alias": "active-s",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-spikes/active-s",
+          "description": "Source active-s of generator-design-initial-encounters-spikes.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 0.25,
+          "maximum_value": 0.25
+        },
+        "cooldown-s": {
+          "alias": "cooldown-s",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-spikes/cooldown-s",
+          "description": "Source cooldown-s of generator-design-initial-encounters-spikes.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 2,
+          "maximum_value": 2
+        },
+        "damage": {
+          "alias": "damage",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-spikes/damage",
+          "description": "Source damage of generator-design-initial-encounters-spikes.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 30,
+          "maximum_value": 30
+        },
+        "attack-type": {
+          "alias": "attack-type",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-spikes/attack-type",
+          "description": "Source attack-type of generator-design-initial-encounters-spikes.",
+          "required": true,
+          "range": "string",
+          "equals_string": "physical"
+        },
+        "warning-sfx": {
+          "alias": "warning-sfx",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-spikes/warning-sfx",
+          "description": "Source warning-sfx of generator-design-initial-encounters-spikes.",
+          "required": true,
+          "range": "string",
+          "equals_string": "block"
+        }
+      }
+    },
+    "generator-design-initial-encounters-furnishings-vase": {
+      "class_uri": "pixlnd:generator-design-initial-encounters-furnishings-vase",
+      "description": "Configuration component generator-design-initial-encounters-furnishings-vase; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "per-room": {
+          "alias": "per-room",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-furnishings-vase/per-room",
+          "description": "Source per-room of generator-design-initial-encounters-furnishings-vase.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 2,
+          "maximum_value": 2
+        },
+        "hp": {
+          "alias": "hp",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-furnishings-vase/hp",
+          "description": "Source hp of generator-design-initial-encounters-furnishings-vase.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 10,
+          "maximum_value": 10
+        },
+        "coin-base": {
+          "alias": "coin-base",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-furnishings-vase/coin-base",
+          "description": "Source coin-base of generator-design-initial-encounters-furnishings-vase.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 1,
+          "maximum_value": 1
+        },
+        "coin-per-level": {
+          "alias": "coin-per-level",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-furnishings-vase/coin-per-level",
+          "description": "Source coin-per-level of generator-design-initial-encounters-furnishings-vase.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 2,
+          "maximum_value": 2
+        }
+      }
+    },
+    "generator-design-initial-encounters-furnishings-table": {
+      "class_uri": "pixlnd:generator-design-initial-encounters-furnishings-table",
+      "description": "Configuration component generator-design-initial-encounters-furnishings-table; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "per-room": {
+          "alias": "per-room",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-furnishings-table/per-room",
+          "description": "Source per-room of generator-design-initial-encounters-furnishings-table.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 1,
+          "maximum_value": 1
+        },
+        "hp": {
+          "alias": "hp",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-furnishings-table/hp",
+          "description": "Source hp of generator-design-initial-encounters-furnishings-table.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 20,
+          "maximum_value": 20
+        },
+        "flask": {
+          "alias": "flask",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-furnishings-table/flask",
+          "description": "Source flask of generator-design-initial-encounters-furnishings-table.",
+          "required": true,
+          "range": "string",
+          "equals_string": "glass-flask"
+        },
+        "flask-count": {
+          "alias": "flask-count",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-furnishings-table/flask-count",
+          "description": "Source flask-count of generator-design-initial-encounters-furnishings-table.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 1,
+          "maximum_value": 1
+        },
+        "potion": {
+          "alias": "potion",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-furnishings-table/potion",
+          "description": "Source potion of generator-design-initial-encounters-furnishings-table.",
+          "required": true,
+          "range": "string",
+          "equals_string": "life-potion"
+        },
+        "potion-count": {
+          "alias": "potion-count",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-furnishings-table/potion-count",
+          "description": "Source potion-count of generator-design-initial-encounters-furnishings-table.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 1,
+          "maximum_value": 1
+        },
+        "potion-rarity": {
+          "alias": "potion-rarity",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-furnishings-table/potion-rarity",
+          "description": "Source potion-rarity of generator-design-initial-encounters-furnishings-table.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 0,
+          "maximum_value": 0
+        }
+      }
+    },
+    "generator-design-initial-encounters-furnishings": {
+      "class_uri": "pixlnd:generator-design-initial-encounters-furnishings",
+      "description": "Configuration component generator-design-initial-encounters-furnishings; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "vase": {
+          "alias": "vase",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-furnishings/vase",
+          "description": "Source vase of generator-design-initial-encounters-furnishings.",
+          "required": true,
+          "range": "generator-design-initial-encounters-furnishings-vase",
+          "inlined": true
+        },
+        "table": {
+          "alias": "table",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-furnishings/table",
+          "description": "Source table of generator-design-initial-encounters-furnishings.",
+          "required": true,
+          "range": "generator-design-initial-encounters-furnishings-table",
+          "inlined": true
+        },
+        "armor": {
+          "alias": "armor",
+          "slot_uri": "pixlnd:generator-design-initial-encounters-furnishings/armor",
+          "description": "Source armor of generator-design-initial-encounters-furnishings.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 0,
+          "maximum_value": 0
+        }
+      }
+    },
+    "generator-design-initial-encounters": {
+      "class_uri": "pixlnd:generator-design-initial-encounters",
+      "description": "Configuration component generator-design-initial-encounters; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "doc": {
+          "alias": "_doc",
+          "slot_uri": "pixlnd:generator-design-initial-encounters/doc",
+          "description": "Source _doc of generator-design-initial-encounters.",
+          "required": true,
+          "range": "string"
+        },
+        "distance-min": {
+          "alias": "distance-min",
+          "slot_uri": "pixlnd:generator-design-initial-encounters/distance-min",
+          "description": "Source distance-min of generator-design-initial-encounters.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 192,
+          "maximum_value": 192
+        },
+        "distance-max": {
+          "alias": "distance-max",
+          "slot_uri": "pixlnd:generator-design-initial-encounters/distance-max",
+          "description": "Source distance-max of generator-design-initial-encounters.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 215,
+          "maximum_value": 215
+        },
+        "separation": {
+          "alias": "separation",
+          "slot_uri": "pixlnd:generator-design-initial-encounters/separation",
+          "description": "Source separation of generator-design-initial-encounters.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 192,
+          "maximum_value": 192
+        },
+        "apron": {
+          "alias": "apron",
+          "slot_uri": "pixlnd:generator-design-initial-encounters/apron",
+          "description": "Source apron of generator-design-initial-encounters.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 8,
+          "maximum_value": 8
+        },
+        "leading-objects": {
+          "alias": "leading-objects",
+          "slot_uri": "pixlnd:generator-design-initial-encounters/leading-objects",
+          "description": "Source leading-objects of generator-design-initial-encounters.",
+          "required": true,
+          "range": "generator-design-initial-encounters-leading-objects",
+          "inlined": true
+        },
+        "dry-above-sea": {
+          "alias": "dry-above-sea",
+          "slot_uri": "pixlnd:generator-design-initial-encounters/dry-above-sea",
+          "description": "Source dry-above-sea of generator-design-initial-encounters.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 4,
+          "maximum_value": 4
+        },
+        "hub-size": {
+          "alias": "hub-size",
+          "slot_uri": "pixlnd:generator-design-initial-encounters/hub-size",
+          "description": "Source hub-size of generator-design-initial-encounters.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 64,
+          "maximum_value": 64
+        },
+        "ruins": {
+          "alias": "ruins",
+          "slot_uri": "pixlnd:generator-design-initial-encounters/ruins",
+          "description": "Source ruins of generator-design-initial-encounters.",
+          "required": true,
+          "range": "generator-design-initial-encounters-ruins",
+          "inlined": true
+        },
+        "camp": {
+          "alias": "camp",
+          "slot_uri": "pixlnd:generator-design-initial-encounters/camp",
+          "description": "Source camp of generator-design-initial-encounters.",
+          "required": true,
+          "range": "generator-design-initial-encounters-camp",
+          "inlined": true
+        },
+        "supplier": {
+          "alias": "supplier",
+          "slot_uri": "pixlnd:generator-design-initial-encounters/supplier",
+          "description": "Source supplier of generator-design-initial-encounters.",
+          "required": true,
+          "range": "generator-design-initial-encounters-supplier",
+          "inlined": true
+        },
+        "pack-size": {
+          "alias": "pack-size",
+          "slot_uri": "pixlnd:generator-design-initial-encounters/pack-size",
+          "description": "Source pack-size of generator-design-initial-encounters.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 3,
+          "maximum_value": 3
+        },
+        "species": {
+          "alias": "species",
+          "slot_uri": "pixlnd:generator-design-initial-encounters/species",
+          "description": "Source species of generator-design-initial-encounters.",
+          "required": true,
+          "range": "string",
+          "equals_string": "skeleton"
+        },
+        "role-weights": {
+          "alias": "role-weights",
+          "slot_uri": "pixlnd:generator-design-initial-encounters/role-weights",
+          "description": "Source role-weights of generator-design-initial-encounters.",
+          "required": true,
+          "range": "generator-design-initial-encounters-role-weights",
+          "inlined": true
+        },
+        "power-base-offset": {
+          "alias": "power-base-offset",
+          "slot_uri": "pixlnd:generator-design-initial-encounters/power-base-offset",
+          "description": "Source power-base-offset of generator-design-initial-encounters.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 2,
+          "maximum_value": 2
+        },
+        "boss-hp-mult": {
+          "alias": "boss-hp-mult",
+          "slot_uri": "pixlnd:generator-design-initial-encounters/boss-hp-mult",
+          "description": "Source boss-hp-mult of generator-design-initial-encounters.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 4,
+          "maximum_value": 4
+        },
+        "boss-damage-mult": {
+          "alias": "boss-damage-mult",
+          "slot_uri": "pixlnd:generator-design-initial-encounters/boss-damage-mult",
+          "description": "Source boss-damage-mult of generator-design-initial-encounters.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 1.5,
+          "maximum_value": 1.5
+        },
+        "boss-height": {
+          "alias": "boss-height",
+          "slot_uri": "pixlnd:generator-design-initial-encounters/boss-height",
+          "description": "Source boss-height of generator-design-initial-encounters.",
+          "required": true,
+          "range": "generator-design-initial-encounters-boss-height",
+          "inlined": true
+        },
+        "boss-specials": {
+          "alias": "boss-specials",
+          "slot_uri": "pixlnd:generator-design-initial-encounters/boss-specials",
+          "description": "Source boss-specials of generator-design-initial-encounters.",
+          "required": true,
+          "range": "generator-design-initial-encounters-boss-specials",
+          "inlined": true
+        },
+        "spirits": {
+          "alias": "spirits",
+          "slot_uri": "pixlnd:generator-design-initial-encounters/spirits",
+          "description": "Source spirits of generator-design-initial-encounters.",
+          "required": true,
+          "range": "generator-design-initial-encounters-spirits",
+          "inlined": true
+        },
+        "mission-package": {
+          "alias": "mission-package",
+          "slot_uri": "pixlnd:generator-design-initial-encounters/mission-package",
+          "description": "Source mission-package of generator-design-initial-encounters.",
+          "required": true,
+          "range": "generator-design-initial-encounters-mission-package",
+          "inlined": true
+        },
+        "special-profile": {
+          "alias": "special-profile",
+          "slot_uri": "pixlnd:generator-design-initial-encounters/special-profile",
+          "description": "Source special-profile of generator-design-initial-encounters.",
+          "required": true,
+          "range": "generator-design-initial-encounters-special-profile",
+          "inlined": true
+        },
+        "rubble": {
+          "alias": "rubble",
+          "slot_uri": "pixlnd:generator-design-initial-encounters/rubble",
+          "description": "Source rubble of generator-design-initial-encounters.",
+          "required": true,
+          "range": "generator-design-initial-encounters-rubble",
+          "inlined": true
+        },
+        "spikes": {
+          "alias": "spikes",
+          "slot_uri": "pixlnd:generator-design-initial-encounters/spikes",
+          "description": "Source spikes of generator-design-initial-encounters.",
+          "required": true,
+          "range": "generator-design-initial-encounters-spikes",
+          "inlined": true
+        },
+        "furnishings": {
+          "alias": "furnishings",
+          "slot_uri": "pixlnd:generator-design-initial-encounters/furnishings",
+          "description": "Source furnishings of generator-design-initial-encounters.",
+          "required": true,
+          "range": "generator-design-initial-encounters-furnishings",
+          "inlined": true
+        }
+      }
+    },
+    "generator-design-prices-rarity-mult": {
+      "class_uri": "pixlnd:generator-design-prices-rarity-mult",
+      "description": "Source configuration component; applicability follows the linked rule.",
+      "see_also": [
+        "../domain/5_Constraints.md#constraint-catalog"
+      ],
+      "attributes": {
+        "entries": {
+          "alias": "entries",
+          "slot_uri": "pixlnd:generator-design-prices-rarity-mult/entries",
+          "description": "Source entries of generator-design-prices-rarity-mult.",
+          "required": true,
+          "range": "generator-design-prices-rarity-mult-entry",
+          "multivalued": true,
+          "inlined": true,
+          "inlined_as_list": true
+        }
+      },
+      "annotations": {
+        "source-map-entries": "entries"
+      }
+    },
+    "generator-design-prices": {
+      "class_uri": "pixlnd:generator-design-prices",
+      "description": "Configuration component generator-design-prices; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "buy": {
+          "alias": "buy",
+          "slot_uri": "pixlnd:generator-design-prices/buy",
+          "description": "Source buy of generator-design-prices.",
+          "required": true,
+          "range": "string"
+        },
+        "sell": {
+          "alias": "sell",
+          "slot_uri": "pixlnd:generator-design-prices/sell",
+          "description": "Source sell of generator-design-prices.",
+          "required": true,
+          "range": "double"
+        },
+        "rarity-mult": {
+          "alias": "rarity-mult",
+          "slot_uri": "pixlnd:generator-design-prices/rarity-mult",
+          "description": "Source rarity-mult of generator-design-prices.",
+          "required": true,
+          "range": "generator-design-prices-rarity-mult",
+          "inlined": true
+        },
+        "base": {
+          "alias": "base",
+          "slot_uri": "pixlnd:generator-design-prices/base",
+          "description": "Source base of generator-design-prices.",
+          "required": true,
+          "range": "generator-design-prices-base",
+          "inlined": true
+        },
+        "calibration": {
+          "alias": "calibration",
+          "slot_uri": "pixlnd:generator-design-prices/calibration",
+          "description": "Source calibration of generator-design-prices.",
+          "required": true,
+          "range": "string"
+        }
+      }
+    },
+    "generator-design-stack-cap": {
+      "class_uri": "pixlnd:generator-design-stack-cap",
+      "description": "Configuration component generator-design-stack-cap; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "doc": {
+          "alias": "_doc",
+          "slot_uri": "pixlnd:generator-design-stack-cap/doc",
+          "description": "Source _doc of generator-design-stack-cap.",
+          "required": true,
+          "range": "string"
+        },
+        "cap": {
+          "alias": "cap",
+          "slot_uri": "pixlnd:generator-design-stack-cap/cap",
+          "description": "Source cap of generator-design-stack-cap.",
+          "required": true,
+          "range": "integer"
+        },
+        "stackable": {
+          "alias": "stackable",
+          "slot_uri": "pixlnd:generator-design-stack-cap/stackable",
+          "description": "Source stackable of generator-design-stack-cap.",
+          "required": true,
+          "range": "item-type",
+          "multivalued": true,
+          "minimum_cardinality": 0
+        }
+      }
+    },
+    "generator-design-pvp": {
+      "class_uri": "pixlnd:generator-design-pvp",
+      "description": "Configuration component generator-design-pvp; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "slash-command": {
+          "alias": "slash-command",
+          "slot_uri": "pixlnd:generator-design-pvp/slash-command",
+          "description": "Source slash-command of generator-design-pvp.",
+          "required": true,
+          "range": "boolean"
+        },
+        "server-cfg-flag": {
+          "alias": "server-cfg-flag",
+          "slot_uri": "pixlnd:generator-design-pvp/server-cfg-flag",
+          "description": "Source server-cfg-flag of generator-design-pvp.",
+          "required": true,
+          "range": "string"
+        },
+        "default": {
+          "alias": "default",
+          "slot_uri": "pixlnd:generator-design-pvp/default",
+          "description": "Source default of generator-design-pvp.",
+          "required": true,
+          "range": "boolean"
+        },
+        "note": {
+          "alias": "note",
+          "slot_uri": "pixlnd:generator-design-pvp/note",
+          "description": "Source note of generator-design-pvp.",
+          "required": true,
+          "range": "string"
+        }
+      }
+    },
+    "generator-design-recipes": {
+      "class_uri": "pixlnd:generator-design-recipes",
+      "description": "Configuration component generator-design-recipes; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "weapon-cubes": {
+          "alias": "weapon-cubes",
+          "slot_uri": "pixlnd:generator-design-recipes/weapon-cubes",
+          "description": "Source weapon-cubes of generator-design-recipes.",
+          "required": true,
+          "range": "string"
+        },
+        "gems-per-rarity-above-common": {
+          "alias": "gems-per-rarity-above-common",
+          "slot_uri": "pixlnd:generator-design-recipes/gems-per-rarity-above-common",
+          "description": "Source gems-per-rarity-above-common of generator-design-recipes.",
+          "required": true,
+          "range": "integer"
+        },
+        "armor": {
+          "alias": "armor",
+          "slot_uri": "pixlnd:generator-design-recipes/armor",
+          "description": "Source armor of generator-design-recipes.",
+          "required": true,
+          "range": "string"
+        }
+      }
+    },
+    "generator-design-loot-coins": {
+      "class_uri": "pixlnd:generator-design-loot-coins",
+      "description": "Configuration component generator-design-loot-coins; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "chance": {
+          "alias": "chance",
+          "slot_uri": "pixlnd:generator-design-loot-coins/chance",
+          "description": "Source chance of generator-design-loot-coins.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 0.6,
+          "maximum_value": 0.6
+        },
+        "base": {
+          "alias": "base",
+          "slot_uri": "pixlnd:generator-design-loot-coins/base",
+          "description": "Source base of generator-design-loot-coins.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 1,
+          "maximum_value": 1
+        },
+        "per-level": {
+          "alias": "per-level",
+          "slot_uri": "pixlnd:generator-design-loot-coins/per-level",
+          "description": "Source per-level of generator-design-loot-coins.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 2,
+          "maximum_value": 2
+        }
+      }
+    },
+    "generator-design-loot-ground": {
+      "class_uri": "pixlnd:generator-design-loot-ground",
+      "description": "Configuration component generator-design-loot-ground; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "lifetime-s": {
+          "alias": "lifetime-s",
+          "slot_uri": "pixlnd:generator-design-loot-ground/lifetime-s",
+          "description": "Source lifetime-s of generator-design-loot-ground.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 60480,
+          "maximum_value": 60480
+        },
+        "lifetime": {
+          "alias": "_lifetime",
+          "slot_uri": "pixlnd:generator-design-loot-ground/lifetime",
+          "description": "Source _lifetime of generator-design-loot-ground.",
+          "required": true,
+          "range": "string"
+        },
+        "pickup-radius": {
+          "alias": "pickup-radius",
+          "slot_uri": "pixlnd:generator-design-loot-ground/pickup-radius",
+          "description": "Source pickup-radius of generator-design-loot-ground.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 2.0,
+          "maximum_value": 2.0
+        },
+        "auto-pickup": {
+          "alias": "auto-pickup",
+          "slot_uri": "pixlnd:generator-design-loot-ground/auto-pickup",
+          "description": "Source auto-pickup of generator-design-loot-ground.",
+          "required": true,
+          "range": "string",
+          "multivalued": true,
+          "minimum_cardinality": 1,
+          "maximum_cardinality": 1,
+          "all_members": {
+            "range": "string",
+            "equals_string": "coin"
+          }
+        },
+        "scatter": {
+          "alias": "scatter",
+          "slot_uri": "pixlnd:generator-design-loot-ground/scatter",
+          "description": "Source scatter of generator-design-loot-ground.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 1.0,
+          "maximum_value": 1.0
+        }
+      }
+    },
+    "generator-design-loot": {
+      "class_uri": "pixlnd:generator-design-loot",
+      "description": "Configuration component generator-design-loot; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "doc": {
+          "alias": "_doc",
+          "slot_uri": "pixlnd:generator-design-loot/doc",
+          "description": "Source _doc of generator-design-loot.",
+          "required": true,
+          "range": "string"
+        },
+        "coins": {
+          "alias": "coins",
+          "slot_uri": "pixlnd:generator-design-loot/coins",
+          "description": "Source coins of generator-design-loot.",
+          "required": true,
+          "range": "generator-design-loot-coins",
+          "inlined": true
+        },
+        "gear-chance": {
+          "alias": "gear-chance",
+          "slot_uri": "pixlnd:generator-design-loot/gear-chance",
+          "description": "Source gear-chance of generator-design-loot.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 0.2,
+          "maximum_value": 0.2
+        },
+        "consumable-chance": {
+          "alias": "consumable-chance",
+          "slot_uri": "pixlnd:generator-design-loot/consumable-chance",
+          "description": "Source consumable-chance of generator-design-loot.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 0.15,
+          "maximum_value": 0.15
+        },
+        "species-drop-chance": {
+          "alias": "species-drop-chance",
+          "slot_uri": "pixlnd:generator-design-loot/species-drop-chance",
+          "description": "Source species-drop-chance of generator-design-loot.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 0.5,
+          "maximum_value": 0.5
+        },
+        "level-spread": {
+          "alias": "level-spread",
+          "slot_uri": "pixlnd:generator-design-loot/level-spread",
+          "description": "Source level-spread of generator-design-loot.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 1,
+          "maximum_value": 1
+        },
+        "boss-rarity-shift": {
+          "alias": "boss-rarity-shift",
+          "slot_uri": "pixlnd:generator-design-loot/boss-rarity-shift",
+          "description": "Source boss-rarity-shift of generator-design-loot.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 1,
+          "maximum_value": 1
+        },
+        "rarity-weights": {
+          "alias": "rarity-weights",
+          "slot_uri": "pixlnd:generator-design-loot/rarity-weights",
+          "description": "Source rarity-weights of generator-design-loot.",
+          "required": true,
+          "range": "generator-design-loot-rarity-weights",
+          "inlined": true
+        },
+        "gear-kinds": {
+          "alias": "gear-kinds",
+          "slot_uri": "pixlnd:generator-design-loot/gear-kinds",
+          "description": "Source gear-kinds of generator-design-loot.",
+          "required": true,
+          "range": "generator-design-loot-gear-kinds",
+          "inlined": true
+        },
+        "consumable-pool": {
+          "alias": "consumable-pool",
+          "slot_uri": "pixlnd:generator-design-loot/consumable-pool",
+          "description": "Source consumable-pool of generator-design-loot.",
+          "required": true,
+          "range": "consumable",
+          "multivalued": true,
+          "minimum_cardinality": 3,
+          "maximum_cardinality": 3,
+          "list_elements_unique": true,
+          "all_members": {
+            "range": "consumable",
+            "equals_string_in": [
+              "life-potion",
+              "apple",
+              "pineapple-slice"
+            ]
+          },
+          "equals_expression": "['life-potion', 'apple', 'pineapple-slice']"
+        },
+        "ground": {
+          "alias": "ground",
+          "slot_uri": "pixlnd:generator-design-loot/ground",
+          "description": "Source ground of generator-design-loot.",
+          "required": true,
+          "range": "generator-design-loot-ground",
+          "inlined": true
+        }
+      }
+    },
+    "generator-design-starting-inventory": {
+      "class_uri": "pixlnd:generator-design-starting-inventory",
+      "description": "Configuration component generator-design-starting-inventory; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "doc": {
+          "alias": "_doc",
+          "slot_uri": "pixlnd:generator-design-starting-inventory/doc",
+          "description": "Source _doc of generator-design-starting-inventory.",
+          "required": true,
+          "range": "string"
+        },
+        "consumables": {
+          "alias": "consumables",
+          "slot_uri": "pixlnd:generator-design-starting-inventory/consumables",
+          "description": "Source consumables of generator-design-starting-inventory.",
+          "required": true,
+          "range": "generator-design-starting-inventory-consumables",
+          "inlined": true
+        },
+        "coins": {
+          "alias": "coins",
+          "slot_uri": "pixlnd:generator-design-starting-inventory/coins",
+          "description": "Source coins of generator-design-starting-inventory.",
+          "required": true,
+          "range": "integer"
+        }
+      }
+    },
+    "generator-design-settlement-placement": {
+      "class_uri": "pixlnd:generator-design-settlement-placement",
+      "description": "Configuration component generator-design-settlement-placement; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "search-step": {
+          "alias": "search-step",
+          "slot_uri": "pixlnd:generator-design-settlement-placement/search-step",
+          "description": "Source search-step of generator-design-settlement-placement.",
+          "required": true,
+          "range": "integer"
+        },
+        "search-rings": {
+          "alias": "search-rings",
+          "slot_uri": "pixlnd:generator-design-settlement-placement/search-rings",
+          "description": "Source search-rings of generator-design-settlement-placement.",
+          "required": true,
+          "range": "integer"
+        },
+        "min-above-sea": {
+          "alias": "min-above-sea",
+          "slot_uri": "pixlnd:generator-design-settlement-placement/min-above-sea",
+          "description": "Source min-above-sea of generator-design-settlement-placement.",
+          "required": true,
+          "range": "integer"
+        }
+      }
+    },
+    "generator-design-settlement-footprint": {
+      "class_uri": "pixlnd:generator-design-settlement-footprint",
+      "description": "Configuration component generator-design-settlement-footprint; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "default": {
+          "alias": "default",
+          "slot_uri": "pixlnd:generator-design-settlement-footprint/default",
+          "description": "Source default of generator-design-settlement-footprint.",
+          "required": true,
+          "range": "integer",
+          "multivalued": true,
+          "minimum_cardinality": 3,
+          "maximum_cardinality": 3
+        },
+        "entries": {
+          "alias": "entries",
+          "slot_uri": "pixlnd:generator-design-settlement-footprint/entries",
+          "description": "Source entries of generator-design-settlement-footprint.",
+          "required": true,
+          "range": "generator-footprint-entry",
+          "multivalued": true,
+          "inlined": true,
+          "inlined_as_list": true
+        }
+      },
+      "annotations": {
+        "source-map-entries": "entries"
+      }
+    },
+    "generator-design-settlement-npc": {
+      "class_uri": "pixlnd:generator-design-settlement-npc",
+      "description": "Configuration component generator-design-settlement-npc; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "interact-radius": {
+          "alias": "interact-radius",
+          "slot_uri": "pixlnd:generator-design-settlement-npc/interact-radius",
+          "description": "Source interact-radius of generator-design-settlement-npc.",
+          "required": true,
+          "range": "double"
+        },
+        "color": {
+          "alias": "color",
+          "slot_uri": "pixlnd:generator-design-settlement-npc/color",
+          "description": "Source color of generator-design-settlement-npc.",
+          "required": true,
+          "range": "string",
+          "pattern": "^#[0-9a-fA-F]{6}(?:[0-9a-fA-F]{2})?(?![\\s\\S])"
+        },
+        "roles": {
+          "alias": "roles",
+          "slot_uri": "pixlnd:generator-design-settlement-npc/roles",
+          "description": "Source roles of generator-design-settlement-npc.",
+          "required": true,
+          "range": "generator-design-settlement-npc-roles",
+          "inlined": true
+        }
+      }
+    },
+    "generator-design-settlement-shop": {
+      "class_uri": "pixlnd:generator-design-settlement-shop",
+      "description": "Configuration component generator-design-settlement-shop; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "stock": {
+          "alias": "stock",
+          "slot_uri": "pixlnd:generator-design-settlement-shop/stock",
+          "description": "Source stock of generator-design-settlement-shop.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 8,
+          "maximum_value": 8
+        },
+        "rarity-cap": {
+          "alias": "rarity-cap",
+          "slot_uri": "pixlnd:generator-design-settlement-shop/rarity-cap",
+          "description": "Source rarity-cap of generator-design-settlement-shop.",
+          "required": true,
+          "range": "GeneratorRarity",
+          "equals_string": "common"
+        },
+        "level-spread": {
+          "alias": "level-spread",
+          "slot_uri": "pixlnd:generator-design-settlement-shop/level-spread",
+          "description": "Source level-spread of generator-design-settlement-shop.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 1,
+          "maximum_value": 1
+        },
+        "item-shop-pool": {
+          "alias": "item-shop-pool",
+          "slot_uri": "pixlnd:generator-design-settlement-shop/item-shop-pool",
+          "description": "Source item-shop-pool of generator-design-settlement-shop.",
+          "required": true,
+          "range": "string",
+          "equals_string": "design.loot.consumable-pool"
+        },
+        "restock": {
+          "alias": "restock",
+          "slot_uri": "pixlnd:generator-design-settlement-shop/restock",
+          "description": "Source restock of generator-design-settlement-shop.",
+          "required": true,
+          "range": "string",
+          "equals_string": "daily"
+        }
+      }
+    },
+    "generator-design-settlement-trainer": {
+      "class_uri": "pixlnd:generator-design-settlement-trainer",
+      "description": "Configuration component generator-design-settlement-trainer; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "respec-fee-per-level": {
+          "alias": "respec-fee-per-level",
+          "slot_uri": "pixlnd:generator-design-settlement-trainer/respec-fee-per-level",
+          "description": "Source respec-fee-per-level of generator-design-settlement-trainer.",
+          "required": true,
+          "range": "integer"
+        }
+      }
+    },
+    "generator-design-settlement-inn": {
+      "class_uri": "pixlnd:generator-design-settlement-inn",
+      "description": "Configuration component generator-design-settlement-inn; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "fee": {
+          "alias": "fee",
+          "slot_uri": "pixlnd:generator-design-settlement-inn/fee",
+          "description": "Source fee of generator-design-settlement-inn.",
+          "required": true,
+          "range": "integer"
+        },
+        "heal": {
+          "alias": "heal",
+          "slot_uri": "pixlnd:generator-design-settlement-inn/heal",
+          "description": "Source heal of generator-design-settlement-inn.",
+          "required": true,
+          "range": "boolean"
+        },
+        "sets-spawn": {
+          "alias": "sets-spawn",
+          "slot_uri": "pixlnd:generator-design-settlement-inn/sets-spawn",
+          "description": "Source sets-spawn of generator-design-settlement-inn.",
+          "required": true,
+          "range": "boolean"
+        }
+      }
+    },
+    "generator-design-settlement": {
+      "class_uri": "pixlnd:generator-design-settlement",
+      "description": "Configuration component generator-design-settlement; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "doc": {
+          "alias": "_doc",
+          "slot_uri": "pixlnd:generator-design-settlement/doc",
+          "description": "Source _doc of generator-design-settlement.",
+          "required": true,
+          "range": "string"
+        },
+        "per-land": {
+          "alias": "per-land",
+          "slot_uri": "pixlnd:generator-design-settlement/per-land",
+          "description": "Source per-land of generator-design-settlement.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 1,
+          "maximum_value": 1
+        },
+        "placement": {
+          "alias": "placement",
+          "slot_uri": "pixlnd:generator-design-settlement/placement",
+          "description": "Source placement of generator-design-settlement.",
+          "required": true,
+          "range": "generator-design-settlement-placement",
+          "inlined": true
+        },
+        "radius": {
+          "alias": "radius",
+          "slot_uri": "pixlnd:generator-design-settlement/radius",
+          "description": "Source radius of generator-design-settlement.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 0,
+          "none_of": [
+            {
+              "range": "double",
+              "equals_number": 0
+            }
+          ]
+        },
+        "blend": {
+          "alias": "blend",
+          "slot_uri": "pixlnd:generator-design-settlement/blend",
+          "description": "Source blend of generator-design-settlement.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 0
+        },
+        "ring-radius": {
+          "alias": "ring-radius",
+          "slot_uri": "pixlnd:generator-design-settlement/ring-radius",
+          "description": "Source ring-radius of generator-design-settlement.",
+          "required": true,
+          "range": "double"
+        },
+        "buildings": {
+          "alias": "buildings",
+          "slot_uri": "pixlnd:generator-design-settlement/buildings",
+          "description": "Source buildings of generator-design-settlement.",
+          "required": true,
+          "range": "building",
+          "multivalued": true,
+          "minimum_cardinality": 0
+        },
+        "footprint": {
+          "alias": "footprint",
+          "slot_uri": "pixlnd:generator-design-settlement/footprint",
+          "description": "Source footprint of generator-design-settlement.",
+          "required": true,
+          "range": "generator-design-settlement-footprint",
+          "inlined": true
+        },
+        "style-by-landscape": {
+          "alias": "style-by-landscape",
+          "slot_uri": "pixlnd:generator-design-settlement/style-by-landscape",
+          "description": "Source style-by-landscape of generator-design-settlement.",
+          "required": true,
+          "range": "generator-design-settlement-style-by-landscape",
+          "inlined": true
+        },
+        "style-colors": {
+          "alias": "style-colors",
+          "slot_uri": "pixlnd:generator-design-settlement/style-colors",
+          "description": "Source style-colors of generator-design-settlement.",
+          "required": true,
+          "range": "generator-design-settlement-style-colors",
+          "inlined": true
+        },
+        "npc": {
+          "alias": "npc",
+          "slot_uri": "pixlnd:generator-design-settlement/npc",
+          "description": "Source npc of generator-design-settlement.",
+          "required": true,
+          "range": "generator-design-settlement-npc",
+          "inlined": true
+        },
+        "shop": {
+          "alias": "shop",
+          "slot_uri": "pixlnd:generator-design-settlement/shop",
+          "description": "Source shop of generator-design-settlement.",
+          "required": true,
+          "range": "generator-design-settlement-shop",
+          "inlined": true
+        },
+        "trainer": {
+          "alias": "trainer",
+          "slot_uri": "pixlnd:generator-design-settlement/trainer",
+          "description": "Source trainer of generator-design-settlement.",
+          "required": true,
+          "range": "generator-design-settlement-trainer",
+          "inlined": true
+        },
+        "inn": {
+          "alias": "inn",
+          "slot_uri": "pixlnd:generator-design-settlement/inn",
+          "description": "Source inn of generator-design-settlement.",
+          "required": true,
+          "range": "generator-design-settlement-inn",
+          "inlined": true
+        },
+        "no-hostiles-within": {
+          "alias": "no-hostiles-within",
+          "slot_uri": "pixlnd:generator-design-settlement/no-hostiles-within",
+          "description": "Source no-hostiles-within of generator-design-settlement.",
+          "required": true,
+          "range": "double",
+          "minimum_value": 0
+        }
+      }
+    },
+    "generator-design": {
+      "class_uri": "pixlnd:generator-design",
+      "description": "Configuration component generator-design; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "initial-encounters": {
+          "alias": "initial-encounters",
+          "slot_uri": "pixlnd:generator-design/initial-encounters",
+          "description": "Source initial-encounters of generator-design.",
+          "required": true,
+          "range": "generator-design-initial-encounters",
+          "inlined": true
+        },
+        "time": {
+          "alias": "time",
+          "slot_uri": "pixlnd:generator-design/time",
+          "description": "Source time of generator-design.",
+          "required": true,
+          "range": "generator-design-time",
+          "inlined": true
+        },
+        "doc": {
+          "alias": "_doc",
+          "slot_uri": "pixlnd:generator-design/doc",
+          "description": "Source _doc of generator-design.",
+          "required": true,
+          "range": "string"
+        },
+        "gear-hp": {
+          "alias": "gear-hp",
+          "slot_uri": "pixlnd:generator-design/gear-hp",
+          "description": "Source gear-hp of generator-design.",
+          "required": true,
+          "range": "gear-hp-design",
+          "inlined": true
+        },
+        "enemy-level": {
+          "alias": "enemy-level",
+          "slot_uri": "pixlnd:generator-design/enemy-level",
+          "description": "Source enemy-level of generator-design.",
+          "required": true,
+          "range": "generator-design-enemy-level",
+          "inlined": true
+        },
+        "skill-point": {
+          "alias": "skill-point",
+          "slot_uri": "pixlnd:generator-design/skill-point",
+          "description": "Source skill-point of generator-design.",
+          "required": true,
+          "range": "generator-design-skill-point",
+          "inlined": true
+        },
+        "abilities": {
+          "alias": "abilities",
+          "slot_uri": "pixlnd:generator-design/abilities",
+          "description": "Source abilities of generator-design.",
+          "required": true,
+          "range": "generator-design-abilities",
+          "inlined": true
+        },
+        "resources": {
+          "alias": "resources",
+          "slot_uri": "pixlnd:generator-design/resources",
+          "description": "Source resources of generator-design.",
+          "required": true,
+          "range": "generator-design-resources",
+          "inlined": true
+        },
+        "special-attack": {
+          "alias": "special-attack",
+          "slot_uri": "pixlnd:generator-design/special-attack",
+          "description": "Source special-attack of generator-design.",
+          "required": true,
+          "range": "generator-design-special-attack",
+          "inlined": true
+        },
+        "status-effects": {
+          "alias": "status-effects",
+          "slot_uri": "pixlnd:generator-design/status-effects",
+          "description": "Source status-effects of generator-design.",
+          "required": true,
+          "range": "generator-design-status-effects",
+          "inlined": true
+        },
+        "progression": {
+          "alias": "progression",
+          "slot_uri": "pixlnd:generator-design/progression",
+          "description": "Source progression of generator-design.",
+          "required": true,
+          "range": "generator-design-progression",
+          "inlined": true
+        },
+        "crit": {
+          "alias": "crit",
+          "slot_uri": "pixlnd:generator-design/crit",
+          "description": "Source crit of generator-design.",
+          "required": true,
+          "range": "generator-design-crit",
+          "inlined": true
+        },
+        "item-stat-curve": {
+          "alias": "item-stat-curve",
+          "slot_uri": "pixlnd:generator-design/item-stat-curve",
+          "description": "Source item-stat-curve of generator-design.",
+          "required": true,
+          "range": "string"
+        },
+        "prices": {
+          "alias": "prices",
+          "slot_uri": "pixlnd:generator-design/prices",
+          "description": "Source prices of generator-design.",
+          "required": true,
+          "range": "generator-design-prices",
+          "inlined": true
+        },
+        "artifact": {
+          "alias": "artifact",
+          "slot_uri": "pixlnd:generator-design/artifact",
+          "description": "Source artifact of generator-design.",
+          "required": true,
+          "range": "artifact-design",
+          "inlined": true
+        },
+        "stack-cap": {
+          "alias": "stack-cap",
+          "slot_uri": "pixlnd:generator-design/stack-cap",
+          "description": "Source stack-cap of generator-design.",
+          "required": true,
+          "range": "generator-design-stack-cap",
+          "inlined": true
+        },
+        "enemy-hp": {
+          "alias": "enemy-hp",
+          "slot_uri": "pixlnd:generator-design/enemy-hp",
+          "description": "Source enemy-hp of generator-design.",
+          "required": true,
+          "range": "generator-design-enemy-hp",
+          "inlined": true
+        },
+        "circle-of-power": {
+          "alias": "circle-of-power",
+          "slot_uri": "pixlnd:generator-design/circle-of-power",
+          "description": "Source circle-of-power of generator-design.",
+          "required": true,
+          "range": "generator-design-circle-of-power",
+          "inlined": true
+        },
+        "block-reward": {
+          "alias": "block-reward",
+          "slot_uri": "pixlnd:generator-design/block-reward",
+          "description": "Source block-reward of generator-design.",
+          "required": true,
+          "range": "string"
+        },
+        "regeneration": {
+          "alias": "regeneration",
+          "slot_uri": "pixlnd:generator-design/regeneration",
+          "description": "Source regeneration of generator-design.",
+          "required": true,
+          "range": "string"
+        },
+        "artifacts-per-land": {
+          "alias": "artifacts-per-land",
+          "slot_uri": "pixlnd:generator-design/artifacts-per-land",
+          "description": "Source artifacts-per-land of generator-design.",
+          "required": true,
+          "range": "generator-design-artifacts-per-land",
+          "inlined": true
+        },
+        "pvp": {
+          "alias": "pvp",
+          "slot_uri": "pixlnd:generator-design/pvp",
+          "description": "Source pvp of generator-design.",
+          "required": true,
+          "range": "generator-design-pvp",
+          "inlined": true
+        },
+        "recipes": {
+          "alias": "recipes",
+          "slot_uri": "pixlnd:generator-design/recipes",
+          "description": "Source recipes of generator-design.",
+          "required": true,
+          "range": "generator-design-recipes",
+          "inlined": true
+        },
+        "terrain": {
+          "alias": "terrain",
+          "slot_uri": "pixlnd:generator-design/terrain",
+          "description": "Source terrain of generator-design.",
+          "required": true,
+          "range": "generator-design-terrain",
+          "inlined": true
+        },
+        "climate": {
+          "alias": "climate",
+          "slot_uri": "pixlnd:generator-design/climate",
+          "description": "Source climate of generator-design.",
+          "required": true,
+          "range": "generator-design-climate",
+          "inlined": true
+        },
+        "names": {
+          "alias": "names",
+          "slot_uri": "pixlnd:generator-design/names",
+          "description": "Source names of generator-design.",
+          "required": true,
+          "range": "generator-design-names",
+          "inlined": true
+        },
+        "movement": {
+          "alias": "movement",
+          "slot_uri": "pixlnd:generator-design/movement",
+          "description": "Source movement of generator-design.",
+          "required": true,
+          "range": "generator-design-movement",
+          "inlined": true
+        },
+        "camera": {
+          "alias": "camera",
+          "slot_uri": "pixlnd:generator-design/camera",
+          "description": "Source camera of generator-design.",
+          "required": true,
+          "range": "generator-design-camera",
+          "inlined": true
+        },
+        "spawns": {
+          "alias": "spawns",
+          "slot_uri": "pixlnd:generator-design/spawns",
+          "description": "Source spawns of generator-design.",
+          "required": true,
+          "range": "generator-design-spawns",
+          "inlined": true
+        },
+        "creature-roles": {
+          "alias": "creature-roles",
+          "slot_uri": "pixlnd:generator-design/creature-roles",
+          "description": "Source creature-roles of generator-design.",
+          "required": true,
+          "range": "generator-design-creature-roles",
+          "inlined": true
+        },
+        "frame-budget": {
+          "alias": "frame-budget",
+          "slot_uri": "pixlnd:generator-design/frame-budget",
+          "description": "Source frame-budget of generator-design.",
+          "required": true,
+          "range": "generator-design-frame-budget",
+          "inlined": true
+        },
+        "loot": {
+          "alias": "loot",
+          "slot_uri": "pixlnd:generator-design/loot",
+          "description": "Source loot of generator-design.",
+          "required": true,
+          "range": "generator-design-loot",
+          "inlined": true
+        },
+        "starting-inventory": {
+          "alias": "starting-inventory",
+          "slot_uri": "pixlnd:generator-design/starting-inventory",
+          "description": "Source starting-inventory of generator-design.",
+          "required": true,
+          "range": "generator-design-starting-inventory",
+          "inlined": true
+        },
+        "combat": {
+          "alias": "combat",
+          "slot_uri": "pixlnd:generator-design/combat",
+          "description": "Source combat of generator-design.",
+          "required": true,
+          "range": "generator-design-combat",
+          "inlined": true
+        },
+        "defence": {
+          "alias": "defence",
+          "slot_uri": "pixlnd:generator-design/defence",
+          "description": "Source defence of generator-design.",
+          "required": true,
+          "range": "generator-design-defence",
+          "inlined": true
+        },
+        "movesets": {
+          "alias": "movesets",
+          "slot_uri": "pixlnd:generator-design/movesets",
+          "description": "Source movesets of generator-design.",
+          "required": true,
+          "range": "generator-design-movesets",
+          "inlined": true
+        },
+        "feel": {
+          "alias": "feel",
+          "slot_uri": "pixlnd:generator-design/feel",
+          "description": "Source feel of generator-design.",
+          "required": true,
+          "range": "generator-design-feel",
+          "inlined": true,
+          "equals_expression": "feel if max([feel['events']['hit']['hit-stop-s'], feel['events']['crit']['hit-stop-s'], feel['events']['kill']['hit-stop-s'], feel['events']['hurt']['hit-stop-s'], feel['events']['block']['hit-stop-s'], feel['events']['dodge']['hit-stop-s'], feel['events']['shoot']['hit-stop-s'], feel['events']['impact']['hit-stop-s'], feel['events']['level-up']['hit-stop-s'], feel['events']['pickup']['hit-stop-s'], feel['events']['coin']['hit-stop-s']]) <= feel['hit-stop']['max-s'] else ''"
+        },
+        "settlement": {
+          "alias": "settlement",
+          "slot_uri": "pixlnd:generator-design/settlement",
+          "description": "Source settlement of generator-design.",
+          "required": true,
+          "range": "generator-design-settlement",
+          "inlined": true,
+          "equals_expression": "settlement if settlement['radius'] > settlement['blend'] else ''",
+          "all_of": [
+            {
+              "range": "generator-design-settlement",
+              "inlined": true,
+              "required": true,
+              "equals_expression": "settlement if settlement['ring-radius'] < settlement['radius'] else ''"
+            },
+            {
+              "range": "generator-design-settlement",
+              "inlined": true,
+              "required": true,
+              "equals_expression": "settlement if settlement['no-hostiles-within'] >= settlement['radius'] else ''"
+            }
+          ]
+        }
+      }
+    },
+    "generators-source": {
+      "class_uri": "pixlnd:generators-source",
+      "description": "Complete original mixed generator configuration. Historical A/S/X/Omega and alpha networking are qualified references, not active-system approval. Binding preserves all original keys and values.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "schema-ref": {
+          "alias": "$schema",
+          "slot_uri": "pixlnd:generators-source/schema-ref",
+          "description": "Source $schema of generators-source.",
+          "required": true,
+          "range": "string"
+        },
+        "doc": {
+          "alias": "_doc",
+          "slot_uri": "pixlnd:generators-source/doc",
+          "description": "Source _doc of generators-source.",
+          "required": true,
+          "range": "string"
+        },
+        "world-scales": {
+          "alias": "world-scales",
+          "slot_uri": "pixlnd:generators-source/world-scales",
+          "description": "Source world-scales of generators-source.",
+          "required": true,
+          "range": "generator-source-world-scales",
+          "inlined": true
+        },
+        "seed": {
+          "alias": "seed",
+          "slot_uri": "pixlnd:generators-source/seed",
+          "description": "Source seed of generators-source.",
+          "required": true,
+          "range": "generator-source-seed",
+          "inlined": true
+        },
+        "time": {
+          "alias": "time",
+          "slot_uri": "pixlnd:generators-source/time",
+          "description": "Source time of generators-source.",
+          "required": true,
+          "range": "generator-source-time",
+          "inlined": true
+        },
+        "climate": {
+          "alias": "climate",
+          "slot_uri": "pixlnd:generators-source/climate",
+          "description": "Source climate of generators-source.",
+          "required": true,
+          "range": "generator-source-climate",
+          "inlined": true
+        },
+        "land": {
+          "alias": "land",
+          "slot_uri": "pixlnd:generators-source/land",
+          "description": "Source land of generators-source.",
+          "required": true,
+          "range": "generator-source-land",
+          "inlined": true
+        },
+        "terrain": {
+          "alias": "terrain",
+          "slot_uri": "pixlnd:generators-source/terrain",
+          "description": "Source terrain of generators-source.",
+          "required": true,
+          "range": "generator-source-terrain",
+          "inlined": true
+        },
+        "coarse-map-omega": {
+          "alias": "coarse-map-omega",
+          "slot_uri": "pixlnd:generators-source/coarse-map-omega",
+          "description": "Source coarse-map-omega of generators-source.",
+          "required": true,
+          "range": "generator-source-coarse-map-omega",
+          "inlined": true
+        },
+        "settlement": {
+          "alias": "settlement",
+          "slot_uri": "pixlnd:generators-source/settlement",
+          "description": "Source settlement of generators-source.",
+          "required": true,
+          "range": "generator-source-settlement",
+          "inlined": true
+        },
+        "dungeon": {
+          "alias": "dungeon",
+          "slot_uri": "pixlnd:generators-source/dungeon",
+          "description": "Source dungeon of generators-source.",
+          "required": true,
+          "range": "generator-source-dungeon",
+          "inlined": true
+        },
+        "spawns": {
+          "alias": "spawns",
+          "slot_uri": "pixlnd:generators-source/spawns",
+          "description": "Source spawns of generators-source.",
+          "required": true,
+          "range": "generator-source-spawns",
+          "inlined": true
+        },
+        "boss": {
+          "alias": "boss",
+          "slot_uri": "pixlnd:generators-source/boss",
+          "description": "Source boss of generators-source.",
+          "required": true,
+          "range": "generator-source-boss",
+          "inlined": true
+        },
+        "names": {
+          "alias": "names",
+          "slot_uri": "pixlnd:generators-source/names",
+          "description": "Source names of generators-source.",
+          "required": true,
+          "range": "generator-source-names",
+          "inlined": true
+        },
+        "item": {
+          "alias": "item",
+          "slot_uri": "pixlnd:generators-source/item",
+          "description": "Source item of generators-source.",
+          "required": true,
+          "range": "generator-source-item",
+          "inlined": true
+        },
+        "loot": {
+          "alias": "loot",
+          "slot_uri": "pixlnd:generators-source/loot",
+          "description": "Source loot of generators-source.",
+          "required": true,
+          "range": "string"
+        },
+        "realm": {
+          "alias": "realm",
+          "slot_uri": "pixlnd:generators-source/realm",
+          "description": "Source realm of generators-source.",
+          "required": true,
+          "range": "generator-source-realm",
+          "inlined": true
+        },
+        "npc-appearance": {
+          "alias": "npc-appearance",
+          "slot_uri": "pixlnd:generators-source/npc-appearance",
+          "description": "Source npc-appearance of generators-source.",
+          "required": true,
+          "range": "generator-source-npc-appearance",
+          "inlined": true
+        },
+        "schedule": {
+          "alias": "schedule",
+          "slot_uri": "pixlnd:generators-source/schedule",
+          "description": "Source schedule of generators-source.",
+          "required": true,
+          "range": "generator-source-schedule",
+          "inlined": true
+        },
+        "key-items-s": {
+          "alias": "key-items-s",
+          "slot_uri": "pixlnd:generators-source/key-items-s",
+          "description": "Source key-items-s of generators-source.",
+          "required": true,
+          "range": "generator-source-key-items-s",
+          "inlined": true
+        },
+        "level-formulas-alpha": {
+          "alias": "level-formulas-alpha",
+          "slot_uri": "pixlnd:generators-source/level-formulas-alpha",
+          "description": "Source level-formulas-alpha of generators-source.",
+          "required": true,
+          "range": "string"
+        },
+        "design": {
+          "alias": "design",
+          "slot_uri": "pixlnd:generators-source/design",
+          "description": "Source design of generators-source.",
+          "required": true,
+          "range": "generator-design",
+          "inlined": true,
+          "equals_expression": "design if design['defence']['dodge']['stamina'] <= design['movement']['stamina']['max'] else ''"
+        },
+        "network-alpha": {
+          "alias": "network-alpha",
+          "slot_uri": "pixlnd:generators-source/network-alpha",
+          "description": "Source network-alpha of generators-source.",
+          "required": true,
+          "range": "generator-source-network-alpha",
+          "inlined": true
+        }
+      }
+    },
+    "generator-selected-initial-encounters-ruins-room": {
+      "class_uri": "pixlnd:generator-selected-initial-encounters-ruins-room",
+      "description": "Configuration component generator-selected-initial-encounters-ruins-room; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "first": {
+          "alias": "first",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-ruins-room/first",
+          "description": "Source first of generator-selected-initial-encounters-ruins-room.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 24,
+          "maximum_value": 24
+        },
+        "second": {
+          "alias": "second",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-ruins-room/second",
+          "description": "Source second of generator-selected-initial-encounters-ruins-room.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 24,
+          "maximum_value": 24
+        }
+      }
+    },
+    "generator-selected-initial-encounters-ruins-corridor": {
+      "class_uri": "pixlnd:generator-selected-initial-encounters-ruins-corridor",
+      "description": "Configuration component generator-selected-initial-encounters-ruins-corridor; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "first": {
+          "alias": "first",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-ruins-corridor/first",
+          "description": "Source first of generator-selected-initial-encounters-ruins-corridor.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 8,
+          "maximum_value": 8
+        },
+        "second": {
+          "alias": "second",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-ruins-corridor/second",
+          "description": "Source second of generator-selected-initial-encounters-ruins-corridor.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 8,
+          "maximum_value": 8
+        }
+      }
+    },
+    "generator-selected-initial-encounters-ruins-court": {
+      "class_uri": "pixlnd:generator-selected-initial-encounters-ruins-court",
+      "description": "Configuration component generator-selected-initial-encounters-ruins-court; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "first": {
+          "alias": "first",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-ruins-court/first",
+          "description": "Source first of generator-selected-initial-encounters-ruins-court.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 24,
+          "maximum_value": 24
+        },
+        "second": {
+          "alias": "second",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-ruins-court/second",
+          "description": "Source second of generator-selected-initial-encounters-ruins-court.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 16,
+          "maximum_value": 16
+        }
+      }
+    },
+    "generator-selected-initial-encounters-ruins-passage": {
+      "class_uri": "pixlnd:generator-selected-initial-encounters-ruins-passage",
+      "description": "Configuration component generator-selected-initial-encounters-ruins-passage; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "first": {
+          "alias": "first",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-ruins-passage/first",
+          "description": "Source first of generator-selected-initial-encounters-ruins-passage.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 8,
+          "maximum_value": 8
+        },
+        "second": {
+          "alias": "second",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-ruins-passage/second",
+          "description": "Source second of generator-selected-initial-encounters-ruins-passage.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 8,
+          "maximum_value": 8
+        }
+      }
+    },
+    "generator-selected-initial-encounters-ruins-alcove": {
+      "class_uri": "pixlnd:generator-selected-initial-encounters-ruins-alcove",
+      "description": "Configuration component generator-selected-initial-encounters-ruins-alcove; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "first": {
+          "alias": "first",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-ruins-alcove/first",
+          "description": "Source first of generator-selected-initial-encounters-ruins-alcove.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 12,
+          "maximum_value": 12
+        },
+        "second": {
+          "alias": "second",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-ruins-alcove/second",
+          "description": "Source second of generator-selected-initial-encounters-ruins-alcove.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 8,
+          "maximum_value": 8
+        }
+      }
+    },
+    "generator-selected-initial-encounters-ruins-bounds": {
+      "class_uri": "pixlnd:generator-selected-initial-encounters-ruins-bounds",
+      "description": "Configuration component generator-selected-initial-encounters-ruins-bounds; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "first": {
+          "alias": "first",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-ruins-bounds/first",
+          "description": "Source first of generator-selected-initial-encounters-ruins-bounds.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 36,
+          "maximum_value": 36
+        },
+        "second": {
+          "alias": "second",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-ruins-bounds/second",
+          "description": "Source second of generator-selected-initial-encounters-ruins-bounds.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 112,
+          "maximum_value": 112
+        }
+      }
+    },
+    "generator-selected-initial-encounters-ruins-door": {
+      "class_uri": "pixlnd:generator-selected-initial-encounters-ruins-door",
+      "description": "Configuration component generator-selected-initial-encounters-ruins-door; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "first": {
+          "alias": "first",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-ruins-door/first",
+          "description": "Source first of generator-selected-initial-encounters-ruins-door.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 4,
+          "maximum_value": 4
+        },
+        "second": {
+          "alias": "second",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-ruins-door/second",
+          "description": "Source second of generator-selected-initial-encounters-ruins-door.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 5,
+          "maximum_value": 5
+        }
+      }
+    },
+    "generator-selected-initial-encounters-ruins-occupancy": {
+      "class_uri": "pixlnd:generator-selected-initial-encounters-ruins-occupancy",
+      "description": "Configuration component generator-selected-initial-encounters-ruins-occupancy; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "first": {
+          "alias": "first",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-ruins-occupancy/first",
+          "description": "Source first of generator-selected-initial-encounters-ruins-occupancy.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": -1,
+          "maximum_value": -1
+        },
+        "second": {
+          "alias": "second",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-ruins-occupancy/second",
+          "description": "Source second of generator-selected-initial-encounters-ruins-occupancy.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 12,
+          "maximum_value": 12
+        }
+      }
+    },
+    "generator-selected-initial-encounters-ruins-pack-tiers": {
+      "class_uri": "pixlnd:generator-selected-initial-encounters-ruins-pack-tiers",
+      "description": "Configuration component generator-selected-initial-encounters-ruins-pack-tiers; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "first": {
+          "alias": "first",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-ruins-pack-tiers/first",
+          "description": "Source first of generator-selected-initial-encounters-ruins-pack-tiers.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 1,
+          "maximum_value": 1
+        },
+        "second": {
+          "alias": "second",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-ruins-pack-tiers/second",
+          "description": "Source second of generator-selected-initial-encounters-ruins-pack-tiers.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 2,
+          "maximum_value": 2
+        },
+        "third": {
+          "alias": "third",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-ruins-pack-tiers/third",
+          "description": "Source third of generator-selected-initial-encounters-ruins-pack-tiers.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 3,
+          "maximum_value": 3
+        }
+      }
+    },
+    "generator-selected-initial-encounters-ruins-boss-tiers": {
+      "class_uri": "pixlnd:generator-selected-initial-encounters-ruins-boss-tiers",
+      "description": "Configuration component generator-selected-initial-encounters-ruins-boss-tiers; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "first": {
+          "alias": "first",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-ruins-boss-tiers/first",
+          "description": "Source first of generator-selected-initial-encounters-ruins-boss-tiers.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 2,
+          "maximum_value": 2
+        },
+        "second": {
+          "alias": "second",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-ruins-boss-tiers/second",
+          "description": "Source second of generator-selected-initial-encounters-ruins-boss-tiers.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 3,
+          "maximum_value": 3
+        }
+      }
+    },
+    "generator-selected-initial-encounters-camp-occupancy": {
+      "class_uri": "pixlnd:generator-selected-initial-encounters-camp-occupancy",
+      "description": "Configuration component generator-selected-initial-encounters-camp-occupancy; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "first": {
+          "alias": "first",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-camp-occupancy/first",
+          "description": "Source first of generator-selected-initial-encounters-camp-occupancy.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": -1,
+          "maximum_value": -1
+        },
+        "second": {
+          "alias": "second",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-camp-occupancy/second",
+          "description": "Source second of generator-selected-initial-encounters-camp-occupancy.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 16,
+          "maximum_value": 16
+        }
+      }
+    },
+    "generator-selected-initial-encounters-supplier-occupancy": {
+      "class_uri": "pixlnd:generator-selected-initial-encounters-supplier-occupancy",
+      "description": "Configuration component generator-selected-initial-encounters-supplier-occupancy; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "first": {
+          "alias": "first",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-supplier-occupancy/first",
+          "description": "Source first of generator-selected-initial-encounters-supplier-occupancy.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": -1,
+          "maximum_value": -1
+        },
+        "second": {
+          "alias": "second",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-supplier-occupancy/second",
+          "description": "Source second of generator-selected-initial-encounters-supplier-occupancy.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 16,
+          "maximum_value": 16
+        }
+      }
+    },
+    "generator-selected-initial-encounters-mission-package-gems": {
+      "class_uri": "pixlnd:generator-selected-initial-encounters-mission-package-gems",
+      "description": "Configuration component generator-selected-initial-encounters-mission-package-gems; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "first": {
+          "alias": "first",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-mission-package-gems/first",
+          "description": "Source first of generator-selected-initial-encounters-mission-package-gems.",
+          "required": true,
+          "range": "string",
+          "equals_string": "emerald"
+        },
+        "second": {
+          "alias": "second",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-mission-package-gems/second",
+          "description": "Source second of generator-selected-initial-encounters-mission-package-gems.",
+          "required": true,
+          "range": "string",
+          "equals_string": "sapphire"
+        },
+        "third": {
+          "alias": "third",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-mission-package-gems/third",
+          "description": "Source third of generator-selected-initial-encounters-mission-package-gems.",
+          "required": true,
+          "range": "string",
+          "equals_string": "ruby"
+        },
+        "fourth": {
+          "alias": "fourth",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-mission-package-gems/fourth",
+          "description": "Source fourth of generator-selected-initial-encounters-mission-package-gems.",
+          "required": true,
+          "range": "string",
+          "equals_string": "diamond"
+        }
+      }
+    },
+    "generator-selected-initial-encounters-special-profile-stomp-victim-height": {
+      "class_uri": "pixlnd:generator-selected-initial-encounters-special-profile-stomp-victim-height",
+      "description": "Configuration component generator-selected-initial-encounters-special-profile-stomp-victim-height; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "first": {
+          "alias": "first",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-special-profile-stomp-victim-height/first",
+          "description": "Source first of generator-selected-initial-encounters-special-profile-stomp-victim-height.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 0,
+          "maximum_value": 0
+        },
+        "second": {
+          "alias": "second",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-special-profile-stomp-victim-height/second",
+          "description": "Source second of generator-selected-initial-encounters-special-profile-stomp-victim-height.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 1,
+          "maximum_value": 1
+        }
+      }
+    },
+    "generator-selected-initial-encounters-special-profile-charge-range": {
+      "class_uri": "pixlnd:generator-selected-initial-encounters-special-profile-charge-range",
+      "description": "Configuration component generator-selected-initial-encounters-special-profile-charge-range; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "first": {
+          "alias": "first",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-special-profile-charge-range/first",
+          "description": "Source first of generator-selected-initial-encounters-special-profile-charge-range.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 4,
+          "maximum_value": 4
+        },
+        "second": {
+          "alias": "second",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-special-profile-charge-range/second",
+          "description": "Source second of generator-selected-initial-encounters-special-profile-charge-range.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 10,
+          "maximum_value": 10
+        }
+      }
+    },
+    "generator-selected-initial-encounters-spikes-footprint": {
+      "class_uri": "pixlnd:generator-selected-initial-encounters-spikes-footprint",
+      "description": "Configuration component generator-selected-initial-encounters-spikes-footprint; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "first": {
+          "alias": "first",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-spikes-footprint/first",
+          "description": "Source first of generator-selected-initial-encounters-spikes-footprint.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 2,
+          "maximum_value": 2
+        },
+        "second": {
+          "alias": "second",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-spikes-footprint/second",
+          "description": "Source second of generator-selected-initial-encounters-spikes-footprint.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 2,
+          "maximum_value": 2
+        }
+      }
+    },
+    "generator-selected-initial-encounters-spikes-victim-height": {
+      "class_uri": "pixlnd:generator-selected-initial-encounters-spikes-victim-height",
+      "description": "Configuration component generator-selected-initial-encounters-spikes-victim-height; applicability follows the linked source rules.",
+      "see_also": [
+        "../domain/5_Constraints.md#required-inputs",
+        "../domain/6_Generators.md"
+      ],
+      "attributes": {
+        "first": {
+          "alias": "first",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-spikes-victim-height/first",
+          "description": "Source first of generator-selected-initial-encounters-spikes-victim-height.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 0,
+          "maximum_value": 0
+        },
+        "second": {
+          "alias": "second",
+          "slot_uri": "pixlnd:generator-selected-initial-encounters-spikes-victim-height/second",
+          "description": "Source second of generator-selected-initial-encounters-spikes-victim-height.",
+          "required": true,
+          "range": "integer",
+          "minimum_value": 1,
+          "maximum_value": 1
+        }
+      }
+    },
+    "generator-design-prices-rarity-mult-entry": {
+      "class_uri": "pixlnd:generator-design-prices-rarity-mult-entry",
+      "description": "Source configuration component; applicability follows the linked rule.",
+      "see_also": [
+        "../domain/5_Constraints.md#constraint-catalog"
+      ],
+      "attributes": {
+        "key": {
+          "alias": "key",
+          "slot_uri": "pixlnd:generator-design-prices-rarity-mult-entry/key",
+          "description": "Source key of generator-design-prices-rarity-mult-entry.",
+          "required": true,
+          "range": "GeneratorRarity"
+        },
+        "value": {
+          "alias": "value",
+          "slot_uri": "pixlnd:generator-design-prices-rarity-mult-entry/value",
+          "description": "Source value of generator-design-prices-rarity-mult-entry.",
+          "required": true,
+          "range": "double"
+        }
+      }
+    },
+    "generator-footprint-entry": {
+      "class_uri": "pixlnd:generator-footprint-entry",
+      "description": "Typed source configuration component.",
+      "see_also": [
+        "../domain/5_Constraints.md#constraint-catalog"
+      ],
+      "attributes": {
+        "key": {
+          "alias": "key",
+          "slot_uri": "pixlnd:generator-footprint-entry/key",
+          "description": "Source key of generator-footprint-entry.",
+          "required": true,
+          "range": "building"
+        },
+        "value": {
+          "alias": "value",
+          "slot_uri": "pixlnd:generator-footprint-entry/value",
+          "description": "Source value of generator-footprint-entry.",
+          "required": true,
+          "range": "integer",
+          "multivalued": true,
+          "minimum_cardinality": 3,
+          "maximum_cardinality": 3
+        }
+      }
+    }
+  },
+  "enums": {
+    "GeneratorRarity": {
+      "enum_uri": "pixlnd:GeneratorRarity",
+      "description": "Literal configuration alternatives for GeneratorRarity.",
+      "permissible_values": {
+        "common": {},
+        "uncommon": {},
+        "rare": {},
+        "epic": {},
+        "legendary": {}
+      }
+    }
+  }
+}

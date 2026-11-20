@@ -1,0 +1,10 @@
+ classDiagram
+    class `Generator-design-settlement-shop`
+    click `Generator-design-settlement-shop` href "../Generator-design-settlement-shop"
+      `Generator-design-settlement-shop` : item_shop_pool
+      `Generator-design-settlement-shop` : level_spread
+      `Generator-design-settlement-shop` : rarity_cap
+        `Generator-design-settlement-shop` --> "1" `GeneratorRarity` : rarity_cap
+        click `GeneratorRarity` href "../GeneratorRarity"
+      `Generator-design-settlement-shop` : restock
+      `Generator-design-settlement-shop` : stock

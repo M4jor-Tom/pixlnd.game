@@ -1,0 +1,14 @@
+ classDiagram
+    class `Generator-source-land`
+    click `Generator-source-land` href "../Generator-source-land"
+      `Generator-source-land` : alpha_level
+      `Generator-source-land` : alpha_per_land
+        `Generator-source-land` --> "1" `Generator-source-land-alpha-per-land` : alpha_per_land
+        click `Generator-source-land-alpha-per-land` href "../Generator-source-land-alpha-per-land"
+      `Generator-source-land` : alpha_rarity
+      `Generator-source-land` : border
+      `Generator-source-land` : equal_size
+      `Generator-source-land` : steam_per_land
+        `Generator-source-land` --> "1" `Generator-source-land-steam-per-land` : steam_per_land
+        click `Generator-source-land-steam-per-land` href "../Generator-source-land-steam-per-land"
+      `Generator-source-land` : steam_tiers

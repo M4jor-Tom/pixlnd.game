@@ -1,0 +1,14 @@
+ classDiagram
+    class `Generator-design-initial-encounters-mission-package`
+    click `Generator-design-initial-encounters-mission-package` href "../Generator-design-initial-encounters-mission-package"
+      `Generator-design-initial-encounters-mission-package` : coin_per_grade
+      `Generator-design-initial-encounters-mission-package` : delivery_height
+      `Generator-design-initial-encounters-mission-package` : gem_count_per_grade
+      `Generator-design-initial-encounters-mission-package` : gems
+        `Generator-design-initial-encounters-mission-package` --> "1" `Generator-selected-initial-encounters-mission-package-gems` : gems
+        click `Generator-selected-initial-encounters-mission-package-gems` href "../Generator-selected-initial-encounters-mission-package-gems"
+      `Generator-design-initial-encounters-mission-package` : potion
+      `Generator-design-initial-encounters-mission-package` : potion_count
+      `Generator-design-initial-encounters-mission-package` : potion_rarity
+      `Generator-design-initial-encounters-mission-package` : rarity_shift
+      `Generator-design-initial-encounters-mission-package` : upgrades

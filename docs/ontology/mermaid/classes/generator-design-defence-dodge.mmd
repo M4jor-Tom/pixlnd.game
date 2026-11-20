@@ -1,0 +1,11 @@
+ classDiagram
+    class `Generator-design-defence-dodge`
+    click `Generator-design-defence-dodge` href "../Generator-design-defence-dodge"
+      `Generator-design-defence-dodge` : cooldown_s
+      `Generator-design-defence-dodge` : distance
+      `Generator-design-defence-dodge` : duration_s
+      `Generator-design-defence-dodge` : iframe_s
+      `Generator-design-defence-dodge` : on_dodge
+        `Generator-design-defence-dodge` --> "1" `Generator-design-defence-dodge-on-dodge` : on_dodge
+        click `Generator-design-defence-dodge-on-dodge` href "../Generator-design-defence-dodge-on-dodge"
+      `Generator-design-defence-dodge` : stamina

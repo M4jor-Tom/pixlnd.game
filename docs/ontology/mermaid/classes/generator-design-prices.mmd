@@ -1,0 +1,12 @@
+ classDiagram
+    class `Generator-design-prices`
+    click `Generator-design-prices` href "../Generator-design-prices"
+      `Generator-design-prices` : base
+        `Generator-design-prices` --> "1" `Generator-design-prices-base` : base
+        click `Generator-design-prices-base` href "../Generator-design-prices-base"
+      `Generator-design-prices` : buy
+      `Generator-design-prices` : calibration
+      `Generator-design-prices` : rarity_mult
+        `Generator-design-prices` --> "1" `Generator-design-prices-rarity-mult` : rarity_mult
+        click `Generator-design-prices-rarity-mult` href "../Generator-design-prices-rarity-mult"
+      `Generator-design-prices` : sell
