@@ -21,7 +21,8 @@ failure requires diagnosis, not CLI/foreground fallback, bypass, force or an amb
 Parent accepted the source and qualified selected gates after all R2 reviews returned
 zero findings; all52 structural handoff spans and the exact pair19 companion are applied
 and independently accepted, including the approved existing backlog-fragment correction.
-No further source work is selected. STOP before Task7, including preparation/scouting.
+Only the bounded tooling calibration correction below is selected; no schema/gameplay work.
+STOP before Task7, including preparation/scouting.
 
 Accepted source/evidence: `task6-active/review-round-1.fCDI8SZH/fix-round-2/phase-b/review-package/`.
 Source acceptance: `task6-active/review-round-2-20261120/`.
@@ -29,13 +30,26 @@ Applied bytes/references/acceptance: `task6-active/handoff-application-20261120/
 Historical failures, actual receipts and dependency-qualified earlier results remain immutable
 there; they are not pending regressions or a completed-bug history in this file.
 
-Pending gate: parent fresh final-fix review and separately sealed exact publication approval.
-Current generated/status/payload/hook evidence is under
-`task6-active/publication-20261120/overview-fix-1/`; the original preparation/review evidence
-remains immutable under `task6-active/publication-20261120/prep/`.
-No further source work or staging is selected. Exact paths/blobs/subject must be approved
-before any normal commit or feature push. No commit/push success, Task6completion or
-Task7authority is implied.
+Pending gate: independent review and separately sealed publication approval for the bounded
+calibration correction, then a normal full-quality push. Local accepted Task6 commit
+`962aeb121b19864c9663c9d0b9230043d975f92b` remains unpublished; live origin is Task5base612bb80,
+local ahead1/behind0. Both normal681s push failures remain immutable under
+`task6-active/publication-20261120/execution/` and `normal-push-retry-1/` (no case summaries).
+Cause is unclassified; current resource observations do not prove historical cause.
+The unchanged full-test diagnostic completed1687cases/0failures in457.701s Godot body time;
+its owned501.032956208s includes setup. Evidence: `publication-20261120/required-input-diagnostic-2/`.
+This is measurement evidence, not a normal full-gate pass. The interrupted D1 outcome remains
+UNKNOWN in managed recovery evidence, not a pending recovery operation.
+
+The separately selected mechanical refresh uses the existing documented formula:
+3×ceil(1.25×457.701)=1719s for the three ordinary allocations. Special1263s, boot12s,
+outerpush5400s and CI90minutes remain unchanged. Exactly zero cases/assertions are weakened;
+no bypass, source/runtime repair or resource-cause claim follows. Correction evidence and the
+new five-path commit proposal belong under `publication-20261120/calibration-correction-1/`.
+No staging/commit/push is selected in this correction unit; fresh review and exact approval
+must precede publication. Any later normal full-gate failure requires STOP and separate
+parent disposition, not automatic further budget growth or retry. Task6 is incomplete;
+Task7 remains unselected, including preparation/scouting.
 
 Qualification is construct-specific: configured directory lint retains exactly184diagnostics
 (26errors/158warnings) across five frozen save owners, with no owned/new diagnostic—not global

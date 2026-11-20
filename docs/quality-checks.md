@@ -57,17 +57,28 @@ exposed only in the development shell as `GDMETRICS_G4`.
 Nothing installs into the game's runtime. Tests use a temporary `PIXLND_TEST_DIR`
 and the boot uses an explicit scratch save; your normal save is untouched.
 Godot deadlines are `3 × ceil(1.25 × longest measured duration in the timeout group)`:
-all previously calibrated limits are tripled, without changing the underlying measurements.
+the factor of three retains the existing tripled margin; the ordinary-group measurement
+refresh below does not change this formula.
 The local pre-push calibration at `f383ef1` measured all 62 Godot invocations with
 local deadlines disabled; by owner selection, CI execution times are not included yet.
 
 | Timeout group | Slowest local invocation | Measured | Deadline |
 |---|---|---:|---:|
-| Ordinary validation/tests, including fixed-1000-FPS map | `ontology/test_required_inputs.gd` | 180.824s | 681s |
+| Ordinary validation/tests, including fixed-1000-FPS map | `ontology/test_required_inputs.gd` | 457.701s | 1719s |
 | Both long capsule traversals | `game/world/test_local_frame_routes.gd` | 336.189s | 1263s |
 | Headless main-scene boot | `--quit` | 3.072s | 12s |
 
-Cognitive analysis also uses the ordinary 681-second deadline; it was not part of
+On 20 November 2026, the unchanged full 1687-case `ontology/test_required_inputs.gd`
+completed with zero failures in 457.701 seconds of Godot wall time. Refreshing only the
+ordinary group's old 180.824s/681s basis gives `3 × ceil(1.25 × 457.701) = 1719s`.
+The 501.032956208-second owned duration includes Nix/setup and is not the Godot measurement.
+Other group measurements remain historical; this does not remeasure every current invocation
+or include CI times. The diagnostic is not a normal full-gate pass. Measurement evidence:
+`publication-20261120/required-input-diagnostic-2/` in the managed Task6 evidence root.
+`tests/test_quality_deadlines.py`, invoked by the runner regressions, checks this calibration
+against the three ordinary allocations and preserves the special and boot limits.
+
+Cognitive analysis also uses the ordinary 1719-second deadline; it was not part of
 that earlier calibration. These limits apply separately to each invocation, locally and in CI. There is no
 whole-suite local deadline; the CI quality job has a tripled 90-minute total limit,
 including setup.
