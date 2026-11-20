@@ -1,0 +1,22 @@
+ classDiagram
+    class `Recipe-armor`
+    click `Recipe-armor` href "../Recipe-armor"
+      `Recipe-armor` : common
+        `Recipe-armor` --> "1" `Recipe-armor-common` : common
+        click `Recipe-armor-common` href "../Recipe-armor-common"
+      `Recipe-armor` : epic
+        `Recipe-armor` --> "1" `Recipe-armor-tier` : epic
+        click `Recipe-armor-tier` href "../Recipe-armor-tier"
+      `Recipe-armor` : legendary
+        `Recipe-armor` --> "1" `Recipe-armor-tier` : legendary
+        click `Recipe-armor-tier` href "../Recipe-armor-tier"
+      `Recipe-armor` : rare
+        `Recipe-armor` --> "1" `Recipe-armor-tier` : rare
+        click `Recipe-armor-tier` href "../Recipe-armor-tier"
+      `Recipe-armor` : stations
+        `Recipe-armor` --> "1" `Recipe-stations` : stations
+        click `Recipe-stations` href "../Recipe-stations"
+      `Recipe-armor` : uncommon
+        `Recipe-armor` --> "1" `Recipe-armor-tier` : uncommon
+        click `Recipe-armor-tier` href "../Recipe-armor-tier"
+      `Recipe-armor` : unit

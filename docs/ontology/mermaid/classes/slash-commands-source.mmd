@@ -1,0 +1,10 @@
+ classDiagram
+    class `Slash-commands-source`
+    click `Slash-commands-source` href "../Slash-commands-source"
+      `Slash-commands-source` : chat_rules
+        `Slash-commands-source` --> "1" `Slash-command-chat-rules` : chat_rules
+        click `Slash-command-chat-rules` href "../Slash-command-chat-rules"
+      `Slash-commands-source` : entries
+        `Slash-commands-source` --> "1..*" `Slash-command-source-entry` : entries
+        click `Slash-command-source-entry` href "../Slash-command-source-entry"
+      `Slash-commands-source` : schema_tag

@@ -1,7 +1,7 @@
 ## Literal display/cache and camera/map ownership controls, independent of extracted helpers.
 extends SceneTree
 
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const PLAYER := preload("res://game/entities/player.tscn")
 const HUD := preload("res://game/meta/hud.gd")
 const WorldMap := preload("res://game/world/world_map.gd")
@@ -17,8 +17,8 @@ func check(ok: bool, label: String) -> void:
 
 func _initialize() -> void:
 	await process_frame
-	var o := Model.Ontology.load_dir("res://ontology/instances")
-	check(o.validate(), "display ontology validates")
+	var o := Domain.Ontology.load_dir()
+	check(o.errors.is_empty(), "display ontology validates")
 	var design: Dictionary = o.configs.generators.design
 	InputMapBuilder.build(o.configs.keybinds.hybrid)
 	var p = PLAYER.instantiate()

@@ -1,0 +1,21 @@
+ classDiagram
+    class `Race-source-row`
+    click `Race-source-row` href "../Race-source-row"
+      `Race-source-row` : alpha_entity_ids
+        `Race-source-row` --> "1" `Race-source-ids` : alpha_entity_ids
+        click `Race-source-ids` href "../Race-source-ids"
+      `Race-source-row` : quirks
+      `Race-source-row` : race_hair
+        `Race-source-row` --> "1" `Gender-option-counts` : race_hair
+        click `Gender-option-counts` href "../Gender-option-counts"
+      `Race-source-row` : race_heads
+        `Race-source-row` --> "1" `Gender-option-counts` : race_heads
+        click `Gender-option-counts` href "../Gender-option-counts"
+      `Race-source-row` : race_name
+      `Race-source-row` : race_playable
+      `Race-source-row` : race_size_class
+        `Race-source-row` --> "1" `Size-class` : race_size_class
+        click `Size-class` href "../Size-class"
+      `Race-source-row` : source_versions
+        `Race-source-row` --> "1..*" `SourceVersion` : source_versions
+        click `SourceVersion` href "../SourceVersion"

@@ -1,0 +1,47 @@
+ classDiagram
+    class `Creature`
+    click `Creature` href "../Creature"
+      `Creature` : abilities
+        `Creature` --> "*" `Ability` : abilities
+        click `Ability` href "../Ability"
+      `Creature` : creature_alpha_entity_id
+      `Creature` : creature_boss_capable
+      `Creature` : creature_boss_species
+      `Creature` : creature_breaks_terrain
+      `Creature` : creature_category
+        `Creature` --> "1" creature_category : creature_category
+        click creature_category href "../creature_category"
+      `Creature` : creature_combat_role
+        `Creature` --> "0..1" `Combat-role` : creature_combat_role
+        click `Combat-role` href "../Combat-role"
+      `Creature` : creature_drinks_potions
+      `Creature` : creature_group_size
+      `Creature` : creature_hostility_default
+        `Creature` --> "1" `Hostility-default` : creature_hostility_default
+        click `Hostility-default` href "../Hostility-default"
+      `Creature` : creature_landscapes
+        `Creature` --> "1..*" `Landscape` : creature_landscapes
+        click `Landscape` href "../Landscape"
+      `Creature` : creature_lantern_at_night
+      `Creature` : creature_pet_types
+        `Creature` --> "1..*" `Pet-type` : creature_pet_types
+        click `Pet-type` href "../Pet-type"
+      `Creature` : creature_rideable
+      `Creature` : descriptive_member_of_family
+        `Creature` --> "*" `Creature-family` : descriptive_member_of_family
+        click `Creature-family` href "../Creature-family"
+      `Creature` : habitats
+      `Creature` : id
+      `Creature` : member_of_family
+        `Creature` --> "0..1" `Creature-family` : member_of_family
+        click `Creature-family` href "../Creature-family"
+      `Creature` : name
+      `Creature` : signature_ability
+        `Creature` --> "0..1" `Ability` : signature_ability
+        click `Ability` href "../Ability"
+      `Creature` : tamed_by
+        `Creature` --> "0..1" `Pet-food` : tamed_by
+        click `Pet-food` href "../Pet-food"
+      `Creature` : versions
+        `Creature` --> "*" `SourceVersion` : versions
+        click `SourceVersion` href "../SourceVersion"

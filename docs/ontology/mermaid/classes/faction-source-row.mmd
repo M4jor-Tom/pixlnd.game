@@ -1,0 +1,14 @@
+ classDiagram
+    class `Faction-source-row`
+    click `Faction-source-row` href "../Faction-source-row"
+      `Faction-source-row` : alignment
+        `Faction-source-row` --> "1" `FactionAlignment` : alignment
+        click `FactionAlignment` href "../FactionAlignment"
+      `Faction-source-row` : faction_name
+      `Faction-source-row` : leader
+      `Faction-source-row` : members
+      `Faction-source-row` : note
+      `Faction-source-row` : presence
+      `Faction-source-row` : source_versions
+        `Faction-source-row` --> "1..*" `SourceVersion` : source_versions
+        click `SourceVersion` href "../SourceVersion"

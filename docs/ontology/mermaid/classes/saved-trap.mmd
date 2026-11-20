@@ -1,0 +1,8 @@
+ classDiagram
+    class `Saved-trap`
+    click `Saved-trap` href "../Saved-trap"
+      `Saved-trap` : saved_trap_hit
+      `Saved-trap` : saved_trap_left
+      `Saved-trap` : saved_trap_phase
+        `Saved-trap` --> "1" `Trap-phase` : saved_trap_phase
+        click `Trap-phase` href "../Trap-phase"

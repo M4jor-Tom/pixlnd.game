@@ -1,0 +1,9 @@
+ classDiagram
+    class `Source-mob-tier`
+    click `Source-mob-tier` href "../Source-mob-tier"
+      `Source-mob-tier` : examples
+      `Source-mob-tier` : hp_range
+      `Source-mob-tier` : note
+      `Source-mob-tier` : rarity
+        `Source-mob-tier` --> "1" `Rarity` : rarity
+        click `Rarity` href "../Rarity"

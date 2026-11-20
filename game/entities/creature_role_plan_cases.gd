@@ -1,6 +1,6 @@
 ## Original creature-role plan search and independent RNG/no-role comparisons.
 extends RefCounted
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const WorldGen := preload("res://game/world/world_gen.gd")
 const Spawner := preload("res://game/world/spawner.gd")
 var t
@@ -67,14 +67,14 @@ func _shared_rng() -> void:
 	)
 	var was: Dictionary = {}
 	for id in o.creatures:
-		if (o.creatures[id] as Model.Creature).combat_role == &"any-class":
-			was[id] = &"any-class"
-			(o.creatures[id] as Model.Creature).combat_role = &"melee"
+		if Domain.combat_role(o.creatures[id]) == &"any-class":
+			was[id] = o.creatures[id].slot_role
+			o.creatures[id].slot_role = "melee"
 	var melee_plan := Spawner.plan(
 		WorldGen.new(many_seed, design, o.landscapes), many_zone, design, o.creatures, rosters, 1
 	)
 	for id in was:
-		(o.creatures[id] as Model.Creature).combat_role = was[id]
+		o.creatures[id].slot_role = was[id]
 	check(
 		any_plan.size() == melee_plan.size(),
 		(
@@ -105,7 +105,7 @@ func _zone(gen, s, zx, zy) -> void:
 		many_seed == 0
 		and p_.size() >= 2
 		and str(p_[0]["role"]) != "melee"
-		and (str((o.creatures[p_[0]["species"]] as Model.Creature).combat_role) == "any-class")
+		and (str(Domain.combat_role(o.creatures[p_[0]["species"]])) == "any-class")
 	):
 		many_seed = s
 		many_zone = zc
@@ -116,7 +116,7 @@ func _group(g, s, zc) -> void:
 		skel = g
 		at_seed = s
 		at_zone = zc
-	elif plain.is_empty() and str((o.creatures[g["species"]] as Model.Creature).combat_role) == "":
+	elif plain.is_empty() and str(Domain.combat_role(o.creatures[g["species"]])) == "":
 		plain = g
 
 

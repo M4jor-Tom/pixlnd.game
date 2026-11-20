@@ -1,0 +1,9 @@
+ classDiagram
+    class `District-building`
+    click `District-building` href "../District-building"
+      `District-building` : district_building_class
+        `District-building` --> "1" `Character-class` : district_building_class
+        click `Character-class` href "../Character-class"
+      `District-building` : district_building_id
+        `District-building` --> "1" `Building` : district_building_id
+        click `Building` href "../Building"

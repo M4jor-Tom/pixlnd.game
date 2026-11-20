@@ -1,0 +1,26 @@
+ classDiagram
+    class `Material`
+    click `Material` href "../Material"
+      `Material` : id
+      `Material` : material_alt_name
+      `Material` : material_armor_mult
+      `Material` : material_class
+      `Material` : material_crafts_rarity
+        `Material` --> "0..1" `Rarity` : material_crafts_rarity
+        click `Rarity` href "../Rarity"
+      `Material` : material_crit_bonus
+      `Material` : material_effect
+      `Material` : material_hp_bonus
+      `Material` : material_kind
+      `Material` : material_name
+      `Material` : material_obtainable
+      `Material` : material_price_s
+      `Material` : material_raw
+      `Material` : material_refined
+        `Material` --> "0..1" `Ingredient` : material_refined
+        click `Ingredient` href "../Ingredient"
+      `Material` : material_regen_bonus
+      `Material` : material_resi_mult
+      `Material` : material_sell_s
+      `Material` : material_station
+      `Material` : material_tempo_bonus

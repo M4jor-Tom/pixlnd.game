@@ -4,7 +4,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 scratch=$(mktemp -d)
 trap 'rm -rf "$scratch"' EXIT
-mkdir -p "$scratch/scripts" "$scratch/ontology" "$scratch/game/tests"
+mkdir -p "$scratch/scripts" "$scratch/ontology" "$scratch/game/tests" "$scratch/tests" "$scratch/skills" "$scratch/monitors" "$scratch/tools"
 cp scripts/check* "$scratch/scripts/"
 cp gdlintrc gdformatrc "$scratch/"
 printf 'config_version=5\n[application]\nrun/main_scene="res://game/main.tscn"\n' > "$scratch/project.godot"
@@ -27,10 +27,30 @@ expect_failure() {
   grep -q "$2" "$scratch/output.log" || { cat "$scratch/output.log"; exit 1; }
 }
 
+limit_fixture() {
+  local lang=$1 kind=$2 n=$3 i
+  case "$lang:$kind" in
+    py:file) for ((i = 0; i < n; i++)); do printf 'x = 1\n'; done ;;
+    py:length) printf 'def check():\n'; for ((i = 1; i < n; i++)); do printf '    x = 1\n'; done ;;
+    py:cognitive) printf 'def check(a):\n'; for ((i = 0; i < n; i++)); do printf '    if a:\n        pass\n'; done ;;
+    sh:file) for ((i = 0; i < n; i++)); do printf ':\n'; done ;;
+    sh:length) printf 'check() {\n'; for ((i = 2; i < n; i++)); do printf '  :\n'; done; printf '}\n' ;;
+    sh:cognitive) printf 'check() {\n'; for ((i = 0; i < n; i++)); do printf '  if a; then :; fi\n'; done; printf '}\n' ;;
+  esac
+}
+declare -A limit=([file]=600 [length]=100 [cognitive]=15)
+# At-limit fixtures (and an ignored over-limit .venv) must pass the first run.
+for lang in py sh; do
+  for kind in file length cognitive; do
+    limit_fixture "$lang" "$kind" "${limit[$kind]}" > "$scratch/tests/limit_$kind.$lang"
+  done
+done
+mkdir -p "$scratch/tools/.venv"
+limit_fixture py file 700 > "$scratch/tools/.venv/ignored.py"
 format_fixture
 run_checks || { cat "$scratch/output.log"; exit 1; }
 # Every completed Godot invocation reports its own wall-clock duration.
-if [[ $(grep -Ec '^Elapsed: [0-9]+\.[0-9]{3} s$' "$scratch/output.log") != 5 ]]; then
+if [[ $(grep -Ec '^Elapsed: [0-9]+\.[0-9]{3} s$' "$scratch/output.log") != 6 ]]; then
   printf 'FAIL: missing per-invocation timings\n' >&2
   cat "$scratch/output.log"
   exit 1
@@ -144,6 +164,18 @@ complexity_fixture 2 | sed $'s/^/\t/' >> "$scratch/game/complexity.gd"
 format_fixture
 expect_failure 'class method incorrectly treated as an empty body' 'cognitive complexity 23 exceeds 15'
 rm "$scratch/game/complexity.gd"
+# Python/Bash limits: 601/101/16 each fail with exact messages (600/100/15 pass in the first run above).
+for lang in py sh; do
+  for spec in file:601:'file length 601 exceeds 600' length:101:'function length 101 exceeds 100' \
+      cognitive:16:'cognitive complexity 16 exceeds 15'; do
+    IFS=: read -r kind n message <<< "$spec"
+    fixture="$scratch/tests/limit_$kind.$lang"
+    limit_fixture "$lang" "$kind" "$n" > "$fixture"
+    expect_failure "$n-limit $kind $lang fixture" "$message"
+    limit_fixture "$lang" "$kind" "${limit[$kind]}" > "$fixture"
+  done
+done
+rm -r "$scratch/tests/limit_"* "$scratch/tools/.venv"
 printf 'extends Node\nvar value=1\n' > "$scratch/game/unformatted.gd"
 expect_failure 'unformatted GDScript' 'unformatted.gd'
 rm "$scratch/game/unformatted.gd"
@@ -164,5 +196,6 @@ printf 'extends SceneTree\nfunc _init() -> void:\n\tprint("ontology INVALID (0 e
 printf 'extends SceneTree\nfunc _init() -> void:\n\tquit(0)\n' > "$scratch/ontology/test_fixture.gd"
 format_fixture
 expect_failure 'invalid ontology with exit 0' 'ontology INVALID'
+python3 tests/test_check_python_bash.py
 bash tests/test_cognitive_defer.sh
 printf 'Quality runner checks passed.\n'

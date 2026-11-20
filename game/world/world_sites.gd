@@ -1,6 +1,6 @@
 ## Stateless site lifecycle; mutable records remain on WorldState and views on World.
 extends RefCounted
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Spawner := preload("res://game/world/spawner.gd")
 const Targeting := preload("res://game/combat/targeting.gd")
 const EncounterGen := preload("res://game/world/encounter_gen.gd")
@@ -103,8 +103,8 @@ static func _materialize(
 ) -> bool:
 	var colour := Color.WHITE
 	for rarity in world.ontology.rarities.values():
-		if rarity.index == int(stable.tier):
-			colour = Color(rarity.raw.hex)
+		if rarity.slot_index == int(stable.tier):
+			colour = Color(rarity.slot_hex)
 			break
 	var mob := Spawner.materialize(
 		world.site_views[id],
@@ -238,9 +238,7 @@ static func _ambient_occupancy(world, point: Array) -> Variant:
 		if mob.dead:
 			continue
 		var species = world.ontology.creatures[StringName(mob.species)]
-		var category: String = Model.CreatureCategory.keys()[species.category].to_lower().replace(
-			"_", "-"
-		)
+		var category := str(species.slot_cat)
 		var size_: float = world.design.spawns["size-by-category"].get(category, 1.0)
 		var live = world.targeting.live.get(mob_id)
 		var p: Array = live.logical_position() if is_instance_valid(live) else mob.position

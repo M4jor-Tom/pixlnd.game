@@ -5,6 +5,7 @@ prefixes:
   pixlnd: https://w3id.org/pixlnd/
   linkml: https://w3id.org/linkml/
 default_prefix: pixlnd
+default_range: string
 imports:
 - linkml:types
 - identity
@@ -15,6 +16,17 @@ imports:
 - relations
 - entities
 - relation-types
+- associations
+- save-character
+- save-combat
+- save-content
+- design-combat
+- design-progression
+- save-geography
+- save-world
+- catalog-properties
+- catalog-identity-combat
+- catalog-meta
 description: Structural definitions linked to canonical domain prose. Catalog species are distinct from
   logical entity instances; ownership, eligibility and lifecycle are defined by the linked rules.
 see_also:

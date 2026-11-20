@@ -1,0 +1,7 @@
+ classDiagram
+    class `Mission-steam-entry`
+    click `Mission-steam-entry` href "../Mission-steam-entry"
+      `Mission-steam-entry` : recipe_map_key
+      `Mission-steam-entry` : value
+        `Mission-steam-entry` --> "1" `Mission-steam-row` : value
+        click `Mission-steam-row` href "../Mission-steam-row"

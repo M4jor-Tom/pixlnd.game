@@ -1,0 +1,15 @@
+ classDiagram
+    class `Npc-role`
+    click `Npc-role` href "../Npc-role"
+      `Npc-role` : id
+      `Npc-role` : npc_role_attackable
+      `Npc-role` : npc_role_behaviour
+      `Npc-role` : npc_role_building
+      `Npc-role` : npc_role_dialogue
+      `Npc-role` : npc_role_name
+      `Npc-role` : npc_role_schedule
+      `Npc-role` : npc_role_service
+      `Npc-role` : npc_role_sign
+      `Npc-role` : npc_role_species
+        `Npc-role` --> "0..1" `Race-or-creature` : npc_role_species
+        click `Race-or-creature` href "../Race-or-creature"

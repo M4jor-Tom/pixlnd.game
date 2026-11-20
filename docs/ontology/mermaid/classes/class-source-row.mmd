@@ -1,0 +1,28 @@
+ classDiagram
+    class `Class-source-row`
+    click `Class-source-row` href "../Class-source-row"
+      `Class-source-row` : alt_name
+      `Class-source-row` : armor_weight
+      `Class-source-row` : character_class_hp_mult
+      `Class-source-row` : character_class_id_number
+      `Class-source-row` : character_class_name
+      `Class-source-row` : character_class_special_attack_mode
+        `Class-source-row` --> "1" `Attack-mode` : character_class_special_attack_mode
+        click `Attack-mode` href "../Attack-mode"
+      `Class-source-row` : has_specialization
+        `Class-source-row` --> "1..*" `Specialization` : has_specialization
+        click `Specialization` href "../Specialization"
+      `Class-source-row` : hp_multiplier_alpha
+      `Class-source-row` : mp_generation
+      `Class-source-row` : source_notes
+      `Class-source-row` : source_versions
+        `Class-source-row` --> "1..*" `SourceVersion` : source_versions
+        click `SourceVersion` href "../SourceVersion"
+      `Class-source-row` : special_attack_cost_mp
+      `Class-source-row` : uses_weapon
+        `Class-source-row` --> "1..*" `Weapon-type` : uses_weapon
+        click `Weapon-type` href "../Weapon-type"
+      `Class-source-row` : weapon_loadouts
+      `Class-source-row` : wears_material
+        `Class-source-row` --> "1" `Material` : wears_material
+        click `Material` href "../Material"

@@ -1,0 +1,17 @@
+ classDiagram
+    class `Status-source-row`
+    click `Status-source-row` href "../Status-source-row"
+      `Status-source-row` : countered_by
+      `Status-source-row` : duration_s
+      `Status-source-row` : effect
+      `Status-source-row` : kind
+        `Status-source-row` --> "1" `SourceStatusKind` : kind
+        click `SourceStatusKind` href "../SourceStatusKind"
+      `Status-source-row` : name
+      `Status-source-row` : note
+      `Status-source-row` : removed_by
+      `Status-source-row` : source_versions
+        `Status-source-row` --> "1..*" `SourceVersion` : source_versions
+        click `SourceVersion` href "../SourceVersion"
+      `Status-source-row` : sources
+      `Status-source-row` : visual

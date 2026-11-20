@@ -1,0 +1,7 @@
+ classDiagram
+    class `Recipe-weapon-entry`
+    click `Recipe-weapon-entry` href "../Recipe-weapon-entry"
+      `Recipe-weapon-entry` : recipe_map_key
+      `Recipe-weapon-entry` : value
+        `Recipe-weapon-entry` --> "1" `Recipe-weapon-row` : value
+        click `Recipe-weapon-row` href "../Recipe-weapon-row"

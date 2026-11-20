@@ -1,0 +1,6 @@
+ classDiagram
+    class `Consumable-recipe`
+    click `Consumable-recipe` href "../Consumable-recipe"
+      `Consumable-recipe` : entries
+        `Consumable-recipe` --> "1..*" `Consumable-recipe-entry` : entries
+        click `Consumable-recipe-entry` href "../Consumable-recipe-entry"

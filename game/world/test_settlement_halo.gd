@@ -1,7 +1,7 @@
 ## Real hard-candidate obstacle halo; every building, selected wall and service capsule retained.
 extends SceneTree
 const Settlement = preload("res://game/world/settlement.gd")
-const Model = preload("res://ontology/model.gd")
+const Domain = preload("res://game/domain/domain.gd")
 const WorldGen = preload("res://game/world/world_gen.gd")
 
 
@@ -30,7 +30,7 @@ func _init() -> void:
 
 
 func run() -> void:
-	var ontology = Model.Ontology.load_dir("res://ontology/instances")
+	var ontology = Domain.Ontology.load_dir()
 	var design: Dictionary = ontology.configs.generators.design
 	g = WorldGen.new(1, design, ontology.landscapes)
 	var land = g.land_at(Vector2i(511, 511))

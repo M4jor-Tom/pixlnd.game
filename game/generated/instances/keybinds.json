@@ -1,0 +1,124 @@
+{
+ "$schema": "input-binding",
+ "_controls": "../domain/controls.md",
+ "_doc": "Physical defaults only; not the canonical controls catalog. No historical binding fallback.",
+ "_profile": "../domain/controller-profiles.md#keyboard-and-mouse",
+ "entries": [
+  {
+   "key": "hybrid",
+   "value": {
+    "_doc": "Executable keyboard-mouse adapter only; canonical meanings: ontology/domain/controls.md; bindings, aliases, shared phases and status: ontology/domain/controller-profiles.md#keyboard-and-mouse. Tokens: Godot key name, M1/M2/M3 mouse buttons, wheel; move expands to four actions. Underscore metadata is not executable.",
+    "entries": [
+     {
+      "key": "move",
+      "value": "WASD"
+     },
+     {
+      "key": "jump",
+      "value": "Space"
+     },
+     {
+      "key": "sprint",
+      "value": "Shift"
+     },
+     {
+      "key": "dodge",
+      "value": "M3"
+     },
+     {
+      "key": "basic-attack",
+      "value": "M1"
+     },
+     {
+      "key": "special-attack",
+      "value": "M2"
+     },
+     {
+      "key": "class-skill-1",
+      "value": "1"
+     },
+     {
+      "key": "class-skill-2",
+      "value": "2"
+     },
+     {
+      "key": "class-skill-3",
+      "value": "3"
+     },
+     {
+      "key": "class-skill-4",
+      "value": "4"
+     },
+     {
+      "key": "ultimate",
+      "value": "R"
+     },
+     {
+      "key": "climb",
+      "value": "E"
+     },
+     {
+      "key": "interact",
+      "value": "E"
+     },
+     {
+      "key": "pick-up",
+      "value": "E"
+     },
+     {
+      "key": "quick-item",
+      "value": "Q"
+     },
+     {
+      "key": "quick-select",
+      "value": "Tab"
+     },
+     {
+      "key": "lamp",
+      "value": "F"
+     },
+     {
+      "key": "pet-call",
+      "value": "T"
+     },
+     {
+      "key": "crafting",
+      "value": "C"
+     },
+     {
+      "key": "inventory",
+      "value": "B"
+     },
+     {
+      "key": "skills-window",
+      "value": "X"
+     },
+     {
+      "key": "world-map",
+      "value": "M"
+     },
+     {
+      "key": "chat",
+      "value": "Enter"
+     },
+     {
+      "key": "menu",
+      "value": "Escape"
+     },
+     {
+      "key": "help",
+      "value": "F1"
+     },
+     {
+      "key": "debug-menu",
+      "value": "F3"
+     },
+     {
+      "key": "zoom",
+      "value": "wheel"
+     }
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,7 @@
+ classDiagram
+    class `Npc-role-source-entry`
+    click `Npc-role-source-entry` href "../Npc-role-source-entry"
+      `Npc-role-source-entry` : recipe_map_key
+      `Npc-role-source-entry` : value
+        `Npc-role-source-entry` --> "1" `Npc-role-source-row` : value
+        click `Npc-role-source-row` href "../Npc-role-source-row"

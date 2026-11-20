@@ -6,7 +6,7 @@ extends RefCounted
 
 const SavedSpawn := preload("res://game/world/saved_spawn.gd")
 const CREATURE := preload("res://game/entities/creature.tscn")
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Items := preload("res://game/items/items.gd")
 const Targeting := preload("res://game/combat/targeting.gd")
 const Combat := preload("res://game/combat/combat.gd")
@@ -75,12 +75,10 @@ static func _candidate_group(
 	party_max: int,
 	out: Array
 ) -> bool:
-	var c: Model.Creature = creatures[pool[rng.randi() % pool.size()]]
-	var size := (
-		c.group_size
-		if c.group_size != Vector2i(1, 1)
-		else Vector2i(int(spawns["default-group"][0]), int(spawns["default-group"][1]))
-	)
+	var c: Object = creatures[pool[rng.randi() % pool.size()]]
+	var size := Domain.group_size(c)
+	if size == Vector2i(1, 1):
+		size = Vector2i(int(spawns["default-group"][0]), int(spawns["default-group"][1]))
 	var count := rng.randi_range(size.x, size.y)
 	var cx := zc.x * n + rng.randi_range(4, n - 5)
 	var cy := zc.y * n + rng.randi_range(4, n - 5)
@@ -92,7 +90,7 @@ static func _candidate_group(
 static func _admit_group(
 	gen,
 	land,
-	c: Model.Creature,
+	c: Object,
 	spawns: Dictionary,
 	rng: RandomNumberGenerator,
 	cx: int,
@@ -120,7 +118,7 @@ static func _admit_group(
 static func _place_group(
 	gen,
 	land,
-	c: Model.Creature,
+	c: Object,
 	spawns: Dictionary,
 	rng: RandomNumberGenerator,
 	cx: int,
@@ -131,7 +129,7 @@ static func _place_group(
 	party_max: int,
 	out: Array
 ) -> bool:
-	var h: StringName = c.hostility
+	var h: StringName = Domain.hostility(c)
 	if h == &"V":
 		h = &"H" if rng.randf() < float(spawns["variable-hostility"]["H"]) else &"N"
 	var positions: Array = []
@@ -145,7 +143,7 @@ static func _place_group(
 static func _append_group(
 	gen,
 	land,
-	c: Model.Creature,
+	c: Object,
 	h: StringName,
 	positions: Array,
 	party_level: int,
@@ -166,20 +164,15 @@ static func _ordinary_pool(roster: Array, creatures: Dictionary, skip: Array) ->
 		func(id: String) -> bool:
 			return (
 				creatures.has(id)
-				and not creatures[id].boss_species
-				and not (
-					Model.CreatureCategory.keys()[creatures[id].category].to_lower().replace(
-						"_", "-"
-					)
-					in skip
-				)
+				and creatures[id].slot_boss != true
+				and not (str(creatures[id].slot_cat) in skip)
 			)
 	)
 
 
 static func _sample_positions(
 	gen,
-	c: Model.Creature,
+	c: Object,
 	spawns: Dictionary,
 	rng: RandomNumberGenerator,
 	cx: int,
@@ -196,7 +189,7 @@ static func _sample_positions(
 
 static func _sample_position(
 	gen,
-	c: Model.Creature,
+	c: Object,
 	spawns: Dictionary,
 	rng: RandomNumberGenerator,
 	cx: int,
@@ -210,10 +203,7 @@ static func _sample_position(
 		return true
 	var ground: int = gen.height_at(x, y)
 	var in_water: bool = ground < gen.sea_level
-	if (
-		in_water != (c.category == Model.CreatureCategory.AQUATIC)
-		and spawns["aquatic-only-in-water"]
-	):
+	if in_water != (c.slot_cat == "aquatic") and spawns["aquatic-only-in-water"]:
 		return true
 	positions.append(Vector3(x + 0.5, (gen.sea_level if in_water else ground) + 1.0, y + 0.5))
 	return true
@@ -222,7 +212,7 @@ static func _sample_position(
 static func _group(
 	gen,
 	land,
-	c: Model.Creature,
+	c: Object,
 	h: StringName,
 	positions: Array,
 	party_level: int,
@@ -240,7 +230,7 @@ static func _group(
 	var dmg := Combat.enemy_damage(lvl, pb, design["combat"])
 	var gseed := rng.randi()  # the group seed, the last draw of the zone rng
 	var cr: Dictionary = design["creature-roles"]  # D26: one combat-role per group, off a private
-	var role := str(c.combat_role)  # rng so the shared zone stream is untouched
+	var role := str(Domain.combat_role(c))  # rng so the shared zone stream is untouched
 	if role == "any-class":
 		var rr := RandomNumberGenerator.new()
 		rr.seed = gseed ^ hash("role")
@@ -249,7 +239,7 @@ static func _group(
 	elif not cr.has(role):
 		role = str(cr["default"])  # no role in creatures.json (or `none`): melee
 	return {
-		"species": StringName(c.id),
+		"species": Domain.id_of(c),
 		"level": lvl,
 		"hostility": h,
 		"max_hp": max_hp,
@@ -328,8 +318,8 @@ static func _populate_plan(
 	var made: Array = []
 	for group_index in plan_.size():
 		var g: Dictionary = plan_[group_index]
-		var c: Model.Creature = creatures[g["species"]]
-		var cat: String = Model.CreatureCategory.keys()[c.category].to_lower().replace("_", "-")
+		var c: Object = creatures[g["species"]]
+		var cat := str(c.slot_cat)
 		var size := float(spawns["size-by-category"].get(cat, 1.0))
 		var color := Color(spawns["hostility-colors"].get(g["hostility"], "#e6e6e6"))
 		if not _populate_group(

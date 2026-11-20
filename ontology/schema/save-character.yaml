@@ -1,0 +1,288 @@
+id: https://w3id.org/pixlnd/save-character
+name: pixlnd-save-character
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+classes:
+  saved-item:
+    class_uri: pixlnd:saved-item
+    see_also: &id001
+    - ../domain/3_Classes.md#save-data
+    slots:
+    - saved-item-type
+    - saved-item-subtype
+    - saved-item-material
+    - saved-item-rarity
+    - saved-item-level
+    - saved-item-upgrade-count
+    - saved-item-modifier
+    - saved-item-minus-modifier
+    - saved-item-count
+    description: Current item_data wire payload. This is mutable item state, not a catalog definition
+      or the historical ItemData layout; kind-dependent target membership and power bounds remain current-rule
+      checks.
+  skill-investment:
+    class_uri: pixlnd:skill-investment
+    see_also: &id002
+    - ../domain/3_Classes.md#save-data
+    slots:
+    - skill-investment-ability
+    - skill-investment-points
+    description: Container-scoped ability key. SimpleDict scalar values are current wire encoding; key/body
+      agreement needs admission validation.
+  saved-equipment-entry:
+    class_uri: pixlnd:saved-equipment-entry
+    see_also: &id003
+    - ../domain/3_Classes.md#save-data
+    slots:
+    - saved-equipment-entry-slot
+    - saved-equipment-entry-item
+    description: Container-scoped usable-slot key, independently empty hands represented by omitted keys;
+      legality remains current-rule validation.
+  character-state:
+    class_uri: pixlnd:character-state
+    see_also: &id004
+    - ../domain/3_Classes.md#save-data
+    slots:
+    - character-state-id
+    - character-state-class-id
+    - character-state-spec
+    - character-state-level
+    - character-state-xp
+    - character-state-banked
+    - character-state-coins
+    - character-state-points
+    - character-state-bag
+    - character-state-equipment
+    description: Current capture character payload only; no transient player HP, statuses, cooldowns or
+      deferred portable fields are added. Exact current-rule progression and equipment integrity remain
+      runtime checks.
+  character-world-position:
+    class_uri: pixlnd:character-world-position
+    see_also: &id005
+    - ../domain/3_Classes.md#save-data
+    slots:
+    - character-world-position-character
+    - character-world-position-position
+    - character-world-position-respawn
+    description: Container-scoped portable hero key; position and respawn belong to this saved world,
+      not a seed or global portable position.
+slots:
+  saved-item-type:
+    slot_uri: pixlnd:saved-item/type
+    alias: type
+    domain: saved-item
+    range: string
+    required: true
+    see_also: *id001
+  saved-item-subtype:
+    slot_uri: pixlnd:saved-item/subtype
+    alias: subtype
+    domain: saved-item
+    range: string
+    required: true
+    see_also: *id001
+  saved-item-material:
+    slot_uri: pixlnd:saved-item/material
+    alias: material
+    domain: saved-item
+    range: string
+    required: true
+    see_also: *id001
+  saved-item-rarity:
+    slot_uri: pixlnd:saved-item/rarity
+    alias: rarity
+    domain: saved-item
+    range: integer
+    required: true
+    see_also: *id001
+    minimum_value: 0
+    maximum_value: 4
+  saved-item-level:
+    slot_uri: pixlnd:saved-item/level
+    alias: level
+    domain: saved-item
+    range: integer
+    required: true
+    see_also: *id001
+    minimum_value: 1
+  saved-item-upgrade-count:
+    slot_uri: pixlnd:saved-item/upgrade_count
+    alias: upgrade_count
+    domain: saved-item
+    range: integer
+    required: true
+    see_also: *id001
+    minimum_value: 0
+  saved-item-modifier:
+    slot_uri: pixlnd:saved-item/modifier
+    alias: modifier
+    domain: saved-item
+    range: integer
+    required: true
+    see_also: *id001
+    minimum_value: 0
+  saved-item-minus-modifier:
+    slot_uri: pixlnd:saved-item/minus_modifier
+    alias: minus_modifier
+    domain: saved-item
+    range: integer
+    required: true
+    see_also: *id001
+    minimum_value: 0
+  saved-item-count:
+    slot_uri: pixlnd:saved-item/count
+    alias: count
+    domain: saved-item
+    range: integer
+    required: true
+    see_also: *id001
+    minimum_value: 1
+  skill-investment-ability:
+    slot_uri: pixlnd:skill-investment/ability
+    alias: ability
+    domain: skill-investment
+    range: ability
+    required: true
+    see_also: *id002
+    key: true
+  skill-investment-points:
+    slot_uri: pixlnd:skill-investment/points
+    alias: points
+    domain: skill-investment
+    range: integer
+    required: true
+    see_also: *id002
+    minimum_value: 1
+  saved-equipment-entry-slot:
+    slot_uri: pixlnd:saved-equipment-entry/slot
+    alias: slot
+    domain: saved-equipment-entry
+    range: equipment-slot
+    required: true
+    see_also: *id003
+    key: true
+  saved-equipment-entry-item:
+    slot_uri: pixlnd:saved-equipment-entry/item
+    alias: item
+    domain: saved-equipment-entry
+    range: saved-item
+    required: true
+    see_also: *id003
+    inlined: true
+  character-state-id:
+    slot_uri: pixlnd:character-state/id
+    alias: id
+    domain: character-state
+    range: string
+    required: true
+    see_also: *id004
+    pattern: ^.+$
+  character-state-class-id:
+    slot_uri: pixlnd:character-state/class_id
+    alias: class_id
+    domain: character-state
+    range: character-class
+    required: true
+    see_also: *id004
+  character-state-spec:
+    slot_uri: pixlnd:character-state/spec
+    alias: spec
+    domain: character-state
+    range: specialization
+    required: true
+    see_also: *id004
+  character-state-level:
+    slot_uri: pixlnd:character-state/level
+    alias: level
+    domain: character-state
+    range: integer
+    required: true
+    see_also: *id004
+    minimum_value: 1
+  character-state-xp:
+    slot_uri: pixlnd:character-state/xp
+    alias: xp
+    domain: character-state
+    range: integer
+    required: true
+    see_also: *id004
+    minimum_value: 0
+  character-state-banked:
+    slot_uri: pixlnd:character-state/banked
+    alias: banked
+    domain: character-state
+    range: integer
+    required: true
+    see_also: *id004
+    minimum_value: 0
+  character-state-coins:
+    slot_uri: pixlnd:character-state/coins
+    alias: coins
+    domain: character-state
+    range: integer
+    required: true
+    see_also: *id004
+    minimum_value: 0
+  character-state-points:
+    slot_uri: pixlnd:character-state/points
+    alias: points
+    domain: character-state
+    range: skill-investment
+    required: true
+    see_also: *id004
+    multivalued: true
+    inlined: true
+    inlined_as_list: false
+  character-state-bag:
+    slot_uri: pixlnd:character-state/bag
+    alias: bag
+    domain: character-state
+    range: saved-item
+    required: true
+    see_also: *id004
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  character-state-equipment:
+    slot_uri: pixlnd:character-state/equipment
+    alias: equipment
+    domain: character-state
+    range: saved-equipment-entry
+    required: true
+    see_also: *id004
+    multivalued: true
+    inlined: true
+    inlined_as_list: false
+  character-world-position-character:
+    slot_uri: pixlnd:character-world-position/character
+    alias: character
+    domain: character-world-position
+    range: string
+    required: true
+    see_also: *id005
+    key: true
+  character-world-position-position:
+    slot_uri: pixlnd:character-world-position/position
+    alias: position
+    domain: character-world-position
+    range: double
+    required: true
+    see_also: *id005
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+  character-world-position-respawn:
+    slot_uri: pixlnd:character-world-position/respawn
+    alias: respawn
+    domain: character-world-position
+    range: double
+    required: true
+    see_also: *id005
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3

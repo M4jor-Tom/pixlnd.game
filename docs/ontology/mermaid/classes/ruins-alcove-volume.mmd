@@ -1,0 +1,9 @@
+ classDiagram
+    class `Ruins-alcove-volume`
+    click `Ruins-alcove-volume` href "../Ruins-alcove-volume"
+      `Encounter-volume` <|-- `Ruins-alcove-volume`
+        click `Encounter-volume` href "../Encounter-volume"
+      `Ruins-alcove-volume` : above_floor
+      `Ruins-alcove-volume` : below_floor
+      `Ruins-alcove-volume` : depth
+      `Ruins-alcove-volume` : width

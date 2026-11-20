@@ -1,6 +1,8 @@
 # ontology/ — Cube World rebuild
 
 Source of truth for the game. Read `domain/index.md` first.
+Mermaid diagrams of the LinkML `schema/`, regenerated on each commit:
+[relations overview](../docs/ontology/mermaid/overview.mmd), per-class details in `classes/` beside it.
 
 ```
 ontology/

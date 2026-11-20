@@ -1,6 +1,9 @@
 ## Refactor seam checks: ordered scans, live admission callbacks and exact RNG consumption.
 extends RefCounted
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
+const CreatureRow := preload("res://game/generated/domain/link_ml_creature_source_row.gd")
+const AbilityRow := preload("res://game/generated/domain/link_ml_ability_source_row.gd")
+const TreePosition := preload("res://game/generated/domain/link_ml_ability_tree_position.gd")
 const Items := preload("res://game/items/items.gd")
 const Item := preload("res://game/items/item.gd")
 const Inventory := preload("res://game/items/inventory.gd")
@@ -85,10 +88,8 @@ static func _loot_draws(test, o, design: Dictionary) -> void:
 	d.loot["gear-chance"] = 0.0
 	d.loot["consumable-chance"] = 0.0
 	d.loot["species-drop-chance"] = 0.0
-	var creature := Model.Creature.new()
-	creature.drops.assign(
-		[&"not-an-ingredient", &"wood-cube", &"not-an-ingredient", &"parrot-feather"]
-	)
+	var creature := CreatureRow.new()
+	creature.slot_drops = ["not-an-ingredient", "wood-cube", "not-an-ingredient", "parrot-feather"]
 	var rng := RandomNumberGenerator.new()
 	var control := RandomNumberGenerator.new()
 	for species in [null, creature]:
@@ -122,15 +123,17 @@ static func _selection(test, o, design: Dictionary) -> void:
 		"completion uses outside finisher only when empty"
 	)
 	var tree := SkillTree.new(o, design["skill-point"], &"warrior", &"berserker")
-	var duplicate := Model.Ability.new()
-	duplicate.alpha_tree = {"column": "class", "rank": 1}
+	var duplicate := AbilityRow.new()
+	duplicate.slot_alpha_tree = TreePosition.new()
+	duplicate.slot_alpha_tree.slot_column = "class"
+	duplicate.slot_alpha_tree.slot_rank = 1
 	tree.nodes.push_front(duplicate)
 	test.check(tree.class_slot(1) == duplicate, "class slot retains first duplicate")
 	test.check(
 		tree.prerequisite(o.abilities[&"cyclone"]) == duplicate,
 		"prerequisite retains first duplicate"
 	)
-	duplicate.alpha_tree.rank = 0
+	duplicate.slot_alpha_tree.slot_rank = 0
 	test.check(tree.class_slot(0) == duplicate, "class slot retains original index <=3 rule")
 
 

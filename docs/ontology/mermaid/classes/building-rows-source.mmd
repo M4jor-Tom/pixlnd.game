@@ -1,0 +1,6 @@
+ classDiagram
+    class `Building-rows-source`
+    click `Building-rows-source` href "../Building-rows-source"
+      `Building-rows-source` : entries
+        `Building-rows-source` --> "1..*" `Building-source-row-entry` : entries
+        click `Building-source-row-entry` href "../Building-source-row-entry"

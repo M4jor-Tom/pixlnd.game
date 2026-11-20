@@ -1,0 +1,121 @@
+{
+ "$schema": "crafting-station",
+ "_doc": "static-entity ids from cuwo. Located in the Crafting District (A) / around villages (S). Crafting screen (../domain/controls.md#crafting) shows required station.",
+ "entries": [
+  {
+   "key": "furnace",
+   "value": {
+    "building": "smithy",
+    "does": "nuggets → metal cubes",
+    "name": "Furnace",
+    "static-id": 71,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "anvil",
+   "value": {
+    "building": "smithy",
+    "does": "metal weapons, iron armor, fists, medium armors (X)",
+    "name": "Anvil",
+    "static-id": 72,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "customization-bench",
+   "value": {
+    "building": "smithy",
+    "does": "attach material cubes (A+S) and spirit cubes (A) to weapons; bench-rotate / bench-place / bench-remove (../domain/controls.md#bench-rotate)",
+    "name": "Customization Bench",
+    "static-id": 77,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "spinning-wheel",
+   "value": {
+    "building": "clothier",
+    "does": "fiber/capsule/cobweb → yarn",
+    "name": "Spinning Wheel",
+    "static-id": 73,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "loom",
+   "value": {
+    "building": "clothier",
+    "does": "cloth armor (linen/cotton/silk); bows/crossbows also use yarn",
+    "name": "Loom",
+    "static-id": 74,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "saw",
+   "value": {
+    "building": "workshop",
+    "does": "wood log → wood cube",
+    "name": "Saw (Saw Bench)",
+    "static-id": 75,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "workbench",
+   "value": {
+    "building": "workshop",
+    "does": "wooden weapons: staves, wands, bows, crossbows, boomerangs, wooden maces; +12 wood cube upgrade (A)",
+    "name": "Workbench",
+    "static-id": 76,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "campfire",
+   "value": {
+    "building": "campsite",
+    "does": "cooking & alchemy marked campfire; thaw iceflower; standing in it does no damage",
+    "name": "Campfire",
+    "static-id": 65,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "anywhere",
+   "value": {
+    "does": "water flask (in water), pineapple slice, snowberry mash, most potions/elixirs/beverages, rings & amulets",
+    "name": "No station",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  }
+ ]
+}

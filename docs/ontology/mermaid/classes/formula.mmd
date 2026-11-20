@@ -1,0 +1,37 @@
+ classDiagram
+    class `Formula`
+    click `Formula` href "../Formula"
+      `Item` <|-- `Formula`
+        click `Item` href "../Item"
+      `Formula` : formula_recipe
+        `Formula` --> "1" `Recipe` : formula_recipe
+        click `Recipe` href "../Recipe"
+      `Formula` : id
+      `Formula` : item_flags
+      `Formula` : item_land
+        `Formula` --> "0..1" `Land` : item_land
+        click `Land` href "../Land"
+      `Formula` : item_level
+      `Formula` : item_material
+        `Formula` --> "1" `Material` : item_material
+        click `Material` href "../Material"
+      `Formula` : item_minus_modifier
+      `Formula` : item_modifier
+      `Formula` : item_name
+      `Formula` : item_plus
+      `Formula` : item_rarity
+        `Formula` --> "1" `Rarity` : item_rarity
+        click `Rarity` href "../Rarity"
+      `Formula` : item_sub_type
+        `Formula` --> "1" `Item-type` : item_sub_type
+        click `Item-type` href "../Item-type"
+      `Formula` : item_type
+        `Formula` --> "1" `Item-type` : item_type
+        click `Item-type` href "../Item-type"
+      `Formula` : item_upgrade_count
+      `Formula` : item_upgrades
+        `Formula` --> "1..*" `Item-upgrade` : item_upgrades
+        click `Item-upgrade` href "../Item-upgrade"
+      `Formula` : item_weapon_type
+        `Formula` --> "0..1" `Weapon-type` : item_weapon_type
+        click `Weapon-type` href "../Weapon-type"

@@ -1,0 +1,133 @@
+{
+ "$schema": "slash-command",
+ "chat-rules": {
+  "_controls": [
+   "../domain/controls.md#chat"
+  ],
+  "charset": "ASCII 32-126 displayed",
+  "name-length": "2-16"
+ },
+ "entries": [
+  {
+   "key": "/connect <addr>",
+   "value": {
+    "desc": "connect to server (seamless if same seed / reconnect)",
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "/disconnect",
+   "value": {
+    "desc": "leave server",
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "/name <name>",
+   "value": {
+    "desc": "rename player",
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "/namepet <name>",
+   "value": {
+    "desc": "name active pet",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "/pvp",
+   "value": {
+    "desc": "dropped (D11): PvP is a server.cfg flag, default off; alpha modded-server duel command",
+    "versions": [
+     "X"
+    ]
+   }
+  },
+  {
+   "key": "/sit",
+   "value": {
+    "desc": "emote",
+    "versions": [
+     "S",
+     "A?"
+    ]
+   }
+  },
+  {
+   "key": "/wave",
+   "value": {
+    "desc": "emote",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "/dance",
+   "value": {
+    "desc": "emote",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "/pet",
+   "value": {
+    "desc": "emote",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "/level",
+   "value": {
+    "desc": "debug (2012 devlog)",
+    "versions": [
+     "X"
+    ]
+   }
+  },
+  {
+   "key": "!goto <player> / !tp <loc>",
+   "value": {
+    "desc": "modded servers",
+    "versions": [
+     "A-mod"
+    ]
+   }
+  },
+  {
+   "key": "cuwo-server-commands",
+   "value": [
+    "/player",
+    "/pm",
+    "/server",
+    "/who",
+    "/whowhere",
+    "/whereis",
+    "/login",
+    "/say",
+    "/kick",
+    "/setclock",
+    "/ban",
+    "/unban",
+    "/kill",
+    "/stun",
+    "/heal"
+   ]
+  }
+ ]
+}

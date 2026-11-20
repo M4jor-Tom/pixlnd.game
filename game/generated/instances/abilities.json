@@ -1,0 +1,1237 @@
+{
+ "$schema": "ability",
+ "_doc": "Control meanings: ../domain/controls.md; physical bindings: ../domain/controller-profiles.md. _controls are inert references, not loader/runtime dispatch. Active/movement abilities without _controls have no hybrid activation assigned here; no source input shape is inherited. Class ranks 1-3 activate slots 1-3; separate ultimate column activates slot 4, except Assassin Camouflage remains only rank/slot 3. alpha-tree needs = points in previous node (roots 0, D20). Current effects/gates and later approvals: ../domain/3_Classes.md#ability and #skill-tree-a; source balance below does not override them.",
+ "_omega-signature": {
+  "_note": "Ω creatures get signature abilities; player Ω skills unpublished (2026 tweet: all classes functional, new skills, skill trees next)",
+  "bat-vampiric-bite": "life drain",
+  "crab-claw-boomerang": "ranged claw throw",
+  "hedgehog-spike-swirl": "radial spikes",
+  "hornet-poison-sting": "poison",
+  "ogre-belly-slide": "charge, damage + stun",
+  "slime-divide": "below 50% HP split into smaller full-HP copies",
+  "zombie-eat": "grab, immobilise, drain HP while healing self; armor penetration grows with combo"
+ },
+ "entries": [
+  {
+   "key": "basic-attack",
+   "value": {
+    "_controls": [
+     "basic-attack"
+    ],
+    "effect": "weapon basic-attack moveset (../domain/controls.md#basic-attack); builds combo and MP (non-mage)",
+    "kind": "active",
+    "name": "Basic Attack",
+    "owner": "all",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "special-attack",
+   "value": {
+    "_controls": [
+     "special-attack"
+    ],
+    "cost": {
+     "mp": "charged amount (mage S: 30)"
+    },
+    "effect": "weapon special-attack moveset (../domain/controls.md#special-attack); warrior/ranger/mage charge (MP bar pink), rogue instant; more MP = more damage + stun/knockdown chance",
+    "kind": "active",
+    "name": "Special Attack",
+    "owner": "all",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "dodge-roll",
+   "value": {
+    "_controls": [
+     "dodge"
+    ],
+    "cost": {
+     "stamina": 25
+    },
+    "effect": "i-frames (not vs spike traps / dagger poison); dismounts; negates fall damage; up to 5 chained if regen allows",
+    "kind": "movement",
+    "name": "Dodge Roll",
+    "owner": "all",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "jump",
+   "value": {
+    "_controls": [
+     "jump"
+    ],
+    "effect": "tap = hop, hold = max; mid-air steering; no i-frames; wall-jump/flip while climbing costs stamina (S 0.9.1-3)",
+    "kind": "movement",
+    "name": "Jump",
+    "owner": "all",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "climb",
+   "value": {
+    "_controls": [
+     "climb"
+    ],
+    "cost": {
+     "stamina": "drain; none while still (A); none with climbing spikes (S)"
+    },
+    "effect": "any vertical surface, sideways ok, no overhangs",
+    "kind": "movement",
+    "name": "Climb",
+    "owner": "all",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "swim",
+   "value": {
+    "_controls": [
+     "move",
+     "swim-ascent"
+    ],
+    "effect": "≈½ walk speed; A: infinite breath; S: diving breath → HP loss when empty, wall-hold pauses, healing extends",
+    "kind": "movement",
+    "name": "Swim / Dive",
+    "owner": "all",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "lantern",
+   "value": {
+    "_controls": [
+     "lamp"
+    ],
+    "effect": "light radius by lamp rarity (A) / artifacts (S)",
+    "kind": "active",
+    "name": "Lantern",
+    "owner": "all",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "quick-item",
+   "value": {
+    "_controls": [
+     "quick-item"
+    ],
+    "effect": "food (sit, immobile), potion (channel, can move), bomb (spawn); choose via quick selection (../domain/controls.md#quick-select)",
+    "kind": "active",
+    "name": "Use Quick Item",
+    "owner": "all",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "call-pet",
+   "value": {
+    "_controls": [
+     "pet-call",
+     "pet-mount"
+    ],
+    "effect": "distinct recall and mount intentions; current mounting gate: ../domain/3_Classes.md#pet",
+    "kind": "active",
+    "name": "Call / Ride Pet",
+    "owner": "all",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "deploy-special-item",
+   "value": {
+    "_controls": [
+     "deploy-glider",
+     "deploy-boat",
+     "glider-level"
+    ],
+    "effect": "glider: glider-level request to level off (../domain/controls.md#glider-level) (stamina), attack closes it, collision = dizzy fall, no midair redeploy; boat: only in swim-deep water, surfaces if underwater",
+    "kind": "active",
+    "name": "Deploy Glider / Boat",
+    "owner": "all",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "block",
+   "value": {
+    "_controls": [
+     "block"
+    ],
+    "cost": {
+     "block-power": "drain"
+    },
+    "effect": "absorbs frontal hits; gives MP (D11: the bar specials spend); guardian block power x2",
+    "kind": "active",
+    "name": "Block",
+    "owner": "warrior",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "pet-master",
+   "value": {
+    "alpha-tree": {
+     "column": "pets",
+     "needs": 0,
+     "skill-slot": 0
+    },
+    "effect": "+X% pet max HP per point",
+    "kind": "shared-passive",
+    "name": "Pet Master",
+    "owner": "all",
+    "unlocks-next": "riding",
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "riding",
+   "value": {
+    "alpha-tree": {
+     "column": "pets",
+     "needs": 5,
+     "skill-slot": 1
+    },
+    "effect": "enables mounting (../domain/controls.md#pet-mount); +X% mount speed per point",
+    "kind": "shared-passive",
+    "name": "Riding",
+    "owner": "all",
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "climbing",
+   "value": {
+    "alpha-tree": {
+     "column": "climbing",
+     "needs": 0,
+     "skill-slot": 2
+    },
+    "effect": "-X% stamina drain per point",
+    "kind": "shared-passive",
+    "name": "Climbing",
+    "owner": "all",
+    "unlocks-next": "hang-gliding",
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "hang-gliding",
+   "value": {
+    "alpha-tree": {
+     "column": "climbing",
+     "needs": 5,
+     "skill-slot": 3
+    },
+    "effect": "1st point enables Hang Glider item; further points +glide speed",
+    "kind": "shared-passive",
+    "name": "Hang Gliding",
+    "owner": "all",
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "swimming",
+   "value": {
+    "alpha-tree": {
+     "column": "water",
+     "needs": 0,
+     "skill-slot": 4
+    },
+    "effect": "+X% swim speed per point",
+    "kind": "shared-passive",
+    "name": "Swimming",
+    "owner": "all",
+    "unlocks-next": "sailing",
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "sailing",
+   "value": {
+    "alpha-tree": {
+     "column": "water",
+     "needs": 5,
+     "skill-slot": 5
+    },
+    "effect": "1st point enables Boat item; further points +boat speed (GP says needs Climbing 5 ?)",
+    "kind": "shared-passive",
+    "name": "Sailing",
+    "owner": "all",
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "smash",
+   "value": {
+    "_controls": [
+     "class-skill-1"
+    ],
+    "alpha-id": 54,
+    "alpha-tree": {
+     "column": "class",
+     "needs": 0,
+     "rank": 1
+    },
+    "applies": [
+     "stun"
+    ],
+    "cooldown-s": {
+     "A": "points reduce",
+     "S": 0
+    },
+    "cost": {
+     "S": {
+      "stamina": 100
+     }
+    },
+    "effect": "leap to target within range, AoE damage, high stun chance",
+    "kind": "active",
+    "name": "Smash",
+    "owner": "warrior",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "cyclone",
+   "value": {
+    "_controls": [
+     "class-skill-2"
+    ],
+    "alpha-id": 86,
+    "alpha-tree": {
+     "column": "class",
+     "needs": 5,
+     "rank": 2
+    },
+    "cooldown-s": {
+     "A": "~60 at low points",
+     "S": 0
+    },
+    "cost": {
+     "S": {
+      "stamina": "25 + 25/s"
+     }
+    },
+    "duration-s": {
+     "A": 5,
+     "S": "channel"
+    },
+    "effect": "A/S reference: spin, damage all nearby every 0.25 s (haste ignored); S: blocks all directions with Block Power which regenerates during cyclone; tap = 1 s. Hybrid: clockwise 1 turn/s from activation facing, current-position directional contacts once per enemy/revolution; front hits immediately, exact final contact counts once, stop body at reached facing without rotating camera; normal camera-based controls unchanged (domain/3_Classes.md#ability).",
+    "kind": "active",
+    "name": "Cyclone",
+    "owner": "warrior",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "cyclone-jump",
+   "value": {
+    "cost": {
+     "stamina": 25
+    },
+    "effect": "launch high, auto-channel 1 s, cannot block during",
+    "kind": "active",
+    "name": "Cyclone Jump",
+    "owner": "warrior",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "war-frenzy",
+   "value": {
+    "_controls": [
+     "class-skill-3"
+    ],
+    "alpha-id": 102,
+    "alpha-tree": {
+     "column": "class",
+     "needs": 5,
+     "rank": 3
+    },
+    "duration-s": 10,
+    "effect": "charge specials faster; red tint; points → cooldown + charge rate",
+    "kind": "active",
+    "name": "War Frenzy",
+    "owner": "berserker",
+    "removed-in": "S",
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "bulwark",
+   "value": {
+    "_controls": [
+     "class-skill-3"
+    ],
+    "alpha-id": 101,
+    "alpha-tree": {
+     "column": "class",
+     "needs": 5,
+     "rank": 3
+    },
+    "duration-s": 10,
+    "effect": "stun immunity + reduced damage; usable while stunned; points → cooldown + damage reduction",
+    "kind": "active",
+    "name": "Bulwark",
+    "owner": "guardian",
+    "removed-in": "S",
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "rock-fist",
+   "value": {
+    "_controls": [
+     "class-skill-4"
+    ],
+    "alpha-tree": {
+     "column": "ultimate",
+     "needs": 5
+    },
+    "applies": [
+     "stun",
+     "knockback"
+    ],
+    "cooldown-s": 20,
+    "cost": {},
+    "effect": "charge in a straight line; knock-up + stun everything hit; cancel with dodge/special attack/Smash",
+    "kind": "active",
+    "name": "Rock Fist",
+    "owner": "berserker",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "heroic-shout",
+   "value": {
+    "_controls": [
+     "class-skill-4"
+    ],
+    "alpha-tree": {
+     "column": "ultimate",
+     "needs": 5
+    },
+    "applies": [
+     "taunt"
+    ],
+    "cooldown-s": 30,
+    "cost": {},
+    "effect": "taunt all enemies within 5 m (red tint); allies incl. self regen 50% max HP over 10 s",
+    "kind": "active",
+    "name": "Heroic Shout",
+    "owner": "guardian",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "battle-fury",
+   "value": {
+    "duration-s": 8,
+    "effect": "13% per hit (wiki ~12-14%) → 8 s buff: 50% life steal, specials charge near-instantly; refreshable",
+    "kind": "passive",
+    "name": "Battle Fury",
+    "owner": "warrior",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "berserker-rage",
+   "value": {
+    "effect": "+attack speed per hit up to 69% (S); reset on miss",
+    "kind": "passive",
+    "name": "Berserker Rage",
+    "owner": "berserker",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "toughness",
+   "value": {
+    "effect": "+25% max HP (A, cuwo x1.25; S shipped +25 flat, treated as bug)",
+    "kind": "passive",
+    "name": "Toughness",
+    "owner": "guardian",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "barricade",
+   "value": {
+    "effect": "block with any weapon; block power doubled / block twice as long",
+    "kind": "passive",
+    "name": "Barricade / Elusiveness (guardian)",
+    "owner": "guardian",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "kick",
+   "value": {
+    "_controls": [
+     "class-skill-1"
+    ],
+    "alpha-id": 21,
+    "alpha-tree": {
+     "column": "class",
+     "needs": 0,
+     "rank": 1
+    },
+    "applies": [
+     "knockback",
+     "knockdown"
+    ],
+    "cooldown-s": {
+     "S": 0
+    },
+    "cost": {
+     "S": {
+      "stamina": 50
+     }
+    },
+    "effect": "roundhouse/spinning kick, knockback all in melee range, possible KO; points → cooldown + knockback",
+    "kind": "active",
+    "name": "Kick",
+    "owner": "ranger",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "retreat",
+   "value": {
+    "_controls": [
+     "class-skill-2"
+    ],
+    "alpha-id": 50,
+    "alpha-tree": {
+     "column": "class",
+     "needs": 5,
+     "rank": 2
+    },
+    "cost": {
+     "S": {
+      "stamina": "all"
+     }
+    },
+    "effect": "A: short backward jump away from cursor; S: backflip toward camera, grants max stealth; 2013-07-23 fix: no glide speed boost",
+    "kind": "active",
+    "name": "Retreat",
+    "owner": "ranger",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "aim",
+   "value": {
+    "_controls": [
+     "class-skill-3"
+    ],
+    "alpha-id": 99,
+    "alpha-tree": {
+     "column": "class",
+     "needs": 5,
+     "rank": 3
+    },
+    "effect": "lie prone, zoomed view, slowly enter stealth (purple bar): fast MP regen, +damage, +crit; cancelled by movement; points → cooldown + entry speed",
+    "kind": "active",
+    "name": "Aim",
+    "owner": "sniper",
+    "removed-in": "S",
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "scouts-swiftness",
+   "value": {
+    "_controls": [
+     "class-skill-3"
+    ],
+    "alpha-id": 100,
+    "alpha-tree": {
+     "column": "class",
+     "needs": 5,
+     "rank": 3
+    },
+    "duration-s": 10,
+    "effect": "+move & attack speed, afterimage; points → cooldown + magnitude; MP crash fixed 2013-07-23",
+    "kind": "active",
+    "name": "Scout's Swiftness",
+    "owner": "scout",
+    "removed-in": "S",
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "sneak",
+   "value": {
+    "_controls": [
+     "class-skill-2"
+    ],
+    "alpha-id": 79,
+    "alpha-tree": {
+     "class": "rogue",
+     "column": "class",
+     "needs": 5,
+     "rank": 2
+    },
+    "applies": [
+     "stealth"
+    ],
+    "effect": "move slower, fill stealth (faster standing still / in darkness, slower in daylight / near lamps)",
+    "kind": "active",
+    "name": "Sneak",
+    "owner": [
+     "rogue (A)",
+     "assassin (S)",
+     "sniper (S)"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "charge-builds-stealth",
+   "value": {
+    "effect": "charging special attack builds stealth; stealth → MP + crit",
+    "kind": "passive",
+    "name": "Charged Shot Stealth",
+    "owner": "sniper",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "hit-series",
+   "value": {
+    "effect": "attack speed (and power ?) up per consecutive hit",
+    "kind": "passive",
+    "name": "Hit Series",
+    "owner": "sniper",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "intuition",
+   "value": {
+    "duration-s": {
+     "S": 30
+    },
+    "effect": "A: chance per shot to crit and to get a free fully-charged power shot; S: basic hit may proc 30 s buff: next special attack charges instantly (consumes all MP)",
+    "kind": "passive",
+    "name": "Intuition (Rough Ranger)",
+    "owner": "scout",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "shadow-shooter",
+   "value": {
+    "_controls": [
+     "class-skill-4"
+    ],
+    "alpha-tree": {
+     "column": "ultimate",
+     "needs": 5
+    },
+    "cooldown-s": 60,
+    "cost": {},
+    "duration-s": 30,
+    "effect": "clone mimicking your shots, same HP as you at spawn, deals % of your damage; stats scale since 0.9.1-4",
+    "kind": "active",
+    "name": "Shadow Shooter",
+    "owner": "sniper",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "sprint",
+   "value": {
+    "_control-status": "Class-specific source ability, not the generic hybrid sprint control; no activation assigned by the current tree (../domain/controls.md#unselected-boundaries).",
+    "cost": {
+     "stamina": "drain"
+    },
+    "effect": "run fast (~mount speed)",
+    "kind": "movement",
+    "name": "Sprint",
+    "owner": "scout",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "high-jump",
+   "value": {
+    "cost": {
+     "stamina": 25
+    },
+    "effect": "~2x jump height; acts as a dodge (ninja)",
+    "kind": "movement",
+    "name": "High Jump",
+    "owner": [
+     "scout",
+     "ninja"
+    ],
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "quicksand-trap",
+   "value": {
+    "_controls": [
+     "class-skill-4"
+    ],
+    "alpha-tree": {
+     "column": "ultimate",
+     "needs": 5
+    },
+    "applies": [
+     "slow"
+    ],
+    "cooldown-s": 40,
+    "cost": {},
+    "duration-s": "~20 (G2: 15-20)",
+    "effect": "zone: enemies inside nearly immobilised and armor/resistance stripped (as if combo built)",
+    "kind": "active",
+    "name": "Quicksand Trap",
+    "owner": "scout",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "fire-explosion",
+   "value": {
+    "_controls": [
+     "class-skill-1"
+    ],
+    "alpha-id": 88,
+    "alpha-tree": {
+     "column": "class",
+     "needs": 0,
+     "rank": 1
+    },
+    "applies": [
+     "burning",
+     "knockback",
+     "stun"
+    ],
+    "cost": {
+     "S": {
+      "mp": 50
+     }
+    },
+    "effect": "self-centred spherical explosion: burn, knockback, stun chance, screen shake; points → damage + knockback",
+    "kind": "active",
+    "name": "Fire Explosion",
+    "owner": "fire-mage",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "healing-stream",
+   "value": {
+    "_controls": [
+     "class-skill-1"
+    ],
+    "alpha-id": 34,
+    "alpha-tree": {
+     "column": "class",
+     "needs": 0,
+     "rank": 1
+    },
+    "cost": {
+     "S": {
+      "mp": "~50"
+     }
+    },
+    "effect": "channel then heal large amount (self or targeted ally); heal scales with weapon level; points → mana cost",
+    "kind": "active",
+    "name": "Healing Stream",
+    "owner": "water-mage",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "healing-stream-cursor",
+   "value": {
+    "cost": {
+     "mp": "~50"
+    },
+    "effect": "place heal at cursor",
+    "kind": "active",
+    "name": "Healing Stream (at cursor)",
+    "owner": "water-mage",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "mana-shield",
+   "value": {
+    "_controls": [
+     "class-skill-2"
+    ],
+    "alpha-id": 103,
+    "alpha-tree": {
+     "column": "class",
+     "needs": 5,
+     "rank": 2
+    },
+    "duration-s": 30,
+    "effect": "instant, absorbs damage = % of player HP; cooldown < duration so permanent; fully absorbed hits give no knockback; points → cooldown + absorb",
+    "kind": "active",
+    "name": "Mana Shield",
+    "owner": "mage",
+    "removed-in": "S",
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "teleport",
+   "value": {
+    "_controls": [
+     "class-skill-3"
+    ],
+    "alpha-id": 49,
+    "alpha-tree": {
+     "column": "class",
+     "needs": 5,
+     "rank": 3
+    },
+    "cost": {
+     "A": {
+      "mp": 100
+     },
+     "S": {
+      "mp": "all (100)"
+     }
+    },
+    "effect": "A: short cast, move forward ~60 blocks (?), blocked by solids, safe landing; S: to cursor; not through gates (0.9.2-0); distance normalised 0.9.3-0",
+    "kind": "active",
+    "name": "Teleport",
+    "owner": "mage",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "float",
+   "value": {
+    "cost": {},
+    "effect": "slow fall, resets fall damage; spam to stay airborne (bug)",
+    "kind": "movement",
+    "name": "Float / Hover",
+    "owner": "mage",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "super-float",
+   "value": {
+    "effect": "~15 blocks straight up; fastest climber",
+    "kind": "movement",
+    "name": "Super Float",
+    "owner": "mage",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "fire-missiles",
+   "value": {
+    "_controls": [
+     "class-skill-4"
+    ],
+    "alpha-tree": {
+     "column": "ultimate",
+     "needs": 5
+    },
+    "applies": [
+     "burning",
+     "knockdown"
+    ],
+    "cooldown-s": 40,
+    "cost": {
+     "mp": 0
+    },
+    "effect": "4 fireballs at cursor, each ≈3x spell power, big AoE, knockdowns",
+    "kind": "active",
+    "name": "Fire Missiles",
+    "owner": "fire-mage",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "bubbles",
+   "value": {
+    "_controls": [
+     "class-skill-4"
+    ],
+    "alpha-tree": {
+     "column": "ultimate",
+     "needs": 5
+    },
+    "cooldown-s": 30,
+    "cost": {
+     "mp": 0
+    },
+    "effect": "6 bubbles trail and stick to enemies (and summoned pets), detonate for damage + healing puddles",
+    "kind": "active",
+    "name": "Bubbles",
+    "owner": "water-mage",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "fire-spark",
+   "value": {
+    "duration-s": 30,
+    "effect": "chance on basic-attack hit → 30 s buff: next special attack instant and free",
+    "kind": "passive",
+    "name": "Fire Spark",
+    "owner": "fire-mage",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "torrent",
+   "value": {
+    "effect": "attack speed per hit, up to 20-hit streak",
+    "kind": "passive",
+    "name": "Torrent",
+    "owner": "water-mage",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "healing-spells",
+   "value": {
+    "effect": "every spell heals allies and leaves a stacking blue healing puddle",
+    "kind": "passive",
+    "name": "Healing Spells",
+    "owner": "water-mage",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "intercept",
+   "value": {
+    "_controls": [
+     "class-skill-1"
+    ],
+    "alpha-id": 48,
+    "alpha-tree": {
+     "column": "class",
+     "needs": 0,
+     "rank": 1
+    },
+    "cost": {
+     "A": {
+      "mp": "yes"
+     },
+     "S": {
+      "mp": "all (needs some)",
+      "stamina": 25
+     }
+    },
+    "effect": "dash to target/cursor then perform weapon special attack on nearby enemies",
+    "kind": "active",
+    "name": "Intercept",
+    "owner": "rogue",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "camouflage",
+   "value": {
+    "_controls": [
+     "class-skill-3"
+    ],
+    "alpha-id": 97,
+    "alpha-tree": {
+     "also-ultimate": true,
+     "column": "class",
+     "needs": 5,
+     "rank": 3
+    },
+    "applies": [
+     "stealth"
+    ],
+    "cooldown-s": {
+     "S": 40
+    },
+    "duration-s": {
+     "S": 20
+    },
+    "effect": "instant full stealth kept while moving and attacking",
+    "kind": "active",
+    "name": "Camouflage",
+    "owner": "assassin",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "shuriken-attack",
+   "value": {
+    "_controls": [
+     "class-skill-3"
+    ],
+    "alpha-id": 96,
+    "alpha-tree": {
+     "column": "class",
+     "needs": 5,
+     "rank": 3
+    },
+    "effect": "backflip away from cursor while throwing 5 shuriken at aim; points → cooldown + stealth duration",
+    "kind": "active",
+    "name": "Shuriken Attack",
+    "owner": "ninja",
+    "removed-in": "S",
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "shuriken-toss",
+   "value": {
+    "cost": {
+     "stamina": 25
+    },
+    "effect": "arcing shuriken, damage scales with weapon, gives MP",
+    "kind": "active",
+    "name": "Shuriken Toss",
+    "owner": "ninja",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "ninja-run",
+   "value": {
+    "cost": {
+     "stamina": "drain"
+    },
+    "effect": "sprint ~mount speed",
+    "kind": "movement",
+    "name": "Ninja Run",
+    "owner": "ninja",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "ninjutsu",
+   "value": {
+    "_controls": [
+     "class-skill-4"
+    ],
+    "alpha-tree": {
+     "column": "ultimate",
+     "needs": 5
+    },
+    "cooldown-s": 60,
+    "duration-s": 20,
+    "effect": "basic attack = free faster shuriken, special attack = Intercept, no stamina costs",
+    "kind": "active",
+    "name": "Ninjutsu",
+    "owner": "ninja",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "poison-vial",
+   "value": {
+    "applies": [
+     "poison"
+    ],
+    "cost": {
+     "stamina": "all"
+    },
+    "effect": "throw arcing vial: green AoE poison",
+    "kind": "active",
+    "name": "Poison Vial",
+    "owner": "assassin",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "way-of-the-shadows",
+   "value": {
+    "effect": "specials (and dodges) build stealth; full stealth = near-zero aggro",
+    "kind": "passive",
+    "name": "Way of the Shadows",
+    "owner": "assassin",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "counter-strike",
+   "value": {
+    "effect": "dodge all damage during your special attack",
+    "kind": "passive",
+    "name": "Counter Strike (Shadow Strike)",
+    "owner": "ninja",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "elusiveness",
+   "value": {
+    "duration-s": 30,
+    "effect": "each dodged attack: +25 MP and 30 s window where next special attack is a guaranteed crit",
+    "kind": "passive",
+    "name": "Elusiveness (Shadow Force)",
+    "owner": "ninja",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  }
+ ]
+}

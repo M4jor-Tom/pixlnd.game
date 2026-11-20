@@ -1,0 +1,553 @@
+{
+ "$schema": "version",
+ "alpha-to-steam-delta": {
+  "added": [
+   "region lock + plus items",
+   "artifacts (7 traversal stats, level)",
+   "lore & realms",
+   "key items per land",
+   "books of crafting",
+   "gnome suppliers",
+   "gem traders",
+   "elixirs & beverages",
+   "analyst",
+   "buy-back",
+   "drowning",
+   "arena",
+   "flight master",
+   "shrines of life",
+   "gear-scaled pets",
+   "mob strength colours",
+   "bag of gold",
+   "land-bound bombs",
+   "rock fist, heroic shout, shadow shooter, quicksand trap, fire missiles, bubbles, poison vial, ninjutsu, shuriken toss, sprint, high jump, float",
+   "factions & events (steel empire, demon portals, circles of power, mana pumps, wizard towers, witch huts)",
+   "wall-jump",
+   "climb sticks",
+   "Steam friends P2P",
+   "many villages per land",
+   "new landscapes (savannah, wetlands, dark woods, deadlands, mountains)"
+  ],
+  "removed": [
+   "XP/levels/skill points",
+   "item +N display",
+   "adaptation & platinum",
+   "spirit cubes",
+   "formulas",
+   "copper/silver coins",
+   "vendor gliders/boats/lamps",
+   "pet XP & hydration",
+   "dungeon vases/tables/spike traps",
+   "infinite breath",
+   "portals",
+   "revival statue auto-respawn",
+   "war frenzy, bulwark, aim, scout's swiftness, mana shield, shuriken attack, ninja stealth",
+   "dedicated server / IP join",
+   "per-world seeds",
+   "hidden unexplored map"
+  ]
+ },
+ "reception": [
+  {
+   "key": "alpha-2013",
+   "value": {
+    "criticism": [
+     "shallow combat/crafting",
+     "random enemy scaling",
+     "grind",
+     "no fast travel",
+     "hard start",
+     "DDoS launch",
+     "6-year silence"
+    ],
+    "praise": [
+     "compulsion loop",
+     "exquisite landscapes"
+    ]
+   }
+  },
+  {
+   "key": "steam-2019",
+   "value": {
+    "criticism": [
+     "no tutorial",
+     "levelling gone",
+     "region lock",
+     "glider worse",
+     "basic combat",
+     "hollow progression",
+     "8-10 h per biome then dreary",
+     "power reset per border",
+     "+ gear RNG",
+     "enemy mages hitscan lasers",
+     "stunlock",
+     "weak pets"
+    ],
+    "praise": [
+     "aesthetics",
+     "OST",
+     "map",
+     "exploration",
+     "movement",
+     "seamless co-op"
+    ],
+    "scores": [
+     {
+      "key": "steam",
+      "value": "Mostly Negative"
+     },
+     {
+      "key": "metacritic-user",
+      "value": "2.5/10"
+     },
+     {
+      "key": "gamestar",
+      "value": "48/100"
+     },
+     {
+      "key": "hardcore-gamer",
+      "value": "3.5/5"
+     }
+    ]
+   }
+  },
+  {
+   "key": "fan-fix-list",
+   "value": [
+    "keep gear across borders / global +",
+    "artifacts affect combat",
+    "return XP/levels/skill trees",
+    "return alpha ninja/shurikens/stealth, spirit cubes, adaptation",
+    "global glider/boat/spikes",
+    "tutorial",
+    "dedicated servers & IP join",
+    "controller support",
+    "mod support",
+    "alpha oceans & infinite breath",
+    "less lore tedium",
+    "balance water mage & enemy mages"
+   ]
+  }
+ ],
+ "timeline": [
+  {
+   "date": "2011-05-25",
+   "features": [
+    "development starts (hobby project)"
+   ],
+   "v": "pre"
+  },
+  {
+   "date": "2011-06-09",
+   "features": [
+    "third-person view, wheel zoom to first person",
+    "multiplayer video"
+   ],
+   "v": "pre"
+  },
+  {
+   "date": "2011-06-11",
+   "features": [
+    "own voxel editor",
+    "NPC speech bubbles",
+    "questing started"
+   ],
+   "v": "pre"
+  },
+  {
+   "date": "2011-06-24",
+   "features": [
+    "terrain resolution doubled",
+    "water",
+    "first boss: troll"
+   ],
+   "v": "pre"
+  },
+  {
+   "date": "2011-07-06",
+   "features": [
+    "villages",
+    "roads with tunnels/bridges",
+    "deserts with pyramids & oases"
+   ],
+   "v": "pre"
+  },
+  {
+   "date": "2011-08-28",
+   "features": [
+    "engine rewritten"
+   ],
+   "v": "pre"
+  },
+  {
+   "date": "2011-09-05",
+   "features": [
+    "procedural trees"
+   ],
+   "v": "pre"
+  },
+  {
+   "date": "2011-11-19",
+   "features": [
+    "bows",
+    "lock-on targeting",
+    "XP/levels"
+   ],
+   "v": "pre"
+  },
+  {
+   "date": "2011-11-20",
+   "features": [
+    "riding"
+   ],
+   "v": "pre"
+  },
+  {
+   "date": "2011-11-26",
+   "features": [
+    "dual wielding",
+    "random castles"
+   ],
+   "v": "pre"
+  },
+  {
+   "date": "2011-12-12",
+   "features": [
+    "rivers with waterfalls",
+    "crows, berserker dwarves, hornets, lizardmen, plain runners"
+   ],
+   "v": "pre"
+  },
+  {
+   "date": "2011-12-30",
+   "features": [
+    "quest system (later cut)"
+   ],
+   "v": "pre"
+  },
+  {
+   "date": "2012-01-18",
+   "features": [
+    "climate system (temperature × humidity)"
+   ],
+   "v": "pre"
+  },
+  {
+   "date": "2012-01-19",
+   "features": [
+    "house building prototype (cut)"
+   ],
+   "v": "pre"
+  },
+  {
+   "date": "2012-01-20",
+   "features": [
+    "caves",
+    "blueprints GUI (cut)",
+    "frogs, moles",
+    "pets (collie)",
+    "aggro system",
+    "equipment cube upgrading",
+    "disenchanter (cut)"
+   ],
+   "v": "pre"
+  },
+  {
+   "date": "2012-01-31",
+   "features": [
+    "spirit energy replaces combo points → MP/special",
+    "spirit cubes"
+   ],
+   "v": "pre"
+  },
+  {
+   "date": "2012-02-10",
+   "features": [
+    "random dungeons: fire & spike traps, levers, doors, gates, bosses, chests"
+   ],
+   "v": "pre"
+  },
+  {
+   "date": "2012-02-27",
+   "features": [
+    "greatswords/greatmaces",
+    "combo back",
+    "kingdoms with frontier walls (cut)",
+    "runestone (cut)",
+    "ring item menu",
+    "copper/silver/gold coins"
+   ],
+   "v": "pre"
+  },
+  {
+   "date": "2012-03-13",
+   "features": [
+    "dungeon themes",
+    "random-body-part bosses",
+    "auto-targeting removed",
+    "stamina"
+   ],
+   "v": "pre"
+  },
+  {
+   "date": "2012-03-26",
+   "features": [
+    "mountains",
+    "clouds"
+   ],
+   "v": "pre"
+  },
+  {
+   "date": "2012-05",
+   "features": [
+    "Pixxie joins",
+    "fields, inns",
+    "potion/armor crafting"
+   ],
+   "v": "pre"
+  },
+  {
+   "date": "2012-07-07",
+   "features": [
+    "separate server app",
+    "chat",
+    "crouch/sneak",
+    "street lights",
+    "shops, inns, sage tower",
+    "rarity 0-4",
+    "witches"
+   ],
+   "v": "pre"
+  },
+  {
+   "date": "2012-09-18",
+   "features": [
+    "hang gliders",
+    "sprint",
+    "stun attacks",
+    "rare zones",
+    "castle dungeons",
+    "lava lands"
+   ],
+   "v": "pre"
+  },
+  {
+   "date": "2012-10-12",
+   "features": [
+    "class overview 4×2",
+    "boss scaling to lvl 10",
+    "stun stars",
+    "potions over time",
+    "injured death debuff (cut)",
+    "sit & sleep",
+    "pet taming with food"
+   ],
+   "v": "pre"
+  },
+  {
+   "date": "2012-10-26",
+   "features": [
+    "lands with levels",
+    "capitals",
+    "procedural buildings, house themes"
+   ],
+   "v": "pre"
+  },
+  {
+   "date": "2012-11-04",
+   "features": [
+    "3-D world map"
+   ],
+   "v": "pre"
+  },
+  {
+   "date": "2012-12-04",
+   "features": [
+    "A* pathfinding",
+    "NPC schedules",
+    "stealth rules",
+    "group aggro"
+   ],
+   "v": "pre"
+  },
+  {
+   "date": "2013-01-28",
+   "features": [
+    "quests dropped",
+    "overview map",
+    "character/world selection",
+    "3 weapon types per class",
+    "adventurer groups",
+    "districts + trainers",
+    "formulas",
+    "boss special abilities"
+   ],
+   "v": "pre"
+  },
+  {
+   "date": "2013-07-02",
+   "features": [
+    "ALPHA RELEASE (€20, Windows, DX9 32-bit)",
+    "DDoS, shop closed"
+   ],
+   "v": "0.1.0"
+  },
+  {
+   "date": "2013-07-05",
+   "features": [
+    "O-key MP debug removed",
+    "sell non-existing items fix",
+    "invert Y option"
+   ],
+   "v": "0.1.0 hotfix"
+  },
+  {
+   "date": "2013-07-23",
+   "features": [
+    "FPS limit option (111)",
+    "crossbow M2 only when charged",
+    "inn reset 18:00-06:00",
+    "Scout's Swiftness MP crash fix",
+    "Retreat glide fix",
+    "group mission XP fix"
+   ],
+   "v": "0.1.1 (?)"
+  },
+  {
+   "date": "2015-10",
+   "features": [
+    "five factions tweeted",
+    "faction tracks"
+   ],
+   "v": "dev"
+  },
+  {
+   "date": "2017-04-01",
+   "features": [
+    "64-bit engine",
+    "new world map",
+    "new snow shading",
+    "new rivers",
+    "dungeon map uncover",
+    "ocean music"
+   ],
+   "v": "dev"
+  },
+  {
+   "date": "2019-09-23",
+   "features": [
+    "closed beta",
+    "wall-jump costs stamina",
+    "minimap scalable",
+    "spawn near villages"
+   ],
+   "v": "0.9.1-3"
+  },
+  {
+   "date": "2019-09-25",
+   "features": [
+    "artifacts lootable by all",
+    "pet/shadow shooter scaling",
+    "controls saved",
+    "sell price removed from tooltip",
+    "music loop option",
+    "no roll through doors",
+    "objects not usable through walls"
+   ],
+   "v": "0.9.1-4"
+  },
+  {
+   "date": "2019-09-26",
+   "features": [
+    "dungeon items bound to correct land",
+    "captives rescuable",
+    "snowberry mash craftable",
+    "iceflowers in snowlands"
+   ],
+   "v": "0.9.1-5"
+  },
+  {
+   "date": "2019-09-27",
+   "features": [
+    "AA samples cfg",
+    "keys kept after gates",
+    "friends widget crash fix",
+    "warrior shift-RMB spam reduced"
+   ],
+   "v": "0.9.1-6"
+  },
+  {
+   "date": "2019-09-28",
+   "features": [
+    "shuriken 25 stamina",
+    "orc hairstyles fix",
+    "invasion bosses",
+    "dialog options in bubbles",
+    "no teleport through gates",
+    "dismount on pet death",
+    "harp in water"
+   ],
+   "v": "0.9.2-0"
+  },
+  {
+   "date": "2019-09-29",
+   "features": [
+    "enemy wand dmg -25%",
+    "teleport distance normal",
+    "dungeon enemy size cap",
+    "help widget default",
+    "barriers in overlapping dungeons",
+    "big portals at altar centre",
+    "+ gear in notifications & pet scaling",
+    "player level on highlight"
+   ],
+   "v": "0.9.3-0"
+  },
+  {
+   "date": "2019-09-30",
+   "features": [
+    "STEAM RELEASE (DX11 64-bit, 206 MB)",
+    "partial controller",
+    "Steam Cloud",
+    "English only"
+   ],
+   "v": "1.0.0-0"
+  },
+  {
+   "date": "2019-10-01",
+   "features": [
+    "last patch; notes unknown"
+   ],
+   "v": "1.0.0-1"
+  },
+  {
+   "date": "2023-05-25",
+   "features": [
+    "Omega announced: Vulkan engine, weather, procedural bodies/equipment, new GUI, XP/levels/skill trees returning"
+   ],
+   "v": "Ω"
+  },
+  {
+   "date": "2023-05-26..10-14",
+   "features": [
+    "procedural undead, zombies (eat), ogres (belly slide), 8 races, slimes (divide), crabs (claw boomerang), new world gen (coarse map), hornets (poison sting), hedgehogs (spike swirl)"
+   ],
+   "v": "Ω"
+  },
+  {
+   "date": "2024-02..06",
+   "features": [
+    "UE5 experiments reported (? contradicts Vulkan)",
+    "last public update ~2024-06"
+   ],
+   "v": "Ω"
+  },
+  {
+   "date": "2026",
+   "features": [
+    "tweet: all classes functional incl. new skills, skill trees next; UI/crafting/procedural races reports (secondary)"
+   ],
+   "v": "Ω"
+  }
+ ]
+}

@@ -1,0 +1,8 @@
+ classDiagram
+    class `Specializations-source`
+    click `Specializations-source` href "../Specializations-source"
+      `Specializations-source` : documentation
+      `Specializations-source` : entries
+        `Specializations-source` --> "1..*" `Specialization-source-entry` : entries
+        click `Specialization-source-entry` href "../Specialization-source-entry"
+      `Specializations-source` : schema_tag

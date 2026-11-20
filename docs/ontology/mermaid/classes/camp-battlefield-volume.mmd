@@ -1,0 +1,9 @@
+ classDiagram
+    class `Camp-battlefield-volume`
+    click `Camp-battlefield-volume` href "../Camp-battlefield-volume"
+      `Encounter-volume` <|-- `Camp-battlefield-volume`
+        click `Encounter-volume` href "../Encounter-volume"
+      `Camp-battlefield-volume` : above_floor
+      `Camp-battlefield-volume` : below_floor
+      `Camp-battlefield-volume` : depth
+      `Camp-battlefield-volume` : width

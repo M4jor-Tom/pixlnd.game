@@ -1,0 +1,10 @@
+ classDiagram
+    class `Threat-pair`
+    click `Threat-pair` href "../Threat-pair"
+      `Threat-pair` : aggro_points
+      `Threat-pair` : threat_mob
+        `Threat-pair` --> "1" `Entity` : threat_mob
+        click `Entity` href "../Entity"
+      `Threat-pair` : threat_player
+        `Threat-pair` --> "1" `Player-character` : threat_player
+        click `Player-character` href "../Player-character"

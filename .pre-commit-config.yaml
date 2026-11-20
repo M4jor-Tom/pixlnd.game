@@ -1,9 +1,27 @@
-default_install_hook_types: [pre-push]
-default_stages: [pre-push]
+default_install_hook_types: [pre-commit, post-commit, pre-push]
+# The full gate runs in the background after each commit (scripts/gate.sh); pre-push only
+# requires its pass. CI runs the same hooks synchronously with `--hook-stage manual`.
+default_stages: [manual]
 
 repos:
   - repo: local
     hooks:
+      - id: ontology-mermaid
+        name: Ontology Mermaid diagrams (LinkML)
+        entry: nix develop --no-update-lock-file -c bash scripts/ontology_mermaid.sh
+        language: system
+        pass_filenames: false
+        files: ^(ontology/schema/|tools/ontology/|docs/ontology/mermaid/|scripts/ontology_mermaid\.sh$)
+        # pre-push (and CI) rejects commits whose diagrams are stale, e.g. after --no-verify.
+        stages: [pre-commit, pre-push, manual]
+      - id: ontology-instances
+        name: Bound, validated ontology instances for the game (LinkML)
+        entry: nix develop --no-update-lock-file -c uv run --locked --project tools/ontology python scripts/ontology_bind.py
+        language: system
+        pass_filenames: false
+        files: ^(ontology/schema/|ontology/instances/|game/generated/instances/|tools/ontology/|scripts/ontology_bind\.py$|tests/ontology_source_contracts\.py$)
+        # pre-push (and CI) rejects commits whose bound instances are stale or invalid.
+        stages: [pre-commit, pre-push, manual]
       - id: quality-runner
         name: Quality runner regressions
         verbose: true
@@ -12,10 +30,26 @@ repos:
         pass_filenames: false
         always_run: true
       - id: quality
-        name: GDScript format, lint, sizes, complexity, ontology and headless tests
+        name: GDScript format and lint, GDScript/Python/Bash sizes and complexity, ontology and headless tests
         verbose: true
         # Enter the pinned toolchain even when git push runs outside nix develop.
         entry: nix develop --no-update-lock-file -c bash scripts/checks.sh
         language: system
         pass_filenames: false
         always_run: true
+      - id: gate-background
+        name: Start the full quality gate in the background
+        verbose: true
+        entry: bash scripts/gate.sh start
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [post-commit]
+      - id: gate-receipt
+        name: Require a passed background quality gate for the pushed commit
+        verbose: true
+        entry: bash scripts/gate.sh check
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-push]

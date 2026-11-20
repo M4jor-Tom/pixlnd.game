@@ -1,0 +1,16 @@
+ classDiagram
+    class `Ui-source-screen-row`
+    click `Ui-source-screen-row` href "../Ui-source-screen-row"
+      `Ui-source-screen-row` : controls
+      `Ui-source-screen-row` : desc
+      `Ui-source-screen-row` : extras
+      `Ui-source-screen-row` : fields
+        `Ui-source-screen-row` --> "0..1" `Ui-source-context-lists` : fields
+        click `Ui-source-context-lists` href "../Ui-source-context-lists"
+      `Ui-source-screen-row` : key
+      `Ui-source-screen-row` : shows
+      `Ui-source-screen-row` : stats
+        `Ui-source-screen-row` --> "0..1" `Ui-source-context-lists` : stats
+        click `Ui-source-context-lists` href "../Ui-source-context-lists"
+      `Ui-source-screen-row` : tabs
+      `Ui-source-screen-row` : versions

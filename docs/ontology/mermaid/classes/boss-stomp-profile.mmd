@@ -1,0 +1,16 @@
+ classDiagram
+    class `Boss-stomp-profile`
+    click `Boss-stomp-profile` href "../Boss-stomp-profile"
+      `Boss-special-profile` <|-- `Boss-stomp-profile`
+        click `Boss-special-profile` href "../Boss-special-profile"
+      `Boss-stomp-profile` : assignment_probability
+      `Boss-stomp-profile` : cooldown_after_completion_or_cancellation_seconds
+      `Boss-stomp-profile` : direct_damage_multiplier
+      `Boss-stomp-profile` : first_ready_after_engagement_seconds
+      `Boss-stomp-profile` : recovery_within_cooldown_seconds
+      `Boss-stomp-profile` : start_max_feet_height_difference_blocks
+      `Boss-stomp-profile` : start_max_horizontal_distance_blocks
+      `Boss-stomp-profile` : strike_radius_blocks
+      `Boss-stomp-profile` : victim_max_feet_above_floor_blocks
+      `Boss-stomp-profile` : victim_min_feet_above_floor_blocks
+      `Boss-stomp-profile` : warning_seconds

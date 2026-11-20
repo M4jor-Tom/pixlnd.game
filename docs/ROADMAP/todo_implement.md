@@ -372,6 +372,7 @@ resolve unmapped histories or certify generated/runtime behavior.
   inverse/compound/set integrity, conditional applicability and lifecycle enforcement still need
   qualification; bounded schema regressions do not supply a production loader or authorize C# work.
 - [ ] Quality gate lint cleanup (`gdlintrc` ponytail): naming/design lint cleanup and refactoring existing violations need a separately selected cleanup. Hard caps of 600 lines/file, 100 lines/function and native gdmetrics-g4 cognitive complexity 15 are enforced without baselines or exemptions. Formatting, essential lint, sizes, complexity, ontology and headless checks share the local/CI runner.
+- [ ] Ontology Mermaid name quoting (`scripts/ontology_mermaid.sh` ponytail): drop the `sed` once LinkML quotes class names ([linkml/linkml#4253](https://github.com/linkml/linkml/issues/4253)).
 - [ ] Save-data (§3.7): implemented character/world/encounter/vendor state persists; future character systems, discovered-land exploration and portable-world import UI remain unfinished.
 - [ ] Dedicated server (D5, `multiplayer-mode`): single-player only; `server.cfg` flags (pvp,
   player cap, level band X/Y) unread.
@@ -578,3 +579,4 @@ resolve unmapped histories or certify generated/runtime behavior.
   applications, class buffs, healing and the stealth bar already run. Combat DOT lifetime/scheduling
   and selected-input validation follow `c-combat-burning-applications` / `c-combat-poison-applications`;
   environmental hazards and additional DOT buff timing remain outside this implementation.
+- [ ] Ontology reference check (`scripts/ontology_bind.py` `CATALOGS`): which instances file owns each referenced class's ids is a hand table; a schema annotation (e.g. `instances-catalog`) could replace it. Uncovered reference slots (pet-food `tames`, ability `owner`, item/dungeon/poi types, rosters) stay checked by `ontology/model*.gd`.

@@ -1,6 +1,6 @@
 ## Literal extraction anchors: ordered plans/mesh arrays, RNG state, overwrite and exact contact.
 extends SceneTree
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Gen := preload("res://game/world/world_gen.gd")
 const Spawner := preload("res://game/world/spawner.gd")
 const Encounters := preload("res://game/world/encounter_gen.gd")
@@ -189,7 +189,7 @@ func mesh_columns() -> void:
 
 
 func _init() -> void:
-	var o = Model.Ontology.load_dir("res://ontology/instances")
+	var o = Domain.Ontology.load_dir()
 	var d: Dictionary = o.configs.generators.design
 	spawn_stream(o, d)
 	assignments(o, d)

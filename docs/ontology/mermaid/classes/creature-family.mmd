@@ -1,0 +1,8 @@
+ classDiagram
+    class `Creature-family`
+    click `Creature-family` href "../Creature-family"
+      `Creature-family` : creature_family_members
+        `Creature-family` --> "1..*" `Creature` : creature_family_members
+        click `Creature` href "../Creature"
+      `Creature-family` : id
+      `Creature-family` : traits

@@ -1,0 +1,33 @@
+ classDiagram
+    class `Initial-populated-ruins-assembly`
+    click `Initial-populated-ruins-assembly` href "../Initial-populated-ruins-assembly"
+      `Initial-ruins-assembly` <|-- `Initial-populated-ruins-assembly`
+        click `Initial-ruins-assembly` href "../Initial-ruins-assembly"
+      `Initial-populated-ruins-assembly` : clear_ceiling_height_blocks
+      `Initial-populated-ruins-assembly` : corridor_trap_free_lane_width_blocks
+      `Initial-populated-ruins-assembly` : corridors
+        `Initial-populated-ruins-assembly` --> "1..*" `Ruins-corridor-volume` : corridors
+        click `Ruins-corridor-volume` href "../Ruins-corridor-volume"
+      `Initial-populated-ruins-assembly` : door_height_blocks
+      `Initial-populated-ruins-assembly` : door_width_blocks
+      `Initial-populated-ruins-assembly` : entrance_court
+        `Initial-populated-ruins-assembly` --> "1" `Ruins-court-volume` : entrance_court
+        click `Ruins-court-volume` href "../Ruins-court-volume"
+      `Initial-populated-ruins-assembly` : entrance_passage
+        `Initial-populated-ruins-assembly` --> "1" `Ruins-passage-volume` : entrance_passage
+        click `Ruins-passage-volume` href "../Ruins-passage-volume"
+      `Initial-populated-ruins-assembly` : horizontal_bounds_depth_blocks
+      `Initial-populated-ruins-assembly` : horizontal_bounds_width_blocks
+      `Initial-populated-ruins-assembly` : id
+      `Initial-populated-ruins-assembly` : located_in
+        `Initial-populated-ruins-assembly` --> "1" `Land` : located_in
+        click `Land` href "../Land"
+      `Initial-populated-ruins-assembly` : population
+        `Initial-populated-ruins-assembly` --> "1" `Ruins-population` : population
+        click `Ruins-population` href "../Ruins-population"
+      `Initial-populated-ruins-assembly` : reward_alcove
+        `Initial-populated-ruins-assembly` --> "1" `Ruins-alcove-volume` : reward_alcove
+        click `Ruins-alcove-volume` href "../Ruins-alcove-volume"
+      `Initial-populated-ruins-assembly` : rooms
+        `Initial-populated-ruins-assembly` --> "1..*" `Initial-populated-ruins-room` : rooms
+        click `Initial-populated-ruins-room` href "../Initial-populated-ruins-room"

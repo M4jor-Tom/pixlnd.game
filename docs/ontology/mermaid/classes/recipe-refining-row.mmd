@@ -1,0 +1,10 @@
+ classDiagram
+    class `Recipe-refining-row`
+    click `Recipe-refining-row` href "../Recipe-refining-row"
+      `Recipe-refining-row` : inputs
+        `Recipe-refining-row` --> "1" `Recipe-ingredient-inputs` : inputs
+        click `Recipe-ingredient-inputs` href "../Recipe-ingredient-inputs"
+      `Recipe-refining-row` : outputs
+        `Recipe-refining-row` --> "0..1" `Recipe-ingredient-outputs` : outputs
+        click `Recipe-ingredient-outputs` href "../Recipe-ingredient-outputs"
+      `Recipe-refining-row` : station

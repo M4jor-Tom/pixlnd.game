@@ -5,6 +5,8 @@
 ## ponytail: clone and zone ultimates are bursts or buffs (todo_implement.md); no cast interruption.
 extends RefCounted
 
+const Domain := preload("res://game/domain/domain.gd")
+
 var p  # the player
 var cfg: Dictionary = {}  # design.abilities
 var cooldowns: Dictionary = {}  # ability id → seconds left
@@ -22,8 +24,13 @@ func _init(player, abilities: Dictionary) -> void:
 	cfg = abilities
 
 
+## Ability row `applies` (status-effect ids); absent in the source row = none.
+static func _applies(a) -> Array:
+	return a.slot_applies if a.slot_applies != null else []
+
+
 func runtime(a) -> Dictionary:
-	return cfg.get(a.id, {})
+	return cfg.get(Domain.id_of(a), {})
 
 
 func busy() -> bool:
@@ -31,7 +38,7 @@ func busy() -> bool:
 
 
 func ready(a) -> bool:
-	return float(cooldowns.get(a.id, 0.0)) <= 0.0 and not busy()
+	return float(cooldowns.get(Domain.id_of(a), 0.0)) <= 0.0 and not busy()
 
 
 ## c-mp-range / stamina: refuse without spending when short; 'all' needs cfg.all-min and empties the bar.
@@ -86,7 +93,7 @@ func _strike(
 ) -> int:
 	var hits := 0
 	var damaging := float(r.get("damage-mult", 0.0)) > 0.0
-	if a.applies.has(&"taunt") and p.targeting != null:
+	if _applies(a).has(&"taunt") and p.targeting != null:
 		p.targeting.taunt([p])
 	var contact_hits = _strike_contacts(a, r, at, e, damaging, committed_weapon)
 	if contact_hits == null:
@@ -218,7 +225,7 @@ func _start_dash(a, r: Dictionary, e: float, committed_weapon: Dictionary) -> bo
 			r["throw"],
 			float(p.weapon["damage"]) * float(r["throw"].get("damage-mult", 1.0)) * e,
 			false,
-			a.applies,
+			_applies(a),
 			Vector3.INF,
 			p.ability_attack_type(a)
 		)
@@ -240,7 +247,7 @@ func _start_projectile(a, r: Dictionary, e: float) -> bool:
 		r,
 		float(p.weapon["damage"]) * float(r.get("damage-mult", 1.0)) * e,
 		false,
-		a.applies,
+		_applies(a),
 		Vector3.INF,
 		p.ability_attack_type(a)
 	)
@@ -370,9 +377,9 @@ func _dispatch(a, r: Dictionary, e: float, committed_weapon: Dictionary) -> bool
 		"projectile":
 			return _start_projectile(a, r, e)
 		"buff":
-			buffs[a.id] = {"left": float(r["duration-s"]) * e, "r": r}
+			buffs[Domain.id_of(a)] = {"left": float(r["duration-s"]) * e, "r": r}
 			if r.has("absorb-pct-hp"):
-				buffs[a.id]["pool"] = p.max_hp * float(r["absorb-pct-hp"])
+				buffs[Domain.id_of(a)]["pool"] = p.max_hp * float(r["absorb-pct-hp"])
 		"heal":
 			cast = {"a": a, "r": r, "left": float(r["cast-s"]), "e": e, "weapon": committed_weapon}
 	return true
@@ -397,7 +404,7 @@ func _start_channel(a, r: Dictionary, e: float, committed_weapon: Dictionary) ->
 func _strike_contacts(
 	a, r: Dictionary, at: Vector3, e: float, damaging: bool, committed_weapon: Dictionary
 ):
-	if damaging or (not a.applies.is_empty() and not a.applies.has(&"taunt")):
+	if damaging or (not _applies(a).is_empty() and not _applies(a).has(&"taunt")):
 		return _weapon_strike(a, r, at, e, committed_weapon)
 	return 0
 
@@ -421,7 +428,7 @@ func _channel_strike(
 		float(r["radius"]),
 		float(active["weapon"]["damage"]) * float(r["damage-mult"]) * float(active["e"]),
 		false,
-		active["a"].applies,
+		_applies(active["a"]),
 		p.ability_attack_type(active["a"]),
 		0,
 		bodies,
@@ -447,8 +454,10 @@ func _channel_group(active: Dictionary, events: Array, i: int, contact: float, b
 
 
 func _commit(a, r: Dictionary) -> bool:
-	cooldowns[a.id] = float(r["cooldown-s"]) * p.skill_tree.cooldown_mult(a.id)
-	var e: float = p.skill_tree.effect_mult(a.id)
+	cooldowns[Domain.id_of(a)] = (
+		float(r["cooldown-s"]) * p.skill_tree.cooldown_mult(Domain.id_of(a))
+	)
+	var e: float = p.skill_tree.effect_mult(Domain.id_of(a))
 	var committed_weapon: Dictionary = p.weapon.duplicate()
 	return _dispatch(a, r, e, committed_weapon)
 
@@ -480,7 +489,7 @@ func _weapon_strike(
 			* e
 		),
 		false,
-		a.applies,
+		_applies(a),
 		p.ability_attack_type(a)
 	)
 

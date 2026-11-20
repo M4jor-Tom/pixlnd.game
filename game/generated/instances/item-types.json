@@ -1,0 +1,490 @@
+{
+ "$schema": "item-type",
+ "_doc": "Alpha ItemData.type / sub_type tables (cuwo strings.py). Subtype names are the data names.",
+ "_s-additions": {
+  "artifact": "S: Artifacts tab item; type id unknown",
+  "bag-of-gold": "S treasure item 25-59 coins",
+  "beverage": "S consumable",
+  "book-of-crafting": "S: 4 per land",
+  "elixir": "S consumable",
+  "key-item-s": [
+   "reins",
+   "climbing-spikes",
+   "divine-harp",
+   "sky-whistle",
+   "spirit-bell",
+   "treasure-spirit",
+   "eternal-ember",
+   "dungeon-keys"
+  ]
+ },
+ "entries": [
+  {
+   "key": "none",
+   "value": {
+    "name": "None",
+    "type": 0
+   }
+  },
+  {
+   "key": "consumable",
+   "value": {
+    "name": "Consumable",
+    "slot": "consumable",
+    "subtypes": {
+     "entries": [
+      {
+       "key": "0",
+       "value": "cookie"
+      },
+      {
+       "key": "1",
+       "value": "life-potion"
+      },
+      {
+       "key": "2",
+       "value": "cactus-potion"
+      },
+      {
+       "key": "3",
+       "value": "mana-potion"
+      },
+      {
+       "key": "4",
+       "value": "ginseng-soup"
+      },
+      {
+       "key": "5",
+       "value": "snowberry-mash"
+      },
+      {
+       "key": "6",
+       "value": "mushroom-spit"
+      },
+      {
+       "key": "7",
+       "value": "bomb"
+      },
+      {
+       "key": "8",
+       "value": "pineapple-slice"
+      },
+      {
+       "key": "9",
+       "value": "pumpkin-muffin"
+      }
+     ]
+    },
+    "type": 1
+   }
+  },
+  {
+   "key": "formula",
+   "value": {
+    "name": "Formula (recipe scroll)",
+    "type": 2,
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "weapon",
+   "value": {
+    "name": "Weapon",
+    "slot": "main-hand|off-hand",
+    "subtypes": "see weapon-types.json",
+    "type": 3
+   }
+  },
+  {
+   "key": "chest-armor",
+   "value": {
+    "name": "Chest Armor",
+    "slot": "chest",
+    "type": 4
+   }
+  },
+  {
+   "key": "gloves",
+   "value": {
+    "name": "Gloves",
+    "slot": "gloves",
+    "type": 5
+   }
+  },
+  {
+   "key": "boots",
+   "value": {
+    "name": "Boots",
+    "slot": "boots",
+    "type": 6
+   }
+  },
+  {
+   "key": "shoulder-armor",
+   "value": {
+    "name": "Shoulder Armor",
+    "slot": "shoulders",
+    "type": 7
+   }
+  },
+  {
+   "key": "amulet",
+   "value": {
+    "name": "Amulet",
+    "slot": "amulet",
+    "stats": [
+     "crit",
+     "tempo"
+    ],
+    "type": 8
+   }
+  },
+  {
+   "key": "ring",
+   "value": {
+    "name": "Ring",
+    "slot": "ring-left|ring-right",
+    "stats": [
+     "crit (gold)",
+     "tempo (silver)"
+    ],
+    "type": 9
+   }
+  },
+  {
+   "key": "block",
+   "value": {
+    "name": "Block (world cube)",
+    "type": 10,
+    "versions": [
+     "X"
+    ]
+   }
+  },
+  {
+   "key": "ingredient",
+   "value": {
+    "name": "Items / ingredients",
+    "subtypes": {
+     "entries": [
+      {
+       "key": "0",
+       "value": "nugget"
+      },
+      {
+       "key": "1",
+       "value": "log"
+      },
+      {
+       "key": "2",
+       "value": "feather"
+      },
+      {
+       "key": "3",
+       "value": "horn"
+      },
+      {
+       "key": "4",
+       "value": "claw"
+      },
+      {
+       "key": "5",
+       "value": "fiber"
+      },
+      {
+       "key": "6",
+       "value": "cobweb"
+      },
+      {
+       "key": "7",
+       "value": "hair"
+      },
+      {
+       "key": "8",
+       "value": "crystal"
+      },
+      {
+       "key": "9",
+       "value": "yarn"
+      },
+      {
+       "key": "10",
+       "value": "cube"
+      },
+      {
+       "key": "11",
+       "value": "capsule"
+      },
+      {
+       "key": "12",
+       "value": "flask"
+      },
+      {
+       "key": "13",
+       "value": "orb"
+      },
+      {
+       "key": "14",
+       "value": "spirit"
+      },
+      {
+       "key": "15",
+       "value": "mushroom"
+      },
+      {
+       "key": "16",
+       "value": "pumpkin"
+      },
+      {
+       "key": "17",
+       "value": "pineapple"
+      },
+      {
+       "key": "18",
+       "value": "radish-slice"
+      },
+      {
+       "key": "19",
+       "value": "shimmer-mushroom"
+      },
+      {
+       "key": "20",
+       "value": "ginseng-root"
+      },
+      {
+       "key": "21",
+       "value": "onion-slice"
+      },
+      {
+       "key": "22",
+       "value": "heartflower"
+      },
+      {
+       "key": "23",
+       "value": "prickly-pear"
+      },
+      {
+       "key": "24",
+       "value": "frozen-heartflower"
+      },
+      {
+       "key": "25",
+       "value": "soulflower (X)"
+      },
+      {
+       "key": "26",
+       "value": "water-flask"
+      },
+      {
+       "key": "27",
+       "value": "snowberry"
+      }
+     ]
+    },
+    "type": 11
+   }
+  },
+  {
+   "key": "coin",
+   "value": {
+    "name": "Coin",
+    "type": 12
+   }
+  },
+  {
+   "key": "platinum-coin",
+   "value": {
+    "name": "Platinum Coin",
+    "type": 13,
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "leftovers",
+   "value": {
+    "name": "Leftovers (unidentified gear)",
+    "type": 14
+   }
+  },
+  {
+   "key": "beak",
+   "value": {
+    "name": "Beak",
+    "type": 15,
+    "versions": [
+     "X"
+    ]
+   }
+  },
+  {
+   "key": "painting",
+   "value": {
+    "name": "Painting",
+    "type": 16,
+    "versions": [
+     "X"
+    ]
+   }
+  },
+  {
+   "key": "vase",
+   "value": {
+    "name": "Vase",
+    "type": 17,
+    "versions": [
+     "X"
+    ]
+   }
+  },
+  {
+   "key": "candle",
+   "value": {
+    "name": "Candle",
+    "note": "decorative light: red, pink (dungeons/castles, yellow light), green (ruins/catacombs, green light); small/tall/large forked",
+    "subtypes": {
+     "entries": [
+      {
+       "key": "0",
+       "value": "candle-a"
+      },
+      {
+       "key": "1",
+       "value": "candle-b"
+      }
+     ]
+    },
+    "type": 18
+   }
+  },
+  {
+   "key": "pet-cage",
+   "value": {
+    "name": "Pet (cage)",
+    "note": "one pet per cage; turtle cage = shell; pet UI controls: ../domain/controls.md#unselected-boundaries",
+    "slot": "pet",
+    "type": 19
+   }
+  },
+  {
+   "key": "pet-food",
+   "value": {
+    "name": "Pet food (Bait)",
+    "subtypes": "see pet-food.json (subtype == creature id)",
+    "type": 20
+   }
+  },
+  {
+   "key": "special-accessory",
+   "value": {
+    "name": "Special accessories (planned quest items)",
+    "subtypes": {
+     "entries": [
+      {
+       "key": "0",
+       "value": "amulet1"
+      },
+      {
+       "key": "1",
+       "value": "amulet2"
+      },
+      {
+       "key": "2",
+       "value": "jewel-case"
+      },
+      {
+       "key": "3",
+       "value": "key"
+      },
+      {
+       "key": "4",
+       "value": "medicine"
+      },
+      {
+       "key": "5",
+       "value": "antivenom"
+      },
+      {
+       "key": "6",
+       "value": "band-aid"
+      },
+      {
+       "key": "7",
+       "value": "crutch"
+      },
+      {
+       "key": "8",
+       "value": "bandage"
+      },
+      {
+       "key": "9",
+       "value": "salve"
+      }
+     ]
+    },
+    "type": 21,
+    "versions": [
+     "X"
+    ]
+   }
+  },
+  {
+   "key": "special",
+   "value": {
+    "name": "Specials (key items)",
+    "slot": "special",
+    "subtypes": {
+     "entries": [
+      {
+       "key": "0",
+       "value": "hang-glider"
+      },
+      {
+       "key": "1",
+       "value": "boat"
+      }
+     ]
+    },
+    "type": 23
+   }
+  },
+  {
+   "key": "light",
+   "value": {
+    "name": "Light",
+    "slot": "lamp",
+    "subtypes": {
+     "entries": [
+      {
+       "key": "0",
+       "value": "lamp"
+      }
+     ]
+    },
+    "type": 24,
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "cube",
+   "value": {
+    "name": "Cubes",
+    "note": "spirit/material cubes for the customization bench",
+    "subtypes": {
+     "entries": [
+      {
+       "key": "0",
+       "value": "mana-cube"
+      }
+     ]
+    },
+    "type": 25
+   }
+  }
+ ]
+}

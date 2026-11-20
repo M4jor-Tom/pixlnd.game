@@ -1,0 +1,9 @@
+ classDiagram
+    class `Economy-currency-alpha`
+    click `Economy-currency-alpha` href "../Economy-currency-alpha"
+      `Economy-currency-alpha` : coins
+        `Economy-currency-alpha` --> "1" `Economy-coins-source` : coins
+        click `Economy-coins-source` href "../Economy-coins-source"
+      `Economy-currency-alpha` : display
+      `Economy-currency-alpha` : pickup
+      `Economy-currency-alpha` : platinum

@@ -1,6 +1,6 @@
 extends SceneTree
 
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Items := preload("res://game/items/items.gd")
 const Item := preload("res://game/items/item.gd")
 const Shop := preload("res://game/items/shop.gd")
@@ -29,7 +29,7 @@ func player(class_id: StringName) -> CharacterBody3D:
 	root.add_child(p)
 	p.setup(design.movement, design.camera, &"normal")
 	p.setup_combat(
-		design.combat, design.crit, {}, Combat.player_max_hp(1, o.classes[class_id].hp_mult)
+		design.combat, design.crit, {}, Combat.player_max_hp(1, o.classes[class_id].slot_hp_mult)
 	)
 	p.setup_items(o, design, class_id)
 	p.set_physics_process(false)
@@ -43,10 +43,10 @@ func _init() -> void:
 			print("EQUIP_COMMIT ", JSON.stringify(observation))
 			quit()
 			return
-	o = Model.Ontology.load_dir("res://ontology/instances")
+	o = Domain.Ontology.load_dir()
 	design = o.configs["generators"]["design"]
 	InputMapBuilder.build(o.configs["keybinds"]["hybrid"])
-	check(o.validate(), "ontology valid")
+	check(o.errors.is_empty(), "ontology valid")
 	var food := _slot_routes()
 
 	var warrior := player(&"warrior")
@@ -105,11 +105,11 @@ func _power_admission() -> void:
 	var p := player(&"warrior")
 	var high := Items.generate(RandomNumberGenerator.new(), &"chest-armor", &"", &"iron", 2, 0)
 	p.inventory.add(high)
-	check(p.level == 1 and Model.power_for_level(p.level) == 1, "level1 power1 fixture")
+	check(p.level == 1 and Domain.power_for_level(p.level) == 1, "level1 power1 fixture")
 	_reject_power(p, high, "+2 at level1")
 	p.gain_xp(50)
 	p.hp = 10
-	check(p.level == 2 and Model.power_for_level(p.level) == 5, "real XP reaches level2 power5")
+	check(p.level == 2 and Domain.power_for_level(p.level) == 5, "real XP reaches level2 power5")
 	check(
 		p.inventory.equip(high) and p.hp == 10,
 		"same retained +2 becomes eligible without equip healing"
@@ -309,9 +309,9 @@ func _starters() -> void:
 
 func _higher_power(p: Node) -> void:
 	while p.level < 10:
-		p.gain_xp(Model.xp_to_next(p.level) - p.xp)
+		p.gain_xp(Domain.xp_to_next(p.level) - p.xp)
 	check(
-		p.level == 10 and Model.power_for_level(p.level) == 32,
+		p.level == 10 and Domain.power_for_level(p.level) == 32,
 		"real progression reaches level10 power32"
 	)
 	var threshold := Items.generate(
@@ -329,9 +329,9 @@ func _higher_power(p: Node) -> void:
 	p.inventory.add(sword)
 	_reject_power(p, sword, "+40 at level10")
 	while p.level < 14:
-		p.gain_xp(Model.xp_to_next(p.level) - p.xp)
+		p.gain_xp(Domain.xp_to_next(p.level) - p.xp)
 	check(
-		Model.power_for_level(p.level) == 40 and p.inventory.equip(sword),
+		Domain.power_for_level(p.level) == 40 and p.inventory.equip(sword),
 		"retained +40 admits after real progression to power40"
 	)
 

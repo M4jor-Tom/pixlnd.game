@@ -1,0 +1,6 @@
+ classDiagram
+    class `Item-type-subtype-map`
+    click `Item-type-subtype-map` href "../Item-type-subtype-map"
+      `Item-type-subtype-map` : entries
+        `Item-type-subtype-map` --> "1..*" `Item-type-subtype-entry` : entries
+        click `Item-type-subtype-entry` href "../Item-type-subtype-entry"

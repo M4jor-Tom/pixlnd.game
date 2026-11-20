@@ -6,6 +6,13 @@ prefixes:
 default_prefix: pixlnd
 imports:
 - linkml:types
+- identity
+- entities
+- combat
+- items
+- world
+- meta
+- relations
 default_range: string
 classes:
   hazard:

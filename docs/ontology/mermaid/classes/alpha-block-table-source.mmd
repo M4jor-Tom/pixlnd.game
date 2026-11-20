@@ -1,0 +1,9 @@
+ classDiagram
+    class `Alpha-block-table-source`
+    click `Alpha-block-table-source` href "../Alpha-block-table-source"
+      `Alpha-block-table-source` : entries
+        `Alpha-block-table-source` --> "1..*" `Alpha-block-source-entry` : entries
+        click `Alpha-block-source-entry` href "../Alpha-block-source-entry"
+      `Alpha-block-table-source` : flags
+        `Alpha-block-table-source` --> "1" `Block-source-flags` : flags
+        click `Block-source-flags` href "../Block-source-flags"

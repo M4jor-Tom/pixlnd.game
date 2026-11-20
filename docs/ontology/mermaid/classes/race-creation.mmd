@@ -1,0 +1,16 @@
+ classDiagram
+    class `Race-creation`
+    click `Race-creation` href "../Race-creation"
+      `Race-creation` : alpha_world_flow
+      `Race-creation` : choices
+      `Race-creation` : genders
+        `Race-creation` --> "1..*" `Gender` : genders
+        click `Gender` href "../Gender"
+      `Race-creation` : skin_color
+      `Race-creation` : spawn
+        `Race-creation` --> "1" `Source-version-text` : spawn
+        click `Source-version-text` href "../Source-version-text"
+      `Race-creation` : spec_at_creation
+      `Race-creation` : starting_kit
+        `Race-creation` --> "1" `Source-version-text-lists` : starting_kit
+        click `Source-version-text-lists` href "../Source-version-text-lists"

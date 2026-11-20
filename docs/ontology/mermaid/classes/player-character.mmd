@@ -1,0 +1,99 @@
+ classDiagram
+    class `Player-character`
+    click `Player-character` href "../Player-character"
+      `Entity` <|-- `Player-character`
+        click `Entity` href "../Entity"
+      `Player-character` : current_target
+        `Player-character` --> "0..1" `Player-character` : current_target
+        click `Player-character` href "../Player-character"
+      `Player-character` : entity_accel
+      `Player-character` : entity_appearance
+        `Player-character` --> "1" `Appearance` : entity_appearance
+        click `Appearance` href "../Appearance"
+      `Player-character` : entity_armor_multiplier
+      `Player-character` : entity_block_power
+      `Player-character` : entity_blue_time
+      `Player-character` : entity_body_pitch
+      `Player-character` : entity_body_roll
+      `Player-character` : entity_body_yaw
+      `Player-character` : entity_class
+        `Player-character` --> "1" `Character-class` : entity_class
+        click `Character-class` href "../Character-class"
+      `Player-character` : entity_damage_multiplier
+      `Player-character` : entity_equipment
+        `Player-character` --> "13..*" `Item` : entity_equipment
+        click `Item` href "../Item"
+      `Player-character` : entity_flags
+        `Player-character` --> "*" `EntityFlag` : entity_flags
+        click `EntityFlag` href "../EntityFlag"
+      `Player-character` : entity_hit_counter
+      `Player-character` : entity_hostility
+        `Player-character` --> "1" hostility : entity_hostility
+        click hostility href "../hostility"
+      `Player-character` : entity_hp
+      `Player-character` : entity_hp_multiplier
+      `Player-character` : entity_last_hit_time
+      `Player-character` : entity_level
+      `Player-character` : entity_mana_cubes
+      `Player-character` : entity_mp
+      `Player-character` : entity_name
+      `Player-character` : entity_parent_owner
+        `Player-character` --> "0..1" `Entity` : entity_parent_owner
+        click `Entity` href "../Entity"
+      `Player-character` : entity_pos
+      `Player-character` : entity_power_base
+      `Player-character` : entity_resi_multiplier
+      `Player-character` : entity_skills
+      `Player-character` : entity_slowed_time
+      `Player-character` : entity_specialization
+        `Player-character` --> "1" `Specialization` : entity_specialization
+        click `Specialization` href "../Specialization"
+      `Player-character` : entity_species
+        `Player-character` --> "1" `Race` : entity_species
+        click `Race` href "../Race"
+      `Player-character` : entity_speed_up_time
+      `Player-character` : entity_stamina
+      `Player-character` : entity_status_applications
+        `Player-character` --> "*" `Status-application` : entity_status_applications
+        click `Status-application` href "../Status-application"
+      `Player-character` : entity_stealth
+      `Player-character` : entity_stun_time
+      `Player-character` : entity_velocity
+      `Player-character` : entity_xp
+      `Player-character` : equips
+        `Player-character` --> "*" `Item` : equips
+        click `Item` href "../Item"
+      `Player-character` : id
+      `Player-character` : knows_recipe
+        `Player-character` --> "*" `Recipe` : knows_recipe
+        click `Recipe` href "../Recipe"
+      `Player-character` : mounts
+        `Player-character` --> "0..1" `Pet` : mounts
+        click `Pet` href "../Pet"
+      `Player-character` : player_character_active_pet
+        `Player-character` --> "0..1" `Pet` : player_character_active_pet
+        click `Pet` href "../Pet"
+      `Player-character` : player_character_artifacts
+        `Player-character` --> "1..*" `Artifact` : player_character_artifacts
+        click `Artifact` href "../Artifact"
+      `Player-character` : player_character_banked_skill_points
+      `Player-character` : player_character_coins
+      `Player-character` : player_character_gender
+        `Player-character` --> "1" `Gender` : player_character_gender
+        click `Gender` href "../Gender"
+      `Player-character` : player_character_inventory
+        `Player-character` --> "1" `Inventory` : player_character_inventory
+        click `Inventory` href "../Inventory"
+      `Player-character` : player_character_lore_known
+        `Player-character` --> "*" `Realm-knowledge` : player_character_lore_known
+        click `Realm-knowledge` href "../Realm-knowledge"
+      `Player-character` : player_character_pet_slot
+        `Player-character` --> "0..1" `Pet` : player_character_pet_slot
+        click `Pet` href "../Pet"
+      `Player-character` : player_character_platinum
+      `Player-character` : player_character_world_states
+        `Player-character` --> "*" `Character-world-state` : player_character_world_states
+        click `Character-world-state` href "../Character-world-state"
+      `Player-character` : threat
+        `Player-character` --> "*" `Player-character` : threat
+        click `Player-character` href "../Player-character"

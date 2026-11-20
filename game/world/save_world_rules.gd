@@ -2,6 +2,7 @@
 ## separate from native-error false, which propagates to the original owner.
 extends RefCounted
 const Combat := preload("res://game/combat/combat.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const WorldGen := preload("res://game/world/world_gen.gd")
 
 
@@ -126,7 +127,7 @@ static func _ambient_record(save, w: Dictionary, id: String) -> bool:
 
 
 static func _ambient_species(save, mob: Dictionary, species, id: String) -> bool:
-	var role := str(species.combat_role)
+	var role := str(Domain.combat_role(species))
 	if role != "any-class":
 		save.require(
 			(
@@ -139,11 +140,10 @@ static func _ambient_species(save, mob: Dictionary, species, id: String) -> bool
 			),
 			"world.mob.species role"
 		)
-	var maximum: int = (
-		int(save.design.spawns["default-group"][1])
-		if species.group_size == Vector2i(1, 1)
-		else species.group_size.y
-	)
+	var size := Domain.group_size(species)
+	var maximum := size.y
+	if size == Vector2i(1, 1):
+		maximum = int(save.design.spawns["default-group"][1])
 	save.require(int(id.get_file()) < maximum, "world.mob.member count")
 	return true
 

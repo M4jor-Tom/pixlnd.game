@@ -1,5 +1,5 @@
 extends SceneTree
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const PLAYER := preload("res://game/entities/player.tscn")
 const Spawner := preload("res://game/world/spawner.gd")
 const HUD := preload("res://game/meta/hud.gd")
@@ -18,7 +18,7 @@ func _init() -> void:
 
 
 func run() -> void:
-	var o = Model.Ontology.load_dir("res://ontology/instances")
+	var o = Domain.Ontology.load_dir()
 	var d: Dictionary = o.configs.generators.design
 	InputBuilder.build(o.configs.keybinds.hybrid)
 	if not _all_specs(o, d):
@@ -60,7 +60,7 @@ func run() -> void:
 
 
 func _spec_case(o, d: Dictionary, spec_id: StringName) -> bool:
-	var class_id: StringName = o.specs[spec_id].character_class
+	var class_id: StringName = o.specs[spec_id].slot_class
 	var p = PLAYER.instantiate()
 	root.add_child(p)
 	p.setup(d.movement, d.camera, &"normal")
@@ -125,7 +125,7 @@ func _skill_case(p, a, r: Dictionary) -> bool:
 		return false
 	var damaging: bool = damaging_value
 	var used: bool = p.abilities.use(a)
-	check(used != damaging, "class request eligibility " + str(a.id))
+	check(used != damaging, "class request eligibility " + str(Domain.id_of(a)))
 	return _skill_spend(p, a, damaging) and _independent_benefit(p, a, r)
 
 
@@ -222,14 +222,17 @@ func _skill_spend(p, a, damaging: bool) -> bool:
 	if damaging:
 		check(
 			p.mp == 100 and p.stamina == 100 and p.combo == 4 and p.abilities.cooldowns.is_empty(),
-			"weapon skill no spend " + str(a.id)
+			"weapon skill no spend " + str(Domain.id_of(a))
 		)
 	return true
 
 
 func _independent_benefit(p, a, r: Dictionary) -> bool:
 	if r.runtime == "buff":
-		check(p.abilities.buffs.has(a.id), "independent buff applied unarmed " + str(a.id))
+		check(
+			p.abilities.buffs.has(Domain.id_of(a)),
+			"independent buff applied unarmed " + str(Domain.id_of(a))
+		)
 	if r.runtime == "heal":
 		p.hp = 10
 		p.abilities.tick(float(r["cast-s"]))

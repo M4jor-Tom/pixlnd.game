@@ -1,0 +1,9 @@
+ classDiagram
+    class `Equipment-extra-source`
+    click `Equipment-extra-source` href "../Equipment-extra-source"
+      `Equipment-extra-source` : consumable
+        `Equipment-extra-source` --> "1" `Equipment-extra-row` : consumable
+        click `Equipment-extra-row` href "../Equipment-extra-row"
+      `Equipment-extra-source` : pet_food
+        `Equipment-extra-source` --> "1" `Equipment-extra-row` : pet_food
+        click `Equipment-extra-row` href "../Equipment-extra-row"

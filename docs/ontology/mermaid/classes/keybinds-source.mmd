@@ -1,0 +1,10 @@
+ classDiagram
+    class `Keybinds-source`
+    click `Keybinds-source` href "../Keybinds-source"
+      `Keybinds-source` : controls_note
+      `Keybinds-source` : documentation
+      `Keybinds-source` : entries
+        `Keybinds-source` --> "1..*" `Keybinds-source-profile-entry` : entries
+        click `Keybinds-source-profile-entry` href "../Keybinds-source-profile-entry"
+      `Keybinds-source` : profile_note
+      `Keybinds-source` : schema_tag

@@ -1,0 +1,25 @@
+ classDiagram
+    class `Initial-populated-rescue-assembly`
+    click `Initial-populated-rescue-assembly` href "../Initial-populated-rescue-assembly"
+      `Initial-rescue-assembly` <|-- `Initial-populated-rescue-assembly`
+        click `Initial-rescue-assembly` href "../Initial-rescue-assembly"
+      `Initial-populated-rescue-assembly` : boss_assignment
+        `Initial-populated-rescue-assembly` --> "1" `Initial-mission-boss-assignment` : boss_assignment
+        click `Initial-mission-boss-assignment` href "../Initial-mission-boss-assignment"
+      `Initial-populated-rescue-assembly` : id
+      `Initial-populated-rescue-assembly` : initial_battlefield
+        `Initial-populated-rescue-assembly` --> "1" `Rescue-battlefield-volume` : initial_battlefield
+        click `Rescue-battlefield-volume` href "../Rescue-battlefield-volume"
+      `Initial-populated-rescue-assembly` : initial_opposite_exits
+        `Initial-populated-rescue-assembly` --> "1..*" `Initial-battlefield-exit` : initial_opposite_exits
+        click `Initial-battlefield-exit` href "../Initial-battlefield-exit"
+      `Initial-populated-rescue-assembly` : located_in
+        `Initial-populated-rescue-assembly` --> "1" `Land` : located_in
+        click `Land` href "../Land"
+      `Initial-populated-rescue-assembly` : pack_assignments
+        `Initial-populated-rescue-assembly` --> "1..*" `Initial-nonboss-assignment` : pack_assignments
+        click `Initial-nonboss-assignment` href "../Initial-nonboss-assignment"
+      `Initial-populated-rescue-assembly` : population
+        `Initial-populated-rescue-assembly` --> "1" `Rescue-population` : population
+        click `Rescue-population` href "../Rescue-population"
+      `Initial-populated-rescue-assembly` : tier

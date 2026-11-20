@@ -1,0 +1,7 @@
+ classDiagram
+    class `Terrain-feature-source-row-entry`
+    click `Terrain-feature-source-row-entry` href "../Terrain-feature-source-row-entry"
+      `Terrain-feature-source-row-entry` : source_entry_key
+      `Terrain-feature-source-row-entry` : value
+        `Terrain-feature-source-row-entry` --> "1" `Terrain-feature-source-row` : value
+        click `Terrain-feature-source-row` href "../Terrain-feature-source-row"

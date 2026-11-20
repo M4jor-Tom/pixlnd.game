@@ -1,0 +1,7 @@
+ classDiagram
+    class `Poi-types-source`
+    click `Poi-types-source` href "../Poi-types-source"
+      `Poi-types-source` : entries
+        `Poi-types-source` --> "1..*" `Poi-source-row-entry` : entries
+        click `Poi-source-row-entry` href "../Poi-source-row-entry"
+      `Poi-types-source` : schema_tag

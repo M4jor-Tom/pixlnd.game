@@ -1,0 +1,7 @@
+ classDiagram
+    class `Economy-shop-entry`
+    click `Economy-shop-entry` href "../Economy-shop-entry"
+      `Economy-shop-entry` : recipe_map_key
+      `Economy-shop-entry` : value
+        `Economy-shop-entry` --> "1" `Economy-shop-row` : value
+        click `Economy-shop-row` href "../Economy-shop-row"

@@ -1,0 +1,7 @@
+ classDiagram
+    class `Resource-source-entry`
+    click `Resource-source-entry` href "../Resource-source-entry"
+      `Resource-source-entry` : source_entry_key
+      `Resource-source-entry` : value
+        `Resource-source-entry` --> "1" `Resource-source-row` : value
+        click `Resource-source-row` href "../Resource-source-row"

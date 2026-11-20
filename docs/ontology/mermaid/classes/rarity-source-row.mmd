@@ -1,0 +1,17 @@
+ classDiagram
+    class `Rarity-source-row`
+    click `Rarity-source-row` href "../Rarity-source-row"
+      `Rarity-source-row` : alt_name
+      `Rarity-source-row` : note
+      `Rarity-source-row` : rarity_color
+      `Rarity-source-row` : rarity_gem
+        `Rarity-source-row` --> "0..1" `Material` : rarity_gem
+        click `Material` href "../Material"
+      `Rarity-source-row` : rarity_hex
+      `Rarity-source-row` : rarity_index
+      `Rarity-source-row` : rarity_name
+      `Rarity-source-row` : rarity_named
+      `Rarity-source-row` : rarity_stars
+      `Rarity-source-row` : source_versions
+        `Rarity-source-row` --> "1..*" `SourceVersion` : source_versions
+        click `SourceVersion` href "../SourceVersion"

@@ -1,0 +1,11 @@
+ classDiagram
+    class `Factions-source`
+    click `Factions-source` href "../Factions-source"
+      `Factions-source` : documentation
+      `Factions-source` : entries
+        `Factions-source` --> "1..*" `Faction-source-entry` : entries
+        click `Faction-source-entry` href "../Faction-source-entry"
+      `Factions-source` : realm_name_examples
+        `Factions-source` --> "1" `Realm-name-examples` : realm_name_examples
+        click `Realm-name-examples` href "../Realm-name-examples"
+      `Factions-source` : schema_tag

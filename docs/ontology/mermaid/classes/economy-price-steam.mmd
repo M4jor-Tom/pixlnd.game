@@ -1,0 +1,15 @@
+ classDiagram
+    class `Economy-price-steam`
+    click `Economy-price-steam` href "../Economy-price-steam"
+      `Economy-price-steam` : flight_min
+      `Economy-price-steam` : flight_scaling
+      `Economy-price-steam` : flight_to_friend
+      `Economy-price-steam` : gems
+        `Economy-price-steam` --> "1" `Economy-gem-values` : gems
+        click `Economy-gem-values` href "../Economy-gem-values"
+      `Economy-price-steam` : glass_flask
+      `Economy-price-steam` : identify
+      `Economy-price-steam` : inn
+      `Economy-price-steam` : legendary_plus_weapon
+      `Economy-price-steam` : plus_items
+      `Economy-price-steam` : spec_swap

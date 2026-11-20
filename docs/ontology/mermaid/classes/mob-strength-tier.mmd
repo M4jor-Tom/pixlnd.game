@@ -1,0 +1,9 @@
+ classDiagram
+    class `Mob-strength-tier`
+    click `Mob-strength-tier` href "../Mob-strength-tier"
+      `Mob-strength-tier` : hp_range
+      `Mob-strength-tier` : id
+      `Mob-strength-tier` : name
+      `Mob-strength-tier` : rarity
+        `Mob-strength-tier` --> "0..1" `Rarity` : rarity
+        click `Rarity` href "../Rarity"

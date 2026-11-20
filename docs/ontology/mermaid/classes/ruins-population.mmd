@@ -1,0 +1,10 @@
+ classDiagram
+    class `Ruins-population`
+    click `Ruins-population` href "../Ruins-population"
+      `Encounter-population` <|-- `Ruins-population`
+        click `Encounter-population` href "../Encounter-population"
+      `Ruins-population` : bosses
+      `Ruins-population` : captives
+      `Ruins-population` : hostiles
+      `Ruins-population` : pack_size
+      `Ruins-population` : packs

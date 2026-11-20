@@ -1,0 +1,7 @@
+ classDiagram
+    class `Ingredient-refinement`
+    click `Ingredient-refinement` href "../Ingredient-refinement"
+      `Ingredient-refinement` : ingredient_refinement_process
+      `Ingredient-refinement` : ingredient_refinement_target
+        `Ingredient-refinement` --> "1" `Ingredient` : ingredient_refinement_target
+        click `Ingredient` href "../Ingredient"

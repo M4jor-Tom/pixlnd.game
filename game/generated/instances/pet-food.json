@@ -1,0 +1,638 @@
+{
+ "$schema": "pet-food",
+ "_doc": "id = item type 20 numeric subtype; matches the known source entity ID (alpha or post-alpha) of the creature named by the stable tames reference. rideable: per-page value; 'table' = wiki table said yes while creature page said no (1.0.0-1 all-rideable bug). shop = purchasable set.",
+ "cut": {
+  "entries": [
+   {
+    "key": "apple-pie",
+    "value": {
+     "tames": "wolf",
+     "versions": [
+      "X"
+     ]
+    }
+   },
+   {
+    "key": "liquid-drop",
+    "value": {
+     "tames": "cow",
+     "versions": [
+      "X"
+     ]
+    }
+   },
+   {
+    "key": "charred-steak",
+    "value": {
+     "tames": "imp",
+     "versions": [
+      "X"
+     ]
+    }
+   },
+   {
+    "key": "wasabi-sauce",
+    "value": {
+     "tames": "devourer",
+     "versions": [
+      "X"
+     ]
+    }
+   },
+   {
+    "key": "kaliptus-leaf",
+    "value": {
+     "note": "replaced by eucalyptus candy",
+     "tames": "koala",
+     "versions": [
+      "X"
+     ]
+    }
+   }
+  ]
+ },
+ "foods": {
+  "entries": [
+   {
+    "key": "bubble-gum",
+    "value": {
+     "id": 19,
+     "name": "Bubble Gum",
+     "rideable": true,
+     "shop": true,
+     "tames": "collie"
+    }
+   },
+   {
+    "key": "vanilla-cupcake",
+    "value": {
+     "id": 22,
+     "name": "Vanilla Cupcake",
+     "rideable": true,
+     "tames": "alpaca"
+    }
+   },
+   {
+    "key": "chocolate-cupcake",
+    "value": {
+     "id": 23,
+     "name": "Chocolate Cupcake",
+     "rideable": true,
+     "tames": "brown-alpaca"
+    }
+   },
+   {
+    "key": "cinnamon-roll",
+    "value": {
+     "id": 25,
+     "name": "Cinnamon Roll",
+     "rideable": true,
+     "tames": "turtle"
+    }
+   },
+   {
+    "key": "waffle",
+    "value": {
+     "id": 26,
+     "name": "Waffle",
+     "rideable": true,
+     "shop": true,
+     "tames": "terrier"
+    }
+   },
+   {
+    "key": "croissant",
+    "value": {
+     "id": 27,
+     "name": "Croissant",
+     "rideable": true,
+     "tames": "scottish-terrier"
+    }
+   },
+   {
+    "key": "candy",
+    "value": {
+     "id": 30,
+     "name": "Candy",
+     "note": "black cat only",
+     "rideable": true,
+     "shop": true,
+     "tames": "cat"
+    }
+   },
+   {
+    "key": "pumpkin-mash",
+    "value": {
+     "id": 33,
+     "name": "Pumpkin Mash",
+     "rideable": true,
+     "tames": "pig"
+    }
+   },
+   {
+    "key": "cotton-candy",
+    "value": {
+     "id": 34,
+     "name": "Cotton Candy",
+     "rideable": true,
+     "shop": true,
+     "tames": "sheep"
+    }
+   },
+   {
+    "key": "carrot",
+    "value": {
+     "id": 35,
+     "name": "Carrot",
+     "rideable": true,
+     "shop": true,
+     "tames": "bunny"
+    }
+   },
+   {
+    "key": "blackberry-marmalade",
+    "value": {
+     "id": 36,
+     "name": "Blackberry Marmalade",
+     "rideable": true,
+     "tames": "porcupine"
+    }
+   },
+   {
+    "key": "green-jelly",
+    "value": {
+     "id": 37,
+     "name": "Green Jelly",
+     "rideable": true,
+     "tames": "green-slime"
+    }
+   },
+   {
+    "key": "pink-jelly",
+    "value": {
+     "id": 38,
+     "name": "Pink Jelly",
+     "rideable": true,
+     "tames": "pink-slime"
+    }
+   },
+   {
+    "key": "yellow-jelly",
+    "value": {
+     "id": 39,
+     "name": "Yellow Jelly",
+     "rideable": true,
+     "tames": "yellow-slime"
+    }
+   },
+   {
+    "key": "blue-jelly",
+    "value": {
+     "id": 40,
+     "name": "Blue Jelly",
+     "rideable": true,
+     "tames": "blue-slime"
+    }
+   },
+   {
+    "key": "banana-split",
+    "value": {
+     "id": 50,
+     "name": "Banana Split",
+     "rideable": false,
+     "tames": "monkey"
+    }
+   },
+   {
+    "key": "popcorn",
+    "value": {
+     "id": 53,
+     "name": "Popcorn",
+     "note": "also dropped by crawler",
+     "rideable": false,
+     "tames": "hornet"
+    }
+   },
+   {
+    "key": "licorice-candy",
+    "value": {
+     "id": 55,
+     "name": "Licorice Candy",
+     "rideable": false,
+     "tames": "crow"
+    }
+   },
+   {
+    "key": "cereal-bar",
+    "value": {
+     "id": 56,
+     "name": "Cereal Bar",
+     "rideable": false,
+     "tames": "chicken"
+    }
+   },
+   {
+    "key": "salted-caramel",
+    "value": {
+     "id": 57,
+     "name": "Salted Caramel",
+     "rideable": false,
+     "tames": "seagull"
+    }
+   },
+   {
+    "key": "ginger-tartlet",
+    "value": {
+     "id": 58,
+     "name": "Ginger Tartlet",
+     "rideable": false,
+     "tames": "parrot"
+    }
+   },
+   {
+    "key": "mango-juice",
+    "value": {
+     "id": 59,
+     "name": "Mango Juice",
+     "rideable": false,
+     "tames": "bat"
+    }
+   },
+   {
+    "key": "fruit-basket",
+    "value": {
+     "id": 60,
+     "name": "Fruit Basket",
+     "rideable": false,
+     "tames": "fly"
+    }
+   },
+   {
+    "key": "melon-ice-cream",
+    "value": {
+     "id": 61,
+     "name": "Melon Ice Cream",
+     "rideable": false,
+     "tames": "midge"
+    }
+   },
+   {
+    "key": "bloodorange-juice",
+    "value": {
+     "id": 62,
+     "name": "Bloodorange Juice",
+     "rideable": true,
+     "tames": "mosquito"
+    }
+   },
+   {
+    "key": "milk-chocolate-bar",
+    "value": {
+     "id": 63,
+     "name": "(Rice) Milk Chocolate Bar",
+     "rideable": true,
+     "tames": "plain-runner"
+    }
+   },
+   {
+    "key": "mint-chocolate-bar",
+    "value": {
+     "id": 64,
+     "name": "Mint Chocolate Bar",
+     "rideable": true,
+     "tames": "leaf-runner"
+    }
+   },
+   {
+    "key": "white-chocolate-bar",
+    "value": {
+     "id": 65,
+     "name": "White Chocolate Bar",
+     "rideable": true,
+     "tames": "snow-runner"
+    }
+   },
+   {
+    "key": "caramel-chocolate-bar",
+    "value": {
+     "id": 66,
+     "name": "Caramel Chocolate Bar",
+     "rideable": true,
+     "tames": "desert-runner"
+    }
+   },
+   {
+    "key": "chocolate-cookie",
+    "value": {
+     "id": 67,
+     "name": "Chocolate Cookie",
+     "rideable": true,
+     "tames": "peacock"
+    }
+   },
+   {
+    "key": "sugar-candy",
+    "value": {
+     "id": 74,
+     "name": "Sugar Candy",
+     "rideable": true,
+     "tames": "duckbill"
+    }
+   },
+   {
+    "key": "apple-ring",
+    "value": {
+     "id": 75,
+     "name": "Apple Ring",
+     "rideable": true,
+     "tames": "crocodile"
+    }
+   },
+   {
+    "key": "water-ice",
+    "value": {
+     "id": 86,
+     "name": "Water Ice",
+     "rideable": false,
+     "tames": "spitter"
+    }
+   },
+   {
+    "key": "chocolate-donut",
+    "value": {
+     "id": 87,
+     "name": "Chocolate Donut",
+     "rideable": false,
+     "shop": true,
+     "tames": "mole"
+    }
+   },
+   {
+    "key": "pancake",
+    "value": {
+     "id": 88,
+     "name": "Pancake",
+     "rideable": false,
+     "tames": "biter"
+    }
+   },
+   {
+    "key": "eucalyptus-candy",
+    "value": {
+     "id": 89,
+     "name": "Eucalyptus Candy",
+     "note": "replaced unused Kaliptus Leaf",
+     "rideable": false,
+     "tames": "koala"
+    }
+   },
+   {
+    "key": "strawberry-cake",
+    "value": {
+     "id": 90,
+     "name": "Strawberry Cake",
+     "rideable": false,
+     "tames": "squirrel"
+    }
+   },
+   {
+    "key": "chocolate-cake",
+    "value": {
+     "id": 91,
+     "name": "Chocolate Cake",
+     "rideable": false,
+     "tames": "raccoon"
+    }
+   },
+   {
+    "key": "lollipop",
+    "value": {
+     "id": 92,
+     "name": "Lollipop",
+     "note": "also from emerald deposits",
+     "rideable": false,
+     "tames": "owl"
+    }
+   },
+   {
+    "key": "soft-ice",
+    "value": {
+     "id": 93,
+     "name": "Soft Ice",
+     "rideable": false,
+     "tames": "penguin"
+    }
+   },
+   {
+    "key": "candied-apple",
+    "value": {
+     "id": 98,
+     "name": "Candied Apple",
+     "rideable": true,
+     "tames": "horse"
+    }
+   },
+   {
+    "key": "date-cookie",
+    "value": {
+     "id": 99,
+     "name": "Date Cookie",
+     "rideable": true,
+     "tames": "camel"
+    }
+   },
+   {
+    "key": "bread",
+    "value": {
+     "id": 102,
+     "name": "Bread",
+     "rideable": true,
+     "tames": "bark-beetle"
+    }
+   },
+   {
+    "key": "curry",
+    "value": {
+     "id": 103,
+     "name": "Curry",
+     "rideable": true,
+     "tames": "fire-beetle"
+    }
+   },
+   {
+    "key": "lolly",
+    "value": {
+     "id": 104,
+     "name": "Lolly",
+     "rideable": true,
+     "tames": "snout-beetle"
+    }
+   },
+   {
+    "key": "lemon-tart",
+    "value": {
+     "id": 105,
+     "name": "Lemon Tart",
+     "rideable": true,
+     "tames": "lemon-beetle"
+    }
+   },
+   {
+    "key": "strawberry-cocktail",
+    "value": {
+     "id": 106,
+     "name": "Strawberry Cocktail",
+     "rideable": false,
+     "tames": "crab"
+    }
+   },
+   {
+    "key": "biscuit-roll",
+    "value": {
+     "id": 151,
+     "name": "Biscuit Roll",
+     "rideable": false,
+     "tames": "bumblebee"
+    }
+   },
+   {
+    "key": "buckhorn",
+    "value": {
+     "id": 156,
+     "name": "Buckhorn",
+     "rideable": false,
+     "tames": "beaver",
+     "versions": [
+      "S"
+     ]
+    }
+   },
+   {
+    "key": "banana-mash",
+    "value": {
+     "id": 170,
+     "name": "Banana Mash",
+     "note": "obtainable (F11; wiki claimed cut)",
+     "rideable": false,
+     "tames": "warthog",
+     "versions": [
+      "S"
+     ]
+    }
+   },
+   {
+    "key": "mineral-water",
+    "value": {
+     "id": 192,
+     "name": "Mineral Water",
+     "rideable": false,
+     "tames": "radishling-sprout",
+     "versions": [
+      "S"
+     ]
+    }
+   },
+   {
+    "key": "spring-water",
+    "value": {
+     "id": 193,
+     "name": "Spring Water",
+     "rideable": false,
+     "tames": "cormling-sprout",
+     "versions": [
+      "S"
+     ]
+    }
+   },
+   {
+    "key": "peanut",
+    "value": {
+     "id": 200,
+     "name": "Peanut",
+     "rideable": true,
+     "tames": "baby-elephant",
+     "versions": [
+      "S"
+     ]
+    }
+   },
+   {
+    "key": "chocolate-ice-cream",
+    "value": {
+     "id": 201,
+     "name": "Chocolate Ice Cream",
+     "rideable": true,
+     "tames": "baby-mammoth",
+     "versions": [
+      "S"
+     ]
+    }
+   },
+   {
+    "key": "raspberry-juice",
+    "value": {
+     "id": 210,
+     "name": "Raspberry Juice",
+     "rideable": true,
+     "tames": "flamingo",
+     "versions": [
+      "S"
+     ]
+    }
+   },
+   {
+    "key": "mixed-salad",
+    "value": {
+     "id": 293,
+     "name": "Mixed Salad",
+     "rideable": true,
+     "tames": "caterpillar",
+     "versions": [
+      "S"
+     ]
+    }
+   },
+   {
+    "key": "radicchio-salad",
+    "value": {
+     "id": 294,
+     "name": "Radicchio Salad",
+     "rideable": true,
+     "tames": "earth-caterpillar",
+     "versions": [
+      "S"
+     ]
+    }
+   },
+   {
+    "key": "cabbage-rolls",
+    "value": {
+     "id": 295,
+     "name": "Cabbage Rolls",
+     "rideable": true,
+     "tames": "snail",
+     "versions": [
+      "S"
+     ]
+    }
+   }
+  ]
+ },
+ "rules": [
+  "equip from Pets tab (../domain/controls.md#equip-item) → approach creature → auto success, hearts",
+  "one of each food carried at a time",
+  "group: others turn hostile",
+  "named bosses tameable (keep skills, lose boss status on reload)",
+  "quest-bound pets untameable",
+  "shop sells one food type per town per day (S)",
+  "jellies drop from bats"
+ ],
+ "shop-set": [
+  "candy",
+  "carrot",
+  "bubble-gum",
+  "chocolate-donut",
+  "waffle",
+  "cotton-candy"
+ ]
+}

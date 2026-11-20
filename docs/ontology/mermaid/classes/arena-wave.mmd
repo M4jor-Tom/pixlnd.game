@@ -1,0 +1,6 @@
+ classDiagram
+    class `Arena-wave`
+    click `Arena-wave` href "../Arena-wave"
+      `Arena-wave` : tiers
+        `Arena-wave` --> "2..*" `MissionTier` : tiers
+        click `MissionTier` href "../MissionTier"

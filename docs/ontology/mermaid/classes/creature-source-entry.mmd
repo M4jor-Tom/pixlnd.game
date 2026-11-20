@@ -1,0 +1,7 @@
+ classDiagram
+    class `Creature-source-entry`
+    click `Creature-source-entry` href "../Creature-source-entry"
+      `Creature-source-entry` : source_entry_key
+      `Creature-source-entry` : value
+        `Creature-source-entry` --> "1" `Creature-source-row` : value
+        click `Creature-source-row` href "../Creature-source-row"

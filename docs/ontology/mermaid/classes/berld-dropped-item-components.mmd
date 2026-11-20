@@ -1,0 +1,12 @@
+ classDiagram
+    class `Berld-dropped-item-components`
+    click `Berld-dropped-item-components` href "../Berld-dropped-item-components"
+      `Dropped-item` <|-- `Berld-dropped-item-components`
+        click `Dropped-item` href "../Dropped-item"
+      `Berld-dropped-item-components` : drop_time
+      `Berld-dropped-item-components` : item
+        `Berld-dropped-item-components` --> "1" `Item` : item
+        click `Item` href "../Item"
+      `Berld-dropped-item-components` : pos
+      `Berld-dropped-item-components` : rotation
+      `Berld-dropped-item-components` : scale

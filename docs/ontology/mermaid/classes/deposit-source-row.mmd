@@ -1,0 +1,10 @@
+ classDiagram
+    class `Deposit-source-row`
+    click `Deposit-source-row` href "../Deposit-source-row"
+      `Deposit-source-row` : aid
+      `Deposit-source-row` : lands
+      `Deposit-source-row` : note
+      `Deposit-source-row` : versions
+      `Deposit-source-row` : yields
+        `Deposit-source-row` --> "1" `Ingredient` : yields
+        click `Ingredient` href "../Ingredient"

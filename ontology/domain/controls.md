@@ -8,8 +8,10 @@ remain in the linked gameplay definitions; later owner approvals override stale 
 
 ## Contract
 
-- Each row has a stable ID/anchor, meaning, value/lifecycle and context. Distinct intentions
-  stay distinct even when a profile currently drives them from the same input.
+- Each row's stable anchor is its `ControlActionId` in [`meta.yaml`](../schema/meta.yaml)
+  via `control-action-id`; its action-specific meaning, value/lifecycle and context remain in
+  this catalog. Distinct intentions stay distinct even when a profile currently drives them
+  from the same input.
 - **Trigger** means one request on activation, not automatic repetition. **Held** means
   active/inactive with start/end. **Direction** and **adjustment** describe semantic values,
   not a device axis, sensitivity, deadzone or analog speed-scaling policy.

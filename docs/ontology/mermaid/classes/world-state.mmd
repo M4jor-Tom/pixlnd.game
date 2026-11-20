@@ -1,0 +1,22 @@
+ classDiagram
+    class `World-state`
+    click `World-state` href "../World-state"
+      `World-state` : world_state_characters
+        `World-state` --> "1..*" `Character-world-position` : world_state_characters
+        click `Character-world-position` href "../Character-world-position"
+      `World-state` : world_state_clock
+      `World-state` : world_state_elapsed
+      `World-state` : world_state_lands
+        `World-state` --> "1..*" `Saved-land-entry` : world_state_lands
+        click `Saved-land-entry` href "../Saved-land-entry"
+      `World-state` : world_state_mobs
+        `World-state` --> "1..*" `Saved-mob-entry` : world_state_mobs
+        click `Saved-mob-entry` href "../Saved-mob-entry"
+      `World-state` : world_state_seed
+      `World-state` : world_state_sites
+        `World-state` --> "1..*" `Saved-site` : world_state_sites
+        click `Saved-site` href "../Saved-site"
+      `World-state` : world_state_vendors
+        `World-state` --> "1..*" `Saved-vendor-entry` : world_state_vendors
+        click `Saved-vendor-entry` href "../Saved-vendor-entry"
+      `World-state` : world_state_world_id

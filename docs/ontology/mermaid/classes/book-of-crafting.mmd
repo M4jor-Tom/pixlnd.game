@@ -1,0 +1,7 @@
+ classDiagram
+    class `Book-of-crafting`
+    click `Book-of-crafting` href "../Book-of-crafting"
+      `Book-of-crafting` : book_recipes
+        `Book-of-crafting` --> "1..*" `Recipe` : book_recipes
+        click `Recipe` href "../Recipe"
+      `Book-of-crafting` : id

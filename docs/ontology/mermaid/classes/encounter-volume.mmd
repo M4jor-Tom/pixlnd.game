@@ -1,0 +1,21 @@
+ classDiagram
+    class `Encounter-volume`
+    click `Encounter-volume` href "../Encounter-volume"
+      `Encounter-volume` <|-- `Ruins-room-volume`
+        click `Ruins-room-volume` href "../Ruins-room-volume"
+      `Encounter-volume` <|-- `Ruins-corridor-volume`
+        click `Ruins-corridor-volume` href "../Ruins-corridor-volume"
+      `Encounter-volume` <|-- `Ruins-court-volume`
+        click `Ruins-court-volume` href "../Ruins-court-volume"
+      `Encounter-volume` <|-- `Ruins-passage-volume`
+        click `Ruins-passage-volume` href "../Ruins-passage-volume"
+      `Encounter-volume` <|-- `Ruins-alcove-volume`
+        click `Ruins-alcove-volume` href "../Ruins-alcove-volume"
+      `Encounter-volume` <|-- `Camp-battlefield-volume`
+        click `Camp-battlefield-volume` href "../Camp-battlefield-volume"
+      `Encounter-volume` <|-- `Rescue-battlefield-volume`
+        click `Rescue-battlefield-volume` href "../Rescue-battlefield-volume"
+      `Encounter-volume` : above_floor
+      `Encounter-volume` : below_floor
+      `Encounter-volume` : depth
+      `Encounter-volume` : width

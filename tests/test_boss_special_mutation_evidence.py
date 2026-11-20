@@ -10,6 +10,25 @@ class NativeLaunchBlocked(Exception):
     pass
 
 
+def verify_existing(runner, source, root, name, files, failures):
+    evidence = root / name
+    evidence.mkdir()
+    for filename, content in files.items():
+        (evidence / filename).write_bytes(content)
+    try:
+        runner.run(source, evidence, only="malformed-save")
+    except FileExistsError:
+        pass
+    except NativeLaunchBlocked:
+        failures.append(name + ": reused evidence reached native preflight")
+    else:
+        failures.append(name + ": existing evidence was accepted")
+    actual = {str(p.relative_to(evidence)): p.read_bytes()
+              for p in evidence.rglob("*") if p.is_file()}
+    if actual != files or set(evidence.iterdir()) != {evidence / p for p in files}:
+        failures.append(name + ": existing evidence changed")
+
+
 def run():
     path = Path(__file__).with_name("test_boss_special_mutations.py")
     spec = importlib.util.spec_from_file_location("boss_mutation_runner", path)
@@ -41,22 +60,7 @@ def run():
                                   "results.json": b"frozen-results\n",
                                   "run.log": b"frozen-log\n"}),
         ):
-            evidence = root / name
-            evidence.mkdir()
-            for filename, content in files.items():
-                (evidence / filename).write_bytes(content)
-            try:
-                runner.run(source, evidence, only="malformed-save")
-            except FileExistsError:
-                pass
-            except NativeLaunchBlocked:
-                failures.append(name + ": reused evidence reached native preflight")
-            else:
-                failures.append(name + ": existing evidence was accepted")
-            actual = {str(p.relative_to(evidence)): p.read_bytes()
-                      for p in evidence.rglob("*") if p.is_file()}
-            if actual != files or set(evidence.iterdir()) != {evidence / p for p in files}:
-                failures.append(name + ": existing evidence changed")
+            verify_existing(runner, source, root, name, files, failures)
         nested = source / "forbidden-evidence"
         try:
             runner.run(source, nested, only="malformed-save")

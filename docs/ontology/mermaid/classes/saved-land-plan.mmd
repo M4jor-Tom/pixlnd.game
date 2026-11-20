@@ -1,0 +1,9 @@
+ classDiagram
+    class `Saved-land-plan`
+    click `Saved-land-plan` href "../Saved-land-plan"
+      `Saved-land-plan` : saved_land_plan_sites
+        `Saved-land-plan` --> "1..*" `Saved-site-layout` : saved_land_plan_sites
+        click `Saved-site-layout` href "../Saved-site-layout"
+      `Saved-land-plan` : saved_land_plan_village
+        `Saved-land-plan` --> "1" `Saved-village` : saved_land_plan_village
+        click `Saved-village` href "../Saved-village"

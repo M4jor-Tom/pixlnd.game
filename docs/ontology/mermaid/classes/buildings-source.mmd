@@ -1,0 +1,19 @@
+ classDiagram
+    class `Buildings-source`
+    click `Buildings-source` href "../Buildings-source"
+      `Buildings-source` : buildings
+        `Buildings-source` --> "1" `Building-rows-source` : buildings
+        click `Building-rows-source` href "../Building-rows-source"
+      `Buildings-source` : districts
+        `Buildings-source` --> "1" `Districts-source` : districts
+        click `Districts-source` href "../Districts-source"
+      `Buildings-source` : map_visibility
+        `Buildings-source` --> "1" `Source-version-text` : map_visibility
+        click `Source-version-text` href "../Source-version-text"
+      `Buildings-source` : population
+        `Buildings-source` --> "1" `Settlement-population-source` : population
+        click `Settlement-population-source` href "../Settlement-population-source"
+      `Buildings-source` : schema_tag
+      `Buildings-source` : settlement_styles
+        `Buildings-source` --> "1" `Settlement-styles-source` : settlement_styles
+        click `Settlement-styles-source` href "../Settlement-styles-source"

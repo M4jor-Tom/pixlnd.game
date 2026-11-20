@@ -41,7 +41,16 @@
             '');
           };
         });
-      devShells = forAll (_system: pkgs: {
+      devShells = forAll (_system: pkgs:
+        let
+          # LinkML's native wheel needs libstdc++ on Linux. Scope it to Python,
+          # including uv-created venvs; never alter Godot's library environment.
+          schemaPython = (pkgs.python312.withPackages (_: [])).override {
+            makeWrapperArgs = pkgs.lib.optionals pkgs.stdenv.hostPlatform.isLinux [
+              "--prefix" "LD_LIBRARY_PATH" ":" "${pkgs.stdenv.cc.cc.lib}/lib"
+            ];
+          };
+        in {
         default = pkgs.mkShell {
           # Development-only analyzer; not an input to either shipped launcher.
           GDMETRICS_G4 = pkgs.fetchFromGitHub {
@@ -50,13 +59,19 @@
             rev = "52e7b62ac5fa3dad032c3d91cf629654a6441133"; # v1.6.1
             hash = "sha256-IDERnxQumeO0egIb0oKu67rR8HhzxqjTMhPXGxj8VYc=";
           };
+          # Standalone schema tooling; never download an alternate interpreter.
+          # Reached only through uv: on PATH it would shadow gdtoolkit's python3.
+          UV_PYTHON = "${schemaPython}/bin/python3.12";
+          UV_PYTHON_DOWNLOADS = "never";
           packages = with pkgs; [
             godot_4   # engine + headless validator: godot --headless -s ontology/validate.gd
             nodejs    # ontology edit/cross-ref scripts
+            uv        # hash-locked schema dependencies
             gdb       # native debugger (development tool only)
             pre-commit # shared pre-push / CI gate
             gdtoolkit_4 # GDScript formatting + lint
             jq        # JSON sanity checks on ontology/instances
+            shfmt     # parser for Python/Bash limits (scripts/check_python_bash.py)
             bash      # test loops: `nix develop -c bash -c ...` (zsh does not word-split $var, see HANDOFF gotchas)
           ];
           # ponytail: no export templates here; CI downloads its own (.github/workflows/release.yml).

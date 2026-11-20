@@ -1,0 +1,13 @@
+ classDiagram
+    class `Realm-knowledge`
+    click `Realm-knowledge` href "../Realm-knowledge"
+      `Realm-knowledge` : realm_knowledge_character
+        `Realm-knowledge` --> "1" `Player-character` : realm_knowledge_character
+        click `Player-character` href "../Player-character"
+      `Realm-knowledge` : realm_knowledge_percent
+      `Realm-knowledge` : realm_knowledge_realm
+        `Realm-knowledge` --> "1" `Realm` : realm_knowledge_realm
+        click `Realm` href "../Realm"
+      `Realm-knowledge` : realm_knowledge_world
+        `Realm-knowledge` --> "1" `World` : realm_knowledge_world
+        click `World` href "../World"

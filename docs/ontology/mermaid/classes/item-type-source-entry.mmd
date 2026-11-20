@@ -1,0 +1,7 @@
+ classDiagram
+    class `Item-type-source-entry`
+    click `Item-type-source-entry` href "../Item-type-source-entry"
+      `Item-type-source-entry` : recipe_map_key
+      `Item-type-source-entry` : value
+        `Item-type-source-entry` --> "1" `Item-type-source-row` : value
+        click `Item-type-source-row` href "../Item-type-source-row"

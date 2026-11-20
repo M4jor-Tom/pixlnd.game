@@ -1,0 +1,18 @@
+ classDiagram
+    class `Encounter-shared-package`
+    click `Encounter-shared-package` href "../Encounter-shared-package"
+      `Encounter-shared-package` : copper
+      `Encounter-shared-package` : gear_count
+      `Encounter-shared-package` : gear_rarity_index
+      `Encounter-shared-package` : gear_upgrades
+      `Encounter-shared-package` : gem
+        `Encounter-shared-package` --> "1" `Ingredient` : gem
+        click `Ingredient` href "../Ingredient"
+      `Encounter-shared-package` : gem_count
+      `Encounter-shared-package` : life_potion_count
+      `Encounter-shared-package` : life_potion_rarity_index
+      `Encounter-shared-package` : selected_class
+        `Encounter-shared-package` --> "0..1" `Character-class` : selected_class
+        click `Character-class` href "../Character-class"
+      `Encounter-shared-package` : source_level
+      `Encounter-shared-package` : tier

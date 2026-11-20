@@ -1,0 +1,183 @@
+{
+ "$schema": "rarity",
+ "_doc": "One scale colours items, enemies (S mob strength) and missions. Alpha stat curve multiplies by 2^(0.25*rarity); wiki says displayed stats roughly double per tier (?).",
+ "alpha-relative-colors": {
+  "enemy-name (gamepressure)": {
+   "light-blue": "equal",
+   "orange": "slightly stronger",
+   "purple": "boss",
+   "red": "much stronger",
+   "white": "weaker"
+  },
+  "landmark-name": {
+   "blue": "equal",
+   "red": "higher",
+   "white": "lower level than player"
+  },
+  "multiplier-tags": [
+   "+1",
+   "+2",
+   "+3",
+   "+4"
+  ]
+ },
+ "entries": [
+  {
+   "key": "worn",
+   "value": {
+    "color": "grey",
+    "gem": null,
+    "hex": "#9a9a9a",
+    "index": -1,
+    "name": "Worn",
+    "named": false,
+    "note": "S: never drops; any gear becomes Worn outside its land (except +); vendors sell only Worn until gnomes rescued",
+    "stars": 1,
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "common",
+   "value": {
+    "color": "white",
+    "gem": null,
+    "hex": "#ffffff",
+    "index": 0,
+    "name": "Common",
+    "named": false,
+    "stars": 1,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "uncommon",
+   "value": {
+    "alt-name": "Magic",
+    "color": "green",
+    "gem": "emerald",
+    "hex": "#3ad63a",
+    "index": 1,
+    "name": "Uncommon",
+    "named": false,
+    "stars": 2,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "rare",
+   "value": {
+    "color": "blue",
+    "gem": "sapphire",
+    "hex": "#3a7bd6",
+    "index": 2,
+    "name": "Rare",
+    "named": false,
+    "stars": 3,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "epic",
+   "value": {
+    "color": "purple",
+    "gem": "ruby",
+    "hex": "#b03ad6",
+    "index": 3,
+    "name": "Epic",
+    "named": true,
+    "stars": 4,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "legendary",
+   "value": {
+    "color": "yellow",
+    "gem": "diamond",
+    "hex": "#e6c41a",
+    "index": 4,
+    "name": "Legendary",
+    "named": true,
+    "stars": 5,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "mythical",
+   "value": {
+    "color": "red (leftovers list) / renders like common",
+    "gem": null,
+    "index": 5,
+    "name": "Mythical",
+    "named": true,
+    "note": "alpha bug: +4 dungeon chests roll +1 above legendary",
+    "stars": null,
+    "versions": [
+     "A",
+     "X"
+    ]
+   }
+  }
+ ],
+ "mob-strength-tiers-s": {
+  "blue": {
+   "examples": [
+    "rockling",
+    "insect guard"
+   ],
+   "rarity": "rare"
+  },
+  "green": {
+   "examples": [
+    "brown alpaca",
+    "plain runner"
+   ],
+   "rarity": "uncommon"
+  },
+  "purple": {
+   "examples": [
+    "dungeon mobs",
+    "lion",
+    "chiling"
+   ],
+   "rarity": "epic"
+  },
+  "white": {
+   "examples": [
+    "farm animals",
+    "never aggressive"
+   ],
+   "hp-range": [
+    150,
+    250
+   ],
+   "rarity": "common"
+  },
+  "yellow": {
+   "examples": [
+    "some collies",
+    "all minotaurs",
+    "lava lands groups"
+   ],
+   "note": "yellow-text enemies wear legendary gear",
+   "rarity": "legendary"
+  }
+ }
+}

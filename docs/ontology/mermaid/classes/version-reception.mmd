@@ -1,0 +1,8 @@
+ classDiagram
+    class `Version-reception`
+    click `Version-reception` href "../Version-reception"
+      `Version-reception` : criticism
+      `Version-reception` : praise
+      `Version-reception` : scores
+        `Version-reception` --> "*" `Version-score-entry` : scores
+        click `Version-score-entry` href "../Version-score-entry"

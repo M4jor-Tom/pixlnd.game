@@ -1,0 +1,9 @@
+ classDiagram
+    class `Rulesets-source`
+    click `Rulesets-source` href "../Rulesets-source"
+      `Rulesets-source` : controls_note
+      `Rulesets-source` : documentation
+      `Rulesets-source` : entries
+        `Rulesets-source` --> "1..*" `Ruleset-source-entry` : entries
+        click `Ruleset-source-entry` href "../Ruleset-source-entry"
+      `Rulesets-source` : schema_tag

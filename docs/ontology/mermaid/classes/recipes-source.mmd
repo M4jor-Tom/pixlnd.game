@@ -1,0 +1,27 @@
+ classDiagram
+    class `Recipes-source`
+    click `Recipes-source` href "../Recipes-source"
+      `Recipes-source` : alchemy
+        `Recipes-source` --> "1" `Recipe-reference` : alchemy
+        click `Recipe-reference` href "../Recipe-reference"
+      `Recipes-source` : cooking
+        `Recipes-source` --> "1" `Recipe-reference` : cooking
+        click `Recipe-reference` href "../Recipe-reference"
+      `Recipes-source` : crafting_tabs_a
+      `Recipes-source` : customization
+        `Recipes-source` --> "1" `Recipe-customization` : customization
+        click `Recipe-customization` href "../Recipe-customization"
+      `Recipes-source` : documentation
+      `Recipes-source` : gear_armor_quantities
+        `Recipes-source` --> "1" `Recipe-armor` : gear_armor_quantities
+        click `Recipe-armor` href "../Recipe-armor"
+      `Recipes-source` : gear_weapons
+        `Recipes-source` --> "1" `Recipe-weapons` : gear_weapons
+        click `Recipe-weapons` href "../Recipe-weapons"
+      `Recipes-source` : recipe_sources
+        `Recipes-source` --> "1" `Recipe-sources` : recipe_sources
+        click `Recipe-sources` href "../Recipe-sources"
+      `Recipes-source` : refining
+        `Recipes-source` --> "1" `Recipe-refining` : refining
+        click `Recipe-refining` href "../Recipe-refining"
+      `Recipes-source` : schema_tag

@@ -9,7 +9,7 @@
 ## one sfx player that is freed again.
 extends SceneTree
 
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Combat := preload("res://game/combat/combat.gd")
 const Feel := preload("res://game/combat/feel.gd")
 const HUD := preload("res://game/meta/hud.gd")
@@ -122,12 +122,11 @@ func _stars_on(e: Node) -> int:
 
 
 func _init() -> void:
-	o = Model.Ontology.load_dir("res://ontology/instances")
-	check(o.validate(), "ontology valid")
+	o = Domain.Ontology.load_dir()
+	check(o.errors.is_empty(), "ontology valid")
 	design = o.configs["generators"]["design"]
 	var fl: Dictionary = design["feel"]
 
-	_config(fl)
 	InputMapBuilder.build(o.configs["keybinds"]["hybrid"])
 	var floor := StaticBody3D.new()
 	var cs := CollisionShape3D.new()
@@ -162,38 +161,6 @@ func _init() -> void:
 	Engine.time_scale = 1.0
 	print("test_feel: %s" % ("OK" if _failed == 0 else "%d FAILED" % _failed))
 	quit(1 if _failed > 0 else 0)
-
-
-func _config(fl) -> void:
-	# --- c-feel-config
-	fl["events"]["hit"]["sfx"] = "nope"
-	check(not o.validate(), "c-feel-config rejects an sfx id that is not an alpha sound")
-	o.errors.clear()
-	fl["events"]["hit"]["sfx"] = "hit"
-	fl["events"]["crit"]["trauma"] = 2.0
-	check(not o.validate(), "c-feel-config rejects trauma > 1")
-	o.errors.clear()
-	fl["events"]["crit"]["trauma"] = 0.3
-	fl["hit-stop"]["time-scale"] = 1.5
-	check(not o.validate(), "c-feel-config rejects a hit-stop time-scale >= 1")
-	o.errors.clear()
-	fl["hit-stop"]["time-scale"] = 0.05
-	var kill_ev: Dictionary = fl["events"]["kill"]
-	fl["events"].erase("kill")
-	check(not o.validate(), "c-feel-config wants every required event id")
-	o.errors.clear()
-	fl["events"]["kill"] = kill_ev
-	var hit_col: Array = fl["numbers"]["colours"]["hit"]
-	fl["numbers"]["colours"].erase("hit")
-	check(not o.validate(), "c-feel-config wants the hit colour (feel.gd's eager fallback)")
-	o.errors.clear()
-	fl["numbers"]["colours"]["hit"] = hit_col
-	var slide = fl["sfx"]["hit"]["slide"]
-	fl["sfx"]["hit"].erase("slide")
-	check(not o.validate(), "c-feel-config wants a slide on every sfx")
-	o.errors.clear()
-	fl["sfx"]["hit"]["slide"] = slide
-	check(o.validate(), "restored")
 
 
 func _hit_stop(fl) -> void:

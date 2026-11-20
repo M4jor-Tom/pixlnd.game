@@ -3,6 +3,8 @@
 ## columns drawn, no tooltips, no respec; the mouse is freed while it is open.
 extends CanvasLayer
 
+const Domain := preload("res://game/domain/domain.gd")
+
 var touch_ui: Node = null
 var touch_buttons: Array[Button] = []
 var player: Node
@@ -79,17 +81,17 @@ func _refresh_nodes(tree) -> bool:
 
 
 func _skill_line(a, tree) -> Variant:
-	var t: Dictionary = a.alpha_tree
+	var t: Object = a.slot_alpha_tree
 	var where: String = (
-		"key %d" % int(t["rank"])
-		if str(t["column"]) == "class"
-		else ("key 4" if str(t["column"]) == "ultimate" else str(t["column"]))
+		"key %d" % int(t.slot_rank)
+		if str(t.slot_column) == "class"
+		else ("key 4" if str(t.slot_column) == "ultimate" else str(t.slot_column))
 	)
 	if touch_ui != null:
 		where = where.replace("key ", "Skill ")
-	var line := "%-22s %-10s %2d pts" % [a.display_name, where, tree.spent(a.id)]
+	var line := "%-22s %-10s %2d pts" % [a.slot_name, where, tree.spent(Domain.id_of(a))]
 	if not tree.is_open(a):
-		line += "   (needs %d in %s)" % [int(t["needs"]), tree.prerequisite(a).display_name]
+		line += "   (needs %d in %s)" % [int(t.slot_needs), tree.prerequisite(a).slot_name]
 	return line
 
 

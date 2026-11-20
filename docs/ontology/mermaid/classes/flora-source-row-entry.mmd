@@ -1,0 +1,7 @@
+ classDiagram
+    class `Flora-source-row-entry`
+    click `Flora-source-row-entry` href "../Flora-source-row-entry"
+      `Flora-source-row-entry` : source_entry_key
+      `Flora-source-row-entry` : value
+        `Flora-source-row-entry` --> "1" `Flora-source-row` : value
+        click `Flora-source-row` href "../Flora-source-row"

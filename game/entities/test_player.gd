@@ -3,7 +3,7 @@
 ## auto step-up, sprint stamina drain and the camera's orbit distance.
 extends SceneTree
 
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const InputMapBuilder := preload("res://game/meta/input_map.gd")
 const PLAYER := preload("res://game/entities/player.tscn")
 
@@ -33,8 +33,8 @@ func _frames(n: int) -> void:
 
 
 func _init() -> void:
-	var o := Model.Ontology.load_dir("res://ontology/instances")
-	check(o.validate(), "ontology valid")
+	var o := Domain.Ontology.load_dir()
+	check(o.errors.is_empty(), "ontology valid")
 	InputMapBuilder.build(o.configs["keybinds"]["hybrid"])
 	if not _input_actions():
 		return
@@ -57,7 +57,7 @@ func _setup_before_ready(design: Dictionary) -> void:
 	check(early.rig == null, "T8 setup precondition: onready rig is absent")
 	early.setup(design["movement"], design["camera"], &"normal")
 	early.setup_combat(design["combat"], design["crit"], {}, 260.0)
-	early.setup_items(Model.Ontology.load_dir("res://ontology/instances"), design)
+	early.setup_items(Domain.Ontology.load_dir(), design)
 	check(
 		is_equal_approx(early.get_node("Collision").shape.height, 1.8),
 		"T8 setup before ready configures collision"

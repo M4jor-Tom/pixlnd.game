@@ -1,5 +1,5 @@
 extends SceneTree
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Gen := preload("res://game/world/world_gen.gd")
 const State := preload("res://game/world/world_state.gd")
 var failed := 0
@@ -12,7 +12,7 @@ func check(ok: bool, label: String) -> void:
 
 
 func _init() -> void:
-	var o = Model.Ontology.load_dir("res://ontology/instances")
+	var o = Domain.Ontology.load_dir()
 	var d: Dictionary = o.configs.generators.design
 	var g := Gen.new(26879, d, o.landscapes)
 	if not g.has_method("encounters_at"):

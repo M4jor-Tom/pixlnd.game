@@ -1,0 +1,7 @@
+ classDiagram
+    class `Saved-threat`
+    click `Saved-threat` href "../Saved-threat"
+      `Saved-threat` : saved_threat_amount
+      `Saved-threat` : saved_threat_player
+        `Saved-threat` --> "1" `Player-character` : saved_threat_player
+        click `Player-character` href "../Player-character"

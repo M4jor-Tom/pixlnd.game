@@ -1,7 +1,7 @@
 ## Ordered character/item checks. Completion phases keep ordinary rejected rows
 ## separate from native-error false, which propagates to the original owner.
 extends RefCounted
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Inventory := preload("res://game/items/inventory.gd")
 const SkillTree := preload("res://game/progression/skill_tree.gd")
 
@@ -68,17 +68,14 @@ static func _item_kind(save, row: Variant, path: String) -> bool:
 
 
 static func _ingredient(save, row: Variant, path: String) -> bool:
-	if (
-		save.o.materials.has(row.subtype)
-		and save.o.materials[row.subtype].raw.get("kind") == "spirit"
-	):
+	if save.o.materials.has(row.subtype) and save.o.materials[row.subtype].slot_kind == "spirit":
 		save.require(row.level <= 100, path + ".power")
 	save.require(
 		(
 			save.o.configs["ingredients"].has(row.subtype)
 			or (
 				save.o.materials.has(row.subtype)
-				and save.o.materials[row.subtype].raw.get("kind") == "spirit"
+				and save.o.materials[row.subtype].slot_kind == "spirit"
 			)
 		),
 		path + ".ingredient"
@@ -93,7 +90,7 @@ static func _skill_point(save, c: Dictionary, id: Variant, tree) -> bool:
 	):
 		var found := false
 		for a in tree.nodes:
-			if a.id == StringName(id):
+			if Domain.id_of(a) == StringName(id):
 				found = true
 		save.require(found, "character.points." + str(id))
 		tree.points[StringName(id)] = c.points[id]
@@ -112,7 +109,7 @@ static func _progression(save, c: Dictionary) -> bool:
 	if save.require(
 		save._integer(c.get("level"), 1) and save._integer(c.get("xp")), "character.level/xp"
 	):
-		save.require(c.xp < Model.xp_to_next(int(c.level)), "character.xp settled")
+		save.require(c.xp < Domain.xp_to_next(int(c.level)), "character.xp settled")
 	save.require(save._integer(c.get("coins")), "character.coins")
 	return true
 
@@ -125,12 +122,12 @@ static func _inventory(save, c: Dictionary, cls: Variant) -> bool:
 static func _skill_total(save, c: Dictionary, tree) -> bool:
 	var spent := 0
 	for a in tree.nodes:
-		spent += tree.spent(a.id)
-		if tree.spent(a.id) > 0:
-			save.require(tree.is_open(a), "character.points prerequisite " + str(a.id))
+		spent += tree.spent(Domain.id_of(a))
+		if tree.spent(Domain.id_of(a)) > 0:
+			save.require(tree.is_open(a), "character.points prerequisite " + str(Domain.id_of(a)))
 	if save._integer(c.get("level"), 1):
 		save.require(
-			c.banked + spent == (c.level - 1) * Model.SKILL_POINTS_PER_LEVEL,
+			c.banked + spent == (c.level - 1) * Domain.SKILL_POINTS_PER_LEVEL,
 			"character.skill point total"
 		)
 	return true
@@ -154,9 +151,7 @@ static func _carried_kind(save, row: Variant, path: String, kind: String) -> boo
 
 static func _class_spec(save, spec: Variant, cls: Variant) -> bool:
 	var valid: bool = (
-		spec is String
-		and save.o.specs.has(spec)
-		and save.o.specs[spec].character_class == StringName(cls)
+		spec is String and save.o.specs.has(spec) and save.o.specs[spec].slot_class == cls
 	)
 	return save.require(valid, "character.spec")
 
@@ -187,7 +182,7 @@ static func _bag(save, c: Dictionary, inv) -> bool:
 
 
 static func _item_rules(save, row: Variant, path: String, start: int) -> bool:
-	save.require(row.rarity <= Model.Rarity.LEGENDARY, path + ".rarity")
+	save.require(row.rarity <= Domain.Rarity.LEGENDARY, path + ".rarity")
 	var stack_valid: bool = row.type in save.design["stack-cap"].stackable or row.count == 1
 	save.require(stack_valid, path + ".stack")
 	return _item_kind(save, row, path) and save.errors.size() == start

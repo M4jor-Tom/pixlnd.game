@@ -1,0 +1,6 @@
+ classDiagram
+    class `Economy-shops-source`
+    click `Economy-shops-source` href "../Economy-shops-source"
+      `Economy-shops-source` : entries
+        `Economy-shops-source` --> "1..*" `Economy-shop-entry` : entries
+        click `Economy-shop-entry` href "../Economy-shop-entry"

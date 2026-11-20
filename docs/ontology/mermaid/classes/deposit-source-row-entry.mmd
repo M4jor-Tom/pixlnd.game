@@ -1,0 +1,7 @@
+ classDiagram
+    class `Deposit-source-row-entry`
+    click `Deposit-source-row-entry` href "../Deposit-source-row-entry"
+      `Deposit-source-row-entry` : source_entry_key
+      `Deposit-source-row-entry` : value
+        `Deposit-source-row-entry` --> "1" `Deposit-source-row` : value
+        click `Deposit-source-row` href "../Deposit-source-row"

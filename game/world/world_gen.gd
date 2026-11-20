@@ -33,7 +33,7 @@ var names: Dictionary  # design.names
 var enemy_level: Dictionary  # design.enemy-level (F4)
 var enemy_hp: Dictionary  # design.enemy-hp (D14)
 var settlement: Dictionary  # design.settlement (D22); empty = no villages
-var landscapes := {}  # id → Model.Landscape, only those with a `gen` block (hybrid)
+var landscapes := {}  # id → landscape row, only those with a `gen` block (hybrid)
 var land_blocks: int
 var land_min: int
 var land_max: int
@@ -73,7 +73,7 @@ func _init(p_seed: int, design: Dictionary, p_landscapes: Dictionary) -> void:
 	land_min = -int(terrain["lands-per-axis"]) / 2
 	land_max = land_min + int(terrain["lands-per-axis"]) - 1
 	for id in p_landscapes:
-		if not p_landscapes[id].gen.is_empty():
+		if p_landscapes[id].slot_gen != null:
 			landscapes[id] = p_landscapes[id]
 	cell_blocks = int(terrain["zone-blocks"])
 	_cliff_slope = float(terrain["cliff-slope"])
@@ -147,12 +147,12 @@ func land_at(lc: Vector2i) -> Land:
 	rng.seed = l.land_seed
 	if not _land_climate(l, rng):
 		return null
-	var g: Dictionary = landscapes[l.landscape].gen
-	l.relief = float(g["relief"])
-	l.base = float(g["base"])
-	l.surface = StringName(g["surface"])
-	l.top = Color(g["top"])
-	l.cliff = Color(g["cliff"])
+	var g: Object = landscapes[l.landscape].slot_gen
+	l.relief = float(g.slot_relief)
+	l.base = float(g.slot_base)
+	l.surface = StringName(g.slot_surface)
+	l.top = Color(g.slot_top)
+	l.cliff = Color(g.slot_cliff)
 	l.name = _land_name(rng, l.landscape)
 	l.danger_tier = _roll_tier(rng)
 	_lands[lc] = l

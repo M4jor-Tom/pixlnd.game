@@ -2,6 +2,7 @@
 extends SceneTree
 
 const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Skills := preload("res://game/progression/skill_tree.gd")
 var failed := 0
 var rejected := 0
@@ -126,12 +127,19 @@ func trees() -> void:
 func positives() -> void:
 	var o = fresh()
 	check(o.validate(), "canonical identity validates")
-	for id in o.specs:
-		specialization_positive(o, id)
-	var assassin := Skills.new(o, {}, &"rogue", &"assassin")
-	check(assassin.class_slot(3).id == &"camouflage", "Camouflage only in slot 3")
-	check(assassin.prerequisite(assassin.class_slot(3)).id == &"sneak", "Camouflage needs Sneak")
-	check(assassin.nodes.count(o.abilities.camouflage) == 1, "one Camouflage investment")
+	# The game's skill tree consumes Domain rows, never model.gd objects.
+	var d = Domain.Ontology.load_dir()
+	check(d.errors.is_empty(), "domain catalogs bind")
+	check(d.specs.keys() == o.specs.keys(), "domain and model list the same specializations")
+	for id in d.specs:
+		specialization_positive(d, id)
+	var assassin := Skills.new(d, {}, &"rogue", &"assassin")
+	check(Domain.id_of(assassin.class_slot(3)) == &"camouflage", "Camouflage only in slot 3")
+	check(
+		Domain.id_of(assassin.prerequisite(assassin.class_slot(3))) == &"sneak",
+		"Camouflage needs Sneak"
+	)
+	check(assassin.nodes.count(d.abilities.camouflage) == 1, "one Camouflage investment")
 	check(o.abilities.camouflage.alpha_tree["also-ultimate"] == true, "source identity retained")
 	check(
 		o.abilities.sneak in o.skill_tree(&"rogue", &"ninja"),
@@ -311,10 +319,10 @@ func assassin_shapes() -> void:
 		reject(o, "skill-tree assassin")
 
 
-func specialization_positive(o, id) -> void:
-	var s = o.specs[id]
+func specialization_positive(d, id) -> void:
+	var s = d.specs[id]
 	var tree := Skills.new(
-		o, o.configs.generators.design["skill-point"], s.character_class, StringName(id)
+		d, d.configs.generators.design["skill-point"], StringName(s.slot_class), StringName(id)
 	)
 	check(tree.nodes.size() == (9 if id == "assassin" else 10), id + " node count")
 	for rank in [1, 2, 3]:
@@ -333,12 +341,12 @@ func specialization_positive(o, id) -> void:
 	)
 	check((tree.class_slot(4) == null) == (id == "assassin"), id + " ultimate unchanged")
 	if ultimate != null:
-		check(tree.class_slot(4).id == ultimate, id + " selected ultimate preserved")
+		check(Domain.id_of(tree.class_slot(4)) == ultimate, id + " selected ultimate preserved")
 	for a in tree.nodes:
-		if a.alpha_tree.needs == 0:
-			check(tree.prerequisite(a) == null, str(a.id) + " is a root")
+		if int(a.slot_alpha_tree.slot_needs) == 0:
+			check(tree.prerequisite(a) == null, str(Domain.id_of(a)) + " is a root")
 		else:
-			check(tree.prerequisite(a) != null, str(a.id) + " has a prerequisite")
+			check(tree.prerequisite(a) != null, str(Domain.id_of(a)) + " has a prerequisite")
 
 
 func copy_identity_catalogs(scratch: String) -> void:

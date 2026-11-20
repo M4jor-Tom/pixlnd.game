@@ -1,0 +1,11 @@
+ classDiagram
+    class `Inventory`
+    click `Inventory` href "../Inventory"
+      `Inventory` : id
+      `Inventory` : inventory_coins
+      `Inventory` : inventory_entries
+        `Inventory` --> "1..*" `Inventory-entry` : inventory_entries
+        click `Inventory-entry` href "../Inventory-entry"
+      `Inventory` : inventory_equipment
+        `Inventory` --> "1..*" `Equipment-assignment` : inventory_equipment
+        click `Equipment-assignment` href "../Equipment-assignment"

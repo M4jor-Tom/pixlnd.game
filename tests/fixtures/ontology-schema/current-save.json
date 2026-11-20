@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "character": {
+    "id": "player-you", "class_id": "warrior", "spec": "berserker",
+    "level": 1, "xp": 0, "banked": 0, "points": {}, "coins": 0,
+    "bag": [{"type": "consumable", "subtype": "life-potion", "material": "", "rarity": 0, "level": 1, "upgrade_count": 0, "modifier": 0, "minus_modifier": 0, "count": 5}],
+    "equipment": {}
+  },
+  "world": {
+    "world_id": "world-a", "seed": 26879, "clock": 25200, "elapsed": 0,
+    "characters": {"player-you": {"position": [0, 1, 0], "respawn": [0, 1, 0]}},
+    "lands": {},
+    "vendors": {
+      "0,0/weapon-vendor": {"day": 0, "level": 1, "ceiling": 0, "items": []}
+    },
+    "mobs": {
+      "world-a/ambient/0,0/0/0": {
+        "species": "collie", "hostility": "N", "role": "melee", "level": 1,
+        "seed": 1, "cycle": 0, "hp": 10, "max_hp": 10, "damage": 1,
+        "power_base": 1, "pack": "world-a/ambient/0,0/0",
+        "home": [0, 1, 0], "position": [0, 1, 0], "dead": false, "eligible": false,
+        "combat": {"threat": {}, "order": {}, "provoked": {}, "next_order": 0, "current": "", "taunt": "", "taunt_left": 0, "returning": false}
+      }
+    },
+    "sites": {
+      "world-a/site/0,0/camp/0": {
+        "id": "world-a/site/0,0/camp/0", "family": "camp",
+        "volumes": [[0, 0, 0, 10, 5, 10]],
+        "pending": false, "cleared": false, "completed": false, "cycle": 0,
+        "mobs": {}, "spirit_levels": {}, "room_levels": [],
+        "contents": {"rubble": {}, "props": {}, "traps": []},
+        "rewards": {
+          "mission/0": {"delivered": false, "level": 1, "payload": [], "classes": [], "class_id": ""}
+        }
+      }
+    }
+  }
+}

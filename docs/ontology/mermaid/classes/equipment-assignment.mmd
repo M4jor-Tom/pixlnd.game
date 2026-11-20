@@ -1,0 +1,9 @@
+ classDiagram
+    class `Equipment-assignment`
+    click `Equipment-assignment` href "../Equipment-assignment"
+      `Equipment-assignment` : equipment_assignment_item
+        `Equipment-assignment` --> "1" `Item` : equipment_assignment_item
+        click `Item` href "../Item"
+      `Equipment-assignment` : equipment_assignment_slot
+        `Equipment-assignment` --> "1" `Equipment-slot` : equipment_assignment_slot
+        click `Equipment-slot` href "../Equipment-slot"

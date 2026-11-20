@@ -1,0 +1,7 @@
+ classDiagram
+    class `Saved-provocation`
+    click `Saved-provocation` href "../Saved-provocation"
+      `Saved-provocation` : saved_provocation_player
+        `Saved-provocation` --> "1" `Player-character` : saved_provocation_player
+        click `Player-character` href "../Player-character"
+      `Saved-provocation` : saved_provocation_provoked

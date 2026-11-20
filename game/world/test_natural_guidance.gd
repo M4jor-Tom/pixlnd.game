@@ -1,6 +1,6 @@
 ## External cliffs never reject destinations; optional decorations cannot reshape terrain.
 extends SceneTree
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Gen := preload("res://game/world/world_gen.gd")
 const Encounters := preload("res://game/world/encounter_gen.gd")
 var failed := 0
@@ -58,7 +58,7 @@ func _init() -> void:
 
 
 func _run() -> void:
-	var o = Model.Ontology.load_dir("res://ontology/instances")
+	var o = Domain.Ontology.load_dir()
 	var d: Dictionary = o.configs.generators.design.duplicate(true)
 	var g := CliffGen.new(26879, d, o.landscapes)
 	var land = g.land_at(Vector2i.ZERO)

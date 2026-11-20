@@ -1,0 +1,645 @@
+{
+ "$schema": "ingredient",
+ "_doc": "kind: gather (from flora/deposit) | drop (creature) | vendor | refined | intermediate. yields listed on flora.json / deposits.json.",
+ "_unused-data": {
+  "entries": [
+   {
+    "key": "horn",
+    "value": 3
+   },
+   {
+    "key": "claw",
+    "value": 4
+   },
+   {
+    "key": "hair",
+    "value": 7
+   },
+   {
+    "key": "crystal",
+    "value": 8
+   },
+   {
+    "key": "orb",
+    "value": 13
+   },
+   {
+    "key": "spirit",
+    "value": 14
+   },
+   {
+    "key": "capsule",
+    "value": 11
+   }
+  ]
+ },
+ "entries": [
+  {
+   "key": "apple",
+   "value": {
+    "from": "apple trees",
+    "kind": "gather",
+    "name": "Apple",
+    "note": "also eaten directly",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "lemon",
+   "value": {
+    "from": "lemon trees",
+    "kind": "gather",
+    "name": "Lemon",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "prickly-pear",
+   "value": {
+    "alpha-subtype": 23,
+    "from": "cactus",
+    "kind": "gather",
+    "name": "Prickly Pear",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "snowberry",
+   "value": {
+    "alpha-subtype": 27,
+    "from": "snowberry-bush",
+    "kind": "gather",
+    "name": "Snowberry",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "ginseng-root",
+   "value": {
+    "alpha-subtype": 20,
+    "from": "ginseng",
+    "kind": "gather",
+    "name": "Ginseng Root",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "dewdrop",
+   "value": {
+    "from": "gathering nodes",
+    "kind": "gather",
+    "name": "Dewdrop",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "banana",
+   "value": {
+    "from": "jungle trees",
+    "kind": "gather",
+    "name": "Banana",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "cocoa-bean",
+   "value": {
+    "from": "jungle trees",
+    "kind": "gather",
+    "name": "Cocoa Bean",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "kale",
+   "value": {
+    "from": "farms/villages",
+    "kind": "gather",
+    "name": "Kale",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "pineapple",
+   "value": {
+    "alpha-subtype": 17,
+    "from": "farms/villages",
+    "kind": "gather",
+    "name": "Pineapple",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "pumpkin",
+   "value": {
+    "alpha-subtype": 16,
+    "from": "farms/villages",
+    "kind": "gather",
+    "name": "Pumpkin",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "mushroom",
+   "value": {
+    "alpha-subtype": 15,
+    "from": "mushroom (under trees, all lands except deserts/underwater)",
+    "kind": "gather",
+    "name": "Mushroom",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "shimmer-mushroom",
+   "value": {
+    "alpha-subtype": 19,
+    "from": "caves/rocks, glows blue",
+    "kind": "gather",
+    "name": "Shimmer Mushroom",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "onion-slice",
+   "value": {
+    "alpha-subtype": 21,
+    "from": "onionling",
+    "kind": "drop",
+    "name": "Onion Slice",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "radish-slice",
+   "value": {
+    "alpha-subtype": 18,
+    "from": "radishling",
+    "kind": "drop",
+    "name": "Radish Slice",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "ice-cube",
+   "value": {
+    "from": "snowlands water / ice crystal deposit",
+    "kind": "gather",
+    "name": "Ice Cube",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "sugar-cube",
+   "value": {
+    "from": "item shop",
+    "kind": "vendor",
+    "name": "Sugar Cube",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "dragon-root",
+   "value": {
+    "from": "under trees (greenlands)",
+    "kind": "gather",
+    "name": "Dragon Root",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "manaorchid",
+   "value": {
+    "from": "grass/forest",
+    "kind": "gather",
+    "name": "Manaorchid",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "heartflower",
+   "value": {
+    "alpha-subtype": 22,
+    "from": "heartflower (all but deserts/snowlands); thawed iceflower",
+    "kind": "gather",
+    "name": "Heartflower",
+    "sell": 1,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "iceflower",
+   "value": {
+    "alpha-subtype": 24,
+    "from": "snowlands (0.9.1-5)",
+    "kind": "gather",
+    "name": "Iceflower (Frozen Heartflower)",
+    "refines-to": {
+     "entries": [
+      {
+       "key": "heartflower",
+       "value": "1-3 @campfire"
+      }
+     ]
+    },
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "soulflower",
+   "value": {
+    "alpha-subtype": 25,
+    "kind": "gather",
+    "name": "Soulflower",
+    "versions": [
+     "X"
+    ]
+   }
+  },
+  {
+   "key": "parrot-feather",
+   "value": {
+    "alpha-subtype": 2,
+    "from": "parrot",
+    "kind": "drop",
+    "name": "Parrot Feather",
+    "note": "parrot armor recipe never in menu",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "mammoth-hide",
+   "value": {
+    "from": "mammoth (0% drop)",
+    "kind": "drop",
+    "name": "Mammoth Hide",
+    "versions": [
+     "X"
+    ]
+   }
+  },
+  {
+   "key": "plant-fiber",
+   "value": {
+    "alpha-subtype": 5,
+    "from": "bush",
+    "kind": "gather",
+    "name": "Plant Fiber",
+    "refines-to": {
+     "entries": [
+      {
+       "key": "linen-yarn",
+       "value": "spinning wheel"
+      }
+     ]
+    },
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "wood-log",
+   "value": {
+    "alpha-subtype": 1,
+    "from": "bush",
+    "kind": "gather",
+    "name": "Wood Log",
+    "refines-to": {
+     "entries": [
+      {
+       "key": "wood-cube",
+       "value": "saw"
+      }
+     ]
+    },
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "cotton-capsule",
+   "value": {
+    "alpha-subtype": 11,
+    "from": "cotton-plant",
+    "kind": "gather",
+    "name": "Cotton Capsule",
+    "refines-to": {
+     "entries": [
+      {
+       "key": "cotton-yarn",
+       "value": "spinning wheel"
+      }
+     ]
+    },
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "cobweb",
+   "value": {
+    "alpha-subtype": 6,
+    "from": "scrub",
+    "kind": "gather",
+    "name": "Cobweb",
+    "refines-to": {
+     "entries": [
+      {
+       "key": "silk-yarn",
+       "value": "spinning wheel"
+      }
+     ]
+    },
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "iron-nugget",
+   "value": {
+    "alpha-subtype": 0,
+    "from": "iron deposit",
+    "kind": "gather",
+    "name": "Iron Nugget",
+    "refines-to": {
+     "entries": [
+      {
+       "key": "iron-cube",
+       "value": "furnace"
+      }
+     ]
+    },
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "silver-nugget",
+   "value": {
+    "from": "silver deposit",
+    "kind": "gather",
+    "name": "Silver Nugget",
+    "refines-to": {
+     "entries": [
+      {
+       "key": "silver-cube",
+       "value": "furnace"
+      }
+     ]
+    },
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "gold-nugget",
+   "value": {
+    "from": "gold deposit",
+    "kind": "gather",
+    "name": "Gold Nugget",
+    "refines-to": {
+     "entries": [
+      {
+       "key": "gold-cube",
+       "value": "furnace"
+      }
+     ]
+    },
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "emerald",
+   "value": {
+    "from": "emerald deposit; gem trader 100",
+    "kind": "gather|vendor",
+    "name": "Emerald",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "sapphire",
+   "value": {
+    "from": "sapphire deposit; gem trader 200",
+    "kind": "gather|vendor",
+    "name": "Sapphire",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "ruby",
+   "value": {
+    "from": "ruby deposit; gem trader 400",
+    "kind": "gather|vendor",
+    "name": "Ruby",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "diamond",
+   "value": {
+    "from": "diamond deposit; gem trader 800",
+    "kind": "gather|vendor",
+    "name": "Diamond",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "linen-yarn",
+   "value": {
+    "alpha-subtype": 9,
+    "kind": "refined",
+    "name": "Linen Yarn",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "cotton-yarn",
+   "value": {
+    "alpha-subtype": 9,
+    "kind": "refined",
+    "name": "Cotton Yarn",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "silk-yarn",
+   "value": {
+    "alpha-subtype": 9,
+    "kind": "refined",
+    "name": "Silk Yarn",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "wood-cube",
+   "value": {
+    "alpha-subtype": 10,
+    "kind": "refined",
+    "name": "Wood Cube",
+    "note": "also customization cube (+1) for wooden weapons; 12 on workbench upgrade (A)",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "iron-cube",
+   "value": {
+    "alpha-subtype": 10,
+    "kind": "refined",
+    "name": "Iron Cube",
+    "note": "also customization cube (+1) for metal weapons",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "silver-cube",
+   "value": {
+    "alpha-subtype": 10,
+    "kind": "refined",
+    "name": "Silver Cube",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "gold-cube",
+   "value": {
+    "alpha-subtype": 10,
+    "kind": "refined",
+    "name": "Gold Cube",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "glass-flask",
+   "value": {
+    "alpha-subtype": 12,
+    "from": "item shop 1 coin (S); drops; dungeon tables",
+    "kind": "vendor|drop",
+    "name": "Glass Flask",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "water-flask",
+   "value": {
+    "alpha-subtype": 26,
+    "kind": "intermediate",
+    "name": "Water Flask",
+    "recipe": "glass flask while standing in water",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  }
+ ]
+}

@@ -9,7 +9,7 @@
 ## ponytail: no portrait head/minimap yet; buff icons are letter boxes, no art (todo_implement.md).
 extends CanvasLayer
 
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 
 var touch_ui: Node = null
 var _margin: MarginContainer
@@ -160,7 +160,7 @@ func _progress_display() -> bool:
 	if player.get("xp") != null:
 		_level.text = (
 			"level %d   %d / %d xp   %d skill points"
-			% [player.level, player.xp, Model.xp_to_next(player.level), player.skill_points]
+			% [player.level, player.xp, Domain.xp_to_next(player.level), player.skill_points]
 		)
 	return true
 
@@ -227,7 +227,7 @@ func _buff_icons() -> void:
 			fill.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 			box.add_child(fill)
 			var l := Label.new()
-			l.text = str(player.o.abilities[id].display_name).substr(0, 1)
+			l.text = str(player.o.abilities[id].slot_name).substr(0, 1)
 			l.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 			l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 			box.add_child(l)
@@ -258,7 +258,7 @@ func _skills_line() -> String:
 		parts.append(part)
 	for id in player.abilities.buffs:
 		parts.append(
-			"[%s %.0fs]" % [player.o.abilities[id].display_name, player.abilities.buffs[id]["left"]]
+			"[%s %.0fs]" % [player.o.abilities[id].slot_name, player.abilities.buffs[id]["left"]]
 		)
 	return ("\n" if touch_ui != null else "   ").join(parts)
 
@@ -270,16 +270,16 @@ func bind_touch(adapter: Node) -> void:
 
 # Untyped return distinguishes a native abort (null) from successful text.
 func _class_skill_line(slot, a):
-	var cd := float(player.abilities.cooldowns.get(a.id, 0.0))
+	var cd := float(player.abilities.cooldowns.get(Domain.id_of(a), 0.0))
 	var state := (
 		"no points"
-		if player.skill_tree.spent(a.id) == 0
+		if player.skill_tree.spent(Domain.id_of(a)) == 0
 		else ("%.0fs" % cd if cd > 0.0 else "ready")
 	)
 	return (
-		("%s: %s" % [a.display_name, state])
+		("%s: %s" % [a.slot_name, state])
 		if touch_ui != null
-		else "%d %s: %s" % [slot, a.display_name, state]
+		else "%d %s: %s" % [slot, a.slot_name, state]
 	)
 
 

@@ -1,0 +1,9 @@
+ classDiagram
+    class `Slot-acceptance-condition`
+    click `Slot-acceptance-condition` href "../Slot-acceptance-condition"
+      `Slot-acceptance-condition` : slot_acceptance_condition_condition
+        `Slot-acceptance-condition` --> "1" `Slot-acceptance-phase` : slot_acceptance_condition_condition
+        click `Slot-acceptance-phase` href "../Slot-acceptance-phase"
+      `Slot-acceptance-condition` : slot_acceptance_condition_item_type
+        `Slot-acceptance-condition` --> "1" `Item-type` : slot_acceptance_condition_item_type
+        click `Item-type` href "../Item-type"

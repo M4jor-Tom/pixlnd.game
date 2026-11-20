@@ -1,0 +1,10 @@
+ classDiagram
+    class `Item-upgrade`
+    click `Item-upgrade` href "../Item-upgrade"
+      `Item-upgrade` : item_upgrade_level
+      `Item-upgrade` : item_upgrade_material
+        `Item-upgrade` --> "1" `Material` : item_upgrade_material
+        click `Material` href "../Material"
+      `Item-upgrade` : item_upgrade_x
+      `Item-upgrade` : item_upgrade_y
+      `Item-upgrade` : item_upgrade_z

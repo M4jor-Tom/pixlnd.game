@@ -3,7 +3,7 @@ extends SceneTree
 # Default invocation also loads the files in a bounded fresh Godot process.
 const Save := preload("res://game/world/save_data.gd")
 const State := preload("res://game/world/world_state.gd")
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const World := preload("res://game/world/world.gd")
 const PLAYER := preload("res://game/entities/player.tscn")
 const POWERS := {7: 24, 8: 26, 9: 29, 10: 32, 11: 34, 12: 36, 13: 38}
@@ -56,7 +56,7 @@ func _fixture(d: Dictionary, o) -> Array:
 	p.logical_id = "f7-cold-hero"
 	p.set_physics_process(false)
 	while p.level < 10:
-		p.gain_xp(Model.xp_to_next(p.level) - p.xp)
+		p.gain_xp(Domain.xp_to_next(p.level) - p.xp)
 	p.inventory.coins = 100000
 	var state := State.new(d, 26879)
 	var world := World.new()
@@ -345,8 +345,8 @@ func _atomic_identity(
 
 
 func _with_ontology(directory: String) -> void:
-	var o := Model.Ontology.load_dir("res://ontology/instances")
-	if not o.validate() or not o.errors.is_empty():
+	var o := Domain.Ontology.load_dir()
+	if not o.errors.is_empty():
 		printerr("ontology invalid ", o.errors)
 		quit(2)
 		return

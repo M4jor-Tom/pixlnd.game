@@ -1,0 +1,10 @@
+ classDiagram
+    class `Resource-cost`
+    click `Resource-cost` href "../Resource-cost"
+      `Resource-cost` : resource_cost_amount
+      `Resource-cost` : resource_cost_resource
+        `Resource-cost` --> "1" `Resource` : resource_cost_resource
+        click `Resource` href "../Resource"
+      `Resource-cost` : resource_cost_ruleset
+        `Resource-cost` --> "1" `Ruleset` : resource_cost_ruleset
+        click `Ruleset` href "../Ruleset"

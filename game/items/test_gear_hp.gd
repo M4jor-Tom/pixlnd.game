@@ -1,8 +1,8 @@
 ## Fixed HP: catches missing/double class-scaled gear, swap healing and lost lifecycle contributions.
-## Expected amounts are literal fixtures, independent of Items.hp and Model.stat_curve.
+## Expected amounts are literal fixtures, independent of Items.hp and Domain.stat_curve.
 extends SceneTree
 
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Combat := preload("res://game/combat/combat.gd")
 const Items := preload("res://game/items/items.gd")
 const Item := preload("res://game/items/item.gd")
@@ -37,7 +37,7 @@ func player(class_id: StringName) -> CharacterBody3D:
 	root.add_child(p)
 	p.setup(design.movement, design.camera, &"normal")
 	p.setup_combat(
-		design.combat, design.crit, {}, Combat.player_max_hp(1, o.classes[class_id].hp_mult)
+		design.combat, design.crit, {}, Combat.player_max_hp(1, o.classes[class_id].slot_hp_mult)
 	)
 	p.setup_items(o, design, class_id)
 	p.set_physics_process(false)
@@ -54,8 +54,8 @@ func _run() -> void:
 			printerr("FAIL: gear HP test exceeded 20 seconds")
 			quit(1)
 	)
-	o = Model.Ontology.load_dir("res://ontology/instances")
-	check(o.validate(), "ontology valid")
+	o = Domain.Ontology.load_dir()
+	check(o.errors.is_empty(), "ontology valid")
 	design = o.configs.generators.design
 	InputMapBuilder.build(o.configs.keybinds.hybrid)
 	_item_fixtures()
@@ -143,13 +143,13 @@ func _item_fixtures() -> void:
 
 
 func _extraneous_hp_fields() -> void:
-	var extra := Model.Ontology.load_dir("res://ontology/instances")
+	var extra := Domain.Ontology.load_dir()
 	for material in [&"wood", &"silk", &"gold"]:
-		extra.materials[material].raw["hp-bonus"] = 1.0
+		extra.materials[material].slot_hp_bonus = 1.0
 	for slot in extra.configs["equipment-slots"]["slots"]:
 		if slot["id"] not in ["chest", "shoulders", "gloves", "boots", "main-hand", "off-hand"]:
 			slot["hp-mult"] = 1.0
-	check(extra.validate(), "extraneous HP fields remain outside selected validation")
+	check(extra.errors.is_empty(), "extraneous HP fields remain outside selected validation")
 	for row in [
 		[&"weapon", &"wood", &"bow", 5.0],
 		[&"chest-armor", &"silk", &"", 10.0],

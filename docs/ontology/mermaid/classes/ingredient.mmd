@@ -1,0 +1,13 @@
+ classDiagram
+    class `Ingredient`
+    click `Ingredient` href "../Ingredient"
+      `Ingredient` : id
+      `Ingredient` : ingredient_alpha_subtype
+      `Ingredient` : ingredient_from
+      `Ingredient` : ingredient_kind
+      `Ingredient` : ingredient_name
+      `Ingredient` : ingredient_recipe
+      `Ingredient` : ingredient_refines_to
+        `Ingredient` --> "*" `Ingredient-refinement` : ingredient_refines_to
+        click `Ingredient-refinement` href "../Ingredient-refinement"
+      `Ingredient` : ingredient_sell

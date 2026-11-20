@@ -1,0 +1,7 @@
+ classDiagram
+    class `District-source-row-entry`
+    click `District-source-row-entry` href "../District-source-row-entry"
+      `District-source-row-entry` : source_entry_key
+      `District-source-row-entry` : value
+        `District-source-row-entry` --> "1" `District-source-row` : value
+        click `District-source-row` href "../District-source-row"

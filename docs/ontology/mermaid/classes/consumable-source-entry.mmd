@@ -1,0 +1,7 @@
+ classDiagram
+    class `Consumable-source-entry`
+    click `Consumable-source-entry` href "../Consumable-source-entry"
+      `Consumable-source-entry` : recipe_map_key
+      `Consumable-source-entry` : value
+        `Consumable-source-entry` --> "1" `Consumable-source-row` : value
+        click `Consumable-source-row` href "../Consumable-source-row"

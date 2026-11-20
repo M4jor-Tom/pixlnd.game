@@ -1,0 +1,7 @@
+ classDiagram
+    class `Settlement-style-source-row`
+    click `Settlement-style-source-row` href "../Settlement-style-source-row"
+      `Settlement-style-source-row` : desc
+      `Settlement-style-source-row` : lands
+        `Settlement-style-source-row` --> "1..*" `Landscape` : lands
+        click `Landscape` href "../Landscape"

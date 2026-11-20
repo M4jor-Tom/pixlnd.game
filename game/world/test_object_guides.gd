@@ -1,6 +1,6 @@
 ## Terrain-following guides remain solid, non-targetable and harmless scenery.
 extends SceneTree
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Gen := preload("res://game/world/world_gen.gd")
 const Site := preload("res://game/world/encounter_site.gd")
 const Player := preload("res://game/entities/player.tscn")
@@ -20,7 +20,7 @@ func _init() -> void:
 
 
 func run() -> void:
-	var o = Model.Ontology.load_dir("res://ontology/instances")
+	var o = Domain.Ontology.load_dir()
 	var d: Dictionary = o.configs.generators.design
 	var g := Gen.new(3, d, o.landscapes)
 	g._h_base = 140
@@ -37,7 +37,7 @@ func run() -> void:
 	root.add_child(view)
 	var p = Player.instantiate()
 	root.add_child(p)
-	p.setup(d.movement, d.camera, o.races.human.size_class)
+	p.setup(d.movement, d.camera, StringName(o.races.human.slot_size_class))
 	p.setup_combat(d.combat, d.crit, {}, 100)
 	p.setup_items(o, d, &"warrior")
 	p.set_physics_process(false)

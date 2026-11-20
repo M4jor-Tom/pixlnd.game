@@ -1,0 +1,7 @@
+ classDiagram
+    class `Ui-source-options`
+    click `Ui-source-options` href "../Ui-source-options"
+      `Ui-source-options` : entries
+        `Ui-source-options` --> "1..*" `Ui-source-option-entry` : entries
+        click `Ui-source-option-entry` href "../Ui-source-option-entry"
+      `Ui-source-options` : missing

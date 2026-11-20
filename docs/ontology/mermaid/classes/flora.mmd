@@ -1,0 +1,11 @@
+ classDiagram
+    class `Flora`
+    click `Flora` href "../Flora"
+      `Flora` : flora_aid
+      `Flora` : flora_lands
+      `Flora` : flora_name
+      `Flora` : flora_variants
+      `Flora` : flora_yields
+        `Flora` --> "*" `Flora-yield-entry` : flora_yields
+        click `Flora-yield-entry` href "../Flora-yield-entry"
+      `Flora` : id

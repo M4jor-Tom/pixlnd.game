@@ -1,0 +1,7 @@
+ classDiagram
+    class `Crafting-station-source-entry`
+    click `Crafting-station-source-entry` href "../Crafting-station-source-entry"
+      `Crafting-station-source-entry` : recipe_map_key
+      `Crafting-station-source-entry` : value
+        `Crafting-station-source-entry` --> "1" `Crafting-station-source-row` : value
+        click `Crafting-station-source-row` href "../Crafting-station-source-row"

@@ -1,0 +1,14 @@
+ classDiagram
+    class `Key-items-source`
+    click `Key-items-source` href "../Key-items-source"
+      `Key-items-source` : counts_per_land_s
+        `Key-items-source` --> "1" `Key-item-counts-source` : counts_per_land_s
+        click `Key-item-counts-source` href "../Key-item-counts-source"
+      `Key-items-source` : documentation
+      `Key-items-source` : entries
+        `Key-items-source` --> "1..*" `Key-items-source-entry` : entries
+        click `Key-items-source-entry` href "../Key-items-source-entry"
+      `Key-items-source` : schema_tag
+      `Key-items-source` : special_accessories_x
+        `Key-items-source` --> "1" `Key-item-cut-summary-source` : special_accessories_x
+        click `Key-item-cut-summary-source` href "../Key-item-cut-summary-source"

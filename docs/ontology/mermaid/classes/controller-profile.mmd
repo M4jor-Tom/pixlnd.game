@@ -1,0 +1,9 @@
+ classDiagram
+    class `Controller-profile`
+    click `Controller-profile` href "../Controller-profile"
+      `Controller-profile` <|-- `Android-controller-profile`
+        click `Android-controller-profile` href "../Android-controller-profile"
+      `Controller-profile` : has_input_binding
+        `Controller-profile` --> "*" `Input-binding` : has_input_binding
+        click `Input-binding` href "../Input-binding"
+      `Controller-profile` : id

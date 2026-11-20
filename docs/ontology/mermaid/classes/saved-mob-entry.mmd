@@ -1,0 +1,7 @@
+ classDiagram
+    class `Saved-mob-entry`
+    click `Saved-mob-entry` href "../Saved-mob-entry"
+      `Saved-mob-entry` : saved_mob_entry_mob
+      `Saved-mob-entry` : saved_mob_entry_value
+        `Saved-mob-entry` --> "1" `Saved-mob` : saved_mob_entry_value
+        click `Saved-mob` href "../Saved-mob"

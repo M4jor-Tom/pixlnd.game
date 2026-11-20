@@ -199,12 +199,8 @@ func database_false_empty(scratch: String) -> void:
 		writer
 		. store_string(
 			'''extends "res://game/ontology_db.gd"
-class FailedValidation:
-	extends Model.Ontology
-	func validate() -> bool:
-		return false
-func _load_ontology() -> Model.Ontology:
-	return FailedValidation.new()
+func _load_ontology() -> Domain.Ontology:
+	return Domain.Ontology.new()  # empty and diagnostic-free: no default ruleset
 '''
 		)
 	)
@@ -227,4 +223,4 @@ func run() -> void:
 	)
 	writer.close()
 	var text := run_child(db_runner, [], "db-false-empty", 1)
-	check("ontology: validation failed" in text, "OntologyDB false/empty useful diagnostic")
+	check("ontology: no default ruleset" in text, "OntologyDB false/empty useful diagnostic")

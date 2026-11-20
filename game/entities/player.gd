@@ -16,7 +16,7 @@ extends "res://game/entities/entity.gd"
 const Combat := preload("res://game/combat/combat.gd")
 const Projectile := preload("res://game/combat/projectile.gd")
 const Abilities := preload("res://game/combat/abilities.gd")
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Items := preload("res://game/items/items.gd")
 const Item := preload("res://game/items/item.gd")
 const Inventory := preload("res://game/items/inventory.gd")

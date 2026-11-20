@@ -1,0 +1,44 @@
+ classDiagram
+    class `Ability-runtime`
+    click `Ability-runtime` href "../Ability-runtime"
+      `Ability-runtime` : ability_runtime_absorb_pct_hp
+      `Ability-runtime` : ability_runtime_cast_s
+      `Ability-runtime` : ability_runtime_charge_mult
+      `Ability-runtime` : ability_runtime_cooldown_s
+      `Ability-runtime` : ability_runtime_cost
+        `Ability-runtime` --> "1" `Runtime-cost` : ability_runtime_cost
+        click `Runtime-cost` href "../Runtime-cost"
+      `Ability-runtime` : ability_runtime_count
+      `Ability-runtime` : ability_runtime_damage_mult
+      `Ability-runtime` : ability_runtime_damage_taken_mult
+      `Ability-runtime` : ability_runtime_distance
+      `Ability-runtime` : ability_runtime_drain_per_s
+      `Ability-runtime` : ability_runtime_duration_s
+      `Ability-runtime` : ability_runtime_gravity
+      `Ability-runtime` : ability_runtime_heal_over_s
+      `Ability-runtime` : ability_runtime_heal_pct
+      `Ability-runtime` : ability_runtime_life_s
+      `Ability-runtime` : ability_runtime_move_mult
+      `Ability-runtime` : ability_runtime_radius
+      `Ability-runtime` : ability_runtime_range
+      `Ability-runtime` : ability_runtime_runtime
+        `Ability-runtime` --> "1" `Ability-runtime-kind` : ability_runtime_runtime
+        click `Ability-runtime-kind` href "../Ability-runtime-kind"
+      `Ability-runtime` : ability_runtime_speed
+      `Ability-runtime` : ability_runtime_splash
+      `Ability-runtime` : ability_runtime_spread
+      `Ability-runtime` : ability_runtime_stealth_full
+      `Ability-runtime` : ability_runtime_stealth_per_s
+      `Ability-runtime` : ability_runtime_strike
+        `Ability-runtime` --> "0..1" `Runtime-strike` : ability_runtime_strike
+        click `Runtime-strike` href "../Runtime-strike"
+      `Ability-runtime` : ability_runtime_stun_immune
+      `Ability-runtime` : ability_runtime_swing_mult
+      `Ability-runtime` : ability_runtime_taunt_s
+      `Ability-runtime` : ability_runtime_throw
+        `Ability-runtime` --> "0..1" `Runtime-projectile` : ability_runtime_throw
+        click `Runtime-projectile` href "../Runtime-projectile"
+      `Ability-runtime` : ability_runtime_toward
+        `Ability-runtime` --> "0..1" `Dash-direction` : ability_runtime_toward
+        click `Dash-direction` href "../Dash-direction"
+      `Ability-runtime` : ability_runtime_turns_per_s

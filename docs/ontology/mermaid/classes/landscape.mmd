@@ -1,0 +1,19 @@
+ classDiagram
+    class `Landscape`
+    click `Landscape` href "../Landscape"
+      `Landscape` : id
+      `Landscape` : landscape_dungeons
+        `Landscape` --> "*" `Dungeon-type` : landscape_dungeons
+        click `Dungeon-type` href "../Dungeon-type"
+      `Landscape` : landscape_fauna
+        `Landscape` --> "*" `Creature` : landscape_fauna
+        click `Creature` href "../Creature"
+      `Landscape` : landscape_flora
+        `Landscape` --> "*" `Flora` : landscape_flora
+        click `Flora` href "../Flora"
+      `Landscape` : landscape_gen
+        `Landscape` --> "0..1" `Landscape-generation` : landscape_gen
+        click `Landscape-generation` href "../Landscape-generation"
+      `Landscape` : landscape_pois
+        `Landscape` --> "*" `Poi-type` : landscape_pois
+        click `Poi-type` href "../Poi-type"

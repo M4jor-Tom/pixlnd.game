@@ -1,0 +1,130 @@
+id: https://w3id.org/pixlnd/design-progression
+name: pixlnd-design-progression
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+classes:
+  progression-design:
+    class_uri: pixlnd:progression-design
+    see_also: &id001
+    - ../domain/3_Classes.md#level-formula-a
+    slots:
+    - progression-design-kill-fraction
+    - progression-design-gap-per-level
+    - progression-design-gap-mult-range
+    - progression-design-heal-on-level-up
+    description: Current XP configuration; ordered gap range and exact settled progression remain linked
+      constraints.
+  gear-hp-design:
+    class_uri: pixlnd:gear-hp-design
+    see_also: &id002
+    - ../domain/3_Classes.md#item
+    slots:
+    - gear-hp-design-curve-mult
+    - gear-hp-design-base
+    - gear-hp-design-upgrade-step
+    description: Selected gear HP coefficients; exact approved values and material/slot agreement remain
+      c-gear-hp.
+  artifact-design:
+    class_uri: pixlnd:artifact-design
+    see_also: &id003
+    - ../domain/3_Classes.md#artifact
+    slots:
+    - artifact-design-first
+    - artifact-design-z
+    - artifact-design-total-bonus
+    - artifact-design-stats
+    description: Normalized logarithm configuration, not generated artifact instances or a copied executable
+      formula. Positive z and the exact approved formula/first value remain c-artifact-stat; no decay/floor
+      alternate fields.
+slots:
+  progression-design-kill-fraction:
+    slot_uri: pixlnd:progression-design/kill-fraction
+    alias: kill-fraction
+    domain: progression-design
+    range: double
+    required: true
+    see_also: *id001
+    minimum_value: 0
+    maximum_value: 1
+  progression-design-gap-per-level:
+    slot_uri: pixlnd:progression-design/gap-per-level
+    alias: gap-per-level
+    domain: progression-design
+    range: double
+    required: true
+    see_also: *id001
+    minimum_value: 0
+  progression-design-gap-mult-range:
+    slot_uri: pixlnd:progression-design/gap-mult-range
+    alias: gap-mult-range
+    domain: progression-design
+    range: double
+    required: true
+    see_also: *id001
+    multivalued: true
+    minimum_cardinality: 2
+    maximum_cardinality: 2
+    minimum_value: 0
+  progression-design-heal-on-level-up:
+    slot_uri: pixlnd:progression-design/heal-on-level-up
+    alias: heal-on-level-up
+    domain: progression-design
+    range: boolean
+    required: true
+    see_also: *id001
+  gear-hp-design-curve-mult:
+    slot_uri: pixlnd:gear-hp-design/curve-mult
+    alias: curve-mult
+    domain: gear-hp-design
+    range: double
+    required: true
+    see_also: *id002
+  gear-hp-design-base:
+    slot_uri: pixlnd:gear-hp-design/base
+    alias: base
+    domain: gear-hp-design
+    range: double
+    required: true
+    see_also: *id002
+  gear-hp-design-upgrade-step:
+    slot_uri: pixlnd:gear-hp-design/upgrade-step
+    alias: upgrade-step
+    domain: gear-hp-design
+    range: double
+    required: true
+    see_also: *id002
+  artifact-design-first:
+    slot_uri: pixlnd:artifact-design/first
+    alias: first
+    domain: artifact-design
+    range: double
+    required: true
+    see_also: *id003
+    minimum_value: 0
+  artifact-design-z:
+    slot_uri: pixlnd:artifact-design/z
+    alias: z
+    domain: artifact-design
+    range: double
+    required: true
+    see_also: *id003
+    minimum_value: 0
+  artifact-design-total-bonus:
+    slot_uri: pixlnd:artifact-design/total-bonus
+    alias: total-bonus
+    domain: artifact-design
+    range: string
+    required: true
+    see_also: *id003
+  artifact-design-stats:
+    slot_uri: pixlnd:artifact-design/stats
+    alias: stats
+    domain: artifact-design
+    range: string
+    required: true
+    see_also: *id003

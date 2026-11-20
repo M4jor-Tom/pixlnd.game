@@ -1,0 +1,6 @@
+ classDiagram
+    class `Equipment-accepts-condition-map`
+    click `Equipment-accepts-condition-map` href "../Equipment-accepts-condition-map"
+      `Equipment-accepts-condition-map` : entries
+        `Equipment-accepts-condition-map` --> "1..*" `Equipment-accepts-condition-entry` : entries
+        click `Equipment-accepts-condition-entry` href "../Equipment-accepts-condition-entry"

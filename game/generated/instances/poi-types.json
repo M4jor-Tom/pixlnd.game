@@ -1,0 +1,335 @@
+{
+ "$schema": "poi-type",
+ "entries": [
+  {
+   "key": "campsite",
+   "value": {
+    "contents": [
+     "bedroll (sleep/heal ~10 HP/s ?)",
+     "campfire",
+     "chairs",
+     "tents",
+     "wagons",
+     "barrels"
+    ],
+    "desc": "NPCs/monsters rest; boss sometimes (S)",
+    "lands": [
+     "every"
+    ],
+    "map": "'Camp'",
+    "name": "Camp / Campsite",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "arena",
+   "value": {
+    "desc": "5 waves W/G, W/G, G/B, B/P, P/Y boss; Bloodaxe orc host; daily; 18-50 coins + gear; more common in oceans",
+    "map": "skull",
+    "name": "Arena",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "wizard-tower",
+   "value": {
+    "desc": "≤5 per land; boss necromancer/wizard/sorcerer guards Magic Crystal at top; all crystals destroyed → land's Magic Barriers drop permanently",
+    "map": "purple gem",
+    "name": "Wizard / Magic Tower",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "magic-barrier",
+   "value": {
+    "desc": "blueish transparent wall sealing areas until towers cleared; overlapping-dungeon fix 0.9.3-0",
+    "name": "Magic Barrier",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "circle-of-power",
+   "value": {
+    "desc": "henge of spire rocks; restless warrior (5★) + lore tablet; eternal ember → brazier → land buff; several per land",
+    "map": "cauldron with fire",
+    "name": "Circle of Power",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "demon-portal",
+   "value": {
+    "desc": "dark cultists channel beam to heal it; imps spawn endlessly; possesses NPCs land-wide until destroyed; big portals at altar centre (0.9.3-0); sizes vary",
+    "map": "red portal",
+    "name": "Demon Portal / Altar",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "mana-pump",
+   "value": {
+    "desc": "Steel Empire: 4 mana generators each with a boss (1-3 coins) → Mana Mech + pilot → smash pump; removes mana-absorption debuff",
+    "map": "battery/clipboard",
+    "name": "Mana Pump",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "mana-inductor",
+   "value": {
+    "desc": "smaller pump variant without mech; may appear at mana trees",
+    "name": "Mana Inductor",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "mana-tree",
+   "value": {
+    "desc": "kill surrounding enemies to summon boss; druids of mana; replaces alpha giant tree",
+    "name": "Mana Tree",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "shrine-of-life",
+   "value": {
+    "desc": "angel holding purple cube; activate with flute (../domain/controls.md#object-interact) → respawn point + free fast travel between shrines",
+    "map": "white cube with door / blue dot when active",
+    "name": "Shrine of Life",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "revival-statue",
+   "value": {
+    "desc": "auto respawn at nearest (never far)",
+    "name": "Revival Statue",
+    "static-id": 0,
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "portal",
+   "value": {
+    "alpha-loc": [
+     10,
+     0
+    ],
+    "desc": "portal activation (../domain/controls.md#object-interact) → destination selection (../domain/controls.md#ui-select); physical mapping unselected, no new travel rule",
+    "name": "Portal (teleport rune stone)",
+    "quarter": [
+     4,
+     0
+    ],
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "bird-statue",
+   "value": {
+    "desc": "small bird structure surrounded by pillars; play sky whistle → birds lift you to sky island",
+    "name": "Bird (eagle) statue",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "lore-site",
+   "value": {
+    "desc": "reading raises realm lore ~10 %",
+    "map": "speech bubble (hover: realm lore %)",
+    "name": "Lore site",
+    "variants": [
+     "stone tablet",
+     "menhir",
+     "rock",
+     "ruins",
+     "small crypt",
+     "stone circle/henge"
+    ],
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "molehill",
+   "value": {
+    "desc": "endless moles until destroyed",
+    "name": "Molehill",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "bone-pile",
+   "value": {
+    "desc": "endless skeletons until destroyed",
+    "name": "Bone pile",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "hornet-nest",
+   "value": {
+    "desc": "endless hornets until destroyed",
+    "name": "Hornet nest",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "slime-well",
+   "value": {
+    "desc": "endless slimes until destroyed",
+    "name": "Slime well",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "old-hut",
+   "value": {
+    "desc": "witch boss petrifies a whole village; often spawns on roof (bug)",
+    "map": "hut / witch",
+    "name": "Old Hut",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "hidden-treasure",
+   "value": {
+    "desc": "treasure spirit points at it; counter per land",
+    "name": "Hidden treasure",
+    "variants": [
+     "hollow log",
+     "sky statue",
+     "hidden cave",
+     "bag of gold 25-59"
+    ],
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "loot-tower",
+   "value": {
+    "desc": "small mission/loot sites",
+    "name": "Loot / golden tower, crypt, tomb, graveyard",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "captive-site",
+   "value": {
+    "desc": "gnome supplier cage (boss key) or captured NPC",
+    "name": "Captive site",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "airship",
+   "value": {
+    "desc": "spawn vehicle overhead; paratroopers; cannot land on it; shows on title screen if you quit during event",
+    "name": "Steel Empire airship",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "wollays-house",
+   "value": {
+    "desc": "block (0,0); Wollay & Pixxie NPCs; ≈1.1M coins flight from typical spawn",
+    "name": "Wollay's House",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "streetlight",
+   "value": {
+    "name": "Street light",
+    "static-ids": [
+     50,
+     51
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "well",
+   "value": {
+    "desc": "only water in desert villages",
+    "name": "Village well",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "runestone",
+   "value": {
+    "desc": "port back after clearing (2012 concept)",
+    "name": "Rune stone (dungeon entrance)",
+    "static-id": 45,
+    "versions": [
+     "A",
+     "X"
+    ]
+   }
+  },
+  {
+   "key": "kingdom-wall",
+   "value": {
+    "name": "Kingdom frontier wall",
+    "versions": [
+     "X"
+    ]
+   }
+  }
+ ]
+}

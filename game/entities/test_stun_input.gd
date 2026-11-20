@@ -3,7 +3,7 @@
 extends SceneTree
 
 const ServiceCases := preload("res://game/entities/stun_service_cases.gd")
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const InputMapBuilder := preload("res://game/meta/input_map.gd")
 const PLAYER := preload("res://game/entities/player.tscn")
 const GROUND := preload("res://game/items/ground_item.tscn")
@@ -190,8 +190,8 @@ func ground(item) -> Node3D:
 
 
 func run() -> void:
-	o = Model.Ontology.load_dir("res://ontology/instances")
-	check(o.validate(), "ontology valid")
+	o = Domain.Ontology.load_dir()
+	check(o.errors.is_empty(), "ontology valid")
 	design = o.configs.generators.design
 	InputMapBuilder.build(o.configs.keybinds.hybrid)
 	key_driver = KeyDriver.new()

@@ -1,0 +1,13 @@
+ classDiagram
+    class `Creature-families-source`
+    click `Creature-families-source` href "../Creature-families-source"
+      `Creature-families-source` : entries
+        `Creature-families-source` --> "1..*" `Family-source-entry` : entries
+        click `Family-source-entry` href "../Family-source-entry"
+      `Creature-families-source` : forest_dungeon_rosters
+        `Creature-families-source` --> "1" `Forest-rosters` : forest_dungeon_rosters
+        click `Forest-rosters` href "../Forest-rosters"
+      `Creature-families-source` : landscape_rosters
+        `Creature-families-source` --> "1" `Landscape-rosters` : landscape_rosters
+        click `Landscape-rosters` href "../Landscape-rosters"
+      `Creature-families-source` : schema_tag

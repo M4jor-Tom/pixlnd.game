@@ -1,0 +1,7 @@
+ classDiagram
+    class `Rarity-source-entry`
+    click `Rarity-source-entry` href "../Rarity-source-entry"
+      `Rarity-source-entry` : source_entry_key
+      `Rarity-source-entry` : value
+        `Rarity-source-entry` --> "1" `Rarity-source-row` : value
+        click `Rarity-source-row` href "../Rarity-source-row"

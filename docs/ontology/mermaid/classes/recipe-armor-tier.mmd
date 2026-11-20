@@ -1,0 +1,16 @@
+ classDiagram
+    class `Recipe-armor-tier`
+    click `Recipe-armor-tier` href "../Recipe-armor-tier"
+      `Recipe-armor-tier` : boots
+        `Recipe-armor-tier` --> "1" `Recipe-piece` : boots
+        click `Recipe-piece` href "../Recipe-piece"
+      `Recipe-armor-tier` : chest
+        `Recipe-armor-tier` --> "1" `Recipe-piece` : chest
+        click `Recipe-piece` href "../Recipe-piece"
+      `Recipe-armor-tier` : gem
+      `Recipe-armor-tier` : gloves
+        `Recipe-armor-tier` --> "1" `Recipe-piece` : gloves
+        click `Recipe-piece` href "../Recipe-piece"
+      `Recipe-armor-tier` : shoulders
+        `Recipe-armor-tier` --> "1" `Recipe-piece` : shoulders
+        click `Recipe-piece` href "../Recipe-piece"

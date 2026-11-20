@@ -1,0 +1,7 @@
+ classDiagram
+    class `Steam-block-table-source`
+    click `Steam-block-table-source` href "../Steam-block-table-source"
+      `Steam-block-table-source` : entries
+        `Steam-block-table-source` --> "1..*" `Steam-block-source-entry` : entries
+        click `Steam-block-source-entry` href "../Steam-block-source-entry"
+      `Steam-block-table-source` : note

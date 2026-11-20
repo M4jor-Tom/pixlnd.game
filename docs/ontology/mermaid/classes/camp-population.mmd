@@ -1,0 +1,10 @@
+ classDiagram
+    class `Camp-population`
+    click `Camp-population` href "../Camp-population"
+      `Encounter-population` <|-- `Camp-population`
+        click `Encounter-population` href "../Encounter-population"
+      `Camp-population` : bosses
+      `Camp-population` : captives
+      `Camp-population` : hostiles
+      `Camp-population` : pack_size
+      `Camp-population` : packs

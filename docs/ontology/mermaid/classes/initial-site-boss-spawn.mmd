@@ -1,0 +1,31 @@
+ classDiagram
+    class `Initial-site-boss-spawn`
+    click `Initial-site-boss-spawn` href "../Initial-site-boss-spawn"
+      `Initial-site-hostile-spawn` <|-- `Initial-site-boss-spawn`
+        click `Initial-site-hostile-spawn` href "../Initial-site-hostile-spawn"
+      `Initial-site-boss-spawn` : entity_appearance
+        `Initial-site-boss-spawn` --> "1" `Appearance` : entity_appearance
+        click `Appearance` href "../Appearance"
+      `Initial-site-boss-spawn` : entity_class
+        `Initial-site-boss-spawn` --> "0..1" `Character-class` : entity_class
+        click `Character-class` href "../Character-class"
+      `Initial-site-boss-spawn` : entity_equipment
+        `Initial-site-boss-spawn` --> "13..*" `Item` : entity_equipment
+        click `Item` href "../Item"
+      `Initial-site-boss-spawn` : entity_hostility
+        `Initial-site-boss-spawn` --> "1" hostility : entity_hostility
+        click hostility href "../hostility"
+      `Initial-site-boss-spawn` : entity_level
+      `Initial-site-boss-spawn` : entity_name
+      `Initial-site-boss-spawn` : entity_power_base
+      `Initial-site-boss-spawn` : entity_specialization
+        `Initial-site-boss-spawn` --> "0..1" `Specialization` : entity_specialization
+        click `Specialization` href "../Specialization"
+      `Initial-site-boss-spawn` : entity_species
+        `Initial-site-boss-spawn` --> "1" `Creature` : entity_species
+        click `Creature` href "../Creature"
+      `Initial-site-boss-spawn` : height_blocks
+      `Initial-site-boss-spawn` : parameters
+        `Initial-site-boss-spawn` --> "1" `Initial-site-local-difficulty-profile` : parameters
+        click `Initial-site-local-difficulty-profile` href "../Initial-site-local-difficulty-profile"
+      `Initial-site-boss-spawn` : tier

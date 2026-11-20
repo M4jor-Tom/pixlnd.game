@@ -1,0 +1,14 @@
+ classDiagram
+    class `Android-controller-profile`
+    click `Android-controller-profile` href "../Android-controller-profile"
+      `Android-profile-parameters` <|-- `Android-controller-profile`
+        click `Android-profile-parameters` href "../Android-profile-parameters"
+      `Controller-profile` <|-- `Android-controller-profile`
+        click `Controller-profile` href "../Controller-profile"
+      `Android-controller-profile` : android_profile_deadzone_ratio
+      `Android-controller-profile` : android_profile_look_deg_per_safe_width
+      `Android-controller-profile` : android_profile_min_target_dp
+      `Android-controller-profile` : has_input_binding
+        `Android-controller-profile` --> "*" `Input-binding` : has_input_binding
+        click `Input-binding` href "../Input-binding"
+      `Android-controller-profile` : id

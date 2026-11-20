@@ -1,0 +1,17 @@
+ classDiagram
+    class `World`
+    click `World` href "../World"
+      `World` : discovered_zones
+        `World` --> "1..*" `Zone-coordinate` : discovered_zones
+        click `Zone-coordinate` href "../Zone-coordinate"
+      `World` : id
+      `World` : world_day
+      `World` : world_name
+      `World` : world_origin_poi
+        `World` --> "0..1" `Poi-type` : world_origin_poi
+        click `Poi-type` href "../Poi-type"
+      `World` : world_seed
+      `World` : world_spawn_rule
+        `World` --> "1" `Spawn-rule` : world_spawn_rule
+        click `Spawn-rule` href "../Spawn-rule"
+      `World` : world_time_ms

@@ -1,5 +1,5 @@
 extends SceneTree
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Combat := preload("res://game/combat/combat.gd")
 const Items := preload("res://game/items/items.gd")
 const Item := preload("res://game/items/item.gd")
@@ -26,7 +26,7 @@ func run() -> void:
 		printerr("set isolated PIXLND_TEST_DIR")
 		quit(1)
 		return
-	var o = Model.Ontology.load_dir("res://ontology/instances")
+	var o = Domain.Ontology.load_dir()
 	var d: Dictionary = o.configs.generators.design
 	InputBuilder.build(o.configs.keybinds.hybrid)
 	var save := Save.new(o, d)
@@ -46,7 +46,9 @@ func _pair(
 	var p = PLAYER.instantiate()
 	root.add_child(p)
 	p.setup(d.movement, d.camera, &"normal")
-	p.setup_combat(d.combat, d.crit, {}, Combat.player_max_hp(1, o.classes[&"warrior"].hp_mult))
+	p.setup_combat(
+		d.combat, d.crit, {}, Combat.player_max_hp(1, o.classes[&"warrior"].slot_hp_mult)
+	)
 	p.setup_items(o, d)
 	p.logical_id = "independent-hands"
 	p.set_physics_process(false)
@@ -78,7 +80,9 @@ func _invalid_loadouts(o, d: Dictionary, save: Save, rng: RandomNumberGenerator)
 	var p = PLAYER.instantiate()
 	root.add_child(p)
 	p.setup(d.movement, d.camera, &"normal")
-	p.setup_combat(d.combat, d.crit, {}, Combat.player_max_hp(1, o.classes[&"warrior"].hp_mult))
+	p.setup_combat(
+		d.combat, d.crit, {}, Combat.player_max_hp(1, o.classes[&"warrior"].slot_hp_mult)
+	)
 	p.setup_items(o, d)
 	p.logical_id = "invalid-hands"
 	p.set_physics_process(false)
@@ -115,7 +119,9 @@ func _restore_pair(p, save: Save, o, d: Dictionary, off, path: String) -> void:
 	var q = PLAYER.instantiate()
 	root.add_child(q)
 	q.setup(d.movement, d.camera, &"normal")
-	q.setup_combat(d.combat, d.crit, {}, Combat.player_max_hp(1, o.classes[&"warrior"].hp_mult))
+	q.setup_combat(
+		d.combat, d.crit, {}, Combat.player_max_hp(1, o.classes[&"warrior"].slot_hp_mult)
+	)
 	q.setup_items(o, d)
 	q.set_physics_process(false)
 	save.restore_player(q, loaded.character, loaded.world)

@@ -1,0 +1,17 @@
+ classDiagram
+    class `Zone`
+    click `Zone` href "../Zone"
+      `Zone` : chunk_items
+        `Zone` --> "1..*" `Dropped-item` : chunk_items
+        click `Dropped-item` href "../Dropped-item"
+      `Zone` : columns
+        `Zone` --> "1..*" `Field` : columns
+        click `Field` href "../Field"
+      `Zone` : id
+      `Zone` : spawns
+        `Zone` --> "1..*" `Creature-spawn` : spawns
+        click `Creature-spawn` href "../Creature-spawn"
+      `Zone` : zone_size_blocks
+      `Zone` : zone_static_entities
+        `Zone` --> "1..*" `Static-entity` : zone_static_entities
+        click `Static-entity` href "../Static-entity"

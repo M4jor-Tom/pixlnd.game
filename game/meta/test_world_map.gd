@@ -1,6 +1,6 @@
 ## Production-input projection, gameplay gating, live simulation, and Android owned-touch regressions.
 extends SceneTree
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const InputMapBuilder := preload("res://game/meta/input_map.gd")
 const Combat := preload("res://game/combat/combat.gd")
 const PLAYER := preload("res://game/entities/player.tscn")
@@ -65,8 +65,8 @@ func player(
 
 func _initialize() -> void:
 	await process_frame
-	o = Model.Ontology.load_dir("res://ontology/instances")
-	check(o.validate(), "current ontology validates")
+	o = Domain.Ontology.load_dir()
+	check(o.errors.is_empty(), "current ontology validates")
 	design = o.configs["generators"]["design"]
 	InputMapBuilder.build(o.configs["keybinds"]["hybrid"])
 	if await _map_cases():
@@ -217,7 +217,7 @@ func _desktop_inputs(p, map, holder, enemy, enemy_start, enemy_hp_before, camera
 		"class skill and held block have live desktop controls"
 	)
 	if class_skill != null:
-		p.skill_tree.points[class_skill.id] = 5
+		p.skill_tree.points[Domain.id_of(class_skill)] = 5
 	p.mp = 100.0
 	var skill_cooldowns_before: int = p.abilities.cooldowns.size()
 	Input.action_press("move_right")

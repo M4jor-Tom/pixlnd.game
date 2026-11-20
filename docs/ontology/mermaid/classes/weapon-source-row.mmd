@@ -1,0 +1,22 @@
+ classDiagram
+    class `Weapon-source-row`
+    click `Weapon-source-row` href "../Weapon-source-row"
+      `Weapon-source-row` : alpha_attack_ids
+      `Weapon-source-row` : class
+      `Weapon-source-row` : combo_cap
+      `Weapon-source-row` : cube_capacity
+      `Weapon-source-row` : damage_k
+      `Weapon-source-row` : hands
+        `Weapon-source-row` --> "0..1" `SourceHands` : hands
+        click `SourceHands` href "../SourceHands"
+      `Weapon-source-row` : m1
+      `Weapon-source-row` : m2
+      `Weapon-source-row` : material
+      `Weapon-source-row` : name
+      `Weapon-source-row` : source_notes
+      `Weapon-source-row` : source_versions
+        `Weapon-source-row` --> "1..*" `SourceVersion` : source_versions
+        click `SourceVersion` href "../SourceVersion"
+      `Weapon-source-row` : station
+      `Weapon-source-row` : subtype
+      `Weapon-source-row` : usable

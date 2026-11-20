@@ -1,0 +1,402 @@
+{
+ "$schema": "material",
+ "_doc": "id = alpha ItemData.material byte. Multipliers from coremaze alpha stat RE.",
+ "entries": [
+  {
+   "key": "iron",
+   "value": {
+    "armor-mult": 1.0,
+    "class": "warrior (armor); metal weapons all classes",
+    "hp-bonus": 1.0,
+    "id": 1,
+    "kind": "metal",
+    "name": "Iron",
+    "raw": "iron-nugget",
+    "refined": "iron-cube",
+    "resi-mult": 0.85,
+    "station": "anvil",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "wood",
+   "value": {
+    "class": "ranger/mage weapons; wooden maces",
+    "id": 2,
+    "kind": "wood",
+    "name": "Wood",
+    "raw": "wood-log",
+    "refined": "wood-cube",
+    "station": "workbench",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "obsidian",
+   "value": {
+    "class": "warrior (2012 armor & swords)",
+    "id": 5,
+    "kind": "stone",
+    "name": "Obsidian",
+    "obtainable": false,
+    "versions": [
+     "X"
+    ]
+   }
+  },
+  {
+   "key": "bone",
+   "value": {
+    "class": "any (medium armor)",
+    "id": 7,
+    "kind": "organic",
+    "name": "Bone",
+    "note": "bones never drop",
+    "obtainable": false,
+    "versions": [
+     "X"
+    ]
+   }
+  },
+  {
+   "key": "copper",
+   "value": {
+    "id": 10,
+    "kind": "metal",
+    "name": "Copper",
+    "note": "coins; coremaze list",
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "gold",
+   "value": {
+    "class": "all (rings, amulets, bracelets)",
+    "crit-bonus": 1.0,
+    "id": 11,
+    "kind": "metal",
+    "name": "Gold",
+    "note": "gold ring = crit; gold cubes on bracelets (?)",
+    "raw": "gold-nugget",
+    "refined": "gold-cube",
+    "station": "none",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "silver",
+   "value": {
+    "class": "all (rings, amulets)",
+    "id": 12,
+    "kind": "metal",
+    "name": "Silver",
+    "note": "silver ring = tempo/haste",
+    "raw": "silver-nugget",
+    "refined": "silver-cube",
+    "station": "none",
+    "tempo-bonus": 1.0,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "emerald",
+   "value": {
+    "crafts-rarity": "uncommon",
+    "id": 13,
+    "kind": "gem",
+    "name": "Emerald",
+    "price-s": 100,
+    "sell-s": 5,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "sapphire",
+   "value": {
+    "crafts-rarity": "rare",
+    "id": 14,
+    "kind": "gem",
+    "name": "Sapphire",
+    "price-s": 200,
+    "sell-s": 7,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "ruby",
+   "value": {
+    "crafts-rarity": "epic",
+    "id": 15,
+    "kind": "gem",
+    "name": "Ruby",
+    "note": "legendary ring recipe may ask rubies",
+    "price-s": 400,
+    "sell-s": 10,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "diamond",
+   "value": {
+    "crafts-rarity": "legendary",
+    "id": 16,
+    "kind": "gem",
+    "name": "Diamond",
+    "price-s": 800,
+    "sell-s": 14,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "sandstone",
+   "value": {
+    "id": 17,
+    "kind": "stone",
+    "name": "Sandstone",
+    "note": "deposit exists (id 134); shelves",
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "saurian",
+   "value": {
+    "armor-mult": 0.8,
+    "class": "any (medium armor)",
+    "id": 18,
+    "kind": "hide",
+    "name": "Saurian",
+    "obtainable": false,
+    "versions": [
+     "X"
+    ]
+   }
+  },
+  {
+   "key": "parrot",
+   "value": {
+    "armor-mult": 0.85,
+    "class": "any (medium armor)",
+    "id": 19,
+    "kind": "feather",
+    "name": "Parrot",
+    "note": "recipe never in menu",
+    "obtainable": false,
+    "raw": "parrot-feather",
+    "resi-mult": 0.85,
+    "versions": [
+     "X"
+    ]
+   }
+  },
+  {
+   "key": "mammoth",
+   "value": {
+    "class": "any (medium armor)",
+    "id": 20,
+    "kind": "hide",
+    "name": "Mammoth",
+    "obtainable": false,
+    "raw": "mammoth-hide (0% drop)",
+    "versions": [
+     "X"
+    ]
+   }
+  },
+  {
+   "key": "plant",
+   "value": {
+    "id": 21,
+    "kind": "organic",
+    "name": "Plant",
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "ice",
+   "value": {
+    "id": 22,
+    "kind": "crystal",
+    "name": "Ice",
+    "raw": "ice-cube",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "licht",
+   "value": {
+    "armor-mult": 0.75,
+    "id": 23,
+    "kind": "magic",
+    "name": "Licht (light)",
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "glass",
+   "value": {
+    "id": 24,
+    "kind": "glass",
+    "name": "Glass",
+    "note": "flasks",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "silk",
+   "value": {
+    "alt-name": "Flannell (some item names)",
+    "armor-mult": 0.75,
+    "class": "mage",
+    "id": 25,
+    "kind": "cloth",
+    "name": "Silk",
+    "raw": "cobweb",
+    "refined": "silk-yarn",
+    "resi-mult": 1.0,
+    "station": "loom",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "linen",
+   "value": {
+    "armor-mult": 0.85,
+    "class": "ranger",
+    "hp-bonus": 0.5,
+    "id": 26,
+    "kind": "cloth",
+    "name": "Linen",
+    "raw": "plant-fiber",
+    "refined": "linen-yarn",
+    "regen-bonus": 0.5,
+    "resi-mult": 0.75,
+    "station": "loom",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "cotton",
+   "value": {
+    "armor-mult": 0.85,
+    "class": "rogue",
+    "hp-bonus": 0.75,
+    "id": 27,
+    "kind": "cloth",
+    "name": "Cotton",
+    "raw": "cotton-capsule",
+    "refined": "cotton-yarn",
+    "regen-bonus": 1.0,
+    "resi-mult": 0.75,
+    "station": "loom",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "bronze",
+   "value": {
+    "id": null,
+    "kind": "metal",
+    "name": "Bronze",
+    "note": "appears in 1.0 item names ('Legendary Bronze Boots of Kurzy'); id unknown (?)",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "spirit-fire",
+   "value": {
+    "effect": "extra fire damage; special hits explode red",
+    "id": 128,
+    "kind": "spirit",
+    "name": "Fire Spirit",
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "spirit-unholy",
+   "value": {
+    "effect": "special attacks drain HP, scaling with combo",
+    "id": 129,
+    "kind": "spirit",
+    "name": "Unholy Spirit",
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "spirit-ice",
+   "value": {
+    "effect": "slows target attack/move speed, tints blue",
+    "id": 130,
+    "kind": "spirit",
+    "name": "Ice Spirit",
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "spirit-wind",
+   "value": {
+    "effect": "+attack & move speed per combo hit; resets with combo",
+    "id": 131,
+    "kind": "spirit",
+    "name": "Wind Spirit",
+    "versions": [
+     "A"
+    ]
+   }
+  }
+ ]
+}

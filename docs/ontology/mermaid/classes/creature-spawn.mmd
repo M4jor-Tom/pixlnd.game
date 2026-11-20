@@ -1,0 +1,26 @@
+ classDiagram
+    class `Creature-spawn`
+    click `Creature-spawn` href "../Creature-spawn"
+      `Creature-spawn` <|-- `Initial-site-hostile-spawn`
+        click `Initial-site-hostile-spawn` href "../Initial-site-hostile-spawn"
+      `Creature-spawn` : entity_appearance
+        `Creature-spawn` --> "1" `Appearance` : entity_appearance
+        click `Appearance` href "../Appearance"
+      `Creature-spawn` : entity_class
+        `Creature-spawn` --> "0..1" `Character-class` : entity_class
+        click `Character-class` href "../Character-class"
+      `Creature-spawn` : entity_equipment
+        `Creature-spawn` --> "13..*" `Item` : entity_equipment
+        click `Item` href "../Item"
+      `Creature-spawn` : entity_hostility
+        `Creature-spawn` --> "1" hostility : entity_hostility
+        click hostility href "../hostility"
+      `Creature-spawn` : entity_level
+      `Creature-spawn` : entity_name
+      `Creature-spawn` : entity_power_base
+      `Creature-spawn` : entity_specialization
+        `Creature-spawn` --> "0..1" `Specialization` : entity_specialization
+        click `Specialization` href "../Specialization"
+      `Creature-spawn` : entity_species
+        `Creature-spawn` --> "1" `Race-or-creature` : entity_species
+        click `Race-or-creature` href "../Race-or-creature"

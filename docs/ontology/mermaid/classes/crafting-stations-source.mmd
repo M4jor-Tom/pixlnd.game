@@ -1,0 +1,8 @@
+ classDiagram
+    class `Crafting-stations-source`
+    click `Crafting-stations-source` href "../Crafting-stations-source"
+      `Crafting-stations-source` : documentation
+      `Crafting-stations-source` : entries
+        `Crafting-stations-source` --> "1..*" `Crafting-station-source-entry` : entries
+        click `Crafting-station-source-entry` href "../Crafting-station-source-entry"
+      `Crafting-stations-source` : schema_tag

@@ -1,6 +1,7 @@
 extends SceneTree
 
 const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Items := preload("res://game/items/items.gd")
 const Inventory := preload("res://game/items/inventory.gd")
 
@@ -345,7 +346,7 @@ func missing_owner_eligibility(
 		"missing raw Wand owner rejected"
 	)
 	missing_owner_capacity(missing_owner)
-	missing_owner_inventory(missing_owner)
+	missing_owner_inventory()
 
 
 func bidirectional_weapon_owner() -> void:
@@ -454,7 +455,11 @@ func missing_owner_capacity(missing_owner) -> void:
 	)
 
 
-func missing_owner_inventory(missing_owner) -> void:
+func missing_owner_inventory() -> void:
+	# The game consumes Domain rows: same drift (no Wand owner, capacity "32") applied to them.
+	var missing_owner = Domain.Ontology.load_dir()
+	missing_owner.weapon_types[&"wand"].slot_class = null
+	missing_owner.weapon_types[&"wand"].slot_cube_capacity = "32"
 	var inv = Inventory.new(
 		missing_owner, missing_owner.configs["generators"]["design"], &"warrior", func(): return 1
 	)

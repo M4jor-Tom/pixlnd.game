@@ -1,0 +1,14 @@
+ classDiagram
+    class `Input-binding`
+    click `Input-binding` href "../Input-binding"
+      `Input-binding` : input_binding_action
+        `Input-binding` --> "1..*" `Control-action` : input_binding_action
+        click `Control-action` href "../Control-action"
+      `Input-binding` : input_binding_alias
+      `Input-binding` : input_binding_alias_of
+        `Input-binding` --> "0..1" `ControlActionId` : input_binding_alias_of
+        click `ControlActionId` href "../ControlActionId"
+      `Input-binding` : input_binding_contexts
+      `Input-binding` : input_binding_mapping_status
+      `Input-binding` : input_binding_phases
+      `Input-binding` : input_binding_physical_input

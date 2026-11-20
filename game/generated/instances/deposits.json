@@ -1,0 +1,109 @@
+{
+ "$schema": "deposit",
+ "_doc": "Entities 131-139 (alpha). Found in caves and underwater caves; yield 1-3; respawn at 0:00; rarely inside boulders needing bombs; harvested by attacking.",
+ "entries": [
+  {
+   "key": "gold-deposit",
+   "value": {
+    "aid": 131,
+    "versions": [
+     "A",
+     "S"
+    ],
+    "yields": "gold-nugget"
+   }
+  },
+  {
+   "key": "iron-deposit",
+   "value": {
+    "aid": 132,
+    "note": "rockling mimics its look",
+    "versions": [
+     "A",
+     "S"
+    ],
+    "yields": "iron-nugget"
+   }
+  },
+  {
+   "key": "silver-deposit",
+   "value": {
+    "aid": 133,
+    "versions": [
+     "A",
+     "S"
+    ],
+    "yields": "silver-nugget"
+   }
+  },
+  {
+   "key": "sandstone-deposit",
+   "value": {
+    "aid": 134,
+    "versions": [
+     "A"
+    ],
+    "yields": "sandstone"
+   }
+  },
+  {
+   "key": "emerald-deposit",
+   "value": {
+    "aid": 135,
+    "note": "may also drop lollipop",
+    "versions": [
+     "A",
+     "S"
+    ],
+    "yields": "emerald"
+   }
+  },
+  {
+   "key": "sapphire-deposit",
+   "value": {
+    "aid": 136,
+    "versions": [
+     "A",
+     "S"
+    ],
+    "yields": "sapphire"
+   }
+  },
+  {
+   "key": "ruby-deposit",
+   "value": {
+    "aid": 137,
+    "versions": [
+     "A",
+     "S"
+    ],
+    "yields": "ruby"
+   }
+  },
+  {
+   "key": "diamond-deposit",
+   "value": {
+    "aid": 138,
+    "versions": [
+     "A",
+     "S"
+    ],
+    "yields": "diamond"
+   }
+  },
+  {
+   "key": "ice-crystal",
+   "value": {
+    "aid": 139,
+    "lands": [
+     "snowlands"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ],
+    "yields": "ice-cube"
+   }
+  }
+ ]
+}

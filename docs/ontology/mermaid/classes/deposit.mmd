@@ -1,0 +1,9 @@
+ classDiagram
+    class `Deposit`
+    click `Deposit` href "../Deposit"
+      `Deposit` : deposit_aid
+      `Deposit` : deposit_lands
+      `Deposit` : deposit_yields
+        `Deposit` --> "0..1" `Ingredient` : deposit_yields
+        click `Ingredient` href "../Ingredient"
+      `Deposit` : id

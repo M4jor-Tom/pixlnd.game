@@ -1,0 +1,14 @@
+ classDiagram
+    class `Dungeon-type`
+    click `Dungeon-type` href "../Dungeon-type"
+      `Dungeon-type` : dungeon_type_boss
+      `Dungeon-type` : dungeon_type_entrance
+      `Dungeon-type` : dungeon_type_lands
+      `Dungeon-type` : dungeon_type_name
+      `Dungeon-type` : dungeon_type_naming
+      `Dungeon-type` : dungeon_type_natural
+      `Dungeon-type` : dungeon_type_rosters
+      `Dungeon-type` : dungeon_type_variants
+        `Dungeon-type` --> "*" `Dungeon-variant-entry` : dungeon_type_variants
+        click `Dungeon-variant-entry` href "../Dungeon-variant-entry"
+      `Dungeon-type` : id

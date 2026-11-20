@@ -1,7 +1,8 @@
 ## One private terrain sampler, one bounded zone job at a time; only plain data crosses threads.
 ## Guidance measured ~2ms for a land, so it shares this worker, after terrain publication.
 extends RefCounted
-const Model := preload("res://ontology/model.gd")
+const LandscapeRow := preload("res://game/generated/domain/link_ml_landscape_source_row.gd")
+const LandscapeGen := preload("res://game/generated/domain/link_ml_landscape_generation.gd")
 const WorldGen := preload("res://game/world/world_gen.gd")
 const ZoneMesh := preload("res://game/world/zone_mesh.gd")
 const Encounters := preload("res://game/world/encounter_gen.gd")
@@ -14,8 +15,12 @@ var _packets: Array = []
 func _init(seed_: int, design: Dictionary, landscapes: Dictionary, saved: Dictionary) -> void:
 	var private_landscapes := {}
 	for id in landscapes:
-		var landscape := Model.Landscape.new()
-		landscape.gen = landscapes[id].gen.duplicate(true)
+		var landscape := LandscapeRow.new()  # private copy: only `gen` is sampled off-thread
+		var gen: Object = landscapes[id].slot_gen
+		if gen != null:
+			landscape.slot_gen = LandscapeGen.new()
+			for field in gen.linkml_keys().values():
+				landscape.slot_gen.set(field, gen.get(field))
 		private_landscapes[id] = landscape
 	_gen = WorldGen.new(seed_, design.duplicate(true), private_landscapes)
 	_gen.saved_lands = saved.duplicate(true)

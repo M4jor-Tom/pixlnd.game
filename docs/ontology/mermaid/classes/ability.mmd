@@ -1,0 +1,31 @@
+ classDiagram
+    class `Ability`
+    click `Ability` href "../Ability"
+      `Ability` : ability__controls
+        `Ability` --> "*" `Control-action` : ability__controls
+        click `Control-action` href "../Control-action"
+      `Ability` : ability_alpha_ability_id
+      `Ability` : ability_alpha_tree
+        `Ability` --> "0..1" `Ability-tree-position` : ability_alpha_tree
+        click `Ability-tree-position` href "../Ability-tree-position"
+      `Ability` : ability_kind
+        `Ability` --> "1" ability_kind : ability_kind
+        click ability_kind href "../ability_kind"
+      `Ability` : applies
+        `Ability` --> "*" `Status-effect` : applies
+        click `Status-effect` href "../Status-effect"
+      `Ability` : cooldown_s
+      `Ability` : cost_records
+        `Ability` --> "*" `Resource-cost` : cost_records
+        click `Resource-cost` href "../Resource-cost"
+      `Ability` : duration_s
+      `Ability` : effect
+      `Ability` : id
+      `Ability` : name
+      `Ability` : owner
+      `Ability` : unlocks_next
+        `Ability` --> "0..1" `Ability` : unlocks_next
+        click `Ability` href "../Ability"
+      `Ability` : versions
+        `Ability` --> "*" `SourceVersion` : versions
+        click `SourceVersion` href "../SourceVersion"

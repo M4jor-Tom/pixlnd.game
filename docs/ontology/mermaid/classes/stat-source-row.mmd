@@ -1,0 +1,13 @@
+ classDiagram
+    class `Stat-source-row`
+    click `Stat-source-row` href "../Stat-source-row"
+      `Stat-source-row` : alpha_name
+      `Stat-source-row` : cap
+      `Stat-source-row` : effect
+      `Stat-source-row` : formula
+      `Stat-source-row` : name
+      `Stat-source-row` : note
+      `Stat-source-row` : source
+      `Stat-source-row` : source_versions
+        `Stat-source-row` --> "1..*" `SourceVersion` : source_versions
+        click `SourceVersion` href "../SourceVersion"

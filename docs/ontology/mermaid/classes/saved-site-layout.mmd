@@ -1,0 +1,18 @@
+ classDiagram
+    class `Saved-site-layout`
+    click `Saved-site-layout` href "../Saved-site-layout"
+      `Saved-site-layout` : saved_site_layout_assignments
+        `Saved-site-layout` --> "1..*" `Saved-assignment` : saved_site_layout_assignments
+        click `Saved-assignment` href "../Saved-assignment"
+      `Saved-site-layout` : saved_site_layout_captive
+      `Saved-site-layout` : saved_site_layout_centre
+      `Saved-site-layout` : saved_site_layout_components
+      `Saved-site-layout` : saved_site_layout_entry
+      `Saved-site-layout` : saved_site_layout_family
+        `Saved-site-layout` --> "1" saved_site_family : saved_site_layout_family
+        click saved_site_family href "../saved_site_family"
+      `Saved-site-layout` : saved_site_layout_floor
+      `Saved-site-layout` : saved_site_layout_ordinal
+      `Saved-site-layout` : saved_site_layout_tier
+      `Saved-site-layout` : saved_site_layout_turn
+      `Saved-site-layout` : saved_site_layout_volumes

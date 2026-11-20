@@ -1,0 +1,15 @@
+ classDiagram
+    class `Arena`
+    click `Arena` href "../Arena"
+      `Arena` : host
+        `Arena` --> "0..1" `Npc-role` : host
+        click `Npc-role` href "../Npc-role"
+      `Arena` : id
+      `Arena` : repeat
+      `Arena` : reward_coins
+      `Arena` : rewards
+        `Arena` --> "*" `Item-type-or-key-item-or-artifact-or-currency-or-book-of-crafting` : rewards
+        click `Item-type-or-key-item-or-artifact-or-currency-or-book-of-crafting` href "../Item-type-or-key-item-or-artifact-or-currency-or-book-of-crafting"
+      `Arena` : waves
+        `Arena` --> "5..*" `Arena-wave` : waves
+        click `Arena-wave` href "../Arena-wave"

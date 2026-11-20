@@ -1,0 +1,436 @@
+{
+ "$schema": "weapon-type",
+ "_controls": {
+  "block": "block",
+  "m1": "basic-attack",
+  "m2": "special-attack"
+ },
+ "_doc": "m1/m2 are retained basic/special data-channel names, not physical bindings. Current hybrid effects: ../domain/3_Classes.md#weapon-type; keyboard coupling is profile-owned. subtype = alpha item type 3 subtype id. damage-k = alpha curve multiplier. cube-capacity = customization bench slots.",
+ "entries": [
+  {
+   "key": "sword",
+   "value": {
+    "class": "warrior",
+    "combo-cap": null,
+    "cube-capacity": 16,
+    "damage-k": 4,
+    "hands": "1h",
+    "m1": "2-hit alternating combo (dual)",
+    "m2": "dual: forward spin multi-hit; with shield: block defends; special attack performs spin swipe; shared-input phases: ../domain/controller-profiles.md#keyboard-and-mouse",
+    "material": "iron",
+    "name": "Sword",
+    "station": "anvil",
+    "subtype": 0,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "axe",
+   "value": {
+    "class": "warrior",
+    "combo-cap": null,
+    "cube-capacity": 16,
+    "damage-k": 4,
+    "hands": "1h",
+    "m1": "as sword",
+    "m2": "as sword",
+    "material": "iron",
+    "name": "Axe",
+    "station": "anvil",
+    "subtype": 1,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "mace",
+   "value": {
+    "class": "warrior",
+    "combo-cap": null,
+    "cube-capacity": 16,
+    "damage-k": 4,
+    "hands": "1h",
+    "m1": "as sword",
+    "m2": "as sword",
+    "material": "iron|wood",
+    "name": "Mace",
+    "station": "anvil|workbench",
+    "subtype": 2,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "dagger",
+   "value": {
+    "class": "rogue",
+    "combo-cap": null,
+    "cube-capacity": 16,
+    "damage-k": 2,
+    "hands": "1h",
+    "m1": "fast stabs",
+    "m2": "Ambush: stab, stun + poison (~5 ticks/5 s, stacks, tick = hit dmg, crit carries; not dodgeable)",
+    "material": "iron",
+    "name": "Dagger",
+    "station": "anvil",
+    "subtype": 3,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "fist",
+   "value": {
+    "class": "rogue",
+    "combo-cap": 50,
+    "cube-capacity": 16,
+    "damage-k": 2,
+    "hands": "1h",
+    "m1": "fastest punches",
+    "m2": "roundhouse kick: knockdown + small stun",
+    "material": "iron (+cotton yarn)",
+    "name": "Fist",
+    "station": "anvil",
+    "subtype": 4,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "longsword",
+   "value": {
+    "class": "rogue",
+    "combo-cap": 30,
+    "cube-capacity": 32,
+    "damage-k": 8,
+    "hands": "2h",
+    "m1": "slashes",
+    "m2": "Perforate: lunging stab 4-5 hits (3 per CWC), wide, stun",
+    "material": "iron",
+    "name": "Longsword",
+    "station": "anvil",
+    "subtype": 5,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "bow",
+   "value": {
+    "class": "ranger",
+    "combo-cap": 30,
+    "cube-capacity": 32,
+    "damage-k": 8,
+    "hands": "2h",
+    "m1": "arrow with gravity arc",
+    "m2": "charged volley of 4-5 arrows, minor splash, stun chance",
+    "material": "wood (+yarn)",
+    "name": "Bow",
+    "notes": [
+     "unlimited arrows",
+     "low-charge 'dud' shots build combo"
+    ],
+    "station": "workbench",
+    "subtype": 6,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "crossbow",
+   "value": {
+    "class": "ranger",
+    "combo-cap": 30,
+    "cube-capacity": 32,
+    "damage-k": 8,
+    "hands": "2h",
+    "m1": "bolt",
+    "m2": "single heavy bolt (only damages when charged, patch 2013-07-23)",
+    "material": "wood",
+    "name": "Crossbow",
+    "station": "workbench",
+    "subtype": 7,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "boomerang",
+   "value": {
+    "class": "ranger",
+    "combo-cap": 80,
+    "cube-capacity": 32,
+    "damage-k": 8,
+    "hands": "2h",
+    "m1": "steerable by camera, multi-hit ticks (more when close), returns",
+    "m2": "throws 2 boomerangs, stun chance",
+    "material": "wood",
+    "name": "Boomerang",
+    "notes": [
+     "fastest combo builder, lowest per hit"
+    ],
+    "station": "workbench",
+    "subtype": 8,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "arrow",
+   "value": {
+    "class": null,
+    "hands": null,
+    "name": "Arrow",
+    "subtype": 9,
+    "usable": false,
+    "versions": [
+     "X"
+    ]
+   }
+  },
+  {
+   "key": "staff",
+   "value": {
+    "alpha-attack-ids": {
+     "fire-swirl": 30,
+     "fire-vortex": 31,
+     "water-swirl": 32,
+     "water-vortex": 33
+    },
+    "class": "mage",
+    "combo-cap": 50,
+    "cube-capacity": 32,
+    "damage-k": 8,
+    "hands": "2h",
+    "m1": "small swirl at cursor (~1 s charge), multi-hit",
+    "m2": "big vortex (~2x charge), stun",
+    "material": "wood",
+    "name": "Staff",
+    "station": "workbench",
+    "subtype": 10,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "wand",
+   "value": {
+    "alpha-attack-ids": {
+     "firebeam": 94,
+     "fireray": 95
+    },
+    "class": "mage",
+    "combo-cap": 20,
+    "cube-capacity": 32,
+    "damage-k": 8,
+    "hands": "2h",
+    "m1": "hitscan beam (0.5 s)",
+    "m2": "thick continuous ray 10-12 hits, slowly steerable; terrain hit breaks combo",
+    "material": "wood",
+    "name": "Wand",
+    "notes": [
+     "alpha: spray of projectiles; beta: beam"
+    ],
+    "station": "workbench",
+    "subtype": 11,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "bracelet",
+   "value": {
+    "alpha-attack-ids": {
+     "fire-salvo": 46,
+     "fireball": 37,
+     "firebolt": [
+      38,
+      39,
+      40
+     ],
+     "water-salvo": 45
+    },
+    "class": "mage",
+    "combo-cap": 20,
+    "cube-capacity": 16,
+    "damage-k": 4,
+    "hands": "1h dual (need two)",
+    "m1": "alternating bolts, no gravity, longest range",
+    "m2": "large ball with splash, half charge time, reliable knockdown",
+    "material": "gold|silver",
+    "name": "Bracelet",
+    "station": "none (amulet & ring tab)",
+    "subtype": 12,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "shield",
+   "value": {
+    "class": "warrior",
+    "combo-cap": null,
+    "cube-capacity": 32,
+    "damage-k": 2,
+    "hands": "offhand",
+    "m2": "block (Block Power gauge; gives MP (D11)); special attack = spin swipe; shared-input phases: ../domain/controller-profiles.md#keyboard-and-mouse",
+    "material": "iron",
+    "name": "Shield",
+    "station": "anvil",
+    "subtype": 13,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "arrows",
+   "value": {
+    "name": "Arrows",
+    "subtype": 14,
+    "usable": false,
+    "versions": [
+     "X"
+    ]
+   }
+  },
+  {
+   "key": "greatsword",
+   "value": {
+    "class": "warrior",
+    "combo-cap": null,
+    "cube-capacity": 32,
+    "damage-k": 8,
+    "hands": "2h",
+    "m1": "slow 3-hit combo: overhead, jab, uppercut w/ knockdown chance",
+    "m2": "Crush overhead (Berserker) / defensive stance then wide side-swipe (Guardian)",
+    "material": "iron",
+    "name": "Greatsword",
+    "station": "anvil",
+    "subtype": 15,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "greataxe",
+   "value": {
+    "class": "warrior",
+    "cube-capacity": 32,
+    "damage-k": 8,
+    "hands": "2h",
+    "m1": "as greatsword",
+    "m2": "as greatsword",
+    "material": "iron",
+    "name": "Greataxe",
+    "station": "anvil",
+    "subtype": 16,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "greatmace",
+   "value": {
+    "class": "warrior",
+    "cube-capacity": 32,
+    "damage-k": 8,
+    "hands": "2h",
+    "m1": "as greatsword",
+    "m2": "as greatsword",
+    "material": "iron|wood",
+    "name": "Greatmace",
+    "station": "anvil|workbench",
+    "subtype": 17,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "fork",
+   "value": {
+    "damage-k": 8,
+    "name": "Fork",
+    "subtype": 18,
+    "usable": false,
+    "versions": [
+     "X"
+    ]
+   }
+  },
+  {
+   "key": "pickaxe",
+   "value": {
+    "name": "Pickaxe",
+    "subtype": 19,
+    "usable": false,
+    "versions": [
+     "X"
+    ]
+   }
+  },
+  {
+   "key": "torch",
+   "value": {
+    "class": "any",
+    "hands": "1h",
+    "name": "Torch",
+    "notes": [
+     "alpha data light item; superseded by Iron Lamp"
+    ],
+    "subtype": 20,
+    "versions": [
+     "A",
+     "X"
+    ]
+   }
+  },
+  {
+   "key": "shuriken",
+   "value": {
+    "class": "rogue",
+    "name": "Shuriken (throwable)",
+    "notes": [
+     "not an item; produced by ninja abilities"
+    ],
+    "subtype": null,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  }
+ ]
+}

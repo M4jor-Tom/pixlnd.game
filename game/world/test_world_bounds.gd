@@ -1,5 +1,5 @@
 extends SceneTree
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Gen := preload("res://game/world/world_gen.gd")
 const ZoneMesh := preload("res://game/world/zone_mesh.gd")
 const Spawner := preload("res://game/world/spawner.gd")
@@ -20,7 +20,7 @@ func _init() -> void:
 
 
 func _run() -> void:
-	var o = Model.Ontology.load_dir("res://ontology/instances")
+	var o = Domain.Ontology.load_dir()
 	var design: Dictionary = o.configs["generators"]["design"]
 	var g = Gen.new(26879, design, o.landscapes)
 	_land_bounds(g)

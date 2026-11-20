@@ -6,10 +6,15 @@ prefixes:
 default_prefix: pixlnd
 imports:
 - linkml:types
+- relations
+- catalog-crafting-social
+- catalog-properties
+- identity
 default_range: string
 classes:
   item:
     class_uri: pixlnd:item
+    description: Logical item definition. Display name is an optional read-only derived projection, not a stored or writable input requirement.
     see_also: &id001
     - ../domain/3_Classes.md#item
     slots:
@@ -24,31 +29,127 @@ classes:
     - item-level
     - item-upgrade-count
     - item-upgrades
+    - item-name
+    - item-land
+    - item-plus
+    - item-weapon-type
+    rules:
+    - preconditions:
+        slot_conditions:
+          item-type: {alias: type, equals_string: weapon}
+      postconditions:
+        slot_conditions:
+          item-weapon-type: {alias: weapon-type, value_presence: PRESENT}
+      elseconditions:
+        slot_conditions:
+          item-weapon-type: {alias: weapon-type, value_presence: ABSENT}
+    - preconditions:
+        slot_conditions:
+          item-weapon-type:
+            alias: weapon-type
+            equals_string_in: [sword, axe, mace, dagger, fist, bracelet]
+      postconditions:
+        slot_conditions:
+          item-upgrade-count: {alias: upgrade-count, maximum_value: 16}
+    all_of:
+    - any_of:
+      - none_of:
+        - slot_conditions:
+            item-weapon-type:
+              alias: weapon-type
+              equals_string_in: [sword, axe, mace, dagger, fist, bracelet]
+      - slot_conditions:
+          item-upgrades: {alias: upgrades, multivalued: true, maximum_cardinality: 16}
+    - any_of:
+      - slot_conditions:
+          item-upgrades:
+            alias: upgrades
+            multivalued: true
+            all_members:
+              range_expression:
+                slot_conditions:
+                  item-upgrade-material:
+                    alias: material
+                    none_of: [{equals_string: wood}]
+      - slot_conditions:
+          item-type: {alias: type, equals_string: weapon}
+          item-material: {alias: material, equals_string_in: [wood]}
+    - any_of:
+      - slot_conditions:
+          item-upgrades:
+            alias: upgrades
+            multivalued: true
+            all_members:
+              range_expression:
+                slot_conditions:
+                  item-upgrade-material:
+                    alias: material
+                    none_of: [{equals_string: iron}]
+      - slot_conditions:
+          item-type: {alias: type, equals_string: weapon}
+          item-material: {alias: material, equals_string_in: [iron, copper, gold, silver, bronze]}
+    slot_usage:
+      item-land:
+        required: false
+        description: Origin region in historical S only; inert hybrid metadata, never regional power weakening or a mandatory hybrid input.
+      item-plus:
+        required: false
+        description: Adjacent-land suffix applicability in historical S only; inert hybrid metadata, never a regional effect gate.
   item-type:
+    description: "Logical item-type definition; applicability follows the cited domain rules."
     class_uri: pixlnd:item-type
     see_also:
     - ../domain/3_Classes.md#item-type
     slots:
     - id
   material:
+    description: "Logical material definition; applicability follows the cited domain rules."
     class_uri: pixlnd:material
     see_also:
     - ../domain/3_Classes.md#material
     slots:
     - id
+    - material-name
+    - material-kind
+    - material-hp-bonus
+    - material-armor-mult
+    - material-resi-mult
+    - material-crit-bonus
+    - material-tempo-bonus
+    - material-regen-bonus
+    - material-refined
+    - material-crafts-rarity
+    - material-obtainable
+    - material-class
+    - material-station
+    - material-raw
+    - material-alt-name
+    - material-effect
+    - material-price-s
+    - material-sell-s
   rarity:
+    description: "Logical rarity definition; applicability follows the cited domain rules."
     class_uri: pixlnd:rarity
     see_also:
     - ../domain/3_Classes.md#rarity
     slots:
     - id
+    - rarity-name
+    - rarity-color
+    - rarity-index
+    - rarity-hex
+    - rarity-stars
+    - rarity-gem
+    - rarity-named
   affix:
+    description: "Logical affix definition; applicability follows the cited domain rules."
     class_uri: pixlnd:affix
     see_also:
     - ../domain/3_Classes.md#affix
     slots:
     - id
   equipment-slot:
+    description: "Logical equipment-slot definition; applicability follows the cited domain rules."
     class_uri: pixlnd:equipment-slot
     see_also: &id004
     - ../domain/3_Classes.md#equipment-slot
@@ -56,55 +157,83 @@ classes:
     - id
     - equipment-slot-index
     - equipment-slot-accepts
+    - equipment-slot-hp-mult
+    - equipment-slot-accepts-conditions
   consumable:
+    description: "Logical consumable definition; applicability follows the cited domain rules."
     class_uri: pixlnd:consumable
     see_also:
     - ../domain/3_Classes.md#consumable
     slots:
     - id
   ingredient:
+    description: "Logical ingredient definition; applicability follows the cited domain rules."
     class_uri: pixlnd:ingredient
     see_also:
     - ../domain/3_Classes.md#ingredient
     slots:
     - id
+    - ingredient-name
+    - ingredient-alpha-subtype
+    - ingredient-kind
+    - ingredient-from
+    - ingredient-sell
+    - ingredient-recipe
+    - ingredient-refines-to
   recipe:
+    description: "Logical recipe definition; applicability follows the cited domain rules."
     class_uri: pixlnd:recipe
     see_also:
     - ../domain/3_Classes.md#recipe
     slots:
     - id
+    - crafted-at
+    - consumes
+    - produces
+    - recipe-required-power
   crafting-station:
+    description: "Logical crafting-station definition; applicability follows the cited domain rules."
     class_uri: pixlnd:crafting-station
     see_also:
     - ../domain/3_Classes.md#crafting-station
     slots:
     - id
+    - crafting-station-name
+    - crafting-station-static-id
   formula:
     class_uri: pixlnd:formula
+    is_a: item
+    description: Formula scroll is an item; its +N uses the shared item power field and formula learning targets the character's shared knows-recipe relation.
     see_also:
     - ../domain/3_Classes.md#formula
+    - ../domain/3_Classes.md#item
     slots:
-    - id
+    - formula-recipe
   book-of-crafting:
     class_uri: pixlnd:book-of-crafting
-    see_also:
-    - ../domain/3_Classes.md#book-of-crafting
+    description: Book recipe source identity and content, not an assertion of Item power or upgrade payload. Duplicate handling and character/world claims remain distinct canonical rules.
     slots:
     - id
+    - book-recipes
+    see_also:
+    - ../domain/3_Classes.md#book-of-crafting
+    - ../domain/3_Classes.md#recipe
   spirit-cube:
+    description: "Logical spirit-cube definition; applicability follows the cited domain rules."
     class_uri: pixlnd:spirit-cube
     see_also:
     - ../domain/3_Classes.md#spirit-cube
     slots:
     - id
   leftovers:
+    description: "Logical leftovers definition; applicability follows the cited domain rules."
     class_uri: pixlnd:leftovers
     see_also:
     - ../domain/3_Classes.md#leftovers
     slots:
     - id
   pet-food:
+    description: "Logical pet-food definition; applicability follows the cited domain rules."
     class_uri: pixlnd:pet-food
     see_also: &id003
     - ../domain/3_Classes.md#pet-food
@@ -112,24 +241,88 @@ classes:
     - id
     - pet-food-tames
   key-item:
+    description: "Logical key-item definition; applicability follows the cited domain rules."
     class_uri: pixlnd:key-item
     see_also:
     - ../domain/3_Classes.md#key-item
     slots:
     - id
   artifact:
+    description: "Logical artifact definition; applicability follows the cited domain rules."
     class_uri: pixlnd:artifact
     see_also:
     - ../domain/3_Classes.md#artifact
     slots:
     - id
+    - traversal-kind
+    - raises-stat
+    - artifact-name
+    - artifact-origin-realm
+    slot_usage:
+      raises-stat:
+        required: true
+        minimum_cardinality: 3
+        maximum_cardinality: 3
+        list_elements_unique: true
+        has_member: {equals_string: attack-power}
+        description: "Exactly one traversal stat plus attack and maximum HP: three distinct existing Stat references, including attack-power and hp (maximum HP), plus the selector's matching traversal Stat. Class rules declare the remaining membership constraints; JSON Schema does not enforce all of them."
+    rules:
+    - postconditions:
+        slot_conditions:
+          raises-stat: {has_member: {equals_string: hp}}
+    - preconditions:
+        slot_conditions:
+          traversal-kind: {equals_string: climb_speed}
+      postconditions:
+        slot_conditions:
+          raises-stat: {has_member: {equals_string: climb-speed}}
+    - preconditions:
+        slot_conditions:
+          traversal-kind: {equals_string: swim_speed}
+      postconditions:
+        slot_conditions:
+          raises-stat: {has_member: {equals_string: swim-speed}}
+    - preconditions:
+        slot_conditions:
+          traversal-kind: {equals_string: diving_skill}
+      postconditions:
+        slot_conditions:
+          raises-stat: {has_member: {equals_string: diving-skill}}
+    - preconditions:
+        slot_conditions:
+          traversal-kind: {equals_string: ride_speed}
+      postconditions:
+        slot_conditions:
+          raises-stat: {has_member: {equals_string: ride-speed}}
+    - preconditions:
+        slot_conditions:
+          traversal-kind: {equals_string: glide_speed}
+      postconditions:
+        slot_conditions:
+          raises-stat: {has_member: {equals_string: glide-speed}}
+    - preconditions:
+        slot_conditions:
+          traversal-kind: {equals_string: sail_speed}
+      postconditions:
+        slot_conditions:
+          raises-stat: {has_member: {equals_string: sail-speed}}
+    - preconditions:
+        slot_conditions:
+          traversal-kind: {equals_string: light_radius}
+      postconditions:
+        slot_conditions:
+          raises-stat: {has_member: {equals_string: light-radius}}
+    attributes:
+      traversal-kind: {alias: traversal-kind, slot_uri: pixlnd:artifact/traversal-kind, range: ArtifactTraversalKind, required: true, description: 'Exactly one of the seven approved traversal bonus kinds; stat targets, equal-share accumulation and logarithmic behavior remain governed by raises-stat and c-artifact-stat.'}
   currency:
+    description: "Logical currency definition; applicability follows the cited domain rules."
     class_uri: pixlnd:currency
     see_also:
     - ../domain/3_Classes.md#currency
     slots:
     - id
   shop:
+    description: "Logical shop definition; applicability follows the cited domain rules."
     class_uri: pixlnd:shop
     see_also:
     - ../domain/3_Classes.md#shop
@@ -137,6 +330,7 @@ classes:
     - id
   inventory:
     class_uri: pixlnd:inventory
+    description: Logical per-character bag, equipment and coin holdings; this is not a selected save-wire format. Starting contents remain a generator configuration reference.
     see_also: &id006
     - ../domain/3_Classes.md#inventory
     slots:
@@ -146,6 +340,7 @@ classes:
     - inventory-equipment
   item-upgrade:
     class_uri: pixlnd:item-upgrade
+    description: Placed item cube with explicit coordinates, material and integer level; cube capacity and count agreement remain coupled rules.
     see_also: &id002
     - ../domain/3_Classes.md#item
     slots:
@@ -153,14 +348,17 @@ classes:
     - item-upgrade-y
     - item-upgrade-z
     - item-upgrade-material
+    - item-upgrade-level
   inventory-entry:
     class_uri: pixlnd:inventory-entry
+    description: One item/count association; stack eligibility is governed by c-stack-rule, not a count cap here.
     see_also: &id005
     - ../domain/3_Classes.md#inventory
     slots:
     - inventory-entry-item
     - inventory-entry-count
   equipment-assignment:
+    description: "Logical equipment-assignment definition; applicability follows the cited domain rules."
     class_uri: pixlnd:equipment-assignment
     see_also: &id007
     - ../domain/3_Classes.md#inventory
@@ -171,50 +369,566 @@ classes:
       slot:
         unique_key_slots:
         - equipment-assignment-slot
+  key-items-source:
+    description: "Source representation of key-items-source."
+    class_uri: pixlnd:key-items-source
+    annotations: {source-map-entries: entries}
+    see_also: [../instances/key-items.json]
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: pixlnd:key-items-source/schema, range: string, required: true, equals_string: key-item, description: "The $schema field of key-items-source."}
+      documentation: {alias: _doc, slot_uri: pixlnd:key-items-source/doc, range: string, required: true, description: "The _doc field of key-items-source."}
+      counts-per-land-s: {alias: counts-per-land-s, slot_uri: pixlnd:key-items-source/counts-per-land-s, range: key-item-counts-source, required: true, inlined: true, description: "Historical S summary configuration, not a key-item row or hybrid quantity default."}
+      special-accessories-x: {alias: special-accessories-x, slot_uri: pixlnd:key-items-source/special-accessories-x, range: key-item-cut-summary-source, required: true, inlined: true, description: "Grouped alpha special-accessory data, X/cut reference configuration rather than an item row."}
+      entries: {alias: entries, slot_uri: pixlnd:key-items-source/entries, range: key-items-source-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of key-items-source."}
+  key-items-source-entry:
+    description: "Source representation of key-items-source-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:key-items-source-entry/value, any_of: [{range: key-item-source-row}, {range: key-item-artifact-source}], required: true, inlined: true, description: "The value field of key-items-source-entry."}
+  key-item-source-row:
+    description: "Source representation of key-item-source-row."
+    attributes:
+      name: {alias: name, slot_uri: pixlnd:key-item-source-row/name, range: string, required: true, description: "The name field of key-item-source-row."}
+      group: {alias: group, slot_uri: pixlnd:key-item-source-row/group, range: string, description: "The group field of key-item-source-row."}
+      alpha-type: {alias: alpha-type, slot_uri: pixlnd:key-item-source-row/alpha-type, any_of: [{range: integer}, {range: integer, multivalued: true, minimum_cardinality: 2, maximum_cardinality: 2}], description: "The alpha-type field of key-item-source-row."}
+      acquire: {alias: acquire, slot_uri: pixlnd:key-item-source-row/acquire, range: key-item-acquire-source, inlined: true, description: "The acquire field of key-item-source-row."}
+      opens: {alias: opens, slot_uri: pixlnd:key-item-source-row/opens, range: string, description: "The opens field of key-item-source-row."}
+      effect: {alias: effect, slot_uri: pixlnd:key-item-source-row/effect, range: string, description: "The effect field of key-item-source-row."}
+      message: {alias: message, slot_uri: pixlnd:key-item-source-row/message, range: string, description: "The message field of key-item-source-row."}
+      rules: {alias: rules, slot_uri: pixlnd:key-item-source-row/rules, range: string, multivalued: true, description: "The rules field of key-item-source-row."}
+      controls: {alias: _controls, slot_uri: pixlnd:key-item-source-row/controls, range: string, multivalued: true, description: "The _controls field of key-item-source-row."}
+      speed-stat: {alias: speed-stat, slot_uri: pixlnd:key-item-source-row/speed-stat, range: string, description: "The speed-stat field of key-item-source-row."}
+      versions: {alias: versions, slot_uri: pixlnd:key-item-source-row/versions, range: string, multivalued: true, description: "The versions field of key-item-source-row."}
+      a-equivalent: {alias: a-equivalent, slot_uri: pixlnd:key-item-source-row/a-equivalent, range: string, description: "The a-equivalent field of key-item-source-row."}
+      s-equivalent: {alias: s-equivalent, slot_uri: pixlnd:key-item-source-row/s-equivalent, range: string, description: "The s-equivalent field of key-item-source-row."}
+  key-item-cut-summary-source:
+    description: "Exact grouped cut/reference accessory data; member names remain data, not model properties or active item availability."
+    see_also: [../instances/key-items.json#special-accessories-x, ../domain/5_Constraints.md#required-inputs]
+    attributes:
+      name: {alias: name, slot_uri: pixlnd:key-item-cut-summary-source/name, range: string, required: true, description: "Source summary name."}
+      alpha-type: {alias: alpha-type, slot_uri: pixlnd:key-item-cut-summary-source/alpha-type, range: integer, required: true, description: "Historical alpha type number, not allocated item identity."}
+      list: {alias: list, slot_uri: pixlnd:key-item-cut-summary-source/list, range: string, required: true, multivalued: true, description: "Exact cut accessory names, not individual schema slots."}
+      versions: {alias: versions, slot_uri: pixlnd:key-item-cut-summary-source/versions, range: string, required: true, multivalued: true, description: "Explicit source provenance, retaining X/cut status."}
+  key-item-acquire-source:
+    description: "Source representation of key-item-acquire-source."
+    attributes:
+      alpha: {alias: A, slot_uri: pixlnd:key-item-acquire-source/alpha, range: string, description: "The A field of key-item-acquire-source."}
+      steam: {alias: S, slot_uri: pixlnd:key-item-acquire-source/steam, range: string, description: "The S field of key-item-acquire-source."}
+  key-item-artifact-source:
+    description: "Source representation of key-item-artifact-source."
+    attributes:
+      name: {alias: name, slot_uri: pixlnd:key-item-artifact-source/name, range: string, required: true, description: "The name field of key-item-artifact-source."}
+      group: {alias: group, slot_uri: pixlnd:key-item-artifact-source/group, range: string, required: true, description: "The group field of key-item-artifact-source."}
+      versions: {alias: versions, slot_uri: pixlnd:key-item-artifact-source/versions, range: string, required: true, multivalued: true, description: "The versions field of key-item-artifact-source."}
+      rules: {alias: rules, slot_uri: pixlnd:key-item-artifact-source/rules, range: string, required: true, multivalued: true, description: "The rules field of key-item-artifact-source."}
+      stat-kinds: {alias: stat-kinds, slot_uri: pixlnd:key-item-artifact-source/stat-kinds, range: string, required: true, multivalued: true, description: "The stat-kinds field of key-item-artifact-source."}
+      name-forms: {alias: name-forms, slot_uri: pixlnd:key-item-artifact-source/name-forms, range: string, required: true, multivalued: true, description: "The name-forms field of key-item-artifact-source."}
+      examples: {alias: examples, slot_uri: pixlnd:key-item-artifact-source/examples, range: string, required: true, multivalued: true, description: "The examples field of key-item-artifact-source."}
+      found-in: {alias: found-in, slot_uri: pixlnd:key-item-artifact-source/found-in, range: string, required: true, multivalued: true, description: "The found-in field of key-item-artifact-source."}
+      count-per-land: {alias: count-per-land, slot_uri: pixlnd:key-item-artifact-source/count-per-land, range: string, required: true, description: "The count-per-land field of key-item-artifact-source."}
+      alpha-static-entity: {alias: alpha-static-entity, slot_uri: pixlnd:key-item-artifact-source/alpha-static-entity, range: integer, required: true, description: "The alpha-static-entity field of key-item-artifact-source."}
+  key-item-counts-source:
+    description: "Source representation of key-item-counts-source."
+    attributes:
+      movement: {alias: movement, slot_uri: pixlnd:key-item-counts-source/movement, range: integer, required: true, description: "The movement field of key-item-counts-source."}
+      ticket: {alias: ticket, slot_uri: pixlnd:key-item-counts-source/ticket, range: integer, required: true, description: "The ticket field of key-item-counts-source."}
+      total-max: {alias: total-max, slot_uri: pixlnd:key-item-counts-source/total-max, range: integer, required: true, description: "The total-max field of key-item-counts-source."}
+      gnome-suppliers: {alias: gnome-suppliers, slot_uri: pixlnd:key-item-counts-source/gnome-suppliers, range: integer, required: true, description: "The gnome-suppliers field of key-item-counts-source."}
+      books: {alias: books, slot_uri: pixlnd:key-item-counts-source/books, range: integer, required: true, description: "The books field of key-item-counts-source."}
+  recipes-source:
+    class_uri: pixlnd:recipes-source
+    description: Literal recipes.json configuration; symbolic counts are not executable relations.
+    see_also: [../instances/recipes.json, ../domain/5_Constraints.md#required-inputs]
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: pixlnd:recipes-source/schema, range: string, required: true, equals_string: recipe, description: "The $schema field of recipes-source."}
+      documentation: {alias: _doc, slot_uri: pixlnd:recipes-source/doc, range: string, required: true, description: "The _doc field of recipes-source."}
+      gear-armor-quantities: {alias: gear-armor-quantities, slot_uri: pixlnd:recipes-source/armor, range: recipe-armor, required: true, inlined: true, description: "The gear-armor-quantities field of recipes-source."}
+      gear-weapons: {alias: gear-weapons, slot_uri: pixlnd:recipes-source/weapons, range: recipe-weapons, required: true, inlined: true, description: "The gear-weapons field of recipes-source."}
+      refining: {alias: refining, slot_uri: pixlnd:recipes-source/refining, range: recipe-refining, required: true, inlined: true, description: "The refining field of recipes-source."}
+      cooking: {alias: cooking, slot_uri: pixlnd:recipes-source/cooking, range: recipe-reference, required: true, inlined: true, description: "The cooking field of recipes-source."}
+      alchemy: {alias: alchemy, slot_uri: pixlnd:recipes-source/alchemy, range: recipe-reference, required: true, inlined: true, description: "The alchemy field of recipes-source."}
+      crafting-tabs-a: {alias: crafting-tabs-a, slot_uri: pixlnd:recipes-source/crafting-tabs-a, range: string, required: true, multivalued: true, description: "The crafting-tabs-a field of recipes-source."}
+      recipe-sources: {alias: recipe-sources, slot_uri: pixlnd:recipes-source/sources, range: recipe-sources, required: true, inlined: true, description: "The recipe-sources field of recipes-source."}
+      customization: {alias: customization, slot_uri: pixlnd:recipes-source/customization, range: recipe-customization, required: true, inlined: true, description: "The customization field of recipes-source."}
+  recipe-armor:
+    description: "Source representation of recipe-armor."
+    attributes:
+      unit: {alias: unit, slot_uri: pixlnd:recipe-armor/unit, range: string, required: true, description: "The unit field of recipe-armor."}
+      common: {alias: common, slot_uri: pixlnd:recipe-armor/common, range: recipe-armor-common, required: true, inlined: true, description: "The common field of recipe-armor."}
+      uncommon: {alias: uncommon, slot_uri: pixlnd:recipe-armor/uncommon, range: recipe-armor-tier, required: true, inlined: true, description: "The uncommon field of recipe-armor."}
+      rare: {alias: rare, slot_uri: pixlnd:recipe-armor/rare, range: recipe-armor-tier, required: true, inlined: true, description: "The rare field of recipe-armor."}
+      epic: {alias: epic, slot_uri: pixlnd:recipe-armor/epic, range: recipe-armor-tier, required: true, inlined: true, description: "The epic field of recipe-armor."}
+      legendary: {alias: legendary, slot_uri: pixlnd:recipe-armor/legendary, range: recipe-armor-tier, required: true, inlined: true, description: "The legendary field of recipe-armor."}
+      stations: {alias: stations, slot_uri: pixlnd:recipe-armor/stations, range: recipe-stations, required: true, inlined: true, description: "The stations field of recipe-armor."}
+  recipe-armor-common:
+    description: "Source representation of recipe-armor-common."
+    attributes:
+      chest: {alias: chest, slot_uri: pixlnd:recipe-armor-common/chest, range: recipe-base, required: true, inlined: true, description: "The chest field of recipe-armor-common."}
+      shoulders: {alias: shoulders, slot_uri: pixlnd:recipe-armor-common/shoulders, range: recipe-base, required: true, inlined: true, description: "The shoulders field of recipe-armor-common."}
+      gloves: {alias: gloves, slot_uri: pixlnd:recipe-armor-common/gloves, range: recipe-base, required: true, inlined: true, description: "The gloves field of recipe-armor-common."}
+      boots: {alias: boots, slot_uri: pixlnd:recipe-armor-common/boots, range: recipe-base, required: true, inlined: true, description: "The boots field of recipe-armor-common."}
+      gem: {alias: gem, slot_uri: pixlnd:recipe-armor-common/gem, range: recipe-null-marker, required: true, inlined: true, annotations: {source-literal-null: true}, description: "The gem field of recipe-armor-common."}
+  recipe-null-marker:
+    description: Empty closed marker used only for reversible binding of the source's present null gem.
+    attributes: {}
+  recipe-base:
+    description: "Source representation of recipe-base."
+    attributes:
+      base: {alias: base, slot_uri: pixlnd:recipe-base/base, range: integer, required: true, minimum_value: 1, description: "The base field of recipe-base."}
+  recipe-armor-tier:
+    description: "Source representation of recipe-armor-tier."
+    attributes:
+      chest: {alias: chest, slot_uri: pixlnd:recipe-armor-tier/chest, range: recipe-piece, required: true, inlined: true, description: "The chest field of recipe-armor-tier."}
+      shoulders: {alias: shoulders, slot_uri: pixlnd:recipe-armor-tier/shoulders, range: recipe-piece, required: true, inlined: true, description: "The shoulders field of recipe-armor-tier."}
+      gloves: {alias: gloves, slot_uri: pixlnd:recipe-armor-tier/gloves, range: recipe-piece, required: true, inlined: true, description: "The gloves field of recipe-armor-tier."}
+      boots: {alias: boots, slot_uri: pixlnd:recipe-armor-tier/boots, range: recipe-piece, required: true, inlined: true, description: "The boots field of recipe-armor-tier."}
+      gem: {alias: gem, slot_uri: pixlnd:recipe-armor-tier/gem, range: string, required: true, description: "The gem field of recipe-armor-tier."}
+  recipe-piece:
+    description: "Source representation of recipe-piece."
+    attributes:
+      base: {alias: base, slot_uri: pixlnd:recipe-piece/base, range: integer, required: true, minimum_value: 1, description: "The base field of recipe-piece."}
+      gem: {alias: gem, slot_uri: pixlnd:recipe-piece/gem, range: integer, required: true, minimum_value: 1, description: "The gem field of recipe-piece."}
+  recipe-stations:
+    description: "Source representation of recipe-stations."
+    attributes:
+      iron: {alias: iron, slot_uri: pixlnd:recipe-stations/iron, range: string, required: true, description: "The iron field of recipe-stations."}
+      textile: {alias: cotton|linen|silk, slot_uri: pixlnd:recipe-stations/textile, range: string, required: true, description: "The cotton|linen|silk field of recipe-stations."}
+  recipe-weapons:
+    description: "Source representation of recipe-weapons."
+    annotations: {source-map-entries: entries}
+    attributes:
+      rule: {alias: _rule, slot_uri: pixlnd:recipe-weapons/rule, range: string, required: true, description: "The _rule field of recipe-weapons."}
+      gem-per-rarity: {alias: gem-per-rarity, slot_uri: pixlnd:recipe-weapons/gem-per-rarity, range: recipe-gems-by-rarity, required: true, inlined: true, description: "The gem-per-rarity field of recipe-weapons."}
+      entries: {alias: entries, slot_uri: pixlnd:recipe-weapons/entries, range: recipe-weapon-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of recipe-weapons."}
+  recipe-weapon-entry:
+    description: "Source representation of recipe-weapon-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:recipe-weapon-entry/value, range: recipe-weapon-row, required: true, inlined: true, description: "The value field of recipe-weapon-entry."}
+  recipe-weapon-row:
+    description: "Source representation of recipe-weapon-row."
+    attributes:
+      inputs: {alias: inputs, slot_uri: pixlnd:recipe-weapon-row/inputs, range: recipe-ingredient-inputs, required: true, inlined: true, description: "The inputs field of recipe-weapon-row."}
+      station: {alias: station, slot_uri: pixlnd:recipe-weapon-row/station, range: string, required: true, description: "The station field of recipe-weapon-row."}
+      note: {alias: note, slot_uri: pixlnd:recipe-weapon-row/note, range: string, description: "The note field of recipe-weapon-row."}
+  recipe-gems-by-rarity:
+    description: "Source representation of recipe-gems-by-rarity."
+    attributes:
+      uncommon: {alias: uncommon, slot_uri: pixlnd:recipe-gems-by-rarity/uncommon, range: string, required: true, description: "The uncommon field of recipe-gems-by-rarity."}
+      rare: {alias: rare, slot_uri: pixlnd:recipe-gems-by-rarity/rare, range: string, required: true, description: "The rare field of recipe-gems-by-rarity."}
+      epic: {alias: epic, slot_uri: pixlnd:recipe-gems-by-rarity/epic, range: string, required: true, description: "The epic field of recipe-gems-by-rarity."}
+      legendary: {alias: legendary, slot_uri: pixlnd:recipe-gems-by-rarity/legendary, range: string, required: true, description: "The legendary field of recipe-gems-by-rarity."}
+  recipe-refining:
+    description: "Source representation of recipe-refining."
+    annotations: {source-map-entries: entries}
+    attributes:
+      entries: {alias: entries, slot_uri: pixlnd:recipe-refining/entries, range: recipe-refining-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of recipe-refining."}
+  recipe-refining-entry:
+    description: "Source representation of recipe-refining-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:recipe-refining-entry/value, range: recipe-refining-row, required: true, inlined: true, description: "The value field of recipe-refining-entry."}
+  recipe-refining-row:
+    description: "Source representation of recipe-refining-row."
+    attributes:
+      inputs: {alias: inputs, slot_uri: pixlnd:recipe-refining-row/inputs, range: recipe-ingredient-inputs, required: true, inlined: true, description: "The inputs field of recipe-refining-row."}
+      outputs: {alias: outputs, slot_uri: pixlnd:recipe-refining-row/outputs, range: recipe-ingredient-outputs, inlined: true, description: "The outputs field of recipe-refining-row."}
+      station: {alias: station, slot_uri: pixlnd:recipe-refining-row/station, range: string, required: true, description: "The station field of recipe-refining-row."}
+  recipe-ingredient-inputs:
+    description: "Source representation of recipe-ingredient-inputs."
+    annotations: {source-map-entries: entries}
+    attributes:
+      entries: {alias: entries, slot_uri: pixlnd:recipe-ingredient-inputs/entries, range: recipe-input-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of recipe-ingredient-inputs."}
+  recipe-input-entry:
+    description: "Source representation of recipe-input-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:recipe-input-entry/value, any_of: [{range: integer, minimum_value: 1}, {range: string}], required: true, description: "The value field of recipe-input-entry."}
+  recipe-ingredient-outputs:
+    description: "Source representation of recipe-ingredient-outputs."
+    annotations: {source-map-entries: entries}
+    attributes:
+      entries: {alias: entries, slot_uri: pixlnd:recipe-ingredient-outputs/entries, range: recipe-output-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of recipe-ingredient-outputs."}
+  recipe-output-entry:
+    description: "Source representation of recipe-output-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:recipe-output-entry/value, range: string, required: true, description: "The value field of recipe-output-entry."}
+  recipe-reference:
+    description: "Source representation of recipe-reference."
+    attributes:
+      see: {alias: see, slot_uri: pixlnd:recipe-reference/see, range: string, required: true, description: "The see field of recipe-reference."}
+  recipe-sources:
+    description: "Source representation of recipe-sources."
+    attributes:
+      alpha: {alias: A, slot_uri: pixlnd:recipe-sources/alpha, range: string, required: true, description: "The A field of recipe-sources."}
+      steam: {alias: S, slot_uri: pixlnd:recipe-sources/steam, range: string, required: true, description: "The S field of recipe-sources."}
+  recipe-customization:
+    description: "Source representation of recipe-customization."
+    attributes:
+      material-cubes: {alias: material-cubes, slot_uri: pixlnd:recipe-customization/material-cubes, range: string, required: true, description: "The material-cubes field of recipe-customization."}
+      spirit-cubes-alpha: {alias: spirit-cubes-a, slot_uri: pixlnd:recipe-customization/spirit-cubes-alpha, range: string, required: true, description: "The spirit-cubes-a field of recipe-customization."}
+      fully-modded-legendary-plus-steam: {alias: fully-modded-legendary-plus-s, slot_uri: pixlnd:recipe-customization/fully-modded-legendary-plus-steam, range: string, required: true, description: "The fully-modded-legendary-plus-s field of recipe-customization."}
+  materials-source:
+    description: "Source representation of materials-source."
+    annotations: {source-map-entries: entries}
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: pixlnd:materials-source/schema, range: string, required: true, equals_string: material, description: "The $schema field of materials-source."}
+      documentation: {alias: _doc, slot_uri: pixlnd:materials-source/doc, range: string, required: true, description: "The _doc field of materials-source."}
+      entries: {alias: entries, slot_uri: pixlnd:materials-source/entries, range: material-source-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of materials-source."}
+  material-source-entry:
+    description: "Source representation of material-source-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:material-source-entry/value, range: material-source-row, required: true, inlined: true, description: "The value field of material-source-entry."}
+  material-source-row:
+    description: "Source representation of material-source-row."
+    attributes:
+      id: {alias: id, slot_uri: pixlnd:material-source-row/id, range: integer, description: "The id field of material-source-row."}
+      name: {alias: name, slot_uri: pixlnd:material-source-row/name, range: string, required: true, description: "The name field of material-source-row."}
+      kind: {alias: kind, slot_uri: pixlnd:material-source-row/kind, range: string, description: "The kind field of material-source-row."}
+      class: {alias: class, slot_uri: pixlnd:material-source-row/class, range: string, description: "The class field of material-source-row."}
+      station: {alias: station, slot_uri: pixlnd:material-source-row/station, range: string, description: "The station field of material-source-row."}
+      raw: {alias: raw, slot_uri: pixlnd:material-source-row/raw, range: string, description: "The raw field of material-source-row."}
+      refined: {alias: refined, slot_uri: pixlnd:material-source-row/refined, range: string, description: "The refined field of material-source-row."}
+      hp-bonus: {alias: hp-bonus, slot_uri: pixlnd:material-source-row/hp-bonus, range: float, description: "The hp-bonus field of material-source-row."}
+      armor-mult: {alias: armor-mult, slot_uri: pixlnd:material-source-row/armor-mult, range: float, description: "The armor-mult field of material-source-row."}
+      resi-mult: {alias: resi-mult, slot_uri: pixlnd:material-source-row/resi-mult, range: float, description: "The resi-mult field of material-source-row."}
+      crit-bonus: {alias: crit-bonus, slot_uri: pixlnd:material-source-row/crit-bonus, range: float, description: "The crit-bonus field of material-source-row."}
+      tempo-bonus: {alias: tempo-bonus, slot_uri: pixlnd:material-source-row/tempo-bonus, range: float, description: "The tempo-bonus field of material-source-row."}
+      regen-bonus: {alias: regen-bonus, slot_uri: pixlnd:material-source-row/regen-bonus, range: float, description: "The regen-bonus field of material-source-row."}
+      crafts-rarity: {alias: crafts-rarity, slot_uri: pixlnd:material-source-row/crafts-rarity, range: string, description: "The crafts-rarity field of material-source-row."}
+      obtainable: {alias: obtainable, slot_uri: pixlnd:material-source-row/obtainable, range: boolean, description: "The obtainable field of material-source-row."}
+      note: {alias: note, slot_uri: pixlnd:material-source-row/note, range: string, description: "The note field of material-source-row."}
+      alt-name: {alias: alt-name, slot_uri: pixlnd:material-source-row/alt-name, range: string, description: "The alt-name field of material-source-row."}
+      effect: {alias: effect, slot_uri: pixlnd:material-source-row/effect, range: string, description: "The effect field of material-source-row."}
+      price-s: {alias: price-s, slot_uri: pixlnd:material-source-row/price-s, range: integer, description: "The price-s field of material-source-row."}
+      sell-s: {alias: sell-s, slot_uri: pixlnd:material-source-row/sell-s, range: integer, description: "The sell-s field of material-source-row."}
+      versions: {alias: versions, slot_uri: pixlnd:material-source-row/versions, range: string, multivalued: true, description: "The versions field of material-source-row."}
+  ingredients-source:
+    description: "Source representation of ingredients-source."
+    annotations: {source-map-entries: entries}
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: pixlnd:ingredients-source/schema, range: string, required: true, equals_string: ingredient, description: "The $schema field of ingredients-source."}
+      documentation: {alias: _doc, slot_uri: pixlnd:ingredients-source/doc, range: string, required: true, description: "The _doc field of ingredients-source."}
+      unused-data: {alias: _unused-data, slot_uri: pixlnd:ingredients-source/unused-data, range: ingredient-unused-data, required: true, inlined: true, description: "The _unused-data field of ingredients-source."}
+      entries: {alias: entries, slot_uri: pixlnd:ingredients-source/entries, range: ingredient-source-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of ingredients-source."}
+  ingredient-source-entry:
+    description: "Source representation of ingredient-source-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:ingredient-source-entry/value, range: ingredient-source-row, required: true, inlined: true, description: "The value field of ingredient-source-entry."}
+  ingredient-source-row:
+    description: "Source representation of ingredient-source-row."
+    attributes:
+      name: {alias: name, slot_uri: pixlnd:ingredient-source-row/name, range: string, required: true, description: "The name field of ingredient-source-row."}
+      kind: {alias: kind, slot_uri: pixlnd:ingredient-source-row/kind, range: string, description: "The kind field of ingredient-source-row."}
+      from: {alias: from, slot_uri: pixlnd:ingredient-source-row/from, range: string, description: "The from field of ingredient-source-row."}
+      alpha-subtype: {alias: alpha-subtype, slot_uri: pixlnd:ingredient-source-row/alpha-subtype, range: integer, description: "The alpha-subtype field of ingredient-source-row."}
+      note: {alias: note, slot_uri: pixlnd:ingredient-source-row/note, range: string, description: "The note field of ingredient-source-row."}
+      sell: {alias: sell, slot_uri: pixlnd:ingredient-source-row/sell, range: integer, description: "The sell field of ingredient-source-row."}
+      recipe: {alias: recipe, slot_uri: pixlnd:ingredient-source-row/recipe, range: string, description: "The recipe field of ingredient-source-row."}
+      refines-to: {alias: refines-to, slot_uri: pixlnd:ingredient-source-row/refines-to, range: ingredient-source-refinement, inlined: true, description: "The refines-to field of ingredient-source-row."}
+      versions: {alias: versions, slot_uri: pixlnd:ingredient-source-row/versions, range: string, multivalued: true, description: "The versions field of ingredient-source-row."}
+  ingredient-source-refinement:
+    description: "Source representation of ingredient-source-refinement."
+    annotations: {source-map-entries: entries}
+    attributes:
+      entries: {alias: entries, slot_uri: pixlnd:ingredient-source-refinement/entries, range: ingredient-source-refinement-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of ingredient-source-refinement."}
+  ingredient-source-refinement-entry:
+    description: "Source representation of ingredient-source-refinement-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:ingredient-source-refinement-entry/value, range: string, required: true, description: "The value field of ingredient-source-refinement-entry."}
+  ingredient-unused-data:
+    description: "Source representation of ingredient-unused-data."
+    annotations: {source-map-entries: entries}
+    attributes:
+      entries: {alias: entries, slot_uri: pixlnd:ingredient-unused-data/entries, range: ingredient-unused-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of ingredient-unused-data."}
+  ingredient-unused-entry:
+    description: "Source representation of ingredient-unused-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:ingredient-unused-entry/value, range: integer, required: true, description: "The value field of ingredient-unused-entry."}
+  crafting-stations-source:
+    description: "Source representation of crafting-stations-source."
+    annotations: {source-map-entries: entries}
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: pixlnd:crafting-stations-source/schema, range: string, required: true, equals_string: crafting-station, description: "The $schema field of crafting-stations-source."}
+      documentation: {alias: _doc, slot_uri: pixlnd:crafting-stations-source/doc, range: string, required: true, description: "The _doc field of crafting-stations-source."}
+      entries: {alias: entries, slot_uri: pixlnd:crafting-stations-source/entries, range: crafting-station-source-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of crafting-stations-source."}
+  crafting-station-source-entry:
+    description: "Source representation of crafting-station-source-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:crafting-station-source-entry/value, range: crafting-station-source-row, required: true, inlined: true, description: "The value field of crafting-station-source-entry."}
+  crafting-station-source-row:
+    description: "Source representation of crafting-station-source-row."
+    attributes:
+      name: {alias: name, slot_uri: pixlnd:crafting-station-source-row/name, range: string, required: true, description: "The name field of crafting-station-source-row."}
+      static-id: {alias: static-id, slot_uri: pixlnd:crafting-station-source-row/static-id, range: integer, description: "The static-id field of crafting-station-source-row."}
+      building: {alias: building, slot_uri: pixlnd:crafting-station-source-row/building, range: string, description: "The building field of crafting-station-source-row."}
+      does: {alias: does, slot_uri: pixlnd:crafting-station-source-row/does, range: string, description: "The does field of crafting-station-source-row."}
+      versions: {alias: versions, slot_uri: pixlnd:crafting-station-source-row/versions, range: string, multivalued: true, description: "The versions field of crafting-station-source-row."}
+  item-types-source:
+    description: "Source representation of item-types-source."
+    class_uri: pixlnd:item-types-source
+    annotations: {source-map-entries: entries}
+    see_also: [../instances/item-types.json]
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: pixlnd:item-types-source/schema, range: string, required: true, equals_string: item-type, description: "The $schema field of item-types-source."}
+      documentation: {alias: _doc, slot_uri: pixlnd:item-types-source/doc, range: string, required: true, description: "The _doc field of item-types-source."}
+      additions: {alias: _s-additions, slot_uri: pixlnd:item-types-source/additions, range: item-type-source-additions, required: true, inlined: true, description: "The _s-additions field of item-types-source."}
+      entries: {alias: entries, slot_uri: pixlnd:item-types-source/entries, range: item-type-source-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of item-types-source."}
+  item-type-source-entry:
+    description: "Source representation of item-type-source-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:item-type-source-entry/value, range: item-type-source-row, required: true, inlined: true, description: "The value field of item-type-source-entry."}
+  item-type-source-row:
+    description: "Source representation of item-type-source-row."
+    attributes:
+      type: {alias: type, slot_uri: pixlnd:item-type-source-row/type, range: integer, required: true, description: "The type field of item-type-source-row."}
+      name: {alias: name, slot_uri: pixlnd:item-type-source-row/name, range: string, required: true, description: "The name field of item-type-source-row."}
+      subtypes:
+        description: "The subtypes field of item-type-source-row."
+        alias: subtypes
+        slot_uri: pixlnd:item-type-source-row/subtypes
+        exactly_one_of: [{range: string}, {range: item-type-subtype-map}]
+        annotations: {source-map-union-range: item-type-subtype-map}
+      slot: {alias: slot, slot_uri: pixlnd:item-type-source-row/slot, range: string, description: "The slot field of item-type-source-row."}
+      versions: {alias: versions, slot_uri: pixlnd:item-type-source-row/versions, range: string, multivalued: true, description: "The versions field of item-type-source-row."}
+      stats: {alias: stats, slot_uri: pixlnd:item-type-source-row/stats, range: string, multivalued: true, description: "The stats field of item-type-source-row."}
+      note: {alias: note, slot_uri: pixlnd:item-type-source-row/note, range: string, description: "The note field of item-type-source-row."}
+  item-type-subtype-map:
+    description: "Source representation of item-type-subtype-map."
+    annotations: {source-map-entries: entries}
+    attributes:
+      entries: {alias: entries, slot_uri: pixlnd:item-type-subtype-map/entries, range: item-type-subtype-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of item-type-subtype-map."}
+  item-type-subtype-entry:
+    description: "Source representation of item-type-subtype-entry."
+    slots: [item-type-subtype-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:item-type-subtype-entry/value, range: string, required: true, description: "The value field of item-type-subtype-entry."}
+  item-type-source-additions:
+    description: "Source representation of item-type-source-additions."
+    attributes:
+      artifact: {alias: artifact, slot_uri: pixlnd:item-type-source-additions/artifact, range: string, required: true, description: "The artifact field of item-type-source-additions."}
+      book-of-crafting: {alias: book-of-crafting, slot_uri: pixlnd:item-type-source-additions/book-of-crafting, range: string, required: true, description: "The book-of-crafting field of item-type-source-additions."}
+      elixir: {alias: elixir, slot_uri: pixlnd:item-type-source-additions/elixir, range: string, required: true, description: "The elixir field of item-type-source-additions."}
+      beverage: {alias: beverage, slot_uri: pixlnd:item-type-source-additions/beverage, range: string, required: true, description: "The beverage field of item-type-source-additions."}
+      key-item-s: {alias: key-item-s, slot_uri: pixlnd:item-type-source-additions/key-item-s, range: string, required: true, multivalued: true, description: "The key-item-s field of item-type-source-additions."}
+      bag-of-gold: {alias: bag-of-gold, slot_uri: pixlnd:item-type-source-additions/bag-of-gold, range: string, required: true, description: "The bag-of-gold field of item-type-source-additions."}
+  equipment-slots-source:
+    description: "Source representation of equipment-slots-source."
+    class_uri: pixlnd:equipment-slots-source
+    see_also: [../instances/equipment-slots.json]
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: pixlnd:equipment-slots-source/schema, range: string, required: true, equals_string: equipment-slot, description: "The $schema field of equipment-slots-source."}
+      documentation: {alias: _doc, slot_uri: pixlnd:equipment-slots-source/doc, range: string, required: true, description: "The _doc field of equipment-slots-source."}
+      slots: {alias: slots, slot_uri: pixlnd:equipment-slots-source/slots, range: equipment-slot-source-row, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The slots field of equipment-slots-source."}
+      extra: {alias: extra, slot_uri: pixlnd:equipment-slots-source/extra, range: equipment-extra-source, required: true, inlined: true, description: "The extra field of equipment-slots-source."}
+      rules: {alias: rules, slot_uri: pixlnd:equipment-slots-source/rules, range: string, required: true, multivalued: true, description: "The rules field of equipment-slots-source."}
+  equipment-slot-source-row:
+    description: "Source representation of equipment-slot-source-row."
+    attributes:
+      id: {alias: id, slot_uri: pixlnd:equipment-slot-source-row/id, range: string, required: true, description: "The id field of equipment-slot-source-row."}
+      index: {alias: index, slot_uri: pixlnd:equipment-slot-source-row/index, range: integer, required: true, minimum_value: 0, maximum_value: 12, description: "The index field of equipment-slot-source-row."}
+      accepts: {alias: accepts, slot_uri: pixlnd:equipment-slot-source-row/accepts, range: string, required: true, multivalued: true, description: "The accepts field of equipment-slot-source-row."}
+      accepts-subtypes: {alias: accepts-subtypes, slot_uri: pixlnd:equipment-slot-source-row/accepts-subtypes, range: string, multivalued: true, description: "The accepts-subtypes field of equipment-slot-source-row."}
+      accepts-conditions: {alias: accepts-conditions, slot_uri: pixlnd:equipment-slot-source-row/accepts-conditions, range: equipment-accepts-condition-map, inlined: true, description: "The accepts-conditions field of equipment-slot-source-row."}
+      controls: {alias: _controls, slot_uri: pixlnd:equipment-slot-source-row/controls, range: string, multivalued: true, description: "The _controls field of equipment-slot-source-row."}
+      hp-mult: {alias: hp-mult, slot_uri: pixlnd:equipment-slot-source-row/hp-mult, range: float, description: "The hp-mult field of equipment-slot-source-row."}
+      versions: {alias: versions, slot_uri: pixlnd:equipment-slot-source-row/versions, range: string, multivalued: true, description: "The versions field of equipment-slot-source-row."}
+      note: {alias: note, slot_uri: pixlnd:equipment-slot-source-row/note, range: string, description: "The note field of equipment-slot-source-row."}
+  equipment-accepts-condition-map:
+    description: "Source representation of equipment-accepts-condition-map."
+    annotations: {source-map-entries: entries}
+    attributes:
+      entries: {alias: entries, slot_uri: pixlnd:equipment-accepts-condition-map/entries, range: equipment-accepts-condition-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of equipment-accepts-condition-map."}
+  equipment-accepts-condition-entry:
+    description: "Source representation of equipment-accepts-condition-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:equipment-accepts-condition-entry/value, range: string, required: true, description: "The value field of equipment-accepts-condition-entry."}
+  equipment-extra-source:
+    description: "Source representation of equipment-extra-source."
+    attributes:
+      consumable: {alias: consumable, slot_uri: pixlnd:equipment-extra-source/consumable, range: equipment-extra-row, required: true, inlined: true, description: "The consumable field of equipment-extra-source."}
+      pet-food: {alias: pet-food, slot_uri: pixlnd:equipment-extra-source/pet-food, range: equipment-extra-row, required: true, inlined: true, description: "The pet-food field of equipment-extra-source."}
+  equipment-extra-row:
+    description: "Source representation of equipment-extra-row."
+    attributes:
+      accepts: {alias: accepts, slot_uri: pixlnd:equipment-extra-row/accepts, range: string, required: true, multivalued: true, description: "The accepts field of equipment-extra-row."}
+      controls: {alias: _controls, slot_uri: pixlnd:equipment-extra-row/controls, range: string, multivalued: true, description: "The _controls field of equipment-extra-row."}
+      note: {alias: note, slot_uri: pixlnd:equipment-extra-row/note, range: string, description: "The note field of equipment-extra-row."}
+  consumables-source:
+    description: "Source representation of consumables-source."
+    class_uri: pixlnd:consumables-source
+    annotations: {source-map-entries: entries}
+    see_also: [../instances/consumables.json]
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: pixlnd:consumables-source/schema, range: string, required: true, equals_string: consumable, description: "The $schema field of consumables-source."}
+      documentation: {alias: _doc, slot_uri: pixlnd:consumables-source/doc, range: string, required: true, description: "The _doc field of consumables-source."}
+      rules: {alias: rules, slot_uri: pixlnd:consumables-source/rules, range: consumable-rules-map, required: true, inlined: true, description: "The rules field of consumables-source."}
+      entries: {alias: entries, slot_uri: pixlnd:consumables-source/entries, range: consumable-source-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of consumables-source."}
+  consumable-rules-map:
+    description: "Source representation of consumable-rules-map."
+    annotations: {source-map-entries: entries}
+    attributes:
+      entries: {alias: entries, slot_uri: pixlnd:consumable-rules-map/entries, range: consumable-rules-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of consumable-rules-map."}
+  consumable-rules-entry:
+    description: "Source representation of consumable-rules-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:consumable-rules-entry/value, range: string, required: true, description: "The value field of consumable-rules-entry."}
+  consumable-source-entry:
+    description: "Source representation of consumable-source-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:consumable-source-entry/value, range: consumable-source-row, required: true, inlined: true, description: "The value field of consumable-source-entry."}
+  consumable-source-row:
+    description: "Source representation of consumable-source-row."
+    attributes:
+      name: {alias: name, slot_uri: pixlnd:consumable-source-row/name, range: string, required: true, description: "The name field of consumable-source-row."}
+      kind: {alias: kind, slot_uri: pixlnd:consumable-source-row/kind, range: string, required: true, description: "The kind field of consumable-source-row."}
+      use: {alias: use, slot_uri: pixlnd:consumable-source-row/use, range: string, description: "The use field of consumable-source-row."}
+      heal-mult: {alias: heal-mult, slot_uri: pixlnd:consumable-source-row/heal-mult, range: integer, description: "The heal-mult field of consumable-source-row."}
+      duration-s: {alias: duration-s, slot_uri: pixlnd:consumable-source-row/duration-s, range: integer, description: "The duration-s field of consumable-source-row."}
+      effect: {alias: effect, slot_uri: pixlnd:consumable-source-row/effect, range: string, description: "The effect field of consumable-source-row."}
+      alpha-subtype: {alias: alpha-subtype, slot_uri: pixlnd:consumable-source-row/alpha-subtype, range: integer, description: "The alpha-subtype field of consumable-source-row."}
+      recipe: {alias: recipe, slot_uri: pixlnd:consumable-source-row/recipe, range: consumable-recipe, inlined: true, description: "The recipe field of consumable-source-row."}
+      station: {alias: station, slot_uri: pixlnd:consumable-source-row/station, range: string, description: "The station field of consumable-source-row."}
+      note: {alias: note, slot_uri: pixlnd:consumable-source-row/note, range: string, description: "The note field of consumable-source-row."}
+      note-s: {alias: note-s, slot_uri: pixlnd:consumable-source-row/note-s, range: string, description: "The note-s field of consumable-source-row."}
+      levels-a: {alias: levels-a, slot_uri: pixlnd:consumable-source-row/levels-a, range: string, multivalued: true, description: "The levels-a field of consumable-source-row."}
+      source: {alias: source, slot_uri: pixlnd:consumable-source-row/source, exactly_one_of: [{range: string}, {range: string, multivalued: true, minimum_cardinality: 1}], description: "The source field of consumable-source-row."}
+      versions: {alias: versions, slot_uri: pixlnd:consumable-source-row/versions, range: string, multivalued: true, description: "The versions field of consumable-source-row."}
+  consumable-recipe:
+    description: "Source representation of consumable-recipe."
+    annotations: {source-map-entries: entries}
+    attributes:
+      entries: {alias: entries, slot_uri: pixlnd:consumable-recipe/entries, range: consumable-recipe-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of consumable-recipe."}
+  consumable-recipe-entry:
+    description: "Source representation of consumable-recipe-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:consumable-recipe-entry/value, any_of: [{range: integer, minimum_value: 1}, {range: string}], required: true, description: "The value field of consumable-recipe-entry."}
+  pet-food-source:
+    description: "Source representation of pet-food-source."
+    class_uri: pixlnd:pet-food-source
+    see_also: [../instances/pet-food.json]
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: pixlnd:pet-food-source/schema, range: string, required: true, equals_string: pet-food, description: "The $schema field of pet-food-source."}
+      documentation: {alias: _doc, slot_uri: pixlnd:pet-food-source/doc, range: string, required: true, description: "The _doc field of pet-food-source."}
+      rules: {alias: rules, slot_uri: pixlnd:pet-food-source/rules, range: string, required: true, multivalued: true, description: "The rules field of pet-food-source."}
+      shop-set: {alias: shop-set, slot_uri: pixlnd:pet-food-source/shop-set, range: string, required: true, multivalued: true, description: "The shop-set field of pet-food-source."}
+      foods: {alias: foods, slot_uri: pixlnd:pet-food-source/foods, range: pet-food-source-map, required: true, inlined: true, description: "The foods field of pet-food-source."}
+      cut: {alias: cut, slot_uri: pixlnd:pet-food-source/cut, range: pet-food-source-map, required: true, inlined: true, description: "The cut field of pet-food-source."}
+  pet-food-source-map:
+    description: "Source representation of pet-food-source-map."
+    annotations: {source-map-entries: entries}
+    attributes:
+      entries: {alias: entries, slot_uri: pixlnd:pet-food-source-map/entries, range: pet-food-source-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of pet-food-source-map."}
+  pet-food-source-entry:
+    description: "Source representation of pet-food-source-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:pet-food-source-entry/value, any_of: [{range: pet-food-source-row}, {range: pet-food-cut-row}], required: true, inlined: true, description: "The value field of pet-food-source-entry."}
+  pet-food-source-row:
+    description: "Source representation of pet-food-source-row."
+    attributes:
+      id: {alias: id, slot_uri: pixlnd:pet-food-source-row/id, range: integer, required: true, description: "The id field of pet-food-source-row."}
+      name: {alias: name, slot_uri: pixlnd:pet-food-source-row/name, range: string, required: true, description: "The name field of pet-food-source-row."}
+      tames: {alias: tames, slot_uri: pixlnd:pet-food-source-row/tames, range: string, required: true, description: "Original scalar target text; logical plural taming targets are declared separately by pet-food-tames."}
+      rideable: {alias: rideable, slot_uri: pixlnd:pet-food-source-row/rideable, range: boolean, required: true, description: "The rideable field of pet-food-source-row."}
+      shop: {alias: shop, slot_uri: pixlnd:pet-food-source-row/shop, range: boolean, description: "The shop field of pet-food-source-row."}
+      versions: {alias: versions, slot_uri: pixlnd:pet-food-source-row/versions, range: string, multivalued: true, description: "The versions field of pet-food-source-row."}
+      note: {alias: note, slot_uri: pixlnd:pet-food-source-row/note, range: string, description: "The note field of pet-food-source-row."}
+  pet-food-cut-row:
+    description: "Source representation of pet-food-cut-row."
+    attributes:
+      tames: {alias: tames, slot_uri: pixlnd:pet-food-cut-row/tames, range: string, required: true, description: "The tames field of pet-food-cut-row."}
+      versions: {alias: versions, slot_uri: pixlnd:pet-food-cut-row/versions, range: string, required: true, multivalued: true, description: "The versions field of pet-food-cut-row."}
+      note: {alias: note, slot_uri: pixlnd:pet-food-cut-row/note, range: string, description: "The note field of pet-food-cut-row."}
+  affixes-source:
+    description: "Source representation of affixes-source."
+    class_uri: pixlnd:affixes-source
+    see_also: [../instances/affixes.json]
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: pixlnd:affixes-source/schema, range: string, required: true, equals_string: affix, description: "The $schema field of affixes-source."}
+      documentation: {alias: _doc, slot_uri: pixlnd:affixes-source/doc, range: string, required: true, description: "The _doc field of affixes-source."}
+      common: {alias: common, slot_uri: pixlnd:affixes-source/common, range: string, required: true, multivalued: true, minimum_cardinality: 1, description: "The common field of affixes-source."}
+      uncommon: {alias: uncommon, slot_uri: pixlnd:affixes-source/uncommon, range: string, required: true, multivalued: true, minimum_cardinality: 1, description: "The uncommon field of affixes-source."}
+      rare: {alias: rare, slot_uri: pixlnd:affixes-source/rare, range: string, required: true, multivalued: true, minimum_cardinality: 1, description: "The rare field of affixes-source."}
+      epic: {alias: epic, slot_uri: pixlnd:affixes-source/epic, range: string, required: true, multivalued: true, minimum_cardinality: 1, description: "The epic field of affixes-source."}
+      legendary: {alias: legendary, slot_uri: pixlnd:affixes-source/legendary, range: string, required: true, multivalued: true, minimum_cardinality: 1, description: "The legendary field of affixes-source."}
+      name-forms: {alias: name-forms, slot_uri: pixlnd:affixes-source/name-forms, range: string, required: true, multivalued: true, minimum_cardinality: 1, description: "The name-forms field of affixes-source."}
+      plus-suffix: {alias: plus-suffix, slot_uri: pixlnd:affixes-source/plus-suffix, range: string, required: true, description: "The plus-suffix field of affixes-source."}
+      examples: {alias: examples, slot_uri: pixlnd:affixes-source/examples, range: string, required: true, multivalued: true, minimum_cardinality: 1, description: "The examples field of affixes-source."}
+enums:
+  ArtifactTraversalKind:
+    description: "Named values for ArtifactTraversalKind."
+    permissible_values:
+      climb_speed: {aliases: [climb-speed]}
+      swim_speed: {aliases: [swim-speed]}
+      diving_skill: {aliases: [diving-skill]}
+      ride_speed: {aliases: [ride-speed]}
+      glide_speed: {aliases: [glide-speed]}
+      sail_speed: {aliases: [sail-speed]}
+      light_radius: {aliases: [light-radius]}
 slots:
   item-type:
+    description: "The type property of items."
     slot_uri: pixlnd:item/type
     alias: type
     range: item-type
     required: true
     see_also: *id001
   item-sub-type:
+    description: "The sub-type property of items."
     slot_uri: pixlnd:item/sub-type
     alias: sub-type
     range: item-type
     required: true
     see_also: *id001
   item-modifier:
+    description: "The modifier property of items."
     slot_uri: pixlnd:item/modifier
     alias: modifier
     range: uint32
     required: true
     see_also: *id001
   item-minus-modifier:
+    description: "The minus-modifier property of items."
     slot_uri: pixlnd:item/minus-modifier
     alias: minus-modifier
     range: uint32
     required: true
     see_also: *id001
   item-rarity:
+    description: "The rarity property of items."
     slot_uri: pixlnd:item/rarity
     alias: rarity
     range: rarity
     required: true
     see_also: *id001
   item-material:
+    description: "The material property of items."
     slot_uri: pixlnd:item/material
     alias: material
     range: material
     required: true
     see_also: *id001
   item-flags:
+    description: "The flags property of items."
     slot_uri: pixlnd:item/flags
     alias: flags
     range: u8
     required: true
     see_also: *id001
   item-level:
+    description: "The level property of items."
     slot_uri: pixlnd:item/level
     alias: level
     range: i16
@@ -223,35 +937,63 @@ slots:
     - ../domain/3_Classes.md#item
     minimum_value: 1
     maximum_value: 100
+  item-weapon-type:
+    slot_uri: pixlnd:item/weapon-type
+    alias: weapon-type
+    domain: item
+    range: weapon-type
+    required: false
+    multivalued: false
+    inlined: false
+    exactly_one_of: [{range: weapon-type}]
+    description: Scalar logical weapon-family reference for weapon items only, agreeing with existing type/sub-type meaning. No numeric-source conversion, global subtype narrowing, implicit foreign-key resolution or saved-wire representation is selected.
+    see_also:
+    - ../domain/3_Classes.md#item
+    - ../domain/5_Constraints.md#constraint-catalog
   item-upgrade-count:
+    description: Number of active placed cubes, exactly the length of logical upgrades, including zero. Existing uint32 information and stat equations are unchanged; no historical inactive-slot layout is selected.
     slot_uri: pixlnd:item/upgrade-count
     alias: upgrade-count
     range: uint32
     required: true
+    maximum_value: 32
+    equals_expression: len({upgrades})
     see_also: *id001
   item-upgrade-x:
+    description: "The x property of items."
     slot_uri: pixlnd:item-upgrade/x
     alias: x
     range: i8
     required: true
     see_also: *id002
   item-upgrade-y:
+    description: "The y property of items."
     slot_uri: pixlnd:item-upgrade/y
     alias: y
     range: i8
     required: true
     see_also: *id002
   item-upgrade-z:
+    description: "The z property of items."
     slot_uri: pixlnd:item-upgrade/z
     alias: z
     range: i8
     required: true
     see_also: *id002
   item-upgrade-material:
+    description: "The material property of items."
     slot_uri: pixlnd:item-upgrade/material
     alias: material
     range: material
     required: true
+    see_also: *id002
+  item-upgrade-level:
+    slot_uri: pixlnd:item-upgrade/level
+    alias: level
+    domain: item-upgrade
+    range: integer
+    required: true
+    description: Recorded per-cube level value; it is not character level or a selected power conversion.
     see_also: *id002
   item-upgrades:
     slot_uri: pixlnd:item/upgrades
@@ -262,8 +1004,7 @@ slots:
     maximum_cardinality: 32
     inlined: true
     inlined_as_list: true
-    description: Up to 32 placed cubes; tighter weapon capacities and count agreement are canonical coupled
-      rules.
+    description: Active placed item-upgrade entries only, at most 32 globally and exactly upgrade-count in number; linked 1H weapon families allow at most 16, 2H and shield 32. Wood cubes require a weapon with concrete wood material, iron cubes a weapon with concrete metal material; other materials are not universally restricted.
     see_also: *id001
   pet-food-tames:
     slot_uri: pixlnd:pet-food/tames
@@ -276,6 +1017,7 @@ slots:
       identity remains separate.
     see_also: *id003
   equipment-slot-index:
+    description: "The index property of items."
     slot_uri: pixlnd:equipment-slot/index
     alias: index
     range: integer
@@ -292,6 +1034,7 @@ slots:
     description: Reserved unknown-0 accepts nothing. Usable-slot and subtype restrictions remain canonical.
     see_also: *id004
   inventory-entry-item:
+    description: "The item property of items."
     slot_uri: pixlnd:inventory-entry/item
     alias: item
     range: item
@@ -299,6 +1042,7 @@ slots:
     inlined: true
     see_also: *id005
   inventory-entry-count:
+    description: "The count property of items."
     slot_uri: pixlnd:inventory-entry/count
     alias: count
     range: integer
@@ -306,6 +1050,7 @@ slots:
     minimum_value: 1
     see_also: *id005
   inventory-entries:
+    description: "The entries property of items."
     slot_uri: pixlnd:inventory/entries
     alias: entries
     range: inventory-entry
@@ -315,18 +1060,21 @@ slots:
     inlined_as_list: true
     see_also: *id006
   inventory-coins:
+    description: "The coins property of items."
     slot_uri: pixlnd:inventory/coins
     alias: coins
     range: uint32
     required: true
     see_also: *id006
   equipment-assignment-slot:
+    description: "The slot property of items."
     slot_uri: pixlnd:equipment-assignment/slot
     alias: slot
     range: equipment-slot
     required: true
     see_also: *id007
   equipment-assignment-item:
+    description: "The item property of items."
     slot_uri: pixlnd:equipment-assignment/item
     alias: item
     range: item
@@ -363,3 +1111,85 @@ slots:
     see_also:
     - ../domain/3_Classes.md#item
     description: Context-qualified declaration; applicability is defined by canonical prose.
+  recipe-map-key:
+    alias: key
+    slot_uri: pixlnd:recipe-source/key
+    range: string
+    required: true
+    key: true
+    pattern: '^[a-z0-9][a-z0-9|.-]*$'
+    description: Original key in a recipe source map, including grouped weapon labels; not a global identity or resolved catalog reference.
+  item-type-subtype-key:
+    alias: key
+    slot_uri: pixlnd:item-type-source/subtype-key
+    range: string
+    required: true
+    key: true
+    pattern: '^[0-9]+$'
+    description: Original numeric subtype string key, retained as source data rather than catalog identity.
+  item-name:
+    slot_uri: pixlnd:item/name
+    alias: name
+    domain: item
+    range: string
+    required: false
+    readonly: 'true'
+    description: Derived item-name generator projection; canonical gen-name item forms, not a naming algorithm, stored save field or writable input.
+    see_also:
+    - ../domain/3_Classes.md#item
+    - ../domain/6_Generators.md
+  recipe-required-power:
+    slot_uri: pixlnd:recipe/required-power
+    alias: required-power
+    domain: recipe
+    range: integer
+    required: true
+    minimum_value: 1
+    maximum_value: 100
+    description: Required item-power points +1..+100, not character level. Known recipes can remain power-locked; no default, generated value or equality with formula power is asserted.
+    see_also:
+    - ../domain/3_Classes.md#item
+    - ../domain/3_Classes.md#power-gate-a
+  formula-recipe:
+    slot_uri: pixlnd:formula/recipe
+    alias: recipe
+    domain: formula
+    range: recipe
+    required: true
+    description: Single Recipe taught by this scroll; acquisition feeds the character's shared knows-recipe relation, not a second learned collection. Scroll +N remains Item power independently of recipe required-power.
+    see_also:
+    - ../domain/3_Classes.md#formula
+    - ../domain/3_Classes.md#recipe
+  book-recipes:
+    slot_uri: pixlnd:book-of-crafting/recipes
+    alias: recipes
+    domain: book-of-crafting
+    range: recipe
+    required: true
+    multivalued: true
+    minimum_cardinality: 1
+    description: Recipe content taught into shared knows-recipe, not player knowledge itself. Historical S has 3–4 recipes per book and four books per land; neither count nor land scope is a hybrid cardinality or default. Only unknown recipes are taught, without rerolls or compensation.
+    see_also:
+    - ../domain/3_Classes.md#book-of-crafting
+    - ../domain/3_Classes.md#recipe
+  artifact-name:
+    slot_uri: pixlnd:artifact/name
+    alias: name
+    domain: artifact
+    range: string
+    required: false
+    readonly: 'true'
+    description: 'Derived relic name, source forms "<Ring|Stone|Gem…> of <Name>" and "<Name> Stone" (e.g. Ring of Momuna, Sirazyna Stone). No naming algorithm or stored-name requirement is selected.'
+    see_also:
+    - ../domain/3_Classes.md#artifact
+    - ../instances/key-items.json
+  artifact-origin-realm:
+    slot_uri: pixlnd:artifact/origin-realm
+    alias: origin-realm
+    domain: artifact
+    range: realm
+    required: true
+    description: Source-S realm association (e.g. Ring of Momuna, Realm of Vakaa); origin/lore does not gate the permanent hybrid bonus, which works everywhere. Found at dungeon ends, vaults, sewers, sky islands and some mission chests; not Item power or upgrade payload.
+    see_also:
+    - ../domain/3_Classes.md#artifact
+    - ../instances/key-items.json

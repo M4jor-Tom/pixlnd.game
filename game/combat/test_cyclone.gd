@@ -2,7 +2,7 @@
 ## Manual runner time isolates scheduling; physics frames register real moving bodies, not fake strikes.
 extends SceneTree
 
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const PLAYER := preload("res://game/entities/player.tscn")
 const Spawner := preload("res://game/world/spawner.gd")
 const InputMapBuilder := preload("res://game/meta/input_map.gd")
@@ -520,8 +520,8 @@ func _configure() -> bool:
 	):
 		quit(2)
 		return false
-	o = Model.Ontology.load_dir("res://ontology/instances")
-	if not require(o.validate(), "canonical ontology valid: " + str(o.errors)):
+	o = Domain.Ontology.load_dir()
+	if not require(o.errors.is_empty(), "canonical ontology valid: " + str(o.errors)):
 		quit(2)
 		return false
 	design = o.configs.generators.design

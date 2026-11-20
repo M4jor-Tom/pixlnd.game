@@ -1,0 +1,7 @@
+ classDiagram
+    class `Recipe-consumption`
+    click `Recipe-consumption` href "../Recipe-consumption"
+      `Recipe-consumption` : recipe_consumption_count
+      `Recipe-consumption` : recipe_consumption_input
+        `Recipe-consumption` --> "1" `Ingredient-or-material` : recipe_consumption_input
+        click `Ingredient-or-material` href "../Ingredient-or-material"

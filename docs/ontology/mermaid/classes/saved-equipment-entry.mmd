@@ -1,0 +1,9 @@
+ classDiagram
+    class `Saved-equipment-entry`
+    click `Saved-equipment-entry` href "../Saved-equipment-entry"
+      `Saved-equipment-entry` : saved_equipment_entry_item
+        `Saved-equipment-entry` --> "1" `Saved-item` : saved_equipment_entry_item
+        click `Saved-item` href "../Saved-item"
+      `Saved-equipment-entry` : saved_equipment_entry_slot
+        `Saved-equipment-entry` --> "1" `Equipment-slot` : saved_equipment_entry_slot
+        click `Equipment-slot` href "../Equipment-slot"

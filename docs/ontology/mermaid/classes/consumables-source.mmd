@@ -1,0 +1,11 @@
+ classDiagram
+    class `Consumables-source`
+    click `Consumables-source` href "../Consumables-source"
+      `Consumables-source` : documentation
+      `Consumables-source` : entries
+        `Consumables-source` --> "1..*" `Consumable-source-entry` : entries
+        click `Consumable-source-entry` href "../Consumable-source-entry"
+      `Consumables-source` : rules
+        `Consumables-source` --> "1" `Consumable-rules-map` : rules
+        click `Consumable-rules-map` href "../Consumable-rules-map"
+      `Consumables-source` : schema_tag

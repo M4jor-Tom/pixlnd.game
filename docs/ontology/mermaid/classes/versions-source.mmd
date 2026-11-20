@@ -1,0 +1,13 @@
+ classDiagram
+    class `Versions-source`
+    click `Versions-source` href "../Versions-source"
+      `Versions-source` : alpha_to_steam_delta
+        `Versions-source` --> "1" `Version-delta` : alpha_to_steam_delta
+        click `Version-delta` href "../Version-delta"
+      `Versions-source` : reception
+        `Versions-source` --> "1..*" `Version-reception-entry` : reception
+        click `Version-reception-entry` href "../Version-reception-entry"
+      `Versions-source` : schema_tag
+      `Versions-source` : timeline
+        `Versions-source` --> "1..*" `Version-timeline-entry` : timeline
+        click `Version-timeline-entry` href "../Version-timeline-entry"

@@ -1,0 +1,23 @@
+ classDiagram
+    class `Character-world-state`
+    click `Character-world-state` href "../Character-world-state"
+      `Character-world-state` : character_world_state_character
+        `Character-world-state` --> "1" `Player-character` : character_world_state_character
+        click `Player-character` href "../Player-character"
+      `Character-world-state` : character_world_state_discovered_flight_points
+        `Character-world-state` --> "*" `Poi` : character_world_state_discovered_flight_points
+        click `Poi` href "../Poi"
+      `Character-world-state` : character_world_state_discovered_lands
+        `Character-world-state` --> "*" `Land` : character_world_state_discovered_lands
+        click `Land` href "../Land"
+      `Character-world-state` : character_world_state_discovered_portals
+        `Character-world-state` --> "*" `Poi` : character_world_state_discovered_portals
+        click `Poi` href "../Poi"
+      `Character-world-state` : character_world_state_discovered_shrines
+        `Character-world-state` --> "*" `Poi` : character_world_state_discovered_shrines
+        click `Poi` href "../Poi"
+      `Character-world-state` : character_world_state_world
+        `Character-world-state` --> "1" `World` : character_world_state_world
+        click `World` href "../World"
+      `Character-world-state` : position
+      `Character-world-state` : respawn

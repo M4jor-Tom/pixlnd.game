@@ -1,0 +1,7 @@
+ classDiagram
+    class `Settlement-style-source-row-entry`
+    click `Settlement-style-source-row-entry` href "../Settlement-style-source-row-entry"
+      `Settlement-style-source-row-entry` : source_entry_key
+      `Settlement-style-source-row-entry` : value
+        `Settlement-style-source-row-entry` --> "1" `Settlement-style-source-row` : value
+        click `Settlement-style-source-row` href "../Settlement-style-source-row"

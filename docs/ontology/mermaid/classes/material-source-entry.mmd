@@ -1,0 +1,7 @@
+ classDiagram
+    class `Material-source-entry`
+    click `Material-source-entry` href "../Material-source-entry"
+      `Material-source-entry` : recipe_map_key
+      `Material-source-entry` : value
+        `Material-source-entry` --> "1" `Material-source-row` : value
+        click `Material-source-row` href "../Material-source-row"

@@ -1,0 +1,10 @@
+ classDiagram
+    class `Npc-roles-source`
+    click `Npc-roles-source` href "../Npc-roles-source"
+      `Npc-roles-source` : dialogue_corpus
+        `Npc-roles-source` --> "1" `Npc-dialogue-corpus-source` : dialogue_corpus
+        click `Npc-dialogue-corpus-source` href "../Npc-dialogue-corpus-source"
+      `Npc-roles-source` : entries
+        `Npc-roles-source` --> "1..*" `Npc-role-source-entry` : entries
+        click `Npc-role-source-entry` href "../Npc-role-source-entry"
+      `Npc-roles-source` : schema_tag

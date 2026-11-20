@@ -1,0 +1,7 @@
+ classDiagram
+    class `Skill-investment`
+    click `Skill-investment` href "../Skill-investment"
+      `Skill-investment` : skill_investment_ability
+        `Skill-investment` --> "1" `Ability` : skill_investment_ability
+        click `Ability` href "../Ability"
+      `Skill-investment` : skill_investment_points

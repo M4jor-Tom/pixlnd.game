@@ -6,7 +6,7 @@ signal changed
 
 const Items := preload("res://game/items/items.gd")
 const Item := preload("res://game/items/item.gd")
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 
 var entries: Array = []  # Item; count lives on the item
 var equipment: Dictionary = {}  # slot id → Item
@@ -109,14 +109,14 @@ func _equip_slot(it: Item) -> StringName:
 func _hand_slot(it: Item, slot: StringName) -> StringName:
 	if slot != &"main-hand" or it.type != &"weapon" or not _o.weapon_types.has(it.subtype):
 		return slot
-	var wt: Model.WeaponType = _o.weapon_types[it.subtype]
+	var wt: Object = _o.weapon_types[it.subtype]
 	var current: Item = equipment.get(&"main-hand")
 	return _available_hand(wt, current)
 
 
-func _available_hand(wt: Model.WeaponType, current: Item) -> StringName:
+func _available_hand(wt: Object, current: Item) -> StringName:
 	if (
-		wt.hands == Model.Hands.ONE_HANDED
+		Domain.hands(wt) == Domain.Hands.ONE_HANDED
 		and current != null
 		and _o.weapon_types.has(current.subtype)
 	):
@@ -125,8 +125,8 @@ func _available_hand(wt: Model.WeaponType, current: Item) -> StringName:
 
 
 func _second_hand_slot(current: Item) -> StringName:
-	var current_hands: Model.Hands = (_o.weapon_types[current.subtype] as Model.WeaponType).hands
-	if current_hands == Model.Hands.ONE_HANDED and not equipment.has(&"off-hand"):
+	var current_hands: Domain.Hands = Domain.hands(_o.weapon_types[current.subtype])
+	if current_hands == Domain.Hands.ONE_HANDED and not equipment.has(&"off-hand"):
 		return &"off-hand"
 	return &"main-hand"
 
@@ -136,7 +136,7 @@ func _item_allowed(it: Item, slot: StringName) -> bool:
 		slot != &""
 		and it.type != &"pet-food"
 		and class_allowed(it)
-		and it.level <= Model.power_for_level(int(_level_provider.call()))
+		and it.level <= Domain.power_for_level(int(_level_provider.call()))
 	)
 
 
@@ -154,7 +154,7 @@ func class_allowed(it: Item) -> bool:
 func _weapon_class_allowed(it: Item) -> bool:
 	if not _o.weapon_types.has(it.subtype):
 		return false
-	var wt: Model.WeaponType = _o.weapon_types[it.subtype]
+	var wt: Object = _o.weapon_types[it.subtype]
 	if not _weapon_owner_allowed(wt):
 		return false
 	return _weapon_membership_allowed(it)
@@ -162,30 +162,29 @@ func _weapon_class_allowed(it: Item) -> bool:
 
 func _weapon_membership_allowed(it: Item) -> bool:
 	return not (
-		not (_o.classes[class_id] as Model.CharacterClass).weapon_types.has(it.subtype)
+		not _o.classes[class_id].slot_weapon_types.has(it.subtype)
 		or not Items.weapon_material_allowed(it, _o)
 	)
 
 
-func _weapon_owner_allowed(wt: Model.WeaponType) -> bool:
+func _weapon_owner_allowed(wt: Object) -> bool:
 	return not (
 		not _o.classes.has(class_id)
-		or not wt.raw.get("class") is String
-		or wt.raw.get("class") != str(class_id)
+		or not wt.slot_class is String
+		or wt.slot_class != str(class_id)
 	)
 
 
 func _armor_class_allowed(it: Item) -> bool:
 	return not (
-		not _o.classes.has(class_id)
-		or it.material != (_o.classes[class_id] as Model.CharacterClass).armor_material
+		not _o.classes.has(class_id) or it.material != _o.classes[class_id].slot_armor_material
 	)
 
 
 func _has_loadout(fragment: String) -> bool:
 	if not _o.classes.has(class_id):
 		return false
-	for loadout in (_o.classes[class_id] as Model.CharacterClass).raw.get("weapon-loadouts", []):
+	for loadout in _o.classes[class_id].slot_weapon_loadouts:
 		if fragment in str(loadout):
 			return true
 	return false
@@ -208,10 +207,10 @@ func _hand_pair_valid(main: Item, off: Item) -> bool:
 func _off_hand_valid(off: Item) -> bool:
 	if off == null:
 		return true
-	var off_hands: Model.Hands = (_o.weapon_types[off.subtype] as Model.WeaponType).hands
-	if off_hands == Model.Hands.OFFHAND:
+	var off_hands: Domain.Hands = Domain.hands(_o.weapon_types[off.subtype])
+	if off_hands == Domain.Hands.OFFHAND:
 		return _has_loadout("1h + shield")
-	return off_hands == Model.Hands.ONE_HANDED and _has_loadout("dual")
+	return off_hands == Domain.Hands.ONE_HANDED and _has_loadout("dual")
 
 
 func unequip(slot: StringName) -> void:
@@ -229,9 +228,9 @@ func first_consumable() -> Item:
 
 
 func _main_hand_valid(main: Item, off: Item) -> bool:
-	var hands: Model.Hands = (_o.weapon_types[main.subtype] as Model.WeaponType).hands
-	if hands not in [Model.Hands.ONE_HANDED, Model.Hands.TWO_HANDED]:
+	var hands: Domain.Hands = Domain.hands(_o.weapon_types[main.subtype])
+	if hands not in [Domain.Hands.ONE_HANDED, Domain.Hands.TWO_HANDED]:
 		return false
-	if off != null and hands == Model.Hands.TWO_HANDED:
+	if off != null and hands == Domain.Hands.TWO_HANDED:
 		return false
 	return true

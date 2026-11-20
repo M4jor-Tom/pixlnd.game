@@ -1,0 +1,10 @@
+ classDiagram
+    class `Mission-types-source`
+    click `Mission-types-source` href "../Mission-types-source"
+      `Mission-types-source` : alpha
+        `Mission-types-source` --> "1" `Mission-alpha-source` : alpha
+        click `Mission-alpha-source` href "../Mission-alpha-source"
+      `Mission-types-source` : schema_tag
+      `Mission-types-source` : steam
+        `Mission-types-source` --> "1" `Mission-steam-source` : steam
+        click `Mission-steam-source` href "../Mission-steam-source"

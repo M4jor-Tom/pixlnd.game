@@ -1,0 +1,32 @@
+ classDiagram
+    class `Initial-ruins-assembly`
+    click `Initial-ruins-assembly` href "../Initial-ruins-assembly"
+      `Dungeon` <|-- `Initial-ruins-assembly`
+        click `Dungeon` href "../Dungeon"
+      `Initial-ruins-assembly` <|-- `Initial-populated-ruins-assembly`
+        click `Initial-populated-ruins-assembly` href "../Initial-populated-ruins-assembly"
+      `Initial-ruins-assembly` : clear_ceiling_height_blocks
+      `Initial-ruins-assembly` : corridor_trap_free_lane_width_blocks
+      `Initial-ruins-assembly` : corridors
+        `Initial-ruins-assembly` --> "1..*" `Ruins-corridor-volume` : corridors
+        click `Ruins-corridor-volume` href "../Ruins-corridor-volume"
+      `Initial-ruins-assembly` : door_height_blocks
+      `Initial-ruins-assembly` : door_width_blocks
+      `Initial-ruins-assembly` : entrance_court
+        `Initial-ruins-assembly` --> "1" `Ruins-court-volume` : entrance_court
+        click `Ruins-court-volume` href "../Ruins-court-volume"
+      `Initial-ruins-assembly` : entrance_passage
+        `Initial-ruins-assembly` --> "1" `Ruins-passage-volume` : entrance_passage
+        click `Ruins-passage-volume` href "../Ruins-passage-volume"
+      `Initial-ruins-assembly` : horizontal_bounds_depth_blocks
+      `Initial-ruins-assembly` : horizontal_bounds_width_blocks
+      `Initial-ruins-assembly` : id
+      `Initial-ruins-assembly` : located_in
+        `Initial-ruins-assembly` --> "1" `Land` : located_in
+        click `Land` href "../Land"
+      `Initial-ruins-assembly` : reward_alcove
+        `Initial-ruins-assembly` --> "1" `Ruins-alcove-volume` : reward_alcove
+        click `Ruins-alcove-volume` href "../Ruins-alcove-volume"
+      `Initial-ruins-assembly` : rooms
+        `Initial-ruins-assembly` --> "1..*" `Ruins-room-volume` : rooms
+        click `Ruins-room-volume` href "../Ruins-room-volume"

@@ -1,0 +1,18 @@
+ classDiagram
+    class `Stats-source`
+    click `Stats-source` href "../Stats-source"
+      `Stats-source` : alpha_character_formulas
+        `Stats-source` --> "1" `Source-character-formulas` : alpha_character_formulas
+        click `Source-character-formulas` href "../Source-character-formulas"
+      `Stats-source` : alpha_item_stat_formulas
+        `Stats-source` --> "1" `Source-item-formulas` : alpha_item_stat_formulas
+        click `Source-item-formulas` href "../Source-item-formulas"
+      `Stats-source` : gaps
+      `Stats-source` : gaps_decided
+      `Stats-source` : resources
+        `Stats-source` --> "1..*" `Resource-source-entry` : resources
+        click `Resource-source-entry` href "../Resource-source-entry"
+      `Stats-source` : schema_tag
+      `Stats-source` : stats
+        `Stats-source` --> "1..*" `Stat-source-entry` : stats
+        click `Stat-source-entry` href "../Stat-source-entry"

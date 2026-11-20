@@ -1,0 +1,7 @@
+ classDiagram
+    class `Family-source-row`
+    click `Family-source-row` href "../Family-source-row"
+      `Family-source-row` : creature_family_members
+        `Family-source-row` --> "1..*" `Creature` : creature_family_members
+        click `Creature` href "../Creature"
+      `Family-source-row` : traits

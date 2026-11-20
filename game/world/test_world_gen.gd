@@ -1,7 +1,7 @@
 ## Headless check of the §6 gen-world invariants: `godot --headless -s game/world/test_world_gen.gd`.
 extends SceneTree
 
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const WorldGen := preload("res://game/world/world_gen.gd")
 const ZoneMesh := preload("res://game/world/zone_mesh.gd")
 
@@ -15,8 +15,8 @@ func check(ok: bool, what: String) -> void:
 
 
 func _init() -> void:
-	var o := Model.Ontology.load_dir("res://ontology/instances")
-	check(o.validate(), "ontology valid")
+	var o := Domain.Ontology.load_dir()
+	check(o.errors.is_empty(), "ontology valid")
 	var design: Dictionary = o.configs["generators"]["design"]
 	var a := WorldGen.new(26879, design, o.landscapes)
 	var b := WorldGen.new(26879, design, o.landscapes)
@@ -89,7 +89,7 @@ func _land(a, b, o, lx: int, ly: int, seen: Dictionary, name_re: RegEx) -> void:
 	check(l == a.land_at(Vector2i(lx, ly)), "land cached")
 	check(l.name == b.land_at(Vector2i(lx, ly)).name, "same seed → same land name")
 	check(
-		o.landscapes.has(l.landscape) and not Model.Version.X in o.landscapes[l.landscape].versions,
+		o.landscapes.has(l.landscape) and not "X" in o.landscapes[l.landscape].slot_versions,
 		"landscape %s is shipped content" % l.landscape
 	)
 	check(name_re.search(l.name) != null, "land name shape: '%s'" % l.name)

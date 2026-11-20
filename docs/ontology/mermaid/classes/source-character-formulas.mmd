@@ -1,0 +1,13 @@
+ classDiagram
+    class `Source-character-formulas`
+    click `Source-character-formulas` href "../Source-character-formulas"
+      `Source-character-formulas` : base_hp
+      `Source-character-formulas` : npc_hp
+      `Source-character-formulas` : player_hp
+      `Source-character-formulas` : power
+      `Source-character-formulas` : power_table
+        `Source-character-formulas` --> "1..*" `Source-power-entry` : power_table
+        click `Source-power-entry` href "../Source-power-entry"
+      `Source-character-formulas` : skill_points_per_level
+      `Source-character-formulas` : source
+      `Source-character-formulas` : xp_to_next

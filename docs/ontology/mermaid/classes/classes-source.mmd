@@ -1,0 +1,13 @@
+ classDiagram
+    class `Classes-source`
+    click `Classes-source` href "../Classes-source"
+      `Classes-source` : entries
+        `Classes-source` --> "1..*" `Class-source-entry` : entries
+        click `Class-source-entry` href "../Class-source-entry"
+      `Classes-source` : paladin
+        `Classes-source` --> "1" `Class-reference` : paladin
+        click `Class-reference` href "../Class-reference"
+      `Classes-source` : schema_tag
+      `Classes-source` : shared
+        `Classes-source` --> "1" `Class-shared` : shared
+        click `Class-shared` href "../Class-shared"

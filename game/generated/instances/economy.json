@@ -1,0 +1,226 @@
+{
+ "$schema": "economy",
+ "currency": {
+  "A": {
+   "coins": {
+    "copper": 1,
+    "gold": 10000,
+    "silver": 100
+   },
+   "display": "inventory",
+   "pickup": "R",
+   "platinum": "adaptation only; from bosses/missions"
+  },
+  "S": {
+   "coins": {
+    "coin": 1
+   },
+   "display": "top-left counter",
+   "pickup": "auto by walking over (items still need E)"
+  }
+ },
+ "gaps": [],
+ "gaps-decided": "2026-09-07 D6 → generators.json#design (prices, stack-cap null)",
+ "incomes": {
+  "A": {
+   "equipment-sell-+1..+100": "20 copper - 1 silver 50",
+   "heartflower-sell": 1,
+   "iceflower-sell": "69 (?)",
+   "monster-lvl1-30": "10 copper - 1 silver"
+  },
+  "S": {
+   "arena": [
+    18,
+    50
+   ],
+   "bag-of-gold": [
+    25,
+    59
+   ],
+   "boss": 20,
+   "gem-sell": {
+    "diamond": 14,
+    "emerald": 5,
+    "ruby": 10,
+    "sapphire": 7
+   },
+   "legendary-plus-sell": 20,
+   "legendary-sell": [
+    8,
+    14
+   ],
+   "mana-generator": [
+    1,
+    3
+   ],
+   "monster": [
+    1,
+    3
+   ]
+  }
+ },
+ "loot": {
+  "A-boss": "eligible non-mission boss: one spirit cube (fixed type+level per boss) + gear of same +N; mission bosses (including Saurians): no spirit cube, normal mission rewards unchanged; hybrid preserves this exception",
+  "A-dungeon": "vases, small chests, table items; +4 chest → mythical",
+  "S-dungeon": "one-time chests, artifact at end",
+  "S-mission": "≥1 class-fitting piece one rarity above quest colour + coins + 1 potion + gems by colour",
+  "ground-items": "vanish after ~1 game week; player item-drop/trading activation unselected (../domain/controls.md#unselected-boundaries)",
+  "leftovers": "same-colour enemies drop leftovers of player tier",
+  "npc-rewards": "once (0.9.1-4)",
+  "npc-weapons": "sometimes drop what they wield",
+  "species-drops": [
+   "parrot-feather",
+   "onion-slice",
+   "radish-slice",
+   "popcorn",
+   "jellies (bats)"
+  ],
+  "tier": "enemy tier ±1; bosses +1 (S)"
+ },
+ "prices": {
+  "A": {
+   "adaptation": "platinum coins (community: 'insane')",
+   "inn": 0,
+   "spec-swap": "small fee",
+   "vendors": "+1..+100 stock"
+  },
+  "S": {
+   "flight-min": 100,
+   "flight-scaling": "with distance (Wollay's House ≈1.1M)",
+   "flight-to-friend": 0,
+   "gems": {
+    "diamond": 800,
+    "emerald": 100,
+    "ruby": 400,
+    "sapphire": 200
+   },
+   "glass-flask": 1,
+   "identify": "scales with level & quality",
+   "inn": 10,
+   "legendary-plus-weapon": "~1800",
+   "plus-items": "≈2x",
+   "spec-swap": 0
+  },
+  "formula": "generators.json#design.prices (D6)"
+ },
+ "rules": {
+  "buy-back": {
+   "A": false,
+   "S": true
+  },
+  "gnome-unlock": {
+   "blue": "epic",
+   "green": "rare",
+   "purple": "legendary",
+   "white": "uncommon"
+  },
+  "money-abundance-s": "abundant (community)",
+  "off-class-drops": "near-worthless to sell",
+  "restock": "daily (S also on inn sleep)",
+  "sell-price-tooltip": "removed 0.9.1-4"
+ },
+ "shops": {
+  "entries": [
+   {
+    "key": "weapon-shop",
+    "value": {
+     "buys": "anything",
+     "sells": [
+      "weapons"
+     ],
+     "stock": {
+      "A": "+1..+100 any class, identical stock",
+      "S": "worn until gnomes rescued; restock daily"
+     }
+    }
+   },
+   {
+    "key": "armor-shop",
+    "value": {
+     "buys": "anything",
+     "sells": [
+      "armor"
+     ]
+    }
+   },
+   {
+    "key": "item-shop",
+    "value": {
+     "sells": {
+      "A": [
+       "materials",
+       "pet food",
+       "formulas",
+       "iron lamps",
+       "hang gliders",
+       "boats",
+       "sugar cubes",
+       "glass flasks"
+      ],
+      "S": [
+       "glass flasks",
+       "bombs",
+       "sugar cubes",
+       "1 pet food/day",
+       "legendary rings/amulets after 4 gnomes"
+      ]
+     }
+    }
+   },
+   {
+    "key": "identifier",
+    "value": {
+     "buys": false,
+     "service": "identify leftovers"
+    }
+   },
+   {
+    "key": "gem-trader",
+    "value": {
+     "buys": "anything",
+     "roaming": true,
+     "sells": [
+      "gems"
+     ],
+     "versions": [
+      "S"
+     ]
+    }
+   },
+   {
+    "key": "inn",
+    "value": {
+     "hours": "18:00-06:00",
+     "service": "sleep → 07:00"
+    }
+   },
+   {
+    "key": "guild",
+    "value": {
+     "service": "spec swap",
+     "versions": [
+      "S"
+     ]
+    }
+   },
+   {
+    "key": "flight-master",
+    "value": {
+     "service": "fast travel",
+     "versions": [
+      "S"
+     ]
+    }
+   },
+   {
+    "key": "adapter",
+    "value": {
+     "service": "adaptation",
+     "versions": [
+      "A"
+     ]
+    }
+   }
+  ]
+ }
+}

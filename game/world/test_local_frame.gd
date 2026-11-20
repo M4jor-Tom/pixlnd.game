@@ -1,5 +1,5 @@
 extends SceneTree
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const PLAYER := preload("res://game/entities/player.tscn")
 var failed := 0
 
@@ -108,9 +108,7 @@ func _finish() -> void:
 
 
 func _frame_cases(p) -> bool:
-	var d: Dictionary = (
-		Model.Ontology.load_dir("res://ontology/instances").configs.generators.design
-	)
+	var d: Dictionary = Domain.Ontology.load_dir().configs.generators.design
 	p.setup(d.movement, d.camera, &"normal")
 	var frame = load("res://game/world/local_frame.gd").new(int(d.terrain["zone-blocks"]))
 	var rid = _scalar_anchor(p, frame)

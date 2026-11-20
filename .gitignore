@@ -6,3 +6,7 @@
 build/
 .superpowers/
 docs/superpowers/
+__pycache__/
+
+# Godot sidecars of generator output (game/generated/): regenerated on import, never referenced by uid.
+game/generated/**/*.uid

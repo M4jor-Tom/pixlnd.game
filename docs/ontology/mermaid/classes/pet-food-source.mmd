@@ -1,0 +1,13 @@
+ classDiagram
+    class `Pet-food-source`
+    click `Pet-food-source` href "../Pet-food-source"
+      `Pet-food-source` : cut
+        `Pet-food-source` --> "1" `Pet-food-source-map` : cut
+        click `Pet-food-source-map` href "../Pet-food-source-map"
+      `Pet-food-source` : documentation
+      `Pet-food-source` : foods
+        `Pet-food-source` --> "1" `Pet-food-source-map` : foods
+        click `Pet-food-source-map` href "../Pet-food-source-map"
+      `Pet-food-source` : rules
+      `Pet-food-source` : schema_tag
+      `Pet-food-source` : shop_set

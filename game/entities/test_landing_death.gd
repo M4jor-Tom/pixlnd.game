@@ -2,7 +2,7 @@
 ## Run: godot --headless -s game/entities/test_landing_death.gd
 extends SceneTree
 
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const InputMapBuilder := preload("res://game/meta/input_map.gd")
 const PLAYER := preload("res://game/entities/player.tscn")
 
@@ -22,8 +22,8 @@ func _init() -> void:
 
 
 func _run() -> void:
-	o = Model.Ontology.load_dir("res://ontology/instances")
-	check(o.validate(), "ontology valid")
+	o = Domain.Ontology.load_dir()
+	check(o.errors.is_empty(), "ontology valid")
 	design = o.configs["generators"]["design"]
 	InputMapBuilder.build(o.configs["keybinds"]["hybrid"])
 	var floor := StaticBody3D.new()

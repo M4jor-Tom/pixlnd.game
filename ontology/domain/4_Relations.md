@@ -15,49 +15,49 @@ One row per fact type. Cardinality as `domain → range`.
 | costs | ability | resource | 1→0..n | amount per resource, scoped by ruleset |
 | applies | ability ∪ weapon-type ∪ hazard | status-effect | n→n | |
 | has-moveset | weapon-type | ability (basic, special) | 1→2 | |
-| knows-recipe | player-character | recipe | n→n | one known fact per character/recipe, shared by books and formulas (`known-recipes`), even while power-locked; knowledge alone does not grant crafting usability; recipes persist across lands/sessions/worlds (§3.7 save-data), not shared-account knowledge |
-| crafted-at | recipe | crafting-station | 1→1 | |
-| consumes | recipe | ingredient ∪ material | 1→n | with counts |
-| produces | recipe | item-type ∪ consumable | 1→1 | |
-| refines-to | ingredient | ingredient | 1→1 | nugget→cube, fiber→yarn, log→wood cube |
-| yields | flora ∪ deposit ∪ creature | ingredient | 1→n | count range |
-| spawns-in | creature ∪ flora ∪ deposit | landscape ∪ terrain-feature ∪ dungeon-type ∪ poi-type | n→n | |
-| placed-in | dungeon-type ∪ poi-type ∪ settlement | landscape | n→n | |
+| [knows-recipe](../schema/entities.yaml) | | | | One known fact per character/recipe, shared by books and formulas (`known-recipes`), even while power-locked; knowledge alone does not grant crafting usability. Recipes persist across lands/sessions/worlds (§3.7), not shared-account knowledge. |
+| [crafted-at](../schema/relations.yaml) | | | | Recipes use one crafting station; station availability and usability remain source-qualified. |
+| [consumes](../schema/relations.yaml) | | | | `recipe-consumption` associates each ingredient/material input with its count; raw symbolic recipe configuration remains distinct. |
+| [produces](../schema/relations.yaml) | | | | One output item-type or consumable per recipe; the raw symbolic configuration does not invent generated output defaults. |
+| [refines-to](../schema/relations.yaml) | | | | Nugget→cube, fiber→yarn, log→wood cube; compact source processes remain exact text, not parsed recipes. |
+| [yields](../schema/relations.yaml) | | | | `ingredient-yield` associates the logical ingredient and count range; source catalog values may remain qualified. |
+| [spawns-in](../schema/relations.yaml) | | | | Applicability and source roster qualification remain in the owning domain entries. |
+| [placed-in](../schema/relations.yaml) | | | | Placement meaning remains distinct from source descriptive text. |
 | tamed-by | creature | pet-food | 1→0..1 | stable ID pairing; one food may serve multiple explicitly approved species (Bubble Gum: Collie and Skeleton Dog); numeric identity follows c-food-id, not family inheritance |
 | member-of-family | creature | creature-family | 1→0..1 | optional primary balancing family (`creature.family`); sole source of family stat modifiers |
 | descriptive-member-of-family | creature | creature-family | 1→0..n | descriptive memberships only (`creature.descriptive-families`); never supply or stack stat modifiers |
 | belongs-to-faction | creature ∪ npc-role | faction | n→n | |
-| hosts | dungeon-type ∪ poi-type | mission-type | n→n | |
-| rewards | mission-type ∪ arena ∪ poi-type | item-type ∪ key-item ∪ artifact ∪ currency ∪ book-of-crafting | n→n | |
-| guards | creature (boss) | artifact ∪ key-item ∪ gnome-supplier ∪ magic-crystal | n→n | |
-| drops | creature | item ∪ spirit-cube ∪ leftovers ∪ currency | n→n | random by tier + species list; initial hybrid [boss guarantees](encounter-contracts.md#guaranteed-boss-gear-and-spirits) are additional shared drops, not personal copies |
-| holds | inventory | item | 1→n | count per entry; c-stack-rule |
-| equips | entity | item | 1→0..12 | at most one per usable equipment-slot; reserved index 0 and separate quick-consumable selection excluded; c-slot-accepts |
+| [hosts](../schema/relations.yaml) | | | | Mission hosting applicability remains source/ruleset-qualified. |
+| [rewards](../schema/relations.yaml) | | | | Hybrid shared packages and personal source claims retain their separate rules. |
+| [guards](../schema/relations.yaml) | | | | Source qualification is `creature (boss)`; the schema endpoint remains generic `creature`. Encounter-specific eligibility remains in the linked encounter contract. |
+| [drops](../schema/relations.yaml) | | | | Random by tier + species list; initial hybrid [boss guarantees](encounter-contracts.md#guaranteed-boss-gear-and-spirits) are additional shared drops, not personal copies. |
+| [holds](../schema/relations.yaml) | | | | `inventory-entry` associates item and count; c-stack-rule remains a behavioral eligibility condition. |
+| [equips](../schema/relations.yaml) | | | | At most one item per usable equipment-slot; reserved index 0 and separate quick-consumable selection excluded; c-slot-accepts remains applicable. |
 | threat | entity (mob) | entity (player-character) | n→n | hybrid mob/player combat state, retained across temporary absence and surviving-mob restart (§3.2); optional per ordered pair, with one numeric `aggro-points` amount; c-threat-pair |
 | current-target | entity (mob) | entity (player-character) | 1→0..1 | hybrid mob/player target selection, separate from threat amounts; multiple mobs may select the same player; c-current-target |
-| requires-key-item | poi-type ∪ dungeon-type ∪ ability | key-item | n→n | divine door→harp, crypt gate→bell, bird statue→whistle; hybrid riding→reins (acquired, c-riding), hang-gliding→hang-glider and sailing→boat (equipped, c-gliding/c-sailing); global scope |
-| located-in | settlement ∪ dungeon ∪ poi | land | n→1 | |
-| owned-by-realm | land | realm | n→1 | S |
-| reveals | realm (lore 100 %) | artifact | 1→n | S |
-| bound-to-land | item ∪ key-item ∪ leftovers | land | n→1 | S region lock |
-| works-in-adjacent | item(plus) | land | n→n | S |
-| raises-stock | gnome-supplier | shop | 1→n | hybrid [land-shared ceiling](encounter-contracts.md#shared-mission-packages-and-supplier-shops), applied at ordinary stock generation/restock, not a rescue-triggered reroll |
-| sells | shop | item-type ∪ pet-food ∪ formula ∪ key-item | n→n | versioned |
-| offers-service | building | npc-role | 1→n | |
-| contains-station | building | crafting-station | 1→n | |
-| in-district | building | district | n→1 | A |
-| styled-by | settlement | landscape | n→1 | architecture theme |
+| [requires-key-item](../schema/relations.yaml) | | | | Divine door→harp, crypt gate→bell, bird statue→whistle; hybrid riding→reins (acquired, c-riding), hang-gliding→hang-glider and sailing→boat (equipped, c-gliding/c-sailing); global scope. |
+| [located-in](../schema/relations.yaml) | | | | A typed logical location does not assert reference existence. |
+| [owned-by-realm](../schema/relations.yaml) | | | | S-qualified; applicability follows realm lore scope. |
+| [reveals](../schema/relations.yaml) | | | | S-qualified; lore thresholds remain a rule, not a native relation predicate. |
+| [bound-to-land](../schema/relations.yaml) | | | | S region lock; applicability remains source-qualified. |
+| [works-in-adjacent](../schema/relations.yaml) | | | | S-qualified plus-item adjacency. |
+| [raises-stock](../schema/relations.yaml) | | | | Hybrid [land-shared ceiling](encounter-contracts.md#shared-mission-packages-and-supplier-shops), applied at ordinary stock generation/restock, not a rescue-triggered reroll. |
+| [sells](../schema/relations.yaml) | | | | Versioned; source-specific stock remains qualified. |
+| [offers-service](../schema/relations.yaml) | | | | |
+| [contains-station](../schema/relations.yaml) | | | | |
+| [in-district](../schema/relations.yaml) | | | | A-qualified district membership. |
+| [styled-by](../schema/relations.yaml) | | | | Architecture theme; selected hybrid style configuration remains separate. |
 | equips-in | item-type | equipment-slot | n→n | permitted slots, not simultaneous copies of an item; rings and weapons have multiple eligible positions, subject to c-slot-accepts |
 | restricted-to-class | weapon-type ∪ material | character-class | n→0..1 | |
-| has-hazard | landscape ∪ terrain-feature | status-effect | n→n | cold-water, toxic, lava |
+| [has-hazard](../schema/relations.yaml) | | | | Cold-water, toxic and lava examples remain distinct from structural endpoint typing. |
 | countered-by | status-effect | consumable | n→n | hot chocolate, green smoothie, lemonade |
 | raises-stat | artifact ∪ ability ∪ spirit-cube ∪ elixir | stat | n→n | hybrid artifacts: exactly one traversal stat plus attack and max HP; per-stat counting and recalculation follow §3.4 artifact / c-artifact-stat |
 | mounts | player-character | pet | 1→0..1 | hybrid training + global Reins + rideable tamed pet: c-riding; A skill-only / S land Reins are reference |
 | owns | player-character | pet | 1→n | cages |
-| possesses | poi-type(demon-portal) | npc-role ∪ creature | 1→n | S |
-| petrifies | creature(witch boss) | settlement | 1→1 | S |
+| [possesses](../schema/relations.yaml) | | | | S-qualified. |
+| [petrifies](../schema/relations.yaml) | | | | S-qualified witch-boss relationship. |
 | scales-with | pet | stat(weapon-rating, armor-rating) | 1→2 | S |
-| adjacent-to | land | land | n→n | derived from grid |
+| [adjacent-to](../schema/relations.yaml) | | | | Derived from the land grid; no separately selected adjacency storage. |
 | enabled-by | ability ∪ item-type ∪ mechanic | ruleset | n→n | feature flags |
 
 ### Threat and current target (hybrid)

@@ -5,6 +5,8 @@ compound keys, or conditional gameplay rules. Real data below is projected to
 selected structural properties, never rewritten on disk.
 """
 
+from copy import deepcopy
+from functools import lru_cache
 import json
 from pathlib import Path
 import unittest
@@ -19,13 +21,163 @@ ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = ROOT / "ontology/schema/pixlnd.yaml"
 
 
+@lru_cache(maxsize=None)
 def generated(class_name):
     return json.loads(JsonSchemaGenerator(
         str(SCHEMA), top_class=class_name, preserve_names=True, not_closed=False
     ).serialize())
 
 
+def assert_ranges(test, slot, known):
+    # A native any_of may intentionally omit range: an explicit default string
+    # would incorrectly intersect numeric/object alternatives in the generator.
+    branches = slot.any_of + slot.exactly_one_of + slot.all_of + slot.none_of
+    test.assertTrue(slot.range or branches)
+    if slot.range:
+        test.assertIn(slot.range, known)
+    for expression in branches:
+        assert_ranges(test, expression, known)
+
+
 class OntologySchemaTests(unittest.TestCase):
+    def test_aggregate_default_aligns_imported_boolean_ranges(self):
+        view = SchemaView(str(SCHEMA))
+        district_buildings = view.induced_slot("buildings", "district-source-row")
+        self.assertEqual((view.schema.default_range, district_buildings.range), ("string", "string"))
+        structured_view = SchemaView(str(SCHEMA.parent / "structured-world.yaml"))
+        self.assertEqual(structured_view.schema.default_range, "string")
+
+    def verify_required(self, owner, required, slots, aliases, definition, full, view):
+        self.assertEqual(len(definition["required"]), len(set(definition["required"])))
+        self.assertTrue(required <= set(definition["required"]))
+        from ontology_source_contracts import assert_declared_root
+
+        induced_required = {slot.alias or slot.name for slot in slots
+                            if slot.required or slot.key or slot.identifier or str(slot.value_presence) == "PRESENT"}
+        assert_declared_root(owner, set(aliases), induced_required, schema=full, view=view)
+
+    def verify_refinements(self, owner, required, slots, by_alias, aliases, definition, full, view):
+        self.assertEqual(view.get_class(owner).is_a, "entity")
+        for alias in required:
+            self.assertTrue(by_alias[alias].required, alias)
+        self.assertEqual(by_alias["level"].range, "integer")
+        self.assertEqual(by_alias["xp"].range, "integer")
+        self.assertEqual(by_alias["appearance"].range, "appearance")
+        self.assertTrue(by_alias["appearance"].inlined)
+        self.assertEqual(by_alias["skills"].range, "uint32")
+        self.assertTrue(by_alias["skills"].multivalued)
+        self.assertEqual((by_alias["skills"].minimum_cardinality, by_alias["skills"].maximum_cardinality), (11, 11))
+        if owner == "player-character":
+            self.verify_player_character_refinements(slots, by_alias, aliases, definition, full, view)
+        else:
+            self.assertEqual(by_alias["species"].range, "creature")
+            self.assertEqual(by_alias["cage"].range, "item")
+
+    def verify_player_character_refinements(self, slots, by_alias, aliases, definition, full, view):
+        self.assertEqual(by_alias["name"].pattern, r"^[\x20-\x7e]{2,16}$")
+        self.assertEqual(by_alias["class"].range, "character-class")
+        for alias, inherited, detached, target in (
+            ("race", "entity-species", "player-character-race", "race"),
+            ("spec", "entity-specialization", "player-character-spec", "specialization"),
+        ):
+            self.assertEqual([slot.name for slot in slots if slot.name in (inherited, detached)], [inherited])
+            self.assertEqual((by_alias[alias].name, by_alias[alias].range), (inherited, target))
+            self.assertTrue(view.get_slot(detached).required)
+            self.assertEqual(view.get_slot(detached).range, target)
+            self.assertIn(alias, definition["properties"])
+        self.assertEqual(by_alias["inventory"].range, "inventory")
+        for redundant in ("species", "specialization"):
+            self.assertNotIn(redundant, aliases)
+            self.assertNotIn(redundant, definition["properties"])
+        self.assertIs(definition["additionalProperties"], False)
+        # Isolate closed-property rejection from the fixture's missing required fields.
+        native = jsonschema.Draft201909Validator(full)
+        for supplied, rejected in (({"race": "human", "spec": "guardian"}, False),
+                                   ({"species": "human"}, True),
+                                   ({"specialization": "guardian"}, True)):
+            with self.subTest(supplied=supplied):
+                self.assertEqual(any(error.validator == "additionalProperties"
+                                     for error in native.iter_errors(supplied)), rejected)
+
+    def test_inherited_entity_aliases_and_roots(self):
+        view = SchemaView(str(SCHEMA))
+        for owner, species_range in (("entity", "race-or-creature"), ("pet", "creature")):
+            species = view.induced_slot("entity-species", owner)
+            spec = view.induced_slot("entity-specialization", owner)
+            self.assertEqual((species.alias, species.range, species.required), ("species", species_range, True))
+            self.assertEqual((spec.alias, spec.range), ("specialization", "specialization"))
+            self.assertFalse(spec.required)
+        expected_required = {
+            "player-character": {"id", "appearance", "race", "gender", "class", "spec", "name", "level", "xp", "coins", "inventory", "skills", "artifacts"},
+            "pet": {"id", "species", "name", "cage", "level", "xp"},
+        }
+        for owner, required in expected_required.items():
+            slots = view.class_induced_slots(owner)
+            aliases = [slot.alias or slot.name for slot in slots]
+            with self.subTest(owner=owner, facet="induced aliases"):
+                self.assertEqual(len(aliases), len(set(aliases)))
+            full = generated(owner)
+            definition = full["$defs"][owner]
+            with self.subTest(owner=owner, facet="native schema"):
+                jsonschema.Draft201909Validator.check_schema(full)
+            with self.subTest(owner=owner, facet="required"):
+                self.verify_required(owner, required, slots, aliases, definition, full, view)
+            by_alias = {slot.alias or slot.name: slot for slot in slots}
+            with self.subTest(owner=owner, facet="refinements"):
+                self.verify_refinements(owner, required, slots, by_alias, aliases, definition, full, view)
+
+    def test_union_range_checker_rejects_untyped_and_unknown_branches(self):
+        view = SchemaView(str(SCHEMA))
+        known = view.all_classes() | view.all_types() | view.all_enums()
+        slot = view.get_slot("resource-cost-amount")
+        assert_ranges(self, slot, known)
+        for value in (None, "not-a-defined-range"):
+            bad = deepcopy(slot)
+            bad.any_of[0].range = value
+            with self.subTest(range=value), self.assertRaises(AssertionError):
+                assert_ranges(self, bad, known)
+
+    def test_boolean_branch_ranges_and_dynamic_values(self):
+        from linkml_runtime.linkml_model.meta import SlotDefinition
+
+        view = SchemaView(str(SCHEMA))
+        known = view.all_classes() | view.all_types() | view.all_enums()
+        for operator in ("any_of", "exactly_one_of", "all_of", "none_of"):
+            slot = SlotDefinition(name="probe", **{operator: [{"range": "integer"}]})
+            assert_ranges(self, slot, known)
+            for value in (None, "not-a-defined-range"):
+                bad = deepcopy(slot)
+                getattr(bad, operator)[0].range = value
+                with self.subTest(operator=operator, value=value), self.assertRaises(AssertionError):
+                    assert_ranges(self, bad, known)
+        for owner in view.all_classes().values():
+            if owner.extra_slots and owner.extra_slots.range_expression:
+                assert_ranges(self, owner.extra_slots.range_expression, known)
+
+    def test_actual_species_yaml_mutation_uses_same_oracle(self):
+        import shutil
+        import tempfile
+        from unittest.mock import patch
+
+        self.test_entity_species_reference()
+        with tempfile.TemporaryDirectory() as scratch:
+            target = Path(scratch) / "schema"
+            shutil.copytree(SCHEMA.parent, target)
+            path = target / "entities.yaml"
+            data = yaml.safe_load(path.read_text())
+            data["slots"]["entity-species"]["range"] = "string"
+            path.write_text(yaml.safe_dump(data, sort_keys=False))
+            mutated_view = SchemaView(str(target / "pixlnd.yaml"))
+            with patch("test_ontology_schema.SchemaView", return_value=mutated_view):
+                with self.assertRaises(AssertionError):
+                    self.test_entity_species_reference()
+            mutated = json.loads(JsonSchemaGenerator(
+                str(target / "pixlnd.yaml"), top_class="entity", preserve_names=True,
+                not_closed=False).serialize())
+            # FK target typing disappears while native scalar shape can remain unchanged.
+            jsonschema.validate("not-a-defined-species",
+                                mutated["$defs"]["entity"]["properties"]["species"])
+
     def test_entity_species_reference(self):
         view = SchemaView(str(SCHEMA))
         self.assertIn("entity-species", view.class_slots("entity"))
@@ -120,11 +272,11 @@ class OntologySchemaTests(unittest.TestCase):
         for name in classes:
             for slot in view.class_induced_slots(name):
                 with self.subTest(class_name=name, slot=slot.name):
-                    self.assertIn(slot.range, classes | types | enums)
+                    assert_ranges(self, slot, classes | types | enums)
                     self.assertTrue(slot.slot_uri)
                     self.assertTrue(slot.alias)
         for slot in slots.values():
-            self.assertIn(slot.range, classes | types | enums)
+            assert_ranges(self, slot, classes | types | enums)
             if slot.domain:
                 self.assertIn(slot.domain, classes)
         self.assertEqual(view.induced_slot("member-of-family", "creature").range,

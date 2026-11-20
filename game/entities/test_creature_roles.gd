@@ -7,7 +7,7 @@
 ## design.defence.enemy-hit.
 extends SceneTree
 
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Combat := preload("res://game/combat/combat.gd")
 const Feel := preload("res://game/combat/feel.gd")
 const WorldGen := preload("res://game/world/world_gen.gd")
@@ -128,12 +128,11 @@ func _two_player_contacts() -> void:
 
 
 func _init() -> void:
-	o = Model.Ontology.load_dir("res://ontology/instances")
-	check(o.validate(), "ontology valid")
+	o = Domain.Ontology.load_dir()
+	check(o.errors.is_empty(), "ontology valid")
 	design = o.configs["generators"]["design"]
 	var cr: Dictionary = design["creature-roles"]
 
-	_config(cr)
 	_role_parsing()
 	_plans()
 	# --- runtime: flat floor, the player and creatures at distinct positions
@@ -166,49 +165,25 @@ func _init() -> void:
 	quit(1 if _failed > 0 else 0)
 
 
-func _config(cr) -> void:
-	# --- c-creature-roles: every key the engine reads is guarded
-	cr["default"] = "archer"
-	check(not o.validate(), "c-creature-roles rejects a default that is not a role")
-	o.errors.clear()
-	cr["default"] = "melee"
-	cr["any-class"]["ranged"] = -1.0
-	check(not o.validate(), "c-creature-roles rejects a negative any-class weight")
-	o.errors.clear()
-	cr["any-class"]["ranged"] = 0.3
-	var speed = cr["ranged"]["shot"]["speed"]
-	cr["ranged"]["shot"]["speed"] = 0
-	check(not o.validate(), "c-creature-roles rejects a shot with speed 0")
-	o.errors.clear()
-	cr["ranged"]["shot"]["speed"] = speed
-	cr["mage"]["applies"] = ["nope"]
-	check(not o.validate(), "c-creature-roles rejects an applies id with no status-effect")
-	o.errors.clear()
-	cr["mage"]["applies"] = ["burning"]
-	cr["ranged"]["sfx"] = "nope"
-	check(not o.validate(), "c-creature-roles rejects an sfx that is not an alpha sound")
-	o.errors.clear()
-	cr["ranged"]["sfx"] = "swing"
-	cr["species"]["nope"] = {"damage-mult": 2.0}
-	check(not o.validate(), "c-creature-roles rejects a species override for an unknown creature")
-	o.errors.clear()
-	cr["species"].erase("nope")
-	check(o.validate(), "restored")
-
-
 func _role_parsing() -> void:
 	# --- role parsing: the first keyword in the creatures.json `role` text wins
-	check(o.creatures["djinn"].combat_role == &"mage", "'mage (bracelets)' → mage")
+	check(Domain.combat_role(o.creatures["djinn"]) == &"mage", "'mage (bracelets)' → mage")
 	check(
-		o.creatures["hell-demon"].combat_role == &"any-class",
+		Domain.combat_role(o.creatures["hell-demon"]) == &"any-class",
 		"'any-class melee+ranged' → any-class"
 	)
-	check(o.creatures["demon-marauder"].combat_role == &"melee", "'melee + fire magic' → melee")
-	check(o.creatures["seeker"].combat_role == &"mage", "'fire mage' → mage")
-	check(o.creatures["minotaur"].combat_role == &"melee", "'melee dual-wield' → melee")
-	check(o.creatures["spitter"].combat_role == &"ranged", "'ranged' → ranged")
-	check(o.creatures["old-man"].combat_role == &"", "'quest giver / vendor (concept)' → unset")
-	check(o.creatures["wolf"].combat_role == &"", "no role key → unset")
+	check(
+		Domain.combat_role(o.creatures["demon-marauder"]) == &"melee",
+		"'melee + fire magic' → melee"
+	)
+	check(Domain.combat_role(o.creatures["seeker"]) == &"mage", "'fire mage' → mage")
+	check(Domain.combat_role(o.creatures["minotaur"]) == &"melee", "'melee dual-wield' → melee")
+	check(Domain.combat_role(o.creatures["spitter"]) == &"ranged", "'ranged' → ranged")
+	check(
+		Domain.combat_role(o.creatures["old-man"]) == &"",
+		"'quest giver / vendor (concept)' → unset"
+	)
+	check(Domain.combat_role(o.creatures["wolf"]) == &"", "no role key → unset")
 
 
 func _plans() -> void:

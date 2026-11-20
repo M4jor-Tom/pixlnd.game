@@ -1,0 +1,9 @@
+ classDiagram
+    class `Ruins-passage-volume`
+    click `Ruins-passage-volume` href "../Ruins-passage-volume"
+      `Encounter-volume` <|-- `Ruins-passage-volume`
+        click `Encounter-volume` href "../Encounter-volume"
+      `Ruins-passage-volume` : above_floor
+      `Ruins-passage-volume` : below_floor
+      `Ruins-passage-volume` : depth
+      `Ruins-passage-volume` : width

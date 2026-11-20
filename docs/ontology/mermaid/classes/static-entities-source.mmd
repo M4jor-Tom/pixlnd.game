@@ -1,0 +1,15 @@
+ classDiagram
+    class `Static-entities-source`
+    click `Static-entities-source` href "../Static-entities-source"
+      `Static-entities-source` : behaviour
+        `Static-entities-source` --> "1" `Static-behaviour-source` : behaviour
+        click `Static-behaviour-source` href "../Static-behaviour-source"
+      `Static-entities-source` : by_id
+        `Static-entities-source` --> "1" `Static-names-source` : by_id
+        click `Static-names-source` href "../Static-names-source"
+      `Static-entities-source` : candles
+        `Static-entities-source` --> "1" `Static-candles-source` : candles
+        click `Static-candles-source` href "../Static-candles-source"
+      `Static-entities-source` : documentation
+      `Static-entities-source` : s_additions
+      `Static-entities-source` : schema_tag

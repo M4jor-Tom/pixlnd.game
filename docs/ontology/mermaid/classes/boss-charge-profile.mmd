@@ -1,0 +1,17 @@
+ classDiagram
+    class `Boss-charge-profile`
+    click `Boss-charge-profile` href "../Boss-charge-profile"
+      `Boss-special-profile` <|-- `Boss-charge-profile`
+        click `Boss-special-profile` href "../Boss-special-profile"
+      `Boss-charge-profile` : assignment_probability
+      `Boss-charge-profile` : cooldown_after_completion_or_cancellation_seconds
+      `Boss-charge-profile` : direct_damage_multiplier
+      `Boss-charge-profile` : first_ready_after_engagement_seconds
+      `Boss-charge-profile` : recovery_within_cooldown_seconds
+      `Boss-charge-profile` : speed_blocks_per_second
+      `Boss-charge-profile` : start_exclusive_min_horizontal_distance_blocks
+      `Boss-charge-profile` : start_max_feet_height_difference_blocks
+      `Boss-charge-profile` : start_max_horizontal_distance_blocks
+      `Boss-charge-profile` : swept_capsule_radius_blocks
+      `Boss-charge-profile` : warning_lane_width_blocks
+      `Boss-charge-profile` : warning_seconds

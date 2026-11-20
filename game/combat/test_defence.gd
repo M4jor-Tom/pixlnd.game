@@ -5,7 +5,7 @@
 ## their absence through a block.
 extends SceneTree
 
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Combat := preload("res://game/combat/combat.gd")
 const Items := preload("res://game/items/items.gd")
 const Spawner := preload("res://game/world/spawner.gd")
@@ -68,19 +68,10 @@ func _wolf(p: Node, at: Vector3) -> CharacterBody3D:
 
 
 func _init() -> void:
-	o = Model.Ontology.load_dir("res://ontology/instances")
-	check(o.validate(), "ontology valid")
+	o = Domain.Ontology.load_dir()
+	check(o.errors.is_empty(), "ontology valid")
 	design = o.configs["generators"]["design"]
 	var df: Dictionary = design["defence"]
-	df["block"]["damage-reduction"] = 2.0
-	check(not o.validate(), "c-defence-config rejects damage-reduction > 1")
-	o.errors.clear()
-	df["block"]["damage-reduction"] = 0.8
-	df["dodge"]["on-dodge"]["smash"] = {"mp": 1}
-	check(not o.validate(), "c-defence-config rejects a non-passive on-dodge key")
-	o.errors.clear()
-	df["dodge"]["on-dodge"].erase("smash")
-	check(o.validate(), "restored")
 	InputMapBuilder.build(o.configs["keybinds"]["hybrid"])
 	var floor := StaticBody3D.new()
 	var cs := CollisionShape3D.new()

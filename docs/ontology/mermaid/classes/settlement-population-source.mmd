@@ -1,0 +1,14 @@
+ classDiagram
+    class `Settlement-population-source`
+    click `Settlement-population-source` href "../Settlement-population-source"
+      `Settlement-population-source` : animals
+        `Settlement-population-source` --> "1..*" `Creature` : animals
+        click `Creature` href "../Creature"
+      `Settlement-population-source` : growth
+      `Settlement-population-source` : majority
+        `Settlement-population-source` --> "1" `Race` : majority
+        click `Race` href "../Race"
+      `Settlement-population-source` : schedule
+      `Settlement-population-source` : undead_villages
+        `Settlement-population-source` --> "1..*" `Landscape` : undead_villages
+        click `Landscape` href "../Landscape"

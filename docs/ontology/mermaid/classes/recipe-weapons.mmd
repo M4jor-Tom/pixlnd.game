@@ -1,0 +1,10 @@
+ classDiagram
+    class `Recipe-weapons`
+    click `Recipe-weapons` href "../Recipe-weapons"
+      `Recipe-weapons` : entries
+        `Recipe-weapons` --> "1..*" `Recipe-weapon-entry` : entries
+        click `Recipe-weapon-entry` href "../Recipe-weapon-entry"
+      `Recipe-weapons` : gem_per_rarity
+        `Recipe-weapons` --> "1" `Recipe-gems-by-rarity` : gem_per_rarity
+        click `Recipe-gems-by-rarity` href "../Recipe-gems-by-rarity"
+      `Recipe-weapons` : rule

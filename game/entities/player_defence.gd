@@ -1,19 +1,21 @@
 ## Defence updates; Player retains all stance, resource and timer state.
 extends RefCounted
 
+const Domain := preload("res://game/domain/domain.gd")
+
 
 static func passives(p) -> Array:
 	if p.o == null or p.spec == &"":
 		return []
 	var s = p.o.specs[p.spec]
-	return s.passives_a + s.passives_s
+	return s.slot_passives.slot_a + s.slot_passives.slot_s
 
 
 static func _cyclone(p) -> bool:
 	return (
 		p.abilities != null
 		and not p.abilities.channel.is_empty()
-		and p.abilities.channel["a"].id == &"cyclone"
+		and Domain.id_of(p.abilities.channel["a"]) == &"cyclone"
 	)
 
 

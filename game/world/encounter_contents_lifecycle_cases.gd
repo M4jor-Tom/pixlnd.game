@@ -154,7 +154,7 @@ static func _renew_rooms(t, w, p, id: String, contents, table_key: String) -> bo
 	var dead_id: String = w.state_data.sites[id].mobs.keys()[0]
 	w.targeting.live[dead_id].take_damage(1e9, p)
 	p.level = 20
-	p.skill_points = 19 * preload("res://ontology/model.gd").SKILL_POINTS_PER_LEVEL
+	p.skill_points = 19 * preload("res://game/domain/domain.gd").SKILL_POINTS_PER_LEVEL
 	w.state_data.sites[id].pending = true
 	w.state_data.advance(0, [[0, 100, 0]])
 	await t.process_frame

@@ -1,0 +1,971 @@
+id: https://w3id.org/pixlnd/structured-world
+name: pixlnd-structured-world
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- items
+- catalog-identity-combat
+default_range: string
+classes:
+  flora-yield-entry:
+    description: "Flora yield entry; interpreted under its linked source definition and context."
+    class_uri: pixlnd:flora-yield-entry
+    see_also:
+    - ../domain/3_Classes.md#flora
+    - ../domain/4_Relations.md
+    - ../instances/flora.json
+    slots:
+    - flora-yield-entry-ingredient
+    - flora-yield-entry-quantity
+  dungeon-variant-entry:
+    description: "Dungeon variant entry; interpreted under its linked source definition and context."
+    class_uri: pixlnd:dungeon-variant-entry
+    see_also:
+    - ../domain/3_Classes.md#dungeon-type
+    - ../instances/dungeon-types.json
+    slots:
+    - dungeon-variant-entry-label
+    - dungeon-variant-entry-description
+  static-entity-catalog:
+    class_uri: pixlnd:static-entity-catalog
+    description: Catalog tables and configuration, not an individual static entity.
+    see_also:
+    - ../domain/5_Constraints.md
+    - ../instances/static-entities.json
+    slots:
+    - static-entity-catalog-by-id
+    - static-entity-catalog-behaviour
+    - static-entity-catalog-s-additions
+    - static-entity-catalog-candles
+  static-index-name:
+    description: "Static index name; interpreted under its linked source definition and context."
+    class_uri: pixlnd:static-index-name
+    see_also:
+    - ../instances/static-entities.json#by-id
+    slots:
+    - static-index-name-index
+    - static-index-name-name
+  static-behaviour-entry:
+    description: "Static behaviour entry; interpreted under its linked source definition and context."
+    class_uri: pixlnd:static-behaviour-entry
+    see_also:
+    - ../instances/static-entities.json#behaviour
+    slots:
+    - static-behaviour-entry-group
+    - static-behaviour-entry-description
+  static-candles:
+    description: "Static candles; interpreted under its linked source definition and context."
+    class_uri: pixlnd:static-candles
+    see_also:
+    - ../instances/static-entities.json#candles
+    slots:
+    - static-candles-colors
+    - static-candles-sizes
+    - static-candles-placement
+  block-type-catalog:
+    class_uri: pixlnd:block-type-catalog
+    description: Catalog configuration, not a voxel or an ordinary block type.
+    see_also:
+    - ../domain/3_Classes.md#block
+    - ../instances/block-types.json
+    slots:
+    - block-type-catalog-scale
+    - block-type-catalog-cub-format
+  block-scale:
+    description: "Block scale; interpreted under its linked source definition and context."
+    class_uri: pixlnd:block-scale
+    see_also:
+    - ../domain/3_Classes.md#block
+    - ../instances/block-types.json
+    slots:
+    - block-scale-block-native-units
+    - block-scale-alpha-zone-blocks
+    - block-scale-steam-zone-blocks
+    - block-scale-steam-map-chunk-blocks
+    - block-scale-character-height-m
+  block-cub-format:
+    description: "Block cub format; interpreted under its linked source definition and context."
+    class_uri: pixlnd:block-cub-format
+    see_also:
+    - ../domain/3_Classes.md#block
+    - ../instances/block-types.json
+    slots:
+    - block-cub-format-header
+    - block-cub-format-body
+    - block-cub-format-empty
+    - block-cub-format-compression
+    - block-cub-format-storage
+  map-marker-integer-triple:
+    class_uri: pixlnd:map-marker-integer-triple
+    description: Three integer coordinates of a source-qualified map marker; not a polygon vertex or a serialization rule.
+    slots:
+    - map-marker-integer-triple-x
+    - map-marker-integer-triple-y
+    - map-marker-integer-triple-z
+  map-marker-place-key:
+    class_uri: pixlnd:map-marker-place-key
+    description: Two integer coordinates forming the composite place key in the later WorldMap source collection.
+    slots:
+    - map-marker-place-key-x
+    - map-marker-place-key-y
+  place-marker-list-entry:
+    class_uri: pixlnd:place-marker-list-entry
+    description: Later release WorldMap positionsByPlace entry; retains its two-integer key and list of integer triples as separate members. Duplicate composite-key enforcement is not selected.
+    slots:
+    - place-marker-list-entry-place
+    - place-marker-list-entry-positions
+  zone-tile-marker-collection:
+    class_uri: pixlnd:zone-tile-marker-collection
+    description: Alpha-era source captures t05-infinite-alpha-worldmap-h.txt and t06-infinite-alpha-worldmap-cpp.txt show ZoneTile m_markers as a list of integer triples. This scope is distinct from the later release keyed collection; neither defines polygon geometry, connectivity, client authenticity, or a universal wire/save contract.
+    slots:
+    - zone-tile-marker-collection-markers
+  place-keyed-marker-collection:
+    class_uri: pixlnd:place-keyed-marker-collection
+    description: Later release captures t14-release-worldmap-h.txt and t15-release-worldmap-cpp.txt show WorldMapRegion positionsByPlace keyed by a two-integer place pair, with a list of integer triples per key. This source scope does not define polygon geometry, connectivity, client authenticity, or a universal wire/save contract.
+    slots:
+    - place-keyed-marker-collection-places
+  terrain-features-source:
+    class_uri: "pixlnd:terrain-features-source"
+    description: "Reversible keyed source container; fixed metadata remains separate."
+    see_also: ["../instances/terrain-features.json", "../domain/5_Constraints.md"]
+    annotations: {"source-map-entries": "entries"}
+    attributes:
+      schema-tag: {"range": "string", "required": true, "equals_string": "terrain-feature", "alias": "$schema", "slot_uri": "pixlnd:terrain-features-source/schema", "description": "Source $schema of terrain-features-source; preserves literal representation and qualification."}
+      entries: {"range": "terrain-feature-source-row-entry", "multivalued": true, "required": true, "minimum_cardinality": 1, "inlined": true, "inlined_as_list": true, "alias": "entries", "slot_uri": "pixlnd:terrain-features-source/entries", "description": "Source entries of terrain-features-source; preserves literal representation and qualification."}
+  terrain-feature-source-row-entry:
+    class_uri: "pixlnd:terrain-feature-source-row-entry"
+    description: "Reversible original container key and unchanged value."
+    see_also: ["../instances/terrain-features.json", "../domain/5_Constraints.md"]
+    slots: ["source-entry-key"]
+    attributes:
+      value: {"range": "terrain-feature-source-row", "inlined": true, "required": true, "alias": "value", "slot_uri": "pixlnd:terrain-feature-source-row-entry/value", "description": "Source value of terrain-feature-source-row-entry; preserves literal representation and qualification."}
+  terrain-feature-source-row:
+    class_uri: "pixlnd:terrain-feature-source-row"
+    description: "Complete natural-feature descriptions; overhang storage uncertainty remains literal prose."
+    see_also: ["../instances/terrain-features.json", "../domain/5_Constraints.md"]
+    attributes:
+      name: {"range": "string", "required": true, "alias": "name", "slot_uri": "pixlnd:terrain-feature-source-row/name", "description": "Source name of terrain-feature-source-row; preserves literal representation and qualification."}
+      desc: {"range": "string", "required": true, "alias": "desc", "slot_uri": "pixlnd:terrain-feature-source-row/desc", "description": "Source desc of terrain-feature-source-row; preserves literal representation and qualification."}
+      named: {"exactly_one_of": [{"range": "boolean"}, {"range": "string"}], "alias": "named", "slot_uri": "pixlnd:terrain-feature-source-row/named", "description": "Source named of terrain-feature-source-row; preserves literal representation and qualification."}
+      versions: {"range": "string", "multivalued": true, "required": true, "minimum_cardinality": 1, "equals_string_in": ["A", "S", "Ω", "X", "A?", "S?"], "alias": "versions", "slot_uri": "pixlnd:terrain-feature-source-row/versions", "description": "Source versions of terrain-feature-source-row; preserves literal representation and qualification."}
+  deposits-source:
+    class_uri: "pixlnd:deposits-source"
+    description: "Reversible keyed source container; fixed metadata remains separate."
+    see_also: ["../instances/deposits.json", "../domain/5_Constraints.md"]
+    annotations: {"source-map-entries": "entries"}
+    attributes:
+      schema-tag: {"range": "string", "required": true, "equals_string": "deposit", "alias": "$schema", "slot_uri": "pixlnd:deposits-source/schema", "description": "Source $schema of deposits-source; preserves literal representation and qualification."}
+      documentation: {"range": "string", "required": true, "alias": "_doc", "slot_uri": "pixlnd:deposits-source/doc", "description": "Source _doc of deposits-source; preserves literal representation and qualification."}
+      entries: {"range": "deposit-source-row-entry", "multivalued": true, "required": true, "minimum_cardinality": 1, "inlined": true, "inlined_as_list": true, "alias": "entries", "slot_uri": "pixlnd:deposits-source/entries", "description": "Source entries of deposits-source; preserves literal representation and qualification."}
+  deposit-source-row-entry:
+    class_uri: "pixlnd:deposit-source-row-entry"
+    description: "Reversible original container key and unchanged value."
+    see_also: ["../instances/deposits.json", "../domain/5_Constraints.md"]
+    slots: ["source-entry-key"]
+    attributes:
+      value: {"range": "deposit-source-row", "inlined": true, "required": true, "alias": "value", "slot_uri": "pixlnd:deposit-source-row-entry/value", "description": "Source value of deposit-source-row-entry; preserves literal representation and qualification."}
+  deposit-source-row:
+    class_uri: "pixlnd:deposit-source-row"
+    description: "Yield names an ingredient; sandstone retains its unresolved source reference."
+    see_also: ["../instances/deposits.json", "../domain/5_Constraints.md"]
+    attributes:
+      aid: {"range": "integer", "required": true, "alias": "aid", "slot_uri": "pixlnd:deposit-source-row/aid", "description": "Source aid of deposit-source-row; preserves literal representation and qualification."}
+      yields: {"range": "ingredient", "required": true, "alias": "yields", "slot_uri": "pixlnd:deposit-source-row/yields", "description": "Source yields of deposit-source-row; preserves literal representation and qualification."}
+      versions: {"range": "string", "multivalued": true, "required": true, "minimum_cardinality": 1, "equals_string_in": ["A", "S", "Ω", "X", "A?", "S?"], "alias": "versions", "slot_uri": "pixlnd:deposit-source-row/versions", "description": "Source versions of deposit-source-row; preserves literal representation and qualification."}
+      lands: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "lands", "slot_uri": "pixlnd:deposit-source-row/lands", "description": "Source lands of deposit-source-row; preserves literal representation and qualification."}
+      note: {"exactly_one_of": [{"range": "string"}], "alias": "note", "slot_uri": "pixlnd:deposit-source-row/note", "description": "Source note of deposit-source-row; preserves literal representation and qualification."}
+  flora-source:
+    class_uri: "pixlnd:flora-source"
+    description: "Reversible keyed source container; fixed metadata remains separate."
+    see_also: ["../instances/flora.json", "../domain/5_Constraints.md"]
+    annotations: {"source-map-entries": "entries"}
+    attributes:
+      schema-tag: {"range": "string", "required": true, "equals_string": "flora", "alias": "$schema", "slot_uri": "pixlnd:flora-source/schema", "description": "Source $schema of flora-source; preserves literal representation and qualification."}
+      documentation: {"range": "string", "required": true, "alias": "_doc", "slot_uri": "pixlnd:flora-source/doc", "description": "Source _doc of flora-source; preserves literal representation and qualification."}
+      entries: {"range": "flora-source-row-entry", "multivalued": true, "required": true, "minimum_cardinality": 1, "inlined": true, "inlined_as_list": true, "alias": "entries", "slot_uri": "pixlnd:flora-source/entries", "description": "Source entries of flora-source; preserves literal representation and qualification."}
+  flora-source-row-entry:
+    class_uri: "pixlnd:flora-source-row-entry"
+    description: "Reversible original container key and unchanged value."
+    see_also: ["../instances/flora.json", "../domain/5_Constraints.md"]
+    slots: ["source-entry-key"]
+    attributes:
+      value: {"range": "flora-source-row", "inlined": true, "required": true, "alias": "value", "slot_uri": "pixlnd:flora-source-row-entry/value", "description": "Source value of flora-source-row-entry; preserves literal representation and qualification."}
+  flora-source-row:
+    class_uri: "pixlnd:flora-source-row"
+    description: "Complete source plant body; symbolic yield n remains symbolic."
+    see_also: ["../instances/flora.json", "../domain/5_Constraints.md"]
+    attributes:
+      name: {"range": "string", "required": true, "alias": "name", "slot_uri": "pixlnd:flora-source-row/name", "description": "Source name of flora-source-row; preserves literal representation and qualification."}
+      desc: {"exactly_one_of": [{"range": "string"}], "alias": "desc", "slot_uri": "pixlnd:flora-source-row/desc", "description": "Source desc of flora-source-row; preserves literal representation and qualification."}
+      lands: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "lands", "slot_uri": "pixlnd:flora-source-row/lands", "description": "Source lands of flora-source-row; preserves literal representation and qualification."}
+      variants: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "variants", "slot_uri": "pixlnd:flora-source-row/variants", "description": "Source variants of flora-source-row; preserves literal representation and qualification."}
+      aid: {"exactly_one_of": [{"range": "integer"}], "alias": "aid", "slot_uri": "pixlnd:flora-source-row/aid", "description": "Source aid of flora-source-row; preserves literal representation and qualification."}
+      yields: {"range": "flora-yields-source", "inlined": true, "exactly_one_of": [{"range": "flora-yields-source", "inlined": true}], "alias": "yields", "slot_uri": "pixlnd:flora-source-row/yields", "description": "Source yields of flora-source-row; preserves literal representation and qualification."}
+      versions: {"range": "string", "multivalued": true, "required": true, "minimum_cardinality": 1, "equals_string_in": ["A", "S", "Ω", "X", "A?", "S?"], "alias": "versions", "slot_uri": "pixlnd:flora-source-row/versions", "description": "Source versions of flora-source-row; preserves literal representation and qualification."}
+  flora-yields-source:
+    class_uri: "pixlnd:flora-yields-source"
+    description: "Reversible keyed source container; fixed metadata remains separate."
+    see_also: ["../instances/flora.json", "../domain/5_Constraints.md"]
+    annotations: {"source-map-entries": "entries"}
+    attributes:
+      entries: {"range": "flora-yield-source-entry", "multivalued": true, "required": true, "minimum_cardinality": 0, "inlined": true, "inlined_as_list": true, "alias": "entries", "slot_uri": "pixlnd:flora-yields-source/entries", "description": "Source entries of flora-yields-source; preserves literal representation and qualification."}
+  flora-yield-source-entry:
+    class_uri: "pixlnd:flora-yield-source-entry"
+    description: "Reversible original container key and unchanged value."
+    see_also: ["../instances/flora.json", "../domain/5_Constraints.md"]
+    slots: ["source-entry-key"]
+    attributes:
+      value: {"any_of": [{"range": "integer"}, {"range": "integer", "multivalued": true, "required": true, "minimum_cardinality": 2, "maximum_cardinality": 2}, {"range": "string", "equals_string": "n"}], "required": true, "alias": "value", "slot_uri": "pixlnd:flora-yield-source-entry/value", "description": "Source value of flora-yield-source-entry; preserves literal representation and qualification."}
+    slot_usage:
+      source-entry-key: {"range": "ingredient"}
+  poi-types-source:
+    class_uri: "pixlnd:poi-types-source"
+    description: "Reversible keyed source container; fixed metadata remains separate."
+    see_also: ["../instances/poi-types.json", "../domain/5_Constraints.md"]
+    annotations: {"source-map-entries": "entries"}
+    attributes:
+      schema-tag: {"range": "string", "required": true, "equals_string": "poi-type", "alias": "$schema", "slot_uri": "pixlnd:poi-types-source/schema", "description": "Source $schema of poi-types-source; preserves literal representation and qualification."}
+      entries: {"range": "poi-source-row-entry", "multivalued": true, "required": true, "minimum_cardinality": 1, "inlined": true, "inlined_as_list": true, "alias": "entries", "slot_uri": "pixlnd:poi-types-source/entries", "description": "Source entries of poi-types-source; preserves literal representation and qualification."}
+  poi-source-row-entry:
+    class_uri: "pixlnd:poi-source-row-entry"
+    description: "Reversible original container key and unchanged value."
+    see_also: ["../instances/poi-types.json", "../domain/5_Constraints.md"]
+    slots: ["source-entry-key"]
+    attributes:
+      value: {"range": "poi-source-row", "inlined": true, "required": true, "alias": "value", "slot_uri": "pixlnd:poi-source-row-entry/value", "description": "Source value of poi-source-row-entry; preserves literal representation and qualification."}
+  poi-source-row:
+    class_uri: "pixlnd:poi-source-row"
+    description: "Full POI source body; alpha location and quarter remain raw numeric pairs, not identities."
+    see_also: ["../instances/poi-types.json", "../domain/5_Constraints.md"]
+    attributes:
+      name: {"range": "string", "required": true, "alias": "name", "slot_uri": "pixlnd:poi-source-row/name", "description": "Source name of poi-source-row; preserves literal representation and qualification."}
+      map: {"exactly_one_of": [{"range": "string"}], "alias": "map", "slot_uri": "pixlnd:poi-source-row/map", "description": "Source map of poi-source-row; preserves literal representation and qualification."}
+      desc: {"exactly_one_of": [{"range": "string"}], "alias": "desc", "slot_uri": "pixlnd:poi-source-row/desc", "description": "Source desc of poi-source-row; preserves literal representation and qualification."}
+      contents: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "contents", "slot_uri": "pixlnd:poi-source-row/contents", "description": "Source contents of poi-source-row; preserves literal representation and qualification."}
+      lands: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "lands", "slot_uri": "pixlnd:poi-source-row/lands", "description": "Source lands of poi-source-row; preserves literal representation and qualification."}
+      variants: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "variants", "slot_uri": "pixlnd:poi-source-row/variants", "description": "Source variants of poi-source-row; preserves literal representation and qualification."}
+      versions: {"range": "string", "multivalued": true, "required": true, "minimum_cardinality": 1, "equals_string_in": ["A", "S", "Ω", "X", "A?", "S?"], "alias": "versions", "slot_uri": "pixlnd:poi-source-row/versions", "description": "Source versions of poi-source-row; preserves literal representation and qualification."}
+      alpha-loc: {"exactly_one_of": [{"range": "integer", "multivalued": true, "minimum_cardinality": 2, "maximum_cardinality": 2}], "alias": "alpha-loc", "slot_uri": "pixlnd:poi-source-row/alpha-loc", "description": "Source alpha-loc of poi-source-row; preserves literal representation and qualification."}
+      quarter: {"exactly_one_of": [{"range": "integer", "multivalued": true, "minimum_cardinality": 2, "maximum_cardinality": 2}], "alias": "quarter", "slot_uri": "pixlnd:poi-source-row/quarter", "description": "Source quarter of poi-source-row; preserves literal representation and qualification."}
+      static-id: {"exactly_one_of": [{"range": "integer"}], "alias": "static-id", "slot_uri": "pixlnd:poi-source-row/static-id", "description": "Source static-id of poi-source-row; preserves literal representation and qualification."}
+      static-ids: {"exactly_one_of": [{"range": "integer", "multivalued": true}], "alias": "static-ids", "slot_uri": "pixlnd:poi-source-row/static-ids", "description": "Source static-ids of poi-source-row; preserves literal representation and qualification."}
+  landscapes-source:
+    class_uri: "pixlnd:landscapes-source"
+    description: "Reversible keyed source container; fixed metadata remains separate."
+    see_also: ["../instances/landscapes.json", "../domain/5_Constraints.md"]
+    annotations: {"source-map-entries": "entries"}
+    attributes:
+      schema-tag: {"range": "string", "required": true, "equals_string": "landscape", "alias": "$schema", "slot_uri": "pixlnd:landscapes-source/schema", "description": "Source $schema of landscapes-source; preserves literal representation and qualification."}
+      documentation: {"range": "string", "required": true, "alias": "_doc", "slot_uri": "pixlnd:landscapes-source/doc", "description": "Source _doc of landscapes-source; preserves literal representation and qualification."}
+      shared: {"range": "landscape-source-shared", "inlined": true, "required": true, "alias": "_shared", "slot_uri": "pixlnd:landscapes-source/shared", "description": "Source _shared of landscapes-source; preserves literal representation and qualification."}
+      entries: {"range": "landscape-source-row-entry", "multivalued": true, "required": true, "minimum_cardinality": 1, "inlined": true, "inlined_as_list": true, "alias": "entries", "slot_uri": "pixlnd:landscapes-source/entries", "description": "Source entries of landscapes-source; preserves literal representation and qualification."}
+  landscape-source-row-entry:
+    class_uri: "pixlnd:landscape-source-row-entry"
+    description: "Reversible original container key and unchanged value."
+    see_also: ["../instances/landscapes.json", "../domain/5_Constraints.md"]
+    slots: ["source-entry-key"]
+    attributes:
+      value: {"range": "landscape-source-row", "inlined": true, "required": true, "alias": "value", "slot_uri": "pixlnd:landscape-source-row-entry/value", "description": "Source value of landscape-source-row-entry; preserves literal representation and qualification."}
+  landscape-source-row:
+    class_uri: "pixlnd:landscape-source-row"
+    description: "Qualified raw rosters/style are not uniformly resolved references; desert ruins remain unresolved notes."
+    see_also: ["../instances/landscapes.json", "../domain/5_Constraints.md"]
+    attributes:
+      name: {"range": "string", "required": true, "alias": "name", "slot_uri": "pixlnd:landscape-source-row/name", "description": "Source name of landscape-source-row; preserves literal representation and qualification."}
+      style: {"exactly_one_of": [{"range": "string"}], "alias": "style", "slot_uri": "pixlnd:landscape-source-row/style", "description": "Source style of landscape-source-row; preserves literal representation and qualification."}
+      population: {"exactly_one_of": [{"range": "string"}], "alias": "population", "slot_uri": "pixlnd:landscape-source-row/population", "description": "Source population of landscape-source-row; preserves literal representation and qualification."}
+      planned: {"exactly_one_of": [{"range": "string"}], "alias": "planned", "slot_uri": "pixlnd:landscape-source-row/planned", "description": "Source planned of landscape-source-row; preserves literal representation and qualification."}
+      note: {"exactly_one_of": [{"range": "string"}], "alias": "note", "slot_uri": "pixlnd:landscape-source-row/note", "description": "Source note of landscape-source-row; preserves literal representation and qualification."}
+      terrain: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "terrain", "slot_uri": "pixlnd:landscape-source-row/terrain", "description": "Source terrain of landscape-source-row; preserves literal representation and qualification."}
+      flora: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "flora", "slot_uri": "pixlnd:landscape-source-row/flora", "description": "Source flora of landscape-source-row; preserves literal representation and qualification."}
+      hazards: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "hazards", "slot_uri": "pixlnd:landscape-source-row/hazards", "description": "Source hazards of landscape-source-row; preserves literal representation and qualification."}
+      dungeons: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "dungeons", "slot_uri": "pixlnd:landscape-source-row/dungeons", "description": "Source dungeons of landscape-source-row; preserves literal representation and qualification."}
+      pois: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "pois", "slot_uri": "pixlnd:landscape-source-row/pois", "description": "Source pois of landscape-source-row; preserves literal representation and qualification."}
+      notes: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "notes", "slot_uri": "pixlnd:landscape-source-row/notes", "description": "Source notes of landscape-source-row; preserves literal representation and qualification."}
+      climate: {"exactly_one_of": [{"range": "landscape-source-climate", "inlined": true}], "alias": "climate", "slot_uri": "pixlnd:landscape-source-row/climate", "description": "Source climate of landscape-source-row; preserves literal representation and qualification."}
+      gen: {"exactly_one_of": [{"range": "landscape-generation", "inlined": true}], "alias": "gen", "slot_uri": "pixlnd:landscape-source-row/gen", "description": "Source gen of landscape-source-row; preserves literal representation and qualification."}
+      versions: {"range": "string", "multivalued": true, "required": true, "minimum_cardinality": 1, "equals_string_in": ["A", "S", "Ω", "X", "A?", "S?"], "alias": "versions", "slot_uri": "pixlnd:landscape-source-row/versions", "description": "Source versions of landscape-source-row; preserves literal representation and qualification."}
+  landscape-source-climate:
+    class_uri: "pixlnd:landscape-source-climate"
+    description: "Raw climate bands and symbolic quantities, not converted numeric climate readings."
+    see_also: ["../instances/landscapes.json", "../domain/5_Constraints.md"]
+    attributes:
+      temp: {"range": "string", "required": true, "alias": "temp", "slot_uri": "pixlnd:landscape-source-climate/temp", "description": "Source temp of landscape-source-climate; preserves literal representation and qualification."}
+      humidity: {"range": "string", "required": true, "alias": "humidity", "slot_uri": "pixlnd:landscape-source-climate/humidity", "description": "Source humidity of landscape-source-climate; preserves literal representation and qualification."}
+  landscape-source-shared:
+    class_uri: "pixlnd:landscape-source-shared"
+    description: "Shared source context, not an additional landscape."
+    see_also: ["../instances/landscapes.json", "../domain/5_Constraints.md"]
+    attributes:
+      region-shape: {"range": "string", "required": true, "alias": "region-shape", "slot_uri": "pixlnd:landscape-source-shared/region-shape", "description": "Source region-shape of landscape-source-shared; preserves literal representation and qualification."}
+      land-level: {"range": "string", "required": true, "alias": "land-level", "slot_uri": "pixlnd:landscape-source-shared/land-level", "description": "Source land-level of landscape-source-shared; preserves literal representation and qualification."}
+      s-difficulty: {"range": "string", "required": true, "alias": "s-difficulty", "slot_uri": "pixlnd:landscape-source-shared/s-difficulty", "description": "Source s-difficulty of landscape-source-shared; preserves literal representation and qualification."}
+      village-styles: {"range": "string", "multivalued": true, "required": true, "alias": "village-styles", "slot_uri": "pixlnd:landscape-source-shared/village-styles", "description": "Source village-styles of landscape-source-shared; preserves literal representation and qualification."}
+  dungeon-types-source:
+    class_uri: "pixlnd:dungeon-types-source"
+    description: "Reversible keyed source container; fixed metadata remains separate."
+    see_also: ["../instances/dungeon-types.json", "../domain/5_Constraints.md"]
+    annotations: {"source-map-entries": "entries"}
+    attributes:
+      schema-tag: {"range": "string", "required": true, "equals_string": "dungeon-type", "alias": "$schema", "slot_uri": "pixlnd:dungeon-types-source/schema", "description": "Source $schema of dungeon-types-source; preserves literal representation and qualification."}
+      documentation: {"range": "string", "required": true, "alias": "_doc", "slot_uri": "pixlnd:dungeon-types-source/doc", "description": "Source _doc of dungeon-types-source; preserves literal representation and qualification."}
+      dungeon-rules: {"range": "dungeon-source-rules", "inlined": true, "required": true, "alias": "_dungeon-rules", "slot_uri": "pixlnd:dungeon-types-source/dungeon-rules", "description": "Source _dungeon-rules of dungeon-types-source; preserves literal representation and qualification."}
+      entries: {"range": "dungeon-source-row-entry", "multivalued": true, "required": true, "minimum_cardinality": 1, "inlined": true, "inlined_as_list": true, "alias": "entries", "slot_uri": "pixlnd:dungeon-types-source/entries", "description": "Source entries of dungeon-types-source; preserves literal representation and qualification."}
+  dungeon-source-row-entry:
+    class_uri: "pixlnd:dungeon-source-row-entry"
+    description: "Reversible original container key and unchanged value."
+    see_also: ["../instances/dungeon-types.json", "../domain/5_Constraints.md"]
+    slots: ["source-entry-key"]
+    attributes:
+      value: {"range": "dungeon-source-row", "inlined": true, "required": true, "alias": "value", "slot_uri": "pixlnd:dungeon-source-row-entry/value", "description": "Source value of dungeon-source-row-entry; preserves literal representation and qualification."}
+  dungeon-source-row:
+    class_uri: "pixlnd:dungeon-source-row"
+    description: "Raw scalar/nested alpha-location pairs and content alternatives; no inferred dungeon identity."
+    see_also: ["../instances/dungeon-types.json", "../domain/5_Constraints.md"]
+    attributes:
+      name: {"range": "string", "required": true, "alias": "name", "slot_uri": "pixlnd:dungeon-source-row/name", "description": "Source name of dungeon-source-row; preserves literal representation and qualification."}
+      entrance: {"exactly_one_of": [{"range": "string"}], "alias": "entrance", "slot_uri": "pixlnd:dungeon-source-row/entrance", "description": "Source entrance of dungeon-source-row; preserves literal representation and qualification."}
+      desc: {"exactly_one_of": [{"range": "string"}], "alias": "desc", "slot_uri": "pixlnd:dungeon-source-row/desc", "description": "Source desc of dungeon-source-row; preserves literal representation and qualification."}
+      boss: {"exactly_one_of": [{"range": "string"}], "alias": "boss", "slot_uri": "pixlnd:dungeon-source-row/boss", "description": "Source boss of dungeon-source-row; preserves literal representation and qualification."}
+      see: {"exactly_one_of": [{"range": "string"}], "alias": "see", "slot_uri": "pixlnd:dungeon-source-row/see", "description": "Source see of dungeon-source-row; preserves literal representation and qualification."}
+      s-replacement: {"exactly_one_of": [{"range": "string"}], "alias": "s-replacement", "slot_uri": "pixlnd:dungeon-source-row/s-replacement", "description": "Source s-replacement of dungeon-source-row; preserves literal representation and qualification."}
+      naming: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "naming", "slot_uri": "pixlnd:dungeon-source-row/naming", "description": "Source naming of dungeon-source-row; preserves literal representation and qualification."}
+      lands: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "lands", "slot_uri": "pixlnd:dungeon-source-row/lands", "description": "Source lands of dungeon-source-row; preserves literal representation and qualification."}
+      rosters: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "rosters", "slot_uri": "pixlnd:dungeon-source-row/rosters", "description": "Source rosters of dungeon-source-row; preserves literal representation and qualification."}
+      natural: {"exactly_one_of": [{"range": "boolean"}], "alias": "natural", "slot_uri": "pixlnd:dungeon-source-row/natural", "description": "Source natural of dungeon-source-row; preserves literal representation and qualification."}
+      versions: {"range": "string", "multivalued": true, "required": true, "minimum_cardinality": 1, "equals_string_in": ["A", "S", "Ω", "X", "A?", "S?"], "alias": "versions", "slot_uri": "pixlnd:dungeon-source-row/versions", "description": "Source versions of dungeon-source-row; preserves literal representation and qualification."}
+      variants: {"range": "dungeon-variants-source", "inlined": true, "exactly_one_of": [{"range": "dungeon-variants-source", "inlined": true}], "alias": "variants", "slot_uri": "pixlnd:dungeon-source-row/variants", "description": "Source variants of dungeon-source-row; preserves literal representation and qualification."}
+      contents: {"exactly_one_of": [{"range": "string", "multivalued": true, "required": true}, {"range": "dungeon-source-contents", "inlined": true, "required": true}], "alias": "contents", "slot_uri": "pixlnd:dungeon-source-row/contents", "description": "Source contents of dungeon-source-row; preserves literal representation and qualification."}
+      alpha-loc: {"annotations": {"source-tuple-positions": "first second"}, "exactly_one_of": [{"range": "source-alpha-location-pair", "inlined": true, "required": true}, {"range": "source-alpha-location-pair-pair", "inlined": true, "required": true}], "alias": "alpha-loc", "slot_uri": "pixlnd:dungeon-source-row/alpha-loc", "description": "Source alpha-loc of dungeon-source-row; preserves literal representation and qualification."}
+  source-integer-pair:
+    class_uri: "pixlnd:source-integer-pair"
+    description: "Two positional integer members used only in a reversible source binding."
+    see_also: ["../instances/dungeon-types.json", "../domain/5_Constraints.md"]
+    attributes:
+      first: {"range": "integer", "required": true, "alias": "first", "slot_uri": "pixlnd:source-integer-pair/first", "description": "Source first of source-integer-pair; preserves literal representation and qualification."}
+      second: {"range": "integer", "required": true, "alias": "second", "slot_uri": "pixlnd:source-integer-pair/second", "description": "Source second of source-integer-pair; preserves literal representation and qualification."}
+  source-alpha-location-pair:
+    class_uri: "pixlnd:source-alpha-location-pair"
+    description: "Raw first position integer and second integer or literal symbolic range, not resolved IDs."
+    see_also: ["../instances/dungeon-types.json", "../domain/5_Constraints.md"]
+    attributes:
+      first: {"range": "integer", "required": true, "alias": "first", "slot_uri": "pixlnd:source-alpha-location-pair/first", "description": "Source first of source-alpha-location-pair; preserves literal representation and qualification."}
+      second: {"required": true, "any_of": [{"range": "integer"}, {"range": "string", "equals_string": "0-9"}], "alias": "second", "slot_uri": "pixlnd:source-alpha-location-pair/second", "description": "Source second of source-alpha-location-pair; preserves literal representation and qualification."}
+  source-alpha-location-pair-pair:
+    class_uri: "pixlnd:source-alpha-location-pair-pair"
+    description: "Original pair of integer pairs, preserving nested source shape."
+    see_also: ["../instances/dungeon-types.json", "../domain/5_Constraints.md"]
+    attributes:
+      first: {"range": "source-integer-pair", "inlined": true, "required": true, "alias": "first", "slot_uri": "pixlnd:source-alpha-location-pair-pair/first", "description": "Source first of source-alpha-location-pair-pair; preserves literal representation and qualification."}
+      second: {"range": "source-integer-pair", "inlined": true, "required": true, "alias": "second", "slot_uri": "pixlnd:source-alpha-location-pair-pair/second", "description": "Source second of source-alpha-location-pair-pair; preserves literal representation and qualification."}
+  dungeon-source-contents:
+    class_uri: "pixlnd:dungeon-source-contents"
+    description: "Steam content list, distinct from the alternate unversioned list."
+    see_also: ["../instances/dungeon-types.json", "../domain/5_Constraints.md"]
+    attributes:
+      steam: {"range": "string", "multivalued": true, "required": true, "alias": "S", "slot_uri": "pixlnd:dungeon-source-contents/steam", "description": "Source steam of dungeon-source-contents; preserves literal representation and qualification."}
+  dungeon-source-rules:
+    class_uri: "pixlnd:dungeon-source-rules"
+    description: "Historical source-scoped descriptions, not selected hybrid behavior."
+    see_also: ["../instances/dungeon-types.json", "../domain/5_Constraints.md"]
+    attributes:
+      alpha: {"range": "string", "multivalued": true, "required": true, "alias": "A", "slot_uri": "pixlnd:dungeon-source-rules/alpha", "description": "Source alpha of dungeon-source-rules; preserves literal representation and qualification."}
+      steam: {"range": "string", "multivalued": true, "required": true, "alias": "S", "slot_uri": "pixlnd:dungeon-source-rules/steam", "description": "Source steam of dungeon-source-rules; preserves literal representation and qualification."}
+      both: {"range": "string", "multivalued": true, "required": true, "alias": "both", "slot_uri": "pixlnd:dungeon-source-rules/both", "description": "Source both of dungeon-source-rules; preserves literal representation and qualification."}
+  dungeon-variants-source:
+    class_uri: "pixlnd:dungeon-variants-source"
+    description: "Reversible keyed source container; fixed metadata remains separate."
+    see_also: ["../instances/dungeon-types.json", "../domain/5_Constraints.md"]
+    annotations: {"source-map-entries": "entries"}
+    attributes:
+      entries: {"range": "dungeon-variant-source-entry", "multivalued": true, "required": true, "minimum_cardinality": 0, "inlined": true, "inlined_as_list": true, "alias": "entries", "slot_uri": "pixlnd:dungeon-variants-source/entries", "description": "Source entries of dungeon-variants-source; preserves literal representation and qualification."}
+  dungeon-variant-source-entry:
+    class_uri: "pixlnd:dungeon-variant-source-entry"
+    description: "Reversible original container key and unchanged value."
+    see_also: ["../instances/dungeon-types.json", "../domain/5_Constraints.md"]
+    slots: ["source-entry-key"]
+    attributes:
+      value: {"range": "string", "required": true, "alias": "value", "slot_uri": "pixlnd:dungeon-variant-source-entry/value", "description": "Source value of dungeon-variant-source-entry; preserves literal representation and qualification."}
+  static-entities-source:
+    class_uri: "pixlnd:static-entities-source"
+    description: "Complete static name/behaviour/configuration source, separate from interactive instances."
+    see_also: ["../instances/static-entities.json", "../domain/5_Constraints.md"]
+    attributes:
+      schema-tag: {"range": "string", "required": true, "equals_string": "static-entity", "alias": "$schema", "slot_uri": "pixlnd:static-entities-source/schema", "description": "Source $schema of static-entities-source; preserves literal representation and qualification."}
+      documentation: {"range": "string", "required": true, "alias": "_doc", "slot_uri": "pixlnd:static-entities-source/doc", "description": "Source _doc of static-entities-source; preserves literal representation and qualification."}
+      by-id: {"range": "static-names-source", "inlined": true, "required": true, "alias": "by-id", "slot_uri": "pixlnd:static-entities-source/by-id", "description": "Source by-id of static-entities-source; preserves literal representation and qualification."}
+      behaviour: {"range": "static-behaviour-source", "inlined": true, "required": true, "alias": "behaviour", "slot_uri": "pixlnd:static-entities-source/behaviour", "description": "Source behaviour of static-entities-source; preserves literal representation and qualification."}
+      s-additions: {"range": "string", "multivalued": true, "required": true, "alias": "s-additions", "slot_uri": "pixlnd:static-entities-source/s-additions", "description": "Source s-additions of static-entities-source; preserves literal representation and qualification."}
+      candles: {"range": "static-candles-source", "inlined": true, "required": true, "alias": "candles", "slot_uri": "pixlnd:static-entities-source/candles", "description": "Source candles of static-entities-source; preserves literal representation and qualification."}
+  static-names-source:
+    class_uri: "pixlnd:static-names-source"
+    description: "Reversible keyed source container; fixed metadata remains separate."
+    see_also: ["../instances/static-entities.json", "../domain/5_Constraints.md"]
+    annotations: {"source-map-entries": "entries"}
+    attributes:
+      entries: {"range": "static-name-source-entry", "multivalued": true, "required": true, "minimum_cardinality": 0, "inlined": true, "inlined_as_list": true, "alias": "entries", "slot_uri": "pixlnd:static-names-source/entries", "description": "Source entries of static-names-source; preserves literal representation and qualification."}
+  static-name-source-entry:
+    class_uri: "pixlnd:static-name-source-entry"
+    description: "Reversible original container key and unchanged value."
+    see_also: ["../instances/static-entities.json", "../domain/5_Constraints.md"]
+    attributes:
+      key: {"range": "string", "required": true, "key": true, "pattern": "^[0-9]+$", "alias": "key", "slot_uri": "pixlnd:static-name-source-entry/key", "description": "Original local table key; not global identity."}
+      value: {"range": "string", "required": true, "alias": "value", "slot_uri": "pixlnd:static-name-source-entry/value", "description": "Source value of static-name-source-entry; preserves literal representation and qualification."}
+  static-behaviour-source:
+    class_uri: "pixlnd:static-behaviour-source"
+    description: "Reversible keyed source container; fixed metadata remains separate."
+    see_also: ["../instances/static-entities.json", "../domain/5_Constraints.md"]
+    annotations: {"source-map-entries": "entries"}
+    attributes:
+      entries: {"range": "static-behaviour-source-entry", "multivalued": true, "required": true, "minimum_cardinality": 0, "inlined": true, "inlined_as_list": true, "alias": "entries", "slot_uri": "pixlnd:static-behaviour-source/entries", "description": "Source entries of static-behaviour-source; preserves literal representation and qualification."}
+  static-behaviour-source-entry:
+    class_uri: "pixlnd:static-behaviour-source-entry"
+    description: "Reversible original container key and unchanged value."
+    see_also: ["../instances/static-entities.json", "../domain/5_Constraints.md"]
+    attributes:
+      key: {"range": "string", "required": true, "key": true, "pattern": "^.+$", "alias": "key", "slot_uri": "pixlnd:static-behaviour-source-entry/key", "description": "Original local table key; not global identity."}
+      value: {"range": "string", "required": true, "alias": "value", "slot_uri": "pixlnd:static-behaviour-source-entry/value", "description": "Source value of static-behaviour-source-entry; preserves literal representation and qualification."}
+  static-candles-source:
+    class_uri: "pixlnd:static-candles-source"
+    description: "Complete candle configuration, not candle instance identity."
+    see_also: ["../instances/static-entities.json", "../domain/5_Constraints.md"]
+    is_a: static-candles
+    slot_usage:
+      static-candles-colors: {required: true}
+      static-candles-sizes: {required: true}
+      static-candles-placement: {required: true}
+  block-types-source:
+    class_uri: "pixlnd:block-types-source"
+    description: "Complete block catalog and configuration; numeric source indices are not global identities."
+    see_also: ["../instances/block-types.json", "../domain/5_Constraints.md"]
+    attributes:
+      schema-tag: {"range": "string", "required": true, "equals_string": "block-type", "alias": "$schema", "slot_uri": "pixlnd:block-types-source/schema", "description": "Source $schema of block-types-source; preserves literal representation and qualification."}
+      documentation: {"range": "string", "required": true, "alias": "_doc", "slot_uri": "pixlnd:block-types-source/doc", "description": "Source _doc of block-types-source; preserves literal representation and qualification."}
+      alpha: {"range": "alpha-block-table-source", "inlined": true, "required": true, "alias": "alpha", "slot_uri": "pixlnd:block-types-source/alpha", "description": "Source alpha of block-types-source; preserves literal representation and qualification."}
+      steam: {"range": "steam-block-table-source", "inlined": true, "required": true, "alias": "steam", "slot_uri": "pixlnd:block-types-source/steam", "description": "Source steam of block-types-source; preserves literal representation and qualification."}
+      scale: {"range": "block-scale-source", "inlined": true, "required": true, "alias": "scale", "slot_uri": "pixlnd:block-types-source/scale", "description": "Source scale of block-types-source; preserves literal representation and qualification."}
+      cub-format: {"range": "block-cub-format-source", "inlined": true, "required": true, "alias": "cub-format", "slot_uri": "pixlnd:block-types-source/cub-format", "description": "Source cub-format of block-types-source; preserves literal representation and qualification."}
+  alpha-block-table-source:
+    class_uri: "pixlnd:alpha-block-table-source"
+    description: "Reversible keyed source container; fixed metadata remains separate."
+    see_also: ["../instances/block-types.json", "../domain/5_Constraints.md"]
+    annotations: {"source-map-entries": "entries"}
+    attributes:
+      flags: {"range": "block-source-flags", "inlined": true, "required": true, "alias": "flags", "slot_uri": "pixlnd:alpha-block-table-source/flags", "description": "Source flags of alpha-block-table-source; preserves literal representation and qualification."}
+      entries: {"range": "alpha-block-source-entry", "multivalued": true, "required": true, "minimum_cardinality": 1, "inlined": true, "inlined_as_list": true, "alias": "entries", "slot_uri": "pixlnd:alpha-block-table-source/entries", "description": "Source entries of alpha-block-table-source; preserves literal representation and qualification."}
+  alpha-block-source-entry:
+    class_uri: "pixlnd:alpha-block-source-entry"
+    description: "Reversible original container key and unchanged value."
+    see_also: ["../instances/block-types.json", "../domain/5_Constraints.md"]
+    attributes:
+      key: {"range": "string", "required": true, "key": true, "pattern": "^[0-9]+$", "alias": "key", "slot_uri": "pixlnd:alpha-block-source-entry/key", "description": "Original local table key; not global identity."}
+      value: {"range": "alpha-block-source-row", "inlined": true, "required": true, "alias": "value", "slot_uri": "pixlnd:alpha-block-source-entry/value", "description": "Source value of alpha-block-source-entry; preserves literal representation and qualification."}
+  alpha-block-source-row:
+    class_uri: "pixlnd:alpha-block-source-row"
+    description: "Alpha block row retains body identifier and independent source-table key."
+    see_also: ["../instances/block-types.json", "../domain/5_Constraints.md"]
+    attributes:
+      id: {"range": "block-type", "required": true, "alias": "id", "slot_uri": "pixlnd:alpha-block-source-row/id", "description": "Source id of alpha-block-source-row; preserves literal representation and qualification."}
+      solid: {"range": "boolean", "required": true, "alias": "solid", "slot_uri": "pixlnd:alpha-block-source-row/solid", "description": "Source solid of alpha-block-source-row; preserves literal representation and qualification."}
+      note: {"exactly_one_of": [{"range": "string"}], "alias": "note", "slot_uri": "pixlnd:alpha-block-source-row/note", "description": "Source note of alpha-block-source-row; preserves literal representation and qualification."}
+  block-source-flags:
+    class_uri: "pixlnd:block-source-flags"
+    description: "Historical block flag descriptions."
+    see_also: ["../instances/block-types.json", "../domain/5_Constraints.md"]
+    attributes:
+      breakable: {"range": "string", "required": true, "alias": "breakable", "slot_uri": "pixlnd:block-source-flags/breakable", "description": "Source breakable of block-source-flags; preserves literal representation and qualification."}
+      dark: {"range": "string", "required": true, "alias": "dark", "slot_uri": "pixlnd:block-source-flags/dark", "description": "Source dark of block-source-flags; preserves literal representation and qualification."}
+  steam-block-table-source:
+    class_uri: "pixlnd:steam-block-table-source"
+    description: "Reversible keyed source container; fixed metadata remains separate."
+    see_also: ["../instances/block-types.json", "../domain/5_Constraints.md"]
+    annotations: {"source-map-entries": "entries"}
+    attributes:
+      note: {"range": "string", "required": true, "alias": "note", "slot_uri": "pixlnd:steam-block-table-source/note", "description": "Source note of steam-block-table-source; preserves literal representation and qualification."}
+      entries: {"range": "steam-block-source-entry", "multivalued": true, "required": true, "minimum_cardinality": 1, "inlined": true, "inlined_as_list": true, "alias": "entries", "slot_uri": "pixlnd:steam-block-table-source/entries", "description": "Source entries of steam-block-table-source; preserves literal representation and qualification."}
+  steam-block-source-entry:
+    class_uri: "pixlnd:steam-block-source-entry"
+    description: "Reversible original container key and unchanged value."
+    see_also: ["../instances/block-types.json", "../domain/5_Constraints.md"]
+    attributes:
+      key: {"range": "string", "required": true, "key": true, "pattern": "^[0-9]+$", "alias": "key", "slot_uri": "pixlnd:steam-block-source-entry/key", "description": "Original local table key; not global identity."}
+      value: {"range": "string", "required": true, "alias": "value", "slot_uri": "pixlnd:steam-block-source-entry/value", "description": "Source value of steam-block-source-entry; preserves literal representation and qualification."}
+  block-scale-source:
+    class_uri: "pixlnd:block-scale-source"
+    description: "Source block-scale numbers with uninterpreted character-height approximation."
+    see_also: ["../instances/block-types.json", "../domain/5_Constraints.md"]
+    is_a: block-scale
+    slot_usage:
+      block-scale-block-native-units: {required: true}
+      block-scale-alpha-zone-blocks: {required: true}
+      block-scale-steam-zone-blocks: {required: true}
+      block-scale-steam-map-chunk-blocks: {required: true}
+      block-scale-character-height-m: {required: true}
+  block-cub-format-source:
+    class_uri: "pixlnd:block-cub-format-source"
+    description: "Source file-format descriptions, not a new voxel storage contract."
+    see_also: ["../instances/block-types.json", "../domain/5_Constraints.md"]
+    is_a: block-cub-format
+    slot_usage:
+      block-cub-format-header: {required: true}
+      block-cub-format-body: {required: true}
+      block-cub-format-empty: {required: true}
+      block-cub-format-compression: {required: true}
+      block-cub-format-storage: {required: true}
+  buildings-source:
+    class_uri: "pixlnd:buildings-source"
+    description: "Complete source envelope with distinct districts, buildings, styles and shared context."
+    see_also: ["../instances/buildings.json", "../domain/5_Constraints.md"]
+    attributes:
+      schema-tag: {"range": "string", "required": true, "equals_string": "building", "alias": "$schema", "slot_uri": "pixlnd:buildings-source/schema", "description": "Source $schema of buildings-source; preserves literal representation and qualification."}
+      districts: {"range": "districts-source", "inlined": true, "required": true, "alias": "districts", "slot_uri": "pixlnd:buildings-source/districts", "description": "Source districts of buildings-source; preserves literal representation and qualification."}
+      buildings: {"range": "building-rows-source", "inlined": true, "required": true, "alias": "buildings", "slot_uri": "pixlnd:buildings-source/buildings", "description": "Source buildings of buildings-source; preserves literal representation and qualification."}
+      settlement-styles: {"range": "settlement-styles-source", "inlined": true, "required": true, "alias": "settlement-styles", "slot_uri": "pixlnd:buildings-source/settlement-styles", "description": "Source settlement-styles of buildings-source; preserves literal representation and qualification."}
+      population: {"range": "settlement-population-source", "inlined": true, "required": true, "alias": "population", "slot_uri": "pixlnd:buildings-source/population", "description": "Source population of buildings-source; preserves literal representation and qualification."}
+      map-visibility: {"range": "source-version-text", "inlined": true, "required": true, "alias": "map-visibility", "slot_uri": "pixlnd:buildings-source/map-visibility", "description": "Source map-visibility of buildings-source; preserves literal representation and qualification."}
+  districts-source:
+    class_uri: "pixlnd:districts-source"
+    description: "Reversible keyed source container; fixed metadata remains separate."
+    see_also: ["../instances/buildings.json", "../domain/5_Constraints.md"]
+    annotations: {"source-map-entries": "entries"}
+    attributes:
+      entries: {"range": "district-source-row-entry", "multivalued": true, "required": true, "minimum_cardinality": 1, "inlined": true, "inlined_as_list": true, "alias": "entries", "slot_uri": "pixlnd:districts-source/entries", "description": "Source entries of districts-source; preserves literal representation and qualification."}
+  district-source-row-entry:
+    class_uri: "pixlnd:district-source-row-entry"
+    description: "Reversible original container key and unchanged value."
+    see_also: ["../instances/buildings.json", "../domain/5_Constraints.md"]
+    slots: ["source-entry-key"]
+    attributes:
+      value: {"range": "district-source-row", "inlined": true, "required": true, "alias": "value", "slot_uri": "pixlnd:district-source-row-entry/value", "description": "Source value of district-source-row-entry; preserves literal representation and qualification."}
+  building-rows-source:
+    class_uri: "pixlnd:building-rows-source"
+    description: "Reversible keyed source container; fixed metadata remains separate."
+    see_also: ["../instances/buildings.json", "../domain/5_Constraints.md"]
+    annotations: {"source-map-entries": "entries"}
+    attributes:
+      entries: {"range": "building-source-row-entry", "multivalued": true, "required": true, "minimum_cardinality": 1, "inlined": true, "inlined_as_list": true, "alias": "entries", "slot_uri": "pixlnd:building-rows-source/entries", "description": "Source entries of building-rows-source; preserves literal representation and qualification."}
+  building-source-row-entry:
+    class_uri: "pixlnd:building-source-row-entry"
+    description: "Reversible original container key and unchanged value."
+    see_also: ["../instances/buildings.json", "../domain/5_Constraints.md"]
+    slots: ["source-entry-key"]
+    attributes:
+      value: {"range": "building-source-row", "inlined": true, "required": true, "alias": "value", "slot_uri": "pixlnd:building-source-row-entry/value", "description": "Source value of building-source-row-entry; preserves literal representation and qualification."}
+  settlement-styles-source:
+    class_uri: "pixlnd:settlement-styles-source"
+    description: "Reversible keyed source container; fixed metadata remains separate."
+    see_also: ["../instances/buildings.json", "../domain/5_Constraints.md"]
+    annotations: {"source-map-entries": "entries"}
+    attributes:
+      entries: {"range": "settlement-style-source-row-entry", "multivalued": true, "required": true, "minimum_cardinality": 1, "inlined": true, "inlined_as_list": true, "alias": "entries", "slot_uri": "pixlnd:settlement-styles-source/entries", "description": "Source entries of settlement-styles-source; preserves literal representation and qualification."}
+  settlement-style-source-row-entry:
+    class_uri: "pixlnd:settlement-style-source-row-entry"
+    description: "Reversible original container key and unchanged value."
+    see_also: ["../instances/buildings.json", "../domain/5_Constraints.md"]
+    slots: ["source-entry-key"]
+    attributes:
+      value: {"range": "settlement-style-source-row", "inlined": true, "required": true, "alias": "value", "slot_uri": "pixlnd:settlement-style-source-row-entry/value", "description": "Source value of settlement-style-source-row-entry; preserves literal representation and qualification."}
+  district-source-row:
+    class_uri: "pixlnd:district-source-row"
+    description: "Raw district entries retain building strings or class-qualified trainer objects, without invented building types."
+    see_also: ["../instances/buildings.json", "../domain/5_Constraints.md"]
+    attributes:
+      name: {"range": "string", "required": true, "alias": "name", "slot_uri": "pixlnd:district-source-row/name", "description": "Source name of district-source-row; preserves literal representation and qualification."}
+      decor: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "decor", "slot_uri": "pixlnd:district-source-row/decor", "description": "Source decor of district-source-row; preserves literal representation and qualification."}
+      quarter-id: {"range": "integer", "multivalued": true, "minimum_cardinality": 2, "maximum_cardinality": 2, "required": true, "alias": "quarter-id", "slot_uri": "pixlnd:district-source-row/quarter-id", "description": "Source quarter-id of district-source-row; preserves literal representation and qualification."}
+      versions: {"range": "string", "multivalued": true, "required": true, "minimum_cardinality": 1, "equals_string_in": ["A", "S", "Ω", "X", "A?", "S?"], "alias": "versions", "slot_uri": "pixlnd:district-source-row/versions", "description": "Source versions of district-source-row; preserves literal representation and qualification."}
+      buildings: {"exactly_one_of": [{"multivalued": true, "any_of": [{"range": "building"}, {"range": "district-building", "inlined": true, "required": true}]}], "alias": "buildings", "slot_uri": "pixlnd:district-source-row/buildings", "description": "Source buildings of district-source-row; preserves literal representation and qualification."}
+  building-source-row:
+    class_uri: "pixlnd:building-source-row"
+    description: "Complete source building row; role/station reference existence remains separate."
+    see_also: ["../instances/buildings.json", "../domain/5_Constraints.md"]
+    attributes:
+      name: {"range": "string", "required": true, "alias": "name", "slot_uri": "pixlnd:building-source-row/name", "description": "Source name of building-source-row; preserves literal representation and qualification."}
+      sign: {"exactly_one_of": [{"range": "string"}], "alias": "sign", "slot_uri": "pixlnd:building-source-row/sign", "description": "Source sign of building-source-row; preserves literal representation and qualification."}
+      map-icon: {"exactly_one_of": [{"range": "string"}], "alias": "map-icon", "slot_uri": "pixlnd:building-source-row/map-icon", "description": "Source map-icon of building-source-row; preserves literal representation and qualification."}
+      desc: {"exactly_one_of": [{"range": "string"}], "alias": "desc", "slot_uri": "pixlnd:building-source-row/desc", "description": "Source desc of building-source-row; preserves literal representation and qualification."}
+      roles: {"exactly_one_of": [{"range": "npc-role", "multivalued": true}], "alias": "roles", "slot_uri": "pixlnd:building-source-row/roles", "description": "Source roles of building-source-row; preserves literal representation and qualification."}
+      stations: {"exactly_one_of": [{"range": "crafting-station", "multivalued": true}], "alias": "stations", "slot_uri": "pixlnd:building-source-row/stations", "description": "Source stations of building-source-row; preserves literal representation and qualification."}
+      count: {"exactly_one_of": [{"range": "source-version-text", "inlined": true}], "alias": "count", "slot_uri": "pixlnd:building-source-row/count", "description": "Source count of building-source-row; preserves literal representation and qualification."}
+      versions: {"range": "string", "multivalued": true, "required": true, "minimum_cardinality": 1, "equals_string_in": ["A", "S", "Ω", "X", "A?", "S?"], "alias": "versions", "slot_uri": "pixlnd:building-source-row/versions", "description": "Source versions of building-source-row; preserves literal representation and qualification."}
+  settlement-style-source-row:
+    class_uri: "pixlnd:settlement-style-source-row"
+    description: "Original style roster and description, not hybrid runtime style selection."
+    see_also: ["../instances/buildings.json", "../domain/5_Constraints.md"]
+    attributes:
+      lands: {"range": "landscape", "multivalued": true, "required": true, "alias": "lands", "slot_uri": "pixlnd:settlement-style-source-row/lands", "description": "Source lands of settlement-style-source-row; preserves literal representation and qualification."}
+      desc: {"exactly_one_of": [{"range": "string"}], "alias": "desc", "slot_uri": "pixlnd:settlement-style-source-row/desc", "description": "Source desc of settlement-style-source-row; preserves literal representation and qualification."}
+  settlement-population-source:
+    class_uri: "pixlnd:settlement-population-source"
+    description: "Shared source population descriptions, not a generated population or scheduling engine."
+    see_also: ["../instances/buildings.json", "../domain/5_Constraints.md"]
+    attributes:
+      majority: {"range": "race", "required": true, "alias": "majority", "slot_uri": "pixlnd:settlement-population-source/majority", "description": "Source majority of settlement-population-source; preserves literal representation and qualification."}
+      undead-villages: {"range": "landscape", "multivalued": true, "required": true, "alias": "undead-villages", "slot_uri": "pixlnd:settlement-population-source/undead-villages", "description": "Source undead-villages of settlement-population-source; preserves literal representation and qualification."}
+      animals: {"range": "creature", "multivalued": true, "required": true, "alias": "animals", "slot_uri": "pixlnd:settlement-population-source/animals", "description": "Source animals of settlement-population-source; preserves literal representation and qualification."}
+      growth: {"range": "string", "required": true, "alias": "growth", "slot_uri": "pixlnd:settlement-population-source/growth", "description": "Source growth of settlement-population-source; preserves literal representation and qualification."}
+      schedule: {"range": "string", "required": true, "alias": "schedule", "slot_uri": "pixlnd:settlement-population-source/schedule", "description": "Source schedule of settlement-population-source; preserves literal representation and qualification."}
+slots:
+  map-marker-integer-triple-x:
+    description: First integer component of a source marker triple; no axis units are selected.
+    alias: x
+    slot_uri: pixlnd:map-marker-integer-triple/x
+    domain: map-marker-integer-triple
+    range: integer
+    required: true
+  map-marker-integer-triple-y:
+    description: Second integer component of a source marker triple; no axis units are selected.
+    alias: y
+    slot_uri: pixlnd:map-marker-integer-triple/y
+    domain: map-marker-integer-triple
+    range: integer
+    required: true
+  map-marker-integer-triple-z:
+    description: Third integer component of a source marker triple; no axis units are selected.
+    alias: z
+    slot_uri: pixlnd:map-marker-integer-triple/z
+    domain: map-marker-integer-triple
+    range: integer
+    required: true
+  map-marker-place-key-x:
+    description: First integer component of the later release's composite place key.
+    alias: x
+    slot_uri: pixlnd:map-marker-place-key/x
+    domain: map-marker-place-key
+    range: integer
+    required: true
+  map-marker-place-key-y:
+    description: Second integer component of the later release's composite place key.
+    alias: y
+    slot_uri: pixlnd:map-marker-place-key/y
+    domain: map-marker-place-key
+    range: integer
+    required: true
+  place-marker-list-entry-place:
+    description: Two-integer composite place key; duplicate-key enforcement is not selected.
+    alias: place
+    slot_uri: pixlnd:place-marker-list-entry/place
+    domain: place-marker-list-entry
+    range: map-marker-place-key
+    inlined: true
+    required: true
+  place-marker-list-entry-positions:
+    description: List of integer triples associated with this source place key.
+    alias: positions
+    slot_uri: pixlnd:place-marker-list-entry/positions
+    domain: place-marker-list-entry
+    range: map-marker-integer-triple
+    multivalued: true
+    inlined: true
+    required: true
+  zone-tile-marker-collection-markers:
+    description: Alpha ZoneTile source list of marker integer triples.
+    alias: markers
+    slot_uri: pixlnd:zone-tile-marker-collection/markers
+    domain: zone-tile-marker-collection
+    range: map-marker-integer-triple
+    multivalued: true
+    inlined: true
+    required: true
+  place-keyed-marker-collection-places:
+    description: Later release source entries grouped by their composite place key.
+    alias: places
+    slot_uri: pixlnd:place-keyed-marker-collection/places
+    domain: place-keyed-marker-collection
+    range: place-marker-list-entry
+    multivalued: true
+    inlined: true
+    required: true
+  flora-yields:
+    description: "Flora yields; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:flora/yields
+    alias: yields
+    domain: flora
+    range: flora-yield-entry
+    multivalued: true
+    inlined: true
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#flora
+    - ../domain/4_Relations.md
+    - ../instances/flora.json
+  flora-yield-entry-ingredient:
+    description: "Flora yield entry ingredient; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:flora-yield-entry/ingredient
+    alias: ingredient
+    domain: flora-yield-entry
+    range: ingredient
+    key: true
+    required: true
+  flora-yield-entry-quantity:
+    slot_uri: pixlnd:flora-yield-entry/quantity
+    alias: quantity
+    domain: flora-yield-entry
+    required: true
+    any_of:
+    - range: integer
+    - range: integer
+      multivalued: true
+      minimum_cardinality: 2
+      maximum_cardinality: 2
+    - range: string
+      equals_string: n
+    description: Source count, two-endpoint count range, or unresolved literal n.
+  dungeon-type-variants:
+    description: "Dungeon type variants; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:dungeon-type/variants
+    alias: variants
+    domain: dungeon-type
+    range: dungeon-variant-entry
+    multivalued: true
+    inlined: true
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#dungeon-type
+    - ../instances/dungeon-types.json
+  dungeon-variant-entry-label:
+    description: "Dungeon variant entry label; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:dungeon-variant-entry/label
+    alias: label
+    domain: dungeon-variant-entry
+    range: string
+    key: true
+    required: true
+  dungeon-variant-entry-description:
+    description: "Dungeon variant entry description; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:dungeon-variant-entry/description
+    alias: description
+    domain: dungeon-variant-entry
+    range: string
+    required: true
+  static-entity-catalog-by-id:
+    description: "Static entity catalog by id; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:static-entity-catalog/by-id
+    alias: by-id
+    domain: static-entity-catalog
+    range: static-index-name
+    multivalued: true
+    inlined: true
+    required: false
+    see_also:
+    - ../domain/5_Constraints.md
+    - ../instances/static-entities.json#by-id
+  static-index-name-index:
+    slot_uri: pixlnd:static-index-name/index
+    alias: index
+    domain: static-index-name
+    range: string
+    key: true
+    required: true
+    description: Container-scoped source index string, not a stable ontology ID.
+  static-index-name-name:
+    description: "Static index name name; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:static-index-name/name
+    alias: name
+    domain: static-index-name
+    range: string
+    required: true
+  static-entity-catalog-behaviour:
+    description: "Static entity catalog behaviour; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:static-entity-catalog/behaviour
+    alias: behaviour
+    domain: static-entity-catalog
+    range: static-behaviour-entry
+    multivalued: true
+    inlined: true
+    required: false
+    see_also:
+    - ../domain/5_Constraints.md
+    - ../instances/static-entities.json#behaviour
+  static-behaviour-entry-group:
+    description: "Static behaviour entry group; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:static-behaviour-entry/group
+    alias: group
+    domain: static-behaviour-entry
+    range: string
+    key: true
+    required: true
+  static-behaviour-entry-description:
+    description: "Static behaviour entry description; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:static-behaviour-entry/description
+    alias: description
+    domain: static-behaviour-entry
+    range: string
+    required: true
+  static-entity-catalog-s-additions:
+    description: "Static entity catalog s additions; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:static-entity-catalog/s-additions
+    alias: s-additions
+    domain: static-entity-catalog
+    range: string
+    multivalued: true
+    required: false
+    see_also:
+    - ../domain/5_Constraints.md
+    - ../instances/static-entities.json#s-additions
+  static-entity-catalog-candles:
+    description: "Static entity catalog candles; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:static-entity-catalog/candles
+    alias: candles
+    domain: static-entity-catalog
+    range: static-candles
+    inlined: true
+    required: false
+    see_also:
+    - ../domain/5_Constraints.md
+    - ../instances/static-entities.json#candles
+  static-candles-colors:
+    description: "Static candles colors; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:static-candles/colors
+    alias: colors
+    domain: static-candles
+    range: string
+    multivalued: true
+    required: false
+    see_also:
+    - ../instances/static-entities.json#candles
+  static-candles-sizes:
+    description: "Static candles sizes; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:static-candles/sizes
+    alias: sizes
+    domain: static-candles
+    range: string
+    multivalued: true
+    required: false
+    see_also:
+    - ../instances/static-entities.json#candles
+  static-candles-placement:
+    description: "Static candles placement; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:static-candles/placement
+    alias: placement
+    domain: static-candles
+    range: string
+    required: false
+    see_also:
+    - ../instances/static-entities.json#candles
+  block-type-catalog-scale:
+    description: "Block type catalog scale; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:block-type-catalog/scale
+    alias: scale
+    domain: block-type-catalog
+    range: block-scale
+    inlined: true
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#block
+    - ../instances/block-types.json
+  block-type-catalog-cub-format:
+    description: "Block type catalog cub format; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:block-type-catalog/cub-format
+    alias: cub-format
+    domain: block-type-catalog
+    range: block-cub-format
+    inlined: true
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#block
+    - ../instances/block-types.json
+  block-scale-block-native-units:
+    description: "Block scale block native units; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:block-scale/block-native-units
+    alias: block-native-units
+    domain: block-scale
+    range: integer
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#block
+    - ../instances/block-types.json
+  block-scale-alpha-zone-blocks:
+    description: "Block scale alpha zone blocks; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:block-scale/alpha-zone-blocks
+    alias: alpha-zone-blocks
+    domain: block-scale
+    range: integer
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#block
+    - ../instances/block-types.json
+  block-scale-steam-zone-blocks:
+    description: "Block scale steam zone blocks; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:block-scale/steam-zone-blocks
+    alias: steam-zone-blocks
+    domain: block-scale
+    range: integer
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#block
+    - ../instances/block-types.json
+  block-scale-steam-map-chunk-blocks:
+    description: "Block scale steam map chunk blocks; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:block-scale/steam-map-chunk-blocks
+    alias: steam-map-chunk-blocks
+    domain: block-scale
+    range: integer
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#block
+    - ../instances/block-types.json
+  block-scale-character-height-m:
+    description: "Block scale character height m; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:block-scale/character-height-m
+    alias: character-height-m
+    domain: block-scale
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#block
+    - ../instances/block-types.json
+  block-cub-format-header:
+    description: "Block cub format header; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:block-cub-format/header
+    alias: header
+    domain: block-cub-format
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#block
+    - ../instances/block-types.json
+  block-cub-format-body:
+    description: "Block cub format body; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:block-cub-format/body
+    alias: body
+    domain: block-cub-format
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#block
+    - ../instances/block-types.json
+  block-cub-format-empty:
+    description: "Block cub format empty; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:block-cub-format/empty
+    alias: empty
+    domain: block-cub-format
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#block
+    - ../instances/block-types.json
+  block-cub-format-compression:
+    description: "Block cub format compression; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:block-cub-format/compression
+    alias: compression
+    domain: block-cub-format
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#block
+    - ../instances/block-types.json
+  block-cub-format-storage:
+    description: "Block cub format storage; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:block-cub-format/storage
+    alias: storage
+    domain: block-cub-format
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#block
+    - ../instances/block-types.json

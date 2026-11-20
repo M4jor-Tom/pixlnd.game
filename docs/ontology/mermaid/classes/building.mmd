@@ -1,0 +1,13 @@
+ classDiagram
+    class `Building`
+    click `Building` href "../Building"
+      `Building` : building_map_icon
+      `Building` : building_name
+      `Building` : building_roles
+        `Building` --> "*" `Npc-role` : building_roles
+        click `Npc-role` href "../Npc-role"
+      `Building` : building_sign
+      `Building` : building_stations
+        `Building` --> "*" `Crafting-station` : building_stations
+        click `Crafting-station` href "../Crafting-station"
+      `Building` : id

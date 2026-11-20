@@ -5,7 +5,7 @@
 ## shuriken-attack throw projectiles.
 extends SceneTree
 
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Combat := preload("res://game/combat/combat.gd")
 const Items := preload("res://game/items/items.gd")
 const Spawner := preload("res://game/world/spawner.gd")
@@ -168,24 +168,9 @@ func _multi_contacts() -> void:
 
 
 func _init() -> void:
-	o = Model.Ontology.load_dir("res://ontology/instances")
-	check(o.validate(), "ontology valid")
+	o = Domain.Ontology.load_dir()
+	check(o.errors.is_empty(), "ontology valid")
 	design = o.configs["generators"]["design"]
-	var mv: Dictionary = design["movesets"]
-	mv["bow"]["m1"]["kind"] = "laser"
-	check(not o.validate(), "c-moveset-config rejects an unknown kind")
-	o.errors.clear()
-	mv["bow"]["m1"]["kind"] = "projectile"
-	var saved = mv["wand"]
-	mv.erase("wand")
-	check(not o.validate(), "c-moveset-config wants every class weapon-type")
-	o.errors.clear()
-	mv["wand"] = saved
-	mv["bow"]["m2"]["speed"] = 0
-	check(not o.validate(), "c-moveset-config rejects speed 0")
-	o.errors.clear()
-	mv["bow"]["m2"]["speed"] = 30.0
-	check(o.validate(), "restored")
 	InputMapBuilder.build(o.configs["keybinds"]["hybrid"])
 	var floor := StaticBody3D.new()
 	var cs := CollisionShape3D.new()

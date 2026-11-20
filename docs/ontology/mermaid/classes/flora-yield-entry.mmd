@@ -1,0 +1,7 @@
+ classDiagram
+    class `Flora-yield-entry`
+    click `Flora-yield-entry` href "../Flora-yield-entry"
+      `Flora-yield-entry` : flora_yield_entry_ingredient
+        `Flora-yield-entry` --> "1" `Ingredient` : flora_yield_entry_ingredient
+        click `Ingredient` href "../Ingredient"
+      `Flora-yield-entry` : flora_yield_entry_quantity

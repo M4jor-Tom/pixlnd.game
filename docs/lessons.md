@@ -1,5 +1,13 @@
 # Lessons
 
+## Large-file reading restrictions are not filesystem-operation bans
+
+Owner clarification (2026-11-05): agents, including the parent, must not read
+`docs/findings/todo_dispatch_in_files.md` because it is very large. Mechanical
+copying, moving and deleting are permitted. Rule: exclude its contents and copies
+from agent reads/search output; do not invent a broader file-operation ban or
+pause authorized work merely because a snapshot copied it.
+
 ## Ontology walkthroughs: describe the finished game
 
 - Owner preference: propose each decision in gamer-facing terms, as it would finally play, rather than leading with schema edits or current implementation limitations.

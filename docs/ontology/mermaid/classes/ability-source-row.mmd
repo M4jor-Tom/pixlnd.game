@@ -1,0 +1,24 @@
+ classDiagram
+    class `Ability-source-row`
+    click `Ability-source-row` href "../Ability-source-row"
+      `Ability-source-row` : ability_kind
+        `Ability-source-row` --> "1" ability_kind : ability_kind
+        click ability_kind href "../ability_kind"
+      `Ability-source-row` : alpha_id
+      `Ability-source-row` : alpha_tree
+      `Ability-source-row` : applies
+      `Ability-source-row` : control_status
+      `Ability-source-row` : controls
+      `Ability-source-row` : cooldown_s
+      `Ability-source-row` : cost
+      `Ability-source-row` : duration_s
+      `Ability-source-row` : effect
+      `Ability-source-row` : name
+      `Ability-source-row` : owner
+      `Ability-source-row` : removed_in
+      `Ability-source-row` : source_versions
+        `Ability-source-row` --> "1..*" `SourceVersion` : source_versions
+        click `SourceVersion` href "../SourceVersion"
+      `Ability-source-row` : unlocks_next
+        `Ability-source-row` --> "0..1" `Ability` : unlocks_next
+        click `Ability` href "../Ability"

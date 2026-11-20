@@ -1,0 +1,8 @@
+ classDiagram
+    class `Source-resource-amounts`
+    click `Source-resource-amounts` href "../Source-resource-amounts"
+      `Source-resource-amounts` <|-- `Source-ability-cost`
+        click `Source-ability-cost` href "../Source-ability-cost"
+      `Source-resource-amounts` : block_power
+      `Source-resource-amounts` : mp
+      `Source-resource-amounts` : stamina

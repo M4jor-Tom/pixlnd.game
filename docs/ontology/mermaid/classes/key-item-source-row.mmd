@@ -1,0 +1,18 @@
+ classDiagram
+    class `Key-item-source-row`
+    click `Key-item-source-row` href "../Key-item-source-row"
+      `Key-item-source-row` : a_equivalent
+      `Key-item-source-row` : acquire
+        `Key-item-source-row` --> "0..1" `Key-item-acquire-source` : acquire
+        click `Key-item-acquire-source` href "../Key-item-acquire-source"
+      `Key-item-source-row` : alpha_type
+      `Key-item-source-row` : controls
+      `Key-item-source-row` : effect
+      `Key-item-source-row` : group
+      `Key-item-source-row` : message
+      `Key-item-source-row` : name
+      `Key-item-source-row` : opens
+      `Key-item-source-row` : rules
+      `Key-item-source-row` : s_equivalent
+      `Key-item-source-row` : speed_stat
+      `Key-item-source-row` : versions

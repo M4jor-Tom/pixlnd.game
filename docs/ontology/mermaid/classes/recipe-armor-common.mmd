@@ -1,0 +1,18 @@
+ classDiagram
+    class `Recipe-armor-common`
+    click `Recipe-armor-common` href "../Recipe-armor-common"
+      `Recipe-armor-common` : boots
+        `Recipe-armor-common` --> "1" `Recipe-base` : boots
+        click `Recipe-base` href "../Recipe-base"
+      `Recipe-armor-common` : chest
+        `Recipe-armor-common` --> "1" `Recipe-base` : chest
+        click `Recipe-base` href "../Recipe-base"
+      `Recipe-armor-common` : gem
+        `Recipe-armor-common` --> "1" `Recipe-null-marker` : gem
+        click `Recipe-null-marker` href "../Recipe-null-marker"
+      `Recipe-armor-common` : gloves
+        `Recipe-armor-common` --> "1" `Recipe-base` : gloves
+        click `Recipe-base` href "../Recipe-base"
+      `Recipe-armor-common` : shoulders
+        `Recipe-armor-common` --> "1" `Recipe-base` : shoulders
+        click `Recipe-base` href "../Recipe-base"

@@ -1,0 +1,274 @@
+{
+ "$schema": "terrain-feature",
+ "entries": [
+  {
+   "key": "mountain",
+   "value": {
+    "desc": "rocky formation in any land; some very high; added 2012-03",
+    "name": "Mountain",
+    "named": "as landmark 'Mountain', 'Peak'",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "plateau",
+   "value": {
+    "desc": "flat top with cliff border (block type 5/6)",
+    "name": "Plateau / Cliff",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "valley",
+   "value": {
+    "desc": "basin surrounded by mountains, smooth floor, lower rims; boss at centre (insectoids, mosquitoes, flies)",
+    "name": "Valley",
+    "named": true,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "canyon",
+   "value": {
+    "desc": "depression with large mesas inside and larger mesas on rim",
+    "name": "Canyon",
+    "named": true,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "crater",
+   "value": {
+    "desc": "alpha mission landmark",
+    "name": "Crater",
+    "named": true,
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "cave",
+   "value": {
+    "desc": "deposits, shimmer mushrooms, bats, rocklings; underwater caves in oceans; boulders needing bombs; block type Cave=18 (S); added 2012-01",
+    "name": "Cave",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "river",
+   "value": {
+    "desc": "with small waterfalls (2011-12); tunnels through giant rocks; lava rivers; toxic rivers (S); new rivers 2017",
+    "name": "River",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "lake",
+   "value": {
+    "desc": "'Lake ___'; river-connected; may hide a divine harp",
+    "name": "Lake",
+    "named": true,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "lava-lake",
+   "value": {
+    "desc": "above-ground magma pool; dry lands + lava lands; may hold a building/island reachable by glider",
+    "name": "Lava Lake",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "volcano",
+   "value": {
+    "desc": "craters; can appear in snow",
+    "name": "Volcano",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "island",
+   "value": {
+    "desc": "generic small + named large '___ Island'; temples on large ones",
+    "name": "Island",
+    "named": true,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "sky-island",
+   "value": {
+    "desc": "small island in the sky with 1 treasure; reached by sky whistle at bird statue or glider+climb",
+    "name": "Floating / Sky Island",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "forest",
+   "value": {
+    "desc": "birch (lime leaves) / pine / normal; aesthetic; map colour clusters",
+    "name": "Forest (generic)",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "dungeon-forest",
+   "value": {
+    "desc": "named ('Duragar Forest'); connected canopies block light; campsites; typed roster + boss (see creature-families)",
+    "name": "Dungeon Forest",
+    "named": true,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "enchanted-grove",
+   "value": {
+    "desc": "lighter grove inside dark forest (map)",
+    "name": "Enchanted Forest / Grove",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "graveyard",
+   "value": {
+    "desc": "undead spawns; catacomb entrances",
+    "name": "Graveyard",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "field",
+   "value": {
+    "desc": "around villages (2012-05); green dots on map; pumpkins, pineapples, kale; Ω fenced wheat + windmills",
+    "name": "Field / Farm",
+    "versions": [
+     "A",
+     "S",
+     "Ω"
+    ]
+   }
+  },
+  {
+   "key": "road",
+   "value": {
+    "desc": "leads to villages/POIs; auto tunnels through mountains and bridges over canyons (2011-07); street lights",
+    "name": "Road",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "oasis",
+   "value": {
+    "desc": "desert water + palms (2011-07)",
+    "name": "Oasis",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "cloud",
+   "value": {
+    "desc": "voxel structures high up, no collision, static (A/S); Ω moving",
+    "name": "Cloud",
+    "versions": [
+     "A",
+     "S",
+     "Ω"
+    ]
+   }
+  },
+  {
+   "key": "giant-rock",
+   "value": {
+    "desc": "massive hard-to-climb rock, small top, boss at centre; smaller on river",
+    "name": "Giant Rock",
+    "named": "'Rock'",
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "giant-tree",
+   "value": {
+    "desc": "tallest structure, boss at top; replaced by Mana Tree in S",
+    "name": "Giant Tree",
+    "named": "'Tree'",
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "overhang",
+   "value": {
+    "desc": "exists (cliffs, caves); column storage = base-z + run, exact multi-gap representation unknown (?)",
+    "name": "Overhang",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "kingdom-frontier-wall",
+   "value": {
+    "desc": "2012 devlog; shipped only as visible 'frontier between two lands' (?)",
+    "name": "Kingdom frontier wall with guards",
+    "versions": [
+     "X"
+    ]
+   }
+  }
+ ]
+}

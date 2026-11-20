@@ -1,0 +1,6 @@
+ classDiagram
+    class `Flora-yields-source`
+    click `Flora-yields-source` href "../Flora-yields-source"
+      `Flora-yields-source` : entries
+        `Flora-yields-source` --> "1..*" `Flora-yield-source-entry` : entries
+        click `Flora-yield-source-entry` href "../Flora-yield-source-entry"

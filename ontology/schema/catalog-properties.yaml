@@ -1,0 +1,671 @@
+id: https://w3id.org/pixlnd/catalog-properties
+name: pixlnd-catalog-properties
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- items
+- world
+- catalog-crafting-social
+default_range: string
+classes:
+  slot-acceptance-condition:
+    class_uri: pixlnd:slot-acceptance-condition
+    see_also:
+    - ../domain/3_Classes.md#equipment-slot
+    slots:
+    - slot-acceptance-condition-item-type
+    - slot-acceptance-condition-condition
+    description: Conditional item-type acceptance from equipment-slots.json. The condition is not
+      unconditional slot permission; evaluating taming state remains a runtime rule.
+  settlement-style:
+    description: "Logical settlement style definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:settlement-style
+    see_also: &id006
+    - ../domain/3_Classes.md#settlement-style
+    slots:
+    - id
+    - settlement-style-lands
+    - settlement-style-desc
+  gender-option-counts:
+    class_uri: pixlnd:gender-option-counts
+    see_also: &id001
+    - ../domain/3_Classes.md#race
+    slots:
+    - gender-option-counts-m
+    - gender-option-counts-f
+    description: Per-gender customization counts from the existing catalog. Counts describe options, not
+      racial stat bonuses.
+  economy-source:
+    description: "Source representation of economy-source."
+    class_uri: pixlnd:economy-source
+    see_also: [../instances/economy.json]
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: pixlnd:economy-source/schema, range: string, required: true, equals_string: economy, description: "The $schema field of economy-source."}
+      currency: {alias: currency, slot_uri: pixlnd:economy-source/currency, range: economy-currency-source, required: true, inlined: true, description: "The currency field of economy-source."}
+      incomes: {alias: incomes, slot_uri: pixlnd:economy-source/incomes, range: economy-incomes-source, required: true, inlined: true, description: "The incomes field of economy-source."}
+      prices: {alias: prices, slot_uri: pixlnd:economy-source/prices, range: economy-prices-source, required: true, inlined: true, description: "The prices field of economy-source."}
+      shops: {alias: shops, slot_uri: pixlnd:economy-source/shops, range: economy-shops-source, required: true, inlined: true, description: "The shops field of economy-source."}
+      rules: {alias: rules, slot_uri: pixlnd:economy-source/rules, range: economy-rules-source, required: true, inlined: true, description: "The rules field of economy-source."}
+      loot: {alias: loot, slot_uri: pixlnd:economy-source/loot, range: economy-loot-source, required: true, inlined: true, description: "The loot field of economy-source."}
+      gaps: {alias: gaps, slot_uri: pixlnd:economy-source/gaps, range: string, required: true, multivalued: true, description: "The gaps field of economy-source."}
+      gaps-decided: {alias: gaps-decided, slot_uri: pixlnd:economy-source/gaps-decided, range: string, required: true, description: "The gaps-decided field of economy-source."}
+  economy-currency-source:
+    description: "Source representation of economy-currency-source."
+    attributes:
+      alpha: {alias: A, slot_uri: pixlnd:economy-currency-source/alpha, range: economy-currency-alpha, required: true, inlined: true, description: "The A field of economy-currency-source."}
+      steam: {alias: S, slot_uri: pixlnd:economy-currency-source/steam, range: economy-currency-steam, required: true, inlined: true, description: "The S field of economy-currency-source."}
+  economy-currency-alpha:
+    description: "Source representation of economy-currency-alpha."
+    attributes:
+      coins: {alias: coins, slot_uri: pixlnd:economy-currency-alpha/coins, range: economy-coins-source, required: true, inlined: true, description: "The coins field of economy-currency-alpha."}
+      platinum: {alias: platinum, slot_uri: pixlnd:economy-currency-alpha/platinum, range: string, required: true, description: "The platinum field of economy-currency-alpha."}
+      pickup: {alias: pickup, slot_uri: pixlnd:economy-currency-alpha/pickup, range: string, required: true, description: "The pickup field of economy-currency-alpha."}
+      display: {alias: display, slot_uri: pixlnd:economy-currency-alpha/display, range: string, required: true, description: "The display field of economy-currency-alpha."}
+  economy-coins-source:
+    description: "Source representation of economy-coins-source."
+    attributes:
+      copper: {alias: copper, slot_uri: pixlnd:economy-coins-source/copper, range: integer, required: true, description: "The copper field of economy-coins-source."}
+      silver: {alias: silver, slot_uri: pixlnd:economy-coins-source/silver, range: integer, required: true, description: "The silver field of economy-coins-source."}
+      gold: {alias: gold, slot_uri: pixlnd:economy-coins-source/gold, range: integer, required: true, description: "The gold field of economy-coins-source."}
+  economy-currency-steam:
+    description: "Source representation of economy-currency-steam."
+    attributes:
+      coins: {alias: coins, slot_uri: pixlnd:economy-currency-steam/coins, range: economy-one-coin-source, required: true, inlined: true, description: "The coins field of economy-currency-steam."}
+      pickup: {alias: pickup, slot_uri: pixlnd:economy-currency-steam/pickup, range: string, required: true, description: "The pickup field of economy-currency-steam."}
+      display: {alias: display, slot_uri: pixlnd:economy-currency-steam/display, range: string, required: true, description: "The display field of economy-currency-steam."}
+  economy-one-coin-source:
+    description: "Source representation of economy-one-coin-source."
+    attributes:
+      coin: {alias: coin, slot_uri: pixlnd:economy-one-coin-source/coin, range: integer, required: true, description: "The coin field of economy-one-coin-source."}
+  economy-incomes-source:
+    description: "Source representation of economy-incomes-source."
+    attributes:
+      alpha: {alias: A, slot_uri: pixlnd:economy-incomes-source/alpha, range: economy-income-alpha, required: true, inlined: true, description: "The A field of economy-incomes-source."}
+      steam: {alias: S, slot_uri: pixlnd:economy-incomes-source/steam, range: economy-income-steam, required: true, inlined: true, description: "The S field of economy-incomes-source."}
+  economy-income-alpha:
+    description: "Source representation of economy-income-alpha."
+    attributes:
+      monster: {alias: monster-lvl1-30, slot_uri: pixlnd:economy-income-alpha/monster, range: string, required: true, description: "The monster-lvl1-30 field of economy-income-alpha."}
+      equipment: {alias: equipment-sell-+1..+100, slot_uri: pixlnd:economy-income-alpha/equipment, range: string, required: true, description: "The equipment-sell-+1..+100 field of economy-income-alpha."}
+      heartflower: {alias: heartflower-sell, slot_uri: pixlnd:economy-income-alpha/heartflower, range: integer, required: true, description: "The heartflower-sell field of economy-income-alpha."}
+      iceflower: {alias: iceflower-sell, slot_uri: pixlnd:economy-income-alpha/iceflower, any_of: [{range: integer}, {range: string}], required: true, description: "The iceflower-sell field of economy-income-alpha."}
+  economy-income-steam:
+    description: "Source representation of economy-income-steam."
+    attributes:
+      monster: {alias: monster, slot_uri: pixlnd:economy-income-steam/monster, range: integer, required: true, multivalued: true, minimum_cardinality: 2, maximum_cardinality: 2, description: "The monster field of economy-income-steam."}
+      boss: {alias: boss, slot_uri: pixlnd:economy-income-steam/boss, range: integer, required: true, description: "The boss field of economy-income-steam."}
+      mana-generator: {alias: mana-generator, slot_uri: pixlnd:economy-income-steam/mana-generator, range: integer, required: true, multivalued: true, minimum_cardinality: 2, maximum_cardinality: 2, description: "The mana-generator field of economy-income-steam."}
+      gem-sell: {alias: gem-sell, slot_uri: pixlnd:economy-income-steam/gem-sell, range: economy-gem-values, required: true, inlined: true, description: "The gem-sell field of economy-income-steam."}
+      legendary-sell: {alias: legendary-sell, slot_uri: pixlnd:economy-income-steam/legendary-sell, range: integer, required: true, multivalued: true, minimum_cardinality: 2, maximum_cardinality: 2, description: "The legendary-sell field of economy-income-steam."}
+      legendary-plus-sell: {alias: legendary-plus-sell, slot_uri: pixlnd:economy-income-steam/legendary-plus, range: integer, required: true, description: "The legendary-plus-sell field of economy-income-steam."}
+      arena: {alias: arena, slot_uri: pixlnd:economy-income-steam/arena, range: integer, required: true, multivalued: true, minimum_cardinality: 2, maximum_cardinality: 2, description: "The arena field of economy-income-steam."}
+      bag-of-gold: {alias: bag-of-gold, slot_uri: pixlnd:economy-income-steam/bag-of-gold, range: integer, required: true, multivalued: true, minimum_cardinality: 2, maximum_cardinality: 2, description: "The bag-of-gold field of economy-income-steam."}
+  economy-gem-values:
+    description: "Source representation of economy-gem-values."
+    attributes:
+      emerald: {alias: emerald, slot_uri: pixlnd:economy-gem-values/emerald, range: integer, required: true, description: "The emerald field of economy-gem-values."}
+      sapphire: {alias: sapphire, slot_uri: pixlnd:economy-gem-values/sapphire, range: integer, required: true, description: "The sapphire field of economy-gem-values."}
+      ruby: {alias: ruby, slot_uri: pixlnd:economy-gem-values/ruby, range: integer, required: true, description: "The ruby field of economy-gem-values."}
+      diamond: {alias: diamond, slot_uri: pixlnd:economy-gem-values/diamond, range: integer, required: true, description: "The diamond field of economy-gem-values."}
+  economy-prices-source:
+    description: "Source representation of economy-prices-source."
+    attributes:
+      formula: {alias: formula, slot_uri: pixlnd:economy-prices-source/formula, range: string, required: true, description: "The formula field of economy-prices-source."}
+      alpha: {alias: A, slot_uri: pixlnd:economy-prices-source/alpha, range: economy-price-alpha, required: true, inlined: true, description: "The A field of economy-prices-source."}
+      steam: {alias: S, slot_uri: pixlnd:economy-prices-source/steam, range: economy-price-steam, required: true, inlined: true, description: "The S field of economy-prices-source."}
+  economy-price-alpha:
+    description: "Source representation of economy-price-alpha."
+    attributes:
+      inn: {alias: inn, slot_uri: pixlnd:economy-price-alpha/inn, range: integer, required: true, description: "The inn field of economy-price-alpha."}
+      spec-swap: {alias: spec-swap, slot_uri: pixlnd:economy-price-alpha/swap, range: string, required: true, description: "The spec-swap field of economy-price-alpha."}
+      adaptation: {alias: adaptation, slot_uri: pixlnd:economy-price-alpha/adaptation, range: string, required: true, description: "The adaptation field of economy-price-alpha."}
+      vendors: {alias: vendors, slot_uri: pixlnd:economy-price-alpha/vendors, range: string, required: true, description: "The vendors field of economy-price-alpha."}
+  economy-price-steam:
+    description: "Source representation of economy-price-steam."
+    attributes:
+      inn: {alias: inn, slot_uri: pixlnd:economy-price-steam/inn, range: integer, required: true, description: "The inn field of economy-price-steam."}
+      flight-min: {alias: flight-min, slot_uri: pixlnd:economy-price-steam/flight, range: integer, required: true, description: "The flight-min field of economy-price-steam."}
+      flight-scaling: {alias: flight-scaling, slot_uri: pixlnd:economy-price-steam/scaling, range: string, required: true, description: "The flight-scaling field of economy-price-steam."}
+      flight-to-friend: {alias: flight-to-friend, slot_uri: pixlnd:economy-price-steam/friend, range: integer, required: true, description: "The flight-to-friend field of economy-price-steam."}
+      gems: {alias: gems, slot_uri: pixlnd:economy-price-steam/gems, range: economy-gem-values, required: true, inlined: true, description: "The gems field of economy-price-steam."}
+      glass-flask: {alias: glass-flask, slot_uri: pixlnd:economy-price-steam/flask, range: integer, required: true, description: "The glass-flask field of economy-price-steam."}
+      legendary-plus-weapon: {alias: legendary-plus-weapon, slot_uri: pixlnd:economy-price-steam/legendary, range: string, required: true, description: "The legendary-plus-weapon field of economy-price-steam."}
+      identify: {alias: identify, slot_uri: pixlnd:economy-price-steam/identify, range: string, required: true, description: "The identify field of economy-price-steam."}
+      plus-items: {alias: plus-items, slot_uri: pixlnd:economy-price-steam/plus, range: string, required: true, description: "The plus-items field of economy-price-steam."}
+      spec-swap: {alias: spec-swap, slot_uri: pixlnd:economy-price-steam/swap, range: integer, required: true, description: "The spec-swap field of economy-price-steam."}
+  economy-shops-source:
+    description: "Source representation of economy-shops-source."
+    annotations: {source-map-entries: entries}
+    attributes:
+      entries: {alias: entries, slot_uri: pixlnd:economy-shops-source/entries, range: economy-shop-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of economy-shops-source."}
+  economy-shop-entry:
+    description: "Source representation of economy-shop-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:economy-shop-entry/value, range: economy-shop-row, required: true, inlined: true, description: "The value field of economy-shop-entry."}
+  economy-shop-row:
+    description: "Source representation of economy-shop-row."
+    attributes:
+      sells: {alias: sells, slot_uri: pixlnd:economy-shop-row/sells, exactly_one_of: [{range: string}, {range: string, multivalued: true, minimum_cardinality: 1}, {range: economy-shop-sells-by-version, inlined: true}], description: "The sells field of economy-shop-row."}
+      service: {alias: service, slot_uri: pixlnd:economy-shop-row/service, range: string, description: "The service field of economy-shop-row."}
+      buys: {alias: buys, slot_uri: pixlnd:economy-shop-row/buys, any_of: [{range: string}, {range: boolean}], description: "The buys field of economy-shop-row."}
+      stock: {alias: stock, slot_uri: pixlnd:economy-shop-row/stock, range: economy-shop-stock, inlined: true, description: "The stock field of economy-shop-row."}
+      roaming: {alias: roaming, slot_uri: pixlnd:economy-shop-row/roaming, range: boolean, description: "The roaming field of economy-shop-row."}
+      versions: {alias: versions, slot_uri: pixlnd:economy-shop-row/versions, range: string, multivalued: true, description: "The versions field of economy-shop-row."}
+      hours: {alias: hours, slot_uri: pixlnd:economy-shop-row/hours, range: string, description: "The hours field of economy-shop-row."}
+  economy-shop-sells-by-version:
+    description: "Source representation of economy-shop-sells-by-version."
+    attributes:
+      alpha: {alias: A, slot_uri: pixlnd:economy-shop-sells-by-version/alpha, range: string, required: true, multivalued: true, description: "The A field of economy-shop-sells-by-version."}
+      steam: {alias: S, slot_uri: pixlnd:economy-shop-sells-by-version/steam, range: string, required: true, multivalued: true, description: "The S field of economy-shop-sells-by-version."}
+  economy-shop-stock:
+    description: "Source representation of economy-shop-stock."
+    attributes:
+      alpha: {alias: A, slot_uri: pixlnd:economy-shop-stock/alpha, range: string, required: true, description: "The A field of economy-shop-stock."}
+      steam: {alias: S, slot_uri: pixlnd:economy-shop-stock/steam, range: string, required: true, description: "The S field of economy-shop-stock."}
+  economy-rules-source:
+    description: "Source representation of economy-rules-source."
+    attributes:
+      restock: {alias: restock, slot_uri: pixlnd:economy-rules-source/restock, range: string, required: true, description: "The restock field of economy-rules-source."}
+      buy-back: {alias: buy-back, slot_uri: pixlnd:economy-rules-source/buy-back, range: economy-buy-back, required: true, inlined: true, description: "The buy-back field of economy-rules-source."}
+      sell-price-tooltip: {alias: sell-price-tooltip, slot_uri: pixlnd:economy-rules-source/tooltip, range: string, required: true, description: "The sell-price-tooltip field of economy-rules-source."}
+      gnome-unlock: {alias: gnome-unlock, slot_uri: pixlnd:economy-rules-source/unlock, range: economy-gem-unlock, required: true, inlined: true, description: "The gnome-unlock field of economy-rules-source."}
+      money-abundance-s: {alias: money-abundance-s, slot_uri: pixlnd:economy-rules-source/abundance, range: string, required: true, description: "The money-abundance-s field of economy-rules-source."}
+      off-class-drops: {alias: off-class-drops, slot_uri: pixlnd:economy-rules-source/off-class, range: string, required: true, description: "The off-class-drops field of economy-rules-source."}
+  economy-buy-back:
+    description: "Source representation of economy-buy-back."
+    attributes:
+      alpha: {alias: A, slot_uri: pixlnd:economy-buy-back/alpha, range: boolean, required: true, description: "The A field of economy-buy-back."}
+      steam: {alias: S, slot_uri: pixlnd:economy-buy-back/steam, range: boolean, required: true, description: "The S field of economy-buy-back."}
+  economy-gem-unlock:
+    description: "Source representation of economy-gem-unlock."
+    attributes:
+      white: {alias: white, slot_uri: pixlnd:economy-gem-unlock/white, range: string, required: true, description: "The white field of economy-gem-unlock."}
+      green: {alias: green, slot_uri: pixlnd:economy-gem-unlock/green, range: string, required: true, description: "The green field of economy-gem-unlock."}
+      blue: {alias: blue, slot_uri: pixlnd:economy-gem-unlock/blue, range: string, required: true, description: "The blue field of economy-gem-unlock."}
+      purple: {alias: purple, slot_uri: pixlnd:economy-gem-unlock/purple, range: string, required: true, description: "The purple field of economy-gem-unlock."}
+  economy-loot-source:
+    description: "Source representation of economy-loot-source."
+    attributes:
+      tier: {alias: tier, slot_uri: pixlnd:economy-loot-source/tier, range: string, required: true, description: "The tier field of economy-loot-source."}
+      leftovers: {alias: leftovers, slot_uri: pixlnd:economy-loot-source/leftovers, range: string, required: true, description: "The leftovers field of economy-loot-source."}
+      species-drops: {alias: species-drops, slot_uri: pixlnd:economy-loot-source/species, range: string, required: true, multivalued: true, description: "The species-drops field of economy-loot-source."}
+      npc-weapons: {alias: npc-weapons, slot_uri: pixlnd:economy-loot-source/npc-weapons, range: string, required: true, description: "The npc-weapons field of economy-loot-source."}
+      alpha-boss: {alias: A-boss, slot_uri: pixlnd:economy-loot-source/A-boss, range: string, required: true, description: "The A-boss field of economy-loot-source."}
+      alpha-dungeon: {alias: A-dungeon, slot_uri: pixlnd:economy-loot-source/A-dungeon, range: string, required: true, description: "The A-dungeon field of economy-loot-source."}
+      steam-mission: {alias: S-mission, slot_uri: pixlnd:economy-loot-source/S-mission, range: string, required: true, description: "The S-mission field of economy-loot-source."}
+      steam-dungeon: {alias: S-dungeon, slot_uri: pixlnd:economy-loot-source/S-dungeon, range: string, required: true, description: "The S-dungeon field of economy-loot-source."}
+      ground-items: {alias: ground-items, slot_uri: pixlnd:economy-loot-source/ground-items, range: string, required: true, description: "The ground-items field of economy-loot-source."}
+      npc-rewards: {alias: npc-rewards, slot_uri: pixlnd:economy-loot-source/npc-rewards, range: string, required: true, description: "The npc-rewards field of economy-loot-source."}
+  mission-types-source:
+    description: "Source representation of mission-types-source."
+    class_uri: pixlnd:mission-types-source
+    see_also: [../instances/mission-types.json]
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: pixlnd:mission-types-source/schema, range: string, required: true, equals_string: mission-type, description: "The $schema field of mission-types-source."}
+      alpha: {alias: alpha, slot_uri: pixlnd:mission-types-source/alpha, range: mission-alpha-source, required: true, inlined: true, description: "The alpha field of mission-types-source."}
+      steam: {alias: steam, slot_uri: pixlnd:mission-types-source/steam, range: mission-steam-source, required: true, inlined: true, description: "The steam field of mission-types-source."}
+  mission-alpha-source:
+    description: "Source representation of mission-alpha-source."
+    annotations: {source-map-entries: entries}
+    attributes:
+      entries: {alias: entries, slot_uri: pixlnd:mission-alpha-source/entries, range: mission-alpha-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of mission-alpha-source."}
+  mission-alpha-entry:
+    description: "Source representation of mission-alpha-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:mission-alpha-entry/value, range: mission-alpha-row, required: true, inlined: true, description: "The value field of mission-alpha-entry."}
+  mission-alpha-row:
+    description: "Source representation of mission-alpha-row."
+    attributes:
+      name: {alias: name, slot_uri: pixlnd:mission-alpha-row/name, range: string, required: true, description: "The name field of mission-alpha-row."}
+      icon: {alias: icon, slot_uri: pixlnd:mission-alpha-row/icon, range: string, description: "The icon field of mission-alpha-row."}
+      desc: {alias: desc, slot_uri: pixlnd:mission-alpha-row/desc, range: string, description: "The desc field of mission-alpha-row."}
+      sites: {alias: sites, slot_uri: pixlnd:mission-alpha-row/sites, range: string, multivalued: true, description: "The sites field of mission-alpha-row."}
+      grid: {alias: grid, slot_uri: pixlnd:mission-alpha-row/grid, range: string, description: "The grid field of mission-alpha-row."}
+      assign: {alias: assign, slot_uri: pixlnd:mission-alpha-row/assign, range: string, description: "The assign field of mission-alpha-row."}
+      reward: {alias: reward, slot_uri: pixlnd:mission-alpha-row/reward, range: string, multivalued: true, description: "The reward field of mission-alpha-row."}
+      repeat: {alias: repeat, slot_uri: pixlnd:mission-alpha-row/repeat, range: string, description: "The repeat field of mission-alpha-row."}
+      notes: {alias: notes, slot_uri: pixlnd:mission-alpha-row/notes, range: string, multivalued: true, description: "The notes field of mission-alpha-row."}
+      versions: {alias: versions, slot_uri: pixlnd:mission-alpha-row/versions, range: string, multivalued: true, description: "The versions field of mission-alpha-row."}
+  mission-steam-source:
+    description: "Source representation of mission-steam-source."
+    annotations: {source-map-entries: entries}
+    attributes:
+      shared: {alias: _shared, slot_uri: pixlnd:mission-steam-source/shared, range: mission-shared-source, required: true, inlined: true, description: "The _shared field of mission-steam-source."}
+      completion-order: {alias: region-completion-order, slot_uri: pixlnd:mission-steam-source/order, range: string, required: true, multivalued: true, description: "The region-completion-order field of mission-steam-source."}
+      entries: {alias: entries, slot_uri: pixlnd:mission-steam-source/entries, range: mission-steam-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of mission-steam-source."}
+  mission-shared-source:
+    description: "Source representation of mission-shared-source."
+    attributes:
+      discover: {alias: discover, slot_uri: pixlnd:mission-shared-source/discover, range: string, required: true, description: "The discover field of mission-shared-source."}
+      tiers: {alias: tiers, slot_uri: pixlnd:mission-shared-source/tiers, range: string, required: true, multivalued: true, description: "The tiers field of mission-shared-source."}
+      reward: {alias: reward, slot_uri: pixlnd:mission-shared-source/reward, range: string, required: true, description: "The reward field of mission-shared-source."}
+      repeat: {alias: repeat, slot_uri: pixlnd:mission-shared-source/repeat, range: string, required: true, description: "The repeat field of mission-shared-source."}
+      completed: {alias: completed, slot_uri: pixlnd:mission-shared-source/completed, range: string, required: true, description: "The completed field of mission-shared-source."}
+  mission-steam-entry:
+    description: "Source representation of mission-steam-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:mission-steam-entry/value, range: mission-steam-row, required: true, inlined: true, description: "The value field of mission-steam-entry."}
+  mission-steam-row:
+    description: "Source representation of mission-steam-row."
+    attributes:
+      name: {alias: name, slot_uri: pixlnd:mission-steam-row/name, range: string, required: true, description: "The name field of mission-steam-row."}
+      desc: {alias: desc, slot_uri: pixlnd:mission-steam-row/desc, range: string, description: "The desc field of mission-steam-row."}
+      count: {alias: count, slot_uri: pixlnd:mission-steam-row/count, any_of: [{range: integer}, {range: string}], description: "The count field of mission-steam-row."}
+      tiers: {alias: tiers, slot_uri: pixlnd:mission-steam-row/tiers, range: string, multivalued: true, description: "The tiers field of mission-steam-row."}
+      repeat: {alias: repeat, slot_uri: pixlnd:mission-steam-row/repeat, range: string, description: "The repeat field of mission-steam-row."}
+      examples: {alias: examples, slot_uri: pixlnd:mission-steam-row/examples, range: string, multivalued: true, description: "The examples field of mission-steam-row."}
+      items: {alias: items, slot_uri: pixlnd:mission-steam-row/items, range: string, multivalued: true, description: "The items field of mission-steam-row."}
+      note: {alias: note, slot_uri: pixlnd:mission-steam-row/note, range: string, description: "The note field of mission-steam-row."}
+      needs: {alias: needs, slot_uri: pixlnd:mission-steam-row/needs, range: string, description: "The needs field of mission-steam-row."}
+      factions: {alias: factions, slot_uri: pixlnd:mission-steam-row/factions, range: string, multivalued: true, description: "The factions field of mission-steam-row."}
+      icon: {alias: icon, slot_uri: pixlnd:mission-steam-row/icon, range: string, description: "The icon field of mission-steam-row."}
+slots:
+  equipment-slot-hp-mult:
+    slot_uri: pixlnd:equipment-slot/hp-mult
+    alias: hp-mult
+    domain: equipment-slot
+    range: double
+    see_also:
+    - ../domain/3_Classes.md#item
+    description: Present only on the existing HP-bearing slots; omission selects no bonus here.
+  equipment-slot-accepts-conditions:
+    description: "Equipment slot accepts conditions property; interpreted under its owning definition."
+    slot_uri: pixlnd:equipment-slot/accepts-conditions
+    alias: accepts-conditions
+    domain: equipment-slot
+    range: slot-acceptance-condition
+    multivalued: true
+    inlined: true
+    inlined_as_list: false
+    see_also:
+    - ../domain/3_Classes.md#equipment-slot
+  slot-acceptance-condition-item-type:
+    description: "Slot acceptance condition item type property; interpreted under its owning definition."
+    slot_uri: pixlnd:slot-acceptance-condition/item-type
+    alias: item-type
+    domain: slot-acceptance-condition
+    range: item-type
+    key: true
+    required: true
+    see_also:
+    - ../domain/3_Classes.md#equipment-slot
+  slot-acceptance-condition-condition:
+    description: "Slot acceptance condition condition property; interpreted under its owning definition."
+    slot_uri: pixlnd:slot-acceptance-condition/condition
+    alias: condition
+    domain: slot-acceptance-condition
+    range: slot-acceptance-phase
+    required: true
+    see_also:
+    - ../domain/3_Classes.md#equipment-slot
+  gender-option-counts-m:
+    description: "Gender option counts m property; interpreted under its owning definition."
+    slot_uri: pixlnd:gender-option-counts/m
+    alias: m
+    domain: gender-option-counts
+    range: integer
+    required: true
+    see_also: *id001
+    minimum_value: 0
+  gender-option-counts-f:
+    description: "Gender option counts f property; interpreted under its owning definition."
+    slot_uri: pixlnd:gender-option-counts/f
+    alias: f
+    domain: gender-option-counts
+    range: integer
+    required: true
+    see_also: *id001
+    minimum_value: 0
+  race-name:
+    description: "Race name property; interpreted under its owning definition."
+    slot_uri: pixlnd:race/name
+    alias: name
+    domain: race
+    range: string
+    required: false
+    see_also: &id002
+    - ../domain/3_Classes.md#race
+  race-hair:
+    description: "Race hair property; interpreted under its owning definition."
+    slot_uri: pixlnd:race/hair
+    alias: hair
+    domain: race
+    range: gender-option-counts
+    required: false
+    see_also: *id002
+    inlined: true
+  race-heads:
+    description: "Race heads property; interpreted under its owning definition."
+    slot_uri: pixlnd:race/heads
+    alias: heads
+    domain: race
+    range: gender-option-counts
+    required: false
+    see_also: *id002
+    inlined: true
+  rarity-name:
+    description: "Rarity name property; interpreted under its owning definition."
+    slot_uri: pixlnd:rarity/name
+    alias: name
+    domain: rarity
+    range: string
+    required: false
+    see_also: &id003
+    - ../domain/3_Classes.md#rarity
+  rarity-color:
+    description: "Rarity color property; interpreted under its owning definition."
+    slot_uri: pixlnd:rarity/color
+    alias: color
+    domain: rarity
+    range: string
+    required: false
+    see_also: *id003
+  rarity-index:
+    description: "Rarity index property; interpreted under its owning definition."
+    slot_uri: pixlnd:rarity/index
+    alias: index
+    domain: rarity
+    range: integer
+    required: false
+    see_also: *id003
+    minimum_value: -1
+    maximum_value: 5
+  rarity-hex:
+    description: "Rarity hex property; interpreted under its owning definition."
+    slot_uri: pixlnd:rarity/hex
+    alias: hex
+    domain: rarity
+    range: string
+    required: false
+    see_also: *id003
+    pattern: ^#[0-9a-fA-F]{6}$
+  rarity-stars:
+    description: "Rarity stars property; interpreted under its owning definition."
+    slot_uri: pixlnd:rarity/stars
+    alias: stars
+    domain: rarity
+    range: integer
+    required: false
+    see_also: *id003
+    minimum_value: 1
+  rarity-gem:
+    description: "Rarity gem property; interpreted under its owning definition."
+    slot_uri: pixlnd:rarity/gem
+    alias: gem
+    domain: rarity
+    range: material
+    required: false
+    see_also: *id003
+  rarity-named:
+    description: "Rarity named property; interpreted under its owning definition."
+    slot_uri: pixlnd:rarity/named
+    alias: named
+    domain: rarity
+    range: boolean
+    required: false
+    see_also: *id003
+  building-name:
+    description: "Building name property; interpreted under its owning definition."
+    slot_uri: pixlnd:building/name
+    alias: name
+    domain: building
+    range: string
+    required: false
+    see_also: &id004
+    - ../domain/3_Classes.md#building
+  building-sign:
+    description: "Building sign property; interpreted under its owning definition."
+    slot_uri: pixlnd:building/sign
+    alias: sign
+    domain: building
+    range: string
+    required: false
+    see_also: *id004
+  building-map-icon:
+    description: "Building map icon property; interpreted under its owning definition."
+    slot_uri: pixlnd:building/map-icon
+    alias: map-icon
+    domain: building
+    range: string
+    required: false
+    see_also: *id004
+  building-roles:
+    description: "Building roles property; interpreted under its owning definition."
+    slot_uri: pixlnd:building/roles
+    alias: roles
+    domain: building
+    range: npc-role
+    required: false
+    see_also: *id004
+    multivalued: true
+  building-stations:
+    description: "Building stations property; interpreted under its owning definition."
+    slot_uri: pixlnd:building/stations
+    alias: stations
+    domain: building
+    range: crafting-station
+    required: false
+    see_also: *id004
+    multivalued: true
+  district-quarter-id:
+    description: "District quarter id property; interpreted under its owning definition."
+    slot_uri: pixlnd:district/quarter-id
+    alias: quarter-id
+    domain: district
+    range: integer
+    required: false
+    see_also: &id005
+    - ../domain/3_Classes.md#district
+    multivalued: true
+    minimum_cardinality: 2
+    maximum_cardinality: 2
+  district-decor:
+    description: "District decor property; interpreted under its owning definition."
+    slot_uri: pixlnd:district/decor
+    alias: decor
+    domain: district
+    range: string
+    required: false
+    see_also: *id005
+    multivalued: true
+  settlement-style-lands:
+    description: "Settlement style lands property; interpreted under its owning definition."
+    slot_uri: pixlnd:settlement-style/lands
+    alias: lands
+    domain: settlement-style
+    range: landscape
+    required: true
+    see_also: *id006
+    multivalued: true
+  settlement-style-desc:
+    description: "Settlement style desc property; interpreted under its owning definition."
+    slot_uri: pixlnd:settlement-style/desc
+    alias: desc
+    domain: settlement-style
+    range: string
+    required: false
+    see_also: *id006
+  material-name:
+    description: "Material name property; interpreted under its owning definition."
+    slot_uri: pixlnd:material/name
+    alias: name
+    domain: material
+    range: string
+    required: false
+    see_also: &id007
+    - ../domain/3_Classes.md#material
+  material-hp-bonus:
+    description: "Material hp bonus property; interpreted under its owning definition."
+    slot_uri: pixlnd:material/hp-bonus
+    alias: hp-bonus
+    domain: material
+    range: double
+    required: false
+    see_also: *id007
+  material-armor-mult:
+    description: "Material armor mult property; interpreted under its owning definition."
+    slot_uri: pixlnd:material/armor-mult
+    alias: armor-mult
+    domain: material
+    range: double
+    required: false
+    see_also: *id007
+  material-resi-mult:
+    description: "Material resi mult property; interpreted under its owning definition."
+    slot_uri: pixlnd:material/resi-mult
+    alias: resi-mult
+    domain: material
+    range: double
+    required: false
+    see_also: *id007
+  material-crit-bonus:
+    description: "Material crit bonus property; interpreted under its owning definition."
+    slot_uri: pixlnd:material/crit-bonus
+    alias: crit-bonus
+    domain: material
+    range: double
+    required: false
+    see_also: *id007
+  material-tempo-bonus:
+    description: "Material tempo bonus property; interpreted under its owning definition."
+    slot_uri: pixlnd:material/tempo-bonus
+    alias: tempo-bonus
+    domain: material
+    range: double
+    required: false
+    see_also: *id007
+  material-regen-bonus:
+    description: "Material regen bonus property; interpreted under its owning definition."
+    slot_uri: pixlnd:material/regen-bonus
+    alias: regen-bonus
+    domain: material
+    range: double
+    required: false
+    see_also: *id007
+  material-refined:
+    description: "Material refined property; interpreted under its owning definition."
+    slot_uri: pixlnd:material/refined
+    alias: refined
+    domain: material
+    range: ingredient
+    required: false
+    see_also: *id007
+  material-crafts-rarity:
+    description: "Material crafts rarity property; interpreted under its owning definition."
+    slot_uri: pixlnd:material/crafts-rarity
+    alias: crafts-rarity
+    domain: material
+    range: rarity
+    required: false
+    see_also: *id007
+  material-obtainable:
+    description: "Material obtainable property; interpreted under its owning definition."
+    slot_uri: pixlnd:material/obtainable
+    alias: obtainable
+    domain: material
+    range: boolean
+    required: false
+    see_also: *id007
+  ingredient-name:
+    description: "Ingredient name property; interpreted under its owning definition."
+    slot_uri: pixlnd:ingredient/name
+    alias: name
+    domain: ingredient
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#ingredient
+  ingredient-alpha-subtype:
+    slot_uri: pixlnd:ingredient/alpha-subtype
+    alias: alpha-subtype
+    domain: ingredient
+    range: integer
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#ingredient
+    - ../instances/ingredients.json
+    description: Optional numeric subtype from the catalog; shared values are not stable ingredient identity.
+  material-kind:
+    description: "Material kind property; interpreted under its owning definition."
+    slot_uri: pixlnd:material/kind
+    alias: kind
+    domain: material
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#material
+    - ../instances/materials.json
+  faction-name:
+    description: "Faction name property; interpreted under its owning definition."
+    slot_uri: pixlnd:faction/name
+    alias: name
+    domain: faction
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#faction
+    - ../instances/factions.json
+  npc-role-name:
+    description: "Npc role name property; interpreted under its owning definition."
+    slot_uri: pixlnd:npc-role/name
+    alias: name
+    domain: npc-role
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#npc-role
+    - ../instances/npc-roles.json
+  npc-role-dialogue:
+    description: "Npc role dialogue property; interpreted under its owning definition."
+    slot_uri: pixlnd:npc-role/dialogue
+    alias: dialogue
+    domain: npc-role
+    range: string
+    required: false
+    multivalued: true
+    see_also:
+    - ../domain/3_Classes.md#npc-role
+    - ../instances/npc-roles.json#villager
+  npc-role-sign:
+    description: "Npc role sign property; interpreted under its owning definition."
+    slot_uri: pixlnd:npc-role/sign
+    alias: sign
+    domain: npc-role
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#npc-role
+    - ../instances/npc-roles.json#identifier
+  crafting-station-name:
+    description: "Crafting station name property; interpreted under its owning definition."
+    slot_uri: pixlnd:crafting-station/name
+    alias: name
+    domain: crafting-station
+    range: string
+    required: false
+    see_also: &id008
+    - ../domain/3_Classes.md#crafting-station
+  crafting-station-static-id:
+    description: "Crafting station static id property; interpreted under its owning definition."
+    slot_uri: pixlnd:crafting-station/static-id
+    alias: static-id
+    domain: crafting-station
+    range: integer
+    required: false
+    see_also: *id008
+    minimum_value: 0
+enums:
+  slot-acceptance-phase:
+    description: "Slot acceptance phase vocabulary."
+    enum_uri: pixlnd:slot-acceptance-phase
+    see_also:
+    - ../domain/3_Classes.md#equipment-slot
+    permissible_values:
+      during-taming: {}

@@ -1,0 +1,214 @@
+{
+ "$schema": "block-type",
+ "_doc": "Every block also carries RGB. Alpha: 5-bit type + breakable bit + darkness flag. 1.0: Block = r,g,b,field_3,type,breakable (6 bytes).",
+ "alpha": {
+  "entries": [
+   {
+    "key": "0",
+    "value": {
+     "id": "air",
+     "solid": false
+    }
+   },
+   {
+    "key": "1",
+    "value": {
+     "id": "solid",
+     "note": "generic",
+     "solid": true
+    }
+   },
+   {
+    "key": "2",
+    "value": {
+     "id": "water",
+     "note": "no colour",
+     "solid": false
+    }
+   },
+   {
+    "key": "3",
+    "value": {
+     "id": "flat-water",
+     "note": "walkable; sides coloured, top looks like water",
+     "solid": true
+    }
+   },
+   {
+    "key": "4",
+    "value": {
+     "id": "grass",
+     "solid": true
+    }
+   },
+   {
+    "key": "5",
+    "value": {
+     "id": "field-cliff",
+     "note": "fields near cities and plateau cliff borders (not lava lands)",
+     "solid": true
+    }
+   },
+   {
+    "key": "6",
+    "value": {
+     "id": "rock-building",
+     "note": "rocks, buildings (cities, castles), lava-land cliffs",
+     "solid": true
+    }
+   },
+   {
+    "key": "7",
+    "value": {
+     "id": "tree-trunk",
+     "solid": true
+    }
+   },
+   {
+    "key": "8",
+    "value": {
+     "id": "leaves",
+     "note": "incl. snow on leaves",
+     "solid": true
+    }
+   },
+   {
+    "key": "9",
+    "value": {
+     "id": "sand",
+     "solid": true
+    }
+   },
+   {
+    "key": "10",
+    "value": {
+     "id": "snow",
+     "solid": true
+    }
+   },
+   {
+    "key": "11",
+    "value": {
+     "id": "solid-2",
+     "note": "unknown",
+     "solid": true
+    }
+   },
+   {
+    "key": "12",
+    "value": {
+     "id": "lava-floor",
+     "note": "floor in lava lands",
+     "solid": true
+    }
+   },
+   {
+    "key": "13",
+    "value": {
+     "id": "solid-3",
+     "note": "unknown",
+     "solid": true
+    }
+   },
+   {
+    "key": "14",
+    "value": {
+     "id": "roof",
+     "note": "normal house roofs (special buildings use 6)",
+     "solid": true
+    }
+   },
+   {
+    "key": "15",
+    "value": {
+     "id": "solid-4",
+     "note": "unknown",
+     "solid": true
+    }
+   }
+  ],
+  "flags": {
+   "breakable": "by bombs/bosses; regenerates ~3 game days",
+   "dark": "mesh/cave darkness"
+  }
+ },
+ "cub-format": {
+  "body": "x*y*z × RGB bytes, loop for z: for y: for x",
+  "compression": "none",
+  "empty": "RGB (0,0,0)",
+  "header": "3 × uint32 LE (x,y,z size)",
+  "storage": "alpha data1.db sqlite (obfuscated)"
+ },
+ "scale": {
+  "alpha-zone-blocks": 256,
+  "block-native-units": 65536,
+  "character-height-m": "≈2",
+  "steam-map-chunk-blocks": 20,
+  "steam-zone-blocks": 64
+ },
+ "steam": {
+  "entries": [
+   {
+    "key": "0",
+    "value": "air"
+   },
+   {
+    "key": "1",
+    "value": "solid"
+   },
+   {
+    "key": "2",
+    "value": "water"
+   },
+   {
+    "key": "3",
+    "value": "wet"
+   },
+   {
+    "key": "4",
+    "value": "grass"
+   },
+   {
+    "key": "5",
+    "value": "ground"
+   },
+   {
+    "key": "6",
+    "value": "building"
+   },
+   {
+    "key": "7",
+    "value": "tree"
+   },
+   {
+    "key": "8",
+    "value": "leaves"
+   },
+   {
+    "key": "10",
+    "value": "snow"
+   },
+   {
+    "key": "11",
+    "value": "snow-leaves"
+   },
+   {
+    "key": "13",
+    "value": "path"
+   },
+   {
+    "key": "17",
+    "value": "lava"
+   },
+   {
+    "key": "18",
+    "value": "cave"
+   },
+   {
+    "key": "19",
+    "value": "poison"
+   }
+  ],
+  "note": "poison = toxic rivers (deadlands/dark woods); lava = hazard"
+ }
+}

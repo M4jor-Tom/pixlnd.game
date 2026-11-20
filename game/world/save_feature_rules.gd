@@ -1,7 +1,7 @@
 ## Ordered feature record checks. Completion phases keep ordinary rejected rows
 ## separate from native-error false, which propagates to the original owner.
 extends RefCounted
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Item := preload("res://game/items/item.gd")
 const EncounterGen := preload("res://game/world/encounter_gen.gd")
 
@@ -144,7 +144,7 @@ static func _furnishing_contents(
 			&"consumable",
 			StringName(rules.potion),
 			int(rules["potion-count"]),
-			clampi(Model.power_for_level(level), 1, 100)
+			clampi(Domain.power_for_level(level), 1, 100)
 		)
 		potion.rarity = int(rules["potion-rarity"])
 		expected = [

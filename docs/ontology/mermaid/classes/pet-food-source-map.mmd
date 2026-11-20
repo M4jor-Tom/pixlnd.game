@@ -1,0 +1,6 @@
+ classDiagram
+    class `Pet-food-source-map`
+    click `Pet-food-source-map` href "../Pet-food-source-map"
+      `Pet-food-source-map` : entries
+        `Pet-food-source-map` --> "1..*" `Pet-food-source-entry` : entries
+        click `Pet-food-source-entry` href "../Pet-food-source-entry"

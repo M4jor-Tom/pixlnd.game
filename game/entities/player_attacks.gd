@@ -3,7 +3,7 @@ extends RefCounted
 
 const Combat := preload("res://game/combat/combat.gd")
 const Projectile := preload("res://game/combat/projectile.gd")
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 
 
 static func _combat_time_tick(p, dt: float) -> void:
@@ -306,15 +306,15 @@ static func weapon_attack_type(p) -> StringName:
 		return Combat.PHYSICAL
 	return (
 		Combat.MAGICAL
-		if (p.o.weapon_types[p.weapon["type"]] as Model.WeaponType).character_class == &"mage"
+		if p.o.weapon_types[p.weapon["type"]].slot_class == &"mage"
 		else Combat.PHYSICAL
 	)
 
 
 static func ability_attack_type(p, a) -> StringName:
-	var owner: StringName = StringName(str(a.owner)) if a.owner is String else p.spec
+	var owner: StringName = StringName(str(a.slot_owner)) if a.slot_owner is String else p.spec
 	var source_class: StringName = (
-		p.o.specs[owner].character_class if p.o.specs.has(owner) else owner
+		StringName(p.o.specs[owner].slot_class) if p.o.specs.has(owner) else owner
 	)
 	return Combat.MAGICAL if source_class == &"mage" else Combat.PHYSICAL
 

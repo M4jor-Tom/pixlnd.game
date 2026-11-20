@@ -1,0 +1,23 @@
+ classDiagram
+    class `Character-state`
+    click `Character-state` href "../Character-state"
+      `Character-state` : character_state_bag
+        `Character-state` --> "1..*" `Saved-item` : character_state_bag
+        click `Saved-item` href "../Saved-item"
+      `Character-state` : character_state_banked
+      `Character-state` : character_state_class_id
+        `Character-state` --> "1" `Character-class` : character_state_class_id
+        click `Character-class` href "../Character-class"
+      `Character-state` : character_state_coins
+      `Character-state` : character_state_equipment
+        `Character-state` --> "1..*" `Saved-equipment-entry` : character_state_equipment
+        click `Saved-equipment-entry` href "../Saved-equipment-entry"
+      `Character-state` : character_state_id
+      `Character-state` : character_state_level
+      `Character-state` : character_state_points
+        `Character-state` --> "1..*" `Skill-investment` : character_state_points
+        click `Skill-investment` href "../Skill-investment"
+      `Character-state` : character_state_spec
+        `Character-state` --> "1" `Specialization` : character_state_spec
+        click `Specialization` href "../Specialization"
+      `Character-state` : character_state_xp

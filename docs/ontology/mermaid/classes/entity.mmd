@@ -1,0 +1,71 @@
+ classDiagram
+    class `Entity`
+    click `Entity` href "../Entity"
+      `Entity` <|-- `Player-character`
+        click `Player-character` href "../Player-character"
+      `Entity` <|-- `Pet`
+        click `Pet` href "../Pet"
+      `Entity` : current_target
+        `Entity` --> "0..1" `Player-character` : current_target
+        click `Player-character` href "../Player-character"
+      `Entity` : entity_accel
+      `Entity` : entity_appearance
+        `Entity` --> "1" `Appearance` : entity_appearance
+        click `Appearance` href "../Appearance"
+      `Entity` : entity_armor_multiplier
+      `Entity` : entity_block_power
+      `Entity` : entity_blue_time
+      `Entity` : entity_body_pitch
+      `Entity` : entity_body_roll
+      `Entity` : entity_body_yaw
+      `Entity` : entity_class
+        `Entity` --> "0..1" `Character-class` : entity_class
+        click `Character-class` href "../Character-class"
+      `Entity` : entity_damage_multiplier
+      `Entity` : entity_equipment
+        `Entity` --> "13..*" `Item` : entity_equipment
+        click `Item` href "../Item"
+      `Entity` : entity_flags
+        `Entity` --> "*" `EntityFlag` : entity_flags
+        click `EntityFlag` href "../EntityFlag"
+      `Entity` : entity_hit_counter
+      `Entity` : entity_hostility
+        `Entity` --> "1" hostility : entity_hostility
+        click hostility href "../hostility"
+      `Entity` : entity_hp
+      `Entity` : entity_hp_multiplier
+      `Entity` : entity_last_hit_time
+      `Entity` : entity_level
+      `Entity` : entity_mana_cubes
+      `Entity` : entity_mp
+      `Entity` : entity_name
+      `Entity` : entity_parent_owner
+        `Entity` --> "0..1" `Entity` : entity_parent_owner
+        click `Entity` href "../Entity"
+      `Entity` : entity_pos
+      `Entity` : entity_power_base
+      `Entity` : entity_resi_multiplier
+      `Entity` : entity_skills
+      `Entity` : entity_slowed_time
+      `Entity` : entity_specialization
+        `Entity` --> "0..1" `Specialization` : entity_specialization
+        click `Specialization` href "../Specialization"
+      `Entity` : entity_species
+        `Entity` --> "1" `Race-or-creature` : entity_species
+        click `Race-or-creature` href "../Race-or-creature"
+      `Entity` : entity_speed_up_time
+      `Entity` : entity_stamina
+      `Entity` : entity_status_applications
+        `Entity` --> "*" `Status-application` : entity_status_applications
+        click `Status-application` href "../Status-application"
+      `Entity` : entity_stealth
+      `Entity` : entity_stun_time
+      `Entity` : entity_velocity
+      `Entity` : entity_xp
+      `Entity` : equips
+        `Entity` --> "*" `Item` : equips
+        click `Item` href "../Item"
+      `Entity` : id
+      `Entity` : threat
+        `Entity` --> "*" `Player-character` : threat
+        click `Player-character` href "../Player-character"

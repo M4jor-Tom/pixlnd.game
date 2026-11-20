@@ -1,0 +1,372 @@
+id: https://w3id.org/pixlnd/associations
+name: pixlnd-associations
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- combat
+- identity
+- items
+- world
+- meta
+- entities
+- relation-types
+- save-character
+default_range: string
+classes:
+  personal-permanent-source-claim:
+    class_uri: pixlnd:personal-permanent-source-claim
+    description: >-
+      Logical personal claim at an artifact or one-time book source in a saved world,
+      not a current save wire member. The tuple itself states ownership; another
+      character retains their own claim opportunity at the source, never a remote award.
+      Leaving, restarting, returning and daily enemy resets never renew a claim.
+      Separate saved worlds, including matching-seed worlds, offer separate sources.
+      Source existence, compound uniqueness and lifecycle enforcement remain consumer
+      responsibilities; this association does not instance ordinary ground loot.
+    see_also: [../domain/3_Classes.md#save-data, ../domain/3_Classes.md#artifact, ../domain/3_Classes.md#book-of-crafting]
+    unique_keys:
+      character-world-source:
+        unique_key_slots: [character, world, source-kind, source-key]
+    attributes:
+      character:
+        alias: character
+        slot_uri: pixlnd:personal-permanent-source-claim/character
+        domain: personal-permanent-source-claim
+        range: player-character
+        required: true
+        description: Portable character identity owning this personal claim.
+      world:
+        alias: world
+        slot_uri: pixlnd:personal-permanent-source-claim/world
+        domain: personal-permanent-source-claim
+        range: world
+        required: true
+        description: Saved-world identity, never the generation seed.
+      source-kind:
+        alias: source-kind
+        slot_uri: pixlnd:personal-permanent-source-claim/source-kind
+        domain: personal-permanent-source-claim
+        range: PersonalPermanentSourceKind
+        required: true
+        description: Only artifact and one-time book sources participate.
+      source-key:
+        alias: source-key
+        slot_uri: pixlnd:personal-permanent-source-claim/source-key
+        domain: personal-permanent-source-claim
+        range: string
+        required: true
+        description: >-
+          Opaque source key qualified by world and source-kind, not a global identifier
+          or an allocation scheme. Identifies the source, not the portable reward item.
+  character-world-state:
+    class_uri: pixlnd:character-world-state
+    description: Logical personal position and travel knowledge scoped to a character and saved world; not a current save wire replacement.
+    see_also: [../domain/3_Classes.md#player-character, ../domain/3_Classes.md#save-data]
+    slots: [character-world-state-discovered-lands, character-world-state-discovered-portals, character-world-state-discovered-shrines, character-world-state-discovered-flight-points]
+    unique_keys:
+      character-world:
+        unique_key_slots: [character-world-state-character, character-world-state-world]
+    attributes:
+      character-world-state-character: {alias: character, slot_uri: 'pixlnd:character-world-state/character', range: player-character, required: true, description: Portable character identity.}
+      character-world-state-world: {alias: world, slot_uri: 'pixlnd:character-world-state/world', range: world, required: true, description: Saved-world identity rather than seed.}
+      position: {alias: position, slot_uri: 'pixlnd:character-world-state/position', range: double, multivalued: true, minimum_cardinality: 3, maximum_cardinality: 3, description: Personal position components in this world.}
+      respawn: {alias: respawn, slot_uri: 'pixlnd:character-world-state/respawn', range: double, multivalued: true, minimum_cardinality: 3, maximum_cardinality: 3, description: Personal respawn-point components in this world.}
+  status-application:
+    class_uri: pixlnd:status-application
+    description: One independent combat status application; expiry and tick delivery remain behavior, not schema defaults.
+    see_also: [../domain/3_Classes.md#status-effect]
+    attributes:
+      effect: {alias: effect, slot_uri: 'pixlnd:status-application/effect', range: status-effect, required: true, description: Applied status definition.}
+      source: {alias: source, slot_uri: 'pixlnd:status-application/source', range: entity, description: Application source entity where present.}
+      damage: {alias: damage, slot_uri: 'pixlnd:status-application/damage', range: double, minimum_value: 0, description: Damage retained independently for this application.}
+      remaining-lifetime: {alias: remaining-lifetime, slot_uri: 'pixlnd:status-application/remaining-lifetime', range: double, minimum_value: 0, description: Remaining application lifetime; clock ownership remains the linked rule.}
+      next-tick: {alias: next-tick, slot_uri: 'pixlnd:status-application/next-tick', range: double, description: Independently retained next tick; no epoch or storage unit is inferred.}
+  resource-cost:
+    class_uri: pixlnd:resource-cost
+    see_also: &id001
+    - ../domain/4_Relations.md
+    slots:
+    - resource-cost-resource
+    - resource-cost-ruleset
+    - resource-cost-amount
+    description: Logical amount per resource and ruleset, not a normalization of qualified historical
+      cost text. Empty cost lists mean no cost; no default amount is implied.
+    unique_keys:
+      resource-ruleset:
+        unique_key_slots:
+        - resource-cost-resource
+        - resource-cost-ruleset
+  recipe-consumption:
+    class_uri: pixlnd:recipe-consumption
+    see_also: &id002
+    - ../domain/4_Relations.md
+    slots:
+    - recipe-consumption-input
+    - recipe-consumption-count
+    description: Logical counted input; ambiguous raw recipe alternatives are not normalized by this declaration.
+  ingredient-yield:
+    class_uri: pixlnd:ingredient-yield
+    see_also: &id003
+    - ../domain/4_Relations.md
+    slots:
+    - ingredient-yield-ingredient
+    - ingredient-yield-minimum
+    - ingredient-yield-maximum
+    description: Logical count interval; minimum <= maximum is a coupled rule, not enforced by native
+      JSON Schema.
+  realm-leader:
+    class_uri: pixlnd:realm-leader
+    see_also: &id004
+    - ../domain/3_Classes.md#realm
+    slots:
+    - realm-leader-name
+    - realm-leader-personality-trait
+    - realm-leader-birth-year
+    - realm-leader-hometown
+    - realm-leader-tomb-location
+    description: Logical named leader with numeric birth year and identified places; no calendar, epoch or historical wire encoding is implied.
+  realm-capital:
+    class_uri: pixlnd:realm-capital
+    see_also: &id005
+    - ../domain/3_Classes.md#realm
+    slots:
+    - realm-capital-name
+    - realm-capital-founding-year
+    - realm-capital-destruction-date
+    description: Logical named capital with numeric founding year and optional destruction year; no calendar, epoch or historical wire encoding is implied.
+  realm-knowledge:
+    class_uri: pixlnd:realm-knowledge
+    see_also: &id006
+    - ../domain/3_Classes.md#save-data
+    slots:
+    - realm-knowledge-character
+    - realm-knowledge-realm
+    - realm-knowledge-world
+    - realm-knowledge-percent
+    description: Logical personal knowledge, not a current serialized save payload. World means saved-world
+      identity, never seed. Reveal eligibility remains canonical prose.
+    unique_keys:
+      character-realm-world:
+        unique_key_slots:
+        - realm-knowledge-character
+        - realm-knowledge-realm
+        - realm-knowledge-world
+slots:
+  resource-cost-resource:
+    description: "Resource cost resource property; interpreted under its owning definition."
+    slot_uri: pixlnd:resource-cost/resource
+    alias: resource
+    domain: resource-cost
+    range: resource
+    required: true
+    see_also: *id001
+  resource-cost-ruleset:
+    description: "Resource cost ruleset property; interpreted under its owning definition."
+    slot_uri: pixlnd:resource-cost/ruleset
+    alias: ruleset
+    domain: resource-cost
+    range: ruleset
+    required: true
+    see_also: *id001
+  resource-cost-amount:
+    description: "Resource cost amount property; interpreted under its owning definition."
+    slot_uri: pixlnd:resource-cost/amount
+    alias: amount
+    domain: resource-cost
+    required: true
+    see_also: *id001
+    any_of:
+    - range: float
+      minimum_value: 0
+    - range: all-resource
+  recipe-consumption-input:
+    description: "Recipe consumption input property; interpreted under its owning definition."
+    slot_uri: pixlnd:recipe-consumption/input
+    alias: input
+    domain: recipe-consumption
+    range: ingredient-or-material
+    required: true
+    see_also: *id002
+  recipe-consumption-count:
+    description: "Recipe consumption count property; interpreted under its owning definition."
+    slot_uri: pixlnd:recipe-consumption/count
+    alias: count
+    domain: recipe-consumption
+    range: integer
+    required: true
+    see_also: *id002
+    minimum_value: 1
+  ingredient-yield-ingredient:
+    description: "Ingredient yield ingredient property; interpreted under its owning definition."
+    slot_uri: pixlnd:ingredient-yield/ingredient
+    alias: ingredient
+    domain: ingredient-yield
+    range: ingredient
+    required: true
+    see_also: *id003
+  ingredient-yield-minimum:
+    description: "Ingredient yield minimum property; interpreted under its owning definition."
+    slot_uri: pixlnd:ingredient-yield/minimum
+    alias: minimum
+    domain: ingredient-yield
+    range: integer
+    required: true
+    see_also: *id003
+    minimum_value: 0
+  ingredient-yield-maximum:
+    description: "Ingredient yield maximum property; interpreted under its owning definition."
+    slot_uri: pixlnd:ingredient-yield/maximum
+    alias: maximum
+    domain: ingredient-yield
+    range: integer
+    required: true
+    see_also: *id003
+    minimum_value: 0
+  realm-leader-name:
+    description: "Realm leader name property; interpreted under its owning definition."
+    slot_uri: pixlnd:realm-leader/name
+    alias: name
+    domain: realm-leader
+    range: string
+    required: false
+    see_also: *id004
+  realm-leader-personality-trait:
+    description: "Realm leader personality trait property; interpreted under its owning definition."
+    slot_uri: pixlnd:realm-leader/personality-trait
+    alias: personality-trait
+    domain: realm-leader
+    range: string
+    required: false
+    see_also: *id004
+  realm-capital-name:
+    description: "Realm capital name property; interpreted under its owning definition."
+    slot_uri: pixlnd:realm-capital/name
+    alias: name
+    domain: realm-capital
+    range: string
+    required: false
+    see_also: *id005
+  realm-knowledge-character:
+    description: "Realm knowledge character property; interpreted under its owning definition."
+    slot_uri: pixlnd:realm-knowledge/character
+    alias: character
+    domain: realm-knowledge
+    range: player-character
+    required: true
+    see_also: *id006
+  realm-knowledge-realm:
+    description: "Realm knowledge realm property; interpreted under its owning definition."
+    slot_uri: pixlnd:realm-knowledge/realm
+    alias: realm
+    domain: realm-knowledge
+    range: realm
+    required: true
+    see_also: *id006
+  realm-knowledge-world:
+    description: "Realm knowledge world property; interpreted under its owning definition."
+    slot_uri: pixlnd:realm-knowledge/world
+    alias: world
+    domain: realm-knowledge
+    range: world
+    required: true
+    see_also: *id006
+  realm-knowledge-percent:
+    description: "Realm knowledge percent property; interpreted under its owning definition."
+    slot_uri: pixlnd:realm-knowledge/percent
+    alias: percent
+    domain: realm-knowledge
+    range: float
+    required: true
+    see_also: *id006
+    minimum_value: 0
+    maximum_value: 100
+  character-world-state-discovered-lands:
+    slot_uri: pixlnd:character-world-state/discovered-lands
+    alias: discovered-lands
+    domain: character-world-state
+    range: land
+    description: Personal discovered land references; terrain exploration remains world-owned.
+    see_also: [../domain/3_Classes.md#player-character]
+    multivalued: true
+    list_elements_unique: true
+  character-world-state-discovered-portals:
+    slot_uri: pixlnd:character-world-state/discovered-portals
+    alias: discovered-portals
+    domain: character-world-state
+    range: poi
+    description: Personal portal unlock references.
+    see_also: [../domain/3_Classes.md#player-character]
+    multivalued: true
+    list_elements_unique: true
+  character-world-state-discovered-shrines:
+    slot_uri: pixlnd:character-world-state/discovered-shrines
+    alias: discovered-shrines
+    domain: character-world-state
+    range: poi
+    description: Personal shrine unlock references.
+    see_also: [../domain/3_Classes.md#player-character]
+    multivalued: true
+    list_elements_unique: true
+  character-world-state-discovered-flight-points:
+    slot_uri: pixlnd:character-world-state/discovered-flight-points
+    alias: discovered-flight-points
+    domain: character-world-state
+    range: poi
+    description: Personal flight-point unlock references.
+    see_also: [../domain/3_Classes.md#player-character]
+    multivalued: true
+    list_elements_unique: true
+
+  realm-leader-birth-year:
+    alias: birth-year
+    slot_uri: pixlnd:realm-leader/birth-year
+    domain: realm-leader
+    range: integer
+    description: "Numeric birth year; no epoch, calendar, bounds, default or derived stored age is selected."
+    see_also: [../domain/3_Classes.md#realm]
+  realm-leader-hometown:
+    alias: hometown
+    slot_uri: pixlnd:realm-leader/hometown
+    domain: realm-leader
+    range: settlement
+    description: "Identified hometown settlement, not copied display-name text."
+    see_also: [../domain/3_Classes.md#realm]
+  realm-leader-tomb-location:
+    alias: tomb-location
+    slot_uri: pixlnd:realm-leader/tomb-location
+    domain: realm-leader
+    range: poi
+    description: "Identified tomb place, not a POI catalog type, active settlement or guessed coordinates; historical geometry and generated availability remain unqualified."
+    see_also: [../domain/3_Classes.md#realm]
+  realm-capital-founding-year:
+    alias: founding-year
+    slot_uri: pixlnd:realm-capital/founding-year
+    domain: realm-capital
+    range: integer
+    description: "Numeric founding year with no invented epoch, calendar, bounds or default."
+    see_also: [../domain/3_Classes.md#realm]
+  realm-capital-destruction-date:
+    alias: destruction-date
+    slot_uri: pixlnd:realm-capital/destruction-date
+    domain: realm-capital
+    range: integer
+    required: false
+    description: "Optional numeric destruction year; no calendar, epoch, bounds, default or chronology is selected."
+    see_also: [../domain/3_Classes.md#realm]
+
+enums:
+  PersonalPermanentSourceKind:
+    enum_uri: pixlnd:PersonalPermanentSourceKind
+    description: Permanent reward source kinds eligible for personal once-per-world claims.
+    permissible_values:
+      artifact: {}
+      one_time_book:
+        aliases: [one-time-book]
+  all-resource:
+    description: "All resource vocabulary."
+    enum_uri: pixlnd:all-resource
+    permissible_values:
+      all: {}

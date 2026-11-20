@@ -1,9 +1,9 @@
 ## Headless check of §3.1 gen-settlement + §3.4 shop + D22 services: `godot --headless -s game/world/test_settlement.gd`.
 ## Village placement (determinism, dry land, plateau), layout, no wild spawns near the square, shop stock + prices,
-## c-settlement-config; then a scene: buy / sell, trainer respec, inn rest, E finds the NPC, NPCs are unattackable.
+## then a scene: buy / sell, trainer respec, inn rest, E finds the NPC, NPCs are unattackable.
 extends SceneTree
 
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const WorldGen := preload("res://game/world/world_gen.gd")
 const Settlement := preload("res://game/world/settlement.gd")
 const Spawner := preload("res://game/world/spawner.gd")
@@ -28,8 +28,8 @@ func _frames(n: int) -> void:
 
 
 func _init() -> void:
-	var o := Model.Ontology.load_dir("res://ontology/instances")
-	check(o.validate(), "ontology valid")
+	var o := Domain.Ontology.load_dir()
+	check(o.errors.is_empty(), "ontology valid")
 	var design: Dictionary = o.configs["generators"]["design"]
 	var st: Dictionary = design["settlement"]
 	var a := WorldGen.new(26879, design, o.landscapes)
@@ -50,11 +50,6 @@ func _init() -> void:
 	_layout(v0, st, r, o)
 	_wild(a, v0, design, o, st)
 	var w1 := _stock(a, v0, o, design, st, rng)
-	# c-settlement-config fires
-	st["ring-radius"] = 99.0
-	check(not o.validate(), "c-settlement-config rejects ring-radius ≥ radius")
-	st["ring-radius"] = 15.0
-	o.errors.clear()
 	await _scene(o, design, st, w1)
 	print(
 		(
@@ -140,7 +135,7 @@ func _stock(
 	var w1 := Shop.stock(&"weapon-vendor", a, l0, v0, 3, o, design)
 	var w2 := Shop.stock(&"weapon-vendor", a, l0, v0, 3, o, design)
 	check(w1.size() == int(st["shop"]["stock"]), "weapon stock has %d items" % w1.size())
-	var cap: int = o.rarities[StringName(st["shop"]["rarity-cap"])].index
+	var cap: int = o.rarities[StringName(st["shop"]["rarity-cap"])].slot_index
 	var bad := 0
 	for i in w1.size():
 		bad += _bad_weapon(w1, w2, i, cap, o, design)
@@ -312,7 +307,10 @@ func _services(p, st: Dictionary) -> void:
 	p.spend_skill(smash)
 	p.spend_skill(smash)
 	p.inventory.coins = 0
-	check(not p.respec() and p.skill_tree.spent(smash.id) == 2, "respec refused without the fee")
+	check(
+		not p.respec() and p.skill_tree.spent(Domain.id_of(smash)) == 2,
+		"respec refused without the fee"
+	)
 	_respec_paid(p, st, smash)
 	_rest(p)
 
@@ -350,7 +348,7 @@ func _armor_stock(a, l0, v0: Dictionary, o, design: Dictionary) -> void:
 
 func _prices(rng: RandomNumberGenerator, o, design: Dictionary, cons: Array) -> void:
 	var sword := Items.generate(rng, &"weapon", &"sword", &"iron", 1, 0)
-	var rare := Items.generate(rng, &"weapon", &"sword", &"iron", 3, Model.Rarity.RARE)
+	var rare := Items.generate(rng, &"weapon", &"sword", &"iron", 3, Domain.Rarity.RARE)
 	check(
 		Shop.buy_price(sword, o, design) == 6 and Shop.buy_price(rare, o, design) == 72,
 		(
@@ -380,7 +378,7 @@ func _respec_paid(p, st: Dictionary, smash) -> void:
 		(
 			p.respec()
 			and p.skill_points == 2
-			and p.skill_tree.spent(smash.id) == 0
+			and p.skill_tree.spent(Domain.id_of(smash)) == 0
 			and p.inventory.coins == 0
 		),
 		"respec refunds 2 points for the fee"

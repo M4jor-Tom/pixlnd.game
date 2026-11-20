@@ -1,0 +1,11 @@
+ classDiagram
+    class `Ui-screen-presentation`
+    click `Ui-screen-presentation` href "../Ui-screen-presentation"
+      `Ui-screen-presentation` : ui_screen_presentation_desc
+      `Ui-screen-presentation` : ui_screen_presentation_extras
+      `Ui-screen-presentation` : ui_screen_presentation_screen
+      `Ui-screen-presentation` : ui_screen_presentation_shows
+      `Ui-screen-presentation` : ui_screen_presentation_stats
+        `Ui-screen-presentation` --> "0..1" `Ui-screen-context-lists` : ui_screen_presentation_stats
+        click `Ui-screen-context-lists` href "../Ui-screen-context-lists"
+      `Ui-screen-presentation` : ui_screen_presentation_tabs

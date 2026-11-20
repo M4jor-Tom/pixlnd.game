@@ -1,0 +1,10 @@
+ classDiagram
+    class `Save-data`
+    click `Save-data` href "../Save-data"
+      `Save-data` : save_data_character
+        `Save-data` --> "1" `Character-state` : save_data_character
+        click `Character-state` href "../Character-state"
+      `Save-data` : save_data_version
+      `Save-data` : save_data_world
+        `Save-data` --> "1" `World-state` : save_data_world
+        click `World-state` href "../World-state"

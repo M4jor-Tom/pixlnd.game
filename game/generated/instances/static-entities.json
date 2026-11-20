@@ -1,0 +1,389 @@
+{
+ "$schema": "static-entity",
+ "_doc": "Alpha static entity type ids (cuwo STATIC_NAMES). Header: type, pos, orientation (0 S,1 E,2 N,3 W), size, closed, time_offset, user_id (sitter). Sit-able: sleeping-mat, stool, bench, bed. Open-able: window, castle-window, door, big-door, chest.",
+ "behaviour": {
+  "entries": [
+   {
+    "key": "door|big-door|gate",
+    "value": "open/close; gates locked by keys/harp/bell (S); objects can't be used through walls (0.9.1-4); mages can't teleport through gates (0.9.2-0)"
+   },
+   {
+    "key": "chest",
+    "value": "loot; A small chests in houses empty; S one-time dungeon chests"
+   },
+   {
+    "key": "lever",
+    "value": "dungeon puzzle (2012)"
+   },
+   {
+    "key": "fire-trap|stomp-trap",
+    "value": "in data, not shipped (X)"
+   },
+   {
+    "key": "spike-trap",
+    "value": "A dungeons; pierces dodge i-frames"
+   },
+   {
+    "key": "bed|sleeping-mat|bench|stool",
+    "value": "sit/sleep; sleeping advances clock 100x; beds heal"
+   },
+   {
+    "key": "vase",
+    "value": "A breakable loot"
+   },
+   {
+    "key": "campfire",
+    "value": "cooking station"
+   },
+   {
+    "key": "statue",
+    "value": "revival statue (A)"
+   },
+   {
+    "key": "market-stand|barrel|crate|sack",
+    "value": "decorative trade district"
+   }
+  ]
+ },
+ "by-id": {
+  "entries": [
+   {
+    "key": "0",
+    "value": "statue"
+   },
+   {
+    "key": "1",
+    "value": "door"
+   },
+   {
+    "key": "2",
+    "value": "big-door"
+   },
+   {
+    "key": "3",
+    "value": "window"
+   },
+   {
+    "key": "4",
+    "value": "castle-window"
+   },
+   {
+    "key": "5",
+    "value": "gate"
+   },
+   {
+    "key": "6",
+    "value": "fire-trap"
+   },
+   {
+    "key": "7",
+    "value": "spike-trap"
+   },
+   {
+    "key": "8",
+    "value": "stomp-trap"
+   },
+   {
+    "key": "9",
+    "value": "lever"
+   },
+   {
+    "key": "10",
+    "value": "chest"
+   },
+   {
+    "key": "11",
+    "value": "chest-top-02"
+   },
+   {
+    "key": "12",
+    "value": "table"
+   },
+   {
+    "key": "13",
+    "value": "table"
+   },
+   {
+    "key": "14",
+    "value": "table"
+   },
+   {
+    "key": "15",
+    "value": "stool"
+   },
+   {
+    "key": "16",
+    "value": "stool"
+   },
+   {
+    "key": "17",
+    "value": "stool"
+   },
+   {
+    "key": "18",
+    "value": "bench"
+   },
+   {
+    "key": "19",
+    "value": "bed"
+   },
+   {
+    "key": "20",
+    "value": "bed-table"
+   },
+   {
+    "key": "21",
+    "value": "market-stand-1"
+   },
+   {
+    "key": "22",
+    "value": "market-stand-2"
+   },
+   {
+    "key": "23",
+    "value": "market-stand-3"
+   },
+   {
+    "key": "24",
+    "value": "barrel"
+   },
+   {
+    "key": "25",
+    "value": "crate"
+   },
+   {
+    "key": "26",
+    "value": "open-crate"
+   },
+   {
+    "key": "27",
+    "value": "sack"
+   },
+   {
+    "key": "28",
+    "value": "shelter"
+   },
+   {
+    "key": "29",
+    "value": "cupboard"
+   },
+   {
+    "key": "30",
+    "value": "desktop"
+   },
+   {
+    "key": "31",
+    "value": "counter"
+   },
+   {
+    "key": "32",
+    "value": "shelf-1"
+   },
+   {
+    "key": "33",
+    "value": "shelf-2"
+   },
+   {
+    "key": "34",
+    "value": "shelf-3"
+   },
+   {
+    "key": "35",
+    "value": "castle-shelf-1"
+   },
+   {
+    "key": "36",
+    "value": "castle-shelf-2"
+   },
+   {
+    "key": "37",
+    "value": "castle-shelf-3"
+   },
+   {
+    "key": "38",
+    "value": "stone-shelf-1"
+   },
+   {
+    "key": "39",
+    "value": "stone-shelf-2"
+   },
+   {
+    "key": "40",
+    "value": "stone-shelf-3"
+   },
+   {
+    "key": "41",
+    "value": "sandstone-shelf-1"
+   },
+   {
+    "key": "42",
+    "value": "sandstone-shelf-2"
+   },
+   {
+    "key": "43",
+    "value": "sandstone-shelf-3"
+   },
+   {
+    "key": "44",
+    "value": "corpse"
+   },
+   {
+    "key": "45",
+    "value": "rune-stone"
+   },
+   {
+    "key": "46",
+    "value": "artifact"
+   },
+   {
+    "key": "47",
+    "value": "flower-box-1"
+   },
+   {
+    "key": "48",
+    "value": "flower-box-2"
+   },
+   {
+    "key": "49",
+    "value": "flower-box-3"
+   },
+   {
+    "key": "50",
+    "value": "street-light"
+   },
+   {
+    "key": "51",
+    "value": "fire-street-light"
+   },
+   {
+    "key": "52",
+    "value": "fence-1"
+   },
+   {
+    "key": "53",
+    "value": "fence-2"
+   },
+   {
+    "key": "54",
+    "value": "fence-3"
+   },
+   {
+    "key": "55",
+    "value": "fence-4"
+   },
+   {
+    "key": "56",
+    "value": "vase-1"
+   },
+   {
+    "key": "57",
+    "value": "vase-2"
+   },
+   {
+    "key": "58",
+    "value": "vase-3"
+   },
+   {
+    "key": "59",
+    "value": "vase-4"
+   },
+   {
+    "key": "60",
+    "value": "vase-5"
+   },
+   {
+    "key": "61",
+    "value": "vase-6"
+   },
+   {
+    "key": "62",
+    "value": "vase-7"
+   },
+   {
+    "key": "63",
+    "value": "vase-8"
+   },
+   {
+    "key": "64",
+    "value": "vase-9"
+   },
+   {
+    "key": "65",
+    "value": "campfire"
+   },
+   {
+    "key": "66",
+    "value": "tent"
+   },
+   {
+    "key": "67",
+    "value": "beach-umbrella"
+   },
+   {
+    "key": "68",
+    "value": "beach-towel"
+   },
+   {
+    "key": "69",
+    "value": "sleeping-mat"
+   },
+   {
+    "key": "71",
+    "value": "furnace"
+   },
+   {
+    "key": "72",
+    "value": "anvil"
+   },
+   {
+    "key": "73",
+    "value": "spinning-wheel"
+   },
+   {
+    "key": "74",
+    "value": "loom"
+   },
+   {
+    "key": "75",
+    "value": "saw-bench"
+   },
+   {
+    "key": "76",
+    "value": "workbench"
+   },
+   {
+    "key": "77",
+    "value": "customization-bench"
+   }
+  ]
+ },
+ "candles": {
+  "colors": [
+   "red",
+   "pink",
+   "green"
+  ],
+  "placement": "red/pink in dungeons/palaces/castles (yellow light); green in ruins/catacombs (green light)",
+  "sizes": [
+   "small",
+   "tall",
+   "large forked"
+  ]
+ },
+ "s-additions": [
+  "magic-crystal",
+  "brazier",
+  "mana-generator",
+  "mana-pump",
+  "demon-portal",
+  "bird-statue",
+  "menhir/tablet",
+  "divine door",
+  "cage",
+  "molehill",
+  "bone-pile",
+  "hornet-nest",
+  "slime-well",
+  "shrine-of-life"
+ ]
+}

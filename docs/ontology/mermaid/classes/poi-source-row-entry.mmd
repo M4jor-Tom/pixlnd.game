@@ -1,0 +1,7 @@
+ classDiagram
+    class `Poi-source-row-entry`
+    click `Poi-source-row-entry` href "../Poi-source-row-entry"
+      `Poi-source-row-entry` : source_entry_key
+      `Poi-source-row-entry` : value
+        `Poi-source-row-entry` --> "1" `Poi-source-row` : value
+        click `Poi-source-row` href "../Poi-source-row"

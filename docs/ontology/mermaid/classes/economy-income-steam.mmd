@@ -1,0 +1,13 @@
+ classDiagram
+    class `Economy-income-steam`
+    click `Economy-income-steam` href "../Economy-income-steam"
+      `Economy-income-steam` : arena
+      `Economy-income-steam` : bag_of_gold
+      `Economy-income-steam` : boss
+      `Economy-income-steam` : gem_sell
+        `Economy-income-steam` --> "1" `Economy-gem-values` : gem_sell
+        click `Economy-gem-values` href "../Economy-gem-values"
+      `Economy-income-steam` : legendary_plus_sell
+      `Economy-income-steam` : legendary_sell
+      `Economy-income-steam` : mana_generator
+      `Economy-income-steam` : monster

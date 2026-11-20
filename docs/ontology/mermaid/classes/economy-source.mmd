@@ -1,0 +1,24 @@
+ classDiagram
+    class `Economy-source`
+    click `Economy-source` href "../Economy-source"
+      `Economy-source` : currency
+        `Economy-source` --> "1" `Economy-currency-source` : currency
+        click `Economy-currency-source` href "../Economy-currency-source"
+      `Economy-source` : gaps
+      `Economy-source` : gaps_decided
+      `Economy-source` : incomes
+        `Economy-source` --> "1" `Economy-incomes-source` : incomes
+        click `Economy-incomes-source` href "../Economy-incomes-source"
+      `Economy-source` : loot
+        `Economy-source` --> "1" `Economy-loot-source` : loot
+        click `Economy-loot-source` href "../Economy-loot-source"
+      `Economy-source` : prices
+        `Economy-source` --> "1" `Economy-prices-source` : prices
+        click `Economy-prices-source` href "../Economy-prices-source"
+      `Economy-source` : rules
+        `Economy-source` --> "1" `Economy-rules-source` : rules
+        click `Economy-rules-source` href "../Economy-rules-source"
+      `Economy-source` : schema_tag
+      `Economy-source` : shops
+        `Economy-source` --> "1" `Economy-shops-source` : shops
+        click `Economy-shops-source` href "../Economy-shops-source"

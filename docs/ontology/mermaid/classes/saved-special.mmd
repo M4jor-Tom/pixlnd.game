@@ -1,0 +1,12 @@
+ classDiagram
+    class `Saved-special`
+    click `Saved-special` href "../Saved-special"
+      `Saved-special` : saved_special_endpoint
+      `Saved-special` : saved_special_engaged
+      `Saved-special` : saved_special_left
+      `Saved-special` : saved_special_origin
+      `Saved-special` : saved_special_phase
+        `Saved-special` --> "1" `Special-phase` : saved_special_phase
+        click `Special-phase` href "../Special-phase"
+      `Saved-special` : saved_special_recovery
+      `Saved-special` : saved_special_target

@@ -1,0 +1,9 @@
+ classDiagram
+    class `Source-alpha-location-pair-pair`
+    click `Source-alpha-location-pair-pair` href "../Source-alpha-location-pair-pair"
+      `Source-alpha-location-pair-pair` : first
+        `Source-alpha-location-pair-pair` --> "1" `Source-integer-pair` : first
+        click `Source-integer-pair` href "../Source-integer-pair"
+      `Source-alpha-location-pair-pair` : second
+        `Source-alpha-location-pair-pair` --> "1" `Source-integer-pair` : second
+        click `Source-integer-pair` href "../Source-integer-pair"

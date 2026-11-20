@@ -1,0 +1,673 @@
+{
+ "$schema": "ruleset",
+ "_controls": "../domain/controls.md#climb; climb-key-hold is a retained legacy flag name, not a physical binding or complete climb lifecycle. Profiles: ../domain/controller-profiles.md",
+ "_doc": "Feature-flag bundles. Only ruleset-hybrid is the pixlnd target (D1); alpha/Steam bundles are historical reference, Omega is announced roadmap content, not v1 (D4). Historical true flags do not authorize hybrid availability. Regional gear power loss is permanently excluded: never propose or implement it, even for cloning fidelity. Hybrid flags describe target/configuration, not proof of implementation; unresolved merges remain in docs/ROADMAP/todo_decide.md §E.",
+ "entries": [
+  {
+   "key": "ruleset-alpha",
+   "value": {
+    "flags": [
+     {
+      "key": "xp-and-levels",
+      "value": true
+     },
+     {
+      "key": "skill-points-per-level",
+      "value": 2
+     },
+     {
+      "key": "skill-tree",
+      "value": true
+     },
+     {
+      "key": "item-power-level-visible",
+      "value": true
+     },
+     {
+      "key": "power-gate",
+      "value": true
+     },
+     {
+      "key": "adaptation",
+      "value": true
+     },
+     {
+      "key": "platinum-coins",
+      "value": true
+     },
+     {
+      "key": "spirit-cubes",
+      "value": true
+     },
+     {
+      "key": "formulas",
+      "value": true
+     },
+     {
+      "key": "books-of-crafting",
+      "value": false
+     },
+     {
+      "key": "gnome-suppliers",
+      "value": false
+     },
+     {
+      "key": "region-lock",
+      "value": false
+     },
+     {
+      "key": "plus-items",
+      "value": false
+     },
+     {
+      "key": "artifacts",
+      "value": false
+     },
+     {
+      "key": "lore",
+      "value": false
+     },
+     {
+      "key": "key-items-per-land",
+      "value": false
+     },
+     {
+      "key": "glider-boat-bought",
+      "value": true
+     },
+     {
+      "key": "pet-xp",
+      "value": true
+     },
+     {
+      "key": "pet-hydration",
+      "value": true
+     },
+     {
+      "key": "pet-scales-with-gear",
+      "value": false
+     },
+     {
+      "key": "drowning",
+      "value": false
+     },
+     {
+      "key": "portals",
+      "value": true
+     },
+     {
+      "key": "shrines-of-life",
+      "value": false
+     },
+     {
+      "key": "flight-master",
+      "value": false
+     },
+     {
+      "key": "revival-statue-auto",
+      "value": true
+     },
+     {
+      "key": "arena",
+      "value": false
+     },
+     {
+      "key": "circle-of-power",
+      "value": false
+     },
+     {
+      "key": "demon-portals",
+      "value": false
+     },
+     {
+      "key": "steel-empire-events",
+      "value": false
+     },
+     {
+      "key": "factions",
+      "value": false
+     },
+     {
+      "key": "elixirs-beverages",
+      "value": false
+     },
+     {
+      "key": "dungeon-traps",
+      "value": true
+     },
+     {
+      "key": "dungeon-vases-tables",
+      "value": true
+     },
+     {
+      "key": "multiple-bosses-per-dungeon",
+      "value": false
+     },
+     {
+      "key": "coin-denominations",
+      "value": [
+       "copper",
+       "silver",
+       "gold"
+      ]
+     },
+     {
+      "key": "inn-cost",
+      "value": 0
+     },
+     {
+      "key": "spec-change",
+      "value": "class-trainer-fee"
+     },
+     {
+      "key": "multiplayer",
+      "value": "dedicated-server"
+     },
+     {
+      "key": "settlements-per-land",
+      "value": 1
+     },
+     {
+      "key": "settlements-always-on-map",
+      "value": true
+     },
+     {
+      "key": "map-unexplored-hidden",
+      "value": true
+     },
+     {
+      "key": "seed-per-world",
+      "value": true
+     },
+     {
+      "key": "iron-lamp-item",
+      "value": true
+     },
+     {
+      "key": "climb-key-hold",
+      "value": true
+     },
+     {
+      "key": "wall-jump",
+      "value": false
+     }
+    ],
+    "name": "Alpha 0.1.x rules",
+    "progression": "xp-levels-skill-points",
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "ruleset-steam",
+   "value": {
+    "flags": [
+     {
+      "key": "xp-and-levels",
+      "value": false
+     },
+     {
+      "key": "skill-points-per-level",
+      "value": 0
+     },
+     {
+      "key": "skill-tree",
+      "value": false
+     },
+     {
+      "key": "item-power-level-visible",
+      "value": false
+     },
+     {
+      "key": "power-gate",
+      "value": false
+     },
+     {
+      "key": "adaptation",
+      "value": false
+     },
+     {
+      "key": "platinum-coins",
+      "value": false
+     },
+     {
+      "key": "spirit-cubes",
+      "value": false
+     },
+     {
+      "key": "formulas",
+      "value": false
+     },
+     {
+      "key": "books-of-crafting",
+      "value": true
+     },
+     {
+      "key": "gnome-suppliers",
+      "value": true
+     },
+     {
+      "key": "region-lock",
+      "value": true
+     },
+     {
+      "key": "plus-items",
+      "value": true
+     },
+     {
+      "key": "artifacts",
+      "value": true
+     },
+     {
+      "key": "lore",
+      "value": true
+     },
+     {
+      "key": "key-items-per-land",
+      "value": true
+     },
+     {
+      "key": "glider-boat-bought",
+      "value": false
+     },
+     {
+      "key": "pet-xp",
+      "value": false
+     },
+     {
+      "key": "pet-hydration",
+      "value": false
+     },
+     {
+      "key": "pet-scales-with-gear",
+      "value": true
+     },
+     {
+      "key": "drowning",
+      "value": true
+     },
+     {
+      "key": "portals",
+      "value": false
+     },
+     {
+      "key": "shrines-of-life",
+      "value": true
+     },
+     {
+      "key": "flight-master",
+      "value": true
+     },
+     {
+      "key": "revival-statue-auto",
+      "value": false
+     },
+     {
+      "key": "arena",
+      "value": true
+     },
+     {
+      "key": "circle-of-power",
+      "value": true
+     },
+     {
+      "key": "demon-portals",
+      "value": true
+     },
+     {
+      "key": "steel-empire-events",
+      "value": true
+     },
+     {
+      "key": "factions",
+      "value": true
+     },
+     {
+      "key": "elixirs-beverages",
+      "value": true
+     },
+     {
+      "key": "dungeon-traps",
+      "value": false
+     },
+     {
+      "key": "dungeon-vases-tables",
+      "value": false
+     },
+     {
+      "key": "multiple-bosses-per-dungeon",
+      "value": true
+     },
+     {
+      "key": "coin-denominations",
+      "value": [
+       "coin"
+      ]
+     },
+     {
+      "key": "inn-cost",
+      "value": 10
+     },
+     {
+      "key": "spec-change",
+      "value": "guild-free"
+     },
+     {
+      "key": "multiplayer",
+      "value": "steam-friends-p2p"
+     },
+     {
+      "key": "settlements-per-land",
+      "value": "many"
+     },
+     {
+      "key": "settlements-always-on-map",
+      "value": false
+     },
+     {
+      "key": "map-unexplored-hidden",
+      "value": false
+     },
+     {
+      "key": "seed-per-world",
+      "value": false
+     },
+     {
+      "key": "iron-lamp-item",
+      "value": false
+     },
+     {
+      "key": "climb-key-hold",
+      "value": false
+     },
+     {
+      "key": "wall-jump",
+      "value": true
+     }
+    ],
+    "name": "Steam 1.0 rules",
+    "progression": "artifacts-and-region-gear",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "ruleset-hybrid",
+   "value": {
+    "_rule": "alpha progression + approved Steam content (D1/D3/D4 and subsequent approvals); regional gear power loss permanently excluded; artifacts do not define level, approved logarithmic bonuses follow generators.json#design.artifact and §3.4 artifact; X/cut and Omega-only content remain reference/roadmap, not v1",
+    "default": true,
+    "flags": [
+     {
+      "key": "xp-and-levels",
+      "value": true
+     },
+     {
+      "key": "skill-points-per-level",
+      "value": 2
+     },
+     {
+      "key": "skill-tree",
+      "value": true
+     },
+     {
+      "key": "item-power-level-visible",
+      "value": true
+     },
+     {
+      "key": "power-gate",
+      "value": true
+     },
+     {
+      "key": "adaptation",
+      "value": true
+     },
+     {
+      "key": "platinum-coins",
+      "value": true
+     },
+     {
+      "key": "spirit-cubes",
+      "value": true
+     },
+     {
+      "key": "formulas",
+      "value": true
+     },
+     {
+      "key": "books-of-crafting",
+      "value": true
+     },
+     {
+      "key": "gnome-suppliers",
+      "value": true
+     },
+     {
+      "key": "region-lock",
+      "value": false
+     },
+     {
+      "key": "plus-items",
+      "value": false
+     },
+     {
+      "key": "worn-rarity",
+      "value": false
+     },
+     {
+      "key": "per-land-inventory",
+      "value": false
+     },
+     {
+      "key": "artifacts",
+      "value": true
+     },
+     {
+      "key": "artifacts-define-level",
+      "value": false
+     },
+     {
+      "key": "lore",
+      "value": true
+     },
+     {
+      "key": "key-items-per-land",
+      "value": false
+     },
+     {
+      "key": "key-items-global-once-found",
+      "value": true
+     },
+     {
+      "key": "glider-boat-bought",
+      "value": true
+     },
+     {
+      "key": "pet-xp",
+      "value": true
+     },
+     {
+      "key": "pet-hydration",
+      "value": true
+     },
+     {
+      "key": "pet-scales-with-gear",
+      "value": false
+     },
+     {
+      "key": "drowning",
+      "value": true
+     },
+     {
+      "key": "portals",
+      "value": true
+     },
+     {
+      "key": "shrines-of-life",
+      "value": true
+     },
+     {
+      "key": "flight-master",
+      "value": true
+     },
+     {
+      "key": "revival-statue-auto",
+      "value": true
+     },
+     {
+      "key": "arena",
+      "value": true
+     },
+     {
+      "key": "circle-of-power",
+      "value": true
+     },
+     {
+      "key": "demon-portals",
+      "value": true
+     },
+     {
+      "key": "steel-empire-events",
+      "value": true
+     },
+     {
+      "key": "factions",
+      "value": true
+     },
+     {
+      "key": "elixirs-beverages",
+      "value": true
+     },
+     {
+      "key": "dungeon-traps",
+      "value": true
+     },
+     {
+      "key": "dungeon-vases-tables",
+      "value": true
+     },
+     {
+      "key": "multiple-bosses-per-dungeon",
+      "value": true
+     },
+     {
+      "key": "coin-denominations",
+      "value": [
+       "copper",
+       "silver",
+       "gold"
+      ]
+     },
+     {
+      "key": "inn-cost",
+      "value": 10
+     },
+     {
+      "key": "spec-change",
+      "value": "guild-free"
+     },
+     {
+      "key": "multiplayer",
+      "value": "dedicated-server"
+     },
+     {
+      "key": "settlements-per-land",
+      "value": 1
+     },
+     {
+      "key": "settlements-always-on-map",
+      "value": false
+     },
+     {
+      "key": "map-unexplored-hidden",
+      "value": true
+     },
+     {
+      "key": "seed-per-world",
+      "value": true
+     },
+     {
+      "key": "iron-lamp-item",
+      "value": true
+     },
+     {
+      "key": "climb-key-hold",
+      "value": false
+     },
+     {
+      "key": "wall-jump",
+      "value": true
+     },
+     {
+      "key": "steam-ability-kits",
+      "value": true
+     },
+     {
+      "key": "alpha-ability-kits",
+      "value": true
+     },
+     {
+      "key": "_ability-merge",
+      "value": "both kits exist; alpha-removed skills (war frenzy, bulwark, aim, swiftness, mana shield, shuriken attack) return as skill-tree nodes alongside selected ultimates; activation follows ../domain/controls.md#class-skill-4 and ../domain/3_Classes.md#skill-tree-a, including Assassin's third-slot-only exception"
+     }
+    ],
+    "name": "Hybrid (chosen, D1 2026-09-07)",
+    "progression": "xp-levels-skill-points",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "ruleset-omega",
+   "value": {
+    "_note": "Announced facts only; everything else unknown. D4 already defers Omega-only content to the roadmap, outside v1. These flags are not pixlnd availability or implementation approval; future inclusion requires a separate owner decision.",
+    "flags": [
+     {
+      "key": "xp-and-levels",
+      "value": true
+     },
+     {
+      "key": "skill-tree",
+      "value": true
+     },
+     {
+      "key": "weather",
+      "value": true
+     },
+     {
+      "key": "procedural-bodies",
+      "value": true
+     },
+     {
+      "key": "procedural-equipment",
+      "value": true
+     },
+     {
+      "key": "signature-abilities",
+      "value": true
+     },
+     {
+      "key": "coarse-map-generation",
+      "value": true
+     },
+     {
+      "key": "facial-expressions",
+      "value": true
+     },
+     {
+      "key": "cast-bars",
+      "value": true
+     }
+    ],
+    "name": "Omega (announced only)",
+    "progression": "xp-levels-skill-trees (announced)",
+    "versions": [
+     "Ω"
+    ]
+   }
+  }
+ ]
+}

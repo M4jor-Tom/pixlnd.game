@@ -1,0 +1,16 @@
+ classDiagram
+    class `Audio-source`
+    click `Audio-source` href "../Audio-source"
+      `Audio-source` : ambient
+        `Audio-source` --> "1" `Audio-source-ambient` : ambient
+        click `Audio-source-ambient` href "../Audio-source-ambient"
+      `Audio-source` : composer
+      `Audio-source` : music_rules
+        `Audio-source` --> "1" `Audio-source-music-rules` : music_rules
+        click `Audio-source-music-rules` href "../Audio-source-music-rules"
+      `Audio-source` : schema_tag
+      `Audio-source` : sfx_alpha_ids
+      `Audio-source` : tracks
+        `Audio-source` --> "1..*" `Audio-source-track-entry` : tracks
+        click `Audio-source-track-entry` href "../Audio-source-track-entry"
+      `Audio-source` : voices

@@ -1,0 +1,98 @@
+extends: recommended
+rules:
+  standard_naming:
+    level: error
+    class_pattern: kebab
+    slot_pattern: kebab
+    # Preserve accepted names; new enums use upstream CamelCase.
+    exclude:
+      - ability-_controls  # Existing slot; serialized alias remains _controls.
+      - hostility
+      - gender
+      - size-class
+      - attack-mode
+      - creature-category
+      - hostility-default
+      - combat-role
+      - pet-type
+      - skill-column
+      - ability-kind
+      - hands
+      - danger-tier
+      - spawn-rule
+      - realm-kind
+      - all-resource
+      - saved-hostility
+      - saved-role
+      - trap-phase
+      - special-phase
+      - ability-runtime-kind
+      - dash-direction
+      - saved-site-family
+      - slot-acceptance-phase
+      # Source-literal PV names cannot be renamed; native excludes match globally,
+      # not only enum values. All substantive rules and other naming checks remain.
+      - "shared-passive"
+      - "1h-dual"
+      - "1h-with-shield"
+      - "2h"
+      - "double-scale"
+      - "happy-angry"
+      - "friendly-player"
+      - "named-friendly"
+      - "plant-creature"
+      - "boss-species"
+      - "static-target"
+      - "any-class"
+      - "1h"
+      - "1h dual (need two)"
+      - "debuff (NPC)"
+      - "debuff (land-wide)"
+      - "debuff (settlement)"
+      - "buff (land-wide)"
+      - "A"
+      - "S"
+      - "Ω"
+      - "X"
+      - during-taming
+      - near-village  # Literal world spawn-rule value; not a renamed domain value.
+      # Canonical ControlActionId source literals; native excludes match globally, not enum-scoped.
+      - swim-ascent
+      - pet-call
+      - pet-mount
+      - pet-dismount
+      - deploy-glider
+      - deploy-boat
+      - glider-level
+      - basic-attack
+      - special-attack
+      - class-skill-1
+      - class-skill-2
+      - class-skill-3
+      - class-skill-4
+      - pick-up
+      - object-interact
+      - quick-item
+      - use-inventory-item
+      - quick-select
+      - quick-cycle
+      - equip-item
+      - learn-formula
+      - spend-skill-point
+      - buy-item
+      - sell-item
+      - skills-window
+      - world-map
+      - debug-menu
+      - ui-navigate
+      - ui-select
+      - ui-activate
+      - ui-cancel
+      - map-rotate
+      - map-pan
+      - map-zoom
+      - map-marker
+      - map-center
+      - bench-rotate
+      - bench-place
+      - bench-remove

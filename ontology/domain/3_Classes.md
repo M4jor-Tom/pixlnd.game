@@ -27,17 +27,7 @@ costs and cooldowns. Crossing attempts
 cause **no special damage, death or forced teleport**. This chooses no edge art, warning UI,
 biome or numerical buffer. The selected map/travel behavior is implemented; Android hardware-specific rendering and touch acceptance remain unverified.
 
-| prop | type | i/e | notes |
-|---|---|---|---|
-| seed | uint32 | i | A: chosen per world at creation (server default 26879); S: one fixed shared seed, no UI |
-| name | string | i | A only (world list) |
-| day | int | i | day counter |
-| time-ms | int 0..86_400_000 | i | ms of game day |
-| spawn-rule | enum `near-village` | i | S 0.9.1-3: new chars spawn near a village; A: world spawn (0,0 area); hybrid (D22): the square of the land (0,0) village |
-| discovered-zones | set<zone-coord> | i | hybrid: world-shared terrain exploration (persistence item 3 below); A: shared by all visitors |
-| origin-poi | `poi-type` ref | e | S: `wollays-house` at block (0,0) |
-Instances: none (runtime). Active scale: `generators.json#design.terrain.lands-per-axis`;
-`world-scales` retains historical source scales.
+Structural definition: [`world`](../schema/world.yaml) (class; `world-seed`, `world-name`, `world-day`, `world-time-ms`, `world-spawn-rule`, `world-origin-poi`, `discovered-zones`). Alpha seed is chosen per world (server default 26879); Steam uses one fixed shared seed without UI. The name is Alpha-only; day is a counter and time is milliseconds within the game day. Steam 0.9.1–3 starts new characters near a village; Alpha uses the (0,0) area, while hybrid uses the square of the (0,0) village. Steam's origin POI is `wollays-house` at block (0,0). Discovery remains world-shared (Alpha visitors; hybrid saved-world visitors) and grants no personal unlocks. Instances: none (runtime). Active scale: `generators.json#design.terrain.lands-per-axis`; `world-scales` retains historical source scales.
 
 **Hybrid persistence item 3 (owner approved, 2026-09-28):** explored terrain belongs to
 that saved world and is visible to all its visitors, including later arrivals. Seeing a place
@@ -47,24 +37,11 @@ newcomers inherit the already-explored map rather than starting with a private b
 
 ### zone
 Terrain streaming unit (alpha "chunk"). `A S`
-| prop | type | notes |
-|---|---|---|
-| size-blocks | int | A: 256×256; S: 64×64 (`BLOCKS_PER_ZONE = 64`); hybrid: 64 (D12, `generators.json#design.terrain`) |
-| columns | `field`[] | one per (x,y); `field` = base-z + vertical run of `block` |
-| static-entities | `static-entity`[] | doors, chests, furniture, stations |
-| spawns | `creature` spawn list | per-zone spawn structs (hostility, type, class, spec, level, power-base, appearance, 13 items, name) |
-| chunk-items | dropped `item`[] | ground items with rotation, scale, drop-time |
-| retire | rule | unloaded when unvisited; dropped items vanish after ~1 game week |
+Structural definition: [`zone`](../schema/world.yaml) (class; `zone-size-blocks`, `zone-static-entities`, `columns`, `spawns`, `chunk-items`); [`field`](../schema/world.yaml) (`base-z`, `blocks`); [`creature-spawn`](../schema/world.yaml) (entity facets); and [`dropped-item`](../schema/world.yaml) (qualified component facets). A zone has one field per (x,y); size remains A 256×256, S 64×64, hybrid 64 (D12, `generators.json#design.terrain`). Static entities are doors, chests, furniture and stations. Zones unload when unvisited; dropped items disappear after ~1 game week. These remain behavioral rules, not fields of those declarations.
 
 ### block
 One voxel. `A S`
-| prop | type | notes |
-|---|---|---|
-| type | `block-type` ref | 5-bit id, see `instances/block-types.json` |
-| rgb | u8×3 | per-voxel colour, no palette |
-| breakable | bool | by bombs / boss terrain damage; regenerates after ~3 game days |
-Block scale: 1 block = 65536 native units (16.16 fixed); hybrid: 1 block = 1 m
-(`generators.json#design.terrain.block-m`). Character ≈ 2 m.
+Structural definition: [`block`](../schema/world.yaml) (`block-type`, `block-rgb`, `block-breakable`); the block-type catalog is [`block-type`](../schema/world-catalog.yaml) and its configured scale/format is [`block-type-catalog`](../schema/structured-world.yaml). Source block-type IDs are 5-bit; RGB remains per-voxel, without a palette. Block scale: 1 block = 65536 native units (16.16 fixed); hybrid: 1 block = 1 m (`generators.json#design.terrain.block-m`). Character ≈ 2 m. Breakability by bombs/boss terrain damage and regeneration after ~3 game days remain behavior.
 Initial hybrid arenas use the scoped [breakable rubble and restoration rules](encounter-contracts.md#boss-specials-and-breakable-rubble).
 
 ### block-type
@@ -72,25 +49,7 @@ Enumeration of voxel kinds; alpha and 1.0 tables differ. `A S` → `instances/bl
 
 ### land
 A named, bordered gameplay region of one `landscape`. What the wiki calls "region"/"land". `A S`
-| prop | type | i/e | notes |
-|---|---|---|---|
-| name | string | i | `<Name> Plains/Hills/Mountains/…`; names not unique |
-| landscape | ref | e | exactly one |
-| level | int | i | hybrid (F4): each creature rolls in the party band [min−X, max+Y], shifted by the land's danger-tier → `generators.json#design.enemy-level`. A: shared, rose with distance |
-| danger-tier | safe / normal / dangerous | i | F4: rolled once at generation |
-| tier-range | `mob-strength-tier`[] | i | S: regions host white→yellow enemies, dungeons above surface |
-| rarity | int 0..4 | i | A devlog "rare zones": stronger monsters, better loot `?` |
-| realm | `realm` ref | e | S: the kingdom/cult/tribe whose lore covers it |
-| border | polygon (map only) | i | internal land border: dotted line on map, no physical wall (A devlog kingdoms had walls `X`); hybrid outer world boundary follows `world` item 2 |
-| inventory-page | — | — | S: each land owns an inventory tab (see `inventory`) |
-| key-items | `key-item`[] ≤ 9 | e | S: up to 4 movement + 3 ticket + treasure spirit + ember |
-| gnome-suppliers | 4 | e | S |
-| books-of-crafting | 4 | e | S |
-| wizard-towers | ≤ 5 | e | S |
-| circles-of-power | 1..n | e | S |
-| artifacts | 1..n | e | S |
-| settlements | hybrid / A: exactly 1; S: several | e | |
-| coords | int×2 | i | land-grid cell (F6); hybrid −512..511 inclusive on each horizontal axis (§3.1 world); `seed = hash(world.seed, coords)`, every roll of the land derives from it (D12) |
+Structural definition: [`land`](../schema/world.yaml) (class; `land-name`, `land-landscape`, `land-level`, `land-danger-tier`, `land-tier-range`, `land-rarity`, `land-realm`, `land-border`, `land-key-items`, `land-gnome-suppliers`, `land-books-of-crafting`, `wizard-towers`, `land-circles-of-power`, `land-artifacts`, `land-settlements`, `land-coords`). Preserve the contextual source facts: names are not unique; A levels rose with distance, while hybrid uses the party-band rule in `generators.json#design.enemy-level`; danger-tier is rolled once at generation. A's 0..4 rarity tier is described as stronger monsters/better loot in the “rare zones” devlog, with uncertain applicability. S tiers run white→yellow, with dungeon enemies above surface tier; realm lore remains S-qualified. The [`land.land-border`](../schema/world.yaml) slot is a logical polygon kind for map only: internal borders are dotted, not physical walls; the outer-world travel boundary is the separate world item 2 rule. `test_land_border_logical_declaration` and `test_land_border_yaml_mutations_are_detected` in `test_ontology_schema_world_polygon.py` cover this declaration. S land inventory tabs remain a source description and are not selected as a land property. S counts remain source-qualified: four gnome suppliers, four crafting books, up to nine key items, up to five wizard towers, one or more circles/artifacts, and several settlements; A/hybrid settlement count remains separately qualified. Hybrid coordinates are bounded −512..511 inclusive on each horizontal axis; `seed = hash(world.seed, coords)`, and every land roll derives from that seed. No representation beyond the declarations is implied.
 Internal grid: alpha region = 64×64 zones = 16 384 blocks; 8×8 mission cells per region;
 world addressable as 1024×1024 regions (finite). One gameplay `land` = one internal region cell
 (F6, decided); heightmap, water level and noise are our own.
@@ -99,15 +58,13 @@ world addressable as 1024×1024 regions (finite). One gameplay `land` = one inte
 Biome family with climate, palette, flora, fauna and structure rosters. `A S Ω`
 → `instances/landscapes.json` (13: greenlands, snowlands, deserts, jungles, lava-lands, oceans,
 savannahs, wetlands, swamp-lands`?`, dark-woods, deadlands, mountains, mushroom-lands `X`).
-| prop | notes |
-|---|---|
-| climate | temperature / humidity band selecting the biome (devlog 2012-01) |
-| sky / lighting | e.g. green sky in deadlands; lava lands and dark woods dark by day |
-| hazard | cold-water slow, toxic-river poison, lava burn (S) |
-| settlement-style | architecture theme |
-| flora, fauna, dungeon-types | ID lists |
-| gen | ours (D12): `relief` (height multiplier), `base` (height offset, blocks), `surface` block-type, `top`/`cliff` RGB |
-| versions | shipped in A, S, both, or `X` |
+Logical roster facets belong to [`landscape`](../schema/world.yaml), with [`landscape-flora`, `landscape-fauna`, `landscape-dungeons`, and `landscape-pois`](../schema/world.yaml); source-list text remains in [`landscape-source-row.flora`, `landscape-source-row.dungeons`, and `landscape-source-row.pois`](../schema/structured-world.yaml). `landscape-fauna` is a typed creature reference. `FullWorldSources.test_whole_landscapes_source` in `test_ontology_schema_world_catalog.py` checks raw source rows/string lists; `BasicWorldP2Tests.test_landscape_fauna_logical_roster_contract` in `test_ontology_schema_world_basic_p2.py` independently checks the logical fauna slot, induced alias/range/cardinality, closed landscape root, native list admission and actual-YAML mutations. This does not resolve creature-reference existence or prove generated fauna selection. `BasicWorldP2Tests.test_world_root_generation_is_repeatable` compares selected landscape, settlement-style and settlement root schemas generated from two independent temporary copies; it does not establish world-generation or runtime determinism.
+
+Raw climate bands are [`landscape-source-row.climate`](../schema/structured-world.yaml) with [`landscape-source-climate.temp` and `landscape-source-climate.humidity`](../schema/structured-world.yaml), also covered by `test_whole_landscapes_source`; these strings are source bands, not converted climate readings. The architectural style roster is [`settlement-style`, `settlement-style-lands`, and `settlement-style-desc`](../schema/catalog-properties.yaml), while each raw landscape's style text is [`landscape-source-row.style`](../schema/structured-world.yaml). `test_world_land_bounds_and_context_facets` checks the logical `settlement.style` range; `test_whole_landscapes_source` covers raw landscape rows and `test_whole_buildings_source` covers source style records. `BasicWorldP2Tests.test_settlement_style_class_slot_contract` additionally checks both authored/induced style slots, requiredness, aliases, ranges, closed-root admission, valid/invalid rows and actual-YAML mutations. These checks do not establish style-reference resolution or historical/hybrid availability. Raw S hazard descriptions are [`landscape-source-row.hazards`](../schema/structured-world.yaml); the S cold-water slow, toxic-river poison and lava-burn examples remain source-qualified behavior.
+
+Generation is [`landscape-gen`](../schema/world.yaml) in `landscape`, with [`landscape-generation`](../schema/world.yaml), exact [`landscape-generation-relief`, `landscape-generation-base`, `landscape-generation-surface`, `landscape-generation-top`, and `landscape-generation-cliff`](../schema/world.yaml), and source [`landscape-source-row.gen`](../schema/structured-world.yaml). `relief` is the height multiplier; `base` is the height offset in blocks. Surface block type and top/cliff RGB meanings remain prose, not duplicated field definitions. Source versions are [`landscape-source-row.versions`](../schema/structured-world.yaml); the raw A/S/Ω/X and uncertainty qualifications do not themselves establish hybrid availability.
+
+Climate bands select biomes (devlog 2012-01). Retain the source sky/lighting examples (green sky in deadlands; lava lands and dark woods dark by day) as source-qualified prose.
 
 Hybrid v1: **Wetlands remains playable; a separate Swamp Lands biome is excluded**.
 The historical `swamp-lands` reference remains uncertain, not an alias of Wetlands or a
@@ -117,7 +74,7 @@ permanent all-version exclusion. No separate swamp terrain, fauna or reward rule
 Natural formation placed inside a land. `A S` → `instances/terrain-features.json`
 (mountain, plateau/cliff, valley, canyon+mesa, cave, river+waterfall, lake, lava-lake, volcano,
 island, sky-island `S`, forest (generic/birch/pine, dungeon-forest), field, road+bridge+tunnel,
-oasis, cloud (no collision), giant-rock `A`, giant-tree `A`, graveyard).
+oasis, cloud (no collision), giant-rock `A`, giant-tree `A`, graveyard). The complete source row is [`terrain-feature-source-row`](../schema/structured-world.yaml), covered by `test_whole_terrain_features_source`; uncertain descriptions remain literal source facts.
 
 #### Hybrid connecting routes
 
@@ -164,40 +121,20 @@ may vary without a fixed gameplay spacing or visibility guarantee.
 
 ### climate
 Continuous fields sampled per position. `A S`
-| prop | notes |
-|---|---|
-| temperature-c | shown in HUD; desert ≈ 36 °C |
-| humidity-pct | shown in HUD; desert ≈ 5 % |
-| effects | snow presence, berry/heartflower spawns (S guide) |
+Structural definition: [`climate`](../schema/world.yaml) (`climate-temperature-c`, `climate-humidity-pct`). Values are shown in the HUD; desert references remain approximately 36 °C and 5% humidity. Snow presence and berry/heartflower spawns are S-guide behavior, not fields in this logical reading class.
 
 ### flora
 Harvestable or decorative plant object; harvested by attacking. `A S` → `instances/flora.json`.
-| prop | notes |
-|---|---|
-| yields | `ingredient` ref + count range (e.g. bush → 1–3 wood log + plant fiber) |
-| landscapes | where it spawns |
-| respawn | at 0:00 (S) |
-| light | shimmer mushroom glows blue |
+Structural yield definition: [`ingredient-yield`](../schema/associations.yaml) and [`flora-yield-entry`](../schema/structured-world.yaml); existing world/catalog tests cover their declared shape. Example: bush → 1–3 wood log + plant fiber. Landscapes remain placement context; S daily respawn and shimmer-mushroom blue glow remain behavior, not structural yield fields.
 
 ### deposit
 Mineral node in caves / underwater caves. `A S` → `instances/deposits.json` (iron, silver, gold,
-sandstone, emerald, sapphire, ruby, diamond, ice-crystal). Yields 1–3; respawn at 0:00; rarely
-inside boulders that need a bomb.
+sandstone, emerald, sapphire, ruby, diamond, ice-crystal). Structural catalog range is [`deposit-yields`](../schema/world-catalog.yaml); the fixed logical 1–3 interval is [`deposit-ingredient-yield`](../schema/world.yaml), covered by `test_deposit_yield_interval_*` and the full-source missing-sandstone characterization. Yields remain ingredient-typed; sandstone's unresolved target is not repaired. Respawn at 0:00 and rare boulder placement requiring a bomb remain behavior.
 
 ### settlement
+<a id="settlement-style"></a>
 Village or city. `A S`
-| prop | notes |
-|---|---|
-| style | `settlement-style` from landscape (european-framework, medieval-stone, na-wood, log, desert, jungle, undead, lava, ocean) |
-| districts | `district`[] (A: trade, crafting, adventurer/class, pet quarter (`X`), portal, palace) |
-| buildings | `building`[] |
-| population | `race` mix (humans majority; undead villages in deadlands/dark woods) + village animals |
-| visibility | A: always on map; S: hidden until discovered |
-| count-per-land | hybrid / A: 1; S: several |
-| sewer | S: dungeon under some 5★ villages holding an artifact |
-| petrified | bool, S: witch curse until witch killed |
-| possessed | bool, S: demon portal active in land |
-| layout | hybrid (D22): one per land from the land seed, terrain flattened under `design.settlement.radius`, box buildings on a ring, one NPC per service building; numbers `design.settlement` |
+Structural definition: [`settlement`](../schema/world.yaml) (`settlement-style`, population races/animals, contextual count, districts, buildings, petrified and possessed state); settlement style details are [`settlement-style`](../schema/catalog-properties.yaml). Existing world root/mutation and full-building-source tests cover the declared subset. Historical styles (`european-framework`, `medieval-stone`, `na-wood`, `log`, `desert`, `jungle`, `undead`, `lava`, `ocean`), A district variants (trade, crafting, adventurer/class, pet quarter `X`, portal, palace) and population descriptions remain source-qualified: humans are noted as the majority, with undead villages in deadlands/dark woods. Alpha settlements are always visible on the map; Steam settlements are hidden until discovered. Steam has sewers under some 5★ villages holding an artifact; petrification is a witch curse until the witch is killed, and possession means a demon portal is active in the land. These are source-specific rules, not consequences of the structural reference. Hybrid D22 layout remains a separate rule.
 
 **Hybrid settlements item 1 (owner approved, 2026-09-27):** exactly one settlement per land
 is the final target, not a temporary limit pending multiple settlements. Other D22 layout,
@@ -205,9 +142,10 @@ services and settlement-safety rules are unchanged. `rulesets.json#ruleset-hybri
 and `design.settlement.per-land` both select 1; current scoped configuration checks require
 that exact count. Generated geography and runtime coverage remain separate checks.
 
-D22's box-building ring and service coverage are slice approximations, not the final layout:
-districts, procedural rooms/roofs, villagers/schedules, specialization changes, sewers/dens
-and the flight master are outside that slice, not permanently banned. Layout, landscape colours,
+D22's land-seeded box-building ring and service coverage are slice approximations, not the
+final layout: terrain is flattened under `design.settlement.radius`, with one NPC per service
+building; districts, procedural rooms/roofs, villagers/schedules, specialization changes,
+sewers/dens and the flight master are outside that slice, not permanently banned. Layout, landscape colours,
 door NPCs, interaction range and spawn-safety tuning remain in `design.settlement` and
 `ui.json#screens.npc-service`.
 
@@ -215,32 +153,27 @@ Hybrid village-curse state is world-shared and persistent under `save-data` item
 Settlement-style records are hybrid configuration under §5 Validation-contract mapping item 1.
 
 ### district
-City quarter. `A` → `instances/buildings.json#districts`. Building references are catalog IDs;
-the four adventurer-quarter trainers use `{id: "class-trainer", class: <class-id>}` to retain
-one building per class, not four invented building types. District provenance and the ranger
-master's aim-target note remain unchanged.
+City quarter. `A` → `instances/buildings.json#districts`. Structural definitions are [`district`](../schema/world.yaml) and [`district-building`](../schema/world.yaml), with `district-quarter-id` and `district-decor` in [`catalog-properties.yaml`](../schema/catalog-properties.yaml); full buildings-source coverage is `test_whole_buildings_source`. Building references are catalog IDs; the four adventurer-quarter trainers use `{id: "class-trainer", class: <class-id>}` to retain one building per class, not four invented building types. District provenance and the ranger master's aim-target note remain unchanged.
 
 ### building
 Functional structure in a settlement. `A S` → `instances/buildings.json` (inn, weapon-shop,
 armor-shop, item-shop/general-store, identifier/analyst, smithy, clothier, workshop/carpenter,
 class-trainer ×4 / guild, adapter `A`, flight-master `S`, den, house, watchtower, well, market
-stalls). Each links to `npc-role`s and `crafting-station`s inside it.
+stalls). Structural definition: [`building`](../schema/world.yaml) and its [`building-name`, `building-sign`, `building-map-icon`, `building-roles`, and `building-stations`](../schema/catalog-properties.yaml), covered by `test_whole_buildings_source`. Each links to `npc-role`s and `crafting-station`s inside it.
 
 ### dungeon-type
-Built or natural structure that hosts a mission objective. `A S` → `instances/dungeon-types.json`.
-| prop | notes |
-|---|---|
-| naming | e.g. "Castle ___", "Ruins of ___", "Temple of ___", "Catacombs of ___", "Pyramid of ___" |
-| landscapes | placement |
-| layout | A: linear route + one dead end with rewards; S: room gauntlet, several bosses of rising tier |
-| entrance | e.g. pyramid: top; temple: near top → spiral down; castle: front gate locked until nearby enemies dead |
-| contents | traps `A` (spike; fire/stomp in data `X`), vases `A`, tables with loose items `A`, one-time chests `S`, artifact at end `S`, magic barriers `S` |
-| roster | enemy faction/race set (forest dungeons: insect, animal-i, animal-ii, undead, orc, human, beetle, dwarf) |
+Built or natural structure that hosts a mission objective. `A S` → `instances/dungeon-types.json`. Logical catalog facets are [`dungeon-type`](../schema/world-catalog.yaml) with [`dungeon-type-name`, `dungeon-type-naming`, `dungeon-type-lands`, `dungeon-type-entrance`, `dungeon-type-rosters`, `dungeon-type-natural`, and `dungeon-type-boss`](../schema/world-catalog.yaml); the variant slot and its entry shape are [`dungeon-type-variants` and `dungeon-variant-entry`](../schema/structured-world.yaml). Complete literal fields are [`dungeon-source-row`](../schema/structured-world.yaml), covered by `test_whole_dungeon_types_source` in `test_ontology_schema_world_catalog.py`.
+
+- **Naming:** the authored name/pattern fields are [`dungeon-type-name` and `dungeon-type-naming`](../schema/world-catalog.yaml), with literal [`dungeon-source-row.name` and `dungeon-source-row.naming`](../schema/structured-world.yaml); examples remain “Castle ___”, “Ruins of ___”, “Temple of ___”, “Catacombs of ___” and “Pyramid of ___”.
+- **Landscapes:** qualified placement text is [`dungeon-type-lands`](../schema/world-catalog.yaml) and raw [`dungeon-source-row.lands`](../schema/structured-world.yaml); it is not resolved placement relation/FK evidence.
+- **Layout:** retain A's linear route plus one reward dead end and S's room gauntlet with several bosses of rising tier as source-specific behavior; no authored facet selects these procedures.
+- **Entrance:** descriptive text is [`dungeon-type-entrance`](../schema/world-catalog.yaml) and [`dungeon-source-row.entrance`](../schema/structured-world.yaml), not an access rule. Retain the pyramid-top, temple-near-top/spiral-down and castle-gate-until-nearby-enemies examples.
+- **Contents:** literal alternatives are [`dungeon-source-row.contents`](../schema/structured-world.yaml), covered by `test_whole_dungeon_types_source`; retain A spike traps/vases/tables, S one-time chests/end artifact, and the X fire/stomp data and S magic-barrier source distinctions. These descriptions do not encode runtime execution.
+- **Roster:** qualified text is [`dungeon-type-rosters`](../schema/world-catalog.yaml) and [`dungeon-source-row.rosters`](../schema/structured-world.yaml), not uniformly resolved creature IDs. Retain the forest roster examples (insect, animal-i, animal-ii, undead, orc, human, beetle, dwarf).
 Alpha location table (cuwo): Village, Mountain, Forest, Lake, Ruins, Gravesite, Canyon, Valley,
 Crater, Cave, Portal, Rock, Tree, Peak, Castle, Catacombs, Palace, Temple, Pyramid, Island.
 
-Landscape `dungeons` lists dungeon-type IDs; `pois` lists POI-type IDs. Placement, frequency and
-variant descriptions remain in each landscape's raw `notes`, not embedded in IDs. Retained
+Landscape dungeon and POI rosters are [`landscape-dungeons` and `landscape-pois`](../schema/world.yaml), referring to [`dungeon-type` and `poi-type`](../schema/world-catalog.yaml); exact qualified source lists are `landscape-source-row.dungeons` / `.pois` in [`landscape-source-row`](../schema/structured-world.yaml). Placement, frequency and variant descriptions remain in each landscape's raw `notes`, not embedded in IDs. Retained
 [world evidence](../../docs/research/research_world.md#32-landscape-list) describes jungle ruins
 as a variant of overworld ruins, supporting `ruins`; ocean temples are on large islands and arenas
 are more common in oceans. Desert ruins are described, but their exact catalog identity remains
@@ -251,41 +184,25 @@ Non-dungeon point of interest / event site. `A S` → `instances/poi-types.json`
 wizard-tower, circle-of-power, demon-portal, mana-pump, mana-inductor, mana-tree, shrine-of-life,
 revival-statue `A`, portal `A`, bird-statue, lore-site (menhir/tablet/crypt/henge), molehill,
 bone-pile, hornet-nest, slime-well, old-hut, hidden-treasure (log/sky statue/cave), airship,
-wollays-house, kingdom-frontier-wall `X`).
+wollays-house, kingdom-frontier-wall `X`). Logical catalog facets are [`poi-type`](../schema/world-catalog.yaml), with exact raw alpha-location/quarter pairs [`poi-type-alpha-loc` and `poi-type-quarter`](../schema/world-catalog.yaml); full source rows are [`poi-source-row`](../schema/structured-world.yaml), covered by `test_whole_poi_types_source`.
+
 
 ### static-entity
 Interactive or decorative world object with orientation and open/closed/sat state. `A S`
 → `instances/static-entities.json` (78 alpha ids: doors, gates, traps, lever, chests, furniture,
 market stands, shelves, corpse, rune stone, artifact pedestal, flower boxes, street lights,
-fences, vases, campfire, tent, beach umbrella/towel, sleeping mat, 7 crafting stations).
+fences, vases, campfire, tent, beach umbrella/towel, sleeping mat, 7 crafting stations). Logical state and cardinal orientation are [`static-entity`](../schema/world.yaml); the complete name/behaviour/config catalog is [`static-entities-source`](../schema/structured-world.yaml), covered by `test_whole_static_entities_source`. Source-qualified projections are [`cuwo-static-entity-components`, `cuwo-static-header-components`, `cuwo-item-with-header-components`, `cuwo-item-with-header-list-components`, and `cuwo-item-with-header-lists-components`](../schema/world.yaml); source marker collections are [`zone-tile-marker-collection` and `place-keyed-marker-collection`](../schema/structured-world.yaml). `test_metadata_and_native_roots`, `test_component_values_and_nominal_item_references`, and `test_actual_yaml_mutation_rejected_by_same_metadata_oracle` in `test_ontology_schema_world_static_composition.py`, plus `test_marker_collection_metadata` and `test_marker_collection_native_boundaries_and_yaml_mutations` in `test_ontology_schema_structured_world.py`, cover these declarations. They remain distinct projections: Item references are nominal, seven opaque u32 components retain unknown meanings, and marker scopes are not polygon vertices, a canonical polygon, or a selected wire/save representation.
 Initial hybrid ruins use the [spike and furnishing contract](encounter-contracts.md#spike-traps-and-furnishing-contents).
 Dynamic subset: sit-able {sleeping-mat, stool, bench, bed}; open-able {window, castle-window,
 door, big-door, chest}.
 
 ### realm
 Procedural kingdom / realm / cult / tribe that historically owned several lands. `S`
-| prop | notes |
-|---|---|
-| kind | kingdom \| realm \| cult \| tribe |
-| name | procedural (Kurlent, Arigorar, Annoia, Asionia…) |
-| leader | name, personality trait, birth year, hometown, tomb location |
-| capital | name, founding year, optional destruction date |
-| magic-or-technology | flavour text |
-| lore-pct | 0..100 per player; each lore site ≈ +10 % |
-| artifacts | `artifact`[] revealed on map at 100 % |
-Hostile NPCs in a land can be labelled with the realm's name.
+Structural definition: [`realm`](../schema/world.yaml) and its typed leader/capital components [`realm-leader-birth-year`, `realm-leader-hometown`, `realm-leader-tomb-location`, `realm-capital-founding-year`, `realm-capital-destruction-date`](../schema/associations.yaml). `test_typed_realm_components` covers those components; optional destruction date remains distinct. Kind, procedural names, personality, magic/technology flavor text, lore percentage/site increments and artifact revelation at 100% retain their source-qualified meanings. Hostile NPCs in a land can be labelled with the realm's name.
 
 ### game-clock
 Time, resets and sleep. `A S`
-| prop | value |
-|---|---|
-| speed | 10× real time (1 game min ≈ 6 s; day = 2 h 24 min real) |
-| initial-time | hybrid: 07:00 only when creating a saved world; existing worlds resume saved time under persistence item 8 below |
-| sleep-speed | A/S reference: 100× (baseline/units unresolved, §5 source item 10; clock only, world does not simulate faster); hybrid inn skip below |
-| midnight-reset | 0:00: respawn eligible monsters, regenerate daily missions, respawn deposits and wilderness plants, restock shops, re-close divine doors; hybrid cleared-enemy eligibility and occupied-site timing follow world/reset items 3–4 below (historical S exclusion uncertain) |
-| inn-reset | A/S reference: innkeeper 18:00–06:00 → set 07:00; A free; S 10 coins, also re-rolls daily missions; hybrid services below |
-| night | very dark; lanterns; stealth builds faster in darkness |
-| weather | none in A/S; Ω: rain, snow, moving clouds, freezing water |
+Structural parameters are [`game-clock`](../schema/world.yaml) (`speed`, `initial-time-ms`, qualified `reference-sleep-speed`) and [`hybrid-inn-sleep-service-parameters`](../schema/world.yaml), covered by `test_precise_field_spawn_clock_and_orientation` and `test_hybrid_inn_sleep_*`. Preserve the distinctions: 10× running-world time; 07:00 applies only to fresh saved worlds; historical A/S sleep is described as 100×, with unresolved baseline/units and no faster world simulation; hybrid inn sleep is the separate agreed clock skip. Historical inn references run 18:00–06:00 and set 07:00; Alpha is free, while Steam costs 10 coins and also rerolls daily missions. The historical midnight-reset account includes respawns, daily missions, deposits/plants, shop restock and divine-door closure, with Steam exclusions uncertain. Historical nights are very dark, use lanterns, and increase stealth buildup; A/S weather is absent, while Ω describes rain, snow, moving clouds and freezing water. These historical/source-qualified descriptions, along with hybrid occupancy, recovery and reset behavior, remain prose, not fields asserted by those structural declarations.
 
 **Hybrid world/reset item 3 (owner approved, 2026-09-28):** defeated enemies, **including
 bosses**, in **ordinary dungeons and repeatable daily encounters** return with the daily reset.
@@ -1070,20 +987,31 @@ HP resets. S: only to an *activated* shrine of life; boss HP resets unless shrin
 ### 3.4 Items
 
 ### item
-Concrete item instance (alpha `ItemData`, 88 bytes). `A S`
-| prop | type | notes |
-|---|---|---|
-| type, sub-type | `item-type` ref | |
-| modifier, minus-modifier | u32 | seed for stat roll (roll = ((attributes<<16)+modifier) % 21) and name |
-| rarity | `rarity` ref | 0..4 (5+ mythical bug) |
-| material | `material` ref | |
-| flags | u8 | adapted etc. |
-| level | i16 | A power +1..+100 (+ for consumables/formulas too); S hidden, region-bound |
-| upgrades[32] | `item-upgrade` | x,y,z i8 + material + level: placed cubes |
-| upgrade-count | u32 | |
-| land | `land` ref | S: origin region (region lock) |
-| plus | bool | S: `+` suffix; works in adjacent lands |
-| name | derived | `item-name` generator |
+Concrete logical item instance. `A S`
+The historical Alpha source description is `ItemData`, 88 bytes, with `upgrades[32]`
+and a separate u32 counter; this is not an independently verified binary layout or a
+choice of inactive-slot encoding for the logical model.
+Logical fields and placed-cube structure are declared by [`item`, `item-upgrade`,
+`item-type`, `item-sub-type`, `item-weapon-type`, `item-modifier`, `item-minus-modifier`,
+`item-rarity`, `item-material`, `item-flags`, `item-level`, `item-upgrades`,
+`item-upgrade-count`, `item-land`, `item-plus` and `item-name`](../schema/items.yaml).
+The width declarations are [`uint32`, `u8`, `i16` and `i8`](../schema/identity.yaml),
+not a verified binary ABI. Modifier seeds drive stat roll
+`roll = ((attributes<<16)+modifier) % 21` and naming; flags include adaptation.
+Generated rarity is 0..4 (5+ is the mythical bug), not removal of reference rarities.
+A power applies to consumables/formulas too; S hides power and binds origin region.
+S `land` and the adjacent-land `+` suffix are inert historical metadata in hybrid.
+Display name is derived by `item-name`, not a mandatory stored input.
+
+Weapon items have one logical weapon-type link; nonweapon items have no applicable
+weapon-family link. This relation does not replace or narrow the existing type/sub-type
+fields, equate logical IDs with Alpha numeric codes, or select a raw-source conversion
+algorithm. Declaring the reference is distinct from resolving or enforcing it.
+The linked weapon definition governs the existing 1H 16 / 2H-and-shield 32 cube limits
+([c-cube-cap](5_Constraints.md#constraint-catalog)). Material compatibility uses the
+concrete item's material and existing material-kind facts, not unparsed weapon-material
+alternatives. The active-list/count relationship chooses no save or native storage layout;
+stat equations remain unchanged, including `n = level + 0.1 × upgrade_count`.
 
 **Hybrid item power:** the `level` field on gear, consumables, formulas and spirit cubes
 means integer item power **+1…+100**, not character/creature level. Recipe/formula power
@@ -1304,7 +1232,8 @@ nor artifact-combination semantics.
 
 ### artifact
 Relic collectible from `S`; permanent and works everywhere; hybrid count is 1–3 per land (D11).
-Named "<Ring|Stone|…> of <Name>", bound to a realm; found at dungeon ends, vaults, sewers,
+Derived naming and realm origin are [`artifact-name` and `artifact-origin-realm`](../schema/items.yaml).
+The name form is "<Ring|Stone|…> of <Name>"; found at dungeon ends, vaults, sewers,
 sky islands and some mission chests. **S reference only:** each relic granted +1 level;
 riding/climbing/gliding bonuses were reportedly non-functional in 1.0 (functional in hybrid, D6).
 Static entity id 46 "Artifact" exists in alpha data `X`.
@@ -1389,11 +1318,19 @@ governs ordinary stock generation/restock, not an immediate rescue reroll or gua
 
 ### inventory
 The per-character bag and worn gear. `A S`
+Bag structure and slot/item associations are [`inventory`, `inventory-entry`,
+`equipment-assignment`, `inventory-entries`, `inventory-equipment`, `inventory-coins`,
+`inventory-entry-item`, `inventory-entry-count`, `equipment-assignment-slot` and
+`equipment-assignment-item`](../schema/items.yaml); per-character ownership is
+[`player-character-inventory`](../schema/entities.yaml).
+There is no bag slot limit; count > 1 is allowed only for stackable item-types
+(`design.stack-cap`, c-stack-rule). At most one item occupies each usable equipment
+slot, subject to the type/subtype restrictions in `equipment-slot` (c-slot-accepts);
+the separate Q selection is excluded. Coins are copper (`currency`), auto-picked up
+under `design.loot.ground`. This selects no persisted map encoding.
+
 | prop | type | notes |
 |---|---|---|
-| entries | (`item`, count)[] | no slot limit; count > 1 only for stackable item-types (`design.stack-cap`, c-stack-rule) |
-| equipment | `equipment-slot` → `item` | at most one item per usable slot; type/subtype restrictions in `equipment-slot` (c-slot-accepts); excludes the separate Q selection |
-| coins | u32 | copper (`currency`); auto-picked up (`design.loot.ground`) |
 | start | `design.starting-inventory` | D18: starter weapon equipped + 5 life potions |
 
 Stacks have no cap (D6; one of each pet food). Tabs: equipment, special `S`,
@@ -1559,13 +1496,13 @@ tree, grand boss (skull), arena, artifact dungeon (orange circle), key item (ite
 witch, captured NPC, molehill / bone pile / hornet nest / slime well, faction encounters (unholy
 pact, dark cultists, obsidian knights, order of light, druids of mana, steel empire), camps,
 vaults, sky islands, lore sites, hidden treasure.
-| prop | notes |
-|---|---|
-| icon | map glyph |
-| tier | white/green/blue/purple/yellow (hidden white until visited on foot `S`) |
-| repeat | daily / once per land |
-| reward | see `loot-rule` |
-| structures | poi/dungeon refs |
+The logical [`mission-type.icon`, `.tier`, `.repeat` and `.structures`](../schema/meta.yaml)
+facets and [`rewards`](../schema/relations.yaml) declare mission structure;
+[`MissionTier`](../schema/meta.yaml) names the five tiers.
+Icon means map glyph; white/green/blue/purple/yellow presentation remains hidden
+white until visited on foot in S. Repeatability is daily / once per land as the
+owning mission specifies; rewards follow [`loot-rule`](#loot-rule), not an inferred
+universal package. Structures reference POIs/dungeons without selecting their existence.
 
 **Hybrid initial encounter-contract scope:** an ordinary multi-boss ruins dungeon, a repeatable
 daily hostile combat camp and one-time world-shared supplier-rescue sites. These are the first
@@ -1613,12 +1550,26 @@ and does not make portable progression cheat-proof. No provenance proof, closed 
 global concurrency guarantee is promised. Import validation/enforcement remains deferred.
 
 ### control-action
-A distinct device-independent player intention: stable ID, meaning, value/lifecycle, context
-and effect reference. Defined once in [controls](controls.md), not inferred from a shared input.
+A distinct device-independent player intention whose per-action meaning and behavior remain in
+[controls](controls.md), not inferred from a shared input. Its common structure is declared by
+[`control-action`](../schema/meta.yaml): `control-action-id` (`ControlActionId`),
+`control-action-value`, `control-action-lifecycle`, `control-action-context`, and
+`control-action-effect-reference`. The action-specific rows remain authoritative for meaning
+and behavior.
 
 ### controller-profile
-Device-specific bindings and their mapping status, aliases and contextual input shapes.
-[Profiles](controller-profiles.md) refer to canonical actions; keyboard/mouse is documented,
+Device-specific profiles use [`controller-profile`](../schema/meta.yaml), with its
+`bindings` alias attached to the existing `has-input-binding` relation. Each
+[`input-binding`](../schema/meta.yaml) record uses a required one-or-more
+`input-binding-action` list of `control-action` references, constrained through
+`control-action-id` (`ControlActionId`), plus `input-binding-physical-input`,
+`input-binding-phases`, `input-binding-contexts`, `input-binding-mapping-status`,
+`input-binding-alias-of`, and `input-binding-alias`. `control-action` attaches the existing
+`bound-to-input` relation. Android's logical refinement is `android-controller-profile`
+with `android-profile-parameters`; the source row is `android-profile-source-row` in
+`catalog-meta.yaml`. These declarations encode relation cardinalities, not inverse or
+foreign-key consistency, implemented device mappings, or runtime behavior. [Profiles](controller-profiles.md) retain adapter
+choices, mapping status, aliases and contextual policy; keyboard/mouse is documented,
 gamepad remains unselected, and Android's [native tool stack](../decisions/android-native-touch-controls.md)
 and [touch-profile policy](controller-profiles.md#android) have a first-slice runtime tested by
 the owner on Android hardware. Device/checklist details and render-cost measurements remain
@@ -1627,7 +1578,14 @@ unrecorded; broader controls implementation is deferred.
 ### input-binding
 A physical input/shape in a controller profile referring to one or more distinct control actions.
 Several bindings may invoke one action; one input may serve several actions with documented
-phases/context, without merging their meanings. Current executable keyboard adapter:
+phases/context, without merging their meanings. The schema record is `input-binding` in
+[`meta.yaml`](../schema/meta.yaml), with fields `input-binding-action`,
+`input-binding-physical-input`, `input-binding-phases`, `input-binding-contexts`,
+`input-binding-mapping-status`, `input-binding-alias-of`, and `input-binding-alias`.
+`input-binding-action` is a non-inlined list with minimum cardinality one; its generated
+items use the closed `ControlActionId` vocabulary. The original relation cardinalities are
+structurally attached, but these schema classes do not validate inverse/foreign-key
+consistency. Current executable keyboard adapter:
 `instances/keybinds.json#hybrid`; its [profile](controller-profiles.md#keyboard-and-mouse)
 explains legacy grouping, aliases and implementation gaps. Remapping/persistence is deferred.
 

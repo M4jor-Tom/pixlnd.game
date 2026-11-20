@@ -1,0 +1,7 @@
+ classDiagram
+    class `Saved-land-entry`
+    click `Saved-land-entry` href "../Saved-land-entry"
+      `Saved-land-entry` : saved_land_entry_land
+      `Saved-land-entry` : saved_land_entry_value
+        `Saved-land-entry` --> "1" `Saved-land-plan` : saved_land_entry_value
+        click `Saved-land-plan` href "../Saved-land-plan"

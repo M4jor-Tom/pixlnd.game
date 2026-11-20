@@ -1,0 +1,12 @@
+ classDiagram
+    class `Weapon-source-controls`
+    click `Weapon-source-controls` href "../Weapon-source-controls"
+      `Weapon-source-controls` : block
+        `Weapon-source-controls` --> "1" `Control-action` : block
+        click `Control-action` href "../Control-action"
+      `Weapon-source-controls` : m1
+        `Weapon-source-controls` --> "1" `Control-action` : m1
+        click `Control-action` href "../Control-action"
+      `Weapon-source-controls` : m2
+        `Weapon-source-controls` --> "1" `Control-action` : m2
+        click `Control-action` href "../Control-action"

@@ -1,0 +1,461 @@
+{
+ "$schema": "dungeon-type",
+ "_doc": "Alpha location table (cuwo LOCATION_NAMES): type ids 1 Village, 2 Mountain, 3 Forest, 4 Lake, 5 Ruins/Gravesite, 6 Canyon, 7 Valley, 8 Crater, 9 Cave, 10 Portal, 11 Rock, 12 Tree, 13 Peak, 14 Castle/Ruins/Catacombs/Palace/Temple/Pyramid, 15 Island. Layout: A linear + dead end with rewards; S room gauntlet with rising-tier bosses.",
+ "_dungeon-rules": {
+  "A": [
+   "linear route, one dead end with main rewards",
+   "spike traps (only shipped trap; fire/stomp in data X)",
+   "breakable vases",
+   "small chests",
+   "loose items on tables/furniture",
+   "one boss",
+   "runestone at entrance to port back (2012 concept)",
+   "+4 dungeon chest may roll mythical"
+  ],
+  "S": [
+   "no vases/small chests/traps",
+   "one-time chests",
+   "multiple bosses of rising tier",
+   "artifact at end",
+   "dungeon map uncovers as explored (2017)",
+   "loot land-bound (0.9.1-5)",
+   "magic barriers",
+   "enemy size capped to fit (0.9.3-0)",
+   "locked doors: keys / harp / bell"
+  ],
+  "both": [
+   "mobs spawn above surface tier, groups of 2-4",
+   "ogre + collie patrols",
+   "seamlessly integrated into terrain"
+  ]
+ },
+ "entries": [
+  {
+   "key": "castle",
+   "value": {
+    "alpha-loc": {
+     "first": 14,
+     "second": 0
+    },
+    "contents": {
+     "S": [
+      "always an artifact"
+     ]
+    },
+    "entrance": "front gate, locked until nearby enemies dead (S)",
+    "lands": [
+     "greenlands",
+     "snowlands"
+    ],
+    "name": "Castle / Palace",
+    "naming": [
+     "Castle ___",
+     "___ Castle",
+     "Palace ___"
+    ],
+    "rosters": [
+     "orcs",
+     "humans",
+     "undead"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "fort",
+   "value": {
+    "desc": "wooden walls, black spire peaks",
+    "lands": [
+     "savannahs"
+    ],
+    "name": "Fort",
+    "naming": [
+     "Fort ___"
+    ],
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "citadel",
+   "value": {
+    "desc": "angular spires; castle equivalent",
+    "lands": [
+     "lava-lands"
+    ],
+    "name": "Citadel",
+    "naming": [
+     "___ Citadel"
+    ],
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "ruins",
+   "value": {
+    "alpha-loc": {
+     "first": {
+      "first": 5,
+      "second": 0
+     },
+     "second": {
+      "first": 14,
+      "second": 1
+     }
+    },
+    "lands": [
+     "any",
+     "jungle variant"
+    ],
+    "name": "Ruins",
+    "naming": [
+     "Ruins of ___",
+     "Ancient Ruins of ___"
+    ],
+    "variants": {
+     "entries": [
+      {
+       "key": "dungeon-ruins",
+       "value": "damaged castles"
+      },
+      {
+       "key": "overworld-ruins",
+       "value": "scattered white Greco-Roman buildings, no interior"
+      }
+     ]
+    },
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "gravesite",
+   "value": {
+    "alpha-loc": {
+     "first": 5,
+     "second": 4
+    },
+    "name": "Gravesite",
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "temple",
+   "value": {
+    "alpha-loc": {
+     "first": 14,
+     "second": 4
+    },
+    "entrance": "near top → spiral staircase down",
+    "lands": [
+     "jungles",
+     "large ocean islands"
+    ],
+    "name": "Temple",
+    "naming": [
+     "Temple of ___",
+     "___ Temple"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "pyramid",
+   "value": {
+    "alpha-loc": {
+     "first": 14,
+     "second": 5
+    },
+    "entrance": "at top",
+    "lands": [
+     "deserts",
+     "lava-lands"
+    ],
+    "name": "Pyramid",
+    "naming": [
+     "Pyramid of ___",
+     "___ Pyramid"
+    ],
+    "rosters": [
+     "ancient-guardian-anubis",
+     "ancient-guardian-horus",
+     "djinn",
+     "skeleton",
+     "cat",
+     "mosquito",
+     "green-slime"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "catacomb",
+   "value": {
+    "alpha-loc": {
+     "first": 14,
+     "second": 2
+    },
+    "desc": "dark, no windows; S 'super dungeon' with artifact; green candles",
+    "entrance": "small surface chamber / graveyard → underground",
+    "name": "Catacombs",
+    "naming": [
+     "Catacombs of ___"
+    ],
+    "rosters": [
+     "undead"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "vault",
+   "value": {
+    "desc": "room-by-room gauntlet of rising difficulty → artifact/treasure; /sit roll exploit patched 0.9.1-4",
+    "entrance": "golden iris door opened by Divine Harp",
+    "name": "Vault (mine / labyrinth)",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "den",
+   "value": {
+    "lands": [
+     "inside cities"
+    ],
+    "name": "Den",
+    "naming": [
+     "___ Den"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "sewer",
+   "value": {
+    "contents": [
+     "artifact"
+    ],
+    "lands": [
+     "under 5-star villages"
+    ],
+    "name": "Sewer",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "wizard-tower",
+   "value": {
+    "name": "Wizard / Magic Tower",
+    "see": "poi-types.json#wizard-tower",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "forest-dungeon",
+   "value": {
+    "alpha-loc": {
+     "first": 3,
+     "second": "0-9"
+    },
+    "desc": "canopy blocks light; campsites; typed roster + boss (creature-families.json#forest-dungeon-rosters)",
+    "name": "Forest",
+    "naming": [
+     "___ Forest",
+     "Galan Wood (planned)"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "mountain",
+   "value": {
+    "alpha-loc": {
+     "first": 2,
+     "second": "0-9"
+    },
+    "name": "Mountain",
+    "natural": true,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "peak",
+   "value": {
+    "alpha-loc": {
+     "first": 13,
+     "second": "0-9"
+    },
+    "name": "Peak",
+    "natural": true,
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "lake",
+   "value": {
+    "alpha-loc": {
+     "first": 4,
+     "second": "0-9"
+    },
+    "name": "Lake",
+    "natural": true,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "island",
+   "value": {
+    "alpha-loc": {
+     "first": 15,
+     "second": "0-9"
+    },
+    "name": "Island",
+    "natural": true,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "canyon",
+   "value": {
+    "alpha-loc": {
+     "first": 6,
+     "second": "0-9"
+    },
+    "name": "Canyon",
+    "natural": true,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "valley",
+   "value": {
+    "alpha-loc": {
+     "first": 7,
+     "second": "0-9"
+    },
+    "boss": "centre",
+    "name": "Valley",
+    "natural": true,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "crater",
+   "value": {
+    "alpha-loc": {
+     "first": 8,
+     "second": "0-9"
+    },
+    "name": "Crater",
+    "natural": true,
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "cave",
+   "value": {
+    "alpha-loc": {
+     "first": 9,
+     "second": 0
+    },
+    "name": "Cave",
+    "natural": true,
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "giant-rock",
+   "value": {
+    "alpha-loc": {
+     "first": 11,
+     "second": "0-9"
+    },
+    "boss": "centre/top",
+    "name": "Rock (Giant Rock)",
+    "natural": true,
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "giant-tree",
+   "value": {
+    "alpha-loc": {
+     "first": 12,
+     "second": "0-9"
+    },
+    "boss": "top",
+    "name": "Tree (Giant Tree)",
+    "natural": true,
+    "s-replacement": "mana-tree",
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "overworld-dungeon",
+   "value": {
+    "desc": "freeform disconnected buildings/ruins, boss near centre (2013)",
+    "name": "Overworld dungeon",
+    "versions": [
+     "A"
+    ]
+   }
+  }
+ ]
+}

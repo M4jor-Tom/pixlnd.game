@@ -1,0 +1,424 @@
+{
+ "$schema": "creature-family",
+ "entries": [
+  {
+   "key": "beetles",
+   "value": {
+    "members": [
+     "bark-beetle",
+     "lemon-beetle",
+     "snout-beetle",
+     "fire-beetle"
+    ],
+    "traits": [
+     "groups 3-5",
+     "not in snowlands",
+     "beetle forest dungeons"
+    ]
+   }
+  },
+  {
+   "key": "runners",
+   "value": {
+    "members": [
+     "plain-runner",
+     "leaf-runner",
+     "snow-runner",
+     "desert-runner"
+    ],
+    "traits": [
+     "large two-legged neckless birds",
+     "groups 3-5",
+     "high attack tempo and run speed",
+     "all but lava lands"
+    ]
+   }
+  },
+  {
+   "key": "slimes",
+   "value": {
+    "members": [
+     "green-slime",
+     "blue-slime",
+     "pink-slime",
+     "yellow-slime"
+    ],
+    "traits": [
+     "any colour any land",
+     "slime wells (S)",
+     "Ω divide"
+    ]
+   }
+  },
+  {
+   "key": "alpacas",
+   "value": {
+    "members": [
+     "alpaca",
+     "brown-alpaca"
+    ]
+   }
+  },
+  {
+   "key": "dogs",
+   "value": {
+    "members": [
+     "collie",
+     "scottish-terrier",
+     "shepherd-dog",
+     "terrier",
+     "bullterrier",
+     "alpha-dog",
+     "savage-dog",
+     "skeleton-dog"
+    ]
+   }
+  },
+  {
+   "key": "cats",
+   "value": {
+    "members": [
+     "cat",
+     "brown-cat",
+     "white-cat"
+    ]
+   }
+  },
+  {
+   "key": "golems",
+   "value": {
+    "members": [
+     "golem",
+     "ember-golem",
+     "snow-golem"
+    ],
+    "traits": [
+     "elemental giants",
+     "throw boulders"
+    ]
+   }
+  },
+  {
+   "key": "trolls",
+   "value": {
+    "members": [
+     "troll",
+     "dark-troll",
+     "yeti"
+    ],
+    "traits": [
+     "big weapon",
+     "earthquake",
+     "terrain damage"
+    ]
+   }
+  },
+  {
+   "key": "skeletons",
+   "value": {
+    "members": [
+     "skeleton",
+     "skeleton-knight",
+     "skeleton-horse",
+     "skeleton-dog"
+    ]
+   }
+  },
+  {
+   "key": "sprouts",
+   "value": {
+    "members": [
+     "onionling",
+     "desert-onionling",
+     "radishling",
+     "radishling-sprout",
+     "cormling",
+     "cormling-sprout",
+     "chiling",
+     "habanero",
+     "bloomling"
+    ],
+    "traits": [
+     "plant creatures"
+    ]
+   }
+  },
+  {
+   "key": "guardians",
+   "value": {
+    "members": [
+     "ancient-guardian-anubis",
+     "ancient-guardian-horus"
+    ]
+   }
+  },
+  {
+   "key": "fish",
+   "value": {
+    "members": [
+     "sapphire-fish",
+     "lemon-fish",
+     "seahorse",
+     "shark",
+     "lantern-fish",
+     "maw-fish",
+     "piranha",
+     "blowfish"
+    ]
+   }
+  }
+ ],
+ "forest-dungeon-rosters": {
+  "animal-i": {
+   "boss": "lizardman",
+   "members": [
+    "lizardman",
+    "crow",
+    "mole",
+    "pig",
+    "biter"
+   ]
+  },
+  "animal-ii": {
+   "boss": "goblin",
+   "members": [
+    "goblin",
+    "crow",
+    "mole",
+    "pig",
+    "biter"
+   ]
+  },
+  "beetle": {
+   "boss": "beetle",
+   "members": [
+    "bark-beetle",
+    "lemon-beetle",
+    "snout-beetle"
+   ]
+  },
+  "dwarf": {
+   "boss": "dwarf",
+   "members": [
+    "dwarf",
+    "mole",
+    "rockling"
+   ]
+  },
+  "human": {
+   "boss": "human",
+   "members": [
+    "human",
+    "minotaur",
+    "werewolf",
+    "collie",
+    "cat",
+    "jester"
+   ]
+  },
+  "insect": {
+   "boss": "insektoid",
+   "members": [
+    "insektoid",
+    "fly",
+    "mosquito"
+   ]
+  },
+  "orc": {
+   "boss": "orc",
+   "members": [
+    "orc",
+    "collie",
+    "terrier",
+    "pig",
+    "ogre"
+   ]
+  },
+  "undead": {
+   "boss": "undead",
+   "members": [
+    "undead",
+    "zombie",
+    "skeleton",
+    "frightener",
+    "vampire",
+    "slimes"
+   ]
+  }
+ },
+ "landscape-rosters": {
+  "caves": [
+   "bat",
+   "rockling"
+  ],
+  "dark-woods": [
+   "skull-slater",
+   "wraith",
+   "frightener",
+   "zombie",
+   "flying-eye",
+   "vampire",
+   "skeleton",
+   "werewolf",
+   "demon-marauder"
+  ],
+  "deadlands": [
+   "skeleton",
+   "skeleton-knight",
+   "skeleton-horse",
+   "skeleton-dog",
+   "skull-slater",
+   "wraith",
+   "frightener",
+   "zombie",
+   "flying-eye",
+   "vampire",
+   "dark-troll",
+   "monstrosity",
+   "dark-cultist",
+   "dark-jester",
+   "werewolf"
+  ],
+  "deserts": [
+   "desert-runner",
+   "camel",
+   "desert-onionling",
+   "chiling",
+   "habanero",
+   "sand-horror",
+   "fire-beetle",
+   "nomad",
+   "djinn",
+   "green-slime",
+   "yellow-slime",
+   "porcupine",
+   "midge",
+   "mosquito",
+   "crawler"
+  ],
+  "greenlands": [
+   "skull-bull",
+   "ogre",
+   "rockling",
+   "bark-beetle",
+   "plain-runner",
+   "raccoon",
+   "mole",
+   "squirrel",
+   "mana-deer",
+   "moose",
+   "onionling",
+   "radishling",
+   "hornet",
+   "bunny",
+   "collie",
+   "sheep",
+   "pig",
+   "chicken",
+   "horse",
+   "bumblebee"
+  ],
+  "jungles": [
+   "parrot",
+   "makake",
+   "monkey",
+   "warthog",
+   "elephant",
+   "baby-elephant",
+   "leaf-runner",
+   "flamingo",
+   "panther",
+   "lion",
+   "crocodile",
+   "koala",
+   "porcupine"
+  ],
+  "lava-lands": [
+   "minotaur",
+   "devourer",
+   "hell-demon",
+   "ember-golem",
+   "imp",
+   "fire-beetle",
+   "earth-caterpillar",
+   "demon-marauder",
+   "vampire",
+   "flying-eye",
+   "bloodaxe-orc"
+  ],
+  "mountains": [
+   "snail",
+   "caterpillar",
+   "earth-caterpillar",
+   "cyclops",
+   "rockling",
+   "biter",
+   "bat"
+  ],
+  "oceans": [
+   "piranha",
+   "maw-fish",
+   "shark",
+   "seahorse",
+   "mermaid",
+   "sea-crab",
+   "lantern-fish",
+   "sapphire-fish",
+   "lemon-fish",
+   "blowfish",
+   "seagull",
+   "crocodile",
+   "spitter",
+   "saurian"
+  ],
+  "pyramids": [
+   "ancient-guardian-anubis",
+   "ancient-guardian-horus",
+   "djinn",
+   "skeleton",
+   "cat",
+   "mosquito",
+   "green-slime"
+  ],
+  "savannahs": [
+   "lion",
+   "camel",
+   "nomad",
+   "djinn",
+   "sand-horror",
+   "habanero",
+   "chiling",
+   "earth-caterpillar",
+   "alpha-dog"
+  ],
+  "snowlands": [
+   "alpaca",
+   "brown-alpaca",
+   "snow-lion",
+   "snow-leopard",
+   "snow-runner",
+   "penguin",
+   "baby-mammoth",
+   "mammoth",
+   "yeti",
+   "polar-gnoll",
+   "snow-gnobold",
+   "iceling",
+   "snow-golem",
+   "horse"
+  ],
+  "wetlands": [
+   "mosquito",
+   "fly",
+   "insect-guard",
+   "green-slime",
+   "blue-slime",
+   "pink-slime",
+   "yellow-slime",
+   "frog",
+   "mermaid",
+   "midge",
+   "bloomling"
+  ]
+ }
+}

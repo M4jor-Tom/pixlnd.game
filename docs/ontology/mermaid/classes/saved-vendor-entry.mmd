@@ -1,0 +1,7 @@
+ classDiagram
+    class `Saved-vendor-entry`
+    click `Saved-vendor-entry` href "../Saved-vendor-entry"
+      `Saved-vendor-entry` : saved_vendor_entry_value
+        `Saved-vendor-entry` --> "1" `Saved-vendor` : saved_vendor_entry_value
+        click `Saved-vendor` href "../Saved-vendor"
+      `Saved-vendor-entry` : saved_vendor_entry_vendor

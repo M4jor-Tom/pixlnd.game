@@ -1,0 +1,7 @@
+ classDiagram
+    class `Weapon-source-entry`
+    click `Weapon-source-entry` href "../Weapon-source-entry"
+      `Weapon-source-entry` : source_entry_key
+      `Weapon-source-entry` : value
+        `Weapon-source-entry` --> "1" `Weapon-source-row` : value
+        click `Weapon-source-row` href "../Weapon-source-row"

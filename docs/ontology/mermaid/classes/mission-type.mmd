@@ -1,0 +1,15 @@
+ classDiagram
+    class `Mission-type`
+    click `Mission-type` href "../Mission-type"
+      `Mission-type` : icon
+      `Mission-type` : id
+      `Mission-type` : repeat
+      `Mission-type` : rewards
+        `Mission-type` --> "*" `Item-type-or-key-item-or-artifact-or-currency-or-book-of-crafting` : rewards
+        click `Item-type-or-key-item-or-artifact-or-currency-or-book-of-crafting` href "../Item-type-or-key-item-or-artifact-or-currency-or-book-of-crafting"
+      `Mission-type` : structures
+        `Mission-type` --> "*" `Dungeon-type-or-poi-type` : structures
+        click `Dungeon-type-or-poi-type` href "../Dungeon-type-or-poi-type"
+      `Mission-type` : tier
+        `Mission-type` --> "0..1" `MissionTier` : tier
+        click `MissionTier` href "../MissionTier"

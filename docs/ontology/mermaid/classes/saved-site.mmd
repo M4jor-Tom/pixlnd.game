@@ -1,0 +1,25 @@
+ classDiagram
+    class `Saved-site`
+    click `Saved-site` href "../Saved-site"
+      `Saved-site` : saved_site_cleared
+      `Saved-site` : saved_site_completed
+      `Saved-site` : saved_site_contents
+        `Saved-site` --> "1" `Saved-contents` : saved_site_contents
+        click `Saved-contents` href "../Saved-contents"
+      `Saved-site` : saved_site_cycle
+      `Saved-site` : saved_site_family
+        `Saved-site` --> "1" saved_site_family : saved_site_family
+        click saved_site_family href "../saved_site_family"
+      `Saved-site` : saved_site_id
+      `Saved-site` : saved_site_mobs
+        `Saved-site` --> "1..*" `Saved-mob-entry` : saved_site_mobs
+        click `Saved-mob-entry` href "../Saved-mob-entry"
+      `Saved-site` : saved_site_pending
+      `Saved-site` : saved_site_rewards
+        `Saved-site` --> "1..*" `Saved-reward` : saved_site_rewards
+        click `Saved-reward` href "../Saved-reward"
+      `Saved-site` : saved_site_room_levels
+      `Saved-site` : saved_site_spirit_levels
+        `Saved-site` --> "1..*" `Saved-spirit-level` : saved_site_spirit_levels
+        click `Saved-spirit-level` href "../Saved-spirit-level"
+      `Saved-site` : saved_site_volumes

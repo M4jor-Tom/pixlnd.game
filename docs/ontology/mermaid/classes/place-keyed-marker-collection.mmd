@@ -1,0 +1,6 @@
+ classDiagram
+    class `Place-keyed-marker-collection`
+    click `Place-keyed-marker-collection` href "../Place-keyed-marker-collection"
+      `Place-keyed-marker-collection` : place_keyed_marker_collection_places
+        `Place-keyed-marker-collection` --> "1..*" `Place-marker-list-entry` : place_keyed_marker_collection_places
+        click `Place-marker-list-entry` href "../Place-marker-list-entry"

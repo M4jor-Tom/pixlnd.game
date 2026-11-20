@@ -7,21 +7,35 @@ prefixes:
 default_prefix: pixlnd
 imports:
 - linkml:types
+- catalog-properties
+- combat
+- items
 default_range: string
 classes:
   race:
+    description: "Logical race definition; applicability follows the cited domain rules."
     class_uri: pixlnd:race
     see_also: &id003
     - ../domain/3_Classes.md#race
+    attributes:
+      alpha-entity-ids: {alias: alpha-entity-ids, slot_uri: "pixlnd:race/alpha-entity-ids", range: race-source-ids, description: "Qualified per-gender numeric source IDs, not stable race identity.", inlined: true}
+      quirks: {alias: quirks, slot_uri: "pixlnd:race/quirks", range: string, description: "Customization qualifications, without racial stat bonuses.", multivalued: true}
+      voice: {alias: voice, slot_uri: "pixlnd:race/voice", range: string, description: "Race-specific groan description; no asset identity is fabricated."}
     slots:
     - id
     - race-playable
     - race-size-class
     - race-genders
+    - race-name
+    - race-hair
+    - race-heads
   character-class:
+    description: "Logical character class definition; applicability follows the cited domain rules."
     class_uri: pixlnd:character-class
     see_also: &id001
     - ../domain/3_Classes.md#character-class
+    attributes:
+      mp-generation: {alias: mp-generation, slot_uri: "pixlnd:character-class/mp-generation", range: string, description: "Class resource generation descriptions.", multivalued: true}
     slots:
     - id
     - character-class-name
@@ -32,9 +46,13 @@ classes:
     - uses-weapon
     - wears-material
   specialization:
+    description: "Logical specialization definition; applicability follows the cited domain rules."
     class_uri: pixlnd:specialization
     see_also: &id002
     - ../domain/3_Classes.md#specialization
+    attributes:
+      passives: {alias: passives, slot_uri: "pixlnd:specialization/passives", range: source-version-abilities, description: "Version-specific passive ability references.", inlined: true}
+      kit: {alias: kit, slot_uri: "pixlnd:specialization/kit", range: source-version-abilities, description: "Version-specific ability kit, distinct from selected hybrid activation.", inlined: true}
     slots:
     - id
     - specialization-name
@@ -46,15 +64,32 @@ classes:
         - specialization-class
         - specialization-index
   npc-role:
+    description: "Logical npc role definition; applicability follows the cited domain rules."
     class_uri: pixlnd:npc-role
     see_also:
     - ../domain/3_Classes.md#npc-role
     slots:
     - id
+    - npc-role-name
+    - npc-role-dialogue
+    - npc-role-sign
+    - npc-role-building
+    - npc-role-species
+    - npc-role-service
+    - npc-role-schedule
+    - npc-role-attackable
+    - npc-role-behaviour
   creature:
+    description: "Logical creature definition; applicability follows the cited domain rules."
     class_uri: pixlnd:creature
     see_also: &id004
     - ../domain/3_Classes.md#creature
+    attributes:
+      name: {alias: name, slot_uri: "pixlnd:creature/name", range: string, description: "Species display name, not limited by player creation rules."}
+      habitats: {alias: habitats, slot_uri: "pixlnd:creature/habitats", range: string, description: "Qualified habitat descriptions.", multivalued: true}
+      abilities: {alias: abilities, slot_uri: "pixlnd:creature/abilities", range: ability, description: "Notable resolved ability references, distinct from raw source summaries.", multivalued: true}
+      signature-ability: {alias: signature-ability, slot_uri: "pixlnd:creature/signature-ability", range: ability, description: "Announced signature ability; no hybrid activation follows."}
+      versions: {alias: versions, slot_uri: "pixlnd:creature/versions", range: SourceVersion, description: "Explicit source tags, not runtime availability.", multivalued: true}
     slots:
     - id
     - creature-alpha-entity-id
@@ -74,18 +109,27 @@ classes:
     - member-of-family
     - descriptive-member-of-family
   creature-family:
+    description: "Logical creature family definition; applicability follows the cited domain rules."
     class_uri: pixlnd:creature-family
     see_also: &id005
     - ../domain/3_Classes.md#creature-family
+    attributes:
+      traits: {alias: traits, slot_uri: "pixlnd:creature-family/traits", range: string, description: "Historical trait descriptions; not automatic member stat inheritance.", multivalued: true}
     slots:
     - id
     - creature-family-members
   faction:
+    description: "Logical faction definition; applicability follows the cited domain rules."
     class_uri: pixlnd:faction
     see_also:
     - ../domain/3_Classes.md#faction
     slots:
     - id
+    - faction-name
+    - faction-alignment
+    - faction-leader
+    - faction-members
+    - faction-presence
 slots:
   id:
     slot_uri: pixlnd:id
@@ -97,12 +141,14 @@ slots:
     description: Stable instance identity under the canonical kebab-case convention; numeric source tables
       have separate unresolved namespace mappings.
   character-class-name:
+    description: "Character class name property; interpreted under its owning definition."
     slot_uri: pixlnd:character-class/name
     alias: name
     range: string
     required: true
     see_also: *id001
   character-class-id-number:
+    description: "Character class id number property; interpreted under its owning definition."
     slot_uri: pixlnd:character-class/id-number
     alias: id-number
     range: integer
@@ -111,30 +157,36 @@ slots:
     minimum_value: 1
     maximum_value: 4
   character-class-special-attack-mode:
+    description: "Character class special attack mode property; interpreted under its owning definition."
     slot_uri: pixlnd:character-class/special-attack-mode
     alias: special-attack-mode
     range: attack-mode
     required: true
     see_also: *id001
   character-class-hp-mult:
+    description: "Character class hp mult property; interpreted under its owning definition."
     slot_uri: pixlnd:character-class/hp-mult
     alias: hp-mult
     range: float
     required: true
     see_also: *id001
   specialization-name:
+    description: "Specialization name property; interpreted under its owning definition."
     slot_uri: pixlnd:specialization/name
     alias: name
     range: string
     required: true
     see_also: *id002
   specialization-class:
+    description: "Specialization class property; interpreted under its owning definition."
+    inverse: has-specialization
     slot_uri: pixlnd:specialization/class
     alias: class
     range: character-class
     required: true
     see_also: *id002
   specialization-index:
+    description: "Specialization index property; interpreted under its owning definition."
     slot_uri: pixlnd:specialization/index
     alias: index
     range: integer
@@ -143,18 +195,21 @@ slots:
     maximum_value: 1
     see_also: *id002
   race-playable:
+    description: "Race playable property; interpreted under its owning definition."
     slot_uri: pixlnd:race/playable
     alias: playable
     range: boolean
     required: true
     see_also: *id003
   race-size-class:
+    description: "Race size class property; interpreted under its owning definition."
     slot_uri: pixlnd:race/size-class
     alias: size-class
     range: size-class
     required: true
     see_also: *id003
   race-genders:
+    description: "Race genders property; interpreted under its owning definition."
     slot_uri: pixlnd:race/genders
     alias: genders
     range: gender
@@ -162,54 +217,63 @@ slots:
     multivalued: true
     see_also: *id003
   creature-alpha-entity-id:
+    description: "Creature alpha entity id property; interpreted under its owning definition."
     slot_uri: pixlnd:creature-alpha-entity-id
     alias: aid
     range: integer
     see_also:
     - ../domain/3_Classes.md#creature
   creature-category:
+    description: "Creature category property; interpreted under its owning definition."
     slot_uri: pixlnd:creature/category
     alias: cat
     range: creature-category
     required: true
     see_also: *id004
   creature-hostility-default:
+    description: "Creature hostility default property; interpreted under its owning definition."
     slot_uri: pixlnd:creature/hostility-default
     alias: h
     range: hostility-default
     required: true
     see_also: *id004
   creature-rideable:
+    description: "Creature rideable property; interpreted under its owning definition."
     slot_uri: pixlnd:creature/rideable
     alias: ride
     range: boolean
     required: true
     see_also: *id004
   creature-boss-species:
+    description: "Creature boss species property; interpreted under its owning definition."
     slot_uri: pixlnd:creature/boss-species
     alias: boss
     range: boolean
     required: true
     see_also: *id004
   creature-boss-capable:
+    description: "Creature boss capable property; interpreted under its owning definition."
     slot_uri: pixlnd:creature/boss-capable
     alias: bossable
     range: boolean
     required: true
     see_also: *id004
   creature-breaks-terrain:
+    description: "Creature breaks terrain property; interpreted under its owning definition."
     slot_uri: pixlnd:creature/breaks-terrain
     alias: breaks-terrain
     range: boolean
     required: true
     see_also: *id004
   creature-drinks-potions:
+    description: "Creature drinks potions property; interpreted under its owning definition."
     slot_uri: pixlnd:creature/drinks-potions
     alias: drinks-potions
     range: boolean
     required: true
     see_also: *id004
   creature-lantern-at-night:
+    description: "Creature lantern at night property; interpreted under its owning definition."
     slot_uri: pixlnd:creature/lantern-at-night
     alias: lantern-at-night
     range: boolean
@@ -223,6 +287,7 @@ slots:
       prose.
     see_also: *id004
   creature-pet-types:
+    description: "Creature pet types property; interpreted under its owning definition."
     slot_uri: pixlnd:creature/pet-types
     alias: pet-types
     range: pet-type
@@ -230,6 +295,7 @@ slots:
     multivalued: true
     see_also: *id004
   creature-landscapes:
+    description: "Creature landscapes property; interpreted under its owning definition."
     slot_uri: pixlnd:creature/landscapes
     alias: lands
     range: landscape
@@ -237,6 +303,7 @@ slots:
     multivalued: true
     see_also: *id004
   creature-group-size:
+    description: "Creature group size property; interpreted under its owning definition."
     slot_uri: pixlnd:creature/group-size
     alias: group
     range: integer
@@ -246,6 +313,7 @@ slots:
     maximum_cardinality: 2
     see_also: *id004
   creature-family-members:
+    description: "Creature family members property; interpreted under its owning definition."
     slot_uri: pixlnd:creature-family/members
     alias: members
     range: creature
@@ -253,6 +321,7 @@ slots:
     multivalued: true
     see_also: *id005
   has-specialization:
+    inverse: specialization-class
     slot_uri: pixlnd:has-specialization
     alias: specializations
     range: specialization
@@ -314,28 +383,45 @@ slots:
     - ../domain/4_Relations.md
     list_elements_unique: true
 types:
+  int64:
+    typeof: integer
+    uri: xsd:integer
+    minimum_value: -9223372036854775808
+    maximum_value: 9223372036854775807
+    description: Signed 64-bit source position component.
+  int32:
+    typeof: integer
+    uri: xsd:integer
+    minimum_value: -2147483648
+    maximum_value: 2147483647
+    description: Signed 32-bit source scalar.
   uint32:
+    description: "uint32 scalar representation."
     typeof: integer
     uri: xsd:integer
     minimum_value: 0
     maximum_value: 4294967295
   u8:
+    description: "u8 scalar representation."
     typeof: integer
     uri: xsd:integer
     minimum_value: 0
     maximum_value: 255
   i8:
+    description: "i8 scalar representation."
     typeof: integer
     uri: xsd:integer
     minimum_value: -128
     maximum_value: 127
   i16:
+    description: "i16 scalar representation."
     typeof: integer
     uri: xsd:integer
     minimum_value: -32768
     maximum_value: 32767
 enums:
   hostility:
+    description: "Hostility vocabulary."
     enum_uri: pixlnd:hostility
     permissible_values:
       hostile: {}
@@ -345,22 +431,26 @@ enums:
       named-friendly: {}
       target: {}
   gender:
+    description: "Gender vocabulary."
     enum_uri: pixlnd:gender
     permissible_values:
       male: {}
       female: {}
   size-class:
+    description: "Size class vocabulary."
     enum_uri: pixlnd:size-class
     permissible_values:
       small: {}
       normal: {}
       large: {}
   attack-mode:
+    description: "Attack mode vocabulary."
     enum_uri: pixlnd:attack-mode
     permissible_values:
       charged: {}
       instant: {}
   creature-category:
+    description: "Creature category vocabulary."
     enum_uri: pixlnd:creature-category
     permissible_values:
       animal: {}
@@ -376,6 +466,7 @@ enums:
       static-target: {}
       unused: {}
   hostility-default:
+    description: "Hostility default vocabulary."
     enum_uri: pixlnd:hostility-default
     permissible_values:
       hostile: {}
@@ -384,6 +475,7 @@ enums:
       friendly: {}
       variable: {}
   combat-role:
+    description: "Combat role vocabulary."
     enum_uri: pixlnd:combat-role
     permissible_values:
       melee: {}
@@ -392,6 +484,7 @@ enums:
       any-class: {}
       none: {}
   pet-type:
+    description: "Pet type vocabulary."
     enum_uri: pixlnd:pet-type
     permissible_values:
       melee: {}

@@ -1,0 +1,8 @@
+ classDiagram
+    class `Economy-currency-steam`
+    click `Economy-currency-steam` href "../Economy-currency-steam"
+      `Economy-currency-steam` : coins
+        `Economy-currency-steam` --> "1" `Economy-one-coin-source` : coins
+        click `Economy-one-coin-source` href "../Economy-one-coin-source"
+      `Economy-currency-steam` : display
+      `Economy-currency-steam` : pickup

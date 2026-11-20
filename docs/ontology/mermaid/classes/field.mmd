@@ -1,0 +1,7 @@
+ classDiagram
+    class `Field`
+    click `Field` href "../Field"
+      `Field` : base_z
+      `Field` : blocks
+        `Field` --> "1..*" `Block` : blocks
+        click `Block` href "../Block"

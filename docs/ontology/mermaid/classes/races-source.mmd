@@ -1,0 +1,11 @@
+ classDiagram
+    class `Races-source`
+    click `Races-source` href "../Races-source"
+      `Races-source` : creation
+        `Races-source` --> "1" `Race-creation` : creation
+        click `Race-creation` href "../Race-creation"
+      `Races-source` : documentation
+      `Races-source` : entries
+        `Races-source` --> "1..*" `Race-source-entry` : entries
+        click `Race-source-entry` href "../Race-source-entry"
+      `Races-source` : schema_tag

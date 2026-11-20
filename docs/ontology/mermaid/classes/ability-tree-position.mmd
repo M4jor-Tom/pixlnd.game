@@ -1,0 +1,13 @@
+ classDiagram
+    class `Ability-tree-position`
+    click `Ability-tree-position` href "../Ability-tree-position"
+      `Ability-tree-position` : ability_tree_also_ultimate
+      `Ability-tree-position` : ability_tree_class
+        `Ability-tree-position` --> "0..1" `Character-class` : ability_tree_class
+        click `Character-class` href "../Character-class"
+      `Ability-tree-position` : ability_tree_column
+        `Ability-tree-position` --> "1" `Skill-column` : ability_tree_column
+        click `Skill-column` href "../Skill-column"
+      `Ability-tree-position` : ability_tree_needs
+      `Ability-tree-position` : ability_tree_rank
+      `Ability-tree-position` : ability_tree_skill_slot

@@ -1,0 +1,34 @@
+ classDiagram
+    class `Item`
+    click `Item` href "../Item"
+      `Item` <|-- `Formula`
+        click `Formula` href "../Formula"
+      `Item` : id
+      `Item` : item_flags
+      `Item` : item_land
+        `Item` --> "0..1" `Land` : item_land
+        click `Land` href "../Land"
+      `Item` : item_level
+      `Item` : item_material
+        `Item` --> "1" `Material` : item_material
+        click `Material` href "../Material"
+      `Item` : item_minus_modifier
+      `Item` : item_modifier
+      `Item` : item_name
+      `Item` : item_plus
+      `Item` : item_rarity
+        `Item` --> "1" `Rarity` : item_rarity
+        click `Rarity` href "../Rarity"
+      `Item` : item_sub_type
+        `Item` --> "1" `Item-type` : item_sub_type
+        click `Item-type` href "../Item-type"
+      `Item` : item_type
+        `Item` --> "1" `Item-type` : item_type
+        click `Item-type` href "../Item-type"
+      `Item` : item_upgrade_count
+      `Item` : item_upgrades
+        `Item` --> "1..*" `Item-upgrade` : item_upgrades
+        click `Item-upgrade` href "../Item-upgrade"
+      `Item` : item_weapon_type
+        `Item` --> "0..1" `Weapon-type` : item_weapon_type
+        click `Weapon-type` href "../Weapon-type"

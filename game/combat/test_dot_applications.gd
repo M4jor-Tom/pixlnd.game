@@ -1,6 +1,6 @@
 ## Independent hit-derived DOT schedules and synchronous lifecycle regressions.
 extends SceneTree
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Entity := preload("res://game/entities/entity.gd")
 var failed := 0
 var se: Dictionary
@@ -32,8 +32,8 @@ func _init() -> void:
 
 
 func _run() -> void:
-	var o = Model.Ontology.load_dir("res://ontology/instances")
-	check(o.validate(), "ontology valid")
+	var o = Domain.Ontology.load_dir()
+	check(o.errors.is_empty(), "ontology valid")
 	design = o.configs.generators.design
 	se = design["status-effects"]
 	_schedules()

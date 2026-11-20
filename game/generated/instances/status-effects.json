@@ -1,0 +1,387 @@
+{
+ "$schema": "status-effect",
+ "ability-buffs": {
+  "list": [
+   "battle-fury",
+   "berserker-rage",
+   "torrent",
+   "hit-series",
+   "fire-spark",
+   "intuition",
+   "elusiveness",
+   "war-frenzy (A)",
+   "bulwark (A)",
+   "mana-shield (A)",
+   "scouts-swiftness (A)",
+   "camouflage",
+   "ninjutsu",
+   "shadow-shooter"
+  ],
+  "note": "defined in abilities.json"
+ },
+ "entries": [
+  {
+   "key": "poison",
+   "value": {
+    "countered-by": [
+     "green-smoothie"
+    ],
+    "effect": "damage ticks (dagger ambush: ~5 ticks/5 s, stacks, tick = hit dmg, crits carry); not avoided by dodge",
+    "kind": "debuff",
+    "name": "Poison",
+    "sources": [
+     "dagger-ambush",
+     "poison-vial",
+     "toxic-river",
+     "hornet-sting (Ω)"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ],
+    "visual": "green"
+   }
+  },
+  {
+   "key": "burning",
+   "value": {
+    "countered-by": [
+     "lemonade"
+    ],
+    "effect": "fire damage over time",
+    "kind": "debuff",
+    "name": "Burning",
+    "sources": [
+     "fire-explosion",
+     "lava",
+     "fire-spirit-cube",
+     "fire-trap (X)"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ],
+    "visual": "flames"
+   }
+  },
+  {
+   "key": "slow",
+   "value": {
+    "countered-by": [
+     "hot-chocolate (cold water)"
+    ],
+    "effect": "reduced attack/move speed; quicksand nearly immobilises",
+    "kind": "debuff",
+    "name": "Slow / Frozen",
+    "sources": [
+     "ice-spirit-cube",
+     "cold-water (15 s)",
+     "quicksand-trap"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ],
+    "visual": "blue tint (make_blue_time)"
+   }
+  },
+  {
+   "key": "stun",
+   "value": {
+    "effect": "cannot act; immune to re-stun while stars visible; interrupts potions and charges",
+    "kind": "debuff",
+    "name": "Stun",
+    "sources": [
+     "special attacks",
+     "smash",
+     "kick",
+     "rock-fist",
+     "fire-explosion",
+     "2h third hit",
+     "dagger ambush",
+     "glider crash (dizzy)"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ],
+    "visual": "stars over head"
+   }
+  },
+  {
+   "key": "knockdown",
+   "value": {
+    "effect": "target falls; interrupts",
+    "kind": "debuff",
+    "name": "Knockdown (KO)",
+    "sources": [
+     "fully charged specials",
+     "2h uppercut",
+     "fist kick",
+     "bracelet ball",
+     "fire-missiles"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "knockback",
+   "value": {
+    "kind": "displacement",
+    "name": "Knockback",
+    "note": "mana shield fully absorbed hits give none (A)",
+    "sources": [
+     "kick",
+     "fire-explosion",
+     "rock-fist (knock-up)",
+     "shield swipe"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "taunt",
+   "value": {
+    "effect": "forced to target the taunter",
+    "kind": "debuff",
+    "name": "Taunt",
+    "sources": [
+     "heroic-shout"
+    ],
+    "versions": [
+     "S"
+    ],
+    "visual": "red tint"
+   }
+  },
+  {
+   "key": "stealth",
+   "value": {
+    "effect": "see stats.json#resources.stealth",
+    "kind": "buff",
+    "name": "Stealth",
+    "sources": [
+     "sneak",
+     "camouflage",
+     "aim (A)",
+     "way-of-the-shadows",
+     "retreat (S)",
+     "charged shot (sniper S)"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ],
+    "visual": "transparency"
+   }
+  },
+  {
+   "key": "dizzy",
+   "value": {
+    "effect": "falls after glider collision",
+    "kind": "debuff",
+    "name": "Dizzy",
+    "sources": [
+     "hang-glider crash"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "drowning",
+   "value": {
+    "effect": "HP loss when diving breath empty",
+    "kind": "debuff",
+    "name": "Drowning",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "possessed",
+   "value": {
+    "effect": "hostile, tougher; respawns possessed until demon portal destroyed",
+    "kind": "debuff (NPC)",
+    "name": "Possessed",
+    "sources": [
+     "demon-portal"
+    ],
+    "versions": [
+     "S"
+    ],
+    "visual": "red, enlarged, name prefix 'Possessed'"
+   }
+  },
+  {
+   "key": "mana-absorption",
+   "value": {
+    "effect": "slows MP gain from attacks",
+    "kind": "debuff (land-wide)",
+    "name": "Mana Absorption",
+    "removed-by": "destroy mana pump",
+    "sources": [
+     "mana-pump"
+    ],
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "petrified",
+   "value": {
+    "effect": "villagers turned to stone until witch killed",
+    "kind": "debuff (settlement)",
+    "name": "Petrified",
+    "sources": [
+     "witch (old hut)"
+    ],
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "injured",
+   "value": {
+    "effect": "reduced max HP for minutes after death; band-aids on back; cured by eating",
+    "kind": "debuff",
+    "name": "Injured",
+    "note": "2012 devlog only; released alpha has no death penalty",
+    "versions": [
+     "X"
+    ]
+   }
+  },
+  {
+   "key": "circle-of-power",
+   "value": {
+    "effect": "'increase your strength throughout the region': +10% attack, +10% max HP in that land (D6)",
+    "kind": "buff (land-wide)",
+    "name": "Circle of Power",
+    "sources": [
+     "eternal-ember at brazier"
+    ],
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "elixir-power",
+   "value": {
+    "duration-s": 600,
+    "effect": "+20% attack power",
+    "kind": "buff",
+    "name": "Elixir of Power",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "elixir-toughness",
+   "value": {
+    "duration-s": 600,
+    "effect": "+20% armor",
+    "kind": "buff",
+    "name": "Elixir of Toughness",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "elixir-life",
+   "value": {
+    "duration-s": 600,
+    "effect": "+20% HP",
+    "kind": "buff",
+    "name": "Elixir of Life",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "elixir-sanity",
+   "value": {
+    "duration-s": 600,
+    "effect": "+20% resistance / +MP & magic power",
+    "kind": "buff",
+    "name": "Elixir of Sanity",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "lava-resistance",
+   "value": {
+    "duration-s": 600,
+    "kind": "buff",
+    "name": "Lava Resistance",
+    "sources": [
+     "lemonade"
+    ],
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "cold-resistance",
+   "value": {
+    "duration-s": 600,
+    "kind": "buff",
+    "name": "Cold Resistance",
+    "sources": [
+     "hot-chocolate"
+    ],
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "poison-resistance",
+   "value": {
+    "duration-s": 600,
+    "kind": "buff",
+    "name": "Poison Resistance",
+    "sources": [
+     "green-smoothie"
+    ],
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "healing-over-time",
+   "value": {
+    "duration-s": 15,
+    "effect": "food/potion heal spread over 15 s; food immobilises, potion channels while moving; knockdown interrupts",
+    "kind": "buff",
+    "name": "Healing",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  }
+ ],
+ "not-found": [
+  "bleeding"
+ ]
+}

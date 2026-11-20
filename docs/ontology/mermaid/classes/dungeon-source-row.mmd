@@ -1,0 +1,19 @@
+ classDiagram
+    class `Dungeon-source-row`
+    click `Dungeon-source-row` href "../Dungeon-source-row"
+      `Dungeon-source-row` : alpha_loc
+      `Dungeon-source-row` : boss
+      `Dungeon-source-row` : contents
+      `Dungeon-source-row` : desc
+      `Dungeon-source-row` : entrance
+      `Dungeon-source-row` : lands
+      `Dungeon-source-row` : name
+      `Dungeon-source-row` : naming
+      `Dungeon-source-row` : natural
+      `Dungeon-source-row` : rosters
+      `Dungeon-source-row` : s_replacement
+      `Dungeon-source-row` : see
+      `Dungeon-source-row` : variants
+        `Dungeon-source-row` --> "0..1" `Dungeon-variants-source` : variants
+        click `Dungeon-variants-source` href "../Dungeon-variants-source"
+      `Dungeon-source-row` : versions

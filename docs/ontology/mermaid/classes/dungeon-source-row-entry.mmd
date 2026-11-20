@@ -1,0 +1,7 @@
+ classDiagram
+    class `Dungeon-source-row-entry`
+    click `Dungeon-source-row-entry` href "../Dungeon-source-row-entry"
+      `Dungeon-source-row-entry` : source_entry_key
+      `Dungeon-source-row-entry` : value
+        `Dungeon-source-row-entry` --> "1" `Dungeon-source-row` : value
+        click `Dungeon-source-row` href "../Dungeon-source-row"

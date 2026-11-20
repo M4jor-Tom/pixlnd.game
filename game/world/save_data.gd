@@ -1,7 +1,7 @@
 ## Current-rule JSON boundary. Validate before publishing nodes AND before replacing the original save.
 ## Same-directory temp + flush + rename; no legacy migration, offline catch-up or corrupt-save fallback.
 extends RefCounted
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Item := preload("res://game/items/item.gd")
 const Rewards := preload("res://game/items/encounter_rewards.gd")
 const Shop := preload("res://game/items/shop.gd")

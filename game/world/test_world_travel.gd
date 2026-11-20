@@ -1,6 +1,6 @@
 ## True-scale real-player travel regressions at the half-open world edges and corners.
 extends SceneTree
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Combat := preload("res://game/combat/combat.gd")
 const Spawner := preload("res://game/world/spawner.gd")
 const InputMapBuilder := preload("res://game/meta/input_map.gd")
@@ -61,8 +61,8 @@ func place(p: CharacterBody3D, position: Vector3) -> void:
 
 func _init() -> void:
 	await process_frame
-	o = Model.Ontology.load_dir("res://ontology/instances")
-	check(o.validate(), "ontology valid")
+	o = Domain.Ontology.load_dir()
+	check(o.errors.is_empty(), "ontology valid")
 	design = o.configs["generators"]["design"]
 	InputMapBuilder.build(o.configs["keybinds"]["hybrid"])
 	var terrain: Dictionary = design["terrain"]

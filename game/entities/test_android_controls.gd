@@ -1,7 +1,7 @@
 ## Native screen-event -> real player/camera/panel integration, not request injection.
 extends SceneTree
 const PanelCases := preload("res://game/entities/android_controls_panel_cases.gd")
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const PLAYER := preload("res://game/entities/player.tscn")
 const Touch := preload("res://game/meta/android_touch.gd")
 const InventoryPanel := preload("res://game/items/inventory_panel.gd")
@@ -108,7 +108,7 @@ func select_row(list: ItemList, row: int, id := 31) -> void:
 
 
 func run() -> void:
-	o = Model.Ontology.load_dir("res://ontology/instances")
+	o = Domain.Ontology.load_dir()
 	design = o.configs.generators.design
 	var initial = PLAYER.instantiate()
 	check("touch_input" in initial, "player accepts independent touch source")

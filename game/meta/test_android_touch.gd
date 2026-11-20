@@ -1,6 +1,6 @@
 ## Real screen events -> native widgets -> owned, unbuffered Android requests.
 extends SceneTree
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 var failed := 0
 var a
 var center: Vector2
@@ -48,7 +48,7 @@ func run() -> void:
 		return
 	a = load("res://game/meta/android_touch.gd").new()
 	root.add_child(a)
-	var o = Model.Ontology.load_dir("res://ontology/instances")
+	var o = Domain.Ontology.load_dir()
 	a.setup(o.configs["controller-profiles"]["android"], null, null, null, null)
 	a.set_layout(Rect2(20, 10, 1240, 700), Vector2.ONE)
 	await process_frame

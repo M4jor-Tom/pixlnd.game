@@ -1,0 +1,3454 @@
+{
+ "$schema": "creature",
+ "_doc": "aid = numeric source entity ID (legacy key): cuwo alpha references or post-alpha additions; null = unrecorded. v records version provenance; an alpha-reserved ID is not proof of alpha availability. h = hostility default: P passive, N neutral, H hostile, V variable (by tribe), F friendly. cat = category. role = combat role. tame = pet-food id or null. ride = per-page rideable (see pet-food.json for conflicts). boss = always boss species. bossable = may spawn boss-ified. lands = landscapes / habitats. v = versions.",
+ "_playable-races-as-enemies": {
+  "note": "humans, elves, dwarves, goblins, lizardmen, orcs, undead, frogmen spawn as hostile adventurers, dungeon rosters and forest bosses; see races.json"
+ },
+ "entries": [
+  {
+   "key": "collie",
+   "value": {
+    "aid": 19,
+    "cat": "animal",
+    "family": "dogs",
+    "h": "P",
+    "lands": [
+     "cities",
+     "greenlands",
+     "castles",
+     "dungeons"
+    ],
+    "name": "Collie",
+    "notes": [
+     "first pet (Wollay's dog Joschi)",
+     "dungeon patrol ally of ogres (untameable)",
+     "some base-legendary (S)"
+    ],
+    "pet-types": [
+     "melee",
+     "mount"
+    ],
+    "ride": true,
+    "tame": "bubble-gum",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "shepherd-dog",
+   "value": {
+    "aid": 20,
+    "cat": "animal",
+    "family": "dogs",
+    "h": "P",
+    "lands": [
+     "greenlands",
+     "near villages"
+    ],
+    "name": "Shepherd Dog",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "terrier",
+   "value": {
+    "aid": 26,
+    "cat": "animal",
+    "family": "dogs",
+    "h": "P",
+    "lands": [
+     "cities",
+     "greenlands",
+     "forests",
+     "plains"
+    ],
+    "name": "Terrier",
+    "ride": true,
+    "tame": "waffle",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "scottish-terrier",
+   "value": {
+    "aid": 27,
+    "cat": "animal",
+    "family": "dogs",
+    "h": "P",
+    "lands": [
+     "cities",
+     "greenlands"
+    ],
+    "name": "Scottish Terrier",
+    "ride": true,
+    "tame": "croissant",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "bullterrier",
+   "value": {
+    "aid": 6,
+    "cat": "animal",
+    "family": "dogs",
+    "h": "P",
+    "name": "Bullterrier",
+    "notes": [
+     "alpha id only"
+    ],
+    "tame": null,
+    "v": [
+     "A",
+     "X"
+    ]
+   }
+  },
+  {
+   "key": "alpha-dog",
+   "value": {
+    "aid": null,
+    "cat": "animal",
+    "family": "dogs",
+    "h": "P (dungeon variants H)",
+    "lands": [
+     "greenlands",
+     "savannahs",
+     "forests",
+     "dungeons"
+    ],
+    "name": "Alpha Dog",
+    "notes": [
+     "surrounded by savage dogs"
+    ],
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "savage-dog",
+   "value": {
+    "aid": null,
+    "cat": "animal",
+    "family": "dogs",
+    "group": [
+     4,
+     4
+    ],
+    "h": "P (dungeon variants H)",
+    "lands": [
+     "woodlands",
+     "greenlands"
+    ],
+    "name": "Savage Dog",
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "skull-bull",
+   "value": {
+    "aid": 21,
+    "cat": "animal",
+    "h": "H",
+    "lands": [
+     "greenlands",
+     "snowlands",
+     "dark-woods",
+     "deadlands",
+     "deserts",
+     "forests"
+    ],
+    "name": "Skull Bull",
+    "notes": [
+     "hard for new players"
+    ],
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "alpaca",
+   "value": {
+    "aid": 22,
+    "cat": "animal",
+    "family": "alpacas",
+    "h": "P",
+    "lands": [
+     "all except lava-lands",
+     "most abundant snowlands"
+    ],
+    "name": "Alpaca (light)",
+    "ride": true,
+    "tame": "vanilla-cupcake",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "brown-alpaca",
+   "value": {
+    "aid": 23,
+    "cat": "animal",
+    "family": "alpacas",
+    "h": "P",
+    "lands": [
+     "all except deserts, lava-lands"
+    ],
+    "name": "Alpaca (dark/brown)",
+    "notes": [
+     "green-tier example (S)",
+     "boss alpaca ridden by lizardman seen"
+    ],
+    "ride": true,
+    "tame": "chocolate-cupcake",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "egg",
+   "value": {
+    "aid": 24,
+    "cat": "unused",
+    "name": "Egg",
+    "v": [
+     "X"
+    ]
+   }
+  },
+  {
+   "key": "turtle",
+   "value": {
+    "aid": 25,
+    "cat": "animal",
+    "h": "P",
+    "lands": [
+     "rivers",
+     "greenlands",
+     "islands",
+     "ponds"
+    ],
+    "name": "Turtle",
+    "notes": [
+     "high HP, spin attack generates aggro",
+     "turtle-shell pet cage"
+    ],
+    "pet-types": [
+     "tank",
+     "mount",
+     "melee"
+    ],
+    "ride": true,
+    "tame": "cinnamon-roll",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "wolf",
+   "value": {
+    "aid": 28,
+    "cat": "animal",
+    "h": "H",
+    "lands": [
+     "greenlands",
+     "forests",
+     "snowlands"
+    ],
+    "name": "Wolf",
+    "notes": [
+     "apple pie planned (X)",
+     "listed rideable in mount list"
+    ],
+    "tame": null,
+    "v": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "panther",
+   "value": {
+    "aid": 29,
+    "cat": "animal",
+    "h": "H",
+    "lands": [
+     "jungles"
+    ],
+    "name": "Panther",
+    "notes": [
+     "alpha id reserved, not spawned in alpha (F10)"
+    ],
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "cat",
+   "value": {
+    "aid": 30,
+    "cat": "animal",
+    "h": "P",
+    "lands": [
+     "cities",
+     "greenlands",
+     "pyramids (with djinn/skeletons)"
+    ],
+    "name": "Cat (black)",
+    "notes": [
+     "only black tameable"
+    ],
+    "ride": true,
+    "tame": "candy",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "brown-cat",
+   "value": {
+    "aid": 31,
+    "cat": "animal",
+    "h": "P",
+    "name": "Cat (brown)",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "white-cat",
+   "value": {
+    "aid": 32,
+    "bossable": true,
+    "cat": "animal",
+    "h": "P",
+    "name": "Cat (white)",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "pig",
+   "value": {
+    "aid": 33,
+    "cat": "animal",
+    "h": "P",
+    "lands": [
+     "greenlands",
+     "cities",
+     "forests"
+    ],
+    "name": "Pig",
+    "ride": true,
+    "tame": "pumpkin-mash",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "sheep",
+   "value": {
+    "aid": 34,
+    "cat": "animal",
+    "h": "P",
+    "lands": [
+     "cities",
+     "forests",
+     "greenlands"
+    ],
+    "name": "Sheep",
+    "ride": true,
+    "tame": "cotton-candy",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "bunny",
+   "value": {
+    "aid": 35,
+    "cat": "animal",
+    "h": "P",
+    "lands": [
+     "greenlands",
+     "plains",
+     "forests"
+    ],
+    "name": "Bunny",
+    "ride": true,
+    "tame": "carrot",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "porcupine",
+   "value": {
+    "aid": 36,
+    "cat": "animal",
+    "h": "N",
+    "lands": [
+     "deserts",
+     "jungles",
+     "mountains"
+    ],
+    "name": "Porcupine",
+    "ride": true,
+    "tame": "blackberry-marmalade",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "green-slime",
+   "value": {
+    "aid": 37,
+    "cat": "monster",
+    "family": "slimes",
+    "h": "H",
+    "lands": [
+     "deserts",
+     "mountains",
+     "wetlands",
+     "any"
+    ],
+    "name": "Green Slime",
+    "notes": [
+     "summoned by djinn",
+     "slime wells (S)",
+     "Ω: divide below 50% HP"
+    ],
+    "ride": true,
+    "tame": "green-jelly",
+    "v": [
+     "A",
+     "S",
+     "Ω"
+    ]
+   }
+  },
+  {
+   "key": "pink-slime",
+   "value": {
+    "aid": 38,
+    "cat": "monster",
+    "family": "slimes",
+    "h": "H",
+    "lands": [
+     "all"
+    ],
+    "name": "Pink Slime",
+    "ride": true,
+    "tame": "pink-jelly",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "yellow-slime",
+   "value": {
+    "aid": 39,
+    "cat": "monster",
+    "family": "slimes",
+    "h": "H",
+    "lands": [
+     "deserts"
+    ],
+    "name": "Yellow Slime",
+    "ride": true,
+    "tame": "yellow-jelly",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "blue-slime",
+   "value": {
+    "aid": 40,
+    "cat": "monster",
+    "family": "slimes",
+    "h": "H",
+    "lands": [
+     "all"
+    ],
+    "name": "Blue Slime",
+    "ride": true,
+    "tame": "blue-jelly",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "frightener",
+   "value": {
+    "aid": 41,
+    "cat": "undead",
+    "h": "H",
+    "lands": [
+     "dungeons",
+     "graveyards",
+     "deadlands",
+     "dark-woods",
+     "dungeon-forests"
+    ],
+    "name": "Frightener",
+    "notes": [
+     "ghost without hands/feet; eyes glow in dark"
+    ],
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "sand-horror",
+   "value": {
+    "aid": 42,
+    "cat": "monster",
+    "group": [
+     3,
+     5
+    ],
+    "h": "H",
+    "lands": [
+     "deserts",
+     "savannahs"
+    ],
+    "name": "Sand Horror",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "wizard",
+   "value": {
+    "aid": 43,
+    "cat": "humanoid",
+    "group": [
+     1,
+     4
+    ],
+    "h": "V",
+    "lands": [
+     "all"
+    ],
+    "name": "Wizard",
+    "notes": [
+     "purple hood, blue eyes, elf ears; staff/wand laser",
+     "wizard-tower boss",
+     "0.9.3-0 wand dmg -25%"
+    ],
+    "role": "mage",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "bandit",
+   "value": {
+    "aid": 44,
+    "cat": "humanoid",
+    "h": "H",
+    "name": "Bandit",
+    "notes": [
+     "no wiki page"
+    ],
+    "role": "any-class",
+    "tame": null,
+    "v": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "witch",
+   "value": {
+    "aid": 45,
+    "bossable": true,
+    "cat": "humanoid",
+    "group": [
+     2,
+     4
+    ],
+    "h": "V",
+    "lands": [
+     "all",
+     "greenlands",
+     "old-hut (S)"
+    ],
+    "name": "Witch",
+    "notes": [
+     "ray attack (staff)",
+     "S: old hut witch petrifies a village"
+    ],
+    "role": "mage",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "ogre",
+   "value": {
+    "aid": 46,
+    "cat": "monster",
+    "drinks-potions": true,
+    "h": "H",
+    "lands": [
+     "greenlands",
+     "woodlands",
+     "mountains",
+     "dungeons (all)"
+    ],
+    "name": "Ogre",
+    "notes": [
+     "dungeon patrol guard with collies, stronger than statics",
+     "drinks potions",
+     "Ω: belly slide charge+stun, procedural wood maces"
+    ],
+    "tame": null,
+    "v": [
+     "A",
+     "S",
+     "Ω"
+    ]
+   }
+  },
+  {
+   "key": "rockling",
+   "value": {
+    "aid": 47,
+    "cat": "elemental",
+    "h": "H",
+    "lands": [
+     "mountains",
+     "caves",
+     "all"
+    ],
+    "name": "Rockling",
+    "notes": [
+     "throws boulders (iron-deposit lookalike)",
+     "blue tier"
+    ],
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "gnoll",
+   "value": {
+    "aid": 48,
+    "cat": "humanoid",
+    "h": "V",
+    "name": "Gnoll",
+    "notes": [
+     "hyena-headed; hostility by tribe"
+    ],
+    "role": "any-class",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "polar-gnoll",
+   "value": {
+    "aid": 49,
+    "cat": "humanoid",
+    "h": "V",
+    "lands": [
+     "snowlands"
+    ],
+    "name": "Polar Gnoll",
+    "role": "any-class",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "monkey",
+   "value": {
+    "aid": 50,
+    "cat": "animal",
+    "h": "N",
+    "lands": [
+     "jungles",
+     "near oceans"
+    ],
+    "name": "Monkey",
+    "ride": false,
+    "tame": "banana-split",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "gnobold",
+   "value": {
+    "aid": 51,
+    "cat": "humanoid",
+    "group": [
+     2,
+     4
+    ],
+    "h": "V",
+    "lands": [
+     "most"
+    ],
+    "name": "Gnobold",
+    "role": "any-class",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "snow-gnobold",
+   "value": {
+    "aid": null,
+    "cat": "humanoid",
+    "h": "V",
+    "lands": [
+     "snowlands"
+    ],
+    "name": "Snow Gnobold",
+    "role": "any-class",
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "insektoid",
+   "value": {
+    "aid": 52,
+    "bossable": true,
+    "cat": "insect",
+    "h": "V",
+    "lands": [
+     "anywhere",
+     "insect forests"
+    ],
+    "name": "Insektoid",
+    "notes": [
+     "insect-forest boss; ranger/rogue boss variants"
+    ],
+    "role": "any-class",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "hornet",
+   "value": {
+    "aid": 53,
+    "cat": "insect",
+    "h": "H",
+    "lands": [
+     "greenlands",
+     "grasslands"
+    ],
+    "name": "Hornet",
+    "notes": [
+     "spawn from hornet nests (S)",
+     "deadlier than colour suggests",
+     "Ω: poison sting"
+    ],
+    "ride": false,
+    "tame": "popcorn",
+    "v": [
+     "A",
+     "S",
+     "Ω"
+    ]
+   }
+  },
+  {
+   "key": "insect-guard",
+   "value": {
+    "aid": 54,
+    "cat": "insect",
+    "drinks-potions": true,
+    "h": "H",
+    "lands": [
+     "plains",
+     "greenlands",
+     "wetlands",
+     "deserts"
+    ],
+    "name": "Insect Guard",
+    "notes": [
+     "flying humanoid insect; blue tier example"
+    ],
+    "role": "melee",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "crow",
+   "value": {
+    "aid": 55,
+    "cat": "animal",
+    "h": "P",
+    "lands": [
+     "greenlands",
+     "forests"
+    ],
+    "name": "Crow",
+    "ride": false,
+    "tame": "licorice-candy",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "chicken",
+   "value": {
+    "aid": 56,
+    "cat": "animal",
+    "h": "P",
+    "lands": [
+     "greenlands",
+     "most"
+    ],
+    "name": "Chicken",
+    "ride": false,
+    "tame": "cereal-bar",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "seagull",
+   "value": {
+    "aid": 57,
+    "bossable": true,
+    "cat": "animal",
+    "h": "P",
+    "lands": [
+     "oceans",
+     "islands",
+     "jungles"
+    ],
+    "name": "Seagull",
+    "ride": false,
+    "tame": "salted-caramel",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "parrot",
+   "value": {
+    "aid": 58,
+    "cat": "animal",
+    "drops": [
+     "parrot-feather"
+    ],
+    "h": "N",
+    "lands": [
+     "jungles",
+     "islands",
+     "deserts",
+     "lava-lands",
+     "forests"
+    ],
+    "name": "Parrot",
+    "notes": [
+     "red/green (alpha also blue)"
+    ],
+    "ride": false,
+    "tame": "ginger-tartlet",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "bat",
+   "value": {
+    "aid": 59,
+    "cat": "animal",
+    "drops": [
+     "jellies"
+    ],
+    "h": "H",
+    "lands": [
+     "caves",
+     "mountains"
+    ],
+    "name": "Bat",
+    "notes": [
+     "Ω: vampiric bite"
+    ],
+    "ride": false,
+    "tame": "mango-juice",
+    "v": [
+     "A",
+     "S",
+     "Ω"
+    ]
+   }
+  },
+  {
+   "key": "fly",
+   "value": {
+    "aid": 60,
+    "cat": "insect",
+    "h": "N",
+    "lands": [
+     "forests",
+     "greenlands",
+     "riversides",
+     "wetlands"
+    ],
+    "name": "Fly",
+    "ride": false,
+    "tame": "fruit-basket",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "midge",
+   "value": {
+    "aid": 61,
+    "cat": "insect",
+    "h": "H",
+    "lands": [
+     "deserts",
+     "wetlands",
+     "riversides"
+    ],
+    "name": "Midge",
+    "ride": false,
+    "tame": "melon-ice-cream",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "mosquito",
+   "value": {
+    "aid": 62,
+    "cat": "insect",
+    "group": [
+     4,
+     5
+    ],
+    "h": "H",
+    "lands": [
+     "river edges",
+     "lava lakes",
+     "all",
+     "pyramids"
+    ],
+    "name": "Mosquito",
+    "ride": true,
+    "tame": "bloodorange-juice",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "plain-runner",
+   "value": {
+    "aid": 63,
+    "cat": "animal",
+    "family": "runners",
+    "group": [
+     3,
+     5
+    ],
+    "h": "H",
+    "lands": [
+     "greenlands"
+    ],
+    "name": "Plain Runner",
+    "notes": [
+     "green tier"
+    ],
+    "ride": true,
+    "tame": "milk-chocolate-bar",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "leaf-runner",
+   "value": {
+    "aid": 64,
+    "cat": "animal",
+    "family": "runners",
+    "group": [
+     3,
+     5
+    ],
+    "h": "H",
+    "lands": [
+     "jungles"
+    ],
+    "name": "Leaf Runner",
+    "ride": true,
+    "tame": "mint-chocolate-bar",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "snow-runner",
+   "value": {
+    "aid": 65,
+    "bossable": true,
+    "cat": "animal",
+    "family": "runners",
+    "group": [
+     3,
+     5
+    ],
+    "h": "H",
+    "lands": [
+     "snowlands"
+    ],
+    "name": "Snow Runner",
+    "ride": true,
+    "tame": "white-chocolate-bar",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "desert-runner",
+   "value": {
+    "aid": 66,
+    "cat": "animal",
+    "family": "runners",
+    "group": [
+     3,
+     5
+    ],
+    "h": "H",
+    "lands": [
+     "deserts"
+    ],
+    "name": "Desert Runner",
+    "ride": true,
+    "tame": "caramel-chocolate-bar",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "peacock",
+   "value": {
+    "aid": 67,
+    "cat": "animal",
+    "h": "P",
+    "lands": [
+     "greenlands",
+     "forests",
+     "hills",
+     "islands",
+     "jungles"
+    ],
+    "name": "Peacock",
+    "ride": true,
+    "tame": "chocolate-cookie",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "frog",
+   "value": {
+    "aid": 68,
+    "cat": "humanoid",
+    "h": "P",
+    "lands": [
+     "near water",
+     "greenlands",
+     "wetlands",
+     "oceans",
+     "islands"
+    ],
+    "name": "Frog",
+    "notes": [
+     "identical to frogman race"
+    ],
+    "role": "any-class (no armor)",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "plant-creature",
+   "value": {
+    "aid": 69,
+    "cat": "plant-creature",
+    "name": "PlantCreature (data)",
+    "notes": [
+     "data name; likely chiling/habanero base (?)"
+    ],
+    "v": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "radishling",
+   "value": {
+    "aid": 70,
+    "cat": "plant-creature",
+    "drops": [
+     "radish-slice"
+    ],
+    "h": "H",
+    "lands": [
+     "greenlands",
+     "hills",
+     "forests"
+    ],
+    "name": "Radishling",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "radishling-sprout",
+   "value": {
+    "aid": 192,
+    "cat": "plant-creature",
+    "h": "H",
+    "name": "Radishling Sprout",
+    "ride": false,
+    "tame": "mineral-water",
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "onionling",
+   "value": {
+    "aid": 71,
+    "cat": "plant-creature",
+    "drops": [
+     "onion-slice"
+    ],
+    "h": "H",
+    "lands": [
+     "greenlands",
+     "jungles",
+     "woodlands",
+     "plains"
+    ],
+    "name": "Onionling",
+    "role": "melee",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "desert-onionling",
+   "value": {
+    "aid": 72,
+    "cat": "plant-creature",
+    "h": "H",
+    "lands": [
+     "deserts",
+     "savannahs"
+    ],
+    "name": "Desert Onionling",
+    "notes": [
+     "no onion slice drop"
+    ],
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "cormling",
+   "value": {
+    "aid": null,
+    "cat": "plant-creature",
+    "h": "H",
+    "lands": [
+     "all"
+    ],
+    "name": "Cormling",
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "cormling-sprout",
+   "value": {
+    "aid": 193,
+    "cat": "plant-creature",
+    "h": "H",
+    "lands": [
+     "greenlands"
+    ],
+    "name": "Cormling Sprout",
+    "ride": false,
+    "tame": "spring-water",
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "chiling",
+   "value": {
+    "aid": null,
+    "cat": "plant-creature",
+    "h": "H",
+    "lands": [
+     "greenlands",
+     "savannahs",
+     "near volcanoes/lava lakes"
+    ],
+    "name": "Chiling",
+    "notes": [
+     "purple base tier",
+     "unused Chiling Sprout"
+    ],
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "habanero",
+   "value": {
+    "aid": null,
+    "cat": "plant-creature",
+    "group": [
+     3,
+     6
+    ],
+    "h": "H",
+    "lands": [
+     "deserts",
+     "savannahs"
+    ],
+    "name": "Habanero",
+    "notes": [
+     "stronger chiling; with chilings & sand horrors"
+    ],
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "bloomling",
+   "value": {
+    "aid": null,
+    "cat": "plant-creature",
+    "group": [
+     2,
+     5
+    ],
+    "h": "H",
+    "lands": [
+     "greenlands",
+     "wetlands",
+     "plains",
+     "forests"
+    ],
+    "name": "Bloomling",
+    "notes": [
+     "flies; strong rapid melee"
+    ],
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "devourer",
+   "value": {
+    "aid": 73,
+    "cat": "monster",
+    "h": "H",
+    "lands": [
+     "lava-lands",
+     "deserts"
+    ],
+    "name": "Devourer",
+    "notes": [
+     "wasabi sauce planned (X)"
+    ],
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "duckbill",
+   "value": {
+    "aid": 74,
+    "cat": "animal",
+    "h": "N",
+    "lands": [
+     "rivers"
+    ],
+    "name": "Duckbill",
+    "notes": [
+     "alpha id reserved, not spawned in alpha (F10)"
+    ],
+    "ride": true,
+    "tame": "sugar-candy",
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "crocodile",
+   "value": {
+    "aid": 75,
+    "cat": "animal",
+    "h": "H",
+    "lands": [
+     "jungles",
+     "oceans",
+     "deserts (rare)"
+    ],
+    "name": "Crocodile",
+    "ride": true,
+    "tame": "apple-ring",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "spike-creature",
+   "value": {
+    "aid": 76,
+    "cat": "monster",
+    "h": "V",
+    "lands": [
+     "all"
+    ],
+    "name": "Spike Creature",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "ancient-guardian-anubis",
+   "value": {
+    "aid": 77,
+    "cat": "humanoid",
+    "h": "H",
+    "lands": [
+     "pyramids"
+    ],
+    "name": "Ancient Guardian (Anubis)",
+    "notes": [
+     "alpha id reserved (F10)"
+    ],
+    "role": "any-class",
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "ancient-guardian-horus",
+   "value": {
+    "aid": 78,
+    "cat": "humanoid",
+    "h": "H",
+    "lands": [
+     "pyramids"
+    ],
+    "name": "Ancient Guardian (Horus)",
+    "notes": [
+     "alpha id reserved (F10)"
+    ],
+    "role": "any-class",
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "jester",
+   "value": {
+    "aid": 79,
+    "cat": "humanoid",
+    "h": "V",
+    "lands": [
+     "most",
+     "dungeons"
+    ],
+    "name": "Jester",
+    "notes": [
+     "same uniform regardless of class"
+    ],
+    "role": "any-class",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "dark-jester",
+   "value": {
+    "aid": null,
+    "cat": "humanoid",
+    "h": "V",
+    "lands": [
+     "deadlands",
+     "dark-woods",
+     "dungeons"
+    ],
+    "name": "Dark Jester",
+    "role": "any-class",
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "spectrino",
+   "value": {
+    "aid": 80,
+    "cat": "monster",
+    "h": "P (rarely H)",
+    "lands": [
+     "any",
+     "arenas"
+    ],
+    "name": "Spectrino",
+    "notes": [
+     "alpha id reserved (F10)"
+    ],
+    "role": "any-class",
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "djinn",
+   "value": {
+    "abilities": [
+     "summon green slimes",
+     "fire explosions"
+    ],
+    "aid": 81,
+    "cat": "humanoid",
+    "h": "H",
+    "lands": [
+     "deserts",
+     "dungeons",
+     "pyramids"
+    ],
+    "name": "Djinn",
+    "notes": [
+     "walks with black cat, followed by mosquitoes"
+    ],
+    "role": "mage (bracelets)",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "minotaur",
+   "value": {
+    "aid": 82,
+    "cat": "monster",
+    "h": "H",
+    "lands": [
+     "lava-lands",
+     "dungeons",
+     "human forests"
+    ],
+    "name": "Minotaur",
+    "notes": [
+     "S: always legendary tier"
+    ],
+    "role": "melee dual-wield",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "nomad",
+   "value": {
+    "aid": 83,
+    "cat": "humanoid",
+    "h": "V",
+    "lands": [
+     "deserts",
+     "savannahs",
+     "islands",
+     "lava-lands"
+    ],
+    "name": "Nomad (m 83 / f 84)",
+    "notes": [
+     "guard ruins/settlements"
+    ],
+    "role": "any-class",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "imp",
+   "value": {
+    "aid": 85,
+    "cat": "demon",
+    "h": "H",
+    "lands": [
+     "lava-lands",
+     "demon portals"
+    ],
+    "name": "Imp",
+    "notes": [
+     "spawned endlessly by portals",
+     "charred steak planned (X)"
+    ],
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "spitter",
+   "value": {
+    "aid": 86,
+    "cat": "aquatic",
+    "h": "H",
+    "lands": [
+     "beaches",
+     "lakes",
+     "oceans",
+     "rivers"
+    ],
+    "name": "Spitter",
+    "notes": [
+     "water trails heal owner only"
+    ],
+    "pet-types": [
+     "ranged",
+     "healer"
+    ],
+    "ride": false,
+    "role": "ranged",
+    "tame": "water-ice",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "mole",
+   "value": {
+    "aid": 87,
+    "cat": "animal",
+    "h": "P",
+    "lands": [
+     "greenlands",
+     "forests"
+    ],
+    "name": "Mole",
+    "notes": [
+     "S: endless from molehills until destroyed"
+    ],
+    "ride": false,
+    "tame": "chocolate-donut",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "biter",
+   "value": {
+    "aid": 88,
+    "bossable": true,
+    "cat": "insect",
+    "h": "H",
+    "lands": [
+     "greenlands",
+     "forests",
+     "plains",
+     "deserts",
+     "mountains"
+    ],
+    "name": "Biter",
+    "ride": false,
+    "tame": "pancake",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "koala",
+   "value": {
+    "aid": 89,
+    "cat": "animal",
+    "h": "N",
+    "lands": [
+     "jungles",
+     "oceans"
+    ],
+    "name": "Koala",
+    "ride": false,
+    "tame": "eucalyptus-candy",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "squirrel",
+   "value": {
+    "aid": 90,
+    "cat": "animal",
+    "h": "H",
+    "lands": [
+     "forests",
+     "greenlands"
+    ],
+    "name": "Squirrel",
+    "ride": false,
+    "tame": "strawberry-cake",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "raccoon",
+   "value": {
+    "aid": 91,
+    "cat": "animal",
+    "h": "N",
+    "lands": [
+     "all except lava-lands, deserts",
+     "forest dungeons"
+    ],
+    "name": "Raccoon",
+    "ride": false,
+    "tame": "chocolate-cake",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "owl",
+   "value": {
+    "aid": 92,
+    "cat": "animal",
+    "h": "P",
+    "lands": [
+     "greenlands",
+     "forests"
+    ],
+    "name": "Owl",
+    "ride": false,
+    "tame": "lollipop",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "penguin",
+   "value": {
+    "aid": 93,
+    "bossable": true,
+    "cat": "animal",
+    "h": "N",
+    "lands": [
+     "snowlands"
+    ],
+    "name": "Penguin",
+    "notes": [
+     "boss example 'Aslan'"
+    ],
+    "ride": false,
+    "tame": "soft-ice",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "werewolf",
+   "value": {
+    "aid": 94,
+    "bossable": true,
+    "cat": "monster",
+    "faction": "unholy-pact",
+    "h": "H",
+    "lands": [
+     "dungeons",
+     "dark-woods",
+     "deadlands",
+     "human forests"
+    ],
+    "name": "Werewolf",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "zombie",
+   "value": {
+    "abilities": [
+     "bite (A only)"
+    ],
+    "aid": 96,
+    "bossable": true,
+    "cat": "undead",
+    "h": "H",
+    "lands": [
+     "graveyards",
+     "dungeons",
+     "deadlands",
+     "dark-woods"
+    ],
+    "name": "Zombie",
+    "notes": [
+     "Ω: eat grab-drain"
+    ],
+    "tame": null,
+    "v": [
+     "A",
+     "S",
+     "Ω"
+    ]
+   }
+  },
+  {
+   "key": "vampire",
+   "value": {
+    "aid": 97,
+    "cat": "undead",
+    "h": "V",
+    "lands": [
+     "dungeons",
+     "deadlands",
+     "dark-woods",
+     "lava-lands",
+     "vaults"
+    ],
+    "name": "Vampire",
+    "notes": [
+     "flies up; friendly ones don't help"
+    ],
+    "role": "any-class",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "horse",
+   "value": {
+    "aid": 98,
+    "cat": "animal",
+    "group": [
+     2,
+     5
+    ],
+    "h": "N",
+    "lands": [
+     "greenlands",
+     "jungles",
+     "snowlands"
+    ],
+    "name": "Horse",
+    "notes": [
+     "white horses used by Order of Light"
+    ],
+    "ride": true,
+    "tame": "candied-apple",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "camel",
+   "value": {
+    "aid": 99,
+    "cat": "animal",
+    "h": "H",
+    "lands": [
+     "deserts",
+     "savannahs"
+    ],
+    "name": "Camel",
+    "ride": true,
+    "tame": "date-cookie",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "cow",
+   "value": {
+    "aid": 100,
+    "cat": "animal",
+    "h": "P",
+    "lands": [
+     "greenlands"
+    ],
+    "name": "Cow",
+    "notes": [
+     "liquid drop planned (X)"
+    ],
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "dragon",
+   "value": {
+    "aid": 101,
+    "boss": true,
+    "cat": "boss-species",
+    "name": "Dragon",
+    "notes": [
+     "unused; won't work when spawned"
+    ],
+    "tame": null,
+    "v": [
+     "X"
+    ]
+   }
+  },
+  {
+   "key": "bark-beetle",
+   "value": {
+    "aid": 102,
+    "cat": "insect",
+    "family": "beetles",
+    "group": [
+     3,
+     5
+    ],
+    "h": "H",
+    "lands": [
+     "most",
+     "greenlands"
+    ],
+    "name": "Bark Beetle",
+    "pet-types": [
+     "melee",
+     "mount",
+     "tank (guide)"
+    ],
+    "ride": true,
+    "tame": "bread",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "fire-beetle",
+   "value": {
+    "aid": 103,
+    "cat": "insect",
+    "family": "beetles",
+    "group": [
+     3,
+     5
+    ],
+    "h": "H",
+    "lands": [
+     "lava-lands",
+     "deserts"
+    ],
+    "name": "Fire Beetle",
+    "ride": true,
+    "tame": "curry",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "snout-beetle",
+   "value": {
+    "abilities": [
+     "charged shot",
+     "dodges",
+     "intuition"
+    ],
+    "aid": 104,
+    "cat": "insect",
+    "family": "beetles",
+    "group": [
+     3,
+     5
+    ],
+    "h": "H",
+    "lands": [
+     "greenlands",
+     "hills"
+    ],
+    "name": "Snout Beetle",
+    "pet-types": [
+     "ranged",
+     "mount"
+    ],
+    "ride": true,
+    "role": "ranged",
+    "tame": "lolly",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "lemon-beetle",
+   "value": {
+    "aid": 105,
+    "cat": "insect",
+    "family": "beetles",
+    "group": [
+     3,
+     5
+    ],
+    "h": "H",
+    "lands": [
+     "greenlands",
+     "rocks",
+     "mountains",
+     "forests"
+    ],
+    "name": "Lemon Beetle",
+    "ride": true,
+    "tame": "lemon-tart",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "crab",
+   "value": {
+    "aid": 106,
+    "cat": "aquatic",
+    "h": "N",
+    "lands": [
+     "lakes",
+     "beaches",
+     "all"
+    ],
+    "name": "Crab",
+    "notes": [
+     "Ω: claw boomerang"
+    ],
+    "ride": false,
+    "tame": "strawberry-cocktail",
+    "v": [
+     "A",
+     "S",
+     "Ω"
+    ]
+   }
+  },
+  {
+   "key": "sea-crab",
+   "value": {
+    "aid": 107,
+    "boss": true,
+    "breaks-terrain": true,
+    "cat": "boss-species",
+    "h": "H",
+    "lands": [
+     "beaches",
+     "oceans",
+     "missions"
+    ],
+    "name": "Sea Crab",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "troll",
+   "value": {
+    "abilities": [
+     "big mace",
+     "earthquake"
+    ],
+    "aid": 108,
+    "boss": true,
+    "breaks-terrain": true,
+    "cat": "boss-species",
+    "h": "H",
+    "lands": [
+     "any",
+     "missions",
+     "arena"
+    ],
+    "name": "Troll",
+    "notes": [
+     "first boss (2011-06)",
+     "gets stuck in trees/caves"
+    ],
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "dark-troll",
+   "value": {
+    "abilities": [
+     "two weapons",
+     "faster than troll"
+    ],
+    "aid": 109,
+    "boss": true,
+    "breaks-terrain": true,
+    "cat": "boss-species",
+    "h": "H",
+    "lands": [
+     "greenlands",
+     "plains",
+     "deadlands",
+     "missions"
+    ],
+    "name": "Dark Troll",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "hell-demon",
+   "value": {
+    "aid": 110,
+    "boss": true,
+    "cat": "demon",
+    "h": "H",
+    "lands": [
+     "lava-lands",
+     "missions"
+    ],
+    "name": "Hell Demon / Demon",
+    "notes": [
+     "giant hands hide fist weapons"
+    ],
+    "role": "any-class melee+ranged",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "demon-marauder",
+   "value": {
+    "aid": null,
+    "cat": "demon",
+    "h": "H",
+    "lands": [
+     "dungeons",
+     "deadlands",
+     "dark-woods",
+     "lava-lands"
+    ],
+    "name": "Demon Marauder",
+    "role": "melee + fire magic",
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "golem",
+   "value": {
+    "abilities": [
+     "throw boulders"
+    ],
+    "aid": 111,
+    "boss": true,
+    "cat": "boss-species",
+    "family": "golems",
+    "h": "H",
+    "lands": [
+     "all",
+     "missions"
+    ],
+    "name": "Golem",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "ember-golem",
+   "value": {
+    "aid": 112,
+    "boss": true,
+    "bossable": true,
+    "cat": "boss-species",
+    "family": "golems",
+    "h": "H",
+    "lands": [
+     "lava-lands"
+    ],
+    "name": "Ember Golem",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "snow-golem",
+   "value": {
+    "aid": 113,
+    "boss": true,
+    "cat": "boss-species",
+    "family": "golems",
+    "h": "H",
+    "lands": [
+     "snowlands"
+    ],
+    "name": "Snow Golem",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "yeti",
+   "value": {
+    "aid": 114,
+    "boss": true,
+    "breaks-terrain": true,
+    "cat": "boss-species",
+    "h": "H",
+    "lands": [
+     "snowlands",
+     "arena",
+     "missions"
+    ],
+    "name": "Yeti",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "cyclops",
+   "value": {
+    "abilities": [
+     "punch",
+     "charge",
+     "cyclone"
+    ],
+    "aid": 115,
+    "boss": true,
+    "cat": "boss-species",
+    "h": "H",
+    "lands": [
+     "greenlands",
+     "plains",
+     "mountains",
+     "missions"
+    ],
+    "name": "Cyclops",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "mammoth",
+   "value": {
+    "aid": 116,
+    "boss": true,
+    "cat": "boss-species",
+    "drops": [
+     "mammoth-hide (0%)"
+    ],
+    "h": "H",
+    "lands": [
+     "snowlands",
+     "arena",
+     "missions"
+    ],
+    "name": "Mammoth",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "baby-mammoth",
+   "value": {
+    "aid": 201,
+    "cat": "animal",
+    "h": "P",
+    "lands": [
+     "snowlands"
+    ],
+    "name": "Baby Mammoth",
+    "pet-types": [
+     "mount",
+     "tank (guide)"
+    ],
+    "ride": true,
+    "tame": "chocolate-ice-cream",
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "lich",
+   "value": {
+    "abilities": [
+     "fireballs (S broken)"
+    ],
+    "aid": 117,
+    "boss": true,
+    "cat": "undead",
+    "h": "H",
+    "lands": [
+     "dungeons",
+     "missions"
+    ],
+    "name": "Lich",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "rune-giant",
+   "value": {
+    "aid": 118,
+    "boss": true,
+    "cat": "boss-species",
+    "h": "H",
+    "lands": [
+     "missions",
+     "arena"
+    ],
+    "name": "Rune Giant",
+    "notes": [
+     "alpha id reserved (F10)"
+    ],
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "saurian",
+   "value": {
+    "aid": 119,
+    "boss": true,
+    "cat": "boss-species",
+    "h": "H",
+    "lands": [
+     "all",
+     "underwater missions (A)",
+     "arenas (S)"
+    ],
+    "name": "Saurian",
+    "notes": [
+     "several giant variants",
+     "no spirit cube drop (A)"
+    ],
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "mana-mech",
+   "value": {
+    "aid": null,
+    "boss": true,
+    "cat": "boss-species",
+    "faction": "steel-empire",
+    "h": "H",
+    "lands": [
+     "mana pump centre",
+     "arena"
+    ],
+    "name": "Mana Mech",
+    "notes": [
+     "pilot emerges on defeat"
+    ],
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "scarecrow",
+   "value": {
+    "aid": 140,
+    "cat": "static-target",
+    "name": "Scarecrow",
+    "v": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "aim-target",
+   "value": {
+    "aid": 141,
+    "cat": "static-target",
+    "name": "Aim (target)",
+    "notes": [
+     "ranger trainer practice"
+    ],
+    "v": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "dummy",
+   "value": {
+    "aid": 142,
+    "cat": "static-target",
+    "name": "Dummy",
+    "v": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "vase-entity",
+   "value": {
+    "aid": 143,
+    "cat": "static-target",
+    "name": "Vase",
+    "v": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "bomb-entity",
+   "value": {
+    "aid": 144,
+    "cat": "static-target",
+    "name": "Bomb",
+    "notes": [
+     "100 HP fuse pet-like entity"
+    ],
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "sapphire-fish",
+   "value": {
+    "aid": 145,
+    "cat": "aquatic",
+    "h": "P",
+    "lands": [
+     "oceans"
+    ],
+    "name": "Sapphire Fish",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "lemon-fish",
+   "value": {
+    "aid": 146,
+    "cat": "aquatic",
+    "h": "P",
+    "lands": [
+     "oceans"
+    ],
+    "name": "Lemon Fish",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "seahorse",
+   "value": {
+    "aid": 147,
+    "cat": "aquatic",
+    "h": "P",
+    "lands": [
+     "oceans"
+    ],
+    "name": "Seahorse",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "mermaid",
+   "value": {
+    "aid": 148,
+    "cat": "humanoid",
+    "drinks-potions": true,
+    "h": "H",
+    "lands": [
+     "beaches",
+     "oceans",
+     "wetlands"
+    ],
+    "name": "Mermaid / Merman (149)",
+    "role": "any-class",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "shark",
+   "value": {
+    "aid": 150,
+    "cat": "aquatic",
+    "h": "H",
+    "lands": [
+     "oceans",
+     "beaches"
+    ],
+    "name": "Shark",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "bumblebee",
+   "value": {
+    "aid": 151,
+    "cat": "insect",
+    "h": "P",
+    "lands": [
+     "greenlands",
+     "forests"
+    ],
+    "name": "Bumblebee",
+    "ride": false,
+    "tame": "biscuit-roll",
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "lantern-fish",
+   "value": {
+    "aid": 152,
+    "cat": "aquatic",
+    "h": "H",
+    "lands": [
+     "oceans"
+    ],
+    "name": "Lantern Fish",
+    "notes": [
+     "antenna glows at night"
+    ],
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "maw-fish",
+   "value": {
+    "aid": 153,
+    "cat": "aquatic",
+    "h": "H",
+    "lands": [
+     "oceans"
+    ],
+    "name": "Maw Fish",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "piranha",
+   "value": {
+    "aid": 154,
+    "cat": "aquatic",
+    "group": [
+     3,
+     6
+    ],
+    "h": "H",
+    "lands": [
+     "oceans"
+    ],
+    "name": "Piranha",
+    "tame": null,
+    "v": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "blowfish",
+   "value": {
+    "aid": 155,
+    "cat": "aquatic",
+    "h": "N",
+    "lands": [
+     "oceans"
+    ],
+    "name": "Blowfish",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "beaver",
+   "value": {
+    "aid": 156,
+    "cat": "animal",
+    "h": "P",
+    "lands": [
+     "greenlands"
+    ],
+    "name": "Beaver",
+    "ride": false,
+    "tame": "buckhorn",
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "warthog",
+   "value": {
+    "aid": 170,
+    "cat": "animal",
+    "h": "N",
+    "lands": [
+     "jungles"
+    ],
+    "name": "Warthog",
+    "ride": false,
+    "tame": "banana-mash",
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "baby-elephant",
+   "value": {
+    "aid": 200,
+    "cat": "animal",
+    "h": "P",
+    "lands": [
+     "jungles"
+    ],
+    "name": "Baby Elephant",
+    "ride": true,
+    "tame": "peanut",
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "elephant",
+   "value": {
+    "aid": null,
+    "cat": "animal",
+    "h": "P",
+    "lands": [
+     "jungles"
+    ],
+    "name": "Elephant",
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "flamingo",
+   "value": {
+    "aid": 210,
+    "cat": "animal",
+    "h": "P",
+    "lands": [
+     "jungles",
+     "islands"
+    ],
+    "name": "Flamingo",
+    "ride": true,
+    "tame": "raspberry-juice",
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "caterpillar",
+   "value": {
+    "aid": 293,
+    "cat": "insect",
+    "h": "H",
+    "lands": [
+     "greenlands",
+     "jungles",
+     "mountains"
+    ],
+    "name": "Caterpillar",
+    "ride": true,
+    "tame": "mixed-salad",
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "earth-caterpillar",
+   "value": {
+    "aid": 294,
+    "cat": "insect",
+    "h": "H",
+    "lands": [
+     "lava-lands",
+     "deserts",
+     "savannahs",
+     "mountains"
+    ],
+    "name": "Earth Caterpillar",
+    "ride": true,
+    "tame": "radicchio-salad",
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "snail",
+   "value": {
+    "aid": 295,
+    "cat": "insect",
+    "h": "H",
+    "lands": [
+     "mountains",
+     "greenlands"
+    ],
+    "name": "Snail",
+    "ride": true,
+    "tame": "cabbage-rolls",
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "makake",
+   "value": {
+    "aid": null,
+    "cat": "animal",
+    "h": "P",
+    "lands": [
+     "jungles"
+    ],
+    "name": "Makake",
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "moose",
+   "value": {
+    "aid": null,
+    "cat": "animal",
+    "h": "P",
+    "lands": [
+     "forests"
+    ],
+    "name": "Moose",
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "mana-deer",
+   "value": {
+    "aid": null,
+    "cat": "animal",
+    "h": "N",
+    "lands": [
+     "greenlands",
+     "woodlands",
+     "plains"
+    ],
+    "name": "Mana Deer",
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "lion",
+   "value": {
+    "aid": null,
+    "cat": "animal",
+    "h": "H",
+    "lands": [
+     "jungles",
+     "savannahs"
+    ],
+    "name": "Lion",
+    "notes": [
+     "male/female",
+     "purple base tier",
+     "tameability disputed"
+    ],
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "snow-lion",
+   "value": {
+    "aid": null,
+    "cat": "animal",
+    "h": "H",
+    "lands": [
+     "snowlands"
+    ],
+    "name": "Snow Lion",
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "snow-leopard",
+   "value": {
+    "aid": null,
+    "cat": "animal",
+    "h": "H",
+    "lands": [
+     "snowlands"
+    ],
+    "name": "Snow Leopard",
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "iceling",
+   "value": {
+    "aid": null,
+    "cat": "elemental",
+    "h": "H (rarely P)",
+    "lands": [
+     "snowlands"
+    ],
+    "name": "Iceling",
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "mantis",
+   "value": {
+    "aid": null,
+    "cat": "insect",
+    "h": "V",
+    "lands": [
+     "any"
+    ],
+    "name": "Mantis",
+    "role": "any-class",
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "crawler",
+   "value": {
+    "aid": null,
+    "cat": "insect",
+    "drops": [
+     "popcorn"
+    ],
+    "h": "H",
+    "lands": [
+     "dungeons",
+     "lava-lands",
+     "deserts"
+    ],
+    "name": "Crawler",
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "flying-eye",
+   "value": {
+    "aid": null,
+    "cat": "monster",
+    "h": "H",
+    "lands": [
+     "dark-woods",
+     "deadlands",
+     "lava-lands",
+     "dungeons"
+    ],
+    "name": "Flying Eye",
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "wraith",
+   "value": {
+    "aid": null,
+    "cat": "undead",
+    "h": "H",
+    "lands": [
+     "dark-woods",
+     "deadlands"
+    ],
+    "name": "Wraith",
+    "notes": [
+     "unkillable",
+     "pursues longer",
+     "pets ignore it"
+    ],
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "skeleton",
+   "value": {
+    "aid": 17,
+    "cat": "undead",
+    "family": "skeletons",
+    "h": "H",
+    "lands": [
+     "deadlands",
+     "dark-woods",
+     "dungeons",
+     "graveyards",
+     "ruins",
+     "pyramids"
+    ],
+    "name": "Skeleton",
+    "notes": [
+     "gnome captors",
+     "S: respawn from bone piles"
+    ],
+    "role": "any-class",
+    "tame": null,
+    "v": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "skeleton-knight",
+   "value": {
+    "aid": null,
+    "cat": "undead",
+    "faction": "unholy-pact",
+    "family": "skeletons",
+    "h": "H",
+    "lands": [
+     "deadlands",
+     "dark-woods"
+    ],
+    "name": "Skeleton Knight",
+    "notes": [
+     "rides skull slater; dismounts when mount dies"
+    ],
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "skeleton-horse",
+   "value": {
+    "aid": null,
+    "cat": "undead",
+    "family": "skeletons",
+    "h": "H",
+    "lands": [
+     "deadlands",
+     "dark-woods"
+    ],
+    "name": "Skeleton Horse",
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "skeleton-dog",
+   "value": {
+    "aid": null,
+    "cat": "undead",
+    "family": "skeletons",
+    "h": "H",
+    "lands": [
+     "dungeons",
+     "dark-woods",
+     "deadlands"
+    ],
+    "name": "Skeleton Dog",
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "skull-slater",
+   "value": {
+    "aid": null,
+    "cat": "undead",
+    "h": "H",
+    "lands": [
+     "deadlands",
+     "dark-woods"
+    ],
+    "name": "Skull Slater",
+    "notes": [
+     "bioluminescent; knight mount; unmasked variant unused"
+    ],
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "monstrosity",
+   "value": {
+    "aid": null,
+    "cat": "undead",
+    "faction": "unholy-pact",
+    "h": "H",
+    "lands": [
+     "deadlands",
+     "dark-woods",
+     "graveyards",
+     "ruins"
+    ],
+    "name": "Monstrosity",
+    "notes": [
+     "gnome captor"
+    ],
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "treant",
+   "value": {
+    "aid": null,
+    "cat": "plant-creature",
+    "faction": "druids-of-mana",
+    "h": "P",
+    "lands": [
+     "forests",
+     "plains",
+     "dark-woods",
+     "deadlands"
+    ],
+    "name": "Treant",
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "seeker",
+   "value": {
+    "aid": null,
+    "cat": "humanoid",
+    "h": "H",
+    "lands": [
+     "dungeons"
+    ],
+    "name": "Seeker",
+    "role": "fire mage",
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "necromancer",
+   "value": {
+    "aid": null,
+    "boss": true,
+    "cat": "humanoid",
+    "faction": "unholy-pact",
+    "h": "H",
+    "lands": [
+     "wizard towers",
+     "missions"
+    ],
+    "name": "Necromancer / Sorcerer",
+    "notes": [
+     "raise/empower undead; distinct model unverified (?)"
+    ],
+    "role": "mage",
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "dark-cultist",
+   "value": {
+    "abilities": [
+     "channel beam healing demon portal"
+    ],
+    "aid": null,
+    "cat": "humanoid",
+    "faction": "cult-of-doom",
+    "h": "H",
+    "lands": [
+     "deadlands",
+     "dark-woods",
+     "demon portals"
+    ],
+    "name": "Dark Cultist",
+    "role": "any-class",
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "bloodaxe-orc",
+   "value": {
+    "aid": null,
+    "cat": "humanoid",
+    "faction": "bloodaxe-clan",
+    "h": "V",
+    "lands": [
+     "arenas (host)",
+     "lava-lands"
+    ],
+    "name": "Bloodaxe Clan Orc",
+    "notes": [
+     "purple, larger orcs"
+    ],
+    "role": "any-class",
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "steel-empire-soldier",
+   "value": {
+    "aid": null,
+    "cat": "humanoid",
+    "faction": "steel-empire",
+    "h": "H",
+    "lands": [
+     "roaming",
+     "mana pump",
+     "mana tree"
+    ],
+    "name": "Steel Empire Soldier",
+    "notes": [
+     "parachute from airship"
+    ],
+    "role": "any-class",
+    "tame": null,
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "paladin",
+   "value": {
+    "aid": null,
+    "cat": "humanoid",
+    "faction": "order-of-the-light",
+    "h": "F",
+    "lands": [
+     "missions"
+    ],
+    "name": "Order of Light Paladin",
+    "notes": [
+     "white horses"
+    ],
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "druid",
+   "value": {
+    "aid": null,
+    "cat": "humanoid",
+    "faction": "druids-of-mana",
+    "h": "F",
+    "lands": [
+     "mana trees"
+    ],
+    "name": "Druid of Mana",
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "obsidian-knight",
+   "value": {
+    "aid": null,
+    "cat": "humanoid",
+    "faction": "obsidian-knights",
+    "h": "H",
+    "lands": [
+     "missions"
+    ],
+    "name": "Obsidian Knight",
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "gnome",
+   "value": {
+    "aid": null,
+    "cat": "humanoid",
+    "h": "F",
+    "lands": [
+     "captive sites",
+     "roaming"
+    ],
+    "name": "Gnome (supplier / gem trader)",
+    "notes": [
+     "treasure-chest backpack"
+    ],
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "restless-warrior",
+   "value": {
+    "aid": null,
+    "boss": true,
+    "cat": "undead",
+    "drops": [
+     "eternal-ember"
+    ],
+    "h": "H",
+    "lands": [
+     "circle of power"
+    ],
+    "name": "Restless Warrior",
+    "notes": [
+     "5-star legendary ghost"
+    ],
+    "v": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "old-man",
+   "value": {
+    "aid": 18,
+    "cat": "humanoid",
+    "name": "Old Man",
+    "role": "quest giver / vendor (concept)",
+    "v": [
+     "X"
+    ]
+   }
+  },
+  {
+   "key": "hedgehog",
+   "value": {
+    "abilities": [
+     "spike swirl"
+    ],
+    "aid": null,
+    "cat": "animal",
+    "name": "Hedgehog",
+    "v": [
+     "Ω"
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,14 @@
+ classDiagram
+    class `Equipment-slot-source-row`
+    click `Equipment-slot-source-row` href "../Equipment-slot-source-row"
+      `Equipment-slot-source-row` : accepts
+      `Equipment-slot-source-row` : accepts_conditions
+        `Equipment-slot-source-row` --> "0..1" `Equipment-accepts-condition-map` : accepts_conditions
+        click `Equipment-accepts-condition-map` href "../Equipment-accepts-condition-map"
+      `Equipment-slot-source-row` : accepts_subtypes
+      `Equipment-slot-source-row` : controls
+      `Equipment-slot-source-row` : hp_mult
+      `Equipment-slot-source-row` : id
+      `Equipment-slot-source-row` : index
+      `Equipment-slot-source-row` : note
+      `Equipment-slot-source-row` : versions

@@ -1,0 +1,456 @@
+{
+ "$schema": "stat",
+ "alpha-character-formulas": {
+  "base-hp": "2^((1 - 1/(0.05*(lvl-1)+1))*3)",
+  "npc-hp": "base-hp * 2^(power_base*0.25) * mult",
+  "player-hp": "base-hp * 2 * max_hp_multiplier(100) * class-mult   (warrior 1.30 [guardian x1.25], ranger 1.10, rogue 1.20, mage 1.0)",
+  "power": "int(101 - 100/(0.05*(lvl-1)+1))  ≡ (101*lvl-81)/(lvl+19)",
+  "power-table": [
+   {
+    "key": "1",
+    "value": 1
+   },
+   {
+    "key": "2",
+    "value": 5
+   },
+   {
+    "key": "3",
+    "value": 10
+   },
+   {
+    "key": "5",
+    "value": 17
+   },
+   {
+    "key": "10",
+    "value": 32
+   },
+   {
+    "key": "20",
+    "value": 49
+   },
+   {
+    "key": "30",
+    "value": 60
+   },
+   {
+    "key": "50",
+    "value": 72
+   },
+   {
+    "key": "100",
+    "value": 84
+   },
+   {
+    "key": "200",
+    "value": 91
+   },
+   {
+    "key": "500",
+    "value": 97
+   },
+   {
+    "key": "1000",
+    "value": 99
+   },
+   {
+    "key": "1981",
+    "value": 100
+   }
+  ],
+  "skill-points-per-level": 2,
+  "source": "cuwo common.py",
+  "xp-to-next": "int(1050 - 1000/(0.05*(lvl-1)+1))   L1 50, L2 97, L5 216, L10 360, L20 537, L50 760, L100 881"
+ },
+ "alpha-item-stat-formulas": {
+  "armor": "curve(n,r) * slot * matMult   (saurian 0.8, parrot/linen/cotton 0.85, licht/silk 0.75, iron 1.0)",
+  "consumable-heal": "curve(level,r) * 200 (life/cactus potion, ginseng soup, snowberry mash, mushroom spit) | * 100 (pineapple slice, pumpkin muffin)",
+  "crit": "curve2(level,r) * (0.1 two-handed & chest | 0.05 other) * (1 - r + gold 1)",
+  "curve": "2^((1 - 1/((n-1)*0.05 + 1))*3) * 2^(rarity*0.25)",
+  "curve2": "curve/8",
+  "damage": "curve(n,r) * k   (k: 2 dagger/fist/shield, 4 one-handed, 8 two-handed)",
+  "hp": "curve(n,r) * 5 * slot * (2 - 8*r + matBonus)   slot: chest 1.0 else 0.5; matBonus iron 1, cotton 0.75, linen 0.5",
+  "hp-scope": "Disputed historical Alpha expression only; hybrid HP uses domain/3_Classes.md#item and generators.json#design.gear-hp, independent of modifier roll.",
+  "n": "level + 0.1 * upgrade_count",
+  "regeneration": "curve(n,r) * (0.2 chest | 0.1 other) * (8*r + linen 0.5 | cotton 1.0)",
+  "resistance": "curve(n,r) * slot * m   (iron/parrot 0.85, linen/cotton 0.75, silk 1.0)",
+  "roll": "((attributes<<16)+modifier) % 21  → r = roll/20",
+  "source": "coremaze/Cube-World-Weapon-Stats Stats.py (0.1.1 RE)",
+  "tempo": "curve2(level,r) * (0.2 two-handed & chest | 0.1 other) * (r + silver 1)"
+ },
+ "gaps": [],
+ "gaps-decided": "2026-09-07 D6 → generators.json#design",
+ "resources": [
+  {
+   "key": "hp",
+   "value": {
+    "name": "Health",
+    "regen": "none passive (potions/food/heals/beds/campsite); alpha entity default 500 x multipliers",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "mp",
+   "value": {
+    "display": "bar turns pink for amount to be spent while charging",
+    "gain": "warrior hits+blocks; ranger hits (+sniper stealth); rogue hits/shuriken (+assassin stealth, ninja dodges +25); mage passive regen",
+    "name": "Mana",
+    "range": [
+     0,
+     100
+    ],
+    "spend": "special attacks (charged amount), intercept, teleport (100), fire explosion 50, healing stream ~50, mage special attack 30 (S reference; current control: ../domain/controls.md#special-attack)",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "stamina",
+   "value": {
+    "display": "hidden until not full (A)",
+    "name": "Stamina",
+    "regen": "Regeneration stat",
+    "spend": "dodge 25, climbing drain, glider level-off, sprint drain, cyclone 25+25/s, smash 100, kick 50, high jump 25, shuriken 25, retreat/poison vial all, wall-jump (S)",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "block-power",
+   "value": {
+    "name": "Block Power",
+    "regen": "when not blocking; during cyclone",
+    "spend": "blocking / cyclone",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "stealth",
+   "value": {
+    "effect": "up to +20% attack power, +50% crit, faster MP; near-zero aggro at full; decays when not generated",
+    "name": "Stealth",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "diving-breath",
+   "value": {
+    "effect": "depletes underwater; empty → HP loss; wall hold pauses; artifacts extend",
+    "name": "Diving Stamina",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "pet-hydration",
+   "value": {
+    "effect": "droplets under pet HP; drains while riding; refill in any water",
+    "name": "Pet Hydration",
+    "versions": [
+     "A"
+    ]
+   }
+  }
+ ],
+ "stats": [
+  {
+   "key": "hp",
+   "value": {
+    "name": "Hit Points",
+    "source": [
+     "level (A)",
+     "weapons",
+     "chest",
+     "gloves",
+     "boots",
+     "shoulders",
+     "elixir of life (S)",
+     "toughness"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "attack-power",
+   "value": {
+    "name": "Attack Power",
+    "source": [
+     "weapon damage",
+     "stealth +20%",
+     "elixir of power +20%"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "spell-power",
+   "value": {
+    "name": "Spell Power",
+    "note": "fire missiles ≈ 3x SP",
+    "source": [
+     "mage weapons",
+     "elixir of sanity"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "armor",
+   "value": {
+    "effect": "physical reduction; subtractive with a floor of 10 % of the attack (D15, design.combat.armor-floor); pierced progressively by combo",
+    "name": "Armor",
+    "source": [
+     "armor pieces",
+     "elixir of toughness +20%"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "resistance",
+   "value": {
+    "effect": "Hybrid: magical hit damage is reduced by Resistance, with a floor of 10% of the incoming hit; unequipped creatures/NPCs have 0 innate Resistance and no automatic scaling",
+    "name": "Resistance",
+    "source": [
+     "armor pieces",
+     "elixir of sanity +20%"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "crit",
+   "value": {
+    "effect": "chance for bonus damage; x2.0, chance above 100% adds to the multiplier (D6, generators.json#design.crit)",
+    "name": "Critical",
+    "source": [
+     "gold rings",
+     "amulets",
+     "weapons",
+     "armor",
+     "stealth +50%"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "haste",
+   "value": {
+    "alpha-name": "Tempo",
+    "effect": "basic attack speed (not cyclone)",
+    "name": "Haste",
+    "source": [
+     "silver rings",
+     "amulets",
+     "weapons",
+     "armor"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "regeneration",
+   "value": {
+    "effect": "stamina regen (D11); HP regen only from food, potions, bedroll",
+    "name": "Regeneration",
+    "source": [
+     "weapons",
+     "armor (linen/cotton bonus)"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "mana-regeneration",
+   "value": {
+    "name": "Mana Regeneration",
+    "source": [
+     "items (A affix)"
+    ],
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "power-level",
+   "value": {
+    "cap": 100,
+    "formula": "(101*lvl - 81)/(lvl + 19)",
+    "name": "Power",
+    "versions": [
+     "A"
+    ]
+   }
+  },
+  {
+   "key": "weapon-rating",
+   "value": {
+    "formula": "average star tier of equipped weapons",
+    "name": "Weapon Level/Rating",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "armor-rating",
+   "value": {
+    "formula": "average star tier of equipped armor",
+    "name": "Armor Level/Rating",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "climb-speed",
+   "value": {
+    "name": "Climbing Speed",
+    "source": [
+     "climbing skill (A)",
+     "artifacts (D6)"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "swim-speed",
+   "value": {
+    "name": "Swimming Speed",
+    "source": [
+     "swimming skill (A)",
+     "artifacts (S)"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "diving-skill",
+   "value": {
+    "name": "Diving Skill",
+    "source": [
+     "artifacts (S)"
+    ],
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "ride-speed",
+   "value": {
+    "name": "Riding Speed",
+    "source": [
+     "riding skill (A)",
+     "artifacts (D6)"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "glide-speed",
+   "value": {
+    "name": "Hang Gliding Speed",
+    "source": [
+     "hang gliding skill (A)",
+     "artifacts (D6)"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "sail-speed",
+   "value": {
+    "name": "Sailing Speed",
+    "source": [
+     "sailing skill (A)",
+     "artifacts (S)"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "light-radius",
+   "value": {
+    "name": "Light Radius",
+    "source": [
+     "lamp rarity (A)",
+     "artifacts (S)"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "pet-max-hp",
+   "value": {
+    "name": "Pet Max HP",
+    "source": [
+     "pet master skill (A)",
+     "owner gear rating (S)"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  }
+ ]
+}

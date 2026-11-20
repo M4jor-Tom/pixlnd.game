@@ -1,0 +1,11 @@
+ classDiagram
+    class `Status-effect`
+    click `Status-effect` href "../Status-effect"
+      `Status-effect` : duration_s
+      `Status-effect` : effect
+      `Status-effect` : id
+      `Status-effect` : kind
+        `Status-effect` --> "0..1" `SourceStatusKind` : kind
+        click `SourceStatusKind` href "../SourceStatusKind"
+      `Status-effect` : name
+      `Status-effect` : visual

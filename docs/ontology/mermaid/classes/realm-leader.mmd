@@ -1,0 +1,12 @@
+ classDiagram
+    class `Realm-leader`
+    click `Realm-leader` href "../Realm-leader"
+      `Realm-leader` : realm_leader_birth_year
+      `Realm-leader` : realm_leader_hometown
+        `Realm-leader` --> "0..1" `Settlement` : realm_leader_hometown
+        click `Settlement` href "../Settlement"
+      `Realm-leader` : realm_leader_name
+      `Realm-leader` : realm_leader_personality_trait
+      `Realm-leader` : realm_leader_tomb_location
+        `Realm-leader` --> "0..1" `Poi` : realm_leader_tomb_location
+        click `Poi` href "../Poi"

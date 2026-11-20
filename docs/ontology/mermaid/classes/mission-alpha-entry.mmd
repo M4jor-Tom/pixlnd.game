@@ -1,0 +1,7 @@
+ classDiagram
+    class `Mission-alpha-entry`
+    click `Mission-alpha-entry` href "../Mission-alpha-entry"
+      `Mission-alpha-entry` : recipe_map_key
+      `Mission-alpha-entry` : value
+        `Mission-alpha-entry` --> "1" `Mission-alpha-row` : value
+        click `Mission-alpha-row` href "../Mission-alpha-row"

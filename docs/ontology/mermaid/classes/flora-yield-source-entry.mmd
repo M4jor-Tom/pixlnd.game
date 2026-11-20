@@ -1,0 +1,7 @@
+ classDiagram
+    class `Flora-yield-source-entry`
+    click `Flora-yield-source-entry` href "../Flora-yield-source-entry"
+      `Flora-yield-source-entry` : source_entry_key
+        `Flora-yield-source-entry` --> "1" `Ingredient` : source_entry_key
+        click `Ingredient` href "../Ingredient"
+      `Flora-yield-source-entry` : value

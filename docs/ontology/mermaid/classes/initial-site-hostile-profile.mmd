@@ -1,0 +1,9 @@
+ classDiagram
+    class `Initial-site-hostile-profile`
+    click `Initial-site-hostile-profile` href "../Initial-site-hostile-profile"
+      `Initial-site-hostile-profile` : hostile_species
+        `Initial-site-hostile-profile` --> "1" `Creature` : hostile_species
+        click `Creature` href "../Creature"
+      `Initial-site-hostile-profile` : mage_probability
+      `Initial-site-hostile-profile` : melee_probability
+      `Initial-site-hostile-profile` : ranged_probability

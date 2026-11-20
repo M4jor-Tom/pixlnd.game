@@ -1,0 +1,13 @@
+ classDiagram
+    class `Static-entity-catalog`
+    click `Static-entity-catalog` href "../Static-entity-catalog"
+      `Static-entity-catalog` : static_entity_catalog_behaviour
+        `Static-entity-catalog` --> "*" `Static-behaviour-entry` : static_entity_catalog_behaviour
+        click `Static-behaviour-entry` href "../Static-behaviour-entry"
+      `Static-entity-catalog` : static_entity_catalog_by_id
+        `Static-entity-catalog` --> "*" `Static-index-name` : static_entity_catalog_by_id
+        click `Static-index-name` href "../Static-index-name"
+      `Static-entity-catalog` : static_entity_catalog_candles
+        `Static-entity-catalog` --> "0..1" `Static-candles` : static_entity_catalog_candles
+        click `Static-candles` href "../Static-candles"
+      `Static-entity-catalog` : static_entity_catalog_s_additions

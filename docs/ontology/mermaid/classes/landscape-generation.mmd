@@ -1,0 +1,10 @@
+ classDiagram
+    class `Landscape-generation`
+    click `Landscape-generation` href "../Landscape-generation"
+      `Landscape-generation` : landscape_generation_base
+      `Landscape-generation` : landscape_generation_cliff
+      `Landscape-generation` : landscape_generation_relief
+      `Landscape-generation` : landscape_generation_surface
+        `Landscape-generation` --> "1" `Block-type` : landscape_generation_surface
+        click `Block-type` href "../Block-type"
+      `Landscape-generation` : landscape_generation_top

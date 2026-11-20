@@ -6,27 +6,48 @@ prefixes:
 default_prefix: pixlnd
 imports:
 - linkml:types
+- world-catalog
+- identity
+- entities
+- items
+- associations
+- relation-types
+- relations
 default_range: string
 classes:
   world:
+    description: "World; interpreted under its linked source definition and context."
     class_uri: pixlnd:world
     see_also: &id001
     - ../domain/3_Classes.md#world
+    attributes:
+      discovered-zones: {"alias": "discovered-zones", "domain": "world", "slot_uri": "pixlnd:world/discovered-zones", "range": "zone-coordinate", "required": true, "description": "World-shared terrain exploration set; grants no personal shrine, flight or lore unlocks. Logical pair objects, not a selected save/packet encoding.", "multivalued": true, "inlined": true, "inlined_as_list": true, "list_elements_unique": true}
+    slot_usage:
+      world-name: {required: false}
+      world-origin-poi: {required: false}
     slots:
     - id
     - world-seed
     - world-day
     - world-time-ms
     - world-spawn-rule
+    - world-name
+    - world-origin-poi
   zone:
+    description: "Zone; interpreted under its linked source definition and context."
     class_uri: pixlnd:zone
     see_also: &id002
     - ../domain/3_Classes.md#zone
+    attributes:
+      chunk-items: {"alias": "chunk-items", "domain": "zone", "slot_uri": "pixlnd:zone/chunk-items", "range": "dropped-item", "required": true, "description": "Ground-item logical components; complete source/save Item envelopes remain unqualified.", "multivalued": true, "inlined": true, "inlined_as_list": true}
+      columns: {"alias": "columns", "slot_uri": "pixlnd:zone/columns", "range": "field", "description": "Columns; interpreted within the linked source scope.", "required": true, "multivalued": true, "inlined": true, "inlined_as_list": true}
+      spawns: {"alias": "spawns", "slot_uri": "pixlnd:zone/spawns", "range": "creature-spawn", "description": "Spawns; interpreted within the linked source scope.", "required": true, "multivalued": true, "inlined": true, "inlined_as_list": true}
     slots:
     - id
     - zone-size-blocks
     - zone-static-entities
   block:
+    description: "Block; interpreted under its linked source definition and context."
     class_uri: pixlnd:block
     see_also: &id003
     - ../domain/3_Classes.md#block
@@ -35,16 +56,22 @@ classes:
     - block-type
     - block-rgb
     - block-breakable
-  block-type:
-    class_uri: pixlnd:block-type
-    see_also:
-    - ../domain/3_Classes.md#block-type
-    slots:
-    - id
   land:
+    description: "Land; interpreted under its linked source definition and context."
     class_uri: pixlnd:land
     see_also: &id004
     - ../domain/3_Classes.md#land
+    slot_usage:
+      land-tier-range: {required: false}
+      land-rarity: {required: false}
+      land-realm: {required: false}
+      land-key-items: {required: false}
+      land-gnome-suppliers: {required: false}
+      land-books-of-crafting: {required: false}
+      land-circles-of-power: {required: false}
+      land-artifacts: {required: false}
+    attributes:
+      wizard-towers: {"alias": "wizard-towers", "slot_uri": "pixlnd:land/wizard-towers", "range": "integer", "description": "Wizard towers; interpreted within the linked source scope.", "minimum_value": 0, "maximum_value": 5}
     slots:
     - id
     - land-name
@@ -53,7 +80,22 @@ classes:
     - land-danger-tier
     - land-coords
     - land-settlements
+    - land-border
+    - land-tier-range
+    - land-rarity
+    - land-realm
+    - land-key-items
+    - land-gnome-suppliers
+    - land-books-of-crafting
+    - land-circles-of-power
+    - land-artifacts
+  polygon:
+    class_uri: pixlnd:polygon
+    description: "Logical polygon geometry kind only; no vertex representation, coordinate units, identity, topology, or concrete serialization is selected."
+    see_also:
+    - ../domain/3_Classes.md#land
   landscape:
+    description: "Landscape; interpreted under its linked source definition and context."
     class_uri: pixlnd:landscape
     see_also: &id005
     - ../domain/3_Classes.md#landscape
@@ -64,13 +106,8 @@ classes:
     - landscape-dungeons
     - landscape-pois
     - landscape-gen
-  terrain-feature:
-    class_uri: pixlnd:terrain-feature
-    see_also:
-    - ../domain/3_Classes.md#terrain-feature
-    slots:
-    - id
   climate:
+    description: "Climate; interpreted under its linked source definition and context."
     class_uri: pixlnd:climate
     see_also: &id007
     - ../domain/3_Classes.md#climate
@@ -78,22 +115,16 @@ classes:
     - id
     - climate-temperature-c
     - climate-humidity-pct
-  flora:
-    class_uri: pixlnd:flora
-    see_also:
-    - ../domain/3_Classes.md#flora
-    slots:
-    - id
-  deposit:
-    class_uri: pixlnd:deposit
-    see_also:
-    - ../domain/3_Classes.md#deposit
-    slots:
-    - id
   settlement:
+    description: "Settlement; interpreted under its linked source definition and context."
     class_uri: pixlnd:settlement
     see_also: &id008
     - ../domain/3_Classes.md#settlement
+    attributes:
+      style: {"alias": "style", "slot_uri": "pixlnd:settlement/style", "range": "settlement-style", "description": "Style; interpreted within the linked source scope."}
+      population-races: {"alias": "population-races", "slot_uri": "pixlnd:settlement/population-races", "range": "race", "description": "Population races; interpreted within the linked source scope.", "multivalued": true}
+      population-animals: {"alias": "population-animals", "slot_uri": "pixlnd:settlement/population-animals", "range": "creature", "description": "Population animals; interpreted within the linked source scope.", "multivalued": true}
+      count-per-land: {"alias": "count-per-land", "slot_uri": "pixlnd:settlement/count-per-land", "range": "integer", "description": "Count per land; interpreted within the linked source scope.", "minimum_value": 1, "equals_number": 1}
     slots:
     - id
     - settlement-districts
@@ -101,36 +132,49 @@ classes:
     - settlement-petrified
     - settlement-possessed
   district:
+    description: "District; interpreted under its linked source definition and context."
     class_uri: pixlnd:district
     see_also:
     - ../domain/3_Classes.md#district
     slots:
     - id
+    - district-name
+    - district-buildings
+    - district-quarter-id
+    - district-decor
+  district-building:
+    description: "District building; interpreted under its linked source definition and context."
+    class_uri: pixlnd:district-building
+    see_also:
+    - ../domain/3_Classes.md#district
+    slots:
+    - district-building-id
+    - district-building-class
   building:
+    description: "Building; interpreted under its linked source definition and context."
     class_uri: pixlnd:building
     see_also:
     - ../domain/3_Classes.md#building
     slots:
     - id
-  dungeon-type:
-    class_uri: pixlnd:dungeon-type
-    see_also:
-    - ../domain/3_Classes.md#dungeon-type
-    slots:
-    - id
-  poi-type:
-    class_uri: pixlnd:poi-type
-    see_also:
-    - ../domain/3_Classes.md#poi-type
-    slots:
-    - id
+    - building-name
+    - building-sign
+    - building-map-icon
+    - building-roles
+    - building-stations
   static-entity:
+    description: "Static entity; interpreted under its linked source definition and context."
     class_uri: pixlnd:static-entity
     see_also:
     - ../domain/3_Classes.md#static-entity
+    attributes:
+      closed: {"alias": "closed", "domain": "static-entity", "slot_uri": "pixlnd:static-entity/closed", "range": "boolean", "required": false, "description": "Logical open/closed state; applicability follows open-able subset, not a new state machine. Optional native null is not historical wire null."}
+      occupant: {"alias": "occupant", "domain": "static-entity", "slot_uri": "pixlnd:static-entity/occupant", "range": "entity", "required": false, "description": "Logical sitter reference for sit-able subset, distinct from closed. No independent sat Boolean, universal numeric identity or empty sentinel is selected."}
+      orientation: {"alias": "orientation", "slot_uri": "pixlnd:static-entity/orientation", "range": "integer", "description": "Historical cardinal codes: 0 south, 1 east, 2 north, 3 west; not yaw degrees. Open-able and sit-able state remain separate.", "minimum_value": 0, "maximum_value": 3}
     slots:
     - id
   realm:
+    description: "Realm; interpreted under its linked source definition and context."
     class_uri: pixlnd:realm
     see_also: &id009
     - ../domain/3_Classes.md#realm
@@ -139,7 +183,10 @@ classes:
     - realm-kind
     - realm-name
     - realm-magic-or-technology
+    - realm-leader
+    - realm-capital
   landscape-generation:
+    description: "Landscape generation; interpreted under its linked source definition and context."
     class_uri: pixlnd:landscape-generation
     see_also: &id006
     - ../domain/3_Classes.md#landscape
@@ -149,20 +196,871 @@ classes:
     - landscape-generation-surface
     - landscape-generation-top
     - landscape-generation-cliff
+  field:
+    class_uri: "pixlnd:field"
+    description: "Known logical base-z plus ordered vertical block run only; historical multi-gap storage remains unqualified."
+    see_also: ["../domain/3_Classes.md#zone"]
+    attributes:
+      base-z: {"alias": "base-z", "slot_uri": "pixlnd:field/base-z", "range": "integer", "description": "Base z; interpreted within the linked source scope.", "required": true}
+      blocks: {"alias": "blocks", "slot_uri": "pixlnd:field/blocks", "range": "block", "description": "Blocks; interpreted within the linked source scope.", "required": true, "multivalued": true, "inlined": true, "inlined_as_list": true}
+  creature-spawn:
+    class_uri: "pixlnd:creature-spawn"
+    description: "Logical spawn components reuse equivalent entity facets; not a historical binary wire contract."
+    see_also: ["../domain/3_Classes.md#zone"]
+    attributes:
+    slots: ["entity-hostility", "entity-species", "entity-class", "entity-specialization", "entity-level", "entity-power-base", "entity-appearance", "entity-equipment", "entity-name"]
+    slot_usage:
+      entity-species: {"alias": "type"}
+      entity-specialization: {"alias": "spec"}
+  zone-coordinate:
+    class_uri: "pixlnd:zone-coordinate"
+    description: "Logical horizontal integer coordinate pair for world-shared exploration. No packet, save encoding, finite range or discovery algorithm is selected. The cuwo 256-block and CWSDK 64-block global-zone views below are distinct historical components; separate 20-block SDK mapchunks are not zones."
+    see_also: ["../domain/3_Classes.md#world", "../domain/3_Classes.md#zone"]
+    attributes:
+      coordinate-x: {"alias": "x", "domain": "zone-coordinate", "slot_uri": "pixlnd:zone-coordinate/x", "range": "integer", "required": true, "description": "Horizontal x zone coordinate; no portable source width or hybrid wire selected."}
+      coordinate-y: {"alias": "y", "domain": "zone-coordinate", "slot_uri": "pixlnd:zone-coordinate/y", "range": "integer", "required": true, "description": "Horizontal y zone coordinate; no portable source width or hybrid wire selected."}
+  cuwo-discovery-coordinate-components:
+    class_uri: "pixlnd:cuwo-discovery-coordinate-components"
+    description: "Third-party Alpha ChunkDiscovered u32 pair, world-global 256-block helper context. Component projection only, not authenticated client behavior, persisted exploration or hybrid encoding."
+    see_also: ["https://github.com/matpow2/cuwo/blob/240bb61ec42abb10a73d750ce72f243e04e55509/cuwo/packet.py#L652-L659", "https://github.com/matpow2/cuwo/blob/240bb61ec42abb10a73d750ce72f243e04e55509/cuwo/world.py"]
+    is_a: "zone-coordinate"
+    slot_usage: {"coordinate-x": {"range": "uint32"}, "coordinate-y": {"range": "uint32"}}
+  cwsdk-zone-coordinate-components:
+    class_uri: "pixlnd:cwsdk-zone-coordinate-components"
+    description: "Third-party SDK in-memory IntVector2 global-zone key: signed C++ int components, portable width unestablished. Floor/mod conversions use 65536 dots/block and 64 blocks/zone; separate mapchunks use 20 blocks. Integer projection deliberately has no int32 bounds. Not a discovery/save wire or original-client authentication."
+    see_also: ["https://api.github.com/repos/coremaze/CWSDK/git/blobs/be8891283cfa0d7676146f19d8e713f5a9650107", "https://api.github.com/repos/coremaze/CWSDK/git/blobs/420c24ff97a594f1e8f8f60aa7baf7929b0161d6", "https://api.github.com/repos/coremaze/CWSDK/git/blobs/a16689bfc90217d4059247de313c17b52b0d7591", "https://api.github.com/repos/coremaze/CWSDK/git/blobs/0b067c6515df7fe38b8ad24993933509cf9a3cfc", "https://api.github.com/repos/coremaze/CWSDK/git/blobs/97fc2a0ac21c0585186805fd7a1227cd827124d8"]
+    is_a: "zone-coordinate"
+  dropped-item:
+    class_uri: "pixlnd:dropped-item"
+    description: "Logical ground-item components, not a complete historical packet or save body. Item remains a nominal reference, not an inlined payload. Rotation and scale are known f32 scalars; no degrees, frame, positivity or uniform-scale semantics selected. Drop-time is an integer component with source-specific signedness below, not established age, epoch, world-clock time or unit. Berld yaw-copy and outgoing 500/stored 0 paired with a configured 500ms asynchronous sleep establish no measured delay or universal timer meaning."
+    see_also: ["../domain/3_Classes.md#zone", "https://github.com/matpow2/cuwo/blob/240bb61ec42abb10a73d750ce72f243e04e55509/cuwo/tgen_wrap.pxd#L441-L450", "https://github.com/LastExceed/berld/blob/f5d3886ce06cde28cc66932f23eea85a05149bc7/protocol/src/packet/world_update/loot.rs"]
+    attributes:
+      item: {"alias": "item", "domain": "dropped-item", "slot_uri": "pixlnd:dropped-item/item", "range": "item", "required": true, "description": "Nominal Item reference only; complete-wire Item admission is later work."}
+      pos: {"alias": "pos", "domain": "dropped-item", "slot_uri": "pixlnd:dropped-item/pos", "range": "int64", "required": true, "description": "Qualified historical signed native-position triple; active coordinate encoding/frame not selected.", "multivalued": true, "minimum_cardinality": 3, "maximum_cardinality": 3}
+      rotation: {"alias": "rotation", "domain": "dropped-item", "slot_uri": "pixlnd:dropped-item/rotation", "range": "float", "required": true, "description": "Source f32 scalar; angular units and frame unestablished."}
+      scale: {"alias": "scale", "domain": "dropped-item", "slot_uri": "pixlnd:dropped-item/scale", "range": "float", "required": true, "description": "Source f32 scalar; no positivity or uniform-transform interpretation imposed."}
+      drop-time: {"alias": "drop-time", "domain": "dropped-item", "slot_uri": "pixlnd:dropped-item/drop-time", "range": "integer", "required": true, "description": "Known timer component only; source signedness differs, unit and clock meaning unestablished."}
+  cuwo-dropped-item-components:
+    class_uri: "pixlnd:cuwo-dropped-item-components"
+    description: "Qualified third-party ground-item component projection; drop-time uses uint32. Not a full ground-item wire, ABI, active/save encoding or Item-body contract."
+    see_also: ["../domain/3_Classes.md#zone", "https://github.com/matpow2/cuwo/blob/240bb61ec42abb10a73d750ce72f243e04e55509/cuwo/tgen_wrap.pxd#L441-L450"]
+    is_a: "dropped-item"
+    slot_usage: {"drop-time": {"range": "uint32"}}
+  berld-dropped-item-components:
+    class_uri: "pixlnd:berld-dropped-item-components"
+    description: "Qualified third-party ground-item component projection; drop-time uses int32. Not a full ground-item wire, ABI, active/save encoding or Item-body contract."
+    see_also: ["../domain/3_Classes.md#zone", "https://github.com/LastExceed/berld/blob/f5d3886ce06cde28cc66932f23eea85a05149bc7/protocol/src/packet/world_update/loot.rs"]
+    is_a: "dropped-item"
+    slot_usage: {"drop-time": {"range": "int32"}}
+  berld-static-size-components:
+    class_uri: "pixlnd:berld-static-size-components"
+    description: "Named f32 Hitbox components used by berld WorldObject.size, not cuwo vec3 storage or a portable native ABI."
+    see_also: ["https://github.com/LastExceed/berld/blob/f5d3886ce06cde28cc66932f23eea85a05149bc7/protocol/src/packet/common.rs#L190-L197"]
+    attributes:
+      width: {"alias": "width", "domain": "berld-static-size-components", "slot_uri": "pixlnd:berld-static-size-components/width", "range": "float", "required": true, "description": "Source f32 width component; no active/save size format selected."}
+      depth: {"alias": "depth", "domain": "berld-static-size-components", "slot_uri": "pixlnd:berld-static-size-components/depth", "range": "float", "required": true, "description": "Source f32 depth component; no active/save size format selected."}
+      height: {"alias": "height", "domain": "berld-static-size-components", "slot_uri": "pixlnd:berld-static-size-components/height", "range": "float", "required": true, "description": "Source f32 height component; no active/save size format selected."}
+  cuwo-static-header-components:
+    class_uri: "pixlnd:cuwo-static-header-components"
+    description: "Third-party static header component projection only, excluding padding and packet envelope. Not the complete logical static-entity family: the cuwo static struct additionally contains Item/list/opaque state. Source signedness, Boolean use and occupant identity remain distinct; native-memory generic codecs do not establish a portable ABI or authenticated original-client semantics."
+    see_also: ["../domain/3_Classes.md#static-entity", "../instances/static-entities.json", "https://github.com/matpow2/cuwo/blob/240bb61ec42abb10a73d750ce72f243e04e55509/cuwo/tgen_wrap.pxd#L260-L271", "https://github.com/matpow2/cuwo/blob/240bb61ec42abb10a73d750ce72f243e04e55509/cuwo/static.py", "https://github.com/matpow2/cuwo/blob/240bb61ec42abb10a73d750ce72f243e04e55509/cuwo/world.py#L135-L182"]
+    attributes:
+      entity-type: {"alias": "entity-type", "domain": "cuwo-static-header-components", "slot_uri": "pixlnd:cuwo-static-header-components/entity-type", "range": "uint32", "required": true, "description": "Source u32 type storage, not catalog membership or source identity reconciliation."}
+      pos: {"alias": "pos", "domain": "cuwo-static-header-components", "slot_uri": "pixlnd:cuwo-static-header-components/pos", "range": "int64", "required": true, "description": "Source signed i64 native-position triple; not selected hybrid/save encoding.", "multivalued": true, "minimum_cardinality": 3, "maximum_cardinality": 3}
+      orientation: {"alias": "orientation", "domain": "cuwo-static-header-components", "slot_uri": "pixlnd:cuwo-static-header-components/orientation", "range": "uint32", "required": true, "description": "Source storage component only; logical cardinal orientation remains 0..3, not yaw degrees. No portable ABI inferred."}
+      size: {"alias": "size", "domain": "cuwo-static-header-components", "slot_uri": "pixlnd:cuwo-static-header-components/size", "range": "float", "required": true, "description": "Source f32 triple; size frame/units and relation to drop scale not inferred.", "multivalued": true, "minimum_cardinality": 3, "maximum_cardinality": 3}
+      closed: {"alias": "closed", "domain": "cuwo-static-header-components", "slot_uri": "pixlnd:cuwo-static-header-components/closed", "range": "u8", "required": true, "description": "Source u8 storage with separate Boolean use; not a universal byte sentinel contract."}
+      time-offset: {"alias": "time-offset", "domain": "cuwo-static-header-components", "slot_uri": "pixlnd:cuwo-static-header-components/time-offset", "range": "uint32", "required": true, "description": "Source u32; cuwo local capped elapsed-loop seconds times 1000 is distinct from accelerated calendar time."}
+      something8: {"alias": "something8", "domain": "cuwo-static-header-components", "slot_uri": "pixlnd:cuwo-static-header-components/something8", "range": "uint32", "required": true, "description": "Opaque source integer component; meaning remains unknown."}
+      user-id: {"alias": "user-id", "domain": "cuwo-static-header-components", "slot_uri": "pixlnd:cuwo-static-header-components/user-id", "range": "integer", "required": true, "description": "Source u64 occupant component; no universal empty sentinel or identity conversion selected.", "minimum_value": 0, "maximum_value": 18446744073709551615}
+  cuwo-item-with-header-components:
+    class_uri: "pixlnd:cuwo-item-with-header-components"
+    description: "Third-party ItemWithHeader component projection. The item is a nominal Item reference, not an inlined or complete Item payload; header meaning is unspecified. Not a portable ABI or authenticated client contract."
+    see_also: ["https://github.com/matpow2/cuwo/blob/240bb61ec42abb10a73d750ce72f243e04e55509/cuwo/tgen_wrap.pxd#L222-L235"]
+    attributes:
+      header: {alias: "header", domain: "cuwo-item-with-header-components", slot_uri: "pixlnd:cuwo-item-with-header-components/header", range: "uint32", required: true, description: "Source u32 component; meaning remains unspecified."}
+      item: {alias: "item", domain: "cuwo-item-with-header-components", slot_uri: "pixlnd:cuwo-item-with-header-components/item", range: "item", required: true, description: "Nominal Item reference only; full Item internals are not included."}
+  cuwo-item-with-header-list-components:
+    class_uri: "pixlnd:cuwo-item-with-header-list-components"
+    description: "Third-party ItemWithHeaderList vector projection; element payloads retain nominal Item references. Container capacity/storage details are not a portable sequence encoding."
+    see_also: ["https://github.com/matpow2/cuwo/blob/240bb61ec42abb10a73d750ce72f243e04e55509/cuwo/tgen_wrap.pxd#L234-L246"]
+    attributes:
+      items: {alias: "items", domain: "cuwo-item-with-header-list-components", slot_uri: "pixlnd:cuwo-item-with-header-list-components/items", range: "cuwo-item-with-header-components", required: true, multivalued: true, inlined: true, inlined_as_list: true, description: "Known vector of ItemWithHeader component entries; no fixed length selected."}
+  cuwo-item-with-header-lists-components:
+    class_uri: "pixlnd:cuwo-item-with-header-lists-components"
+    description: "Third-party ItemWithHeaderLists vector projection, separate from one ItemWithHeaderList. Container capacity/storage details are not a portable sequence encoding."
+    see_also: ["https://github.com/matpow2/cuwo/blob/240bb61ec42abb10a73d750ce72f243e04e55509/cuwo/tgen_wrap.pxd#L247-L259"]
+    attributes:
+      lists: {alias: "lists", domain: "cuwo-item-with-header-lists-components", slot_uri: "pixlnd:cuwo-item-with-header-lists-components/lists", range: "cuwo-item-with-header-list-components", required: true, multivalued: true, inlined: true, inlined_as_list: true, description: "Known vector of ItemWithHeaderList component entries; no fixed length selected."}
+  cuwo-static-entity-components:
+    class_uri: "pixlnd:cuwo-static-entity-components"
+    description: "Third-party StaticEntity outer composition projection: header, nested item-header lists, nominal Item and seven source-declared u32 components. The unnamed components retain source names and have no inferred meanings. This is not a complete portable ABI, packet, save contract or authenticated client behavior."
+    see_also: ["../domain/3_Classes.md#static-entity", "../instances/static-entities.json", "https://github.com/matpow2/cuwo/blob/240bb61ec42abb10a73d750ce72f243e04e55509/cuwo/tgen_wrap.pxd#L260-L292"]
+    attributes:
+      header: {alias: "header", domain: "cuwo-static-entity-components", slot_uri: "pixlnd:cuwo-static-entity-components/header", range: "cuwo-static-header-components", required: true, inlined: true, description: "Nested source static-header component projection."}
+      item-with-header-lists: {alias: "item-with-header-lists", domain: "cuwo-static-entity-components", slot_uri: "pixlnd:cuwo-static-entity-components/item-with-header-lists", range: "cuwo-item-with-header-lists-components", required: true, inlined: true, description: "Nested source vector-of-lists component projection."}
+      item: {alias: "item", domain: "cuwo-static-entity-components", slot_uri: "pixlnd:cuwo-static-entity-components/item", range: "item", required: true, description: "Nominal Item reference only; full Item internals are not included."}
+      something1: {alias: "something1", domain: "cuwo-static-entity-components", slot_uri: "pixlnd:cuwo-static-entity-components/something1", range: "uint32", required: true, description: "Source-declared u32 component; meaning remains unknown."}
+      something2: {alias: "something2", domain: "cuwo-static-entity-components", slot_uri: "pixlnd:cuwo-static-entity-components/something2", range: "uint32", required: true, description: "Source-declared u32 component; meaning remains unknown."}
+      something3: {alias: "something3", domain: "cuwo-static-entity-components", slot_uri: "pixlnd:cuwo-static-entity-components/something3", range: "uint32", required: true, description: "Source-declared u32 component; meaning remains unknown."}
+      something4: {alias: "something4", domain: "cuwo-static-entity-components", slot_uri: "pixlnd:cuwo-static-entity-components/something4", range: "uint32", required: true, description: "Source-declared u32 component; meaning remains unknown."}
+      something5: {alias: "something5", domain: "cuwo-static-entity-components", slot_uri: "pixlnd:cuwo-static-entity-components/something5", range: "uint32", required: true, description: "Source-declared u32 component; meaning remains unknown."}
+      something6: {alias: "something6", domain: "cuwo-static-entity-components", slot_uri: "pixlnd:cuwo-static-entity-components/something6", range: "uint32", required: true, description: "Source-declared u32 component; meaning remains unknown."}
+      something7: {alias: "something7", domain: "cuwo-static-entity-components", slot_uri: "pixlnd:cuwo-static-entity-components/something7", range: "uint32", required: true, description: "Source-declared u32 component; meaning remains unknown."}
+  berld-static-header-components:
+    class_uri: "pixlnd:berld-static-header-components"
+    description: "Third-party static header component projection only, excluding padding and packet envelope. Not the complete logical static-entity family: the cuwo static struct additionally contains Item/list/opaque state. Source signedness, Boolean use and occupant identity remain distinct; native-memory generic codecs do not establish a portable ABI or authenticated original-client semantics."
+    see_also: ["../domain/3_Classes.md#static-entity", "../instances/static-entities.json", "https://github.com/LastExceed/berld/blob/f5d3886ce06cde28cc66932f23eea85a05149bc7/protocol/src/packet/world_update.rs#L119-L135", "https://github.com/LastExceed/berld/blob/f5d3886ce06cde28cc66932f23eea85a05149bc7/protocol/src/packet/world_update/world_object.rs", "https://github.com/LastExceed/berld/blob/f5d3886ce06cde28cc66932f23eea85a05149bc7/protocol/src/packet/common.rs#L10"]
+    attributes:
+      kind: {"alias": "kind", "domain": "berld-static-header-components", "slot_uri": "pixlnd:berld-static-header-components/kind", "range": "int32", "required": true, "description": "Source repr(i32) enum storage only; this component projection does not enforce Kind enum membership."}
+      position: {"alias": "position", "domain": "berld-static-header-components", "slot_uri": "pixlnd:berld-static-header-components/position", "range": "int64", "required": true, "description": "Source signed i64 native-position triple; not selected hybrid/save encoding.", "multivalued": true, "minimum_cardinality": 3, "maximum_cardinality": 3}
+      orientation: {"alias": "orientation", "domain": "berld-static-header-components", "slot_uri": "pixlnd:berld-static-header-components/orientation", "range": "i8", "required": true, "description": "Source storage component only; logical cardinal orientation remains 0..3, not yaw degrees. No portable ABI inferred."}
+      size: {"alias": "size", "domain": "berld-static-header-components", "slot_uri": "pixlnd:berld-static-header-components/size", "range": "berld-static-size-components", "required": true, "description": "Named source Hitbox width/depth/height f32 components, not a cuwo vec3 or selected active/save format.", "inlined": true}
+      is-closed: {"alias": "is-closed", "domain": "berld-static-header-components", "slot_uri": "pixlnd:berld-static-header-components/is-closed", "range": "boolean", "required": true, "description": "Source Boolean component, distinct from occupant/interactor identity."}
+      transform-time: {"alias": "transform-time", "domain": "berld-static-header-components", "slot_uri": "pixlnd:berld-static-header-components/transform-time", "range": "int32", "required": true, "description": "Source i32 transform component; no universal clock/unit selected."}
+      unknown-b: {"alias": "unknown-b", "domain": "berld-static-header-components", "slot_uri": "pixlnd:berld-static-header-components/unknown-b", "range": "int32", "required": true, "description": "Opaque source integer component; meaning remains unknown."}
+      interactor: {"alias": "interactor", "domain": "berld-static-header-components", "slot_uri": "pixlnd:berld-static-header-components/interactor", "range": "int64", "required": true, "description": "Source signed i64 CreatureId component; no universal empty sentinel selected."}
+  deposit-ingredient-yield:
+    class_uri: pixlnd:deposit-ingredient-yield
+    description: "Deposit-scoped logical ingredient yield interval, not an emitted quantity or distribution. The inherited ingredient reference and required minimum/maximum describe the fixed 1–3 interval. Raw deposit catalog yields remain ingredient strings; reference existence and midnight renewal remain separate."
+    see_also: ["../domain/3_Classes.md#deposit", "../schema/associations.yaml#ingredient-yield", "../schema/world-catalog.yaml#deposit-yields"]
+    is_a: ingredient-yield
+    slot_usage:
+      ingredient-yield-minimum: {equals_number: 1}
+      ingredient-yield-maximum: {equals_number: 3}
+  hybrid-inn-sleep-service-parameters:
+    class_uri: pixlnd:hybrid-inn-sleep-service-parameters
+    description: "Hybrid inn paid sleep parameters from settlements/inn items 2–4, distinct from free anytime healing and respawn. The 18:00–06:00 availability wraps midnight; next 07:00 is a clock skip, not accelerated combat, statuses or cooldowns. All connected players explicitly agree; the initiator pays the single fee only on success, with refusal blocking the skip without charge. Ordinary midnight resets apply once only when crossed; sleeping grants no extra shop refresh or mission reroll. The historical reference sleep multiplier and fresh-world clock remain separate."
+    see_also: &inn-sleep-source ["../domain/3_Classes.md#game-clock", "../domain/5_Constraints.md#c-inn-hours"]
+    attributes:
+      fee-copper:
+        alias: fee-copper
+        slot_uri: pixlnd:hybrid-inn-sleep-service-parameters/fee-copper
+        range: integer
+        required: true
+        equals_number: 10
+        description: Single initiating-player fee on a successful agreed sleep skip.
+        see_also: *inn-sleep-source
+      available-from-hour:
+        alias: available-from-hour
+        slot_uri: pixlnd:hybrid-inn-sleep-service-parameters/available-from-hour
+        range: integer
+        required: true
+        equals_number: 18
+        description: Start hour of the overnight paid sleep window, not a free recovery restriction.
+        see_also: *inn-sleep-source
+      available-until-hour:
+        alias: available-until-hour
+        slot_uri: pixlnd:hybrid-inn-sleep-service-parameters/available-until-hour
+        range: integer
+        required: true
+        equals_number: 6
+        description: End hour of the overnight paid sleep window; wraps midnight from 18.
+        see_also: *inn-sleep-source
+      next-morning-hour:
+        alias: next-morning-hour
+        slot_uri: pixlnd:hybrid-inn-sleep-service-parameters/next-morning-hour
+        range: integer
+        required: true
+        equals_number: 7
+        description: "Next 07:00 target: 22:00 reaches tomorrow morning; 02:00 reaches that morning."
+        see_also: *inn-sleep-source
+  game-clock:
+    class_uri: "pixlnd:game-clock"
+    description: "Clock parameters only: initial time applies to fresh worlds; historical sleep multiplier baseline is unresolved. Sleep, midnight, weather and offline policies remain distinct linked rules."
+    see_also: ["../domain/3_Classes.md#game-clock"]
+    attributes:
+      speed: {"alias": "speed", "slot_uri": "pixlnd:game-clock/speed", "range": "double", "description": "Speed; interpreted within the linked source scope.", "required": true, "equals_number": 10}
+      initial-time-ms: {"alias": "initial-time-ms", "slot_uri": "pixlnd:game-clock/initial-time-ms", "range": "integer", "description": "Initial time ms; interpreted within the linked source scope.", "required": true, "minimum_value": 0, "maximum_value": 86400000, "equals_number": 25200000}
+      reference-sleep-speed: {"alias": "reference-sleep-speed", "slot_uri": "pixlnd:game-clock/reference-sleep-speed", "range": "double", "description": "Reference sleep speed; interpreted within the linked source scope.", "equals_number": 100}
+  encounter-volume:
+    class_uri: "pixlnd:encounter-volume"
+    description: "Logical closed playable component dimensions in blocks, not an enclosing rectangle or selected save wire. Occupancy of a union and boundary membership follow the linked rule."
+    see_also: ["../domain/encounter-contracts.md#geometry-and-occupancy"]
+    attributes:
+      width: {"alias": "width", "slot_uri": "pixlnd:encounter-volume/width", "range": "double", "description": "Width; interpreted within the linked source scope.", "required": true, "minimum_value": 0}
+      depth: {"alias": "depth", "slot_uri": "pixlnd:encounter-volume/depth", "range": "double", "description": "Depth; interpreted within the linked source scope.", "required": true, "minimum_value": 0}
+      below-floor: {"alias": "below-floor", "slot_uri": "pixlnd:encounter-volume/below-floor", "range": "double", "description": "Below floor; interpreted within the linked source scope.", "required": true, "minimum_value": 0}
+      above-floor: {"alias": "above-floor", "slot_uri": "pixlnd:encounter-volume/above-floor", "range": "double", "description": "Above floor; interpreted within the linked source scope.", "required": true, "minimum_value": 0}
+  ruins-room-volume:
+    class_uri: "pixlnd:ruins-room-volume"
+    description: "Source-scoped playable component dimensions; floor-height formula and placement remain linked rules."
+    see_also: ["../domain/encounter-contracts.md#geometry-and-occupancy"]
+    is_a: "encounter-volume"
+    slot_usage:
+      width: {"equals_number": 24}
+      depth: {"equals_number": 24}
+      below-floor: {"equals_number": 1}
+      above-floor: {"equals_number": 12}
+  ruins-corridor-volume:
+    class_uri: "pixlnd:ruins-corridor-volume"
+    description: "Source-scoped playable component dimensions; floor-height formula and placement remain linked rules."
+    see_also: ["../domain/encounter-contracts.md#geometry-and-occupancy"]
+    is_a: "encounter-volume"
+    slot_usage:
+      width: {"equals_number": 8}
+      depth: {"equals_number": 8}
+      below-floor: {"equals_number": 1}
+      above-floor: {"equals_number": 12}
+  ruins-court-volume:
+    class_uri: "pixlnd:ruins-court-volume"
+    description: "Source-scoped playable component dimensions; floor-height formula and placement remain linked rules."
+    see_also: ["../domain/encounter-contracts.md#geometry-and-occupancy"]
+    is_a: "encounter-volume"
+    slot_usage:
+      width: {"equals_number": 24}
+      depth: {"equals_number": 16}
+      below-floor: {"equals_number": 1}
+      above-floor: {"equals_number": 12}
+  ruins-passage-volume:
+    class_uri: "pixlnd:ruins-passage-volume"
+    description: "Source-scoped playable component dimensions; floor-height formula and placement remain linked rules."
+    see_also: ["../domain/encounter-contracts.md#geometry-and-occupancy"]
+    is_a: "encounter-volume"
+    slot_usage:
+      width: {"equals_number": 8}
+      depth: {"equals_number": 8}
+      below-floor: {"equals_number": 1}
+      above-floor: {"equals_number": 12}
+  ruins-alcove-volume:
+    class_uri: "pixlnd:ruins-alcove-volume"
+    description: "Source-scoped playable component dimensions; floor-height formula and placement remain linked rules."
+    see_also: ["../domain/encounter-contracts.md#geometry-and-occupancy"]
+    is_a: "encounter-volume"
+    slot_usage:
+      width: {"equals_number": 12}
+      depth: {"equals_number": 8}
+      below-floor: {"equals_number": 1}
+      above-floor: {"equals_number": 12}
+  camp-battlefield-volume:
+    class_uri: "pixlnd:camp-battlefield-volume"
+    description: "Source-scoped playable component dimensions; floor-height formula and placement remain linked rules."
+    see_also: ["../domain/encounter-contracts.md#geometry-and-occupancy"]
+    is_a: "encounter-volume"
+    slot_usage:
+      width: {"equals_number": 64}
+      depth: {"equals_number": 64}
+      below-floor: {"equals_number": 1}
+      above-floor: {"equals_number": 16}
+  rescue-battlefield-volume:
+    class_uri: "pixlnd:rescue-battlefield-volume"
+    description: "Source-scoped playable component dimensions; floor-height formula and placement remain linked rules."
+    see_also: ["../domain/encounter-contracts.md#geometry-and-occupancy"]
+    is_a: "encounter-volume"
+    slot_usage:
+      width: {"equals_number": 48}
+      depth: {"equals_number": 48}
+      below-floor: {"equals_number": 1}
+      above-floor: {"equals_number": 16}
+  encounter-population:
+    class_uri: "pixlnd:encounter-population"
+    description: "Designated population counts, not ambient fauna or live surviving-incarnation state. Clear and renewal predicates remain linked rules."
+    see_also: ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"]
+    attributes:
+      packs: {"alias": "packs", "slot_uri": "pixlnd:encounter-population/packs", "range": "integer", "description": "Packs; interpreted within the linked source scope.", "required": true, "minimum_value": 0}
+      pack-size: {"alias": "pack-size", "slot_uri": "pixlnd:encounter-population/pack-size", "range": "integer", "description": "Pack size; interpreted within the linked source scope.", "required": true, "minimum_value": 0}
+      bosses: {"alias": "bosses", "slot_uri": "pixlnd:encounter-population/bosses", "range": "integer", "description": "Bosses; interpreted within the linked source scope.", "required": true, "minimum_value": 0}
+      hostiles: {"alias": "hostiles", "slot_uri": "pixlnd:encounter-population/hostiles", "range": "integer", "description": "Hostiles; interpreted within the linked source scope.", "required": true, "minimum_value": 0}
+      captives: {"alias": "captives", "slot_uri": "pixlnd:encounter-population/captives", "range": "integer", "description": "Captives; interpreted within the linked source scope.", "required": true, "minimum_value": 0}
+  ruins-population:
+    class_uri: "pixlnd:ruins-population"
+    description: "Exact source-scoped designated population; no reinforcement or ambient roster change."
+    see_also: ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"]
+    is_a: "encounter-population"
+    slot_usage:
+      packs: {"equals_number": 3}
+      pack-size: {"equals_number": 3}
+      bosses: {"equals_number": 2}
+      hostiles: {"equals_number": 11}
+      captives: {"equals_number": 0}
+  camp-population:
+    class_uri: "pixlnd:camp-population"
+    description: "Exact source-scoped designated population; no reinforcement or ambient roster change."
+    see_also: ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"]
+    is_a: "encounter-population"
+    slot_usage:
+      packs: {"equals_number": 2}
+      pack-size: {"equals_number": 3}
+      bosses: {"equals_number": 1}
+      hostiles: {"equals_number": 7}
+      captives: {"equals_number": 0}
+  rescue-population:
+    class_uri: "pixlnd:rescue-population"
+    description: "Exact source-scoped designated population; no reinforcement or ambient roster change."
+    see_also: ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"]
+    is_a: "encounter-population"
+    slot_usage:
+      packs: {"equals_number": 2}
+      pack-size: {"equals_number": 3}
+      bosses: {"equals_number": 1}
+      hostiles: {"equals_number": 7}
+      captives: {"equals_number": 1}
+  encounter-assignment:
+    class_uri: "pixlnd:encounter-assignment"
+    description: "Permanent logical role/special and eligible non-mission boss spirit assignment. Probabilities, boss-only eligibility and initial-level/current-level distinctions remain the linked rules; no new assignment engine."
+    see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]
+    exactly_one_of:
+    - slot_conditions:
+        boss: {equals_expression: "True"}
+        special: {value_presence: PRESENT}
+    - slot_conditions:
+        boss: {equals_expression: "False"}
+        special: {value_presence: ABSENT}
+    attributes:
+      role: {"alias": "role", "slot_uri": "pixlnd:encounter-assignment/role", "range": "string", "description": "Role; interpreted within the linked source scope.", "required": true, "equals_string_in": ["melee", "ranged", "mage"]}
+      tier: {"alias": "tier", "slot_uri": "pixlnd:encounter-assignment/tier", "range": "integer", "description": "Tier; interpreted within the linked source scope.", "required": true, "minimum_value": 0, "maximum_value": 4}
+      boss: {"alias": "boss", "slot_uri": "pixlnd:encounter-assignment/boss", "range": "boolean", "description": "Boss; interpreted within the linked source scope.", "required": true}
+      special: {"alias": "special", "slot_uri": "pixlnd:encounter-assignment/special", "description": "Special; interpreted within the linked source scope.", "exactly_one_of": [{"range": "string", "equals_string_in": ["stomp", "charge"]}]}
+      spirit: {"alias": "spirit", "slot_uri": "pixlnd:encounter-assignment/spirit", "description": "Spirit; interpreted within the linked source scope.", "exactly_one_of": [{"range": "material", "equals_string_in": ["spirit-fire", "spirit-unholy", "spirit-ice", "spirit-wind"]}]}
+  initial-nonboss-assignment:
+    class_uri: "pixlnd:initial-nonboss-assignment"
+    description: "Permanent logical assignment of an initial site nonboss guard: not a boss, with neither a boss special nor a spirit type. Scope is expressed by this class, not a new mission/site/context field or saved payload; ordinary kill loot remains separate."
+    see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits", "../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]
+    is_a: "encounter-assignment"
+    slot_usage:
+      boss: {equals_expression: "False"}
+    none_of:
+    - slot_conditions:
+        special: {value_presence: PRESENT}
+    - slot_conditions:
+        spirit: {value_presence: PRESENT}
+  initial-ruins-boss-assignment:
+    class_uri: "pixlnd:initial-ruins-boss-assignment"
+    description: "Permanent logical assignment of either of the two initial ruins non-mission bosses: boss, one required permanent special and one required spirit type. First logical generation independently chooses the spirit type once; genuine deaths retain that type and power derived from the initial boss level across renewal. No per-player copy, per-death or daily type reroll, stored level or reward receipt is added."
+    see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits", "../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]
+    is_a: "encounter-assignment"
+    slot_usage:
+      boss: {equals_expression: "True"}
+      special: {required: true}
+      spirit: {required: true}
+  initial-mission-boss-assignment:
+    class_uri: "pixlnd:initial-mission-boss-assignment"
+    description: "Permanent logical assignment of the initial camp boss or any of the four supplier rescue bosses: boss with a required permanent special and no spirit type. These mission bosses give zero spirits; guaranteed gear and shared mission packages remain separate additive rewards. No mission Boolean, selected site serialization or global spirit exclusion is introduced."
+    see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits", "../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]
+    is_a: "encounter-assignment"
+    slot_usage:
+      boss: {equals_expression: "True"}
+      special: {required: true}
+    none_of:
+    - slot_conditions:
+        spirit: {value_presence: PRESENT}
+  initial-spirit-profile:
+    class_uri: "pixlnd:initial-spirit-profile"
+    description: "Fixed logical spirit acquisition parameters for the two ruins bosses (non-mission bosses), not a reward event, configuration or saved payload. At first logical generation each independently chooses one of four equally probable existing spirit types; that choice is permanent per logical boss. Each genuine ruins-boss death gives one cube and mission bosses give zero. Use canonical power(L) for the initial boss level L without spread, retaining its initial-level-derived power across daily renewal, not the current defeated boss level used by guaranteed gear. These are shared ground drops, not per-player copies, additive to ordinary rolls and guaranteed gear; unload/restart cannot reroll or re-award a death. This scope permits collecting and carrying only, no numerical effects or attachment behavior; retained bench restrictions and later customization remain distinct. No regional weakening or global spirit exclusion is added."
+    see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits", "../domain/3_Classes.md#item", "../domain/3_Classes.md#spirit-cube", "../instances/generators.json#design.initial-encounters.spirits"]
+    attributes:
+      ruins-boss-count-per-death: {alias: "ruins-boss-count-per-death", slot_uri: "pixlnd:initial-spirit-profile/ruins-boss-count-per-death", range: integer, required: true, equals_number: 1, description: "One spirit cube per genuine death of either initial ruins boss, not per player or per whole site.", see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits"]}
+      mission-boss-count-per-death: {alias: "mission-boss-count-per-death", slot_uri: "pixlnd:initial-spirit-profile/mission-boss-count-per-death", range: integer, required: true, equals_number: 0, description: "Zero spirit cubes for the camp and four supplier rescue mission bosses; not a global removal of spirit sources.", see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits"]}
+      spirit-fire-probability: {alias: "spirit-fire-probability", slot_uri: "pixlnd:initial-spirit-profile/spirit-fire-probability", range: double, required: true, minimum_value: 0.25, maximum_value: 0.25, description: "Dimensionless probability of the existing fire spirit type on first logical boss generation, independently per eligible boss; permanent thereafter, not per death. The catalog material identity retains its historical qualification, without selecting combat effects.", see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits", "../instances/materials.json#spirit-fire", "../instances/generators.json#design.initial-encounters.spirits"]}
+      spirit-unholy-probability: {alias: "spirit-unholy-probability", slot_uri: "pixlnd:initial-spirit-profile/spirit-unholy-probability", range: double, required: true, minimum_value: 0.25, maximum_value: 0.25, description: "Dimensionless probability of the existing unholy spirit type on first logical boss generation, independently per eligible boss; permanent thereafter, not per death. The catalog material identity retains its historical qualification, without selecting combat effects.", see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits", "../instances/materials.json#spirit-unholy", "../instances/generators.json#design.initial-encounters.spirits"]}
+      spirit-ice-probability: {alias: "spirit-ice-probability", slot_uri: "pixlnd:initial-spirit-profile/spirit-ice-probability", range: double, required: true, minimum_value: 0.25, maximum_value: 0.25, description: "Dimensionless probability of the existing ice spirit type on first logical boss generation, independently per eligible boss; permanent thereafter, not per death. The catalog material identity retains its historical qualification, without selecting combat effects.", see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits", "../instances/materials.json#spirit-ice", "../instances/generators.json#design.initial-encounters.spirits"]}
+      spirit-wind-probability: {alias: "spirit-wind-probability", slot_uri: "pixlnd:initial-spirit-profile/spirit-wind-probability", range: double, required: true, minimum_value: 0.25, maximum_value: 0.25, description: "Dimensionless probability of the existing wind spirit type on first logical boss generation, independently per eligible boss; permanent thereafter, not per death. The catalog material identity retains its historical qualification, without selecting combat effects.", see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits", "../instances/materials.json#spirit-wind", "../instances/generators.json#design.initial-encounters.spirits"]}
+      power-spread: {alias: "power-spread", slot_uri: "pixlnd:initial-spirit-profile/power-spread", range: integer, required: true, equals_number: 0, description: "No spread in power points after canonical power(L) conversion of INITIAL boss level L; renewal retains that power, unlike current-level guaranteed gear.", see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits", "../domain/3_Classes.md#item"]}
+      minimum-initial-boss-level: {alias: "minimum-initial-boss-level", slot_uri: "pixlnd:initial-spirit-profile/minimum-initial-boss-level", range: integer, required: true, equals_number: 1, description: "Minimum source-level context for the logical boss INITIAL level L used by spirit power(L), matching the existing saved initial-boss-level constraint; not an actual saved level, another level list or minimum item power.", see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits", "save-world.yaml#saved-spirit-level-level"]}
+  supplier-gear-stock-ceiling-profile:
+    class_uri: "pixlnd:supplier-gear-stock-ceiling-profile"
+    description: "Fixed logical gear-stock ceiling parameters shared by all players in the same saved world for each land, not current progress, a completed-rescue counter or a stock payload. Starts common; four completed supplier rescues raise the ceiling to legendary. The raised ceiling applies at the next normal stock generation/restock, not an extra rescue-triggered reroll. This is the best quality shops may offer, not a guarantee every item has that quality. Existing quantities and prices remain unchanged; equipment keeps its strength when travelling. Rescue eligibility, completion and restocking follow the linked rules."
+    see_also: ["../domain/encounter-contracts.md#shared-mission-packages-and-supplier-shops", "../domain/3_Classes.md#shop", "../domain/3_Classes.md#gnome-supplier-s"]
+    attributes:
+      initial-rarity-index: {alias: "initial-rarity-index", slot_uri: "pixlnd:supplier-gear-stock-ceiling-profile/initial-rarity-index", range: integer, required: true, equals_number: 0, description: "Common initial land-local gear-stock ceiling index, not a stored current ceiling or a default stock item rarity.", see_also: ["../domain/encounter-contracts.md#shared-mission-packages-and-supplier-shops", "../domain/3_Classes.md#shop", "../domain/3_Classes.md#gnome-supplier-s", "../instances/rarities.json#common"]}
+      rarity-increment-per-completed-rescue: {alias: "rarity-increment-per-completed-rescue", slot_uri: "pixlnd:supplier-gear-stock-ceiling-profile/rarity-increment-per-completed-rescue", range: integer, required: true, equals_number: 1, description: "Ceiling rises one grade per completed supplier rescue, shared across players in that saved-world land, not a per-player benefit or an immediate stock reroll.", see_also: ["../domain/encounter-contracts.md#shared-mission-packages-and-supplier-shops", "../domain/3_Classes.md#shop", "../domain/3_Classes.md#gnome-supplier-s"]}
+      maximum-rarity-index: {alias: "maximum-rarity-index", slot_uri: "pixlnd:supplier-gear-stock-ceiling-profile/maximum-rarity-index", range: integer, required: true, equals_number: 4, description: "Legendary maximum gear-stock ceiling index, reached after four land-shared rescues; not guaranteed quality of every offer.", see_also: ["../domain/encounter-contracts.md#shared-mission-packages-and-supplier-shops", "../domain/3_Classes.md#shop", "../domain/3_Classes.md#gnome-supplier-s", "../instances/rarities.json#legendary"]}
+  shared-mission-completion-profile:
+    class_uri: "pixlnd:shared-mission-completion-profile"
+    description: "Fixed logical delivery-height and extra-XP parameters for one shared package per camp/rescue completion cycle, not another reward event, receipt, configuration or package shape. Existing source level and class snapshot/fallback/deferred choice remain unchanged. Delivery at camp centre or captive feet follows camp final-death or rescue conversation/last-player-exit completion timing, once per cycle. Issuance and undelivered payload persist without duplicate rewards; ordinary ground pickup and lifetime apply, including later visitors. Existing kill XP and other future currency contracts remain unchanged; no additional completion currency is introduced."
+    see_also: ["../domain/encounter-contracts.md#shared-mission-packages-and-supplier-shops"]
+    attributes:
+      delivery-height-above-floor-blocks: {alias: "delivery-height-above-floor-blocks", slot_uri: "pixlnd:shared-mission-completion-profile/delivery-height-above-floor-blocks", range: double, required: true, minimum_value: 0.5, maximum_value: 0.5, description: "Shared package delivery height in blocks above the floor at camp centre/captive feet, not an absolute position or a changed completion time.", see_also: ["../domain/encounter-contracts.md#shared-mission-packages-and-supplier-shops"]}
+      extra-completion-xp: {alias: "extra-completion-xp", slot_uri: "pixlnd:shared-mission-completion-profile/extra-completion-xp", range: integer, required: true, equals_number: 0, description: "Zero extra completion XP, not removal of kill XP or a replacement XP reward event.", see_also: ["../domain/encounter-contracts.md#shared-mission-packages-and-supplier-shops"]}
+  initial-permanent-source-profile:
+    class_uri: "pixlnd:initial-permanent-source-profile"
+    description: "Fixed logical artifact and one-time book source counts across only the six initial sites, including their alcove, bosses, props and packages; not full-land permanent-content coverage and not a permanent or global content exclusion. Personal claims per saved world and existing artifact allocation remain unchanged. Historical Steam book counts and recipe quantities are not hybrid selections. Later full-land sources and spirit customization remain deferred beyond the initial playable scope, not prerequisites or removed content."
+    see_also: ["../domain/encounter-contracts.md#initial-permanent-source-scope", "../domain/3_Classes.md#artifact", "../domain/3_Classes.md#book-of-crafting"]
+    attributes:
+      artifact-source-count: {alias: "artifact-source-count", slot_uri: "pixlnd:initial-permanent-source-profile/artifact-source-count", range: integer, required: true, equals_number: 0, description: "Zero artifact sources across only the six initial sites including alcove, bosses, props and packages; not a full-land allocation or removal of retained artifacts or personal claims.", see_also: ["../domain/encounter-contracts.md#initial-permanent-source-scope", "../domain/3_Classes.md#artifact"]}
+      one-time-book-source-count: {alias: "one-time-book-source-count", slot_uri: "pixlnd:initial-permanent-source-profile/one-time-book-source-count", range: integer, required: true, equals_number: 0, description: "Zero one-time book sources across only the six initial sites including alcove, bosses, props and packages; not a global book exclusion, historical quantity selection or removal of recipe knowledge or personal claims.", see_also: ["../domain/encounter-contracts.md#initial-permanent-source-scope", "../domain/3_Classes.md#book-of-crafting"]}
+  boss-special-profile:
+    class_uri: "pixlnd:boss-special-profile"
+    description: "Shared fixed logical parameters for permanent boss specials, not an activation, save or configuration payload. Targeting, sight, shielding, physical defence/status order, attack gating, interruption, cancellation and simulation/lifecycle rules remain linked behavior. No friendly-fire, DOT, resource, crit or combo policy fields."
+    see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]
+    attributes:
+      assignment-probability: {alias: "assignment-probability", slot_uri: "pixlnd:boss-special-profile/assignment-probability", range: double, required: true, minimum_value: 0.5, maximum_value: 0.5, description: "Dimensionless probability of either permanent special, selected independently for each boss; not a combat-trigger chance or an exclusive ordinary-loot weight.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+      warning-seconds: {alias: "warning-seconds", slot_uri: "pixlnd:boss-special-profile/warning-seconds", range: double, required: true, minimum_value: 1.2, maximum_value: 1.2, description: "Warning duration in simulation seconds before execution.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+      first-ready-after-engagement-seconds: {alias: "first-ready-after-engagement-seconds", slot_uri: "pixlnd:boss-special-profile/first-ready-after-engagement-seconds", range: double, required: true, minimum_value: 3, maximum_value: 3, description: "First readiness delay in simulation seconds after engagement.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+      cooldown-after-completion-or-cancellation-seconds: {alias: "cooldown-after-completion-or-cancellation-seconds", slot_uri: "pixlnd:boss-special-profile/cooldown-after-completion-or-cancellation-seconds", range: double, required: true, minimum_value: 10, maximum_value: 10, description: "Cooldown in simulation seconds after completion or cancellation, including recovery rather than followed by additional recovery.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+      recovery-within-cooldown-seconds: {alias: "recovery-within-cooldown-seconds", slot_uri: "pixlnd:boss-special-profile/recovery-within-cooldown-seconds", range: double, required: true, minimum_value: 0.8, maximum_value: 0.8, description: "Recovery occupies the first simulation seconds within cooldown, not an extra duration added to cooldown.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+      start-max-horizontal-distance-blocks: {alias: "start-max-horizontal-distance-blocks", slot_uri: "pixlnd:boss-special-profile/start-max-horizontal-distance-blocks", range: double, required: true, description: "Maximum target horizontal distance in blocks at start, inclusive; a fixed threshold parameter, not execution of the target-distance predicate.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+      start-max-feet-height-difference-blocks: {alias: "start-max-feet-height-difference-blocks", slot_uri: "pixlnd:boss-special-profile/start-max-feet-height-difference-blocks", range: double, required: true, description: "Maximum target feet-height difference in blocks at start, inclusive.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+      direct-damage-multiplier: {alias: "direct-damage-multiplier", slot_uri: "pixlnd:boss-special-profile/direct-damage-multiplier", range: double, required: true, description: "Dimensionless direct physical damage multiplier relative to boss damage, not unmodified player spell damage.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+  boss-stomp-profile:
+    class_uri: "pixlnd:boss-stomp-profile"
+    description: "Fixed ground-stomp logical parameters; closed floor-circle impact and victim-height predicates, wall shielding and jump avoidance follow the linked rules."
+    see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]
+    is_a: "boss-special-profile"
+    slot_usage:
+      start-max-horizontal-distance-blocks: {minimum_value: 4, maximum_value: 4}
+      start-max-feet-height-difference-blocks: {minimum_value: 2, maximum_value: 2}
+      direct-damage-multiplier: {minimum_value: 1, maximum_value: 1}
+    attributes:
+      strike-radius-blocks: {alias: "strike-radius-blocks", slot_uri: "pixlnd:boss-stomp-profile/strike-radius-blocks", range: double, required: true, minimum_value: 4, maximum_value: 4, description: "Warning floor-circle and strike radius in blocks, inclusive for victim feet on the closed circle boundary.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+      victim-min-feet-above-floor-blocks: {alias: "victim-min-feet-above-floor-blocks", slot_uri: "pixlnd:boss-stomp-profile/victim-min-feet-above-floor-blocks", range: double, required: true, minimum_value: 0, maximum_value: 0, description: "Minimum victim feet height above the impact floor in blocks, inclusive lower endpoint of the closed interval.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+      victim-max-feet-above-floor-blocks: {alias: "victim-max-feet-above-floor-blocks", slot_uri: "pixlnd:boss-stomp-profile/victim-max-feet-above-floor-blocks", range: double, required: true, minimum_value: 1, maximum_value: 1, description: "Maximum victim feet height above the impact floor in blocks, inclusive upper endpoint of the closed interval.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+  boss-charge-profile:
+    class_uri: "pixlnd:boss-charge-profile"
+    description: "Fixed charge logical parameters. Swept capsule height uses the approved boss-height rule, not a new fixed height. Direction/endpoint snapshot, no homing, first-hit/endpoint/obstacle stopping and cancellation remain linked behavior."
+    see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble", "../domain/encounter-contracts.md#local-difficulty-and-boss-size"]
+    is_a: "boss-special-profile"
+    slot_usage:
+      start-max-horizontal-distance-blocks: {minimum_value: 10, maximum_value: 10}
+      start-max-feet-height-difference-blocks: {minimum_value: 1, maximum_value: 1}
+      direct-damage-multiplier: {minimum_value: 1.25, maximum_value: 1.25}
+    attributes:
+      start-exclusive-min-horizontal-distance-blocks: {alias: "start-exclusive-min-horizontal-distance-blocks", slot_uri: "pixlnd:boss-charge-profile/start-exclusive-min-horizontal-distance-blocks", range: double, required: true, minimum_value: 4, maximum_value: 4, description: "Minimum start target horizontal distance threshold in blocks, exclusive: target distance must exceed this fixed parameter. Native constant admission does not execute that gameplay predicate.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+      warning-lane-width-blocks: {alias: "warning-lane-width-blocks", slot_uri: "pixlnd:boss-charge-profile/warning-lane-width-blocks", range: double, required: true, minimum_value: 2, maximum_value: 2, description: "Full warning lane width in blocks, not its half-width.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+      speed-blocks-per-second: {alias: "speed-blocks-per-second", slot_uri: "pixlnd:boss-charge-profile/speed-blocks-per-second", range: double, required: true, minimum_value: 12, maximum_value: 12, description: "Charge movement speed in blocks per simulation second.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+      swept-capsule-radius-blocks: {alias: "swept-capsule-radius-blocks", slot_uri: "pixlnd:boss-charge-profile/swept-capsule-radius-blocks", range: double, required: true, minimum_value: 1, maximum_value: 1, description: "Swept capsule radius in blocks; height follows the linked approved boss-height rule.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+  rubble-profile:
+    class_uri: "pixlnd:rubble-profile"
+    description: "Fixed logical parameters of stone rubble in each boss arena. Placement outside required routes and safe lanes, stomp shattering, charge continuation, no resource drops, protected structures and actor/occupancy-deferred restoration follow the linked rules."
+    see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]
+    slots:
+    - block-breakable
+    slot_usage:
+      block-breakable: {required: true, equals_expression: "True", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+    attributes:
+      count-per-boss-arena: {alias: "count-per-boss-arena", slot_uri: "pixlnd:rubble-profile/count-per-boss-arena", range: integer, required: true, equals_number: 8, description: "Number of rubble voxels per boss arena, not per land, site or room.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+      cube-edge-blocks: {alias: "cube-edge-blocks", slot_uri: "pixlnd:rubble-profile/cube-edge-blocks", range: double, required: true, minimum_value: 1, maximum_value: 1, description: "Edge length in blocks of each one-block cube.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+      material: {alias: "material", slot_uri: "pixlnd:rubble-profile/material", range: string, required: true, equals_string: "stone", description: "Current encounter rule's logical material token for stone; not a catalog identity or a historical numeric block code.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+      restoration-delay-world-hours: {alias: "restoration-delay-world-hours", slot_uri: "pixlnd:rubble-profile/restoration-delay-world-hours", range: double, required: true, minimum_value: 72, maximum_value: 72, description: "Restoration delay in world-clock hours after breaking; occupancy and actor overlap defer restoration under the linked world-clock rules.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+  spike-trap-profile:
+    class_uri: "pixlnd:spike-trap-profile"
+    description: "Fixed logical parameters of the ruins' spike traps. Players-only feet triggering, once-per-activation hits, retriggering, persistent warnings, jump and safe-lane avoidance, armor-floor then reduction and absorption, exclusions of dodge/combat-block/Resistance, crit/status/resource/XP exclusions and renewal persistence follow the linked rules."
+    see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents", "../domain/encounter-contracts.md#geometry-and-occupancy"]
+    attributes:
+      count-per-ruins-site: {alias: "count-per-ruins-site", slot_uri: "pixlnd:spike-trap-profile/count-per-ruins-site", range: integer, required: true, equals_number: 2, description: "Number of spike traps per ruins site, not a count for every encounter.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+      footprint-width-blocks: {alias: "footprint-width-blocks", slot_uri: "pixlnd:spike-trap-profile/footprint-width-blocks", range: double, required: true, minimum_value: 2, maximum_value: 2, description: "Full width in blocks of the closed trap footprint, distinct from the trap-free safe lane.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+      footprint-depth-blocks: {alias: "footprint-depth-blocks", slot_uri: "pixlnd:spike-trap-profile/footprint-depth-blocks", range: double, required: true, minimum_value: 2, maximum_value: 2, description: "Full depth in blocks of the closed trap footprint.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+      trigger-min-feet-above-floor-blocks: {alias: "trigger-min-feet-above-floor-blocks", slot_uri: "pixlnd:spike-trap-profile/trigger-min-feet-above-floor-blocks", range: double, required: true, minimum_value: 0, maximum_value: 0, description: "Minimum triggering player-feet height above the trap floor in blocks, inclusive lower endpoint.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+      trigger-max-feet-above-floor-blocks: {alias: "trigger-max-feet-above-floor-blocks", slot_uri: "pixlnd:spike-trap-profile/trigger-max-feet-above-floor-blocks", range: double, required: true, minimum_value: 1, maximum_value: 1, description: "Maximum triggering player-feet height above the trap floor in blocks, inclusive upper endpoint.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+      warning-seconds: {alias: "warning-seconds", slot_uri: "pixlnd:spike-trap-profile/warning-seconds", range: double, required: true, minimum_value: 0.8, maximum_value: 0.8, description: "Visible and audible warning duration in simulation seconds; leaving does not cancel it.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+      active-seconds: {alias: "active-seconds", slot_uri: "pixlnd:spike-trap-profile/active-seconds", range: double, required: true, minimum_value: 0.25, maximum_value: 0.25, description: "Active duration in simulation seconds after warning.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+      cooldown-seconds: {alias: "cooldown-seconds", slot_uri: "pixlnd:spike-trap-profile/cooldown-seconds", range: double, required: true, minimum_value: 2, maximum_value: 2, description: "Cooldown duration in simulation seconds after the active phase.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+      physical-damage: {alias: "physical-damage", slot_uri: "pixlnd:spike-trap-profile/physical-damage", range: double, required: true, minimum_value: 30, maximum_value: 30, description: "Fixed physical damage amount per hit before the linked trap-specific defence order; not a boss-damage multiplier.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+  furnishing-profile:
+    class_uri: "pixlnd:furnishing-profile"
+    description: "Fixed logical parameters of ruins-room furnishings, distinct from current prop health, saved room levels and source/cycle item payloads or delivery receipts. Direct player/boss damage, DOT/trap exclusions, no combo/MP/XP/status rolls, shared level selection, surviving guards and mixed levels, persistence, safe coalesced renewal without reload refill and exclusion of formulas/books/artifacts follow the linked rules."
+    see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]
+    attributes:
+      count-per-ruins-room: {alias: "count-per-ruins-room", slot_uri: "pixlnd:furnishing-profile/count-per-ruins-room", range: integer, required: true, description: "Number of furnishings of this kind per ruins room, not a whole-site or global count.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+      full-health: {alias: "full-health", slot_uri: "pixlnd:furnishing-profile/full-health", range: double, required: true, description: "Initial/full furnishing health in HP, not current damaged HP or a restriction on enemy/player health.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+      armor: {alias: "armor", slot_uri: "pixlnd:furnishing-profile/armor", range: double, required: true, minimum_value: 0, maximum_value: 0, description: "Fixed furnishing armor amount.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+      minimum-room-guard-level: {alias: "minimum-room-guard-level", slot_uri: "pixlnd:furnishing-profile/minimum-room-guard-level", range: integer, required: true, equals_number: 1, description: "Minimum source level for the saved room guard-pack level shared by furnishings and newly spawned or replacement guards; a fixed context parameter, not an actual saved level or another room-level list.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+  vase-profile:
+    class_uri: "pixlnd:vase-profile"
+    description: "Fixed logical vase parameters. Destruction releases copper using the saved room guard-pack level; the fixed coefficients do not introduce an independent coin roll or power/spread-based income."
+    see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]
+    is_a: "furnishing-profile"
+    slot_usage:
+      count-per-ruins-room: {equals_number: 2}
+      full-health: {minimum_value: 10, maximum_value: 10}
+    attributes:
+      copper-base: {alias: "copper-base", slot_uri: "pixlnd:vase-profile/copper-base", range: integer, required: true, equals_number: 1, description: "Base copper per destroyed vase in 1 + 2L, where L is the stored room guard-pack level, not boss level or item power.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+      copper-per-room-guard-level: {alias: "copper-per-room-guard-level", slot_uri: "pixlnd:vase-profile/copper-per-room-guard-level", range: integer, required: true, equals_number: 2, description: "Linear coefficient in copper per room guard-pack level for each destroyed vase. The rule remains 1 + 2L; actual safe renewal may change stored L and thus the copper amount, not freeze it permanently.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+  table-profile:
+    class_uri: "pixlnd:table-profile"
+    description: "Fixed logical table parameters. Each table owns its pair per actual renewal, issued as loose pickups independently before break; breaking never reissues them whether remaining, taken or expired. Potion power converts the saved room level under the linked item rule; glass flasks are unchanged."
+    see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]
+    is_a: "furnishing-profile"
+    slot_usage:
+      count-per-ruins-room: {equals_number: 1}
+      full-health: {minimum_value: 20, maximum_value: 20}
+    attributes:
+      glass-flask-count-per-renewal: {alias: "glass-flask-count-per-renewal", slot_uri: "pixlnd:table-profile/glass-flask-count-per-renewal", range: integer, required: true, equals_number: 1, description: "Glass flask quantity owned by one table per actual renewal; no flask power is specified.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+      life-potion-count-per-renewal: {alias: "life-potion-count-per-renewal", slot_uri: "pixlnd:table-profile/life-potion-count-per-renewal", range: integer, required: true, equals_number: 1, description: "Life potion quantity owned by one table per actual renewal, with item power derived from the saved room guard-pack level rather than boss level.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+      life-potion-rarity-index: {alias: "life-potion-rarity-index", slot_uri: "pixlnd:table-profile/life-potion-rarity-index", range: integer, required: true, equals_number: 0, description: "Table life potion uses the common rarity index.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents", "../instances/rarities.json#common"]}
+      life-potion-power-spread: {alias: "life-potion-power-spread", slot_uri: "pixlnd:table-profile/life-potion-power-spread", range: integer, required: true, equals_number: 0, description: "Spread in power points after canonical source-level conversion: the potion uses power(L) directly for saved room guard-pack level L, not a flask power or coin-income spread.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents", "../domain/3_Classes.md#item"]}
+  ordinary-site-kill-loot-profile:
+    class_uri: "pixlnd:ordinary-site-kill-loot-profile"
+    description: "Fixed logical parameters for ordinary site-kill loot, not a drop event, configuration or saved reward payload. Per-kill rolls are independent and additive, not mutually exclusive: coins, one gear, one consumable and each defined species ingredient. Gear and consumables convert power(enemy level) first, then choose an equal-weight integer offset, then clamp to 1..100. Copper is 1 + 2 times enemy level; kill XP also uses enemy level, not item power. Ordinary rarity, kind and consumable pools and species ingredient selection/quantity reuse the linked inputs. Shared pickup, additivity with boss rewards and mission packages, and no reroll or re-award across unload/restart follow the linked rules."
+    see_also: ["../domain/encounter-contracts.md#ordinary-kill-loot", "../domain/3_Classes.md#loot-rule", "../domain/3_Classes.md#item", "../instances/generators.json#design.loot"]
+    attributes:
+      coin-probability: {alias: "coin-probability", slot_uri: "pixlnd:ordinary-site-kill-loot-profile/coin-probability", range: double, required: true, minimum_value: 0.6, maximum_value: 0.6, description: "Dimensionless independent per-kill probability of copper, not a relative weight or the gear chance.", see_also: ["../domain/encounter-contracts.md#ordinary-kill-loot"]}
+      gear-probability: {alias: "gear-probability", slot_uri: "pixlnd:ordinary-site-kill-loot-profile/gear-probability", range: double, required: true, minimum_value: 0.2, maximum_value: 0.2, description: "Dimensionless independent per-kill probability of one gear item, not the coin chance.", see_also: ["../domain/encounter-contracts.md#ordinary-kill-loot"]}
+      consumable-probability: {alias: "consumable-probability", slot_uri: "pixlnd:ordinary-site-kill-loot-profile/consumable-probability", range: double, required: true, minimum_value: 0.15, maximum_value: 0.15, description: "Dimensionless independent per-kill probability of one consumable.", see_also: ["../domain/encounter-contracts.md#ordinary-kill-loot"]}
+      each-species-ingredient-probability: {alias: "each-species-ingredient-probability", slot_uri: "pixlnd:ordinary-site-kill-loot-profile/each-species-ingredient-probability", range: double, required: true, minimum_value: 0.5, maximum_value: 0.5, description: "Dimensionless independent per-kill probability for EACH defined species ingredient, not one roll for the entire ingredient pool; quantities remain species-defined.", see_also: ["../domain/encounter-contracts.md#ordinary-kill-loot"]}
+      copper-base: {alias: "copper-base", slot_uri: "pixlnd:ordinary-site-kill-loot-profile/copper-base", range: integer, required: true, equals_number: 1, description: "Base copper on a successful coin roll in 1 + 2 times enemy level, not converted item power.", see_also: ["../domain/encounter-contracts.md#ordinary-kill-loot"]}
+      copper-per-enemy-level: {alias: "copper-per-enemy-level", slot_uri: "pixlnd:ordinary-site-kill-loot-profile/copper-per-enemy-level", range: integer, required: true, equals_number: 2, description: "Linear coefficient in copper per enemy level on a successful coin roll; no item-power conversion applies to income.", see_also: ["../domain/encounter-contracts.md#ordinary-kill-loot"]}
+      gear-count-per-success: {alias: "gear-count-per-success", slot_uri: "pixlnd:ordinary-site-kill-loot-profile/gear-count-per-success", range: integer, required: true, equals_number: 1, description: "Gear quantity per successful ordinary gear roll, additional to other reward sources.", see_also: ["../domain/encounter-contracts.md#ordinary-kill-loot"]}
+      consumable-count-per-success: {alias: "consumable-count-per-success", slot_uri: "pixlnd:ordinary-site-kill-loot-profile/consumable-count-per-success", range: integer, required: true, equals_number: 1, description: "Consumable quantity per successful ordinary consumable roll, not an ingredient quantity.", see_also: ["../domain/encounter-contracts.md#ordinary-kill-loot"]}
+      power-offset-low: {alias: "power-offset-low", slot_uri: "pixlnd:ordinary-site-kill-loot-profile/power-offset-low", range: integer, required: true, equals_number: -1, description: "Lower integer power-point offset for gear and consumables, applied after conversion of enemy level to power and before clamping, not to source level.", see_also: ["../domain/encounter-contracts.md#ordinary-kill-loot", "../domain/3_Classes.md#item"]}
+      power-offset-zero: {alias: "power-offset-zero", slot_uri: "pixlnd:ordinary-site-kill-loot-profile/power-offset-zero", range: integer, required: true, equals_number: 0, description: "Middle integer power-point offset for gear and consumables, applied after conversion of enemy level to power and before clamping.", see_also: ["../domain/encounter-contracts.md#ordinary-kill-loot", "../domain/3_Classes.md#item"]}
+      power-offset-high: {alias: "power-offset-high", slot_uri: "pixlnd:ordinary-site-kill-loot-profile/power-offset-high", range: integer, required: true, equals_number: 1, description: "Upper integer power-point offset for gear and consumables, applied after conversion of enemy level to power and before clamping.", see_also: ["../domain/encounter-contracts.md#ordinary-kill-loot", "../domain/3_Classes.md#item"]}
+      power-offset-low-relative-weight: {alias: "power-offset-low-relative-weight", slot_uri: "pixlnd:ordinary-site-kill-loot-profile/power-offset-low-relative-weight", range: integer, required: true, equals_number: 1, description: "Exact equal relative weight of the lower offset among the three integer offsets; not a rounded probability or a weight for independent drop rolls.", see_also: ["../domain/encounter-contracts.md#ordinary-kill-loot", "../domain/3_Classes.md#item"]}
+      power-offset-zero-relative-weight: {alias: "power-offset-zero-relative-weight", slot_uri: "pixlnd:ordinary-site-kill-loot-profile/power-offset-zero-relative-weight", range: integer, required: true, equals_number: 1, description: "Exact equal relative weight of the zero offset among the three integer offsets.", see_also: ["../domain/encounter-contracts.md#ordinary-kill-loot", "../domain/3_Classes.md#item"]}
+      power-offset-high-relative-weight: {alias: "power-offset-high-relative-weight", slot_uri: "pixlnd:ordinary-site-kill-loot-profile/power-offset-high-relative-weight", range: integer, required: true, equals_number: 1, description: "Exact equal relative weight of the upper offset among the three integer offsets.", see_also: ["../domain/encounter-contracts.md#ordinary-kill-loot", "../domain/3_Classes.md#item"]}
+      minimum-item-power: {alias: "minimum-item-power", slot_uri: "pixlnd:ordinary-site-kill-loot-profile/minimum-item-power", range: integer, required: true, equals_number: 1, description: "Inclusive lower item-power clamp bound after conversion and offset, not a source-level bound.", see_also: ["../domain/encounter-contracts.md#ordinary-kill-loot", "../domain/3_Classes.md#item"]}
+      maximum-item-power: {alias: "maximum-item-power", slot_uri: "pixlnd:ordinary-site-kill-loot-profile/maximum-item-power", range: integer, required: true, equals_number: 100, description: "Inclusive upper item-power clamp bound after conversion and offset, not a source-level bound.", see_also: ["../domain/encounter-contracts.md#ordinary-kill-loot", "../domain/3_Classes.md#item"]}
+  guaranteed-boss-gear-profile:
+    class_uri: "pixlnd:guaranteed-boss-gear-profile"
+    description: "Fixed logical guaranteed-gear parameters, not a reward event, configuration or saved payload. All seven initial site bosses independently guarantee one additional gear item, not replacement normal rolls or per-player copies. Gear uses power(L) for the defeated boss current saved level L, minimum 1, not the initial spirit level, current HP or boss power; no spread and zero upgrades. Rarity is tier + 1 capped at legendary, not a random rarity roll. Kind uses relative weights and the four current character classes are equally likely; legal class materials/weapons and subtype/modifier/name choices reuse linked inputs. New genuine deaths may reroll those choices, not tier-based rarity. Reloads cannot reroll the same death rewards. Shared pickup and reward lifecycle follow the linked rules; spirit applicability and initial-level power are distinct."
+    see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits", "../domain/3_Classes.md#loot-rule", "../domain/3_Classes.md#item", "../instances/generators.json#design.loot"]
+    attributes:
+      additional-gear-count-per-boss: {alias: "additional-gear-count-per-boss", slot_uri: "pixlnd:guaranteed-boss-gear-profile/additional-gear-count-per-boss", range: integer, required: true, equals_number: 1, description: "One additional gear item per defeated initial site boss, independently guaranteed alongside ordinary rolls, not per player.", see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits"]}
+      minimum-current-defeated-boss-level: {alias: "minimum-current-defeated-boss-level", slot_uri: "pixlnd:guaranteed-boss-gear-profile/minimum-current-defeated-boss-level", range: integer, required: true, equals_number: 1, description: "Minimum context level for the currently defeated boss saved level L before canonical power(L) conversion; not an actual level, initial spirit level or source-level clipping offset.", see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits"]}
+      power-spread: {alias: "power-spread", slot_uri: "pixlnd:guaranteed-boss-gear-profile/power-spread", range: integer, required: true, equals_number: 0, description: "No spread in power points after conversion of current defeated boss saved level L: use power(L) directly, not initial spirit power.", see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits", "../domain/3_Classes.md#item"]}
+      upgrades: {alias: "upgrades", slot_uri: "pixlnd:guaranteed-boss-gear-profile/upgrades", range: integer, required: true, equals_number: 0, description: "Guaranteed boss gear upgrade count, not rarity or power.", see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits"]}
+      rarity-tier-increment: {alias: "rarity-tier-increment", slot_uri: "pixlnd:guaranteed-boss-gear-profile/rarity-tier-increment", range: integer, required: true, equals_number: 1, description: "Fixed increment above defeated boss tier before capping at legendary; not an additional random rarity roll.", see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits"]}
+      maximum-rarity-index: {alias: "maximum-rarity-index", slot_uri: "pixlnd:guaranteed-boss-gear-profile/maximum-rarity-index", range: integer, required: true, equals_number: 4, description: "Legendary cap on boss tier plus increment; mythical is not admitted by this reward rule.", see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits", "../instances/rarities.json#legendary"]}
+      minimum-item-power: {alias: "minimum-item-power", slot_uri: "pixlnd:guaranteed-boss-gear-profile/minimum-item-power", range: integer, required: true, equals_number: 1, description: "Inclusive canonical item-power lower bound, not a replacement for current defeated boss source level.", see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits", "../domain/3_Classes.md#item"]}
+      maximum-item-power: {alias: "maximum-item-power", slot_uri: "pixlnd:guaranteed-boss-gear-profile/maximum-item-power", range: integer, required: true, equals_number: 100, description: "Inclusive canonical item-power upper bound, not source-level clipping before conversion.", see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits", "../domain/3_Classes.md#item"]}
+      weapon-relative-weight: {alias: "weapon-relative-weight", slot_uri: "pixlnd:guaranteed-boss-gear-profile/weapon-relative-weight", range: integer, required: true, equals_number: 4, description: "Weapon relative integer weight, not a percentage, in the existing gear-kind pool.", see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits", "../instances/generators.json#design.loot"]}
+      chest-relative-weight: {alias: "chest-relative-weight", slot_uri: "pixlnd:guaranteed-boss-gear-profile/chest-relative-weight", range: integer, required: true, equals_number: 2, description: "Chest relative integer weight, not a percentage; the existing gear-kind key is chest-armor.", see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits", "../instances/generators.json#design.loot"]}
+      gloves-relative-weight: {alias: "gloves-relative-weight", slot_uri: "pixlnd:guaranteed-boss-gear-profile/gloves-relative-weight", range: integer, required: true, equals_number: 2, description: "Gloves relative integer weight, not a percentage, in the existing gear-kind pool.", see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits", "../instances/generators.json#design.loot"]}
+      boots-relative-weight: {alias: "boots-relative-weight", slot_uri: "pixlnd:guaranteed-boss-gear-profile/boots-relative-weight", range: integer, required: true, equals_number: 2, description: "Boots relative integer weight, not a percentage, in the existing gear-kind pool.", see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits", "../instances/generators.json#design.loot"]}
+      shoulders-relative-weight: {alias: "shoulders-relative-weight", slot_uri: "pixlnd:guaranteed-boss-gear-profile/shoulders-relative-weight", range: integer, required: true, equals_number: 2, description: "Shoulders relative integer weight, not a percentage; the existing gear-kind key is shoulder-armor.", see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits", "../instances/generators.json#design.loot"]}
+      warrior-class-relative-weight: {alias: "warrior-class-relative-weight", slot_uri: "pixlnd:guaranteed-boss-gear-profile/warrior-class-relative-weight", range: integer, required: true, equals_number: 1, description: "Warrior equal relative integer weight among the four current character-class identities; no new class pool.", see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits", "../domain/3_Classes.md#character-class"]}
+      ranger-class-relative-weight: {alias: "ranger-class-relative-weight", slot_uri: "pixlnd:guaranteed-boss-gear-profile/ranger-class-relative-weight", range: integer, required: true, equals_number: 1, description: "Ranger equal relative integer weight among the four current character-class identities; legal class choices remain linked.", see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits", "../domain/3_Classes.md#character-class"]}
+      mage-class-relative-weight: {alias: "mage-class-relative-weight", slot_uri: "pixlnd:guaranteed-boss-gear-profile/mage-class-relative-weight", range: integer, required: true, equals_number: 1, description: "Mage equal relative integer weight among the four current character-class identities; legal class choices remain linked.", see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits", "../domain/3_Classes.md#character-class"]}
+      rogue-class-relative-weight: {alias: "rogue-class-relative-weight", slot_uri: "pixlnd:guaranteed-boss-gear-profile/rogue-class-relative-weight", range: integer, required: true, equals_number: 1, description: "Rogue equal relative integer weight among the four current character-class identities; legal class choices remain linked.", see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits", "../domain/3_Classes.md#character-class"]}
+  encounter-shared-package:
+    class_uri: "pixlnd:encounter-shared-package"
+    description: "One shared package per source/cycle, with source-level retained separately from derived item power. Omitted gear class is pending selection, not a new default; delivery/claim/lifecycle procedures remain linked rules."
+    see_also: ["../domain/encounter-contracts.md#shared-mission-packages-and-supplier-shops"]
+    attributes:
+      tier: {"alias": "tier", "slot_uri": "pixlnd:encounter-shared-package/tier", "range": "integer", "description": "Tier; interpreted within the linked source scope.", "required": true, "minimum_value": 0, "maximum_value": 3}
+      gear-count: {"alias": "gear-count", "slot_uri": "pixlnd:encounter-shared-package/gear-count", "range": "integer", "description": "Gear count; interpreted within the linked source scope.", "required": true, "minimum_value": 0, "equals_number": 1}
+      gear-rarity-index: {"alias": "gear-rarity-index", "slot_uri": "pixlnd:encounter-shared-package/gear-rarity-index", "range": "integer", "description": "Gear rarity index; interpreted within the linked source scope.", "required": true, "minimum_value": 1, "maximum_value": 4}
+      gear-upgrades: {"alias": "gear-upgrades", "slot_uri": "pixlnd:encounter-shared-package/gear-upgrades", "range": "integer", "description": "Shared mission-package gear has zero upgrades.", "required": true, "equals_number": 0, "see_also": ["../domain/encounter-contracts.md#shared-mission-packages-and-supplier-shops"]}
+      copper: {"alias": "copper", "slot_uri": "pixlnd:encounter-shared-package/copper", "range": "integer", "description": "Copper; interpreted within the linked source scope.", "required": true, "minimum_value": 20, "maximum_value": 80}
+      life-potion-count: {"alias": "life-potion-count", "slot_uri": "pixlnd:encounter-shared-package/life-potion-count", "range": "integer", "description": "Life potion count; interpreted within the linked source scope.", "required": true, "minimum_value": 0, "equals_number": 1}
+      life-potion-rarity-index: {"alias": "life-potion-rarity-index", "slot_uri": "pixlnd:encounter-shared-package/life-potion-rarity-index", "range": "integer", "description": "Shared mission-package life potion uses the common rarity index.", "required": true, "equals_number": 0, "see_also": ["../domain/encounter-contracts.md#shared-mission-packages-and-supplier-shops", "../instances/rarities.json#common"]}
+      gem-count: {"alias": "gem-count", "slot_uri": "pixlnd:encounter-shared-package/gem-count", "range": "integer", "description": "Gem count; interpreted within the linked source scope.", "required": true, "minimum_value": 1, "maximum_value": 4}
+      gem: {"alias": "gem", "slot_uri": "pixlnd:encounter-shared-package/gem", "range": "ingredient", "description": "Gem; interpreted within the linked source scope.", "required": true}
+      source-level: {"alias": "source-level", "slot_uri": "pixlnd:encounter-shared-package/source-level", "range": "integer", "description": "Source level; interpreted within the linked source scope.", "required": true, "minimum_value": 1}
+      selected-class: {"alias": "selected-class", "slot_uri": "pixlnd:encounter-shared-package/selected-class", "range": "character-class", "description": "Selected class; interpreted within the linked source scope."}
+    rules: [{"preconditions": {"slot_conditions": {"tier": {"equals_number": 0}}}, "postconditions": {"slot_conditions": {"gear-rarity-index": {"equals_number": 1}, "copper": {"equals_number": 20}, "gem-count": {"equals_number": 1}, "gem": {"equals_string": "emerald"}}}}, {"preconditions": {"slot_conditions": {"tier": {"equals_number": 1}}}, "postconditions": {"slot_conditions": {"gear-rarity-index": {"equals_number": 2}, "copper": {"equals_number": 40}, "gem-count": {"equals_number": 2}, "gem": {"equals_string": "sapphire"}}}}, {"preconditions": {"slot_conditions": {"tier": {"equals_number": 2}}}, "postconditions": {"slot_conditions": {"gear-rarity-index": {"equals_number": 3}, "copper": {"equals_number": 60}, "gem-count": {"equals_number": 3}, "gem": {"equals_string": "ruby"}}}}, {"preconditions": {"slot_conditions": {"tier": {"equals_number": 3}}}, "postconditions": {"slot_conditions": {"gear-rarity-index": {"equals_number": 4}, "copper": {"equals_number": 80}, "gem-count": {"equals_number": 4}, "gem": {"equals_string": "diamond"}}}}]
+  initial-ruins-assembly:
+    class_uri: "pixlnd:initial-ruins-assembly"
+    description: "Ruins with locally contained playable components; occupancy is their closed union, not the enclosing bounds. Placement and connectedness follow the linked geometry rule."
+    see_also: ["../domain/encounter-contracts.md#geometry-and-occupancy"]
+    is_a: "dungeon"
+    slots: ["located-in"]
+    attributes:
+      rooms: {"alias": "rooms", "slot_uri": "pixlnd:initial-ruins-assembly/rooms", "domain": "initial-ruins-assembly", "range": "ruins-room-volume", "description": "The three contained playable room occurrences.", "see_also": ["../domain/encounter-contracts.md#geometry-and-occupancy"], "required": true, "multivalued": true, "inlined": true, "inlined_as_list": true, "minimum_cardinality": 3, "maximum_cardinality": 3}
+      corridors: {"alias": "corridors", "slot_uri": "pixlnd:initial-ruins-assembly/corridors", "domain": "initial-ruins-assembly", "range": "ruins-corridor-volume", "description": "Contained room-joining corridors; connectedness follows the linked geometry rule.", "see_also": ["../domain/encounter-contracts.md#geometry-and-occupancy"], "required": true, "multivalued": true, "inlined": true, "inlined_as_list": true, "minimum_cardinality": 1}
+      entrance-court: {"alias": "entrance-court", "slot_uri": "pixlnd:initial-ruins-assembly/entrance-court", "domain": "initial-ruins-assembly", "range": "ruins-court-volume", "description": "The contained entrance court.", "see_also": ["../domain/encounter-contracts.md#geometry-and-occupancy"], "required": true, "inlined": true}
+      entrance-passage: {"alias": "entrance-passage", "slot_uri": "pixlnd:initial-ruins-assembly/entrance-passage", "domain": "initial-ruins-assembly", "range": "ruins-passage-volume", "description": "The contained entrance passage.", "see_also": ["../domain/encounter-contracts.md#geometry-and-occupancy"], "required": true, "inlined": true}
+      reward-alcove: {"alias": "reward-alcove", "slot_uri": "pixlnd:initial-ruins-assembly/reward-alcove", "domain": "initial-ruins-assembly", "range": "ruins-alcove-volume", "description": "The contained side reward alcove; side placement follows the linked geometry rule.", "see_also": ["../domain/encounter-contracts.md#geometry-and-occupancy"], "required": true, "inlined": true}
+      horizontal-bounds-width-blocks: {"alias": "horizontal-bounds-width-blocks", "slot_uri": "pixlnd:initial-ruins-assembly/horizontal-bounds-width-blocks", "domain": "initial-ruins-assembly", "range": "double", "description": "Enclosing horizontal width in blocks, not playable occupancy or an absolute axis.", "see_also": ["../domain/encounter-contracts.md#geometry-and-occupancy"], "required": true, "equals_number": 36}
+      horizontal-bounds-depth-blocks: {"alias": "horizontal-bounds-depth-blocks", "slot_uri": "pixlnd:initial-ruins-assembly/horizontal-bounds-depth-blocks", "domain": "initial-ruins-assembly", "range": "double", "description": "Enclosing horizontal depth in blocks, not playable occupancy or an absolute axis.", "see_also": ["../domain/encounter-contracts.md#geometry-and-occupancy"], "required": true, "equals_number": 112}
+      clear-ceiling-height-blocks: {"alias": "clear-ceiling-height-blocks", "slot_uri": "pixlnd:initial-ruins-assembly/clear-ceiling-height-blocks", "domain": "initial-ruins-assembly", "range": "double", "description": "Clear ceiling height in blocks, distinct from the playable components’ above-floor extent.", "see_also": ["../domain/encounter-contracts.md#geometry-and-occupancy"], "required": true, "equals_number": 6}
+      door-width-blocks: {"alias": "door-width-blocks", "slot_uri": "pixlnd:initial-ruins-assembly/door-width-blocks", "domain": "initial-ruins-assembly", "range": "double", "description": "Ruins door width in blocks; no door count or state is specified.", "see_also": ["../domain/encounter-contracts.md#geometry-and-occupancy"], "required": true, "equals_number": 4}
+      door-height-blocks: {"alias": "door-height-blocks", "slot_uri": "pixlnd:initial-ruins-assembly/door-height-blocks", "domain": "initial-ruins-assembly", "range": "double", "description": "Ruins door height in blocks; no door count or state is specified.", "see_also": ["../domain/encounter-contracts.md#geometry-and-occupancy"], "required": true, "equals_number": 5}
+      corridor-trap-free-lane-width-blocks: {"alias": "corridor-trap-free-lane-width-blocks", "slot_uri": "pixlnd:initial-ruins-assembly/corridor-trap-free-lane-width-blocks", "domain": "initial-ruins-assembly", "range": "double", "description": "Required trap-free corridor lane width in blocks; actual clearance follows the linked geometry rule.", "see_also": ["../domain/encounter-contracts.md#geometry-and-occupancy"], "required": true, "equals_number": 4}
+  initial-camp-assembly:
+    class_uri: "pixlnd:initial-camp-assembly"
+    description: "Outdoor camp with its contained battlefield and opposite exits; visible boundaries and spatial opposition follow the linked geometry rule."
+    see_also: ["../domain/encounter-contracts.md#geometry-and-occupancy"]
+    is_a: "poi"
+    slots: ["located-in", "initial-battlefield", "initial-opposite-exits"]
+    slot_usage: {"initial-battlefield": {"range": "camp-battlefield-volume"}}
+  initial-rescue-assembly:
+    class_uri: "pixlnd:initial-rescue-assembly"
+    description: "Outdoor rescue with its contained battlefield and opposite exits; visible boundaries and spatial opposition follow the linked geometry rule."
+    see_also: ["../domain/encounter-contracts.md#geometry-and-occupancy"]
+    is_a: "poi"
+    slots: ["located-in", "initial-battlefield", "initial-opposite-exits"]
+    slot_usage: {"initial-battlefield": {"range": "rescue-battlefield-volume"}}
+  initial-battlefield-exit:
+    class_uri: "pixlnd:initial-battlefield-exit"
+    description: "Local battlefield exit occurrence; equal widths do not imply spatial placement or opposition."
+    see_also: ["../domain/encounter-contracts.md#geometry-and-occupancy"]
+    attributes:
+      width-blocks: {"alias": "width-blocks", "slot_uri": "pixlnd:initial-battlefield-exit/width-blocks", "domain": "initial-battlefield-exit", "range": "double", "description": "Exit width in blocks.", "see_also": ["../domain/encounter-contracts.md#geometry-and-occupancy"], "required": true, "equals_number": 8}
+  initial-populated-camp-assembly:
+    class_uri: "pixlnd:initial-populated-camp-assembly"
+    description: "Outdoor camp geometry associated with its complete designated population and permanent assignments; not current survivors or cleared state."
+    see_also: ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"]
+    is_a: "initial-camp-assembly"
+    attributes:
+      tier: {"alias": "tier", "slot_uri": "pixlnd:initial-populated-camp-assembly/tier", "domain": "initial-populated-camp-assembly", "range": "integer", "description": "Designated site tier, shared by its packs and singleton boss.", "see_also": ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"], "required": true, "equals_number": 1}
+      population: {"alias": "population", "slot_uri": "pixlnd:initial-populated-camp-assembly/population", "domain": "initial-populated-camp-assembly", "range": "camp-population", "description": "Designated population, not surviving or spawned state.", "see_also": ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"], "required": true, "inlined": true}
+      pack-assignments: {"alias": "pack-assignments", "slot_uri": "pixlnd:initial-populated-camp-assembly/pack-assignments", "domain": "initial-populated-camp-assembly", "range": "initial-nonboss-assignment", "description": "One permanent assignment occurrence per designated pack, shared by its three guards; equal values may occur independently.", "see_also": ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"], "required": true, "multivalued": true, "inlined": true, "inlined_as_list": true, "minimum_cardinality": 2, "maximum_cardinality": 2, "range_expression": {"slot_conditions": {"tier": {"equals_number": 1}}}}
+      boss-assignment: {"alias": "boss-assignment", "slot_uri": "pixlnd:initial-populated-camp-assembly/boss-assignment", "domain": "initial-populated-camp-assembly", "range": "initial-mission-boss-assignment", "description": "Permanent assignment of the designated singleton mission boss.", "see_also": ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"], "required": true, "inlined": true, "range_expression": {"slot_conditions": {"tier": {"equals_number": 1}}}}
+  initial-populated-rescue-assembly:
+    class_uri: "pixlnd:initial-populated-rescue-assembly"
+    description: "Outdoor rescue geometry associated with its complete designated population and permanent assignments; not current survivors or cleared state."
+    see_also: ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"]
+    is_a: "initial-rescue-assembly"
+    rules: [{"preconditions": {"slot_conditions": {"tier": {"equals_number": 0}}}, "postconditions": {"slot_conditions": {"pack-assignments": {"range_expression": {"slot_conditions": {"tier": {"equals_number": 0}}}}, "boss-assignment": {"range_expression": {"slot_conditions": {"tier": {"equals_number": 0}}}}}}}, {"preconditions": {"slot_conditions": {"tier": {"equals_number": 1}}}, "postconditions": {"slot_conditions": {"pack-assignments": {"range_expression": {"slot_conditions": {"tier": {"equals_number": 1}}}}, "boss-assignment": {"range_expression": {"slot_conditions": {"tier": {"equals_number": 1}}}}}}}, {"preconditions": {"slot_conditions": {"tier": {"equals_number": 2}}}, "postconditions": {"slot_conditions": {"pack-assignments": {"range_expression": {"slot_conditions": {"tier": {"equals_number": 2}}}}, "boss-assignment": {"range_expression": {"slot_conditions": {"tier": {"equals_number": 2}}}}}}}, {"preconditions": {"slot_conditions": {"tier": {"equals_number": 3}}}, "postconditions": {"slot_conditions": {"pack-assignments": {"range_expression": {"slot_conditions": {"tier": {"equals_number": 3}}}}, "boss-assignment": {"range_expression": {"slot_conditions": {"tier": {"equals_number": 3}}}}}}}]
+    attributes:
+      tier: {"alias": "tier", "slot_uri": "pixlnd:initial-populated-rescue-assembly/tier", "domain": "initial-populated-rescue-assembly", "range": "integer", "description": "Designated site tier, shared by its packs and singleton boss.", "see_also": ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"], "required": true, "minimum_value": 0, "maximum_value": 3}
+      population: {"alias": "population", "slot_uri": "pixlnd:initial-populated-rescue-assembly/population", "domain": "initial-populated-rescue-assembly", "range": "rescue-population", "description": "Designated population, not surviving or spawned state.", "see_also": ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"], "required": true, "inlined": true}
+      pack-assignments: {"alias": "pack-assignments", "slot_uri": "pixlnd:initial-populated-rescue-assembly/pack-assignments", "domain": "initial-populated-rescue-assembly", "range": "initial-nonboss-assignment", "description": "One permanent assignment occurrence per designated pack, shared by its three guards; equal values may occur independently.", "see_also": ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"], "required": true, "multivalued": true, "inlined": true, "inlined_as_list": true, "minimum_cardinality": 2, "maximum_cardinality": 2}
+      boss-assignment: {"alias": "boss-assignment", "slot_uri": "pixlnd:initial-populated-rescue-assembly/boss-assignment", "domain": "initial-populated-rescue-assembly", "range": "initial-mission-boss-assignment", "description": "Permanent assignment of the designated singleton mission boss.", "see_also": ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"], "required": true, "inlined": true}
+  initial-populated-ruins-room:
+    class_uri: pixlnd:initial-populated-ruins-room
+    description: "The same contained ruins room volume with its designated tier, one shared three-guard pack assignment and a separate boss only in rooms two and three; not mutable survivors or saved room levels."
+    see_also: ["../domain/encounter-contracts.md#geometry-and-occupancy", "../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"]
+    is_a: ruins-room-volume
+    attributes:
+      tier: {alias: tier, domain: initial-populated-ruins-room, slot_uri: "pixlnd:initial-populated-ruins-room/tier", range: integer, required: true, minimum_value: 1, maximum_value: 3, description: "Designated room tier green, blue or purple, not an occurrence identifier.", see_also: ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"]}
+      pack-assignment: {alias: pack-assignment, domain: initial-populated-ruins-room, slot_uri: "pixlnd:initial-populated-ruins-room/pack-assignment", range: initial-nonboss-assignment, required: true, inlined: true, description: "One permanent singleton assignment shared by the designated three-guard pack of this room; not three independent member assignments.", see_also: ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"]}
+      boss-assignment: {alias: boss-assignment, domain: initial-populated-ruins-room, slot_uri: "pixlnd:initial-populated-ruins-room/boss-assignment", range: initial-ruins-boss-assignment, inlined: true, description: "Separate permanent non-mission boss assignment, absent in room one and present in rooms two and three at their room tier; existing special and spirit scope is retained.", see_also: ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"]}
+    rules:
+    - preconditions:
+        slot_conditions:
+          tier: {equals_number: 1}
+      postconditions:
+        slot_conditions:
+          pack-assignment: {range_expression: {slot_conditions: {tier: {equals_number: 1}}}}
+          boss-assignment: {value_presence: ABSENT}
+    - preconditions:
+        slot_conditions:
+          tier: {equals_number: 2}
+      postconditions:
+        slot_conditions:
+          pack-assignment: {range_expression: {slot_conditions: {tier: {equals_number: 2}}}}
+          boss-assignment: {value_presence: PRESENT, range: initial-ruins-boss-assignment, inlined: true, range_expression: {slot_conditions: {tier: {equals_number: 2}}}}
+    - preconditions:
+        slot_conditions:
+          tier: {equals_number: 3}
+      postconditions:
+        slot_conditions:
+          pack-assignment: {range_expression: {slot_conditions: {tier: {equals_number: 3}}}}
+          boss-assignment: {value_presence: PRESENT, range: initial-ruins-boss-assignment, inlined: true, range_expression: {slot_conditions: {tier: {equals_number: 3}}}}
+  initial-populated-ruins-assembly:
+    class_uri: pixlnd:initial-populated-ruins-assembly
+    description: "Initial ruins geometry refined on the same three contained room occurrences with ordered green, blue, purple allocations and its complete designated population; not a configuration or saved payload."
+    see_also: ["../domain/encounter-contracts.md#geometry-and-occupancy", "../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"]
+    is_a: initial-ruins-assembly
+    slot_usage:
+      rooms:
+        range: initial-populated-ruins-room
+        list_elements_ordered: true
+        equals_expression: "rooms if rooms.tier == [1, 2, 3] else []"
+    attributes:
+      population: {alias: population, domain: initial-populated-ruins-assembly, slot_uri: "pixlnd:initial-populated-ruins-assembly/population", range: ruins-population, required: true, inlined: true, description: "Complete designated three packs of three and two separate bosses, not surviving or spawned state.", see_also: ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"]}
+  initial-site-hostile-profile:
+    class_uri: "pixlnd:initial-site-hostile-profile"
+    description: "Fixed logical parameters for the designated initial-site hostiles: existing skeleton species and the basic-role choice probabilities. Friendly captives remain separate and ambient rosters are unchanged. Each pack and singleton boss makes its independent once-only role choice, retained across unload, restart and daily renewal, under the linked encounter rule. This is not a generated entity identity or assignment record."
+    see_also: ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions", "../instances/generators.json#design.initial-encounters"]
+    attributes:
+      hostile-species: {alias: "hostile-species", slot_uri: "pixlnd:initial-site-hostile-profile/hostile-species", range: creature, required: true, inlined: false, equals_string: skeleton, description: "Existing creature species for the designated initial hostiles, not a family, generated entity identity, captive or ambient roster extension.", see_also: ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions", "../instances/generators.json#design.initial-encounters.species", "../instances/creatures.json#skeleton"]}
+      melee-probability: {alias: "melee-probability", slot_uri: "pixlnd:initial-site-hostile-profile/melee-probability", range: double, required: true, minimum_value: 0.5, maximum_value: 0.5, description: "Dimensionless independent probability for choosing the existing melee role once per pack or singleton boss, not a per-hostile roll or relative loot weight.", see_also: ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions", "../instances/generators.json#design.initial-encounters.role-weights"]}
+      ranged-probability: {alias: "ranged-probability", slot_uri: "pixlnd:initial-site-hostile-profile/ranged-probability", range: double, required: true, minimum_value: 0.3, maximum_value: 0.3, description: "Dimensionless independent probability for choosing the existing ranged role once per pack or singleton boss, not a per-hostile roll or relative loot weight.", see_also: ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions", "../instances/generators.json#design.initial-encounters.role-weights"]}
+      mage-probability: {alias: "mage-probability", slot_uri: "pixlnd:initial-site-hostile-profile/mage-probability", range: double, required: true, minimum_value: 0.2, maximum_value: 0.2, description: "Dimensionless independent probability for choosing the existing mage role once per pack or singleton boss, not a per-hostile roll or relative loot weight.", see_also: ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions", "../instances/generators.json#design.initial-encounters.role-weights"]}
+  initial-site-local-difficulty-profile: {"class_uri":"pixlnd:initial-site-local-difficulty-profile","description":"Seven fixed logical parameters for initial-site local power, relative boss health and direct damage, and linear clamped boss height. Existing NPC curves and connected-party level selection remain authoritative; surviving enemies are never rescaled. Not a raw configuration envelope or mutable state.","see_also":["../domain/encounter-contracts.md#local-difficulty-and-boss-size","../instances/stats.json#alpha-character-formulas.npc-hp","../instances/generators.json#design.combat.enemy-attack","../instances/generators.json#design.enemy-level"],"attributes":{"power-base-offset":{"alias":"power-base-offset","slot_uri":"pixlnd:initial-site-local-difficulty-profile/power-base-offset","range":"integer","required":true,"description":"Dimensionless additive offset for local tier power.","see_also":["../domain/encounter-contracts.md#local-difficulty-and-boss-size","../instances/generators.json#design.initial-encounters.power-base-offset"],"equals_number":2,"minimum_value":2,"maximum_value":2},"boss-hp-multiplier":{"alias":"boss-hp-multiplier","slot_uri":"pixlnd:initial-site-local-difficulty-profile/boss-hp-multiplier","range":"double","required":true,"description":"Dimensionless boss health relative to an ordinary enemy at the same level and power, not an aggregate entity multiplier.","see_also":["../domain/encounter-contracts.md#local-difficulty-and-boss-size","../instances/generators.json#design.initial-encounters.boss-hp-mult"],"equals_number":4,"minimum_value":4,"maximum_value":4},"boss-direct-damage-multiplier":{"alias":"boss-direct-damage-multiplier","slot_uri":"pixlnd:initial-site-local-difficulty-profile/boss-direct-damage-multiplier","range":"double","required":true,"description":"Dimensionless boss direct damage relative to an ordinary enemy at the same level and power; hit-derived DOT inherits once only.","see_also":["../domain/encounter-contracts.md#local-difficulty-and-boss-size","../instances/generators.json#design.initial-encounters.boss-damage-mult"],"minimum_value":1.5,"maximum_value":1.5},"height-base-blocks":{"alias":"height-base-blocks","slot_uri":"pixlnd:initial-site-local-difficulty-profile/height-base-blocks","range":"double","required":true,"description":"Boss height base in blocks.","see_also":["../domain/encounter-contracts.md#local-difficulty-and-boss-size","../instances/generators.json#design.initial-encounters.boss-height.base"],"minimum_value":1.7,"maximum_value":1.7},"height-minimum-multiplier":{"alias":"height-minimum-multiplier","slot_uri":"pixlnd:initial-site-local-difficulty-profile/height-minimum-multiplier","range":"double","required":true,"description":"Dimensionless minimum boss height multiplier.","see_also":["../domain/encounter-contracts.md#local-difficulty-and-boss-size","../instances/generators.json#design.initial-encounters.boss-height.min-mult"],"minimum_value":1.25,"maximum_value":1.25},"height-linear-growth":{"alias":"height-linear-growth","slot_uri":"pixlnd:initial-site-local-difficulty-profile/height-linear-growth","range":"double","required":true,"description":"Dimensionless additive linear height multiplier growth, not an exponent.","see_also":["../domain/encounter-contracts.md#local-difficulty-and-boss-size","../instances/generators.json#design.initial-encounters.boss-height.growth"],"minimum_value":0.75,"maximum_value":0.75},"height-maximum-level":{"alias":"height-maximum-level","slot_uri":"pixlnd:initial-site-local-difficulty-profile/height-maximum-level","range":"integer","required":true,"description":"Level at and above which boss height remains at its maximum.","see_also":["../domain/encounter-contracts.md#local-difficulty-and-boss-size","../instances/generators.json#design.initial-encounters.boss-height.max-level"],"equals_number":10,"minimum_value":10,"maximum_value":10}}}
+  initial-site-hostile-spawn: {"class_uri":"pixlnd:initial-site-hostile-spawn","is_a":"creature-spawn","description":"Designated initial-site skeleton hostile spawn with inherited entity facts and local tier power p = 2 + t; tier indices white through yellow are 0 through 4. Party-level selection and no-rescale follow the linked rule.","see_also":["../domain/encounter-contracts.md#local-difficulty-and-boss-size","../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"],"slot_usage":{"entity-species":{"alias":"type","range":"creature","equals_string":"skeleton"},"entity-hostility":{"alias":"hostility","equals_string":"hostile"},"entity-power-base":{"alias":"power-base","minimum_value":2,"maximum_value":6,"equals_expression":"parameters['power-base-offset'] + tier"}},"attributes":{"tier":{"alias":"tier","slot_uri":"pixlnd:initial-site-hostile-spawn/tier","range":"integer","required":true,"description":"Tier index white, green, blue, purple, yellow in order.","see_also":["../domain/encounter-contracts.md#local-difficulty-and-boss-size"],"minimum_value":0,"maximum_value":4},"parameters":{"alias":"parameters","slot_uri":"pixlnd:initial-site-hostile-spawn/parameters","range":"initial-site-local-difficulty-profile","required":true,"description":"The same encounter-local fixed parameter bundle used for local power and boss size.","see_also":["../domain/encounter-contracts.md#local-difficulty-and-boss-size"],"inlined":true}}}
+  initial-site-boss-spawn: {"class_uri":"pixlnd:initial-site-boss-spawn","is_a":"initial-site-hostile-spawn","description":"Initial-site boss spawn; derived height in blocks uses its inherited level and the same local parameters. Boss relative HP and direct damage remain distinct from aggregate entity multipliers and DOT.","see_also":["../domain/encounter-contracts.md#local-difficulty-and-boss-size"],"attributes":{"height-blocks":{"alias":"height-blocks","slot_uri":"pixlnd:initial-site-boss-spawn/height-blocks","range":"double","required":true,"description":"Derived boss height in blocks, linear from level 1 through 10 and clamped outside that interval.","see_also":["../domain/encounter-contracts.md#local-difficulty-and-boss-size"],"minimum_value":2.125,"maximum_value":3.4,"equals_expression":"parameters['height-base-blocks'] * (parameters['height-minimum-multiplier'] + parameters['height-linear-growth'] * (max([1, min([level, parameters['height-maximum-level']])]) - 1) / (parameters['height-maximum-level'] - 1))"}}}
+
+  initial-populated-land: {
+    "attributes": {
+      "blue-rescue": {
+        "alias": "blue-rescue",
+        "description": "The blue-rescue site relationship for this initial hybrid land; not a captive or a duplicated site body.",
+        "inlined": false,
+        "range": "initial-populated-rescue-assembly",
+        "range_expression": {
+          "slot_conditions": {
+            "tier": {
+              "equals_number": 2
+            }
+          }
+        },
+        "required": true,
+        "see_also": [
+          "../domain/encounter-contracts.md#placement-and-access",
+          "../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"
+        ],
+        "slot_uri": "pixlnd:initial-populated-land/blue-rescue"
+      },
+      "daily-camp": {
+        "alias": "daily-camp",
+        "description": "The daily-camp site relationship for this initial hybrid land; not a captive or a duplicated site body.",
+        "inlined": false,
+        "range": "initial-populated-camp-assembly",
+        "required": true,
+        "see_also": [
+          "../domain/encounter-contracts.md#placement-and-access",
+          "../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"
+        ],
+        "slot_uri": "pixlnd:initial-populated-land/daily-camp"
+      },
+      "green-rescue": {
+        "alias": "green-rescue",
+        "description": "The green-rescue site relationship for this initial hybrid land; not a captive or a duplicated site body.",
+        "inlined": false,
+        "range": "initial-populated-rescue-assembly",
+        "range_expression": {
+          "slot_conditions": {
+            "tier": {
+              "equals_number": 1
+            }
+          }
+        },
+        "required": true,
+        "see_also": [
+          "../domain/encounter-contracts.md#placement-and-access",
+          "../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"
+        ],
+        "slot_uri": "pixlnd:initial-populated-land/green-rescue"
+      },
+      "purple-rescue": {
+        "alias": "purple-rescue",
+        "description": "The purple-rescue site relationship for this initial hybrid land; not a captive or a duplicated site body.",
+        "inlined": false,
+        "range": "initial-populated-rescue-assembly",
+        "range_expression": {
+          "slot_conditions": {
+            "tier": {
+              "equals_number": 3
+            }
+          }
+        },
+        "required": true,
+        "see_also": [
+          "../domain/encounter-contracts.md#placement-and-access",
+          "../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"
+        ],
+        "slot_uri": "pixlnd:initial-populated-land/purple-rescue"
+      },
+      "ruins": {
+        "alias": "ruins",
+        "description": "The ruins site relationship for this initial hybrid land; not a captive or a duplicated site body.",
+        "inlined": false,
+        "range": "initial-populated-ruins-assembly",
+        "required": true,
+        "see_also": [
+          "../domain/encounter-contracts.md#placement-and-access",
+          "../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"
+        ],
+        "slot_uri": "pixlnd:initial-populated-land/ruins"
+      },
+      "white-rescue": {
+        "alias": "white-rescue",
+        "description": "The white-rescue site relationship for this initial hybrid land; not a captive or a duplicated site body.",
+        "inlined": false,
+        "range": "initial-populated-rescue-assembly",
+        "range_expression": {
+          "slot_conditions": {
+            "tier": {
+              "equals_number": 0
+            }
+          }
+        },
+        "required": true,
+        "see_also": [
+          "../domain/encounter-contracts.md#placement-and-access",
+          "../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"
+        ],
+        "slot_uri": "pixlnd:initial-populated-land/white-rescue"
+      }
+    },
+    "class_uri": "pixlnd:initial-populated-land",
+    "description": "Initial hybrid land and its designated ruins, daily camp and four supplier-rescue sites. Every selected site belongs to this land; rescue roles have no presentation order.",
+    "is_a": "land",
+    "see_also": [
+      "../domain/encounter-contracts.md#placement-and-access",
+      "../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"
+    ],
+    "slot_usage": {
+      "id": {
+        "equals_expression": "id if [ruins.located_in, daily_camp.located_in, white_rescue.located_in, green_rescue.located_in, blue_rescue.located_in, purple_rescue.located_in] == [id, id, id, id, id, id] else id + '-'"
+      }
+    }
+  }
+
+  initial-site-placement-profile: {
+    "class_uri": "pixlnd:initial-site-placement-profile",
+    "description": "Initial hybrid site placement parameters, not positions or saved state. Land-seeded locations remain fixed across visits and daily renewal. Floors follow H=max(natural ground height, sea level+4 blocks); ocean lands retain dry site islands. The dry village hub applies only where ordinary ocean village generation fails. Protected village area, finite-world bounds and joint village/all-six-site geography validation remain required; failure is diagnostic, never fewer suppliers or partial encounters. Optional terrain-following guidance never reshapes terrain or guarantees walkability; its failure only omits guidance.",
+    "see_also": ["../domain/encounter-contracts.md#placement-and-access"],
+    "attributes": {
+      "minimum-village-distance-blocks": {"alias": "minimum-village-distance-blocks", "slot_uri": "pixlnd:initial-site-placement-profile/minimum-village-distance-blocks", "range": "integer", "required": true, "equals_number": 192, "description": "Inclusive lower distance of a site centre from the village square, not the land centre.", "see_also": ["../domain/encounter-contracts.md#placement-and-access"]},
+      "maximum-village-distance-blocks": {"alias": "maximum-village-distance-blocks", "slot_uri": "pixlnd:initial-site-placement-profile/maximum-village-distance-blocks", "range": "integer", "required": true, "equals_number": 215, "description": "Inclusive upper distance of a site centre from the village square, not the land centre.", "see_also": ["../domain/encounter-contracts.md#placement-and-access"]},
+      "minimum-site-separation-blocks": {"alias": "minimum-site-separation-blocks", "slot_uri": "pixlnd:initial-site-placement-profile/minimum-site-separation-blocks", "range": "integer", "required": true, "equals_number": 192, "description": "Minimum distance between site centres, distinct from village distance.", "see_also": ["../domain/encounter-contracts.md#placement-and-access"]},
+      "sea-level-floor-clearance-blocks": {"alias": "sea-level-floor-clearance-blocks", "slot_uri": "pixlnd:initial-site-placement-profile/sea-level-floor-clearance-blocks", "range": "integer", "required": true, "equals_number": 4, "description": "Relative sea-level clearance in H=max(natural ground height, sea level+4 blocks), not absolute floor altitude.", "see_also": ["../domain/encounter-contracts.md#placement-and-access"]},
+      "terrain-apron-blocks": {"alias": "terrain-apron-blocks", "slot_uri": "pixlnd:initial-site-placement-profile/terrain-apron-blocks", "range": "integer", "required": true, "equals_number": 8, "description": "Site terrain apron, not a connecting-route width or walkability guarantee.", "see_also": ["../domain/encounter-contracts.md#placement-and-access"]},
+      "fallback-village-hub-width-blocks": {"alias": "fallback-village-hub-width-blocks", "slot_uri": "pixlnd:initial-site-placement-profile/fallback-village-hub-width-blocks", "range": "integer", "required": true, "equals_number": 64, "description": "Dry village hub width only on ocean lands where ordinary village generation otherwise fails; not every site or battlefield.", "see_also": ["../domain/encounter-contracts.md#placement-and-access"]},
+      "fallback-village-hub-depth-blocks": {"alias": "fallback-village-hub-depth-blocks", "slot_uri": "pixlnd:initial-site-placement-profile/fallback-village-hub-depth-blocks", "range": "integer", "required": true, "equals_number": 64, "description": "Dry village hub depth only on ocean lands where ordinary village generation otherwise fails; not every site or battlefield.", "see_also": ["../domain/encounter-contracts.md#placement-and-access"]}
+    }
+  }
+
 slots:
+  initial-battlefield: {"alias": "battlefield", "slot_uri": "pixlnd:poi/initial-battlefield", "domain": "poi", "range": "encounter-volume", "description": "The outdoor initial site’s contained playable battlefield.", "see_also": ["../domain/encounter-contracts.md#geometry-and-occupancy"], "required": true, "inlined": true}
+  initial-opposite-exits: {"alias": "opposite-exits", "slot_uri": "pixlnd:poi/initial-opposite-exits", "domain": "poi", "range": "initial-battlefield-exit", "description": "The outdoor initial site’s two opposite exit occurrences; spatial opposition follows the linked geometry rule.", "see_also": ["../domain/encounter-contracts.md#geometry-and-occupancy"], "required": true, "multivalued": true, "inlined": true, "inlined_as_list": true, "minimum_cardinality": 2, "maximum_cardinality": 2}
+  realm-leader:
+    description: "Realm leader; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:realm/leader
+    alias: leader
+    domain: realm
+    range: realm-leader
+    inlined: true
+    see_also:
+    - ../domain/3_Classes.md#realm
+  realm-capital:
+    description: "Realm capital; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:realm/capital
+    alias: capital
+    domain: realm
+    range: realm-capital
+    inlined: true
+    see_also:
+    - ../domain/3_Classes.md#realm
+  district-name:
+    description: "District name; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:district/name
+    alias: name
+    domain: district
+    range: string
+    see_also:
+    - ../domain/3_Classes.md#district
+  district-buildings:
+    description: "District buildings; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:district/buildings
+    alias: buildings
+    domain: district
+    multivalued: true
+    any_of:
+    - range: building
+    - range: district-building
+      inlined: true
+    see_also:
+    - ../domain/3_Classes.md#district
+  district-building-id:
+    description: "District building id; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:district-building/id
+    alias: id
+    domain: district-building
+    range: building
+    required: true
+    see_also:
+    - ../domain/3_Classes.md#district
+  district-building-class:
+    description: "District building class; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:district-building/class
+    alias: class
+    domain: district-building
+    range: character-class
+    required: true
+    see_also:
+    - ../domain/3_Classes.md#district
   world-seed:
+    description: "World seed; interpreted under its linked source definition and context."
     slot_uri: pixlnd:world/seed
     alias: seed
     range: uint32
     required: true
     see_also: *id001
   world-day:
+    description: "World day; interpreted under its linked source definition and context."
     slot_uri: pixlnd:world/day
     alias: day
     range: integer
     required: true
     see_also: *id001
   world-time-ms:
+    description: "World time ms; interpreted under its linked source definition and context."
     slot_uri: pixlnd:world/time-ms
     alias: time-ms
     range: integer
@@ -171,18 +1069,21 @@ slots:
     minimum_value: 0
     maximum_value: 86400000
   world-spawn-rule:
+    description: "World spawn rule; interpreted under its linked source definition and context."
     slot_uri: pixlnd:world/spawn-rule
     alias: spawn-rule
     range: spawn-rule
     required: true
     see_also: *id001
   zone-size-blocks:
+    description: "Zone size blocks; interpreted under its linked source definition and context."
     slot_uri: pixlnd:zone/size-blocks
     alias: size-blocks
     range: integer
     required: true
     see_also: *id002
   zone-static-entities:
+    description: "Zone static entities; interpreted under its linked source definition and context."
     slot_uri: pixlnd:zone/static-entities
     alias: static-entities
     range: static-entity
@@ -192,12 +1093,14 @@ slots:
     inlined_as_list: true
     see_also: *id002
   block-type:
+    description: "Block type; interpreted under its linked source definition and context."
     slot_uri: pixlnd:block/type
     alias: type
     range: block-type
     required: true
     see_also: *id003
   block-rgb:
+    description: "Block rgb; interpreted under its linked source definition and context."
     slot_uri: pixlnd:block/rgb
     alias: rgb
     range: u8
@@ -207,36 +1110,42 @@ slots:
     maximum_cardinality: 3
     see_also: *id003
   block-breakable:
+    description: "Block breakable; interpreted under its linked source definition and context."
     slot_uri: pixlnd:block/breakable
     alias: breakable
     range: boolean
     required: true
     see_also: *id003
   land-name:
+    description: "Land name; interpreted under its linked source definition and context."
     slot_uri: pixlnd:land/name
     alias: name
     range: string
     required: true
     see_also: *id004
   land-landscape:
+    description: "Land landscape; interpreted under its linked source definition and context."
     slot_uri: pixlnd:land/landscape
     alias: landscape
     range: landscape
     required: true
     see_also: *id004
   land-level:
+    description: "Land level; interpreted under its linked source definition and context."
     slot_uri: pixlnd:land/level
     alias: level
     range: integer
     required: true
     see_also: *id004
   land-danger-tier:
+    description: "Land danger tier; interpreted under its linked source definition and context."
     slot_uri: pixlnd:land/danger-tier
     alias: danger-tier
     range: danger-tier
     required: true
     see_also: *id004
   land-coords:
+    description: "Land coords; interpreted under its linked source definition and context."
     slot_uri: pixlnd:land/coords
     alias: coords
     range: integer
@@ -248,6 +1157,7 @@ slots:
     maximum_cardinality: 2
     see_also: *id004
   land-settlements:
+    description: "Land settlements; interpreted under its linked source definition and context."
     slot_uri: pixlnd:land/settlements
     alias: settlements
     range: settlement
@@ -257,48 +1167,56 @@ slots:
     maximum_cardinality: 1
     see_also: *id004
   landscape-flora:
+    description: "Landscape flora; interpreted under its linked source definition and context."
     slot_uri: pixlnd:landscape/flora
     alias: flora
     range: flora
     multivalued: true
     see_also: *id005
   landscape-fauna:
+    description: "Landscape fauna; interpreted under its linked source definition and context."
     slot_uri: pixlnd:landscape/fauna
     alias: fauna
     range: creature
     multivalued: true
     see_also: *id005
   landscape-dungeons:
+    description: "Landscape dungeons; interpreted under its linked source definition and context."
     slot_uri: pixlnd:landscape/dungeons
     alias: dungeons
     range: dungeon-type
     multivalued: true
     see_also: *id005
   landscape-pois:
+    description: "Landscape pois; interpreted under its linked source definition and context."
     slot_uri: pixlnd:landscape/pois
     alias: pois
     range: poi-type
     multivalued: true
     see_also: *id005
   landscape-generation-relief:
+    description: "Landscape generation relief; interpreted under its linked source definition and context."
     slot_uri: pixlnd:landscape-generation/relief
     alias: relief
     range: float
     required: true
     see_also: *id006
   landscape-generation-base:
+    description: "Landscape generation base; interpreted under its linked source definition and context."
     slot_uri: pixlnd:landscape-generation/base
     alias: base
     range: float
     required: true
     see_also: *id006
   landscape-generation-surface:
+    description: "Landscape generation surface; interpreted under its linked source definition and context."
     slot_uri: pixlnd:landscape-generation/surface
     alias: surface
     range: block-type
     required: true
     see_also: *id006
   landscape-generation-top:
+    description: "Landscape generation top; interpreted under its linked source definition and context."
     slot_uri: pixlnd:landscape-generation/top
     alias: top
     range: string
@@ -306,6 +1224,7 @@ slots:
     pattern: ^#[0-9a-fA-F]{6}$
     see_also: *id006
   landscape-generation-cliff:
+    description: "Landscape generation cliff; interpreted under its linked source definition and context."
     slot_uri: pixlnd:landscape-generation/cliff
     alias: cliff
     range: string
@@ -313,24 +1232,28 @@ slots:
     pattern: ^#[0-9a-fA-F]{6}$
     see_also: *id006
   landscape-gen:
+    description: "Landscape gen; interpreted under its linked source definition and context."
     slot_uri: pixlnd:landscape/gen
     alias: gen
     range: landscape-generation
     inlined: true
     see_also: *id005
   climate-temperature-c:
+    description: "Climate temperature c; interpreted under its linked source definition and context."
     slot_uri: pixlnd:climate/temperature-c
     alias: temperature-c
     range: float
     required: true
     see_also: *id007
   climate-humidity-pct:
+    description: "Climate humidity pct; interpreted under its linked source definition and context."
     slot_uri: pixlnd:climate/humidity-pct
     alias: humidity-pct
     range: float
     required: true
     see_also: *id007
   settlement-districts:
+    description: "Settlement districts; interpreted under its linked source definition and context."
     slot_uri: pixlnd:settlement/districts
     alias: districts
     range: district
@@ -338,6 +1261,7 @@ slots:
     multivalued: true
     see_also: *id008
   settlement-buildings:
+    description: "Settlement buildings; interpreted under its linked source definition and context."
     slot_uri: pixlnd:settlement/buildings
     alias: buildings
     range: building
@@ -357,18 +1281,21 @@ slots:
     description: Curse state; shared-world persistence policy is linked in the canonical settlement definition.
     see_also: *id008
   realm-kind:
+    description: "Realm kind; interpreted under its linked source definition and context."
     slot_uri: pixlnd:realm/kind
     alias: kind
     range: realm-kind
     required: true
     see_also: *id009
   realm-name:
+    description: "Realm name; interpreted under its linked source definition and context."
     slot_uri: pixlnd:realm/name
     alias: name
     range: string
     required: true
     see_also: *id009
   realm-magic-or-technology:
+    description: "Realm magic or technology; interpreted under its linked source definition and context."
     slot_uri: pixlnd:realm/magic-or-technology
     alias: magic-or-technology
     range: string
@@ -392,6 +1319,15 @@ slots:
     see_also:
     - ../domain/3_Classes.md#world
     description: Context-qualified declaration; applicability is defined by canonical prose.
+  land-border:
+    slot_uri: pixlnd:land/border
+    alias: border
+    range: polygon
+    required: false
+    domain: land
+    see_also:
+    - ../domain/3_Classes.md#land
+    description: Internal land border is a dotted map line, not a physical wall; the outer-world travel boundary is defined separately.
   land-tier-range:
     slot_uri: pixlnd:land/tier-range
     alias: tier-range
@@ -481,16 +1417,19 @@ slots:
     minimum_cardinality: 1
 enums:
   danger-tier:
+    description: "Danger tier; interpreted under its linked source definition and context."
     enum_uri: pixlnd:danger-tier
     permissible_values:
       safe: {}
       normal: {}
       dangerous: {}
   spawn-rule:
+    description: "Spawn rule; interpreted under its linked source definition and context."
     enum_uri: pixlnd:spawn-rule
     permissible_values:
       near-village: {}
   realm-kind:
+    description: "Realm kind; interpreted under its linked source definition and context."
     enum_uri: pixlnd:realm-kind
     permissible_values:
       kingdom: {}

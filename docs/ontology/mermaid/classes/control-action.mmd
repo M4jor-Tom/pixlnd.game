@@ -1,0 +1,13 @@
+ classDiagram
+    class `Control-action`
+    click `Control-action` href "../Control-action"
+      `Control-action` : bound_to_input
+        `Control-action` --> "*" `Input-binding` : bound_to_input
+        click `Input-binding` href "../Input-binding"
+      `Control-action` : control_action_context
+      `Control-action` : control_action_effect_reference
+      `Control-action` : control_action_id
+        `Control-action` --> "1" `ControlActionId` : control_action_id
+        click `ControlActionId` href "../ControlActionId"
+      `Control-action` : control_action_lifecycle
+      `Control-action` : control_action_value

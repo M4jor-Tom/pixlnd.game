@@ -1,0 +1,11 @@
+ classDiagram
+    class `Item-types-source`
+    click `Item-types-source` href "../Item-types-source"
+      `Item-types-source` : additions
+        `Item-types-source` --> "1" `Item-type-source-additions` : additions
+        click `Item-type-source-additions` href "../Item-type-source-additions"
+      `Item-types-source` : documentation
+      `Item-types-source` : entries
+        `Item-types-source` --> "1..*" `Item-type-source-entry` : entries
+        click `Item-type-source-entry` href "../Item-type-source-entry"
+      `Item-types-source` : schema_tag

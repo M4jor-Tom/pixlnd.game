@@ -1,0 +1,11 @@
+ classDiagram
+    class `Dungeon-types-source`
+    click `Dungeon-types-source` href "../Dungeon-types-source"
+      `Dungeon-types-source` : documentation
+      `Dungeon-types-source` : dungeon_rules
+        `Dungeon-types-source` --> "1" `Dungeon-source-rules` : dungeon_rules
+        click `Dungeon-source-rules` href "../Dungeon-source-rules"
+      `Dungeon-types-source` : entries
+        `Dungeon-types-source` --> "1..*" `Dungeon-source-row-entry` : entries
+        click `Dungeon-source-row-entry` href "../Dungeon-source-row-entry"
+      `Dungeon-types-source` : schema_tag

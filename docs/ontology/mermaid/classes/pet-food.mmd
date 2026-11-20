@@ -1,0 +1,7 @@
+ classDiagram
+    class `Pet-food`
+    click `Pet-food` href "../Pet-food"
+      `Pet-food` : id
+      `Pet-food` : pet_food_tames
+        `Pet-food` --> "1..*" `Creature` : pet_food_tames
+        click `Creature` href "../Creature"

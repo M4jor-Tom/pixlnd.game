@@ -1,0 +1,9 @@
+ classDiagram
+    class `Source-version-abilities`
+    click `Source-version-abilities` href "../Source-version-abilities"
+      `Source-version-abilities` : alpha
+        `Source-version-abilities` --> "1..*" `Ability` : alpha
+        click `Ability` href "../Ability"
+      `Source-version-abilities` : steam
+        `Source-version-abilities` --> "1..*" `Ability` : steam
+        click `Ability` href "../Ability"

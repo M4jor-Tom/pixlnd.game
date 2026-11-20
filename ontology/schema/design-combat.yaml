@@ -1,0 +1,441 @@
+id: https://w3id.org/pixlnd/design-combat
+name: pixlnd-design-combat
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+classes:
+  runtime-cost:
+    class_uri: pixlnd:runtime-cost
+    see_also: &id001
+    - ../domain/3_Classes.md#ability
+    slots:
+    - runtime-cost-mp
+    - runtime-cost-stamina
+    description: Selected hybrid resource costs only, not historical qualified catalog costs. Missing
+      resource keys mean no debit; all-min is configured separately.
+  runtime-strike:
+    class_uri: pixlnd:runtime-strike
+    see_also: &id002
+    - ../domain/3_Classes.md#ability
+    slots:
+    - runtime-strike-radius
+    - runtime-strike-damage-mult
+    description: Optional dash strike; origin/end placement and class-specific effects follow the canonical
+      runtime rules.
+  ability-runtime:
+    class_uri: pixlnd:ability-runtime
+    see_also: &id003
+    - ../domain/3_Classes.md#ability
+    slots:
+    - ability-runtime-runtime
+    - ability-runtime-cost
+    - ability-runtime-cooldown-s
+    - ability-runtime-toward
+    - ability-runtime-range
+    - ability-runtime-distance
+    - ability-runtime-duration-s
+    - ability-runtime-turns-per-s
+    - ability-runtime-radius
+    - ability-runtime-damage-mult
+    - ability-runtime-move-mult
+    - ability-runtime-drain-per-s
+    - ability-runtime-charge-mult
+    - ability-runtime-damage-taken-mult
+    - ability-runtime-heal-pct
+    - ability-runtime-heal-over-s
+    - ability-runtime-stealth-per-s
+    - ability-runtime-swing-mult
+    - ability-runtime-cast-s
+    - ability-runtime-absorb-pct-hp
+    - ability-runtime-spread
+    - ability-runtime-speed
+    - ability-runtime-gravity
+    - ability-runtime-life-s
+    - ability-runtime-splash
+    - ability-runtime-taunt-s
+    - ability-runtime-stun-immune
+    - ability-runtime-stealth-full
+    - ability-runtime-count
+    - ability-runtime-strike
+    - ability-runtime-throw
+    description: Selected hybrid runtime entry. Kind-specific presence, strict positivity and coupled
+      bounds remain c-ability-runtime; optional fields are not defaulted by this schema.
+  runtime-projectile:
+    class_uri: pixlnd:runtime-projectile
+    see_also: &id004
+    - ../domain/3_Classes.md#weapon-type
+    slots:
+    - runtime-projectile-speed
+    - runtime-projectile-radius
+    - runtime-projectile-life-s
+    - runtime-projectile-spread
+    - runtime-projectile-gravity
+    - runtime-projectile-splash
+    - runtime-projectile-damage-mult
+    - runtime-projectile-count
+    description: Projectile payload shared by dash throws; optional spread/gravity/splash/damage multipliers
+      remain optional, not fabricated defaults.
+slots:
+  runtime-cost-mp:
+    slot_uri: pixlnd:runtime-cost/mp
+    alias: mp
+    domain: runtime-cost
+    required: false
+    see_also: *id001
+    any_of:
+    - range: double
+      minimum_value: 0
+      maximum_value: 100
+    - range: all-resource
+  runtime-cost-stamina:
+    slot_uri: pixlnd:runtime-cost/stamina
+    alias: stamina
+    domain: runtime-cost
+    required: false
+    see_also: *id001
+    any_of:
+    - range: double
+      minimum_value: 0
+    - range: all-resource
+  runtime-strike-radius:
+    slot_uri: pixlnd:runtime-strike/radius
+    alias: radius
+    domain: runtime-strike
+    range: double
+    required: true
+    see_also: *id002
+  runtime-strike-damage-mult:
+    slot_uri: pixlnd:runtime-strike/damage-mult
+    alias: damage-mult
+    domain: runtime-strike
+    range: double
+    required: true
+    see_also: *id002
+  ability-runtime-runtime:
+    slot_uri: pixlnd:ability-runtime/runtime
+    alias: runtime
+    domain: ability-runtime
+    range: ability-runtime-kind
+    required: true
+    see_also: *id003
+  ability-runtime-cost:
+    slot_uri: pixlnd:ability-runtime/cost
+    alias: cost
+    domain: ability-runtime
+    range: runtime-cost
+    required: true
+    see_also: *id003
+    inlined: true
+  ability-runtime-cooldown-s:
+    slot_uri: pixlnd:ability-runtime/cooldown-s
+    alias: cooldown-s
+    domain: ability-runtime
+    range: double
+    required: true
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-toward:
+    slot_uri: pixlnd:ability-runtime/toward
+    alias: toward
+    domain: ability-runtime
+    range: dash-direction
+    required: false
+    see_also: *id003
+  ability-runtime-range:
+    slot_uri: pixlnd:ability-runtime/range
+    alias: range
+    domain: ability-runtime
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-distance:
+    slot_uri: pixlnd:ability-runtime/distance
+    alias: distance
+    domain: ability-runtime
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-duration-s:
+    slot_uri: pixlnd:ability-runtime/duration-s
+    alias: duration-s
+    domain: ability-runtime
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-turns-per-s:
+    slot_uri: pixlnd:ability-runtime/turns-per-s
+    alias: turns-per-s
+    domain: ability-runtime
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-radius:
+    slot_uri: pixlnd:ability-runtime/radius
+    alias: radius
+    domain: ability-runtime
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-damage-mult:
+    slot_uri: pixlnd:ability-runtime/damage-mult
+    alias: damage-mult
+    domain: ability-runtime
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-move-mult:
+    slot_uri: pixlnd:ability-runtime/move-mult
+    alias: move-mult
+    domain: ability-runtime
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-drain-per-s:
+    slot_uri: pixlnd:ability-runtime/drain-per-s
+    alias: drain-per-s
+    domain: ability-runtime
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-charge-mult:
+    slot_uri: pixlnd:ability-runtime/charge-mult
+    alias: charge-mult
+    domain: ability-runtime
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-damage-taken-mult:
+    slot_uri: pixlnd:ability-runtime/damage-taken-mult
+    alias: damage-taken-mult
+    domain: ability-runtime
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-heal-pct:
+    slot_uri: pixlnd:ability-runtime/heal-pct
+    alias: heal-pct
+    domain: ability-runtime
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-heal-over-s:
+    slot_uri: pixlnd:ability-runtime/heal-over-s
+    alias: heal-over-s
+    domain: ability-runtime
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-stealth-per-s:
+    slot_uri: pixlnd:ability-runtime/stealth-per-s
+    alias: stealth-per-s
+    domain: ability-runtime
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-swing-mult:
+    slot_uri: pixlnd:ability-runtime/swing-mult
+    alias: swing-mult
+    domain: ability-runtime
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-cast-s:
+    slot_uri: pixlnd:ability-runtime/cast-s
+    alias: cast-s
+    domain: ability-runtime
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-absorb-pct-hp:
+    slot_uri: pixlnd:ability-runtime/absorb-pct-hp
+    alias: absorb-pct-hp
+    domain: ability-runtime
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-spread:
+    slot_uri: pixlnd:ability-runtime/spread
+    alias: spread
+    domain: ability-runtime
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-speed:
+    slot_uri: pixlnd:ability-runtime/speed
+    alias: speed
+    domain: ability-runtime
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-gravity:
+    slot_uri: pixlnd:ability-runtime/gravity
+    alias: gravity
+    domain: ability-runtime
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-life-s:
+    slot_uri: pixlnd:ability-runtime/life-s
+    alias: life-s
+    domain: ability-runtime
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-splash:
+    slot_uri: pixlnd:ability-runtime/splash
+    alias: splash
+    domain: ability-runtime
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-taunt-s:
+    slot_uri: pixlnd:ability-runtime/taunt-s
+    alias: taunt-s
+    domain: ability-runtime
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-stun-immune:
+    slot_uri: pixlnd:ability-runtime/stun-immune
+    alias: stun-immune
+    domain: ability-runtime
+    range: boolean
+    required: false
+    see_also: *id003
+  ability-runtime-stealth-full:
+    slot_uri: pixlnd:ability-runtime/stealth-full
+    alias: stealth-full
+    domain: ability-runtime
+    range: boolean
+    required: false
+    see_also: *id003
+  ability-runtime-count:
+    slot_uri: pixlnd:ability-runtime/count
+    alias: count
+    domain: ability-runtime
+    range: integer
+    required: false
+    see_also: *id003
+    minimum_value: 1
+  ability-runtime-strike:
+    slot_uri: pixlnd:ability-runtime/strike
+    alias: strike
+    domain: ability-runtime
+    range: runtime-strike
+    required: false
+    see_also: *id003
+    inlined: true
+  ability-runtime-throw:
+    slot_uri: pixlnd:ability-runtime/throw
+    alias: throw
+    domain: ability-runtime
+    range: runtime-projectile
+    required: false
+    see_also: *id003
+    inlined: true
+  runtime-projectile-speed:
+    slot_uri: pixlnd:runtime-projectile/speed
+    alias: speed
+    domain: runtime-projectile
+    range: double
+    required: true
+    see_also: *id004
+    minimum_value: 0
+  runtime-projectile-radius:
+    slot_uri: pixlnd:runtime-projectile/radius
+    alias: radius
+    domain: runtime-projectile
+    range: double
+    required: true
+    see_also: *id004
+    minimum_value: 0
+  runtime-projectile-life-s:
+    slot_uri: pixlnd:runtime-projectile/life-s
+    alias: life-s
+    domain: runtime-projectile
+    range: double
+    required: true
+    see_also: *id004
+    minimum_value: 0
+  runtime-projectile-spread:
+    slot_uri: pixlnd:runtime-projectile/spread
+    alias: spread
+    domain: runtime-projectile
+    range: double
+    required: false
+    see_also: *id004
+    minimum_value: 0
+  runtime-projectile-gravity:
+    slot_uri: pixlnd:runtime-projectile/gravity
+    alias: gravity
+    domain: runtime-projectile
+    range: double
+    required: false
+    see_also: *id004
+    minimum_value: 0
+  runtime-projectile-splash:
+    slot_uri: pixlnd:runtime-projectile/splash
+    alias: splash
+    domain: runtime-projectile
+    range: double
+    required: false
+    see_also: *id004
+    minimum_value: 0
+  runtime-projectile-damage-mult:
+    slot_uri: pixlnd:runtime-projectile/damage-mult
+    alias: damage-mult
+    domain: runtime-projectile
+    range: double
+    required: false
+    see_also: *id004
+    minimum_value: 0
+  runtime-projectile-count:
+    slot_uri: pixlnd:runtime-projectile/count
+    alias: count
+    domain: runtime-projectile
+    range: integer
+    required: false
+    see_also: *id004
+    minimum_value: 1
+enums:
+  ability-runtime-kind:
+    enum_uri: pixlnd:ability-runtime-kind
+    permissible_values:
+      dash: {}
+      channel: {}
+      burst: {}
+      buff: {}
+      heal: {}
+      projectile: {}
+  dash-direction:
+    enum_uri: pixlnd:dash-direction
+    permissible_values:
+      target: {}
+      forward: {}
+      back: {}

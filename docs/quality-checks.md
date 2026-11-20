@@ -8,39 +8,45 @@ From this checkout, run once (and again after cloning):
 nix develop --no-update-lock-file -c pre-commit install
 ```
 
-The configuration installs **pre-push only**, not a commit hook. Each `git push`
-runs the full gate, including tests, even for documentation-only changes. The hook
-enters the locked Nix environment itself, so pushing outside `nix develop` works.
+The configuration installs pre-commit, post-commit and pre-push hooks. Each commit starts the
+full gate, including tests, in the background on a clean export of the committed tree
+(`scripts/gate.sh start`). Each `git push` only checks that the pushed commit's tree passed
+(`scripts/gate.sh check`): it fails fast while the gate is running, after a failure, or when no
+gate ran (e.g. a `--no-verify` commit: run `bash scripts/gate.sh start <rev>`). Receipts and
+logs live in `.git/pixlnd-gate/<tree>.{running,pass,fail,log}`; a squash or rebase with an
+identical tree reuses its pass. One gate runs at a time; later ones queue. The hooks enter the
+locked Nix environment themselves, so committing or pushing outside `nix develop` works.
 
-The full suite can take many minutes. For SSH remotes, enable keepalives so the
-connection stays open while the hook runs. If you have no custom `core.sshCommand`:
+On commits touching `ontology/schema/`, the pre-commit hook regenerates the
+[ontology Mermaid diagrams](ontology/mermaid/overview.mmd). If they change, the commit fails:
+`git add docs/ontology/mermaid` and commit again.
 
-```sh
-git config --local core.sshCommand 'ssh -o ServerAliveInterval=30'
-```
-
-Preserve existing SSH options if that command is already customized.
+The full suite can take many minutes, which is why it no longer runs inside `git push`
+(a long pre-push hook held the SSH connection open until the server timed out).
 
 ## Run manually
 
-This is also the exact command in `.github/workflows/quality.yml`:
+This is also the exact command in `.github/workflows/quality.yml` (synchronous, same hooks):
 
 ```sh
-nix develop --no-update-lock-file -c pre-commit run --all-files --hook-stage pre-push
+nix develop --no-update-lock-file -c pre-commit run --all-files --hook-stage manual
 ```
 
 `.pre-commit-config.yaml` is the shared definition. Its local hooks run:
 
 1. `tests/test_checks.sh`: regression checks for the runner's pass/fail behavior,
    including size/complexity boundaries, class methods and bypass prevention.
-2. `scripts/checks.sh`: GDScript formatting and lint, file/function size, cognitive complexity,
-   ontology validation, every
+2. `scripts/checks.sh`: GDScript formatting and lint, file/function size, Python/Bash limits,
+   cognitive complexity, ontology validation, every
    `ontology/test_*.gd` and `game/*/test_*.gd`, then a headless main-scene boot.
    The map test also runs at fixed 1000 FPS to catch render/physics ordering races.
    Each Godot invocation prints its own wall-clock `Elapsed:` time, excluding Nix setup,
    lint, formatting and size checks. Hook output is visible on success locally and in CI.
+3. `scripts/ontology_mermaid.sh` (also the pre-commit hook): regenerates `docs/ontology/mermaid/`
+   with LinkML's `gen-erdiagram` and `gen-mermaid-class-diagram` from the `uv.lock`-pinned
+   `tools/ontology` environment, failing on stale diagrams (e.g. committed with `--no-verify`).
 
-Both use the same `flake.lock`-pinned Godot, gdtoolkit and pre-commit packages.
+The first two use the same `flake.lock`-pinned Godot, gdtoolkit and pre-commit packages.
 `flake.nix` additionally pins gdmetrics-g4 v1.6.1 by source commit and content hash,
 exposed only in the development shell as `GDMETRICS_G4`.
 Nothing installs into the game's runtime. Tests use a temporary `PIXLND_TEST_DIR`
@@ -92,6 +98,27 @@ setters, abstract declarations and lambdas use the same cap. A file of 600 lines
 function of 100 lines passes; 601/101 fails with its location and measured length.
 There are no baselines or inline-lint exemptions; existing violations block the gate.
 No new package is required.
+
+### Python and Bash limits
+
+`scripts/check_python_bash.py` applies the same hard caps to every `.py` and `.sh` file under
+`scripts/`, `tests/`, `skills/`, `monitors/` and `tools/` (symlinks followed, `.venv` pruned):
+600 lines per file, 100 lines per function, cognitive complexity 15 per function. 600/100/15
+passes; 601/101/16 fails with the file, line, function and measured value. There is no baseline
+or inline exemption. Python is parsed with `ast`; Bash with `shfmt -ln bash --to-json`, which
+`flake.nix` adds to the development shell. A file that does not parse fails.
+
+Function length runs from the declaration (decorators excluded) through the last statement.
+Module-level and top-level shell code is not scored. Each nested function is scored on its own
+and not added to its parent. Cognitive rules (our reading of Sonar's):
+
+| Construct | Increment |
+|---|---|
+| `if`, loops (`for`, `while`, `until`), `match`/`case`, `except`, ternary | +1 plus nesting; body one level deeper |
+| `elif`, `else` | +1, no nesting penalty |
+| run of the same `and`/`or` (`&&`/`||`) | +1 per run |
+| lambda | 0; body one level deeper |
+| `with`, `try` body, comprehensions, pipes, subshells, blocks, recursion | 0 |
 
 ### Cognitive complexity
 

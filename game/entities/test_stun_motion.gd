@@ -1,5 +1,5 @@
 extends SceneTree
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const CREATURE := preload("res://game/entities/creature.tscn")
 const Entity := preload("res://game/entities/entity.gd")
 var failed := 0
@@ -129,7 +129,7 @@ func inactive_and_dead() -> void:
 
 
 func run() -> void:
-	var ontology = Model.Ontology.load_dir("res://ontology/instances")
+	var ontology = Domain.Ontology.load_dir()
 	design = ontology.configs.generators.design
 	var floor_ := box(Vector3(0, -0.5, 0), Vector3(100, 1, 100))
 	target = Entity.new()

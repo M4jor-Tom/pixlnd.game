@@ -5,7 +5,7 @@ const Spawner := preload("res://game/world/spawner.gd")
 const MeshData := preload("res://game/world/zone_mesh.gd")
 const Encounters := preload("res://game/world/encounter_gen.gd")
 const Save := preload("res://game/world/save_data.gd")
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 var failed := 0
 var directory: String
 
@@ -161,7 +161,7 @@ func cold_read() -> void:
 	# Isolate genuine progression/renewal from optional headless level-up audio, as in role tests.
 	player.feel = null
 	while player.level < 20:
-		player.gain_xp(Model.xp_to_next(player.level) - player.xp)
+		player.gain_xp(Domain.xp_to_next(player.level) - player.xp)
 	main.state_data.clock = 86400 - 1
 	world._physics_process(0.1 * Engine.time_scale)
 	world.populate_zone(zone)

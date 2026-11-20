@@ -1,0 +1,14 @@
+ classDiagram
+    class `Artifact`
+    click `Artifact` href "../Artifact"
+      `Artifact` : artifact_name
+      `Artifact` : artifact_origin_realm
+        `Artifact` --> "1" `Realm` : artifact_origin_realm
+        click `Realm` href "../Realm"
+      `Artifact` : id
+      `Artifact` : raises_stat
+        `Artifact` --> "1..*" `Stat` : raises_stat
+        click `Stat` href "../Stat"
+      `Artifact` : traversal_kind
+        `Artifact` --> "1" `ArtifactTraversalKind` : traversal_kind
+        click `ArtifactTraversalKind` href "../ArtifactTraversalKind"

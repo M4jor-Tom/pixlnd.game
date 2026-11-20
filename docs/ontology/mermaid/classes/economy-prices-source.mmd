@@ -1,0 +1,10 @@
+ classDiagram
+    class `Economy-prices-source`
+    click `Economy-prices-source` href "../Economy-prices-source"
+      `Economy-prices-source` : alpha
+        `Economy-prices-source` --> "1" `Economy-price-alpha` : alpha
+        click `Economy-price-alpha` href "../Economy-price-alpha"
+      `Economy-prices-source` : formula
+      `Economy-prices-source` : steam
+        `Economy-prices-source` --> "1" `Economy-price-steam` : steam
+        click `Economy-price-steam` href "../Economy-price-steam"

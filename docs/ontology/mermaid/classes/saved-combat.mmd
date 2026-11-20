@@ -1,0 +1,17 @@
+ classDiagram
+    class `Saved-combat`
+    click `Saved-combat` href "../Saved-combat"
+      `Saved-combat` : saved_combat_current
+      `Saved-combat` : saved_combat_next_order
+      `Saved-combat` : saved_combat_order
+        `Saved-combat` --> "1..*" `Saved-order` : saved_combat_order
+        click `Saved-order` href "../Saved-order"
+      `Saved-combat` : saved_combat_provoked
+        `Saved-combat` --> "1..*" `Saved-provocation` : saved_combat_provoked
+        click `Saved-provocation` href "../Saved-provocation"
+      `Saved-combat` : saved_combat_returning
+      `Saved-combat` : saved_combat_taunt
+      `Saved-combat` : saved_combat_taunt_left
+      `Saved-combat` : saved_combat_threat
+        `Saved-combat` --> "1..*" `Saved-threat` : saved_combat_threat
+        click `Saved-threat` href "../Saved-threat"

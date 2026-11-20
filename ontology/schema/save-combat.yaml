@@ -1,0 +1,349 @@
+id: https://w3id.org/pixlnd/save-combat
+name: pixlnd-save-combat
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+classes:
+  saved-threat:
+    class_uri: pixlnd:saved-threat
+    see_also: &id001
+    - ../domain/3_Classes.md#ai-behavior
+    slots:
+    - saved-threat-player
+    - saved-threat-amount
+    description: Container-scoped player key. Native keyed inlining accepts scalar and object alternatives;
+      pair closure and equality constraints require runtime checks.
+  saved-order:
+    class_uri: pixlnd:saved-order
+    see_also: &id002
+    - ../domain/3_Classes.md#ai-behavior
+    slots:
+    - saved-order-player
+    - saved-order-order
+    description: Container-scoped player key. Native keyed inlining accepts scalar and object alternatives;
+      pair closure and equality constraints require runtime checks.
+  saved-provocation:
+    class_uri: pixlnd:saved-provocation
+    see_also: &id003
+    - ../domain/3_Classes.md#ai-behavior
+    slots:
+    - saved-provocation-player
+    - saved-provocation-provoked
+    description: Container-scoped player key. Native keyed inlining accepts scalar and object alternatives;
+      pair closure and equality constraints require runtime checks.
+  saved-combat:
+    class_uri: pixlnd:saved-combat
+    see_also: &id004
+    - ../domain/3_Classes.md#ai-behavior
+    slots:
+    - saved-combat-threat
+    - saved-combat-order
+    - saved-combat-provoked
+    - saved-combat-next-order
+    - saved-combat-current
+    - saved-combat-taunt
+    - saved-combat-taunt-left
+    - saved-combat-returning
+    description: Current mutable mob combat state. Empty current/taunt strings are current no-target sentinels,
+      not catalog IDs. Threat/order/provocation closure, positive stored threat, engagement ordering and
+      timer/target lifecycle remain linked rules.
+  saved-mob:
+    class_uri: pixlnd:saved-mob
+    see_also: &id005
+    - ../domain/3_Classes.md#save-data
+    slots:
+    - saved-mob-species
+    - saved-mob-hostility
+    - saved-mob-role
+    - saved-mob-level
+    - saved-mob-seed
+    - saved-mob-cycle
+    - saved-mob-hp
+    - saved-mob-max-hp
+    - saved-mob-damage
+    - saved-mob-power-base
+    - saved-mob-pack
+    - saved-mob-home
+    - saved-mob-position
+    - saved-mob-dead
+    - saved-mob-eligible
+    - saved-mob-combat
+    - saved-mob-room-cycle
+    - saved-mob-special
+    description: Individual mutable incarnation, never a creature species. World dictionary key provides
+      identity separately. Local curves, ID/pack agreement and conditional site-only fields remain current-rule
+      checks.
+slots:
+  saved-threat-player:
+    slot_uri: pixlnd:saved-threat/player
+    alias: player
+    domain: saved-threat
+    range: player-character
+    required: true
+    see_also: *id001
+    key: true
+  saved-threat-amount:
+    slot_uri: pixlnd:saved-threat/amount
+    alias: amount
+    domain: saved-threat
+    range: double
+    required: true
+    see_also: *id001
+    minimum_value: 0
+  saved-order-player:
+    slot_uri: pixlnd:saved-order/player
+    alias: player
+    domain: saved-order
+    range: player-character
+    required: true
+    see_also: *id002
+    key: true
+  saved-order-order:
+    slot_uri: pixlnd:saved-order/order
+    alias: order
+    domain: saved-order
+    range: integer
+    required: true
+    see_also: *id002
+    minimum_value: 0
+  saved-provocation-player:
+    slot_uri: pixlnd:saved-provocation/player
+    alias: player
+    domain: saved-provocation
+    range: player-character
+    required: true
+    see_also: *id003
+    key: true
+  saved-provocation-provoked:
+    slot_uri: pixlnd:saved-provocation/provoked
+    alias: provoked
+    domain: saved-provocation
+    range: boolean
+    required: true
+    see_also: *id003
+  saved-combat-threat:
+    slot_uri: pixlnd:saved-combat/threat
+    alias: threat
+    domain: saved-combat
+    range: saved-threat
+    required: true
+    see_also: *id004
+    multivalued: true
+    inlined: true
+    inlined_as_list: false
+  saved-combat-order:
+    slot_uri: pixlnd:saved-combat/order
+    alias: order
+    domain: saved-combat
+    range: saved-order
+    required: true
+    see_also: *id004
+    multivalued: true
+    inlined: true
+    inlined_as_list: false
+  saved-combat-provoked:
+    slot_uri: pixlnd:saved-combat/provoked
+    alias: provoked
+    domain: saved-combat
+    range: saved-provocation
+    required: true
+    see_also: *id004
+    multivalued: true
+    inlined: true
+    inlined_as_list: false
+  saved-combat-next-order:
+    slot_uri: pixlnd:saved-combat/next_order
+    alias: next_order
+    domain: saved-combat
+    range: integer
+    required: true
+    see_also: *id004
+    minimum_value: 0
+  saved-combat-current:
+    slot_uri: pixlnd:saved-combat/current
+    alias: current
+    domain: saved-combat
+    range: string
+    required: true
+    see_also: *id004
+  saved-combat-taunt:
+    slot_uri: pixlnd:saved-combat/taunt
+    alias: taunt
+    domain: saved-combat
+    range: string
+    required: true
+    see_also: *id004
+  saved-combat-taunt-left:
+    slot_uri: pixlnd:saved-combat/taunt_left
+    alias: taunt_left
+    domain: saved-combat
+    range: double
+    required: true
+    see_also: *id004
+    minimum_value: 0
+  saved-combat-returning:
+    slot_uri: pixlnd:saved-combat/returning
+    alias: returning
+    domain: saved-combat
+    range: boolean
+    required: true
+    see_also: *id004
+  saved-mob-species:
+    slot_uri: pixlnd:saved-mob/species
+    alias: species
+    domain: saved-mob
+    range: creature
+    required: true
+    see_also: *id005
+  saved-mob-hostility:
+    slot_uri: pixlnd:saved-mob/hostility
+    alias: hostility
+    domain: saved-mob
+    range: saved-hostility
+    required: true
+    see_also: *id005
+  saved-mob-role:
+    slot_uri: pixlnd:saved-mob/role
+    alias: role
+    domain: saved-mob
+    range: saved-role
+    required: true
+    see_also: *id005
+  saved-mob-level:
+    slot_uri: pixlnd:saved-mob/level
+    alias: level
+    domain: saved-mob
+    range: integer
+    required: true
+    see_also: *id005
+    minimum_value: 1
+  saved-mob-seed:
+    slot_uri: pixlnd:saved-mob/seed
+    alias: seed
+    domain: saved-mob
+    range: integer
+    required: true
+    see_also: *id005
+    minimum_value: 0
+  saved-mob-cycle:
+    slot_uri: pixlnd:saved-mob/cycle
+    alias: cycle
+    domain: saved-mob
+    range: integer
+    required: true
+    see_also: *id005
+    minimum_value: 0
+  saved-mob-hp:
+    slot_uri: pixlnd:saved-mob/hp
+    alias: hp
+    domain: saved-mob
+    range: double
+    required: true
+    see_also: *id005
+    minimum_value: 0
+  saved-mob-max-hp:
+    slot_uri: pixlnd:saved-mob/max_hp
+    alias: max_hp
+    domain: saved-mob
+    range: double
+    required: true
+    see_also: *id005
+    minimum_value: 0
+  saved-mob-damage:
+    slot_uri: pixlnd:saved-mob/damage
+    alias: damage
+    domain: saved-mob
+    range: double
+    required: true
+    see_also: *id005
+    minimum_value: 0
+  saved-mob-power-base:
+    slot_uri: pixlnd:saved-mob/power_base
+    alias: power_base
+    domain: saved-mob
+    range: double
+    required: true
+    see_also: *id005
+  saved-mob-pack:
+    slot_uri: pixlnd:saved-mob/pack
+    alias: pack
+    domain: saved-mob
+    range: string
+    required: true
+    see_also: *id005
+  saved-mob-home:
+    slot_uri: pixlnd:saved-mob/home
+    alias: home
+    domain: saved-mob
+    range: double
+    required: true
+    see_also: *id005
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+  saved-mob-position:
+    slot_uri: pixlnd:saved-mob/position
+    alias: position
+    domain: saved-mob
+    range: double
+    required: true
+    see_also: *id005
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+  saved-mob-dead:
+    slot_uri: pixlnd:saved-mob/dead
+    alias: dead
+    domain: saved-mob
+    range: boolean
+    required: true
+    see_also: *id005
+  saved-mob-eligible:
+    slot_uri: pixlnd:saved-mob/eligible
+    alias: eligible
+    domain: saved-mob
+    range: boolean
+    required: true
+    see_also: *id005
+  saved-mob-combat:
+    slot_uri: pixlnd:saved-mob/combat
+    alias: combat
+    domain: saved-mob
+    range: saved-combat
+    required: true
+    see_also: *id005
+    inlined: true
+  saved-mob-room-cycle:
+    slot_uri: pixlnd:saved-mob/room_cycle
+    alias: room_cycle
+    domain: saved-mob
+    range: integer
+    required: false
+    see_also: *id005
+    minimum_value: 0
+  saved-mob-special:
+    slot_uri: pixlnd:saved-mob/special
+    alias: special
+    domain: saved-mob
+    range: saved-special
+    required: false
+    see_also: *id005
+    inlined: true
+enums:
+  saved-hostility:
+    enum_uri: pixlnd:saved-hostility
+    permissible_values:
+      H: {}
+      N: {}
+      P: {}
+      F: {}
+  saved-role:
+    enum_uri: pixlnd:saved-role
+    permissible_values:
+      melee: {}
+      ranged: {}
+      mage: {}

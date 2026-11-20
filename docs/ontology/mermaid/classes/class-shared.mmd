@@ -1,0 +1,8 @@
+ classDiagram
+    class `Class-shared`
+    click `Class-shared` href "../Class-shared"
+      `Class-shared` : accessories
+      `Class-shared` : spec_change
+        `Class-shared` --> "1" `Source-version-text` : spec_change
+        click `Source-version-text` href "../Source-version-text"
+      `Class-shared` : unarmed

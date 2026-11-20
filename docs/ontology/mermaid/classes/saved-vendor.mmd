@@ -1,0 +1,9 @@
+ classDiagram
+    class `Saved-vendor`
+    click `Saved-vendor` href "../Saved-vendor"
+      `Saved-vendor` : saved_vendor_ceiling
+      `Saved-vendor` : saved_vendor_day
+      `Saved-vendor` : saved_vendor_items
+        `Saved-vendor` --> "1..*" `Saved-item` : saved_vendor_items
+        click `Saved-item` href "../Saved-item"
+      `Saved-vendor` : saved_vendor_level

@@ -1,0 +1,295 @@
+{
+ "$schema": "mission-type",
+ "alpha": {
+  "entries": [
+   {
+    "key": "boss-kill",
+    "value": {
+     "assign": "auto on approach; green speech-bubble villagers point to it",
+     "grid": "8x8 cells per internal region",
+     "icon": "crossed swords",
+     "name": "Mission (boss kill)",
+     "notes": [
+      "mission bosses (saurian) drop no spirit cube",
+      "group XP bug fixed 2013-07-23"
+     ],
+     "repeat": "regenerate daily / on sleep; marker vanishes when done",
+     "reward": [
+      "xp",
+      "platinum-coin",
+      "items"
+     ],
+     "sites": [
+      "castle",
+      "catacomb",
+      "temple",
+      "pyramid",
+      "ruins",
+      "giant-tree",
+      "giant-rock",
+      "lake",
+      "island",
+      "canyon",
+      "valley",
+      "forest-dungeon",
+      "mountain",
+      "crater",
+      "peak",
+      "cave"
+     ],
+     "versions": [
+      "A"
+     ]
+    }
+   },
+   {
+    "key": "quests-cut",
+    "value": {
+     "desc": "2011-12 kill/find quests with generated text (EN/DE), quest region on minimap; cut Jan 2013 ('could remove freedom, repetitive'); pre-2019 concept: quest log, rarity-coloured quests, Old Man giver, amulet fetch, Drolu herbs cauldron",
+     "name": "Procedural quests",
+     "versions": [
+      "X"
+     ]
+    }
+   }
+  ]
+ },
+ "steam": {
+  "_shared": {
+   "completed": "check mark",
+   "discover": "talk to villagers/adventurers or read lore → marker (may be far); tier hidden (white text) until visited on foot",
+   "repeat": "most daily (inn reset works); gnomes/books once per land",
+   "reward": "gear one rarity above tier + coins + 1 potion + gems",
+   "tiers": [
+    "white",
+    "green",
+    "blue",
+    "purple",
+    "yellow"
+   ]
+  },
+  "entries": [
+   {
+    "key": "combat-encounter",
+    "value": {
+     "desc": "kill group + boss; factions fighting each other; necromancers raising undead; captives; destroy spawn structures",
+     "icon": "crossed swords",
+     "name": "Combat / Invasion / Boss fight",
+     "repeat": "daily"
+    }
+   },
+   {
+    "key": "gnome-supplier",
+    "value": {
+     "count": 4,
+     "desc": "boss holds key or freed on objective; unlocks shop rarity",
+     "icon": "gnome head",
+     "name": "Gnome Supplier rescue",
+     "repeat": "once",
+     "tiers": [
+      "white",
+      "green",
+      "blue",
+      "purple"
+     ]
+    }
+   },
+   {
+    "key": "book-of-crafting",
+    "value": {
+     "count": 4,
+     "icon": "hammer",
+     "name": "Book of Crafting",
+     "repeat": "once"
+    }
+   },
+   {
+    "key": "wizard-tower",
+    "value": {
+     "count": "≤5",
+     "icon": "purple gem",
+     "name": "Magic Barrier / Wizard Tower",
+     "repeat": "once"
+    }
+   },
+   {
+    "key": "circle-of-power",
+    "value": {
+     "count": "several",
+     "icon": "cauldron with fire",
+     "name": "Circle of Power"
+    }
+   },
+   {
+    "key": "demon-portal",
+    "value": {
+     "icon": "red portal",
+     "name": "Demon Portal / Altar"
+    }
+   },
+   {
+    "key": "mana-pump",
+    "value": {
+     "icon": "battery/clipboard",
+     "name": "Mana Pump"
+    }
+   },
+   {
+    "key": "mana-inductor",
+    "value": {
+     "icon": null,
+     "name": "Mana Inductor"
+    }
+   },
+   {
+    "key": "mana-tree",
+    "value": {
+     "icon": null,
+     "name": "Mana Tree"
+    }
+   },
+   {
+    "key": "grand-boss",
+    "value": {
+     "examples": [
+      "yeti",
+      "mammoth",
+      "saurian",
+      "sea-crab",
+      "troll",
+      "hell-demon",
+      "golems"
+     ],
+     "icon": "skull",
+     "name": "Grand boss encounter",
+     "repeat": "daily"
+    }
+   },
+   {
+    "key": "arena",
+    "value": {
+     "icon": "skull",
+     "name": "Arena",
+     "repeat": "daily"
+    }
+   },
+   {
+    "key": "artifact-dungeon",
+    "value": {
+     "desc": "land's ultimate goal; parkour, enemies green→yellow, multiple bosses; may need key items",
+     "icon": "orange circle",
+     "name": "Artifact dungeon"
+    }
+   },
+   {
+    "key": "key-item",
+    "value": {
+     "desc": "reins need no fight; NPC hint places floating icon on map",
+     "icon": "item pictogram",
+     "items": [
+      "reins",
+      "boat",
+      "hang-glider",
+      "climbing-spikes",
+      "divine-harp",
+      "sky-whistle",
+      "spirit-bell",
+      "treasure-spirit"
+     ],
+     "name": "Special / key item"
+    }
+   },
+   {
+    "key": "old-hut",
+    "value": {
+     "desc": "village petrified until witch killed",
+     "icon": "hut / witch",
+     "name": "Old Hut (witch)"
+    }
+   },
+   {
+    "key": "captured-npc",
+    "value": {
+     "icon": null,
+     "name": "Captured NPC rescue",
+     "note": "fixed 0.9.1-5"
+    }
+   },
+   {
+    "key": "spawner",
+    "value": {
+     "desc": "destroy spawner",
+     "icon": null,
+     "name": "Molehill / Bone pile / Hornet nest / Slime well"
+    }
+   },
+   {
+    "key": "faction-encounter",
+    "value": {
+     "factions": [
+      "unholy-pact",
+      "cult-of-doom",
+      "obsidian-knights",
+      "order-of-the-light",
+      "druids-of-mana",
+      "steel-empire"
+     ],
+     "icon": null,
+     "name": "Faction encounter"
+    }
+   },
+   {
+    "key": "camp",
+    "value": {
+     "icon": "Camp",
+     "name": "Camp boss"
+    }
+   },
+   {
+    "key": "vault",
+    "value": {
+     "icon": null,
+     "name": "Vault",
+     "needs": "divine-harp"
+    }
+   },
+   {
+    "key": "sky-island",
+    "value": {
+     "icon": null,
+     "name": "Sky island",
+     "needs": "sky-whistle"
+    }
+   },
+   {
+    "key": "lore",
+    "value": {
+     "icon": "speech bubble",
+     "name": "Lore site"
+    }
+   },
+   {
+    "key": "hidden-treasure",
+    "value": {
+     "icon": null,
+     "name": "Hidden treasure"
+    }
+   },
+   {
+    "key": "undiscovered",
+    "value": {
+     "icon": "none",
+     "name": "Undiscovered objective"
+    }
+   }
+  ],
+  "region-completion-order": [
+   "activate shrines",
+   "white quests (gnomes first)",
+   "green",
+   "blue",
+   "purple",
+   "get + gear before leaving"
+  ]
+ }
+}

@@ -3,7 +3,7 @@
 ## key slots, then a floor with a player and a wolf: spend a point on Smash, key 1 hits, cooldown holds.
 extends SceneTree
 
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const SkillTree := preload("res://game/progression/skill_tree.gd")
 const Combat := preload("res://game/combat/combat.gd")
 const Spawner := preload("res://game/world/spawner.gd")
@@ -25,12 +25,12 @@ func _frames(n: int) -> void:
 
 
 func _ids(nodes: Array) -> Array:
-	return nodes.map(func(a) -> StringName: return a.id)
+	return nodes.map(func(a) -> StringName: return Domain.id_of(a))
 
 
 func _init() -> void:
-	var o := Model.Ontology.load_dir("res://ontology/instances")
-	check(o.validate(), "ontology valid")
+	var o := Domain.Ontology.load_dir()
+	check(o.errors.is_empty(), "ontology valid")
 	var design: Dictionary = o.configs["generators"]["design"]
 	_shape(o)
 
@@ -130,12 +130,6 @@ func _shape(o) -> void:
 		),
 		"water-mage rank 1 is spec-specific"
 	)
-	# c-tree-shape fires
-	o.abilities["cyclone"].alpha_tree["rank"] = 3
-	check(not o.validate(), "c-tree-shape rejects two rank-3 nodes")
-	o.abilities["cyclone"].alpha_tree["rank"] = 2
-	o.errors.clear()
-	check(o.validate(), "restored")
 
 
 func _spending(o, design: Dictionary):

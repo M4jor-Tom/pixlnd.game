@@ -1,0 +1,15 @@
+ classDiagram
+    class `Specialization`
+    click `Specialization` href "../Specialization"
+      `Specialization` : id
+      `Specialization` : kit
+        `Specialization` --> "0..1" `Source-version-abilities` : kit
+        click `Source-version-abilities` href "../Source-version-abilities"
+      `Specialization` : passives
+        `Specialization` --> "0..1" `Source-version-abilities` : passives
+        click `Source-version-abilities` href "../Source-version-abilities"
+      `Specialization` : specialization_class
+        `Specialization` --> "1" `Character-class` : specialization_class
+        click `Character-class` href "../Character-class"
+      `Specialization` : specialization_index
+      `Specialization` : specialization_name

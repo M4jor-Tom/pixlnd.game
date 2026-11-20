@@ -1,0 +1,440 @@
+{
+ "$schema": "landscape",
+ "_doc": "climate = temperature × humidity band (devlog 2012-01). Fauna lists in creature-families.json#landscape-rosters.",
+ "_shared": {
+  "land-level": "hybrid (F4): party-level band + per-land danger tier, generators.json#design.enemy-level (alpha: distance from start; Picroma 2013: all ranges per land)",
+  "region-shape": "roughly equal-sized lands; dotted map borders; no physical walls; features may appear off-biome (volcano in snow, forest in desert)",
+  "s-difficulty": "mob strength colours; each land has own regular + legendary enemies",
+  "village-styles": [
+   "european-framework",
+   "medieval-stone",
+   "north-american-wood",
+   "log",
+   "desert",
+   "jungle",
+   "undead",
+   "lava",
+   "ocean"
+  ]
+ },
+ "entries": [
+  {
+   "key": "greenlands",
+   "value": {
+    "climate": {
+     "humidity": "mid",
+     "temp": "mild"
+    },
+    "dungeons": [
+     "castle",
+     "catacomb",
+     "ruins",
+     "forest-dungeon"
+    ],
+    "flora": [
+     "mushroom",
+     "ginseng",
+     "dragon-root (S)",
+     "bush",
+     "heartflower",
+     "cotton-plant",
+     "scrub",
+     "apple-tree"
+    ],
+    "gen": {
+     "base": 0,
+     "cliff": "#7a6b52",
+     "relief": 1.0,
+     "surface": "grass",
+     "top": "#5da130"
+    },
+    "name": "Greenlands",
+    "style": "european-framework | medieval-stone",
+    "terrain": [
+     "grass hills",
+     "forests (birch/pine/normal)",
+     "caves",
+     "plains",
+     "mountains"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "snowlands",
+   "value": {
+    "climate": {
+     "humidity": "any",
+     "temp": "cold"
+    },
+    "dungeons": [
+     "castle",
+     "catacomb"
+    ],
+    "flora": [
+     "snowberry-bush",
+     "iceflower",
+     "snow-bush",
+     "snow-on-leaves"
+    ],
+    "gen": {
+     "base": 20,
+     "cliff": "#8d9099",
+     "relief": 1.6,
+     "surface": "snow",
+     "top": "#e8eef5"
+    },
+    "hazards": [
+     "cold-water (slow 15 s; hot chocolate counters)"
+    ],
+    "name": "Snowlands",
+    "style": "log-houses",
+    "terrain": [
+     "snow",
+     "high mountains",
+     "frozen lakes (Ω ice physics)"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "deserts",
+   "value": {
+    "climate": {
+     "humidity": "≈5 %",
+     "temp": "≈36 °C"
+    },
+    "dungeons": [
+     "pyramid"
+    ],
+    "flora": [
+     "cactus",
+     "fire-shrub",
+     "habanero/chiling plants"
+    ],
+    "gen": {
+     "base": -10,
+     "cliff": "#b8783a",
+     "relief": 0.6,
+     "surface": "sand",
+     "top": "#d9a955"
+    },
+    "name": "Deserts",
+    "notes": [
+     "desert ruins are described; exact dungeon-type identity unresolved (research_world.md §3); not a resolved catalog reference"
+    ],
+    "style": "desert",
+    "terrain": [
+     "dunes (red/orange/yellow sand)",
+     "pyramids",
+     "lava lakes",
+     "oasis",
+     "rare rivers",
+     "occasional forest"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "jungles",
+   "value": {
+    "climate": {
+     "humidity": "high",
+     "temp": "hot"
+    },
+    "dungeons": [
+     "temple",
+     "ruins"
+    ],
+    "flora": [
+     "cocoa-tree",
+     "banana-tree",
+     "large trees"
+    ],
+    "gen": {
+     "base": 0,
+     "cliff": "#6b5a3c",
+     "relief": 0.9,
+     "surface": "grass",
+     "top": "#2f8a3a"
+    },
+    "name": "Jungles",
+    "notes": [
+     "jungle ruins: jungle variant of overworld ruins (research_world.md §3)"
+    ],
+    "style": "jungle (orange roofs)",
+    "terrain": [
+     "dense large trees",
+     "rivers"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "lava-lands",
+   "value": {
+    "climate": {
+     "humidity": "dry",
+     "temp": "extreme"
+    },
+    "dungeons": [
+     "citadel",
+     "pyramid"
+    ],
+    "flora": [
+     "fire-shrub",
+     "thorn-tree"
+    ],
+    "gen": {
+     "base": 10,
+     "cliff": "#5a3a2a",
+     "relief": 1.2,
+     "surface": "lava-floor",
+     "top": "#3b2f2f"
+    },
+    "hazards": [
+     "lava (burn; lemonade counters)"
+    ],
+    "name": "Lava Lands",
+    "notes": [
+     "overrun by legendary-tier groups (S)"
+    ],
+    "style": "lava-city",
+    "terrain": [
+     "magma",
+     "lava rivers",
+     "charred terrain (very dark at night)",
+     "volcanoes"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "oceans",
+   "value": {
+    "climate": {
+     "humidity": "water",
+     "temp": "any"
+    },
+    "dungeons": [
+     "temple",
+     "island"
+    ],
+    "gen": {
+     "base": -60,
+     "cliff": "#7a6b52",
+     "relief": 0.4,
+     "surface": "sand",
+     "top": "#d6c58a"
+    },
+    "name": "Oceans",
+    "notes": [
+     "temples on large islands",
+     "arenas more common in oceans",
+     "swim ≈ ½ walk speed",
+     "A infinite breath, S drowning",
+     "S oceans nearly empty (spawn bug)",
+     "A level-≈5 sea mobs"
+    ],
+    "pois": [
+     "arena"
+    ],
+    "style": "ocean-city (islands)",
+    "terrain": [
+     "water",
+     "small islands",
+     "named large islands",
+     "underwater caves"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "savannahs",
+   "value": {
+    "climate": {
+     "humidity": "dry",
+     "temp": "warm"
+    },
+    "dungeons": [
+     "fort"
+    ],
+    "flora": [
+     "fire-shrub",
+     "acacia"
+    ],
+    "gen": {
+     "base": 0,
+     "cliff": "#8a7548",
+     "relief": 0.5,
+     "surface": "grass",
+     "top": "#b7a94a"
+    },
+    "name": "Savannahs",
+    "planned": "2013",
+    "terrain": [
+     "dried grass",
+     "acacia trees"
+    ],
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "wetlands",
+   "value": {
+    "climate": {
+     "humidity": "very high",
+     "temp": "mild"
+    },
+    "dungeons": [],
+    "gen": {
+     "base": -15,
+     "cliff": "#5e5a44",
+     "relief": 0.3,
+     "surface": "grass",
+     "top": "#4f8a4a"
+    },
+    "name": "Wetlands",
+    "terrain": [
+     "scattered ponds",
+     "land chunks",
+     "rivers"
+    ],
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "swamp-lands",
+   "value": {
+    "name": "Swamp Lands",
+    "note": "wiki lists it ('wetlands with many forests and large rivers; rivers for boats'); distinct from Wetlands in 1.0 unverified (?)",
+    "planned": "2013",
+    "versions": [
+     "S?"
+    ]
+   }
+  },
+  {
+   "key": "dark-woods",
+   "value": {
+    "climate": {
+     "humidity": "high",
+     "temp": "cool"
+    },
+    "gen": {
+     "base": 0,
+     "cliff": "#3d3a3a",
+     "relief": 0.8,
+     "surface": "grass",
+     "top": "#2a4a2a"
+    },
+    "hazards": [
+     "toxic-river (poison; green smoothie counters)"
+    ],
+    "name": "Dark Woods",
+    "style": "undead (dark grey, pointed roofs, green lights)",
+    "terrain": [
+     "dark forest, purple/blue bioluminescent foliage",
+     "toxic rivers",
+     "dark by day"
+    ],
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "deadlands",
+   "value": {
+    "climate": {
+     "humidity": "any",
+     "temp": "any"
+    },
+    "gen": {
+     "base": 0,
+     "cliff": "#4a4040",
+     "relief": 0.9,
+     "surface": "ground",
+     "top": "#5a5a4a"
+    },
+    "hazards": [
+     "toxic-river"
+    ],
+    "name": "Deadlands (Undead Lands)",
+    "planned": "2013 as Undead Lands",
+    "population": "undead villagers",
+    "style": "undead",
+    "terrain": [
+     "contaminated",
+     "bioluminescent vegetation",
+     "toxic rivers",
+     "green sky",
+     "graveyards"
+    ],
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "mountains",
+   "value": {
+    "climate": {
+     "humidity": "mid",
+     "temp": "mild"
+    },
+    "gen": {
+     "base": 30,
+     "cliff": "#7d7a72",
+     "relief": 2.2,
+     "surface": "grass",
+     "top": "#6f9a4a"
+    },
+    "name": "Mountains",
+    "terrain": [
+     "whole land deemed mountainous; resembles greenlands",
+     "e.g. 'Marnis Mountains'"
+    ],
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "mushroom-lands",
+   "value": {
+    "name": "Mushroom Lands",
+    "planned": "2013, never shipped",
+    "terrain": [
+     "giant mushrooms",
+     "huge insects"
+    ],
+    "versions": [
+     "X"
+    ]
+   }
+  }
+ ]
+}

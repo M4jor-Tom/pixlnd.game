@@ -1,6 +1,6 @@
 extends Node3D
 
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const InputMapBuilder := preload("res://game/meta/input_map.gd")
 const Combat := preload("res://game/combat/combat.gd")
 const InventoryPanel := preload("res://game/items/inventory_panel.gd")
@@ -25,7 +25,7 @@ var _started := false
 
 func _ready() -> void:
 	var db := get_node("/root/OntologyDB")
-	var o: Model.Ontology = db.data
+	var o: Domain.Ontology = db.data
 	var design: Dictionary = db.design
 	if not OS.has_feature("android"):
 		InputMapBuilder.build(o.configs["keybinds"]["hybrid"])
@@ -86,13 +86,19 @@ func _setup_player(o, design, loaded, player) -> bool:
 
 
 func _configure_player(o, design, loaded, player, class_id) -> bool:
-	var cls: Model.CharacterClass = o.classes[class_id]
-	player.setup(design["movement"], design["camera"], o.races["human"].size_class)
+	var cls: Object = o.classes[class_id]
+	player.setup(design["movement"], design["camera"], o.races["human"].slot_size_class)
 	player.setup_combat(
-		design["combat"], design["crit"], {}, Combat.player_max_hp(player.level, cls.hp_mult)
+		design["combat"],
+		design["crit"],
+		{},
+		Combat.player_max_hp(player.level, cls.slot_hp_mult if cls.slot_hp_mult != null else 1.0)
 	)
 	player.setup_items(
-		o, design, cls.id, StringName(loaded.character.spec) if not loaded.is_empty() else &""
+		o,
+		design,
+		Domain.id_of(cls),
+		StringName(loaded.character.spec) if not loaded.is_empty() else &""
 	)  # starting inventory → weapon / armor
 	player.logical_id = Crypto.new().generate_random_bytes(16).hex_encode()
 	return true
@@ -194,7 +200,7 @@ func _finish_startup(db, o, loaded, world, player, touch, mid, village) -> bool:
 		(
 			"pixlnd: ruleset %s, %d creatures, %d abilities; seed %d, land '%s' (%s, %s), village '%s'; %s, hp %.0f, level %d"
 			% [
-				db.ruleset.id,
+				Domain.id_of(db.ruleset),
 				o.creatures.size(),
 				o.abilities.size(),
 				world.world_seed,

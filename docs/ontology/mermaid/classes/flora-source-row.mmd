@@ -1,0 +1,12 @@
+ classDiagram
+    class `Flora-source-row`
+    click `Flora-source-row` href "../Flora-source-row"
+      `Flora-source-row` : aid
+      `Flora-source-row` : desc
+      `Flora-source-row` : lands
+      `Flora-source-row` : name
+      `Flora-source-row` : variants
+      `Flora-source-row` : versions
+      `Flora-source-row` : yields
+        `Flora-source-row` --> "0..1" `Flora-yields-source` : yields
+        click `Flora-yields-source` href "../Flora-yields-source"

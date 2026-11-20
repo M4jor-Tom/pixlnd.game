@@ -1,0 +1,13 @@
+ classDiagram
+    class `Personal-permanent-source-claim`
+    click `Personal-permanent-source-claim` href "../Personal-permanent-source-claim"
+      `Personal-permanent-source-claim` : character
+        `Personal-permanent-source-claim` --> "1" `Player-character` : character
+        click `Player-character` href "../Player-character"
+      `Personal-permanent-source-claim` : source_key
+      `Personal-permanent-source-claim` : source_kind
+        `Personal-permanent-source-claim` --> "1" `PersonalPermanentSourceKind` : source_kind
+        click `PersonalPermanentSourceKind` href "../PersonalPermanentSourceKind"
+      `Personal-permanent-source-claim` : world
+        `Personal-permanent-source-claim` --> "1" `World` : world
+        click `World` href "../World"

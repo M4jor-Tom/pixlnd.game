@@ -1,7 +1,7 @@
 ## Headless check of gen-spawns + creature FSM (D14): `godot --headless -s game/entities/test_creatures.gd`.
 extends SceneTree
 
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const WorldGen := preload("res://game/world/world_gen.gd")
 const Spawner := preload("res://game/world/spawner.gd")
 
@@ -15,8 +15,8 @@ func check(ok: bool, what: String) -> void:
 
 
 func _init() -> void:
-	var o := Model.Ontology.load_dir("res://ontology/instances")
-	check(o.validate(), "ontology valid")
+	var o := Domain.Ontology.load_dir()
+	check(o.errors.is_empty(), "ontology valid")
 	var design: Dictionary = o.configs["generators"]["design"]
 	var spawns: Dictionary = design["spawns"]
 	var rosters: Dictionary = o.configs["creature-families"]["landscape-rosters"]
@@ -143,9 +143,11 @@ func _group(g, rosters, land, o, lvl1_hostile_hp) -> void:
 		g["species"] in rosters[land.landscape],
 		"%s is in the %s roster" % [g["species"], land.landscape]
 	)
-	var c: Model.Creature = o.creatures[g["species"]]
-	check(not c.boss_species, "ordinary group is not an always-boss species")
-	var gs := c.group_size if c.group_size != Vector2i(1, 1) else Vector2i(1, 3)
+	var c: Object = o.creatures[g["species"]]
+	check(c.slot_boss != true, "ordinary group is not an always-boss species")
+	var gs := Domain.group_size(c)
+	if gs == Vector2i(1, 1):
+		gs = Vector2i(1, 3)
 	check(
 		g["positions"].size() >= 1 and g["positions"].size() <= gs.y,
 		"group size within %s: %d" % [gs, g["positions"].size()]

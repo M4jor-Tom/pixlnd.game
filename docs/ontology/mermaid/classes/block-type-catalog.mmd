@@ -1,0 +1,9 @@
+ classDiagram
+    class `Block-type-catalog`
+    click `Block-type-catalog` href "../Block-type-catalog"
+      `Block-type-catalog` : block_type_catalog_cub_format
+        `Block-type-catalog` --> "0..1" `Block-cub-format` : block_type_catalog_cub_format
+        click `Block-cub-format` href "../Block-cub-format"
+      `Block-type-catalog` : block_type_catalog_scale
+        `Block-type-catalog` --> "0..1" `Block-scale` : block_type_catalog_scale
+        click `Block-scale` href "../Block-scale"

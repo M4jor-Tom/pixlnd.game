@@ -1,0 +1,7 @@
+ classDiagram
+    class `Saved-prop-entry`
+    click `Saved-prop-entry` href "../Saved-prop-entry"
+      `Saved-prop-entry` : saved_prop_entry_prop
+      `Saved-prop-entry` : saved_prop_entry_value
+        `Saved-prop-entry` --> "1" `Saved-prop` : saved_prop_entry_value
+        click `Saved-prop` href "../Saved-prop"

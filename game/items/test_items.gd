@@ -1,9 +1,9 @@
 ## Headless check of §3.4 (D18): `godot --headless -s game/items/test_items.gd`.
-## gen-item determinism + roll, gen-item-stats, names, slots, stack rule, gen-loot rates, c-loot-config,
+## gen-item determinism + roll, gen-item-stats, names, slots, stack rule, gen-loot rates,
 ## then a floor with a player and a wolf: starting inventory, kill → ground items → pick-up → quick item.
 extends SceneTree
 
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Items := preload("res://game/items/items.gd")
 const Item := preload("res://game/items/item.gd")
 const Inventory := preload("res://game/items/inventory.gd")
@@ -26,8 +26,8 @@ func _frames(n: int) -> void:
 
 
 func _init() -> void:
-	var o := Model.Ontology.load_dir("res://ontology/instances")
-	check(o.validate(), "ontology valid")
+	var o := Domain.Ontology.load_dir()
+	check(o.errors.is_empty(), "ontology valid")
 	var design: Dictionary = o.configs["generators"]["design"]
 	var loot: Dictionary = design["loot"]
 	preload("res://game/items/item_rule_cases.gd").run(self, o, design)
@@ -62,7 +62,7 @@ func _generators(o, design: Dictionary, rng: RandomNumberGenerator) -> Array:
 		rolls[r] = true
 	check(rolls.size() >= 15, "rolls spread over the range (%d distinct)" % rolls.size())
 	check(
-		Items.generate(rng, &"weapon", &"sword", &"iron", 1, 9).rarity == Model.Rarity.LEGENDARY,
+		Items.generate(rng, &"weapon", &"sword", &"iron", 1, 9).rarity == Domain.Rarity.LEGENDARY,
 		"rarity clamped to legendary"
 	)
 	# gen-item-stats: level-1 common sword damage 4 (× attack-power 10 = the boot line's 40); monotone
@@ -173,11 +173,6 @@ func _loot(o, design: Dictionary, loot: Dictionary, rng: RandomNumberGenerator) 
 		),
 		"gen-loot is seed-deterministic"
 	)
-	# c-loot-config fires
-	loot["gear-chance"] = 2.0
-	check(not o.validate(), "c-loot-config rejects a chance above 1")
-	loot["gear-chance"] = 0.2
-	o.errors.clear()
 
 
 func _scene(o, design: Dictionary) -> void:
@@ -357,7 +352,7 @@ func _loot_counts(o, design: Dictionary, rng: RandomNumberGenerator, kills: int)
 	var feathers := 0
 	var bad := 0
 	var cookies := 0
-	var parrot: Model.Creature = o.creatures["parrot"]
+	var parrot: Object = o.creatures["parrot"]
 	for i in kills:
 		for it in Items.roll_loot(rng, 5, parrot, o, design):
 			var sample := _count_drop(it, o)
@@ -464,7 +459,7 @@ func _replace_shield(hands_inv, s1: Item, two: Item) -> void:
 
 func _invalid_gear(it, o) -> bool:
 	return (
-		it.rarity > Model.Rarity.LEGENDARY
+		it.rarity > Domain.Rarity.LEGENDARY
 		or it.level < 16
 		or it.level > 18
 		or Items.slot_id(it, o) == &""

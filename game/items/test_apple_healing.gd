@@ -1,6 +1,6 @@
 ## Apple healing through real selected, Quick, inventory and Android Use paths.
 extends SceneTree
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Items := preload("res://game/items/items.gd")
 const Item := preload("res://game/items/item.gd")
 const PLAYER := preload("res://game/entities/player.tscn")
@@ -62,8 +62,8 @@ func activate(route: String, apple) -> void:
 
 
 func run() -> void:
-	o = Model.Ontology.load_dir("res://ontology/instances")
-	check(o.validate(), "shipped ontology validates")
+	o = Domain.Ontology.load_dir()
+	check(o.errors.is_empty(), "shipped ontology validates")
 	var design: Dictionary = o.configs.generators.design
 	p = PLAYER.instantiate()
 	root.add_child(p)
@@ -87,7 +87,7 @@ func run() -> void:
 		"APPLE raw_has_heal_mult=",
 		o.configs.consumables.apple.has("heal-mult"),
 		" loaded=",
-		o.consumables.apple.heal_mult,
+		o.consumables.apple.slot_heal_mult,
 		" nominal=",
 		Items.heal(apple, o),
 		" potion_nominal=",

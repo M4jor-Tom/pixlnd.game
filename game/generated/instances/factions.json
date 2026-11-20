@@ -1,0 +1,212 @@
+{
+ "$schema": "faction",
+ "_doc": "Five factions tweeted Oct 2015 (+ 'at least one more'); gameplay presence in S. Realm names are procedural instances of the realm class, not factions.",
+ "entries": [
+  {
+   "key": "order-of-the-light",
+   "value": {
+    "alignment": "good",
+    "leader": "Aurus, legendary paladin, sole survivor of three Legendary Paladins of the Unholy War",
+    "members": [
+     "paladin"
+    ],
+    "name": "Order of the Light",
+    "presence": [
+     "paladins on white horses fighting Unholy Pact legions",
+     "own soundtrack"
+    ],
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "druids-of-mana",
+   "value": {
+    "alignment": "good",
+    "leader": "Archdruid Kendu (dead, 'still leading')",
+    "members": [
+     "druid",
+     "treant"
+    ],
+    "name": "Druids of Mana",
+    "presence": [
+     "mana trees",
+     "assaulted by Steel Empire",
+     "protect ancient runes"
+    ],
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "unholy-pact",
+   "value": {
+    "alignment": "evil",
+    "leader": "three ghost preachers (black cloaks, white faces, green pupils)",
+    "members": [
+     "necromancer",
+     "werewolf",
+     "skeleton-knight",
+     "monstrosity",
+     "zombie"
+    ],
+    "name": "Unholy Pact",
+    "presence": [
+     "faction missions",
+     "undead raising"
+    ],
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "steel-empire",
+   "value": {
+    "alignment": "evil",
+    "leader": "Empress Cyphera, said to be immortal",
+    "members": [
+     "steel-empire-soldier",
+     "mana-mech"
+    ],
+    "name": "Steel Empire (formerly Steel Legion)",
+    "presence": [
+     "airship overhead, paratroopers",
+     "mana pumps / inductors",
+     "mana absorption debuff",
+     "roaming groups any tier",
+     "largest sprite: airship 1313 KB"
+    ],
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "cult-of-doom",
+   "value": {
+    "alignment": "evil",
+    "leader": "Dow the half-demon",
+    "members": [
+     "dark-cultist",
+     "imp"
+    ],
+    "name": "Cult of Doom",
+    "presence": [
+     "demon portals",
+     "possession"
+    ],
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "bloodaxe-clan",
+   "value": {
+    "alignment": "hostile",
+    "members": [
+     "bloodaxe-orc"
+    ],
+    "name": "Bloodaxe Clan",
+    "presence": [
+     "arena hosts",
+     "lava lands"
+    ],
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "obsidian-knights",
+   "value": {
+    "alignment": "hostile",
+    "members": [
+     "obsidian-knight"
+    ],
+    "name": "Obsidian Knights",
+    "presence": [
+     "mission enemy group"
+    ],
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "thaldania-cult",
+   "value": {
+    "alignment": "lore",
+    "name": "Thaldania Cult",
+    "note": "dwarf-composed procedural cult instance",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "benkal-pirates",
+   "value": {
+    "alignment": "hostile",
+    "name": "Benkal Pirates",
+    "note": "seen in gallery ('A Benkal Pirate'); no ship dungeon documented",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "bandits",
+   "value": {
+    "alignment": "hostile",
+    "members": [
+     "bandit"
+    ],
+    "name": "Bandits",
+    "versions": [
+     "A"
+    ]
+   }
+  }
+ ],
+ "realm-name-examples": {
+  "cults": [
+   "Annoia",
+   "Santara",
+   "Markinia",
+   "Roionar",
+   "Theogora",
+   "Thallonar",
+   "Cyrtara"
+  ],
+  "kingdoms": [
+   "Kurlent",
+   "Vartarar",
+   "Theomida",
+   "Cydriaia",
+   "Kurnort",
+   "Lanmorar",
+   "Tulmida"
+  ],
+  "realms": [
+   "Arigorar",
+   "Gadart",
+   "Gekina",
+   "Ardaria",
+   "Cyrmora",
+   "Rimorar",
+   "Cydrisia",
+   "Ulania",
+   "Ledarar",
+   "Rokaar",
+   "Wynlurt",
+   "Vakaa"
+  ],
+  "tribes": [
+   "Asionia"
+  ]
+ }
+}

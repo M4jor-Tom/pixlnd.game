@@ -1,0 +1,19 @@
+ classDiagram
+    class `Weapon-type`
+    click `Weapon-type` href "../Weapon-type"
+      `Weapon-type` : id
+      `Weapon-type` : m1
+      `Weapon-type` : m2
+      `Weapon-type` : material
+        `Weapon-type` --> "*" `Material` : material
+        click `Material` href "../Material"
+      `Weapon-type` : name
+      `Weapon-type` : weapon_type_class
+        `Weapon-type` --> "1" `Character-class` : weapon_type_class
+        click `Character-class` href "../Character-class"
+      `Weapon-type` : weapon_type_combo_cap
+      `Weapon-type` : weapon_type_cube_capacity
+      `Weapon-type` : weapon_type_damage_k
+      `Weapon-type` : weapon_type_hands
+        `Weapon-type` --> "1" hands : weapon_type_hands
+        click hands href "../hands"

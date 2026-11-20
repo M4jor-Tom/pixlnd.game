@@ -1,0 +1,12 @@
+ classDiagram
+    class `Equipment-slot`
+    click `Equipment-slot` href "../Equipment-slot"
+      `Equipment-slot` : equipment_slot_accepts
+        `Equipment-slot` --> "1..*" `Item-type` : equipment_slot_accepts
+        click `Item-type` href "../Item-type"
+      `Equipment-slot` : equipment_slot_accepts_conditions
+        `Equipment-slot` --> "*" `Slot-acceptance-condition` : equipment_slot_accepts_conditions
+        click `Slot-acceptance-condition` href "../Slot-acceptance-condition"
+      `Equipment-slot` : equipment_slot_hp_mult
+      `Equipment-slot` : equipment_slot_index
+      `Equipment-slot` : id

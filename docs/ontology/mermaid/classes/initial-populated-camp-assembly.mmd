@@ -1,0 +1,25 @@
+ classDiagram
+    class `Initial-populated-camp-assembly`
+    click `Initial-populated-camp-assembly` href "../Initial-populated-camp-assembly"
+      `Initial-camp-assembly` <|-- `Initial-populated-camp-assembly`
+        click `Initial-camp-assembly` href "../Initial-camp-assembly"
+      `Initial-populated-camp-assembly` : boss_assignment
+        `Initial-populated-camp-assembly` --> "1" `Initial-mission-boss-assignment` : boss_assignment
+        click `Initial-mission-boss-assignment` href "../Initial-mission-boss-assignment"
+      `Initial-populated-camp-assembly` : id
+      `Initial-populated-camp-assembly` : initial_battlefield
+        `Initial-populated-camp-assembly` --> "1" `Camp-battlefield-volume` : initial_battlefield
+        click `Camp-battlefield-volume` href "../Camp-battlefield-volume"
+      `Initial-populated-camp-assembly` : initial_opposite_exits
+        `Initial-populated-camp-assembly` --> "1..*" `Initial-battlefield-exit` : initial_opposite_exits
+        click `Initial-battlefield-exit` href "../Initial-battlefield-exit"
+      `Initial-populated-camp-assembly` : located_in
+        `Initial-populated-camp-assembly` --> "1" `Land` : located_in
+        click `Land` href "../Land"
+      `Initial-populated-camp-assembly` : pack_assignments
+        `Initial-populated-camp-assembly` --> "1..*" `Initial-nonboss-assignment` : pack_assignments
+        click `Initial-nonboss-assignment` href "../Initial-nonboss-assignment"
+      `Initial-populated-camp-assembly` : population
+        `Initial-populated-camp-assembly` --> "1" `Camp-population` : population
+        click `Camp-population` href "../Camp-population"
+      `Initial-populated-camp-assembly` : tier

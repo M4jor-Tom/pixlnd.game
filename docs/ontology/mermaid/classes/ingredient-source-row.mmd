@@ -1,0 +1,14 @@
+ classDiagram
+    class `Ingredient-source-row`
+    click `Ingredient-source-row` href "../Ingredient-source-row"
+      `Ingredient-source-row` : alpha_subtype
+      `Ingredient-source-row` : from
+      `Ingredient-source-row` : kind
+      `Ingredient-source-row` : name
+      `Ingredient-source-row` : note
+      `Ingredient-source-row` : recipe
+      `Ingredient-source-row` : refines_to
+        `Ingredient-source-row` --> "0..1" `Ingredient-source-refinement` : refines_to
+        click `Ingredient-source-refinement` href "../Ingredient-source-refinement"
+      `Ingredient-source-row` : sell
+      `Ingredient-source-row` : versions

@@ -1,0 +1,44 @@
+ classDiagram
+    class `Land`
+    click `Land` href "../Land"
+      `Land` <|-- `Initial-populated-land`
+        click `Initial-populated-land` href "../Initial-populated-land"
+      `Land` : id
+      `Land` : land_artifacts
+        `Land` --> "1..*" `Artifact` : land_artifacts
+        click `Artifact` href "../Artifact"
+      `Land` : land_books_of_crafting
+        `Land` --> "4..*" `Book-of-crafting` : land_books_of_crafting
+        click `Book-of-crafting` href "../Book-of-crafting"
+      `Land` : land_border
+        `Land` --> "0..1" `Polygon` : land_border
+        click `Polygon` href "../Polygon"
+      `Land` : land_circles_of_power
+        `Land` --> "1..*" `Circle-of-power` : land_circles_of_power
+        click `Circle-of-power` href "../Circle-of-power"
+      `Land` : land_coords
+      `Land` : land_danger_tier
+        `Land` --> "1" `Danger-tier` : land_danger_tier
+        click `Danger-tier` href "../Danger-tier"
+      `Land` : land_gnome_suppliers
+        `Land` --> "4..*" `Gnome-supplier` : land_gnome_suppliers
+        click `Gnome-supplier` href "../Gnome-supplier"
+      `Land` : land_key_items
+        `Land` --> "*" `Key-item` : land_key_items
+        click `Key-item` href "../Key-item"
+      `Land` : land_landscape
+        `Land` --> "1" `Landscape` : land_landscape
+        click `Landscape` href "../Landscape"
+      `Land` : land_level
+      `Land` : land_name
+      `Land` : land_rarity
+      `Land` : land_realm
+        `Land` --> "0..1" `Realm` : land_realm
+        click `Realm` href "../Realm"
+      `Land` : land_settlements
+        `Land` --> "1..*" `Settlement` : land_settlements
+        click `Settlement` href "../Settlement"
+      `Land` : land_tier_range
+        `Land` --> "*" `Mob-strength-tier` : land_tier_range
+        click `Mob-strength-tier` href "../Mob-strength-tier"
+      `Land` : wizard_towers

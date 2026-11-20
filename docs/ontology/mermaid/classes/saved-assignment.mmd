@@ -1,0 +1,14 @@
+ classDiagram
+    class `Saved-assignment`
+    click `Saved-assignment` href "../Saved-assignment"
+      `Saved-assignment` : saved_assignment_boss
+      `Saved-assignment` : saved_assignment_home
+      `Saved-assignment` : saved_assignment_key
+      `Saved-assignment` : saved_assignment_pack
+      `Saved-assignment` : saved_assignment_role
+        `Saved-assignment` --> "1" `Saved-role` : saved_assignment_role
+        click `Saved-role` href "../Saved-role"
+      `Saved-assignment` : saved_assignment_seed
+      `Saved-assignment` : saved_assignment_special
+      `Saved-assignment` : saved_assignment_spirit
+      `Saved-assignment` : saved_assignment_tier

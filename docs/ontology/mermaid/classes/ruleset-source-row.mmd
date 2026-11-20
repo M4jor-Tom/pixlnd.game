@@ -1,0 +1,12 @@
+ classDiagram
+    class `Ruleset-source-row`
+    click `Ruleset-source-row` href "../Ruleset-source-row"
+      `Ruleset-source-row` : default
+      `Ruleset-source-row` : flags
+        `Ruleset-source-row` --> "1..*" `Ruleset-source-flag-entry` : flags
+        click `Ruleset-source-flag-entry` href "../Ruleset-source-flag-entry"
+      `Ruleset-source-row` : name
+      `Ruleset-source-row` : note
+      `Ruleset-source-row` : progression
+      `Ruleset-source-row` : rule_note
+      `Ruleset-source-row` : versions

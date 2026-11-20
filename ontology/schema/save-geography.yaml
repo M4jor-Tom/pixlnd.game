@@ -1,0 +1,325 @@
+id: https://w3id.org/pixlnd/save-geography
+name: pixlnd-save-geography
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+classes:
+  saved-assignment:
+    class_uri: pixlnd:saved-assignment
+    see_also: &id001
+    - ../domain/encounter-contracts.md#geometry-and-occupancy
+    slots:
+    - saved-assignment-key
+    - saved-assignment-pack
+    - saved-assignment-special
+    - saved-assignment-spirit
+    - saved-assignment-home
+    - saved-assignment-role
+    - saved-assignment-tier
+    - saved-assignment-boss
+    - saved-assignment-seed
+    description: Permanent generation assignment, not a live mob incarnation. Pack/member keys, spirit
+      and special sentinel strings preserve current encoding; deterministic assignment and eligibility
+      require current-rule checks.
+  saved-site-layout:
+    class_uri: pixlnd:saved-site-layout
+    see_also: &id002
+    - ../domain/encounter-contracts.md#geometry-and-occupancy
+    slots:
+    - saved-site-layout-family
+    - saved-site-layout-ordinal
+    - saved-site-layout-centre
+    - saved-site-layout-turn
+    - saved-site-layout-floor
+    - saved-site-layout-components
+    - saved-site-layout-volumes
+    - saved-site-layout-assignments
+    - saved-site-layout-entry
+    - saved-site-layout-tier
+    - saved-site-layout-captive
+    description: Current permanent site geometry and assignments; conditional tier/captive applicability,
+      component unions, physical geometry and seeded correctness remain linked current-rule checks.
+  saved-village:
+    class_uri: pixlnd:saved-village
+    see_also: &id003
+    - ../domain/3_Classes.md#settlement
+    slots:
+    - saved-village-centre
+    - saved-village-height
+    - saved-village-gate-width
+    - saved-village-gate-offset
+    - saved-village-name
+    - saved-village-style
+    - saved-village-hub
+    - saved-village-gate-index
+    description: Current joint-geography village payload, distinct from the generic settlement definition.
+      Layout and authored opening correctness remain deterministic checks.
+  saved-land-plan:
+    class_uri: pixlnd:saved-land-plan
+    see_also: &id004
+    - ../domain/3_Classes.md#save-data
+    slots:
+    - saved-land-plan-village
+    - saved-land-plan-sites
+    description: Complete current joint geography payload stored per land-grid key; contains no optional
+      guidance. Exact six-site allocation and deterministic equality remain runtime checks.
+slots:
+  saved-assignment-key:
+    slot_uri: pixlnd:saved-assignment/key
+    alias: key
+    domain: saved-assignment
+    range: string
+    required: true
+    see_also: *id001
+  saved-assignment-pack:
+    slot_uri: pixlnd:saved-assignment/pack
+    alias: pack
+    domain: saved-assignment
+    range: string
+    required: true
+    see_also: *id001
+  saved-assignment-special:
+    slot_uri: pixlnd:saved-assignment/special
+    alias: special
+    domain: saved-assignment
+    range: string
+    required: true
+    see_also: *id001
+  saved-assignment-spirit:
+    slot_uri: pixlnd:saved-assignment/spirit
+    alias: spirit
+    domain: saved-assignment
+    range: string
+    required: true
+    see_also: *id001
+  saved-assignment-home:
+    slot_uri: pixlnd:saved-assignment/home
+    alias: home
+    domain: saved-assignment
+    range: double
+    required: true
+    see_also: *id001
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+  saved-assignment-role:
+    slot_uri: pixlnd:saved-assignment/role
+    alias: role
+    domain: saved-assignment
+    range: saved-role
+    required: true
+    see_also: *id001
+  saved-assignment-tier:
+    slot_uri: pixlnd:saved-assignment/tier
+    alias: tier
+    domain: saved-assignment
+    range: integer
+    required: true
+    see_also: *id001
+    minimum_value: 0
+  saved-assignment-boss:
+    slot_uri: pixlnd:saved-assignment/boss
+    alias: boss
+    domain: saved-assignment
+    range: boolean
+    required: true
+    see_also: *id001
+  saved-assignment-seed:
+    slot_uri: pixlnd:saved-assignment/seed
+    alias: seed
+    domain: saved-assignment
+    range: integer
+    required: true
+    see_also: *id001
+    minimum_value: 0
+  saved-site-layout-family:
+    slot_uri: pixlnd:saved-site-layout/family
+    alias: family
+    domain: saved-site-layout
+    range: saved-site-family
+    required: true
+    see_also: *id002
+  saved-site-layout-ordinal:
+    slot_uri: pixlnd:saved-site-layout/ordinal
+    alias: ordinal
+    domain: saved-site-layout
+    range: integer
+    required: true
+    see_also: *id002
+    minimum_value: 0
+  saved-site-layout-centre:
+    slot_uri: pixlnd:saved-site-layout/centre
+    alias: centre
+    domain: saved-site-layout
+    range: double
+    required: true
+    see_also: *id002
+    multivalued: true
+    minimum_cardinality: 2
+    maximum_cardinality: 2
+  saved-site-layout-turn:
+    slot_uri: pixlnd:saved-site-layout/turn
+    alias: turn
+    domain: saved-site-layout
+    range: integer
+    required: true
+    see_also: *id002
+    minimum_value: 0
+    maximum_value: 3
+  saved-site-layout-floor:
+    slot_uri: pixlnd:saved-site-layout/floor
+    alias: floor
+    domain: saved-site-layout
+    range: double
+    required: true
+    see_also: *id002
+  saved-site-layout-components:
+    slot_uri: pixlnd:saved-site-layout/components
+    alias: components
+    domain: saved-site-layout
+    range: double
+    required: true
+    see_also: *id002
+    array:
+      dimensions:
+      - minimum_cardinality: 1
+      - exact_cardinality: 4
+  saved-site-layout-volumes:
+    slot_uri: pixlnd:saved-site-layout/volumes
+    alias: volumes
+    domain: saved-site-layout
+    range: double
+    required: true
+    see_also: *id002
+    array:
+      dimensions:
+      - minimum_cardinality: 1
+      - exact_cardinality: 6
+  saved-site-layout-assignments:
+    slot_uri: pixlnd:saved-site-layout/assignments
+    alias: assignments
+    domain: saved-site-layout
+    range: saved-assignment
+    required: true
+    see_also: *id002
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  saved-site-layout-entry:
+    slot_uri: pixlnd:saved-site-layout/entry
+    alias: entry
+    domain: saved-site-layout
+    range: double
+    required: true
+    see_also: *id002
+    multivalued: true
+    minimum_cardinality: 2
+    maximum_cardinality: 2
+  saved-site-layout-tier:
+    slot_uri: pixlnd:saved-site-layout/tier
+    alias: tier
+    domain: saved-site-layout
+    range: integer
+    required: false
+    see_also: *id002
+    minimum_value: 0
+  saved-site-layout-captive:
+    slot_uri: pixlnd:saved-site-layout/captive
+    alias: captive
+    domain: saved-site-layout
+    range: double
+    required: false
+    see_also: *id002
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+  saved-village-centre:
+    slot_uri: pixlnd:saved-village/centre
+    alias: centre
+    domain: saved-village
+    range: double
+    required: true
+    see_also: *id003
+    multivalued: true
+    minimum_cardinality: 2
+    maximum_cardinality: 2
+  saved-village-height:
+    slot_uri: pixlnd:saved-village/height
+    alias: height
+    domain: saved-village
+    range: double
+    required: true
+    see_also: *id003
+  saved-village-gate-width:
+    slot_uri: pixlnd:saved-village/gate_width
+    alias: gate_width
+    domain: saved-village
+    range: double
+    required: true
+    see_also: *id003
+  saved-village-gate-offset:
+    slot_uri: pixlnd:saved-village/gate_offset
+    alias: gate_offset
+    domain: saved-village
+    range: double
+    required: true
+    see_also: *id003
+  saved-village-name:
+    slot_uri: pixlnd:saved-village/name
+    alias: name
+    domain: saved-village
+    range: string
+    required: true
+    see_also: *id003
+  saved-village-style:
+    slot_uri: pixlnd:saved-village/style
+    alias: style
+    domain: saved-village
+    range: string
+    required: true
+    see_also: *id003
+  saved-village-hub:
+    slot_uri: pixlnd:saved-village/hub
+    alias: hub
+    domain: saved-village
+    range: boolean
+    required: true
+    see_also: *id003
+  saved-village-gate-index:
+    slot_uri: pixlnd:saved-village/gate_index
+    alias: gate_index
+    domain: saved-village
+    range: integer
+    required: true
+    see_also: *id003
+  saved-land-plan-village:
+    slot_uri: pixlnd:saved-land-plan/village
+    alias: village
+    domain: saved-land-plan
+    range: saved-village
+    required: true
+    see_also: *id004
+    inlined: true
+  saved-land-plan-sites:
+    slot_uri: pixlnd:saved-land-plan/sites
+    alias: sites
+    domain: saved-land-plan
+    range: saved-site-layout
+    required: true
+    see_also: *id004
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+    minimum_cardinality: 6
+    maximum_cardinality: 6
+enums:
+  saved-site-family:
+    enum_uri: pixlnd:saved-site-family
+    permissible_values:
+      ruins: {}
+      camp: {}
+      supplier: {}

@@ -1,0 +1,7 @@
+ classDiagram
+    class `Inventory-entry`
+    click `Inventory-entry` href "../Inventory-entry"
+      `Inventory-entry` : inventory_entry_count
+      `Inventory-entry` : inventory_entry_item
+        `Inventory-entry` --> "1" `Item` : inventory_entry_item
+        click `Item` href "../Item"

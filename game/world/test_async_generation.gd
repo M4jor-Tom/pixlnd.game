@@ -2,7 +2,7 @@
 extends SceneTree
 const Main := preload("res://game/main.tscn")
 const MeshData := preload("res://game/world/zone_mesh.gd")
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Transactions := preload("res://game/world/streaming_transaction_cases.gd")
 var failed := 0
 
@@ -35,7 +35,7 @@ func run() -> void:
 	if not directory.is_absolute_path():
 		quit(1)
 		return
-	Transactions.run(self, Model.Ontology.load_dir("res://ontology/instances"))
+	Transactions.run(self, Domain.Ontology.load_dir())
 	var path := directory.path_join("async-generation.json")
 	DirAccess.remove_absolute(path)
 	var main = Main.instantiate()

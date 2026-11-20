@@ -1,0 +1,12 @@
+ classDiagram
+    class `Status-application`
+    click `Status-application` href "../Status-application"
+      `Status-application` : damage
+      `Status-application` : effect
+        `Status-application` --> "1" `Status-effect` : effect
+        click `Status-effect` href "../Status-effect"
+      `Status-application` : next_tick
+      `Status-application` : remaining_lifetime
+      `Status-application` : source
+        `Status-application` --> "0..1" `Entity` : source
+        click `Entity` href "../Entity"

@@ -4,7 +4,7 @@
 ## Healing Stream cast, Bulwark stun immunity and Mana Shield absorb.
 extends SceneTree
 
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Combat := preload("res://game/combat/combat.gd")
 const Spawner := preload("res://game/world/spawner.gd")
 const InputMapBuilder := preload("res://game/meta/input_map.gd")
@@ -82,20 +82,9 @@ func _hot_boundaries() -> void:
 
 
 func _init() -> void:
-	o = Model.Ontology.load_dir("res://ontology/instances")
-	check(o.validate(), "ontology valid")
+	o = Domain.Ontology.load_dir()
+	check(o.errors.is_empty(), "ontology valid")
 	design = o.configs["generators"]["design"]
-	var ab: Dictionary = design["abilities"]
-	# c-ability-runtime fires
-	ab["smash"]["runtime"] = "fly"
-	check(not o.validate(), "c-ability-runtime rejects an unknown runtime")
-	o.errors.clear()
-	ab["smash"]["runtime"] = "dash"
-	ab["smash"]["cost"]["mp"] = 150
-	check(not o.validate(), "c-ability-runtime rejects mp cost > 100")
-	o.errors.clear()
-	ab["smash"]["cost"].erase("mp")
-	check(o.validate(), "restored")
 	InputMapBuilder.build(o.configs["keybinds"]["hybrid"])
 	_camouflage_boundaries()
 	await process_frame  # HoT fixtures need ready cameras and an active tree for actual death.

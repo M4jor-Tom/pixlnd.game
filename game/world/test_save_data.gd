@@ -2,7 +2,7 @@ extends SceneTree
 const ContractCases := preload("res://game/world/save_data_contract_cases.gd")
 const Save := preload("res://game/world/save_data.gd")
 const State := preload("res://game/world/world_state.gd")
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Item := preload("res://game/items/item.gd")
 const Items := preload("res://game/items/items.gd")
 const Gen := preload("res://game/world/world_gen.gd")
@@ -30,7 +30,7 @@ func run() -> void:
 		quit(1)
 		return
 	path = directory.path_join("test-save-data.json")
-	var o = Model.Ontology.load_dir("res://ontology/instances")
+	var o = Domain.Ontology.load_dir()
 	var d: Dictionary = o.configs.generators.design
 	var p = PLAYER.instantiate()
 	root.add_child(p)
@@ -326,9 +326,9 @@ func _power_progression(p, worn: Item, sword) -> void:
 	if p.inventory.equipment.get(&"main-hand") == worn:
 		p.inventory.unequip(&"main-hand")
 	while p.level < 14:
-		p.gain_xp(Model.xp_to_next(p.level) - p.xp)
+		p.gain_xp(Domain.xp_to_next(p.level) - p.xp)
 	check(
-		Model.power_for_level(p.level) == 40 and p.inventory.equip(worn),
+		Domain.power_for_level(p.level) == 40 and p.inventory.equip(worn),
 		"restored retained +40 admits after real progression"
 	)
 	check(p.inventory.class_allowed(sword), "class admission remains structural")

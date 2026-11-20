@@ -1,0 +1,74 @@
+ classDiagram
+    class `Pet`
+    click `Pet` href "../Pet"
+      `Entity` <|-- `Pet`
+        click `Entity` href "../Entity"
+      `Pet` : current_target
+        `Pet` --> "0..1" `Player-character` : current_target
+        click `Player-character` href "../Player-character"
+      `Pet` : entity_accel
+      `Pet` : entity_appearance
+        `Pet` --> "1" `Appearance` : entity_appearance
+        click `Appearance` href "../Appearance"
+      `Pet` : entity_armor_multiplier
+      `Pet` : entity_block_power
+      `Pet` : entity_blue_time
+      `Pet` : entity_body_pitch
+      `Pet` : entity_body_roll
+      `Pet` : entity_body_yaw
+      `Pet` : entity_class
+        `Pet` --> "0..1" `Character-class` : entity_class
+        click `Character-class` href "../Character-class"
+      `Pet` : entity_damage_multiplier
+      `Pet` : entity_equipment
+        `Pet` --> "13..*" `Item` : entity_equipment
+        click `Item` href "../Item"
+      `Pet` : entity_flags
+        `Pet` --> "*" `EntityFlag` : entity_flags
+        click `EntityFlag` href "../EntityFlag"
+      `Pet` : entity_hit_counter
+      `Pet` : entity_hostility
+        `Pet` --> "1" hostility : entity_hostility
+        click hostility href "../hostility"
+      `Pet` : entity_hp
+      `Pet` : entity_hp_multiplier
+      `Pet` : entity_last_hit_time
+      `Pet` : entity_level
+      `Pet` : entity_mana_cubes
+      `Pet` : entity_mp
+      `Pet` : entity_name
+      `Pet` : entity_parent_owner
+        `Pet` --> "0..1" `Entity` : entity_parent_owner
+        click `Entity` href "../Entity"
+      `Pet` : entity_pos
+      `Pet` : entity_power_base
+      `Pet` : entity_resi_multiplier
+      `Pet` : entity_skills
+      `Pet` : entity_slowed_time
+      `Pet` : entity_specialization
+        `Pet` --> "0..1" `Specialization` : entity_specialization
+        click `Specialization` href "../Specialization"
+      `Pet` : entity_species
+        `Pet` --> "1" `Creature` : entity_species
+        click `Creature` href "../Creature"
+      `Pet` : entity_speed_up_time
+      `Pet` : entity_stamina
+      `Pet` : entity_status_applications
+        `Pet` --> "*" `Status-application` : entity_status_applications
+        click `Status-application` href "../Status-application"
+      `Pet` : entity_stealth
+      `Pet` : entity_stun_time
+      `Pet` : entity_velocity
+      `Pet` : entity_xp
+      `Pet` : equips
+        `Pet` --> "*" `Item` : equips
+        click `Item` href "../Item"
+      `Pet` : id
+      `Pet` : pet_boss_origin
+      `Pet` : pet_cage
+        `Pet` --> "1" `Item` : pet_cage
+        click `Item` href "../Item"
+      `Pet` : pet_hydration
+      `Pet` : threat
+        `Pet` --> "*" `Player-character` : threat
+        click `Player-character` href "../Player-character"

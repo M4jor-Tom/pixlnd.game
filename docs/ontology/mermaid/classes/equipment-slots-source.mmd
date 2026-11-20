@@ -1,0 +1,12 @@
+ classDiagram
+    class `Equipment-slots-source`
+    click `Equipment-slots-source` href "../Equipment-slots-source"
+      `Equipment-slots-source` : documentation
+      `Equipment-slots-source` : extra
+        `Equipment-slots-source` --> "1" `Equipment-extra-source` : extra
+        click `Equipment-extra-source` href "../Equipment-extra-source"
+      `Equipment-slots-source` : rules
+      `Equipment-slots-source` : schema_tag
+      `Equipment-slots-source` : slots
+        `Equipment-slots-source` --> "1..*" `Equipment-slot-source-row` : slots
+        click `Equipment-slot-source-row` href "../Equipment-slot-source-row"

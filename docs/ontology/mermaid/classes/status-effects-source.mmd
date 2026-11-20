@@ -1,0 +1,11 @@
+ classDiagram
+    class `Status-effects-source`
+    click `Status-effects-source` href "../Status-effects-source"
+      `Status-effects-source` : ability_buffs
+        `Status-effects-source` --> "1" `Source-ability-buffs` : ability_buffs
+        click `Source-ability-buffs` href "../Source-ability-buffs"
+      `Status-effects-source` : entries
+        `Status-effects-source` --> "1..*" `Status-source-entry` : entries
+        click `Status-source-entry` href "../Status-source-entry"
+      `Status-effects-source` : not_found
+      `Status-effects-source` : schema_tag

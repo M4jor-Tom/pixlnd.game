@@ -1,0 +1,7 @@
+ classDiagram
+    class `Terrain-features-source`
+    click `Terrain-features-source` href "../Terrain-features-source"
+      `Terrain-features-source` : entries
+        `Terrain-features-source` --> "1..*" `Terrain-feature-source-row-entry` : entries
+        click `Terrain-feature-source-row-entry` href "../Terrain-feature-source-row-entry"
+      `Terrain-features-source` : schema_tag

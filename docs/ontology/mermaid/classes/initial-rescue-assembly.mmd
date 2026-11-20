@@ -1,0 +1,17 @@
+ classDiagram
+    class `Initial-rescue-assembly`
+    click `Initial-rescue-assembly` href "../Initial-rescue-assembly"
+      `Poi` <|-- `Initial-rescue-assembly`
+        click `Poi` href "../Poi"
+      `Initial-rescue-assembly` <|-- `Initial-populated-rescue-assembly`
+        click `Initial-populated-rescue-assembly` href "../Initial-populated-rescue-assembly"
+      `Initial-rescue-assembly` : id
+      `Initial-rescue-assembly` : initial_battlefield
+        `Initial-rescue-assembly` --> "1" `Rescue-battlefield-volume` : initial_battlefield
+        click `Rescue-battlefield-volume` href "../Rescue-battlefield-volume"
+      `Initial-rescue-assembly` : initial_opposite_exits
+        `Initial-rescue-assembly` --> "1..*" `Initial-battlefield-exit` : initial_opposite_exits
+        click `Initial-battlefield-exit` href "../Initial-battlefield-exit"
+      `Initial-rescue-assembly` : located_in
+        `Initial-rescue-assembly` --> "1" `Land` : located_in
+        click `Land` href "../Land"

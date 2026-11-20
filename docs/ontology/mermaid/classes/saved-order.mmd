@@ -1,0 +1,7 @@
+ classDiagram
+    class `Saved-order`
+    click `Saved-order` href "../Saved-order"
+      `Saved-order` : saved_order_order
+      `Saved-order` : saved_order_player
+        `Saved-order` --> "1" `Player-character` : saved_order_player
+        click `Player-character` href "../Player-character"

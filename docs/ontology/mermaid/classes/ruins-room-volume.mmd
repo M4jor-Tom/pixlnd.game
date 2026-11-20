@@ -1,0 +1,11 @@
+ classDiagram
+    class `Ruins-room-volume`
+    click `Ruins-room-volume` href "../Ruins-room-volume"
+      `Encounter-volume` <|-- `Ruins-room-volume`
+        click `Encounter-volume` href "../Encounter-volume"
+      `Ruins-room-volume` <|-- `Initial-populated-ruins-room`
+        click `Initial-populated-ruins-room` href "../Initial-populated-ruins-room"
+      `Ruins-room-volume` : above_floor
+      `Ruins-room-volume` : below_floor
+      `Ruins-room-volume` : depth
+      `Ruins-room-volume` : width

@@ -1,0 +1,22 @@
+ classDiagram
+    class `Settlement`
+    click `Settlement` href "../Settlement"
+      `Settlement` : count_per_land
+      `Settlement` : id
+      `Settlement` : population_animals
+        `Settlement` --> "*" `Creature` : population_animals
+        click `Creature` href "../Creature"
+      `Settlement` : population_races
+        `Settlement` --> "*" `Race` : population_races
+        click `Race` href "../Race"
+      `Settlement` : settlement_buildings
+        `Settlement` --> "1..*" `Building` : settlement_buildings
+        click `Building` href "../Building"
+      `Settlement` : settlement_districts
+        `Settlement` --> "1..*" `District` : settlement_districts
+        click `District` href "../District"
+      `Settlement` : settlement_petrified
+      `Settlement` : settlement_possessed
+      `Settlement` : style
+        `Settlement` --> "0..1" `Settlement-style` : style
+        click `Settlement-style` href "../Settlement-style"

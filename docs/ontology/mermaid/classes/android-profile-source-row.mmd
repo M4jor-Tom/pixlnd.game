@@ -1,0 +1,11 @@
+ classDiagram
+    class `Android-profile-source-row`
+    click `Android-profile-source-row` href "../Android-profile-source-row"
+      `Android-profile-parameters` <|-- `Android-profile-source-row`
+        click `Android-profile-parameters` href "../Android-profile-parameters"
+      `Android-profile-source-row` : actions
+        `Android-profile-source-row` --> "1..*" `ControlActionId` : actions
+        click `ControlActionId` href "../ControlActionId"
+      `Android-profile-source-row` : android_profile_deadzone_ratio
+      `Android-profile-source-row` : android_profile_look_deg_per_safe_width
+      `Android-profile-source-row` : android_profile_min_target_dp

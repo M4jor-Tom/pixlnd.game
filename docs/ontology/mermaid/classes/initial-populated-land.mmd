@@ -1,0 +1,62 @@
+ classDiagram
+    class `Initial-populated-land`
+    click `Initial-populated-land` href "../Initial-populated-land"
+      `Land` <|-- `Initial-populated-land`
+        click `Land` href "../Land"
+      `Initial-populated-land` : blue_rescue
+        `Initial-populated-land` --> "1" `Initial-populated-rescue-assembly` : blue_rescue
+        click `Initial-populated-rescue-assembly` href "../Initial-populated-rescue-assembly"
+      `Initial-populated-land` : daily_camp
+        `Initial-populated-land` --> "1" `Initial-populated-camp-assembly` : daily_camp
+        click `Initial-populated-camp-assembly` href "../Initial-populated-camp-assembly"
+      `Initial-populated-land` : green_rescue
+        `Initial-populated-land` --> "1" `Initial-populated-rescue-assembly` : green_rescue
+        click `Initial-populated-rescue-assembly` href "../Initial-populated-rescue-assembly"
+      `Initial-populated-land` : id
+      `Initial-populated-land` : land_artifacts
+        `Initial-populated-land` --> "1..*" `Artifact` : land_artifacts
+        click `Artifact` href "../Artifact"
+      `Initial-populated-land` : land_books_of_crafting
+        `Initial-populated-land` --> "4..*" `Book-of-crafting` : land_books_of_crafting
+        click `Book-of-crafting` href "../Book-of-crafting"
+      `Initial-populated-land` : land_border
+        `Initial-populated-land` --> "0..1" `Polygon` : land_border
+        click `Polygon` href "../Polygon"
+      `Initial-populated-land` : land_circles_of_power
+        `Initial-populated-land` --> "1..*" `Circle-of-power` : land_circles_of_power
+        click `Circle-of-power` href "../Circle-of-power"
+      `Initial-populated-land` : land_coords
+      `Initial-populated-land` : land_danger_tier
+        `Initial-populated-land` --> "1" `Danger-tier` : land_danger_tier
+        click `Danger-tier` href "../Danger-tier"
+      `Initial-populated-land` : land_gnome_suppliers
+        `Initial-populated-land` --> "4..*" `Gnome-supplier` : land_gnome_suppliers
+        click `Gnome-supplier` href "../Gnome-supplier"
+      `Initial-populated-land` : land_key_items
+        `Initial-populated-land` --> "*" `Key-item` : land_key_items
+        click `Key-item` href "../Key-item"
+      `Initial-populated-land` : land_landscape
+        `Initial-populated-land` --> "1" `Landscape` : land_landscape
+        click `Landscape` href "../Landscape"
+      `Initial-populated-land` : land_level
+      `Initial-populated-land` : land_name
+      `Initial-populated-land` : land_rarity
+      `Initial-populated-land` : land_realm
+        `Initial-populated-land` --> "0..1" `Realm` : land_realm
+        click `Realm` href "../Realm"
+      `Initial-populated-land` : land_settlements
+        `Initial-populated-land` --> "1..*" `Settlement` : land_settlements
+        click `Settlement` href "../Settlement"
+      `Initial-populated-land` : land_tier_range
+        `Initial-populated-land` --> "*" `Mob-strength-tier` : land_tier_range
+        click `Mob-strength-tier` href "../Mob-strength-tier"
+      `Initial-populated-land` : purple_rescue
+        `Initial-populated-land` --> "1" `Initial-populated-rescue-assembly` : purple_rescue
+        click `Initial-populated-rescue-assembly` href "../Initial-populated-rescue-assembly"
+      `Initial-populated-land` : ruins
+        `Initial-populated-land` --> "1" `Initial-populated-ruins-assembly` : ruins
+        click `Initial-populated-ruins-assembly` href "../Initial-populated-ruins-assembly"
+      `Initial-populated-land` : white_rescue
+        `Initial-populated-land` --> "1" `Initial-populated-rescue-assembly` : white_rescue
+        click `Initial-populated-rescue-assembly` href "../Initial-populated-rescue-assembly"
+      `Initial-populated-land` : wizard_towers

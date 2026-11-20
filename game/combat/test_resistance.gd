@@ -1,7 +1,7 @@
 ## Resistance-stage routing, equipped gear, creature baseline and hit-derived burn inheritance.
 extends SceneTree
 
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Combat := preload("res://game/combat/combat.gd")
 const Items := preload("res://game/items/items.gd")
 const Spawner := preload("res://game/world/spawner.gd")
@@ -28,8 +28,8 @@ func _frames(count: int) -> void:
 
 
 func _run() -> void:
-	o = Model.Ontology.load_dir("res://ontology/instances")
-	check(o.validate(), "ontology valid")
+	o = Domain.Ontology.load_dir()
+	check(o.errors.is_empty(), "ontology valid")
 	design = o.configs.generators.design
 	_formulas()
 
@@ -119,7 +119,7 @@ func _gear(mage) -> void:
 	var chest = Items.generate(RandomNumberGenerator.new(), &"chest-armor", &"", &"silk", 1, 0)
 	mage.inventory.add(chest)
 	mage.inventory.equip(chest)
-	var expected_r: float = Model.stat_curve(1, 0)
+	var expected_r: float = Domain.stat_curve(1, 0)
 	check(
 		(
 			is_equal_approx(mage.resistance, expected_r)

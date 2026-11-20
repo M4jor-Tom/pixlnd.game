@@ -1,0 +1,14 @@
+ classDiagram
+    class `Saved-reward`
+    click `Saved-reward` href "../Saved-reward"
+      `Saved-reward` : saved_reward_class_id
+      `Saved-reward` : saved_reward_classes
+        `Saved-reward` --> "*" `Character-class` : saved_reward_classes
+        click `Character-class` href "../Character-class"
+      `Saved-reward` : saved_reward_delivered
+      `Saved-reward` : saved_reward_level
+      `Saved-reward` : saved_reward_payload
+        `Saved-reward` --> "1..*" `Saved-item` : saved_reward_payload
+        click `Saved-item` href "../Saved-item"
+      `Saved-reward` : saved_reward_position
+      `Saved-reward` : saved_reward_source

@@ -57,6 +57,33 @@ def check_aliases():
         print("PASS: 25 alias-origin entrypoints, repository/sibling/companion target identity")
 
 
+def check_skill(name):
+    directory = SKILLS / name
+    assert directory.is_dir() and not directory.is_symlink(), directory
+    skill = directory / "SKILL.md"
+    assert not skill.is_symlink(), skill
+    text = skill.read_text()
+    assert text.startswith("---\n"), f"missing frontmatter: {skill}"
+    frontmatter = text.split("---\n", 2)[1]
+    fields = dict(re.findall(r"^(name|description):\s*(.+)$", frontmatter, re.M))
+    assert fields.get("name", "").strip('\"\'') == name, skill
+    description = fields.get("description", "").strip('\"\'')
+    assert description and len(description) <= 1024, skill
+
+
+def check_document(document):
+    for target in re.findall(r"\[[^\]]*\]\(([^\s)]+)\)", document.read_text()):
+        url = urlsplit(target)
+        if url.scheme or url.netloc:
+            continue
+        path = document.parent / unquote(url.path) if url.path else document
+        assert path.exists(), f"broken link: {document}: {target}"
+        if url.fragment and path.suffix == ".md":
+            headings = re.findall(r"^#+\s+(.+)$", path.read_text(), re.M)
+            anchors = {re.sub(r"[^\w\- ]", "", h.lower()).replace(" ", "-") for h in headings}
+            assert unquote(url.fragment) in anchors, f"missing anchor: {document}: {target}"
+
+
 def check():
     for harness in (".pi", ".claude"):
         link = ROOT / harness / "skills"
@@ -66,33 +93,14 @@ def check():
     found = {p.parent.name for p in SKILLS.glob("*/SKILL.md")}
     assert found == EXPECTED, f"skill inventory mismatch: {found ^ EXPECTED}"
     for name in sorted(EXPECTED):
-        directory = SKILLS / name
-        assert directory.is_dir() and not directory.is_symlink(), directory
-        skill = directory / "SKILL.md"
-        assert not skill.is_symlink(), skill
-        text = skill.read_text()
-        assert text.startswith("---\n"), f"missing frontmatter: {skill}"
-        frontmatter = text.split("---\n", 2)[1]
-        fields = dict(re.findall(r"^(name|description):\s*(.+)$", frontmatter, re.M))
-        assert fields.get("name", "").strip('\"\'') == name, skill
-        description = fields.get("description", "").strip('\"\'')
-        assert description and len(description) <= 1024, skill
+        check_skill(name)
     entrypoints = [ROOT / p for p in (
         "AGENTS.md", "docs/lessons.md", "docs/ROADMAP/README.md",
         "ontology/AGENTS.md", "ontology/decisions/AGENTS.md",
     )]
     documents = sorted(SKILLS.rglob("*.md")) + entrypoints
     for document in documents:
-        for target in re.findall(r"\[[^\]]*\]\(([^\s)]+)\)", document.read_text()):
-            url = urlsplit(target)
-            if url.scheme or url.netloc:
-                continue
-            path = document.parent / unquote(url.path) if url.path else document
-            assert path.exists(), f"broken link: {document}: {target}"
-            if url.fragment and path.suffix == ".md":
-                headings = re.findall(r"^#+\s+(.+)$", path.read_text(), re.M)
-                anchors = {re.sub(r"[^\w\- ]", "", h.lower()).replace(" ", "-") for h in headings}
-                assert unquote(url.fragment) in anchors, f"missing anchor: {document}: {target}"
+        check_document(document)
     check_aliases()
     print(f"PASS: {len(EXPECTED)} canonical skills, two relative discovery links, {len(documents)} Markdown files")
 

@@ -1,0 +1,11 @@
+ classDiagram
+    class `Furnishing-profile`
+    click `Furnishing-profile` href "../Furnishing-profile"
+      `Furnishing-profile` <|-- `Vase-profile`
+        click `Vase-profile` href "../Vase-profile"
+      `Furnishing-profile` <|-- `Table-profile`
+        click `Table-profile` href "../Table-profile"
+      `Furnishing-profile` : armor
+      `Furnishing-profile` : count_per_ruins_room
+      `Furnishing-profile` : full_health
+      `Furnishing-profile` : minimum_room_guard_level

@@ -1,0 +1,9 @@
+ classDiagram
+    class `Economy-incomes-source`
+    click `Economy-incomes-source` href "../Economy-incomes-source"
+      `Economy-incomes-source` : alpha
+        `Economy-incomes-source` --> "1" `Economy-income-alpha` : alpha
+        click `Economy-income-alpha` href "../Economy-income-alpha"
+      `Economy-incomes-source` : steam
+        `Economy-incomes-source` --> "1" `Economy-income-steam` : steam
+        click `Economy-income-steam` href "../Economy-income-steam"

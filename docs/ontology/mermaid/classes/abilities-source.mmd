@@ -1,0 +1,11 @@
+ classDiagram
+    class `Abilities-source`
+    click `Abilities-source` href "../Abilities-source"
+      `Abilities-source` : documentation
+      `Abilities-source` : entries
+        `Abilities-source` --> "1..*" `Ability-source-entry` : entries
+        click `Ability-source-entry` href "../Ability-source-entry"
+      `Abilities-source` : omega_signature
+        `Abilities-source` --> "1" `Signature-descriptions` : omega_signature
+        click `Signature-descriptions` href "../Signature-descriptions"
+      `Abilities-source` : schema_tag

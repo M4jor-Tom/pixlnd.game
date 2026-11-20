@@ -3,7 +3,7 @@
 ## then a floor with a player and wolves: kills → XP → level 2, max HP up, healed, 2 skill points banked.
 extends SceneTree
 
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Progression := preload("res://game/progression/progression.gd")
 const Combat := preload("res://game/combat/combat.gd")
 const Spawner := preload("res://game/world/spawner.gd")
@@ -25,11 +25,11 @@ func _frames(n: int) -> void:
 
 
 func _init() -> void:
-	var o := Model.Ontology.load_dir("res://ontology/instances")
-	check(o.validate(), "ontology valid")
+	var o := Domain.Ontology.load_dir()
+	check(o.errors.is_empty(), "ontology valid")
 	var design: Dictionary = o.configs["generators"]["design"]
 	var prog: Dictionary = design["progression"]
-	_formulas(o, prog)
+	_formulas(prog)
 
 	# scene: player kills three L2 wolves → 3 × 21 = 63 xp → level 2
 	InputMapBuilder.build(o.configs["keybinds"]["hybrid"])
@@ -83,42 +83,36 @@ func _init() -> void:
 	quit(0 if _failed == 0 else 1)
 
 
-func _formulas(o, prog: Dictionary) -> void:
+func _formulas(prog: Dictionary) -> void:
 	# level-formula (stats.json table)
 	for pair in [[1, 50], [2, 97], [5, 216], [10, 360], [20, 537], [50, 760], [100, 881]]:
 		check(
-			Model.xp_to_next(pair[0]) == pair[1],
-			"xp-to-next L%d = %d: %d" % [pair[0], pair[1], Model.xp_to_next(pair[0])]
+			Domain.xp_to_next(pair[0]) == pair[1],
+			"xp-to-next L%d = %d: %d" % [pair[0], pair[1], Domain.xp_to_next(pair[0])]
 		)
 	check(
 		(
-			Model.power_for_level(1) == 1
-			and Model.power_for_level(10) == 32
-			and Model.power_for_level(1981) == 100
+			Domain.power_for_level(1) == 1
+			and Domain.power_for_level(10) == 32
+			and Domain.power_for_level(1981) == 100
 		),
 		"power table"
 	)
 	# xp-for-kill: even level = fraction of xp-to-next; 10 below = 0; far above capped ×2
 	check(
-		Model.xp_for_kill(2, 2, prog) == int(97 * 0.2),
-		"even kill L2 = 19: %d" % Model.xp_for_kill(2, 2, prog)
+		Domain.xp_for_kill(2, 2, prog) == int(97 * 0.2),
+		"even kill L2 = 19: %d" % Domain.xp_for_kill(2, 2, prog)
 	)
-	check(Model.xp_for_kill(1, 11, prog) == 0, "grey kill (10 below) = 0")
+	check(Domain.xp_for_kill(1, 11, prog) == 0, "grey kill (10 below) = 0")
 	check(
-		Model.xp_for_kill(30, 1, prog) == int(Model.xp_to_next(30) * 0.2 * 2.0),
+		Domain.xp_for_kill(30, 1, prog) == int(Domain.xp_to_next(30) * 0.2 * 2.0),
 		"far above capped at ×2"
 	)
 	check(
-		Model.xp_for_kill(3, 1, prog) > Model.xp_for_kill(3, 3, prog),
+		Domain.xp_for_kill(3, 1, prog) > Domain.xp_for_kill(3, 3, prog),
 		"higher creature than us = more xp"
 	)
 	_settle()
-
-	# c-xp-config fires
-	prog["kill-fraction"] = 1.5
-	check(not o.validate(), "c-xp-config rejects kill-fraction > 1")
-	prog["kill-fraction"] = 0.2
-	o.errors.clear()
 
 
 func _level_up(p, wolves: Array, levels: Array, hp1: float) -> void:

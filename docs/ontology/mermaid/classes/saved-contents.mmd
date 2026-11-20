@@ -1,0 +1,12 @@
+ classDiagram
+    class `Saved-contents`
+    click `Saved-contents` href "../Saved-contents"
+      `Saved-contents` : saved_contents_props
+        `Saved-contents` --> "1..*" `Saved-prop-entry` : saved_contents_props
+        click `Saved-prop-entry` href "../Saved-prop-entry"
+      `Saved-contents` : saved_contents_rubble
+        `Saved-contents` --> "1..*" `Saved-rubble-entry` : saved_contents_rubble
+        click `Saved-rubble-entry` href "../Saved-rubble-entry"
+      `Saved-contents` : saved_contents_traps
+        `Saved-contents` --> "1..*" `Saved-trap` : saved_contents_traps
+        click `Saved-trap` href "../Saved-trap"

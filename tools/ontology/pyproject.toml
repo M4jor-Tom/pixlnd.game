@@ -1,0 +1,5 @@
+[project]
+name = "pixlnd-ontology-tools"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = ["linkml==1.12.1", "linkml-runtime==1.12.1", "jsonschema==4.26.0", "PyYAML==6.0.3"]

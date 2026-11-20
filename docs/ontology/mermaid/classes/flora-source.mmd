@@ -1,0 +1,8 @@
+ classDiagram
+    class `Flora-source`
+    click `Flora-source` href "../Flora-source"
+      `Flora-source` : documentation
+      `Flora-source` : entries
+        `Flora-source` --> "1..*" `Flora-source-row-entry` : entries
+        click `Flora-source-row-entry` href "../Flora-source-row-entry"
+      `Flora-source` : schema_tag

@@ -1,0 +1,11 @@
+ classDiagram
+    class `Faction`
+    click `Faction` href "../Faction"
+      `Faction` : faction_alignment
+      `Faction` : faction_leader
+      `Faction` : faction_members
+        `Faction` --> "*" `Creature` : faction_members
+        click `Creature` href "../Creature"
+      `Faction` : faction_name
+      `Faction` : faction_presence
+      `Faction` : id

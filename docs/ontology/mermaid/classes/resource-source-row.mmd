@@ -1,0 +1,13 @@
+ classDiagram
+    class `Resource-source-row`
+    click `Resource-source-row` href "../Resource-source-row"
+      `Resource-source-row` : display
+      `Resource-source-row` : effect
+      `Resource-source-row` : gain
+      `Resource-source-row` : name
+      `Resource-source-row` : range
+      `Resource-source-row` : regen
+      `Resource-source-row` : source_versions
+        `Resource-source-row` --> "1..*" `SourceVersion` : source_versions
+        click `SourceVersion` href "../SourceVersion"
+      `Resource-source-row` : spend

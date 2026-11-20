@@ -1,0 +1,8 @@
+ classDiagram
+    class `Materials-source`
+    click `Materials-source` href "../Materials-source"
+      `Materials-source` : documentation
+      `Materials-source` : entries
+        `Materials-source` --> "1..*" `Material-source-entry` : entries
+        click `Material-source-entry` href "../Material-source-entry"
+      `Materials-source` : schema_tag

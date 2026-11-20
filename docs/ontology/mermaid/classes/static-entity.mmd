@@ -1,0 +1,9 @@
+ classDiagram
+    class `Static-entity`
+    click `Static-entity` href "../Static-entity"
+      `Static-entity` : closed
+      `Static-entity` : id
+      `Static-entity` : occupant
+        `Static-entity` --> "0..1" `Entity` : occupant
+        click `Entity` href "../Entity"
+      `Static-entity` : orientation

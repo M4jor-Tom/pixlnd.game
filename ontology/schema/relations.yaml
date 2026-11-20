@@ -6,6 +6,8 @@ prefixes:
 default_prefix: pixlnd
 imports:
 - linkml:types
+- relation-types
+- associations
 default_range: string
 slots:
   grants-ability:
@@ -52,6 +54,8 @@ slots:
   costs:
     slot_uri: pixlnd:costs
     alias: costs
+    annotations:
+      association-class: resource-cost
     range: resource
     multivalued: true
     domain: ability
@@ -82,6 +86,8 @@ slots:
   consumes:
     slot_uri: pixlnd:consumes
     alias: consumes
+    annotations:
+      association-class: recipe-consumption
     range: ingredient-or-material
     required: true
     multivalued: true
@@ -111,6 +117,8 @@ slots:
   yields:
     slot_uri: pixlnd:yields
     alias: yields
+    annotations:
+      association-class: ingredient-yield
     range: ingredient
     required: true
     multivalued: true
@@ -186,6 +194,8 @@ slots:
   holds:
     slot_uri: pixlnd:holds
     alias: holds
+    annotations:
+      association-class: inventory-entry
     range: item
     required: true
     multivalued: true
@@ -460,16 +470,19 @@ slots:
     see_also:
     - ../domain/4_Relations.md
   threat-mob:
+    description: "Threat mob property; interpreted under its owning definition."
     slot_uri: pixlnd:threat-mob
     alias: mob
     range: entity
     required: true
   threat-player:
+    description: "Threat player property; interpreted under its owning definition."
     slot_uri: pixlnd:threat-player
     alias: player
     range: player-character
     required: true
   aggro-points:
+    description: "Aggro points property; interpreted under its owning definition."
     slot_uri: pixlnd:aggro-points
     alias: aggro-points
     range: float

@@ -1,0 +1,7 @@
+ classDiagram
+    class `Specialization-source-entry`
+    click `Specialization-source-entry` href "../Specialization-source-entry"
+      `Specialization-source-entry` : source_entry_key
+      `Specialization-source-entry` : value
+        `Specialization-source-entry` --> "1" `Specialization-source-row` : value
+        click `Specialization-source-row` href "../Specialization-source-row"

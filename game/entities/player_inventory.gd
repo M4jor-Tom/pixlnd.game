@@ -3,7 +3,7 @@ extends RefCounted
 
 const Combat := preload("res://game/combat/combat.gd")
 const Abilities := preload("res://game/combat/abilities.gd")
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Items := preload("res://game/items/items.gd")
 const Item := preload("res://game/items/item.gd")
 const Inventory := preload("res://game/items/inventory.gd")
@@ -18,24 +18,24 @@ static func setup_items(
 	p.design = p_design
 	var cls = p.o.classes[class_id]
 	if spec_id == &"":
-		spec_id = cls.specializations[0]  # c-spec-of-class: start as spec index 0
+		spec_id = cls.slot_specializations[0]  # c-spec-of-class: start as spec index 0
 	p.spec = spec_id
 	p.defence = p.design.get("defence", {})
 	p.block_power = p.block_max()
 	p.skill_tree = SkillTree.new(p.o, p.design["skill-point"], class_id, spec_id)
 	p.abilities = Abilities.new(p, p.design["abilities"])
-	p.special_mode = cls.special_attack_mode
-	p.mp_passive = "passive" in str(cls.raw.get("mp-generation", []))
+	p.special_mode = cls.slot_special_attack_mode
+	p.mp_passive = "passive" in str(cls.slot_mp_generation)
 	p.prog = p.design["progression"]
-	p.hp_mult = cls.hp_mult
+	p.hp_mult = cls.slot_hp_mult if cls.slot_hp_mult != null else 1.0
 	p.inventory = Inventory.new(p.o, p.design, class_id, func(): return p.level)
 	var start: Dictionary = p.design["starting-inventory"]
 	var starter: Dictionary = p.combat["starter-weapon"]
-	var wt = p.o.weapon_types[cls.weapon_types[0]]
+	var wt = p.o.weapon_types[cls.slot_weapon_types[0]]
 	var first := Items.generate(
 		p._rng,
 		&"weapon",
-		wt.id,
+		Domain.id_of(wt),
 		Items.weapon_material(wt),
 		int(starter["level"]),
 		int(starter["rarity"])
@@ -50,6 +50,13 @@ static func setup_items(
 	p.hp = p.max_hp  # initialization alone starts full, including starter gear
 
 
+## The weapon's documented combo cap, else the design default.
+static func _combo_cap(p, wt: Object) -> int:
+	if wt.slot_combo_cap != null and wt.slot_combo_cap > 0:
+		return int(wt.slot_combo_cap)
+	return int(p.combat["combo"]["default-cap"])
+
+
 static func _refresh_gear(p) -> void:
 	var main = p.inventory.equipment.get(&"main-hand")
 	p.weapon = {}
@@ -61,7 +68,7 @@ static func _refresh_gear(p) -> void:
 		p.weapon = {
 			"type": main.subtype,
 			"damage": Items.damage(main, p.o) * float(p.combat["attack-power-mult"]),
-			"combo_cap": wt.combo_cap if wt.combo_cap > 0 else int(p.combat["combo"]["default-cap"])
+			"combo_cap": _combo_cap(p, wt)
 		}
 		p.moveset = p.moveset_for(main.subtype)
 	p.armor = 0.0
@@ -79,7 +86,7 @@ static func _refresh_gear(p) -> void:
 static func on_kill(p, creature_level: int) -> void:
 	if p.prog.is_empty():  # tests that skip setup_items
 		return
-	p.gain_xp(Model.xp_for_kill(creature_level, p.level, p.prog))
+	p.gain_xp(Domain.xp_for_kill(creature_level, p.level, p.prog))
 
 
 static func gain_xp(p, amount: int) -> void:
@@ -88,7 +95,7 @@ static func gain_xp(p, amount: int) -> void:
 	if s["gained"] == 0:
 		return
 	p.level = s["level"]
-	p.skill_points += s["gained"] * Model.SKILL_POINTS_PER_LEVEL
+	p.skill_points += s["gained"] * Domain.SKILL_POINTS_PER_LEVEL
 	p._base_max_hp = Combat.player_max_hp(p.level, p.hp_mult)
 	p._refresh_gear()
 	if p.prog["heal-on-level-up"]:
@@ -108,7 +115,7 @@ static func use_class_skill(p, slot: int) -> bool:
 	if p.skill_tree == null:
 		return false
 	var a = p.skill_tree.class_slot(slot)
-	return a != null and p.skill_tree.spent(a.id) > 0 and p.abilities.use(a)
+	return a != null and p.skill_tree.spent(Domain.id_of(a)) > 0 and p.abilities.use(a)
 
 
 static func item_label(p, it) -> String:

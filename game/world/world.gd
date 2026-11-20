@@ -4,7 +4,7 @@ extends Node3D
 const WorldStreaming := preload("res://game/world/world_streaming.gd")
 const WorldSites := preload("res://game/world/world_sites.gd")
 const WorldRewards := preload("res://game/world/world_rewards.gd")
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const WorldGen := preload("res://game/world/world_gen.gd")
 const ZoneMesh := preload("res://game/world/zone_mesh.gd")
 const TerrainWorker := preload("res://game/world/terrain_worker.gd")

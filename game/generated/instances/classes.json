@@ -1,0 +1,173 @@
+{
+ "$schema": "character-class",
+ "_paladin": {
+  "name": "Paladin",
+  "status": "X — mentioned as possible future class in 2012, never shipped; Order of the Light paladins exist as NPCs (S)"
+ },
+ "_shared": {
+  "accessories": "all classes: 1 amulet, 2 rings (gold = crit, silver = tempo/haste)",
+  "spec-change": {
+   "A": "adventurer district, next to class trainer, open skills [X], small coin fee; full respec possible",
+   "S": "guild receptionist / trainer in any village, free"
+  },
+  "unarmed": "punch; unarmed special = short roundhouse kick"
+ },
+ "entries": [
+  {
+   "key": "warrior",
+   "value": {
+    "armor-material": "iron",
+    "armor-weight": "heavy",
+    "hp-mult": 1.3,
+    "hp-multiplier-alpha": 1.3,
+    "id-number": 1,
+    "mp-generation": [
+     "basic hits",
+     "successful blocks"
+    ],
+    "name": "Warrior",
+    "special-attack-mode": "charged",
+    "specializations": [
+     "berserker",
+     "guardian"
+    ],
+    "versions": [
+     "A",
+     "S",
+     "Ω"
+    ],
+    "weapon-loadouts": [
+     "dual 1h",
+     "1h + shield",
+     "2h"
+    ],
+    "weapon-types": [
+     "sword",
+     "axe",
+     "mace",
+     "shield",
+     "greatsword",
+     "greataxe",
+     "greatmace"
+    ]
+   }
+  },
+  {
+   "key": "ranger",
+   "value": {
+    "armor-material": "linen",
+    "armor-weight": "medium",
+    "hp-mult": 1.1,
+    "hp-multiplier-alpha": 1.1,
+    "id-number": 2,
+    "mp-generation": [
+     "basic hits",
+     "stealth (sniper)"
+    ],
+    "name": "Ranger",
+    "notes": [
+     "unlimited ammo",
+     "strafes like a shooter, free aim"
+    ],
+    "special-attack-mode": "charged",
+    "specializations": [
+     "sniper",
+     "scout"
+    ],
+    "versions": [
+     "A",
+     "S",
+     "Ω"
+    ],
+    "weapon-loadouts": [
+     "2h"
+    ],
+    "weapon-types": [
+     "bow",
+     "crossbow",
+     "boomerang"
+    ]
+   }
+  },
+  {
+   "key": "mage",
+   "value": {
+    "alt-name": "Spirit Mage (2012)",
+    "armor-material": "silk",
+    "armor-weight": "light",
+    "hp-mult": 1.0,
+    "hp-multiplier-alpha": 1.0,
+    "id-number": 3,
+    "mp-generation": [
+     "passive regeneration to 100"
+    ],
+    "name": "Mage",
+    "notes": [
+     "unarmed = weak bracelet-like bolts",
+     "fire spells light the area like a 2-star lantern"
+    ],
+    "special-attack-cost-mp": 30,
+    "special-attack-mode": "charged",
+    "specializations": [
+     "fire-mage",
+     "water-mage"
+    ],
+    "versions": [
+     "A",
+     "S",
+     "Ω"
+    ],
+    "weapon-loadouts": [
+     "2h staff",
+     "wand",
+     "dual bracelets"
+    ],
+    "weapon-types": [
+     "staff",
+     "wand",
+     "bracelet"
+    ]
+   }
+  },
+  {
+   "key": "rogue",
+   "value": {
+    "armor-material": "cotton",
+    "armor-weight": "medium (?) / light",
+    "hp-mult": 1.2,
+    "hp-multiplier-alpha": 1.2,
+    "id-number": 4,
+    "mp-generation": [
+     "basic hits",
+     "shuriken hits",
+     "stealth (assassin)",
+     "dodges (ninja)"
+    ],
+    "name": "Rogue",
+    "notes": [
+     "right-hand weapon decides animation and special",
+     "specials can be prefixed with Intercept (S)"
+    ],
+    "special-attack-mode": "instant",
+    "specializations": [
+     "assassin",
+     "ninja"
+    ],
+    "versions": [
+     "A",
+     "S",
+     "Ω"
+    ],
+    "weapon-loadouts": [
+     "dual 1h (dagger/fist mix allowed)",
+     "2h longsword"
+    ],
+    "weapon-types": [
+     "dagger",
+     "fist",
+     "longsword"
+    ]
+   }
+  }
+ ]
+}

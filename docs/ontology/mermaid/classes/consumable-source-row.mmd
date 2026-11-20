@@ -1,0 +1,19 @@
+ classDiagram
+    class `Consumable-source-row`
+    click `Consumable-source-row` href "../Consumable-source-row"
+      `Consumable-source-row` : alpha_subtype
+      `Consumable-source-row` : duration_s
+      `Consumable-source-row` : effect
+      `Consumable-source-row` : heal_mult
+      `Consumable-source-row` : kind
+      `Consumable-source-row` : levels_a
+      `Consumable-source-row` : name
+      `Consumable-source-row` : note
+      `Consumable-source-row` : note_s
+      `Consumable-source-row` : recipe
+        `Consumable-source-row` --> "0..1" `Consumable-recipe` : recipe
+        click `Consumable-recipe` href "../Consumable-recipe"
+      `Consumable-source-row` : source
+      `Consumable-source-row` : station
+      `Consumable-source-row` : use
+      `Consumable-source-row` : versions

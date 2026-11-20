@@ -1,6 +1,6 @@
 ## Stateless source/cycle receipts, delivery and saved daily vendor transactions.
 extends RefCounted
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Targeting := preload("res://game/combat/targeting.gd")
 const EncounterGen := preload("res://game/world/encounter_gen.gd")
 const Rewards := preload("res://game/items/encounter_rewards.gd")
@@ -22,7 +22,7 @@ static func stage_tables(world, site: Dictionary, layout: Dictionary, cycle: int
 			&"consumable",
 			StringName(rules.potion),
 			int(rules["potion-count"]),
-			clampi(Model.power_for_level(level), 1, 100)
+			clampi(Domain.power_for_level(level), 1, 100)
 		)
 		potion.rarity = int(rules["potion-rarity"])
 		var pair := [
@@ -165,7 +165,7 @@ static func complete_supplier(world, id: String) -> bool:
 
 static func supplier_ceiling(world, coords: Vector2i) -> int:
 	var count := int(
-		world.ontology.rarities[StringName(world.design.settlement.shop["rarity-cap"])].index
+		world.ontology.rarities[StringName(world.design.settlement.shop["rarity-cap"])].slot_index
 	)
 	for ordinal in world.design["initial-encounters"].supplier.tiers.size():
 		var id: String = world.state_data.site_id(coords, "supplier", ordinal)

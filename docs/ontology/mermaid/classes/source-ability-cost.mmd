@@ -1,0 +1,10 @@
+ classDiagram
+    class `Source-ability-cost`
+    click `Source-ability-cost` href "../Source-ability-cost"
+      `Source-resource-amounts` <|-- `Source-ability-cost`
+        click `Source-resource-amounts` href "../Source-resource-amounts"
+      `Source-ability-cost` : alpha
+      `Source-ability-cost` : block_power
+      `Source-ability-cost` : mp
+      `Source-ability-cost` : stamina
+      `Source-ability-cost` : steam

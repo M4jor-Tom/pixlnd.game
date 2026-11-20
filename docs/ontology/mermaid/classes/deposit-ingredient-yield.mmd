@@ -1,0 +1,10 @@
+ classDiagram
+    class `Deposit-ingredient-yield`
+    click `Deposit-ingredient-yield` href "../Deposit-ingredient-yield"
+      `Ingredient-yield` <|-- `Deposit-ingredient-yield`
+        click `Ingredient-yield` href "../Ingredient-yield"
+      `Deposit-ingredient-yield` : ingredient_yield_ingredient
+        `Deposit-ingredient-yield` --> "1" `Ingredient` : ingredient_yield_ingredient
+        click `Ingredient` href "../Ingredient"
+      `Deposit-ingredient-yield` : ingredient_yield_maximum
+      `Deposit-ingredient-yield` : ingredient_yield_minimum

@@ -1,0 +1,16 @@
+ classDiagram
+    class `Initial-populated-ruins-room`
+    click `Initial-populated-ruins-room` href "../Initial-populated-ruins-room"
+      `Ruins-room-volume` <|-- `Initial-populated-ruins-room`
+        click `Ruins-room-volume` href "../Ruins-room-volume"
+      `Initial-populated-ruins-room` : above_floor
+      `Initial-populated-ruins-room` : below_floor
+      `Initial-populated-ruins-room` : boss_assignment
+        `Initial-populated-ruins-room` --> "0..1" `Initial-ruins-boss-assignment` : boss_assignment
+        click `Initial-ruins-boss-assignment` href "../Initial-ruins-boss-assignment"
+      `Initial-populated-ruins-room` : depth
+      `Initial-populated-ruins-room` : pack_assignment
+        `Initial-populated-ruins-room` --> "1" `Initial-nonboss-assignment` : pack_assignment
+        click `Initial-nonboss-assignment` href "../Initial-nonboss-assignment"
+      `Initial-populated-ruins-room` : tier
+      `Initial-populated-ruins-room` : width

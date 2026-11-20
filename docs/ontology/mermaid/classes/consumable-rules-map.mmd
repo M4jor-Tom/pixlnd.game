@@ -1,0 +1,6 @@
+ classDiagram
+    class `Consumable-rules-map`
+    click `Consumable-rules-map` href "../Consumable-rules-map"
+      `Consumable-rules-map` : entries
+        `Consumable-rules-map` --> "1..*" `Consumable-rules-entry` : entries
+        click `Consumable-rules-entry` href "../Consumable-rules-entry"

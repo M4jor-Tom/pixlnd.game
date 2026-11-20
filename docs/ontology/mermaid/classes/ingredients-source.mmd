@@ -1,0 +1,11 @@
+ classDiagram
+    class `Ingredients-source`
+    click `Ingredients-source` href "../Ingredients-source"
+      `Ingredients-source` : documentation
+      `Ingredients-source` : entries
+        `Ingredients-source` --> "1..*" `Ingredient-source-entry` : entries
+        click `Ingredient-source-entry` href "../Ingredient-source-entry"
+      `Ingredients-source` : schema_tag
+      `Ingredients-source` : unused_data
+        `Ingredients-source` --> "1" `Ingredient-unused-data` : unused_data
+        click `Ingredient-unused-data` href "../Ingredient-unused-data"

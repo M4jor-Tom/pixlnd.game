@@ -1,0 +1,9 @@
+ classDiagram
+    class `Block`
+    click `Block` href "../Block"
+      `Block` : block_breakable
+      `Block` : block_rgb
+      `Block` : block_type
+        `Block` --> "1" `Block-type` : block_type
+        click `Block-type` href "../Block-type"
+      `Block` : id

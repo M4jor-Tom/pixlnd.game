@@ -1,0 +1,15 @@
+ classDiagram
+    class `Realm`
+    click `Realm` href "../Realm"
+      `Realm` : id
+      `Realm` : realm_capital
+        `Realm` --> "0..1" `Realm-capital` : realm_capital
+        click `Realm-capital` href "../Realm-capital"
+      `Realm` : realm_kind
+        `Realm` --> "1" realm_kind : realm_kind
+        click realm_kind href "../realm_kind"
+      `Realm` : realm_leader
+        `Realm` --> "0..1" `Realm-leader` : realm_leader
+        click `Realm-leader` href "../Realm-leader"
+      `Realm` : realm_magic_or_technology
+      `Realm` : realm_name

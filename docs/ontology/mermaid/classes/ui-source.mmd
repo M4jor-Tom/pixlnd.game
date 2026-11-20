@@ -1,0 +1,18 @@
+ classDiagram
+    class `Ui-source`
+    click `Ui-source` href "../Ui-source"
+      `Ui-source` : camera
+        `Ui-source` --> "1" `Ui-source-camera` : camera
+        click `Ui-source-camera` href "../Ui-source-camera"
+      `Ui-source` : controls_note
+      `Ui-source` : hud
+        `Ui-source` --> "1..*" `Ui-source-hud-row` : hud
+        click `Ui-source-hud-row` href "../Ui-source-hud-row"
+      `Ui-source` : options
+        `Ui-source` --> "1" `Ui-source-options` : options
+        click `Ui-source-options` href "../Ui-source-options"
+      `Ui-source` : profiles_note
+      `Ui-source` : schema_tag
+      `Ui-source` : screens
+        `Ui-source` --> "1..*" `Ui-source-screen-row` : screens
+        click `Ui-source-screen-row` href "../Ui-source-screen-row"

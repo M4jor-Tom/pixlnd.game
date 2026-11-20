@@ -1,0 +1,11 @@
+ classDiagram
+    class `Landscapes-source`
+    click `Landscapes-source` href "../Landscapes-source"
+      `Landscapes-source` : documentation
+      `Landscapes-source` : entries
+        `Landscapes-source` --> "1..*" `Landscape-source-row-entry` : entries
+        click `Landscape-source-row-entry` href "../Landscape-source-row-entry"
+      `Landscapes-source` : schema_tag
+      `Landscapes-source` : shared
+        `Landscapes-source` --> "1" `Landscape-source-shared` : shared
+        click `Landscape-source-shared` href "../Landscape-source-shared"

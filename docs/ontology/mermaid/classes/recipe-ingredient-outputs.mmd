@@ -1,0 +1,6 @@
+ classDiagram
+    class `Recipe-ingredient-outputs`
+    click `Recipe-ingredient-outputs` href "../Recipe-ingredient-outputs"
+      `Recipe-ingredient-outputs` : entries
+        `Recipe-ingredient-outputs` --> "1..*" `Recipe-output-entry` : entries
+        click `Recipe-output-entry` href "../Recipe-output-entry"

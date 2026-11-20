@@ -1,0 +1,17 @@
+ classDiagram
+    class `Block-types-source`
+    click `Block-types-source` href "../Block-types-source"
+      `Block-types-source` : alpha
+        `Block-types-source` --> "1" `Alpha-block-table-source` : alpha
+        click `Alpha-block-table-source` href "../Alpha-block-table-source"
+      `Block-types-source` : cub_format
+        `Block-types-source` --> "1" `Block-cub-format-source` : cub_format
+        click `Block-cub-format-source` href "../Block-cub-format-source"
+      `Block-types-source` : documentation
+      `Block-types-source` : scale
+        `Block-types-source` --> "1" `Block-scale-source` : scale
+        click `Block-scale-source` href "../Block-scale-source"
+      `Block-types-source` : schema_tag
+      `Block-types-source` : steam
+        `Block-types-source` --> "1" `Steam-block-table-source` : steam
+        click `Steam-block-table-source` href "../Steam-block-table-source"

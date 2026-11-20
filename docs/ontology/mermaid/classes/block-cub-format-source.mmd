@@ -1,0 +1,10 @@
+ classDiagram
+    class `Block-cub-format-source`
+    click `Block-cub-format-source` href "../Block-cub-format-source"
+      `Block-cub-format` <|-- `Block-cub-format-source`
+        click `Block-cub-format` href "../Block-cub-format"
+      `Block-cub-format-source` : block_cub_format_body
+      `Block-cub-format-source` : block_cub_format_compression
+      `Block-cub-format-source` : block_cub_format_empty
+      `Block-cub-format-source` : block_cub_format_header
+      `Block-cub-format-source` : block_cub_format_storage

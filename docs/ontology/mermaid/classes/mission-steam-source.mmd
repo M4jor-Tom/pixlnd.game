@@ -1,0 +1,10 @@
+ classDiagram
+    class `Mission-steam-source`
+    click `Mission-steam-source` href "../Mission-steam-source"
+      `Mission-steam-source` : completion_order
+      `Mission-steam-source` : entries
+        `Mission-steam-source` --> "1..*" `Mission-steam-entry` : entries
+        click `Mission-steam-entry` href "../Mission-steam-entry"
+      `Mission-steam-source` : shared
+        `Mission-steam-source` --> "1" `Mission-shared-source` : shared
+        click `Mission-shared-source` href "../Mission-shared-source"

@@ -1,0 +1,14 @@
+ classDiagram
+    class `Rarities-source`
+    click `Rarities-source` href "../Rarities-source"
+      `Rarities-source` : alpha_relative_colors
+        `Rarities-source` --> "1" `Source-relative-colors` : alpha_relative_colors
+        click `Source-relative-colors` href "../Source-relative-colors"
+      `Rarities-source` : documentation
+      `Rarities-source` : entries
+        `Rarities-source` --> "1..*" `Rarity-source-entry` : entries
+        click `Rarity-source-entry` href "../Rarity-source-entry"
+      `Rarities-source` : mob_strength_tiers
+        `Rarities-source` --> "1" `Source-mob-tiers` : mob_strength_tiers
+        click `Source-mob-tiers` href "../Source-mob-tiers"
+      `Rarities-source` : schema_tag

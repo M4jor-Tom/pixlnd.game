@@ -1,7 +1,7 @@
 ## Ordinary eligibility through real Spawner.plan, with dry ground and no village exclusions.
 extends SceneTree
 
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const WorldGen := preload("res://game/world/world_gen.gd")
 const Spawner := preload("res://game/world/spawner.gd")
 
@@ -15,8 +15,8 @@ func check(ok: bool, label: String) -> void:
 
 
 func _init() -> void:
-	var o := Model.Ontology.load_dir("res://ontology/instances")
-	check(o.validate(), "ontology valid")
+	var o := Domain.Ontology.load_dir()
+	check(o.errors.is_empty(), "ontology valid")
 	var d: Dictionary = o.configs.generators.design.duplicate(true)
 	# Isolate eligibility, not random group absence, terrain or settlement rejection.
 	d.spawns["groups-per-zone"] = [2, 2]
@@ -30,8 +30,8 @@ func _init() -> void:
 	var rosters := {land.landscape: ["hell-demon"]}
 	check(
 		(
-			o.creatures["hell-demon"].boss_species
-			and o.creatures["hell-demon"].category == Model.CreatureCategory.DEMON
+			o.creatures["hell-demon"].slot_boss == true
+			and o.creatures["hell-demon"].slot_cat == "demon"
 		),
 		"Hell Demon is always boss independently of category"
 	)
@@ -58,8 +58,12 @@ func _excluded(
 ) -> void:
 	# Clear only the boss flag in a copied troll: category alone must still exclude it.
 	var creatures: Dictionary = o.creatures.duplicate()
-	creatures["troll"] = o.creatures["troll"].duplicate()
-	creatures["troll"].boss_species = false
+	var troll: Object = o.creatures["troll"].get_script().new()
+	for field in troll.linkml_keys().values():
+		troll.set(field, o.creatures["troll"].get(field))
+	troll.set_meta(&"id", &"troll")
+	troll.slot_boss = false
+	creatures["troll"] = troll
 	for id in ["troll", "scarecrow", "egg", "missing-species"]:
 		rosters[land.landscape] = [id]
 		check(
@@ -76,7 +80,7 @@ func _excluded(
 func _capable(o, g, zone: Vector2i, d: Dictionary, rosters: Dictionary, land) -> void:
 	rosters[land.landscape] = ["witch"]
 	check(
-		o.creatures["witch"].boss_capable and not o.creatures["witch"].boss_species,
+		o.creatures["witch"].slot_bossable == true and o.creatures["witch"].slot_boss != true,
 		"witch control is boss-capable, not always boss"
 	)
 	var capable := Spawner.plan(g, zone, d, o.creatures, rosters, 6, 10)

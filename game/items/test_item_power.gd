@@ -1,7 +1,7 @@
 extends SceneTree
 # Source-level producers and powered import boundaries; literal expectations are independent
 # of power_for_level() and of the producers replayed by save validation.
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Items := preload("res://game/items/items.gd")
 const Item := preload("res://game/items/item.gd")
 const Rewards := preload("res://game/items/encounter_rewards.gd")
@@ -60,8 +60,8 @@ func run() -> void:
 		printerr("INFRA: existing isolated absolute PIXLND_TEST_DIR required")
 		quit(2)
 		return
-	var o := Model.Ontology.load_dir("res://ontology/instances")
-	if not o.validate() or not o.errors.is_empty():
+	var o := Domain.Ontology.load_dir()
+	if not o.errors.is_empty():
 		printerr("INFRA: ontology validation failed ", o.errors)
 		quit(2)
 		return

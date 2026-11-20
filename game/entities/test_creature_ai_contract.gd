@@ -1,5 +1,5 @@
 extends SceneTree
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Spawner := preload("res://game/world/spawner.gd")
 const Authority := preload("res://game/combat/targeting.gd")
 const PLAYER := preload("res://game/entities/player.tscn")
@@ -17,7 +17,7 @@ func _init() -> void:
 
 
 func run() -> void:
-	var o = Model.Ontology.load_dir("res://ontology/instances")
+	var o = Domain.Ontology.load_dir()
 	var d: Dictionary = o.configs["generators"]["design"]
 	var players: Array = []
 	for id in ["a", "b", "c"]:

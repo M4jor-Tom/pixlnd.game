@@ -1,6 +1,6 @@
 ## Independent nominal diagonal strip: continuous box clearance and ordinary player capsule, including corners.
 extends SceneTree
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Settlement := preload("res://game/world/settlement.gd")
 const InputBuilder := preload("res://game/meta/input_map.gd")
 const PLAYER := preload("res://game/entities/player.tscn")
@@ -25,7 +25,7 @@ func _init() -> void:
 
 
 func run() -> void:
-	var o = Model.Ontology.load_dir("res://ontology/instances")
+	var o = Domain.Ontology.load_dir()
 	var d: Dictionary = o.configs.generators.design
 	InputBuilder.build(o.configs.keybinds.hybrid)
 	# Literal house6 direction; never derive expected strip from layout or recorded raster cells.

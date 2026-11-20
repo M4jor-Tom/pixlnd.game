@@ -1,7 +1,7 @@
 ## Daily saved gear ownership lives in World; this pure generator preserves ordinary pools/prices.
 extends RefCounted
 
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Items := preload("res://game/items/items.gd")
 const Item := preload("res://game/items/item.gd")
 
@@ -29,14 +29,14 @@ static func price_group(it: Item) -> String:
 
 
 ## buy = base[group] × level × rarity-mult (copper), at least 1.
-static func buy_price(it: Item, o: Model.Ontology, design: Dictionary) -> int:
+static func buy_price(it: Item, o: Domain.Ontology, design: Dictionary) -> int:
 	var p: Dictionary = design["prices"]
 	var mult := float(p["rarity-mult"].get(String(Items.rarity_id(it.rarity, o)), 1.0))
 	return maxi(1, ceili(float(p["base"].get(price_group(it), 1)) * it.level * mult))
 
 
 ## sell = buy × design.prices.sell, at least 1 (per unit).
-static func sell_price(it: Item, o: Model.Ontology, design: Dictionary) -> int:
+static func sell_price(it: Item, o: Domain.Ontology, design: Dictionary) -> int:
 	return maxi(1, floori(buy_price(it, o, design) * float(design["prices"]["sell"])))
 
 
@@ -46,7 +46,7 @@ static func stock(
 	land,
 	village: Dictionary,
 	player_level: int,
-	o: Model.Ontology,
+	o: Domain.Ontology,
 	design: Dictionary,
 	ceiling: int = -1,
 	day: int = 0
@@ -54,17 +54,13 @@ static func stock(
 	var st: Dictionary = design["settlement"]["shop"]
 	var out: Array = []
 	if role == &"item-vendor":  # unlimited consumables at the player's converted power
-		var power := clampi(Model.power_for_level(player_level), 1, 100)
+		var power := clampi(Domain.power_for_level(player_level), 1, 100)
 		for c in design["loot"]["consumable-pool"]:
 			out.append(Item.stack(&"consumable", StringName(c), 1, power))
 		return out
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash([gen.world_seed, village["centre"], role, day])
-	var cap: int = (
-		ceiling
-		if ceiling >= 0
-		else (o.rarities[StringName(st["rarity-cap"])] as Model.RarityDef).index
-	)
+	var cap: int = ceiling if ceiling >= 0 else o.rarities[StringName(st["rarity-cap"])].slot_index
 	var spread := int(st["level-spread"])
 	var armor_kinds: Array = design["loot"]["gear-kinds"].keys().filter(
 		func(k: String) -> bool: return k != "weapon"
@@ -72,16 +68,16 @@ static func stock(
 	for i in int(st["stock"]):
 		var power := clampi(
 			(
-				Model.power_for_level(gen.creature_level(land, player_level, player_level, rng))
+				Domain.power_for_level(gen.creature_level(land, player_level, player_level, rng))
 				+ rng.randi_range(-spread, spread)
 			),
 			1,
 			100
 		)
 		var rarity := mini(Items.roll_rarity(rng, design["loot"], o), cap)
-		var cls: Model.CharacterClass = o.classes[o.classes.keys()[rng.randi() % o.classes.size()]]
+		var cls: Object = o.classes[o.classes.keys()[rng.randi() % o.classes.size()]]
 		if role == &"weapon-vendor":
-			var wt: StringName = cls.weapon_types[rng.randi() % cls.weapon_types.size()]
+			var wt: StringName = cls.slot_weapon_types[rng.randi() % cls.slot_weapon_types.size()]
 			out.append(
 				Items.generate(
 					rng, &"weapon", wt, Items.weapon_material(o.weapon_types[wt]), power, rarity
@@ -93,7 +89,7 @@ static func stock(
 					rng,
 					StringName(armor_kinds[rng.randi() % armor_kinds.size()]),
 					&"",
-					cls.armor_material,
+					cls.slot_armor_material,
 					power,
 					rarity
 				)

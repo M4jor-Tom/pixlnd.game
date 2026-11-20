@@ -1,0 +1,35 @@
+ classDiagram
+    class `Creature-source-row`
+    click `Creature-source-row` href "../Creature-source-row"
+      `Creature-source-row` : abilities
+      `Creature-source-row` : boss
+      `Creature-source-row` : bossable
+      `Creature-source-row` : breaks_terrain
+      `Creature-source-row` : creature_alpha_entity_id
+      `Creature-source-row` : creature_category
+        `Creature-source-row` --> "1" creature_category : creature_category
+        click creature_category href "../creature_category"
+      `Creature-source-row` : descriptive_member_of_family
+        `Creature-source-row` --> "*" `Creature-family` : descriptive_member_of_family
+        click `Creature-family` href "../Creature-family"
+      `Creature-source-row` : drinks_potions
+      `Creature-source-row` : drops
+      `Creature-source-row` : faction
+      `Creature-source-row` : group
+      `Creature-source-row` : hostility
+      `Creature-source-row` : lands
+      `Creature-source-row` : lantern_at_night
+      `Creature-source-row` : member_of_family
+        `Creature-source-row` --> "0..1" `Creature-family` : member_of_family
+        click `Creature-family` href "../Creature-family"
+      `Creature-source-row` : name
+      `Creature-source-row` : pet_types
+      `Creature-source-row` : ride
+      `Creature-source-row` : role
+      `Creature-source-row` : source_notes
+      `Creature-source-row` : tamed_by
+        `Creature-source-row` --> "0..1" `Pet-food` : tamed_by
+        click `Pet-food` href "../Pet-food"
+      `Creature-source-row` : versions
+        `Creature-source-row` --> "1..*" `SourceVersion` : versions
+        click `SourceVersion` href "../SourceVersion"

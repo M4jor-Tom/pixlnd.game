@@ -1,0 +1,8 @@
+ classDiagram
+    class `Recipe-weapon-row`
+    click `Recipe-weapon-row` href "../Recipe-weapon-row"
+      `Recipe-weapon-row` : inputs
+        `Recipe-weapon-row` --> "1" `Recipe-ingredient-inputs` : inputs
+        click `Recipe-ingredient-inputs` href "../Recipe-ingredient-inputs"
+      `Recipe-weapon-row` : note
+      `Recipe-weapon-row` : station

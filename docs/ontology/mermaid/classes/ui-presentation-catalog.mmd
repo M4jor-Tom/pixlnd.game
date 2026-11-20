@@ -1,0 +1,15 @@
+ classDiagram
+    class `Ui-presentation-catalog`
+    click `Ui-presentation-catalog` href "../Ui-presentation-catalog"
+      `Ui-presentation-catalog` : ui_presentation_catalog_camera
+        `Ui-presentation-catalog` --> "0..1" `Ui-camera-presentation` : ui_presentation_catalog_camera
+        click `Ui-camera-presentation` href "../Ui-camera-presentation"
+      `Ui-presentation-catalog` : ui_presentation_catalog_hud
+        `Ui-presentation-catalog` --> "*" `Hud-element` : ui_presentation_catalog_hud
+        click `Hud-element` href "../Hud-element"
+      `Ui-presentation-catalog` : ui_presentation_catalog_options
+        `Ui-presentation-catalog` --> "*" `Ui-option-presentation` : ui_presentation_catalog_options
+        click `Ui-option-presentation` href "../Ui-option-presentation"
+      `Ui-presentation-catalog` : ui_presentation_catalog_screens
+        `Ui-presentation-catalog` --> "*" `Ui-screen-presentation` : ui_presentation_catalog_screens
+        click `Ui-screen-presentation` href "../Ui-screen-presentation"

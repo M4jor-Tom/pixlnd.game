@@ -1,0 +1,14 @@
+ classDiagram
+    class `Encounter-assignment`
+    click `Encounter-assignment` href "../Encounter-assignment"
+      `Encounter-assignment` <|-- `Initial-nonboss-assignment`
+        click `Initial-nonboss-assignment` href "../Initial-nonboss-assignment"
+      `Encounter-assignment` <|-- `Initial-ruins-boss-assignment`
+        click `Initial-ruins-boss-assignment` href "../Initial-ruins-boss-assignment"
+      `Encounter-assignment` <|-- `Initial-mission-boss-assignment`
+        click `Initial-mission-boss-assignment` href "../Initial-mission-boss-assignment"
+      `Encounter-assignment` : boss
+      `Encounter-assignment` : role
+      `Encounter-assignment` : special
+      `Encounter-assignment` : spirit
+      `Encounter-assignment` : tier

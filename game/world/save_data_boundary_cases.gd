@@ -1,7 +1,7 @@
 ## Expected-native-error child: mutation after a successful representation check must not
 ## let a new predicate's default false continue the original validator's remaining phases.
 extends SceneTree
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 
 
 class MutationSave:
@@ -73,7 +73,7 @@ func _init() -> void:
 		quit(2)
 		return
 	var data: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(args[0]))
-	var o := Model.Ontology.load_dir("res://ontology/instances")
+	var o := Domain.Ontology.load_dir()
 	var save := MutationSave.new(o, o.configs.generators.design)
 	save.mode = args[1]
 	var id: String = data.world.sites.keys().filter(func(k): return data.world.sites[k].family == "ruins")[0]

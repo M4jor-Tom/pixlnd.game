@@ -1,0 +1,528 @@
+{
+ "$schema": "flora",
+ "_doc": "aid = alpha entity id (plants are entities 120-130). Harvest by attacking. Respawn at 0:00 (S).",
+ "entries": [
+  {
+   "key": "bush",
+   "value": {
+    "aid": 120,
+    "lands": [
+     "most"
+    ],
+    "name": "Bush",
+    "variants": [
+     "snow-bush (121)",
+     "fire-shrub (126, hot lands)"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ],
+    "yields": {
+     "entries": [
+      {
+       "key": "wood-log",
+       "value": [
+        1,
+        3
+       ]
+      },
+      {
+       "key": "plant-fiber",
+       "value": [
+        1,
+        3
+       ]
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "snow-bush",
+   "value": {
+    "aid": 121,
+    "lands": [
+     "snowlands"
+    ],
+    "name": "Snow Bush",
+    "versions": [
+     "A",
+     "S"
+    ],
+    "yields": {
+     "entries": [
+      {
+       "key": "wood-log",
+       "value": [
+        1,
+        3
+       ]
+      },
+      {
+       "key": "plant-fiber",
+       "value": [
+        1,
+        3
+       ]
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "snowberry-bush",
+   "value": {
+    "aid": 122,
+    "lands": [
+     "snowlands"
+    ],
+    "name": "Snowberry Bush",
+    "versions": [
+     "A",
+     "S"
+    ],
+    "yields": {
+     "entries": [
+      {
+       "key": "snowberry",
+       "value": [
+        1,
+        3
+       ]
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "cotton-plant",
+   "value": {
+    "aid": 123,
+    "lands": [
+     "greenlands",
+     "most"
+    ],
+    "name": "Cotton Plant",
+    "versions": [
+     "A",
+     "S"
+    ],
+    "yields": {
+     "entries": [
+      {
+       "key": "cotton-capsule",
+       "value": [
+        1,
+        3
+       ]
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "scrub",
+   "value": {
+    "aid": 124,
+    "desc": "2-branch sapling with spider web",
+    "name": "Scrub",
+    "variants": [
+     "cobweb-scrub (125)"
+    ],
+    "versions": [
+     "A",
+     "S"
+    ],
+    "yields": {
+     "entries": [
+      {
+       "key": "cobweb",
+       "value": [
+        1,
+        3
+       ]
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "fire-shrub",
+   "value": {
+    "aid": 126,
+    "lands": [
+     "deserts",
+     "savannahs",
+     "lava-lands"
+    ],
+    "name": "Fire Shrub",
+    "versions": [
+     "A",
+     "S"
+    ],
+    "yields": {
+     "entries": [
+      {
+       "key": "wood-log",
+       "value": [
+        1,
+        3
+       ]
+      },
+      {
+       "key": "plant-fiber",
+       "value": [
+        1,
+        3
+       ]
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "ginseng",
+   "value": {
+    "aid": 127,
+    "lands": [
+     "greenlands"
+    ],
+    "name": "Ginseng",
+    "versions": [
+     "A",
+     "S"
+    ],
+    "yields": {
+     "entries": [
+      {
+       "key": "ginseng-root",
+       "value": [
+        1,
+        3
+       ]
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "cactus",
+   "value": {
+    "aid": 128,
+    "lands": [
+     "deserts"
+    ],
+    "name": "Cactus",
+    "versions": [
+     "A",
+     "S"
+    ],
+    "yields": {
+     "entries": [
+      {
+       "key": "prickly-pear",
+       "value": [
+        1,
+        3
+       ]
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "thorn-tree",
+   "value": {
+    "aid": 129,
+    "lands": [
+     "lava-lands (near volcanoes/lava lakes)"
+    ],
+    "name": "Thorn Tree",
+    "versions": [
+     "A",
+     "S"
+    ],
+    "yields": {
+     "entries": []
+    }
+   }
+  },
+  {
+   "key": "heartflower",
+   "value": {
+    "lands": [
+     "all except deserts, snowlands"
+    ],
+    "name": "Heartflower",
+    "versions": [
+     "A",
+     "S"
+    ],
+    "yields": {
+     "entries": [
+      {
+       "key": "heartflower",
+       "value": 1
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "iceflower",
+   "value": {
+    "lands": [
+     "snowlands"
+    ],
+    "name": "Iceflower",
+    "versions": [
+     "A",
+     "S"
+    ],
+    "yields": {
+     "entries": [
+      {
+       "key": "iceflower",
+       "value": 1
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "mushroom",
+   "value": {
+    "desc": "purple with yellow spots, under trees",
+    "lands": [
+     "all except deserts, underwater"
+    ],
+    "name": "Mushroom",
+    "versions": [
+     "A",
+     "S"
+    ],
+    "yields": {
+     "entries": [
+      {
+       "key": "mushroom",
+       "value": 1
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "shimmer-mushroom",
+   "value": {
+    "desc": "blue glow; decorative light (A), elixir ingredient (S)",
+    "lands": [
+     "caves",
+     "rocks"
+    ],
+    "name": "Shimmer Mushroom",
+    "versions": [
+     "A",
+     "S"
+    ],
+    "yields": {
+     "entries": [
+      {
+       "key": "shimmer-mushroom",
+       "value": 1
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "dragon-root",
+   "value": {
+    "lands": [
+     "greenlands (under trees)"
+    ],
+    "name": "Dragon Root",
+    "versions": [
+     "S"
+    ],
+    "yields": {
+     "entries": [
+      {
+       "key": "dragon-root",
+       "value": 1
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "manaorchid",
+   "value": {
+    "lands": [
+     "grass",
+     "forest"
+    ],
+    "name": "Manaorchid",
+    "versions": [
+     "S"
+    ],
+    "yields": {
+     "entries": [
+      {
+       "key": "manaorchid",
+       "value": 1
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "apple-tree",
+   "value": {
+    "name": "Apple Tree",
+    "versions": [
+     "A",
+     "S"
+    ],
+    "yields": {
+     "entries": [
+      {
+       "key": "apple",
+       "value": "n"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "lemon-tree",
+   "value": {
+    "name": "Lemon Tree",
+    "versions": [
+     "S"
+    ],
+    "yields": {
+     "entries": [
+      {
+       "key": "lemon",
+       "value": "n"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "cocoa-tree",
+   "value": {
+    "lands": [
+     "jungles"
+    ],
+    "name": "Cocoa Tree",
+    "versions": [
+     "S"
+    ],
+    "yields": {
+     "entries": [
+      {
+       "key": "cocoa-bean",
+       "value": "n"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "banana-tree",
+   "value": {
+    "lands": [
+     "jungles"
+    ],
+    "name": "Banana Tree",
+    "versions": [
+     "S"
+    ],
+    "yields": {
+     "entries": [
+      {
+       "key": "banana",
+       "value": "n"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "farm-crops",
+   "value": {
+    "lands": [
+     "village fields"
+    ],
+    "name": "Farm crops",
+    "versions": [
+     "A",
+     "S"
+    ],
+    "yields": {
+     "entries": [
+      {
+       "key": "pumpkin",
+       "value": 1
+      },
+      {
+       "key": "pineapple",
+       "value": 1
+      },
+      {
+       "key": "kale",
+       "value": 1
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "trees",
+   "value": {
+    "desc": "procedurally generated, each unique (2011-09); birch/pine/normal, acacia (savannah), large jungle trees, palms (oasis); leaves carry snow in snowlands; key items sometimes on top",
+    "name": "Trees",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "grass",
+   "value": {
+    "desc": "sways (animation only, no wind)",
+    "name": "Grass",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "flowers",
+   "value": {
+    "desc": "decorative; 2015 tweet: flowers with rarities (X); Ω butterflies near flowers, water lilies",
+    "name": "Flowers",
+    "versions": [
+     "A",
+     "S",
+     "Ω"
+    ]
+   }
+  },
+  {
+   "key": "drolu-herb",
+   "value": {
+    "desc": "concept quest ingredient (Deadlands cauldron quest)",
+    "name": "Drolu Herb",
+    "versions": [
+     "X"
+    ]
+   }
+  }
+ ]
+}

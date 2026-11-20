@@ -1,0 +1,12 @@
+ classDiagram
+    class `Economy-shop-row`
+    click `Economy-shop-row` href "../Economy-shop-row"
+      `Economy-shop-row` : buys
+      `Economy-shop-row` : hours
+      `Economy-shop-row` : roaming
+      `Economy-shop-row` : sells
+      `Economy-shop-row` : service
+      `Economy-shop-row` : stock
+        `Economy-shop-row` --> "0..1" `Economy-shop-stock` : stock
+        click `Economy-shop-stock` href "../Economy-shop-stock"
+      `Economy-shop-row` : versions

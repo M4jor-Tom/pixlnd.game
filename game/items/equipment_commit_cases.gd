@@ -1,6 +1,6 @@
 ## Native mutation-abort regression; expected errors stay in bounded child-process logs.
 extends RefCounted
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 const Inventory := preload("res://game/items/inventory.gd")
 const Item := preload("res://game/items/item.gd")
 const CASES := [
@@ -93,7 +93,7 @@ static func _observations(text: String) -> Array:
 
 
 static func probe(mode: String) -> Dictionary:
-	var o = Model.Ontology.load_dir("res://ontology/instances")
+	var o = Domain.Ontology.load_dir()
 	var inv := Inventory.new(o, o.configs.generators.design, &"warrior", func(): return 100)
 	var it := Item.new()
 	it.type = &"weapon"

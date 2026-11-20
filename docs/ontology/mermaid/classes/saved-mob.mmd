@@ -1,0 +1,31 @@
+ classDiagram
+    class `Saved-mob`
+    click `Saved-mob` href "../Saved-mob"
+      `Saved-mob` : saved_mob_combat
+        `Saved-mob` --> "1" `Saved-combat` : saved_mob_combat
+        click `Saved-combat` href "../Saved-combat"
+      `Saved-mob` : saved_mob_cycle
+      `Saved-mob` : saved_mob_damage
+      `Saved-mob` : saved_mob_dead
+      `Saved-mob` : saved_mob_eligible
+      `Saved-mob` : saved_mob_home
+      `Saved-mob` : saved_mob_hostility
+        `Saved-mob` --> "1" `Saved-hostility` : saved_mob_hostility
+        click `Saved-hostility` href "../Saved-hostility"
+      `Saved-mob` : saved_mob_hp
+      `Saved-mob` : saved_mob_level
+      `Saved-mob` : saved_mob_max_hp
+      `Saved-mob` : saved_mob_pack
+      `Saved-mob` : saved_mob_position
+      `Saved-mob` : saved_mob_power_base
+      `Saved-mob` : saved_mob_role
+        `Saved-mob` --> "1" `Saved-role` : saved_mob_role
+        click `Saved-role` href "../Saved-role"
+      `Saved-mob` : saved_mob_room_cycle
+      `Saved-mob` : saved_mob_seed
+      `Saved-mob` : saved_mob_special
+        `Saved-mob` --> "0..1" `Saved-special` : saved_mob_special
+        click `Saved-special` href "../Saved-special"
+      `Saved-mob` : saved_mob_species
+        `Saved-mob` --> "1" `Creature` : saved_mob_species
+        click `Creature` href "../Creature"

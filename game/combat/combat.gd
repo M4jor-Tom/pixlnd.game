@@ -1,12 +1,12 @@
 ## §3.3 formulas, pure and static: stats.json#alpha-item-stat-formulas, generators.json#design.combat|crit.
 extends RefCounted
 
-const Model := preload("res://ontology/model.gd")
+const Domain := preload("res://game/domain/domain.gd")
 
 
 ## gen-item-stats damage × the attack-power multiplier (D15). ponytail: the 0..20 modifier roll is ignored.
 static func weapon_damage(level: int, rarity: int, k: int, combat: Dictionary) -> float:
-	return Model.stat_curve(level, rarity) * k * float(combat["attack-power-mult"])
+	return Domain.stat_curve(level, rarity) * k * float(combat["attack-power-mult"])
 
 
 const PHYSICAL := &"physical"
@@ -39,18 +39,18 @@ static func combo_mult(combo: int, combat: Dictionary) -> float:
 
 ## stats.json#player-hp: base-hp × 2 × 100 × class mult.
 static func player_max_hp(level: int, class_hp_mult: float) -> float:
-	return Model.stat_curve(level, 0) * 2.0 * 100.0 * class_hp_mult
+	return Domain.stat_curve(level, 0) * 2.0 * 100.0 * class_hp_mult
 
 
 ## NPC health curve shared by generation and saved-incarnation validation.
 static func enemy_max_hp(level: int, power_base: float) -> float:
-	return Model.stat_curve(level, 0) * 200.0 * pow(2.0, power_base * 0.25)
+	return Domain.stat_curve(level, 0) * 200.0 * pow(2.0, power_base * 0.25)
 
 
 ## design.combat.enemy-attack.formula
 static func enemy_damage(level: int, power_base: float, combat: Dictionary) -> float:
 	return (
-		Model.stat_curve(level, 0)
+		Domain.stat_curve(level, 0)
 		* float(combat["enemy-attack"]["mult"])
 		* pow(2.0, power_base * 0.25)
 	)

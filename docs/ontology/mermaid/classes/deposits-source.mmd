@@ -1,0 +1,8 @@
+ classDiagram
+    class `Deposits-source`
+    click `Deposits-source` href "../Deposits-source"
+      `Deposits-source` : documentation
+      `Deposits-source` : entries
+        `Deposits-source` --> "1..*" `Deposit-source-row-entry` : entries
+        click `Deposit-source-row-entry` href "../Deposit-source-row-entry"
+      `Deposits-source` : schema_tag

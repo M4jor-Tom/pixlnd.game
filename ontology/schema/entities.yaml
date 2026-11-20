@@ -6,9 +6,16 @@ prefixes:
 default_prefix: pixlnd
 imports:
 - linkml:types
+- identity
+- items
+- combat
+- relations
+- associations
+- save-character
 default_range: string
 classes:
   entity:
+    description: "Logical entity definition; applicability follows the cited domain rules."
     class_uri: pixlnd:entity
     see_also: &id001
     - ../domain/3_Classes.md#entity
@@ -23,6 +30,36 @@ classes:
     - entity-mana-cubes
     - entity-skills
     - entity-parent-owner
+    - entity-pos
+    - entity-velocity
+    - entity-accel
+    - entity-body-roll
+    - entity-body-pitch
+    - entity-body-yaw
+    - entity-class
+    - entity-specialization
+    - entity-hp
+    - entity-mp
+    - entity-stamina
+    - entity-block-power
+    - entity-stealth
+    - entity-hp-multiplier
+    - entity-damage-multiplier
+    - entity-armor-multiplier
+    - entity-resi-multiplier
+    - entity-hit-counter
+    - entity-last-hit-time
+    - entity-stun-time
+    - entity-slowed-time
+    - entity-blue-time
+    - entity-speed-up-time
+    - entity-flags
+    - entity-equipment
+    - entity-name
+    - entity-status-applications
+    - equips
+    - threat
+    - current-target
   race-or-creature:
     class_uri: pixlnd:race-or-creature
     see_also:
@@ -34,43 +71,100 @@ classes:
     - creature
     description: Species definition reference to race or creature.
   appearance:
+    description: Logical appearance with precisely qualified cuwo Alpha structural detail; no universal Steam or Omega field layout is claimed.
     class_uri: pixlnd:appearance
     see_also:
     - ../domain/3_Classes.md#appearance
+    - https://github.com/matpow2/cuwo/blob/240bb61ec42abb10a73d750ce72f243e04e55509/cuwo/entity.pyx#L106-L241
     slots:
     - id
+    - appearance-hair-rgb
+    - appearance-scale
+    - appearance-head-model
+    - appearance-hair-model
+    - appearance-hand-model
+    - appearance-foot-model
+    - appearance-body-model
+    - appearance-tail-model
+    - appearance-shoulder2-model
+    - appearance-wing-model
+    - appearance-head-scale
+    - appearance-body-scale
+    - appearance-hand-scale
+    - appearance-foot-scale
+    - appearance-shoulder2-scale
+    - appearance-weapon-scale
+    - appearance-tail-scale
+    - appearance-shoulder-scale
+    - appearance-wing-scale
+    - appearance-body-offset
+    - appearance-head-offset
+    - appearance-hand-offset
+    - appearance-foot-offset
+    - appearance-tail-offset
+    - appearance-wing-offset
+    - appearance-body-pitch
+    - appearance-arm-pitch
+    - appearance-arm-roll
+    - appearance-arm-yaw
+    - appearance-feet-pitch
+    - appearance-wing-pitch
+    - appearance-back-pitch
+    - appearance-flags
+    - appearance-expression
   player-character:
+    description: "Logical player character definition; applicability follows the cited domain rules."
+    is_a: entity
     class_uri: pixlnd:player-character
     see_also: &id002
     - ../domain/3_Classes.md#player-character
     slots:
     - id
-    - player-character-appearance
-    - player-character-race
     - player-character-gender
-    - player-character-class
-    - player-character-spec
-    - player-character-name
-    - player-character-level
-    - player-character-xp
     - player-character-coins
     - player-character-inventory
-    - player-character-skills
     - player-character-artifacts
     - knows-recipe
+    - player-character-platinum
+    - player-character-lore-known
+    - player-character-world-states
+    - player-character-pet-slot
+    - player-character-active-pet
+    - player-character-banked-skill-points
+    - mounts
+    slot_usage:
+      entity-species:
+        alias: race
+        range: race
+        required: true
+      entity-specialization:
+        alias: spec
+        range: specialization
+        required: true
+      entity-class:
+        required: true
+      entity-name:
+        required: true
+        pattern: ^[\x20-\x7e]{2,16}$
   pet:
+    description: "Logical pet definition; applicability follows the cited domain rules."
+    is_a: entity
     class_uri: pixlnd:pet
     see_also: &id003
     - ../domain/3_Classes.md#pet
     slots:
     - id
-    - pet-species
-    - pet-name
     - pet-cage
-    - pet-level
-    - pet-xp
+    - pet-hydration
+    - pet-boss-origin
+    slot_usage:
+      entity-species:
+        range: creature
+      entity-name:
+        required: true
 slots:
   entity-hostility:
+    description: "Entity hostility property; interpreted under its owning definition."
     slot_uri: pixlnd:entity/hostility
     alias: hostility
     range: hostility
@@ -78,6 +172,7 @@ slots:
     inlined: false
     see_also: *id001
   entity-species:
+    description: "Entity species property; interpreted under its owning definition."
     slot_uri: pixlnd:entity/species
     alias: species
     range: race-or-creature
@@ -85,6 +180,7 @@ slots:
     inlined: false
     see_also: *id001
   entity-level:
+    description: "Entity level property; interpreted under its owning definition."
     slot_uri: pixlnd:entity/level
     alias: level
     range: integer
@@ -92,6 +188,7 @@ slots:
     inlined: false
     see_also: *id001
   entity-xp:
+    description: "Entity xp property; interpreted under its owning definition."
     slot_uri: pixlnd:entity/xp
     alias: xp
     range: integer
@@ -99,6 +196,7 @@ slots:
     inlined: false
     see_also: *id001
   entity-power-base:
+    description: "Entity power base property; interpreted under its owning definition."
     slot_uri: pixlnd:entity/power-base
     alias: power-base
     range: u8
@@ -106,6 +204,7 @@ slots:
     inlined: false
     see_also: *id001
   entity-appearance:
+    description: "Entity appearance property; interpreted under its owning definition."
     slot_uri: pixlnd:entity/appearance
     alias: appearance
     range: appearance
@@ -113,6 +212,7 @@ slots:
     inlined: true
     see_also: *id001
   entity-mana-cubes:
+    description: "Entity mana cubes property; interpreted under its owning definition."
     slot_uri: pixlnd:entity/mana-cubes
     alias: mana-cubes
     range: uint32
@@ -120,6 +220,7 @@ slots:
     inlined: false
     see_also: *id001
   entity-skills:
+    description: "Entity skills property; interpreted under its owning definition."
     slot_uri: pixlnd:entity/skills
     alias: skills
     range: uint32
@@ -136,6 +237,7 @@ slots:
       identity.
     see_also: *id001
   player-character-appearance:
+    description: "Player character appearance property; interpreted under its owning definition."
     slot_uri: pixlnd:player-character/appearance
     alias: appearance
     range: appearance
@@ -143,30 +245,35 @@ slots:
     inlined: true
     see_also: *id002
   player-character-race:
+    description: "Player character race property; interpreted under its owning definition."
     slot_uri: pixlnd:player-character/race
     alias: race
     range: race
     required: true
     see_also: *id002
   player-character-gender:
+    description: "Player character gender property; interpreted under its owning definition."
     slot_uri: pixlnd:player-character/gender
     alias: gender
     range: gender
     required: true
     see_also: *id002
   player-character-class:
+    description: "Player character class property; interpreted under its owning definition."
     slot_uri: pixlnd:player-character/class
     alias: class
     range: character-class
     required: true
     see_also: *id002
   player-character-spec:
+    description: "Player character spec property; interpreted under its owning definition."
     slot_uri: pixlnd:player-character/spec
     alias: spec
     range: specialization
     required: true
     see_also: *id002
   player-character-name:
+    description: "Player character name property; interpreted under its owning definition."
     slot_uri: pixlnd:player-character/name
     alias: name
     range: string
@@ -174,6 +281,7 @@ slots:
     pattern: ^[\x20-\x7e]{2,16}$
     see_also: *id002
   player-character-level:
+    description: "Player character level property; interpreted under its owning definition."
     slot_uri: pixlnd:player-character/level
     alias: level
     range: integer
@@ -181,6 +289,7 @@ slots:
     inlined: false
     see_also: *id002
   player-character-xp:
+    description: "Player character xp property; interpreted under its owning definition."
     slot_uri: pixlnd:player-character/xp
     alias: xp
     range: integer
@@ -188,6 +297,7 @@ slots:
     inlined: false
     see_also: *id002
   player-character-coins:
+    description: "Player character coins property; interpreted under its owning definition."
     slot_uri: pixlnd:player-character/coins
     alias: coins
     range: uint32
@@ -195,6 +305,7 @@ slots:
     inlined: false
     see_also: *id002
   player-character-inventory:
+    description: "Player character inventory property; interpreted under its owning definition."
     slot_uri: pixlnd:player-character/inventory
     alias: inventory
     range: inventory
@@ -202,6 +313,7 @@ slots:
     inlined: true
     see_also: *id002
   player-character-skills:
+    description: "Player character skills property; interpreted under its owning definition."
     slot_uri: pixlnd:player-character/skills
     alias: skills
     range: uint32
@@ -211,6 +323,7 @@ slots:
     maximum_cardinality: 11
     see_also: *id002
   player-character-artifacts:
+    description: "Player character artifacts property; interpreted under its owning definition."
     slot_uri: pixlnd:player-character/artifacts
     alias: artifacts
     range: artifact
@@ -218,30 +331,35 @@ slots:
     multivalued: true
     see_also: *id002
   pet-species:
+    description: "Pet species property; interpreted under its owning definition."
     slot_uri: pixlnd:pet/species
     alias: species
     range: creature
     required: true
     see_also: *id003
   pet-name:
+    description: "Pet name property; interpreted under its owning definition."
     slot_uri: pixlnd:pet/name
     alias: name
     range: string
     required: true
     see_also: *id003
   pet-cage:
+    description: "Pet cage property; interpreted under its owning definition."
     slot_uri: pixlnd:pet/cage
     alias: cage
     range: item
     required: true
     see_also: *id003
   pet-level:
+    description: "Pet level property; interpreted under its owning definition."
     slot_uri: pixlnd:pet/level
     alias: level
     range: integer
     required: true
     see_also: *id003
   pet-xp:
+    description: "Pet xp property; interpreted under its owning definition."
     slot_uri: pixlnd:pet/xp
     alias: xp
     range: integer
@@ -259,3 +377,572 @@ slots:
     see_also:
     - ../domain/4_Relations.md
     list_elements_unique: true
+
+  entity-pos:
+    slot_uri: pixlnd:entity/pos
+    alias: pos
+    domain: entity
+    range: int64
+    description: Three native-unit position components in the qualified Alpha representation.
+    see_also: [../domain/3_Classes.md#entity]
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+  entity-velocity:
+    slot_uri: pixlnd:entity/velocity
+    alias: velocity
+    domain: entity
+    range: double
+    description: Three velocity components.
+    see_also: [../domain/3_Classes.md#entity]
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+  entity-accel:
+    slot_uri: pixlnd:entity/accel
+    alias: accel
+    domain: entity
+    range: double
+    description: Three acceleration components.
+    see_also: [../domain/3_Classes.md#entity]
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+  entity-body-roll:
+    slot_uri: pixlnd:entity/body-roll
+    alias: body-roll
+    domain: entity
+    range: double
+    description: Body orientation component; no new angular unit or motion rule is selected.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-body-pitch:
+    slot_uri: pixlnd:entity/body-pitch
+    alias: body-pitch
+    domain: entity
+    range: double
+    description: Body orientation component; no new angular unit or motion rule is selected.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-body-yaw:
+    slot_uri: pixlnd:entity/body-yaw
+    alias: body-yaw
+    domain: entity
+    range: double
+    description: Body orientation component; no new angular unit or motion rule is selected.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-class:
+    slot_uri: pixlnd:entity/class
+    alias: class
+    domain: entity
+    range: character-class
+    description: Optional humanoid classification reference.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-specialization:
+    slot_uri: pixlnd:entity/specialization
+    alias: specialization
+    domain: entity
+    range: specialization
+    description: Optional humanoid classification reference.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-hp:
+    slot_uri: pixlnd:entity/hp
+    alias: hp
+    domain: entity
+    range: double
+    description: Current resource amount, distinct from the resource definition.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-mp:
+    slot_uri: pixlnd:entity/mp
+    alias: mp
+    domain: entity
+    range: double
+    description: Current resource amount, distinct from the resource definition.
+    see_also: [../domain/3_Classes.md#entity]
+    minimum_value: 0
+    maximum_value: 100
+  entity-stamina:
+    slot_uri: pixlnd:entity/stamina
+    alias: stamina
+    domain: entity
+    range: double
+    description: Current resource amount, distinct from the resource definition.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-block-power:
+    slot_uri: pixlnd:entity/block-power
+    alias: block-power
+    domain: entity
+    range: double
+    description: Current resource amount, distinct from the resource definition.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-stealth:
+    slot_uri: pixlnd:entity/stealth
+    alias: stealth
+    domain: entity
+    range: double
+    description: Current resource amount, distinct from the resource definition.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-hp-multiplier:
+    slot_uri: pixlnd:entity/hp-multiplier
+    alias: hp-multiplier
+    domain: entity
+    range: double
+    description: Entity scaling parameter, not an inferred species or family default.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-damage-multiplier:
+    slot_uri: pixlnd:entity/damage-multiplier
+    alias: damage-multiplier
+    domain: entity
+    range: double
+    description: Entity scaling parameter, not an inferred species or family default.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-armor-multiplier:
+    slot_uri: pixlnd:entity/armor-multiplier
+    alias: armor-multiplier
+    domain: entity
+    range: double
+    description: Entity scaling parameter, not an inferred species or family default.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-resi-multiplier:
+    slot_uri: pixlnd:entity/resi-multiplier
+    alias: resi-multiplier
+    domain: entity
+    range: double
+    description: Entity scaling parameter, not an inferred species or family default.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-hit-counter:
+    slot_uri: pixlnd:entity/hit-counter
+    alias: hit-counter
+    domain: entity
+    range: uint32
+    description: Combo counter in the qualified cuwo Alpha representation.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-last-hit-time:
+    slot_uri: pixlnd:entity/last-hit-time
+    alias: last-hit-time
+    domain: entity
+    range: uint32
+    description: Raw uint32 storage evidenced by cuwo 240bb61ec42abb10a73d750ce72f243e04e55509 entity.pyx; units, epoch, reset, wrap and cross-edition semantics remain unresolved.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-stun-time:
+    slot_uri: pixlnd:entity/stun-time
+    alias: stun-time
+    domain: entity
+    range: int32
+    description: Status timer in milliseconds per the canonical entity table; source integer width is cuwo-qualified.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-slowed-time:
+    slot_uri: pixlnd:entity/slowed-time
+    alias: slowed-time
+    domain: entity
+    range: uint32
+    description: Status timer in milliseconds per the canonical entity table; source integer width is cuwo-qualified.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-blue-time:
+    slot_uri: pixlnd:entity/blue-time
+    alias: blue-time
+    domain: entity
+    range: uint32
+    description: Status timer in milliseconds per the canonical entity table; source integer width is cuwo-qualified.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-speed-up-time:
+    slot_uri: pixlnd:entity/speed-up-time
+    alias: speed-up-time
+    domain: entity
+    range: uint32
+    description: Status timer in milliseconds per the canonical entity table; source integer width is cuwo-qualified.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-flags:
+    slot_uri: pixlnd:entity/flags
+    alias: flags
+    domain: entity
+    range: EntityFlag
+    description: Named entity flags; no numeric bit layout is selected.
+    see_also: [../domain/3_Classes.md#entity]
+    multivalued: true
+    list_elements_unique: true
+  entity-equipment:
+    slot_uri: pixlnd:entity/equipment
+    alias: equipment
+    domain: entity
+    range: item
+    description: Historical thirteen-position item table, distinct from equips and its twelve usable slots; not a current-save wire declaration.
+    see_also: [../domain/3_Classes.md#entity]
+    multivalued: true
+    minimum_cardinality: 13
+    maximum_cardinality: 13
+  entity-name:
+    slot_uri: pixlnd:entity/name
+    alias: name
+    domain: entity
+    range: string
+    description: Entity source name, distinct from the stricter playable-name minimum.
+    see_also: [../domain/3_Classes.md#entity]
+    pattern: '^[\x20-\x7e]{0,16}$'
+  appearance-hair-rgb:
+    slot_uri: pixlnd:appearance/hair-rgb
+    alias: hair-rgb
+    domain: appearance
+    range: u8
+    description: Free RGB components.
+    see_also: [../domain/3_Classes.md#appearance]
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+  appearance-scale:
+    slot_uri: pixlnd:appearance/scale
+    alias: scale
+    domain: appearance
+    range: float
+    description: Global three-component scale in the qualified cuwo codec; individual part scales are scalar.
+    see_also: [../domain/3_Classes.md#appearance]
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+  appearance-head-model:
+    slot_uri: pixlnd:appearance/head-model
+    alias: head-model
+    domain: appearance
+    range: i16
+    description: Numeric model-table field in cuwo 240bb61ec42abb10a73d750ce72f243e04e55509; not a stable ontology ID, species identity or universal sentinel policy.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-hair-model:
+    slot_uri: pixlnd:appearance/hair-model
+    alias: hair-model
+    domain: appearance
+    range: i16
+    description: Numeric model-table field in cuwo 240bb61ec42abb10a73d750ce72f243e04e55509; not a stable ontology ID, species identity or universal sentinel policy.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-hand-model:
+    slot_uri: pixlnd:appearance/hand-model
+    alias: hand-model
+    domain: appearance
+    range: i16
+    description: Numeric model-table field in cuwo 240bb61ec42abb10a73d750ce72f243e04e55509; not a stable ontology ID, species identity or universal sentinel policy.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-foot-model:
+    slot_uri: pixlnd:appearance/foot-model
+    alias: foot-model
+    domain: appearance
+    range: i16
+    description: Numeric model-table field in cuwo 240bb61ec42abb10a73d750ce72f243e04e55509; not a stable ontology ID, species identity or universal sentinel policy.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-body-model:
+    slot_uri: pixlnd:appearance/body-model
+    alias: body-model
+    domain: appearance
+    range: i16
+    description: Numeric model-table field in cuwo 240bb61ec42abb10a73d750ce72f243e04e55509; not a stable ontology ID, species identity or universal sentinel policy.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-tail-model:
+    slot_uri: pixlnd:appearance/tail-model
+    alias: tail-model
+    domain: appearance
+    range: i16
+    description: Numeric model-table field in cuwo 240bb61ec42abb10a73d750ce72f243e04e55509; not a stable ontology ID, species identity or universal sentinel policy.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-shoulder2-model:
+    slot_uri: pixlnd:appearance/shoulder2-model
+    alias: shoulder2-model
+    domain: appearance
+    range: i16
+    description: Numeric model-table field in cuwo 240bb61ec42abb10a73d750ce72f243e04e55509; not a stable ontology ID, species identity or universal sentinel policy.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-wing-model:
+    slot_uri: pixlnd:appearance/wing-model
+    alias: wing-model
+    domain: appearance
+    range: i16
+    description: Numeric model-table field in cuwo 240bb61ec42abb10a73d750ce72f243e04e55509; not a stable ontology ID, species identity or universal sentinel policy.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-head-scale:
+    slot_uri: pixlnd:appearance/head-scale
+    alias: head-scale
+    domain: appearance
+    range: float
+    description: Scalar four-byte-float cuwo wire scale; in-memory Cython double does not establish wire f64.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-body-scale:
+    slot_uri: pixlnd:appearance/body-scale
+    alias: body-scale
+    domain: appearance
+    range: float
+    description: Scalar four-byte-float cuwo wire scale; in-memory Cython double does not establish wire f64.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-hand-scale:
+    slot_uri: pixlnd:appearance/hand-scale
+    alias: hand-scale
+    domain: appearance
+    range: float
+    description: Scalar four-byte-float cuwo wire scale; in-memory Cython double does not establish wire f64.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-foot-scale:
+    slot_uri: pixlnd:appearance/foot-scale
+    alias: foot-scale
+    domain: appearance
+    range: float
+    description: Scalar four-byte-float cuwo wire scale; in-memory Cython double does not establish wire f64.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-shoulder2-scale:
+    slot_uri: pixlnd:appearance/shoulder2-scale
+    alias: shoulder2-scale
+    domain: appearance
+    range: float
+    description: Scalar four-byte-float cuwo wire scale; in-memory Cython double does not establish wire f64.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-weapon-scale:
+    slot_uri: pixlnd:appearance/weapon-scale
+    alias: weapon-scale
+    domain: appearance
+    range: float
+    description: Scalar four-byte-float cuwo wire scale; in-memory Cython double does not establish wire f64.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-tail-scale:
+    slot_uri: pixlnd:appearance/tail-scale
+    alias: tail-scale
+    domain: appearance
+    range: float
+    description: Scalar four-byte-float cuwo wire scale; in-memory Cython double does not establish wire f64.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-shoulder-scale:
+    slot_uri: pixlnd:appearance/shoulder-scale
+    alias: shoulder-scale
+    domain: appearance
+    range: float
+    description: Scalar four-byte-float cuwo wire scale; in-memory Cython double does not establish wire f64.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-wing-scale:
+    slot_uri: pixlnd:appearance/wing-scale
+    alias: wing-scale
+    domain: appearance
+    range: float
+    description: Scalar four-byte-float cuwo wire scale; in-memory Cython double does not establish wire f64.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-body-offset:
+    slot_uri: pixlnd:appearance/body-offset
+    alias: body-offset
+    domain: appearance
+    range: float
+    description: Three-component cuwo part offset; no missing part transforms are implied.
+    see_also: [../domain/3_Classes.md#appearance]
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+  appearance-head-offset:
+    slot_uri: pixlnd:appearance/head-offset
+    alias: head-offset
+    domain: appearance
+    range: float
+    description: Three-component cuwo part offset; no missing part transforms are implied.
+    see_also: [../domain/3_Classes.md#appearance]
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+  appearance-hand-offset:
+    slot_uri: pixlnd:appearance/hand-offset
+    alias: hand-offset
+    domain: appearance
+    range: float
+    description: Three-component cuwo part offset; no missing part transforms are implied.
+    see_also: [../domain/3_Classes.md#appearance]
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+  appearance-foot-offset:
+    slot_uri: pixlnd:appearance/foot-offset
+    alias: foot-offset
+    domain: appearance
+    range: float
+    description: Three-component cuwo part offset; no missing part transforms are implied.
+    see_also: [../domain/3_Classes.md#appearance]
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+  appearance-tail-offset:
+    slot_uri: pixlnd:appearance/tail-offset
+    alias: tail-offset
+    domain: appearance
+    range: float
+    description: Three-component cuwo part offset; no missing part transforms are implied.
+    see_also: [../domain/3_Classes.md#appearance]
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+  appearance-wing-offset:
+    slot_uri: pixlnd:appearance/wing-offset
+    alias: wing-offset
+    domain: appearance
+    range: float
+    description: Three-component cuwo part offset; no missing part transforms are implied.
+    see_also: [../domain/3_Classes.md#appearance]
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+  appearance-body-pitch:
+    slot_uri: pixlnd:appearance/body-pitch
+    alias: body-pitch
+    domain: appearance
+    range: float
+    description: Individual cuwo orientation field; no universal per-part transform or angular unit is inferred.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-arm-pitch:
+    slot_uri: pixlnd:appearance/arm-pitch
+    alias: arm-pitch
+    domain: appearance
+    range: float
+    description: Individual cuwo orientation field; no universal per-part transform or angular unit is inferred.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-arm-roll:
+    slot_uri: pixlnd:appearance/arm-roll
+    alias: arm-roll
+    domain: appearance
+    range: float
+    description: Individual cuwo orientation field; no universal per-part transform or angular unit is inferred.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-arm-yaw:
+    slot_uri: pixlnd:appearance/arm-yaw
+    alias: arm-yaw
+    domain: appearance
+    range: float
+    description: Individual cuwo orientation field; no universal per-part transform or angular unit is inferred.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-feet-pitch:
+    slot_uri: pixlnd:appearance/feet-pitch
+    alias: feet-pitch
+    domain: appearance
+    range: float
+    description: Individual cuwo orientation field; no universal per-part transform or angular unit is inferred.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-wing-pitch:
+    slot_uri: pixlnd:appearance/wing-pitch
+    alias: wing-pitch
+    domain: appearance
+    range: float
+    description: Individual cuwo orientation field; no universal per-part transform or angular unit is inferred.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-back-pitch:
+    slot_uri: pixlnd:appearance/back-pitch
+    alias: back-pitch
+    domain: appearance
+    range: float
+    description: Individual cuwo orientation field; no universal per-part transform or angular unit is inferred.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-flags:
+    slot_uri: pixlnd:appearance/flags
+    alias: flags
+    domain: appearance
+    range: AppearanceFlag
+    description: Named appearance flags, not a selected numeric bit layout.
+    see_also: [../domain/3_Classes.md#appearance]
+    multivalued: true
+    list_elements_unique: true
+  appearance-expression:
+    slot_uri: pixlnd:appearance/expression
+    alias: expression
+    domain: appearance
+    range: AppearanceExpression
+    description: Omega source expression categories; not authenticated Alpha codec fields.
+    see_also: [../domain/3_Classes.md#appearance]
+  player-character-platinum:
+    slot_uri: pixlnd:player-character/platinum
+    alias: platinum
+    domain: player-character
+    range: uint32
+    description: Alpha platinum currency.
+    see_also: [../domain/3_Classes.md#player-character]
+  player-character-lore-known:
+    slot_uri: pixlnd:player-character/lore-known
+    alias: lore-known
+    domain: player-character
+    range: realm-knowledge
+    description: Knowledge scoped to character, realm and saved world.
+    see_also: [../domain/3_Classes.md#player-character]
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  player-character-world-states:
+    slot_uri: pixlnd:player-character/world-states
+    alias: world-states
+    domain: player-character
+    range: character-world-state
+    description: Position and respawn scoped to the saved world, not global hero coordinates.
+    see_also: [../domain/3_Classes.md#player-character]
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+
+  player-character-pet-slot:
+    slot_uri: pixlnd:player-character/pet-slot
+    alias: pet-slot
+    domain: player-character
+    range: pet
+    description: Pet currently in the pet slot; cages and active mounting are distinct.
+    see_also: [../domain/3_Classes.md#player-character]
+  pet-hydration:
+    slot_uri: pixlnd:pet/hydration
+    alias: hydration
+    domain: pet
+    range: double
+    description: Pet hydration resource; no new drain or refill amount.
+    see_also: [../domain/3_Classes.md#pet]
+  pet-boss-origin:
+    slot_uri: pixlnd:pet/boss-origin
+    alias: boss-origin
+    domain: pet
+    range: boolean
+    description: Whether the pet originated from a boss; reload-size behavior remains prose.
+    see_also: [../domain/3_Classes.md#pet]
+  entity-status-applications:
+    alias: status-applications
+    slot_uri: pixlnd:entity/status-applications
+    domain: entity
+    range: status-application
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+    description: Independent status applications; duplicate effects may coexist without merging lifetimes.
+    see_also: [../domain/3_Classes.md#status-effect]
+
+  player-character-active-pet:
+    alias: active-pet
+    slot_uri: pixlnd:player-character/active-pet
+    domain: player-character
+    range: pet
+    description: At most one summoned pet, separate from the mounted pet and cage slot.
+    see_also: [../domain/3_Classes.md#player-character, ../domain/5_Constraints.md#constraint-catalog]
+  player-character-banked-skill-points:
+    alias: banked-skill-points
+    slot_uri: pixlnd:player-character/banked-skill-points
+    domain: player-character
+    range: uint32
+    description: Unspent skill points; gain, spending and respec remain progression rules.
+    see_also: [../domain/3_Classes.md#skill-tree-a]
+
+enums:
+  EntityFlag:
+    enum_uri: pixlnd:EntityFlag
+    description: Canonical named entity flags, without a chosen bit encoding.
+    see_also: [../domain/3_Classes.md#appearance]
+    permissible_values:
+      climbing: {description: "Climbing flag or expression."}
+      attacking: {description: "Attacking flag or expression."}
+      glider: {description: "Glider flag or expression."}
+      hostile: {description: "Hostile flag or expression."}
+      lantern: {description: "Lantern flag or expression."}
+      stealth: {description: "Stealth flag or expression."}
+  AppearanceFlag:
+    enum_uri: pixlnd:AppearanceFlag
+    description: Canonical named appearance flags, without a chosen bit encoding.
+    see_also: [../domain/3_Classes.md#appearance]
+    permissible_values:
+      double-scale: {description: "Double scale flag or expression."}
+      immovable: {description: "Immovable flag or expression."}
+  AppearanceExpression:
+    enum_uri: pixlnd:AppearanceExpression
+    description: Announced Omega expressions; no cross-edition mapping.
+    see_also: [../domain/3_Classes.md#appearance]
+    permissible_values:
+      neutral: {description: "Neutral flag or expression."}
+      happy-angry: {description: "Happy angry flag or expression."}
+      sad: {description: "Sad flag or expression."}
+      surprised: {description: "Surprised flag or expression."}
+      sleeping: {description: "Sleeping flag or expression."}
+      blink: {description: "Blink flag or expression."}

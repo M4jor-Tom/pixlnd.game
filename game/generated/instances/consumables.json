@@ -1,0 +1,492 @@
+{
+ "$schema": "consumable",
+ "_doc": "use = sit (immobile) | channel (can move) | throw. heal-mult applies to alpha curve. Recipes duplicated in recipes.json under the same id.",
+ "entries": [
+  {
+   "key": "apple",
+   "value": {
+    "effect": "heal over 15 s",
+    "heal-mult": 20,
+    "kind": "food",
+    "name": "Apple",
+    "source": "pickup under apple trees",
+    "use": "sit",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "pineapple-slice",
+   "value": {
+    "alpha-subtype": 8,
+    "heal-mult": 100,
+    "kind": "food",
+    "name": "Pineapple Slice",
+    "recipe": {
+     "entries": [
+      {
+       "key": "pineapple",
+       "value": 1
+      }
+     ]
+    },
+    "station": "anywhere",
+    "use": "sit",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "snowberry-mash",
+   "value": {
+    "alpha-subtype": 5,
+    "heal-mult": 200,
+    "kind": "food",
+    "name": "Snowberry Mash",
+    "recipe": {
+     "entries": [
+      {
+       "key": "snowberry",
+       "value": 1
+      }
+     ]
+    },
+    "station": "anywhere (craftable since 0.9.1-5)",
+    "use": "sit",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "pumpkin-muffin",
+   "value": {
+    "alpha-subtype": 9,
+    "heal-mult": 100,
+    "kind": "food",
+    "name": "Pumpkin Muffin",
+    "recipe": {
+     "entries": [
+      {
+       "key": "pumpkin",
+       "value": 1
+      }
+     ]
+    },
+    "station": "campfire",
+    "use": "sit",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "ginseng-soup",
+   "value": {
+    "alpha-subtype": 4,
+    "heal-mult": 200,
+    "kind": "food",
+    "name": "Ginseng Soup",
+    "recipe": {
+     "entries": [
+      {
+       "key": "ginseng-root",
+       "value": 4
+      }
+     ]
+    },
+    "station": "campfire",
+    "use": "sit",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "mushroom-spit",
+   "value": {
+    "alpha-subtype": 6,
+    "heal-mult": 200,
+    "kind": "food",
+    "name": "Mushroom Spit",
+    "recipe": {
+     "entries": [
+      {
+       "key": "mushroom",
+       "value": 1
+      },
+      {
+       "key": "onion-slice",
+       "value": 1
+      }
+     ]
+    },
+    "station": "campfire",
+    "use": "sit",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "cookie",
+   "value": {
+    "alpha-subtype": 0,
+    "kind": "food",
+    "name": "Cookie",
+    "note": "2012: heals pets; rare/unused in alpha",
+    "versions": [
+     "A",
+     "X"
+    ]
+   }
+  },
+  {
+   "key": "life-potion",
+   "value": {
+    "alpha-subtype": 1,
+    "heal-mult": 200,
+    "kind": "potion",
+    "name": "Life Potion",
+    "note": "S: new characters start with 5",
+    "recipe": {
+     "entries": [
+      {
+       "key": "heartflower",
+       "value": 1
+      },
+      {
+       "key": "water-flask",
+       "value": 1
+      }
+     ]
+    },
+    "station": "anywhere",
+    "use": "channel",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "cactus-potion",
+   "value": {
+    "alpha-subtype": 2,
+    "heal-mult": 200,
+    "kind": "potion",
+    "name": "Cactus Potion",
+    "recipe": {
+     "entries": [
+      {
+       "key": "prickly-pear",
+       "value": 1
+      },
+      {
+       "key": "glass-flask",
+       "value": 1
+      }
+     ]
+    },
+    "station": "anywhere",
+    "use": "channel",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "mana-potion",
+   "value": {
+    "alpha-subtype": 3,
+    "kind": "potion",
+    "name": "Mana Potion",
+    "note": "exists in data enum only; not craftable/documented (?)",
+    "versions": [
+     "X"
+    ]
+   }
+  },
+  {
+   "key": "elixir-of-power",
+   "value": {
+    "duration-s": 600,
+    "effect": "+20% attack power",
+    "kind": "elixir",
+    "name": "Elixir of Power",
+    "recipe": {
+     "entries": [
+      {
+       "key": "water-flask",
+       "value": 1
+      },
+      {
+       "key": "dragon-root",
+       "value": 2
+      },
+      {
+       "key": "mushroom",
+       "value": 5
+      }
+     ]
+    },
+    "use": "channel",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "elixir-of-toughness",
+   "value": {
+    "duration-s": 600,
+    "effect": "+20% armor",
+    "kind": "elixir",
+    "name": "Elixir of Toughness",
+    "recipe": {
+     "entries": [
+      {
+       "key": "water-flask",
+       "value": 1
+      },
+      {
+       "key": "dewdrop",
+       "value": 2
+      },
+      {
+       "key": "mushroom",
+       "value": 5
+      }
+     ]
+    },
+    "use": "channel",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "elixir-of-life",
+   "value": {
+    "duration-s": 600,
+    "effect": "+20% HP",
+    "kind": "elixir",
+    "name": "Elixir of Life",
+    "recipe": {
+     "entries": [
+      {
+       "key": "water-flask",
+       "value": 1
+      },
+      {
+       "key": "ginseng-root",
+       "value": 1
+      },
+      {
+       "key": "heartflower",
+       "value": 5
+      }
+     ]
+    },
+    "use": "channel",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "elixir-of-sanity",
+   "value": {
+    "duration-s": 600,
+    "effect": "+20% resistance (+MP/magic power)",
+    "kind": "elixir",
+    "name": "Elixir of Sanity",
+    "recipe": {
+     "entries": [
+      {
+       "key": "water-flask",
+       "value": 1
+      },
+      {
+       "key": "manaorchid",
+       "value": "1-2"
+      },
+      {
+       "key": "shimmer-mushroom",
+       "value": 5
+      }
+     ]
+    },
+    "use": "channel",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "lemonade",
+   "value": {
+    "duration-s": 600,
+    "effect": "lava resistance",
+    "kind": "beverage",
+    "name": "Lemonade",
+    "recipe": {
+     "entries": [
+      {
+       "key": "water-flask",
+       "value": 1
+      },
+      {
+       "key": "sugar-cube",
+       "value": 2
+      },
+      {
+       "key": "ice-cube",
+       "value": 2
+      },
+      {
+       "key": "lemon",
+       "value": 3
+      }
+     ]
+    },
+    "station": "anywhere",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "hot-chocolate",
+   "value": {
+    "duration-s": 600,
+    "effect": "cold resistance (snowlands cold-water slow)",
+    "kind": "beverage",
+    "name": "Hot Chocolate",
+    "recipe": {
+     "entries": [
+      {
+       "key": "water-flask",
+       "value": 1
+      },
+      {
+       "key": "sugar-cube",
+       "value": 1
+      },
+      {
+       "key": "cocoa-bean",
+       "value": 3
+      }
+     ]
+    },
+    "station": "campfire",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "green-smoothie",
+   "value": {
+    "duration-s": 600,
+    "effect": "poison resistance (toxic rivers)",
+    "kind": "beverage",
+    "name": "Green Smoothie",
+    "recipe": {
+     "entries": [
+      {
+       "key": "water-flask",
+       "value": 1
+      },
+      {
+       "key": "banana",
+       "value": 2
+      },
+      {
+       "key": "kale",
+       "value": 2
+      }
+     ]
+    },
+    "station": "anywhere",
+    "versions": [
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "bomb",
+   "value": {
+    "alpha-subtype": 7,
+    "effect": "spawns 100-HP fuse entity that ticks down and explodes; hit it to detonate early; chains; breaks boulders / cracked dirt; hurts players; may pop loot",
+    "kind": "bomb",
+    "levels-a": [
+     "+1",
+     "+5",
+     "+10"
+    ],
+    "name": "Bomb",
+    "note-s": "all same strength; loot land-bound",
+    "source": [
+     "item vendor",
+     "drops",
+     "tables"
+    ],
+    "use": "throw/place",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "water-flask",
+   "value": {
+    "kind": "intermediate",
+    "name": "Water Flask",
+    "recipe": {
+     "entries": [
+      {
+       "key": "glass-flask",
+       "value": 1
+      }
+     ]
+    },
+    "station": "standing in water",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  }
+ ],
+ "rules": {
+  "entries": [
+   {
+    "key": "eat-while-sitting-in-chair",
+    "value": "bug: consumes without healing"
+   },
+   {
+    "key": "repeated-use",
+    "value": "repeated quick-item requests can waste potions (../domain/controls.md#quick-item)"
+   },
+   {
+    "key": "npc-use",
+    "value": "humanoid NPCs/monsters drink potions at low HP"
+   },
+   {
+    "key": "potion-rarity-colours",
+    "value": "X (Pixxie 2015 preview, never shipped)"
+   }
+  ]
+ }
+}

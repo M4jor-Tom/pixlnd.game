@@ -1,0 +1,9 @@
+ classDiagram
+    class `Economy-currency-source`
+    click `Economy-currency-source` href "../Economy-currency-source"
+      `Economy-currency-source` : alpha
+        `Economy-currency-source` --> "1" `Economy-currency-alpha` : alpha
+        click `Economy-currency-alpha` href "../Economy-currency-alpha"
+      `Economy-currency-source` : steam
+        `Economy-currency-source` --> "1" `Economy-currency-steam` : steam
+        click `Economy-currency-steam` href "../Economy-currency-steam"

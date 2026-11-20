@@ -1,0 +1,13 @@
+ classDiagram
+    class `Rarity`
+    click `Rarity` href "../Rarity"
+      `Rarity` : id
+      `Rarity` : rarity_color
+      `Rarity` : rarity_gem
+        `Rarity` --> "0..1" `Material` : rarity_gem
+        click `Material` href "../Material"
+      `Rarity` : rarity_hex
+      `Rarity` : rarity_index
+      `Rarity` : rarity_name
+      `Rarity` : rarity_named
+      `Rarity` : rarity_stars

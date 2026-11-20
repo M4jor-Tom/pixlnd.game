@@ -1,0 +1,9 @@
+ classDiagram
+    class `Place-marker-list-entry`
+    click `Place-marker-list-entry` href "../Place-marker-list-entry"
+      `Place-marker-list-entry` : place_marker_list_entry_place
+        `Place-marker-list-entry` --> "1" `Map-marker-place-key` : place_marker_list_entry_place
+        click `Map-marker-place-key` href "../Map-marker-place-key"
+      `Place-marker-list-entry` : place_marker_list_entry_positions
+        `Place-marker-list-entry` --> "1..*" `Map-marker-integer-triple` : place_marker_list_entry_positions
+        click `Map-marker-integer-triple` href "../Map-marker-integer-triple"

@@ -1,0 +1,8 @@
+ classDiagram
+    class `Settlement-style`
+    click `Settlement-style` href "../Settlement-style"
+      `Settlement-style` : id
+      `Settlement-style` : settlement_style_desc
+      `Settlement-style` : settlement_style_lands
+        `Settlement-style` --> "1..*" `Landscape` : settlement_style_lands
+        click `Landscape` href "../Landscape"

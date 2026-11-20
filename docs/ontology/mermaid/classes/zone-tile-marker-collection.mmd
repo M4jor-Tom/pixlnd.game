@@ -1,0 +1,6 @@
+ classDiagram
+    class `Zone-tile-marker-collection`
+    click `Zone-tile-marker-collection` href "../Zone-tile-marker-collection"
+      `Zone-tile-marker-collection` : zone_tile_marker_collection_markers
+        `Zone-tile-marker-collection` --> "1..*" `Map-marker-integer-triple` : zone_tile_marker_collection_markers
+        click `Map-marker-integer-triple` href "../Map-marker-integer-triple"

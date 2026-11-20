@@ -1,0 +1,7 @@
+ classDiagram
+    class `Saved-rubble-entry`
+    click `Saved-rubble-entry` href "../Saved-rubble-entry"
+      `Saved-rubble-entry` : saved_rubble_entry_rubble
+      `Saved-rubble-entry` : saved_rubble_entry_value
+        `Saved-rubble-entry` --> "1" `Saved-rubble` : saved_rubble_entry_value
+        click `Saved-rubble` href "../Saved-rubble"

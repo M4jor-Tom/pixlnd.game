@@ -1,0 +1,11 @@
+ classDiagram
+    class `Creatures-source`
+    click `Creatures-source` href "../Creatures-source"
+      `Creatures-source` : documentation
+      `Creatures-source` : entries
+        `Creatures-source` --> "1..*" `Creature-source-entry` : entries
+        click `Creature-source-entry` href "../Creature-source-entry"
+      `Creatures-source` : playable_races_as_enemies
+        `Creatures-source` --> "1" `Source-note-record` : playable_races_as_enemies
+        click `Source-note-record` href "../Source-note-record"
+      `Creatures-source` : schema_tag

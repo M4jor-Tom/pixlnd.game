@@ -1,0 +1,287 @@
+{
+ "$schema": "specialization",
+ "_doc": "index = cuwo specialization byte. Abilities listed by id (see abilities.json). Passives are abilities of kind passive.",
+ "entries": [
+  {
+   "key": "berserker",
+   "value": {
+    "class": "warrior",
+    "index": 0,
+    "kit": {
+     "A": [
+      "smash",
+      "cyclone",
+      "war-frenzy"
+     ],
+     "S": [
+      "smash",
+      "cyclone",
+      "cyclone-jump",
+      "rock-fist"
+     ]
+    },
+    "name": "Berserker",
+    "passives": {
+     "A": [
+      "berserker-rage"
+     ],
+     "S": [
+      "battle-fury",
+      "berserker-rage"
+     ]
+    },
+    "tint": "red",
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "guardian",
+   "value": {
+    "class": "warrior",
+    "index": 1,
+    "kit": {
+     "A": [
+      "smash",
+      "cyclone",
+      "bulwark"
+     ],
+     "S": [
+      "smash",
+      "cyclone",
+      "cyclone-jump",
+      "heroic-shout"
+     ]
+    },
+    "name": "Guardian",
+    "passives": {
+     "A": [
+      "toughness",
+      "barricade"
+     ],
+     "S": [
+      "battle-fury",
+      "toughness",
+      "barricade"
+     ]
+    },
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "sniper",
+   "value": {
+    "class": "ranger",
+    "index": 0,
+    "kit": {
+     "A": [
+      "kick",
+      "retreat",
+      "aim"
+     ],
+     "S": [
+      "sneak",
+      "retreat",
+      "shadow-shooter"
+     ]
+    },
+    "name": "Sniper",
+    "passives": {
+     "A": [
+      "hit-series"
+     ],
+     "S": [
+      "hit-series",
+      "charge-builds-stealth"
+     ]
+    },
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "scout",
+   "value": {
+    "class": "ranger",
+    "index": 1,
+    "kit": {
+     "A": [
+      "kick",
+      "retreat",
+      "scouts-swiftness"
+     ],
+     "S": [
+      "sprint",
+      "high-jump",
+      "kick",
+      "quicksand-trap"
+     ]
+    },
+    "name": "Scout",
+    "passives": {
+     "A": [
+      "intuition"
+     ],
+     "S": [
+      "intuition"
+     ]
+    },
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "fire-mage",
+   "value": {
+    "class": "mage",
+    "cuwo-name": "Fire",
+    "index": 0,
+    "kit": {
+     "A": [
+      "fire-explosion",
+      "mana-shield",
+      "teleport"
+     ],
+     "S": [
+      "float",
+      "super-float",
+      "teleport",
+      "fire-explosion",
+      "fire-missiles"
+     ]
+    },
+    "name": "Fire Mage",
+    "passives": {
+     "A": [
+      "fire-spark"
+     ],
+     "S": [
+      "fire-spark"
+     ]
+    },
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "water-mage",
+   "value": {
+    "class": "mage",
+    "cuwo-name": "Water",
+    "index": 1,
+    "kit": {
+     "A": [
+      "healing-stream",
+      "mana-shield",
+      "teleport"
+     ],
+     "S": [
+      "float",
+      "super-float",
+      "teleport",
+      "healing-stream",
+      "healing-stream-cursor",
+      "bubbles"
+     ]
+    },
+    "name": "Water Mage",
+    "passives": {
+     "A": [
+      "torrent"
+     ],
+     "S": [
+      "torrent",
+      "healing-spells"
+     ]
+    },
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "assassin",
+   "value": {
+    "class": "rogue",
+    "index": 0,
+    "kit": {
+     "A": [
+      "intercept",
+      "sneak",
+      "camouflage"
+     ],
+     "S": [
+      "sneak",
+      "intercept",
+      "poison-vial",
+      "camouflage"
+     ]
+    },
+    "name": "Assassin",
+    "passives": {
+     "A": [
+      "way-of-the-shadows"
+     ],
+     "S": [
+      "way-of-the-shadows"
+     ]
+    },
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  },
+  {
+   "key": "ninja",
+   "value": {
+    "class": "rogue",
+    "index": 1,
+    "kit": {
+     "A": [
+      "intercept",
+      "sneak",
+      "shuriken-attack"
+     ],
+     "S": [
+      "ninja-run",
+      "high-jump",
+      "shuriken-toss",
+      "intercept",
+      "ninjutsu"
+     ]
+    },
+    "name": "Ninja",
+    "notes": [
+     "S: lost stealth entirely (Steam thread 'what happened to ninja')"
+    ],
+    "passives": {
+     "A": [
+      "counter-strike",
+      "elusiveness"
+     ],
+     "S": [
+      "counter-strike",
+      "elusiveness"
+     ]
+    },
+    "versions": [
+     "A",
+     "S"
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,11 @@
+ classDiagram
+    class `Weapon-types-source`
+    click `Weapon-types-source` href "../Weapon-types-source"
+      `Weapon-types-source` : controls
+        `Weapon-types-source` --> "1" `Weapon-source-controls` : controls
+        click `Weapon-source-controls` href "../Weapon-source-controls"
+      `Weapon-types-source` : documentation
+      `Weapon-types-source` : entries
+        `Weapon-types-source` --> "1..*" `Weapon-source-entry` : entries
+        click `Weapon-source-entry` href "../Weapon-source-entry"
+      `Weapon-types-source` : schema_tag

@@ -1,0 +1,14 @@
+ classDiagram
+    class `Recipe`
+    click `Recipe` href "../Recipe"
+      `Recipe` : consumes
+        `Recipe` --> "1..*" `Ingredient-or-material` : consumes
+        click `Ingredient-or-material` href "../Ingredient-or-material"
+      `Recipe` : crafted_at
+        `Recipe` --> "1" `Crafting-station` : crafted_at
+        click `Crafting-station` href "../Crafting-station"
+      `Recipe` : id
+      `Recipe` : produces
+        `Recipe` --> "1" `Item-type-or-consumable` : produces
+        click `Item-type-or-consumable` href "../Item-type-or-consumable"
+      `Recipe` : recipe_required_power

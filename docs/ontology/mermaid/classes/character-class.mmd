@@ -1,0 +1,20 @@
+ classDiagram
+    class `Character-class`
+    click `Character-class` href "../Character-class"
+      `Character-class` : character_class_hp_mult
+      `Character-class` : character_class_id_number
+      `Character-class` : character_class_name
+      `Character-class` : character_class_special_attack_mode
+        `Character-class` --> "1" `Attack-mode` : character_class_special_attack_mode
+        click `Attack-mode` href "../Attack-mode"
+      `Character-class` : has_specialization
+        `Character-class` --> "1..*" `Specialization` : has_specialization
+        click `Specialization` href "../Specialization"
+      `Character-class` : id
+      `Character-class` : mp_generation
+      `Character-class` : uses_weapon
+        `Character-class` --> "1..*" `Weapon-type` : uses_weapon
+        click `Weapon-type` href "../Weapon-type"
+      `Character-class` : wears_material
+        `Character-class` --> "1" `Material` : wears_material
+        click `Material` href "../Material"

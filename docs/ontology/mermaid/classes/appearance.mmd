@@ -1,0 +1,42 @@
+ classDiagram
+    class `Appearance`
+    click `Appearance` href "../Appearance"
+      `Appearance` : appearance_arm_pitch
+      `Appearance` : appearance_arm_roll
+      `Appearance` : appearance_arm_yaw
+      `Appearance` : appearance_back_pitch
+      `Appearance` : appearance_body_model
+      `Appearance` : appearance_body_offset
+      `Appearance` : appearance_body_pitch
+      `Appearance` : appearance_body_scale
+      `Appearance` : appearance_expression
+        `Appearance` --> "0..1" `AppearanceExpression` : appearance_expression
+        click `AppearanceExpression` href "../AppearanceExpression"
+      `Appearance` : appearance_feet_pitch
+      `Appearance` : appearance_flags
+        `Appearance` --> "*" `AppearanceFlag` : appearance_flags
+        click `AppearanceFlag` href "../AppearanceFlag"
+      `Appearance` : appearance_foot_model
+      `Appearance` : appearance_foot_offset
+      `Appearance` : appearance_foot_scale
+      `Appearance` : appearance_hair_model
+      `Appearance` : appearance_hair_rgb
+      `Appearance` : appearance_hand_model
+      `Appearance` : appearance_hand_offset
+      `Appearance` : appearance_hand_scale
+      `Appearance` : appearance_head_model
+      `Appearance` : appearance_head_offset
+      `Appearance` : appearance_head_scale
+      `Appearance` : appearance_scale
+      `Appearance` : appearance_shoulder_scale
+      `Appearance` : appearance_shoulder2_model
+      `Appearance` : appearance_shoulder2_scale
+      `Appearance` : appearance_tail_model
+      `Appearance` : appearance_tail_offset
+      `Appearance` : appearance_tail_scale
+      `Appearance` : appearance_weapon_scale
+      `Appearance` : appearance_wing_model
+      `Appearance` : appearance_wing_offset
+      `Appearance` : appearance_wing_pitch
+      `Appearance` : appearance_wing_scale
+      `Appearance` : id

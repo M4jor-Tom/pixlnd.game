@@ -1,0 +1,7 @@
+ classDiagram
+    class `Keybinds-source-profile`
+    click `Keybinds-source-profile` href "../Keybinds-source-profile"
+      `Keybinds-source-profile` : documentation
+      `Keybinds-source-profile` : entries
+        `Keybinds-source-profile` --> "1..*" `Keybinds-source-binding-entry` : entries
+        click `Keybinds-source-binding-entry` href "../Keybinds-source-binding-entry"

@@ -6,78 +6,685 @@ prefixes:
 default_prefix: pixlnd
 imports:
 - linkml:types
+- relations
+- identity
 default_range: string
 classes:
   ruleset:
     class_uri: pixlnd:ruleset
+    description: Feature-flag bundle; hybrid is the target, while Alpha and Steam bundles are historical references.
     see_also:
     - ../domain/3_Classes.md#ruleset
     slots:
     - id
   control-action:
+    description: Device-independent intention structure; its meaning and behavior remain in the canonical control prose.
     class_uri: pixlnd:control-action
     see_also:
     - ../domain/3_Classes.md#control-action
+    - ../domain/controls.md
     slots:
-    - id
+    - control-action-id
+    - control-action-value
+    - control-action-lifecycle
+    - control-action-context
+    - control-action-effect-reference
+    - bound-to-input
+    slot_usage:
+      bound-to-input:
+        inlined: true
   controller-profile:
+    description: Device profile identity and its separate physical binding structures.
     class_uri: pixlnd:controller-profile
     see_also:
     - ../domain/3_Classes.md#controller-profile
+    - ../domain/controller-profiles.md
     slots:
     - id
+    - has-input-binding
+    slot_usage:
+      has-input-binding:
+        alias: bindings
+        inlined: true
+  android-profile-parameters:
+    class_uri: pixlnd:android-profile-parameters
+    description: ID-free Android-only chosen response and minimum-target parameters; no device behavior is implemented by this declaration.
+    see_also:
+    - ../domain/controller-profiles.md#android
+    mixin: true
+    slots:
+    - android-profile-deadzone-ratio
+    - android-profile-min-target-dp
+    - android-profile-look-deg-per-safe-width
+  android-controller-profile:
+    class_uri: pixlnd:android-controller-profile
+    description: Android-specific logical refinement of a controller profile; its selected policy parameters do not add physical mappings.
+    is_a: controller-profile
+    mixins:
+    - android-profile-parameters
+    see_also:
+    - ../domain/controller-profiles.md#android
+    slot_usage:
+      id:
+        equals_string: android
   input-binding:
+    description: One physical input row referring to one or more distinct canonical actions; shared inputs remain separate rows.
     class_uri: pixlnd:input-binding
     see_also:
     - ../domain/3_Classes.md#input-binding
+    - ../domain/controller-profiles.md
     slots:
-    - id
+    - input-binding-action
+    - input-binding-physical-input
+    - input-binding-phases
+    - input-binding-contexts
+    - input-binding-mapping-status
+    - input-binding-alias-of
+    - input-binding-alias
   hud-element:
     class_uri: pixlnd:hud-element
+    description: HUD elements and screens recorded in the source UI catalog.
     see_also:
     - ../domain/3_Classes.md#hud-element
     slots:
     - id
+    - hud-element-pos
+    - hud-element-shows
+    - hud-element-desc
+    - hud-element-default
+  ui-presentation-catalog:
+    class_uri: pixlnd:ui-presentation-catalog
+    description: Selected HUD, screens, camera and option default/cfg presentation configuration, not the complete UI document.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json
+    slots:
+    - ui-presentation-catalog-hud
+    - ui-presentation-catalog-camera
+    - ui-presentation-catalog-screens
+    - ui-presentation-catalog-options
+  ui-option-presentation:
+    class_uri: pixlnd:ui-option-presentation
+    description: Selected option payload with a container-scoped source label, not a globally identified entity or runtime setting.
+    see_also:
+    - ../domain/3_Classes.md#option
+    - ../instances/ui.json#options
+    slots:
+    - ui-option-presentation-option
+    - ui-option-presentation-default
+    - ui-option-presentation-cfg
+  ui-screen-presentation:
+    class_uri: pixlnd:ui-screen-presentation
+    description: Selected screen presentation with a container-scoped source label, not a globally identified entity.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#screens
+    slots:
+    - ui-screen-presentation-screen
+    - ui-screen-presentation-desc
+    - ui-screen-presentation-shows
+    - ui-screen-presentation-extras
+    - ui-screen-presentation-tabs
+    - ui-screen-presentation-stats
+  ui-screen-context-lists:
+    class_uri: pixlnd:ui-screen-context-lists
+    description: Literal contextual presentation lists shared by tabs and stats.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#screens
+    slots:
+    - ui-screen-context-lists-a
+    - ui-screen-context-lists-s
+  ui-camera-presentation:
+    class_uri: pixlnd:ui-camera-presentation
+    description: Text fields composing the camera presentation configuration.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../domain/controls.md#locomotion-and-view
+    - ../instances/ui.json#camera
+    slots:
+    - ui-camera-presentation-mode
+    - ui-camera-presentation-aim
+    - ui-camera-presentation-map
   option:
     class_uri: pixlnd:option
+    description: Option records from the source UI catalog.
     see_also:
     - ../domain/3_Classes.md#option
     slots:
     - id
   slash-command:
     class_uri: pixlnd:slash-command
+    description: Command entries from the source slash-command catalog.
     see_also:
     - ../domain/3_Classes.md#slash-command
     slots:
     - id
   audio:
     class_uri: pixlnd:audio
+    description: Track and sound-effect identifiers from the source audio catalog.
     see_also:
     - ../domain/3_Classes.md#audio
     slots:
     - id
   mission-type:
+    description: "Logical mission-type definition; applicability follows the cited domain rules."
     class_uri: pixlnd:mission-type
     see_also:
     - ../domain/3_Classes.md#mission-type
-    slots:
-    - id
+    slots: [id, rewards]
+    attributes:
+      icon: {alias: icon, slot_uri: pixlnd:mission-type/icon, range: string, description: Map glyph; historical source scopes remain distinct.}
+      tier: {alias: tier, slot_uri: pixlnd:mission-type/tier, range: MissionTier, description: Mission tier; source and ruleset applicability remain qualified.}
+      repeat: {alias: repeat, slot_uri: pixlnd:mission-type/repeat, range: string, description: Repeat schedule as stated by the owning mission rule.}
+      structures: {alias: structures, slot_uri: pixlnd:mission-type/structures, range: dungeon-type-or-poi-type, multivalued: true, description: Referenced POI/dungeon structures; no reference-existence guarantee.}
   arena:
+    description: 'Source-S arena: five waves, final boss; any species (including saurian, mammoth, yeti, mana mech and spectrino pairs), more common in oceans. Rewards are 18–50 coins plus gear. Gear generation/eligibility remains governed by the cited rules, not an invented gear taxonomy or default. No current-wave or saved-progress state.'
     class_uri: pixlnd:arena
     see_also:
     - ../domain/3_Classes.md#arena-s
-    slots:
-    - id
+    slots: [id, rewards]
+    attributes:
+      waves:
+        alias: waves
+        slot_uri: pixlnd:arena/waves
+        range: arena-wave
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+        minimum_cardinality: 5
+        maximum_cardinality: 5
+        list_elements_ordered: true
+        equals_expression: "[{'tiers': ['common', 'uncommon']}, {'tiers': ['common', 'uncommon']}, {'tiers': ['uncommon', 'rare']}, {'tiers': ['rare', 'epic']}, {'tiers': ['epic', 'legendary']}]"
+        description: 'Exact ordered source-S ladder W/G, W/G, G/B, B/P, P/Y; equals_expression is declarative, not enforced by JSON Schema.'
+      host: {alias: host, slot_uri: pixlnd:arena/host, range: npc-role, equals_string: arena-master, description: 'Source-S host role arena-master; npc-roles.json records its species as bloodaxe-orc. Native typing does not resolve the reference.', see_also: ['../instances/npc-roles.json#/arena-master', '../domain/3_Classes.md#arena-s']}
+      repeat: {alias: repeat, slot_uri: pixlnd:arena/repeat, range: string, equals_string: daily, description: Source-S arena resets daily.}
+      reward-coins: {alias: reward-coins, slot_uri: pixlnd:arena/reward-coins, range: integer, multivalued: true, minimum_cardinality: 2, maximum_cardinality: 2, list_elements_ordered: true, equals_expression: '[18, 50]', description: 'Exact ordered lower/upper source-S coin reward interval [18, 50]; equals_expression is declarative, not enforced by JSON Schema.'}
+  arena-wave:
+    class_uri: pixlnd:arena-wave
+    see_also:
+    - ../domain/3_Classes.md#arena-s
+    description: One ordered arena wave tier pair; this is a logical structure, not saved wave progress.
+    attributes:
+      tiers: {alias: tiers, slot_uri: pixlnd:arena-wave/tiers, range: MissionTier, multivalued: true, minimum_cardinality: 2, maximum_cardinality: 2, list_elements_ordered: true, description: 'Ordered lower/upper tier pair in the source-S arena ladder.'}
   gnome-supplier:
+    description: "Logical gnome-supplier definition; applicability follows the cited domain rules."
     class_uri: pixlnd:gnome-supplier
     see_also:
     - ../domain/3_Classes.md#gnome-supplier-s
     slots:
     - id
   circle-of-power:
+    description: "Logical circle-of-power definition; applicability follows the cited domain rules."
     class_uri: pixlnd:circle-of-power
     see_also:
     - ../domain/3_Classes.md#circle-of-power-s
     slots:
     - id
-slots: {}
+enums:
+  MissionTier:
+    description: Mission tier labels from common through legendary.
+    permissible_values:
+      common: {}
+      uncommon: {}
+      rare: {}
+      epic: {}
+      legendary: {}
+  ControlActionId:
+    description: The closed set of canonical, device-independent action identifiers; meanings remain in controls.md.
+    permissible_values:
+      move: {}
+      look: {}
+      zoom: {}
+      sprint: {}
+      jump: {}
+      swim-ascent: {}
+      climb: {}
+      pet-call: {}
+      pet-mount: {}
+      pet-dismount: {}
+      deploy-glider: {}
+      deploy-boat: {}
+      glider-level: {}
+      basic-attack: {}
+      special-attack: {}
+      block: {}
+      dodge: {}
+      class-skill-1: {}
+      class-skill-2: {}
+      class-skill-3: {}
+      class-skill-4: {}
+      interact: {}
+      pick-up: {}
+      object-interact: {}
+      lamp: {}
+      quick-item: {}
+      use-inventory-item: {}
+      quick-select: {}
+      quick-cycle: {}
+      equip-item: {}
+      learn-formula: {}
+      spend-skill-point: {}
+      buy-item: {}
+      sell-item: {}
+      inventory: {}
+      skills-window: {}
+      crafting: {}
+      world-map: {}
+      chat: {}
+      menu: {}
+      help: {}
+      debug-menu: {}
+      ui-navigate: {}
+      ui-select: {}
+      ui-activate: {}
+      ui-cancel: {}
+      map-rotate: {}
+      map-pan: {}
+      map-zoom: {}
+      map-marker: {}
+      map-center: {}
+      bench-rotate: {}
+      bench-place: {}
+      bench-remove: {}
+slots:
+  control-action-id:
+    slot_uri: pixlnd:control-action/id
+    alias: id
+    domain: control-action
+    range: ControlActionId
+    key: true
+    identifier: true
+    required: true
+    description: Stable canonical action identifier from the device-independent catalog.
+    see_also:
+    - ../domain/controls.md
+    - ../domain/3_Classes.md#control-action
+  android-profile-deadzone-ratio:
+    slot_uri: pixlnd:android-profile-parameters/deadzone-ratio
+    alias: deadzone-ratio
+    domain: android-profile-parameters
+    range: float
+    required: true
+    minimum_value: 0.15
+    maximum_value: 0.15
+    description: Chosen neutral deadzone ratio 0.15; the Android policy formula remains in controller-profiles.md.
+    see_also:
+    - ../domain/controller-profiles.md#android-response
+  android-profile-min-target-dp:
+    slot_uri: pixlnd:android-profile-parameters/min-target-dp
+    alias: min-target-dp
+    domain: android-profile-parameters
+    range: integer
+    required: true
+    minimum_value: 48
+    maximum_value: 48
+    description: Chosen minimum-target parameter 48 dp; actual targets may be larger without a schema upper bound.
+    see_also:
+    - ../domain/controller-profiles.md#android-layout
+  android-profile-look-deg-per-safe-width:
+    slot_uri: pixlnd:android-profile-parameters/look-deg-per-safe-width
+    alias: look-deg-per-safe-width
+    domain: android-profile-parameters
+    range: integer
+    required: true
+    minimum_value: 180
+    maximum_value: 180
+    description: Chosen look-response coefficient 180 degrees per usable safe width; signs and formula remain in controller-profiles.md.
+    see_also:
+    - ../domain/controller-profiles.md#android-response
+  control-action-value:
+    slot_uri: pixlnd:control-action/value
+    alias: value
+    domain: control-action
+    range: string
+    required: true
+    description: Textual value or lifecycle-shape label; the canonical control prose owns its meaning.
+    see_also:
+    - ../domain/controls.md
+    - ../domain/3_Classes.md#control-action
+  control-action-lifecycle:
+    slot_uri: pixlnd:control-action/lifecycle
+    alias: lifecycle
+    domain: control-action
+    range: string
+    required: true
+    description: Textual request lifecycle shape, without selecting unspecified interruptions or gesture outcomes.
+    see_also:
+    - ../domain/controls.md#contract
+    - ../domain/3_Classes.md#control-action
+  control-action-context:
+    slot_uri: pixlnd:control-action/context
+    alias: context
+    domain: control-action
+    range: string
+    required: true
+    description: Textual use context retained as domain prose, not inferred device availability.
+    see_also:
+    - ../domain/controls.md#contract
+    - ../domain/3_Classes.md#control-action
+  control-action-effect-reference:
+    slot_uri: pixlnd:control-action/effect-reference
+    alias: effect-reference
+    domain: control-action
+    range: string
+    required: true
+    description: Textual reference to the existing effect owner; no foreign-key resolution is implied.
+    see_also:
+    - ../domain/controls.md
+    - ../domain/3_Classes.md#control-action
+  input-binding-action:
+    slot_uri: pixlnd:input-binding/action
+    alias: action
+    domain: input-binding
+    range: control-action
+    required: true
+    multivalued: true
+    minimum_cardinality: 1
+    inlined: false
+    description: One or more nominal canonical control-action references constrained through their closed IDs; no runtime behavior follows.
+    see_also:
+    - ../domain/controls.md
+    - ../domain/3_Classes.md#input-binding
+  input-binding-physical-input:
+    slot_uri: pixlnd:input-binding/physical-input
+    alias: physical-input
+    domain: input-binding
+    range: string
+    required: true
+    description: Physical input label in the owning profile; not a portable canonical action.
+    see_also:
+    - ../domain/controller-profiles.md
+    - ../domain/3_Classes.md#input-binding
+  input-binding-phases:
+    slot_uri: pixlnd:input-binding/phases
+    alias: phases
+    domain: input-binding
+    range: string
+    multivalued: true
+    description: Profile-owned request phases retained without a universal lifecycle inference.
+    see_also:
+    - ../domain/controller-profiles.md
+    - ../domain/3_Classes.md#input-binding
+  input-binding-contexts:
+    slot_uri: pixlnd:input-binding/contexts
+    alias: contexts
+    domain: input-binding
+    range: string
+    multivalued: true
+    description: Profile-owned input contexts; not a gameplay eligibility or global priority rule.
+    see_also:
+    - ../domain/controller-profiles.md
+    - ../domain/3_Classes.md#input-binding
+  input-binding-mapping-status:
+    slot_uri: pixlnd:input-binding/mapping-status
+    alias: mapping-status
+    domain: input-binding
+    range: string
+    description: Source-qualified mapping status; does not prove implementation.
+    see_also:
+    - ../domain/controller-profiles.md
+    - ../domain/3_Classes.md#input-binding
+  input-binding-alias-of:
+    slot_uri: pixlnd:input-binding/alias-of
+    alias: alias-of
+    domain: input-binding
+    range: ControlActionId
+    description: Canonical alias target identifier; this is not a separate new action or runtime relationship.
+    see_also:
+    - ../domain/controller-profiles.md
+    - ../domain/3_Classes.md#input-binding
+  input-binding-alias:
+    slot_uri: pixlnd:input-binding/alias
+    alias: alias
+    domain: input-binding
+    range: string
+    description: Literal adapter alias label, not a new canonical action.
+    see_also:
+    - ../domain/controller-profiles.md#keyboard-and-mouse
+    - ../domain/3_Classes.md#input-binding
+  ui-option-presentation-option:
+    slot_uri: pixlnd:ui-option-presentation/option
+    alias: option
+    domain: ui-option-presentation
+    range: string
+    key: true
+    required: true
+    description: Container-scoped source key, not a global stable ID or a raw keyed-body field.
+    see_also:
+    - ../domain/3_Classes.md#option
+    - ../instances/ui.json#options
+  ui-option-presentation-default:
+    slot_uri: pixlnd:ui-option-presentation/default
+    alias: default
+    domain: ui-option-presentation
+    range: integer
+    required: false
+    description: Integer option default retained as source data, not an applied setting.
+    see_also:
+    - ../domain/3_Classes.md#option
+    - ../instances/ui.json#options
+  ui-option-presentation-cfg:
+    slot_uri: pixlnd:ui-option-presentation/cfg
+    alias: cfg
+    domain: ui-option-presentation
+    range: string
+    required: false
+    description: Unparsed configuration text for an option.
+    see_also:
+    - ../domain/3_Classes.md#option
+    - ../instances/ui.json#options
+  ui-presentation-catalog-options:
+    slot_uri: pixlnd:ui-presentation-catalog/options
+    alias: options
+    domain: ui-presentation-catalog
+    range: ui-option-presentation
+    required: false
+    multivalued: true
+    inlined: true
+    inlined_as_list: false
+    description: Selected default/cfg bodies indexed by unchanged literal source labels, excluding the mixed missing list and annotations.
+    see_also:
+    - ../domain/3_Classes.md#option
+    - ../instances/ui.json#options
+  ui-screen-presentation-tabs:
+    slot_uri: pixlnd:ui-screen-presentation/tabs
+    description: Original tab labels retained as source presentation text.
+    alias: tabs
+    domain: ui-screen-presentation
+    required: false
+    inlined: true
+    any_of:
+    - range: string
+      multivalued: true
+    - range: ui-screen-context-lists
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#screens
+  ui-screen-presentation-stats:
+    slot_uri: pixlnd:ui-screen-presentation/stats
+    description: Original character-sheet statistic labels retained as source presentation text.
+    alias: stats
+    domain: ui-screen-presentation
+    range: ui-screen-context-lists
+    required: false
+    inlined: true
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#screens
+  ui-screen-context-lists-a:
+    slot_uri: pixlnd:ui-screen-context-lists/A
+    description: Original A-context UI list values.
+    alias: A
+    domain: ui-screen-context-lists
+    range: string
+    required: false
+    multivalued: true
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#screens
+  ui-screen-context-lists-s:
+    slot_uri: pixlnd:ui-screen-context-lists/S
+    description: Original S-context UI list values.
+    alias: S
+    domain: ui-screen-context-lists
+    range: string
+    required: false
+    multivalued: true
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#screens
+  ui-presentation-catalog-screens:
+    slot_uri: pixlnd:ui-presentation-catalog/screens
+    alias: screens
+    domain: ui-presentation-catalog
+    range: ui-screen-presentation
+    required: false
+    multivalued: true
+    inlined: true
+    inlined_as_list: false
+    description: Selected screen bodies indexed by their unchanged source labels.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#screens
+  ui-screen-presentation-screen:
+    slot_uri: pixlnd:ui-screen-presentation/screen
+    alias: screen
+    domain: ui-screen-presentation
+    range: string
+    key: true
+    required: true
+    description: Container-scoped source key, not a global stable ID or a raw keyed-body field.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#screens
+  ui-screen-presentation-desc:
+    slot_uri: pixlnd:ui-screen-presentation/desc
+    alias: desc
+    domain: ui-screen-presentation
+    range: string
+    required: false
+    description: Screen presentation description retained as text.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#screens
+  ui-screen-presentation-shows:
+    slot_uri: pixlnd:ui-screen-presentation/shows
+    alias: shows
+    domain: ui-screen-presentation
+    range: string
+    required: false
+    description: Screen contents recorded as one text value.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#screens
+  ui-screen-presentation-extras:
+    slot_uri: pixlnd:ui-screen-presentation/extras
+    alias: extras
+    domain: ui-screen-presentation
+    range: string
+    required: false
+    multivalued: true
+    description: Ordered additional screen presentation labels.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#screens
+  hud-element-pos:
+    slot_uri: pixlnd:hud-element/pos
+    alias: pos
+    domain: hud-element
+    range: string
+    required: false
+    description: Textual placement label for a HUD entry.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#hud
+  hud-element-shows:
+    slot_uri: pixlnd:hud-element/shows
+    alias: shows
+    domain: hud-element
+    required: false
+    any_of:
+    - range: string
+    - range: string
+      multivalued: true
+    description: Presentation contents recorded as one text value or an ordered list of text values.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#hud
+  hud-element-desc:
+    slot_uri: pixlnd:hud-element/desc
+    alias: desc
+    domain: hud-element
+    range: string
+    required: false
+    description: Descriptive text for a HUD entry.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#hud
+  hud-element-default:
+    slot_uri: pixlnd:hud-element/default
+    alias: default
+    domain: hud-element
+    range: string
+    required: false
+    description: Text describing a HUD entry's default presentation.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#hud
+  ui-presentation-catalog-hud:
+    slot_uri: pixlnd:ui-presentation-catalog/hud
+    alias: hud
+    domain: ui-presentation-catalog
+    range: hud-element
+    required: false
+    multivalued: true
+    inlined: true
+    inlined_as_list: false
+    description: HUD entry bodies indexed by their original source keys.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#hud
+  ui-presentation-catalog-camera:
+    slot_uri: pixlnd:ui-presentation-catalog/camera
+    alias: camera
+    domain: ui-presentation-catalog
+    range: ui-camera-presentation
+    required: false
+    inlined: true
+    description: Composed camera presentation text object.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#camera
+  ui-camera-presentation-mode:
+    slot_uri: pixlnd:ui-camera-presentation/mode
+    alias: mode
+    domain: ui-camera-presentation
+    range: string
+    required: false
+    description: Text describing the camera presentation mode.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../domain/controls.md#locomotion-and-view
+    - ../instances/ui.json#camera
+  ui-camera-presentation-aim:
+    slot_uri: pixlnd:ui-camera-presentation/aim
+    alias: aim
+    domain: ui-camera-presentation
+    range: string
+    required: false
+    description: Text describing the aiming presentation.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#camera
+  ui-camera-presentation-map:
+    slot_uri: pixlnd:ui-camera-presentation/map
+    alias: map
+    domain: ui-camera-presentation
+    range: string
+    required: false
+    description: Text describing map presentation, retained as a single value.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../domain/controls.md#screens-and-contextual-ui
+    - ../instances/ui.json#camera

@@ -1,0 +1,10 @@
+ classDiagram
+    class `Source-relative-colors`
+    click `Source-relative-colors` href "../Source-relative-colors"
+      `Source-relative-colors` : enemy_name
+        `Source-relative-colors` --> "1" `Source-text-map` : enemy_name
+        click `Source-text-map` href "../Source-text-map"
+      `Source-relative-colors` : landmark_name
+        `Source-relative-colors` --> "1" `Source-text-map` : landmark_name
+        click `Source-text-map` href "../Source-text-map"
+      `Source-relative-colors` : multiplier_tags

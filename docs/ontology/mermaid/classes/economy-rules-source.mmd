@@ -1,0 +1,13 @@
+ classDiagram
+    class `Economy-rules-source`
+    click `Economy-rules-source` href "../Economy-rules-source"
+      `Economy-rules-source` : buy_back
+        `Economy-rules-source` --> "1" `Economy-buy-back` : buy_back
+        click `Economy-buy-back` href "../Economy-buy-back"
+      `Economy-rules-source` : gnome_unlock
+        `Economy-rules-source` --> "1" `Economy-gem-unlock` : gnome_unlock
+        click `Economy-gem-unlock` href "../Economy-gem-unlock"
+      `Economy-rules-source` : money_abundance_s
+      `Economy-rules-source` : off_class_drops
+      `Economy-rules-source` : restock
+      `Economy-rules-source` : sell_price_tooltip
