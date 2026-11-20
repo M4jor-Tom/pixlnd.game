@@ -9,7 +9,7 @@ func _init() -> void:
 	var loader := Loader.new()
 	var roots := _load_all(loader)
 	var skeleton := _entry(loader.load_file("creatures"), "skeleton")
-	var ok: bool = loader.errors.is_empty() and roots == 40 and _skeleton_ok(skeleton)
+	var ok: bool = loader.errors.is_empty() and roots == 41 and _skeleton_ok(skeleton)
 	for e in loader.errors.slice(0, 20):
 		printerr("  ✗ ", e)
 	print("linkml loader: %d roots, %d errors" % [roots, loader.errors.size()])

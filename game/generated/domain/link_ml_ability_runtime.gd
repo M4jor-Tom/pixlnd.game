@@ -3,72 +3,107 @@ class_name LinkMLAbilityRuntime
 extends RefCounted
 ## Selected hybrid runtime entry. Kind-specific presence, strict positivity and coupled bounds remain c-ability-runtime; optional fields are not defaulted by this schema.
 
+## Additional critical chance during the selected buff.
+var slot_crit_add: Variant = null
+
+## Configuration field; applicability follows the linked rule.
 var slot_runtime: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_cost: LinkMLRuntimeCost = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_cooldown_s: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_toward: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_range: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_distance: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_duration_s: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_turns_per_s: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_radius: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_damage_mult: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_move_mult: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_drain_per_s: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_charge_mult: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_damage_taken_mult: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_heal_pct: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_heal_over_s: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_stealth_per_s: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_swing_mult: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_cast_s: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_absorb_pct_hp: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_spread: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_speed: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_gravity: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_life_s: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_splash: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_taunt_s: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_stun_immune: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_stealth_full: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_count: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_strike: LinkMLRuntimeStrike = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_throw: LinkMLRuntimeProjectile = null
 
 
 ## Serialized key (alias or slot name) to field name, including inherited slots.
 func linkml_keys() -> Dictionary[String, String]:
     return {
+        "crit-add": "slot_crit_add",
         "runtime": "slot_runtime",
         "cost": "slot_cost",
         "cooldown-s": "slot_cooldown_s",
@@ -106,6 +141,7 @@ func linkml_keys() -> Dictionary[String, String]:
 ## Primitive storage of single-valued scalar fields (they are typed Variant to keep absence).
 func linkml_scalar_types() -> Dictionary[String, String]:
     return {
+        "slot_crit_add": "float",
         "slot_runtime": "String",
         "slot_cooldown_s": "float",
         "slot_toward": "String",

@@ -7,11 +7,16 @@ Owner request: “Task 5 is done. Execute task 6, and wait before executing task
 **Task6 only is selected. STOP before Task7, including preparation/scouting.**
 Task6 completes generator/design schema contracts and their reviewed incremental Markdown
 handoff; no gameplay/runtime/save/raw-instance change or later-family repair is selected.
+Current owner authority is history maintenance: replay the authoring commits on
+`feat/generated-domain-model` (`4a97ec5`), regenerate derived output and verify, then
+reapply those commits on `master` (`d6b9d41`) with an identical tree. Leave `master`
+unchanged and do not push; Task7 remains unselected.
 
 Task5 is verified published at `612bb80eb56e2222ab3d03eb7f3ab2acb08ef938`.
 Its final acceptance and independent publication audit are under
 `task5-active/final-publication-1/`; do not repeat its staging, commit, push or successful
-checks. Task6 starts from that clean primary base. Current Task6 contract/evidence belongs
+checks. That is the historical Task6 source base, not the current integration base.
+Current Task6 contract/evidence belongs
 under `task6-active/` in the evidence root below; parent owns acceptance and exact publication
 approval. Preserve accepted earlier families and their qualified evidence. An infrastructure
 failure requires diagnosis, not CLI/foreground fallback, bypass, force or an ambiguous retry.
@@ -21,7 +26,7 @@ failure requires diagnosis, not CLI/foreground fallback, bypass, force or an amb
 Parent accepted the source and qualified selected gates after all R2 reviews returned
 zero findings; all52 structural handoff spans and the exact pair19 companion are applied
 and independently accepted, including the approved existing backlog-fragment correction.
-Only the bounded tooling calibration correction below is selected; no schema/gameplay work.
+Only the history maintenance above is currently selected; no further schema/gameplay work.
 STOP before Task7, including preparation/scouting.
 
 Accepted source/evidence: `task6-active/review-round-1.fCDI8SZH/fix-round-2/phase-b/review-package/`.
@@ -30,10 +35,11 @@ Applied bytes/references/acceptance: `task6-active/handoff-application-20261120/
 Historical failures, actual receipts and dependency-qualified earlier results remain immutable
 there; they are not pending regressions or a completed-bug history in this file.
 
-Pending gate: independent review and separately sealed publication approval for the bounded
-calibration correction, then a normal full-quality push. Local accepted Task6 commit
-`962aeb121b19864c9663c9d0b9230043d975f92b` remains unpublished; live origin is Task5base612bb80,
-local ahead1/behind0. Both normal681s push failures remain immutable under
+Pending gate: rebase/regeneration verification and separate approval before remote publication.
+Accepted Task6 source and the deadline correction were recorded as `962aeb1` and `3898818`
+in the original history; origin remains at `389881829334a555fb90f220e5630459fbc1ca51`.
+The rewritten local history is unpublished; simple pre-rebase ahead/behind counts do not apply.
+Both normal681s push failures remain immutable under
 `task6-active/publication-20261120/execution/` and `normal-push-retry-1/` (no case summaries).
 Cause is unclassified; current resource observations do not prove historical cause.
 The unchanged full-test diagnostic completed1687cases/0failures in457.701s Godot body time;
@@ -46,8 +52,8 @@ The separately selected mechanical refresh uses the existing documented formula:
 outerpush5400s and CI90minutes remain unchanged. Exactly zero cases/assertions are weakened;
 no bypass, source/runtime repair or resource-cause claim follows. Correction evidence and the
 new five-path commit proposal belong under `publication-20261120/calibration-correction-1/`.
-No staging/commit/push is selected in this correction unit; fresh review and exact approval
-must precede publication. Any later normal full-gate failure requires STOP and separate
+The current history-maintenance request permits local regeneration commits, not a push;
+separate approval must precede publication. Any later normal full-gate failure requires STOP and separate
 parent disposition, not automatic further budget growth or retry. Task6 is incomplete;
 Task7 remains unselected, including preparation/scouting.
 

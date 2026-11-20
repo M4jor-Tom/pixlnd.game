@@ -3,8 +3,10 @@ class_name LinkMLRuntimeCost
 extends RefCounted
 ## Selected hybrid resource costs only, not historical qualified catalog costs. Missing resource keys mean no debit; all-min is configured separately.
 
+## Configuration field; applicability follows the linked rule.
 var slot_mp: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_stamina: Variant = null
 
 

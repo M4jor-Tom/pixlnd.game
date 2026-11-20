@@ -3,12 +3,16 @@ class_name LinkMLProgressionDesign
 extends RefCounted
 ## Current XP configuration; ordered gap range and exact settled progression remain linked constraints.
 
+## Configuration field; applicability follows the linked rule.
 var slot_kill_fraction: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_gap_per_level: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_gap_mult_range: Array[float] = []
 
+## Configuration field; applicability follows the linked rule.
 var slot_heal_on_level_up: Variant = null
 
 

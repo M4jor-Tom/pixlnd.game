@@ -1,278 +1,2495 @@
 {
-  "$schema": "generator-config",
-  "_doc": "Configs and invariants for §6 generators: historical A/S reference, X/Omega roadmap coverage (not v1, D3/D4), and approved hybrid design. Reference facts are not automatic hybrid requirements; owner-approved rules and exceptions in ontology/domain/index.md take precedence. Regional gear power loss is permanently excluded, even for cloning fidelity.",
-  "world-scales": {
-    "block-native-units": 65536,
-    "position-type": "int64 (16.16 fixed per axis)",
-    "full-mask": "0x0000FFFFFFFFFFFF",
-    "alpha": {"zone-blocks": 256, "region-zones": 64, "region-blocks": 16384, "regions-per-axis": 1024, "world-blocks-per-axis": 16777216, "mission-cells-per-region": [8, 8], "mission-scale": "region/8", "region-struct-bytes": 88104, "zone-struct-bytes": 200, "spawn-struct-bytes": 4336},
-    "steam": {"zone-blocks": 64, "map-chunk-blocks": 20, "zone-fields": 4096, "field": "base_z + vector<Block>", "block-bytes": 6, "coords-typical-spawn": "±5,000,000 from origin", "origin-poi": "wollays-house"},
-    "generation-neighbourhood": {"region-data": "3x3 around player", "region-seeds": "7x7"},
-    "server-chunk-retire-s": 15,
-    "invariants": ["same seed → same world", "finite 1024² lands, no wrapping", "terrain generated on the fly, no precompute"]
+ "$schema": "generator-config",
+ "_doc": "Configs and invariants for §6 generators: historical A/S reference, X/Omega roadmap coverage (not v1, D3/D4), and approved hybrid design. Reference facts are not automatic hybrid requirements; owner-approved rules and exceptions in ontology/domain/index.md take precedence. Regional gear power loss is permanently excluded, even for cloning fidelity.",
+ "boss": {
+  "alpha-size-scaling": "1 at lvl 1 → full at lvl 10",
+  "alpha-spirit-drop": "A / hybrid: one per eligible non-mission boss kill, fixed type+level per boss; mission bosses (including Saurians) drop none, normal mission rewards unchanged",
+  "arena-waves": [
+   {
+    "first": "white",
+    "second": "green"
+   },
+   {
+    "first": "white",
+    "second": "green"
+   },
+   {
+    "first": "green",
+    "second": "blue"
+   },
+   {
+    "first": "blue",
+    "second": "purple"
+   },
+   {
+    "first": "purple",
+    "second": "yellow"
+   }
+  ],
+  "chance": "low, any species",
+  "coins-s": 20,
+  "special-pool": [
+   "ground stomp",
+   "fire missiles",
+   "summon zombies",
+   "summon weaker copies / clone",
+   "slowing lava trap",
+   "channelled explosion",
+   "charge",
+   "cyclone",
+   "earthquake",
+   "boulder throw",
+   "doppelganger"
+  ],
+  "steam-loot": "+1 tier",
+  "traits": [
+   "named",
+   "enlarged (double-scale flag)",
+   "tier-coloured name",
+   "1-2 random special moves",
+   "breaks terrain",
+   "guards"
+  ]
+ },
+ "climate": {
+  "bands": "see landscapes.json climate; devlog: high temp + high humidity → jungle",
+  "fields": [
+   "temperature",
+   "humidity"
+  ],
+  "hud": true
+ },
+ "coarse-map-omega": {
+  "places": [
+   "streets",
+   "buildings",
+   "rivers",
+   "bridges",
+   "trees",
+   "caves",
+   "fields",
+   "windmills",
+   "watchtowers",
+   "walls",
+   "fences",
+   "street lights"
+  ],
+  "planned-use": [
+   "NPC navigation between distant places",
+   "quest design"
+  ],
+  "then": "voxel detail on the fly"
+ },
+ "design": {
+  "_doc": "Owner-approved hybrid tunables, traced to dated D/F decisions in ontology/domain/index.md §7. Engine consumers read these values; presence alone does not prove implementation. Current-slice approximations are not final rules, and later approvals supersede earlier placeholders. Unresolved merges remain in docs/ROADMAP/todo_decide.md §E; do not silently resolve them from flags or reference facts. Tune in play.",
+  "abilities": {
+   "_doc": "D21 (2026-09-10): every class node and ultimate of abilities.json#alpha-tree has one runtime here (game/combat/abilities.gd). runtime: dash = move `distance` blocks (`toward` target = nearest enemy within `range`, else forward | forward | back) at dash-speed, then `strike` (radius, damage-mult, at end | origin); channel = Cyclone rotates clockwise at turns-per-s from activation facing, current-position azimuth contacts once per enemy per revolution, front-only initial contact, inclusive exact final contact; clip active time to duration-s and affordable drain-per-s (zero drain legal), stop body at reached angle without rotating camera or changing normal controls; radius/damage-mult, movement × move-mult, stamina drain-per-s on top of cost; burst = instant self-centred strike (damage-mult 0 = no damage, taunt only) + optional heal-pct (over heal-over-s); buff = timed self status (damage-mult, damage-taken-mult, move-mult, swing-mult, crit-add, absorb-pct-hp, stun-immune, charge-mult); heal = cast-s then heal-pct of max HP. Strikes apply the ability's `applies` through design.status-effects. cost: mp (c-mp-range) / stamina, a number or 'all' (needs ≥ all-min, spends the bar). cooldown-s: the sources' S value where numeric, else designed here (cyclone A said ~60). Per point (D6, design.skill-point): strike damage, heal-pct and buff duration × effect-mult; cooldown × cooldown-mult. Tune in play.",
+   "all-min": 10,
+   "dash-speed": 25.0,
+   "entries": [
+    {
+     "key": "smash",
+     "value": {
+      "cooldown-s": 10,
+      "cost": {
+       "stamina": 100
+      },
+      "distance": 6.0,
+      "range": 8.0,
+      "runtime": "dash",
+      "strike": {
+       "damage-mult": 2.0,
+       "radius": 3.0
+      },
+      "toward": "target"
+     }
+    },
+    {
+     "key": "cyclone",
+     "value": {
+      "cooldown-s": 30,
+      "cost": {
+       "stamina": 25
+      },
+      "damage-mult": 0.5,
+      "drain-per-s": 25.0,
+      "duration-s": 5.0,
+      "move-mult": 0.6,
+      "radius": 3.0,
+      "runtime": "channel",
+      "turns-per-s": 1.0
+     }
+    },
+    {
+     "key": "war-frenzy",
+     "value": {
+      "charge-mult": 2.0,
+      "cooldown-s": 20,
+      "cost": {},
+      "damage-mult": 1.2,
+      "duration-s": 10.0,
+      "runtime": "buff"
+     }
+    },
+    {
+     "key": "bulwark",
+     "value": {
+      "cooldown-s": 20,
+      "cost": {},
+      "damage-taken-mult": 0.5,
+      "duration-s": 10.0,
+      "runtime": "buff",
+      "stun-immune": true
+     }
+    },
+    {
+     "key": "rock-fist",
+     "value": {
+      "cooldown-s": 20,
+      "cost": {},
+      "distance": 10.0,
+      "runtime": "dash",
+      "strike": {
+       "damage-mult": 3.0,
+       "radius": 2.5
+      },
+      "toward": "forward"
+     }
+    },
+    {
+     "key": "heroic-shout",
+     "value": {
+      "cooldown-s": 30,
+      "cost": {},
+      "damage-mult": 0.0,
+      "heal-over-s": 10.0,
+      "heal-pct": 0.5,
+      "radius": 5.0,
+      "runtime": "burst",
+      "taunt-s": 3.0
+     }
+    },
+    {
+     "key": "kick",
+     "value": {
+      "cooldown-s": 10,
+      "cost": {
+       "stamina": 50
+      },
+      "damage-mult": 1.0,
+      "radius": 2.5,
+      "runtime": "burst"
+     }
+    },
+    {
+     "key": "retreat",
+     "value": {
+      "cooldown-s": 10,
+      "cost": {
+       "stamina": "all"
+      },
+      "distance": 6.0,
+      "runtime": "dash",
+      "toward": "back"
+     }
+    },
+    {
+     "key": "aim",
+     "value": {
+      "cooldown-s": 15,
+      "cost": {},
+      "duration-s": 10.0,
+      "runtime": "buff",
+      "stealth-per-s": 0.3
+     }
+    },
+    {
+     "key": "scouts-swiftness",
+     "value": {
+      "cooldown-s": 20,
+      "cost": {},
+      "duration-s": 10.0,
+      "move-mult": 1.5,
+      "runtime": "buff",
+      "swing-mult": 0.7
+     }
+    },
+    {
+     "key": "shadow-shooter",
+     "value": {
+      "cooldown-s": 60,
+      "cost": {},
+      "damage-mult": 1.5,
+      "duration-s": 30.0,
+      "runtime": "buff"
+     }
+    },
+    {
+     "key": "quicksand-trap",
+     "value": {
+      "cooldown-s": 40,
+      "cost": {},
+      "damage-mult": 0.5,
+      "radius": 5.0,
+      "runtime": "burst"
+     }
+    },
+    {
+     "key": "fire-explosion",
+     "value": {
+      "cooldown-s": 10,
+      "cost": {
+       "mp": 50
+      },
+      "damage-mult": 2.0,
+      "radius": 4.0,
+      "runtime": "burst"
+     }
+    },
+    {
+     "key": "healing-stream",
+     "value": {
+      "cast-s": 1.5,
+      "cooldown-s": 10,
+      "cost": {
+       "mp": 50
+      },
+      "heal-pct": 0.5,
+      "runtime": "heal"
+     }
+    },
+    {
+     "key": "mana-shield",
+     "value": {
+      "absorb-pct-hp": 0.3,
+      "cooldown-s": 25,
+      "cost": {},
+      "duration-s": 30.0,
+      "runtime": "buff"
+     }
+    },
+    {
+     "key": "teleport",
+     "value": {
+      "cooldown-s": 10,
+      "cost": {
+       "mp": 100
+      },
+      "distance": 20.0,
+      "runtime": "dash",
+      "toward": "forward"
+     }
+    },
+    {
+     "key": "fire-missiles",
+     "value": {
+      "cooldown-s": 40,
+      "cost": {},
+      "count": 4,
+      "damage-mult": 3.0,
+      "gravity": 0.0,
+      "life-s": 2.0,
+      "radius": 1.0,
+      "runtime": "projectile",
+      "speed": 25.0,
+      "splash": 3.0,
+      "spread": 0.1
+     }
+    },
+    {
+     "key": "bubbles",
+     "value": {
+      "cooldown-s": 30,
+      "cost": {},
+      "count": 6,
+      "damage-mult": 1.5,
+      "gravity": 0.0,
+      "heal-over-s": 5.0,
+      "heal-pct": 0.25,
+      "life-s": 2.5,
+      "radius": 1.0,
+      "runtime": "projectile",
+      "speed": 15.0,
+      "splash": 2.5,
+      "spread": 0.25
+     }
+    },
+    {
+     "key": "intercept",
+     "value": {
+      "cooldown-s": 10,
+      "cost": {
+       "stamina": 25
+      },
+      "distance": 8.0,
+      "range": 10.0,
+      "runtime": "dash",
+      "strike": {
+       "damage-mult": 1.5,
+       "radius": 2.5
+      },
+      "toward": "target"
+     }
+    },
+    {
+     "key": "sneak",
+     "value": {
+      "cooldown-s": 12,
+      "cost": {},
+      "duration-s": 10.0,
+      "move-mult": 0.5,
+      "runtime": "buff",
+      "stealth-per-s": 0.25
+     }
+    },
+    {
+     "key": "camouflage",
+     "value": {
+      "cooldown-s": 40,
+      "cost": {},
+      "duration-s": 20.0,
+      "runtime": "buff",
+      "stealth-full": true
+     }
+    },
+    {
+     "key": "shuriken-attack",
+     "value": {
+      "cooldown-s": 10,
+      "cost": {
+       "stamina": 25
+      },
+      "distance": 5.0,
+      "runtime": "dash",
+      "throw": {
+       "count": 5,
+       "damage-mult": 0.6,
+       "gravity": 0.0,
+       "life-s": 1.5,
+       "radius": 0.6,
+       "speed": 35.0,
+       "spread": 0.15
+      },
+      "toward": "back"
+     }
+    },
+    {
+     "key": "ninjutsu",
+     "value": {
+      "cooldown-s": 60,
+      "cost": {},
+      "damage-mult": 1.2,
+      "duration-s": 20.0,
+      "runtime": "buff",
+      "swing-mult": 0.6
+     }
+    }
+   ],
+   "runtimes": [
+    "dash",
+    "channel",
+    "burst",
+    "buff",
+    "heal",
+    "projectile"
+   ]
   },
-  "seed": {"alpha-default": 26879, "alpha-source": "server.cfg / world creation UI", "steam": "single fixed shared seed, random spawn"},
-  "time": {"max-time-ms": 86400000, "normal-speed": 10.0, "sleep-speed": 100.0, "day-real-minutes": 144, "inn-hours": [18, 6], "inn-target": 7, "reset-hour": 0},
-  "climate": {"fields": ["temperature", "humidity"], "bands": "see landscapes.json climate; devlog: high temp + high humidity → jungle", "hud": true},
-  "land": {"alpha-level": "replaced (F4): party-level band + per-land danger tier → design.enemy-level", "alpha-rarity": "0-4 rare zones (?)", "steam-tiers": ["white", "green", "blue", "purple", "yellow"], "border": "dotted map line, no wall", "equal-size": true, "steam-per-land": {"gnomes": 4, "books": 4, "movement-items": 4, "ticket-items": 3, "key-items-max": 9, "towers-max": 5, "circles": "≥1", "artifacts": "design.artifacts-per-land", "settlements": "≥1"}, "alpha-per-land": {"settlements": 1, "mission-cells": 64}},
-  "terrain": {"block-palette": "block-types.json", "features": "terrain-features.json", "water-level": "ours (F6), tuned in engine", "noise-params": "unknown; alpha generator exists only as x86 code wrapped by cuwo tgen", "roads": "auto tunnels through mountains, bridges over canyons", "caves": "type 18 (S)", "rivers": "with waterfalls; lava/toxic variants"},
-  "coarse-map-omega": {"places": ["streets", "buildings", "rivers", "bridges", "trees", "caves", "fields", "windmills", "watchtowers", "walls", "fences", "street lights"], "then": "voxel detail on the fly", "planned-use": ["NPC navigation between distant places", "quest design"]},
-  "settlement": {"alpha-count": 1, "steam-count": "several", "districts-alpha": ["trade", "crafting", "adventurer", "portal", "palace"], "buildings-procedural": ["rooms", "sizes", "roofs"], "style-by-landscape": "buildings.json#settlement-styles", "inn": {"A": "several", "S": 1}},
-  "dungeon": {"alpha-layout": "linear + dead end", "steam-layout": "room gauntlet, rising tiers", "group-size": [2, 4], "mob-tier": "above surface", "traps-alpha": ["spike"], "traps-data-x": ["fire", "stomp"], "boss": {"A": 1, "S": "several"}, "artifact-s": "castles always", "size-cap-s": "0.9.3-0"},
-  "spawns": {"group-sizes": "creatures.json group", "hostility": "creatures.json h", "humanoid-class": "any of 4 classes + spec", "alpha-multipliers": ["+1", "+2", "+3", "+4"], "farm-animals": "white, never aggressive", "night-lanterns": true, "reset": "midnight", "ocean-s-bug": "nearly empty"},
-  "boss": {"chance": "low, any species", "traits": ["named", "enlarged (double-scale flag)", "tier-coloured name", "1-2 random special moves", "breaks terrain", "guards"], "special-pool": ["ground stomp", "fire missiles", "summon zombies", "summon weaker copies / clone", "slowing lava trap", "channelled explosion", "charge", "cyclone", "earthquake", "boulder throw", "doppelganger"], "alpha-size-scaling": "1 at lvl 1 → full at lvl 10", "alpha-spirit-drop": "A / hybrid: one per eligible non-mission boss kill, fixed type+level per boss; mission bosses (including Saurians) drop none, normal mission rewards unchanged", "steam-loot": "+1 tier", "coins-s": 20, "arena-waves": [["white","green"],["white","green"],["green","blue"],["blue","purple"],["purple","yellow"]]},
-  "names": {"land": "<Name> Plains|Hills|Mountains|Village|City|Road|Forest", "dungeon": "dungeon-types.json naming", "realm": "factions.json#realm-name-examples", "item": "affixes.json", "quarter": ["Trade Quarter", "Crafting Quarter", "Class Quarter", "Pet Quarter", "Portal", "Palace"], "uniqueness": false, "examples": ["Coria Plains", "Lanno Plains", "Sanion Hills", "Marnis Mountains", "Arris City", "Akar Village", "Caion Road", "Temple of Arno", "Tririon City", "Duragar Forest", "Vardara Forest"]},
-  "item": {"roll": "((attributes<<16)+modifier) % 21", "rarity-range": [0, 4], "mythical-bug": false, "stat-curves": "stats.json#alpha-item-stat-formulas", "cubes-max": {"1h": 16, "2h": 32}, "plus-chance-s": "rare roll; ~1-2 per cleared land", "name-rule": "epic/legendary named"},
-  "loot": "economy.json#loot",
-  "realm": {"kinds": ["kingdom", "realm", "cult", "tribe"], "leader-fields": ["name", "trait", "birth-year", "hometown", "tomb"], "capital-fields": ["name", "founding-year", "destruction-date?"], "lore-per-site-pct": 10, "reveal-at": 100},
-  "npc-appearance": {"asset-counts": "races.json", "hair-rgb": "free", "omega": "fully procedural + expressions"},
-  "schedule": {"stops": ["home", "park", "shops", "inn"], "sleep": "night", "campsite-rest": true, "lantern-night": true},
-  "key-items-s": {"rule": "spawn only if lock type exists (harp→divine door, bell→crypt gate, whistle→bird statue, boat→water)"},
-  "level-formulas-alpha": "stats.json#alpha-character-formulas",
-  "design": {
-    "initial-encounters": {
-      "_doc": "Initial hybrid encounter-contracts.md: required complete village/site generation and local populations, independent of optional leading objects. Layout coordinates are derived by the engine from these dimensions; no ambient roster or global stat changes.",
-      "distance-min": 192,
-      "distance-max": 215,
-      "separation": 192,
-      "apron": 8,
-      "leading-objects": {"ruins": "masonry", "camp": "stake-torch", "supplier": "broken-crate"},
-      "dry-above-sea": 4,
-      "hub-size": 64,
-      "ruins": {
-        "room": [
-          24,
-          24
-        ],
-        "corridor": [
-          8,
-          8
-        ],
-        "court": [
-          24,
-          16
-        ],
-        "passage": [
-          8,
-          8
-        ],
-        "alcove": [
-          12,
-          8
-        ],
-        "bounds": [
-          36,
-          112
-        ],
-        "ceiling": 6,
-        "door": [
-          4,
-          5
-        ],
-        "occupancy": [
-          -1,
-          12
-        ],
-        "pack-tiers": [
-          1,
-          2,
-          3
-        ],
-        "boss-tiers": [
-          2,
-          3
-        ]
-      },
-      "camp": {
-        "size": 64,
-        "occupancy": [
-          -1,
-          16
-        ],
-        "exit-width": 8,
-        "tier": 1,
-        "packs": 2
-      },
-      "supplier": {
-        "size": 48,
-        "occupancy": [
-          -1,
-          16
-        ],
-        "exit-width": 8,
-        "tiers": [
-          0,
-          1,
-          2,
-          3
-        ],
-        "packs": 2
-      },
-      "pack-size": 3,
-      "species": "skeleton",
-      "role-weights": {
-        "melee": 0.5,
-        "ranged": 0.3,
-        "mage": 0.2
-      },
-      "power-base-offset": 2,
-      "boss-hp-mult": 4,
-      "boss-damage-mult": 1.5,
-      "boss-height": {
-        "base": 1.7,
-        "min-mult": 1.25,
-        "growth": 0.75,
-        "max-level": 10
-      },
-      "boss-specials": {
-        "stomp": 0.5,
-        "charge": 0.5
-      },
-      "spirits": {
-        "spirit-fire": 0.25,
-        "spirit-unholy": 0.25,
-        "spirit-ice": 0.25,
-        "spirit-wind": 0.25
-      },
-      "mission-package": {"coin-per-grade": 20, "potion": "life-potion", "potion-rarity": 0, "potion-count": 1, "gems": ["emerald", "sapphire", "ruby", "diamond"], "gem-count-per-grade": 1, "rarity-shift": 1, "upgrades": 0, "delivery-height": 0.5},
-      "special-profile": {"ready-s": 3, "cooldown-s": 10, "recovery-s": 0.8, "warning-s": 1.2, "stomp": {"radius": 4, "start-height-diff": 2, "victim-height": [0, 1], "damage-mult": 1}, "charge": {"range": [4, 10], "start-height-diff": 1, "lane-width": 2, "speed": 12, "sweep-radius": 1, "damage-mult": 1.25}},
-      "rubble": {"per-arena": 8, "voxel-size": 1, "restore-world-hours": 72, "block-type": "rock-building"},
-      "spikes": {"count": 2, "footprint": [2, 2], "victim-height": [0, 1], "warning-s": 0.8, "active-s": 0.25, "cooldown-s": 2, "damage": 30, "attack-type": "physical", "warning-sfx": "block"},
-      "furnishings": {"vase": {"per-room": 2, "hp": 10, "coin-base": 1, "coin-per-level": 2}, "table": {"per-room": 1, "hp": 20, "flask": "glass-flask", "flask-count": 1, "potion": "life-potion", "potion-count": 1, "potion-rarity": 0}, "armor": 0}
-    },
-    "time": {"_doc": "Hybrid game-clock: running time only; fresh saved worlds begin at 07:00.", "speed": 10.0, "day-s": 86400.0, "initial-hour": 7.0},
-    "_doc": "Owner-approved hybrid tunables, traced to dated D/F decisions in ontology/domain/index.md §7. Engine consumers read these values; presence alone does not prove implementation. Current-slice approximations are not final rules, and later approvals supersede earlier placeholders. Unresolved merges remain in docs/ROADMAP/todo_decide.md §E; do not silently resolve them from flags or reference facts. Tune in play.",
-    "gear-hp": {"curve-mult": 5.0, "base": 2.0, "upgrade-step": 0.1},
-    "enemy-level": {"rule": "creature level rolled in band [min-party-level - below, max-party-level + above] (solo: own level); each land rolls a danger-tier at generation that fixes where in the band it sits", "below": 3, "above": 5, "danger-tiers": {"safe": 0.0, "normal": 0.5, "dangerous": 1.0}, "tier-weights": {"safe": 0.25, "normal": 0.5, "dangerous": 0.25}, "config": "solo settings / server.cfg"},
-    "skill-point": {"_doc": "D6 per-point scaling. D20 (2026-09-09) spend rules: one banked point per spend-skill-point request (../domain/controls.md#spend-skill-point); a node opens when the previous node of its column holds alpha-tree.needs points (roots 0); respec at the class trainer (settlements, not built).", "effect-per-point": 0.05, "cooldown-per-point": 0.05, "cooldown-floor": 0.25, "cap": null},
-    "abilities": {"_doc": "D21 (2026-09-10): every class node and ultimate of abilities.json#alpha-tree has one runtime here (game/combat/abilities.gd). runtime: dash = move `distance` blocks (`toward` target = nearest enemy within `range`, else forward | forward | back) at dash-speed, then `strike` (radius, damage-mult, at end | origin); channel = Cyclone rotates clockwise at turns-per-s from activation facing, current-position azimuth contacts once per enemy per revolution, front-only initial contact, inclusive exact final contact; clip active time to duration-s and affordable drain-per-s (zero drain legal), stop body at reached angle without rotating camera or changing normal controls; radius/damage-mult, movement × move-mult, stamina drain-per-s on top of cost; burst = instant self-centred strike (damage-mult 0 = no damage, taunt only) + optional heal-pct (over heal-over-s); buff = timed self status (damage-mult, damage-taken-mult, move-mult, swing-mult, crit-add, absorb-pct-hp, stun-immune, charge-mult); heal = cast-s then heal-pct of max HP. Strikes apply the ability's `applies` through design.status-effects. cost: mp (c-mp-range) / stamina, a number or 'all' (needs ≥ all-min, spends the bar). cooldown-s: the sources' S value where numeric, else designed here (cyclone A said ~60). Per point (D6, design.skill-point): strike damage, heal-pct and buff duration × effect-mult; cooldown × cooldown-mult. Tune in play.",
-      "runtimes": ["dash", "channel", "burst", "buff", "heal", "projectile"],
-      "dash-speed": 25.0,
-      "all-min": 10,
-      "smash": {"runtime": "dash", "toward": "target", "range": 8.0, "distance": 6.0, "strike": {"radius": 3.0, "damage-mult": 2.0}, "cost": {"stamina": 100}, "cooldown-s": 10},
-      "cyclone": {"runtime": "channel", "duration-s": 5.0, "turns-per-s": 1.0, "radius": 3.0, "damage-mult": 0.5, "move-mult": 0.6, "cost": {"stamina": 25}, "drain-per-s": 25.0, "cooldown-s": 30},
-      "war-frenzy": {"runtime": "buff", "duration-s": 10.0, "damage-mult": 1.2, "charge-mult": 2.0, "cost": {}, "cooldown-s": 20},
-      "bulwark": {"runtime": "buff", "duration-s": 10.0, "damage-taken-mult": 0.5, "stun-immune": true, "cost": {}, "cooldown-s": 20},
-      "rock-fist": {"runtime": "dash", "toward": "forward", "distance": 10.0, "strike": {"radius": 2.5, "damage-mult": 3.0}, "cost": {}, "cooldown-s": 20},
-      "heroic-shout": {"taunt-s": 3.0, "runtime": "burst", "radius": 5.0, "damage-mult": 0.0, "heal-pct": 0.5, "heal-over-s": 10.0, "cost": {}, "cooldown-s": 30},
-      "kick": {"runtime": "burst", "radius": 2.5, "damage-mult": 1.0, "cost": {"stamina": 50}, "cooldown-s": 10},
-      "retreat": {"runtime": "dash", "toward": "back", "distance": 6.0, "cost": {"stamina": "all"}, "cooldown-s": 10},
-      "aim": {"runtime": "buff", "duration-s": 10.0, "stealth-per-s": 0.3, "cost": {}, "cooldown-s": 15},
-      "scouts-swiftness": {"runtime": "buff", "duration-s": 10.0, "move-mult": 1.5, "swing-mult": 0.7, "cost": {}, "cooldown-s": 20},
-      "shadow-shooter": {"runtime": "buff", "duration-s": 30.0, "damage-mult": 1.5, "cost": {}, "cooldown-s": 60},
-      "quicksand-trap": {"runtime": "burst", "radius": 5.0, "damage-mult": 0.5, "cost": {}, "cooldown-s": 40},
-      "fire-explosion": {"runtime": "burst", "radius": 4.0, "damage-mult": 2.0, "cost": {"mp": 50}, "cooldown-s": 10},
-      "healing-stream": {"runtime": "heal", "cast-s": 1.5, "heal-pct": 0.5, "cost": {"mp": 50}, "cooldown-s": 10},
-      "mana-shield": {"runtime": "buff", "duration-s": 30.0, "absorb-pct-hp": 0.3, "cost": {}, "cooldown-s": 25},
-      "teleport": {"runtime": "dash", "toward": "forward", "distance": 20.0, "cost": {"mp": 100}, "cooldown-s": 10},
-      "fire-missiles": {"runtime": "projectile", "count": 4, "spread": 0.1, "speed": 25.0, "gravity": 0.0, "radius": 1.0, "life-s": 2.0, "splash": 3.0, "damage-mult": 3.0, "cost": {}, "cooldown-s": 40},
-      "bubbles": {"runtime": "projectile", "count": 6, "spread": 0.25, "speed": 15.0, "gravity": 0.0, "radius": 1.0, "life-s": 2.5, "splash": 2.5, "damage-mult": 1.5, "heal-pct": 0.25, "heal-over-s": 5.0, "cost": {}, "cooldown-s": 30},
-      "intercept": {"runtime": "dash", "toward": "target", "range": 10.0, "distance": 8.0, "strike": {"radius": 2.5, "damage-mult": 1.5}, "cost": {"stamina": 25}, "cooldown-s": 10},
-      "sneak": {"runtime": "buff", "duration-s": 10.0, "move-mult": 0.5, "stealth-per-s": 0.25, "cost": {}, "cooldown-s": 12},
-      "camouflage": {"runtime": "buff", "duration-s": 20.0, "stealth-full": true, "cost": {}, "cooldown-s": 40},
-      "shuriken-attack": {"runtime": "dash", "toward": "back", "distance": 5.0, "throw": {"count": 5, "spread": 0.15, "speed": 35.0, "gravity": 0.0, "radius": 0.6, "life-s": 1.5, "damage-mult": 0.6}, "cost": {"stamina": 25}, "cooldown-s": 10},
-      "ninjutsu": {"runtime": "buff", "duration-s": 20.0, "swing-mult": 0.6, "damage-mult": 1.2, "cost": {}, "cooldown-s": 60}},
-    "resources": {"_doc": "D21: the MP bar (stats.json#resources.mp, c-mp-range). Non-mages gain per-hit on every landed basic attack (blocks, stealth and dodges wait for their runtimes); mages regenerate mage-regen-per-s. Stamina numbers stay in design.movement.stamina.", "mp": {"max": 100, "per-hit": 8.0, "mage-regen-per-s": 5.0}},
-    "special-attack": {"_doc": "D21: special-attack (../domain/controls.md#special-attack). Charged classes (classes.json special-attack-mode) hold the special-attack request: the charge fills at charge-mp-per-s up to the MP held (bar pink), release spends it; instant classes press. damage = weapon × (1 + charged/100 × (damage-mult-at-full − 1)), stun chance = charged/100 × stun-chance-at-full, hitbox = basic-attack's, no combo bonus, resets nothing (c-combo-reset applies: a whiff resets the combo). Below min-mp nothing happens.", "charge-mp-per-s": 50.0, "min-mp": 10.0, "damage-mult-at-full": 2.5, "stun-chance-at-full": 0.6},
-    "status-effects": {"_doc": "D21: what the engine does with ability.applies (ids = status-effects.json). stun: the target cannot act (c-stun-immunity: not refreshed while it lasts); knockdown counts as a stun (`as`); knockback: horizontal impulse away from the caster (blocks/s); burning: ticks pct-of-hit of the hit that applied it; slow: move × move-mult. taunt: a 0-damage hit, which already makes the creature target you. poison (D24, dagger ambush): burning-style ticks of the whole hit at 1-5 s. Combat burns and poisons each retain independent damage, source, lifetime and schedule; burns tick at 0.5-4 s. Any other applied status (stealth) is ignored until its runtime exists.", "stun": {"duration-s": 2.0}, "knockdown": {"as": "stun", "duration-s": 1.5}, "knockback": {"impulse": 8.0}, "burning": {"duration-s": 4.0, "tick-s": 0.5, "pct-of-hit": 0.1}, "slow": {"duration-s": 15.0, "move-mult": 0.3}, "poison": {"as": "burning", "duration-s": 5.0, "tick-s": 1.0, "pct-of-hit": 1.0}},
-    "progression": {"_doc": "D19 (2026-09-09): XP per kill, the number the sources never give. xp = xp-to-next(creature level) * kill-fraction * clamp(1 + gap-per-level * (creature level - player level), gap-mult-range); overflow carries; level-up refills HP; skill points banked at skill-points-per-level (stats.json).", "kill-fraction": 0.2, "gap-per-level": 0.1, "gap-mult-range": [0.0, 2.0], "heal-on-level-up": true},
-    "crit": {"multiplier": 2.0, "overflow": "crit chance above 1.0 adds to the multiplier (chance 1.5 → x2.5)"},
-    "item-stat-curve": "stats.json#alpha-item-stat-formulas only (no 1.0 tier curve)",
-    "prices": {"buy": "base[item-type] * item-level * rarity-mult (copper)", "sell": 0.25, "rarity-mult": {"common": 1, "uncommon": 2, "rare": 4, "epic": 8, "legendary": 16}, "base": {"weapon": 6, "armor": 6, "ring|amulet": 8, "consumable": 2, "material": 1, "formula": 10}, "calibration": "alpha sell range 20 copper (+1) … 1s50 (+100) for white gear"},
-    "artifact": {"first": 0.05, "z": 0.1, "total-bonus": "B(x) = first * ln(1 + z * x) / ln(1 + z)", "stats": "Exactly one of key-items.json#artifact.stat-kinds plus attack and max HP. x is the nonnegative integer contributor count: matching artifacts per traversal stat, all artifacts for attack/max HP. Adjustable z > 0; B(0) = 0; first = B(1). Equal current shares B(x)/x for x > 0 are additive, never compounded. Recalculate current artifact-free stat * (1 + B(x)) when ordinary inputs change; no cap, decay or per-artifact floor."},
-    "stack-cap": {"_doc": "D6: no cap (0). D18 stack rule: only these item-types stack; gear carries a modifier roll and never stacks; pet food is one of each (c-stack-rule).", "cap": 0, "stackable": ["consumable", "ingredient", "coin", "formula", "block"]},
-    "enemy-hp": {"rule": "stats.json#alpha-character-formulas.npc-hp * family-mult", "family-mult": "creature-families.json hp-mult, default 1.0", "calibration": "white mob at level 1 → 150–250 HP", "formula": "base-hp(lvl) * 200 * 2^(power-base * 0.25) * family-mult  (D14: the 200 is the NPC max-hp multiplier the sources never state)", "power-base": [-1.5, 1.25]},
-    "circle-of-power": {"attack": 0.10, "max-hp": 0.10},
-    "block-reward": "mp (D11: a successful block adds MP, the same bar special attacks spend)",
-    "regeneration": "stamina (D11: the Regeneration stat only regens stamina; HP regen comes from food, potions, bedroll)",
-    "artifacts-per-land": {"min": 1, "max": 3, "roll": "uniform, seeded, at land generation (D11)"},
-    "pvp": {"slash-command": false, "server-cfg-flag": "pvp", "default": false, "note": "D11: no /pvp command; server-wide flag"},
-    "recipes": {"weapon-cubes": "5 * size-class (dagger/fist/shield 1, one-handed 2, two-handed 4)", "gems-per-rarity-above-common": 1, "armor": "cotton table shape for every material"},
-    "terrain": {"_doc": "D12 (2026-09-08): our world numbers; the sources never had them (alpha noise = x86 blob). Tune in play.", "block-m": 1.0, "zone-blocks": 64, "land-zones": 256,
-      "lands-per-axis": 1024, "land-blocks": 16384, "height": {"min": 0, "max": 255}, "sea-level": 96, "heightfield": {"base": 100, "amplitude": 56, "octaves": 5, "frequency": 0.004, "lacunarity": 2.0, "gain": 0.5}, "land-blend": "relief/base bilinear over the 4 nearest land centres, so borders have no cliffs", "cliff-slope": 1.2, "beach-above-sea": 2, "snow-above": 200, "water-color": "#2b64b4", "sand-color": "#d6c58a", "snow-color": "#e8eef5", "view-zones": 4, "seed-default": 26879},
-    "climate": {"_doc": "D12: gen-climate numbers. Three seeded fields sampled once per land centre, normalised 0..1: temperature, humidity (fBm, frequency in lands), continent (oceans), relief (mountains). First matching rule wins; greenlands is the fallback.", "field-frequency-lands": 0.15, "field-octaves": 3, "rules": [["oceans", "continent < 0.3"], ["mountains", "relief > 0.78"], ["deadlands", "roll < 0.05"], ["snowlands", "temp < 0.25"], ["lava-lands", "temp > 0.92 and humidity < 0.35"], ["deserts", "temp > 0.7 and humidity < 0.3"], ["jungles", "temp > 0.7 and humidity > 0.65"], ["savannahs", "temp > 0.6 and humidity < 0.65"], ["wetlands", "humidity > 0.8"], ["dark-woods", "temp < 0.45 and humidity > 0.6"], ["greenlands", "true"]], "hud": {"temp-c": "lerp(-10, 40, temp)", "humidity-pct": "100 * humidity"}},
-    "names": {"_doc": "D12: gen-name land rule. name = 2-3 syllables, capitalised, + suffix by landscape (generators.json#names.land shape).", "syllables": ["a", "ar", "ca", "co", "da", "du", "ga", "io", "ka", "la", "ma", "ni", "no", "ra", "ri", "sa", "tri", "va", "var", "on", "is", "ion", "mar", "lan", "san"], "land-suffix": {"greenlands": ["Plains", "Hills"], "snowlands": ["Mountains", "Hills"], "deserts": ["Plains", "Hills"], "jungles": ["Forest"], "lava-lands": ["Mountains"], "oceans": ["Islands"], "savannahs": ["Plains"], "wetlands": ["Plains"], "dark-woods": ["Forest"], "deadlands": ["Hills"], "mountains": ["Mountains"]}},
-    "movement": {"_doc": "D13 (2026-09-08): player-character movement numbers, blocks and seconds; sources only say swim ≈ ½ walk and sprint ≈ mount speed. Tune in play.", "walk": 6.0, "sprint-mult": 1.8, "swim-mult": 0.5, "swim-vertical": 3.0, "jump-height": {"tap": 1.5, "hold": 3.0}, "gravity": 32.0, "step-up": 1.0, "fall-damage": {"from-blocks": 8, "pct-max-hp-per-block": 5}, "stamina": {"max": 100, "sprint-drain": 10.0, "regen": 20.0, "regen-delay-s": 1.0}, "hitbox": {"_doc": "capsule by race size-class (D13 settles the races.json stats ?): radius, height", "small": [0.35, 1.4], "normal": [0.4, 1.8], "large": [0.5, 2.2]}},
-    "camera": {"_doc": "D13: third-person orbit, camera zoom (../domain/controls.md#zoom); distance 0 = first person (D9).", "distance": {"min": 0.0, "max": 12.0, "default": 6.0, "step": 1.0}, "pitch-deg": [-80, 60], "sensitivity": 0.003, "eye-height-factor": 0.9, "shoulder-offset": 0.0},
-    "spawns": {"_doc": "D14 (2026-09-08): gen-spawns numbers for the open world (dungeon and settlement spawns later). Rolled per 64² zone from (world seed, zone). Tune in play.", "groups-per-zone": [0, 2], "default-group": [1, 3], "group-spread": 4, "roster": "creature-families.json#landscape-rosters[land.landscape]; creatures.json group = group size", "skip-categories": ["static-target", "unused", "boss-species"], "aquatic-only-in-water": true, "variable-hostility": {"H": 0.5, "N": 0.5}, "ai": {"_doc": "FSM idle → wander → chase (hostile, target in aggro range) → return (past leash). sim-radius (D16): creatures farther than this many blocks from the player are frozen — no AI, no physics (c-sim-radius).", "threat-per-full-hp": 100.0, "threat-decay-per-s": 1.0, "return-speed-mult": 2.0, "return-damage-reduction": 0.9, "sim-radius": 80, "aggro-range": 12, "leash": 30, "wander-radius": 8, "wander-pause-s": [1, 4], "walk": 3.0, "chase": 6.5}, "size-by-category": {"animal": 1.0, "insect": 0.5, "aquatic": 0.8, "plant-creature": 1.0, "monster": 1.8, "undead": 1.7, "demon": 2.2, "elemental": 2.0, "humanoid": 1.8}, "hostility-colors": {"H": "#c83232", "N": "#40b040", "P": "#e6e6e6", "F": "#3070e0"}},
-    "creature-roles": {"_doc": "D26 (2026-09-11): what a creature's combat-role does (game/entities/creature.gd, game/world/spawner.gd). A creatures.json row with no role uses `default`; `any-class` rolls one of the weighted roles per spawned group from the spawn rng (humanoids may be any class; class / equipment / appearance still todo). melee = today's reach attack (design.combat.enemy-attack). ranged / mage = a projectile role: the creature chases to `range` blocks, backs off below `keep-away`, needs line of sight, then winds up `windup-s` and fires `shot` (a c-moveset-config projectile dict, damage = creature damage × damage-mult, damage through the target's normal take_damage so dodge / block / i-frames apply) and waits `cooldown-s`; `applies` are design.status-effects ids rolled onto the target on a landed shot (dodged or blocked shots carry no status, except poison, which dodge never avoids); `sfx` is the audio.json#sfx-alpha-ids sound played from the shooter, needing a design.feel.sfx entry; `color` tints the shot. `species` overrides any of those keys per creatures.json id. A creature shot never damages another creature (c-no-friendly-fire). Tune in play.",
-      "default": "melee",
-      "any-class": {"melee": 0.5, "ranged": 0.3, "mage": 0.2},
-      "melee":  {"kind": "melee"},
-      "ranged": {"kind": "projectile", "range": 14, "keep-away": 6, "windup-s": 0.8, "cooldown-s": 2.0, "damage-mult": 0.9,
-                 "shot": {"speed": 24, "gravity": 8, "radius": 0.6, "life-s": 3}, "applies": [], "sfx": "swing", "color": "#d8d8b0"},
-      "mage":   {"kind": "projectile", "range": 12, "keep-away": 5, "windup-s": 1.0, "cooldown-s": 2.5, "damage-mult": 1.1,
-                 "shot": {"speed": 14, "gravity": 0, "radius": 0.7, "life-s": 2.5, "splash": 2.5}, "applies": ["burning"], "sfx": "fireball", "color": "#ff7030"},
-      "species": {
-        "spitter":      {"applies": ["poison"], "shot": {"speed": 18, "gravity": 4, "radius": 0.6, "life-s": 3}, "color": "#60c0ff"},
-        "snout-beetle": {"windup-s": 1.4, "cooldown-s": 3.0, "damage-mult": 1.6, "shot": {"speed": 30, "gravity": 0, "radius": 0.6, "life-s": 2}}
-      }
-    },
-    "frame-budget": {"_doc": "D17 (2026-09-08): physics tick rate and how many catch-up ticks one frame may run (Engine.max_physics_steps_per_frame). Over budget = game time slows, FPS never collapses.", "physics-hz": 60, "max-catch-up-steps": 2},
-    "loot": {"_doc": "D18 (2026-09-09): gen-loot numbers the sources never state (loot-rule only says tier ±1). Per kill of a non-friendly creature, independent rolls: coins, one gear piece (gen-item), one consumable, species drops. Item power = clamp(power(creature level) ± level-spread, 1, 100), converting the source level before the existing power-point spread; coins keep creature-level units. Gear kind by weight; a weapon is a uniformly rolled class's weapon-type with its first listed material, armor uses that class's armor-material. Rings/amulets wait for their stat formulas. Tune in play.", "coins": {"chance": 0.6, "base": 1, "per-level": 2}, "gear-chance": 0.2, "consumable-chance": 0.15, "species-drop-chance": 0.5, "level-spread": 1, "boss-rarity-shift": 1, "rarity-weights": {"common": 60, "uncommon": 25, "rare": 10, "epic": 4, "legendary": 1}, "gear-kinds": {"weapon": 4, "chest-armor": 2, "gloves": 2, "boots": 2, "shoulder-armor": 2}, "consumable-pool": ["life-potion", "apple", "pineapple-slice"], "ground": {"lifetime-s": 60480, "_lifetime": "≈ 1 game week at 10× (c-time-speed); unloading the zone removes them earlier (zone.retire)", "pickup-radius": 2.0, "auto-pickup": ["coin"], "scatter": 1.0}},
-    "starting-inventory": {"_doc": "D18: hybrid start = the class starter weapon (design.combat.starter-weapon) equipped + 5 life potions (S: new characters start with 5) + no coins.", "consumables": {"life-potion": 5}, "coins": 0},
-    "combat": {"_doc": "D15 (2026-09-08): the multipliers the sources never state. attack = item damage curve × k × attack-power-mult; NPC damage mirrors enemy-hp; armor subtractive with a floor (settles the stats.json armor ?). Tune in play.", "creature-resistance": 0, "attack-power-mult": 10.0, "starter-weapon": {"_doc": "player-character creation: first weapon-type of the class at this level/rarity", "level": 1, "rarity": 0}, "basic-attack": {"swing-s": 0.5, "reach": 2.5, "hit-radius": 1.3}, "armor-floor": 0.1, "combo": {"bonus-per-hit": 0.02, "expire-s": 5.0, "default-cap": 30}, "enemy-attack": {"formula": "base-hp(lvl) * mult * 2^(power-base * 0.25)", "mult": 12.0, "windup-s": 0.6, "cooldown-s": 1.2, "reach": 1.6}, "death": {"respawn-s": 2.0, "respawn-at": "spawn point until revival statues exist (A: nearest statue; c-no-death-penalty)"}, "hit-flash-s": 0.12},
-    "defence": {"_doc": "D23 (2026-09-11): the §3.3 dodge / combat-block / stealth runtimes and what a creature hit does to the player (game/entities/player.gd, game/entities/creature.gd). dodge (../domain/controls.md#dodge): activation while moving rolls `distance` blocks over duration-s, ignoring every hit for iframe-s (poison excepted once it exists), costs stamina (c-dodge-cost), cannot start while stunned / busy / blocking, and the landing does no fall damage; on-dodge is keyed by the passive that grants it (elusiveness: +mp; way-of-the-shadows: +stealth), applied when the spec has that passive. block (../domain/controls.md#block): active request with a shield in the off-hand, or any weapon as a guardian (barricade), or while cyclone channels (every direction then); a hit whose attacker is in the front cone (dot of forward and the direction to it ≥ front-dot) is multiplied by 1 − damage-reduction, spends power-per-hit block-power and gives mp-per-block (D11 block-reward); block-power (0..max, guardian × guardian-mult) regenerates regen-per-s while not blocking (× cyclone-regen-mult during cyclone); at 0 the block drops until it regenerates; movement × move-mult while blocking. stealth: a 0..1 bar; buffs with stealth-per-s fill it (× still-mult while not moving), a stealth-full buff pins it at 1; with no source it decays decay-per-s; at s: attack × (1 + s × attack-mult-at-full), crit chance + s × crit-add-at-full, MP per hit × (1 + s × mp-mult-at-full), and creatures notice you from aggro-range × (1 − s × aggro-cut); a landed hit empties the bar unless a stealth-full buff holds it. enemy-hit: every creature hit that lands (not dodged, not blocked) rolls stun-chance and knockback-chance on the player with design.status-effects numbers (c-stun-immunity). Tune in play.",
-      "dodge": {"stamina": 25, "distance": 4, "duration-s": 0.4, "iframe-s": 0.4, "cooldown-s": 0.3, "on-dodge": {"elusiveness": {"mp": 25}, "way-of-the-shadows": {"stealth": 0.5}}},
-      "block": {"max": 100, "damage-reduction": 0.8, "front-dot": 0.0, "power-per-hit": 25, "mp-per-block": 8, "regen-per-s": 20, "cyclone-regen-mult": 2, "guardian-mult": 2, "move-mult": 0.5},
-      "stealth": {"decay-per-s": 0.15, "still-mult": 2, "attack-mult-at-full": 0.2, "crit-add-at-full": 0.5, "mp-mult-at-full": 1.0, "aggro-cut": 0.9},
-      "enemy-hit": {"stun-chance": 0.05, "knockback-chance": 0.15}
-    },
-    "movesets": {"_doc": "D24 (2026-09-11): weapon-type.m1 (../domain/controls.md#basic-attack) and .m2 (../domain/controls.md#special-attack), retained data-channel names, not physical bindings, per main-hand weapon-type, read by game/entities/player.gd; a weapon-type without an entry uses `default`, `as` copies another entry. kind melee = the D15 sphere in front of the camera yaw (radius × radius-mult, swing-s × swing-mult; `around` centres it on the player; `lunge` first moves the player that many blocks forward, stopped by walls; `finisher` rolls `applies` with `chance` on every `every`-th landed basic-attack hit); projectile = `count` shots from the eye along the camera aim (spread radians between them), each flying `speed` blocks/s under `gravity` blocks/s² for life-s, hitting the first body within `radius` (or exploding over `splash` blocks on any contact, terrain included); `pierce` keeps flying and re-hits every tick-s; `return` turns back at half life-s and homes to the player; beam = an instant ray along the aim up to `range`, striking `radius` around what it hits (or the ray end); at-cursor = an instant sphere of `radius` where the aim ray lands within `range`. Every kind takes weapon damage × damage-mult (basic attack adds the combo bonus, special attack the charge and stun roll) and carries `applies` (design.status-effects). A landed hit counts for combo / MP once per attack; an attack whose every shot lands nothing resets the combo (c-combo-reset). Ultimates: design.abilities runtime `projectile` (same keys, damage-mult of weapon damage, heal-pct on use) and a dash `throw` (projectiles thrown from the origin before the move). Tune in play.",
-      "kinds": ["melee", "projectile", "beam", "at-cursor"],
-      "default": {"m1": {"kind": "melee"}, "m2": {"kind": "melee"}},
-      "sword": {"m1": {"kind": "melee"}, "m2": {"kind": "melee", "around": true, "radius-mult": 1.5}},
-      "axe": {"as": "sword"},
-      "mace": {"as": "sword"},
-      "greatsword": {"m1": {"kind": "melee", "swing-mult": 1.6, "radius-mult": 1.3, "finisher": {"every": 3, "chance": 0.5, "applies": ["knockdown"]}}, "m2": {"kind": "melee", "damage-mult": 1.5, "radius-mult": 1.3, "applies": ["knockdown"]}},
-      "greataxe": {"as": "greatsword"},
-      "greatmace": {"as": "greatsword"},
-      "dagger": {"m1": {"kind": "melee", "swing-mult": 0.6}, "m2": {"kind": "melee", "applies": ["stun", "poison"]}},
-      "fist": {"m1": {"kind": "melee", "swing-mult": 0.5}, "m2": {"kind": "melee", "applies": ["knockdown"]}},
-      "longsword": {"m1": {"kind": "melee", "radius-mult": 1.2}, "m2": {"kind": "melee", "lunge": 4.0, "damage-mult": 2.0, "radius-mult": 1.5, "applies": ["stun"]}},
-      "bow": {"m1": {"kind": "projectile", "speed": 30.0, "gravity": 10.0, "radius": 0.7, "life-s": 3.0}, "m2": {"kind": "projectile", "count": 4, "spread": 0.12, "speed": 30.0, "gravity": 10.0, "radius": 0.7, "life-s": 3.0, "splash": 2.0}},
-      "crossbow": {"m1": {"kind": "projectile", "speed": 45.0, "gravity": 3.0, "radius": 0.6, "life-s": 2.5}, "m2": {"kind": "projectile", "speed": 45.0, "gravity": 3.0, "radius": 0.8, "life-s": 2.5, "damage-mult": 1.5}},
-      "boomerang": {"m1": {"kind": "projectile", "speed": 20.0, "gravity": 0.0, "radius": 1.0, "life-s": 3.0, "pierce": true, "tick-s": 0.25, "return": true, "damage-mult": 0.5}, "m2": {"kind": "projectile", "count": 2, "spread": 0.4, "speed": 20.0, "gravity": 0.0, "radius": 1.0, "life-s": 3.0, "pierce": true, "tick-s": 0.25, "return": true, "damage-mult": 0.5}},
-      "staff": {"m1": {"kind": "at-cursor", "range": 20.0, "radius": 2.0}, "m2": {"kind": "at-cursor", "range": 20.0, "radius": 4.0}},
-      "wand": {"m1": {"kind": "beam", "range": 25.0, "radius": 0.6}, "m2": {"kind": "beam", "range": 25.0, "radius": 1.5, "damage-mult": 2.0}},
-      "bracelet": {"m1": {"kind": "projectile", "speed": 40.0, "gravity": 0.0, "radius": 0.6, "life-s": 2.0}, "m2": {"kind": "projectile", "speed": 25.0, "gravity": 0.0, "radius": 1.2, "life-s": 2.0, "splash": 3.0, "applies": ["knockdown"]}}},
-    "feel": {"_doc": "D25 (2026-09-11): feedback bundles per event (game/combat/feel.gd): hit-stop-s freezes Engine.time_scale at time-scale for that many real seconds (never stacked, the longer wins); trauma adds to the camera's 0..1 trauma (shake = trauma² × max-offset blocks on Camera3D h/v offset + max-roll-deg, decays decay-per-s, × shake-mult for accessibility); sfx = an alpha sound id (audio.json#sfx-alpha-ids) synthesised from design.feel.sfx until assets exist; number = a floating damage number (Label3D over the target: rises rise-blocks over life-s, crit × crit-scale, colour by kind); flash = an impact sphere at the hit (impact-s, impact-radius or the splash radius). stun-stars: a '✶ ✶ ✶' Label3D over any stunned entity's head while the stun lasts. buff-icons: one coloured box per active buff with its initial and a countdown fill (hud). level-up: the toast text and pop scale. projectile trail: a fading sphere every trail-every-s living trail-s. Tune in play.",
-      "hit-stop": {"time-scale": 0.05, "max-s": 0.3},
-      "shake": {"decay-per-s": 1.5, "max-offset": 0.15, "max-roll-deg": 2.0, "shake-mult": 1.0},
-      "numbers": {"rise-blocks": 1.5, "life-s": 0.8, "font-size": 24, "crit-scale": 1.5,
-                  "colours": {"hit": [1,1,1], "crit": [1,0.85,0.2], "dot": [1,0.5,0.1], "hurt": [1,0.25,0.25], "heal": [0.3,1,0.4]}},
-      "impact": {"impact-s": 0.15, "impact-radius": 0.5},
-      "trail": {"trail-every-s": 0.03, "trail-s": 0.25},
-      "level-up": {"text": "LEVEL UP!", "pop-scale": 1.6, "pop-s": 0.4},
-      "events": {
-        "hit":      {"hit-stop-s": 0.04, "trauma": 0.15, "sfx": "hit"},
-        "crit":     {"hit-stop-s": 0.08, "trauma": 0.3,  "sfx": "hit-arrow-critical"},
-        "kill":     {"hit-stop-s": 0.12, "trauma": 0.45, "sfx": "cry"},
-        "hurt":     {"hit-stop-s": 0.0,  "trauma": 0.35, "sfx": "punch1"},
-        "block":    {"hit-stop-s": 0.03, "trauma": 0.1,  "sfx": "block"},
-        "dodge":    {"hit-stop-s": 0.0,  "trauma": 0.0,  "sfx": "roll"},
-        "shoot":    {"hit-stop-s": 0.0,  "trauma": 0.05, "sfx": "swing"},
-        "impact":   {"hit-stop-s": 0.0,  "trauma": 0.1,  "sfx": "fire-hit"},
-        "level-up": {"hit-stop-s": 0.0,  "trauma": 0.2,  "sfx": "levelup2"},
-        "pickup":   {"hit-stop-s": 0.0,  "trauma": 0.0,  "sfx": "pickup"},
-        "coin":     {"hit-stop-s": 0.0,  "trauma": 0.0,  "sfx": "drop-coin"}
-      },
-      "sfx": {
-        "hit":                {"hz": 180, "len-s": 0.08, "noise": 0.5, "slide": -0.6},
-        "hit-arrow-critical": {"hz": 320, "len-s": 0.14, "noise": 0.3, "slide": -0.7},
-        "cry":                {"hz": 140, "len-s": 0.3,  "noise": 0.6, "slide": -0.8},
-        "punch1":             {"hz": 120, "len-s": 0.1,  "noise": 0.7, "slide": -0.5},
-        "block":              {"hz": 600, "len-s": 0.06, "noise": 0.2, "slide": -0.2},
-        "roll":               {"hz": 200, "len-s": 0.12, "noise": 0.8, "slide": 0.3},
-        "swing":              {"hz": 400, "len-s": 0.06, "noise": 0.9, "slide": -0.4},
-        "fire-hit":           {"hz": 260, "len-s": 0.12, "noise": 0.6, "slide": -0.6},
-        "levelup2":           {"hz": 440, "len-s": 0.4,  "noise": 0.0, "slide": 0.8},
-        "pickup":             {"hz": 700, "len-s": 0.05, "noise": 0.0, "slide": 0.4},
-        "drop-coin":          {"hz": 1200,"len-s": 0.05, "noise": 0.0, "slide": 0.2},
-        "fireball":           {"hz": 220, "len-s": 0.2,  "noise": 0.5, "slide": -0.3}
-      }
-    },
-    "settlement": {"_doc": "D22 (2026-09-10): gen-settlement for the hybrid, the sources never gave placement or layout numbers. One village per land (alpha count, c-land-count), placed from the land seed: the first candidate on rings of `search-step` blocks around the land centre whose column is ≥ min-above-sea above sea level; the terrain is flattened to that height within `radius` and blended over `blend` more (gen-terrain, no cliffs into town). Buildings are boxes [w, h, d] on a ring of `ring-radius` around the square, coloured by settlement-style ([wall, roof]) via style-by-landscape; one NPC per service building (npc-roles) stands at its door; houses are empty. E within interact-radius of an NPC = its service (ui.json#screens.npc-service): vendors open the shop (stock rolled from (world seed, village, shop): convert each actual land-danger/character-level source roll to power before the power-point spread and clamp to 1..100; unlimited consumables convert the character-level input directly without spread, land-shared supplier ceiling applied only at normal daily generation/restock, prices design.prices, sell = buy × design.prices.sell, worn gear cannot be sold), the class trainer refunds every spent point to the bank for respec-fee-per-level × level copper, the innkeeper heals fully and moves the respawn point to the inn (A: free). world.spawn-rule = near-village: new characters start on the square of the land (0,0) village. Wild spawns skip groups within no-hostiles-within blocks of the square (c-hostile-in-city). Tune in play.", "per-land": 1, "placement": {"search-step": 64, "search-rings": 8, "min-above-sea": 4}, "radius": 24, "blend": 8, "ring-radius": 15, "buildings": ["inn", "weapon-shop", "armor-shop", "item-shop", "class-trainer", "house", "house", "house", "house", "house"], "footprint": {"default": [6, 5, 6], "inn": [8, 6, 7], "house": [5, 4, 5]}, "style-by-landscape": {"greenlands": "european-framework", "snowlands": "log", "deserts": "desert", "savannahs": "desert", "jungles": "jungle", "lava-lands": "lava", "oceans": "ocean", "wetlands": "north-american-wood", "dark-woods": "undead", "deadlands": "undead", "mountains": "medieval-stone"}, "style-colors": {"european-framework": ["#d9c9a3", "#8a3b2a"], "medieval-stone": ["#8c8c88", "#4a4a55"], "north-american-wood": ["#a9743f", "#5b3a1e"], "log": ["#5a3a1e", "#e8eef5"], "desert": ["#e0c98f", "#b98a4a"], "jungle": ["#b08a5a", "#e07a2a"], "undead": ["#4a4a4a", "#2a2a2a"], "lava": ["#3a2a2a", "#c04020"], "ocean": ["#e8e2d0", "#3a70b0"]}, "npc": {"interact-radius": 3.0, "color": "#3070e0", "roles": {"inn": "innkeeper", "weapon-shop": "weapon-vendor", "armor-shop": "armor-vendor", "item-shop": "item-vendor", "class-trainer": "class-trainer"}}, "shop": {"stock": 8, "rarity-cap": "common", "level-spread": 1, "item-shop-pool": "design.loot.consumable-pool", "restock": "daily"}, "trainer": {"respec-fee-per-level": 5}, "inn": {"fee": 0, "heal": true, "sets-spawn": true}, "no-hostiles-within": 40}
+  "artifact": {
+   "first": 0.05,
+   "stats": "Exactly one of key-items.json#artifact.stat-kinds plus attack and max HP. x is the nonnegative integer contributor count: matching artifacts per traversal stat, all artifacts for attack/max HP. Adjustable z > 0; B(0) = 0; first = B(1). Equal current shares B(x)/x for x > 0 are additive, never compounded. Recalculate current artifact-free stat * (1 + B(x)) when ordinary inputs change; no cap, decay or per-artifact floor.",
+   "total-bonus": "B(x) = first * ln(1 + z * x) / ln(1 + z)",
+   "z": 0.1
   },
-  "network-alpha": {"port": 12345, "protocol": "TCP", "client-version": 3, "tick-hz": 50, "compression": "zlib", "authority": "client (anticheat scripts)", "packets-c2s": {"0": "EntityUpdate", "6": "Interact", "7": "Hit", "8": "Passive", "9": "Shoot", "10": "ChatMessage", "11": "ChunkDiscovered", "12": "SectorDiscovered", "17": "ClientVersion"}, "packets-s2c": {"0": "EntityUpdate", "1": "MultipleEntityUpdate", "2": "UpdateFinished", "3": "AirshipUpdate", "4": "ServerUpdate", "5": "CurrentTime", "10": "ServerChatMessage", "15": "SeedData", "16": "JoinPacket", "17": "ServerMismatch", "18": "ServerFull"}, "max-players": 4, "max-players-configurable": true, "hit-types": {"0": "normal", "1": "block", "3": "miss", "5": "absorb"}, "interact-types": {"2": "npc", "3": "normal", "5": "pickup", "6": "drop", "8": "examine"}, "anticheat-caps": {"level": 1000, "rarity": 4, "air-time-s": 10}}
+  "artifacts-per-land": {
+   "max": 3,
+   "min": 1,
+   "roll": "uniform, seeded, at land generation (D11)"
+  },
+  "block-reward": "mp (D11: a successful block adds MP, the same bar special attacks spend)",
+  "camera": {
+   "_doc": "D13: third-person orbit, camera zoom (../domain/controls.md#zoom); distance 0 = first person (D9).",
+   "distance": {
+    "default": 6.0,
+    "max": 12.0,
+    "min": 0.0,
+    "step": 1.0
+   },
+   "eye-height-factor": 0.9,
+   "pitch-deg": [
+    -80,
+    60
+   ],
+   "sensitivity": 0.003,
+   "shoulder-offset": 0.0
+  },
+  "circle-of-power": {
+   "attack": 0.1,
+   "max-hp": 0.1
+  },
+  "climate": {
+   "_doc": "D12: gen-climate numbers. Three seeded fields sampled once per land centre, normalised 0..1: temperature, humidity (fBm, frequency in lands), continent (oceans), relief (mountains). First matching rule wins; greenlands is the fallback.",
+   "field-frequency-lands": 0.15,
+   "field-octaves": 3,
+   "hud": {
+    "humidity-pct": "100 * humidity",
+    "temp-c": "lerp(-10, 40, temp)"
+   },
+   "rules": [
+    {
+     "first": "oceans",
+     "second": "continent < 0.3"
+    },
+    {
+     "first": "mountains",
+     "second": "relief > 0.78"
+    },
+    {
+     "first": "deadlands",
+     "second": "roll < 0.05"
+    },
+    {
+     "first": "snowlands",
+     "second": "temp < 0.25"
+    },
+    {
+     "first": "lava-lands",
+     "second": "temp > 0.92 and humidity < 0.35"
+    },
+    {
+     "first": "deserts",
+     "second": "temp > 0.7 and humidity < 0.3"
+    },
+    {
+     "first": "jungles",
+     "second": "temp > 0.7 and humidity > 0.65"
+    },
+    {
+     "first": "savannahs",
+     "second": "temp > 0.6 and humidity < 0.65"
+    },
+    {
+     "first": "wetlands",
+     "second": "humidity > 0.8"
+    },
+    {
+     "first": "dark-woods",
+     "second": "temp < 0.45 and humidity > 0.6"
+    },
+    {
+     "first": "greenlands",
+     "second": "true"
+    }
+   ]
+  },
+  "combat": {
+   "_doc": "D15 (2026-09-08): the multipliers the sources never state. attack = item damage curve × k × attack-power-mult; NPC damage mirrors enemy-hp; armor subtractive with a floor (settles the stats.json armor ?). Tune in play.",
+   "armor-floor": 0.1,
+   "attack-power-mult": 10.0,
+   "basic-attack": {
+    "hit-radius": 1.3,
+    "reach": 2.5,
+    "swing-s": 0.5
+   },
+   "combo": {
+    "bonus-per-hit": 0.02,
+    "default-cap": 30,
+    "expire-s": 5.0
+   },
+   "creature-resistance": 0,
+   "death": {
+    "respawn-at": "spawn point until revival statues exist (A: nearest statue; c-no-death-penalty)",
+    "respawn-s": 2.0
+   },
+   "enemy-attack": {
+    "cooldown-s": 1.2,
+    "formula": "base-hp(lvl) * mult * 2^(power-base * 0.25)",
+    "mult": 12.0,
+    "reach": 1.6,
+    "windup-s": 0.6
+   },
+   "hit-flash-s": 0.12,
+   "starter-weapon": {
+    "_doc": "player-character creation: first weapon-type of the class at this level/rarity",
+    "level": 1,
+    "rarity": 0
+   }
+  },
+  "creature-roles": {
+   "_doc": "D26 (2026-09-11): what a creature's combat-role does (game/entities/creature.gd, game/world/spawner.gd). A creatures.json row with no role uses `default`; `any-class` rolls one of the weighted roles per spawned group from the spawn rng (humanoids may be any class; class / equipment / appearance still todo). melee = today's reach attack (design.combat.enemy-attack). ranged / mage = a projectile role: the creature chases to `range` blocks, backs off below `keep-away`, needs line of sight, then winds up `windup-s` and fires `shot` (a c-moveset-config projectile dict, damage = creature damage × damage-mult, damage through the target's normal take_damage so dodge / block / i-frames apply) and waits `cooldown-s`; `applies` are design.status-effects ids rolled onto the target on a landed shot (dodged or blocked shots carry no status, except poison, which dodge never avoids); `sfx` is the audio.json#sfx-alpha-ids sound played from the shooter, needing a design.feel.sfx entry; `color` tints the shot. `species` overrides any of those keys per creatures.json id. A creature shot never damages another creature (c-no-friendly-fire). Tune in play.",
+   "any-class": {
+    "entries": [
+     {
+      "key": "melee",
+      "value": 0.5
+     },
+     {
+      "key": "ranged",
+      "value": 0.3
+     },
+     {
+      "key": "mage",
+      "value": 0.2
+     }
+    ]
+   },
+   "default": "melee",
+   "mage": {
+    "applies": [
+     "burning"
+    ],
+    "color": "#ff7030",
+    "cooldown-s": 2.5,
+    "damage-mult": 1.1,
+    "keep-away": 5,
+    "kind": "projectile",
+    "range": 12,
+    "sfx": "fireball",
+    "shot": {
+     "gravity": 0,
+     "life-s": 2.5,
+     "radius": 0.7,
+     "speed": 14,
+     "splash": 2.5
+    },
+    "windup-s": 1.0
+   },
+   "melee": {
+    "kind": "melee"
+   },
+   "ranged": {
+    "applies": [],
+    "color": "#d8d8b0",
+    "cooldown-s": 2.0,
+    "damage-mult": 0.9,
+    "keep-away": 6,
+    "kind": "projectile",
+    "range": 14,
+    "sfx": "swing",
+    "shot": {
+     "gravity": 8,
+     "life-s": 3,
+     "radius": 0.6,
+     "speed": 24
+    },
+    "windup-s": 0.8
+   },
+   "species": {
+    "entries": [
+     {
+      "key": "spitter",
+      "value": {
+       "applies": [
+        "poison"
+       ],
+       "color": "#60c0ff",
+       "shot": {
+        "gravity": 4,
+        "life-s": 3,
+        "radius": 0.6,
+        "speed": 18
+       }
+      }
+     },
+     {
+      "key": "snout-beetle",
+      "value": {
+       "cooldown-s": 3.0,
+       "damage-mult": 1.6,
+       "shot": {
+        "gravity": 0,
+        "life-s": 2,
+        "radius": 0.6,
+        "speed": 30
+       },
+       "windup-s": 1.4
+      }
+     }
+    ]
+   }
+  },
+  "crit": {
+   "multiplier": 2.0,
+   "overflow": "crit chance above 1.0 adds to the multiplier (chance 1.5 → x2.5)"
+  },
+  "defence": {
+   "_doc": "D23 (2026-09-11): the §3.3 dodge / combat-block / stealth runtimes and what a creature hit does to the player (game/entities/player.gd, game/entities/creature.gd). dodge (../domain/controls.md#dodge): activation while moving rolls `distance` blocks over duration-s, ignoring every hit for iframe-s (poison excepted once it exists), costs stamina (c-dodge-cost), cannot start while stunned / busy / blocking, and the landing does no fall damage; on-dodge is keyed by the passive that grants it (elusiveness: +mp; way-of-the-shadows: +stealth), applied when the spec has that passive. block (../domain/controls.md#block): active request with a shield in the off-hand, or any weapon as a guardian (barricade), or while cyclone channels (every direction then); a hit whose attacker is in the front cone (dot of forward and the direction to it ≥ front-dot) is multiplied by 1 − damage-reduction, spends power-per-hit block-power and gives mp-per-block (D11 block-reward); block-power (0..max, guardian × guardian-mult) regenerates regen-per-s while not blocking (× cyclone-regen-mult during cyclone); at 0 the block drops until it regenerates; movement × move-mult while blocking. stealth: a 0..1 bar; buffs with stealth-per-s fill it (× still-mult while not moving), a stealth-full buff pins it at 1; with no source it decays decay-per-s; at s: attack × (1 + s × attack-mult-at-full), crit chance + s × crit-add-at-full, MP per hit × (1 + s × mp-mult-at-full), and creatures notice you from aggro-range × (1 − s × aggro-cut); a landed hit empties the bar unless a stealth-full buff holds it. enemy-hit: every creature hit that lands (not dodged, not blocked) rolls stun-chance and knockback-chance on the player with design.status-effects numbers (c-stun-immunity). Tune in play.",
+   "block": {
+    "cyclone-regen-mult": 2,
+    "damage-reduction": 0.8,
+    "front-dot": 0.0,
+    "guardian-mult": 2,
+    "max": 100,
+    "move-mult": 0.5,
+    "mp-per-block": 8,
+    "power-per-hit": 25,
+    "regen-per-s": 20
+   },
+   "dodge": {
+    "cooldown-s": 0.3,
+    "distance": 4,
+    "duration-s": 0.4,
+    "iframe-s": 0.4,
+    "on-dodge": {
+     "entries": [
+      {
+       "key": "elusiveness",
+       "value": {
+        "mp": 25
+       }
+      },
+      {
+       "key": "way-of-the-shadows",
+       "value": {
+        "stealth": 0.5
+       }
+      }
+     ]
+    },
+    "stamina": 25
+   },
+   "enemy-hit": {
+    "knockback-chance": 0.15,
+    "stun-chance": 0.05
+   },
+   "stealth": {
+    "aggro-cut": 0.9,
+    "attack-mult-at-full": 0.2,
+    "crit-add-at-full": 0.5,
+    "decay-per-s": 0.15,
+    "mp-mult-at-full": 1.0,
+    "still-mult": 2
+   }
+  },
+  "enemy-hp": {
+   "calibration": "white mob at level 1 → 150–250 HP",
+   "family-mult": "creature-families.json hp-mult, default 1.0",
+   "formula": "base-hp(lvl) * 200 * 2^(power-base * 0.25) * family-mult  (D14: the 200 is the NPC max-hp multiplier the sources never state)",
+   "power-base": [
+    -1.5,
+    1.25
+   ],
+   "rule": "stats.json#alpha-character-formulas.npc-hp * family-mult"
+  },
+  "enemy-level": {
+   "above": 5,
+   "below": 3,
+   "config": "solo settings / server.cfg",
+   "danger-tiers": {
+    "dangerous": 1.0,
+    "normal": 0.5,
+    "safe": 0.0
+   },
+   "rule": "creature level rolled in band [min-party-level - below, max-party-level + above] (solo: own level); each land rolls a danger-tier at generation that fixes where in the band it sits",
+   "tier-weights": {
+    "dangerous": 0.25,
+    "normal": 0.5,
+    "safe": 0.25
+   }
+  },
+  "feel": {
+   "_doc": "D25 (2026-09-11): feedback bundles per event (game/combat/feel.gd): hit-stop-s freezes Engine.time_scale at time-scale for that many real seconds (never stacked, the longer wins); trauma adds to the camera's 0..1 trauma (shake = trauma² × max-offset blocks on Camera3D h/v offset + max-roll-deg, decays decay-per-s, × shake-mult for accessibility); sfx = an alpha sound id (audio.json#sfx-alpha-ids) synthesised from design.feel.sfx until assets exist; number = a floating damage number (Label3D over the target: rises rise-blocks over life-s, crit × crit-scale, colour by kind); flash = an impact sphere at the hit (impact-s, impact-radius or the splash radius). stun-stars: a '✶ ✶ ✶' Label3D over any stunned entity's head while the stun lasts. buff-icons: one coloured box per active buff with its initial and a countdown fill (hud). level-up: the toast text and pop scale. projectile trail: a fading sphere every trail-every-s living trail-s. Tune in play.",
+   "events": {
+    "block": {
+     "hit-stop-s": 0.03,
+     "sfx": "block",
+     "trauma": 0.1
+    },
+    "coin": {
+     "hit-stop-s": 0.0,
+     "sfx": "drop-coin",
+     "trauma": 0.0
+    },
+    "crit": {
+     "hit-stop-s": 0.08,
+     "sfx": "hit-arrow-critical",
+     "trauma": 0.3
+    },
+    "dodge": {
+     "hit-stop-s": 0.0,
+     "sfx": "roll",
+     "trauma": 0.0
+    },
+    "hit": {
+     "hit-stop-s": 0.04,
+     "sfx": "hit",
+     "trauma": 0.15
+    },
+    "hurt": {
+     "hit-stop-s": 0.0,
+     "sfx": "punch1",
+     "trauma": 0.35
+    },
+    "impact": {
+     "hit-stop-s": 0.0,
+     "sfx": "fire-hit",
+     "trauma": 0.1
+    },
+    "kill": {
+     "hit-stop-s": 0.12,
+     "sfx": "cry",
+     "trauma": 0.45
+    },
+    "level-up": {
+     "hit-stop-s": 0.0,
+     "sfx": "levelup2",
+     "trauma": 0.2
+    },
+    "pickup": {
+     "hit-stop-s": 0.0,
+     "sfx": "pickup",
+     "trauma": 0.0
+    },
+    "shoot": {
+     "hit-stop-s": 0.0,
+     "sfx": "swing",
+     "trauma": 0.05
+    }
+   },
+   "hit-stop": {
+    "max-s": 0.3,
+    "time-scale": 0.05
+   },
+   "impact": {
+    "impact-radius": 0.5,
+    "impact-s": 0.15
+   },
+   "level-up": {
+    "pop-s": 0.4,
+    "pop-scale": 1.6,
+    "text": "LEVEL UP!"
+   },
+   "numbers": {
+    "colours": {
+     "entries": [
+      {
+       "key": "hit",
+       "value": [
+        1,
+        1,
+        1
+       ]
+      },
+      {
+       "key": "crit",
+       "value": [
+        1,
+        0.85,
+        0.2
+       ]
+      },
+      {
+       "key": "dot",
+       "value": [
+        1,
+        0.5,
+        0.1
+       ]
+      },
+      {
+       "key": "hurt",
+       "value": [
+        1,
+        0.25,
+        0.25
+       ]
+      },
+      {
+       "key": "heal",
+       "value": [
+        0.3,
+        1,
+        0.4
+       ]
+      }
+     ]
+    },
+    "crit-scale": 1.5,
+    "font-size": 24,
+    "life-s": 0.8,
+    "rise-blocks": 1.5
+   },
+   "sfx": {
+    "entries": [
+     {
+      "key": "hit",
+      "value": {
+       "hz": 180,
+       "len-s": 0.08,
+       "noise": 0.5,
+       "slide": -0.6
+      }
+     },
+     {
+      "key": "hit-arrow-critical",
+      "value": {
+       "hz": 320,
+       "len-s": 0.14,
+       "noise": 0.3,
+       "slide": -0.7
+      }
+     },
+     {
+      "key": "cry",
+      "value": {
+       "hz": 140,
+       "len-s": 0.3,
+       "noise": 0.6,
+       "slide": -0.8
+      }
+     },
+     {
+      "key": "punch1",
+      "value": {
+       "hz": 120,
+       "len-s": 0.1,
+       "noise": 0.7,
+       "slide": -0.5
+      }
+     },
+     {
+      "key": "block",
+      "value": {
+       "hz": 600,
+       "len-s": 0.06,
+       "noise": 0.2,
+       "slide": -0.2
+      }
+     },
+     {
+      "key": "roll",
+      "value": {
+       "hz": 200,
+       "len-s": 0.12,
+       "noise": 0.8,
+       "slide": 0.3
+      }
+     },
+     {
+      "key": "swing",
+      "value": {
+       "hz": 400,
+       "len-s": 0.06,
+       "noise": 0.9,
+       "slide": -0.4
+      }
+     },
+     {
+      "key": "fire-hit",
+      "value": {
+       "hz": 260,
+       "len-s": 0.12,
+       "noise": 0.6,
+       "slide": -0.6
+      }
+     },
+     {
+      "key": "levelup2",
+      "value": {
+       "hz": 440,
+       "len-s": 0.4,
+       "noise": 0.0,
+       "slide": 0.8
+      }
+     },
+     {
+      "key": "pickup",
+      "value": {
+       "hz": 700,
+       "len-s": 0.05,
+       "noise": 0.0,
+       "slide": 0.4
+      }
+     },
+     {
+      "key": "drop-coin",
+      "value": {
+       "hz": 1200,
+       "len-s": 0.05,
+       "noise": 0.0,
+       "slide": 0.2
+      }
+     },
+     {
+      "key": "fireball",
+      "value": {
+       "hz": 220,
+       "len-s": 0.2,
+       "noise": 0.5,
+       "slide": -0.3
+      }
+     }
+    ]
+   },
+   "shake": {
+    "decay-per-s": 1.5,
+    "max-offset": 0.15,
+    "max-roll-deg": 2.0,
+    "shake-mult": 1.0
+   },
+   "trail": {
+    "trail-every-s": 0.03,
+    "trail-s": 0.25
+   }
+  },
+  "frame-budget": {
+   "_doc": "D17 (2026-09-08): physics tick rate and how many catch-up ticks one frame may run (Engine.max_physics_steps_per_frame). Over budget = game time slows, FPS never collapses.",
+   "max-catch-up-steps": 2,
+   "physics-hz": 60
+  },
+  "gear-hp": {
+   "base": 2.0,
+   "curve-mult": 5.0,
+   "upgrade-step": 0.1
+  },
+  "initial-encounters": {
+   "_doc": "Initial hybrid encounter-contracts.md: required complete village/site generation and local populations, independent of optional leading objects. Layout coordinates are derived by the engine from these dimensions; no ambient roster or global stat changes.",
+   "apron": 8,
+   "boss-damage-mult": 1.5,
+   "boss-height": {
+    "base": 1.7,
+    "growth": 0.75,
+    "max-level": 10,
+    "min-mult": 1.25
+   },
+   "boss-hp-mult": 4,
+   "boss-specials": {
+    "charge": 0.5,
+    "stomp": 0.5
+   },
+   "camp": {
+    "exit-width": 8,
+    "occupancy": {
+     "first": -1,
+     "second": 16
+    },
+    "packs": 2,
+    "size": 64,
+    "tier": 1
+   },
+   "distance-max": 215,
+   "distance-min": 192,
+   "dry-above-sea": 4,
+   "furnishings": {
+    "armor": 0,
+    "table": {
+     "flask": "glass-flask",
+     "flask-count": 1,
+     "hp": 20,
+     "per-room": 1,
+     "potion": "life-potion",
+     "potion-count": 1,
+     "potion-rarity": 0
+    },
+    "vase": {
+     "coin-base": 1,
+     "coin-per-level": 2,
+     "hp": 10,
+     "per-room": 2
+    }
+   },
+   "hub-size": 64,
+   "leading-objects": {
+    "camp": "stake-torch",
+    "ruins": "masonry",
+    "supplier": "broken-crate"
+   },
+   "mission-package": {
+    "coin-per-grade": 20,
+    "delivery-height": 0.5,
+    "gem-count-per-grade": 1,
+    "gems": {
+     "first": "emerald",
+     "fourth": "diamond",
+     "second": "sapphire",
+     "third": "ruby"
+    },
+    "potion": "life-potion",
+    "potion-count": 1,
+    "potion-rarity": 0,
+    "rarity-shift": 1,
+    "upgrades": 0
+   },
+   "pack-size": 3,
+   "power-base-offset": 2,
+   "role-weights": {
+    "mage": 0.2,
+    "melee": 0.5,
+    "ranged": 0.3
+   },
+   "rubble": {
+    "block-type": "rock-building",
+    "per-arena": 8,
+    "restore-world-hours": 72,
+    "voxel-size": 1
+   },
+   "ruins": {
+    "alcove": {
+     "first": 12,
+     "second": 8
+    },
+    "boss-tiers": {
+     "first": 2,
+     "second": 3
+    },
+    "bounds": {
+     "first": 36,
+     "second": 112
+    },
+    "ceiling": 6,
+    "corridor": {
+     "first": 8,
+     "second": 8
+    },
+    "court": {
+     "first": 24,
+     "second": 16
+    },
+    "door": {
+     "first": 4,
+     "second": 5
+    },
+    "occupancy": {
+     "first": -1,
+     "second": 12
+    },
+    "pack-tiers": {
+     "first": 1,
+     "second": 2,
+     "third": 3
+    },
+    "passage": {
+     "first": 8,
+     "second": 8
+    },
+    "room": {
+     "first": 24,
+     "second": 24
+    }
+   },
+   "separation": 192,
+   "special-profile": {
+    "charge": {
+     "damage-mult": 1.25,
+     "lane-width": 2,
+     "range": {
+      "first": 4,
+      "second": 10
+     },
+     "speed": 12,
+     "start-height-diff": 1,
+     "sweep-radius": 1
+    },
+    "cooldown-s": 10,
+    "ready-s": 3,
+    "recovery-s": 0.8,
+    "stomp": {
+     "damage-mult": 1,
+     "radius": 4,
+     "start-height-diff": 2,
+     "victim-height": {
+      "first": 0,
+      "second": 1
+     }
+    },
+    "warning-s": 1.2
+   },
+   "species": "skeleton",
+   "spikes": {
+    "active-s": 0.25,
+    "attack-type": "physical",
+    "cooldown-s": 2,
+    "count": 2,
+    "damage": 30,
+    "footprint": {
+     "first": 2,
+     "second": 2
+    },
+    "victim-height": {
+     "first": 0,
+     "second": 1
+    },
+    "warning-s": 0.8,
+    "warning-sfx": "block"
+   },
+   "spirits": {
+    "spirit-fire": 0.25,
+    "spirit-ice": 0.25,
+    "spirit-unholy": 0.25,
+    "spirit-wind": 0.25
+   },
+   "supplier": {
+    "exit-width": 8,
+    "occupancy": {
+     "first": -1,
+     "second": 16
+    },
+    "packs": 2,
+    "size": 48,
+    "tiers": [
+     0,
+     1,
+     2,
+     3
+    ]
+   }
+  },
+  "item-stat-curve": "stats.json#alpha-item-stat-formulas only (no 1.0 tier curve)",
+  "loot": {
+   "_doc": "D18 (2026-09-09): gen-loot numbers the sources never state (loot-rule only says tier ±1). Per kill of a non-friendly creature, independent rolls: coins, one gear piece (gen-item), one consumable, species drops. Item power = clamp(power(creature level) ± level-spread, 1, 100), converting the source level before the existing power-point spread; coins keep creature-level units. Gear kind by weight; a weapon is a uniformly rolled class's weapon-type with its first listed material, armor uses that class's armor-material. Rings/amulets wait for their stat formulas. Tune in play.",
+   "boss-rarity-shift": 1,
+   "coins": {
+    "base": 1,
+    "chance": 0.6,
+    "per-level": 2
+   },
+   "consumable-chance": 0.15,
+   "consumable-pool": [
+    "life-potion",
+    "apple",
+    "pineapple-slice"
+   ],
+   "gear-chance": 0.2,
+   "gear-kinds": {
+    "entries": [
+     {
+      "key": "weapon",
+      "value": 4
+     },
+     {
+      "key": "chest-armor",
+      "value": 2
+     },
+     {
+      "key": "gloves",
+      "value": 2
+     },
+     {
+      "key": "boots",
+      "value": 2
+     },
+     {
+      "key": "shoulder-armor",
+      "value": 2
+     }
+    ]
+   },
+   "ground": {
+    "_lifetime": "≈ 1 game week at 10× (c-time-speed); unloading the zone removes them earlier (zone.retire)",
+    "auto-pickup": [
+     "coin"
+    ],
+    "lifetime-s": 60480,
+    "pickup-radius": 2.0,
+    "scatter": 1.0
+   },
+   "level-spread": 1,
+   "rarity-weights": {
+    "entries": [
+     {
+      "key": "common",
+      "value": 60
+     },
+     {
+      "key": "uncommon",
+      "value": 25
+     },
+     {
+      "key": "rare",
+      "value": 10
+     },
+     {
+      "key": "epic",
+      "value": 4
+     },
+     {
+      "key": "legendary",
+      "value": 1
+     }
+    ]
+   },
+   "species-drop-chance": 0.5
+  },
+  "movement": {
+   "_doc": "D13 (2026-09-08): player-character movement numbers, blocks and seconds; sources only say swim ≈ ½ walk and sprint ≈ mount speed. Tune in play.",
+   "fall-damage": {
+    "from-blocks": 8,
+    "pct-max-hp-per-block": 5
+   },
+   "gravity": 32.0,
+   "hitbox": {
+    "_doc": "capsule by race size-class (D13 settles the races.json stats ?): radius, height",
+    "large": [
+     0.5,
+     2.2
+    ],
+    "normal": [
+     0.4,
+     1.8
+    ],
+    "small": [
+     0.35,
+     1.4
+    ]
+   },
+   "jump-height": {
+    "hold": 3.0,
+    "tap": 1.5
+   },
+   "sprint-mult": 1.8,
+   "stamina": {
+    "max": 100,
+    "regen": 20.0,
+    "regen-delay-s": 1.0,
+    "sprint-drain": 10.0
+   },
+   "step-up": 1.0,
+   "swim-mult": 0.5,
+   "swim-vertical": 3.0,
+   "walk": 6.0
+  },
+  "movesets": {
+   "_doc": "D24 (2026-09-11): weapon-type.m1 (../domain/controls.md#basic-attack) and .m2 (../domain/controls.md#special-attack), retained data-channel names, not physical bindings, per main-hand weapon-type, read by game/entities/player.gd; a weapon-type without an entry uses `default`, `as` copies another entry. kind melee = the D15 sphere in front of the camera yaw (radius × radius-mult, swing-s × swing-mult; `around` centres it on the player; `lunge` first moves the player that many blocks forward, stopped by walls; `finisher` rolls `applies` with `chance` on every `every`-th landed basic-attack hit); projectile = `count` shots from the eye along the camera aim (spread radians between them), each flying `speed` blocks/s under `gravity` blocks/s² for life-s, hitting the first body within `radius` (or exploding over `splash` blocks on any contact, terrain included); `pierce` keeps flying and re-hits every tick-s; `return` turns back at half life-s and homes to the player; beam = an instant ray along the aim up to `range`, striking `radius` around what it hits (or the ray end); at-cursor = an instant sphere of `radius` where the aim ray lands within `range`. Every kind takes weapon damage × damage-mult (basic attack adds the combo bonus, special attack the charge and stun roll) and carries `applies` (design.status-effects). A landed hit counts for combo / MP once per attack; an attack whose every shot lands nothing resets the combo (c-combo-reset). Ultimates: design.abilities runtime `projectile` (same keys, damage-mult of weapon damage, heal-pct on use) and a dash `throw` (projectiles thrown from the origin before the move). Tune in play.",
+   "default": {
+    "m1": {
+     "kind": "melee"
+    },
+    "m2": {
+     "kind": "melee"
+    }
+   },
+   "entries": [
+    {
+     "key": "sword",
+     "value": {
+      "m1": {
+       "kind": "melee"
+      },
+      "m2": {
+       "around": true,
+       "kind": "melee",
+       "radius-mult": 1.5
+      }
+     }
+    },
+    {
+     "key": "axe",
+     "value": {
+      "as": "sword"
+     }
+    },
+    {
+     "key": "mace",
+     "value": {
+      "as": "sword"
+     }
+    },
+    {
+     "key": "greatsword",
+     "value": {
+      "m1": {
+       "finisher": {
+        "applies": [
+         "knockdown"
+        ],
+        "chance": 0.5,
+        "every": 3
+       },
+       "kind": "melee",
+       "radius-mult": 1.3,
+       "swing-mult": 1.6
+      },
+      "m2": {
+       "applies": [
+        "knockdown"
+       ],
+       "damage-mult": 1.5,
+       "kind": "melee",
+       "radius-mult": 1.3
+      }
+     }
+    },
+    {
+     "key": "greataxe",
+     "value": {
+      "as": "greatsword"
+     }
+    },
+    {
+     "key": "greatmace",
+     "value": {
+      "as": "greatsword"
+     }
+    },
+    {
+     "key": "dagger",
+     "value": {
+      "m1": {
+       "kind": "melee",
+       "swing-mult": 0.6
+      },
+      "m2": {
+       "applies": [
+        "stun",
+        "poison"
+       ],
+       "kind": "melee"
+      }
+     }
+    },
+    {
+     "key": "fist",
+     "value": {
+      "m1": {
+       "kind": "melee",
+       "swing-mult": 0.5
+      },
+      "m2": {
+       "applies": [
+        "knockdown"
+       ],
+       "kind": "melee"
+      }
+     }
+    },
+    {
+     "key": "longsword",
+     "value": {
+      "m1": {
+       "kind": "melee",
+       "radius-mult": 1.2
+      },
+      "m2": {
+       "applies": [
+        "stun"
+       ],
+       "damage-mult": 2.0,
+       "kind": "melee",
+       "lunge": 4.0,
+       "radius-mult": 1.5
+      }
+     }
+    },
+    {
+     "key": "bow",
+     "value": {
+      "m1": {
+       "gravity": 10.0,
+       "kind": "projectile",
+       "life-s": 3.0,
+       "radius": 0.7,
+       "speed": 30.0
+      },
+      "m2": {
+       "count": 4,
+       "gravity": 10.0,
+       "kind": "projectile",
+       "life-s": 3.0,
+       "radius": 0.7,
+       "speed": 30.0,
+       "splash": 2.0,
+       "spread": 0.12
+      }
+     }
+    },
+    {
+     "key": "crossbow",
+     "value": {
+      "m1": {
+       "gravity": 3.0,
+       "kind": "projectile",
+       "life-s": 2.5,
+       "radius": 0.6,
+       "speed": 45.0
+      },
+      "m2": {
+       "damage-mult": 1.5,
+       "gravity": 3.0,
+       "kind": "projectile",
+       "life-s": 2.5,
+       "radius": 0.8,
+       "speed": 45.0
+      }
+     }
+    },
+    {
+     "key": "boomerang",
+     "value": {
+      "m1": {
+       "damage-mult": 0.5,
+       "gravity": 0.0,
+       "kind": "projectile",
+       "life-s": 3.0,
+       "pierce": true,
+       "radius": 1.0,
+       "return": true,
+       "speed": 20.0,
+       "tick-s": 0.25
+      },
+      "m2": {
+       "count": 2,
+       "damage-mult": 0.5,
+       "gravity": 0.0,
+       "kind": "projectile",
+       "life-s": 3.0,
+       "pierce": true,
+       "radius": 1.0,
+       "return": true,
+       "speed": 20.0,
+       "spread": 0.4,
+       "tick-s": 0.25
+      }
+     }
+    },
+    {
+     "key": "staff",
+     "value": {
+      "m1": {
+       "kind": "at-cursor",
+       "radius": 2.0,
+       "range": 20.0
+      },
+      "m2": {
+       "kind": "at-cursor",
+       "radius": 4.0,
+       "range": 20.0
+      }
+     }
+    },
+    {
+     "key": "wand",
+     "value": {
+      "m1": {
+       "kind": "beam",
+       "radius": 0.6,
+       "range": 25.0
+      },
+      "m2": {
+       "damage-mult": 2.0,
+       "kind": "beam",
+       "radius": 1.5,
+       "range": 25.0
+      }
+     }
+    },
+    {
+     "key": "bracelet",
+     "value": {
+      "m1": {
+       "gravity": 0.0,
+       "kind": "projectile",
+       "life-s": 2.0,
+       "radius": 0.6,
+       "speed": 40.0
+      },
+      "m2": {
+       "applies": [
+        "knockdown"
+       ],
+       "gravity": 0.0,
+       "kind": "projectile",
+       "life-s": 2.0,
+       "radius": 1.2,
+       "speed": 25.0,
+       "splash": 3.0
+      }
+     }
+    }
+   ],
+   "kinds": [
+    "melee",
+    "projectile",
+    "beam",
+    "at-cursor"
+   ]
+  },
+  "names": {
+   "_doc": "D12: gen-name land rule. name = 2-3 syllables, capitalised, + suffix by landscape (generators.json#names.land shape).",
+   "land-suffix": {
+    "entries": [
+     {
+      "key": "greenlands",
+      "value": [
+       "Plains",
+       "Hills"
+      ]
+     },
+     {
+      "key": "snowlands",
+      "value": [
+       "Mountains",
+       "Hills"
+      ]
+     },
+     {
+      "key": "deserts",
+      "value": [
+       "Plains",
+       "Hills"
+      ]
+     },
+     {
+      "key": "jungles",
+      "value": [
+       "Forest"
+      ]
+     },
+     {
+      "key": "lava-lands",
+      "value": [
+       "Mountains"
+      ]
+     },
+     {
+      "key": "oceans",
+      "value": [
+       "Islands"
+      ]
+     },
+     {
+      "key": "savannahs",
+      "value": [
+       "Plains"
+      ]
+     },
+     {
+      "key": "wetlands",
+      "value": [
+       "Plains"
+      ]
+     },
+     {
+      "key": "dark-woods",
+      "value": [
+       "Forest"
+      ]
+     },
+     {
+      "key": "deadlands",
+      "value": [
+       "Hills"
+      ]
+     },
+     {
+      "key": "mountains",
+      "value": [
+       "Mountains"
+      ]
+     }
+    ]
+   },
+   "syllables": [
+    "a",
+    "ar",
+    "ca",
+    "co",
+    "da",
+    "du",
+    "ga",
+    "io",
+    "ka",
+    "la",
+    "ma",
+    "ni",
+    "no",
+    "ra",
+    "ri",
+    "sa",
+    "tri",
+    "va",
+    "var",
+    "on",
+    "is",
+    "ion",
+    "mar",
+    "lan",
+    "san"
+   ]
+  },
+  "prices": {
+   "base": {
+    "entries": [
+     {
+      "key": "weapon",
+      "value": 6
+     },
+     {
+      "key": "armor",
+      "value": 6
+     },
+     {
+      "key": "ring|amulet",
+      "value": 8
+     },
+     {
+      "key": "consumable",
+      "value": 2
+     },
+     {
+      "key": "material",
+      "value": 1
+     },
+     {
+      "key": "formula",
+      "value": 10
+     }
+    ]
+   },
+   "buy": "base[item-type] * item-level * rarity-mult (copper)",
+   "calibration": "alpha sell range 20 copper (+1) … 1s50 (+100) for white gear",
+   "rarity-mult": {
+    "entries": [
+     {
+      "key": "common",
+      "value": 1
+     },
+     {
+      "key": "uncommon",
+      "value": 2
+     },
+     {
+      "key": "rare",
+      "value": 4
+     },
+     {
+      "key": "epic",
+      "value": 8
+     },
+     {
+      "key": "legendary",
+      "value": 16
+     }
+    ]
+   },
+   "sell": 0.25
+  },
+  "progression": {
+   "_doc": "D19 (2026-09-09): XP per kill, the number the sources never give. xp = xp-to-next(creature level) * kill-fraction * clamp(1 + gap-per-level * (creature level - player level), gap-mult-range); overflow carries; level-up refills HP; skill points banked at skill-points-per-level (stats.json).",
+   "gap-mult-range": {
+    "first": 0.0,
+    "second": 2.0
+   },
+   "gap-per-level": 0.1,
+   "heal-on-level-up": true,
+   "kill-fraction": 0.2
+  },
+  "pvp": {
+   "default": false,
+   "note": "D11: no /pvp command; server-wide flag",
+   "server-cfg-flag": "pvp",
+   "slash-command": false
+  },
+  "recipes": {
+   "armor": "cotton table shape for every material",
+   "gems-per-rarity-above-common": 1,
+   "weapon-cubes": "5 * size-class (dagger/fist/shield 1, one-handed 2, two-handed 4)"
+  },
+  "regeneration": "stamina (D11: the Regeneration stat only regens stamina; HP regen comes from food, potions, bedroll)",
+  "resources": {
+   "_doc": "D21: the MP bar (stats.json#resources.mp, c-mp-range). Non-mages gain per-hit on every landed basic attack (blocks, stealth and dodges wait for their runtimes); mages regenerate mage-regen-per-s. Stamina numbers stay in design.movement.stamina.",
+   "mp": {
+    "mage-regen-per-s": 5.0,
+    "max": 100,
+    "per-hit": 8.0
+   }
+  },
+  "settlement": {
+   "_doc": "D22 (2026-09-10): gen-settlement for the hybrid, the sources never gave placement or layout numbers. One village per land (alpha count, c-land-count), placed from the land seed: the first candidate on rings of `search-step` blocks around the land centre whose column is ≥ min-above-sea above sea level; the terrain is flattened to that height within `radius` and blended over `blend` more (gen-terrain, no cliffs into town). Buildings are boxes [w, h, d] on a ring of `ring-radius` around the square, coloured by settlement-style ([wall, roof]) via style-by-landscape; one NPC per service building (npc-roles) stands at its door; houses are empty. E within interact-radius of an NPC = its service (ui.json#screens.npc-service): vendors open the shop (stock rolled from (world seed, village, shop): convert each actual land-danger/character-level source roll to power before the power-point spread and clamp to 1..100; unlimited consumables convert the character-level input directly without spread, land-shared supplier ceiling applied only at normal daily generation/restock, prices design.prices, sell = buy × design.prices.sell, worn gear cannot be sold), the class trainer refunds every spent point to the bank for respec-fee-per-level × level copper, the innkeeper heals fully and moves the respawn point to the inn (A: free). world.spawn-rule = near-village: new characters start on the square of the land (0,0) village. Wild spawns skip groups within no-hostiles-within blocks of the square (c-hostile-in-city). Tune in play.",
+   "blend": 8,
+   "buildings": [
+    "inn",
+    "weapon-shop",
+    "armor-shop",
+    "item-shop",
+    "class-trainer",
+    "house",
+    "house",
+    "house",
+    "house",
+    "house"
+   ],
+   "footprint": {
+    "default": [
+     6,
+     5,
+     6
+    ],
+    "entries": [
+     {
+      "key": "inn",
+      "value": [
+       8,
+       6,
+       7
+      ]
+     },
+     {
+      "key": "house",
+      "value": [
+       5,
+       4,
+       5
+      ]
+     }
+    ]
+   },
+   "inn": {
+    "fee": 0,
+    "heal": true,
+    "sets-spawn": true
+   },
+   "no-hostiles-within": 40,
+   "npc": {
+    "color": "#3070e0",
+    "interact-radius": 3.0,
+    "roles": {
+     "entries": [
+      {
+       "key": "inn",
+       "value": "innkeeper"
+      },
+      {
+       "key": "weapon-shop",
+       "value": "weapon-vendor"
+      },
+      {
+       "key": "armor-shop",
+       "value": "armor-vendor"
+      },
+      {
+       "key": "item-shop",
+       "value": "item-vendor"
+      },
+      {
+       "key": "class-trainer",
+       "value": "class-trainer"
+      }
+     ]
+    }
+   },
+   "per-land": 1,
+   "placement": {
+    "min-above-sea": 4,
+    "search-rings": 8,
+    "search-step": 64
+   },
+   "radius": 24,
+   "ring-radius": 15,
+   "shop": {
+    "item-shop-pool": "design.loot.consumable-pool",
+    "level-spread": 1,
+    "rarity-cap": "common",
+    "restock": "daily",
+    "stock": 8
+   },
+   "style-by-landscape": {
+    "entries": [
+     {
+      "key": "greenlands",
+      "value": "european-framework"
+     },
+     {
+      "key": "snowlands",
+      "value": "log"
+     },
+     {
+      "key": "deserts",
+      "value": "desert"
+     },
+     {
+      "key": "savannahs",
+      "value": "desert"
+     },
+     {
+      "key": "jungles",
+      "value": "jungle"
+     },
+     {
+      "key": "lava-lands",
+      "value": "lava"
+     },
+     {
+      "key": "oceans",
+      "value": "ocean"
+     },
+     {
+      "key": "wetlands",
+      "value": "north-american-wood"
+     },
+     {
+      "key": "dark-woods",
+      "value": "undead"
+     },
+     {
+      "key": "deadlands",
+      "value": "undead"
+     },
+     {
+      "key": "mountains",
+      "value": "medieval-stone"
+     }
+    ]
+   },
+   "style-colors": {
+    "entries": [
+     {
+      "key": "european-framework",
+      "value": [
+       "#d9c9a3",
+       "#8a3b2a"
+      ]
+     },
+     {
+      "key": "medieval-stone",
+      "value": [
+       "#8c8c88",
+       "#4a4a55"
+      ]
+     },
+     {
+      "key": "north-american-wood",
+      "value": [
+       "#a9743f",
+       "#5b3a1e"
+      ]
+     },
+     {
+      "key": "log",
+      "value": [
+       "#5a3a1e",
+       "#e8eef5"
+      ]
+     },
+     {
+      "key": "desert",
+      "value": [
+       "#e0c98f",
+       "#b98a4a"
+      ]
+     },
+     {
+      "key": "jungle",
+      "value": [
+       "#b08a5a",
+       "#e07a2a"
+      ]
+     },
+     {
+      "key": "undead",
+      "value": [
+       "#4a4a4a",
+       "#2a2a2a"
+      ]
+     },
+     {
+      "key": "lava",
+      "value": [
+       "#3a2a2a",
+       "#c04020"
+      ]
+     },
+     {
+      "key": "ocean",
+      "value": [
+       "#e8e2d0",
+       "#3a70b0"
+      ]
+     }
+    ]
+   },
+   "trainer": {
+    "respec-fee-per-level": 5
+   }
+  },
+  "skill-point": {
+   "_doc": "D6 per-point scaling. D20 (2026-09-09) spend rules: one banked point per spend-skill-point request (../domain/controls.md#spend-skill-point); a node opens when the previous node of its column holds alpha-tree.needs points (roots 0); respec at the class trainer (settlements, not built).",
+   "cap": {},
+   "cooldown-floor": 0.25,
+   "cooldown-per-point": 0.05,
+   "effect-per-point": 0.05
+  },
+  "spawns": {
+   "_doc": "D14 (2026-09-08): gen-spawns numbers for the open world (dungeon and settlement spawns later). Rolled per 64² zone from (world seed, zone). Tune in play.",
+   "ai": {
+    "_doc": "FSM idle → wander → chase (hostile, target in aggro range) → return (past leash). sim-radius (D16): creatures farther than this many blocks from the player are frozen — no AI, no physics (c-sim-radius).",
+    "aggro-range": 12,
+    "chase": 6.5,
+    "leash": 30,
+    "return-damage-reduction": 0.9,
+    "return-speed-mult": 2.0,
+    "sim-radius": 80,
+    "threat-decay-per-s": 1.0,
+    "threat-per-full-hp": 100.0,
+    "walk": 3.0,
+    "wander-pause-s": [
+     1,
+     4
+    ],
+    "wander-radius": 8
+   },
+   "aquatic-only-in-water": true,
+   "default-group": [
+    1,
+    3
+   ],
+   "group-spread": 4,
+   "groups-per-zone": [
+    0,
+    2
+   ],
+   "hostility-colors": {
+    "F": "#3070e0",
+    "H": "#c83232",
+    "N": "#40b040",
+    "P": "#e6e6e6"
+   },
+   "roster": "creature-families.json#landscape-rosters[land.landscape]; creatures.json group = group size",
+   "size-by-category": {
+    "entries": [
+     {
+      "key": "animal",
+      "value": 1.0
+     },
+     {
+      "key": "insect",
+      "value": 0.5
+     },
+     {
+      "key": "aquatic",
+      "value": 0.8
+     },
+     {
+      "key": "plant-creature",
+      "value": 1.0
+     },
+     {
+      "key": "monster",
+      "value": 1.8
+     },
+     {
+      "key": "undead",
+      "value": 1.7
+     },
+     {
+      "key": "demon",
+      "value": 2.2
+     },
+     {
+      "key": "elemental",
+      "value": 2.0
+     },
+     {
+      "key": "humanoid",
+      "value": 1.8
+     }
+    ]
+   },
+   "skip-categories": [
+    "static-target",
+    "unused",
+    "boss-species"
+   ],
+   "variable-hostility": {
+    "H": 0.5,
+    "N": 0.5
+   }
+  },
+  "special-attack": {
+   "_doc": "D21: special-attack (../domain/controls.md#special-attack). Charged classes (classes.json special-attack-mode) hold the special-attack request: the charge fills at charge-mp-per-s up to the MP held (bar pink), release spends it; instant classes press. damage = weapon × (1 + charged/100 × (damage-mult-at-full − 1)), stun chance = charged/100 × stun-chance-at-full, hitbox = basic-attack's, no combo bonus, resets nothing (c-combo-reset applies: a whiff resets the combo). Below min-mp nothing happens.",
+   "charge-mp-per-s": 50.0,
+   "damage-mult-at-full": 2.5,
+   "min-mp": 10.0,
+   "stun-chance-at-full": 0.6
+  },
+  "stack-cap": {
+   "_doc": "D6: no cap (0). D18 stack rule: only these item-types stack; gear carries a modifier roll and never stacks; pet food is one of each (c-stack-rule).",
+   "cap": 0,
+   "stackable": [
+    "consumable",
+    "ingredient",
+    "coin",
+    "formula",
+    "block"
+   ]
+  },
+  "starting-inventory": {
+   "_doc": "D18: hybrid start = the class starter weapon (design.combat.starter-weapon) equipped + 5 life potions (S: new characters start with 5) + no coins.",
+   "coins": 0,
+   "consumables": {
+    "entries": [
+     {
+      "key": "life-potion",
+      "value": 5
+     }
+    ]
+   }
+  },
+  "status-effects": {
+   "_doc": "D21: what the engine does with ability.applies (ids = status-effects.json). stun: the target cannot act (c-stun-immunity: not refreshed while it lasts); knockdown counts as a stun (`as`); knockback: horizontal impulse away from the caster (blocks/s); burning: ticks pct-of-hit of the hit that applied it; slow: move × move-mult. taunt: a 0-damage hit, which already makes the creature target you. poison (D24, dagger ambush): burning-style ticks of the whole hit at 1-5 s. Combat burns and poisons each retain independent damage, source, lifetime and schedule; burns tick at 0.5-4 s. Any other applied status (stealth) is ignored until its runtime exists.",
+   "entries": [
+    {
+     "key": "stun",
+     "value": {
+      "duration-s": 2.0
+     }
+    },
+    {
+     "key": "knockdown",
+     "value": {
+      "as": "stun",
+      "duration-s": 1.5
+     }
+    },
+    {
+     "key": "knockback",
+     "value": {
+      "impulse": 8.0
+     }
+    },
+    {
+     "key": "burning",
+     "value": {
+      "duration-s": 4.0,
+      "pct-of-hit": 0.1,
+      "tick-s": 0.5
+     }
+    },
+    {
+     "key": "slow",
+     "value": {
+      "duration-s": 15.0,
+      "move-mult": 0.3
+     }
+    },
+    {
+     "key": "poison",
+     "value": {
+      "as": "burning",
+      "duration-s": 5.0,
+      "pct-of-hit": 1.0,
+      "tick-s": 1.0
+     }
+    }
+   ]
+  },
+  "terrain": {
+   "_doc": "D12 (2026-09-08): our world numbers; the sources never had them (alpha noise = x86 blob). Tune in play.",
+   "beach-above-sea": 2,
+   "block-m": 1.0,
+   "cliff-slope": 1.2,
+   "height": {
+    "max": 255,
+    "min": 0
+   },
+   "heightfield": {
+    "amplitude": 56,
+    "base": 100,
+    "frequency": 0.004,
+    "gain": 0.5,
+    "lacunarity": 2.0,
+    "octaves": 5
+   },
+   "land-blend": "relief/base bilinear over the 4 nearest land centres, so borders have no cliffs",
+   "land-blocks": 16384,
+   "land-zones": 256,
+   "lands-per-axis": 1024,
+   "sand-color": "#d6c58a",
+   "sea-level": 96,
+   "seed-default": 26879,
+   "snow-above": 200,
+   "snow-color": "#e8eef5",
+   "view-zones": 4,
+   "water-color": "#2b64b4",
+   "zone-blocks": 64
+  },
+  "time": {
+   "_doc": "Hybrid game-clock: running time only; fresh saved worlds begin at 07:00.",
+   "day-s": 86400.0,
+   "initial-hour": 7.0,
+   "speed": 10.0
+  }
+ },
+ "dungeon": {
+  "alpha-layout": "linear + dead end",
+  "artifact-s": "castles always",
+  "boss": {
+   "A": 1,
+   "S": "several"
+  },
+  "group-size": [
+   2,
+   4
+  ],
+  "mob-tier": "above surface",
+  "size-cap-s": "0.9.3-0",
+  "steam-layout": "room gauntlet, rising tiers",
+  "traps-alpha": [
+   "spike"
+  ],
+  "traps-data-x": [
+   "fire",
+   "stomp"
+  ]
+ },
+ "item": {
+  "cubes-max": {
+   "1h": 16,
+   "2h": 32
+  },
+  "mythical-bug": false,
+  "name-rule": "epic/legendary named",
+  "plus-chance-s": "rare roll; ~1-2 per cleared land",
+  "rarity-range": [
+   0,
+   4
+  ],
+  "roll": "((attributes<<16)+modifier) % 21",
+  "stat-curves": "stats.json#alpha-item-stat-formulas"
+ },
+ "key-items-s": {
+  "rule": "spawn only if lock type exists (harp→divine door, bell→crypt gate, whistle→bird statue, boat→water)"
+ },
+ "land": {
+  "alpha-level": "replaced (F4): party-level band + per-land danger tier → design.enemy-level",
+  "alpha-per-land": {
+   "mission-cells": 64,
+   "settlements": 1
+  },
+  "alpha-rarity": "0-4 rare zones (?)",
+  "border": "dotted map line, no wall",
+  "equal-size": true,
+  "steam-per-land": {
+   "artifacts": "design.artifacts-per-land",
+   "books": 4,
+   "circles": "≥1",
+   "gnomes": 4,
+   "key-items-max": 9,
+   "movement-items": 4,
+   "settlements": "≥1",
+   "ticket-items": 3,
+   "towers-max": 5
+  },
+  "steam-tiers": [
+   "white",
+   "green",
+   "blue",
+   "purple",
+   "yellow"
+  ]
+ },
+ "level-formulas-alpha": "stats.json#alpha-character-formulas",
+ "loot": "economy.json#loot",
+ "names": {
+  "dungeon": "dungeon-types.json naming",
+  "examples": [
+   "Coria Plains",
+   "Lanno Plains",
+   "Sanion Hills",
+   "Marnis Mountains",
+   "Arris City",
+   "Akar Village",
+   "Caion Road",
+   "Temple of Arno",
+   "Tririon City",
+   "Duragar Forest",
+   "Vardara Forest"
+  ],
+  "item": "affixes.json",
+  "land": "<Name> Plains|Hills|Mountains|Village|City|Road|Forest",
+  "quarter": [
+   "Trade Quarter",
+   "Crafting Quarter",
+   "Class Quarter",
+   "Pet Quarter",
+   "Portal",
+   "Palace"
+  ],
+  "realm": "factions.json#realm-name-examples",
+  "uniqueness": false
+ },
+ "network-alpha": {
+  "anticheat-caps": {
+   "air-time-s": 10,
+   "level": 1000,
+   "rarity": 4
+  },
+  "authority": "client (anticheat scripts)",
+  "client-version": 3,
+  "compression": "zlib",
+  "hit-types": {
+   "entries": [
+    {
+     "key": "0",
+     "value": "normal"
+    },
+    {
+     "key": "1",
+     "value": "block"
+    },
+    {
+     "key": "3",
+     "value": "miss"
+    },
+    {
+     "key": "5",
+     "value": "absorb"
+    }
+   ]
+  },
+  "interact-types": {
+   "entries": [
+    {
+     "key": "2",
+     "value": "npc"
+    },
+    {
+     "key": "3",
+     "value": "normal"
+    },
+    {
+     "key": "5",
+     "value": "pickup"
+    },
+    {
+     "key": "6",
+     "value": "drop"
+    },
+    {
+     "key": "8",
+     "value": "examine"
+    }
+   ]
+  },
+  "max-players": 4,
+  "max-players-configurable": true,
+  "packets-c2s": {
+   "entries": [
+    {
+     "key": "0",
+     "value": "EntityUpdate"
+    },
+    {
+     "key": "6",
+     "value": "Interact"
+    },
+    {
+     "key": "7",
+     "value": "Hit"
+    },
+    {
+     "key": "8",
+     "value": "Passive"
+    },
+    {
+     "key": "9",
+     "value": "Shoot"
+    },
+    {
+     "key": "10",
+     "value": "ChatMessage"
+    },
+    {
+     "key": "11",
+     "value": "ChunkDiscovered"
+    },
+    {
+     "key": "12",
+     "value": "SectorDiscovered"
+    },
+    {
+     "key": "17",
+     "value": "ClientVersion"
+    }
+   ]
+  },
+  "packets-s2c": {
+   "entries": [
+    {
+     "key": "0",
+     "value": "EntityUpdate"
+    },
+    {
+     "key": "1",
+     "value": "MultipleEntityUpdate"
+    },
+    {
+     "key": "2",
+     "value": "UpdateFinished"
+    },
+    {
+     "key": "3",
+     "value": "AirshipUpdate"
+    },
+    {
+     "key": "4",
+     "value": "ServerUpdate"
+    },
+    {
+     "key": "5",
+     "value": "CurrentTime"
+    },
+    {
+     "key": "10",
+     "value": "ServerChatMessage"
+    },
+    {
+     "key": "15",
+     "value": "SeedData"
+    },
+    {
+     "key": "16",
+     "value": "JoinPacket"
+    },
+    {
+     "key": "17",
+     "value": "ServerMismatch"
+    },
+    {
+     "key": "18",
+     "value": "ServerFull"
+    }
+   ]
+  },
+  "port": 12345,
+  "protocol": "TCP",
+  "tick-hz": 50
+ },
+ "npc-appearance": {
+  "asset-counts": "races.json",
+  "hair-rgb": "free",
+  "omega": "fully procedural + expressions"
+ },
+ "realm": {
+  "capital-fields": [
+   "name",
+   "founding-year",
+   "destruction-date?"
+  ],
+  "kinds": [
+   "kingdom",
+   "realm",
+   "cult",
+   "tribe"
+  ],
+  "leader-fields": [
+   "name",
+   "trait",
+   "birth-year",
+   "hometown",
+   "tomb"
+  ],
+  "lore-per-site-pct": 10,
+  "reveal-at": 100
+ },
+ "schedule": {
+  "campsite-rest": true,
+  "lantern-night": true,
+  "sleep": "night",
+  "stops": [
+   "home",
+   "park",
+   "shops",
+   "inn"
+  ]
+ },
+ "seed": {
+  "alpha-default": 26879,
+  "alpha-source": "server.cfg / world creation UI",
+  "steam": "single fixed shared seed, random spawn"
+ },
+ "settlement": {
+  "alpha-count": 1,
+  "buildings-procedural": [
+   "rooms",
+   "sizes",
+   "roofs"
+  ],
+  "districts-alpha": [
+   "trade",
+   "crafting",
+   "adventurer",
+   "portal",
+   "palace"
+  ],
+  "inn": {
+   "A": "several",
+   "S": 1
+  },
+  "steam-count": "several",
+  "style-by-landscape": "buildings.json#settlement-styles"
+ },
+ "spawns": {
+  "alpha-multipliers": [
+   "+1",
+   "+2",
+   "+3",
+   "+4"
+  ],
+  "farm-animals": "white, never aggressive",
+  "group-sizes": "creatures.json group",
+  "hostility": "creatures.json h",
+  "humanoid-class": "any of 4 classes + spec",
+  "night-lanterns": true,
+  "ocean-s-bug": "nearly empty",
+  "reset": "midnight"
+ },
+ "terrain": {
+  "block-palette": "block-types.json",
+  "caves": "type 18 (S)",
+  "features": "terrain-features.json",
+  "noise-params": "unknown; alpha generator exists only as x86 code wrapped by cuwo tgen",
+  "rivers": "with waterfalls; lava/toxic variants",
+  "roads": "auto tunnels through mountains, bridges over canyons",
+  "water-level": "ours (F6), tuned in engine"
+ },
+ "time": {
+  "day-real-minutes": 144,
+  "inn-hours": [
+   18,
+   6
+  ],
+  "inn-target": 7,
+  "max-time-ms": 86400000,
+  "normal-speed": 10.0,
+  "reset-hour": 0,
+  "sleep-speed": 100.0
+ },
+ "world-scales": {
+  "alpha": {
+   "mission-cells-per-region": [
+    8,
+    8
+   ],
+   "mission-scale": "region/8",
+   "region-blocks": 16384,
+   "region-struct-bytes": 88104,
+   "region-zones": 64,
+   "regions-per-axis": 1024,
+   "spawn-struct-bytes": 4336,
+   "world-blocks-per-axis": 16777216,
+   "zone-blocks": 256,
+   "zone-struct-bytes": 200
+  },
+  "block-native-units": 65536,
+  "full-mask": "0x0000FFFFFFFFFFFF",
+  "generation-neighbourhood": {
+   "region-data": "3x3 around player",
+   "region-seeds": "7x7"
+  },
+  "invariants": [
+   "same seed → same world",
+   "finite 1024² lands, no wrapping",
+   "terrain generated on the fly, no precompute"
+  ],
+  "position-type": "int64 (16.16 fixed per axis)",
+  "server-chunk-retire-s": 15,
+  "steam": {
+   "block-bytes": 6,
+   "coords-typical-spawn": "±5,000,000 from origin",
+   "field": "base_z + vector<Block>",
+   "map-chunk-blocks": 20,
+   "origin-poi": "wollays-house",
+   "zone-blocks": 64,
+   "zone-fields": 4096
+  }
+ }
 }

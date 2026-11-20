@@ -3,12 +3,16 @@ class_name LinkMLArtifactDesign
 extends RefCounted
 ## Normalized logarithm configuration, not generated artifact instances or a copied executable formula. Positive z and the exact approved formula/first value remain c-artifact-stat; no decay/floor alternate fields.
 
+## Configuration field; applicability follows the linked rule.
 var slot_first: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_z: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_total_bonus: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_stats: Variant = null
 
 

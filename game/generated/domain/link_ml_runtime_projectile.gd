@@ -3,20 +3,28 @@ class_name LinkMLRuntimeProjectile
 extends RefCounted
 ## Projectile payload shared by dash throws; optional spread/gravity/splash/damage multipliers remain optional, not fabricated defaults.
 
+## Configuration field; applicability follows the linked rule.
 var slot_speed: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_radius: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_life_s: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_spread: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_gravity: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_splash: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_damage_mult: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_count: Variant = null
 
 

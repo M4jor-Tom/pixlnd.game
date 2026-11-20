@@ -3,10 +3,13 @@ class_name LinkMLGearHpDesign
 extends RefCounted
 ## Selected gear HP coefficients; exact approved values and material/slot agreement remain c-gear-hp.
 
+## Configuration field; applicability follows the linked rule.
 var slot_curve_mult: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_base: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_upgrade_step: Variant = null
 
 

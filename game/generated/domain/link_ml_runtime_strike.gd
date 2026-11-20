@@ -3,8 +3,10 @@ class_name LinkMLRuntimeStrike
 extends RefCounted
 ## Optional dash strike; origin/end placement and class-specific effects follow the canonical runtime rules.
 
+## Configuration field; applicability follows the linked rule.
 var slot_radius: Variant = null
 
+## Configuration field; applicability follows the linked rule.
 var slot_damage_mult: Variant = null
 
 
