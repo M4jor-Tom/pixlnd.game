@@ -352,3 +352,50 @@ Found by the generic catalog-reference check in `scripts/ontology_bind.py` (bran
 `feat/generated-domain-model`), which tolerates exactly this one diagnostic as `KNOWN_FINDINGS`.
 Next: owner decides between widening the range (ingredient or material) and changing the data;
 then remove the `KNOWN_FINDINGS` entry.
+
+## LinkML schema-module cap — two modules cannot be split as authored
+
+`ontology-schema-size` (150 lines per `ontology/schema/*.yaml`) still fails for
+`design-items.yaml` (3613) and `design-world.yaml` (2562); the other 22 modules are split.
+Both are indent-2 JSON, and single class bodies exceed the cap on their own:
+`generator-design` 326 lines (38 attributes), `generator-design-initial-encounters` 219,
+`generators-source` 191, `generator-design-terrain` 151. A class cannot span modules, so a pure
+split cannot pass. Re-styled as block YAML the first three are still 280 / 191 / 165 lines.
+Next action: owner decision between remodelling those classes (semantic change), authoring them
+in the one-line attribute style the other modules already use, or a different cap rule.
+
+## Range oracle — 46 subtest failures in `test_ontology_schema.py`
+
+`test_imports_ranges_aliases_and_compound_keys` fails 46 subtests at `8ce6932`, with the identical
+set after the module split (`Ran 14 tests`, `failures=46`): `assert_ranges` meets `any_of`
+branches that carry no `range`, e.g. `runtime-strike-radius`, `ability-runtime-cooldown-s`,
+`generator-move.damage-mult`. Reproduce: `… python -m unittest discover -v -s tests -p
+"test_ontology_schema.py"`. Next action: decide whether the oracle or those declarations change.
+
+## Crafting/social native-limit oracle — one failure
+
+`test_ontology_schema_crafting_social.py::test_native_values_and_limits` fails (`Ran 9`,
+`failures=1`): it expects a bare `{"type": "string"}` branch in `ingredient.refines-to`, while the
+generated JSON Schema (byte-identical at `8ce6932` and after the split) emits that branch with a
+`description`. Next action: decide whether the oracle or the declaration changes.
+
+## Hostile-profile mutation test — stale module manifest
+
+`tests/test_ontology_schema_world_hostile_profile.py::test_initial_site_hostile_profile_mutations`
+errors at `8ce6932` and after the module split alike: its hard-coded copy list omits
+`catalog-meta.yaml` (also `design-items`, `design-world`, `save-geography`), which `pixlnd.yaml`
+imports, so `SchemaView` raises `FileNotFoundError: …/schema/catalog-meta.yaml`.
+Reproduce: `uv run --locked --project tools/ontology python -m unittest discover -s tests -p
+"test_ontology_schema_world_hostile_profile.py"` (Ran 2, errors=1). The LinkML suite therefore
+cannot pass in the gate. Next action: decide the intended manifest (or copy the whole directory).
+
+## Fresh-checkout Godot runs — autoload error and `--import` abort
+
+On a clean export of `8ce6932`, `godot --headless -s ontology/validate.gd` prints `ontology valid`
+and exits 0, then logs `SCRIPT ERROR: Invalid type in function '_rows' … Cannot convert argument 1
+from Dictionary to Object` (`game/domain/domain.gd:123`) and `Nonexistent function
+'default_ruleset' in base 'Nil'` (`game/ontology_db.gd:23`); identical in this worktree.
+The background gate for that tree (`.git/pixlnd-gate/c2960ca1….log`) failed earlier still:
+`godot --headless --import` aborted (exit 134, `Parameter "singleton" is null`,
+`editor/editor_node.cpp:6618`), so the gate never reached the LinkML tests. Cause not diagnosed.
+Next action: reproduce `scripts/checks.sh` on a clean export and classify (environment or code).

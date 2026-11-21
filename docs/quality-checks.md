@@ -21,6 +21,11 @@ The schema-module cap and the LinkML test run mirror the `starflake/design` gate
 rules are narrowed to what this repo passes (see `ruff.toml`). A commit made with `--no-verify`
 skips the short gates; only CI catches that.
 
+A module over the cap is split by topic into `<module>-<topic>.yaml` parts that it imports; the
+module file stays as the name other modules import. A part's `id` nests under its module's
+(`…/pixlnd/world/land` for `world-land.yaml`), which is how `load_module` and `copy_schema` in
+`tests/test_ontology_schema.py` read or copy a module as one document for mutation tests.
+
 Each commit starts the long gates in the background on a clean export of the committed tree
 (`scripts/gate.sh start`). Each `git push` only checks that the pushed commit's tree passed
 (`scripts/gate.sh check`): it fails fast while the gate is running, after a failure, or when no
