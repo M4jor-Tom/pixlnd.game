@@ -1,0 +1,133 @@
+id: https://w3id.org/pixlnd/entities/entity-vitals
+name: pixlnd-entities-entity-vitals
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- entities-entity
+default_range: string
+slots:
+  entity-class:
+    slot_uri: pixlnd:entity/class
+    alias: class
+    domain: entity
+    range: character-class
+    description: Optional humanoid classification reference.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-specialization:
+    slot_uri: pixlnd:entity/specialization
+    alias: specialization
+    domain: entity
+    range: specialization
+    description: Optional humanoid classification reference.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-hp:
+    slot_uri: pixlnd:entity/hp
+    alias: hp
+    domain: entity
+    range: double
+    description: Current resource amount, distinct from the resource definition.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-mp:
+    slot_uri: pixlnd:entity/mp
+    alias: mp
+    domain: entity
+    range: double
+    description: Current resource amount, distinct from the resource definition.
+    see_also: [../domain/3_Classes.md#entity]
+    minimum_value: 0
+    maximum_value: 100
+  entity-stamina:
+    slot_uri: pixlnd:entity/stamina
+    alias: stamina
+    domain: entity
+    range: double
+    description: Current resource amount, distinct from the resource definition.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-block-power:
+    slot_uri: pixlnd:entity/block-power
+    alias: block-power
+    domain: entity
+    range: double
+    description: Current resource amount, distinct from the resource definition.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-stealth:
+    slot_uri: pixlnd:entity/stealth
+    alias: stealth
+    domain: entity
+    range: double
+    description: Current resource amount, distinct from the resource definition.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-hp-multiplier:
+    slot_uri: pixlnd:entity/hp-multiplier
+    alias: hp-multiplier
+    domain: entity
+    range: double
+    description: Entity scaling parameter, not an inferred species or family default.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-damage-multiplier:
+    slot_uri: pixlnd:entity/damage-multiplier
+    alias: damage-multiplier
+    domain: entity
+    range: double
+    description: Entity scaling parameter, not an inferred species or family default.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-armor-multiplier:
+    slot_uri: pixlnd:entity/armor-multiplier
+    alias: armor-multiplier
+    domain: entity
+    range: double
+    description: Entity scaling parameter, not an inferred species or family default.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-resi-multiplier:
+    slot_uri: pixlnd:entity/resi-multiplier
+    alias: resi-multiplier
+    domain: entity
+    range: double
+    description: Entity scaling parameter, not an inferred species or family default.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-hit-counter:
+    slot_uri: pixlnd:entity/hit-counter
+    alias: hit-counter
+    domain: entity
+    range: uint32
+    description: Combo counter in the qualified cuwo Alpha representation.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-last-hit-time:
+    slot_uri: pixlnd:entity/last-hit-time
+    alias: last-hit-time
+    domain: entity
+    range: uint32
+    description: Raw uint32 storage evidenced by cuwo 240bb61ec42abb10a73d750ce72f243e04e55509 entity.pyx; units, epoch, reset, wrap and cross-edition semantics remain unresolved.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-stun-time:
+    slot_uri: pixlnd:entity/stun-time
+    alias: stun-time
+    domain: entity
+    range: int32
+    description: Status timer in milliseconds per the canonical entity table; source integer width is cuwo-qualified.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-slowed-time:
+    slot_uri: pixlnd:entity/slowed-time
+    alias: slowed-time
+    domain: entity
+    range: uint32
+    description: Status timer in milliseconds per the canonical entity table; source integer width is cuwo-qualified.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-blue-time:
+    slot_uri: pixlnd:entity/blue-time
+    alias: blue-time
+    domain: entity
+    range: uint32
+    description: Status timer in milliseconds per the canonical entity table; source integer width is cuwo-qualified.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-speed-up-time:
+    slot_uri: pixlnd:entity/speed-up-time
+    alias: speed-up-time
+    domain: entity
+    range: uint32
+    description: Status timer in milliseconds per the canonical entity table; source integer width is cuwo-qualified.
+    see_also: [../domain/3_Classes.md#entity]

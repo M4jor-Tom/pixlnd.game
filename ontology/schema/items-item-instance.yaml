@@ -1,0 +1,141 @@
+id: https://w3id.org/pixlnd/items/item-instance
+name: pixlnd-items-item-instance
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- items-item
+- items-item-catalog
+default_range: string
+classes:
+  item-upgrade:
+    class_uri: pixlnd:item-upgrade
+    description: Placed item cube with explicit coordinates, material and integer level; cube capacity and count agreement remain coupled rules.
+    see_also: &id002
+    - ../domain/3_Classes.md#item
+    slots:
+    - item-upgrade-x
+    - item-upgrade-y
+    - item-upgrade-z
+    - item-upgrade-material
+    - item-upgrade-level
+slots:
+  item-flags:
+    description: "The flags property of items."
+    slot_uri: pixlnd:item/flags
+    alias: flags
+    range: u8
+    required: true
+    see_also: &id001
+    - ../domain/3_Classes.md#item
+  item-level:
+    description: "The level property of items."
+    slot_uri: pixlnd:item/level
+    alias: level
+    range: i16
+    required: true
+    see_also:
+    - ../domain/3_Classes.md#item
+    minimum_value: 1
+    maximum_value: 100
+  item-weapon-type:
+    slot_uri: pixlnd:item/weapon-type
+    alias: weapon-type
+    domain: item
+    range: weapon-type
+    required: false
+    multivalued: false
+    inlined: false
+    exactly_one_of: [{range: weapon-type}]
+    description: Scalar logical weapon-family reference for weapon items only, agreeing with existing type/sub-type meaning. No numeric-source conversion, global subtype narrowing, implicit foreign-key resolution or saved-wire representation is selected.
+    see_also:
+    - ../domain/3_Classes.md#item
+    - ../domain/5_Constraints.md#constraint-catalog
+  item-upgrade-count:
+    description: Number of active placed cubes, exactly the length of logical upgrades, including zero. Existing uint32 information and stat equations are unchanged; no historical inactive-slot layout is selected.
+    slot_uri: pixlnd:item/upgrade-count
+    alias: upgrade-count
+    range: uint32
+    required: true
+    maximum_value: 32
+    equals_expression: len({upgrades})
+    see_also: *id001
+  item-upgrade-x:
+    description: "The x property of items."
+    slot_uri: pixlnd:item-upgrade/x
+    alias: x
+    range: i8
+    required: true
+    see_also: *id002
+  item-upgrade-y:
+    description: "The y property of items."
+    slot_uri: pixlnd:item-upgrade/y
+    alias: y
+    range: i8
+    required: true
+    see_also: *id002
+  item-upgrade-z:
+    description: "The z property of items."
+    slot_uri: pixlnd:item-upgrade/z
+    alias: z
+    range: i8
+    required: true
+    see_also: *id002
+  item-upgrade-material:
+    description: "The material property of items."
+    slot_uri: pixlnd:item-upgrade/material
+    alias: material
+    range: material
+    required: true
+    see_also: *id002
+  item-upgrade-level:
+    slot_uri: pixlnd:item-upgrade/level
+    alias: level
+    domain: item-upgrade
+    range: integer
+    required: true
+    description: Recorded per-cube level value; it is not character level or a selected power conversion.
+    see_also: *id002
+  item-upgrades:
+    slot_uri: pixlnd:item/upgrades
+    alias: upgrades
+    range: item-upgrade
+    required: true
+    multivalued: true
+    maximum_cardinality: 32
+    inlined: true
+    inlined_as_list: true
+    description: Active placed item-upgrade entries only, at most 32 globally and exactly upgrade-count in number; linked 1H weapon families allow at most 16, 2H and shield 32. Wood cubes require a weapon with concrete wood material, iron cubes a weapon with concrete metal material; other materials are not universally restricted.
+    see_also: *id001
+  item-land:
+    slot_uri: pixlnd:item/land
+    alias: land
+    range: land
+    required: true
+    domain: item
+    see_also:
+    - ../domain/3_Classes.md#item
+    description: Context-qualified declaration; applicability is defined by canonical prose.
+  item-plus:
+    slot_uri: pixlnd:item/plus
+    alias: plus
+    range: boolean
+    required: true
+    domain: item
+    see_also:
+    - ../domain/3_Classes.md#item
+    description: Context-qualified declaration; applicability is defined by canonical prose.
+  item-name:
+    slot_uri: pixlnd:item/name
+    alias: name
+    domain: item
+    range: string
+    required: false
+    readonly: 'true'
+    description: Derived item-name generator projection; canonical gen-name item forms, not a naming algorithm, stored save field or writable input.
+    see_also:
+    - ../domain/3_Classes.md#item
+    - ../domain/6_Generators.md

@@ -1,0 +1,129 @@
+id: https://w3id.org/pixlnd/meta/ui-catalog
+name: pixlnd-meta-ui-catalog
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- meta-ui-camera
+- meta-ui-screens
+default_range: string
+classes:
+  hud-element:
+    class_uri: pixlnd:hud-element
+    description: HUD elements and screens recorded in the source UI catalog.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    slots:
+    - id
+    - hud-element-pos
+    - hud-element-shows
+    - hud-element-desc
+    - hud-element-default
+  ui-presentation-catalog:
+    class_uri: pixlnd:ui-presentation-catalog
+    description: Selected HUD, screens, camera and option default/cfg presentation configuration, not the complete UI document.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json
+    slots:
+    - ui-presentation-catalog-hud
+    - ui-presentation-catalog-camera
+    - ui-presentation-catalog-screens
+    - ui-presentation-catalog-options
+slots:
+  ui-presentation-catalog-options:
+    slot_uri: pixlnd:ui-presentation-catalog/options
+    alias: options
+    domain: ui-presentation-catalog
+    range: ui-option-presentation
+    required: false
+    multivalued: true
+    inlined: true
+    inlined_as_list: false
+    description: Selected default/cfg bodies indexed by unchanged literal source labels, excluding the mixed missing list and annotations.
+    see_also:
+    - ../domain/3_Classes.md#option
+    - ../instances/ui.json#options
+  ui-presentation-catalog-screens:
+    slot_uri: pixlnd:ui-presentation-catalog/screens
+    alias: screens
+    domain: ui-presentation-catalog
+    range: ui-screen-presentation
+    required: false
+    multivalued: true
+    inlined: true
+    inlined_as_list: false
+    description: Selected screen bodies indexed by their unchanged source labels.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#screens
+  hud-element-pos:
+    slot_uri: pixlnd:hud-element/pos
+    alias: pos
+    domain: hud-element
+    range: string
+    required: false
+    description: Textual placement label for a HUD entry.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#hud
+  hud-element-shows:
+    slot_uri: pixlnd:hud-element/shows
+    alias: shows
+    domain: hud-element
+    required: false
+    any_of:
+    - range: string
+    - range: string
+      multivalued: true
+    description: Presentation contents recorded as one text value or an ordered list of text values.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#hud
+  hud-element-desc:
+    slot_uri: pixlnd:hud-element/desc
+    alias: desc
+    domain: hud-element
+    range: string
+    required: false
+    description: Descriptive text for a HUD entry.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#hud
+  hud-element-default:
+    slot_uri: pixlnd:hud-element/default
+    alias: default
+    domain: hud-element
+    range: string
+    required: false
+    description: Text describing a HUD entry's default presentation.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#hud
+  ui-presentation-catalog-hud:
+    slot_uri: pixlnd:ui-presentation-catalog/hud
+    alias: hud
+    domain: ui-presentation-catalog
+    range: hud-element
+    required: false
+    multivalued: true
+    inlined: true
+    inlined_as_list: false
+    description: HUD entry bodies indexed by their original source keys.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#hud
+  ui-presentation-catalog-camera:
+    slot_uri: pixlnd:ui-presentation-catalog/camera
+    alias: camera
+    domain: ui-presentation-catalog
+    range: ui-camera-presentation
+    required: false
+    inlined: true
+    description: Composed camera presentation text object.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#camera

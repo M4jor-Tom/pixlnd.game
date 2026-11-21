@@ -1,0 +1,112 @@
+id: https://w3id.org/pixlnd/items/crafting-inputs-source
+name: pixlnd-items-crafting-inputs-source
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- items-key-items-source
+default_range: string
+classes:
+  materials-source:
+    description: "Source representation of materials-source."
+    annotations: {source-map-entries: entries}
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: pixlnd:materials-source/schema, range: string, required: true, equals_string: material, description: "The $schema field of materials-source."}
+      documentation: {alias: _doc, slot_uri: pixlnd:materials-source/doc, range: string, required: true, description: "The _doc field of materials-source."}
+      entries: {alias: entries, slot_uri: pixlnd:materials-source/entries, range: material-source-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of materials-source."}
+  material-source-entry:
+    description: "Source representation of material-source-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:material-source-entry/value, range: material-source-row, required: true, inlined: true, description: "The value field of material-source-entry."}
+  material-source-row:
+    description: "Source representation of material-source-row."
+    attributes:
+      id: {alias: id, slot_uri: pixlnd:material-source-row/id, range: integer, description: "The id field of material-source-row."}
+      name: {alias: name, slot_uri: pixlnd:material-source-row/name, range: string, required: true, description: "The name field of material-source-row."}
+      kind: {alias: kind, slot_uri: pixlnd:material-source-row/kind, range: string, description: "The kind field of material-source-row."}
+      class: {alias: class, slot_uri: pixlnd:material-source-row/class, range: string, description: "The class field of material-source-row."}
+      station: {alias: station, slot_uri: pixlnd:material-source-row/station, range: string, description: "The station field of material-source-row."}
+      raw: {alias: raw, slot_uri: pixlnd:material-source-row/raw, range: string, description: "The raw field of material-source-row."}
+      refined: {alias: refined, slot_uri: pixlnd:material-source-row/refined, range: string, description: "The refined field of material-source-row."}
+      hp-bonus: {alias: hp-bonus, slot_uri: pixlnd:material-source-row/hp-bonus, range: float, description: "The hp-bonus field of material-source-row."}
+      armor-mult: {alias: armor-mult, slot_uri: pixlnd:material-source-row/armor-mult, range: float, description: "The armor-mult field of material-source-row."}
+      resi-mult: {alias: resi-mult, slot_uri: pixlnd:material-source-row/resi-mult, range: float, description: "The resi-mult field of material-source-row."}
+      crit-bonus: {alias: crit-bonus, slot_uri: pixlnd:material-source-row/crit-bonus, range: float, description: "The crit-bonus field of material-source-row."}
+      tempo-bonus: {alias: tempo-bonus, slot_uri: pixlnd:material-source-row/tempo-bonus, range: float, description: "The tempo-bonus field of material-source-row."}
+      regen-bonus: {alias: regen-bonus, slot_uri: pixlnd:material-source-row/regen-bonus, range: float, description: "The regen-bonus field of material-source-row."}
+      crafts-rarity: {alias: crafts-rarity, slot_uri: pixlnd:material-source-row/crafts-rarity, range: string, description: "The crafts-rarity field of material-source-row."}
+      obtainable: {alias: obtainable, slot_uri: pixlnd:material-source-row/obtainable, range: boolean, description: "The obtainable field of material-source-row."}
+      note: {alias: note, slot_uri: pixlnd:material-source-row/note, range: string, description: "The note field of material-source-row."}
+      alt-name: {alias: alt-name, slot_uri: pixlnd:material-source-row/alt-name, range: string, description: "The alt-name field of material-source-row."}
+      effect: {alias: effect, slot_uri: pixlnd:material-source-row/effect, range: string, description: "The effect field of material-source-row."}
+      price-s: {alias: price-s, slot_uri: pixlnd:material-source-row/price-s, range: integer, description: "The price-s field of material-source-row."}
+      sell-s: {alias: sell-s, slot_uri: pixlnd:material-source-row/sell-s, range: integer, description: "The sell-s field of material-source-row."}
+      versions: {alias: versions, slot_uri: pixlnd:material-source-row/versions, range: string, multivalued: true, description: "The versions field of material-source-row."}
+  ingredients-source:
+    description: "Source representation of ingredients-source."
+    annotations: {source-map-entries: entries}
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: pixlnd:ingredients-source/schema, range: string, required: true, equals_string: ingredient, description: "The $schema field of ingredients-source."}
+      documentation: {alias: _doc, slot_uri: pixlnd:ingredients-source/doc, range: string, required: true, description: "The _doc field of ingredients-source."}
+      unused-data: {alias: _unused-data, slot_uri: pixlnd:ingredients-source/unused-data, range: ingredient-unused-data, required: true, inlined: true, description: "The _unused-data field of ingredients-source."}
+      entries: {alias: entries, slot_uri: pixlnd:ingredients-source/entries, range: ingredient-source-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of ingredients-source."}
+  ingredient-source-entry:
+    description: "Source representation of ingredient-source-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:ingredient-source-entry/value, range: ingredient-source-row, required: true, inlined: true, description: "The value field of ingredient-source-entry."}
+  ingredient-source-row:
+    description: "Source representation of ingredient-source-row."
+    attributes:
+      name: {alias: name, slot_uri: pixlnd:ingredient-source-row/name, range: string, required: true, description: "The name field of ingredient-source-row."}
+      kind: {alias: kind, slot_uri: pixlnd:ingredient-source-row/kind, range: string, description: "The kind field of ingredient-source-row."}
+      from: {alias: from, slot_uri: pixlnd:ingredient-source-row/from, range: string, description: "The from field of ingredient-source-row."}
+      alpha-subtype: {alias: alpha-subtype, slot_uri: pixlnd:ingredient-source-row/alpha-subtype, range: integer, description: "The alpha-subtype field of ingredient-source-row."}
+      note: {alias: note, slot_uri: pixlnd:ingredient-source-row/note, range: string, description: "The note field of ingredient-source-row."}
+      sell: {alias: sell, slot_uri: pixlnd:ingredient-source-row/sell, range: integer, description: "The sell field of ingredient-source-row."}
+      recipe: {alias: recipe, slot_uri: pixlnd:ingredient-source-row/recipe, range: string, description: "The recipe field of ingredient-source-row."}
+      refines-to: {alias: refines-to, slot_uri: pixlnd:ingredient-source-row/refines-to, range: ingredient-source-refinement, inlined: true, description: "The refines-to field of ingredient-source-row."}
+      versions: {alias: versions, slot_uri: pixlnd:ingredient-source-row/versions, range: string, multivalued: true, description: "The versions field of ingredient-source-row."}
+  ingredient-source-refinement:
+    description: "Source representation of ingredient-source-refinement."
+    annotations: {source-map-entries: entries}
+    attributes:
+      entries: {alias: entries, slot_uri: pixlnd:ingredient-source-refinement/entries, range: ingredient-source-refinement-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of ingredient-source-refinement."}
+  ingredient-source-refinement-entry:
+    description: "Source representation of ingredient-source-refinement-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:ingredient-source-refinement-entry/value, range: string, required: true, description: "The value field of ingredient-source-refinement-entry."}
+  ingredient-unused-data:
+    description: "Source representation of ingredient-unused-data."
+    annotations: {source-map-entries: entries}
+    attributes:
+      entries: {alias: entries, slot_uri: pixlnd:ingredient-unused-data/entries, range: ingredient-unused-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of ingredient-unused-data."}
+  ingredient-unused-entry:
+    description: "Source representation of ingredient-unused-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:ingredient-unused-entry/value, range: integer, required: true, description: "The value field of ingredient-unused-entry."}
+  crafting-stations-source:
+    description: "Source representation of crafting-stations-source."
+    annotations: {source-map-entries: entries}
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: pixlnd:crafting-stations-source/schema, range: string, required: true, equals_string: crafting-station, description: "The $schema field of crafting-stations-source."}
+      documentation: {alias: _doc, slot_uri: pixlnd:crafting-stations-source/doc, range: string, required: true, description: "The _doc field of crafting-stations-source."}
+      entries: {alias: entries, slot_uri: pixlnd:crafting-stations-source/entries, range: crafting-station-source-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of crafting-stations-source."}
+  crafting-station-source-entry:
+    description: "Source representation of crafting-station-source-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:crafting-station-source-entry/value, range: crafting-station-source-row, required: true, inlined: true, description: "The value field of crafting-station-source-entry."}
+  crafting-station-source-row:
+    description: "Source representation of crafting-station-source-row."
+    attributes:
+      name: {alias: name, slot_uri: pixlnd:crafting-station-source-row/name, range: string, required: true, description: "The name field of crafting-station-source-row."}
+      static-id: {alias: static-id, slot_uri: pixlnd:crafting-station-source-row/static-id, range: integer, description: "The static-id field of crafting-station-source-row."}
+      building: {alias: building, slot_uri: pixlnd:crafting-station-source-row/building, range: string, description: "The building field of crafting-station-source-row."}
+      does: {alias: does, slot_uri: pixlnd:crafting-station-source-row/does, range: string, description: "The does field of crafting-station-source-row."}
+      versions: {alias: versions, slot_uri: pixlnd:crafting-station-source-row/versions, range: string, multivalued: true, description: "The versions field of crafting-station-source-row."}

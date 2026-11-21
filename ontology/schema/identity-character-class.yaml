@@ -1,0 +1,142 @@
+id: https://w3id.org/pixlnd/identity/character-class
+name: pixlnd-identity-character-class
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- combat
+- items
+- identity-types
+default_range: string
+classes:
+  character-class:
+    description: "Logical character class definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:character-class
+    see_also: &id001
+    - ../domain/3_Classes.md#character-class
+    attributes:
+      mp-generation: {alias: mp-generation, slot_uri: "pixlnd:character-class/mp-generation", range: string, description: "Class resource generation descriptions.", multivalued: true}
+    slots:
+    - id
+    - character-class-name
+    - character-class-id-number
+    - character-class-special-attack-mode
+    - character-class-hp-mult
+    - has-specialization
+    - uses-weapon
+    - wears-material
+  specialization:
+    description: "Logical specialization definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:specialization
+    see_also: &id002
+    - ../domain/3_Classes.md#specialization
+    attributes:
+      passives: {alias: passives, slot_uri: "pixlnd:specialization/passives", range: source-version-abilities, description: "Version-specific passive ability references.", inlined: true}
+      kit: {alias: kit, slot_uri: "pixlnd:specialization/kit", range: source-version-abilities, description: "Version-specific ability kit, distinct from selected hybrid activation.", inlined: true}
+    slots:
+    - id
+    - specialization-name
+    - specialization-class
+    - specialization-index
+    unique_keys:
+      class-index:
+        unique_key_slots:
+        - specialization-class
+        - specialization-index
+slots:
+  character-class-name:
+    description: "Character class name property; interpreted under its owning definition."
+    slot_uri: pixlnd:character-class/name
+    alias: name
+    range: string
+    required: true
+    see_also: *id001
+  character-class-id-number:
+    description: "Character class id number property; interpreted under its owning definition."
+    slot_uri: pixlnd:character-class/id-number
+    alias: id-number
+    range: integer
+    required: true
+    see_also: *id001
+    minimum_value: 1
+    maximum_value: 4
+  character-class-special-attack-mode:
+    description: "Character class special attack mode property; interpreted under its owning definition."
+    slot_uri: pixlnd:character-class/special-attack-mode
+    alias: special-attack-mode
+    range: attack-mode
+    required: true
+    see_also: *id001
+  character-class-hp-mult:
+    description: "Character class hp mult property; interpreted under its owning definition."
+    slot_uri: pixlnd:character-class/hp-mult
+    alias: hp-mult
+    range: float
+    required: true
+    see_also: *id001
+  specialization-name:
+    description: "Specialization name property; interpreted under its owning definition."
+    slot_uri: pixlnd:specialization/name
+    alias: name
+    range: string
+    required: true
+    see_also: *id002
+  specialization-class:
+    description: "Specialization class property; interpreted under its owning definition."
+    inverse: has-specialization
+    slot_uri: pixlnd:specialization/class
+    alias: class
+    range: character-class
+    required: true
+    see_also: *id002
+  specialization-index:
+    description: "Specialization index property; interpreted under its owning definition."
+    slot_uri: pixlnd:specialization/index
+    alias: index
+    range: integer
+    required: true
+    minimum_value: 0
+    maximum_value: 1
+    see_also: *id002
+  has-specialization:
+    inverse: specialization-class
+    slot_uri: pixlnd:has-specialization
+    alias: specializations
+    range: specialization
+    required: true
+    multivalued: true
+    domain: character-class
+    description: Cardinality 1→2.
+    see_also:
+    - ../domain/4_Relations.md
+    minimum_cardinality: 2
+    maximum_cardinality: 2
+  uses-weapon:
+    slot_uri: pixlnd:uses-weapon
+    alias: weapon-types
+    range: weapon-type
+    multivalued: true
+    domain: character-class
+    description: Cardinality 1→3 families. The three-family requirement is not a three-subtype-ID limit;
+      family grouping is unspecified.
+    see_also:
+    - ../domain/4_Relations.md
+    required: true
+  wears-material:
+    slot_uri: pixlnd:wears-material
+    alias: armor-material
+    range: material
+    required: true
+    domain: character-class
+    description: Cardinality 1→1. iron/linen/silk/cotton
+    see_also:
+    - ../domain/4_Relations.md
+enums:
+  attack-mode:
+    description: "Attack mode vocabulary."
+    enum_uri: pixlnd:attack-mode
+    permissible_values:
+      charged: {}
+      instant: {}

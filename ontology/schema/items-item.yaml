@@ -1,0 +1,132 @@
+id: https://w3id.org/pixlnd/items/item
+name: pixlnd-items-item
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- items-item-catalog
+- items-item-instance
+default_range: string
+classes:
+  item:
+    class_uri: pixlnd:item
+    description: Logical item definition. Display name is an optional read-only derived projection, not a stored or writable input requirement.
+    see_also: &id001
+    - ../domain/3_Classes.md#item
+    slots:
+    - id
+    - item-type
+    - item-sub-type
+    - item-modifier
+    - item-minus-modifier
+    - item-rarity
+    - item-material
+    - item-flags
+    - item-level
+    - item-upgrade-count
+    - item-upgrades
+    - item-name
+    - item-land
+    - item-plus
+    - item-weapon-type
+    rules:
+    - preconditions:
+        slot_conditions:
+          item-type: {alias: type, equals_string: weapon}
+      postconditions:
+        slot_conditions:
+          item-weapon-type: {alias: weapon-type, value_presence: PRESENT}
+      elseconditions:
+        slot_conditions:
+          item-weapon-type: {alias: weapon-type, value_presence: ABSENT}
+    - preconditions:
+        slot_conditions:
+          item-weapon-type:
+            alias: weapon-type
+            equals_string_in: [sword, axe, mace, dagger, fist, bracelet]
+      postconditions:
+        slot_conditions:
+          item-upgrade-count: {alias: upgrade-count, maximum_value: 16}
+    all_of:
+    - any_of:
+      - none_of:
+        - slot_conditions:
+            item-weapon-type:
+              alias: weapon-type
+              equals_string_in: [sword, axe, mace, dagger, fist, bracelet]
+      - slot_conditions:
+          item-upgrades: {alias: upgrades, multivalued: true, maximum_cardinality: 16}
+    - any_of:
+      - slot_conditions:
+          item-upgrades:
+            alias: upgrades
+            multivalued: true
+            all_members:
+              range_expression:
+                slot_conditions:
+                  item-upgrade-material:
+                    alias: material
+                    none_of: [{equals_string: wood}]
+      - slot_conditions:
+          item-type: {alias: type, equals_string: weapon}
+          item-material: {alias: material, equals_string_in: [wood]}
+    - any_of:
+      - slot_conditions:
+          item-upgrades:
+            alias: upgrades
+            multivalued: true
+            all_members:
+              range_expression:
+                slot_conditions:
+                  item-upgrade-material:
+                    alias: material
+                    none_of: [{equals_string: iron}]
+      - slot_conditions:
+          item-type: {alias: type, equals_string: weapon}
+          item-material: {alias: material, equals_string_in: [iron, copper, gold, silver, bronze]}
+    slot_usage:
+      item-land:
+        required: false
+        description: Origin region in historical S only; inert hybrid metadata, never regional power weakening or a mandatory hybrid input.
+      item-plus:
+        required: false
+        description: Adjacent-land suffix applicability in historical S only; inert hybrid metadata, never a regional effect gate.
+slots:
+  item-sub-type:
+    description: "The sub-type property of items."
+    slot_uri: pixlnd:item/sub-type
+    alias: sub-type
+    range: item-type
+    required: true
+    see_also: *id001
+  item-modifier:
+    description: "The modifier property of items."
+    slot_uri: pixlnd:item/modifier
+    alias: modifier
+    range: uint32
+    required: true
+    see_also: *id001
+  item-minus-modifier:
+    description: "The minus-modifier property of items."
+    slot_uri: pixlnd:item/minus-modifier
+    alias: minus-modifier
+    range: uint32
+    required: true
+    see_also: *id001
+  item-rarity:
+    description: "The rarity property of items."
+    slot_uri: pixlnd:item/rarity
+    alias: rarity
+    range: rarity
+    required: true
+    see_also: *id001
+  item-material:
+    description: "The material property of items."
+    slot_uri: pixlnd:item/material
+    alias: material
+    range: material
+    required: true
+    see_also: *id001

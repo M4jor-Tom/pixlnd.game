@@ -1,0 +1,133 @@
+id: https://w3id.org/pixlnd/meta/ui-screens
+name: pixlnd-meta-ui-screens
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- meta-ui-camera
+default_range: string
+classes:
+  ui-option-presentation:
+    class_uri: pixlnd:ui-option-presentation
+    description: Selected option payload with a container-scoped source label, not a globally identified entity or runtime setting.
+    see_also:
+    - ../domain/3_Classes.md#option
+    - ../instances/ui.json#options
+    slots:
+    - ui-option-presentation-option
+    - ui-option-presentation-default
+    - ui-option-presentation-cfg
+  ui-screen-presentation:
+    class_uri: pixlnd:ui-screen-presentation
+    description: Selected screen presentation with a container-scoped source label, not a globally identified entity.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#screens
+    slots:
+    - ui-screen-presentation-screen
+    - ui-screen-presentation-desc
+    - ui-screen-presentation-shows
+    - ui-screen-presentation-extras
+    - ui-screen-presentation-tabs
+    - ui-screen-presentation-stats
+slots:
+  ui-option-presentation-option:
+    slot_uri: pixlnd:ui-option-presentation/option
+    alias: option
+    domain: ui-option-presentation
+    range: string
+    key: true
+    required: true
+    description: Container-scoped source key, not a global stable ID or a raw keyed-body field.
+    see_also:
+    - ../domain/3_Classes.md#option
+    - ../instances/ui.json#options
+  ui-option-presentation-default:
+    slot_uri: pixlnd:ui-option-presentation/default
+    alias: default
+    domain: ui-option-presentation
+    range: integer
+    required: false
+    description: Integer option default retained as source data, not an applied setting.
+    see_also:
+    - ../domain/3_Classes.md#option
+    - ../instances/ui.json#options
+  ui-option-presentation-cfg:
+    slot_uri: pixlnd:ui-option-presentation/cfg
+    alias: cfg
+    domain: ui-option-presentation
+    range: string
+    required: false
+    description: Unparsed configuration text for an option.
+    see_also:
+    - ../domain/3_Classes.md#option
+    - ../instances/ui.json#options
+  ui-screen-presentation-tabs:
+    slot_uri: pixlnd:ui-screen-presentation/tabs
+    description: Original tab labels retained as source presentation text.
+    alias: tabs
+    domain: ui-screen-presentation
+    required: false
+    inlined: true
+    any_of:
+    - range: string
+      multivalued: true
+    - range: ui-screen-context-lists
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#screens
+  ui-screen-presentation-stats:
+    slot_uri: pixlnd:ui-screen-presentation/stats
+    description: Original character-sheet statistic labels retained as source presentation text.
+    alias: stats
+    domain: ui-screen-presentation
+    range: ui-screen-context-lists
+    required: false
+    inlined: true
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#screens
+  ui-screen-presentation-screen:
+    slot_uri: pixlnd:ui-screen-presentation/screen
+    alias: screen
+    domain: ui-screen-presentation
+    range: string
+    key: true
+    required: true
+    description: Container-scoped source key, not a global stable ID or a raw keyed-body field.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#screens
+  ui-screen-presentation-desc:
+    slot_uri: pixlnd:ui-screen-presentation/desc
+    alias: desc
+    domain: ui-screen-presentation
+    range: string
+    required: false
+    description: Screen presentation description retained as text.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#screens
+  ui-screen-presentation-shows:
+    slot_uri: pixlnd:ui-screen-presentation/shows
+    alias: shows
+    domain: ui-screen-presentation
+    range: string
+    required: false
+    description: Screen contents recorded as one text value.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#screens
+  ui-screen-presentation-extras:
+    slot_uri: pixlnd:ui-screen-presentation/extras
+    alias: extras
+    domain: ui-screen-presentation
+    range: string
+    required: false
+    multivalued: true
+    description: Ordered additional screen presentation labels.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#screens

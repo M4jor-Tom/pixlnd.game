@@ -1,10 +1,10 @@
  classDiagram
     class `Entity`
     click `Entity` href "../Entity"
-      `Entity` <|-- `Player-character`
-        click `Player-character` href "../Player-character"
       `Entity` <|-- `Pet`
         click `Pet` href "../Pet"
+      `Entity` <|-- `Player-character`
+        click `Player-character` href "../Player-character"
       `Entity` : current_target
         `Entity` --> "0..1" `Player-character` : current_target
         click `Player-character` href "../Player-character"

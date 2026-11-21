@@ -1,0 +1,85 @@
+id: https://w3id.org/pixlnd/meta/ui-camera
+name: pixlnd-meta-ui-camera
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+classes:
+  ui-screen-context-lists:
+    class_uri: pixlnd:ui-screen-context-lists
+    description: Literal contextual presentation lists shared by tabs and stats.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#screens
+    slots:
+    - ui-screen-context-lists-a
+    - ui-screen-context-lists-s
+  ui-camera-presentation:
+    class_uri: pixlnd:ui-camera-presentation
+    description: Text fields composing the camera presentation configuration.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../domain/controls.md#locomotion-and-view
+    - ../instances/ui.json#camera
+    slots:
+    - ui-camera-presentation-mode
+    - ui-camera-presentation-aim
+    - ui-camera-presentation-map
+slots:
+  ui-screen-context-lists-a:
+    slot_uri: pixlnd:ui-screen-context-lists/A
+    description: Original A-context UI list values.
+    alias: A
+    domain: ui-screen-context-lists
+    range: string
+    required: false
+    multivalued: true
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#screens
+  ui-screen-context-lists-s:
+    slot_uri: pixlnd:ui-screen-context-lists/S
+    description: Original S-context UI list values.
+    alias: S
+    domain: ui-screen-context-lists
+    range: string
+    required: false
+    multivalued: true
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#screens
+  ui-camera-presentation-mode:
+    slot_uri: pixlnd:ui-camera-presentation/mode
+    alias: mode
+    domain: ui-camera-presentation
+    range: string
+    required: false
+    description: Text describing the camera presentation mode.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../domain/controls.md#locomotion-and-view
+    - ../instances/ui.json#camera
+  ui-camera-presentation-aim:
+    slot_uri: pixlnd:ui-camera-presentation/aim
+    alias: aim
+    domain: ui-camera-presentation
+    range: string
+    required: false
+    description: Text describing the aiming presentation.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../instances/ui.json#camera
+  ui-camera-presentation-map:
+    slot_uri: pixlnd:ui-camera-presentation/map
+    alias: map
+    domain: ui-camera-presentation
+    range: string
+    required: false
+    description: Text describing map presentation, retained as a single value.
+    see_also:
+    - ../domain/3_Classes.md#hud-element
+    - ../domain/controls.md#screens-and-contextual-ui
+    - ../instances/ui.json#camera

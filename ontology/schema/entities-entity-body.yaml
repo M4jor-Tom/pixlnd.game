@@ -1,0 +1,115 @@
+id: https://w3id.org/pixlnd/entities/entity-body
+name: pixlnd-entities-entity-body
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- items
+- associations
+- entities-entity
+default_range: string
+slots:
+  entity-pos:
+    slot_uri: pixlnd:entity/pos
+    alias: pos
+    domain: entity
+    range: int64
+    description: Three native-unit position components in the qualified Alpha representation.
+    see_also: [../domain/3_Classes.md#entity]
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+  entity-velocity:
+    slot_uri: pixlnd:entity/velocity
+    alias: velocity
+    domain: entity
+    range: double
+    description: Three velocity components.
+    see_also: [../domain/3_Classes.md#entity]
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+  entity-accel:
+    slot_uri: pixlnd:entity/accel
+    alias: accel
+    domain: entity
+    range: double
+    description: Three acceleration components.
+    see_also: [../domain/3_Classes.md#entity]
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+  entity-body-roll:
+    slot_uri: pixlnd:entity/body-roll
+    alias: body-roll
+    domain: entity
+    range: double
+    description: Body orientation component; no new angular unit or motion rule is selected.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-body-pitch:
+    slot_uri: pixlnd:entity/body-pitch
+    alias: body-pitch
+    domain: entity
+    range: double
+    description: Body orientation component; no new angular unit or motion rule is selected.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-body-yaw:
+    slot_uri: pixlnd:entity/body-yaw
+    alias: body-yaw
+    domain: entity
+    range: double
+    description: Body orientation component; no new angular unit or motion rule is selected.
+    see_also: [../domain/3_Classes.md#entity]
+  entity-flags:
+    slot_uri: pixlnd:entity/flags
+    alias: flags
+    domain: entity
+    range: EntityFlag
+    description: Named entity flags; no numeric bit layout is selected.
+    see_also: [../domain/3_Classes.md#entity]
+    multivalued: true
+    list_elements_unique: true
+  entity-equipment:
+    slot_uri: pixlnd:entity/equipment
+    alias: equipment
+    domain: entity
+    range: item
+    description: Historical thirteen-position item table, distinct from equips and its twelve usable slots; not a current-save wire declaration.
+    see_also: [../domain/3_Classes.md#entity]
+    multivalued: true
+    minimum_cardinality: 13
+    maximum_cardinality: 13
+  entity-name:
+    slot_uri: pixlnd:entity/name
+    alias: name
+    domain: entity
+    range: string
+    description: Entity source name, distinct from the stricter playable-name minimum.
+    see_also: [../domain/3_Classes.md#entity]
+    pattern: '^[\x20-\x7e]{0,16}$'
+  entity-status-applications:
+    alias: status-applications
+    slot_uri: pixlnd:entity/status-applications
+    domain: entity
+    range: status-application
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+    description: Independent status applications; duplicate effects may coexist without merging lifetimes.
+    see_also: [../domain/3_Classes.md#status-effect]
+
+enums:
+  EntityFlag:
+    enum_uri: pixlnd:EntityFlag
+    description: Canonical named entity flags, without a chosen bit encoding.
+    see_also: [../domain/3_Classes.md#appearance]
+    permissible_values:
+      climbing: {description: "Climbing flag or expression."}
+      attacking: {description: "Attacking flag or expression."}
+      glider: {description: "Glider flag or expression."}
+      hostile: {description: "Hostile flag or expression."}
+      lantern: {description: "Lantern flag or expression."}
+      stealth: {description: "Stealth flag or expression."}

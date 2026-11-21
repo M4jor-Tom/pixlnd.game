@@ -1,0 +1,104 @@
+id: https://w3id.org/pixlnd/items/inventory
+name: pixlnd-items-inventory
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- items-item
+- items-item-catalog
+default_range: string
+classes:
+  inventory:
+    class_uri: pixlnd:inventory
+    description: Logical per-character bag, equipment and coin holdings; this is not a selected save-wire format. Starting contents remain a generator configuration reference.
+    see_also: &id006
+    - ../domain/3_Classes.md#inventory
+    slots:
+    - id
+    - inventory-entries
+    - inventory-coins
+    - inventory-equipment
+  inventory-entry:
+    class_uri: pixlnd:inventory-entry
+    description: One item/count association; stack eligibility is governed by c-stack-rule, not a count cap here.
+    see_also: &id005
+    - ../domain/3_Classes.md#inventory
+    slots:
+    - inventory-entry-item
+    - inventory-entry-count
+  equipment-assignment:
+    description: "Logical equipment-assignment definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:equipment-assignment
+    see_also: &id007
+    - ../domain/3_Classes.md#inventory
+    slots:
+    - equipment-assignment-slot
+    - equipment-assignment-item
+    unique_keys:
+      slot:
+        unique_key_slots:
+        - equipment-assignment-slot
+slots:
+  inventory-entry-item:
+    description: "The item property of items."
+    slot_uri: pixlnd:inventory-entry/item
+    alias: item
+    range: item
+    required: true
+    inlined: true
+    see_also: *id005
+  inventory-entry-count:
+    description: "The count property of items."
+    slot_uri: pixlnd:inventory-entry/count
+    alias: count
+    range: integer
+    required: true
+    minimum_value: 1
+    see_also: *id005
+  inventory-entries:
+    description: "The entries property of items."
+    slot_uri: pixlnd:inventory/entries
+    alias: entries
+    range: inventory-entry
+    required: true
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+    see_also: *id006
+  inventory-coins:
+    description: "The coins property of items."
+    slot_uri: pixlnd:inventory/coins
+    alias: coins
+    range: uint32
+    required: true
+    see_also: *id006
+  equipment-assignment-slot:
+    description: "The slot property of items."
+    slot_uri: pixlnd:equipment-assignment/slot
+    alias: slot
+    range: equipment-slot
+    required: true
+    see_also: *id007
+  equipment-assignment-item:
+    description: "The item property of items."
+    slot_uri: pixlnd:equipment-assignment/item
+    alias: item
+    range: item
+    required: true
+    inlined: true
+    see_also: *id007
+  inventory-equipment:
+    slot_uri: pixlnd:inventory/equipment
+    alias: equipment
+    range: equipment-assignment
+    required: true
+    multivalued: true
+    maximum_cardinality: 12
+    inlined: true
+    inlined_as_list: true
+    description: Logical slot/item associations, not a selected persisted JSON map encoding; uniqueness
+      and slot legality need extra validation.
+    see_also: *id006

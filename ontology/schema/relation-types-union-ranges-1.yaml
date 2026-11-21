@@ -1,0 +1,146 @@
+id: https://w3id.org/pixlnd/relation-types/union-ranges-1
+name: pixlnd-relation-types-union-ranges-1
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- combat
+- items
+- world
+- meta
+- relation-types-nominal
+default_range: string
+classes:
+  specialization-or-character-class:
+    class_uri: pixlnd:specialization-or-character-class
+    see_also:
+    - ../domain/4_Relations.md
+    slots:
+    - id
+    union_of:
+    - specialization
+    - character-class
+    description: Union expression of the exact named §4 endpoints.
+  ability-or-weapon-type-or-hazard:
+    class_uri: pixlnd:ability-or-weapon-type-or-hazard
+    see_also:
+    - ../domain/4_Relations.md
+    slots:
+    - id
+    union_of:
+    - ability
+    - weapon-type
+    - hazard
+    description: Union expression of the exact named §4 endpoints.
+  ingredient-or-material:
+    class_uri: pixlnd:ingredient-or-material
+    see_also:
+    - ../domain/4_Relations.md
+    slots:
+    - id
+    union_of:
+    - ingredient
+    - material
+    description: Union expression of the exact named §4 endpoints.
+  item-type-or-consumable:
+    class_uri: pixlnd:item-type-or-consumable
+    see_also:
+    - ../domain/4_Relations.md
+    slots:
+    - id
+    union_of:
+    - item-type
+    - consumable
+    description: Union expression of the exact named §4 endpoints.
+  flora-or-deposit-or-creature:
+    class_uri: pixlnd:flora-or-deposit-or-creature
+    see_also:
+    - ../domain/4_Relations.md
+    slots:
+    - id
+    union_of:
+    - flora
+    - deposit
+    - creature
+    description: Union expression of the exact named §4 endpoints.
+  creature-or-flora-or-deposit:
+    class_uri: pixlnd:creature-or-flora-or-deposit
+    see_also:
+    - ../domain/4_Relations.md
+    slots:
+    - id
+    union_of:
+    - creature
+    - flora
+    - deposit
+    description: Union expression of the exact named §4 endpoints.
+  landscape-or-terrain-feature-or-dungeon-type-or-poi-type:
+    class_uri: pixlnd:landscape-or-terrain-feature-or-dungeon-type-or-poi-type
+    see_also:
+    - ../domain/4_Relations.md
+    slots:
+    - id
+    union_of:
+    - landscape
+    - terrain-feature
+    - dungeon-type
+    - poi-type
+    description: Union expression of the exact named §4 endpoints.
+  dungeon-type-or-poi-type-or-settlement:
+    class_uri: pixlnd:dungeon-type-or-poi-type-or-settlement
+    see_also:
+    - ../domain/4_Relations.md
+    slots:
+    - id
+    union_of:
+    - dungeon-type
+    - poi-type
+    - settlement
+    description: Union expression of the exact named §4 endpoints.
+  creature-or-npc-role:
+    class_uri: pixlnd:creature-or-npc-role
+    see_also:
+    - ../domain/4_Relations.md
+    slots:
+    - id
+    union_of:
+    - creature
+    - npc-role
+    description: Union expression of the exact named §4 endpoints.
+  dungeon-type-or-poi-type:
+    class_uri: pixlnd:dungeon-type-or-poi-type
+    see_also:
+    - ../domain/4_Relations.md
+    slots:
+    - id
+    union_of:
+    - dungeon-type
+    - poi-type
+    description: Union expression of the exact named §4 endpoints.
+  mission-type-or-arena-or-poi-type:
+    class_uri: pixlnd:mission-type-or-arena-or-poi-type
+    see_also:
+    - ../domain/4_Relations.md
+    slots:
+    - id
+    union_of:
+    - mission-type
+    - arena
+    - poi-type
+    description: Union expression of the exact named §4 endpoints.
+  item-type-or-key-item-or-artifact-or-currency-or-book-of-crafting:
+    class_uri: pixlnd:item-type-or-key-item-or-artifact-or-currency-or-book-of-crafting
+    see_also:
+    - ../domain/4_Relations.md
+    slots:
+    - id
+    union_of:
+    - item-type
+    - key-item
+    - artifact
+    - currency
+    - book-of-crafting
+    description: Union expression of the exact named §4 endpoints.

@@ -1,0 +1,51 @@
+id: https://w3id.org/pixlnd/identity/factions
+name: pixlnd-identity-factions
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- catalog-properties
+- identity-types
+default_range: string
+classes:
+  npc-role:
+    description: "Logical npc role definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:npc-role
+    see_also:
+    - ../domain/3_Classes.md#npc-role
+    slots:
+    - id
+    - npc-role-name
+    - npc-role-dialogue
+    - npc-role-sign
+    - npc-role-building
+    - npc-role-species
+    - npc-role-service
+    - npc-role-schedule
+    - npc-role-attackable
+    - npc-role-behaviour
+  faction:
+    description: "Logical faction definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:faction
+    see_also:
+    - ../domain/3_Classes.md#faction
+    slots:
+    - id
+    - faction-name
+    - faction-alignment
+    - faction-leader
+    - faction-members
+    - faction-presence
+enums:
+  hostility:
+    description: "Hostility vocabulary."
+    enum_uri: pixlnd:hostility
+    permissible_values:
+      hostile: {}
+      neutral: {}
+      friendly: {}
+      friendly-player: {}
+      named-friendly: {}
+      target: {}

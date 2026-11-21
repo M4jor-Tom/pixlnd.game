@@ -1,0 +1,87 @@
+id: https://w3id.org/pixlnd/items/crafting
+name: pixlnd-items-crafting
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- relations
+- catalog-properties
+- identity
+- items-item
+default_range: string
+classes:
+  recipe:
+    description: "Logical recipe definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:recipe
+    see_also:
+    - ../domain/3_Classes.md#recipe
+    slots:
+    - id
+    - crafted-at
+    - consumes
+    - produces
+    - recipe-required-power
+  crafting-station:
+    description: "Logical crafting-station definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:crafting-station
+    see_also:
+    - ../domain/3_Classes.md#crafting-station
+    slots:
+    - id
+    - crafting-station-name
+    - crafting-station-static-id
+  formula:
+    class_uri: pixlnd:formula
+    is_a: item
+    description: Formula scroll is an item; its +N uses the shared item power field and formula learning targets the character's shared knows-recipe relation.
+    see_also:
+    - ../domain/3_Classes.md#formula
+    - ../domain/3_Classes.md#item
+    slots:
+    - formula-recipe
+  book-of-crafting:
+    class_uri: pixlnd:book-of-crafting
+    description: Book recipe source identity and content, not an assertion of Item power or upgrade payload. Duplicate handling and character/world claims remain distinct canonical rules.
+    slots:
+    - id
+    - book-recipes
+    see_also:
+    - ../domain/3_Classes.md#book-of-crafting
+    - ../domain/3_Classes.md#recipe
+slots:
+  recipe-required-power:
+    slot_uri: pixlnd:recipe/required-power
+    alias: required-power
+    domain: recipe
+    range: integer
+    required: true
+    minimum_value: 1
+    maximum_value: 100
+    description: Required item-power points +1..+100, not character level. Known recipes can remain power-locked; no default, generated value or equality with formula power is asserted.
+    see_also:
+    - ../domain/3_Classes.md#item
+    - ../domain/3_Classes.md#power-gate-a
+  formula-recipe:
+    slot_uri: pixlnd:formula/recipe
+    alias: recipe
+    domain: formula
+    range: recipe
+    required: true
+    description: Single Recipe taught by this scroll; acquisition feeds the character's shared knows-recipe relation, not a second learned collection. Scroll +N remains Item power independently of recipe required-power.
+    see_also:
+    - ../domain/3_Classes.md#formula
+    - ../domain/3_Classes.md#recipe
+  book-recipes:
+    slot_uri: pixlnd:book-of-crafting/recipes
+    alias: recipes
+    domain: book-of-crafting
+    range: recipe
+    required: true
+    multivalued: true
+    minimum_cardinality: 1
+    description: Recipe content taught into shared knows-recipe, not player knowledge itself. Historical S has 3–4 recipes per book and four books per land; neither count nor land scope is a hybrid cardinality or default. Only unknown recipes are taught, without rerolls or compensation.
+    see_also:
+    - ../domain/3_Classes.md#book-of-crafting
+    - ../domain/3_Classes.md#recipe

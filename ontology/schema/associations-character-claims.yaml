@@ -1,0 +1,128 @@
+id: https://w3id.org/pixlnd/associations/character-claims
+name: pixlnd-associations-character-claims
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- combat
+- world
+- entities
+- relation-types
+default_range: string
+classes:
+  personal-permanent-source-claim:
+    class_uri: pixlnd:personal-permanent-source-claim
+    description: >-
+      Logical personal claim at an artifact or one-time book source in a saved world,
+      not a current save wire member. The tuple itself states ownership; another
+      character retains their own claim opportunity at the source, never a remote award.
+      Leaving, restarting, returning and daily enemy resets never renew a claim.
+      Separate saved worlds, including matching-seed worlds, offer separate sources.
+      Source existence, compound uniqueness and lifecycle enforcement remain consumer
+      responsibilities; this association does not instance ordinary ground loot.
+    see_also: [../domain/3_Classes.md#save-data, ../domain/3_Classes.md#artifact, ../domain/3_Classes.md#book-of-crafting]
+    unique_keys:
+      character-world-source:
+        unique_key_slots: [character, world, source-kind, source-key]
+    attributes:
+      character:
+        alias: character
+        slot_uri: pixlnd:personal-permanent-source-claim/character
+        domain: personal-permanent-source-claim
+        range: player-character
+        required: true
+        description: Portable character identity owning this personal claim.
+      world:
+        alias: world
+        slot_uri: pixlnd:personal-permanent-source-claim/world
+        domain: personal-permanent-source-claim
+        range: world
+        required: true
+        description: Saved-world identity, never the generation seed.
+      source-kind:
+        alias: source-kind
+        slot_uri: pixlnd:personal-permanent-source-claim/source-kind
+        domain: personal-permanent-source-claim
+        range: PersonalPermanentSourceKind
+        required: true
+        description: Only artifact and one-time book sources participate.
+      source-key:
+        alias: source-key
+        slot_uri: pixlnd:personal-permanent-source-claim/source-key
+        domain: personal-permanent-source-claim
+        range: string
+        required: true
+        description: >-
+          Opaque source key qualified by world and source-kind, not a global identifier
+          or an allocation scheme. Identifies the source, not the portable reward item.
+  character-world-state:
+    class_uri: pixlnd:character-world-state
+    description: Logical personal position and travel knowledge scoped to a character and saved world; not a current save wire replacement.
+    see_also: [../domain/3_Classes.md#player-character, ../domain/3_Classes.md#save-data]
+    slots: [character-world-state-discovered-lands, character-world-state-discovered-portals, character-world-state-discovered-shrines, character-world-state-discovered-flight-points]
+    unique_keys:
+      character-world:
+        unique_key_slots: [character-world-state-character, character-world-state-world]
+    attributes:
+      character-world-state-character: {alias: character, slot_uri: 'pixlnd:character-world-state/character', range: player-character, required: true, description: Portable character identity.}
+      character-world-state-world: {alias: world, slot_uri: 'pixlnd:character-world-state/world', range: world, required: true, description: Saved-world identity rather than seed.}
+      position: {alias: position, slot_uri: 'pixlnd:character-world-state/position', range: double, multivalued: true, minimum_cardinality: 3, maximum_cardinality: 3, description: Personal position components in this world.}
+      respawn: {alias: respawn, slot_uri: 'pixlnd:character-world-state/respawn', range: double, multivalued: true, minimum_cardinality: 3, maximum_cardinality: 3, description: Personal respawn-point components in this world.}
+  status-application:
+    class_uri: pixlnd:status-application
+    description: One independent combat status application; expiry and tick delivery remain behavior, not schema defaults.
+    see_also: [../domain/3_Classes.md#status-effect]
+    attributes:
+      effect: {alias: effect, slot_uri: 'pixlnd:status-application/effect', range: status-effect, required: true, description: Applied status definition.}
+      source: {alias: source, slot_uri: 'pixlnd:status-application/source', range: entity, description: Application source entity where present.}
+      damage: {alias: damage, slot_uri: 'pixlnd:status-application/damage', range: double, minimum_value: 0, description: Damage retained independently for this application.}
+      remaining-lifetime: {alias: remaining-lifetime, slot_uri: 'pixlnd:status-application/remaining-lifetime', range: double, minimum_value: 0, description: Remaining application lifetime; clock ownership remains the linked rule.}
+      next-tick: {alias: next-tick, slot_uri: 'pixlnd:status-application/next-tick', range: double, description: Independently retained next tick; no epoch or storage unit is inferred.}
+slots:
+  character-world-state-discovered-lands:
+    slot_uri: pixlnd:character-world-state/discovered-lands
+    alias: discovered-lands
+    domain: character-world-state
+    range: land
+    description: Personal discovered land references; terrain exploration remains world-owned.
+    see_also: [../domain/3_Classes.md#player-character]
+    multivalued: true
+    list_elements_unique: true
+  character-world-state-discovered-portals:
+    slot_uri: pixlnd:character-world-state/discovered-portals
+    alias: discovered-portals
+    domain: character-world-state
+    range: poi
+    description: Personal portal unlock references.
+    see_also: [../domain/3_Classes.md#player-character]
+    multivalued: true
+    list_elements_unique: true
+  character-world-state-discovered-shrines:
+    slot_uri: pixlnd:character-world-state/discovered-shrines
+    alias: discovered-shrines
+    domain: character-world-state
+    range: poi
+    description: Personal shrine unlock references.
+    see_also: [../domain/3_Classes.md#player-character]
+    multivalued: true
+    list_elements_unique: true
+  character-world-state-discovered-flight-points:
+    slot_uri: pixlnd:character-world-state/discovered-flight-points
+    alias: discovered-flight-points
+    domain: character-world-state
+    range: poi
+    description: Personal flight-point unlock references.
+    see_also: [../domain/3_Classes.md#player-character]
+    multivalued: true
+    list_elements_unique: true
+
+enums:
+  PersonalPermanentSourceKind:
+    enum_uri: pixlnd:PersonalPermanentSourceKind
+    description: Permanent reward source kinds eligible for personal once-per-world claims.
+    permissible_values:
+      artifact: {}
+      one_time_book:
+        aliases: [one-time-book]

@@ -1,0 +1,124 @@
+id: https://w3id.org/pixlnd/items/item-catalog
+name: pixlnd-items-item-catalog
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- catalog-crafting-social
+- catalog-properties
+- identity
+default_range: string
+classes:
+  item-type:
+    description: "Logical item-type definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:item-type
+    see_also:
+    - ../domain/3_Classes.md#item-type
+    slots:
+    - id
+  material:
+    description: "Logical material definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:material
+    see_also:
+    - ../domain/3_Classes.md#material
+    slots:
+    - id
+    - material-name
+    - material-kind
+    - material-hp-bonus
+    - material-armor-mult
+    - material-resi-mult
+    - material-crit-bonus
+    - material-tempo-bonus
+    - material-regen-bonus
+    - material-refined
+    - material-crafts-rarity
+    - material-obtainable
+    - material-class
+    - material-station
+    - material-raw
+    - material-alt-name
+    - material-effect
+    - material-price-s
+    - material-sell-s
+  rarity:
+    description: "Logical rarity definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:rarity
+    see_also:
+    - ../domain/3_Classes.md#rarity
+    slots:
+    - id
+    - rarity-name
+    - rarity-color
+    - rarity-index
+    - rarity-hex
+    - rarity-stars
+    - rarity-gem
+    - rarity-named
+  affix:
+    description: "Logical affix definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:affix
+    see_also:
+    - ../domain/3_Classes.md#affix
+    slots:
+    - id
+  equipment-slot:
+    description: "Logical equipment-slot definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:equipment-slot
+    see_also: &id004
+    - ../domain/3_Classes.md#equipment-slot
+    slots:
+    - id
+    - equipment-slot-index
+    - equipment-slot-accepts
+    - equipment-slot-hp-mult
+    - equipment-slot-accepts-conditions
+  consumable:
+    description: "Logical consumable definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:consumable
+    see_also:
+    - ../domain/3_Classes.md#consumable
+    slots:
+    - id
+  ingredient:
+    description: "Logical ingredient definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:ingredient
+    see_also:
+    - ../domain/3_Classes.md#ingredient
+    slots:
+    - id
+    - ingredient-name
+    - ingredient-alpha-subtype
+    - ingredient-kind
+    - ingredient-from
+    - ingredient-sell
+    - ingredient-recipe
+    - ingredient-refines-to
+slots:
+  item-type:
+    description: "The type property of items."
+    slot_uri: pixlnd:item/type
+    alias: type
+    range: item-type
+    required: true
+    see_also: &id001
+    - ../domain/3_Classes.md#item
+  equipment-slot-index:
+    description: "The index property of items."
+    slot_uri: pixlnd:equipment-slot/index
+    alias: index
+    range: integer
+    required: true
+    minimum_value: 0
+    maximum_value: 12
+    see_also: *id004
+  equipment-slot-accepts:
+    slot_uri: pixlnd:equipment-slot/accepts
+    alias: accepts
+    range: item-type
+    required: true
+    multivalued: true
+    description: Reserved unknown-0 accepts nothing. Usable-slot and subtype restrictions remain canonical.
+    see_also: *id004

@@ -1,0 +1,124 @@
+id: https://w3id.org/pixlnd/associations/crafting-costs
+name: pixlnd-associations-crafting-costs
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- combat
+- items
+- meta
+- relation-types
+default_range: string
+classes:
+  resource-cost:
+    class_uri: pixlnd:resource-cost
+    see_also: &id001
+    - ../domain/4_Relations.md
+    slots:
+    - resource-cost-resource
+    - resource-cost-ruleset
+    - resource-cost-amount
+    description: Logical amount per resource and ruleset, not a normalization of qualified historical
+      cost text. Empty cost lists mean no cost; no default amount is implied.
+    unique_keys:
+      resource-ruleset:
+        unique_key_slots:
+        - resource-cost-resource
+        - resource-cost-ruleset
+  recipe-consumption:
+    class_uri: pixlnd:recipe-consumption
+    see_also: &id002
+    - ../domain/4_Relations.md
+    slots:
+    - recipe-consumption-input
+    - recipe-consumption-count
+    description: Logical counted input; ambiguous raw recipe alternatives are not normalized by this declaration.
+  ingredient-yield:
+    class_uri: pixlnd:ingredient-yield
+    see_also: &id003
+    - ../domain/4_Relations.md
+    slots:
+    - ingredient-yield-ingredient
+    - ingredient-yield-minimum
+    - ingredient-yield-maximum
+    description: Logical count interval; minimum <= maximum is a coupled rule, not enforced by native
+      JSON Schema.
+slots:
+  resource-cost-resource:
+    description: "Resource cost resource property; interpreted under its owning definition."
+    slot_uri: pixlnd:resource-cost/resource
+    alias: resource
+    domain: resource-cost
+    range: resource
+    required: true
+    see_also: *id001
+  resource-cost-ruleset:
+    description: "Resource cost ruleset property; interpreted under its owning definition."
+    slot_uri: pixlnd:resource-cost/ruleset
+    alias: ruleset
+    domain: resource-cost
+    range: ruleset
+    required: true
+    see_also: *id001
+  resource-cost-amount:
+    description: "Resource cost amount property; interpreted under its owning definition."
+    slot_uri: pixlnd:resource-cost/amount
+    alias: amount
+    domain: resource-cost
+    required: true
+    see_also: *id001
+    any_of:
+    - range: float
+      minimum_value: 0
+    - range: all-resource
+  recipe-consumption-input:
+    description: "Recipe consumption input property; interpreted under its owning definition."
+    slot_uri: pixlnd:recipe-consumption/input
+    alias: input
+    domain: recipe-consumption
+    range: ingredient-or-material
+    required: true
+    see_also: *id002
+  recipe-consumption-count:
+    description: "Recipe consumption count property; interpreted under its owning definition."
+    slot_uri: pixlnd:recipe-consumption/count
+    alias: count
+    domain: recipe-consumption
+    range: integer
+    required: true
+    see_also: *id002
+    minimum_value: 1
+  ingredient-yield-ingredient:
+    description: "Ingredient yield ingredient property; interpreted under its owning definition."
+    slot_uri: pixlnd:ingredient-yield/ingredient
+    alias: ingredient
+    domain: ingredient-yield
+    range: ingredient
+    required: true
+    see_also: *id003
+  ingredient-yield-minimum:
+    description: "Ingredient yield minimum property; interpreted under its owning definition."
+    slot_uri: pixlnd:ingredient-yield/minimum
+    alias: minimum
+    domain: ingredient-yield
+    range: integer
+    required: true
+    see_also: *id003
+    minimum_value: 0
+  ingredient-yield-maximum:
+    description: "Ingredient yield maximum property; interpreted under its owning definition."
+    slot_uri: pixlnd:ingredient-yield/maximum
+    alias: maximum
+    domain: ingredient-yield
+    range: integer
+    required: true
+    see_also: *id003
+    minimum_value: 0
+enums:
+  all-resource:
+    description: "All resource vocabulary."
+    enum_uri: pixlnd:all-resource
+    permissible_values:
+      all: {}

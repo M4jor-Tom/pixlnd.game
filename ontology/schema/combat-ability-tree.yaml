@@ -1,0 +1,83 @@
+id: https://w3id.org/pixlnd/combat/ability-tree
+name: pixlnd-combat-ability-tree
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+default_range: string
+classes:
+  ability-tree-position:
+    class_uri: pixlnd:ability-tree-position
+    see_also:
+    - ../domain/3_Classes.md#skill-tree-a
+    slots:
+    - ability-tree-column
+    - ability-tree-needs
+    - ability-tree-rank
+    - ability-tree-skill-slot
+    - ability-tree-class
+    - ability-tree-also-ultimate
+    description: Tree placement, not an extra ultimate for the Assassin's shared rank-3 skill.
+slots:
+  ability-tree-column:
+    description: "Ability tree column property; interpreted under its owning definition."
+    slot_uri: pixlnd:ability-tree-position/column
+    alias: column
+    range: skill-column
+    required: true
+    see_also:
+    - ../domain/3_Classes.md#skill-tree-a
+  ability-tree-needs:
+    description: "Ability tree needs property; interpreted under its owning definition."
+    slot_uri: pixlnd:ability-tree-position/needs
+    alias: needs
+    range: integer
+    required: true
+    minimum_value: 0
+    see_also:
+    - ../domain/3_Classes.md#skill-tree-a
+  ability-tree-rank:
+    description: "Ability tree rank property; interpreted under its owning definition."
+    slot_uri: pixlnd:ability-tree-position/rank
+    alias: rank
+    range: integer
+    minimum_value: 1
+    maximum_value: 3
+    see_also:
+    - ../domain/3_Classes.md#skill-tree-a
+  ability-tree-skill-slot:
+    description: "Ability tree skill slot property; interpreted under its owning definition."
+    slot_uri: pixlnd:ability-tree-position/skill-slot
+    alias: skill-slot
+    range: integer
+    minimum_value: 0
+    maximum_value: 10
+    see_also:
+    - ../domain/3_Classes.md#skill-tree-a
+  ability-tree-class:
+    description: "Ability tree class property; interpreted under its owning definition."
+    slot_uri: pixlnd:ability-tree-position/class
+    alias: class
+    range: character-class
+    see_also:
+    - ../domain/3_Classes.md#skill-tree-a
+  ability-tree-also-ultimate:
+    description: "Ability tree also ultimate property; interpreted under its owning definition."
+    slot_uri: pixlnd:ability-tree-position/also-ultimate
+    alias: also-ultimate
+    range: boolean
+    see_also:
+    - ../domain/3_Classes.md#skill-tree-a
+enums:
+  skill-column:
+    description: "Skill column vocabulary."
+    enum_uri: pixlnd:skill-column
+    permissible_values:
+      pets: {}
+      climbing: {}
+      water: {}
+      class: {}
+      ultimate: {}

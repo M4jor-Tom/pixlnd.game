@@ -1,0 +1,65 @@
+id: https://w3id.org/pixlnd/items/special-items
+name: pixlnd-items-special-items
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+default_range: string
+classes:
+  spirit-cube:
+    description: "Logical spirit-cube definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:spirit-cube
+    see_also:
+    - ../domain/3_Classes.md#spirit-cube
+    slots:
+    - id
+  leftovers:
+    description: "Logical leftovers definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:leftovers
+    see_also:
+    - ../domain/3_Classes.md#leftovers
+    slots:
+    - id
+  pet-food:
+    description: "Logical pet-food definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:pet-food
+    see_also: &id003
+    - ../domain/3_Classes.md#pet-food
+    slots:
+    - id
+    - pet-food-tames
+  key-item:
+    description: "Logical key-item definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:key-item
+    see_also:
+    - ../domain/3_Classes.md#key-item
+    slots:
+    - id
+  currency:
+    description: "Logical currency definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:currency
+    see_also:
+    - ../domain/3_Classes.md#currency
+    slots:
+    - id
+  shop:
+    description: "Logical shop definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:shop
+    see_also:
+    - ../domain/3_Classes.md#shop
+    slots:
+    - id
+slots:
+  pet-food-tames:
+    slot_uri: pixlnd:pet-food/tames
+    alias: tames
+    range: creature
+    required: true
+    multivalued: true
+    minimum_cardinality: 1
+    description: Explicit species pairings; Bubble Gum may name Collie and Skeleton Dog. Numeric source
+      identity remains separate.
+    see_also: *id003

@@ -1,0 +1,132 @@
+id: https://w3id.org/pixlnd/identity/creature
+name: pixlnd-identity-creature
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- combat
+- identity-creature-ecology
+- identity-types
+default_range: string
+classes:
+  creature:
+    description: "Logical creature definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:creature
+    see_also: &id004
+    - ../domain/3_Classes.md#creature
+    attributes:
+      name: {alias: name, slot_uri: "pixlnd:creature/name", range: string, description: "Species display name, not limited by player creation rules."}
+      habitats: {alias: habitats, slot_uri: "pixlnd:creature/habitats", range: string, description: "Qualified habitat descriptions.", multivalued: true}
+      abilities: {alias: abilities, slot_uri: "pixlnd:creature/abilities", range: ability, description: "Notable resolved ability references, distinct from raw source summaries.", multivalued: true}
+      signature-ability: {alias: signature-ability, slot_uri: "pixlnd:creature/signature-ability", range: ability, description: "Announced signature ability; no hybrid activation follows."}
+      versions: {alias: versions, slot_uri: "pixlnd:creature/versions", range: SourceVersion, description: "Explicit source tags, not runtime availability.", multivalued: true}
+    slots:
+    - id
+    - creature-alpha-entity-id
+    - creature-category
+    - creature-hostility-default
+    - creature-rideable
+    - creature-boss-species
+    - creature-boss-capable
+    - creature-breaks-terrain
+    - creature-drinks-potions
+    - creature-lantern-at-night
+    - creature-combat-role
+    - creature-pet-types
+    - creature-landscapes
+    - creature-group-size
+    - tamed-by
+    - member-of-family
+    - descriptive-member-of-family
+slots:
+  creature-alpha-entity-id:
+    description: "Creature alpha entity id property; interpreted under its owning definition."
+    slot_uri: pixlnd:creature-alpha-entity-id
+    alias: aid
+    range: integer
+    see_also:
+    - ../domain/3_Classes.md#creature
+  creature-category:
+    description: "Creature category property; interpreted under its owning definition."
+    slot_uri: pixlnd:creature/category
+    alias: cat
+    range: creature-category
+    required: true
+    see_also: *id004
+  creature-hostility-default:
+    description: "Creature hostility default property; interpreted under its owning definition."
+    slot_uri: pixlnd:creature/hostility-default
+    alias: h
+    range: hostility-default
+    required: true
+    see_also: *id004
+  creature-rideable:
+    description: "Creature rideable property; interpreted under its owning definition."
+    slot_uri: pixlnd:creature/rideable
+    alias: ride
+    range: boolean
+    required: true
+    see_also: *id004
+  creature-boss-species:
+    description: "Creature boss species property; interpreted under its owning definition."
+    slot_uri: pixlnd:creature/boss-species
+    alias: boss
+    range: boolean
+    required: true
+    see_also: *id004
+  creature-boss-capable:
+    description: "Creature boss capable property; interpreted under its owning definition."
+    slot_uri: pixlnd:creature/boss-capable
+    alias: bossable
+    range: boolean
+    required: true
+    see_also: *id004
+  creature-breaks-terrain:
+    description: "Creature breaks terrain property; interpreted under its owning definition."
+    slot_uri: pixlnd:creature/breaks-terrain
+    alias: breaks-terrain
+    range: boolean
+    required: true
+    see_also: *id004
+  creature-drinks-potions:
+    description: "Creature drinks potions property; interpreted under its owning definition."
+    slot_uri: pixlnd:creature/drinks-potions
+    alias: drinks-potions
+    range: boolean
+    required: true
+    see_also: *id004
+  creature-lantern-at-night:
+    description: "Creature lantern at night property; interpreted under its owning definition."
+    slot_uri: pixlnd:creature/lantern-at-night
+    alias: lantern-at-night
+    range: boolean
+    required: true
+    see_also: *id004
+enums:
+  creature-category:
+    description: "Creature category vocabulary."
+    enum_uri: pixlnd:creature-category
+    permissible_values:
+      animal: {}
+      insect: {}
+      aquatic: {}
+      plant-creature: {}
+      monster: {}
+      undead: {}
+      demon: {}
+      elemental: {}
+      humanoid: {}
+      boss-species: {}
+      static-target: {}
+      unused: {}
+  hostility-default:
+    description: "Hostility default vocabulary."
+    enum_uri: pixlnd:hostility-default
+    permissible_values:
+      hostile: {}
+      neutral: {}
+      passive: {}
+      friendly: {}
+      variable: {}

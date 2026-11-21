@@ -1,0 +1,76 @@
+id: https://w3id.org/pixlnd/entities/player-character-identity
+name: pixlnd-entities-player-character-identity
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- entities-appearance
+default_range: string
+slots:
+  player-character-appearance:
+    description: "Player character appearance property; interpreted under its owning definition."
+    slot_uri: pixlnd:player-character/appearance
+    alias: appearance
+    range: appearance
+    required: true
+    inlined: true
+    see_also: &id002
+    - ../domain/3_Classes.md#player-character
+  player-character-race:
+    description: "Player character race property; interpreted under its owning definition."
+    slot_uri: pixlnd:player-character/race
+    alias: race
+    range: race
+    required: true
+    see_also: *id002
+  player-character-class:
+    description: "Player character class property; interpreted under its owning definition."
+    slot_uri: pixlnd:player-character/class
+    alias: class
+    range: character-class
+    required: true
+    see_also: *id002
+  player-character-spec:
+    description: "Player character spec property; interpreted under its owning definition."
+    slot_uri: pixlnd:player-character/spec
+    alias: spec
+    range: specialization
+    required: true
+    see_also: *id002
+  player-character-name:
+    description: "Player character name property; interpreted under its owning definition."
+    slot_uri: pixlnd:player-character/name
+    alias: name
+    range: string
+    required: true
+    pattern: ^[\x20-\x7e]{2,16}$
+    see_also: *id002
+  player-character-level:
+    description: "Player character level property; interpreted under its owning definition."
+    slot_uri: pixlnd:player-character/level
+    alias: level
+    range: integer
+    required: true
+    inlined: false
+    see_also: *id002
+  player-character-xp:
+    description: "Player character xp property; interpreted under its owning definition."
+    slot_uri: pixlnd:player-character/xp
+    alias: xp
+    range: integer
+    required: true
+    inlined: false
+    see_also: *id002
+  player-character-skills:
+    description: "Player character skills property; interpreted under its owning definition."
+    slot_uri: pixlnd:player-character/skills
+    alias: skills
+    range: uint32
+    required: true
+    multivalued: true
+    minimum_cardinality: 11
+    maximum_cardinality: 11
+    see_also: *id002

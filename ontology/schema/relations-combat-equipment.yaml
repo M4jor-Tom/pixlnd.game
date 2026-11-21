@@ -1,0 +1,118 @@
+id: https://w3id.org/pixlnd/relations/combat-equipment
+name: pixlnd-relations-combat-equipment
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- relation-types
+default_range: string
+slots:
+  equips:
+    slot_uri: pixlnd:equips
+    alias: equips
+    range: item
+    multivalued: true
+    domain: entity
+    description: Cardinality 1→0..12. at most one per usable equipment-slot; reserved index 0 and separate
+      quick-consumable selection excluded; c-slot-accepts
+    see_also:
+    - ../domain/4_Relations.md
+    maximum_cardinality: 12
+  threat:
+    slot_uri: pixlnd:threat
+    alias: threat
+    range: player-character
+    multivalued: true
+    domain: entity
+    description: Cardinality n→n. hybrid mob/player combat state, retained across temporary absence and
+      surviving-mob restart (§3.2); optional per ordered pair, with one numeric `aggro-points` amount;
+      c-threat-pair Numeric association properties are represented by threat-pair.
+    see_also:
+    - ../domain/4_Relations.md
+  current-target:
+    slot_uri: pixlnd:current-target
+    alias: current-target
+    range: player-character
+    domain: entity
+    description: Cardinality 1→0..1. hybrid mob/player target selection, separate from threat amounts;
+      multiple mobs may select the same player; c-current-target
+    see_also:
+    - ../domain/4_Relations.md
+  requires-key-item:
+    slot_uri: pixlnd:requires-key-item
+    alias: requires-key-item
+    range: key-item
+    multivalued: true
+    domain: poi-type-or-dungeon-type-or-ability
+    description: Cardinality n→n. divine door→harp, crypt gate→bell, bird statue→whistle; hybrid riding→reins
+      (acquired, c-riding), hang-gliding→hang-glider and sailing→boat (equipped, c-gliding/c-sailing);
+      global scope
+    see_also:
+    - ../domain/4_Relations.md
+  equips-in:
+    slot_uri: pixlnd:equips-in
+    alias: equips-in
+    range: equipment-slot
+    multivalued: true
+    domain: item-type
+    description: Cardinality n→n. permitted slots, not simultaneous copies of an item; rings and weapons
+      have multiple eligible positions, subject to c-slot-accepts
+    see_also:
+    - ../domain/4_Relations.md
+  restricted-to-class:
+    slot_uri: pixlnd:restricted-to-class
+    alias: restricted-to-class
+    range: character-class
+    domain: weapon-type-or-material
+    description: Cardinality n→0..1.
+    see_also:
+    - ../domain/4_Relations.md
+  has-hazard:
+    slot_uri: pixlnd:has-hazard
+    alias: has-hazard
+    range: status-effect
+    multivalued: true
+    domain: landscape-or-terrain-feature
+    description: Cardinality n→n. cold-water, toxic, lava
+    see_also:
+    - ../domain/4_Relations.md
+  countered-by:
+    slot_uri: pixlnd:countered-by
+    alias: countered-by
+    range: consumable
+    multivalued: true
+    domain: status-effect
+    description: Cardinality n→n. hot chocolate, green smoothie, lemonade
+    see_also:
+    - ../domain/4_Relations.md
+  raises-stat:
+    slot_uri: pixlnd:raises-stat
+    alias: raises-stat
+    range: stat
+    multivalued: true
+    domain: artifact-or-ability-or-spirit-cube-or-elixir
+    description: 'Cardinality n→n. hybrid artifacts: exactly one traversal stat plus attack and max HP;
+      per-stat counting and recalculation follow §3.4 artifact / c-artifact-stat'
+    see_also:
+    - ../domain/4_Relations.md
+  threat-mob:
+    description: "Threat mob property; interpreted under its owning definition."
+    slot_uri: pixlnd:threat-mob
+    alias: mob
+    range: entity
+    required: true
+  threat-player:
+    description: "Threat player property; interpreted under its owning definition."
+    slot_uri: pixlnd:threat-player
+    alias: player
+    range: player-character
+    required: true
+  aggro-points:
+    description: "Aggro points property; interpreted under its owning definition."
+    slot_uri: pixlnd:aggro-points
+    alias: aggro-points
+    range: float
+    required: true
+    minimum_value: 0

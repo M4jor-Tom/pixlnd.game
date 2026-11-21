@@ -1,0 +1,62 @@
+id: https://w3id.org/pixlnd/items/recipe-refining-source
+name: pixlnd-items-recipe-refining-source
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- items-key-items-source
+default_range: string
+classes:
+  recipe-refining:
+    description: "Source representation of recipe-refining."
+    annotations: {source-map-entries: entries}
+    attributes:
+      entries: {alias: entries, slot_uri: pixlnd:recipe-refining/entries, range: recipe-refining-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of recipe-refining."}
+  recipe-refining-entry:
+    description: "Source representation of recipe-refining-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:recipe-refining-entry/value, range: recipe-refining-row, required: true, inlined: true, description: "The value field of recipe-refining-entry."}
+  recipe-refining-row:
+    description: "Source representation of recipe-refining-row."
+    attributes:
+      inputs: {alias: inputs, slot_uri: pixlnd:recipe-refining-row/inputs, range: recipe-ingredient-inputs, required: true, inlined: true, description: "The inputs field of recipe-refining-row."}
+      outputs: {alias: outputs, slot_uri: pixlnd:recipe-refining-row/outputs, range: recipe-ingredient-outputs, inlined: true, description: "The outputs field of recipe-refining-row."}
+      station: {alias: station, slot_uri: pixlnd:recipe-refining-row/station, range: string, required: true, description: "The station field of recipe-refining-row."}
+  recipe-ingredient-inputs:
+    description: "Source representation of recipe-ingredient-inputs."
+    annotations: {source-map-entries: entries}
+    attributes:
+      entries: {alias: entries, slot_uri: pixlnd:recipe-ingredient-inputs/entries, range: recipe-input-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of recipe-ingredient-inputs."}
+  recipe-input-entry:
+    description: "Source representation of recipe-input-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:recipe-input-entry/value, any_of: [{range: integer, minimum_value: 1}, {range: string}], required: true, description: "The value field of recipe-input-entry."}
+  recipe-ingredient-outputs:
+    description: "Source representation of recipe-ingredient-outputs."
+    annotations: {source-map-entries: entries}
+    attributes:
+      entries: {alias: entries, slot_uri: pixlnd:recipe-ingredient-outputs/entries, range: recipe-output-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of recipe-ingredient-outputs."}
+  recipe-output-entry:
+    description: "Source representation of recipe-output-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:recipe-output-entry/value, range: string, required: true, description: "The value field of recipe-output-entry."}
+  recipe-reference:
+    description: "Source representation of recipe-reference."
+    attributes:
+      see: {alias: see, slot_uri: pixlnd:recipe-reference/see, range: string, required: true, description: "The see field of recipe-reference."}
+  recipe-sources:
+    description: "Source representation of recipe-sources."
+    attributes:
+      alpha: {alias: A, slot_uri: pixlnd:recipe-sources/alpha, range: string, required: true, description: "The A field of recipe-sources."}
+      steam: {alias: S, slot_uri: pixlnd:recipe-sources/steam, range: string, required: true, description: "The S field of recipe-sources."}
+  recipe-customization:
+    description: "Source representation of recipe-customization."
+    attributes:
+      material-cubes: {alias: material-cubes, slot_uri: pixlnd:recipe-customization/material-cubes, range: string, required: true, description: "The material-cubes field of recipe-customization."}
+      spirit-cubes-alpha: {alias: spirit-cubes-a, slot_uri: pixlnd:recipe-customization/spirit-cubes-alpha, range: string, required: true, description: "The spirit-cubes-a field of recipe-customization."}
+      fully-modded-legendary-plus-steam: {alias: fully-modded-legendary-plus-s, slot_uri: pixlnd:recipe-customization/fully-modded-legendary-plus-steam, range: string, required: true, description: "The fully-modded-legendary-plus-s field of recipe-customization."}

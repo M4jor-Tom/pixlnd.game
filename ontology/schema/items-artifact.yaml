@@ -1,0 +1,112 @@
+id: https://w3id.org/pixlnd/items/artifact
+name: pixlnd-items-artifact
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- relations
+- identity
+default_range: string
+classes:
+  artifact:
+    description: "Logical artifact definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:artifact
+    see_also:
+    - ../domain/3_Classes.md#artifact
+    slots:
+    - id
+    - traversal-kind
+    - raises-stat
+    - artifact-name
+    - artifact-origin-realm
+    slot_usage:
+      raises-stat:
+        required: true
+        minimum_cardinality: 3
+        maximum_cardinality: 3
+        list_elements_unique: true
+        has_member: {equals_string: attack-power}
+        description: "Exactly one traversal stat plus attack and maximum HP: three distinct existing Stat references, including attack-power and hp (maximum HP), plus the selector's matching traversal Stat. Class rules declare the remaining membership constraints; JSON Schema does not enforce all of them."
+    rules:
+    - postconditions:
+        slot_conditions:
+          raises-stat: {has_member: {equals_string: hp}}
+    - preconditions:
+        slot_conditions:
+          traversal-kind: {equals_string: climb_speed}
+      postconditions:
+        slot_conditions:
+          raises-stat: {has_member: {equals_string: climb-speed}}
+    - preconditions:
+        slot_conditions:
+          traversal-kind: {equals_string: swim_speed}
+      postconditions:
+        slot_conditions:
+          raises-stat: {has_member: {equals_string: swim-speed}}
+    - preconditions:
+        slot_conditions:
+          traversal-kind: {equals_string: diving_skill}
+      postconditions:
+        slot_conditions:
+          raises-stat: {has_member: {equals_string: diving-skill}}
+    - preconditions:
+        slot_conditions:
+          traversal-kind: {equals_string: ride_speed}
+      postconditions:
+        slot_conditions:
+          raises-stat: {has_member: {equals_string: ride-speed}}
+    - preconditions:
+        slot_conditions:
+          traversal-kind: {equals_string: glide_speed}
+      postconditions:
+        slot_conditions:
+          raises-stat: {has_member: {equals_string: glide-speed}}
+    - preconditions:
+        slot_conditions:
+          traversal-kind: {equals_string: sail_speed}
+      postconditions:
+        slot_conditions:
+          raises-stat: {has_member: {equals_string: sail-speed}}
+    - preconditions:
+        slot_conditions:
+          traversal-kind: {equals_string: light_radius}
+      postconditions:
+        slot_conditions:
+          raises-stat: {has_member: {equals_string: light-radius}}
+    attributes:
+      traversal-kind: {alias: traversal-kind, slot_uri: pixlnd:artifact/traversal-kind, range: ArtifactTraversalKind, required: true, description: 'Exactly one of the seven approved traversal bonus kinds; stat targets, equal-share accumulation and logarithmic behavior remain governed by raises-stat and c-artifact-stat.'}
+enums:
+  ArtifactTraversalKind:
+    description: "Named values for ArtifactTraversalKind."
+    permissible_values:
+      climb_speed: {aliases: [climb-speed]}
+      swim_speed: {aliases: [swim-speed]}
+      diving_skill: {aliases: [diving-skill]}
+      ride_speed: {aliases: [ride-speed]}
+      glide_speed: {aliases: [glide-speed]}
+      sail_speed: {aliases: [sail-speed]}
+      light_radius: {aliases: [light-radius]}
+slots:
+  artifact-name:
+    slot_uri: pixlnd:artifact/name
+    alias: name
+    domain: artifact
+    range: string
+    required: false
+    readonly: 'true'
+    description: 'Derived relic name, source forms "<Ring|Stone|Gem…> of <Name>" and "<Name> Stone" (e.g. Ring of Momuna, Sirazyna Stone). No naming algorithm or stored-name requirement is selected.'
+    see_also:
+    - ../domain/3_Classes.md#artifact
+    - ../instances/key-items.json
+  artifact-origin-realm:
+    slot_uri: pixlnd:artifact/origin-realm
+    alias: origin-realm
+    domain: artifact
+    range: realm
+    required: true
+    description: Source-S realm association (e.g. Ring of Momuna, Realm of Vakaa); origin/lore does not gate the permanent hybrid bonus, which works everywhere. Found at dungeon ends, vaults, sewers, sky islands and some mission chests; not Item power or upgrade payload.
+    see_also:
+    - ../domain/3_Classes.md#artifact
+    - ../instances/key-items.json

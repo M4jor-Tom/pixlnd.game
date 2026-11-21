@@ -1,0 +1,71 @@
+id: https://w3id.org/pixlnd/relation-types/nominal
+name: pixlnd-relation-types-nominal
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- relations
+default_range: string
+classes:
+  hazard:
+    class_uri: pixlnd:hazard
+    see_also:
+    - ../domain/4_Relations.md
+    slots:
+    - id
+    description: Nominal identity endpoint named by §4; no complete record shape is specified.
+  magic-crystal:
+    class_uri: pixlnd:magic-crystal
+    see_also:
+    - ../domain/4_Relations.md
+    slots:
+    - id
+    description: Nominal identity endpoint named by §4; no complete record shape is specified.
+  dungeon:
+    class_uri: pixlnd:dungeon
+    see_also:
+    - ../domain/4_Relations.md
+    slots:
+    - id
+    description: Nominal identity endpoint named by §4; no complete record shape is specified.
+  poi:
+    class_uri: pixlnd:poi
+    see_also:
+    - ../domain/4_Relations.md
+    slots:
+    - id
+    description: Nominal identity endpoint named by §4; no complete record shape is specified.
+  elixir:
+    class_uri: pixlnd:elixir
+    see_also:
+    - ../domain/4_Relations.md
+    slots:
+    - id
+    description: Nominal identity endpoint named by §4; no complete record shape is specified.
+  mechanic:
+    class_uri: pixlnd:mechanic
+    see_also:
+    - ../domain/4_Relations.md
+    slots:
+    - id
+    description: Nominal identity endpoint named by §4; no complete record shape is specified.
+  threat-pair:
+    class_uri: pixlnd:threat
+    see_also:
+    - ../domain/4_Relations.md#threat-and-current-target-hybrid
+    - ../domain/5_Constraints.md#constraint-catalog
+    slots:
+    - threat-mob
+    - threat-player
+    - aggro-points
+    unique_keys:
+      mob-player:
+        unique_key_slots:
+        - threat-mob
+        - threat-player
+    description: Reification of the directed threat relation with its mob/player endpoints and numeric
+      amount. Compound uniqueness, presence/liveness and lifecycle require validation beyond native JSON
+      Schema.

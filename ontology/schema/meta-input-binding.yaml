@@ -1,0 +1,96 @@
+id: https://w3id.org/pixlnd/meta/input-binding
+name: pixlnd-meta-input-binding
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- meta-control-action
+default_range: string
+classes:
+  input-binding:
+    description: One physical input row referring to one or more distinct canonical actions; shared inputs remain separate rows.
+    class_uri: pixlnd:input-binding
+    see_also:
+    - ../domain/3_Classes.md#input-binding
+    - ../domain/controller-profiles.md
+    slots:
+    - input-binding-action
+    - input-binding-physical-input
+    - input-binding-phases
+    - input-binding-contexts
+    - input-binding-mapping-status
+    - input-binding-alias-of
+    - input-binding-alias
+slots:
+  input-binding-action:
+    slot_uri: pixlnd:input-binding/action
+    alias: action
+    domain: input-binding
+    range: control-action
+    required: true
+    multivalued: true
+    minimum_cardinality: 1
+    inlined: false
+    description: One or more nominal canonical control-action references constrained through their closed IDs; no runtime behavior follows.
+    see_also:
+    - ../domain/controls.md
+    - ../domain/3_Classes.md#input-binding
+  input-binding-physical-input:
+    slot_uri: pixlnd:input-binding/physical-input
+    alias: physical-input
+    domain: input-binding
+    range: string
+    required: true
+    description: Physical input label in the owning profile; not a portable canonical action.
+    see_also:
+    - ../domain/controller-profiles.md
+    - ../domain/3_Classes.md#input-binding
+  input-binding-phases:
+    slot_uri: pixlnd:input-binding/phases
+    alias: phases
+    domain: input-binding
+    range: string
+    multivalued: true
+    description: Profile-owned request phases retained without a universal lifecycle inference.
+    see_also:
+    - ../domain/controller-profiles.md
+    - ../domain/3_Classes.md#input-binding
+  input-binding-contexts:
+    slot_uri: pixlnd:input-binding/contexts
+    alias: contexts
+    domain: input-binding
+    range: string
+    multivalued: true
+    description: Profile-owned input contexts; not a gameplay eligibility or global priority rule.
+    see_also:
+    - ../domain/controller-profiles.md
+    - ../domain/3_Classes.md#input-binding
+  input-binding-mapping-status:
+    slot_uri: pixlnd:input-binding/mapping-status
+    alias: mapping-status
+    domain: input-binding
+    range: string
+    description: Source-qualified mapping status; does not prove implementation.
+    see_also:
+    - ../domain/controller-profiles.md
+    - ../domain/3_Classes.md#input-binding
+  input-binding-alias-of:
+    slot_uri: pixlnd:input-binding/alias-of
+    alias: alias-of
+    domain: input-binding
+    range: ControlActionId
+    description: Canonical alias target identifier; this is not a separate new action or runtime relationship.
+    see_also:
+    - ../domain/controller-profiles.md
+    - ../domain/3_Classes.md#input-binding
+  input-binding-alias:
+    slot_uri: pixlnd:input-binding/alias
+    alias: alias
+    domain: input-binding
+    range: string
+    description: Literal adapter alias label, not a new canonical action.
+    see_also:
+    - ../domain/controller-profiles.md#keyboard-and-mouse
+    - ../domain/3_Classes.md#input-binding

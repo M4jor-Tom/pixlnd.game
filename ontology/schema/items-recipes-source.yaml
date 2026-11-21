@@ -1,0 +1,95 @@
+id: https://w3id.org/pixlnd/items/recipes-source
+name: pixlnd-items-recipes-source
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- items-key-items-source
+- items-recipe-refining-source
+default_range: string
+classes:
+  recipes-source:
+    class_uri: pixlnd:recipes-source
+    description: Literal recipes.json configuration; symbolic counts are not executable relations.
+    see_also: [../instances/recipes.json, ../domain/5_Constraints.md#required-inputs]
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: pixlnd:recipes-source/schema, range: string, required: true, equals_string: recipe, description: "The $schema field of recipes-source."}
+      documentation: {alias: _doc, slot_uri: pixlnd:recipes-source/doc, range: string, required: true, description: "The _doc field of recipes-source."}
+      gear-armor-quantities: {alias: gear-armor-quantities, slot_uri: pixlnd:recipes-source/armor, range: recipe-armor, required: true, inlined: true, description: "The gear-armor-quantities field of recipes-source."}
+      gear-weapons: {alias: gear-weapons, slot_uri: pixlnd:recipes-source/weapons, range: recipe-weapons, required: true, inlined: true, description: "The gear-weapons field of recipes-source."}
+      refining: {alias: refining, slot_uri: pixlnd:recipes-source/refining, range: recipe-refining, required: true, inlined: true, description: "The refining field of recipes-source."}
+      cooking: {alias: cooking, slot_uri: pixlnd:recipes-source/cooking, range: recipe-reference, required: true, inlined: true, description: "The cooking field of recipes-source."}
+      alchemy: {alias: alchemy, slot_uri: pixlnd:recipes-source/alchemy, range: recipe-reference, required: true, inlined: true, description: "The alchemy field of recipes-source."}
+      crafting-tabs-a: {alias: crafting-tabs-a, slot_uri: pixlnd:recipes-source/crafting-tabs-a, range: string, required: true, multivalued: true, description: "The crafting-tabs-a field of recipes-source."}
+      recipe-sources: {alias: recipe-sources, slot_uri: pixlnd:recipes-source/sources, range: recipe-sources, required: true, inlined: true, description: "The recipe-sources field of recipes-source."}
+      customization: {alias: customization, slot_uri: pixlnd:recipes-source/customization, range: recipe-customization, required: true, inlined: true, description: "The customization field of recipes-source."}
+  recipe-armor:
+    description: "Source representation of recipe-armor."
+    attributes:
+      unit: {alias: unit, slot_uri: pixlnd:recipe-armor/unit, range: string, required: true, description: "The unit field of recipe-armor."}
+      common: {alias: common, slot_uri: pixlnd:recipe-armor/common, range: recipe-armor-common, required: true, inlined: true, description: "The common field of recipe-armor."}
+      uncommon: {alias: uncommon, slot_uri: pixlnd:recipe-armor/uncommon, range: recipe-armor-tier, required: true, inlined: true, description: "The uncommon field of recipe-armor."}
+      rare: {alias: rare, slot_uri: pixlnd:recipe-armor/rare, range: recipe-armor-tier, required: true, inlined: true, description: "The rare field of recipe-armor."}
+      epic: {alias: epic, slot_uri: pixlnd:recipe-armor/epic, range: recipe-armor-tier, required: true, inlined: true, description: "The epic field of recipe-armor."}
+      legendary: {alias: legendary, slot_uri: pixlnd:recipe-armor/legendary, range: recipe-armor-tier, required: true, inlined: true, description: "The legendary field of recipe-armor."}
+      stations: {alias: stations, slot_uri: pixlnd:recipe-armor/stations, range: recipe-stations, required: true, inlined: true, description: "The stations field of recipe-armor."}
+  recipe-armor-common:
+    description: "Source representation of recipe-armor-common."
+    attributes:
+      chest: {alias: chest, slot_uri: pixlnd:recipe-armor-common/chest, range: recipe-base, required: true, inlined: true, description: "The chest field of recipe-armor-common."}
+      shoulders: {alias: shoulders, slot_uri: pixlnd:recipe-armor-common/shoulders, range: recipe-base, required: true, inlined: true, description: "The shoulders field of recipe-armor-common."}
+      gloves: {alias: gloves, slot_uri: pixlnd:recipe-armor-common/gloves, range: recipe-base, required: true, inlined: true, description: "The gloves field of recipe-armor-common."}
+      boots: {alias: boots, slot_uri: pixlnd:recipe-armor-common/boots, range: recipe-base, required: true, inlined: true, description: "The boots field of recipe-armor-common."}
+      gem: {alias: gem, slot_uri: pixlnd:recipe-armor-common/gem, range: recipe-null-marker, required: true, inlined: true, annotations: {source-literal-null: true}, description: "The gem field of recipe-armor-common."}
+  recipe-null-marker:
+    description: Empty closed marker used only for reversible binding of the source's present null gem.
+    attributes: {}
+  recipe-base:
+    description: "Source representation of recipe-base."
+    attributes:
+      base: {alias: base, slot_uri: pixlnd:recipe-base/base, range: integer, required: true, minimum_value: 1, description: "The base field of recipe-base."}
+  recipe-armor-tier:
+    description: "Source representation of recipe-armor-tier."
+    attributes:
+      chest: {alias: chest, slot_uri: pixlnd:recipe-armor-tier/chest, range: recipe-piece, required: true, inlined: true, description: "The chest field of recipe-armor-tier."}
+      shoulders: {alias: shoulders, slot_uri: pixlnd:recipe-armor-tier/shoulders, range: recipe-piece, required: true, inlined: true, description: "The shoulders field of recipe-armor-tier."}
+      gloves: {alias: gloves, slot_uri: pixlnd:recipe-armor-tier/gloves, range: recipe-piece, required: true, inlined: true, description: "The gloves field of recipe-armor-tier."}
+      boots: {alias: boots, slot_uri: pixlnd:recipe-armor-tier/boots, range: recipe-piece, required: true, inlined: true, description: "The boots field of recipe-armor-tier."}
+      gem: {alias: gem, slot_uri: pixlnd:recipe-armor-tier/gem, range: string, required: true, description: "The gem field of recipe-armor-tier."}
+  recipe-piece:
+    description: "Source representation of recipe-piece."
+    attributes:
+      base: {alias: base, slot_uri: pixlnd:recipe-piece/base, range: integer, required: true, minimum_value: 1, description: "The base field of recipe-piece."}
+      gem: {alias: gem, slot_uri: pixlnd:recipe-piece/gem, range: integer, required: true, minimum_value: 1, description: "The gem field of recipe-piece."}
+  recipe-stations:
+    description: "Source representation of recipe-stations."
+    attributes:
+      iron: {alias: iron, slot_uri: pixlnd:recipe-stations/iron, range: string, required: true, description: "The iron field of recipe-stations."}
+      textile: {alias: cotton|linen|silk, slot_uri: pixlnd:recipe-stations/textile, range: string, required: true, description: "The cotton|linen|silk field of recipe-stations."}
+  recipe-weapons:
+    description: "Source representation of recipe-weapons."
+    annotations: {source-map-entries: entries}
+    attributes:
+      rule: {alias: _rule, slot_uri: pixlnd:recipe-weapons/rule, range: string, required: true, description: "The _rule field of recipe-weapons."}
+      gem-per-rarity: {alias: gem-per-rarity, slot_uri: pixlnd:recipe-weapons/gem-per-rarity, range: recipe-gems-by-rarity, required: true, inlined: true, description: "The gem-per-rarity field of recipe-weapons."}
+      entries: {alias: entries, slot_uri: pixlnd:recipe-weapons/entries, range: recipe-weapon-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of recipe-weapons."}
+  recipe-weapon-entry:
+    description: "Source representation of recipe-weapon-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:recipe-weapon-entry/value, range: recipe-weapon-row, required: true, inlined: true, description: "The value field of recipe-weapon-entry."}
+  recipe-weapon-row:
+    description: "Source representation of recipe-weapon-row."
+    attributes:
+      inputs: {alias: inputs, slot_uri: pixlnd:recipe-weapon-row/inputs, range: recipe-ingredient-inputs, required: true, inlined: true, description: "The inputs field of recipe-weapon-row."}
+      station: {alias: station, slot_uri: pixlnd:recipe-weapon-row/station, range: string, required: true, description: "The station field of recipe-weapon-row."}
+      note: {alias: note, slot_uri: pixlnd:recipe-weapon-row/note, range: string, description: "The note field of recipe-weapon-row."}
+  recipe-gems-by-rarity:
+    description: "Source representation of recipe-gems-by-rarity."
+    attributes:
+      uncommon: {alias: uncommon, slot_uri: pixlnd:recipe-gems-by-rarity/uncommon, range: string, required: true, description: "The uncommon field of recipe-gems-by-rarity."}
+      rare: {alias: rare, slot_uri: pixlnd:recipe-gems-by-rarity/rare, range: string, required: true, description: "The rare field of recipe-gems-by-rarity."}
+      epic: {alias: epic, slot_uri: pixlnd:recipe-gems-by-rarity/epic, range: string, required: true, description: "The epic field of recipe-gems-by-rarity."}
+      legendary: {alias: legendary, slot_uri: pixlnd:recipe-gems-by-rarity/legendary, range: string, required: true, description: "The legendary field of recipe-gems-by-rarity."}

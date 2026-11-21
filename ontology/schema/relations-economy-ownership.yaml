@@ -1,0 +1,141 @@
+id: https://w3id.org/pixlnd/relations/economy-ownership
+name: pixlnd-relations-economy-ownership
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- relation-types
+default_range: string
+slots:
+  raises-stock:
+    slot_uri: pixlnd:raises-stock
+    alias: raises-stock
+    range: shop
+    required: true
+    multivalued: true
+    domain: gnome-supplier
+    description: Cardinality 1→n. hybrid [land-shared ceiling](encounter-contracts.md#shared-mission-packages-and-supplier-shops),
+      applied at ordinary stock generation/restock, not a rescue-triggered reroll
+    see_also:
+    - ../domain/4_Relations.md
+    minimum_cardinality: 1
+  sells:
+    slot_uri: pixlnd:sells
+    alias: sells
+    range: item-type-or-pet-food-or-formula-or-key-item
+    multivalued: true
+    domain: shop
+    description: Cardinality n→n. Applicability follows the linked canonical rules.
+    see_also:
+    - ../domain/4_Relations.md
+  offers-service:
+    slot_uri: pixlnd:offers-service
+    alias: offers-service
+    range: npc-role
+    required: true
+    multivalued: true
+    domain: building
+    description: Cardinality 1→n.
+    see_also:
+    - ../domain/4_Relations.md
+    minimum_cardinality: 1
+  contains-station:
+    slot_uri: pixlnd:contains-station
+    alias: contains-station
+    range: crafting-station
+    required: true
+    multivalued: true
+    domain: building
+    description: Cardinality 1→n.
+    see_also:
+    - ../domain/4_Relations.md
+    minimum_cardinality: 1
+  in-district:
+    slot_uri: pixlnd:in-district
+    alias: in-district
+    range: district
+    required: true
+    domain: building
+    description: Cardinality n→1. District membership; applicability follows the linked canonical rules.
+    see_also:
+    - ../domain/4_Relations.md
+  styled-by:
+    slot_uri: pixlnd:styled-by
+    alias: styled-by
+    range: landscape
+    required: true
+    domain: settlement
+    description: Cardinality n→1. architecture theme
+    see_also:
+    - ../domain/4_Relations.md
+  mounts:
+    slot_uri: pixlnd:mounts
+    alias: mounts
+    range: pet
+    domain: player-character
+    description: 'Cardinality 1→0..1. hybrid training + global Reins + rideable tamed pet: c-riding'
+    see_also:
+    - ../domain/4_Relations.md
+  owns:
+    slot_uri: pixlnd:owns
+    alias: owns
+    range: pet
+    required: true
+    multivalued: true
+    domain: player-character
+    description: Cardinality 1→n. cages
+    see_also:
+    - ../domain/4_Relations.md
+    minimum_cardinality: 1
+  possesses:
+    slot_uri: pixlnd:possesses
+    alias: possesses
+    range: npc-role-or-creature
+    required: true
+    multivalued: true
+    domain: poi-type
+    description: Cardinality 1→n. Demon-portal possession; applicability follows the linked canonical rules.
+    see_also:
+    - ../domain/4_Relations.md
+    minimum_cardinality: 1
+  petrifies:
+    slot_uri: pixlnd:petrifies
+    alias: petrifies
+    range: settlement
+    required: true
+    domain: creature
+    description: Cardinality 1→1. Witch-boss curse; applicability follows the linked canonical rules.
+    see_also:
+    - ../domain/4_Relations.md
+  scales-with:
+    slot_uri: pixlnd:scales-with
+    alias: scales-with
+    range: stat
+    required: true
+    multivalued: true
+    domain: pet
+    description: Cardinality 1→2. Weapon-rating and armor-rating; applicability follows the linked canonical rules.
+    see_also:
+    - ../domain/4_Relations.md
+    minimum_cardinality: 2
+    maximum_cardinality: 2
+  adjacent-to:
+    slot_uri: pixlnd:adjacent-to
+    alias: adjacent-to
+    range: land
+    multivalued: true
+    domain: land
+    description: Cardinality n→n. derived from grid
+    see_also:
+    - ../domain/4_Relations.md
+  enabled-by:
+    slot_uri: pixlnd:enabled-by
+    alias: enabled-by
+    range: ruleset
+    multivalued: true
+    domain: ability-or-item-type-or-mechanic
+    description: Cardinality n→n. feature flags
+    see_also:
+    - ../domain/4_Relations.md

@@ -1,0 +1,61 @@
+id: https://w3id.org/pixlnd/combat/stats
+name: pixlnd-combat-stats
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- catalog-identity-combat
+default_range: string
+classes:
+  resource:
+    description: "Logical resource definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:resource
+    see_also:
+    - ../domain/3_Classes.md#resource
+    attributes:
+      name: {alias: name, slot_uri: "pixlnd:resource/name", range: string, description: "Display name for this definition."}
+      range: {alias: range, slot_uri: "pixlnd:resource/range", range: double, description: "Described resource interval; no default amount.", multivalued: true, minimum_cardinality: 2, maximum_cardinality: 2}
+      gain: {alias: gain, slot_uri: "pixlnd:resource/gain", range: string, description: "Resource acquisition description."}
+      spend: {alias: spend, slot_uri: "pixlnd:resource/spend", range: string, description: "Resource consumption description."}
+      regen: {alias: regen, slot_uri: "pixlnd:resource/regen", range: string, description: "Resource regeneration description."}
+    slots:
+    - id
+  stat:
+    description: "Logical stat definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:stat
+    see_also:
+    - ../domain/3_Classes.md#stat
+    attributes:
+      name: {alias: name, slot_uri: "pixlnd:stat/name", range: string, description: "Display name for this definition."}
+      source: {alias: source, slot_uri: "pixlnd:stat/source", range: string, description: "Contributors to the derived stat.", multivalued: true}
+      formula: {alias: formula, slot_uri: "pixlnd:stat/formula", range: string, description: "Qualified formula text; structural typing does not execute it."}
+      effect: {alias: effect, slot_uri: "pixlnd:stat/effect", range: string, description: "Meaning of the derived quantity."}
+    slots:
+    - id
+  status-effect:
+    description: "Logical status effect definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:status-effect
+    see_also:
+    - ../domain/3_Classes.md#status-effect
+    attributes:
+      name: {alias: name, slot_uri: "pixlnd:status-effect/name", range: string, description: "Display name for this definition."}
+      kind: {alias: kind, slot_uri: "pixlnd:status-effect/kind", range: SourceStatusKind, description: "Source-qualified effect category."}
+      visual: {alias: visual, slot_uri: "pixlnd:status-effect/visual", range: string, description: "Visible effect description."}
+      effect: {alias: effect, slot_uri: "pixlnd:status-effect/effect", range: string, description: "Effect summary, not executable rules."}
+      duration-s: {alias: duration-s, slot_uri: "pixlnd:status-effect/duration-s", range: double, description: "Duration where specified.", minimum_value: 0}
+    slots:
+    - id
+  mob-strength-tier:
+    description: "Logical mob strength tier definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:mob-strength-tier
+    see_also:
+    - ../domain/3_Classes.md#mob-strength-tier
+    attributes:
+      name: {alias: name, slot_uri: "pixlnd:mob-strength-tier/name", range: string, description: "Display name for this definition."}
+      rarity: {alias: rarity, slot_uri: "pixlnd:mob-strength-tier/rarity", range: rarity, description: "Comparison rarity reference."}
+      hp-range: {alias: hp-range, slot_uri: "pixlnd:mob-strength-tier/hp-range", range: double, description: "Source example HP interval, not a universal generated bound.", multivalued: true, minimum_cardinality: 2, maximum_cardinality: 2}
+    slots:
+    - id

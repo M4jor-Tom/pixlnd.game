@@ -1,0 +1,56 @@
+id: https://w3id.org/pixlnd/identity/types
+name: pixlnd-identity-types
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+slots:
+  id:
+    slot_uri: pixlnd:id
+    alias: id
+    range: string
+    required: true
+    pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
+    identifier: true
+    description: Stable instance identity under the canonical kebab-case convention; numeric source tables
+      have separate unresolved namespace mappings.
+types:
+  int64:
+    typeof: integer
+    uri: xsd:integer
+    minimum_value: -9223372036854775808
+    maximum_value: 9223372036854775807
+    description: Signed 64-bit source position component.
+  int32:
+    typeof: integer
+    uri: xsd:integer
+    minimum_value: -2147483648
+    maximum_value: 2147483647
+    description: Signed 32-bit source scalar.
+  uint32:
+    description: "uint32 scalar representation."
+    typeof: integer
+    uri: xsd:integer
+    minimum_value: 0
+    maximum_value: 4294967295
+  u8:
+    description: "u8 scalar representation."
+    typeof: integer
+    uri: xsd:integer
+    minimum_value: 0
+    maximum_value: 255
+  i8:
+    description: "i8 scalar representation."
+    typeof: integer
+    uri: xsd:integer
+    minimum_value: -128
+    maximum_value: 127
+  i16:
+    description: "i16 scalar representation."
+    typeof: integer
+    uri: xsd:integer
+    minimum_value: -32768
+    maximum_value: 32767

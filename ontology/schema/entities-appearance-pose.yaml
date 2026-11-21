@@ -1,0 +1,95 @@
+id: https://w3id.org/pixlnd/entities/appearance-pose
+name: pixlnd-entities-appearance-pose
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- entities-appearance
+default_range: string
+slots:
+  appearance-body-pitch:
+    slot_uri: pixlnd:appearance/body-pitch
+    alias: body-pitch
+    domain: appearance
+    range: float
+    description: Individual cuwo orientation field; no universal per-part transform or angular unit is inferred.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-arm-pitch:
+    slot_uri: pixlnd:appearance/arm-pitch
+    alias: arm-pitch
+    domain: appearance
+    range: float
+    description: Individual cuwo orientation field; no universal per-part transform or angular unit is inferred.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-arm-roll:
+    slot_uri: pixlnd:appearance/arm-roll
+    alias: arm-roll
+    domain: appearance
+    range: float
+    description: Individual cuwo orientation field; no universal per-part transform or angular unit is inferred.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-arm-yaw:
+    slot_uri: pixlnd:appearance/arm-yaw
+    alias: arm-yaw
+    domain: appearance
+    range: float
+    description: Individual cuwo orientation field; no universal per-part transform or angular unit is inferred.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-feet-pitch:
+    slot_uri: pixlnd:appearance/feet-pitch
+    alias: feet-pitch
+    domain: appearance
+    range: float
+    description: Individual cuwo orientation field; no universal per-part transform or angular unit is inferred.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-wing-pitch:
+    slot_uri: pixlnd:appearance/wing-pitch
+    alias: wing-pitch
+    domain: appearance
+    range: float
+    description: Individual cuwo orientation field; no universal per-part transform or angular unit is inferred.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-back-pitch:
+    slot_uri: pixlnd:appearance/back-pitch
+    alias: back-pitch
+    domain: appearance
+    range: float
+    description: Individual cuwo orientation field; no universal per-part transform or angular unit is inferred.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-flags:
+    slot_uri: pixlnd:appearance/flags
+    alias: flags
+    domain: appearance
+    range: AppearanceFlag
+    description: Named appearance flags, not a selected numeric bit layout.
+    see_also: [../domain/3_Classes.md#appearance]
+    multivalued: true
+    list_elements_unique: true
+  appearance-expression:
+    slot_uri: pixlnd:appearance/expression
+    alias: expression
+    domain: appearance
+    range: AppearanceExpression
+    description: Omega source expression categories; not authenticated Alpha codec fields.
+    see_also: [../domain/3_Classes.md#appearance]
+enums:
+  AppearanceFlag:
+    enum_uri: pixlnd:AppearanceFlag
+    description: Canonical named appearance flags, without a chosen bit encoding.
+    see_also: [../domain/3_Classes.md#appearance]
+    permissible_values:
+      double-scale: {description: "Double scale flag or expression."}
+      immovable: {description: "Immovable flag or expression."}
+  AppearanceExpression:
+    enum_uri: pixlnd:AppearanceExpression
+    description: Announced Omega expressions; no cross-edition mapping.
+    see_also: [../domain/3_Classes.md#appearance]
+    permissible_values:
+      neutral: {description: "Neutral flag or expression."}
+      happy-angry: {description: "Happy angry flag or expression."}
+      sad: {description: "Sad flag or expression."}
+      surprised: {description: "Surprised flag or expression."}
+      sleeping: {description: "Sleeping flag or expression."}
+      blink: {description: "Blink flag or expression."}

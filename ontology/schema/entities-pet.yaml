@@ -1,0 +1,80 @@
+id: https://w3id.org/pixlnd/entities/pet
+name: pixlnd-entities-pet
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- items
+- entities-entity
+- entities-entity-body
+default_range: string
+classes:
+  pet:
+    description: "Logical pet definition; applicability follows the cited domain rules."
+    is_a: entity
+    class_uri: pixlnd:pet
+    see_also: &id003
+    - ../domain/3_Classes.md#pet
+    slots:
+    - id
+    - pet-cage
+    - pet-hydration
+    - pet-boss-origin
+    slot_usage:
+      entity-species:
+        range: creature
+      entity-name:
+        required: true
+slots:
+  pet-species:
+    description: "Pet species property; interpreted under its owning definition."
+    slot_uri: pixlnd:pet/species
+    alias: species
+    range: creature
+    required: true
+    see_also: *id003
+  pet-name:
+    description: "Pet name property; interpreted under its owning definition."
+    slot_uri: pixlnd:pet/name
+    alias: name
+    range: string
+    required: true
+    see_also: *id003
+  pet-cage:
+    description: "Pet cage property; interpreted under its owning definition."
+    slot_uri: pixlnd:pet/cage
+    alias: cage
+    range: item
+    required: true
+    see_also: *id003
+  pet-level:
+    description: "Pet level property; interpreted under its owning definition."
+    slot_uri: pixlnd:pet/level
+    alias: level
+    range: integer
+    required: true
+    see_also: *id003
+  pet-xp:
+    description: "Pet xp property; interpreted under its owning definition."
+    slot_uri: pixlnd:pet/xp
+    alias: xp
+    range: integer
+    required: true
+    see_also: *id003
+  pet-hydration:
+    slot_uri: pixlnd:pet/hydration
+    alias: hydration
+    domain: pet
+    range: double
+    description: Pet hydration resource; no new drain or refill amount.
+    see_also: [../domain/3_Classes.md#pet]
+  pet-boss-origin:
+    slot_uri: pixlnd:pet/boss-origin
+    alias: boss-origin
+    domain: pet
+    range: boolean
+    description: Whether the pet originated from a boss; reload-size behavior remains prose.
+    see_also: [../domain/3_Classes.md#pet]

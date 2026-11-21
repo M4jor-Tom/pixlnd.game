@@ -1,0 +1,112 @@
+id: https://w3id.org/pixlnd/items/item-types-source
+name: pixlnd-items-item-types-source
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- items-key-items-source
+default_range: string
+classes:
+  item-types-source:
+    description: "Source representation of item-types-source."
+    class_uri: pixlnd:item-types-source
+    annotations: {source-map-entries: entries}
+    see_also: [../instances/item-types.json]
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: pixlnd:item-types-source/schema, range: string, required: true, equals_string: item-type, description: "The $schema field of item-types-source."}
+      documentation: {alias: _doc, slot_uri: pixlnd:item-types-source/doc, range: string, required: true, description: "The _doc field of item-types-source."}
+      additions: {alias: _s-additions, slot_uri: pixlnd:item-types-source/additions, range: item-type-source-additions, required: true, inlined: true, description: "The _s-additions field of item-types-source."}
+      entries: {alias: entries, slot_uri: pixlnd:item-types-source/entries, range: item-type-source-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of item-types-source."}
+  item-type-source-entry:
+    description: "Source representation of item-type-source-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:item-type-source-entry/value, range: item-type-source-row, required: true, inlined: true, description: "The value field of item-type-source-entry."}
+  item-type-source-row:
+    description: "Source representation of item-type-source-row."
+    attributes:
+      type: {alias: type, slot_uri: pixlnd:item-type-source-row/type, range: integer, required: true, description: "The type field of item-type-source-row."}
+      name: {alias: name, slot_uri: pixlnd:item-type-source-row/name, range: string, required: true, description: "The name field of item-type-source-row."}
+      subtypes:
+        description: "The subtypes field of item-type-source-row."
+        alias: subtypes
+        slot_uri: pixlnd:item-type-source-row/subtypes
+        exactly_one_of: [{range: string}, {range: item-type-subtype-map}]
+        annotations: {source-map-union-range: item-type-subtype-map}
+      slot: {alias: slot, slot_uri: pixlnd:item-type-source-row/slot, range: string, description: "The slot field of item-type-source-row."}
+      versions: {alias: versions, slot_uri: pixlnd:item-type-source-row/versions, range: string, multivalued: true, description: "The versions field of item-type-source-row."}
+      stats: {alias: stats, slot_uri: pixlnd:item-type-source-row/stats, range: string, multivalued: true, description: "The stats field of item-type-source-row."}
+      note: {alias: note, slot_uri: pixlnd:item-type-source-row/note, range: string, description: "The note field of item-type-source-row."}
+  item-type-subtype-map:
+    description: "Source representation of item-type-subtype-map."
+    annotations: {source-map-entries: entries}
+    attributes:
+      entries: {alias: entries, slot_uri: pixlnd:item-type-subtype-map/entries, range: item-type-subtype-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of item-type-subtype-map."}
+  item-type-subtype-entry:
+    description: "Source representation of item-type-subtype-entry."
+    slots: [item-type-subtype-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:item-type-subtype-entry/value, range: string, required: true, description: "The value field of item-type-subtype-entry."}
+  item-type-source-additions:
+    description: "Source representation of item-type-source-additions."
+    attributes:
+      artifact: {alias: artifact, slot_uri: pixlnd:item-type-source-additions/artifact, range: string, required: true, description: "The artifact field of item-type-source-additions."}
+      book-of-crafting: {alias: book-of-crafting, slot_uri: pixlnd:item-type-source-additions/book-of-crafting, range: string, required: true, description: "The book-of-crafting field of item-type-source-additions."}
+      elixir: {alias: elixir, slot_uri: pixlnd:item-type-source-additions/elixir, range: string, required: true, description: "The elixir field of item-type-source-additions."}
+      beverage: {alias: beverage, slot_uri: pixlnd:item-type-source-additions/beverage, range: string, required: true, description: "The beverage field of item-type-source-additions."}
+      key-item-s: {alias: key-item-s, slot_uri: pixlnd:item-type-source-additions/key-item-s, range: string, required: true, multivalued: true, description: "The key-item-s field of item-type-source-additions."}
+      bag-of-gold: {alias: bag-of-gold, slot_uri: pixlnd:item-type-source-additions/bag-of-gold, range: string, required: true, description: "The bag-of-gold field of item-type-source-additions."}
+  equipment-slots-source:
+    description: "Source representation of equipment-slots-source."
+    class_uri: pixlnd:equipment-slots-source
+    see_also: [../instances/equipment-slots.json]
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: pixlnd:equipment-slots-source/schema, range: string, required: true, equals_string: equipment-slot, description: "The $schema field of equipment-slots-source."}
+      documentation: {alias: _doc, slot_uri: pixlnd:equipment-slots-source/doc, range: string, required: true, description: "The _doc field of equipment-slots-source."}
+      slots: {alias: slots, slot_uri: pixlnd:equipment-slots-source/slots, range: equipment-slot-source-row, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The slots field of equipment-slots-source."}
+      extra: {alias: extra, slot_uri: pixlnd:equipment-slots-source/extra, range: equipment-extra-source, required: true, inlined: true, description: "The extra field of equipment-slots-source."}
+      rules: {alias: rules, slot_uri: pixlnd:equipment-slots-source/rules, range: string, required: true, multivalued: true, description: "The rules field of equipment-slots-source."}
+  equipment-slot-source-row:
+    description: "Source representation of equipment-slot-source-row."
+    attributes:
+      id: {alias: id, slot_uri: pixlnd:equipment-slot-source-row/id, range: string, required: true, description: "The id field of equipment-slot-source-row."}
+      index: {alias: index, slot_uri: pixlnd:equipment-slot-source-row/index, range: integer, required: true, minimum_value: 0, maximum_value: 12, description: "The index field of equipment-slot-source-row."}
+      accepts: {alias: accepts, slot_uri: pixlnd:equipment-slot-source-row/accepts, range: string, required: true, multivalued: true, description: "The accepts field of equipment-slot-source-row."}
+      accepts-subtypes: {alias: accepts-subtypes, slot_uri: pixlnd:equipment-slot-source-row/accepts-subtypes, range: string, multivalued: true, description: "The accepts-subtypes field of equipment-slot-source-row."}
+      accepts-conditions: {alias: accepts-conditions, slot_uri: pixlnd:equipment-slot-source-row/accepts-conditions, range: equipment-accepts-condition-map, inlined: true, description: "The accepts-conditions field of equipment-slot-source-row."}
+      controls: {alias: _controls, slot_uri: pixlnd:equipment-slot-source-row/controls, range: string, multivalued: true, description: "The _controls field of equipment-slot-source-row."}
+      hp-mult: {alias: hp-mult, slot_uri: pixlnd:equipment-slot-source-row/hp-mult, range: float, description: "The hp-mult field of equipment-slot-source-row."}
+      versions: {alias: versions, slot_uri: pixlnd:equipment-slot-source-row/versions, range: string, multivalued: true, description: "The versions field of equipment-slot-source-row."}
+      note: {alias: note, slot_uri: pixlnd:equipment-slot-source-row/note, range: string, description: "The note field of equipment-slot-source-row."}
+  equipment-accepts-condition-map:
+    description: "Source representation of equipment-accepts-condition-map."
+    annotations: {source-map-entries: entries}
+    attributes:
+      entries: {alias: entries, slot_uri: pixlnd:equipment-accepts-condition-map/entries, range: equipment-accepts-condition-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of equipment-accepts-condition-map."}
+  equipment-accepts-condition-entry:
+    description: "Source representation of equipment-accepts-condition-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:equipment-accepts-condition-entry/value, range: string, required: true, description: "The value field of equipment-accepts-condition-entry."}
+  equipment-extra-source:
+    description: "Source representation of equipment-extra-source."
+    attributes:
+      consumable: {alias: consumable, slot_uri: pixlnd:equipment-extra-source/consumable, range: equipment-extra-row, required: true, inlined: true, description: "The consumable field of equipment-extra-source."}
+      pet-food: {alias: pet-food, slot_uri: pixlnd:equipment-extra-source/pet-food, range: equipment-extra-row, required: true, inlined: true, description: "The pet-food field of equipment-extra-source."}
+  equipment-extra-row:
+    description: "Source representation of equipment-extra-row."
+    attributes:
+      accepts: {alias: accepts, slot_uri: pixlnd:equipment-extra-row/accepts, range: string, required: true, multivalued: true, description: "The accepts field of equipment-extra-row."}
+      controls: {alias: _controls, slot_uri: pixlnd:equipment-extra-row/controls, range: string, multivalued: true, description: "The _controls field of equipment-extra-row."}
+      note: {alias: note, slot_uri: pixlnd:equipment-extra-row/note, range: string, description: "The note field of equipment-extra-row."}
+slots:
+  item-type-subtype-key:
+    alias: key
+    slot_uri: pixlnd:item-type-source/subtype-key
+    range: string
+    required: true
+    key: true
+    pattern: '^[0-9]+$'
+    description: Original numeric subtype string key, retained as source data rather than catalog identity.

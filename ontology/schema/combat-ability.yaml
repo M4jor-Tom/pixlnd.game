@@ -1,0 +1,93 @@
+id: https://w3id.org/pixlnd/combat/ability
+name: pixlnd-combat-ability
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- associations
+- meta
+- catalog-identity-combat
+- combat-ability-tree
+- combat-stats
+default_range: string
+classes:
+  ability:
+    description: "Logical ability definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:ability
+    see_also: &id001
+    - ../domain/3_Classes.md#ability
+    attributes:
+      name: {alias: name, slot_uri: "pixlnd:ability/name", range: string, description: "Ability display name."}
+      owner: {alias: owner, slot_uri: "pixlnd:ability/owner", description: "Class, specialization or all-owner applicability.", any_of: [{range: specialization-or-character-class}, {range: string, equals_string: all}]}
+      cost-records: {alias: cost-records, slot_uri: "pixlnd:ability/cost-records", range: resource-cost, description: "Logical amounts per resource and ruleset, not normalized historical prose.", multivalued: true, inlined: true, inlined_as_list: true}
+      cooldown-s: {alias: cooldown-s, slot_uri: "pixlnd:ability/cooldown-s", range: double, description: "Selected numeric cooldown, distinct from qualified source timing text.", minimum_value: 0}
+      duration-s: {alias: duration-s, slot_uri: "pixlnd:ability/duration-s", range: double, description: "Selected numeric duration, distinct from qualified source timing text.", minimum_value: 0}
+      effect: {alias: effect, slot_uri: "pixlnd:ability/effect", range: string, description: "Effect summary; behavior and historical qualifications remain source-linked."}
+      versions: {alias: versions, slot_uri: "pixlnd:ability/versions", range: SourceVersion, description: "Explicit source versions, not feature activation.", multivalued: true}
+    slots:
+    - id
+    - ability-kind
+    - ability-alpha-tree
+    - ability-alpha-ability-id
+    - ability-_controls
+    - unlocks-next
+    - applies
+slots:
+  ability-alpha-tree:
+    description: "Ability alpha tree property; interpreted under its owning definition."
+    slot_uri: pixlnd:ability/alpha-tree
+    alias: alpha-tree
+    domain: ability
+    range: ability-tree-position
+    inlined: true
+    see_also:
+    - ../domain/3_Classes.md#ability
+  ability-kind:
+    description: "Ability kind property; interpreted under its owning definition."
+    slot_uri: pixlnd:ability/kind
+    alias: kind
+    range: ability-kind
+    required: true
+    see_also: *id001
+  ability-alpha-ability-id:
+    description: "Ability alpha ability id property; interpreted under its owning definition."
+    slot_uri: pixlnd:ability/alpha-ability-id
+    alias: alpha-ability-id
+    range: integer
+    see_also: *id001
+  ability-_controls:
+    description: "Ability _controls property; interpreted under its owning definition."
+    slot_uri: pixlnd:ability/_controls
+    alias: _controls
+    range: control-action
+    multivalued: true
+    see_also: *id001
+  unlocks-next:
+    slot_uri: pixlnd:unlocks-next
+    alias: unlocks-next
+    range: ability
+    domain: ability
+    description: 'Cardinality 1→0..1. skill tree: 5 points'
+    see_also:
+    - ../domain/4_Relations.md
+  applies:
+    slot_uri: pixlnd:applies
+    alias: applies
+    range: status-effect
+    multivalued: true
+    domain: ability-or-weapon-type-or-hazard
+    description: Cardinality n→n.
+    see_also:
+    - ../domain/4_Relations.md
+enums:
+  ability-kind:
+    description: "Ability kind vocabulary."
+    enum_uri: pixlnd:ability-kind
+    permissible_values:
+      active: {}
+      passive: {}
+      shared-passive: {}
+      movement: {}

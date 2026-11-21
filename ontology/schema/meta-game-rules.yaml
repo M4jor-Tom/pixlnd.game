@@ -1,0 +1,103 @@
+id: https://w3id.org/pixlnd/meta/game-rules
+name: pixlnd-meta-game-rules
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- relations
+- identity
+default_range: string
+classes:
+  ruleset:
+    class_uri: pixlnd:ruleset
+    description: Feature-flag bundle; hybrid is the target, while Alpha and Steam bundles are historical references.
+    see_also:
+    - ../domain/3_Classes.md#ruleset
+    slots:
+    - id
+  option:
+    class_uri: pixlnd:option
+    description: Option records from the source UI catalog.
+    see_also:
+    - ../domain/3_Classes.md#option
+    slots:
+    - id
+  slash-command:
+    class_uri: pixlnd:slash-command
+    description: Command entries from the source slash-command catalog.
+    see_also:
+    - ../domain/3_Classes.md#slash-command
+    slots:
+    - id
+  audio:
+    class_uri: pixlnd:audio
+    description: Track and sound-effect identifiers from the source audio catalog.
+    see_also:
+    - ../domain/3_Classes.md#audio
+    slots:
+    - id
+  mission-type:
+    description: "Logical mission-type definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:mission-type
+    see_also:
+    - ../domain/3_Classes.md#mission-type
+    slots: [id, rewards]
+    attributes:
+      icon: {alias: icon, slot_uri: pixlnd:mission-type/icon, range: string, description: Map glyph; historical source scopes remain distinct.}
+      tier: {alias: tier, slot_uri: pixlnd:mission-type/tier, range: MissionTier, description: Mission tier; source and ruleset applicability remain qualified.}
+      repeat: {alias: repeat, slot_uri: pixlnd:mission-type/repeat, range: string, description: Repeat schedule as stated by the owning mission rule.}
+      structures: {alias: structures, slot_uri: pixlnd:mission-type/structures, range: dungeon-type-or-poi-type, multivalued: true, description: Referenced POI/dungeon structures; no reference-existence guarantee.}
+  arena:
+    description: 'Source-S arena: five waves, final boss; any species (including saurian, mammoth, yeti, mana mech and spectrino pairs), more common in oceans. Rewards are 18–50 coins plus gear. Gear generation/eligibility remains governed by the cited rules, not an invented gear taxonomy or default. No current-wave or saved-progress state.'
+    class_uri: pixlnd:arena
+    see_also:
+    - ../domain/3_Classes.md#arena-s
+    slots: [id, rewards]
+    attributes:
+      waves:
+        alias: waves
+        slot_uri: pixlnd:arena/waves
+        range: arena-wave
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+        minimum_cardinality: 5
+        maximum_cardinality: 5
+        list_elements_ordered: true
+        equals_expression: "[{'tiers': ['common', 'uncommon']}, {'tiers': ['common', 'uncommon']}, {'tiers': ['uncommon', 'rare']}, {'tiers': ['rare', 'epic']}, {'tiers': ['epic', 'legendary']}]"
+        description: 'Exact ordered source-S ladder W/G, W/G, G/B, B/P, P/Y; equals_expression is declarative, not enforced by JSON Schema.'
+      host: {alias: host, slot_uri: pixlnd:arena/host, range: npc-role, equals_string: arena-master, description: 'Source-S host role arena-master; npc-roles.json records its species as bloodaxe-orc. Native typing does not resolve the reference.', see_also: ['../instances/npc-roles.json#/arena-master', '../domain/3_Classes.md#arena-s']}
+      repeat: {alias: repeat, slot_uri: pixlnd:arena/repeat, range: string, equals_string: daily, description: Source-S arena resets daily.}
+      reward-coins: {alias: reward-coins, slot_uri: pixlnd:arena/reward-coins, range: integer, multivalued: true, minimum_cardinality: 2, maximum_cardinality: 2, list_elements_ordered: true, equals_expression: '[18, 50]', description: 'Exact ordered lower/upper source-S coin reward interval [18, 50]; equals_expression is declarative, not enforced by JSON Schema.'}
+  arena-wave:
+    class_uri: pixlnd:arena-wave
+    see_also:
+    - ../domain/3_Classes.md#arena-s
+    description: One ordered arena wave tier pair; this is a logical structure, not saved wave progress.
+    attributes:
+      tiers: {alias: tiers, slot_uri: pixlnd:arena-wave/tiers, range: MissionTier, multivalued: true, minimum_cardinality: 2, maximum_cardinality: 2, list_elements_ordered: true, description: 'Ordered lower/upper tier pair in the source-S arena ladder.'}
+  gnome-supplier:
+    description: "Logical gnome-supplier definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:gnome-supplier
+    see_also:
+    - ../domain/3_Classes.md#gnome-supplier-s
+    slots:
+    - id
+  circle-of-power:
+    description: "Logical circle-of-power definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:circle-of-power
+    see_also:
+    - ../domain/3_Classes.md#circle-of-power-s
+    slots:
+    - id
+enums:
+  MissionTier:
+    description: Mission tier labels from common through legendary.
+    permissible_values:
+      common: {}
+      uncommon: {}
+      rare: {}
+      epic: {}
+      legendary: {}

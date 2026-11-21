@@ -1,0 +1,73 @@
+id: https://w3id.org/pixlnd/combat/weapon-type
+name: pixlnd-combat-weapon-type
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+default_range: string
+classes:
+  weapon-type:
+    description: "Logical weapon type definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:weapon-type
+    see_also: &id002
+    - ../domain/3_Classes.md#weapon-type
+    attributes:
+      name: {alias: name, slot_uri: "pixlnd:weapon-type/name", range: string, description: "Weapon family display name."}
+      material: {alias: material, slot_uri: "pixlnd:weapon-type/material", range: material, description: "Resolved material references, not parsed source alternatives.", multivalued: true}
+      m1: {alias: m1, slot_uri: "pixlnd:weapon-type/m1", range: string, description: "Basic-attack summary; not a physical binding."}
+      m2: {alias: m2, slot_uri: "pixlnd:weapon-type/m2", range: string, description: "Special-attack summary; not a physical binding."}
+    slots:
+    - id
+    - weapon-type-class
+    - weapon-type-hands
+    - weapon-type-damage-k
+    - weapon-type-cube-capacity
+    - weapon-type-combo-cap
+slots:
+  weapon-type-class:
+    description: "Weapon type class property; interpreted under its owning definition."
+    slot_uri: pixlnd:weapon-type/class
+    alias: class
+    range: character-class
+    required: true
+    see_also: *id002
+  weapon-type-hands:
+    description: "Weapon type hands property; interpreted under its owning definition."
+    slot_uri: pixlnd:weapon-type/hands
+    alias: hands
+    range: hands
+    required: true
+    see_also: *id002
+  weapon-type-damage-k:
+    description: "Weapon type damage k property; interpreted under its owning definition."
+    slot_uri: pixlnd:weapon-type/damage-k
+    alias: damage-k
+    range: float
+    required: true
+    see_also: *id002
+  weapon-type-cube-capacity:
+    description: "Weapon type cube capacity property; interpreted under its owning definition."
+    slot_uri: pixlnd:weapon-type/cube-capacity
+    alias: cube-capacity
+    range: integer
+    required: true
+    see_also: *id002
+  weapon-type-combo-cap:
+    description: "Weapon type combo cap property; interpreted under its owning definition."
+    slot_uri: pixlnd:weapon-type/combo-cap
+    alias: combo-cap
+    range: integer
+    required: true
+    see_also: *id002
+enums:
+  hands:
+    description: "Hands vocabulary."
+    enum_uri: pixlnd:hands
+    permissible_values:
+      1h-dual: {}
+      1h-with-shield: {}
+      2h: {}
+      offhand: {}

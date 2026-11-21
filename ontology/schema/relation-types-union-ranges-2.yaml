@@ -1,0 +1,138 @@
+id: https://w3id.org/pixlnd/relation-types/union-ranges-2
+name: pixlnd-relation-types-union-ranges-2
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- combat
+- items
+- world
+- meta
+- relation-types-nominal
+default_range: string
+classes:
+  artifact-or-key-item-or-gnome-supplier-or-magic-crystal:
+    class_uri: pixlnd:artifact-or-key-item-or-gnome-supplier-or-magic-crystal
+    see_also:
+    - ../domain/4_Relations.md
+    slots:
+    - id
+    union_of:
+    - artifact
+    - key-item
+    - gnome-supplier
+    - magic-crystal
+    description: Union expression of the exact named §4 endpoints.
+  item-or-spirit-cube-or-leftovers-or-currency:
+    class_uri: pixlnd:item-or-spirit-cube-or-leftovers-or-currency
+    see_also:
+    - ../domain/4_Relations.md
+    slots:
+    - id
+    union_of:
+    - item
+    - spirit-cube
+    - leftovers
+    - currency
+    description: Union expression of the exact named §4 endpoints.
+  poi-type-or-dungeon-type-or-ability:
+    class_uri: pixlnd:poi-type-or-dungeon-type-or-ability
+    see_also:
+    - ../domain/4_Relations.md
+    slots:
+    - id
+    union_of:
+    - poi-type
+    - dungeon-type
+    - ability
+    description: Union expression of the exact named §4 endpoints.
+  settlement-or-dungeon-or-poi:
+    class_uri: pixlnd:settlement-or-dungeon-or-poi
+    see_also:
+    - ../domain/4_Relations.md
+    slots:
+    - id
+    union_of:
+    - settlement
+    - dungeon
+    - poi
+    description: Union expression of the exact named §4 endpoints.
+  item-or-key-item-or-leftovers:
+    class_uri: pixlnd:item-or-key-item-or-leftovers
+    see_also:
+    - ../domain/4_Relations.md
+    slots:
+    - id
+    union_of:
+    - item
+    - key-item
+    - leftovers
+    description: Union expression of the exact named §4 endpoints.
+  item-type-or-pet-food-or-formula-or-key-item:
+    class_uri: pixlnd:item-type-or-pet-food-or-formula-or-key-item
+    see_also:
+    - ../domain/4_Relations.md
+    slots:
+    - id
+    union_of:
+    - item-type
+    - pet-food
+    - formula
+    - key-item
+    description: Union expression of the exact named §4 endpoints.
+  weapon-type-or-material:
+    class_uri: pixlnd:weapon-type-or-material
+    see_also:
+    - ../domain/4_Relations.md
+    slots:
+    - id
+    union_of:
+    - weapon-type
+    - material
+    description: Union expression of the exact named §4 endpoints.
+  landscape-or-terrain-feature:
+    class_uri: pixlnd:landscape-or-terrain-feature
+    see_also:
+    - ../domain/4_Relations.md
+    slots:
+    - id
+    union_of:
+    - landscape
+    - terrain-feature
+    description: Union expression of the exact named §4 endpoints.
+  artifact-or-ability-or-spirit-cube-or-elixir:
+    class_uri: pixlnd:artifact-or-ability-or-spirit-cube-or-elixir
+    see_also:
+    - ../domain/4_Relations.md
+    slots:
+    - id
+    union_of:
+    - artifact
+    - ability
+    - spirit-cube
+    - elixir
+    description: Union expression of the exact named §4 endpoints.
+  npc-role-or-creature:
+    class_uri: pixlnd:npc-role-or-creature
+    see_also:
+    - ../domain/4_Relations.md
+    slots:
+    - id
+    union_of:
+    - npc-role
+    - creature
+    description: Union expression of the exact named §4 endpoints.
+  ability-or-item-type-or-mechanic:
+    class_uri: pixlnd:ability-or-item-type-or-mechanic
+    see_also:
+    - ../domain/4_Relations.md
+    slots:
+    - id
+    union_of:
+    - ability
+    - item-type
+    - mechanic
+    description: Union expression of the exact named §4 endpoints.

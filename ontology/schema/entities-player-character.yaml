@@ -1,0 +1,147 @@
+id: https://w3id.org/pixlnd/entities/player-character
+name: pixlnd-entities-player-character
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- items
+- relations
+- associations
+- entities-entity
+- entities-entity-body
+- entities-entity-vitals
+- entities-pet
+default_range: string
+classes:
+  player-character:
+    description: "Logical player character definition; applicability follows the cited domain rules."
+    is_a: entity
+    class_uri: pixlnd:player-character
+    see_also: &id002
+    - ../domain/3_Classes.md#player-character
+    slots:
+    - id
+    - player-character-gender
+    - player-character-coins
+    - player-character-inventory
+    - player-character-artifacts
+    - knows-recipe
+    - player-character-platinum
+    - player-character-lore-known
+    - player-character-world-states
+    - player-character-pet-slot
+    - player-character-active-pet
+    - player-character-banked-skill-points
+    - mounts
+    slot_usage:
+      entity-species:
+        alias: race
+        range: race
+        required: true
+      entity-specialization:
+        alias: spec
+        range: specialization
+        required: true
+      entity-class:
+        required: true
+      entity-name:
+        required: true
+        pattern: ^[\x20-\x7e]{2,16}$
+slots:
+  player-character-gender:
+    description: "Player character gender property; interpreted under its owning definition."
+    slot_uri: pixlnd:player-character/gender
+    alias: gender
+    range: gender
+    required: true
+    see_also: *id002
+  player-character-coins:
+    description: "Player character coins property; interpreted under its owning definition."
+    slot_uri: pixlnd:player-character/coins
+    alias: coins
+    range: uint32
+    required: true
+    inlined: false
+    see_also: *id002
+  player-character-inventory:
+    description: "Player character inventory property; interpreted under its owning definition."
+    slot_uri: pixlnd:player-character/inventory
+    alias: inventory
+    range: inventory
+    required: true
+    inlined: true
+    see_also: *id002
+  player-character-artifacts:
+    description: "Player character artifacts property; interpreted under its owning definition."
+    slot_uri: pixlnd:player-character/artifacts
+    alias: artifacts
+    range: artifact
+    required: true
+    multivalued: true
+    see_also: *id002
+  knows-recipe:
+    slot_uri: pixlnd:knows-recipe
+    alias: known-recipes
+    range: recipe
+    multivalued: true
+    domain: player-character
+    description: Cardinality n→n. one known fact per character/recipe, shared by books and formulas (`known-recipes`),
+      even while power-locked; knowledge alone does not grant crafting usability; recipes persist across
+      lands/sessions/worlds (§3.7 save-data), not shared-account knowledge
+    see_also:
+    - ../domain/4_Relations.md
+    list_elements_unique: true
+
+  player-character-platinum:
+    slot_uri: pixlnd:player-character/platinum
+    alias: platinum
+    domain: player-character
+    range: uint32
+    description: Alpha platinum currency.
+    see_also: [../domain/3_Classes.md#player-character]
+  player-character-lore-known:
+    slot_uri: pixlnd:player-character/lore-known
+    alias: lore-known
+    domain: player-character
+    range: realm-knowledge
+    description: Knowledge scoped to character, realm and saved world.
+    see_also: [../domain/3_Classes.md#player-character]
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  player-character-world-states:
+    slot_uri: pixlnd:player-character/world-states
+    alias: world-states
+    domain: player-character
+    range: character-world-state
+    description: Position and respawn scoped to the saved world, not global hero coordinates.
+    see_also: [../domain/3_Classes.md#player-character]
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+
+  player-character-pet-slot:
+    slot_uri: pixlnd:player-character/pet-slot
+    alias: pet-slot
+    domain: player-character
+    range: pet
+    description: Pet currently in the pet slot; cages and active mounting are distinct.
+    see_also: [../domain/3_Classes.md#player-character]
+  player-character-active-pet:
+    alias: active-pet
+    slot_uri: pixlnd:player-character/active-pet
+    domain: player-character
+    range: pet
+    description: At most one summoned pet, separate from the mounted pet and cage slot.
+    see_also: [../domain/3_Classes.md#player-character, ../domain/5_Constraints.md#constraint-catalog]
+  player-character-banked-skill-points:
+    alias: banked-skill-points
+    slot_uri: pixlnd:player-character/banked-skill-points
+    domain: player-character
+    range: uint32
+    description: Unspent skill points; gain, spending and respec remain progression rules.
+    see_also: [../domain/3_Classes.md#skill-tree-a]
+

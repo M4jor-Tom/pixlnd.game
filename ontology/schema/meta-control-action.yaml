@@ -1,0 +1,138 @@
+id: https://w3id.org/pixlnd/meta/control-action
+name: pixlnd-meta-control-action
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- relations
+default_range: string
+classes:
+  control-action:
+    description: Device-independent intention structure; its meaning and behavior remain in the canonical control prose.
+    class_uri: pixlnd:control-action
+    see_also:
+    - ../domain/3_Classes.md#control-action
+    - ../domain/controls.md
+    slots:
+    - control-action-id
+    - control-action-value
+    - control-action-lifecycle
+    - control-action-context
+    - control-action-effect-reference
+    - bound-to-input
+    slot_usage:
+      bound-to-input:
+        inlined: true
+enums:
+  ControlActionId:
+    description: The closed set of canonical, device-independent action identifiers; meanings remain in controls.md.
+    permissible_values:
+      move: {}
+      look: {}
+      zoom: {}
+      sprint: {}
+      jump: {}
+      swim-ascent: {}
+      climb: {}
+      pet-call: {}
+      pet-mount: {}
+      pet-dismount: {}
+      deploy-glider: {}
+      deploy-boat: {}
+      glider-level: {}
+      basic-attack: {}
+      special-attack: {}
+      block: {}
+      dodge: {}
+      class-skill-1: {}
+      class-skill-2: {}
+      class-skill-3: {}
+      class-skill-4: {}
+      interact: {}
+      pick-up: {}
+      object-interact: {}
+      lamp: {}
+      quick-item: {}
+      use-inventory-item: {}
+      quick-select: {}
+      quick-cycle: {}
+      equip-item: {}
+      learn-formula: {}
+      spend-skill-point: {}
+      buy-item: {}
+      sell-item: {}
+      inventory: {}
+      skills-window: {}
+      crafting: {}
+      world-map: {}
+      chat: {}
+      menu: {}
+      help: {}
+      debug-menu: {}
+      ui-navigate: {}
+      ui-select: {}
+      ui-activate: {}
+      ui-cancel: {}
+      map-rotate: {}
+      map-pan: {}
+      map-zoom: {}
+      map-marker: {}
+      map-center: {}
+      bench-rotate: {}
+      bench-place: {}
+      bench-remove: {}
+slots:
+  control-action-id:
+    slot_uri: pixlnd:control-action/id
+    alias: id
+    domain: control-action
+    range: ControlActionId
+    key: true
+    identifier: true
+    required: true
+    description: Stable canonical action identifier from the device-independent catalog.
+    see_also:
+    - ../domain/controls.md
+    - ../domain/3_Classes.md#control-action
+  control-action-value:
+    slot_uri: pixlnd:control-action/value
+    alias: value
+    domain: control-action
+    range: string
+    required: true
+    description: Textual value or lifecycle-shape label; the canonical control prose owns its meaning.
+    see_also:
+    - ../domain/controls.md
+    - ../domain/3_Classes.md#control-action
+  control-action-lifecycle:
+    slot_uri: pixlnd:control-action/lifecycle
+    alias: lifecycle
+    domain: control-action
+    range: string
+    required: true
+    description: Textual request lifecycle shape, without selecting unspecified interruptions or gesture outcomes.
+    see_also:
+    - ../domain/controls.md#contract
+    - ../domain/3_Classes.md#control-action
+  control-action-context:
+    slot_uri: pixlnd:control-action/context
+    alias: context
+    domain: control-action
+    range: string
+    required: true
+    description: Textual use context retained as domain prose, not inferred device availability.
+    see_also:
+    - ../domain/controls.md#contract
+    - ../domain/3_Classes.md#control-action
+  control-action-effect-reference:
+    slot_uri: pixlnd:control-action/effect-reference
+    alias: effect-reference
+    domain: control-action
+    range: string
+    required: true
+    description: Textual reference to the existing effect owner; no foreign-key resolution is implied.
+    see_also:
+    - ../domain/controls.md
+    - ../domain/3_Classes.md#control-action

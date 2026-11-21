@@ -1,0 +1,128 @@
+id: https://w3id.org/pixlnd/relations/abilities-crafting
+name: pixlnd-relations-abilities-crafting
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- relation-types
+default_range: string
+slots:
+  grants-ability:
+    slot_uri: pixlnd:grants-ability
+    alias: grants-ability
+    range: ability
+    required: true
+    multivalued: true
+    domain: specialization-or-character-class
+    description: Cardinality 1→n. Applicability follows the linked canonical rules.
+    see_also:
+    - ../domain/4_Relations.md
+    minimum_cardinality: 1
+  invoked-by-control:
+    slot_uri: pixlnd:invoked-by-control
+    alias: invoked-by-control
+    range: control-action
+    multivalued: true
+    domain: ability
+    description: Cardinality n→n. active ability activation refers to [controls](controls.md), directly
+      or through the current class slot/tree; passive effects need no binding
+    see_also:
+    - ../domain/4_Relations.md
+  bound-to-input:
+    slot_uri: pixlnd:bound-to-input
+    alias: bound-to-input
+    range: input-binding
+    multivalued: true
+    domain: control-action
+    description: Cardinality n→n. each binding belongs to a controller profile; aliases/shared phases
+      and context are profile-owned, not ability identity
+    see_also:
+    - ../domain/4_Relations.md
+  has-input-binding:
+    slot_uri: pixlnd:has-input-binding
+    alias: has-input-binding
+    range: input-binding
+    multivalued: true
+    domain: controller-profile
+    description: Cardinality 1→0..n. [profiles](controller-profiles.md) explicitly distinguish implemented,
+      registered-only and unselected mappings
+    see_also:
+    - ../domain/4_Relations.md
+  costs:
+    slot_uri: pixlnd:costs
+    alias: costs
+    annotations:
+      association-class: resource-cost
+    range: resource
+    multivalued: true
+    domain: ability
+    description: Cardinality 1→0..n. amount per resource, scoped by ruleset
+    see_also:
+    - ../domain/4_Relations.md
+  has-moveset:
+    slot_uri: pixlnd:has-moveset
+    alias: has-moveset
+    range: ability
+    required: true
+    multivalued: true
+    domain: weapon-type
+    description: Cardinality 1→2.
+    see_also:
+    - ../domain/4_Relations.md
+    minimum_cardinality: 2
+    maximum_cardinality: 2
+  crafted-at:
+    slot_uri: pixlnd:crafted-at
+    alias: crafted-at
+    range: crafting-station
+    required: true
+    domain: recipe
+    description: Cardinality 1→1.
+    see_also:
+    - ../domain/4_Relations.md
+  consumes:
+    slot_uri: pixlnd:consumes
+    alias: consumes
+    annotations:
+      association-class: recipe-consumption
+    range: ingredient-or-material
+    required: true
+    multivalued: true
+    domain: recipe
+    description: Cardinality 1→n. with counts
+    see_also:
+    - ../domain/4_Relations.md
+    minimum_cardinality: 1
+  produces:
+    slot_uri: pixlnd:produces
+    alias: produces
+    range: item-type-or-consumable
+    required: true
+    domain: recipe
+    description: Cardinality 1→1.
+    see_also:
+    - ../domain/4_Relations.md
+  refines-to:
+    slot_uri: pixlnd:refines-to
+    alias: refines-to
+    range: ingredient
+    required: true
+    domain: ingredient
+    description: Cardinality 1→1. nugget→cube, fiber→yarn, log→wood cube
+    see_also:
+    - ../domain/4_Relations.md
+  yields:
+    slot_uri: pixlnd:yields
+    alias: yields
+    annotations:
+      association-class: ingredient-yield
+    range: ingredient
+    required: true
+    multivalued: true
+    domain: flora-or-deposit-or-creature
+    description: Cardinality 1→n. count range
+    see_also:
+    - ../domain/4_Relations.md
+    minimum_cardinality: 1

@@ -1,0 +1,115 @@
+id: https://w3id.org/pixlnd/items/consumables-source
+name: pixlnd-items-consumables-source
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- items-key-items-source
+default_range: string
+classes:
+  consumables-source:
+    description: "Source representation of consumables-source."
+    class_uri: pixlnd:consumables-source
+    annotations: {source-map-entries: entries}
+    see_also: [../instances/consumables.json]
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: pixlnd:consumables-source/schema, range: string, required: true, equals_string: consumable, description: "The $schema field of consumables-source."}
+      documentation: {alias: _doc, slot_uri: pixlnd:consumables-source/doc, range: string, required: true, description: "The _doc field of consumables-source."}
+      rules: {alias: rules, slot_uri: pixlnd:consumables-source/rules, range: consumable-rules-map, required: true, inlined: true, description: "The rules field of consumables-source."}
+      entries: {alias: entries, slot_uri: pixlnd:consumables-source/entries, range: consumable-source-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of consumables-source."}
+  consumable-rules-map:
+    description: "Source representation of consumable-rules-map."
+    annotations: {source-map-entries: entries}
+    attributes:
+      entries: {alias: entries, slot_uri: pixlnd:consumable-rules-map/entries, range: consumable-rules-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of consumable-rules-map."}
+  consumable-rules-entry:
+    description: "Source representation of consumable-rules-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:consumable-rules-entry/value, range: string, required: true, description: "The value field of consumable-rules-entry."}
+  consumable-source-entry:
+    description: "Source representation of consumable-source-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:consumable-source-entry/value, range: consumable-source-row, required: true, inlined: true, description: "The value field of consumable-source-entry."}
+  consumable-source-row:
+    description: "Source representation of consumable-source-row."
+    attributes:
+      name: {alias: name, slot_uri: pixlnd:consumable-source-row/name, range: string, required: true, description: "The name field of consumable-source-row."}
+      kind: {alias: kind, slot_uri: pixlnd:consumable-source-row/kind, range: string, required: true, description: "The kind field of consumable-source-row."}
+      use: {alias: use, slot_uri: pixlnd:consumable-source-row/use, range: string, description: "The use field of consumable-source-row."}
+      heal-mult: {alias: heal-mult, slot_uri: pixlnd:consumable-source-row/heal-mult, range: integer, description: "The heal-mult field of consumable-source-row."}
+      duration-s: {alias: duration-s, slot_uri: pixlnd:consumable-source-row/duration-s, range: integer, description: "The duration-s field of consumable-source-row."}
+      effect: {alias: effect, slot_uri: pixlnd:consumable-source-row/effect, range: string, description: "The effect field of consumable-source-row."}
+      alpha-subtype: {alias: alpha-subtype, slot_uri: pixlnd:consumable-source-row/alpha-subtype, range: integer, description: "The alpha-subtype field of consumable-source-row."}
+      recipe: {alias: recipe, slot_uri: pixlnd:consumable-source-row/recipe, range: consumable-recipe, inlined: true, description: "The recipe field of consumable-source-row."}
+      station: {alias: station, slot_uri: pixlnd:consumable-source-row/station, range: string, description: "The station field of consumable-source-row."}
+      note: {alias: note, slot_uri: pixlnd:consumable-source-row/note, range: string, description: "The note field of consumable-source-row."}
+      note-s: {alias: note-s, slot_uri: pixlnd:consumable-source-row/note-s, range: string, description: "The note-s field of consumable-source-row."}
+      levels-a: {alias: levels-a, slot_uri: pixlnd:consumable-source-row/levels-a, range: string, multivalued: true, description: "The levels-a field of consumable-source-row."}
+      source: {alias: source, slot_uri: pixlnd:consumable-source-row/source, exactly_one_of: [{range: string}, {range: string, multivalued: true, minimum_cardinality: 1}], description: "The source field of consumable-source-row."}
+      versions: {alias: versions, slot_uri: pixlnd:consumable-source-row/versions, range: string, multivalued: true, description: "The versions field of consumable-source-row."}
+  consumable-recipe:
+    description: "Source representation of consumable-recipe."
+    annotations: {source-map-entries: entries}
+    attributes:
+      entries: {alias: entries, slot_uri: pixlnd:consumable-recipe/entries, range: consumable-recipe-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of consumable-recipe."}
+  consumable-recipe-entry:
+    description: "Source representation of consumable-recipe-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:consumable-recipe-entry/value, any_of: [{range: integer, minimum_value: 1}, {range: string}], required: true, description: "The value field of consumable-recipe-entry."}
+  pet-food-source:
+    description: "Source representation of pet-food-source."
+    class_uri: pixlnd:pet-food-source
+    see_also: [../instances/pet-food.json]
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: pixlnd:pet-food-source/schema, range: string, required: true, equals_string: pet-food, description: "The $schema field of pet-food-source."}
+      documentation: {alias: _doc, slot_uri: pixlnd:pet-food-source/doc, range: string, required: true, description: "The _doc field of pet-food-source."}
+      rules: {alias: rules, slot_uri: pixlnd:pet-food-source/rules, range: string, required: true, multivalued: true, description: "The rules field of pet-food-source."}
+      shop-set: {alias: shop-set, slot_uri: pixlnd:pet-food-source/shop-set, range: string, required: true, multivalued: true, description: "The shop-set field of pet-food-source."}
+      foods: {alias: foods, slot_uri: pixlnd:pet-food-source/foods, range: pet-food-source-map, required: true, inlined: true, description: "The foods field of pet-food-source."}
+      cut: {alias: cut, slot_uri: pixlnd:pet-food-source/cut, range: pet-food-source-map, required: true, inlined: true, description: "The cut field of pet-food-source."}
+  pet-food-source-map:
+    description: "Source representation of pet-food-source-map."
+    annotations: {source-map-entries: entries}
+    attributes:
+      entries: {alias: entries, slot_uri: pixlnd:pet-food-source-map/entries, range: pet-food-source-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of pet-food-source-map."}
+  pet-food-source-entry:
+    description: "Source representation of pet-food-source-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:pet-food-source-entry/value, any_of: [{range: pet-food-source-row}, {range: pet-food-cut-row}], required: true, inlined: true, description: "The value field of pet-food-source-entry."}
+  pet-food-source-row:
+    description: "Source representation of pet-food-source-row."
+    attributes:
+      id: {alias: id, slot_uri: pixlnd:pet-food-source-row/id, range: integer, required: true, description: "The id field of pet-food-source-row."}
+      name: {alias: name, slot_uri: pixlnd:pet-food-source-row/name, range: string, required: true, description: "The name field of pet-food-source-row."}
+      tames: {alias: tames, slot_uri: pixlnd:pet-food-source-row/tames, range: string, required: true, description: "Original scalar target text; logical plural taming targets are declared separately by pet-food-tames."}
+      rideable: {alias: rideable, slot_uri: pixlnd:pet-food-source-row/rideable, range: boolean, required: true, description: "The rideable field of pet-food-source-row."}
+      shop: {alias: shop, slot_uri: pixlnd:pet-food-source-row/shop, range: boolean, description: "The shop field of pet-food-source-row."}
+      versions: {alias: versions, slot_uri: pixlnd:pet-food-source-row/versions, range: string, multivalued: true, description: "The versions field of pet-food-source-row."}
+      note: {alias: note, slot_uri: pixlnd:pet-food-source-row/note, range: string, description: "The note field of pet-food-source-row."}
+  pet-food-cut-row:
+    description: "Source representation of pet-food-cut-row."
+    attributes:
+      tames: {alias: tames, slot_uri: pixlnd:pet-food-cut-row/tames, range: string, required: true, description: "The tames field of pet-food-cut-row."}
+      versions: {alias: versions, slot_uri: pixlnd:pet-food-cut-row/versions, range: string, required: true, multivalued: true, description: "The versions field of pet-food-cut-row."}
+      note: {alias: note, slot_uri: pixlnd:pet-food-cut-row/note, range: string, description: "The note field of pet-food-cut-row."}
+  affixes-source:
+    description: "Source representation of affixes-source."
+    class_uri: pixlnd:affixes-source
+    see_also: [../instances/affixes.json]
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: pixlnd:affixes-source/schema, range: string, required: true, equals_string: affix, description: "The $schema field of affixes-source."}
+      documentation: {alias: _doc, slot_uri: pixlnd:affixes-source/doc, range: string, required: true, description: "The _doc field of affixes-source."}
+      common: {alias: common, slot_uri: pixlnd:affixes-source/common, range: string, required: true, multivalued: true, minimum_cardinality: 1, description: "The common field of affixes-source."}
+      uncommon: {alias: uncommon, slot_uri: pixlnd:affixes-source/uncommon, range: string, required: true, multivalued: true, minimum_cardinality: 1, description: "The uncommon field of affixes-source."}
+      rare: {alias: rare, slot_uri: pixlnd:affixes-source/rare, range: string, required: true, multivalued: true, minimum_cardinality: 1, description: "The rare field of affixes-source."}
+      epic: {alias: epic, slot_uri: pixlnd:affixes-source/epic, range: string, required: true, multivalued: true, minimum_cardinality: 1, description: "The epic field of affixes-source."}
+      legendary: {alias: legendary, slot_uri: pixlnd:affixes-source/legendary, range: string, required: true, multivalued: true, minimum_cardinality: 1, description: "The legendary field of affixes-source."}
+      name-forms: {alias: name-forms, slot_uri: pixlnd:affixes-source/name-forms, range: string, required: true, multivalued: true, minimum_cardinality: 1, description: "The name-forms field of affixes-source."}
+      plus-suffix: {alias: plus-suffix, slot_uri: pixlnd:affixes-source/plus-suffix, range: string, required: true, description: "The plus-suffix field of affixes-source."}
+      examples: {alias: examples, slot_uri: pixlnd:affixes-source/examples, range: string, required: true, multivalued: true, minimum_cardinality: 1, description: "The examples field of affixes-source."}

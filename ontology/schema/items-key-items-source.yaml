@@ -1,0 +1,85 @@
+id: https://w3id.org/pixlnd/items/key-items-source
+name: pixlnd-items-key-items-source
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+classes:
+  key-items-source:
+    description: "Source representation of key-items-source."
+    class_uri: pixlnd:key-items-source
+    annotations: {source-map-entries: entries}
+    see_also: [../instances/key-items.json]
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: pixlnd:key-items-source/schema, range: string, required: true, equals_string: key-item, description: "The $schema field of key-items-source."}
+      documentation: {alias: _doc, slot_uri: pixlnd:key-items-source/doc, range: string, required: true, description: "The _doc field of key-items-source."}
+      counts-per-land-s: {alias: counts-per-land-s, slot_uri: pixlnd:key-items-source/counts-per-land-s, range: key-item-counts-source, required: true, inlined: true, description: "Historical S summary configuration, not a key-item row or hybrid quantity default."}
+      special-accessories-x: {alias: special-accessories-x, slot_uri: pixlnd:key-items-source/special-accessories-x, range: key-item-cut-summary-source, required: true, inlined: true, description: "Grouped alpha special-accessory data, X/cut reference configuration rather than an item row."}
+      entries: {alias: entries, slot_uri: pixlnd:key-items-source/entries, range: key-items-source-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of key-items-source."}
+  key-items-source-entry:
+    description: "Source representation of key-items-source-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:key-items-source-entry/value, any_of: [{range: key-item-source-row}, {range: key-item-artifact-source}], required: true, inlined: true, description: "The value field of key-items-source-entry."}
+  key-item-source-row:
+    description: "Source representation of key-item-source-row."
+    attributes:
+      name: {alias: name, slot_uri: pixlnd:key-item-source-row/name, range: string, required: true, description: "The name field of key-item-source-row."}
+      group: {alias: group, slot_uri: pixlnd:key-item-source-row/group, range: string, description: "The group field of key-item-source-row."}
+      alpha-type: {alias: alpha-type, slot_uri: pixlnd:key-item-source-row/alpha-type, any_of: [{range: integer}, {range: integer, multivalued: true, minimum_cardinality: 2, maximum_cardinality: 2}], description: "The alpha-type field of key-item-source-row."}
+      acquire: {alias: acquire, slot_uri: pixlnd:key-item-source-row/acquire, range: key-item-acquire-source, inlined: true, description: "The acquire field of key-item-source-row."}
+      opens: {alias: opens, slot_uri: pixlnd:key-item-source-row/opens, range: string, description: "The opens field of key-item-source-row."}
+      effect: {alias: effect, slot_uri: pixlnd:key-item-source-row/effect, range: string, description: "The effect field of key-item-source-row."}
+      message: {alias: message, slot_uri: pixlnd:key-item-source-row/message, range: string, description: "The message field of key-item-source-row."}
+      rules: {alias: rules, slot_uri: pixlnd:key-item-source-row/rules, range: string, multivalued: true, description: "The rules field of key-item-source-row."}
+      controls: {alias: _controls, slot_uri: pixlnd:key-item-source-row/controls, range: string, multivalued: true, description: "The _controls field of key-item-source-row."}
+      speed-stat: {alias: speed-stat, slot_uri: pixlnd:key-item-source-row/speed-stat, range: string, description: "The speed-stat field of key-item-source-row."}
+      versions: {alias: versions, slot_uri: pixlnd:key-item-source-row/versions, range: string, multivalued: true, description: "The versions field of key-item-source-row."}
+      a-equivalent: {alias: a-equivalent, slot_uri: pixlnd:key-item-source-row/a-equivalent, range: string, description: "The a-equivalent field of key-item-source-row."}
+      s-equivalent: {alias: s-equivalent, slot_uri: pixlnd:key-item-source-row/s-equivalent, range: string, description: "The s-equivalent field of key-item-source-row."}
+  key-item-cut-summary-source:
+    description: "Exact grouped cut/reference accessory data; member names remain data, not model properties or active item availability."
+    see_also: [../instances/key-items.json#special-accessories-x, ../domain/5_Constraints.md#required-inputs]
+    attributes:
+      name: {alias: name, slot_uri: pixlnd:key-item-cut-summary-source/name, range: string, required: true, description: "Source summary name."}
+      alpha-type: {alias: alpha-type, slot_uri: pixlnd:key-item-cut-summary-source/alpha-type, range: integer, required: true, description: "Historical alpha type number, not allocated item identity."}
+      list: {alias: list, slot_uri: pixlnd:key-item-cut-summary-source/list, range: string, required: true, multivalued: true, description: "Exact cut accessory names, not individual schema slots."}
+      versions: {alias: versions, slot_uri: pixlnd:key-item-cut-summary-source/versions, range: string, required: true, multivalued: true, description: "Explicit source provenance, retaining X/cut status."}
+  key-item-acquire-source:
+    description: "Source representation of key-item-acquire-source."
+    attributes:
+      alpha: {alias: A, slot_uri: pixlnd:key-item-acquire-source/alpha, range: string, description: "The A field of key-item-acquire-source."}
+      steam: {alias: S, slot_uri: pixlnd:key-item-acquire-source/steam, range: string, description: "The S field of key-item-acquire-source."}
+  key-item-artifact-source:
+    description: "Source representation of key-item-artifact-source."
+    attributes:
+      name: {alias: name, slot_uri: pixlnd:key-item-artifact-source/name, range: string, required: true, description: "The name field of key-item-artifact-source."}
+      group: {alias: group, slot_uri: pixlnd:key-item-artifact-source/group, range: string, required: true, description: "The group field of key-item-artifact-source."}
+      versions: {alias: versions, slot_uri: pixlnd:key-item-artifact-source/versions, range: string, required: true, multivalued: true, description: "The versions field of key-item-artifact-source."}
+      rules: {alias: rules, slot_uri: pixlnd:key-item-artifact-source/rules, range: string, required: true, multivalued: true, description: "The rules field of key-item-artifact-source."}
+      stat-kinds: {alias: stat-kinds, slot_uri: pixlnd:key-item-artifact-source/stat-kinds, range: string, required: true, multivalued: true, description: "The stat-kinds field of key-item-artifact-source."}
+      name-forms: {alias: name-forms, slot_uri: pixlnd:key-item-artifact-source/name-forms, range: string, required: true, multivalued: true, description: "The name-forms field of key-item-artifact-source."}
+      examples: {alias: examples, slot_uri: pixlnd:key-item-artifact-source/examples, range: string, required: true, multivalued: true, description: "The examples field of key-item-artifact-source."}
+      found-in: {alias: found-in, slot_uri: pixlnd:key-item-artifact-source/found-in, range: string, required: true, multivalued: true, description: "The found-in field of key-item-artifact-source."}
+      count-per-land: {alias: count-per-land, slot_uri: pixlnd:key-item-artifact-source/count-per-land, range: string, required: true, description: "The count-per-land field of key-item-artifact-source."}
+      alpha-static-entity: {alias: alpha-static-entity, slot_uri: pixlnd:key-item-artifact-source/alpha-static-entity, range: integer, required: true, description: "The alpha-static-entity field of key-item-artifact-source."}
+  key-item-counts-source:
+    description: "Source representation of key-item-counts-source."
+    attributes:
+      movement: {alias: movement, slot_uri: pixlnd:key-item-counts-source/movement, range: integer, required: true, description: "The movement field of key-item-counts-source."}
+      ticket: {alias: ticket, slot_uri: pixlnd:key-item-counts-source/ticket, range: integer, required: true, description: "The ticket field of key-item-counts-source."}
+      total-max: {alias: total-max, slot_uri: pixlnd:key-item-counts-source/total-max, range: integer, required: true, description: "The total-max field of key-item-counts-source."}
+      gnome-suppliers: {alias: gnome-suppliers, slot_uri: pixlnd:key-item-counts-source/gnome-suppliers, range: integer, required: true, description: "The gnome-suppliers field of key-item-counts-source."}
+      books: {alias: books, slot_uri: pixlnd:key-item-counts-source/books, range: integer, required: true, description: "The books field of key-item-counts-source."}
+slots:
+  recipe-map-key:
+    alias: key
+    slot_uri: pixlnd:recipe-source/key
+    range: string
+    required: true
+    key: true
+    pattern: '^[a-z0-9][a-z0-9|.-]*$'
+    description: Original key in a recipe source map, including grouped weapon labels; not a global identity or resolved catalog reference.

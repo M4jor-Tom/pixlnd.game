@@ -1,0 +1,134 @@
+id: https://w3id.org/pixlnd/entities/appearance-scales-offsets
+name: pixlnd-entities-appearance-scales-offsets
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- entities-appearance
+default_range: string
+slots:
+  appearance-head-scale:
+    slot_uri: pixlnd:appearance/head-scale
+    alias: head-scale
+    domain: appearance
+    range: float
+    description: Scalar four-byte-float cuwo wire scale; in-memory Cython double does not establish wire f64.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-body-scale:
+    slot_uri: pixlnd:appearance/body-scale
+    alias: body-scale
+    domain: appearance
+    range: float
+    description: Scalar four-byte-float cuwo wire scale; in-memory Cython double does not establish wire f64.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-hand-scale:
+    slot_uri: pixlnd:appearance/hand-scale
+    alias: hand-scale
+    domain: appearance
+    range: float
+    description: Scalar four-byte-float cuwo wire scale; in-memory Cython double does not establish wire f64.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-foot-scale:
+    slot_uri: pixlnd:appearance/foot-scale
+    alias: foot-scale
+    domain: appearance
+    range: float
+    description: Scalar four-byte-float cuwo wire scale; in-memory Cython double does not establish wire f64.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-shoulder2-scale:
+    slot_uri: pixlnd:appearance/shoulder2-scale
+    alias: shoulder2-scale
+    domain: appearance
+    range: float
+    description: Scalar four-byte-float cuwo wire scale; in-memory Cython double does not establish wire f64.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-weapon-scale:
+    slot_uri: pixlnd:appearance/weapon-scale
+    alias: weapon-scale
+    domain: appearance
+    range: float
+    description: Scalar four-byte-float cuwo wire scale; in-memory Cython double does not establish wire f64.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-tail-scale:
+    slot_uri: pixlnd:appearance/tail-scale
+    alias: tail-scale
+    domain: appearance
+    range: float
+    description: Scalar four-byte-float cuwo wire scale; in-memory Cython double does not establish wire f64.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-shoulder-scale:
+    slot_uri: pixlnd:appearance/shoulder-scale
+    alias: shoulder-scale
+    domain: appearance
+    range: float
+    description: Scalar four-byte-float cuwo wire scale; in-memory Cython double does not establish wire f64.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-wing-scale:
+    slot_uri: pixlnd:appearance/wing-scale
+    alias: wing-scale
+    domain: appearance
+    range: float
+    description: Scalar four-byte-float cuwo wire scale; in-memory Cython double does not establish wire f64.
+    see_also: [../domain/3_Classes.md#appearance]
+  appearance-body-offset:
+    slot_uri: pixlnd:appearance/body-offset
+    alias: body-offset
+    domain: appearance
+    range: float
+    description: Three-component cuwo part offset; no missing part transforms are implied.
+    see_also: [../domain/3_Classes.md#appearance]
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+  appearance-head-offset:
+    slot_uri: pixlnd:appearance/head-offset
+    alias: head-offset
+    domain: appearance
+    range: float
+    description: Three-component cuwo part offset; no missing part transforms are implied.
+    see_also: [../domain/3_Classes.md#appearance]
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+  appearance-hand-offset:
+    slot_uri: pixlnd:appearance/hand-offset
+    alias: hand-offset
+    domain: appearance
+    range: float
+    description: Three-component cuwo part offset; no missing part transforms are implied.
+    see_also: [../domain/3_Classes.md#appearance]
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+  appearance-foot-offset:
+    slot_uri: pixlnd:appearance/foot-offset
+    alias: foot-offset
+    domain: appearance
+    range: float
+    description: Three-component cuwo part offset; no missing part transforms are implied.
+    see_also: [../domain/3_Classes.md#appearance]
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+  appearance-tail-offset:
+    slot_uri: pixlnd:appearance/tail-offset
+    alias: tail-offset
+    domain: appearance
+    range: float
+    description: Three-component cuwo part offset; no missing part transforms are implied.
+    see_also: [../domain/3_Classes.md#appearance]
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+  appearance-wing-offset:
+    slot_uri: pixlnd:appearance/wing-offset
+    alias: wing-offset
+    domain: appearance
+    range: float
+    description: Three-component cuwo part offset; no missing part transforms are implied.
+    see_also: [../domain/3_Classes.md#appearance]
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3

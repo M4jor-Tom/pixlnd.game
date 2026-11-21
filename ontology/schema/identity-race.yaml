@@ -1,0 +1,66 @@
+id: https://w3id.org/pixlnd/identity/race
+name: pixlnd-identity-race
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- catalog-properties
+- identity-types
+default_range: string
+classes:
+  race:
+    description: "Logical race definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:race
+    see_also: &id003
+    - ../domain/3_Classes.md#race
+    attributes:
+      alpha-entity-ids: {alias: alpha-entity-ids, slot_uri: "pixlnd:race/alpha-entity-ids", range: race-source-ids, description: "Qualified per-gender numeric source IDs, not stable race identity.", inlined: true}
+      quirks: {alias: quirks, slot_uri: "pixlnd:race/quirks", range: string, description: "Customization qualifications, without racial stat bonuses.", multivalued: true}
+      voice: {alias: voice, slot_uri: "pixlnd:race/voice", range: string, description: "Race-specific groan description; no asset identity is fabricated."}
+    slots:
+    - id
+    - race-playable
+    - race-size-class
+    - race-genders
+    - race-name
+    - race-hair
+    - race-heads
+slots:
+  race-playable:
+    description: "Race playable property; interpreted under its owning definition."
+    slot_uri: pixlnd:race/playable
+    alias: playable
+    range: boolean
+    required: true
+    see_also: *id003
+  race-size-class:
+    description: "Race size class property; interpreted under its owning definition."
+    slot_uri: pixlnd:race/size-class
+    alias: size-class
+    range: size-class
+    required: true
+    see_also: *id003
+  race-genders:
+    description: "Race genders property; interpreted under its owning definition."
+    slot_uri: pixlnd:race/genders
+    alias: genders
+    range: gender
+    required: true
+    multivalued: true
+    see_also: *id003
+enums:
+  gender:
+    description: "Gender vocabulary."
+    enum_uri: pixlnd:gender
+    permissible_values:
+      male: {}
+      female: {}
+  size-class:
+    description: "Size class vocabulary."
+    enum_uri: pixlnd:size-class
+    permissible_values:
+      small: {}
+      normal: {}
+      large: {}

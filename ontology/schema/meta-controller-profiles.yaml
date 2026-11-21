@@ -1,0 +1,80 @@
+id: https://w3id.org/pixlnd/meta/controller-profiles
+name: pixlnd-meta-controller-profiles
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- relations
+- identity
+default_range: string
+classes:
+  controller-profile:
+    description: Device profile identity and its separate physical binding structures.
+    class_uri: pixlnd:controller-profile
+    see_also:
+    - ../domain/3_Classes.md#controller-profile
+    - ../domain/controller-profiles.md
+    slots:
+    - id
+    - has-input-binding
+    slot_usage:
+      has-input-binding:
+        alias: bindings
+        inlined: true
+  android-profile-parameters:
+    class_uri: pixlnd:android-profile-parameters
+    description: ID-free Android-only chosen response and minimum-target parameters; no device behavior is implemented by this declaration.
+    see_also:
+    - ../domain/controller-profiles.md#android
+    mixin: true
+    slots:
+    - android-profile-deadzone-ratio
+    - android-profile-min-target-dp
+    - android-profile-look-deg-per-safe-width
+  android-controller-profile:
+    class_uri: pixlnd:android-controller-profile
+    description: Android-specific logical refinement of a controller profile; its selected policy parameters do not add physical mappings.
+    is_a: controller-profile
+    mixins:
+    - android-profile-parameters
+    see_also:
+    - ../domain/controller-profiles.md#android
+    slot_usage:
+      id:
+        equals_string: android
+slots:
+  android-profile-deadzone-ratio:
+    slot_uri: pixlnd:android-profile-parameters/deadzone-ratio
+    alias: deadzone-ratio
+    domain: android-profile-parameters
+    range: float
+    required: true
+    minimum_value: 0.15
+    maximum_value: 0.15
+    description: Chosen neutral deadzone ratio 0.15; the Android policy formula remains in controller-profiles.md.
+    see_also:
+    - ../domain/controller-profiles.md#android-response
+  android-profile-min-target-dp:
+    slot_uri: pixlnd:android-profile-parameters/min-target-dp
+    alias: min-target-dp
+    domain: android-profile-parameters
+    range: integer
+    required: true
+    minimum_value: 48
+    maximum_value: 48
+    description: Chosen minimum-target parameter 48 dp; actual targets may be larger without a schema upper bound.
+    see_also:
+    - ../domain/controller-profiles.md#android-layout
+  android-profile-look-deg-per-safe-width:
+    slot_uri: pixlnd:android-profile-parameters/look-deg-per-safe-width
+    alias: look-deg-per-safe-width
+    domain: android-profile-parameters
+    range: integer
+    required: true
+    minimum_value: 180
+    maximum_value: 180
+    description: Chosen look-response coefficient 180 degrees per usable safe width; signs and formula remain in controller-profiles.md.
+    see_also:
+    - ../domain/controller-profiles.md#android-response
