@@ -1,0 +1,126 @@
+id: https://w3id.org/pixlnd/save-world/saved-contents
+name: pixlnd-save-world-saved-contents
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- save-world-saved-entries
+default_range: string
+classes:
+  saved-contents:
+    class_uri: pixlnd:saved-contents
+    see_also: &id006
+    - ../domain/encounter-contracts.md#spike-traps-and-furnishing-contents
+    slots:
+    - saved-contents-rubble
+    - saved-contents-props
+    - saved-contents-traps
+  saved-reward:
+    class_uri: pixlnd:saved-reward
+    see_also: &id007
+    - ../domain/3_Classes.md#save-data
+    slots:
+    - saved-reward-source
+    - saved-reward-delivered
+    - saved-reward-level
+    - saved-reward-payload
+    - saved-reward-position
+    - saved-reward-classes
+    - saved-reward-class-id
+    description: Current source/cycle reward record. Kill records add position, mission records add classes/class_id,
+      furnishing records add neither. Those mutually conditional fields and source/cycle receipt integrity
+      remain current-rule checks, not a universal payload shape.
+slots:
+  saved-contents-rubble:
+    slot_uri: pixlnd:saved-contents/rubble
+    alias: rubble
+    domain: saved-contents
+    range: saved-rubble-entry
+    required: true
+    see_also: *id006
+    multivalued: true
+    inlined: true
+    inlined_as_list: false
+  saved-contents-props:
+    slot_uri: pixlnd:saved-contents/props
+    alias: props
+    domain: saved-contents
+    range: saved-prop-entry
+    required: true
+    see_also: *id006
+    multivalued: true
+    inlined: true
+    inlined_as_list: false
+  saved-contents-traps:
+    slot_uri: pixlnd:saved-contents/traps
+    alias: traps
+    domain: saved-contents
+    range: saved-trap
+    required: true
+    see_also: *id006
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  saved-reward-source:
+    slot_uri: pixlnd:saved-reward/source
+    alias: source
+    domain: saved-reward
+    range: string
+    required: true
+    see_also: *id007
+    key: true
+  saved-reward-delivered:
+    slot_uri: pixlnd:saved-reward/delivered
+    alias: delivered
+    domain: saved-reward
+    range: boolean
+    required: true
+    see_also: *id007
+  saved-reward-level:
+    slot_uri: pixlnd:saved-reward/level
+    alias: level
+    domain: saved-reward
+    range: integer
+    required: true
+    see_also: *id007
+    minimum_value: 1
+  saved-reward-payload:
+    slot_uri: pixlnd:saved-reward/payload
+    alias: payload
+    domain: saved-reward
+    range: saved-item
+    required: true
+    see_also: *id007
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  saved-reward-position:
+    slot_uri: pixlnd:saved-reward/position
+    alias: position
+    domain: saved-reward
+    range: double
+    required: false
+    see_also: *id007
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+  saved-reward-classes:
+    slot_uri: pixlnd:saved-reward/classes
+    alias: classes
+    domain: saved-reward
+    range: character-class
+    required: false
+    see_also: *id007
+    multivalued: true
+    list_elements_unique: true
+  saved-reward-class-id:
+    slot_uri: pixlnd:saved-reward/class_id
+    alias: class_id
+    domain: saved-reward
+    range: string
+    required: false
+    see_also: *id007
+    description: Current empty-string pending-class sentinel or selected class ID; membership and applicability
+      require current-rule validation.

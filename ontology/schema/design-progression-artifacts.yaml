@@ -1,0 +1,61 @@
+id: https://w3id.org/pixlnd/design-progression/artifacts
+name: pixlnd-design-progression-artifacts
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+classes:
+  artifact-design:
+    class_uri: pixlnd:artifact-design
+    see_also: &id003
+    - ../domain/3_Classes.md#artifact
+    slots:
+    - artifact-design-first
+    - artifact-design-z
+    - artifact-design-total-bonus
+    - artifact-design-stats
+    description: Normalized logarithm configuration, not generated artifact instances or a copied executable
+      formula. Positive z and the exact approved formula/first value remain c-artifact-stat; no decay/floor
+      alternate fields.
+  generator-design-circle-of-power: {"class_uri": "pixlnd:generator-design-circle-of-power", "description": "Configuration component generator-design-circle-of-power; applicability follows the linked source rules.", "see_also": ["../domain/5_Constraints.md#required-inputs", "../domain/6_Generators.md"], "attributes": {"attack": {"alias": "attack", "slot_uri": "pixlnd:generator-design-circle-of-power/attack", "description": "Source attack of generator-design-circle-of-power.", "required": true, "range": "double"}, "max-hp": {"alias": "max-hp", "slot_uri": "pixlnd:generator-design-circle-of-power/max-hp", "description": "Source max-hp of generator-design-circle-of-power.", "required": true, "range": "double"}}}
+  generator-design-artifacts-per-land: {"class_uri": "pixlnd:generator-design-artifacts-per-land", "description": "Configuration component generator-design-artifacts-per-land; applicability follows the linked source rules.", "see_also": ["../domain/5_Constraints.md#required-inputs", "../domain/6_Generators.md"], "attributes": {"min": {"alias": "min", "slot_uri": "pixlnd:generator-design-artifacts-per-land/min", "description": "Source min of generator-design-artifacts-per-land.", "required": true, "range": "integer"}, "max": {"alias": "max", "slot_uri": "pixlnd:generator-design-artifacts-per-land/max", "description": "Source max of generator-design-artifacts-per-land.", "required": true, "range": "integer"}, "roll": {"alias": "roll", "slot_uri": "pixlnd:generator-design-artifacts-per-land/roll", "description": "Source roll of generator-design-artifacts-per-land.", "required": true, "range": "string"}}}
+slots:
+  artifact-design-first:
+    slot_uri: pixlnd:artifact-design/first
+    alias: first
+    domain: artifact-design
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: true
+    see_also: *id003
+    minimum_value: 0.05
+    maximum_value: 0.05
+  artifact-design-z:
+    slot_uri: pixlnd:artifact-design/z
+    alias: z
+    domain: artifact-design
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: true
+    see_also: *id003
+    minimum_value: 0
+    none_of: [{equals_number: 0}]
+  artifact-design-total-bonus:
+    slot_uri: pixlnd:artifact-design/total-bonus
+    alias: total-bonus
+    domain: artifact-design
+    description: Configuration field; applicability follows the linked rule.
+    range: string
+    required: true
+    see_also: *id003
+  artifact-design-stats:
+    slot_uri: pixlnd:artifact-design/stats
+    alias: stats
+    domain: artifact-design
+    description: Configuration field; applicability follows the linked rule.
+    range: string
+    required: true
+    see_also: *id003

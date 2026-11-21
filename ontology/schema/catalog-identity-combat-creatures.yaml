@@ -1,0 +1,101 @@
+id: https://w3id.org/pixlnd/catalog-identity-combat/creatures
+name: pixlnd-catalog-identity-combat-creatures
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- catalog-identity-combat-classes
+- catalog-identity-combat-races
+default_range: string
+classes:
+  creatures-source:
+    class_uri: pixlnd:creatures-source
+    description: Species source catalog; logical mobs are separate entities.
+    see_also: [../instances/creatures.json]
+    annotations: {source-map-entries: entries}
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: 'pixlnd:creatures-source/schema', range: string, required: true, equals_string: creature, description: "Original $schema field of creatures-source; retains the source representation."}
+      documentation: {alias: _doc, slot_uri: 'pixlnd:creatures-source/doc', range: string, required: true, description: "Original _doc field of creatures-source; retains the source representation."}
+      playable-races-as-enemies: {alias: _playable-races-as-enemies, slot_uri: 'pixlnd:creatures-source/playable-races-as-enemies', range: source-note-record, required: true, inlined: true, description: "Original _playable-races-as-enemies field of creatures-source; retains the source representation."}
+      entries: {alias: entries, slot_uri: 'pixlnd:creatures-source/entries', range: creature-source-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "Original entries field of creatures-source; retains the source representation."}
+  creature-source-entry:
+    class_uri: pixlnd:creature-source-entry
+    description: Original species key and complete source body.
+    see_also: [../instances/creatures.json]
+    slots: [source-entry-key]
+    attributes:
+      value: {alias: value, slot_uri: 'pixlnd:creature-source-entry/value', range: creature-source-row, required: true, inlined: true, description: "Original value field of creature-source-entry; retains the source representation."}
+  creature-source-row:
+    class_uri: pixlnd:creature-source-row
+    description: Qualified source codes and descriptions remain literal, separate from normalized logical enums and references.
+    see_also: [../instances/creatures.json, ../domain/3_Classes.md#creature]
+    slots: [creature-alpha-entity-id, creature-category, member-of-family, descriptive-member-of-family, tamed-by, source-notes]
+    attributes:
+      name: {alias: name, slot_uri: 'pixlnd:creature-source-row/name', range: string, required: true, description: "Original name field of creature-source-row; retains the source representation."}
+      hostility: {alias: h, slot_uri: 'pixlnd:creature-source-row/hostility', exactly_one_of: [{range: string}], description: "Original h field of creature-source-row; retains the source representation."}
+      lands: {alias: lands, slot_uri: 'pixlnd:creature-source-row/lands', exactly_one_of: [{range: string, multivalued: true}], description: "Original lands field of creature-source-row; retains the source representation."}
+      role: {alias: role, slot_uri: 'pixlnd:creature-source-row/role', exactly_one_of: [{range: string}], description: "Original role field of creature-source-row; retains the source representation."}
+      ride: {alias: ride, slot_uri: 'pixlnd:creature-source-row/ride', exactly_one_of: [{range: boolean}], description: "Original ride field of creature-source-row; retains the source representation."}
+      boss: {alias: boss, slot_uri: 'pixlnd:creature-source-row/boss', exactly_one_of: [{range: boolean}], description: "Original boss field of creature-source-row; retains the source representation."}
+      bossable: {alias: bossable, slot_uri: 'pixlnd:creature-source-row/bossable', exactly_one_of: [{range: boolean}], description: "Original bossable field of creature-source-row; retains the source representation."}
+      breaks-terrain: {alias: breaks-terrain, slot_uri: 'pixlnd:creature-source-row/breaks-terrain', exactly_one_of: [{range: boolean}], description: "Original breaks-terrain field of creature-source-row; retains the source representation."}
+      drinks-potions: {alias: drinks-potions, slot_uri: 'pixlnd:creature-source-row/drinks-potions', exactly_one_of: [{range: boolean}], description: "Original drinks-potions field of creature-source-row; retains the source representation."}
+      lantern-at-night: {alias: lantern-at-night, slot_uri: 'pixlnd:creature-source-row/lantern-at-night', exactly_one_of: [{range: boolean}], description: "Original lantern-at-night field of creature-source-row; retains the source representation."}
+      pet-types: {alias: pet-types, slot_uri: 'pixlnd:creature-source-row/pet-types', exactly_one_of: [{range: string, multivalued: true}], description: "Original pet-types field of creature-source-row; retains the source representation."}
+      group: {alias: group, slot_uri: 'pixlnd:creature-source-row/group', exactly_one_of: [{range: integer, multivalued: true, minimum_cardinality: 2, maximum_cardinality: 2, minimum_value: 1}], description: "Original group field of creature-source-row; retains the source representation."}
+      drops: {alias: drops, slot_uri: 'pixlnd:creature-source-row/drops', exactly_one_of: [{range: string, multivalued: true}], description: "Original drops field of creature-source-row; retains the source representation."}
+      abilities: {alias: abilities, slot_uri: 'pixlnd:creature-source-row/abilities', exactly_one_of: [{range: string, multivalued: true}], description: "Original abilities field of creature-source-row; retains the source representation."}
+      faction: {alias: faction, slot_uri: 'pixlnd:creature-source-row/faction', exactly_one_of: [{range: faction}], description: "Original faction field of creature-source-row; retains the source representation."}
+      versions: {alias: v, slot_uri: 'pixlnd:creature-source-row/versions', range: SourceVersion, required: true, multivalued: true, minimum_cardinality: 1, description: "Original v field of creature-source-row; retains the source representation."}
+  source-note-record:
+    class_uri: pixlnd:source-note-record
+    description: Metadata note object, not a content instance.
+    see_also: [../domain/5_Constraints.md]
+    attributes:
+      note: {alias: note, slot_uri: 'pixlnd:source-note-record/note', range: string, required: true, description: "Original note field of source-note-record; retains the source representation."}
+  creature-families-source:
+    class_uri: pixlnd:creature-families-source
+    description: Taxonomy families and two distinct roster configurations.
+    see_also: [../instances/creature-families.json, ../domain/5_Constraints.md]
+    annotations: {source-map-entries: entries}
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: 'pixlnd:creature-families-source/schema', range: string, required: true, equals_string: creature-family, description: "Original $schema field of creature-families-source; retains the source representation."}
+      forest-dungeon-rosters: {alias: forest-dungeon-rosters, slot_uri: 'pixlnd:creature-families-source/forest-dungeon-rosters', range: forest-rosters, required: true, inlined: true, description: "Original forest-dungeon-rosters field of creature-families-source; retains the source representation."}
+      landscape-rosters: {alias: landscape-rosters, slot_uri: 'pixlnd:creature-families-source/landscape-rosters', range: landscape-rosters, required: true, inlined: true, description: "Original landscape-rosters field of creature-families-source; retains the source representation."}
+      entries: {alias: entries, slot_uri: 'pixlnd:creature-families-source/entries', range: family-source-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "Original entries field of creature-families-source; retains the source representation."}
+  family-source-entry:
+    class_uri: pixlnd:family-source-entry
+    description: Original taxonomy key and complete body, without inferred historical provenance.
+    see_also: [../instances/creature-families.json]
+    slots: [source-entry-key]
+    attributes:
+      value: {alias: value, slot_uri: 'pixlnd:family-source-entry/value', range: family-source-row, required: true, inlined: true, description: "Original value field of family-source-entry; retains the source representation."}
+  family-source-row:
+    class_uri: pixlnd:family-source-row
+    description: Descriptive memberships do not assign multiple primary balancing families.
+    see_also: [../instances/creature-families.json, ../domain/3_Classes.md#creature-family]
+    slots: [creature-family-members]
+    attributes:
+      traits: {alias: traits, slot_uri: 'pixlnd:family-source-row/traits', exactly_one_of: [{range: string, multivalued: true}], description: "Original traits field of family-source-row; retains the source representation."}
+  forest-rosters:
+    class_uri: pixlnd:forest-rosters
+    description: Named source roster variants; labels are configuration keys, not creature identities.
+    see_also: [../instances/creature-families.json#forest-dungeon-rosters]
+    extra_slots:
+      range_expression: {range: forest-roster, required: true, inlined: true}
+  forest-roster:
+    class_uri: pixlnd:forest-roster
+    description: Literal race, creature and family tokens; beetle is retained without inventing a creature alias.
+    see_also: [../instances/creature-families.json#forest-dungeon-rosters, ../domain/5_Constraints.md]
+    attributes:
+      members: {alias: members, slot_uri: 'pixlnd:forest-roster/members', range: string, required: true, multivalued: true, description: "Original members field of forest-roster; retains the source representation."}
+      boss: {alias: boss, slot_uri: 'pixlnd:forest-roster/boss', range: string, required: true, description: "Original boss field of forest-roster; retains the source representation."}
+  landscape-rosters:
+    class_uri: pixlnd:landscape-rosters
+    description: Literal source landscape or habitat labels to creature reference lists; key resolution is not native foreign-key validation.
+    see_also: [../instances/creature-families.json#landscape-rosters, ../domain/5_Constraints.md]
+    extra_slots:
+      range_expression: {range: creature, required: true, multivalued: true}

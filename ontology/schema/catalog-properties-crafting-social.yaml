@@ -1,0 +1,90 @@
+id: https://w3id.org/pixlnd/catalog-properties/crafting-social
+name: pixlnd-catalog-properties-crafting-social
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- items
+default_range: string
+slots:
+  ingredient-name:
+    description: "Ingredient name property; interpreted under its owning definition."
+    slot_uri: pixlnd:ingredient/name
+    alias: name
+    domain: ingredient
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#ingredient
+  ingredient-alpha-subtype:
+    slot_uri: pixlnd:ingredient/alpha-subtype
+    alias: alpha-subtype
+    domain: ingredient
+    range: integer
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#ingredient
+    - ../instances/ingredients.json
+    description: Optional numeric subtype from the catalog; shared values are not stable ingredient identity.
+  faction-name:
+    description: "Faction name property; interpreted under its owning definition."
+    slot_uri: pixlnd:faction/name
+    alias: name
+    domain: faction
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#faction
+    - ../instances/factions.json
+  npc-role-name:
+    description: "Npc role name property; interpreted under its owning definition."
+    slot_uri: pixlnd:npc-role/name
+    alias: name
+    domain: npc-role
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#npc-role
+    - ../instances/npc-roles.json
+  npc-role-dialogue:
+    description: "Npc role dialogue property; interpreted under its owning definition."
+    slot_uri: pixlnd:npc-role/dialogue
+    alias: dialogue
+    domain: npc-role
+    range: string
+    required: false
+    multivalued: true
+    see_also:
+    - ../domain/3_Classes.md#npc-role
+    - ../instances/npc-roles.json#villager
+  npc-role-sign:
+    description: "Npc role sign property; interpreted under its owning definition."
+    slot_uri: pixlnd:npc-role/sign
+    alias: sign
+    domain: npc-role
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#npc-role
+    - ../instances/npc-roles.json#identifier
+  crafting-station-name:
+    description: "Crafting station name property; interpreted under its owning definition."
+    slot_uri: pixlnd:crafting-station/name
+    alias: name
+    domain: crafting-station
+    range: string
+    required: false
+    see_also: &id008
+    - ../domain/3_Classes.md#crafting-station
+  crafting-station-static-id:
+    description: "Crafting station static id property; interpreted under its owning definition."
+    slot_uri: pixlnd:crafting-station/static-id
+    alias: static-id
+    domain: crafting-station
+    range: integer
+    required: false
+    see_also: *id008
+    minimum_value: 0

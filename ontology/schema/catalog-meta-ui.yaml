@@ -1,0 +1,101 @@
+id: https://w3id.org/pixlnd/catalog-meta/ui
+name: pixlnd-catalog-meta-ui
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+classes:
+  ui-source:
+    description: Complete original UI source document, not a selected presentation projection or runtime policy.
+    class_uri: pixlnd:ui-source
+    see_also: [../instances/ui.json, ../domain/controls.md]
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: pixlnd:ui-source/schema, range: string, required: true, equals_string: hud-element, description: Original source marker.}
+      controls-note: {alias: _controls, slot_uri: pixlnd:ui-source/controls-note, range: string, required: true, description: Original controls reference.}
+      profiles-note: {alias: _profiles, slot_uri: pixlnd:ui-source/profiles-note, range: string, required: true, description: Original profiles reference.}
+      hud: {alias: hud, slot_uri: pixlnd:ui-source/hud, range: ui-source-hud-row, multivalued: true, inlined: true, required: true, description: Full keyed HUD source rows.}
+      screens: {alias: screens, slot_uri: pixlnd:ui-source/screens, range: ui-source-screen-row, multivalued: true, inlined: true, required: true, description: Full keyed screen source rows.}
+      options: {alias: options, slot_uri: pixlnd:ui-source/options, range: ui-source-options, inlined: true, required: true, description: Full option payloads and the unchanged missing-options list.}
+      camera: {alias: camera, slot_uri: pixlnd:ui-source/camera, range: ui-source-camera, inlined: true, required: true, description: Complete camera presentation text.}
+  ui-source-options:
+    description: Fixed missing-options list plus keyed option objects, preserving their distinct source forms.
+    class_uri: pixlnd:ui-source-options
+    annotations: {source-map-entries: entries}
+    see_also: [../instances/ui.json#options]
+    attributes:
+      missing: {alias: missing, slot_uri: pixlnd:ui-source-options/missing, range: string, multivalued: true, required: true, description: Original missing-options string list.}
+      entries: {alias: entries, slot_uri: pixlnd:ui-source-options/entries, range: ui-source-option-entry, multivalued: true, inlined: true, inlined_as_list: true, required: true, description: Original keyed option objects other than the fixed missing list.}
+  ui-source-hud-row:
+    description: Full HUD source row; container key is not duplicated as a body identifier.
+    class_uri: pixlnd:ui-source-hud-row
+    see_also: [../instances/ui.json#hud]
+    attributes:
+      key: {alias: key, slot_uri: pixlnd:ui-source-hud-row/key, range: string, key: true, required: true, description: Original HUD map key.}
+      pos: {alias: pos, slot_uri: pixlnd:ui-source-hud-row/pos, range: string, description: Original placement label.}
+      shows:
+        alias: shows
+        slot_uri: pixlnd:ui-source-hud-row/shows
+        any_of: [{range: string}, {range: string, multivalued: true}]
+        description: Original scalar or ordered-list presentation contents.
+      desc: {alias: desc, slot_uri: pixlnd:ui-source-hud-row/desc, range: string, description: Original descriptive text.}
+      default: {alias: default, slot_uri: pixlnd:ui-source-hud-row/default, range: string, description: Original textual default.}
+      versions: {alias: versions, slot_uri: pixlnd:ui-source-hud-row/versions, range: string, multivalued: true, description: Original version labels.}
+      controls: {alias: _controls, slot_uri: pixlnd:ui-source-hud-row/controls, range: string, multivalued: true, description: Original control-reference strings.}
+      design: {alias: design, slot_uri: pixlnd:ui-source-hud-row/design, range: string, description: Original design note.}
+  ui-source-screen-row:
+    description: Full screen source row with literal contextual lists and no copied map-key identity.
+    class_uri: pixlnd:ui-source-screen-row
+    see_also: [../instances/ui.json#screens]
+    attributes:
+      key: {alias: key, slot_uri: pixlnd:ui-source-screen-row/key, range: string, key: true, required: true, description: Original screen map key.}
+      controls: {alias: _controls, slot_uri: pixlnd:ui-source-screen-row/controls, range: string, multivalued: true, description: Original control-reference strings.}
+      desc: {alias: desc, slot_uri: pixlnd:ui-source-screen-row/desc, range: string, description: Original descriptive text.}
+      versions: {alias: versions, slot_uri: pixlnd:ui-source-screen-row/versions, range: string, multivalued: true, description: Original version labels.}
+      shows:
+        alias: shows
+        slot_uri: pixlnd:ui-source-screen-row/shows
+        any_of: [{range: string}, {range: string, multivalued: true}]
+        description: Original scalar or ordered-list presentation contents.
+      extras: {alias: extras, slot_uri: pixlnd:ui-source-screen-row/extras, range: string, multivalued: true, description: Original additional presentation labels.}
+      tabs:
+        alias: tabs
+        slot_uri: pixlnd:ui-source-screen-row/tabs
+        any_of: [{range: string, multivalued: true}, {range: ui-source-context-lists, inlined: true}]
+        description: Original string-list or A/S contextual tab groups.
+      stats: {alias: stats, slot_uri: pixlnd:ui-source-screen-row/stats, range: ui-source-context-lists, inlined: true, description: Original contextual statistics lists.}
+      fields: {alias: fields, slot_uri: pixlnd:ui-source-screen-row/fields, range: ui-source-context-lists, inlined: true, description: Original contextual field lists.}
+  ui-source-context-lists:
+    description: Literal A/S string-list object retained in its source context.
+    class_uri: pixlnd:ui-source-context-lists
+    see_also: [../instances/ui.json#screens]
+    attributes:
+      alpha: {alias: A, slot_uri: pixlnd:ui-source-context-lists/A, range: string, multivalued: true, description: Original A list.}
+      steam: {alias: S, slot_uri: pixlnd:ui-source-context-lists/S, range: string, multivalued: true, description: Original S list.}
+  ui-source-option-entry:
+    description: Key/value binding for one ordinary keyed UI option object.
+    class_uri: pixlnd:ui-source-option-entry
+    see_also: [../instances/ui.json#options]
+    attributes:
+      key: {alias: key, slot_uri: pixlnd:ui-source-option-entry/key, range: string, key: true, required: true, description: Original option key.}
+      value: {alias: value, slot_uri: pixlnd:ui-source-option-entry/value, range: ui-source-option-row, inlined: true, required: true, description: Original ordinary option body; the missing list is a fixed sibling field.}
+  ui-source-option-row:
+    description: Complete keyed UI option body with its original heterogeneous descriptive fields.
+    class_uri: pixlnd:ui-source-option-row
+    see_also: [../instances/ui.json#options]
+    attributes:
+      default: {alias: default, slot_uri: pixlnd:ui-source-option-row/default, range: integer, description: Original numeric option default.}
+      cfg: {alias: cfg, slot_uri: pixlnd:ui-source-option-row/cfg, range: string, description: Original configuration text.}
+      since: {alias: since, slot_uri: pixlnd:ui-source-option-row/since, range: string, description: Original release/date string without normalization.}
+      note: {alias: note, slot_uri: pixlnd:ui-source-option-row/note, range: string, description: Original note.}
+      versions: {alias: versions, slot_uri: pixlnd:ui-source-option-row/versions, range: string, multivalued: true, description: Original qualified version labels.}
+  ui-source-camera:
+    description: Complete camera source strings; map text is retained without selecting map behavior.
+    class_uri: pixlnd:ui-source-camera
+    see_also: [../instances/ui.json#camera, ../domain/controls.md]
+    attributes:
+      mode: {alias: mode, slot_uri: pixlnd:ui-source-camera/mode, range: string, required: true, description: Original camera-mode text.}
+      aim: {alias: aim, slot_uri: pixlnd:ui-source-camera/aim, range: string, required: true, description: Original aim text.}
+      map: {alias: map, slot_uri: pixlnd:ui-source-camera/map, range: string, required: true, description: Original map text.}

@@ -1,0 +1,142 @@
+id: https://w3id.org/pixlnd/design-combat/ability-runtime
+name: pixlnd-design-combat-ability-runtime
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- design-combat-ability-runtime-delivery
+- design-combat-ability-runtime-modifiers
+- design-combat-runtime-cost-strike
+default_range: string
+classes:
+  ability-runtime:
+    class_uri: pixlnd:ability-runtime
+    see_also: &id003
+    - ../domain/3_Classes.md#ability
+    slots:
+    - ability-runtime-crit-add
+    - ability-runtime-runtime
+    - ability-runtime-cost
+    - ability-runtime-cooldown-s
+    - ability-runtime-toward
+    - ability-runtime-range
+    - ability-runtime-distance
+    - ability-runtime-duration-s
+    - ability-runtime-turns-per-s
+    - ability-runtime-radius
+    - ability-runtime-damage-mult
+    - ability-runtime-move-mult
+    - ability-runtime-drain-per-s
+    - ability-runtime-charge-mult
+    - ability-runtime-damage-taken-mult
+    - ability-runtime-heal-pct
+    - ability-runtime-heal-over-s
+    - ability-runtime-stealth-per-s
+    - ability-runtime-swing-mult
+    - ability-runtime-cast-s
+    - ability-runtime-absorb-pct-hp
+    - ability-runtime-spread
+    - ability-runtime-speed
+    - ability-runtime-gravity
+    - ability-runtime-life-s
+    - ability-runtime-splash
+    - ability-runtime-taunt-s
+    - ability-runtime-stun-immune
+    - ability-runtime-stealth-full
+    - ability-runtime-count
+    - ability-runtime-strike
+    - ability-runtime-throw
+    description: Selected hybrid runtime entry. Kind-specific presence, strict positivity and coupled
+      bounds remain c-ability-runtime; optional fields are not defaulted by this schema.
+    rules: [{"preconditions": {"slot_conditions": {"ability-runtime-runtime": {"equals_string": "dash", "alias": "runtime"}}}, "postconditions": {"slot_conditions": {"ability-runtime-distance": {"required": true, "alias": "distance"}}}}, {"preconditions": {"slot_conditions": {"ability-runtime-runtime": {"equals_string": "channel", "alias": "runtime"}}}, "postconditions": {"slot_conditions": {"ability-runtime-duration-s": {"required": true, "alias": "duration-s"}, "ability-runtime-turns-per-s": {"required": true, "alias": "turns-per-s"}, "ability-runtime-drain-per-s": {"required": true, "alias": "drain-per-s", "all_of": [{"range": "double"}]}, "ability-runtime-radius": {"required": true, "alias": "radius"}, "ability-runtime-damage-mult": {"required": true, "alias": "damage-mult", "all_of": [{"range": "double"}]}, "ability-runtime-move-mult": {"required": true, "alias": "move-mult", "all_of": [{"range": "double"}]}}}}, {"preconditions": {"slot_conditions": {"ability-runtime-runtime": {"equals_string": "buff", "alias": "runtime"}}}, "postconditions": {"slot_conditions": {"ability-runtime-duration-s": {"required": true, "alias": "duration-s"}}}}, {"preconditions": {"slot_conditions": {"ability-runtime-runtime": {"equals_string": "heal", "alias": "runtime"}}}, "postconditions": {"slot_conditions": {"ability-runtime-cast-s": {"required": true, "alias": "cast-s", "all_of": [{"range": "double"}]}, "ability-runtime-heal-pct": {"required": true, "alias": "heal-pct", "all_of": [{"range": "double"}]}}}}, {"preconditions": {"slot_conditions": {"ability-runtime-runtime": {"equals_string": "burst", "alias": "runtime"}}}, "postconditions": {"slot_conditions": {"ability-runtime-radius": {"required": true, "alias": "radius"}, "ability-runtime-damage-mult": {"required": true, "alias": "damage-mult", "all_of": [{"range": "double"}]}}}}, {"preconditions": {"slot_conditions": {"ability-runtime-runtime": {"equals_string": "projectile", "alias": "runtime"}}}, "postconditions": {"slot_conditions": {"ability-runtime-speed": {"required": true, "range": "double", "minimum_value": 0, "none_of": [{"range": "double", "equals_number": 0}], "alias": "speed", "all_of": [{"range": "double"}]}, "ability-runtime-radius": {"required": true, "alias": "radius"}, "ability-runtime-life-s": {"required": true, "range": "double", "minimum_value": 0, "none_of": [{"range": "double", "equals_number": 0}], "alias": "life-s", "all_of": [{"range": "double"}]}}}}]
+slots:
+  ability-runtime-crit-add:
+    alias: crit-add
+    slot_uri: pixlnd:ability-runtime/crit-add
+    domain: ability-runtime
+    range: double
+    description: Additional critical chance during the selected buff.
+  ability-runtime-runtime:
+    slot_uri: pixlnd:ability-runtime/runtime
+    alias: runtime
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: ability-runtime-kind
+    required: true
+    see_also: *id003
+  ability-runtime-cost:
+    slot_uri: pixlnd:ability-runtime/cost
+    alias: cost
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: runtime-cost
+    required: true
+    see_also: *id003
+    inlined: true
+  ability-runtime-cooldown-s:
+    slot_uri: pixlnd:ability-runtime/cooldown-s
+    alias: cooldown-s
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: true
+    see_also: *id003
+    minimum_value: 0
+    none_of: [{equals_number: 0}]
+  ability-runtime-toward:
+    slot_uri: pixlnd:ability-runtime/toward
+    alias: toward
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: dash-direction
+    required: false
+    see_also: *id003
+  ability-runtime-range:
+    slot_uri: pixlnd:ability-runtime/range
+    alias: range
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-distance:
+    slot_uri: pixlnd:ability-runtime/distance
+    alias: distance
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+    none_of: [{equals_number: 0}]
+  ability-runtime-duration-s:
+    slot_uri: pixlnd:ability-runtime/duration-s
+    alias: duration-s
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+    none_of: [{equals_number: 0}]
+enums:
+  ability-runtime-kind:
+    description: Selected hybrid ability execution kind; historical catalog kinds remain separate.
+    enum_uri: pixlnd:ability-runtime-kind
+    permissible_values:
+      dash: {}
+      channel: {}
+      burst: {}
+      buff: {}
+      heal: {}
+      projectile: {}
+  dash-direction:
+    description: Direction of an ability dash relative to its selected target or facing.
+    enum_uri: pixlnd:dash-direction
+    permissible_values:
+      target: {}
+      forward: {}
+      back: {}

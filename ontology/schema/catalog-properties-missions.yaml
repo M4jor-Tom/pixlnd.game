@@ -1,0 +1,76 @@
+id: https://w3id.org/pixlnd/catalog-properties/missions
+name: pixlnd-catalog-properties-missions
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- items
+default_range: string
+classes:
+  mission-types-source:
+    description: "Source representation of mission-types-source."
+    class_uri: pixlnd:mission-types-source
+    see_also: [../instances/mission-types.json]
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: pixlnd:mission-types-source/schema, range: string, required: true, equals_string: mission-type, description: "The $schema field of mission-types-source."}
+      alpha: {alias: alpha, slot_uri: pixlnd:mission-types-source/alpha, range: mission-alpha-source, required: true, inlined: true, description: "The alpha field of mission-types-source."}
+      steam: {alias: steam, slot_uri: pixlnd:mission-types-source/steam, range: mission-steam-source, required: true, inlined: true, description: "The steam field of mission-types-source."}
+  mission-alpha-source:
+    description: "Source representation of mission-alpha-source."
+    annotations: {source-map-entries: entries}
+    attributes:
+      entries: {alias: entries, slot_uri: pixlnd:mission-alpha-source/entries, range: mission-alpha-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of mission-alpha-source."}
+  mission-alpha-entry:
+    description: "Source representation of mission-alpha-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:mission-alpha-entry/value, range: mission-alpha-row, required: true, inlined: true, description: "The value field of mission-alpha-entry."}
+  mission-alpha-row:
+    description: "Source representation of mission-alpha-row."
+    attributes:
+      name: {alias: name, slot_uri: pixlnd:mission-alpha-row/name, range: string, required: true, description: "The name field of mission-alpha-row."}
+      icon: {alias: icon, slot_uri: pixlnd:mission-alpha-row/icon, range: string, description: "The icon field of mission-alpha-row."}
+      desc: {alias: desc, slot_uri: pixlnd:mission-alpha-row/desc, range: string, description: "The desc field of mission-alpha-row."}
+      sites: {alias: sites, slot_uri: pixlnd:mission-alpha-row/sites, range: string, multivalued: true, description: "The sites field of mission-alpha-row."}
+      grid: {alias: grid, slot_uri: pixlnd:mission-alpha-row/grid, range: string, description: "The grid field of mission-alpha-row."}
+      assign: {alias: assign, slot_uri: pixlnd:mission-alpha-row/assign, range: string, description: "The assign field of mission-alpha-row."}
+      reward: {alias: reward, slot_uri: pixlnd:mission-alpha-row/reward, range: string, multivalued: true, description: "The reward field of mission-alpha-row."}
+      repeat: {alias: repeat, slot_uri: pixlnd:mission-alpha-row/repeat, range: string, description: "The repeat field of mission-alpha-row."}
+      notes: {alias: notes, slot_uri: pixlnd:mission-alpha-row/notes, range: string, multivalued: true, description: "The notes field of mission-alpha-row."}
+      versions: {alias: versions, slot_uri: pixlnd:mission-alpha-row/versions, range: string, multivalued: true, description: "The versions field of mission-alpha-row."}
+  mission-steam-source:
+    description: "Source representation of mission-steam-source."
+    annotations: {source-map-entries: entries}
+    attributes:
+      shared: {alias: _shared, slot_uri: pixlnd:mission-steam-source/shared, range: mission-shared-source, required: true, inlined: true, description: "The _shared field of mission-steam-source."}
+      completion-order: {alias: region-completion-order, slot_uri: pixlnd:mission-steam-source/order, range: string, required: true, multivalued: true, description: "The region-completion-order field of mission-steam-source."}
+      entries: {alias: entries, slot_uri: pixlnd:mission-steam-source/entries, range: mission-steam-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of mission-steam-source."}
+  mission-shared-source:
+    description: "Source representation of mission-shared-source."
+    attributes:
+      discover: {alias: discover, slot_uri: pixlnd:mission-shared-source/discover, range: string, required: true, description: "The discover field of mission-shared-source."}
+      tiers: {alias: tiers, slot_uri: pixlnd:mission-shared-source/tiers, range: string, required: true, multivalued: true, description: "The tiers field of mission-shared-source."}
+      reward: {alias: reward, slot_uri: pixlnd:mission-shared-source/reward, range: string, required: true, description: "The reward field of mission-shared-source."}
+      repeat: {alias: repeat, slot_uri: pixlnd:mission-shared-source/repeat, range: string, required: true, description: "The repeat field of mission-shared-source."}
+      completed: {alias: completed, slot_uri: pixlnd:mission-shared-source/completed, range: string, required: true, description: "The completed field of mission-shared-source."}
+  mission-steam-entry:
+    description: "Source representation of mission-steam-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:mission-steam-entry/value, range: mission-steam-row, required: true, inlined: true, description: "The value field of mission-steam-entry."}
+  mission-steam-row:
+    description: "Source representation of mission-steam-row."
+    attributes:
+      name: {alias: name, slot_uri: pixlnd:mission-steam-row/name, range: string, required: true, description: "The name field of mission-steam-row."}
+      desc: {alias: desc, slot_uri: pixlnd:mission-steam-row/desc, range: string, description: "The desc field of mission-steam-row."}
+      count: {alias: count, slot_uri: pixlnd:mission-steam-row/count, any_of: [{range: integer}, {range: string}], description: "The count field of mission-steam-row."}
+      tiers: {alias: tiers, slot_uri: pixlnd:mission-steam-row/tiers, range: string, multivalued: true, description: "The tiers field of mission-steam-row."}
+      repeat: {alias: repeat, slot_uri: pixlnd:mission-steam-row/repeat, range: string, description: "The repeat field of mission-steam-row."}
+      examples: {alias: examples, slot_uri: pixlnd:mission-steam-row/examples, range: string, multivalued: true, description: "The examples field of mission-steam-row."}
+      items: {alias: items, slot_uri: pixlnd:mission-steam-row/items, range: string, multivalued: true, description: "The items field of mission-steam-row."}
+      note: {alias: note, slot_uri: pixlnd:mission-steam-row/note, range: string, description: "The note field of mission-steam-row."}
+      needs: {alias: needs, slot_uri: pixlnd:mission-steam-row/needs, range: string, description: "The needs field of mission-steam-row."}
+      factions: {alias: factions, slot_uri: pixlnd:mission-steam-row/factions, range: string, multivalued: true, description: "The factions field of mission-steam-row."}
+      icon: {alias: icon, slot_uri: pixlnd:mission-steam-row/icon, range: string, description: "The icon field of mission-steam-row."}

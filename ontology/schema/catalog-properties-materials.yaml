@@ -1,0 +1,102 @@
+id: https://w3id.org/pixlnd/catalog-properties/materials
+name: pixlnd-catalog-properties-materials
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- items
+default_range: string
+slots:
+  material-name:
+    description: "Material name property; interpreted under its owning definition."
+    slot_uri: pixlnd:material/name
+    alias: name
+    domain: material
+    range: string
+    required: false
+    see_also: &id007
+    - ../domain/3_Classes.md#material
+  material-hp-bonus:
+    description: "Material hp bonus property; interpreted under its owning definition."
+    slot_uri: pixlnd:material/hp-bonus
+    alias: hp-bonus
+    domain: material
+    range: double
+    required: false
+    see_also: *id007
+  material-armor-mult:
+    description: "Material armor mult property; interpreted under its owning definition."
+    slot_uri: pixlnd:material/armor-mult
+    alias: armor-mult
+    domain: material
+    range: double
+    required: false
+    see_also: *id007
+  material-resi-mult:
+    description: "Material resi mult property; interpreted under its owning definition."
+    slot_uri: pixlnd:material/resi-mult
+    alias: resi-mult
+    domain: material
+    range: double
+    required: false
+    see_also: *id007
+  material-crit-bonus:
+    description: "Material crit bonus property; interpreted under its owning definition."
+    slot_uri: pixlnd:material/crit-bonus
+    alias: crit-bonus
+    domain: material
+    range: double
+    required: false
+    see_also: *id007
+  material-tempo-bonus:
+    description: "Material tempo bonus property; interpreted under its owning definition."
+    slot_uri: pixlnd:material/tempo-bonus
+    alias: tempo-bonus
+    domain: material
+    range: double
+    required: false
+    see_also: *id007
+  material-regen-bonus:
+    description: "Material regen bonus property; interpreted under its owning definition."
+    slot_uri: pixlnd:material/regen-bonus
+    alias: regen-bonus
+    domain: material
+    range: double
+    required: false
+    see_also: *id007
+  material-refined:
+    description: "Material refined property; interpreted under its owning definition."
+    slot_uri: pixlnd:material/refined
+    alias: refined
+    domain: material
+    range: ingredient
+    required: false
+    see_also: *id007
+  material-crafts-rarity:
+    description: "Material crafts rarity property; interpreted under its owning definition."
+    slot_uri: pixlnd:material/crafts-rarity
+    alias: crafts-rarity
+    domain: material
+    range: rarity
+    required: false
+    see_also: *id007
+  material-obtainable:
+    description: "Material obtainable property; interpreted under its owning definition."
+    slot_uri: pixlnd:material/obtainable
+    alias: obtainable
+    domain: material
+    range: boolean
+    required: false
+    see_also: *id007
+  material-kind:
+    description: "Material kind property; interpreted under its owning definition."
+    slot_uri: pixlnd:material/kind
+    alias: kind
+    domain: material
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#material
+    - ../instances/materials.json

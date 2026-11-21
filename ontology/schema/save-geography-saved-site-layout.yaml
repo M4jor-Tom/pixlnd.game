@@ -1,0 +1,138 @@
+id: https://w3id.org/pixlnd/save-geography/saved-site-layout
+name: pixlnd-save-geography-saved-site-layout
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- save-geography-saved-assignment
+default_range: string
+classes:
+  saved-site-layout:
+    class_uri: pixlnd:saved-site-layout
+    see_also: &id002
+    - ../domain/encounter-contracts.md#geometry-and-occupancy
+    slots:
+    - saved-site-layout-family
+    - saved-site-layout-ordinal
+    - saved-site-layout-centre
+    - saved-site-layout-turn
+    - saved-site-layout-floor
+    - saved-site-layout-components
+    - saved-site-layout-volumes
+    - saved-site-layout-assignments
+    - saved-site-layout-entry
+    - saved-site-layout-tier
+    - saved-site-layout-captive
+    description: Current permanent site geometry and assignments; conditional tier/captive applicability,
+      component unions, physical geometry and seeded correctness remain linked current-rule checks.
+slots:
+  saved-site-layout-family:
+    slot_uri: pixlnd:saved-site-layout/family
+    alias: family
+    domain: saved-site-layout
+    range: saved-site-family
+    required: true
+    see_also: *id002
+  saved-site-layout-ordinal:
+    slot_uri: pixlnd:saved-site-layout/ordinal
+    alias: ordinal
+    domain: saved-site-layout
+    range: integer
+    required: true
+    see_also: *id002
+    minimum_value: 0
+  saved-site-layout-centre:
+    slot_uri: pixlnd:saved-site-layout/centre
+    alias: centre
+    domain: saved-site-layout
+    range: double
+    required: true
+    see_also: *id002
+    multivalued: true
+    minimum_cardinality: 2
+    maximum_cardinality: 2
+  saved-site-layout-turn:
+    slot_uri: pixlnd:saved-site-layout/turn
+    alias: turn
+    domain: saved-site-layout
+    range: integer
+    required: true
+    see_also: *id002
+    minimum_value: 0
+    maximum_value: 3
+  saved-site-layout-floor:
+    slot_uri: pixlnd:saved-site-layout/floor
+    alias: floor
+    domain: saved-site-layout
+    range: double
+    required: true
+    see_also: *id002
+  saved-site-layout-components:
+    slot_uri: pixlnd:saved-site-layout/components
+    alias: components
+    domain: saved-site-layout
+    range: double
+    required: true
+    see_also: *id002
+    array:
+      dimensions:
+      - minimum_cardinality: 1
+      - exact_cardinality: 4
+  saved-site-layout-volumes:
+    slot_uri: pixlnd:saved-site-layout/volumes
+    alias: volumes
+    domain: saved-site-layout
+    range: double
+    required: true
+    see_also: *id002
+    array:
+      dimensions:
+      - minimum_cardinality: 1
+      - exact_cardinality: 6
+  saved-site-layout-assignments:
+    slot_uri: pixlnd:saved-site-layout/assignments
+    alias: assignments
+    domain: saved-site-layout
+    range: saved-assignment
+    required: true
+    see_also: *id002
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  saved-site-layout-entry:
+    slot_uri: pixlnd:saved-site-layout/entry
+    alias: entry
+    domain: saved-site-layout
+    range: double
+    required: true
+    see_also: *id002
+    multivalued: true
+    minimum_cardinality: 2
+    maximum_cardinality: 2
+  saved-site-layout-tier:
+    slot_uri: pixlnd:saved-site-layout/tier
+    alias: tier
+    domain: saved-site-layout
+    range: integer
+    required: false
+    see_also: *id002
+    minimum_value: 0
+  saved-site-layout-captive:
+    slot_uri: pixlnd:saved-site-layout/captive
+    alias: captive
+    domain: saved-site-layout
+    range: double
+    required: false
+    see_also: *id002
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+enums:
+  saved-site-family:
+    enum_uri: pixlnd:saved-site-family
+    permissible_values:
+      ruins: {}
+      camp: {}
+      supplier: {}

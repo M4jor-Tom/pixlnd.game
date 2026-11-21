@@ -1,0 +1,70 @@
+id: https://w3id.org/pixlnd/design-combat/runtime-cost-strike
+name: pixlnd-design-combat-runtime-cost-strike
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+classes:
+  runtime-cost:
+    class_uri: pixlnd:runtime-cost
+    see_also: &id001
+    - ../domain/3_Classes.md#ability
+    slots:
+    - runtime-cost-mp
+    - runtime-cost-stamina
+    description: Selected hybrid resource costs only, not historical qualified catalog costs. Missing
+      resource keys mean no debit; all-min is configured separately.
+  runtime-strike:
+    class_uri: pixlnd:runtime-strike
+    see_also: &id002
+    - ../domain/3_Classes.md#ability
+    slots:
+    - runtime-strike-radius
+    - runtime-strike-damage-mult
+    description: Optional dash strike; origin/end placement and class-specific effects follow the canonical
+      runtime rules.
+slots:
+  runtime-cost-mp:
+    slot_uri: pixlnd:runtime-cost/mp
+    alias: mp
+    domain: runtime-cost
+    description: Configuration field; applicability follows the linked rule.
+    required: false
+    see_also: *id001
+    any_of:
+    - range: double
+      minimum_value: 0
+      maximum_value: 100
+    - range: all-resource
+  runtime-cost-stamina:
+    slot_uri: pixlnd:runtime-cost/stamina
+    alias: stamina
+    domain: runtime-cost
+    description: Configuration field; applicability follows the linked rule.
+    required: false
+    see_also: *id001
+    any_of:
+    - range: double
+      minimum_value: 0
+    - range: all-resource
+  runtime-strike-radius:
+    slot_uri: pixlnd:runtime-strike/radius
+    alias: radius
+    domain: runtime-strike
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: true
+    see_also: *id002
+    minimum_value: 0
+    none_of: [{equals_number: 0}]
+  runtime-strike-damage-mult:
+    slot_uri: pixlnd:runtime-strike/damage-mult
+    alias: damage-mult
+    domain: runtime-strike
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: true
+    see_also: *id002

@@ -1,0 +1,128 @@
+id: https://w3id.org/pixlnd/save-combat/saved-mob
+name: pixlnd-save-combat-saved-mob
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- save-combat-saved-mob-state
+default_range: string
+classes:
+  saved-mob:
+    class_uri: pixlnd:saved-mob
+    see_also: &id005
+    - ../domain/3_Classes.md#save-data
+    slots:
+    - saved-mob-species
+    - saved-mob-hostility
+    - saved-mob-role
+    - saved-mob-level
+    - saved-mob-seed
+    - saved-mob-cycle
+    - saved-mob-hp
+    - saved-mob-max-hp
+    - saved-mob-damage
+    - saved-mob-power-base
+    - saved-mob-pack
+    - saved-mob-home
+    - saved-mob-position
+    - saved-mob-dead
+    - saved-mob-eligible
+    - saved-mob-combat
+    - saved-mob-room-cycle
+    - saved-mob-special
+    description: Individual mutable incarnation, never a creature species. World dictionary key provides
+      identity separately. Local curves, ID/pack agreement and conditional site-only fields remain current-rule
+      checks.
+slots:
+  saved-mob-species:
+    slot_uri: pixlnd:saved-mob/species
+    alias: species
+    domain: saved-mob
+    range: creature
+    required: true
+    see_also: *id005
+  saved-mob-hostility:
+    slot_uri: pixlnd:saved-mob/hostility
+    alias: hostility
+    domain: saved-mob
+    range: saved-hostility
+    required: true
+    see_also: *id005
+  saved-mob-role:
+    slot_uri: pixlnd:saved-mob/role
+    alias: role
+    domain: saved-mob
+    range: saved-role
+    required: true
+    see_also: *id005
+  saved-mob-level:
+    slot_uri: pixlnd:saved-mob/level
+    alias: level
+    domain: saved-mob
+    range: integer
+    required: true
+    see_also: *id005
+    minimum_value: 1
+  saved-mob-seed:
+    slot_uri: pixlnd:saved-mob/seed
+    alias: seed
+    domain: saved-mob
+    range: integer
+    required: true
+    see_also: *id005
+    minimum_value: 0
+  saved-mob-cycle:
+    slot_uri: pixlnd:saved-mob/cycle
+    alias: cycle
+    domain: saved-mob
+    range: integer
+    required: true
+    see_also: *id005
+    minimum_value: 0
+  saved-mob-hp:
+    slot_uri: pixlnd:saved-mob/hp
+    alias: hp
+    domain: saved-mob
+    range: double
+    required: true
+    see_also: *id005
+    minimum_value: 0
+  saved-mob-max-hp:
+    slot_uri: pixlnd:saved-mob/max_hp
+    alias: max_hp
+    domain: saved-mob
+    range: double
+    required: true
+    see_also: *id005
+    minimum_value: 0
+  saved-mob-damage:
+    slot_uri: pixlnd:saved-mob/damage
+    alias: damage
+    domain: saved-mob
+    range: double
+    required: true
+    see_also: *id005
+    minimum_value: 0
+  saved-mob-power-base:
+    slot_uri: pixlnd:saved-mob/power_base
+    alias: power_base
+    domain: saved-mob
+    range: double
+    required: true
+    see_also: *id005
+enums:
+  saved-hostility:
+    enum_uri: pixlnd:saved-hostility
+    permissible_values:
+      H: {}
+      N: {}
+      P: {}
+      F: {}
+  saved-role:
+    enum_uri: pixlnd:saved-role
+    permissible_values:
+      melee: {}
+      ranged: {}
+      mage: {}

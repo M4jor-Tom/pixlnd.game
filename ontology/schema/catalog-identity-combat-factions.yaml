@@ -1,0 +1,62 @@
+id: https://w3id.org/pixlnd/catalog-identity-combat/factions
+name: pixlnd-catalog-identity-combat-factions
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- catalog-properties
+- catalog-identity-combat-races
+default_range: string
+classes:
+  factions-source:
+    class_uri: pixlnd:factions-source
+    description: Faction catalog with separate procedural realm-name examples.
+    see_also: [../instances/factions.json]
+    annotations: {source-map-entries: entries}
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: 'pixlnd:factions-source/schema', range: string, required: true, equals_string: faction, description: "Original $schema field of factions-source; retains the source representation."}
+      documentation: {alias: _doc, slot_uri: 'pixlnd:factions-source/doc', range: string, required: true, description: "Original _doc field of factions-source; retains the source representation."}
+      realm-name-examples: {alias: realm-name-examples, slot_uri: 'pixlnd:factions-source/realm-name-examples', range: realm-name-examples, required: true, inlined: true, description: "Original realm-name-examples field of factions-source; retains the source representation."}
+      entries: {alias: entries, slot_uri: 'pixlnd:factions-source/entries', range: faction-source-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "Original entries field of factions-source; retains the source representation."}
+  faction-source-entry:
+    class_uri: pixlnd:faction-source-entry
+    description: Original faction key and complete body.
+    see_also: [../instances/factions.json]
+    slots: [source-entry-key]
+    attributes:
+      value: {alias: value, slot_uri: 'pixlnd:faction-source-entry/value', range: faction-source-row, required: true, inlined: true, description: "Original value field of faction-source-entry; retains the source representation."}
+  faction-source-row:
+    class_uri: pixlnd:faction-source-row
+    description: Faction source descriptions and literal member references.
+    see_also: [../instances/factions.json, ../domain/3_Classes.md#faction]
+    slots: [faction-name, source-versions]
+    slot_usage:
+      faction-name: {required: true}
+    attributes:
+      alignment: {alias: alignment, slot_uri: 'pixlnd:faction-source-row/alignment', range: FactionAlignment, required: true, description: "Original alignment field of faction-source-row; retains the source representation."}
+      leader: {alias: leader, slot_uri: 'pixlnd:faction-source-row/leader', exactly_one_of: [{range: string}], description: "Original leader field of faction-source-row; retains the source representation."}
+      members: {alias: members, slot_uri: 'pixlnd:faction-source-row/members', exactly_one_of: [{range: creature, multivalued: true}], description: "Original members field of faction-source-row; retains the source representation."}
+      presence: {alias: presence, slot_uri: 'pixlnd:faction-source-row/presence', exactly_one_of: [{range: string, multivalued: true}], description: "Original presence field of faction-source-row; retains the source representation."}
+      note: {alias: note, slot_uri: 'pixlnd:faction-source-row/note', exactly_one_of: [{range: string}], description: "Original note field of faction-source-row; retains the source representation."}
+  realm-name-examples:
+    class_uri: pixlnd:realm-name-examples
+    description: Example generated names, not enumerated realm or faction instances.
+    see_also: [../instances/factions.json#realm-name-examples]
+    attributes:
+      kingdoms: {alias: kingdoms, slot_uri: 'pixlnd:realm-name-examples/kingdoms', range: string, required: true, multivalued: true, description: "Original kingdoms field of realm-name-examples; retains the source representation."}
+      realms: {alias: realms, slot_uri: 'pixlnd:realm-name-examples/realms', range: string, required: true, multivalued: true, description: "Original realms field of realm-name-examples; retains the source representation."}
+      cults: {alias: cults, slot_uri: 'pixlnd:realm-name-examples/cults', range: string, required: true, multivalued: true, description: "Original cults field of realm-name-examples; retains the source representation."}
+      tribes: {alias: tribes, slot_uri: 'pixlnd:realm-name-examples/tribes', range: string, required: true, multivalued: true, description: "Original tribes field of realm-name-examples; retains the source representation."}
+enums:
+  FactionAlignment:
+    enum_uri: pixlnd:FactionAlignment
+    description: Source faction alignment categories, not creature hostility or attack permission.
+    see_also: [../instances/factions.json]
+    permissible_values:
+      good: {description: Good-aligned faction.}
+      evil: {description: Evil-aligned faction.}
+      hostile: {description: Hostile source group.}
+      lore: {description: Lore-only faction description.}

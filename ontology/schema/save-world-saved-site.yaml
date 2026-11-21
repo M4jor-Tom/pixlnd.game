@@ -1,0 +1,98 @@
+id: https://w3id.org/pixlnd/save-world/saved-site
+name: pixlnd-save-world-saved-site
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- save-world-saved-site-collections
+default_range: string
+classes:
+  saved-site:
+    class_uri: pixlnd:saved-site
+    see_also: &id009
+    - ../domain/3_Classes.md#save-data
+    slots:
+    - saved-site-id
+    - saved-site-family
+    - saved-site-volumes
+    - saved-site-pending
+    - saved-site-cleared
+    - saved-site-completed
+    - saved-site-cycle
+    - saved-site-mobs
+    - saved-site-rewards
+    - saved-site-spirit-levels
+    - saved-site-room-levels
+    - saved-site-contents
+    description: Current mutable site state keyed by logical site ID. Conditional ruin room levels, boss
+      spirit membership, refresh/completion and reward issuance remain current-rule checks.
+    rules:
+    - see_also:
+      - ../domain/encounter-contracts.md#spike-traps-and-furnishing-contents
+      preconditions:
+        slot_conditions:
+          saved-site-family:
+            equals_string: ruins
+      postconditions:
+        slot_conditions:
+          saved-site-room-levels:
+            minimum_cardinality: 3
+            maximum_cardinality: 3
+slots:
+  saved-site-id:
+    slot_uri: pixlnd:saved-site/id
+    alias: id
+    domain: saved-site
+    range: string
+    required: true
+    see_also: *id009
+    key: true
+  saved-site-family:
+    slot_uri: pixlnd:saved-site/family
+    alias: family
+    domain: saved-site
+    range: saved-site-family
+    required: true
+    see_also: *id009
+  saved-site-volumes:
+    slot_uri: pixlnd:saved-site/volumes
+    alias: volumes
+    domain: saved-site
+    range: double
+    required: true
+    see_also: *id009
+    array:
+      dimensions:
+      - minimum_cardinality: 1
+      - exact_cardinality: 6
+  saved-site-pending:
+    slot_uri: pixlnd:saved-site/pending
+    alias: pending
+    domain: saved-site
+    range: boolean
+    required: true
+    see_also: *id009
+  saved-site-cleared:
+    slot_uri: pixlnd:saved-site/cleared
+    alias: cleared
+    domain: saved-site
+    range: boolean
+    required: true
+    see_also: *id009
+  saved-site-completed:
+    slot_uri: pixlnd:saved-site/completed
+    alias: completed
+    domain: saved-site
+    range: boolean
+    required: true
+    see_also: *id009
+  saved-site-cycle:
+    slot_uri: pixlnd:saved-site/cycle
+    alias: cycle
+    domain: saved-site
+    range: integer
+    required: true
+    see_also: *id009
+    minimum_value: 0

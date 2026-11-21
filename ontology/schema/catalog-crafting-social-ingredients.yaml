@@ -1,0 +1,96 @@
+id: https://w3id.org/pixlnd/catalog-crafting-social/ingredients
+name: pixlnd-catalog-crafting-social-ingredients
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- items
+default_range: string
+classes:
+  ingredient-refinement:
+    class_uri: pixlnd:ingredient-refinement
+    see_also:
+    - ../domain/4_Relations.md
+    - ../instances/ingredients.json
+    slots:
+    - ingredient-refinement-target
+    - ingredient-refinement-process
+    description: Container-keyed target and exact process text from the compact refines-to map; not a parsed recipe.
+slots:
+  ingredient-kind:
+    description: "The kind property of ingredient."
+    slot_uri: pixlnd:ingredient/kind
+    alias: kind
+    domain: ingredient
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#ingredient
+    - ../instances/ingredients.json
+  ingredient-from:
+    slot_uri: pixlnd:ingredient/from
+    alias: from
+    domain: ingredient
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#ingredient
+    - ../instances/ingredients.json
+    description: Exact qualified source description, not a resolved source reference.
+  ingredient-sell:
+    description: "The sell property of ingredient."
+    slot_uri: pixlnd:ingredient/sell
+    alias: sell
+    domain: ingredient
+    range: integer
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#ingredient
+    - ../instances/ingredients.json
+  ingredient-recipe:
+    slot_uri: pixlnd:ingredient/recipe
+    alias: recipe
+    domain: ingredient
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#ingredient
+    - ../instances/ingredients.json
+    description: Exact preparation text, not an executable recipe or station reference.
+  ingredient-refines-to:
+    description: "The refines-to property of ingredient."
+    slot_uri: pixlnd:ingredient/refines-to
+    alias: refines-to
+    domain: ingredient
+    range: ingredient-refinement
+    required: false
+    multivalued: true
+    inlined: true
+    inlined_as_list: false
+    see_also:
+    - ../domain/3_Classes.md#ingredient
+    - ../domain/4_Relations.md
+    - ../instances/ingredients.json
+  ingredient-refinement-target:
+    description: "The target property of ingredient-refinement."
+    slot_uri: pixlnd:ingredient-refinement/target
+    alias: target
+    domain: ingredient-refinement
+    range: ingredient
+    key: true
+    required: true
+    see_also:
+    - ../domain/4_Relations.md
+    - ../instances/ingredients.json
+  ingredient-refinement-process:
+    description: "The process property of ingredient-refinement."
+    slot_uri: pixlnd:ingredient-refinement/process
+    alias: process
+    domain: ingredient-refinement
+    range: string
+    required: true
+    see_also:
+    - ../domain/4_Relations.md
+    - ../instances/ingredients.json

@@ -1,0 +1,104 @@
+id: https://w3id.org/pixlnd/design-combat/runtime-projectile
+name: pixlnd-design-combat-runtime-projectile
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+classes:
+  runtime-projectile:
+    class_uri: pixlnd:runtime-projectile
+    see_also: &id004
+    - ../domain/3_Classes.md#weapon-type
+    slots:
+    - runtime-projectile-speed
+    - runtime-projectile-radius
+    - runtime-projectile-life-s
+    - runtime-projectile-spread
+    - runtime-projectile-gravity
+    - runtime-projectile-splash
+    - runtime-projectile-damage-mult
+    - runtime-projectile-count
+    description: Projectile payload shared by dash throws; optional spread/gravity/splash/damage multipliers
+      remain optional, not fabricated defaults.
+slots:
+  runtime-projectile-speed:
+    slot_uri: pixlnd:runtime-projectile/speed
+    alias: speed
+    domain: runtime-projectile
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: true
+    see_also: *id004
+    minimum_value: 0
+    none_of: [{equals_number: 0}]
+  runtime-projectile-radius:
+    slot_uri: pixlnd:runtime-projectile/radius
+    alias: radius
+    domain: runtime-projectile
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: true
+    see_also: *id004
+    minimum_value: 0
+    none_of: [{equals_number: 0}]
+  runtime-projectile-life-s:
+    slot_uri: pixlnd:runtime-projectile/life-s
+    alias: life-s
+    domain: runtime-projectile
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: true
+    see_also: *id004
+    minimum_value: 0
+    none_of: [{equals_number: 0}]
+  runtime-projectile-spread:
+    slot_uri: pixlnd:runtime-projectile/spread
+    alias: spread
+    domain: runtime-projectile
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: false
+    see_also: *id004
+    minimum_value: 0
+  runtime-projectile-gravity:
+    slot_uri: pixlnd:runtime-projectile/gravity
+    alias: gravity
+    domain: runtime-projectile
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: false
+    see_also: *id004
+    minimum_value: 0
+  runtime-projectile-splash:
+    slot_uri: pixlnd:runtime-projectile/splash
+    alias: splash
+    domain: runtime-projectile
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: false
+    see_also: *id004
+    minimum_value: 0
+  runtime-projectile-damage-mult:
+    slot_uri: pixlnd:runtime-projectile/damage-mult
+    alias: damage-mult
+    domain: runtime-projectile
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: false
+    see_also: *id004
+    minimum_value: 0
+    none_of:
+    - range: double
+      equals_number: 0
+  runtime-projectile-count:
+    slot_uri: pixlnd:runtime-projectile/count
+    alias: count
+    domain: runtime-projectile
+    description: Configuration field; applicability follows the linked rule.
+    range: integer
+    required: false
+    see_also: *id004
+    minimum_value: 1

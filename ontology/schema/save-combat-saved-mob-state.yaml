@@ -1,0 +1,78 @@
+id: https://w3id.org/pixlnd/save-combat/saved-mob-state
+name: pixlnd-save-combat-saved-mob-state
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- save-combat-saved-combat
+- save-combat-saved-mob
+default_range: string
+slots:
+  saved-mob-pack:
+    slot_uri: pixlnd:saved-mob/pack
+    alias: pack
+    domain: saved-mob
+    range: string
+    required: true
+    see_also: &id005
+    - ../domain/3_Classes.md#save-data
+  saved-mob-home:
+    slot_uri: pixlnd:saved-mob/home
+    alias: home
+    domain: saved-mob
+    range: double
+    required: true
+    see_also: *id005
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+  saved-mob-position:
+    slot_uri: pixlnd:saved-mob/position
+    alias: position
+    domain: saved-mob
+    range: double
+    required: true
+    see_also: *id005
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+  saved-mob-dead:
+    slot_uri: pixlnd:saved-mob/dead
+    alias: dead
+    domain: saved-mob
+    range: boolean
+    required: true
+    see_also: *id005
+  saved-mob-eligible:
+    slot_uri: pixlnd:saved-mob/eligible
+    alias: eligible
+    domain: saved-mob
+    range: boolean
+    required: true
+    see_also: *id005
+  saved-mob-combat:
+    slot_uri: pixlnd:saved-mob/combat
+    alias: combat
+    domain: saved-mob
+    range: saved-combat
+    required: true
+    see_also: *id005
+    inlined: true
+  saved-mob-room-cycle:
+    slot_uri: pixlnd:saved-mob/room_cycle
+    alias: room_cycle
+    domain: saved-mob
+    range: integer
+    required: false
+    see_also: *id005
+    minimum_value: 0
+  saved-mob-special:
+    slot_uri: pixlnd:saved-mob/special
+    alias: special
+    domain: saved-mob
+    range: saved-special
+    required: false
+    see_also: *id005
+    inlined: true

@@ -1,0 +1,97 @@
+id: https://w3id.org/pixlnd/catalog-meta/audio-commands
+name: pixlnd-catalog-meta-audio-commands
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+classes:
+  audio-source:
+    description: Whole audio source document including historical notes, tracks, music rules, IDs and ambient groups.
+    class_uri: pixlnd:audio-source
+    annotations: {source-map-paths: tracks}
+    see_also: [../instances/audio.json]
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: pixlnd:audio-source/schema, range: string, required: true, equals_string: audio, description: Original schema marker.}
+      composer: {alias: composer, slot_uri: pixlnd:audio-source/composer, range: string, required: true, description: Original composer note.}
+      tracks: {alias: tracks, slot_uri: pixlnd:audio-source/tracks, range: audio-source-track-entry, multivalued: true, inlined: true, inlined_as_list: true, required: true, description: Original track map and gap note.}
+      music-rules: {alias: music-rules, slot_uri: pixlnd:audio-source/music-rules, range: audio-source-music-rules, inlined: true, required: true, description: Original music rules.}
+      sfx-alpha-ids: {alias: sfx-alpha-ids, slot_uri: pixlnd:audio-source/sfx-alpha-ids, range: string, multivalued: true, required: true, description: Original ordered alpha sound ID and note list.}
+      voices: {alias: voices, slot_uri: pixlnd:audio-source/voices, range: string, required: true, description: Original voice note.}
+      ambient: {alias: ambient, slot_uri: pixlnd:audio-source/ambient, range: audio-source-ambient, inlined: true, required: true, description: Original version-keyed ambient lists.}
+  audio-source-track-entry:
+    description: Key/value binding for a source music track or the literal track-gap note.
+    class_uri: pixlnd:audio-source-track-entry
+    see_also: [../instances/audio.json#tracks]
+    attributes:
+      key: {alias: key, slot_uri: pixlnd:audio-source-track-entry/key, range: string, key: true, required: true, description: Original track key.}
+      value:
+        alias: value
+        slot_uri: pixlnd:audio-source-track-entry/value
+        any_of: [{range: audio-source-track-row, inlined: true}, {range: string}]
+        annotations: {source-map-union-range: audio-source-track-row}
+        required: true
+        description: Original track fields or literal gap note.
+  audio-source-track-row:
+    description: Optional historical track metadata as recorded; no identity, availability or provenance is inferred.
+    class_uri: pixlnd:audio-source-track-row
+    see_also: [../instances/audio.json#tracks]
+    attributes:
+      date: {alias: date, slot_uri: pixlnd:audio-source-track-row/date, range: string, description: Original date label.}
+      role: {alias: role, slot_uri: pixlnd:audio-source-track-row/role, range: string, description: Original role note.}
+      length: {alias: length, slot_uri: pixlnd:audio-source-track-row/length, range: string, description: Original duration text.}
+      faction: {alias: faction, slot_uri: pixlnd:audio-source-track-row/faction, range: string, description: Original faction label.}
+  audio-source-music-rules:
+    description: Original music-option and backend text without runtime selection.
+    class_uri: pixlnd:audio-source-music-rules
+    see_also: [../instances/audio.json#music-rules]
+    attributes:
+      loop-option: {alias: loop-option, slot_uri: pixlnd:audio-source-music-rules/loop-option, range: string, required: true, description: Original loop option text.}
+      volume-sliders: {alias: volume-sliders, slot_uri: pixlnd:audio-source-music-rules/volume-sliders, range: string, required: true, description: Original volume text.}
+      backend: {alias: backend, slot_uri: pixlnd:audio-source-music-rules/backend, range: string, required: true, description: Original backend qualification.}
+  audio-source-ambient:
+    description: Original source-tagged ambient descriptions, not availability claims.
+    class_uri: pixlnd:audio-source-ambient
+    see_also: [../instances/audio.json#ambient]
+    attributes:
+      omega: {alias: Ω, slot_uri: pixlnd:audio-source-ambient/omega, range: string, multivalued: true, description: Original Omega list.}
+      steam: {alias: S, slot_uri: pixlnd:audio-source-ambient/S, range: string, multivalued: true, description: Original Steam list.}
+  slash-commands-source:
+    description: Whole slash-command input retaining literal command keys and modded-server context.
+    class_uri: pixlnd:slash-commands-source
+    annotations: {source-map-entries: entries}
+    see_also: [../instances/slash-commands.json]
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: pixlnd:slash-commands-source/schema, range: string, required: true, equals_string: slash-command, description: Original schema marker.}
+      chat-rules: {alias: chat-rules, slot_uri: pixlnd:slash-commands-source/chat-rules, range: slash-command-chat-rules, inlined: true, required: true, description: Original chat rules.}
+      entries: {alias: entries, slot_uri: pixlnd:slash-commands-source/entries, range: slash-command-source-entry, multivalued: true, inlined: true, inlined_as_list: true, required: true, description: Original literal command-key map.}
+  slash-command-source-entry:
+    description: Key/value binding for one literal command key or server-command collection.
+    class_uri: pixlnd:slash-command-source-entry
+    see_also: [../instances/slash-commands.json]
+    attributes:
+      key: {alias: key, slot_uri: pixlnd:slash-command-source-entry/key, range: string, key: true, required: true, description: Original command key.}
+      value:
+        alias: value
+        slot_uri: pixlnd:slash-command-source-entry/value
+        any_of: [{range: slash-command-source-row, inlined: true}, {range: string, multivalued: true}]
+        annotations: {source-map-union-range: slash-command-source-row}
+        required: true
+        description: Original command row or ordered server-command list.
+  slash-command-source-row:
+    description: Original descriptive command row; command keys remain unparsed source strings.
+    class_uri: pixlnd:slash-command-source-row
+    see_also: [../instances/slash-commands.json]
+    attributes:
+      desc: {alias: desc, slot_uri: pixlnd:slash-command-source-row/desc, range: string, required: true, description: Original command description.}
+      versions: {alias: versions, slot_uri: pixlnd:slash-command-source-row/versions, range: string, multivalued: true, required: true, description: Original qualified source-version strings.}
+  slash-command-chat-rules:
+    description: Original chat-rule fields without inferred command or gameplay availability.
+    class_uri: pixlnd:slash-command-chat-rules
+    see_also: [../instances/slash-commands.json#chat-rules]
+    attributes:
+      controls: {alias: _controls, slot_uri: pixlnd:slash-command-chat-rules/controls, range: string, multivalued: true, required: true, description: Original control reference.}
+      charset: {alias: charset, slot_uri: pixlnd:slash-command-chat-rules/charset, range: string, required: true, description: Original charset text.}
+      name-length: {alias: name-length, slot_uri: pixlnd:slash-command-chat-rules/name-length, range: string, required: true, description: Original name-length text.}

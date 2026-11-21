@@ -1,0 +1,131 @@
+id: https://w3id.org/pixlnd/design-combat/ability-runtime-modifiers
+name: pixlnd-design-combat-ability-runtime-modifiers
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- design-combat-ability-runtime
+default_range: string
+slots:
+  ability-runtime-turns-per-s:
+    slot_uri: pixlnd:ability-runtime/turns-per-s
+    alias: turns-per-s
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: false
+    see_also: &id003
+    - ../domain/3_Classes.md#ability
+    minimum_value: 0
+    none_of: [{equals_number: 0}]
+  ability-runtime-radius:
+    slot_uri: pixlnd:ability-runtime/radius
+    alias: radius
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+    none_of: [{equals_number: 0}]
+  ability-runtime-damage-mult:
+    slot_uri: pixlnd:ability-runtime/damage-mult
+    alias: damage-mult
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-move-mult:
+    slot_uri: pixlnd:ability-runtime/move-mult
+    alias: move-mult
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-drain-per-s:
+    slot_uri: pixlnd:ability-runtime/drain-per-s
+    alias: drain-per-s
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-charge-mult:
+    slot_uri: pixlnd:ability-runtime/charge-mult
+    alias: charge-mult
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-damage-taken-mult:
+    slot_uri: pixlnd:ability-runtime/damage-taken-mult
+    alias: damage-taken-mult
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-heal-pct:
+    slot_uri: pixlnd:ability-runtime/heal-pct
+    alias: heal-pct
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-heal-over-s:
+    slot_uri: pixlnd:ability-runtime/heal-over-s
+    alias: heal-over-s
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-stealth-per-s:
+    slot_uri: pixlnd:ability-runtime/stealth-per-s
+    alias: stealth-per-s
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-swing-mult:
+    slot_uri: pixlnd:ability-runtime/swing-mult
+    alias: swing-mult
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-cast-s:
+    slot_uri: pixlnd:ability-runtime/cast-s
+    alias: cast-s
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-absorb-pct-hp:
+    slot_uri: pixlnd:ability-runtime/absorb-pct-hp
+    alias: absorb-pct-hp
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0

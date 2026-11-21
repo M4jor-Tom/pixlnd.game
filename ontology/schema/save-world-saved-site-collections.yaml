@@ -1,0 +1,88 @@
+id: https://w3id.org/pixlnd/save-world/saved-site-collections
+name: pixlnd-save-world-saved-site-collections
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- save-world-saved-contents
+- save-world-saved-entries
+- save-world-saved-site
+default_range: string
+classes:
+  saved-spirit-level:
+    class_uri: pixlnd:saved-spirit-level
+    see_also: &id008
+    - ../domain/3_Classes.md#save-data
+    slots:
+    - saved-spirit-level-assignment
+    - saved-spirit-level-level
+    description: Initial boss level keyed by stable assignment, not item power; source-level-to-power
+      conversion remains the canonical rule.
+slots:
+  saved-spirit-level-assignment:
+    slot_uri: pixlnd:saved-spirit-level/assignment
+    alias: assignment
+    domain: saved-spirit-level
+    range: string
+    required: true
+    see_also: *id008
+    key: true
+  saved-spirit-level-level:
+    slot_uri: pixlnd:saved-spirit-level/level
+    alias: level
+    domain: saved-spirit-level
+    range: integer
+    required: true
+    see_also: *id008
+    minimum_value: 1
+  saved-site-mobs:
+    slot_uri: pixlnd:saved-site/mobs
+    alias: mobs
+    domain: saved-site
+    range: saved-mob-entry
+    required: true
+    see_also: &id009
+    - ../domain/3_Classes.md#save-data
+    multivalued: true
+    inlined: true
+    inlined_as_list: false
+  saved-site-rewards:
+    slot_uri: pixlnd:saved-site/rewards
+    alias: rewards
+    domain: saved-site
+    range: saved-reward
+    required: true
+    see_also: *id009
+    multivalued: true
+    inlined: true
+    inlined_as_list: false
+  saved-site-spirit-levels:
+    slot_uri: pixlnd:saved-site/spirit_levels
+    alias: spirit_levels
+    domain: saved-site
+    range: saved-spirit-level
+    required: true
+    see_also: *id009
+    multivalued: true
+    inlined: true
+    inlined_as_list: false
+  saved-site-room-levels:
+    slot_uri: pixlnd:saved-site/room_levels
+    alias: room_levels
+    domain: saved-site
+    range: integer
+    required: true
+    see_also: *id009
+    multivalued: true
+    minimum_value: 1
+    maximum_cardinality: 3
+  saved-site-contents:
+    slot_uri: pixlnd:saved-site/contents
+    alias: contents
+    domain: saved-site
+    range: saved-contents
+    required: true
+    see_also: *id009
+    inlined: true

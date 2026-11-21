@@ -1,0 +1,115 @@
+id: https://w3id.org/pixlnd/save-geography/saved-village
+name: pixlnd-save-geography-saved-village
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- save-geography-saved-site-layout
+default_range: string
+classes:
+  saved-village:
+    class_uri: pixlnd:saved-village
+    see_also: &id003
+    - ../domain/3_Classes.md#settlement
+    slots:
+    - saved-village-centre
+    - saved-village-height
+    - saved-village-gate-width
+    - saved-village-gate-offset
+    - saved-village-name
+    - saved-village-style
+    - saved-village-hub
+    - saved-village-gate-index
+    description: Current joint-geography village payload, distinct from the generic settlement definition.
+      Layout and authored opening correctness remain deterministic checks.
+  saved-land-plan:
+    class_uri: pixlnd:saved-land-plan
+    see_also: &id004
+    - ../domain/3_Classes.md#save-data
+    slots:
+    - saved-land-plan-village
+    - saved-land-plan-sites
+    description: Complete current joint geography payload stored per land-grid key; contains no optional
+      guidance. Exact six-site allocation and deterministic equality remain runtime checks.
+slots:
+  saved-village-centre:
+    slot_uri: pixlnd:saved-village/centre
+    alias: centre
+    domain: saved-village
+    range: double
+    required: true
+    see_also: *id003
+    multivalued: true
+    minimum_cardinality: 2
+    maximum_cardinality: 2
+  saved-village-height:
+    slot_uri: pixlnd:saved-village/height
+    alias: height
+    domain: saved-village
+    range: double
+    required: true
+    see_also: *id003
+  saved-village-gate-width:
+    slot_uri: pixlnd:saved-village/gate_width
+    alias: gate_width
+    domain: saved-village
+    range: double
+    required: true
+    see_also: *id003
+  saved-village-gate-offset:
+    slot_uri: pixlnd:saved-village/gate_offset
+    alias: gate_offset
+    domain: saved-village
+    range: double
+    required: true
+    see_also: *id003
+  saved-village-name:
+    slot_uri: pixlnd:saved-village/name
+    alias: name
+    domain: saved-village
+    range: string
+    required: true
+    see_also: *id003
+  saved-village-style:
+    slot_uri: pixlnd:saved-village/style
+    alias: style
+    domain: saved-village
+    range: string
+    required: true
+    see_also: *id003
+  saved-village-hub:
+    slot_uri: pixlnd:saved-village/hub
+    alias: hub
+    domain: saved-village
+    range: boolean
+    required: true
+    see_also: *id003
+  saved-village-gate-index:
+    slot_uri: pixlnd:saved-village/gate_index
+    alias: gate_index
+    domain: saved-village
+    range: integer
+    required: true
+    see_also: *id003
+  saved-land-plan-village:
+    slot_uri: pixlnd:saved-land-plan/village
+    alias: village
+    domain: saved-land-plan
+    range: saved-village
+    required: true
+    see_also: *id004
+    inlined: true
+  saved-land-plan-sites:
+    slot_uri: pixlnd:saved-land-plan/sites
+    alias: sites
+    domain: saved-land-plan
+    range: saved-site-layout
+    required: true
+    see_also: *id004
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+    minimum_cardinality: 6
+    maximum_cardinality: 6

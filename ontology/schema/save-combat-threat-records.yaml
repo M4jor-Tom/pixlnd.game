@@ -1,0 +1,85 @@
+id: https://w3id.org/pixlnd/save-combat/threat-records
+name: pixlnd-save-combat-threat-records
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+classes:
+  saved-threat:
+    class_uri: pixlnd:saved-threat
+    see_also: &id001
+    - ../domain/3_Classes.md#ai-behavior
+    slots:
+    - saved-threat-player
+    - saved-threat-amount
+    description: Container-scoped player key. Native keyed inlining accepts scalar and object alternatives;
+      pair closure and equality constraints require runtime checks.
+  saved-order:
+    class_uri: pixlnd:saved-order
+    see_also: &id002
+    - ../domain/3_Classes.md#ai-behavior
+    slots:
+    - saved-order-player
+    - saved-order-order
+    description: Container-scoped player key. Native keyed inlining accepts scalar and object alternatives;
+      pair closure and equality constraints require runtime checks.
+  saved-provocation:
+    class_uri: pixlnd:saved-provocation
+    see_also: &id003
+    - ../domain/3_Classes.md#ai-behavior
+    slots:
+    - saved-provocation-player
+    - saved-provocation-provoked
+    description: Container-scoped player key. Native keyed inlining accepts scalar and object alternatives;
+      pair closure and equality constraints require runtime checks.
+slots:
+  saved-threat-player:
+    slot_uri: pixlnd:saved-threat/player
+    alias: player
+    domain: saved-threat
+    range: player-character
+    required: true
+    see_also: *id001
+    key: true
+  saved-threat-amount:
+    slot_uri: pixlnd:saved-threat/amount
+    alias: amount
+    domain: saved-threat
+    range: double
+    required: true
+    see_also: *id001
+    minimum_value: 0
+  saved-order-player:
+    slot_uri: pixlnd:saved-order/player
+    alias: player
+    domain: saved-order
+    range: player-character
+    required: true
+    see_also: *id002
+    key: true
+  saved-order-order:
+    slot_uri: pixlnd:saved-order/order
+    alias: order
+    domain: saved-order
+    range: integer
+    required: true
+    see_also: *id002
+    minimum_value: 0
+  saved-provocation-player:
+    slot_uri: pixlnd:saved-provocation/player
+    alias: player
+    domain: saved-provocation
+    range: player-character
+    required: true
+    see_also: *id003
+    key: true
+  saved-provocation-provoked:
+    slot_uri: pixlnd:saved-provocation/provoked
+    alias: provoked
+    domain: saved-provocation
+    range: boolean
+    required: true
+    see_also: *id003

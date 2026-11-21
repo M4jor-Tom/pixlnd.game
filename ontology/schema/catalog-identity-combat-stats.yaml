@@ -1,0 +1,104 @@
+id: https://w3id.org/pixlnd/catalog-identity-combat/stats
+name: pixlnd-catalog-identity-combat-stats
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- catalog-identity-combat-races
+default_range: string
+classes:
+  stats-source:
+    class_uri: pixlnd:stats-source
+    description: Fixed stats envelope; catalog and decimal-level map keys remain explicit reversible local entries.
+    see_also: [../instances/stats.json, ../domain/5_Constraints.md]
+    annotations:
+      source-map-paths: resources stats alpha-character-formulas.power-table
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: 'pixlnd:stats-source/schema', range: string, required: true, equals_string: stat, description: "Original $schema field of stats-source; retains the source representation."}
+      resources: {alias: resources, slot_uri: 'pixlnd:stats-source/resources', range: resource-source-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "Original resources field of stats-source; retains the source representation."}
+      stats: {alias: stats, slot_uri: 'pixlnd:stats-source/stats', range: stat-source-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "Original stats field of stats-source; retains the source representation."}
+      alpha-item-stat-formulas: {alias: alpha-item-stat-formulas, slot_uri: 'pixlnd:stats-source/alpha-item-stat-formulas', range: source-item-formulas, required: true, inlined: true, description: "Original alpha-item-stat-formulas field of stats-source; retains the source representation."}
+      alpha-character-formulas: {alias: alpha-character-formulas, slot_uri: 'pixlnd:stats-source/alpha-character-formulas', range: source-character-formulas, required: true, inlined: true, description: "Original alpha-character-formulas field of stats-source; retains the source representation."}
+      gaps: {alias: gaps, slot_uri: 'pixlnd:stats-source/gaps', range: string, required: true, multivalued: true, description: "Original gaps field of stats-source; retains the source representation."}
+      gaps-decided: {alias: gaps-decided, slot_uri: 'pixlnd:stats-source/gaps-decided', range: string, required: true, description: "Original gaps-decided field of stats-source; retains the source representation."}
+  resource-source-entry:
+    class_uri: pixlnd:resource-source-entry
+    description: Original resource key and full source description.
+    see_also: [../instances/stats.json#resources]
+    slots: [source-entry-key]
+    attributes:
+      value: {alias: value, slot_uri: 'pixlnd:resource-source-entry/value', range: resource-source-row, required: true, inlined: true, description: "Original value field of resource-source-entry; retains the source representation."}
+  resource-source-row:
+    class_uri: pixlnd:resource-source-row
+    description: Resource descriptions and any stated interval, without interpreting formula text.
+    see_also: [../instances/stats.json#resources, ../domain/3_Classes.md#resource]
+    slots: [source-versions]
+    attributes:
+      name: {alias: name, slot_uri: 'pixlnd:resource-source-row/name', range: string, required: true, description: "Original name field of resource-source-row; retains the source representation."}
+      regen: {alias: regen, slot_uri: 'pixlnd:resource-source-row/regen', exactly_one_of: [{range: string}], description: "Original regen field of resource-source-row; retains the source representation."}
+      gain: {alias: gain, slot_uri: 'pixlnd:resource-source-row/gain', exactly_one_of: [{range: string}], description: "Original gain field of resource-source-row; retains the source representation."}
+      spend: {alias: spend, slot_uri: 'pixlnd:resource-source-row/spend', exactly_one_of: [{range: string}], description: "Original spend field of resource-source-row; retains the source representation."}
+      effect: {alias: effect, slot_uri: 'pixlnd:resource-source-row/effect', exactly_one_of: [{range: string}], description: "Original effect field of resource-source-row; retains the source representation."}
+      display: {alias: display, slot_uri: 'pixlnd:resource-source-row/display', exactly_one_of: [{range: string}], description: "Original display field of resource-source-row; retains the source representation."}
+      range: {alias: range, slot_uri: 'pixlnd:resource-source-row/range', exactly_one_of: [{range: double, multivalued: true, minimum_cardinality: 2, maximum_cardinality: 2}], description: "Original range field of resource-source-row; retains the source representation."}
+  stat-source-entry:
+    class_uri: pixlnd:stat-source-entry
+    description: Original stat key and full source description.
+    see_also: [../instances/stats.json#stats]
+    slots: [source-entry-key]
+    attributes:
+      value: {alias: value, slot_uri: 'pixlnd:stat-source-entry/value', range: stat-source-row, required: true, inlined: true, description: "Original value field of stat-source-entry; retains the source representation."}
+  stat-source-row:
+    class_uri: pixlnd:stat-source-row
+    description: Source stat descriptions and formula text, separate from computed values.
+    see_also: [../instances/stats.json#stats, ../domain/3_Classes.md#stat]
+    slots: [source-versions]
+    attributes:
+      name: {alias: name, slot_uri: 'pixlnd:stat-source-row/name', range: string, required: true, description: "Original name field of stat-source-row; retains the source representation."}
+      source: {alias: source, slot_uri: 'pixlnd:stat-source-row/source', exactly_one_of: [{range: string, multivalued: true}], description: "Original source field of stat-source-row; retains the source representation."}
+      effect: {alias: effect, slot_uri: 'pixlnd:stat-source-row/effect', exactly_one_of: [{range: string}], description: "Original effect field of stat-source-row; retains the source representation."}
+      note: {alias: note, slot_uri: 'pixlnd:stat-source-row/note', exactly_one_of: [{range: string}], description: "Original note field of stat-source-row; retains the source representation."}
+      alpha-name: {alias: alpha-name, slot_uri: 'pixlnd:stat-source-row/alpha-name', exactly_one_of: [{range: string}], description: "Original alpha-name field of stat-source-row; retains the source representation."}
+      formula: {alias: formula, slot_uri: 'pixlnd:stat-source-row/formula', exactly_one_of: [{range: string}], description: "Original formula field of stat-source-row; retains the source representation."}
+      cap: {alias: cap, slot_uri: 'pixlnd:stat-source-row/cap', exactly_one_of: [{range: double}], description: "Original cap field of stat-source-row; retains the source representation."}
+  source-item-formulas:
+    class_uri: pixlnd:source-item-formulas
+    description: Fixed source formula fields; disputed historical HP text never overrides hybrid HP.
+    see_also: [../instances/stats.json#alpha-item-stat-formulas]
+    attributes:
+      source: {alias: source, slot_uri: 'pixlnd:source-item-formulas/source', range: string, required: true, description: "Original source field of source-item-formulas; retains the source representation."}
+      hp-scope: {alias: hp-scope, slot_uri: 'pixlnd:source-item-formulas/hp-scope', range: string, required: true, description: "Original hp-scope field of source-item-formulas; retains the source representation."}
+      curve: {alias: curve, slot_uri: 'pixlnd:source-item-formulas/curve', range: string, required: true, description: "Original curve field of source-item-formulas; retains the source representation."}
+      curve-two: {alias: curve2, slot_uri: 'pixlnd:source-item-formulas/curve-two', range: string, required: true, description: "Original curve2 field of source-item-formulas; retains the source representation."}
+      formula-input: {alias: n, slot_uri: 'pixlnd:source-item-formulas/n', range: string, required: true, description: "Original n field of source-item-formulas; retains the source representation."}
+      roll: {alias: roll, slot_uri: 'pixlnd:source-item-formulas/roll', range: string, required: true, description: "Original roll field of source-item-formulas; retains the source representation."}
+      damage: {alias: damage, slot_uri: 'pixlnd:source-item-formulas/damage', range: string, required: true, description: "Original damage field of source-item-formulas; retains the source representation."}
+      hp: {alias: hp, slot_uri: 'pixlnd:source-item-formulas/hp', range: string, required: true, description: "Original hp field of source-item-formulas; retains the source representation."}
+      armor: {alias: armor, slot_uri: 'pixlnd:source-item-formulas/armor', range: string, required: true, description: "Original armor field of source-item-formulas; retains the source representation."}
+      resistance: {alias: resistance, slot_uri: 'pixlnd:source-item-formulas/resistance', range: string, required: true, description: "Original resistance field of source-item-formulas; retains the source representation."}
+      regeneration: {alias: regeneration, slot_uri: 'pixlnd:source-item-formulas/regeneration', range: string, required: true, description: "Original regeneration field of source-item-formulas; retains the source representation."}
+      tempo: {alias: tempo, slot_uri: 'pixlnd:source-item-formulas/tempo', range: string, required: true, description: "Original tempo field of source-item-formulas; retains the source representation."}
+      crit: {alias: crit, slot_uri: 'pixlnd:source-item-formulas/crit', range: string, required: true, description: "Original crit field of source-item-formulas; retains the source representation."}
+      consumable-heal: {alias: consumable-heal, slot_uri: 'pixlnd:source-item-formulas/consumable-heal', range: string, required: true, description: "Original consumable-heal field of source-item-formulas; retains the source representation."}
+  source-character-formulas:
+    class_uri: pixlnd:source-character-formulas
+    description: Fixed character formula fields and decimal-level lookup table; source expressions remain uninterpreted.
+    see_also: [../instances/stats.json#alpha-character-formulas, ../domain/3_Classes.md#level-formula-a]
+    attributes:
+      source: {alias: source, slot_uri: 'pixlnd:source-character-formulas/source', range: string, required: true, description: "Original source field of source-character-formulas; retains the source representation."}
+      power: {alias: power, slot_uri: 'pixlnd:source-character-formulas/power', range: string, required: true, description: "Original power field of source-character-formulas; retains the source representation."}
+      xp-to-next: {alias: xp-to-next, slot_uri: 'pixlnd:source-character-formulas/xp-to-next', range: string, required: true, description: "Original xp-to-next field of source-character-formulas; retains the source representation."}
+      base-hp: {alias: base-hp, slot_uri: 'pixlnd:source-character-formulas/base-hp', range: string, required: true, description: "Original base-hp field of source-character-formulas; retains the source representation."}
+      player-hp: {alias: player-hp, slot_uri: 'pixlnd:source-character-formulas/player-hp', range: string, required: true, description: "Original player-hp field of source-character-formulas; retains the source representation."}
+      npc-hp: {alias: npc-hp, slot_uri: 'pixlnd:source-character-formulas/npc-hp', range: string, required: true, description: "Original npc-hp field of source-character-formulas; retains the source representation."}
+      skill-points-per-level: {alias: skill-points-per-level, slot_uri: 'pixlnd:source-character-formulas/skill-points-per-level', range: integer, required: true, equals_number: 2, description: "Original skill-points-per-level field of source-character-formulas; retains the source representation."}
+      power-table: {alias: power-table, slot_uri: 'pixlnd:source-character-formulas/power-table', range: source-power-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, description: "Original power-table field of source-character-formulas; retains the source representation."}
+  source-power-entry:
+    class_uri: pixlnd:source-power-entry
+    description: Original decimal level label and integer power, not a global identity or newly computed value.
+    see_also: [../instances/stats.json#alpha-character-formulas, ../domain/3_Classes.md#level-formula-a]
+    attributes:
+      key: {alias: key, slot_uri: 'pixlnd:source-power-entry/key', range: string, required: true, key: true, pattern: '^[1-9][0-9]*$', description: "Original key field of source-power-entry; retains the source representation."}
+      value: {alias: value, slot_uri: 'pixlnd:source-power-entry/value', range: integer, required: true, minimum_value: 1, maximum_value: 100, description: "Original value field of source-power-entry; retains the source representation."}

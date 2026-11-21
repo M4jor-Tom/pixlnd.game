@@ -1,0 +1,89 @@
+id: https://w3id.org/pixlnd/save-content/saved-props-traps
+name: pixlnd-save-content-saved-props-traps
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+classes:
+  saved-rubble:
+    class_uri: pixlnd:saved-rubble
+    see_also: &id001
+    - ../domain/encounter-contracts.md#boss-specials-and-breakable-rubble
+    slots:
+    - saved-rubble-broken
+    - saved-rubble-restore-at
+  saved-prop:
+    class_uri: pixlnd:saved-prop
+    see_also: &id002
+    - ../domain/encounter-contracts.md#spike-traps-and-furnishing-contents
+    slots:
+    - saved-prop-hp
+  saved-trap:
+    class_uri: pixlnd:saved-trap
+    see_also: &id003
+    - ../domain/encounter-contracts.md#spike-traps-and-furnishing-contents
+    slots:
+    - saved-trap-phase
+    - saved-trap-left
+    - saved-trap-hit
+    description: Current trap phase/timer/hit-set; phase-dependent timing and hit-set emptiness require
+      coupled current-rule checks.
+slots:
+  saved-rubble-broken:
+    slot_uri: pixlnd:saved-rubble/broken
+    alias: broken
+    domain: saved-rubble
+    range: boolean
+    required: true
+    see_also: *id001
+  saved-rubble-restore-at:
+    slot_uri: pixlnd:saved-rubble/restore_at
+    alias: restore_at
+    domain: saved-rubble
+    range: double
+    required: true
+    see_also: *id001
+    minimum_value: 0
+  saved-prop-hp:
+    slot_uri: pixlnd:saved-prop/hp
+    alias: hp
+    domain: saved-prop
+    range: double
+    required: true
+    see_also: *id002
+    minimum_value: 0
+  saved-trap-phase:
+    slot_uri: pixlnd:saved-trap/phase
+    alias: phase
+    domain: saved-trap
+    range: trap-phase
+    required: true
+    see_also: *id003
+  saved-trap-left:
+    slot_uri: pixlnd:saved-trap/left
+    alias: left
+    domain: saved-trap
+    range: double
+    required: true
+    see_also: *id003
+    minimum_value: 0
+  saved-trap-hit:
+    slot_uri: pixlnd:saved-trap/hit
+    alias: hit
+    domain: saved-trap
+    range: string
+    required: true
+    see_also: *id003
+    multivalued: true
+    list_elements_unique: true
+enums:
+  trap-phase:
+    enum_uri: pixlnd:trap-phase
+    permissible_values:
+      idle: {}
+      warning: {}
+      active: {}
+      cooldown: {}

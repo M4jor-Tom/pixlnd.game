@@ -1,0 +1,83 @@
+id: https://w3id.org/pixlnd/catalog-properties/economy-currency
+name: pixlnd-catalog-properties-economy-currency
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- catalog-properties-economy-trade
+default_range: string
+classes:
+  economy-source:
+    description: "Source representation of economy-source."
+    class_uri: pixlnd:economy-source
+    see_also: [../instances/economy.json]
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: pixlnd:economy-source/schema, range: string, required: true, equals_string: economy, description: "The $schema field of economy-source."}
+      currency: {alias: currency, slot_uri: pixlnd:economy-source/currency, range: economy-currency-source, required: true, inlined: true, description: "The currency field of economy-source."}
+      incomes: {alias: incomes, slot_uri: pixlnd:economy-source/incomes, range: economy-incomes-source, required: true, inlined: true, description: "The incomes field of economy-source."}
+      prices: {alias: prices, slot_uri: pixlnd:economy-source/prices, range: economy-prices-source, required: true, inlined: true, description: "The prices field of economy-source."}
+      shops: {alias: shops, slot_uri: pixlnd:economy-source/shops, range: economy-shops-source, required: true, inlined: true, description: "The shops field of economy-source."}
+      rules: {alias: rules, slot_uri: pixlnd:economy-source/rules, range: economy-rules-source, required: true, inlined: true, description: "The rules field of economy-source."}
+      loot: {alias: loot, slot_uri: pixlnd:economy-source/loot, range: economy-loot-source, required: true, inlined: true, description: "The loot field of economy-source."}
+      gaps: {alias: gaps, slot_uri: pixlnd:economy-source/gaps, range: string, required: true, multivalued: true, description: "The gaps field of economy-source."}
+      gaps-decided: {alias: gaps-decided, slot_uri: pixlnd:economy-source/gaps-decided, range: string, required: true, description: "The gaps-decided field of economy-source."}
+  economy-currency-source:
+    description: "Source representation of economy-currency-source."
+    attributes:
+      alpha: {alias: A, slot_uri: pixlnd:economy-currency-source/alpha, range: economy-currency-alpha, required: true, inlined: true, description: "The A field of economy-currency-source."}
+      steam: {alias: S, slot_uri: pixlnd:economy-currency-source/steam, range: economy-currency-steam, required: true, inlined: true, description: "The S field of economy-currency-source."}
+  economy-currency-alpha:
+    description: "Source representation of economy-currency-alpha."
+    attributes:
+      coins: {alias: coins, slot_uri: pixlnd:economy-currency-alpha/coins, range: economy-coins-source, required: true, inlined: true, description: "The coins field of economy-currency-alpha."}
+      platinum: {alias: platinum, slot_uri: pixlnd:economy-currency-alpha/platinum, range: string, required: true, description: "The platinum field of economy-currency-alpha."}
+      pickup: {alias: pickup, slot_uri: pixlnd:economy-currency-alpha/pickup, range: string, required: true, description: "The pickup field of economy-currency-alpha."}
+      display: {alias: display, slot_uri: pixlnd:economy-currency-alpha/display, range: string, required: true, description: "The display field of economy-currency-alpha."}
+  economy-coins-source:
+    description: "Source representation of economy-coins-source."
+    attributes:
+      copper: {alias: copper, slot_uri: pixlnd:economy-coins-source/copper, range: integer, required: true, description: "The copper field of economy-coins-source."}
+      silver: {alias: silver, slot_uri: pixlnd:economy-coins-source/silver, range: integer, required: true, description: "The silver field of economy-coins-source."}
+      gold: {alias: gold, slot_uri: pixlnd:economy-coins-source/gold, range: integer, required: true, description: "The gold field of economy-coins-source."}
+  economy-currency-steam:
+    description: "Source representation of economy-currency-steam."
+    attributes:
+      coins: {alias: coins, slot_uri: pixlnd:economy-currency-steam/coins, range: economy-one-coin-source, required: true, inlined: true, description: "The coins field of economy-currency-steam."}
+      pickup: {alias: pickup, slot_uri: pixlnd:economy-currency-steam/pickup, range: string, required: true, description: "The pickup field of economy-currency-steam."}
+      display: {alias: display, slot_uri: pixlnd:economy-currency-steam/display, range: string, required: true, description: "The display field of economy-currency-steam."}
+  economy-one-coin-source:
+    description: "Source representation of economy-one-coin-source."
+    attributes:
+      coin: {alias: coin, slot_uri: pixlnd:economy-one-coin-source/coin, range: integer, required: true, description: "The coin field of economy-one-coin-source."}
+  economy-incomes-source:
+    description: "Source representation of economy-incomes-source."
+    attributes:
+      alpha: {alias: A, slot_uri: pixlnd:economy-incomes-source/alpha, range: economy-income-alpha, required: true, inlined: true, description: "The A field of economy-incomes-source."}
+      steam: {alias: S, slot_uri: pixlnd:economy-incomes-source/steam, range: economy-income-steam, required: true, inlined: true, description: "The S field of economy-incomes-source."}
+  economy-income-alpha:
+    description: "Source representation of economy-income-alpha."
+    attributes:
+      monster: {alias: monster-lvl1-30, slot_uri: pixlnd:economy-income-alpha/monster, range: string, required: true, description: "The monster-lvl1-30 field of economy-income-alpha."}
+      equipment: {alias: equipment-sell-+1..+100, slot_uri: pixlnd:economy-income-alpha/equipment, range: string, required: true, description: "The equipment-sell-+1..+100 field of economy-income-alpha."}
+      heartflower: {alias: heartflower-sell, slot_uri: pixlnd:economy-income-alpha/heartflower, range: integer, required: true, description: "The heartflower-sell field of economy-income-alpha."}
+      iceflower: {alias: iceflower-sell, slot_uri: pixlnd:economy-income-alpha/iceflower, any_of: [{range: integer}, {range: string}], required: true, description: "The iceflower-sell field of economy-income-alpha."}
+  economy-income-steam:
+    description: "Source representation of economy-income-steam."
+    attributes:
+      monster: {alias: monster, slot_uri: pixlnd:economy-income-steam/monster, range: integer, required: true, multivalued: true, minimum_cardinality: 2, maximum_cardinality: 2, description: "The monster field of economy-income-steam."}
+      boss: {alias: boss, slot_uri: pixlnd:economy-income-steam/boss, range: integer, required: true, description: "The boss field of economy-income-steam."}
+      mana-generator: {alias: mana-generator, slot_uri: pixlnd:economy-income-steam/mana-generator, range: integer, required: true, multivalued: true, minimum_cardinality: 2, maximum_cardinality: 2, description: "The mana-generator field of economy-income-steam."}
+      gem-sell: {alias: gem-sell, slot_uri: pixlnd:economy-income-steam/gem-sell, range: economy-gem-values, required: true, inlined: true, description: "The gem-sell field of economy-income-steam."}
+      legendary-sell: {alias: legendary-sell, slot_uri: pixlnd:economy-income-steam/legendary-sell, range: integer, required: true, multivalued: true, minimum_cardinality: 2, maximum_cardinality: 2, description: "The legendary-sell field of economy-income-steam."}
+      legendary-plus-sell: {alias: legendary-plus-sell, slot_uri: pixlnd:economy-income-steam/legendary-plus, range: integer, required: true, description: "The legendary-plus-sell field of economy-income-steam."}
+      arena: {alias: arena, slot_uri: pixlnd:economy-income-steam/arena, range: integer, required: true, multivalued: true, minimum_cardinality: 2, maximum_cardinality: 2, description: "The arena field of economy-income-steam."}
+      bag-of-gold: {alias: bag-of-gold, slot_uri: pixlnd:economy-income-steam/bag-of-gold, range: integer, required: true, multivalued: true, minimum_cardinality: 2, maximum_cardinality: 2, description: "The bag-of-gold field of economy-income-steam."}
+  economy-gem-values:
+    description: "Source representation of economy-gem-values."
+    attributes:
+      emerald: {alias: emerald, slot_uri: pixlnd:economy-gem-values/emerald, range: integer, required: true, description: "The emerald field of economy-gem-values."}
+      sapphire: {alias: sapphire, slot_uri: pixlnd:economy-gem-values/sapphire, range: integer, required: true, description: "The sapphire field of economy-gem-values."}
+      ruby: {alias: ruby, slot_uri: pixlnd:economy-gem-values/ruby, range: integer, required: true, description: "The ruby field of economy-gem-values."}
+      diamond: {alias: diamond, slot_uri: pixlnd:economy-gem-values/diamond, range: integer, required: true, description: "The diamond field of economy-gem-values."}

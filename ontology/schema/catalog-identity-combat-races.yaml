@@ -1,0 +1,104 @@
+id: https://w3id.org/pixlnd/catalog-identity-combat/races
+name: pixlnd-catalog-identity-combat-races
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- catalog-properties
+default_range: string
+classes:
+  races-source:
+    class_uri: pixlnd:races-source
+    description: Race catalog with creation metadata; entries carry original container keys, not global identities.
+    see_also: [../instances/races.json, ../domain/5_Constraints.md]
+    annotations:
+      source-map-entries: entries
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: 'pixlnd:races-source/schema', range: string, required: true, equals_string: race, description: "Original $schema field of races-source; retains the source representation."}
+      documentation: {alias: _doc, slot_uri: 'pixlnd:races-source/doc', range: string, required: true, description: "Original _doc field of races-source; retains the source representation."}
+      creation: {alias: _creation, slot_uri: 'pixlnd:races-source/creation', range: race-creation, required: true, inlined: true, description: "Original _creation field of races-source; retains the source representation."}
+      entries: {alias: entries, slot_uri: 'pixlnd:races-source/entries', range: race-source-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "Original entries field of races-source; retains the source representation."}
+  race-source-entry:
+    class_uri: pixlnd:race-source-entry
+    description: Reversible representation of one original race container key and its unchanged body.
+    see_also: [../domain/0_Conventions.md, ../instances/races.json]
+    slots: [source-entry-key]
+    attributes:
+      value: {alias: value, slot_uri: 'pixlnd:race-source-entry/value', range: race-source-row, required: true, inlined: true, description: "Original value field of race-source-entry; retains the source representation."}
+  race-source-row:
+    class_uri: pixlnd:race-source-row
+    description: Race source body without a fabricated identifier or inherited creation defaults.
+    see_also: [../instances/races.json, ../domain/3_Classes.md#race]
+    slots: [race-name, race-playable, race-size-class, race-hair, race-heads, source-versions]
+    slot_usage:
+      race-name: {required: true}
+      race-hair: {required: true}
+      race-heads: {required: true}
+    attributes:
+      alpha-entity-ids: {alias: alpha-entity-ids, slot_uri: 'pixlnd:race-source-row/alpha-entity-ids', range: race-source-ids, required: true, inlined: true, description: "Original alpha-entity-ids field of race-source-row; retains the source representation."}
+      quirks: {alias: quirks, slot_uri: 'pixlnd:race-source-row/quirks', range: string, required: true, multivalued: true, description: "Original quirks field of race-source-row; retains the source representation."}
+  race-source-ids:
+    class_uri: pixlnd:race-source-ids
+    description: Per-gender numeric source IDs; these do not replace stable race identity.
+    see_also: [../instances/races.json]
+    attributes:
+      male: {alias: male, slot_uri: 'pixlnd:race-source-ids/male', range: integer, required: true, minimum_value: 0, description: "Original male field of race-source-ids; retains the source representation."}
+      female: {alias: female, slot_uri: 'pixlnd:race-source-ids/female', range: integer, required: true, minimum_value: 0, description: "Original female field of race-source-ids; retains the source representation."}
+  race-creation:
+    class_uri: pixlnd:race-creation
+    description: Literal character-creation metadata, retaining source-specific alternatives and uncertain palette text.
+    see_also: [../instances/races.json#_creation, ../domain/3_Classes.md#player-character]
+    attributes:
+      genders: {alias: genders, slot_uri: 'pixlnd:race-creation/genders', range: gender, required: true, multivalued: true, description: "Original genders field of race-creation; retains the source representation."}
+      choices: {alias: choices, slot_uri: 'pixlnd:race-creation/choices', range: string, required: true, multivalued: true, description: "Original choices field of race-creation; retains the source representation."}
+      skin-color: {alias: skin-color, slot_uri: 'pixlnd:race-creation/skin-color', range: string, required: true, description: "Original skin-color field of race-creation; retains the source representation."}
+      spec-at-creation: {alias: spec-at-creation, slot_uri: 'pixlnd:race-creation/spec-at-creation', range: boolean, required: true, description: "Original spec-at-creation field of race-creation; retains the source representation."}
+      starting-kit: {alias: starting-kit, slot_uri: 'pixlnd:race-creation/starting-kit', range: source-version-text-lists, required: true, inlined: true, description: "Original starting-kit field of race-creation; retains the source representation."}
+      spawn: {alias: spawn, slot_uri: 'pixlnd:race-creation/spawn', range: source-version-text, required: true, inlined: true, description: "Original spawn field of race-creation; retains the source representation."}
+      alpha-world-flow: {alias: alpha-world-flow, slot_uri: 'pixlnd:race-creation/alpha-world-flow', range: string, required: true, multivalued: true, description: "Original alpha-world-flow field of race-creation; retains the source representation."}
+  source-version-text:
+    class_uri: pixlnd:source-version-text
+    description: Explicit Alpha and Steam description fields, not inferred provenance or selected hybrid rules.
+    see_also: [../domain/5_Constraints.md]
+    attributes:
+      alpha: {alias: A, slot_uri: 'pixlnd:source-version-text/alpha', range: string, required: true, description: "Original A field of source-version-text; retains the source representation."}
+      steam: {alias: S, slot_uri: 'pixlnd:source-version-text/steam', range: string, required: true, description: "Original S field of source-version-text; retains the source representation."}
+  source-version-text-lists:
+    class_uri: pixlnd:source-version-text-lists
+    description: Explicit Alpha and Steam lists, preserving literal source entries.
+    see_also: [../domain/5_Constraints.md]
+    attributes:
+      alpha: {alias: A, slot_uri: 'pixlnd:source-version-text-lists/alpha', range: string, required: true, multivalued: true, description: "Original A field of source-version-text-lists; retains the source representation."}
+      steam: {alias: S, slot_uri: 'pixlnd:source-version-text-lists/steam', range: string, required: true, multivalued: true, description: "Original S field of source-version-text-lists; retains the source representation."}
+slots:
+  source-entry-key:
+    alias: key
+    slot_uri: pixlnd:source-entry/key
+    range: string
+    required: true
+    key: true
+    pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
+    description: Exact original catalog container key, local to its source; never a fabricated body identifier.
+    see_also: [../domain/0_Conventions.md, ../domain/5_Constraints.md]
+  source-versions:
+    alias: versions
+    slot_uri: pixlnd:source/versions
+    range: SourceVersion
+    required: true
+    multivalued: true
+    minimum_cardinality: 1
+    description: Explicit confirmed source annotations, not hybrid availability.
+    see_also: [../domain/0_Conventions.md]
+enums:
+  SourceVersion:
+    enum_uri: pixlnd:SourceVersion
+    description: Confirmed source tags; uncertainty-qualified source text is retained separately.
+    see_also: [../domain/0_Conventions.md]
+    permissible_values:
+      A: {description: Alpha reference.}
+      S: {description: Steam reference.}
+      Ω: {description: Announced Omega reference.}
+      X: {description: Cut or unused source content.}

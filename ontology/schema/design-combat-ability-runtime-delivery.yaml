@@ -1,0 +1,111 @@
+id: https://w3id.org/pixlnd/design-combat/ability-runtime-delivery
+name: pixlnd-design-combat-ability-runtime-delivery
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- design-combat-ability-runtime
+- design-combat-runtime-cost-strike
+- design-combat-runtime-projectile
+default_range: string
+slots:
+  ability-runtime-spread:
+    slot_uri: pixlnd:ability-runtime/spread
+    alias: spread
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: false
+    see_also: &id003
+    - ../domain/3_Classes.md#ability
+    minimum_value: 0
+  ability-runtime-speed:
+    slot_uri: pixlnd:ability-runtime/speed
+    alias: speed
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-gravity:
+    slot_uri: pixlnd:ability-runtime/gravity
+    alias: gravity
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-life-s:
+    slot_uri: pixlnd:ability-runtime/life-s
+    alias: life-s
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-splash:
+    slot_uri: pixlnd:ability-runtime/splash
+    alias: splash
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-taunt-s:
+    slot_uri: pixlnd:ability-runtime/taunt-s
+    alias: taunt-s
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: double
+    required: false
+    see_also: *id003
+    minimum_value: 0
+  ability-runtime-stun-immune:
+    slot_uri: pixlnd:ability-runtime/stun-immune
+    alias: stun-immune
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: boolean
+    required: false
+    see_also: *id003
+  ability-runtime-stealth-full:
+    slot_uri: pixlnd:ability-runtime/stealth-full
+    alias: stealth-full
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: boolean
+    required: false
+    see_also: *id003
+  ability-runtime-count:
+    slot_uri: pixlnd:ability-runtime/count
+    alias: count
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: integer
+    required: false
+    see_also: *id003
+    minimum_value: 1
+  ability-runtime-strike:
+    slot_uri: pixlnd:ability-runtime/strike
+    alias: strike
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: runtime-strike
+    required: false
+    see_also: *id003
+    inlined: true
+  ability-runtime-throw:
+    slot_uri: pixlnd:ability-runtime/throw
+    alias: throw
+    domain: ability-runtime
+    description: Configuration field; applicability follows the linked rule.
+    range: runtime-projectile
+    required: false
+    see_also: *id003
+    inlined: true

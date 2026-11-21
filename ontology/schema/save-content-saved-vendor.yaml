@@ -1,0 +1,56 @@
+id: https://w3id.org/pixlnd/save-content/saved-vendor
+name: pixlnd-save-content-saved-vendor
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+classes:
+  saved-vendor:
+    class_uri: pixlnd:saved-vendor
+    see_also: &id005
+    - ../domain/3_Classes.md#shop
+    slots:
+    - saved-vendor-day
+    - saved-vendor-level
+    - saved-vendor-ceiling
+    - saved-vendor-items
+    description: Remaining daily stock; earned ceiling, deterministic remaining-stock subsequence and
+      clock/day agreement require current-rule validation.
+slots:
+  saved-vendor-day:
+    slot_uri: pixlnd:saved-vendor/day
+    alias: day
+    domain: saved-vendor
+    range: integer
+    required: true
+    see_also: *id005
+    minimum_value: 0
+  saved-vendor-level:
+    slot_uri: pixlnd:saved-vendor/level
+    alias: level
+    domain: saved-vendor
+    range: integer
+    required: true
+    see_also: *id005
+    minimum_value: 1
+  saved-vendor-ceiling:
+    slot_uri: pixlnd:saved-vendor/ceiling
+    alias: ceiling
+    domain: saved-vendor
+    range: integer
+    required: true
+    see_also: *id005
+    minimum_value: 0
+  saved-vendor-items:
+    slot_uri: pixlnd:saved-vendor/items
+    alias: items
+    domain: saved-vendor
+    range: saved-item
+    required: true
+    see_also: *id005
+    multivalued: true
+    inlined: true
+    inlined_as_list: true

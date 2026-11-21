@@ -1,0 +1,102 @@
+id: https://w3id.org/pixlnd/catalog-properties/economy-trade
+name: pixlnd-catalog-properties-economy-trade
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- items
+- catalog-properties-economy-currency
+default_range: string
+classes:
+  economy-prices-source:
+    description: "Source representation of economy-prices-source."
+    attributes:
+      formula: {alias: formula, slot_uri: pixlnd:economy-prices-source/formula, range: string, required: true, description: "The formula field of economy-prices-source."}
+      alpha: {alias: A, slot_uri: pixlnd:economy-prices-source/alpha, range: economy-price-alpha, required: true, inlined: true, description: "The A field of economy-prices-source."}
+      steam: {alias: S, slot_uri: pixlnd:economy-prices-source/steam, range: economy-price-steam, required: true, inlined: true, description: "The S field of economy-prices-source."}
+  economy-price-alpha:
+    description: "Source representation of economy-price-alpha."
+    attributes:
+      inn: {alias: inn, slot_uri: pixlnd:economy-price-alpha/inn, range: integer, required: true, description: "The inn field of economy-price-alpha."}
+      spec-swap: {alias: spec-swap, slot_uri: pixlnd:economy-price-alpha/swap, range: string, required: true, description: "The spec-swap field of economy-price-alpha."}
+      adaptation: {alias: adaptation, slot_uri: pixlnd:economy-price-alpha/adaptation, range: string, required: true, description: "The adaptation field of economy-price-alpha."}
+      vendors: {alias: vendors, slot_uri: pixlnd:economy-price-alpha/vendors, range: string, required: true, description: "The vendors field of economy-price-alpha."}
+  economy-price-steam:
+    description: "Source representation of economy-price-steam."
+    attributes:
+      inn: {alias: inn, slot_uri: pixlnd:economy-price-steam/inn, range: integer, required: true, description: "The inn field of economy-price-steam."}
+      flight-min: {alias: flight-min, slot_uri: pixlnd:economy-price-steam/flight, range: integer, required: true, description: "The flight-min field of economy-price-steam."}
+      flight-scaling: {alias: flight-scaling, slot_uri: pixlnd:economy-price-steam/scaling, range: string, required: true, description: "The flight-scaling field of economy-price-steam."}
+      flight-to-friend: {alias: flight-to-friend, slot_uri: pixlnd:economy-price-steam/friend, range: integer, required: true, description: "The flight-to-friend field of economy-price-steam."}
+      gems: {alias: gems, slot_uri: pixlnd:economy-price-steam/gems, range: economy-gem-values, required: true, inlined: true, description: "The gems field of economy-price-steam."}
+      glass-flask: {alias: glass-flask, slot_uri: pixlnd:economy-price-steam/flask, range: integer, required: true, description: "The glass-flask field of economy-price-steam."}
+      legendary-plus-weapon: {alias: legendary-plus-weapon, slot_uri: pixlnd:economy-price-steam/legendary, range: string, required: true, description: "The legendary-plus-weapon field of economy-price-steam."}
+      identify: {alias: identify, slot_uri: pixlnd:economy-price-steam/identify, range: string, required: true, description: "The identify field of economy-price-steam."}
+      plus-items: {alias: plus-items, slot_uri: pixlnd:economy-price-steam/plus, range: string, required: true, description: "The plus-items field of economy-price-steam."}
+      spec-swap: {alias: spec-swap, slot_uri: pixlnd:economy-price-steam/swap, range: integer, required: true, description: "The spec-swap field of economy-price-steam."}
+  economy-shops-source:
+    description: "Source representation of economy-shops-source."
+    annotations: {source-map-entries: entries}
+    attributes:
+      entries: {alias: entries, slot_uri: pixlnd:economy-shops-source/entries, range: economy-shop-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "The entries field of economy-shops-source."}
+  economy-shop-entry:
+    description: "Source representation of economy-shop-entry."
+    slots: [recipe-map-key]
+    attributes:
+      value: {alias: value, slot_uri: pixlnd:economy-shop-entry/value, range: economy-shop-row, required: true, inlined: true, description: "The value field of economy-shop-entry."}
+  economy-shop-row:
+    description: "Source representation of economy-shop-row."
+    attributes:
+      sells: {alias: sells, slot_uri: pixlnd:economy-shop-row/sells, exactly_one_of: [{range: string}, {range: string, multivalued: true, minimum_cardinality: 1}, {range: economy-shop-sells-by-version, inlined: true}], description: "The sells field of economy-shop-row."}
+      service: {alias: service, slot_uri: pixlnd:economy-shop-row/service, range: string, description: "The service field of economy-shop-row."}
+      buys: {alias: buys, slot_uri: pixlnd:economy-shop-row/buys, any_of: [{range: string}, {range: boolean}], description: "The buys field of economy-shop-row."}
+      stock: {alias: stock, slot_uri: pixlnd:economy-shop-row/stock, range: economy-shop-stock, inlined: true, description: "The stock field of economy-shop-row."}
+      roaming: {alias: roaming, slot_uri: pixlnd:economy-shop-row/roaming, range: boolean, description: "The roaming field of economy-shop-row."}
+      versions: {alias: versions, slot_uri: pixlnd:economy-shop-row/versions, range: string, multivalued: true, description: "The versions field of economy-shop-row."}
+      hours: {alias: hours, slot_uri: pixlnd:economy-shop-row/hours, range: string, description: "The hours field of economy-shop-row."}
+  economy-shop-sells-by-version:
+    description: "Source representation of economy-shop-sells-by-version."
+    attributes:
+      alpha: {alias: A, slot_uri: pixlnd:economy-shop-sells-by-version/alpha, range: string, required: true, multivalued: true, description: "The A field of economy-shop-sells-by-version."}
+      steam: {alias: S, slot_uri: pixlnd:economy-shop-sells-by-version/steam, range: string, required: true, multivalued: true, description: "The S field of economy-shop-sells-by-version."}
+  economy-shop-stock:
+    description: "Source representation of economy-shop-stock."
+    attributes:
+      alpha: {alias: A, slot_uri: pixlnd:economy-shop-stock/alpha, range: string, required: true, description: "The A field of economy-shop-stock."}
+      steam: {alias: S, slot_uri: pixlnd:economy-shop-stock/steam, range: string, required: true, description: "The S field of economy-shop-stock."}
+  economy-rules-source:
+    description: "Source representation of economy-rules-source."
+    attributes:
+      restock: {alias: restock, slot_uri: pixlnd:economy-rules-source/restock, range: string, required: true, description: "The restock field of economy-rules-source."}
+      buy-back: {alias: buy-back, slot_uri: pixlnd:economy-rules-source/buy-back, range: economy-buy-back, required: true, inlined: true, description: "The buy-back field of economy-rules-source."}
+      sell-price-tooltip: {alias: sell-price-tooltip, slot_uri: pixlnd:economy-rules-source/tooltip, range: string, required: true, description: "The sell-price-tooltip field of economy-rules-source."}
+      gnome-unlock: {alias: gnome-unlock, slot_uri: pixlnd:economy-rules-source/unlock, range: economy-gem-unlock, required: true, inlined: true, description: "The gnome-unlock field of economy-rules-source."}
+      money-abundance-s: {alias: money-abundance-s, slot_uri: pixlnd:economy-rules-source/abundance, range: string, required: true, description: "The money-abundance-s field of economy-rules-source."}
+      off-class-drops: {alias: off-class-drops, slot_uri: pixlnd:economy-rules-source/off-class, range: string, required: true, description: "The off-class-drops field of economy-rules-source."}
+  economy-buy-back:
+    description: "Source representation of economy-buy-back."
+    attributes:
+      alpha: {alias: A, slot_uri: pixlnd:economy-buy-back/alpha, range: boolean, required: true, description: "The A field of economy-buy-back."}
+      steam: {alias: S, slot_uri: pixlnd:economy-buy-back/steam, range: boolean, required: true, description: "The S field of economy-buy-back."}
+  economy-gem-unlock:
+    description: "Source representation of economy-gem-unlock."
+    attributes:
+      white: {alias: white, slot_uri: pixlnd:economy-gem-unlock/white, range: string, required: true, description: "The white field of economy-gem-unlock."}
+      green: {alias: green, slot_uri: pixlnd:economy-gem-unlock/green, range: string, required: true, description: "The green field of economy-gem-unlock."}
+      blue: {alias: blue, slot_uri: pixlnd:economy-gem-unlock/blue, range: string, required: true, description: "The blue field of economy-gem-unlock."}
+      purple: {alias: purple, slot_uri: pixlnd:economy-gem-unlock/purple, range: string, required: true, description: "The purple field of economy-gem-unlock."}
+  economy-loot-source:
+    description: "Source representation of economy-loot-source."
+    attributes:
+      tier: {alias: tier, slot_uri: pixlnd:economy-loot-source/tier, range: string, required: true, description: "The tier field of economy-loot-source."}
+      leftovers: {alias: leftovers, slot_uri: pixlnd:economy-loot-source/leftovers, range: string, required: true, description: "The leftovers field of economy-loot-source."}
+      species-drops: {alias: species-drops, slot_uri: pixlnd:economy-loot-source/species, range: string, required: true, multivalued: true, description: "The species-drops field of economy-loot-source."}
+      npc-weapons: {alias: npc-weapons, slot_uri: pixlnd:economy-loot-source/npc-weapons, range: string, required: true, description: "The npc-weapons field of economy-loot-source."}
+      alpha-boss: {alias: A-boss, slot_uri: pixlnd:economy-loot-source/A-boss, range: string, required: true, description: "The A-boss field of economy-loot-source."}
+      alpha-dungeon: {alias: A-dungeon, slot_uri: pixlnd:economy-loot-source/A-dungeon, range: string, required: true, description: "The A-dungeon field of economy-loot-source."}
+      steam-mission: {alias: S-mission, slot_uri: pixlnd:economy-loot-source/S-mission, range: string, required: true, description: "The S-mission field of economy-loot-source."}
+      steam-dungeon: {alias: S-dungeon, slot_uri: pixlnd:economy-loot-source/S-dungeon, range: string, required: true, description: "The S-dungeon field of economy-loot-source."}
+      ground-items: {alias: ground-items, slot_uri: pixlnd:economy-loot-source/ground-items, range: string, required: true, description: "The ground-items field of economy-loot-source."}
+      npc-rewards: {alias: npc-rewards, slot_uri: pixlnd:economy-loot-source/npc-rewards, range: string, required: true, description: "The npc-rewards field of economy-loot-source."}

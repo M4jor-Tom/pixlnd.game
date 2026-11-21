@@ -1,0 +1,99 @@
+id: https://w3id.org/pixlnd/catalog-identity-combat/classes
+name: pixlnd-catalog-identity-combat-classes
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- combat
+- catalog-identity-combat-races
+default_range: string
+classes:
+  classes-source:
+    class_uri: pixlnd:classes-source
+    description: Class catalog and its separate shared and unshipped reference records.
+    see_also: [../instances/classes.json]
+    annotations: {source-map-entries: entries}
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: 'pixlnd:classes-source/schema', range: string, required: true, equals_string: character-class, description: "Original $schema field of classes-source; retains the source representation."}
+      paladin: {alias: _paladin, slot_uri: 'pixlnd:classes-source/paladin', range: class-reference, required: true, inlined: true, description: "Original _paladin field of classes-source; retains the source representation."}
+      shared: {alias: _shared, slot_uri: 'pixlnd:classes-source/shared', range: class-shared, required: true, inlined: true, description: "Original _shared field of classes-source; retains the source representation."}
+      entries: {alias: entries, slot_uri: 'pixlnd:classes-source/entries', range: class-source-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "Original entries field of classes-source; retains the source representation."}
+  class-source-entry:
+    class_uri: pixlnd:class-source-entry
+    description: Original class key and complete body.
+    see_also: [../instances/classes.json]
+    slots: [source-entry-key]
+    attributes:
+      value: {alias: value, slot_uri: 'pixlnd:class-source-entry/value', range: class-source-row, required: true, inlined: true, description: "Original value field of class-source-entry; retains the source representation."}
+  class-source-row:
+    class_uri: pixlnd:class-source-row
+    description: Source class body; shared configuration is not a fifth class.
+    see_also: [../instances/classes.json, ../domain/3_Classes.md#character-class]
+    slots: [character-class-name, character-class-id-number, character-class-special-attack-mode, character-class-hp-mult, has-specialization, uses-weapon, wears-material, source-versions, source-notes]
+    attributes:
+      weapon-loadouts: {alias: weapon-loadouts, slot_uri: 'pixlnd:class-source-row/weapon-loadouts', range: string, required: true, multivalued: true, description: "Original weapon-loadouts field of class-source-row; retains the source representation."}
+      armor-weight: {alias: armor-weight, slot_uri: 'pixlnd:class-source-row/armor-weight', range: string, required: true, description: "Original armor-weight field of class-source-row; retains the source representation."}
+      mp-generation: {alias: mp-generation, slot_uri: 'pixlnd:class-source-row/mp-generation', range: string, required: true, multivalued: true, description: "Original mp-generation field of class-source-row; retains the source representation."}
+      hp-multiplier-alpha: {alias: hp-multiplier-alpha, slot_uri: 'pixlnd:class-source-row/hp-multiplier-alpha', range: double, required: true, description: "Original hp-multiplier-alpha field of class-source-row; retains the source representation."}
+      alt-name: {alias: alt-name, slot_uri: 'pixlnd:class-source-row/alt-name', exactly_one_of: [{range: string}], description: "Original alt-name field of class-source-row; retains the source representation."}
+      special-attack-cost-mp: {alias: special-attack-cost-mp, slot_uri: 'pixlnd:class-source-row/special-attack-cost-mp', exactly_one_of: [{range: double, minimum_value: 0, maximum_value: 100}], description: "Original special-attack-cost-mp field of class-source-row; retains the source representation."}
+  class-reference:
+    class_uri: pixlnd:class-reference
+    description: Named unshipped class reference, not an enabled character class.
+    see_also: [../instances/classes.json#_paladin]
+    attributes:
+      name: {alias: name, slot_uri: 'pixlnd:class-reference/name', range: string, required: true, description: "Original name field of class-reference; retains the source representation."}
+      status: {alias: status, slot_uri: 'pixlnd:class-reference/status', range: string, required: true, description: "Original status field of class-reference; retains the source representation."}
+  class-shared:
+    class_uri: pixlnd:class-shared
+    description: Source-qualified shared class descriptions.
+    see_also: [../instances/classes.json#_shared]
+    attributes:
+      unarmed: {alias: unarmed, slot_uri: 'pixlnd:class-shared/unarmed', range: string, required: true, description: "Original unarmed field of class-shared; retains the source representation."}
+      accessories: {alias: accessories, slot_uri: 'pixlnd:class-shared/accessories', range: string, required: true, description: "Original accessories field of class-shared; retains the source representation."}
+      spec-change: {alias: spec-change, slot_uri: 'pixlnd:class-shared/spec-change', range: source-version-text, required: true, inlined: true, description: "Original spec-change field of class-shared; retains the source representation."}
+  specializations-source:
+    class_uri: pixlnd:specializations-source
+    description: Complete specialization catalog, retaining version-specific kits.
+    see_also: [../instances/specializations.json]
+    annotations: {source-map-entries: entries}
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: 'pixlnd:specializations-source/schema', range: string, required: true, equals_string: specialization, description: "Original $schema field of specializations-source; retains the source representation."}
+      documentation: {alias: _doc, slot_uri: 'pixlnd:specializations-source/doc', range: string, required: true, description: "Original _doc field of specializations-source; retains the source representation."}
+      entries: {alias: entries, slot_uri: 'pixlnd:specializations-source/entries', range: specialization-source-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "Original entries field of specializations-source; retains the source representation."}
+  specialization-source-entry:
+    class_uri: pixlnd:specialization-source-entry
+    description: Original specialization key and complete body.
+    see_also: [../instances/specializations.json]
+    slots: [source-entry-key]
+    attributes:
+      value: {alias: value, slot_uri: 'pixlnd:specialization-source-entry/value', range: specialization-source-row, required: true, inlined: true, description: "Original value field of specialization-source-entry; retains the source representation."}
+  specialization-source-row:
+    class_uri: pixlnd:specialization-source-row
+    description: Source specialization without a fabricated body ID.
+    see_also: [../instances/specializations.json, ../domain/3_Classes.md#specialization]
+    slots: [specialization-name, specialization-class, specialization-index, source-versions, source-notes]
+    attributes:
+      tint: {alias: tint, slot_uri: 'pixlnd:specialization-source-row/tint', exactly_one_of: [{range: string}], description: "Original tint field of specialization-source-row; retains the source representation."}
+      cuwo-name: {alias: cuwo-name, slot_uri: 'pixlnd:specialization-source-row/cuwo-name', exactly_one_of: [{range: string}], description: "Original cuwo-name field of specialization-source-row; retains the source representation."}
+      passives: {alias: passives, slot_uri: 'pixlnd:specialization-source-row/passives', range: source-version-abilities, required: true, inlined: true, description: "Original passives field of specialization-source-row; retains the source representation."}
+      kit: {alias: kit, slot_uri: 'pixlnd:specialization-source-row/kit', range: source-version-abilities, required: true, inlined: true, description: "Original kit field of specialization-source-row; retains the source representation."}
+  source-version-abilities:
+    class_uri: pixlnd:source-version-abilities
+    description: Version-specific ability references, without implicit hybrid activation.
+    see_also: [../instances/specializations.json]
+    attributes:
+      alpha: {alias: A, slot_uri: 'pixlnd:source-version-abilities/alpha', range: ability, required: true, multivalued: true, description: "Original A field of source-version-abilities; retains the source representation."}
+      steam: {alias: S, slot_uri: 'pixlnd:source-version-abilities/steam', range: ability, required: true, multivalued: true, description: "Original S field of source-version-abilities; retains the source representation."}
+slots:
+  source-notes:
+    alias: notes
+    slot_uri: pixlnd:source/notes
+    exactly_one_of:
+    - range: string
+      multivalued: true
+    description: Literal source qualifications; no reference normalization or inferred availability.
+    see_also: [../domain/5_Constraints.md]

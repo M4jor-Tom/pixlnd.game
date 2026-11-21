@@ -1,0 +1,127 @@
+id: https://w3id.org/pixlnd/catalog-crafting-social/materials-factions
+name: pixlnd-catalog-crafting-social-materials-factions
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- items
+default_range: string
+slots:
+  material-class:
+    slot_uri: pixlnd:material/class
+    alias: class
+    domain: material
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#material
+    - ../instances/materials.json
+    description: Qualified class applicability text, not a resolved class restriction.
+  material-station:
+    slot_uri: pixlnd:material/station
+    alias: station
+    domain: material
+    required: false
+    any_of:
+    - range: crafting-station
+    - range: string
+      equals_string: none
+    see_also:
+    - ../domain/3_Classes.md#material
+    - ../instances/materials.json
+    description: Station reference or the exact literal none; not null or a fabricated station identity.
+  material-raw:
+    slot_uri: pixlnd:material/raw
+    alias: raw
+    domain: material
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#material
+    - ../instances/materials.json
+    description: Exact qualified raw-material text; ingredient resolution is not asserted.
+  material-alt-name:
+    description: "The alt-name property of material."
+    slot_uri: pixlnd:material/alt-name
+    alias: alt-name
+    domain: material
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#material
+    - ../instances/materials.json
+  material-effect:
+    description: "The effect property of material."
+    slot_uri: pixlnd:material/effect
+    alias: effect
+    domain: material
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#material
+    - ../instances/materials.json
+  material-price-s:
+    description: "The price-s property of material."
+    slot_uri: pixlnd:material/price-s
+    alias: price-s
+    domain: material
+    range: integer
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#material
+    - ../instances/materials.json
+  material-sell-s:
+    description: "The sell-s property of material."
+    slot_uri: pixlnd:material/sell-s
+    alias: sell-s
+    domain: material
+    range: integer
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#material
+    - ../instances/materials.json
+  faction-alignment:
+    description: "The alignment property of faction."
+    slot_uri: pixlnd:faction/alignment
+    alias: alignment
+    domain: faction
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#faction
+    - ../instances/factions.json
+  faction-leader:
+    slot_uri: pixlnd:faction/leader
+    alias: leader
+    domain: faction
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#faction
+    - ../instances/factions.json
+    description: Exact leader description, not a newly identified entity.
+  faction-members:
+    slot_uri: pixlnd:faction/members
+    alias: members
+    domain: faction
+    range: creature
+    required: false
+    multivalued: true
+    see_also:
+    - ../domain/3_Classes.md#faction
+    - ../instances/factions.json
+    description: Species catalog references, not live entity membership enforcement.
+  faction-presence:
+    description: "The presence property of faction."
+    slot_uri: pixlnd:faction/presence
+    alias: presence
+    domain: faction
+    range: string
+    required: false
+    multivalued: true
+    see_also:
+    - ../domain/3_Classes.md#faction
+    - ../instances/factions.json

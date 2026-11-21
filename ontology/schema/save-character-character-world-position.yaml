@@ -1,0 +1,49 @@
+id: https://w3id.org/pixlnd/save-character/character-world-position
+name: pixlnd-save-character-character-world-position
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+classes:
+  character-world-position:
+    class_uri: pixlnd:character-world-position
+    see_also: &id005
+    - ../domain/3_Classes.md#save-data
+    slots:
+    - character-world-position-character
+    - character-world-position-position
+    - character-world-position-respawn
+    description: Container-scoped portable hero key; position and respawn belong to this saved world,
+      not a seed or global portable position.
+slots:
+  character-world-position-character:
+    slot_uri: pixlnd:character-world-position/character
+    alias: character
+    domain: character-world-position
+    range: string
+    required: true
+    see_also: *id005
+    key: true
+  character-world-position-position:
+    slot_uri: pixlnd:character-world-position/position
+    alias: position
+    domain: character-world-position
+    range: double
+    required: true
+    see_also: *id005
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+  character-world-position-respawn:
+    slot_uri: pixlnd:character-world-position/respawn
+    alias: respawn
+    domain: character-world-position
+    range: double
+    required: true
+    see_also: *id005
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3

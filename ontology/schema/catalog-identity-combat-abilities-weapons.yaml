@@ -1,0 +1,144 @@
+id: https://w3id.org/pixlnd/catalog-identity-combat/abilities-weapons
+name: pixlnd-catalog-identity-combat-abilities-weapons
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- combat
+- catalog-identity-combat-classes
+- catalog-identity-combat-races
+default_range: string
+classes:
+  abilities-source:
+    class_uri: pixlnd:abilities-source
+    description: Full source ability descriptions, separate from selected hybrid runtime configuration.
+    see_also: [../instances/abilities.json]
+    annotations: {source-map-entries: entries}
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: 'pixlnd:abilities-source/schema', range: string, required: true, equals_string: ability, description: "Original $schema field of abilities-source; retains the source representation."}
+      documentation: {alias: _doc, slot_uri: 'pixlnd:abilities-source/doc', range: string, required: true, description: "Original _doc field of abilities-source; retains the source representation."}
+      omega-signature: {alias: _omega-signature, slot_uri: 'pixlnd:abilities-source/omega-signature', range: signature-descriptions, required: true, inlined: true, description: "Original _omega-signature field of abilities-source; retains the source representation."}
+      entries: {alias: entries, slot_uri: 'pixlnd:abilities-source/entries', range: ability-source-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "Original entries field of abilities-source; retains the source representation."}
+  ability-source-entry:
+    class_uri: pixlnd:ability-source-entry
+    description: Original ability key and unchanged complete source body.
+    see_also: [../instances/abilities.json]
+    slots: [source-entry-key]
+    attributes:
+      value: {alias: value, slot_uri: 'pixlnd:ability-source-entry/value', range: ability-source-row, required: true, inlined: true, description: "Original value field of ability-source-entry; retains the source representation."}
+  ability-source-row:
+    class_uri: pixlnd:ability-source-row
+    description: Source qualifications and version-shaped costs are not normalized into current resource-cost associations.
+    see_also: [../instances/abilities.json, ../domain/3_Classes.md#ability]
+    slots: [ability-kind, unlocks-next, source-versions]
+    attributes:
+      alpha-tree: {alias: alpha-tree, slot_uri: 'pixlnd:ability-source-row/alpha-tree', exactly_one_of: [{range: ability-tree-position, inlined: true}], description: Optional tree placement object; omission is distinct from a null body.}
+      controls: {alias: _controls, slot_uri: 'pixlnd:ability-source-row/controls', exactly_one_of: [{range: control-action, multivalued: true}], annotations: {source-reference-prefix: '../domain/controls.md#'}, description: Optional canonical control reference list without physical defaults.}
+      applies: {alias: applies, slot_uri: 'pixlnd:ability-source-row/applies', exactly_one_of: [{range: status-effect, multivalued: true}], description: Optional applied status reference list.}
+      name: {alias: name, slot_uri: 'pixlnd:ability-source-row/name', range: string, required: true, description: "Original name field of ability-source-row; retains the source representation."}
+      owner: {alias: owner, slot_uri: 'pixlnd:ability-source-row/owner', required: true, any_of: [{range: string}, {range: string, multivalued: true}], description: "Original owner field of ability-source-row; retains the source representation."}
+      alpha-id: {alias: alpha-id, slot_uri: 'pixlnd:ability-source-row/alpha-id', exactly_one_of: [{range: integer, minimum_value: 0}], description: "Original alpha-id field of ability-source-row; retains the source representation."}
+      effect: {alias: effect, slot_uri: 'pixlnd:ability-source-row/effect', range: string, required: true, description: "Original effect field of ability-source-row; retains the source representation."}
+      control-status: {alias: _control-status, slot_uri: 'pixlnd:ability-source-row/control-status', exactly_one_of: [{range: string}], description: "Original _control-status field of ability-source-row; retains the source representation."}
+      cost: {alias: cost, slot_uri: 'pixlnd:ability-source-row/cost', exactly_one_of: [{range: source-ability-cost, inlined: true}], description: "Original cost field of ability-source-row; retains the source representation."}
+      cooldown-s: {alias: cooldown-s, slot_uri: 'pixlnd:ability-source-row/cooldown-s', exactly_one_of: [{range: double, minimum_value: 0}, {range: string}, {range: source-version-quantity, inlined: true}], description: "Original cooldown-s field of ability-source-row; retains the source representation."}
+      duration-s: {alias: duration-s, slot_uri: 'pixlnd:ability-source-row/duration-s', exactly_one_of: [{range: double, minimum_value: 0}, {range: string}, {range: source-version-quantity, inlined: true}], description: "Original duration-s field of ability-source-row; retains the source representation."}
+      removed-in: {alias: removed-in, slot_uri: 'pixlnd:ability-source-row/removed-in', exactly_one_of: [{range: SourceVersion}], description: "Original removed-in field of ability-source-row; retains the source representation."}
+  source-resource-amounts:
+    class_uri: pixlnd:source-resource-amounts
+    description: Source numeric quantities or qualified text; empty costs remain empty, not fabricated zeroes.
+    see_also: [../instances/abilities.json]
+    attributes:
+      mp: {alias: mp, slot_uri: 'pixlnd:source-resource-amounts/mp', exactly_one_of: [{range: double, minimum_value: 0}, {range: string}], description: "Original mp field of source-resource-amounts; retains the source representation."}
+      stamina: {alias: stamina, slot_uri: 'pixlnd:source-resource-amounts/stamina', exactly_one_of: [{range: double, minimum_value: 0}, {range: string}], description: "Original stamina field of source-resource-amounts; retains the source representation."}
+      block-power: {alias: block-power, slot_uri: 'pixlnd:source-resource-amounts/block-power', exactly_one_of: [{range: double, minimum_value: 0}, {range: string}], description: "Original block-power field of source-resource-amounts; retains the source representation."}
+  source-ability-cost:
+    is_a: source-resource-amounts
+    class_uri: pixlnd:source-ability-cost
+    description: Resource amounts may be unversioned or grouped by explicit source version.
+    see_also: [../instances/abilities.json]
+    attributes:
+      alpha: {alias: A, slot_uri: 'pixlnd:source-ability-cost/alpha', exactly_one_of: [{range: source-resource-amounts, inlined: true}], description: "Original A field of source-ability-cost; retains the source representation."}
+      steam: {alias: S, slot_uri: 'pixlnd:source-ability-cost/steam', exactly_one_of: [{range: source-resource-amounts, inlined: true}], description: "Original S field of source-ability-cost; retains the source representation."}
+  source-version-quantity:
+    class_uri: pixlnd:source-version-quantity
+    description: Literal source numeric or qualified timing values, without invented precision.
+    see_also: [../instances/abilities.json]
+    attributes:
+      alpha: {alias: A, slot_uri: 'pixlnd:source-version-quantity/alpha', exactly_one_of: [{range: double, minimum_value: 0}, {range: string}], description: "Original A field of source-version-quantity; retains the source representation."}
+      steam: {alias: S, slot_uri: 'pixlnd:source-version-quantity/steam', exactly_one_of: [{range: double, minimum_value: 0}, {range: string}], description: "Original S field of source-version-quantity; retains the source representation."}
+  signature-descriptions:
+    class_uri: pixlnd:signature-descriptions
+    description: Source-named signature descriptions; labels do not create ability identities or hybrid activation.
+    see_also: [../instances/abilities.json#_omega-signature]
+    attributes:
+      note: {alias: _note, slot_uri: 'pixlnd:signature-descriptions/note', range: string, required: true, description: "Original _note field of signature-descriptions; retains the source representation."}
+    extra_slots:
+      range_expression: {range: string, required: true}
+  weapon-types-source:
+    class_uri: pixlnd:weapon-types-source
+    description: Complete weapon source catalog, including unused rows and literal material and station alternatives.
+    see_also: [../instances/weapon-types.json]
+    annotations: {source-map-entries: entries}
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: 'pixlnd:weapon-types-source/schema', range: string, required: true, equals_string: weapon-type, description: "Original $schema field of weapon-types-source; retains the source representation."}
+      documentation: {alias: _doc, slot_uri: 'pixlnd:weapon-types-source/doc', range: string, required: true, description: "Original _doc field of weapon-types-source; retains the source representation."}
+      controls: {alias: _controls, slot_uri: 'pixlnd:weapon-types-source/controls', range: weapon-source-controls, required: true, inlined: true, description: "Original _controls field of weapon-types-source; retains the source representation."}
+      entries: {alias: entries, slot_uri: 'pixlnd:weapon-types-source/entries', range: weapon-source-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "Original entries field of weapon-types-source; retains the source representation."}
+  weapon-source-entry:
+    class_uri: pixlnd:weapon-source-entry
+    description: Original weapon source key and complete body.
+    see_also: [../instances/weapon-types.json]
+    slots: [source-entry-key]
+    attributes:
+      value: {alias: value, slot_uri: 'pixlnd:weapon-source-entry/value', range: weapon-source-row, required: true, inlined: true, description: "Original value field of weapon-source-entry; retains the source representation."}
+  weapon-source-row:
+    class_uri: pixlnd:weapon-source-row
+    description: Exact source fields, not a reinterpretation of qualified hands/material/station strings.
+    see_also: [../instances/weapon-types.json, ../domain/3_Classes.md#weapon-type]
+    slots: [source-versions, source-notes]
+    attributes:
+      name: {alias: name, slot_uri: 'pixlnd:weapon-source-row/name', range: string, required: true, description: "Original name field of weapon-source-row; retains the source representation."}
+      subtype: {alias: subtype, slot_uri: 'pixlnd:weapon-source-row/subtype', range: integer, minimum_value: 0, description: "Original subtype field of weapon-source-row; retains the source representation."}
+      class: {alias: class, slot_uri: 'pixlnd:weapon-source-row/class', any_of: [{range: character-class}, {range: string, equals_string: any}], description: "Original class field of weapon-source-row; retains the source representation."}
+      hands: {alias: hands, slot_uri: 'pixlnd:weapon-source-row/hands', range: SourceHands, description: "Original hands field of weapon-source-row; retains the source representation."}
+      usable: {alias: usable, slot_uri: 'pixlnd:weapon-source-row/usable', exactly_one_of: [{range: boolean}], description: "Original usable field of weapon-source-row; retains the source representation."}
+      material: {alias: material, slot_uri: 'pixlnd:weapon-source-row/material', exactly_one_of: [{range: string}], description: "Original material field of weapon-source-row; retains the source representation."}
+      station: {alias: station, slot_uri: 'pixlnd:weapon-source-row/station', exactly_one_of: [{range: string}], description: "Original station field of weapon-source-row; retains the source representation."}
+      damage-k: {alias: damage-k, slot_uri: 'pixlnd:weapon-source-row/damage-k', exactly_one_of: [{range: double, minimum_value: 0}], description: "Original damage-k field of weapon-source-row; retains the source representation."}
+      cube-capacity: {alias: cube-capacity, slot_uri: 'pixlnd:weapon-source-row/cube-capacity', exactly_one_of: [{range: integer, minimum_value: 0}], description: "Original cube-capacity field of weapon-source-row; retains the source representation."}
+      combo-cap: {alias: combo-cap, slot_uri: 'pixlnd:weapon-source-row/combo-cap', range: integer, minimum_value: 0, description: "Original combo-cap field of weapon-source-row; retains the source representation."}
+      m1: {alias: m1, slot_uri: 'pixlnd:weapon-source-row/m1', exactly_one_of: [{range: string}], description: "Original m1 field of weapon-source-row; retains the source representation."}
+      m2: {alias: m2, slot_uri: 'pixlnd:weapon-source-row/m2', exactly_one_of: [{range: string}], description: "Original m2 field of weapon-source-row; retains the source representation."}
+      alpha-attack-ids: {alias: alpha-attack-ids, slot_uri: 'pixlnd:weapon-source-row/alpha-attack-ids', exactly_one_of: [{range: source-attack-ids, inlined: true}], description: "Original alpha-attack-ids field of weapon-source-row; retains the source representation."}
+  weapon-source-controls:
+    class_uri: pixlnd:weapon-source-controls
+    description: Canonical action references, not physical input bindings.
+    see_also: [../instances/weapon-types.json#_controls]
+    attributes:
+      m1: {alias: m1, slot_uri: 'pixlnd:weapon-source-controls/m1', range: control-action, required: true, annotations: {source-reference-prefix: '../domain/controls.md#'}, description: "Original m1 field of weapon-source-controls; retains the source representation."}
+      m2: {alias: m2, slot_uri: 'pixlnd:weapon-source-controls/m2', range: control-action, required: true, annotations: {source-reference-prefix: '../domain/controls.md#'}, description: "Original m2 field of weapon-source-controls; retains the source representation."}
+      block: {alias: block, slot_uri: 'pixlnd:weapon-source-controls/block', range: control-action, required: true, annotations: {source-reference-prefix: '../domain/controls.md#'}, description: "Original block field of weapon-source-controls; retains the source representation."}
+  source-attack-ids:
+    class_uri: pixlnd:source-attack-ids
+    description: Source attack labels to numeric IDs or ID lists; labels are not ontology ability identities.
+    see_also: [../instances/weapon-types.json]
+    extra_slots:
+      range_expression:
+        required: true
+        any_of:
+        - {range: integer, minimum_value: 0}
+        - {range: integer, multivalued: true, minimum_value: 0}
+enums:
+  SourceHands:
+    enum_uri: pixlnd:SourceHands
+    description: Literal weapon-source handedness, separate from logical loadout alternatives.
+    see_also: [../instances/weapon-types.json]
+    permissible_values:
+      1h: {description: One-handed source weapon.}
+      2h: {description: Two-handed source weapon.}
+      offhand: {description: Off-hand source weapon.}
+      1h dual (need two): {description: Source bracelet qualification.}

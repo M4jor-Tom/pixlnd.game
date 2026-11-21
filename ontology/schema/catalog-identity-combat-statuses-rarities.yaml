@@ -1,0 +1,126 @@
+id: https://w3id.org/pixlnd/catalog-identity-combat/statuses-rarities
+name: pixlnd-catalog-identity-combat-statuses-rarities
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- catalog-properties
+- catalog-identity-combat-races
+default_range: string
+classes:
+  status-effects-source:
+    class_uri: pixlnd:status-effects-source
+    description: Effect catalog with separate ability-definition references and negative research.
+    see_also: [../instances/status-effects.json, ../domain/5_Constraints.md]
+    annotations: {source-map-entries: entries}
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: 'pixlnd:status-effects-source/schema', range: string, required: true, equals_string: status-effect, description: "Original $schema field of status-effects-source; retains the source representation."}
+      ability-buffs: {alias: ability-buffs, slot_uri: 'pixlnd:status-effects-source/ability-buffs', range: source-ability-buffs, required: true, inlined: true, description: "Original ability-buffs field of status-effects-source; retains the source representation."}
+      not-found: {alias: not-found, slot_uri: 'pixlnd:status-effects-source/not-found', range: string, required: true, multivalued: true, description: "Original not-found field of status-effects-source; retains the source representation."}
+      entries: {alias: entries, slot_uri: 'pixlnd:status-effects-source/entries', range: status-source-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "Original entries field of status-effects-source; retains the source representation."}
+  status-source-entry:
+    class_uri: pixlnd:status-source-entry
+    description: Original effect key and complete body.
+    see_also: [../instances/status-effects.json]
+    slots: [source-entry-key]
+    attributes:
+      value: {alias: value, slot_uri: 'pixlnd:status-source-entry/value', range: status-source-row, required: true, inlined: true, description: "Original value field of status-source-entry; retains the source representation."}
+  status-source-row:
+    class_uri: pixlnd:status-source-row
+    description: Qualified historical effect descriptions, not an executable damage or duration rule.
+    see_also: [../instances/status-effects.json, ../domain/3_Classes.md#status-effect]
+    slots: [source-versions]
+    attributes:
+      name: {alias: name, slot_uri: 'pixlnd:status-source-row/name', range: string, required: true, description: "Original name field of status-source-row; retains the source representation."}
+      kind: {alias: kind, slot_uri: 'pixlnd:status-source-row/kind', range: SourceStatusKind, required: true, description: "Original kind field of status-source-row; retains the source representation."}
+      visual: {alias: visual, slot_uri: 'pixlnd:status-source-row/visual', exactly_one_of: [{range: string}], description: "Original visual field of status-source-row; retains the source representation."}
+      effect: {alias: effect, slot_uri: 'pixlnd:status-source-row/effect', exactly_one_of: [{range: string}], description: "Original effect field of status-source-row; retains the source representation."}
+      sources: {alias: sources, slot_uri: 'pixlnd:status-source-row/sources', exactly_one_of: [{range: string, multivalued: true}], description: "Original sources field of status-source-row; retains the source representation."}
+      countered-by: {alias: countered-by, slot_uri: 'pixlnd:status-source-row/countered-by', exactly_one_of: [{range: string, multivalued: true}], description: "Original countered-by field of status-source-row; retains the source representation."}
+      duration-s: {alias: duration-s, slot_uri: 'pixlnd:status-source-row/duration-s', exactly_one_of: [{range: double, minimum_value: 0}], description: "Original duration-s field of status-source-row; retains the source representation."}
+      removed-by: {alias: removed-by, slot_uri: 'pixlnd:status-source-row/removed-by', exactly_one_of: [{range: string}], description: "Original removed-by field of status-source-row; retains the source representation."}
+      note: {alias: note, slot_uri: 'pixlnd:status-source-row/note', exactly_one_of: [{range: string}], description: "Original note field of status-source-row; retains the source representation."}
+  source-ability-buffs:
+    class_uri: pixlnd:source-ability-buffs
+    description: Qualified ability-definition references, not new status-effect instances.
+    see_also: [../instances/status-effects.json#ability-buffs]
+    attributes:
+      list: {alias: list, slot_uri: 'pixlnd:source-ability-buffs/list', range: string, required: true, multivalued: true, description: "Original list field of source-ability-buffs; retains the source representation."}
+      note: {alias: note, slot_uri: 'pixlnd:source-ability-buffs/note', range: string, required: true, description: "Original note field of source-ability-buffs; retains the source representation."}
+  rarities-source:
+    class_uri: pixlnd:rarities-source
+    description: Rarity catalog with separate source comparison configurations, including excluded historical regional mechanics.
+    see_also: [../instances/rarities.json]
+    annotations: {source-map-entries: entries}
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: 'pixlnd:rarities-source/schema', range: string, required: true, equals_string: rarity, description: "Original $schema field of rarities-source; retains the source representation."}
+      documentation: {alias: _doc, slot_uri: 'pixlnd:rarities-source/doc', range: string, required: true, description: "Original _doc field of rarities-source; retains the source representation."}
+      mob-strength-tiers: {alias: mob-strength-tiers-s, slot_uri: 'pixlnd:rarities-source/mob-strength-tiers', range: source-mob-tiers, required: true, inlined: true, description: "Original mob-strength-tiers-s field of rarities-source; retains the source representation."}
+      alpha-relative-colors: {alias: alpha-relative-colors, slot_uri: 'pixlnd:rarities-source/alpha-relative-colors', range: source-relative-colors, required: true, inlined: true, description: "Original alpha-relative-colors field of rarities-source; retains the source representation."}
+      entries: {alias: entries, slot_uri: 'pixlnd:rarities-source/entries', range: rarity-source-entry, required: true, multivalued: true, inlined: true, inlined_as_list: true, minimum_cardinality: 1, description: "Original entries field of rarities-source; retains the source representation."}
+  rarity-source-entry:
+    class_uri: pixlnd:rarity-source-entry
+    description: Original rarity key and complete body.
+    see_also: [../instances/rarities.json]
+    slots: [source-entry-key]
+    attributes:
+      value: {alias: value, slot_uri: 'pixlnd:rarity-source-entry/value', range: rarity-source-row, required: true, inlined: true, description: "Original value field of rarity-source-entry; retains the source representation."}
+  rarity-source-row:
+    class_uri: pixlnd:rarity-source-row
+    description: Full source rarity, including nullable mythical stars and absent gems; not generated-rarity eligibility.
+    see_also: [../instances/rarities.json, ../domain/3_Classes.md#rarity]
+    slots: [rarity-name, rarity-color, rarity-index, rarity-hex, rarity-stars, rarity-gem, rarity-named, source-versions]
+    slot_usage:
+      rarity-name: {required: true}
+      rarity-color: {required: true}
+      rarity-index: {required: true}
+      rarity-named: {required: true}
+      rarity-stars: {value_presence: PRESENT}
+      rarity-gem: {value_presence: PRESENT}
+    attributes:
+      alt-name: {alias: alt-name, slot_uri: 'pixlnd:rarity-source-row/alt-name', exactly_one_of: [{range: string}], description: "Original alt-name field of rarity-source-row; retains the source representation."}
+      note: {alias: note, slot_uri: 'pixlnd:rarity-source-row/note', exactly_one_of: [{range: string}], description: "Original note field of rarity-source-row; retains the source representation."}
+  source-mob-tiers:
+    class_uri: pixlnd:source-mob-tiers
+    description: Source color labels to mob-tier comparison records, not creature instances.
+    see_also: [../instances/rarities.json#mob-strength-tiers-s]
+    extra_slots:
+      range_expression: {range: source-mob-tier, required: true, inlined: true}
+  source-mob-tier:
+    class_uri: pixlnd:source-mob-tier
+    description: Source comparison tier with optional HP interval and descriptive examples.
+    see_also: [../instances/rarities.json#mob-strength-tiers-s, ../domain/3_Classes.md#mob-strength-tier]
+    attributes:
+      rarity: {alias: rarity, slot_uri: 'pixlnd:source-mob-tier/rarity', range: rarity, required: true, description: "Original rarity field of source-mob-tier; retains the source representation."}
+      examples: {alias: examples, slot_uri: 'pixlnd:source-mob-tier/examples', range: string, required: true, multivalued: true, description: "Original examples field of source-mob-tier; retains the source representation."}
+      hp-range: {alias: hp-range, slot_uri: 'pixlnd:source-mob-tier/hp-range', exactly_one_of: [{range: double, multivalued: true, minimum_cardinality: 2, maximum_cardinality: 2, minimum_value: 0}], description: "Original hp-range field of source-mob-tier; retains the source representation."}
+      note: {alias: note, slot_uri: 'pixlnd:source-mob-tier/note', exactly_one_of: [{range: string}], description: "Original note field of source-mob-tier; retains the source representation."}
+  source-relative-colors:
+    class_uri: pixlnd:source-relative-colors
+    description: Separate landmark and enemy comparison maps; literal source labels retain their attribution.
+    see_also: [../instances/rarities.json#alpha-relative-colors]
+    attributes:
+      landmark-name: {alias: landmark-name, slot_uri: 'pixlnd:source-relative-colors/landmark-name', range: source-text-map, required: true, inlined: true, description: "Original landmark-name field of source-relative-colors; retains the source representation."}
+      enemy-name: {alias: 'enemy-name (gamepressure)', slot_uri: 'pixlnd:source-relative-colors/enemy-name', range: source-text-map, required: true, inlined: true, description: "Original enemy-name (gamepressure) field of source-relative-colors; retains the source representation."}
+      multiplier-tags: {alias: multiplier-tags, slot_uri: 'pixlnd:source-relative-colors/multiplier-tags', range: string, required: true, multivalued: true, description: "Original multiplier-tags field of source-relative-colors; retains the source representation."}
+  source-text-map:
+    class_uri: pixlnd:source-text-map
+    description: Literal source labels to text values; labels are not ontology identities.
+    see_also: [../instances/rarities.json#alpha-relative-colors]
+    extra_slots:
+      range_expression: {range: string, required: true}
+enums:
+  SourceStatusKind:
+    enum_uri: pixlnd:SourceStatusKind
+    description: Literal source effect categories and scope qualifications.
+    see_also: [../instances/status-effects.json]
+    permissible_values:
+      buff: {description: Beneficial effect.}
+      debuff: {description: Harmful effect.}
+      displacement: {description: Displacing effect.}
+      debuff (NPC): {description: NPC-scoped source effect.}
+      debuff (land-wide): {description: Land-scoped source effect.}
+      debuff (settlement): {description: Settlement-scoped source effect.}
+      buff (land-wide): {description: Land-scoped source buff.}

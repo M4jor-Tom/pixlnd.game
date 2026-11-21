@@ -1,0 +1,123 @@
+id: https://w3id.org/pixlnd/save-character/saved-item
+name: pixlnd-save-character-saved-item
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+classes:
+  saved-item:
+    class_uri: pixlnd:saved-item
+    see_also: &id001
+    - ../domain/3_Classes.md#save-data
+    slots:
+    - saved-item-type
+    - saved-item-subtype
+    - saved-item-material
+    - saved-item-rarity
+    - saved-item-level
+    - saved-item-upgrade-count
+    - saved-item-modifier
+    - saved-item-minus-modifier
+    - saved-item-count
+    description: Current item_data wire payload. This is mutable item state, not a catalog definition
+      or the historical ItemData layout; kind-dependent target membership and power bounds remain current-rule
+      checks.
+  saved-equipment-entry:
+    class_uri: pixlnd:saved-equipment-entry
+    see_also: &id003
+    - ../domain/3_Classes.md#save-data
+    slots:
+    - saved-equipment-entry-slot
+    - saved-equipment-entry-item
+    description: Container-scoped usable-slot key, independently empty hands represented by omitted keys;
+      legality remains current-rule validation.
+slots:
+  saved-item-type:
+    slot_uri: pixlnd:saved-item/type
+    alias: type
+    domain: saved-item
+    range: string
+    required: true
+    see_also: *id001
+  saved-item-subtype:
+    slot_uri: pixlnd:saved-item/subtype
+    alias: subtype
+    domain: saved-item
+    range: string
+    required: true
+    see_also: *id001
+  saved-item-material:
+    slot_uri: pixlnd:saved-item/material
+    alias: material
+    domain: saved-item
+    range: string
+    required: true
+    see_also: *id001
+  saved-item-rarity:
+    slot_uri: pixlnd:saved-item/rarity
+    alias: rarity
+    domain: saved-item
+    range: integer
+    required: true
+    see_also: *id001
+    minimum_value: 0
+    maximum_value: 4
+  saved-item-level:
+    slot_uri: pixlnd:saved-item/level
+    alias: level
+    domain: saved-item
+    range: integer
+    required: true
+    see_also: *id001
+    minimum_value: 1
+  saved-item-upgrade-count:
+    slot_uri: pixlnd:saved-item/upgrade_count
+    alias: upgrade_count
+    domain: saved-item
+    range: integer
+    required: true
+    see_also: *id001
+    minimum_value: 0
+  saved-item-modifier:
+    slot_uri: pixlnd:saved-item/modifier
+    alias: modifier
+    domain: saved-item
+    range: integer
+    required: true
+    see_also: *id001
+    minimum_value: 0
+  saved-item-minus-modifier:
+    slot_uri: pixlnd:saved-item/minus_modifier
+    alias: minus_modifier
+    domain: saved-item
+    range: integer
+    required: true
+    see_also: *id001
+    minimum_value: 0
+  saved-item-count:
+    slot_uri: pixlnd:saved-item/count
+    alias: count
+    domain: saved-item
+    range: integer
+    required: true
+    see_also: *id001
+    minimum_value: 1
+  saved-equipment-entry-slot:
+    slot_uri: pixlnd:saved-equipment-entry/slot
+    alias: slot
+    domain: saved-equipment-entry
+    range: equipment-slot
+    required: true
+    see_also: *id003
+    key: true
+  saved-equipment-entry-item:
+    slot_uri: pixlnd:saved-equipment-entry/item
+    alias: item
+    domain: saved-equipment-entry
+    range: saved-item
+    required: true
+    see_also: *id003
+    inlined: true

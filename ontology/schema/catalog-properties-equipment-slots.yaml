@@ -1,0 +1,67 @@
+id: https://w3id.org/pixlnd/catalog-properties/equipment-slots
+name: pixlnd-catalog-properties-equipment-slots
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- items
+default_range: string
+classes:
+  slot-acceptance-condition:
+    class_uri: pixlnd:slot-acceptance-condition
+    see_also:
+    - ../domain/3_Classes.md#equipment-slot
+    slots:
+    - slot-acceptance-condition-item-type
+    - slot-acceptance-condition-condition
+    description: Conditional item-type acceptance from equipment-slots.json. The condition is not
+      unconditional slot permission; evaluating taming state remains a runtime rule.
+slots:
+  equipment-slot-hp-mult:
+    slot_uri: pixlnd:equipment-slot/hp-mult
+    alias: hp-mult
+    domain: equipment-slot
+    range: double
+    see_also:
+    - ../domain/3_Classes.md#item
+    description: Present only on the existing HP-bearing slots; omission selects no bonus here.
+  equipment-slot-accepts-conditions:
+    description: "Equipment slot accepts conditions property; interpreted under its owning definition."
+    slot_uri: pixlnd:equipment-slot/accepts-conditions
+    alias: accepts-conditions
+    domain: equipment-slot
+    range: slot-acceptance-condition
+    multivalued: true
+    inlined: true
+    inlined_as_list: false
+    see_also:
+    - ../domain/3_Classes.md#equipment-slot
+  slot-acceptance-condition-item-type:
+    description: "Slot acceptance condition item type property; interpreted under its owning definition."
+    slot_uri: pixlnd:slot-acceptance-condition/item-type
+    alias: item-type
+    domain: slot-acceptance-condition
+    range: item-type
+    key: true
+    required: true
+    see_also:
+    - ../domain/3_Classes.md#equipment-slot
+  slot-acceptance-condition-condition:
+    description: "Slot acceptance condition condition property; interpreted under its owning definition."
+    slot_uri: pixlnd:slot-acceptance-condition/condition
+    alias: condition
+    domain: slot-acceptance-condition
+    range: slot-acceptance-phase
+    required: true
+    see_also:
+    - ../domain/3_Classes.md#equipment-slot
+enums:
+  slot-acceptance-phase:
+    description: "Slot acceptance phase vocabulary."
+    enum_uri: pixlnd:slot-acceptance-phase
+    see_also:
+    - ../domain/3_Classes.md#equipment-slot
+    permissible_values:
+      during-taming: {}

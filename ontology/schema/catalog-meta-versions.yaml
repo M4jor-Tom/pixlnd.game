@@ -1,0 +1,64 @@
+id: https://w3id.org/pixlnd/catalog-meta/versions
+name: pixlnd-catalog-meta-versions
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+classes:
+  versions-source:
+    description: Whole historical timeline, delta and reception source document without date normalization.
+    class_uri: pixlnd:versions-source
+    annotations: {source-map-paths: reception}
+    see_also: [../instances/versions.json]
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: pixlnd:versions-source/schema, range: string, required: true, equals_string: version, description: Original schema marker.}
+      timeline: {alias: timeline, slot_uri: pixlnd:versions-source/timeline, range: version-timeline-entry, multivalued: true, inlined: true, inlined_as_list: true, required: true, description: Original ordered timeline.}
+      alpha-to-steam-delta: {alias: alpha-to-steam-delta, slot_uri: pixlnd:versions-source/alpha-to-steam-delta, range: version-delta, inlined: true, required: true, description: Original alpha-to-Steam delta.}
+      reception: {alias: reception, slot_uri: pixlnd:versions-source/reception, range: version-reception-entry, multivalued: true, inlined: true, inlined_as_list: true, required: true, description: Original reception and fan-fix sections.}
+  version-timeline-entry:
+    description: Original historical timeline record; date and qualified version remain source strings.
+    class_uri: pixlnd:version-timeline-entry
+    see_also: [../instances/versions.json#timeline]
+    attributes:
+      date: {alias: date, slot_uri: pixlnd:version-timeline-entry/date, range: string, required: true, description: Original date or date-range string without normalization.}
+      version-label: {alias: v, slot_uri: pixlnd:version-timeline-entry/v, range: string, required: true, description: Original version label including qualifications.}
+      features: {alias: features, slot_uri: pixlnd:version-timeline-entry/features, range: string, multivalued: true, required: true, description: Original ordered feature and source-note strings.}
+  version-delta:
+    description: Original alpha-to-Steam removal and addition lists.
+    class_uri: pixlnd:version-delta
+    see_also: [../instances/versions.json#alpha-to-steam-delta]
+    attributes:
+      removed: {alias: removed, slot_uri: pixlnd:version-delta/removed, range: string, multivalued: true, required: true, description: Original removal list.}
+      added: {alias: added, slot_uri: pixlnd:version-delta/added, range: string, multivalued: true, required: true, description: Original addition list.}
+  version-reception-entry:
+    description: Key/value binding for a reception section or the literal fan-fix list.
+    class_uri: pixlnd:version-reception-entry
+    see_also: [../instances/versions.json#reception]
+    attributes:
+      key: {alias: key, slot_uri: pixlnd:version-reception-entry/key, range: string, key: true, required: true, description: Original reception key.}
+      value:
+        alias: value
+        slot_uri: pixlnd:version-reception-entry/value
+        any_of: [{range: version-reception, inlined: true}, {range: string, multivalued: true}]
+        annotations: {source-map-union-range: version-reception}
+        required: true
+        description: Original reception record or fan-fix list.
+  version-reception:
+    description: Original reception text, scores and lists; rating text is not parsed or normalized.
+    class_uri: pixlnd:version-reception
+    annotations: {source-map-paths: scores}
+    see_also: [../instances/versions.json#reception]
+    attributes:
+      scores: {alias: scores, slot_uri: pixlnd:version-reception/scores, range: version-score-entry, multivalued: true, inlined: true, inlined_as_list: true, description: Original source score map.}
+      praise: {alias: praise, slot_uri: pixlnd:version-reception/praise, range: string, multivalued: true, description: Original praise list.}
+      criticism: {alias: criticism, slot_uri: pixlnd:version-reception/criticism, range: string, multivalued: true, description: Original criticism list.}
+  version-score-entry:
+    description: Key/value binding for one literal score label and original text.
+    class_uri: pixlnd:version-score-entry
+    see_also: [../instances/versions.json#reception]
+    attributes:
+      key: {alias: key, slot_uri: pixlnd:version-score-entry/key, range: string, key: true, required: true, description: Original score key.}
+      value: {alias: value, slot_uri: pixlnd:version-score-entry/value, range: string, required: true, description: Original score string.}

@@ -1,0 +1,128 @@
+id: https://w3id.org/pixlnd/catalog-properties/races-rarities
+name: pixlnd-catalog-properties-races-rarities
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- items
+default_range: string
+classes:
+  gender-option-counts:
+    class_uri: pixlnd:gender-option-counts
+    see_also: &id001
+    - ../domain/3_Classes.md#race
+    slots:
+    - gender-option-counts-m
+    - gender-option-counts-f
+    description: Per-gender customization counts from the existing catalog. Counts describe options, not
+      racial stat bonuses.
+slots:
+  gender-option-counts-m:
+    description: "Gender option counts m property; interpreted under its owning definition."
+    slot_uri: pixlnd:gender-option-counts/m
+    alias: m
+    domain: gender-option-counts
+    range: integer
+    required: true
+    see_also: *id001
+    minimum_value: 0
+  gender-option-counts-f:
+    description: "Gender option counts f property; interpreted under its owning definition."
+    slot_uri: pixlnd:gender-option-counts/f
+    alias: f
+    domain: gender-option-counts
+    range: integer
+    required: true
+    see_also: *id001
+    minimum_value: 0
+  race-name:
+    description: "Race name property; interpreted under its owning definition."
+    slot_uri: pixlnd:race/name
+    alias: name
+    domain: race
+    range: string
+    required: false
+    see_also: &id002
+    - ../domain/3_Classes.md#race
+  race-hair:
+    description: "Race hair property; interpreted under its owning definition."
+    slot_uri: pixlnd:race/hair
+    alias: hair
+    domain: race
+    range: gender-option-counts
+    required: false
+    see_also: *id002
+    inlined: true
+  race-heads:
+    description: "Race heads property; interpreted under its owning definition."
+    slot_uri: pixlnd:race/heads
+    alias: heads
+    domain: race
+    range: gender-option-counts
+    required: false
+    see_also: *id002
+    inlined: true
+  rarity-name:
+    description: "Rarity name property; interpreted under its owning definition."
+    slot_uri: pixlnd:rarity/name
+    alias: name
+    domain: rarity
+    range: string
+    required: false
+    see_also: &id003
+    - ../domain/3_Classes.md#rarity
+  rarity-color:
+    description: "Rarity color property; interpreted under its owning definition."
+    slot_uri: pixlnd:rarity/color
+    alias: color
+    domain: rarity
+    range: string
+    required: false
+    see_also: *id003
+  rarity-index:
+    description: "Rarity index property; interpreted under its owning definition."
+    slot_uri: pixlnd:rarity/index
+    alias: index
+    domain: rarity
+    range: integer
+    required: false
+    see_also: *id003
+    minimum_value: -1
+    maximum_value: 5
+  rarity-hex:
+    description: "Rarity hex property; interpreted under its owning definition."
+    slot_uri: pixlnd:rarity/hex
+    alias: hex
+    domain: rarity
+    range: string
+    required: false
+    see_also: *id003
+    pattern: ^#[0-9a-fA-F]{6}$
+  rarity-stars:
+    description: "Rarity stars property; interpreted under its owning definition."
+    slot_uri: pixlnd:rarity/stars
+    alias: stars
+    domain: rarity
+    range: integer
+    required: false
+    see_also: *id003
+    minimum_value: 1
+  rarity-gem:
+    description: "Rarity gem property; interpreted under its owning definition."
+    slot_uri: pixlnd:rarity/gem
+    alias: gem
+    domain: rarity
+    range: material
+    required: false
+    see_also: *id003
+  rarity-named:
+    description: "Rarity named property; interpreted under its owning definition."
+    slot_uri: pixlnd:rarity/named
+    alias: named
+    domain: rarity
+    range: boolean
+    required: false
+    see_also: *id003

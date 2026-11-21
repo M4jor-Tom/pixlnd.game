@@ -1,0 +1,96 @@
+id: https://w3id.org/pixlnd/save-geography/saved-assignment
+name: pixlnd-save-geography-saved-assignment
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+classes:
+  saved-assignment:
+    class_uri: pixlnd:saved-assignment
+    see_also: &id001
+    - ../domain/encounter-contracts.md#geometry-and-occupancy
+    slots:
+    - saved-assignment-key
+    - saved-assignment-pack
+    - saved-assignment-special
+    - saved-assignment-spirit
+    - saved-assignment-home
+    - saved-assignment-role
+    - saved-assignment-tier
+    - saved-assignment-boss
+    - saved-assignment-seed
+    description: Permanent generation assignment, not a live mob incarnation. Pack/member keys, spirit
+      and special sentinel strings preserve current encoding; deterministic assignment and eligibility
+      require current-rule checks.
+slots:
+  saved-assignment-key:
+    slot_uri: pixlnd:saved-assignment/key
+    alias: key
+    domain: saved-assignment
+    range: string
+    required: true
+    see_also: *id001
+  saved-assignment-pack:
+    slot_uri: pixlnd:saved-assignment/pack
+    alias: pack
+    domain: saved-assignment
+    range: string
+    required: true
+    see_also: *id001
+  saved-assignment-special:
+    slot_uri: pixlnd:saved-assignment/special
+    alias: special
+    domain: saved-assignment
+    range: string
+    required: true
+    see_also: *id001
+  saved-assignment-spirit:
+    slot_uri: pixlnd:saved-assignment/spirit
+    alias: spirit
+    domain: saved-assignment
+    range: string
+    required: true
+    see_also: *id001
+  saved-assignment-home:
+    slot_uri: pixlnd:saved-assignment/home
+    alias: home
+    domain: saved-assignment
+    range: double
+    required: true
+    see_also: *id001
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+  saved-assignment-role:
+    slot_uri: pixlnd:saved-assignment/role
+    alias: role
+    domain: saved-assignment
+    range: saved-role
+    required: true
+    see_also: *id001
+  saved-assignment-tier:
+    slot_uri: pixlnd:saved-assignment/tier
+    alias: tier
+    domain: saved-assignment
+    range: integer
+    required: true
+    see_also: *id001
+    minimum_value: 0
+  saved-assignment-boss:
+    slot_uri: pixlnd:saved-assignment/boss
+    alias: boss
+    domain: saved-assignment
+    range: boolean
+    required: true
+    see_also: *id001
+  saved-assignment-seed:
+    slot_uri: pixlnd:saved-assignment/seed
+    alias: seed
+    domain: saved-assignment
+    range: integer
+    required: true
+    see_also: *id001
+    minimum_value: 0

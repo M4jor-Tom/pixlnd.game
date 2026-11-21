@@ -1,0 +1,111 @@
+id: https://w3id.org/pixlnd/catalog-meta/rulesets-controls
+name: pixlnd-catalog-meta-rulesets-controls
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- meta
+default_range: string
+classes:
+  rulesets-source:
+    description: Whole source rulesets document; named bundles and flag maps are losslessly bound entries, not model slots.
+    class_uri: pixlnd:rulesets-source
+    annotations: {source-map-entries: entries}
+    see_also: [../instances/rulesets.json]
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: pixlnd:rulesets-source/schema, range: string, required: true, equals_string: ruleset, description: Source schema marker.}
+      controls-note: {alias: _controls, slot_uri: pixlnd:rulesets-source/controls-note, range: string, required: true, description: Original controls qualification.}
+      documentation: {alias: _doc, slot_uri: pixlnd:rulesets-source/doc, range: string, required: true, description: Original ruleset source note.}
+      entries: {alias: entries, slot_uri: pixlnd:rulesets-source/entries, range: ruleset-source-entry, multivalued: true, inlined: true, inlined_as_list: true, required: true, description: Original named ruleset bundles.}
+  ruleset-source-entry:
+    description: Key/value binding for one original ruleset bundle.
+    class_uri: pixlnd:ruleset-source-entry
+    see_also: [../instances/rulesets.json]
+    attributes:
+      key: {alias: key, slot_uri: pixlnd:ruleset-source-entry/key, range: string, key: true, required: true, description: Original ruleset map key.}
+      value: {alias: value, slot_uri: pixlnd:ruleset-source-entry/value, range: ruleset-source-row, inlined: true, required: true, description: Original ruleset bundle value.}
+  ruleset-source-row:
+    description: Complete source ruleset bundle without interpreted availability defaults.
+    class_uri: pixlnd:ruleset-source-row
+    annotations: {source-map-paths: flags}
+    see_also: [../instances/rulesets.json]
+    attributes:
+      name: {alias: name, slot_uri: pixlnd:ruleset-source-row/name, range: string, required: true, description: Original bundle name.}
+      versions: {alias: versions, slot_uri: pixlnd:ruleset-source-row/versions, range: string, multivalued: true, required: true, description: Original version labels.}
+      progression: {alias: progression, slot_uri: pixlnd:ruleset-source-row/progression, range: string, required: true, description: Original progression label.}
+      default: {alias: default, slot_uri: pixlnd:ruleset-source-row/default, range: boolean, description: Original default marker.}
+      flags: {alias: flags, slot_uri: pixlnd:ruleset-source-row/flags, range: ruleset-source-flag-entry, multivalued: true, inlined: true, inlined_as_list: true, required: true, description: Original heterogeneous flag map.}
+      rule-note: {alias: _rule, slot_uri: pixlnd:ruleset-source-row/rule-note, range: string, description: Original rule qualification.}
+      note: {alias: _note, slot_uri: pixlnd:ruleset-source-row/note, range: string, description: Original source note.}
+  ruleset-source-flag-entry:
+    description: Original heterogeneous ruleset flag value keyed by its unchanged literal name.
+    class_uri: pixlnd:ruleset-source-flag-entry
+    see_also: [../instances/rulesets.json]
+    attributes:
+      key: {alias: key, slot_uri: pixlnd:ruleset-source-flag-entry/key, range: string, key: true, required: true, description: Original flag key.}
+      value:
+        alias: value
+        slot_uri: pixlnd:ruleset-source-flag-entry/value
+        required: true
+        any_of:
+        - {range: boolean}
+        - {range: integer}
+        - {range: string}
+        - {range: string, multivalued: true}
+        description: Original Boolean, integer, string or ordered string-list flag value.
+  controller-profiles-source:
+    description: Whole source controller-profile document, retaining profile IDs as bound keys.
+    class_uri: pixlnd:controller-profiles-source
+    annotations: {source-map-entries: entries}
+    see_also: [../instances/controller-profiles.json]
+    attributes:
+      entries: {alias: entries, slot_uri: pixlnd:controller-profiles-source/entries, range: controller-profile-source-entry, multivalued: true, inlined: true, inlined_as_list: true, required: true, description: Original named profile map.}
+  controller-profile-source-entry:
+    description: Key/value binding for one source controller profile.
+    class_uri: pixlnd:controller-profile-source-entry
+    see_also: [../instances/controller-profiles.json]
+    attributes:
+      key: {alias: key, slot_uri: pixlnd:controller-profile-source-entry/key, range: string, key: true, required: true, description: Original profile key.}
+      value: {alias: value, slot_uri: pixlnd:controller-profile-source-entry/value, range: android-profile-source-row, inlined: true, required: true, description: Original Android profile parameters and action references.}
+  android-profile-source-row:
+    description: Current Android source profile values, reusing the Android-only parameter refinements without adding a body ID.
+    class_uri: pixlnd:android-profile-source-row
+    mixins: [android-profile-parameters]
+    see_also: [../instances/controller-profiles.json, ../domain/controller-profiles.md#android]
+    attributes:
+      actions: {alias: actions, slot_uri: pixlnd:android-profile-source-row/actions, range: ControlActionId, multivalued: true, required: true, description: Original selected canonical action identifiers from the closed canonical vocabulary.}
+  keybinds-source:
+    description: Whole keyboard/mouse adapter document; dynamic profile IDs are reversible local entries.
+    class_uri: pixlnd:keybinds-source
+    annotations: {source-map-entries: entries}
+    see_also: [../instances/keybinds.json]
+    attributes:
+      schema-tag: {alias: '$schema', slot_uri: pixlnd:keybinds-source/schema, range: string, required: true, equals_string: input-binding, description: Source schema marker.}
+      documentation: {alias: _doc, slot_uri: pixlnd:keybinds-source/doc, range: string, required: true, description: Original adapter note.}
+      controls-note: {alias: _controls, slot_uri: pixlnd:keybinds-source/controls-note, range: string, required: true, description: Original canonical controls reference.}
+      profile-note: {alias: _profile, slot_uri: pixlnd:keybinds-source/profile-note, range: string, required: true, description: Original profile reference.}
+      entries: {alias: entries, slot_uri: pixlnd:keybinds-source/entries, range: keybinds-source-profile-entry, multivalued: true, inlined: true, inlined_as_list: true, required: true, description: Original adapter profile map.}
+  keybinds-source-profile-entry:
+    description: Key/value binding for one original keybind profile.
+    class_uri: pixlnd:keybinds-source-profile-entry
+    see_also: [../instances/keybinds.json]
+    attributes:
+      key: {alias: key, slot_uri: pixlnd:keybinds-source-profile-entry/key, range: string, key: true, required: true, description: Original profile key.}
+      value: {alias: value, slot_uri: pixlnd:keybinds-source-profile-entry/value, range: keybinds-source-profile, inlined: true, required: true, description: Original profile adapter map.}
+  keybinds-source-profile:
+    description: Complete source keyboard/mouse adapter rows including metadata and literal bindings.
+    class_uri: pixlnd:keybinds-source-profile
+    annotations: {source-map-entries: entries}
+    see_also: [../instances/keybinds.json]
+    attributes:
+      documentation: {alias: _doc, slot_uri: pixlnd:keybinds-source-profile/doc, range: string, required: true, description: Original adapter-profile note.}
+      entries: {alias: entries, slot_uri: pixlnd:keybinds-source-profile/entries, range: keybinds-source-binding-entry, multivalued: true, inlined: true, inlined_as_list: true, required: true, description: Original physical binding-key map.}
+  keybinds-source-binding-entry:
+    description: Original literal adapter binding name/value pair.
+    class_uri: pixlnd:keybinds-source-binding-entry
+    see_also: [../instances/keybinds.json]
+    attributes:
+      key: {alias: key, slot_uri: pixlnd:keybinds-source-binding-entry/key, range: string, key: true, required: true, description: Original binding key.}
+      value: {alias: value, slot_uri: pixlnd:keybinds-source-binding-entry/value, range: string, required: true, description: Original physical binding label.}

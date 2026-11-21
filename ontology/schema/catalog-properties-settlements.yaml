@@ -1,0 +1,104 @@
+id: https://w3id.org/pixlnd/catalog-properties/settlements
+name: pixlnd-catalog-properties-settlements
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- items
+- world
+default_range: string
+classes:
+  settlement-style:
+    description: "Logical settlement style definition; applicability follows the cited domain rules."
+    class_uri: pixlnd:settlement-style
+    see_also: &id006
+    - ../domain/3_Classes.md#settlement-style
+    slots:
+    - id
+    - settlement-style-lands
+    - settlement-style-desc
+slots:
+  building-name:
+    description: "Building name property; interpreted under its owning definition."
+    slot_uri: pixlnd:building/name
+    alias: name
+    domain: building
+    range: string
+    required: false
+    see_also: &id004
+    - ../domain/3_Classes.md#building
+  building-sign:
+    description: "Building sign property; interpreted under its owning definition."
+    slot_uri: pixlnd:building/sign
+    alias: sign
+    domain: building
+    range: string
+    required: false
+    see_also: *id004
+  building-map-icon:
+    description: "Building map icon property; interpreted under its owning definition."
+    slot_uri: pixlnd:building/map-icon
+    alias: map-icon
+    domain: building
+    range: string
+    required: false
+    see_also: *id004
+  building-roles:
+    description: "Building roles property; interpreted under its owning definition."
+    slot_uri: pixlnd:building/roles
+    alias: roles
+    domain: building
+    range: npc-role
+    required: false
+    see_also: *id004
+    multivalued: true
+  building-stations:
+    description: "Building stations property; interpreted under its owning definition."
+    slot_uri: pixlnd:building/stations
+    alias: stations
+    domain: building
+    range: crafting-station
+    required: false
+    see_also: *id004
+    multivalued: true
+  district-quarter-id:
+    description: "District quarter id property; interpreted under its owning definition."
+    slot_uri: pixlnd:district/quarter-id
+    alias: quarter-id
+    domain: district
+    range: integer
+    required: false
+    see_also: &id005
+    - ../domain/3_Classes.md#district
+    multivalued: true
+    minimum_cardinality: 2
+    maximum_cardinality: 2
+  district-decor:
+    description: "District decor property; interpreted under its owning definition."
+    slot_uri: pixlnd:district/decor
+    alias: decor
+    domain: district
+    range: string
+    required: false
+    see_also: *id005
+    multivalued: true
+  settlement-style-lands:
+    description: "Settlement style lands property; interpreted under its owning definition."
+    slot_uri: pixlnd:settlement-style/lands
+    alias: lands
+    domain: settlement-style
+    range: landscape
+    required: true
+    see_also: *id006
+    multivalued: true
+  settlement-style-desc:
+    description: "Settlement style desc property; interpreted under its owning definition."
+    slot_uri: pixlnd:settlement-style/desc
+    alias: desc
+    domain: settlement-style
+    range: string
+    required: false
+    see_also: *id006
