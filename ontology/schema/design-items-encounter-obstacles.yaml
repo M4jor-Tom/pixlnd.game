@@ -1,0 +1,35 @@
+id: https://w3id.org/pixlnd/design-items/encounter-obstacles
+name: pixlnd-design-items-encounter-obstacles
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+- design-items-encounter-furnishings
+- design-items-encounter-rubble
+- design-items-encounter-spikes
+
+slots:
+  generator-design-initial-encounters-field-rubble:
+    alias: rubble
+    slot_uri: pixlnd:generator-design-initial-encounters/rubble
+    description: Source rubble of generator-design-initial-encounters.
+    required: true
+    range: generator-design-initial-encounters-rubble
+    inlined: true
+  generator-design-initial-encounters-field-spikes:
+    alias: spikes
+    slot_uri: pixlnd:generator-design-initial-encounters/spikes
+    description: Source spikes of generator-design-initial-encounters.
+    required: true
+    range: generator-design-initial-encounters-spikes
+    inlined: true
+  generator-design-initial-encounters-field-furnishings:
+    alias: furnishings
+    slot_uri: pixlnd:generator-design-initial-encounters/furnishings
+    description: Source furnishings of generator-design-initial-encounters.
+    required: true
+    range: generator-design-initial-encounters-furnishings
+    inlined: true

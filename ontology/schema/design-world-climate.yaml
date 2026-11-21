@@ -1,0 +1,94 @@
+id: https://w3id.org/pixlnd/design-world/climate
+name: pixlnd-design-world-climate
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+- world-landscape
+
+classes:
+  generator-design-climate:
+    class_uri: pixlnd:generator-design-climate
+    description: Configuration component generator-design-climate; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      doc:
+        alias: _doc
+        slot_uri: pixlnd:generator-design-climate/doc
+        description: Source _doc of generator-design-climate.
+        required: true
+        range: string
+      field-frequency-lands:
+        alias: field-frequency-lands
+        slot_uri: pixlnd:generator-design-climate/field-frequency-lands
+        description: Source field-frequency-lands of generator-design-climate.
+        required: true
+        range: double
+      field-octaves:
+        alias: field-octaves
+        slot_uri: pixlnd:generator-design-climate/field-octaves
+        description: Source field-octaves of generator-design-climate.
+        required: true
+        range: integer
+      rules:
+        alias: rules
+        slot_uri: pixlnd:generator-design-climate/rules
+        description: Source rules of generator-design-climate.
+        required: true
+        range: generator-climate-rule
+        inlined: true
+        annotations:
+          source-tuple-positions: first second
+        multivalued: true
+        minimum_cardinality: 1
+        inlined_as_list: true
+      hud:
+        alias: hud
+        slot_uri: pixlnd:generator-design-climate/hud
+        description: Source hud of generator-design-climate.
+        required: true
+        range: generator-design-climate-hud
+        inlined: true
+  generator-design-climate-hud:
+    class_uri: pixlnd:generator-design-climate-hud
+    description: Configuration component generator-design-climate-hud; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      temp-c:
+        alias: temp-c
+        slot_uri: pixlnd:generator-design-climate-hud/temp-c
+        description: Source temp-c of generator-design-climate-hud.
+        required: true
+        range: string
+      humidity-pct:
+        alias: humidity-pct
+        slot_uri: pixlnd:generator-design-climate-hud/humidity-pct
+        description: Source humidity-pct of generator-design-climate-hud.
+        required: true
+        range: string
+  generator-climate-rule:
+    class_uri: pixlnd:generator-climate-rule
+    description: Configuration component generator-climate-rule; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      first:
+        alias: first
+        slot_uri: pixlnd:generator-climate-rule/first
+        description: Source first of generator-climate-rule.
+        required: true
+        range: landscape
+      second:
+        alias: second
+        slot_uri: pixlnd:generator-climate-rule/second
+        description: Source second of generator-climate-rule.
+        required: true
+        range: string

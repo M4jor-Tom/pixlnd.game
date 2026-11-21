@@ -1,0 +1,92 @@
+id: https://w3id.org/pixlnd/design-items/encounter-camp
+name: pixlnd-design-items-encounter-camp
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-design-initial-encounters-camp:
+    class_uri: pixlnd:generator-design-initial-encounters-camp
+    description: Configuration component generator-design-initial-encounters-camp; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      size:
+        alias: size
+        slot_uri: pixlnd:generator-design-initial-encounters-camp/size
+        description: Source size of generator-design-initial-encounters-camp.
+        required: true
+        range: integer
+        minimum_value: 64
+        maximum_value: 64
+      occupancy:
+        alias: occupancy
+        slot_uri: pixlnd:generator-design-initial-encounters-camp/occupancy
+        description: Source occupancy of generator-design-initial-encounters-camp.
+        required: true
+        range: generator-selected-initial-encounters-camp-occupancy
+        inlined: true
+        annotations:
+          source-tuple-positions: first second
+      exit-width:
+        alias: exit-width
+        slot_uri: pixlnd:generator-design-initial-encounters-camp/exit-width
+        description: Source exit-width of generator-design-initial-encounters-camp.
+        required: true
+        range: integer
+        minimum_value: 8
+        maximum_value: 8
+      tier:
+        alias: tier
+        slot_uri: pixlnd:generator-design-initial-encounters-camp/tier
+        description: Source tier of generator-design-initial-encounters-camp.
+        required: true
+        range: integer
+        minimum_value: 1
+        maximum_value: 1
+      packs:
+        alias: packs
+        slot_uri: pixlnd:generator-design-initial-encounters-camp/packs
+        description: Source packs of generator-design-initial-encounters-camp.
+        required: true
+        range: integer
+        minimum_value: 2
+        maximum_value: 2
+  generator-selected-initial-encounters-camp-occupancy:
+    class_uri: pixlnd:generator-selected-initial-encounters-camp-occupancy
+    description: Configuration component generator-selected-initial-encounters-camp-occupancy; applicability follows the linked source
+      rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      first:
+        alias: first
+        slot_uri: pixlnd:generator-selected-initial-encounters-camp-occupancy/first
+        description: Source first of generator-selected-initial-encounters-camp-occupancy.
+        required: true
+        range: integer
+        minimum_value: -1
+        maximum_value: -1
+      second:
+        alias: second
+        slot_uri: pixlnd:generator-selected-initial-encounters-camp-occupancy/second
+        description: Source second of generator-selected-initial-encounters-camp-occupancy.
+        required: true
+        range: integer
+        minimum_value: 16
+        maximum_value: 16
+
+slots:
+  generator-design-initial-encounters-field-camp:
+    alias: camp
+    slot_uri: pixlnd:generator-design-initial-encounters/camp
+    description: Source camp of generator-design-initial-encounters.
+    required: true
+    range: generator-design-initial-encounters-camp
+    inlined: true

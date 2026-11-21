@@ -1,0 +1,130 @@
+id: https://w3id.org/pixlnd/design-items/encounter-ruins-rooms
+name: pixlnd-design-items-encounter-ruins-rooms
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-selected-initial-encounters-ruins-room:
+    class_uri: pixlnd:generator-selected-initial-encounters-ruins-room
+    description: Configuration component generator-selected-initial-encounters-ruins-room; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      first:
+        alias: first
+        slot_uri: pixlnd:generator-selected-initial-encounters-ruins-room/first
+        description: Source first of generator-selected-initial-encounters-ruins-room.
+        required: true
+        range: integer
+        minimum_value: 24
+        maximum_value: 24
+      second:
+        alias: second
+        slot_uri: pixlnd:generator-selected-initial-encounters-ruins-room/second
+        description: Source second of generator-selected-initial-encounters-ruins-room.
+        required: true
+        range: integer
+        minimum_value: 24
+        maximum_value: 24
+  generator-selected-initial-encounters-ruins-corridor:
+    class_uri: pixlnd:generator-selected-initial-encounters-ruins-corridor
+    description: Configuration component generator-selected-initial-encounters-ruins-corridor; applicability follows the linked source
+      rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      first:
+        alias: first
+        slot_uri: pixlnd:generator-selected-initial-encounters-ruins-corridor/first
+        description: Source first of generator-selected-initial-encounters-ruins-corridor.
+        required: true
+        range: integer
+        minimum_value: 8
+        maximum_value: 8
+      second:
+        alias: second
+        slot_uri: pixlnd:generator-selected-initial-encounters-ruins-corridor/second
+        description: Source second of generator-selected-initial-encounters-ruins-corridor.
+        required: true
+        range: integer
+        minimum_value: 8
+        maximum_value: 8
+  generator-selected-initial-encounters-ruins-court:
+    class_uri: pixlnd:generator-selected-initial-encounters-ruins-court
+    description: Configuration component generator-selected-initial-encounters-ruins-court; applicability follows the linked source
+      rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      first:
+        alias: first
+        slot_uri: pixlnd:generator-selected-initial-encounters-ruins-court/first
+        description: Source first of generator-selected-initial-encounters-ruins-court.
+        required: true
+        range: integer
+        minimum_value: 24
+        maximum_value: 24
+      second:
+        alias: second
+        slot_uri: pixlnd:generator-selected-initial-encounters-ruins-court/second
+        description: Source second of generator-selected-initial-encounters-ruins-court.
+        required: true
+        range: integer
+        minimum_value: 16
+        maximum_value: 16
+  generator-selected-initial-encounters-ruins-passage:
+    class_uri: pixlnd:generator-selected-initial-encounters-ruins-passage
+    description: Configuration component generator-selected-initial-encounters-ruins-passage; applicability follows the linked source
+      rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      first:
+        alias: first
+        slot_uri: pixlnd:generator-selected-initial-encounters-ruins-passage/first
+        description: Source first of generator-selected-initial-encounters-ruins-passage.
+        required: true
+        range: integer
+        minimum_value: 8
+        maximum_value: 8
+      second:
+        alias: second
+        slot_uri: pixlnd:generator-selected-initial-encounters-ruins-passage/second
+        description: Source second of generator-selected-initial-encounters-ruins-passage.
+        required: true
+        range: integer
+        minimum_value: 8
+        maximum_value: 8
+  generator-selected-initial-encounters-ruins-alcove:
+    class_uri: pixlnd:generator-selected-initial-encounters-ruins-alcove
+    description: Configuration component generator-selected-initial-encounters-ruins-alcove; applicability follows the linked source
+      rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      first:
+        alias: first
+        slot_uri: pixlnd:generator-selected-initial-encounters-ruins-alcove/first
+        description: Source first of generator-selected-initial-encounters-ruins-alcove.
+        required: true
+        range: integer
+        minimum_value: 12
+        maximum_value: 12
+      second:
+        alias: second
+        slot_uri: pixlnd:generator-selected-initial-encounters-ruins-alcove/second
+        description: Source second of generator-selected-initial-encounters-ruins-alcove.
+        required: true
+        range: integer
+        minimum_value: 8
+        maximum_value: 8

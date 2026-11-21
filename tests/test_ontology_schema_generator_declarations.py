@@ -30,14 +30,28 @@ from ontology_generator_expectations import (
     assert_literal_contract,
 )
 from ontology_source_contracts import assert_declared_root
-from test_ontology_schema import SCHEMA, generated, load_module
+from test_ontology_schema import SCHEMA, copy_schema, generated, load_module
 from test_ontology_schema_authoring import catalog
 
 MODULE_NAMES = ("design-combat", "design-progression", "design-world", "design-items")
 
 
 def modules_at(directory):
-    return {name: load_module(directory / (name + ".yaml")) for name in MODULE_NAMES}
+    modules = {name: load_module(directory / (name + ".yaml")) for name in MODULE_NAMES}
+    # Give the literal oracle the original attribute-keyed view of authored fields.
+    # Resolve only slots attached to the class, never all global slots by alias.
+    for module in modules.values():
+        for name, owner in module["classes"].items():
+            prefix = f"{name}-field-"
+            attached = [key for key in owner.get("slots", ()) if key.startswith(prefix)]
+            if attached:
+                attributes = owner.setdefault("attributes", {})
+                for key in attached:
+                    field = key.removeprefix(prefix)
+                    assert field not in attributes, (name, key, "duplicate attachment")
+                    attributes[field] = module["slots"][key]
+                assert len(aliases(owner)) == len(attributes), (name, "duplicate wire alias")
+    return modules
 
 
 def assert_induced_owner(test, name, owner, view):
@@ -53,6 +67,12 @@ def assert_induced_owner(test, name, owner, view):
                       "maximum_cardinality", "equals_expression", "equals_string", "pattern"):
             if facet in raw:
                 test.assertEqual(getattr(slot, facet), raw[facet], (name, alias, facet))
+
+
+def authored_field(view, owner, alias):
+    cls = view.get_class(owner)
+    return next(slot for slot in (*cls.attributes.values(), *(view.get_slot(name) for name in cls.slots))
+                if slot.alias == alias)
 
 
 def assert_map_batch_induced(test, view):
@@ -79,7 +99,7 @@ def assert_map_batch_induced(test, view):
     test.assertFalse(view.is_inlined(building))
 
     for (owner, alias), expression in OBJECT_EXPRESSIONS.items():
-        declared = next(s for s in view.get_class(owner).attributes.values() if s.alias == alias)
+        declared = authored_field(view, owner, alias)
         induced = next(s for s in view.class_induced_slots(owner) if s.alias == alias)
         for slot in (declared, induced):
             test.assertEqual(slot.equals_expression, expression)
@@ -88,11 +108,10 @@ def assert_map_batch_induced(test, view):
             test.assertEqual(str(slot.alias), alias)
             test.assertTrue(alias.isidentifier())
     for owner, alias in NO_EQUALITY_FIELDS:
-        for slots in (view.get_class(owner).attributes.values(), view.class_induced_slots(owner)):
-            test.assertIsNone(next(s for s in slots if s.alias == alias).equals_expression)
-    for slots in (view.get_class("generator-design").attributes.values(),
-                  view.class_induced_slots("generator-design")):
-        settlement = next(s for s in slots if s.alias == "settlement")
+        test.assertIsNone(authored_field(view, owner, alias).equals_expression)
+        test.assertIsNone(next(s for s in view.class_induced_slots(owner) if s.alias == alias).equals_expression)
+    for settlement in (authored_field(view, "generator-design", "settlement"),
+                       next(s for s in view.class_induced_slots("generator-design") if s.alias == "settlement")):
         test.assertEqual([(str(s.range), s.inlined, s.required, s.equals_expression) for s in settlement.all_of],
             [(s["range"], True, True, s["equals_expression"]) for s in SETTLEMENT_CONJUNCTS])
     for slots in (view.get_class("generator-design-loot").attributes.values(),
@@ -221,6 +240,16 @@ def assert_integer_equalities(test, modules):
 
 
 class GeneratorDeclarationTests(unittest.TestCase):
+    def test_terrain_dimensions_slot_preserves_wire_contract(self):
+        name = "generator-design-terrain"
+        slot_name = f"{name}-field-zone-blocks"
+        view = SchemaView(str(SCHEMA))
+        self.assertEqual(view.get_class(name).slots.count(slot_name), 1)
+        slot = view.induced_slot(slot_name, name)
+        self.assertEqual((slot.alias, slot.slot_uri, slot.range, slot.required,
+                          slot.minimum_value, slot.maximum_value),
+                         ("zone-blocks", "pixlnd:generator-design-terrain/zone-blocks", "integer", True, 64, 64))
+
     def test_native_naming_policy_preserves_exact_literal_exception(self):
         from linkml.linter.linter import Linter
 
@@ -314,6 +343,10 @@ class GeneratorDeclarationTests(unittest.TestCase):
 
     def test_complete_authored_and_induced_declarations(self):
         declaration_oracle(self)
+        with tempfile.TemporaryDirectory() as scratch:
+            target = Path(scratch) / "schema"
+            copy_schema(target)
+            declaration_oracle(self, target)
 
     def test_numeric_metamodel_and_selected_fractional_facets(self):
         meta = Path(linkml_runtime.__file__).parent / "linkml_model/jsonschema/meta.schema.json"

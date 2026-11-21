@@ -1,0 +1,100 @@
+id: https://w3id.org/pixlnd/design-world/source-boss
+name: pixlnd-design-world-source-boss
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-source-boss:
+    class_uri: pixlnd:generator-source-boss
+    description: Configuration component generator-source-boss; applicability follows the linked source rules. Historical facts retain
+      their explicit A/S/X/Omega scope; hybrid overrides remain authoritative.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      chance:
+        alias: chance
+        slot_uri: pixlnd:generator-source-boss/chance
+        description: Source chance of generator-source-boss.
+        required: true
+        range: string
+      traits:
+        alias: traits
+        slot_uri: pixlnd:generator-source-boss/traits
+        description: Source traits of generator-source-boss.
+        required: true
+        range: string
+        multivalued: true
+        minimum_cardinality: 0
+      special-pool:
+        alias: special-pool
+        slot_uri: pixlnd:generator-source-boss/special-pool
+        description: Source special-pool of generator-source-boss.
+        required: true
+        range: string
+        multivalued: true
+        minimum_cardinality: 0
+      alpha-size-scaling:
+        alias: alpha-size-scaling
+        slot_uri: pixlnd:generator-source-boss/alpha-size-scaling
+        description: Source alpha-size-scaling of generator-source-boss.
+        required: true
+        range: string
+      alpha-spirit-drop:
+        alias: alpha-spirit-drop
+        slot_uri: pixlnd:generator-source-boss/alpha-spirit-drop
+        description: Source alpha-spirit-drop of generator-source-boss.
+        required: true
+        range: string
+      steam-loot:
+        alias: steam-loot
+        slot_uri: pixlnd:generator-source-boss/steam-loot
+        description: Source steam-loot of generator-source-boss.
+        required: true
+        range: string
+      coins-s:
+        alias: coins-s
+        slot_uri: pixlnd:generator-source-boss/coins-s
+        description: Source coins-s of generator-source-boss.
+        required: true
+        range: integer
+      arena-waves:
+        alias: arena-waves
+        slot_uri: pixlnd:generator-source-boss/arena-waves
+        description: Source arena-waves of generator-source-boss.
+        required: true
+        range: generator-source-boss-arena-waves-pair
+        inlined: true
+        annotations:
+          source-tuple-positions: first second
+        multivalued: true
+        minimum_cardinality: 5
+        inlined_as_list: true
+        maximum_cardinality: 5
+        equals_expression: '[{''first'': ''white'', ''second'': ''green''}, {''first'': ''white'', ''second'': ''green''}, {''first'':
+          ''green'', ''second'': ''blue''}, {''first'': ''blue'', ''second'': ''purple''}, {''first'': ''purple'', ''second'': ''yellow''}]'
+  generator-source-boss-arena-waves-pair:
+    class_uri: pixlnd:generator-source-boss-arena-waves-pair
+    description: Configuration component generator-source-boss-arena-waves-pair; applicability follows the linked source rules. Historical
+      facts retain their explicit A/S/X/Omega scope; hybrid overrides remain authoritative.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      first:
+        alias: first
+        slot_uri: pixlnd:generator-source-boss-arena-waves-pair/first
+        description: Source first of generator-source-boss-arena-waves-pair.
+        required: true
+        range: string
+      second:
+        alias: second
+        slot_uri: pixlnd:generator-source-boss-arena-waves-pair/second
+        description: Source second of generator-source-boss-arena-waves-pair.
+        required: true
+        range: string

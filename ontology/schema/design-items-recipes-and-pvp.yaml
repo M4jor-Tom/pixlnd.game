@@ -1,0 +1,67 @@
+id: https://w3id.org/pixlnd/design-items/recipes-and-pvp
+name: pixlnd-design-items-recipes-and-pvp
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-design-recipes:
+    class_uri: pixlnd:generator-design-recipes
+    description: Configuration component generator-design-recipes; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      weapon-cubes:
+        alias: weapon-cubes
+        slot_uri: pixlnd:generator-design-recipes/weapon-cubes
+        description: Source weapon-cubes of generator-design-recipes.
+        required: true
+        range: string
+      gems-per-rarity-above-common:
+        alias: gems-per-rarity-above-common
+        slot_uri: pixlnd:generator-design-recipes/gems-per-rarity-above-common
+        description: Source gems-per-rarity-above-common of generator-design-recipes.
+        required: true
+        range: integer
+      armor:
+        alias: armor
+        slot_uri: pixlnd:generator-design-recipes/armor
+        description: Source armor of generator-design-recipes.
+        required: true
+        range: string
+  generator-design-pvp:
+    class_uri: pixlnd:generator-design-pvp
+    description: Configuration component generator-design-pvp; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      slash-command:
+        alias: slash-command
+        slot_uri: pixlnd:generator-design-pvp/slash-command
+        description: Source slash-command of generator-design-pvp.
+        required: true
+        range: boolean
+      server-cfg-flag:
+        alias: server-cfg-flag
+        slot_uri: pixlnd:generator-design-pvp/server-cfg-flag
+        description: Source server-cfg-flag of generator-design-pvp.
+        required: true
+        range: string
+      default:
+        alias: default
+        slot_uri: pixlnd:generator-design-pvp/default
+        description: Source default of generator-design-pvp.
+        required: true
+        range: boolean
+      note:
+        alias: note
+        slot_uri: pixlnd:generator-design-pvp/note
+        description: Source note of generator-design-pvp.
+        required: true
+        range: string

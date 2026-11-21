@@ -1,0 +1,67 @@
+id: https://w3id.org/pixlnd/design-items/encounter-ruins-tiers
+name: pixlnd-design-items-encounter-ruins-tiers
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-selected-initial-encounters-ruins-pack-tiers:
+    class_uri: pixlnd:generator-selected-initial-encounters-ruins-pack-tiers
+    description: Configuration component generator-selected-initial-encounters-ruins-pack-tiers; applicability follows the linked source
+      rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      first:
+        alias: first
+        slot_uri: pixlnd:generator-selected-initial-encounters-ruins-pack-tiers/first
+        description: Source first of generator-selected-initial-encounters-ruins-pack-tiers.
+        required: true
+        range: integer
+        minimum_value: 1
+        maximum_value: 1
+      second:
+        alias: second
+        slot_uri: pixlnd:generator-selected-initial-encounters-ruins-pack-tiers/second
+        description: Source second of generator-selected-initial-encounters-ruins-pack-tiers.
+        required: true
+        range: integer
+        minimum_value: 2
+        maximum_value: 2
+      third:
+        alias: third
+        slot_uri: pixlnd:generator-selected-initial-encounters-ruins-pack-tiers/third
+        description: Source third of generator-selected-initial-encounters-ruins-pack-tiers.
+        required: true
+        range: integer
+        minimum_value: 3
+        maximum_value: 3
+  generator-selected-initial-encounters-ruins-boss-tiers:
+    class_uri: pixlnd:generator-selected-initial-encounters-ruins-boss-tiers
+    description: Configuration component generator-selected-initial-encounters-ruins-boss-tiers; applicability follows the linked source
+      rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      first:
+        alias: first
+        slot_uri: pixlnd:generator-selected-initial-encounters-ruins-boss-tiers/first
+        description: Source first of generator-selected-initial-encounters-ruins-boss-tiers.
+        required: true
+        range: integer
+        minimum_value: 2
+        maximum_value: 2
+      second:
+        alias: second
+        slot_uri: pixlnd:generator-selected-initial-encounters-ruins-boss-tiers/second
+        description: Source second of generator-selected-initial-encounters-ruins-boss-tiers.
+        required: true
+        range: integer
+        minimum_value: 3
+        maximum_value: 3

@@ -1,0 +1,67 @@
+id: https://w3id.org/pixlnd/design-items/encounter-specials
+name: pixlnd-design-items-encounter-specials
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+- design-items-encounter-special-charge
+- design-items-encounter-special-stomp
+
+classes:
+  generator-design-initial-encounters-special-profile:
+    class_uri: pixlnd:generator-design-initial-encounters-special-profile
+    description: Configuration component generator-design-initial-encounters-special-profile; applicability follows the linked source
+      rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      ready-s:
+        alias: ready-s
+        slot_uri: pixlnd:generator-design-initial-encounters-special-profile/ready-s
+        description: Source ready-s of generator-design-initial-encounters-special-profile.
+        required: true
+        range: integer
+        minimum_value: 3
+        maximum_value: 3
+      cooldown-s:
+        alias: cooldown-s
+        slot_uri: pixlnd:generator-design-initial-encounters-special-profile/cooldown-s
+        description: Source cooldown-s of generator-design-initial-encounters-special-profile.
+        required: true
+        range: integer
+        minimum_value: 10
+        maximum_value: 10
+      recovery-s:
+        alias: recovery-s
+        slot_uri: pixlnd:generator-design-initial-encounters-special-profile/recovery-s
+        description: Source recovery-s of generator-design-initial-encounters-special-profile.
+        required: true
+        range: double
+        minimum_value: 0.8
+        maximum_value: 0.8
+      warning-s:
+        alias: warning-s
+        slot_uri: pixlnd:generator-design-initial-encounters-special-profile/warning-s
+        description: Source warning-s of generator-design-initial-encounters-special-profile.
+        required: true
+        range: double
+        minimum_value: 1.2
+        maximum_value: 1.2
+      stomp:
+        alias: stomp
+        slot_uri: pixlnd:generator-design-initial-encounters-special-profile/stomp
+        description: Source stomp of generator-design-initial-encounters-special-profile.
+        required: true
+        range: generator-design-initial-encounters-special-profile-stomp
+        inlined: true
+      charge:
+        alias: charge
+        slot_uri: pixlnd:generator-design-initial-encounters-special-profile/charge
+        description: Source charge of generator-design-initial-encounters-special-profile.
+        required: true
+        range: generator-design-initial-encounters-special-profile-charge
+        inlined: true

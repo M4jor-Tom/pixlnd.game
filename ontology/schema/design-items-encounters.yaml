@@ -1,0 +1,52 @@
+id: https://w3id.org/pixlnd/design-items/encounters
+name: pixlnd-design-items-encounters
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+- design-items-encounter-boss
+- design-items-encounter-camp
+- design-items-encounter-mission
+- design-items-encounter-obstacles
+- design-items-encounter-placement
+- design-items-encounter-population
+- design-items-encounter-ruins
+- design-items-encounter-spirits
+- design-items-encounter-supplier
+
+classes:
+  generator-design-initial-encounters:
+    class_uri: pixlnd:generator-design-initial-encounters
+    description: Configuration component generator-design-initial-encounters; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    slots:
+    - generator-design-initial-encounters-field-doc
+    - generator-design-initial-encounters-field-distance-min
+    - generator-design-initial-encounters-field-distance-max
+    - generator-design-initial-encounters-field-separation
+    - generator-design-initial-encounters-field-apron
+    - generator-design-initial-encounters-field-leading-objects
+    - generator-design-initial-encounters-field-dry-above-sea
+    - generator-design-initial-encounters-field-hub-size
+    - generator-design-initial-encounters-field-ruins
+    - generator-design-initial-encounters-field-camp
+    - generator-design-initial-encounters-field-supplier
+    - generator-design-initial-encounters-field-pack-size
+    - generator-design-initial-encounters-field-species
+    - generator-design-initial-encounters-field-role-weights
+    - generator-design-initial-encounters-field-power-base-offset
+    - generator-design-initial-encounters-field-boss-hp-mult
+    - generator-design-initial-encounters-field-boss-damage-mult
+    - generator-design-initial-encounters-field-boss-height
+    - generator-design-initial-encounters-field-boss-specials
+    - generator-design-initial-encounters-field-spirits
+    - generator-design-initial-encounters-field-mission-package
+    - generator-design-initial-encounters-field-special-profile
+    - generator-design-initial-encounters-field-rubble
+    - generator-design-initial-encounters-field-spikes
+    - generator-design-initial-encounters-field-furnishings

@@ -1,0 +1,80 @@
+id: https://w3id.org/pixlnd/design-world/names
+name: pixlnd-design-world-names
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+- world-landscape
+
+classes:
+  generator-design-names:
+    class_uri: pixlnd:generator-design-names
+    description: Configuration component generator-design-names; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      doc:
+        alias: _doc
+        slot_uri: pixlnd:generator-design-names/doc
+        description: Source _doc of generator-design-names.
+        required: true
+        range: string
+      syllables:
+        alias: syllables
+        slot_uri: pixlnd:generator-design-names/syllables
+        description: Source syllables of generator-design-names.
+        required: true
+        range: string
+        multivalued: true
+        minimum_cardinality: 0
+      land-suffix:
+        alias: land-suffix
+        slot_uri: pixlnd:generator-design-names/land-suffix
+        description: Source land-suffix of generator-design-names.
+        required: true
+        range: generator-design-names-land-suffix
+        inlined: true
+  generator-design-names-land-suffix:
+    class_uri: pixlnd:generator-design-names-land-suffix
+    description: Configuration component generator-design-names-land-suffix; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      entries:
+        alias: entries
+        slot_uri: pixlnd:generator-design-names-land-suffix/entries
+        description: Source entries of generator-design-names-land-suffix.
+        required: true
+        range: generator-design-names-land-suffix-entry
+        inlined: true
+        multivalued: true
+        minimum_cardinality: 0
+        inlined_as_list: true
+    annotations:
+      source-map-entries: entries
+  generator-design-names-land-suffix-entry:
+    class_uri: pixlnd:generator-design-names-land-suffix-entry
+    description: Configuration component generator-design-names-land-suffix-entry; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      key:
+        alias: key
+        slot_uri: pixlnd:generator-design-names-land-suffix-entry/key
+        description: Source key of generator-design-names-land-suffix-entry.
+        required: true
+        range: landscape
+      value:
+        alias: value
+        slot_uri: pixlnd:generator-design-names-land-suffix-entry/value
+        description: Source value of generator-design-names-land-suffix-entry.
+        required: true
+        range: string
+        multivalued: true
+        minimum_cardinality: 1

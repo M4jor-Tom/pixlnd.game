@@ -1,0 +1,74 @@
+id: https://w3id.org/pixlnd/design-items/encounter-population
+name: pixlnd-design-items-encounter-population
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-design-initial-encounters-role-weights:
+    class_uri: pixlnd:generator-design-initial-encounters-role-weights
+    description: Configuration component generator-design-initial-encounters-role-weights; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      melee:
+        alias: melee
+        slot_uri: pixlnd:generator-design-initial-encounters-role-weights/melee
+        description: Source melee of generator-design-initial-encounters-role-weights.
+        required: true
+        range: double
+        minimum_value: 0.5
+        maximum_value: 0.5
+      ranged:
+        alias: ranged
+        slot_uri: pixlnd:generator-design-initial-encounters-role-weights/ranged
+        description: Source ranged of generator-design-initial-encounters-role-weights.
+        required: true
+        range: double
+        minimum_value: 0.3
+        maximum_value: 0.3
+      mage:
+        alias: mage
+        slot_uri: pixlnd:generator-design-initial-encounters-role-weights/mage
+        description: Source mage of generator-design-initial-encounters-role-weights.
+        required: true
+        range: double
+        minimum_value: 0.2
+        maximum_value: 0.2
+
+slots:
+  generator-design-initial-encounters-field-pack-size:
+    alias: pack-size
+    slot_uri: pixlnd:generator-design-initial-encounters/pack-size
+    description: Source pack-size of generator-design-initial-encounters.
+    required: true
+    range: integer
+    minimum_value: 3
+    maximum_value: 3
+  generator-design-initial-encounters-field-species:
+    alias: species
+    slot_uri: pixlnd:generator-design-initial-encounters/species
+    description: Source species of generator-design-initial-encounters.
+    required: true
+    range: string
+    equals_string: skeleton
+  generator-design-initial-encounters-field-role-weights:
+    alias: role-weights
+    slot_uri: pixlnd:generator-design-initial-encounters/role-weights
+    description: Source role-weights of generator-design-initial-encounters.
+    required: true
+    range: generator-design-initial-encounters-role-weights
+    inlined: true
+  generator-design-initial-encounters-field-power-base-offset:
+    alias: power-base-offset
+    slot_uri: pixlnd:generator-design-initial-encounters/power-base-offset
+    description: Source power-base-offset of generator-design-initial-encounters.
+    required: true
+    range: integer
+    minimum_value: 2
+    maximum_value: 2

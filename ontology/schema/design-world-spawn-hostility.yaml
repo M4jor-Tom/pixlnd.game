@@ -1,0 +1,61 @@
+id: https://w3id.org/pixlnd/design-world/spawn-hostility
+name: pixlnd-design-world-spawn-hostility
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-design-spawns-variable-hostility:
+    class_uri: pixlnd:generator-design-spawns-variable-hostility
+    description: Configuration component generator-design-spawns-variable-hostility; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      hostile:
+        alias: H
+        slot_uri: pixlnd:generator-design-spawns-variable-hostility/h
+        description: Source H of generator-design-spawns-variable-hostility.
+        required: true
+        range: double
+      neutral:
+        alias: N
+        slot_uri: pixlnd:generator-design-spawns-variable-hostility/n
+        description: Source N of generator-design-spawns-variable-hostility.
+        required: true
+        range: double
+  generator-design-spawns-hostility-colors:
+    class_uri: pixlnd:generator-design-spawns-hostility-colors
+    description: Configuration component generator-design-spawns-hostility-colors; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      hostile:
+        alias: H
+        slot_uri: pixlnd:generator-design-spawns-hostility-colors/h
+        description: Source H of generator-design-spawns-hostility-colors.
+        required: true
+        range: string
+      neutral:
+        alias: N
+        slot_uri: pixlnd:generator-design-spawns-hostility-colors/n
+        description: Source N of generator-design-spawns-hostility-colors.
+        required: true
+        range: string
+      passive:
+        alias: P
+        slot_uri: pixlnd:generator-design-spawns-hostility-colors/p
+        description: Source P of generator-design-spawns-hostility-colors.
+        required: true
+        range: string
+      friendly:
+        alias: F
+        slot_uri: pixlnd:generator-design-spawns-hostility-colors/f
+        description: Source F of generator-design-spawns-hostility-colors.
+        required: true
+        range: string

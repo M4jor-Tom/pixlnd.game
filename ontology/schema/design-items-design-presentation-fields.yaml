@@ -1,0 +1,44 @@
+id: https://w3id.org/pixlnd/design-items/design-presentation-fields
+name: pixlnd-design-items-design-presentation-fields
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+- design-combat-generator-design
+
+slots:
+  generator-design-field-movement:
+    alias: movement
+    slot_uri: pixlnd:generator-design/movement
+    description: Source movement of generator-design.
+    required: true
+    range: generator-design-movement
+    inlined: true
+  generator-design-field-camera:
+    alias: camera
+    slot_uri: pixlnd:generator-design/camera
+    description: Source camera of generator-design.
+    required: true
+    range: generator-design-camera
+    inlined: true
+  generator-design-field-feel:
+    alias: feel
+    slot_uri: pixlnd:generator-design/feel
+    description: Source feel of generator-design.
+    required: true
+    range: generator-design-feel
+    inlined: true
+    equals_expression: feel if max([feel['events']['hit']['hit-stop-s'], feel['events']['crit']['hit-stop-s'], feel['events']['kill']['hit-stop-s'],
+      feel['events']['hurt']['hit-stop-s'], feel['events']['block']['hit-stop-s'], feel['events']['dodge']['hit-stop-s'], feel['events']['shoot']['hit-stop-s'],
+      feel['events']['impact']['hit-stop-s'], feel['events']['level-up']['hit-stop-s'], feel['events']['pickup']['hit-stop-s'], feel['events']['coin']['hit-stop-s']])
+      <= feel['hit-stop']['max-s'] else ''
+  generator-design-field-frame-budget:
+    alias: frame-budget
+    slot_uri: pixlnd:generator-design/frame-budget
+    description: Source frame-budget of generator-design.
+    required: true
+    range: generator-design-frame-budget
+    inlined: true

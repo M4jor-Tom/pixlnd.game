@@ -1,0 +1,146 @@
+id: https://w3id.org/pixlnd/design-world/enemy-scaling
+name: pixlnd-design-world-enemy-scaling
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-design-enemy-level:
+    class_uri: pixlnd:generator-design-enemy-level
+    description: Configuration component generator-design-enemy-level; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      rule:
+        alias: rule
+        slot_uri: pixlnd:generator-design-enemy-level/rule
+        description: Source rule of generator-design-enemy-level.
+        required: true
+        range: string
+      below:
+        alias: below
+        slot_uri: pixlnd:generator-design-enemy-level/below
+        description: Source below of generator-design-enemy-level.
+        required: true
+        range: integer
+      above:
+        alias: above
+        slot_uri: pixlnd:generator-design-enemy-level/above
+        description: Source above of generator-design-enemy-level.
+        required: true
+        range: integer
+      danger-tiers:
+        alias: danger-tiers
+        slot_uri: pixlnd:generator-design-enemy-level/danger-tiers
+        description: Source danger-tiers of generator-design-enemy-level.
+        required: true
+        range: generator-design-enemy-level-danger-tiers
+        inlined: true
+      tier-weights:
+        alias: tier-weights
+        slot_uri: pixlnd:generator-design-enemy-level/tier-weights
+        description: Source tier-weights of generator-design-enemy-level.
+        required: true
+        range: generator-design-enemy-level-tier-weights
+        inlined: true
+      config:
+        alias: config
+        slot_uri: pixlnd:generator-design-enemy-level/config
+        description: Source config of generator-design-enemy-level.
+        required: true
+        range: string
+  generator-design-enemy-level-tier-weights:
+    class_uri: pixlnd:generator-design-enemy-level-tier-weights
+    description: Configuration component generator-design-enemy-level-tier-weights; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      safe:
+        alias: safe
+        slot_uri: pixlnd:generator-design-enemy-level-tier-weights/safe
+        description: Source safe of generator-design-enemy-level-tier-weights.
+        required: true
+        range: double
+      normal:
+        alias: normal
+        slot_uri: pixlnd:generator-design-enemy-level-tier-weights/normal
+        description: Source normal of generator-design-enemy-level-tier-weights.
+        required: true
+        range: double
+      dangerous:
+        alias: dangerous
+        slot_uri: pixlnd:generator-design-enemy-level-tier-weights/dangerous
+        description: Source dangerous of generator-design-enemy-level-tier-weights.
+        required: true
+        range: double
+  generator-design-enemy-level-danger-tiers:
+    class_uri: pixlnd:generator-design-enemy-level-danger-tiers
+    description: Configuration component generator-design-enemy-level-danger-tiers; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      safe:
+        alias: safe
+        slot_uri: pixlnd:generator-design-enemy-level-danger-tiers/safe
+        description: Source safe of generator-design-enemy-level-danger-tiers.
+        required: true
+        range: double
+      normal:
+        alias: normal
+        slot_uri: pixlnd:generator-design-enemy-level-danger-tiers/normal
+        description: Source normal of generator-design-enemy-level-danger-tiers.
+        required: true
+        range: double
+      dangerous:
+        alias: dangerous
+        slot_uri: pixlnd:generator-design-enemy-level-danger-tiers/dangerous
+        description: Source dangerous of generator-design-enemy-level-danger-tiers.
+        required: true
+        range: double
+  generator-design-enemy-hp:
+    class_uri: pixlnd:generator-design-enemy-hp
+    description: Configuration component generator-design-enemy-hp; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      rule:
+        alias: rule
+        slot_uri: pixlnd:generator-design-enemy-hp/rule
+        description: Source rule of generator-design-enemy-hp.
+        required: true
+        range: string
+      family-mult:
+        alias: family-mult
+        slot_uri: pixlnd:generator-design-enemy-hp/family-mult
+        description: Source family-mult of generator-design-enemy-hp.
+        required: true
+        range: string
+      calibration:
+        alias: calibration
+        slot_uri: pixlnd:generator-design-enemy-hp/calibration
+        description: Source calibration of generator-design-enemy-hp.
+        required: true
+        range: string
+      formula:
+        alias: formula
+        slot_uri: pixlnd:generator-design-enemy-hp/formula
+        description: Source formula of generator-design-enemy-hp.
+        required: true
+        range: string
+      power-base:
+        alias: power-base
+        slot_uri: pixlnd:generator-design-enemy-hp/power-base
+        description: Source power-base of generator-design-enemy-hp.
+        required: true
+        range: double
+        multivalued: true
+        minimum_cardinality: 2
+        maximum_cardinality: 2

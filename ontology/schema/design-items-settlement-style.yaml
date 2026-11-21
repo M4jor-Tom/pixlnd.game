@@ -1,0 +1,93 @@
+id: https://w3id.org/pixlnd/design-items/settlement-style
+name: pixlnd-design-items-settlement-style
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+- world-landscape
+
+classes:
+  generator-design-settlement-style-by-landscape:
+    class_uri: pixlnd:generator-design-settlement-style-by-landscape
+    description: Configuration component generator-design-settlement-style-by-landscape; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      entries:
+        alias: entries
+        slot_uri: pixlnd:generator-design-settlement-style-by-landscape/entries
+        description: Source entries of generator-design-settlement-style-by-landscape.
+        required: true
+        range: generator-design-settlement-style-by-landscape-entry
+        inlined: true
+        multivalued: true
+        minimum_cardinality: 0
+        inlined_as_list: true
+    annotations:
+      source-map-entries: entries
+  generator-design-settlement-style-by-landscape-entry:
+    class_uri: pixlnd:generator-design-settlement-style-by-landscape-entry
+    description: Configuration component generator-design-settlement-style-by-landscape-entry; applicability follows the linked source
+      rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      key:
+        alias: key
+        slot_uri: pixlnd:generator-design-settlement-style-by-landscape-entry/key
+        description: Source key of generator-design-settlement-style-by-landscape-entry.
+        required: true
+        range: landscape
+      value:
+        alias: value
+        slot_uri: pixlnd:generator-design-settlement-style-by-landscape-entry/value
+        description: Source value of generator-design-settlement-style-by-landscape-entry.
+        required: true
+        range: string
+  generator-design-settlement-style-colors:
+    class_uri: pixlnd:generator-design-settlement-style-colors
+    description: Configuration component generator-design-settlement-style-colors; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      entries:
+        alias: entries
+        slot_uri: pixlnd:generator-design-settlement-style-colors/entries
+        description: Source entries of generator-design-settlement-style-colors.
+        required: true
+        range: generator-design-settlement-style-colors-entry
+        inlined: true
+        multivalued: true
+        minimum_cardinality: 0
+        inlined_as_list: true
+    annotations:
+      source-map-entries: entries
+  generator-design-settlement-style-colors-entry:
+    class_uri: pixlnd:generator-design-settlement-style-colors-entry
+    description: Configuration component generator-design-settlement-style-colors-entry; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      key:
+        alias: key
+        slot_uri: pixlnd:generator-design-settlement-style-colors-entry/key
+        description: Source key of generator-design-settlement-style-colors-entry.
+        required: true
+        range: string
+      value:
+        alias: value
+        slot_uri: pixlnd:generator-design-settlement-style-colors-entry/value
+        description: Source value of generator-design-settlement-style-colors-entry.
+        required: true
+        range: string
+        pattern: ^#[0-9a-fA-F]{6}(?:[0-9a-fA-F]{2})?(?![\s\S])
+        multivalued: true
+        minimum_cardinality: 2
+        maximum_cardinality: 2

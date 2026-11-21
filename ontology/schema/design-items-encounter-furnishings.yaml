@@ -1,0 +1,142 @@
+id: https://w3id.org/pixlnd/design-items/encounter-furnishings
+name: pixlnd-design-items-encounter-furnishings
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-design-initial-encounters-furnishings:
+    class_uri: pixlnd:generator-design-initial-encounters-furnishings
+    description: Configuration component generator-design-initial-encounters-furnishings; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      vase:
+        alias: vase
+        slot_uri: pixlnd:generator-design-initial-encounters-furnishings/vase
+        description: Source vase of generator-design-initial-encounters-furnishings.
+        required: true
+        range: generator-design-initial-encounters-furnishings-vase
+        inlined: true
+      table:
+        alias: table
+        slot_uri: pixlnd:generator-design-initial-encounters-furnishings/table
+        description: Source table of generator-design-initial-encounters-furnishings.
+        required: true
+        range: generator-design-initial-encounters-furnishings-table
+        inlined: true
+      armor:
+        alias: armor
+        slot_uri: pixlnd:generator-design-initial-encounters-furnishings/armor
+        description: Source armor of generator-design-initial-encounters-furnishings.
+        required: true
+        range: integer
+        minimum_value: 0
+        maximum_value: 0
+  generator-design-initial-encounters-furnishings-vase:
+    class_uri: pixlnd:generator-design-initial-encounters-furnishings-vase
+    description: Configuration component generator-design-initial-encounters-furnishings-vase; applicability follows the linked source
+      rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      per-room:
+        alias: per-room
+        slot_uri: pixlnd:generator-design-initial-encounters-furnishings-vase/per-room
+        description: Source per-room of generator-design-initial-encounters-furnishings-vase.
+        required: true
+        range: integer
+        minimum_value: 2
+        maximum_value: 2
+      hp:
+        alias: hp
+        slot_uri: pixlnd:generator-design-initial-encounters-furnishings-vase/hp
+        description: Source hp of generator-design-initial-encounters-furnishings-vase.
+        required: true
+        range: integer
+        minimum_value: 10
+        maximum_value: 10
+      coin-base:
+        alias: coin-base
+        slot_uri: pixlnd:generator-design-initial-encounters-furnishings-vase/coin-base
+        description: Source coin-base of generator-design-initial-encounters-furnishings-vase.
+        required: true
+        range: integer
+        minimum_value: 1
+        maximum_value: 1
+      coin-per-level:
+        alias: coin-per-level
+        slot_uri: pixlnd:generator-design-initial-encounters-furnishings-vase/coin-per-level
+        description: Source coin-per-level of generator-design-initial-encounters-furnishings-vase.
+        required: true
+        range: integer
+        minimum_value: 2
+        maximum_value: 2
+  generator-design-initial-encounters-furnishings-table:
+    class_uri: pixlnd:generator-design-initial-encounters-furnishings-table
+    description: Configuration component generator-design-initial-encounters-furnishings-table; applicability follows the linked source
+      rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      per-room:
+        alias: per-room
+        slot_uri: pixlnd:generator-design-initial-encounters-furnishings-table/per-room
+        description: Source per-room of generator-design-initial-encounters-furnishings-table.
+        required: true
+        range: integer
+        minimum_value: 1
+        maximum_value: 1
+      hp:
+        alias: hp
+        slot_uri: pixlnd:generator-design-initial-encounters-furnishings-table/hp
+        description: Source hp of generator-design-initial-encounters-furnishings-table.
+        required: true
+        range: integer
+        minimum_value: 20
+        maximum_value: 20
+      flask:
+        alias: flask
+        slot_uri: pixlnd:generator-design-initial-encounters-furnishings-table/flask
+        description: Source flask of generator-design-initial-encounters-furnishings-table.
+        required: true
+        range: string
+        equals_string: glass-flask
+      flask-count:
+        alias: flask-count
+        slot_uri: pixlnd:generator-design-initial-encounters-furnishings-table/flask-count
+        description: Source flask-count of generator-design-initial-encounters-furnishings-table.
+        required: true
+        range: integer
+        minimum_value: 1
+        maximum_value: 1
+      potion:
+        alias: potion
+        slot_uri: pixlnd:generator-design-initial-encounters-furnishings-table/potion
+        description: Source potion of generator-design-initial-encounters-furnishings-table.
+        required: true
+        range: string
+        equals_string: life-potion
+      potion-count:
+        alias: potion-count
+        slot_uri: pixlnd:generator-design-initial-encounters-furnishings-table/potion-count
+        description: Source potion-count of generator-design-initial-encounters-furnishings-table.
+        required: true
+        range: integer
+        minimum_value: 1
+        maximum_value: 1
+      potion-rarity:
+        alias: potion-rarity
+        slot_uri: pixlnd:generator-design-initial-encounters-furnishings-table/potion-rarity
+        description: Source potion-rarity of generator-design-initial-encounters-furnishings-table.
+        required: true
+        range: integer
+        minimum_value: 0
+        maximum_value: 0

@@ -1,0 +1,19 @@
+id: https://w3id.org/pixlnd/design-items/source-alpha-network
+name: pixlnd-design-items-source-alpha-network
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+- design-world-alpha-network
+
+slots:
+  generators-source-field-network-alpha:
+    alias: network-alpha
+    slot_uri: pixlnd:generators-source/network-alpha
+    description: Source network-alpha of generators-source.
+    required: true
+    range: generator-source-network-alpha
+    inlined: true

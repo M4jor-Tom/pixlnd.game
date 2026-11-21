@@ -1,0 +1,109 @@
+id: https://w3id.org/pixlnd/design-items/loot-gear
+name: pixlnd-design-items-loot-gear
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+- items-item-catalog
+
+classes:
+  generator-design-loot-gear-kinds:
+    class_uri: pixlnd:generator-design-loot-gear-kinds
+    description: Configuration component generator-design-loot-gear-kinds; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      entries:
+        alias: entries
+        slot_uri: pixlnd:generator-design-loot-gear-kinds/entries
+        description: Source entries of generator-design-loot-gear-kinds.
+        required: true
+        range: generator-design-loot-gear-kinds-entry
+        inlined: true
+        multivalued: true
+        minimum_cardinality: 5
+        inlined_as_list: true
+        maximum_cardinality: 5
+    annotations:
+      source-map-entries: entries
+  generator-design-loot-gear-kinds-entry:
+    class_uri: pixlnd:generator-design-loot-gear-kinds-entry
+    description: Configuration component generator-design-loot-gear-kinds-entry; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      key:
+        alias: key
+        slot_uri: pixlnd:generator-design-loot-gear-kinds-entry/key
+        description: Source key of generator-design-loot-gear-kinds-entry.
+        required: true
+        range: item-type
+        equals_string_in:
+        - weapon
+        - chest-armor
+        - gloves
+        - boots
+        - shoulder-armor
+      value:
+        alias: value
+        slot_uri: pixlnd:generator-design-loot-gear-kinds-entry/value
+        description: Source value of generator-design-loot-gear-kinds-entry.
+        required: true
+        range: double
+        minimum_value: 0
+    rules:
+    - preconditions:
+        slot_conditions:
+          key:
+            equals_string: weapon
+      postconditions:
+        slot_conditions:
+          value:
+            range: double
+            minimum_value: 4
+            maximum_value: 4
+    - preconditions:
+        slot_conditions:
+          key:
+            equals_string: chest-armor
+      postconditions:
+        slot_conditions:
+          value:
+            range: double
+            minimum_value: 2
+            maximum_value: 2
+    - preconditions:
+        slot_conditions:
+          key:
+            equals_string: gloves
+      postconditions:
+        slot_conditions:
+          value:
+            range: double
+            minimum_value: 2
+            maximum_value: 2
+    - preconditions:
+        slot_conditions:
+          key:
+            equals_string: boots
+      postconditions:
+        slot_conditions:
+          value:
+            range: double
+            minimum_value: 2
+            maximum_value: 2
+    - preconditions:
+        slot_conditions:
+          key:
+            equals_string: shoulder-armor
+      postconditions:
+        slot_conditions:
+          value:
+            range: double
+            minimum_value: 2
+            maximum_value: 2

@@ -1,0 +1,104 @@
+id: https://w3id.org/pixlnd/design-world/spawn-ai
+name: pixlnd-design-world-spawn-ai
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-design-spawns-ai:
+    class_uri: pixlnd:generator-design-spawns-ai
+    description: Configuration component generator-design-spawns-ai; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      doc:
+        alias: _doc
+        slot_uri: pixlnd:generator-design-spawns-ai/doc
+        description: Source _doc of generator-design-spawns-ai.
+        required: true
+        range: string
+      threat-per-full-hp:
+        alias: threat-per-full-hp
+        slot_uri: pixlnd:generator-design-spawns-ai/threat-per-full-hp
+        description: Source threat-per-full-hp of generator-design-spawns-ai.
+        required: true
+        range: double
+        minimum_value: 100.0
+        maximum_value: 100.0
+      threat-decay-per-s:
+        alias: threat-decay-per-s
+        slot_uri: pixlnd:generator-design-spawns-ai/threat-decay-per-s
+        description: Source threat-decay-per-s of generator-design-spawns-ai.
+        required: true
+        range: double
+        minimum_value: 1.0
+        maximum_value: 1.0
+      return-speed-mult:
+        alias: return-speed-mult
+        slot_uri: pixlnd:generator-design-spawns-ai/return-speed-mult
+        description: Source return-speed-mult of generator-design-spawns-ai.
+        required: true
+        range: double
+        minimum_value: 2.0
+        maximum_value: 2.0
+      return-damage-reduction:
+        alias: return-damage-reduction
+        slot_uri: pixlnd:generator-design-spawns-ai/return-damage-reduction
+        description: Source return-damage-reduction of generator-design-spawns-ai.
+        required: true
+        range: double
+        minimum_value: 0.9
+        maximum_value: 0.9
+      sim-radius:
+        alias: sim-radius
+        slot_uri: pixlnd:generator-design-spawns-ai/sim-radius
+        description: Source sim-radius of generator-design-spawns-ai.
+        required: true
+        range: double
+        minimum_value: 0
+      aggro-range:
+        alias: aggro-range
+        slot_uri: pixlnd:generator-design-spawns-ai/aggro-range
+        description: Source aggro-range of generator-design-spawns-ai.
+        required: true
+        range: double
+        minimum_value: 0
+      leash:
+        alias: leash
+        slot_uri: pixlnd:generator-design-spawns-ai/leash
+        description: Source leash of generator-design-spawns-ai.
+        required: true
+        range: double
+        minimum_value: 0
+      wander-radius:
+        alias: wander-radius
+        slot_uri: pixlnd:generator-design-spawns-ai/wander-radius
+        description: Source wander-radius of generator-design-spawns-ai.
+        required: true
+        range: integer
+      wander-pause-s:
+        alias: wander-pause-s
+        slot_uri: pixlnd:generator-design-spawns-ai/wander-pause-s
+        description: Source wander-pause-s of generator-design-spawns-ai.
+        required: true
+        range: integer
+        multivalued: true
+        minimum_cardinality: 2
+        maximum_cardinality: 2
+      walk:
+        alias: walk
+        slot_uri: pixlnd:generator-design-spawns-ai/walk
+        description: Source walk of generator-design-spawns-ai.
+        required: true
+        range: double
+      chase:
+        alias: chase
+        slot_uri: pixlnd:generator-design-spawns-ai/chase
+        description: Source chase of generator-design-spawns-ai.
+        required: true
+        range: double

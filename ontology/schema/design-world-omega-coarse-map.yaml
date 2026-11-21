@@ -1,0 +1,41 @@
+id: https://w3id.org/pixlnd/design-world/omega-coarse-map
+name: pixlnd-design-world-omega-coarse-map
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-source-coarse-map-omega:
+    class_uri: pixlnd:generator-source-coarse-map-omega
+    description: Configuration component generator-source-coarse-map-omega; applicability follows the linked source rules. Historical
+      facts retain their explicit A/S/X/Omega scope; hybrid overrides remain authoritative.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      places:
+        alias: places
+        slot_uri: pixlnd:generator-source-coarse-map-omega/places
+        description: Source places of generator-source-coarse-map-omega.
+        required: true
+        range: string
+        multivalued: true
+        minimum_cardinality: 0
+      then:
+        alias: then
+        slot_uri: pixlnd:generator-source-coarse-map-omega/then
+        description: Source then of generator-source-coarse-map-omega.
+        required: true
+        range: string
+      planned-use:
+        alias: planned-use
+        slot_uri: pixlnd:generator-source-coarse-map-omega/planned-use
+        description: Source planned-use of generator-source-coarse-map-omega.
+        required: true
+        range: string
+        multivalued: true
+        minimum_cardinality: 0

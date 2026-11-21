@@ -1,0 +1,61 @@
+id: https://w3id.org/pixlnd/design-world/source-terrain
+name: pixlnd-design-world-source-terrain
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-source-terrain:
+    class_uri: pixlnd:generator-source-terrain
+    description: Configuration component generator-source-terrain; applicability follows the linked source rules. Historical facts retain
+      their explicit A/S/X/Omega scope; hybrid overrides remain authoritative.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      block-palette:
+        alias: block-palette
+        slot_uri: pixlnd:generator-source-terrain/block-palette
+        description: Source block-palette of generator-source-terrain.
+        required: true
+        range: string
+      features:
+        alias: features
+        slot_uri: pixlnd:generator-source-terrain/features
+        description: Source features of generator-source-terrain.
+        required: true
+        range: string
+      water-level:
+        alias: water-level
+        slot_uri: pixlnd:generator-source-terrain/water-level
+        description: Source water-level of generator-source-terrain.
+        required: true
+        range: string
+      noise-params:
+        alias: noise-params
+        slot_uri: pixlnd:generator-source-terrain/noise-params
+        description: Source noise-params of generator-source-terrain.
+        required: true
+        range: string
+      roads:
+        alias: roads
+        slot_uri: pixlnd:generator-source-terrain/roads
+        description: Source roads of generator-source-terrain.
+        required: true
+        range: string
+      caves:
+        alias: caves
+        slot_uri: pixlnd:generator-source-terrain/caves
+        description: Source caves of generator-source-terrain.
+        required: true
+        range: string
+      rivers:
+        alias: rivers
+        slot_uri: pixlnd:generator-source-terrain/rivers
+        description: Source rivers of generator-source-terrain.
+        required: true
+        range: string

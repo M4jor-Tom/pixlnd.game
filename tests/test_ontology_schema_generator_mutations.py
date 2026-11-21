@@ -56,11 +56,11 @@ class GeneratorMutationTests(unittest.TestCase):
                 if mutation == "required-member":
                     data["classes"]["generator-design-movesets"]["all_of"].pop()
                 elif mutation == "attachment":
-                    data["classes"]["generators-source"]["attributes"]["design"]["range"] = "generator-design-terrain"
+                    data["slots"]["generators-source-field-design"]["range"] = "generator-design-terrain"
                 elif mutation == "alias":
-                    data["classes"]["generator-design-terrain"]["attributes"]["zone-blocks"]["alias"] = "zone-count"
+                    data["slots"]["generator-design-terrain-field-zone-blocks"]["alias"] = "zone-count"
                 else:
-                    data["classes"]["generator-design-terrain"]["attributes"]["zone-blocks"].pop("maximum_value")
+                    data["slots"]["generator-design-terrain-field-zone-blocks"].pop("maximum_value")
                 path.write_text(yaml.safe_dump(data, sort_keys=False))
                 with self.assertRaises(AssertionError):
                     declaration_oracle(self, target)
@@ -135,13 +135,13 @@ class GeneratorMutationTests(unittest.TestCase):
     def test_actual_yaml_coupling_and_context_loss(self):
         declaration_oracle(self)
         cases = [
-            ("settlement-minimum", "design-items", ("generator-design-settlement", "attributes", "radius", "minimum_value"), None),
-            ("settlement-conjunctions", "design-items", ("generator-design", "attributes", "settlement", "all_of"), None),
-            ("feel-maximum", "design-items", ("generator-design", "attributes", "feel", "equals_expression"), None),
-            ("dodge-maximum", "design-items", ("generators-source", "attributes", "design", "equals_expression"), None),
-            ("role-raw-key", "design-combat", ("generator-design-creature-roles", "attributes", "ranged", "equals_expression"),
+            ("settlement-minimum", "design-items", ("classes", "generator-design-settlement", "attributes", "radius", "minimum_value"), None),
+            ("settlement-conjunctions", "design-items", ("slots", "generator-design-field-settlement", "all_of"), None),
+            ("feel-maximum", "design-items", ("slots", "generator-design-field-feel", "equals_expression"), None),
+            ("dodge-maximum", "design-items", ("slots", "generators-source-field-design", "equals_expression"), None),
+            ("role-raw-key", "design-combat", ("classes", "generator-design-creature-roles", "attributes", "ranged", "equals_expression"),
              "ranged if ranged['range'] > ranged['keep_away'] else ''"),
-            ("simulation-radius", "design-world", ("generator-design-spawns", "attributes", "ai", "equals_expression"), None),
+            ("simulation-radius", "design-world", ("classes", "generator-design-spawns", "attributes", "ai", "equals_expression"), None),
         ]
         for label, module, parts, replacement in cases:
             with self.subTest(mutation=label), tempfile.TemporaryDirectory() as scratch:
@@ -150,7 +150,7 @@ class GeneratorMutationTests(unittest.TestCase):
                 path = target / (module + ".yaml")
                 before = path.read_text()
                 data = yaml.safe_load(before)
-                node = data["classes"]
+                node = data
                 for key in parts[:-1]:
                     node = node[key]
                 if replacement is None:

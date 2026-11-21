@@ -1,0 +1,65 @@
+id: https://w3id.org/pixlnd/design-world/source-names
+name: pixlnd-design-world-source-names
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-source-names:
+    class_uri: pixlnd:generator-source-names
+    description: Configuration component generator-source-names; applicability follows the linked source rules. Historical facts retain
+      their explicit A/S/X/Omega scope; hybrid overrides remain authoritative.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      land:
+        alias: land
+        slot_uri: pixlnd:generator-source-names/land
+        description: Source land of generator-source-names.
+        required: true
+        range: string
+      dungeon:
+        alias: dungeon
+        slot_uri: pixlnd:generator-source-names/dungeon
+        description: Source dungeon of generator-source-names.
+        required: true
+        range: string
+      realm:
+        alias: realm
+        slot_uri: pixlnd:generator-source-names/realm
+        description: Source realm of generator-source-names.
+        required: true
+        range: string
+      item:
+        alias: item
+        slot_uri: pixlnd:generator-source-names/item
+        description: Source item of generator-source-names.
+        required: true
+        range: string
+      quarter:
+        alias: quarter
+        slot_uri: pixlnd:generator-source-names/quarter
+        description: Source quarter of generator-source-names.
+        required: true
+        range: string
+        multivalued: true
+        minimum_cardinality: 0
+      uniqueness:
+        alias: uniqueness
+        slot_uri: pixlnd:generator-source-names/uniqueness
+        description: Source uniqueness of generator-source-names.
+        required: true
+        range: boolean
+      examples:
+        alias: examples
+        slot_uri: pixlnd:generator-source-names/examples
+        description: Source examples of generator-source-names.
+        required: true
+        range: string
+        multivalued: true
+        minimum_cardinality: 0

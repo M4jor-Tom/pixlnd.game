@@ -1,0 +1,147 @@
+id: https://w3id.org/pixlnd/design-world/source-land
+name: pixlnd-design-world-source-land
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-source-land:
+    class_uri: pixlnd:generator-source-land
+    description: Configuration component generator-source-land; applicability follows the linked source rules. Historical facts retain
+      their explicit A/S/X/Omega scope; hybrid overrides remain authoritative.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      alpha-level:
+        alias: alpha-level
+        slot_uri: pixlnd:generator-source-land/alpha-level
+        description: Source alpha-level of generator-source-land.
+        required: true
+        range: string
+      alpha-rarity:
+        alias: alpha-rarity
+        slot_uri: pixlnd:generator-source-land/alpha-rarity
+        description: Source alpha-rarity of generator-source-land.
+        required: true
+        range: string
+      steam-tiers:
+        alias: steam-tiers
+        slot_uri: pixlnd:generator-source-land/steam-tiers
+        description: Source steam-tiers of generator-source-land.
+        required: true
+        range: string
+        multivalued: true
+        minimum_cardinality: 0
+      border:
+        alias: border
+        slot_uri: pixlnd:generator-source-land/border
+        description: Source border of generator-source-land.
+        required: true
+        range: string
+      equal-size:
+        alias: equal-size
+        slot_uri: pixlnd:generator-source-land/equal-size
+        description: Source equal-size of generator-source-land.
+        required: true
+        range: boolean
+      steam-per-land:
+        alias: steam-per-land
+        slot_uri: pixlnd:generator-source-land/steam-per-land
+        description: Source steam-per-land of generator-source-land.
+        required: true
+        range: generator-source-land-steam-per-land
+        inlined: true
+      alpha-per-land:
+        alias: alpha-per-land
+        slot_uri: pixlnd:generator-source-land/alpha-per-land
+        description: Source alpha-per-land of generator-source-land.
+        required: true
+        range: generator-source-land-alpha-per-land
+        inlined: true
+  generator-source-land-steam-per-land:
+    class_uri: pixlnd:generator-source-land-steam-per-land
+    description: Configuration component generator-source-land-steam-per-land; applicability follows the linked source rules. Historical
+      facts retain their explicit A/S/X/Omega scope; hybrid overrides remain authoritative.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      gnomes:
+        alias: gnomes
+        slot_uri: pixlnd:generator-source-land-steam-per-land/gnomes
+        description: Source gnomes of generator-source-land-steam-per-land.
+        required: true
+        range: integer
+      books:
+        alias: books
+        slot_uri: pixlnd:generator-source-land-steam-per-land/books
+        description: Source books of generator-source-land-steam-per-land.
+        required: true
+        range: integer
+      movement-items:
+        alias: movement-items
+        slot_uri: pixlnd:generator-source-land-steam-per-land/movement-items
+        description: Source movement-items of generator-source-land-steam-per-land.
+        required: true
+        range: integer
+      ticket-items:
+        alias: ticket-items
+        slot_uri: pixlnd:generator-source-land-steam-per-land/ticket-items
+        description: Source ticket-items of generator-source-land-steam-per-land.
+        required: true
+        range: integer
+      key-items-max:
+        alias: key-items-max
+        slot_uri: pixlnd:generator-source-land-steam-per-land/key-items-max
+        description: Source key-items-max of generator-source-land-steam-per-land.
+        required: true
+        range: integer
+      towers-max:
+        alias: towers-max
+        slot_uri: pixlnd:generator-source-land-steam-per-land/towers-max
+        description: Source towers-max of generator-source-land-steam-per-land.
+        required: true
+        range: integer
+      circles:
+        alias: circles
+        slot_uri: pixlnd:generator-source-land-steam-per-land/circles
+        description: Source circles of generator-source-land-steam-per-land.
+        required: true
+        range: string
+      artifacts:
+        alias: artifacts
+        slot_uri: pixlnd:generator-source-land-steam-per-land/artifacts
+        description: Source artifacts of generator-source-land-steam-per-land.
+        required: true
+        range: string
+      settlements:
+        alias: settlements
+        slot_uri: pixlnd:generator-source-land-steam-per-land/settlements
+        description: Source settlements of generator-source-land-steam-per-land.
+        required: true
+        range: string
+  generator-source-land-alpha-per-land:
+    class_uri: pixlnd:generator-source-land-alpha-per-land
+    description: Configuration component generator-source-land-alpha-per-land; applicability follows the linked source rules. Historical
+      facts retain their explicit A/S/X/Omega scope; hybrid overrides remain authoritative.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      settlements:
+        alias: settlements
+        slot_uri: pixlnd:generator-source-land-alpha-per-land/settlements
+        description: Source settlements of generator-source-land-alpha-per-land.
+        required: true
+        range: integer
+      mission-cells:
+        alias: mission-cells
+        slot_uri: pixlnd:generator-source-land-alpha-per-land/mission-cells
+        description: Source mission-cells of generator-source-land-alpha-per-land.
+        required: true
+        range: integer

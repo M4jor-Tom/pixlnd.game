@@ -1,0 +1,125 @@
+id: https://w3id.org/pixlnd/design-items/prices
+name: pixlnd-design-items-prices
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+- design-items-loot-rarity
+
+classes:
+  generator-design-prices:
+    class_uri: pixlnd:generator-design-prices
+    description: Configuration component generator-design-prices; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      buy:
+        alias: buy
+        slot_uri: pixlnd:generator-design-prices/buy
+        description: Source buy of generator-design-prices.
+        required: true
+        range: string
+      sell:
+        alias: sell
+        slot_uri: pixlnd:generator-design-prices/sell
+        description: Source sell of generator-design-prices.
+        required: true
+        range: double
+      rarity-mult:
+        alias: rarity-mult
+        slot_uri: pixlnd:generator-design-prices/rarity-mult
+        description: Source rarity-mult of generator-design-prices.
+        required: true
+        range: generator-design-prices-rarity-mult
+        inlined: true
+      base:
+        alias: base
+        slot_uri: pixlnd:generator-design-prices/base
+        description: Source base of generator-design-prices.
+        required: true
+        range: generator-design-prices-base
+        inlined: true
+      calibration:
+        alias: calibration
+        slot_uri: pixlnd:generator-design-prices/calibration
+        description: Source calibration of generator-design-prices.
+        required: true
+        range: string
+  generator-design-prices-base:
+    class_uri: pixlnd:generator-design-prices-base
+    description: Configuration component generator-design-prices-base; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      entries:
+        alias: entries
+        slot_uri: pixlnd:generator-design-prices-base/entries
+        description: Source entries of generator-design-prices-base.
+        required: true
+        range: generator-design-prices-base-entry
+        inlined: true
+        multivalued: true
+        minimum_cardinality: 0
+        inlined_as_list: true
+    annotations:
+      source-map-entries: entries
+  generator-design-prices-base-entry:
+    class_uri: pixlnd:generator-design-prices-base-entry
+    description: Configuration component generator-design-prices-base-entry; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      key:
+        alias: key
+        slot_uri: pixlnd:generator-design-prices-base-entry/key
+        description: Source key of generator-design-prices-base-entry.
+        required: true
+        range: string
+      value:
+        alias: value
+        slot_uri: pixlnd:generator-design-prices-base-entry/value
+        description: Source value of generator-design-prices-base-entry.
+        required: true
+        range: double
+        minimum_value: 0
+  generator-design-prices-rarity-mult:
+    class_uri: pixlnd:generator-design-prices-rarity-mult
+    description: Source configuration component; applicability follows the linked rule.
+    see_also:
+    - ../domain/5_Constraints.md#constraint-catalog
+    attributes:
+      entries:
+        alias: entries
+        slot_uri: pixlnd:generator-design-prices-rarity-mult/entries
+        description: Source entries of generator-design-prices-rarity-mult.
+        required: true
+        range: generator-design-prices-rarity-mult-entry
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+    annotations:
+      source-map-entries: entries
+  generator-design-prices-rarity-mult-entry:
+    class_uri: pixlnd:generator-design-prices-rarity-mult-entry
+    description: Source configuration component; applicability follows the linked rule.
+    see_also:
+    - ../domain/5_Constraints.md#constraint-catalog
+    attributes:
+      key:
+        alias: key
+        slot_uri: pixlnd:generator-design-prices-rarity-mult-entry/key
+        description: Source key of generator-design-prices-rarity-mult-entry.
+        required: true
+        range: GeneratorRarity
+      value:
+        alias: value
+        slot_uri: pixlnd:generator-design-prices-rarity-mult-entry/value
+        description: Source value of generator-design-prices-rarity-mult-entry.
+        required: true
+        range: double

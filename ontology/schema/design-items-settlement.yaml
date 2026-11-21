@@ -1,0 +1,131 @@
+id: https://w3id.org/pixlnd/design-items/settlement
+name: pixlnd-design-items-settlement
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+- design-items-settlement-layout
+- design-items-settlement-npcs
+- design-items-settlement-services
+- design-items-settlement-style
+- world-settlement
+
+classes:
+  generator-design-settlement:
+    class_uri: pixlnd:generator-design-settlement
+    description: Configuration component generator-design-settlement; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      doc:
+        alias: _doc
+        slot_uri: pixlnd:generator-design-settlement/doc
+        description: Source _doc of generator-design-settlement.
+        required: true
+        range: string
+      per-land:
+        alias: per-land
+        slot_uri: pixlnd:generator-design-settlement/per-land
+        description: Source per-land of generator-design-settlement.
+        required: true
+        range: integer
+        minimum_value: 1
+        maximum_value: 1
+      placement:
+        alias: placement
+        slot_uri: pixlnd:generator-design-settlement/placement
+        description: Source placement of generator-design-settlement.
+        required: true
+        range: generator-design-settlement-placement
+        inlined: true
+      radius:
+        alias: radius
+        slot_uri: pixlnd:generator-design-settlement/radius
+        description: Source radius of generator-design-settlement.
+        required: true
+        range: double
+        minimum_value: 0
+        none_of:
+        - range: double
+          equals_number: 0
+      blend:
+        alias: blend
+        slot_uri: pixlnd:generator-design-settlement/blend
+        description: Source blend of generator-design-settlement.
+        required: true
+        range: double
+        minimum_value: 0
+      ring-radius:
+        alias: ring-radius
+        slot_uri: pixlnd:generator-design-settlement/ring-radius
+        description: Source ring-radius of generator-design-settlement.
+        required: true
+        range: double
+      buildings:
+        alias: buildings
+        slot_uri: pixlnd:generator-design-settlement/buildings
+        description: Source buildings of generator-design-settlement.
+        required: true
+        range: building
+        multivalued: true
+        minimum_cardinality: 0
+      footprint:
+        alias: footprint
+        slot_uri: pixlnd:generator-design-settlement/footprint
+        description: Source footprint of generator-design-settlement.
+        required: true
+        range: generator-design-settlement-footprint
+        inlined: true
+      style-by-landscape:
+        alias: style-by-landscape
+        slot_uri: pixlnd:generator-design-settlement/style-by-landscape
+        description: Source style-by-landscape of generator-design-settlement.
+        required: true
+        range: generator-design-settlement-style-by-landscape
+        inlined: true
+      style-colors:
+        alias: style-colors
+        slot_uri: pixlnd:generator-design-settlement/style-colors
+        description: Source style-colors of generator-design-settlement.
+        required: true
+        range: generator-design-settlement-style-colors
+        inlined: true
+      npc:
+        alias: npc
+        slot_uri: pixlnd:generator-design-settlement/npc
+        description: Source npc of generator-design-settlement.
+        required: true
+        range: generator-design-settlement-npc
+        inlined: true
+      shop:
+        alias: shop
+        slot_uri: pixlnd:generator-design-settlement/shop
+        description: Source shop of generator-design-settlement.
+        required: true
+        range: generator-design-settlement-shop
+        inlined: true
+      trainer:
+        alias: trainer
+        slot_uri: pixlnd:generator-design-settlement/trainer
+        description: Source trainer of generator-design-settlement.
+        required: true
+        range: generator-design-settlement-trainer
+        inlined: true
+      inn:
+        alias: inn
+        slot_uri: pixlnd:generator-design-settlement/inn
+        description: Source inn of generator-design-settlement.
+        required: true
+        range: generator-design-settlement-inn
+        inlined: true
+      no-hostiles-within:
+        alias: no-hostiles-within
+        slot_uri: pixlnd:generator-design-settlement/no-hostiles-within
+        description: Source no-hostiles-within of generator-design-settlement.
+        required: true
+        range: double
+        minimum_value: 0

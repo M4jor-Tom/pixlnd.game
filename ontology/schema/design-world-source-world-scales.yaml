@@ -1,0 +1,119 @@
+id: https://w3id.org/pixlnd/design-world/source-world-scales
+name: pixlnd-design-world-source-world-scales
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+- design-world-source-edition-scales
+
+classes:
+  generator-source-world-scales:
+    class_uri: pixlnd:generator-source-world-scales
+    description: Configuration component generator-source-world-scales; applicability follows the linked source rules. Historical facts
+      retain their explicit A/S/X/Omega scope; hybrid overrides remain authoritative.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      block-native-units:
+        alias: block-native-units
+        slot_uri: pixlnd:generator-source-world-scales/block-native-units
+        description: Source block-native-units of generator-source-world-scales.
+        required: true
+        range: integer
+      position-type:
+        alias: position-type
+        slot_uri: pixlnd:generator-source-world-scales/position-type
+        description: Source position-type of generator-source-world-scales.
+        required: true
+        range: string
+      full-mask:
+        alias: full-mask
+        slot_uri: pixlnd:generator-source-world-scales/full-mask
+        description: Source full-mask of generator-source-world-scales.
+        required: true
+        range: string
+      alpha:
+        alias: alpha
+        slot_uri: pixlnd:generator-source-world-scales/alpha
+        description: Source alpha of generator-source-world-scales.
+        required: true
+        range: generator-source-world-scales-alpha
+        inlined: true
+      steam:
+        alias: steam
+        slot_uri: pixlnd:generator-source-world-scales/steam
+        description: Source steam of generator-source-world-scales.
+        required: true
+        range: generator-source-world-scales-steam
+        inlined: true
+      generation-neighbourhood:
+        alias: generation-neighbourhood
+        slot_uri: pixlnd:generator-source-world-scales/generation-neighbourhood
+        description: Source generation-neighbourhood of generator-source-world-scales.
+        required: true
+        range: generator-source-world-scales-generation-neighbourhood
+        inlined: true
+      server-chunk-retire-s:
+        alias: server-chunk-retire-s
+        slot_uri: pixlnd:generator-source-world-scales/server-chunk-retire-s
+        description: Source server-chunk-retire-s of generator-source-world-scales.
+        required: true
+        range: integer
+      invariants:
+        alias: invariants
+        slot_uri: pixlnd:generator-source-world-scales/invariants
+        description: Source invariants of generator-source-world-scales.
+        required: true
+        range: string
+        multivalued: true
+        minimum_cardinality: 0
+  generator-source-world-scales-generation-neighbourhood:
+    class_uri: pixlnd:generator-source-world-scales-generation-neighbourhood
+    description: Configuration component generator-source-world-scales-generation-neighbourhood; applicability follows the linked source
+      rules. Historical facts retain their explicit A/S/X/Omega scope; hybrid overrides remain authoritative.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      region-data:
+        alias: region-data
+        slot_uri: pixlnd:generator-source-world-scales-generation-neighbourhood/region-data
+        description: Source region-data of generator-source-world-scales-generation-neighbourhood.
+        required: true
+        range: string
+      region-seeds:
+        alias: region-seeds
+        slot_uri: pixlnd:generator-source-world-scales-generation-neighbourhood/region-seeds
+        description: Source region-seeds of generator-source-world-scales-generation-neighbourhood.
+        required: true
+        range: string
+  generator-source-seed:
+    class_uri: pixlnd:generator-source-seed
+    description: Configuration component generator-source-seed; applicability follows the linked source rules. Historical facts retain
+      their explicit A/S/X/Omega scope; hybrid overrides remain authoritative.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      alpha-default:
+        alias: alpha-default
+        slot_uri: pixlnd:generator-source-seed/alpha-default
+        description: Source alpha-default of generator-source-seed.
+        required: true
+        range: integer
+      alpha-source:
+        alias: alpha-source
+        slot_uri: pixlnd:generator-source-seed/alpha-source
+        description: Source alpha-source of generator-source-seed.
+        required: true
+        range: string
+      steam:
+        alias: steam
+        slot_uri: pixlnd:generator-source-seed/steam
+        description: Source steam of generator-source-seed.
+        required: true
+        range: string

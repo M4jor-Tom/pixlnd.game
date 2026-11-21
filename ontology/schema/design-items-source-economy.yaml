@@ -1,0 +1,38 @@
+id: https://w3id.org/pixlnd/design-items/source-economy
+name: pixlnd-design-items-source-economy
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+- design-world-source-item
+
+slots:
+  generators-source-field-item:
+    alias: item
+    slot_uri: pixlnd:generators-source/item
+    description: Source item of generators-source.
+    required: true
+    range: generator-source-item
+    inlined: true
+  generators-source-field-loot:
+    alias: loot
+    slot_uri: pixlnd:generators-source/loot
+    description: Source loot of generators-source.
+    required: true
+    range: string
+  generators-source-field-key-items-s:
+    alias: key-items-s
+    slot_uri: pixlnd:generators-source/key-items-s
+    description: Source key-items-s of generators-source.
+    required: true
+    range: generator-source-key-items-s
+    inlined: true
+  generators-source-field-level-formulas-alpha:
+    alias: level-formulas-alpha
+    slot_uri: pixlnd:generators-source/level-formulas-alpha
+    description: Source level-formulas-alpha of generators-source.
+    required: true
+    range: string

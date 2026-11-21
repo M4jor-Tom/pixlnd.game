@@ -1,0 +1,94 @@
+id: https://w3id.org/pixlnd/design-items/settlement-services
+name: pixlnd-design-items-settlement-services
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+- design-items-loot-rarity
+
+classes:
+  generator-design-settlement-shop:
+    class_uri: pixlnd:generator-design-settlement-shop
+    description: Configuration component generator-design-settlement-shop; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      stock:
+        alias: stock
+        slot_uri: pixlnd:generator-design-settlement-shop/stock
+        description: Source stock of generator-design-settlement-shop.
+        required: true
+        range: integer
+        minimum_value: 8
+        maximum_value: 8
+      rarity-cap:
+        alias: rarity-cap
+        slot_uri: pixlnd:generator-design-settlement-shop/rarity-cap
+        description: Source rarity-cap of generator-design-settlement-shop.
+        required: true
+        range: GeneratorRarity
+        equals_string: common
+      level-spread:
+        alias: level-spread
+        slot_uri: pixlnd:generator-design-settlement-shop/level-spread
+        description: Source level-spread of generator-design-settlement-shop.
+        required: true
+        range: integer
+        minimum_value: 1
+        maximum_value: 1
+      item-shop-pool:
+        alias: item-shop-pool
+        slot_uri: pixlnd:generator-design-settlement-shop/item-shop-pool
+        description: Source item-shop-pool of generator-design-settlement-shop.
+        required: true
+        range: string
+        equals_string: design.loot.consumable-pool
+      restock:
+        alias: restock
+        slot_uri: pixlnd:generator-design-settlement-shop/restock
+        description: Source restock of generator-design-settlement-shop.
+        required: true
+        range: string
+        equals_string: daily
+  generator-design-settlement-trainer:
+    class_uri: pixlnd:generator-design-settlement-trainer
+    description: Configuration component generator-design-settlement-trainer; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      respec-fee-per-level:
+        alias: respec-fee-per-level
+        slot_uri: pixlnd:generator-design-settlement-trainer/respec-fee-per-level
+        description: Source respec-fee-per-level of generator-design-settlement-trainer.
+        required: true
+        range: integer
+  generator-design-settlement-inn:
+    class_uri: pixlnd:generator-design-settlement-inn
+    description: Configuration component generator-design-settlement-inn; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      fee:
+        alias: fee
+        slot_uri: pixlnd:generator-design-settlement-inn/fee
+        description: Source fee of generator-design-settlement-inn.
+        required: true
+        range: integer
+      heal:
+        alias: heal
+        slot_uri: pixlnd:generator-design-settlement-inn/heal
+        description: Source heal of generator-design-settlement-inn.
+        required: true
+        range: boolean
+      sets-spawn:
+        alias: sets-spawn
+        slot_uri: pixlnd:generator-design-settlement-inn/sets-spawn
+        description: Source sets-spawn of generator-design-settlement-inn.
+        required: true
+        range: boolean

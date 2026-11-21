@@ -1,0 +1,92 @@
+id: https://w3id.org/pixlnd/design-items/encounter-special-charge
+name: pixlnd-design-items-encounter-special-charge
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-design-initial-encounters-special-profile-charge:
+    class_uri: pixlnd:generator-design-initial-encounters-special-profile-charge
+    description: Configuration component generator-design-initial-encounters-special-profile-charge; applicability follows the linked
+      source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      range:
+        alias: range
+        slot_uri: pixlnd:generator-design-initial-encounters-special-profile-charge/range
+        description: Source range of generator-design-initial-encounters-special-profile-charge.
+        required: true
+        range: generator-selected-initial-encounters-special-profile-charge-range
+        inlined: true
+        annotations:
+          source-tuple-positions: first second
+      start-height-diff:
+        alias: start-height-diff
+        slot_uri: pixlnd:generator-design-initial-encounters-special-profile-charge/start-height-diff
+        description: Source start-height-diff of generator-design-initial-encounters-special-profile-charge.
+        required: true
+        range: integer
+        minimum_value: 1
+        maximum_value: 1
+      lane-width:
+        alias: lane-width
+        slot_uri: pixlnd:generator-design-initial-encounters-special-profile-charge/lane-width
+        description: Source lane-width of generator-design-initial-encounters-special-profile-charge.
+        required: true
+        range: integer
+        minimum_value: 2
+        maximum_value: 2
+      speed:
+        alias: speed
+        slot_uri: pixlnd:generator-design-initial-encounters-special-profile-charge/speed
+        description: Source speed of generator-design-initial-encounters-special-profile-charge.
+        required: true
+        range: integer
+        minimum_value: 12
+        maximum_value: 12
+      sweep-radius:
+        alias: sweep-radius
+        slot_uri: pixlnd:generator-design-initial-encounters-special-profile-charge/sweep-radius
+        description: Source sweep-radius of generator-design-initial-encounters-special-profile-charge.
+        required: true
+        range: integer
+        minimum_value: 1
+        maximum_value: 1
+      damage-mult:
+        alias: damage-mult
+        slot_uri: pixlnd:generator-design-initial-encounters-special-profile-charge/damage-mult
+        description: Source damage-mult of generator-design-initial-encounters-special-profile-charge.
+        required: true
+        range: double
+        minimum_value: 1.25
+        maximum_value: 1.25
+  generator-selected-initial-encounters-special-profile-charge-range:
+    class_uri: pixlnd:generator-selected-initial-encounters-special-profile-charge-range
+    description: Configuration component generator-selected-initial-encounters-special-profile-charge-range; applicability follows the
+      linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      first:
+        alias: first
+        slot_uri: pixlnd:generator-selected-initial-encounters-special-profile-charge-range/first
+        description: Source first of generator-selected-initial-encounters-special-profile-charge-range.
+        required: true
+        range: integer
+        minimum_value: 4
+        maximum_value: 4
+      second:
+        alias: second
+        slot_uri: pixlnd:generator-selected-initial-encounters-special-profile-charge-range/second
+        description: Source second of generator-selected-initial-encounters-special-profile-charge-range.
+        required: true
+        range: integer
+        minimum_value: 10
+        maximum_value: 10

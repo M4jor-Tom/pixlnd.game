@@ -1,0 +1,48 @@
+id: https://w3id.org/pixlnd/design-world/time
+name: pixlnd-design-world-time
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-design-time:
+    class_uri: pixlnd:generator-design-time
+    description: Configuration component generator-design-time; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      doc:
+        alias: _doc
+        slot_uri: pixlnd:generator-design-time/doc
+        description: Source _doc of generator-design-time.
+        required: true
+        range: string
+      speed:
+        alias: speed
+        slot_uri: pixlnd:generator-design-time/speed
+        description: Source speed of generator-design-time.
+        required: true
+        range: double
+        minimum_value: 10.0
+        maximum_value: 10.0
+      day-s:
+        alias: day-s
+        slot_uri: pixlnd:generator-design-time/day-s
+        description: Source day-s of generator-design-time.
+        required: true
+        range: double
+        minimum_value: 86400.0
+        maximum_value: 86400.0
+      initial-hour:
+        alias: initial-hour
+        slot_uri: pixlnd:generator-design-time/initial-hour
+        description: Source initial-hour of generator-design-time.
+        required: true
+        range: double
+        minimum_value: 7.0
+        maximum_value: 7.0

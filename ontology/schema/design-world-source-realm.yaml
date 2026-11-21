@@ -1,0 +1,55 @@
+id: https://w3id.org/pixlnd/design-world/source-realm
+name: pixlnd-design-world-source-realm
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-source-realm:
+    class_uri: pixlnd:generator-source-realm
+    description: Configuration component generator-source-realm; applicability follows the linked source rules. Historical facts retain
+      their explicit A/S/X/Omega scope; hybrid overrides remain authoritative.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      kinds:
+        alias: kinds
+        slot_uri: pixlnd:generator-source-realm/kinds
+        description: Source kinds of generator-source-realm.
+        required: true
+        range: string
+        multivalued: true
+        minimum_cardinality: 0
+      leader-fields:
+        alias: leader-fields
+        slot_uri: pixlnd:generator-source-realm/leader-fields
+        description: Source leader-fields of generator-source-realm.
+        required: true
+        range: string
+        multivalued: true
+        minimum_cardinality: 0
+      capital-fields:
+        alias: capital-fields
+        slot_uri: pixlnd:generator-source-realm/capital-fields
+        description: Source capital-fields of generator-source-realm.
+        required: true
+        range: string
+        multivalued: true
+        minimum_cardinality: 0
+      lore-per-site-pct:
+        alias: lore-per-site-pct
+        slot_uri: pixlnd:generator-source-realm/lore-per-site-pct
+        description: Source lore-per-site-pct of generator-source-realm.
+        required: true
+        range: integer
+      reveal-at:
+        alias: reveal-at
+        slot_uri: pixlnd:generator-source-realm/reveal-at
+        description: Source reveal-at of generator-source-realm.
+        required: true
+        range: integer

@@ -1,0 +1,131 @@
+id: https://w3id.org/pixlnd/design-world/alpha-network
+name: pixlnd-design-world-alpha-network
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+- design-world-alpha-combat-packets
+- design-world-alpha-packets-c2s
+- design-world-alpha-packets-s2c
+
+classes:
+  generator-source-network-alpha:
+    class_uri: pixlnd:generator-source-network-alpha
+    description: Configuration component generator-source-network-alpha; applicability follows the linked source rules. Historical facts
+      retain their explicit A/S/X/Omega scope; hybrid overrides remain authoritative.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      port:
+        alias: port
+        slot_uri: pixlnd:generator-source-network-alpha/port
+        description: Source port of generator-source-network-alpha.
+        required: true
+        range: integer
+      protocol:
+        alias: protocol
+        slot_uri: pixlnd:generator-source-network-alpha/protocol
+        description: Source protocol of generator-source-network-alpha.
+        required: true
+        range: string
+      client-version:
+        alias: client-version
+        slot_uri: pixlnd:generator-source-network-alpha/client-version
+        description: Source client-version of generator-source-network-alpha.
+        required: true
+        range: integer
+      tick-hz:
+        alias: tick-hz
+        slot_uri: pixlnd:generator-source-network-alpha/tick-hz
+        description: Source tick-hz of generator-source-network-alpha.
+        required: true
+        range: integer
+      compression:
+        alias: compression
+        slot_uri: pixlnd:generator-source-network-alpha/compression
+        description: Source compression of generator-source-network-alpha.
+        required: true
+        range: string
+      authority:
+        alias: authority
+        slot_uri: pixlnd:generator-source-network-alpha/authority
+        description: Source authority of generator-source-network-alpha.
+        required: true
+        range: string
+      packets-c2s:
+        alias: packets-c2s
+        slot_uri: pixlnd:generator-source-network-alpha/packets-c2s
+        description: Source packets-c2s of generator-source-network-alpha.
+        required: true
+        range: generator-source-network-alpha-packets-c2s
+        inlined: true
+      packets-s2c:
+        alias: packets-s2c
+        slot_uri: pixlnd:generator-source-network-alpha/packets-s2c
+        description: Source packets-s2c of generator-source-network-alpha.
+        required: true
+        range: generator-source-network-alpha-packets-s2c
+        inlined: true
+      max-players:
+        alias: max-players
+        slot_uri: pixlnd:generator-source-network-alpha/max-players
+        description: Source max-players of generator-source-network-alpha.
+        required: true
+        range: integer
+      max-players-configurable:
+        alias: max-players-configurable
+        slot_uri: pixlnd:generator-source-network-alpha/max-players-configurable
+        description: Source max-players-configurable of generator-source-network-alpha.
+        required: true
+        range: boolean
+      hit-types:
+        alias: hit-types
+        slot_uri: pixlnd:generator-source-network-alpha/hit-types
+        description: Source hit-types of generator-source-network-alpha.
+        required: true
+        range: generator-source-network-alpha-hit-types
+        inlined: true
+      interact-types:
+        alias: interact-types
+        slot_uri: pixlnd:generator-source-network-alpha/interact-types
+        description: Source interact-types of generator-source-network-alpha.
+        required: true
+        range: generator-source-network-alpha-interact-types
+        inlined: true
+      anticheat-caps:
+        alias: anticheat-caps
+        slot_uri: pixlnd:generator-source-network-alpha/anticheat-caps
+        description: Source anticheat-caps of generator-source-network-alpha.
+        required: true
+        range: generator-source-network-alpha-anticheat-caps
+        inlined: true
+  generator-source-network-alpha-anticheat-caps:
+    class_uri: pixlnd:generator-source-network-alpha-anticheat-caps
+    description: Configuration component generator-source-network-alpha-anticheat-caps; applicability follows the linked source rules.
+      Historical facts retain their explicit A/S/X/Omega scope; hybrid overrides remain authoritative.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      level:
+        alias: level
+        slot_uri: pixlnd:generator-source-network-alpha-anticheat-caps/level
+        description: Source level of generator-source-network-alpha-anticheat-caps.
+        required: true
+        range: integer
+      rarity:
+        alias: rarity
+        slot_uri: pixlnd:generator-source-network-alpha-anticheat-caps/rarity
+        description: Source rarity of generator-source-network-alpha-anticheat-caps.
+        required: true
+        range: integer
+      air-time-s:
+        alias: air-time-s
+        slot_uri: pixlnd:generator-source-network-alpha-anticheat-caps/air-time-s
+        description: Source air-time-s of generator-source-network-alpha-anticheat-caps.
+        required: true
+        range: integer

@@ -1,0 +1,69 @@
+id: https://w3id.org/pixlnd/design-world/source-spawns
+name: pixlnd-design-world-source-spawns
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-source-spawns:
+    class_uri: pixlnd:generator-source-spawns
+    description: Configuration component generator-source-spawns; applicability follows the linked source rules. Historical facts retain
+      their explicit A/S/X/Omega scope; hybrid overrides remain authoritative.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      group-sizes:
+        alias: group-sizes
+        slot_uri: pixlnd:generator-source-spawns/group-sizes
+        description: Source group-sizes of generator-source-spawns.
+        required: true
+        range: string
+      hostility:
+        alias: hostility
+        slot_uri: pixlnd:generator-source-spawns/hostility
+        description: Source hostility of generator-source-spawns.
+        required: true
+        range: string
+      humanoid-class:
+        alias: humanoid-class
+        slot_uri: pixlnd:generator-source-spawns/humanoid-class
+        description: Source humanoid-class of generator-source-spawns.
+        required: true
+        range: string
+      alpha-multipliers:
+        alias: alpha-multipliers
+        slot_uri: pixlnd:generator-source-spawns/alpha-multipliers
+        description: Source alpha-multipliers of generator-source-spawns.
+        required: true
+        range: string
+        multivalued: true
+        minimum_cardinality: 0
+      farm-animals:
+        alias: farm-animals
+        slot_uri: pixlnd:generator-source-spawns/farm-animals
+        description: Source farm-animals of generator-source-spawns.
+        required: true
+        range: string
+      night-lanterns:
+        alias: night-lanterns
+        slot_uri: pixlnd:generator-source-spawns/night-lanterns
+        description: Source night-lanterns of generator-source-spawns.
+        required: true
+        range: boolean
+      reset:
+        alias: reset
+        slot_uri: pixlnd:generator-source-spawns/reset
+        description: Source reset of generator-source-spawns.
+        required: true
+        range: string
+      ocean-s-bug:
+        alias: ocean-s-bug
+        slot_uri: pixlnd:generator-source-spawns/ocean-s-bug
+        description: Source ocean-s-bug of generator-source-spawns.
+        required: true
+        range: string

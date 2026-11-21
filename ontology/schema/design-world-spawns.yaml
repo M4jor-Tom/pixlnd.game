@@ -1,0 +1,141 @@
+id: https://w3id.org/pixlnd/design-world/spawns
+name: pixlnd-design-world-spawns
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+- design-world-spawn-ai
+- design-world-spawn-hostility
+- identity-creature
+
+classes:
+  generator-design-spawns:
+    class_uri: pixlnd:generator-design-spawns
+    description: Configuration component generator-design-spawns; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      doc:
+        alias: _doc
+        slot_uri: pixlnd:generator-design-spawns/doc
+        description: Source _doc of generator-design-spawns.
+        required: true
+        range: string
+      groups-per-zone:
+        alias: groups-per-zone
+        slot_uri: pixlnd:generator-design-spawns/groups-per-zone
+        description: Source groups-per-zone of generator-design-spawns.
+        required: true
+        range: integer
+        multivalued: true
+        minimum_cardinality: 2
+        maximum_cardinality: 2
+      default-group:
+        alias: default-group
+        slot_uri: pixlnd:generator-design-spawns/default-group
+        description: Source default-group of generator-design-spawns.
+        required: true
+        range: integer
+        multivalued: true
+        minimum_cardinality: 2
+        maximum_cardinality: 2
+      group-spread:
+        alias: group-spread
+        slot_uri: pixlnd:generator-design-spawns/group-spread
+        description: Source group-spread of generator-design-spawns.
+        required: true
+        range: integer
+      roster:
+        alias: roster
+        slot_uri: pixlnd:generator-design-spawns/roster
+        description: Source roster of generator-design-spawns.
+        required: true
+        range: string
+      skip-categories:
+        alias: skip-categories
+        slot_uri: pixlnd:generator-design-spawns/skip-categories
+        description: Source skip-categories of generator-design-spawns.
+        required: true
+        range: string
+        multivalued: true
+        minimum_cardinality: 0
+      aquatic-only-in-water:
+        alias: aquatic-only-in-water
+        slot_uri: pixlnd:generator-design-spawns/aquatic-only-in-water
+        description: Source aquatic-only-in-water of generator-design-spawns.
+        required: true
+        range: boolean
+      variable-hostility:
+        alias: variable-hostility
+        slot_uri: pixlnd:generator-design-spawns/variable-hostility
+        description: Source variable-hostility of generator-design-spawns.
+        required: true
+        range: generator-design-spawns-variable-hostility
+        inlined: true
+      ai:
+        alias: ai
+        slot_uri: pixlnd:generator-design-spawns/ai
+        description: Source ai of generator-design-spawns.
+        required: true
+        range: generator-design-spawns-ai
+        inlined: true
+        equals_expression: ai if ai['sim-radius'] >= ai['aggro-range'] + ai['leash'] else ''
+      size-by-category:
+        alias: size-by-category
+        slot_uri: pixlnd:generator-design-spawns/size-by-category
+        description: Source size-by-category of generator-design-spawns.
+        required: true
+        range: generator-design-spawns-size-by-category
+        inlined: true
+      hostility-colors:
+        alias: hostility-colors
+        slot_uri: pixlnd:generator-design-spawns/hostility-colors
+        description: Source hostility-colors of generator-design-spawns.
+        required: true
+        range: generator-design-spawns-hostility-colors
+        inlined: true
+  generator-design-spawns-size-by-category:
+    class_uri: pixlnd:generator-design-spawns-size-by-category
+    description: Configuration component generator-design-spawns-size-by-category; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      entries:
+        alias: entries
+        slot_uri: pixlnd:generator-design-spawns-size-by-category/entries
+        description: Source entries of generator-design-spawns-size-by-category.
+        required: true
+        range: generator-design-spawns-size-by-category-entry
+        inlined: true
+        multivalued: true
+        minimum_cardinality: 0
+        inlined_as_list: true
+    annotations:
+      source-map-entries: entries
+  generator-design-spawns-size-by-category-entry:
+    class_uri: pixlnd:generator-design-spawns-size-by-category-entry
+    description: Configuration component generator-design-spawns-size-by-category-entry; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      key:
+        alias: key
+        slot_uri: pixlnd:generator-design-spawns-size-by-category-entry/key
+        description: Source key of generator-design-spawns-size-by-category-entry.
+        required: true
+        range: creature-category
+      value:
+        alias: value
+        slot_uri: pixlnd:generator-design-spawns-size-by-category-entry/value
+        description: Source value of generator-design-spawns-size-by-category-entry.
+        required: true
+        range: double
+        minimum_value: 0
+        none_of:
+        - equals_number: 0

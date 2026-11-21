@@ -1,0 +1,122 @@
+id: https://w3id.org/pixlnd/design-items/loot-rarity
+name: pixlnd-design-items-loot-rarity
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-design-loot-rarity-weights:
+    class_uri: pixlnd:generator-design-loot-rarity-weights
+    description: Configuration component generator-design-loot-rarity-weights; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      entries:
+        alias: entries
+        slot_uri: pixlnd:generator-design-loot-rarity-weights/entries
+        description: Source entries of generator-design-loot-rarity-weights.
+        required: true
+        range: generator-design-loot-rarity-weights-entry
+        inlined: true
+        multivalued: true
+        minimum_cardinality: 5
+        inlined_as_list: true
+        has_member:
+          range_expression:
+            slot_conditions:
+              value:
+                range: double
+                minimum_value: 0
+                none_of:
+                - range: double
+                  equals_number: 0
+        maximum_cardinality: 5
+    annotations:
+      source-map-entries: entries
+  generator-design-loot-rarity-weights-entry:
+    class_uri: pixlnd:generator-design-loot-rarity-weights-entry
+    description: Configuration component generator-design-loot-rarity-weights-entry; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      key:
+        alias: key
+        slot_uri: pixlnd:generator-design-loot-rarity-weights-entry/key
+        description: Source key of generator-design-loot-rarity-weights-entry.
+        required: true
+        range: GeneratorRarity
+      value:
+        alias: value
+        slot_uri: pixlnd:generator-design-loot-rarity-weights-entry/value
+        description: Source value of generator-design-loot-rarity-weights-entry.
+        required: true
+        range: double
+        minimum_value: 0
+    rules:
+    - preconditions:
+        slot_conditions:
+          key:
+            equals_string: common
+      postconditions:
+        slot_conditions:
+          value:
+            range: double
+            minimum_value: 60
+            maximum_value: 60
+    - preconditions:
+        slot_conditions:
+          key:
+            equals_string: uncommon
+      postconditions:
+        slot_conditions:
+          value:
+            range: double
+            minimum_value: 25
+            maximum_value: 25
+    - preconditions:
+        slot_conditions:
+          key:
+            equals_string: rare
+      postconditions:
+        slot_conditions:
+          value:
+            range: double
+            minimum_value: 10
+            maximum_value: 10
+    - preconditions:
+        slot_conditions:
+          key:
+            equals_string: epic
+      postconditions:
+        slot_conditions:
+          value:
+            range: double
+            minimum_value: 4
+            maximum_value: 4
+    - preconditions:
+        slot_conditions:
+          key:
+            equals_string: legendary
+      postconditions:
+        slot_conditions:
+          value:
+            range: double
+            minimum_value: 1
+            maximum_value: 1
+
+enums:
+  GeneratorRarity:
+    enum_uri: pixlnd:GeneratorRarity
+    description: Literal configuration alternatives for GeneratorRarity.
+    permissible_values:
+      common: {}
+      uncommon: {}
+      rare: {}
+      epic: {}
+      legendary: {}

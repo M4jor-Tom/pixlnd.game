@@ -1,0 +1,128 @@
+id: https://w3id.org/pixlnd/design-items/encounter-ruins
+name: pixlnd-design-items-encounter-ruins
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+- design-items-encounter-ruins-bounds
+- design-items-encounter-ruins-rooms
+- design-items-encounter-ruins-tiers
+
+classes:
+  generator-design-initial-encounters-ruins:
+    class_uri: pixlnd:generator-design-initial-encounters-ruins
+    description: Configuration component generator-design-initial-encounters-ruins; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      room:
+        alias: room
+        slot_uri: pixlnd:generator-design-initial-encounters-ruins/room
+        description: Source room of generator-design-initial-encounters-ruins.
+        required: true
+        range: generator-selected-initial-encounters-ruins-room
+        inlined: true
+        annotations:
+          source-tuple-positions: first second
+      corridor:
+        alias: corridor
+        slot_uri: pixlnd:generator-design-initial-encounters-ruins/corridor
+        description: Source corridor of generator-design-initial-encounters-ruins.
+        required: true
+        range: generator-selected-initial-encounters-ruins-corridor
+        inlined: true
+        annotations:
+          source-tuple-positions: first second
+      court:
+        alias: court
+        slot_uri: pixlnd:generator-design-initial-encounters-ruins/court
+        description: Source court of generator-design-initial-encounters-ruins.
+        required: true
+        range: generator-selected-initial-encounters-ruins-court
+        inlined: true
+        annotations:
+          source-tuple-positions: first second
+      passage:
+        alias: passage
+        slot_uri: pixlnd:generator-design-initial-encounters-ruins/passage
+        description: Source passage of generator-design-initial-encounters-ruins.
+        required: true
+        range: generator-selected-initial-encounters-ruins-passage
+        inlined: true
+        annotations:
+          source-tuple-positions: first second
+      alcove:
+        alias: alcove
+        slot_uri: pixlnd:generator-design-initial-encounters-ruins/alcove
+        description: Source alcove of generator-design-initial-encounters-ruins.
+        required: true
+        range: generator-selected-initial-encounters-ruins-alcove
+        inlined: true
+        annotations:
+          source-tuple-positions: first second
+      bounds:
+        alias: bounds
+        slot_uri: pixlnd:generator-design-initial-encounters-ruins/bounds
+        description: Source bounds of generator-design-initial-encounters-ruins.
+        required: true
+        range: generator-selected-initial-encounters-ruins-bounds
+        inlined: true
+        annotations:
+          source-tuple-positions: first second
+      ceiling:
+        alias: ceiling
+        slot_uri: pixlnd:generator-design-initial-encounters-ruins/ceiling
+        description: Source ceiling of generator-design-initial-encounters-ruins.
+        required: true
+        range: integer
+        minimum_value: 6
+        maximum_value: 6
+      door:
+        alias: door
+        slot_uri: pixlnd:generator-design-initial-encounters-ruins/door
+        description: Source door of generator-design-initial-encounters-ruins.
+        required: true
+        range: generator-selected-initial-encounters-ruins-door
+        inlined: true
+        annotations:
+          source-tuple-positions: first second
+      occupancy:
+        alias: occupancy
+        slot_uri: pixlnd:generator-design-initial-encounters-ruins/occupancy
+        description: Source occupancy of generator-design-initial-encounters-ruins.
+        required: true
+        range: generator-selected-initial-encounters-ruins-occupancy
+        inlined: true
+        annotations:
+          source-tuple-positions: first second
+      pack-tiers:
+        alias: pack-tiers
+        slot_uri: pixlnd:generator-design-initial-encounters-ruins/pack-tiers
+        description: Source pack-tiers of generator-design-initial-encounters-ruins.
+        required: true
+        range: generator-selected-initial-encounters-ruins-pack-tiers
+        inlined: true
+        annotations:
+          source-tuple-positions: first second third
+      boss-tiers:
+        alias: boss-tiers
+        slot_uri: pixlnd:generator-design-initial-encounters-ruins/boss-tiers
+        description: Source boss-tiers of generator-design-initial-encounters-ruins.
+        required: true
+        range: generator-selected-initial-encounters-ruins-boss-tiers
+        inlined: true
+        annotations:
+          source-tuple-positions: first second
+
+slots:
+  generator-design-initial-encounters-field-ruins:
+    alias: ruins
+    slot_uri: pixlnd:generator-design-initial-encounters/ruins
+    description: Source ruins of generator-design-initial-encounters.
+    required: true
+    range: generator-design-initial-encounters-ruins
+    inlined: true

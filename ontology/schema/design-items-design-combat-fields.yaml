@@ -1,0 +1,75 @@
+id: https://w3id.org/pixlnd/design-items/design-combat-fields
+name: pixlnd-design-items-design-combat-fields
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+- design-combat-generator-design
+
+slots:
+  generator-design-field-abilities:
+    alias: abilities
+    slot_uri: pixlnd:generator-design/abilities
+    description: Source abilities of generator-design.
+    required: true
+    range: generator-design-abilities
+    inlined: true
+  generator-design-field-resources:
+    alias: resources
+    slot_uri: pixlnd:generator-design/resources
+    description: Source resources of generator-design.
+    required: true
+    range: generator-design-resources
+    inlined: true
+  generator-design-field-special-attack:
+    alias: special-attack
+    slot_uri: pixlnd:generator-design/special-attack
+    description: Source special-attack of generator-design.
+    required: true
+    range: generator-design-special-attack
+    inlined: true
+  generator-design-field-status-effects:
+    alias: status-effects
+    slot_uri: pixlnd:generator-design/status-effects
+    description: Source status-effects of generator-design.
+    required: true
+    range: generator-design-status-effects
+    inlined: true
+  generator-design-field-crit:
+    alias: crit
+    slot_uri: pixlnd:generator-design/crit
+    description: Source crit of generator-design.
+    required: true
+    range: generator-design-crit
+    inlined: true
+  generator-design-field-creature-roles:
+    alias: creature-roles
+    slot_uri: pixlnd:generator-design/creature-roles
+    description: Source creature-roles of generator-design.
+    required: true
+    range: generator-design-creature-roles
+    inlined: true
+  generator-design-field-combat:
+    alias: combat
+    slot_uri: pixlnd:generator-design/combat
+    description: Source combat of generator-design.
+    required: true
+    range: generator-design-combat
+    inlined: true
+  generator-design-field-defence:
+    alias: defence
+    slot_uri: pixlnd:generator-design/defence
+    description: Source defence of generator-design.
+    required: true
+    range: generator-design-defence
+    inlined: true
+  generator-design-field-movesets:
+    alias: movesets
+    slot_uri: pixlnd:generator-design/movesets
+    description: Source movesets of generator-design.
+    required: true
+    range: generator-design-movesets
+    inlined: true

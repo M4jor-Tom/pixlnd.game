@@ -1,0 +1,113 @@
+id: https://w3id.org/pixlnd/design-items/loot
+name: pixlnd-design-items-loot
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+- design-items-loot-gear
+- design-items-loot-pickup
+- design-items-loot-rarity
+- items-item-catalog
+
+classes:
+  generator-design-loot:
+    class_uri: pixlnd:generator-design-loot
+    description: Configuration component generator-design-loot; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      doc:
+        alias: _doc
+        slot_uri: pixlnd:generator-design-loot/doc
+        description: Source _doc of generator-design-loot.
+        required: true
+        range: string
+      coins:
+        alias: coins
+        slot_uri: pixlnd:generator-design-loot/coins
+        description: Source coins of generator-design-loot.
+        required: true
+        range: generator-design-loot-coins
+        inlined: true
+      gear-chance:
+        alias: gear-chance
+        slot_uri: pixlnd:generator-design-loot/gear-chance
+        description: Source gear-chance of generator-design-loot.
+        required: true
+        range: double
+        minimum_value: 0.2
+        maximum_value: 0.2
+      consumable-chance:
+        alias: consumable-chance
+        slot_uri: pixlnd:generator-design-loot/consumable-chance
+        description: Source consumable-chance of generator-design-loot.
+        required: true
+        range: double
+        minimum_value: 0.15
+        maximum_value: 0.15
+      species-drop-chance:
+        alias: species-drop-chance
+        slot_uri: pixlnd:generator-design-loot/species-drop-chance
+        description: Source species-drop-chance of generator-design-loot.
+        required: true
+        range: double
+        minimum_value: 0.5
+        maximum_value: 0.5
+      level-spread:
+        alias: level-spread
+        slot_uri: pixlnd:generator-design-loot/level-spread
+        description: Source level-spread of generator-design-loot.
+        required: true
+        range: integer
+        minimum_value: 1
+        maximum_value: 1
+      boss-rarity-shift:
+        alias: boss-rarity-shift
+        slot_uri: pixlnd:generator-design-loot/boss-rarity-shift
+        description: Source boss-rarity-shift of generator-design-loot.
+        required: true
+        range: integer
+        minimum_value: 1
+        maximum_value: 1
+      rarity-weights:
+        alias: rarity-weights
+        slot_uri: pixlnd:generator-design-loot/rarity-weights
+        description: Source rarity-weights of generator-design-loot.
+        required: true
+        range: generator-design-loot-rarity-weights
+        inlined: true
+      gear-kinds:
+        alias: gear-kinds
+        slot_uri: pixlnd:generator-design-loot/gear-kinds
+        description: Source gear-kinds of generator-design-loot.
+        required: true
+        range: generator-design-loot-gear-kinds
+        inlined: true
+      consumable-pool:
+        alias: consumable-pool
+        slot_uri: pixlnd:generator-design-loot/consumable-pool
+        description: Source consumable-pool of generator-design-loot.
+        required: true
+        range: consumable
+        multivalued: true
+        minimum_cardinality: 3
+        maximum_cardinality: 3
+        list_elements_unique: true
+        all_members:
+          range: consumable
+          equals_string_in:
+          - life-potion
+          - apple
+          - pineapple-slice
+        equals_expression: '[''life-potion'', ''apple'', ''pineapple-slice'']'
+      ground:
+        alias: ground
+        slot_uri: pixlnd:generator-design-loot/ground
+        description: Source ground of generator-design-loot.
+        required: true
+        range: generator-design-loot-ground
+        inlined: true

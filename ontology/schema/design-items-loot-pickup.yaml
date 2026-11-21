@@ -1,0 +1,91 @@
+id: https://w3id.org/pixlnd/design-items/loot-pickup
+name: pixlnd-design-items-loot-pickup
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-design-loot-coins:
+    class_uri: pixlnd:generator-design-loot-coins
+    description: Configuration component generator-design-loot-coins; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      chance:
+        alias: chance
+        slot_uri: pixlnd:generator-design-loot-coins/chance
+        description: Source chance of generator-design-loot-coins.
+        required: true
+        range: double
+        minimum_value: 0.6
+        maximum_value: 0.6
+      base:
+        alias: base
+        slot_uri: pixlnd:generator-design-loot-coins/base
+        description: Source base of generator-design-loot-coins.
+        required: true
+        range: integer
+        minimum_value: 1
+        maximum_value: 1
+      per-level:
+        alias: per-level
+        slot_uri: pixlnd:generator-design-loot-coins/per-level
+        description: Source per-level of generator-design-loot-coins.
+        required: true
+        range: integer
+        minimum_value: 2
+        maximum_value: 2
+  generator-design-loot-ground:
+    class_uri: pixlnd:generator-design-loot-ground
+    description: Configuration component generator-design-loot-ground; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      lifetime-s:
+        alias: lifetime-s
+        slot_uri: pixlnd:generator-design-loot-ground/lifetime-s
+        description: Source lifetime-s of generator-design-loot-ground.
+        required: true
+        range: integer
+        minimum_value: 60480
+        maximum_value: 60480
+      lifetime:
+        alias: _lifetime
+        slot_uri: pixlnd:generator-design-loot-ground/lifetime
+        description: Source _lifetime of generator-design-loot-ground.
+        required: true
+        range: string
+      pickup-radius:
+        alias: pickup-radius
+        slot_uri: pixlnd:generator-design-loot-ground/pickup-radius
+        description: Source pickup-radius of generator-design-loot-ground.
+        required: true
+        range: double
+        minimum_value: 2.0
+        maximum_value: 2.0
+      auto-pickup:
+        alias: auto-pickup
+        slot_uri: pixlnd:generator-design-loot-ground/auto-pickup
+        description: Source auto-pickup of generator-design-loot-ground.
+        required: true
+        range: string
+        multivalued: true
+        minimum_cardinality: 1
+        maximum_cardinality: 1
+        all_members:
+          range: string
+          equals_string: coin
+      scatter:
+        alias: scatter
+        slot_uri: pixlnd:generator-design-loot-ground/scatter
+        description: Source scatter of generator-design-loot-ground.
+        required: true
+        range: double
+        minimum_value: 1.0
+        maximum_value: 1.0

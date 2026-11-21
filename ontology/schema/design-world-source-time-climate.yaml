@@ -1,0 +1,92 @@
+id: https://w3id.org/pixlnd/design-world/source-time-climate
+name: pixlnd-design-world-source-time-climate
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-source-time:
+    class_uri: pixlnd:generator-source-time
+    description: Configuration component generator-source-time; applicability follows the linked source rules. Historical facts retain
+      their explicit A/S/X/Omega scope; hybrid overrides remain authoritative.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      max-time-ms:
+        alias: max-time-ms
+        slot_uri: pixlnd:generator-source-time/max-time-ms
+        description: Source max-time-ms of generator-source-time.
+        required: true
+        range: integer
+      normal-speed:
+        alias: normal-speed
+        slot_uri: pixlnd:generator-source-time/normal-speed
+        description: Source normal-speed of generator-source-time.
+        required: true
+        range: double
+      sleep-speed:
+        alias: sleep-speed
+        slot_uri: pixlnd:generator-source-time/sleep-speed
+        description: Source sleep-speed of generator-source-time.
+        required: true
+        range: double
+      day-real-minutes:
+        alias: day-real-minutes
+        slot_uri: pixlnd:generator-source-time/day-real-minutes
+        description: Source day-real-minutes of generator-source-time.
+        required: true
+        range: integer
+      inn-hours:
+        alias: inn-hours
+        slot_uri: pixlnd:generator-source-time/inn-hours
+        description: Source inn-hours of generator-source-time.
+        required: true
+        range: integer
+        multivalued: true
+        minimum_cardinality: 2
+        maximum_cardinality: 2
+      inn-target:
+        alias: inn-target
+        slot_uri: pixlnd:generator-source-time/inn-target
+        description: Source inn-target of generator-source-time.
+        required: true
+        range: integer
+      reset-hour:
+        alias: reset-hour
+        slot_uri: pixlnd:generator-source-time/reset-hour
+        description: Source reset-hour of generator-source-time.
+        required: true
+        range: integer
+  generator-source-climate:
+    class_uri: pixlnd:generator-source-climate
+    description: Configuration component generator-source-climate; applicability follows the linked source rules. Historical facts retain
+      their explicit A/S/X/Omega scope; hybrid overrides remain authoritative.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      fields:
+        alias: fields
+        slot_uri: pixlnd:generator-source-climate/fields
+        description: Source fields of generator-source-climate.
+        required: true
+        range: string
+        multivalued: true
+        minimum_cardinality: 0
+      bands:
+        alias: bands
+        slot_uri: pixlnd:generator-source-climate/bands
+        description: Source bands of generator-source-climate.
+        required: true
+        range: string
+      hud:
+        alias: hud
+        slot_uri: pixlnd:generator-source-climate/hud
+        description: Source hud of generator-source-climate.
+        required: true
+        range: boolean

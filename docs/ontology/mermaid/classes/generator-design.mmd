@@ -1,109 +1,109 @@
  classDiagram
     class `Generator-design`
     click `Generator-design` href "../Generator-design"
-      `Generator-design` : abilities
-        `Generator-design` --> "1" `Generator-design-abilities` : abilities
+      `Generator-design` : generator_design_field_abilities
+        `Generator-design` --> "1" `Generator-design-abilities` : generator_design_field_abilities
         click `Generator-design-abilities` href "../Generator-design-abilities"
-      `Generator-design` : artifact
-        `Generator-design` --> "1" `Artifact-design` : artifact
+      `Generator-design` : generator_design_field_artifact
+        `Generator-design` --> "1" `Artifact-design` : generator_design_field_artifact
         click `Artifact-design` href "../Artifact-design"
-      `Generator-design` : artifacts_per_land
-        `Generator-design` --> "1" `Generator-design-artifacts-per-land` : artifacts_per_land
+      `Generator-design` : generator_design_field_artifacts_per_land
+        `Generator-design` --> "1" `Generator-design-artifacts-per-land` : generator_design_field_artifacts_per_land
         click `Generator-design-artifacts-per-land` href "../Generator-design-artifacts-per-land"
-      `Generator-design` : block_reward
-      `Generator-design` : camera
-        `Generator-design` --> "1" `Generator-design-camera` : camera
+      `Generator-design` : generator_design_field_block_reward
+      `Generator-design` : generator_design_field_camera
+        `Generator-design` --> "1" `Generator-design-camera` : generator_design_field_camera
         click `Generator-design-camera` href "../Generator-design-camera"
-      `Generator-design` : circle_of_power
-        `Generator-design` --> "1" `Generator-design-circle-of-power` : circle_of_power
+      `Generator-design` : generator_design_field_circle_of_power
+        `Generator-design` --> "1" `Generator-design-circle-of-power` : generator_design_field_circle_of_power
         click `Generator-design-circle-of-power` href "../Generator-design-circle-of-power"
-      `Generator-design` : climate
-        `Generator-design` --> "1" `Generator-design-climate` : climate
+      `Generator-design` : generator_design_field_climate
+        `Generator-design` --> "1" `Generator-design-climate` : generator_design_field_climate
         click `Generator-design-climate` href "../Generator-design-climate"
-      `Generator-design` : combat
-        `Generator-design` --> "1" `Generator-design-combat` : combat
+      `Generator-design` : generator_design_field_combat
+        `Generator-design` --> "1" `Generator-design-combat` : generator_design_field_combat
         click `Generator-design-combat` href "../Generator-design-combat"
-      `Generator-design` : creature_roles
-        `Generator-design` --> "1" `Generator-design-creature-roles` : creature_roles
+      `Generator-design` : generator_design_field_creature_roles
+        `Generator-design` --> "1" `Generator-design-creature-roles` : generator_design_field_creature_roles
         click `Generator-design-creature-roles` href "../Generator-design-creature-roles"
-      `Generator-design` : crit
-        `Generator-design` --> "1" `Generator-design-crit` : crit
+      `Generator-design` : generator_design_field_crit
+        `Generator-design` --> "1" `Generator-design-crit` : generator_design_field_crit
         click `Generator-design-crit` href "../Generator-design-crit"
-      `Generator-design` : defence
-        `Generator-design` --> "1" `Generator-design-defence` : defence
+      `Generator-design` : generator_design_field_defence
+        `Generator-design` --> "1" `Generator-design-defence` : generator_design_field_defence
         click `Generator-design-defence` href "../Generator-design-defence"
-      `Generator-design` : doc
-      `Generator-design` : enemy_hp
-        `Generator-design` --> "1" `Generator-design-enemy-hp` : enemy_hp
+      `Generator-design` : generator_design_field_doc
+      `Generator-design` : generator_design_field_enemy_hp
+        `Generator-design` --> "1" `Generator-design-enemy-hp` : generator_design_field_enemy_hp
         click `Generator-design-enemy-hp` href "../Generator-design-enemy-hp"
-      `Generator-design` : enemy_level
-        `Generator-design` --> "1" `Generator-design-enemy-level` : enemy_level
+      `Generator-design` : generator_design_field_enemy_level
+        `Generator-design` --> "1" `Generator-design-enemy-level` : generator_design_field_enemy_level
         click `Generator-design-enemy-level` href "../Generator-design-enemy-level"
-      `Generator-design` : feel
-        `Generator-design` --> "1" `Generator-design-feel` : feel
+      `Generator-design` : generator_design_field_feel
+        `Generator-design` --> "1" `Generator-design-feel` : generator_design_field_feel
         click `Generator-design-feel` href "../Generator-design-feel"
-      `Generator-design` : frame_budget
-        `Generator-design` --> "1" `Generator-design-frame-budget` : frame_budget
+      `Generator-design` : generator_design_field_frame_budget
+        `Generator-design` --> "1" `Generator-design-frame-budget` : generator_design_field_frame_budget
         click `Generator-design-frame-budget` href "../Generator-design-frame-budget"
-      `Generator-design` : gear_hp
-        `Generator-design` --> "1" `Gear-hp-design` : gear_hp
+      `Generator-design` : generator_design_field_gear_hp
+        `Generator-design` --> "1" `Gear-hp-design` : generator_design_field_gear_hp
         click `Gear-hp-design` href "../Gear-hp-design"
-      `Generator-design` : initial_encounters
-        `Generator-design` --> "1" `Generator-design-initial-encounters` : initial_encounters
+      `Generator-design` : generator_design_field_initial_encounters
+        `Generator-design` --> "1" `Generator-design-initial-encounters` : generator_design_field_initial_encounters
         click `Generator-design-initial-encounters` href "../Generator-design-initial-encounters"
-      `Generator-design` : item_stat_curve
-      `Generator-design` : loot
-        `Generator-design` --> "1" `Generator-design-loot` : loot
+      `Generator-design` : generator_design_field_item_stat_curve
+      `Generator-design` : generator_design_field_loot
+        `Generator-design` --> "1" `Generator-design-loot` : generator_design_field_loot
         click `Generator-design-loot` href "../Generator-design-loot"
-      `Generator-design` : movement
-        `Generator-design` --> "1" `Generator-design-movement` : movement
+      `Generator-design` : generator_design_field_movement
+        `Generator-design` --> "1" `Generator-design-movement` : generator_design_field_movement
         click `Generator-design-movement` href "../Generator-design-movement"
-      `Generator-design` : movesets
-        `Generator-design` --> "1" `Generator-design-movesets` : movesets
+      `Generator-design` : generator_design_field_movesets
+        `Generator-design` --> "1" `Generator-design-movesets` : generator_design_field_movesets
         click `Generator-design-movesets` href "../Generator-design-movesets"
-      `Generator-design` : names
-        `Generator-design` --> "1" `Generator-design-names` : names
+      `Generator-design` : generator_design_field_names
+        `Generator-design` --> "1" `Generator-design-names` : generator_design_field_names
         click `Generator-design-names` href "../Generator-design-names"
-      `Generator-design` : prices
-        `Generator-design` --> "1" `Generator-design-prices` : prices
+      `Generator-design` : generator_design_field_prices
+        `Generator-design` --> "1" `Generator-design-prices` : generator_design_field_prices
         click `Generator-design-prices` href "../Generator-design-prices"
-      `Generator-design` : progression
-        `Generator-design` --> "1" `Generator-design-progression` : progression
+      `Generator-design` : generator_design_field_progression
+        `Generator-design` --> "1" `Generator-design-progression` : generator_design_field_progression
         click `Generator-design-progression` href "../Generator-design-progression"
-      `Generator-design` : pvp
-        `Generator-design` --> "1" `Generator-design-pvp` : pvp
+      `Generator-design` : generator_design_field_pvp
+        `Generator-design` --> "1" `Generator-design-pvp` : generator_design_field_pvp
         click `Generator-design-pvp` href "../Generator-design-pvp"
-      `Generator-design` : recipes
-        `Generator-design` --> "1" `Generator-design-recipes` : recipes
+      `Generator-design` : generator_design_field_recipes
+        `Generator-design` --> "1" `Generator-design-recipes` : generator_design_field_recipes
         click `Generator-design-recipes` href "../Generator-design-recipes"
-      `Generator-design` : regeneration
-      `Generator-design` : resources
-        `Generator-design` --> "1" `Generator-design-resources` : resources
+      `Generator-design` : generator_design_field_regeneration
+      `Generator-design` : generator_design_field_resources
+        `Generator-design` --> "1" `Generator-design-resources` : generator_design_field_resources
         click `Generator-design-resources` href "../Generator-design-resources"
-      `Generator-design` : settlement
-        `Generator-design` --> "1" `Generator-design-settlement` : settlement
+      `Generator-design` : generator_design_field_settlement
+        `Generator-design` --> "1" `Generator-design-settlement` : generator_design_field_settlement
         click `Generator-design-settlement` href "../Generator-design-settlement"
-      `Generator-design` : skill_point
-        `Generator-design` --> "1" `Generator-design-skill-point` : skill_point
+      `Generator-design` : generator_design_field_skill_point
+        `Generator-design` --> "1" `Generator-design-skill-point` : generator_design_field_skill_point
         click `Generator-design-skill-point` href "../Generator-design-skill-point"
-      `Generator-design` : spawns
-        `Generator-design` --> "1" `Generator-design-spawns` : spawns
+      `Generator-design` : generator_design_field_spawns
+        `Generator-design` --> "1" `Generator-design-spawns` : generator_design_field_spawns
         click `Generator-design-spawns` href "../Generator-design-spawns"
-      `Generator-design` : special_attack
-        `Generator-design` --> "1" `Generator-design-special-attack` : special_attack
+      `Generator-design` : generator_design_field_special_attack
+        `Generator-design` --> "1" `Generator-design-special-attack` : generator_design_field_special_attack
         click `Generator-design-special-attack` href "../Generator-design-special-attack"
-      `Generator-design` : stack_cap
-        `Generator-design` --> "1" `Generator-design-stack-cap` : stack_cap
+      `Generator-design` : generator_design_field_stack_cap
+        `Generator-design` --> "1" `Generator-design-stack-cap` : generator_design_field_stack_cap
         click `Generator-design-stack-cap` href "../Generator-design-stack-cap"
-      `Generator-design` : starting_inventory
-        `Generator-design` --> "1" `Generator-design-starting-inventory` : starting_inventory
+      `Generator-design` : generator_design_field_starting_inventory
+        `Generator-design` --> "1" `Generator-design-starting-inventory` : generator_design_field_starting_inventory
         click `Generator-design-starting-inventory` href "../Generator-design-starting-inventory"
-      `Generator-design` : status_effects
-        `Generator-design` --> "1" `Generator-design-status-effects` : status_effects
+      `Generator-design` : generator_design_field_status_effects
+        `Generator-design` --> "1" `Generator-design-status-effects` : generator_design_field_status_effects
         click `Generator-design-status-effects` href "../Generator-design-status-effects"
-      `Generator-design` : terrain
-        `Generator-design` --> "1" `Generator-design-terrain` : terrain
+      `Generator-design` : generator_design_field_terrain
+        `Generator-design` --> "1" `Generator-design-terrain` : generator_design_field_terrain
         click `Generator-design-terrain` href "../Generator-design-terrain"
-      `Generator-design` : time
-        `Generator-design` --> "1" `Generator-design-time` : time
+      `Generator-design` : generator_design_field_time
+        `Generator-design` --> "1" `Generator-design-time` : generator_design_field_time
         click `Generator-design-time` href "../Generator-design-time"

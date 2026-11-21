@@ -1,25 +1,25 @@
  classDiagram
     class `Generator-design-terrain`
     click `Generator-design-terrain` href "../Generator-design-terrain"
-      `Generator-design-terrain` : beach_above_sea
-      `Generator-design-terrain` : block_m
-      `Generator-design-terrain` : cliff_slope
-      `Generator-design-terrain` : doc
-      `Generator-design-terrain` : height
-        `Generator-design-terrain` --> "1" `Generator-design-terrain-height` : height
+      `Generator-design-terrain` : generator_design_terrain_field_beach_above_sea
+      `Generator-design-terrain` : generator_design_terrain_field_block_m
+      `Generator-design-terrain` : generator_design_terrain_field_cliff_slope
+      `Generator-design-terrain` : generator_design_terrain_field_doc
+      `Generator-design-terrain` : generator_design_terrain_field_height
+        `Generator-design-terrain` --> "1" `Generator-design-terrain-height` : generator_design_terrain_field_height
         click `Generator-design-terrain-height` href "../Generator-design-terrain-height"
-      `Generator-design-terrain` : heightfield
-        `Generator-design-terrain` --> "1" `Generator-design-terrain-heightfield` : heightfield
+      `Generator-design-terrain` : generator_design_terrain_field_heightfield
+        `Generator-design-terrain` --> "1" `Generator-design-terrain-heightfield` : generator_design_terrain_field_heightfield
         click `Generator-design-terrain-heightfield` href "../Generator-design-terrain-heightfield"
-      `Generator-design-terrain` : land_blend
-      `Generator-design-terrain` : land_blocks
-      `Generator-design-terrain` : land_zones
-      `Generator-design-terrain` : lands_per_axis
-      `Generator-design-terrain` : sand_color
-      `Generator-design-terrain` : sea_level
-      `Generator-design-terrain` : seed_default
-      `Generator-design-terrain` : snow_above
-      `Generator-design-terrain` : snow_color
-      `Generator-design-terrain` : view_zones
-      `Generator-design-terrain` : water_color
-      `Generator-design-terrain` : zone_blocks
+      `Generator-design-terrain` : generator_design_terrain_field_land_blend
+      `Generator-design-terrain` : generator_design_terrain_field_land_blocks
+      `Generator-design-terrain` : generator_design_terrain_field_land_zones
+      `Generator-design-terrain` : generator_design_terrain_field_lands_per_axis
+      `Generator-design-terrain` : generator_design_terrain_field_sand_color
+      `Generator-design-terrain` : generator_design_terrain_field_sea_level
+      `Generator-design-terrain` : generator_design_terrain_field_seed_default
+      `Generator-design-terrain` : generator_design_terrain_field_snow_above
+      `Generator-design-terrain` : generator_design_terrain_field_snow_color
+      `Generator-design-terrain` : generator_design_terrain_field_view_zones
+      `Generator-design-terrain` : generator_design_terrain_field_water_color
+      `Generator-design-terrain` : generator_design_terrain_field_zone_blocks

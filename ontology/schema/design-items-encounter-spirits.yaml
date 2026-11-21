@@ -1,0 +1,59 @@
+id: https://w3id.org/pixlnd/design-items/encounter-spirits
+name: pixlnd-design-items-encounter-spirits
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-design-initial-encounters-spirits:
+    class_uri: pixlnd:generator-design-initial-encounters-spirits
+    description: Configuration component generator-design-initial-encounters-spirits; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      spirit-fire:
+        alias: spirit-fire
+        slot_uri: pixlnd:generator-design-initial-encounters-spirits/spirit-fire
+        description: Source spirit-fire of generator-design-initial-encounters-spirits.
+        required: true
+        range: double
+        minimum_value: 0.25
+        maximum_value: 0.25
+      spirit-unholy:
+        alias: spirit-unholy
+        slot_uri: pixlnd:generator-design-initial-encounters-spirits/spirit-unholy
+        description: Source spirit-unholy of generator-design-initial-encounters-spirits.
+        required: true
+        range: double
+        minimum_value: 0.25
+        maximum_value: 0.25
+      spirit-ice:
+        alias: spirit-ice
+        slot_uri: pixlnd:generator-design-initial-encounters-spirits/spirit-ice
+        description: Source spirit-ice of generator-design-initial-encounters-spirits.
+        required: true
+        range: double
+        minimum_value: 0.25
+        maximum_value: 0.25
+      spirit-wind:
+        alias: spirit-wind
+        slot_uri: pixlnd:generator-design-initial-encounters-spirits/spirit-wind
+        description: Source spirit-wind of generator-design-initial-encounters-spirits.
+        required: true
+        range: double
+        minimum_value: 0.25
+        maximum_value: 0.25
+
+slots:
+  generator-design-initial-encounters-field-spirits:
+    alias: spirits
+    slot_uri: pixlnd:generator-design-initial-encounters/spirits
+    description: Source spirits of generator-design-initial-encounters.
+    required: true
+    range: generator-design-initial-encounters-spirits
+    inlined: true

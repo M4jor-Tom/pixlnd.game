@@ -1,0 +1,57 @@
+id: https://w3id.org/pixlnd/design-items/source-world
+name: pixlnd-design-items-source-world
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+- design-world-source-land
+- design-world-source-terrain
+- design-world-source-time-climate
+- design-world-source-world-scales
+
+slots:
+  generators-source-field-world-scales:
+    alias: world-scales
+    slot_uri: pixlnd:generators-source/world-scales
+    description: Source world-scales of generators-source.
+    required: true
+    range: generator-source-world-scales
+    inlined: true
+  generators-source-field-seed:
+    alias: seed
+    slot_uri: pixlnd:generators-source/seed
+    description: Source seed of generators-source.
+    required: true
+    range: generator-source-seed
+    inlined: true
+  generators-source-field-time:
+    alias: time
+    slot_uri: pixlnd:generators-source/time
+    description: Source time of generators-source.
+    required: true
+    range: generator-source-time
+    inlined: true
+  generators-source-field-climate:
+    alias: climate
+    slot_uri: pixlnd:generators-source/climate
+    description: Source climate of generators-source.
+    required: true
+    range: generator-source-climate
+    inlined: true
+  generators-source-field-land:
+    alias: land
+    slot_uri: pixlnd:generators-source/land
+    description: Source land of generators-source.
+    required: true
+    range: generator-source-land
+    inlined: true
+  generators-source-field-terrain:
+    alias: terrain
+    slot_uri: pixlnd:generators-source/terrain
+    description: Source terrain of generators-source.
+    required: true
+    range: generator-source-terrain
+    inlined: true

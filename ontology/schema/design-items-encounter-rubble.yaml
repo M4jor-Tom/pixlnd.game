@@ -1,0 +1,49 @@
+id: https://w3id.org/pixlnd/design-items/encounter-rubble
+name: pixlnd-design-items-encounter-rubble
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-design-initial-encounters-rubble:
+    class_uri: pixlnd:generator-design-initial-encounters-rubble
+    description: Configuration component generator-design-initial-encounters-rubble; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      per-arena:
+        alias: per-arena
+        slot_uri: pixlnd:generator-design-initial-encounters-rubble/per-arena
+        description: Source per-arena of generator-design-initial-encounters-rubble.
+        required: true
+        range: integer
+        minimum_value: 8
+        maximum_value: 8
+      voxel-size:
+        alias: voxel-size
+        slot_uri: pixlnd:generator-design-initial-encounters-rubble/voxel-size
+        description: Source voxel-size of generator-design-initial-encounters-rubble.
+        required: true
+        range: integer
+        minimum_value: 1
+        maximum_value: 1
+      restore-world-hours:
+        alias: restore-world-hours
+        slot_uri: pixlnd:generator-design-initial-encounters-rubble/restore-world-hours
+        description: Source restore-world-hours of generator-design-initial-encounters-rubble.
+        required: true
+        range: integer
+        minimum_value: 72
+        maximum_value: 72
+      block-type:
+        alias: block-type
+        slot_uri: pixlnd:generator-design-initial-encounters-rubble/block-type
+        description: Source block-type of generator-design-initial-encounters-rubble.
+        required: true
+        range: string
+        equals_string: rock-building

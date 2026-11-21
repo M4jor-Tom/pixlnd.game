@@ -1,0 +1,98 @@
+id: https://w3id.org/pixlnd/design-items/design-world-fields
+name: pixlnd-design-items-design-world-fields
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+- design-items-encounters
+- design-items-settlement
+- design-world
+- design-world-climate
+- design-world-enemy-scaling
+- design-world-names
+- design-world-spawns
+- design-world-time
+
+slots:
+  generator-design-field-doc:
+    alias: _doc
+    slot_uri: pixlnd:generator-design/doc
+    description: Source _doc of generator-design.
+    required: true
+    range: string
+  generator-design-field-time:
+    alias: time
+    slot_uri: pixlnd:generator-design/time
+    description: Source time of generator-design.
+    required: true
+    range: generator-design-time
+    inlined: true
+  generator-design-field-enemy-level:
+    alias: enemy-level
+    slot_uri: pixlnd:generator-design/enemy-level
+    description: Source enemy-level of generator-design.
+    required: true
+    range: generator-design-enemy-level
+    inlined: true
+  generator-design-field-enemy-hp:
+    alias: enemy-hp
+    slot_uri: pixlnd:generator-design/enemy-hp
+    description: Source enemy-hp of generator-design.
+    required: true
+    range: generator-design-enemy-hp
+    inlined: true
+  generator-design-field-terrain:
+    alias: terrain
+    slot_uri: pixlnd:generator-design/terrain
+    description: Source terrain of generator-design.
+    required: true
+    range: generator-design-terrain
+    inlined: true
+  generator-design-field-climate:
+    alias: climate
+    slot_uri: pixlnd:generator-design/climate
+    description: Source climate of generator-design.
+    required: true
+    range: generator-design-climate
+    inlined: true
+  generator-design-field-names:
+    alias: names
+    slot_uri: pixlnd:generator-design/names
+    description: Source names of generator-design.
+    required: true
+    range: generator-design-names
+    inlined: true
+  generator-design-field-spawns:
+    alias: spawns
+    slot_uri: pixlnd:generator-design/spawns
+    description: Source spawns of generator-design.
+    required: true
+    range: generator-design-spawns
+    inlined: true
+  generator-design-field-settlement:
+    alias: settlement
+    slot_uri: pixlnd:generator-design/settlement
+    description: Source settlement of generator-design.
+    required: true
+    range: generator-design-settlement
+    inlined: true
+    equals_expression: settlement if settlement['radius'] > settlement['blend'] else ''
+    all_of:
+    - range: generator-design-settlement
+      inlined: true
+      required: true
+      equals_expression: settlement if settlement['ring-radius'] < settlement['radius'] else ''
+    - range: generator-design-settlement
+      inlined: true
+      required: true
+      equals_expression: settlement if settlement['no-hostiles-within'] >= settlement['radius'] else ''
+  generator-design-field-initial-encounters:
+    alias: initial-encounters
+    slot_uri: pixlnd:generator-design/initial-encounters
+    description: Source initial-encounters of generator-design.
+    required: true
+    range: generator-design-initial-encounters
+    inlined: true

@@ -1,0 +1,68 @@
+id: https://w3id.org/pixlnd/design-items/design-progression-fields
+name: pixlnd-design-items-design-progression-fields
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+- design-combat-generator-design
+- design-progression-artifacts
+- design-progression-leveling
+
+slots:
+  generator-design-field-gear-hp:
+    alias: gear-hp
+    slot_uri: pixlnd:generator-design/gear-hp
+    description: Source gear-hp of generator-design.
+    required: true
+    range: gear-hp-design
+    inlined: true
+  generator-design-field-skill-point:
+    alias: skill-point
+    slot_uri: pixlnd:generator-design/skill-point
+    description: Source skill-point of generator-design.
+    required: true
+    range: generator-design-skill-point
+    inlined: true
+  generator-design-field-progression:
+    alias: progression
+    slot_uri: pixlnd:generator-design/progression
+    description: Source progression of generator-design.
+    required: true
+    range: generator-design-progression
+    inlined: true
+  generator-design-field-artifact:
+    alias: artifact
+    slot_uri: pixlnd:generator-design/artifact
+    description: Source artifact of generator-design.
+    required: true
+    range: artifact-design
+    inlined: true
+  generator-design-field-circle-of-power:
+    alias: circle-of-power
+    slot_uri: pixlnd:generator-design/circle-of-power
+    description: Source circle-of-power of generator-design.
+    required: true
+    range: generator-design-circle-of-power
+    inlined: true
+  generator-design-field-block-reward:
+    alias: block-reward
+    slot_uri: pixlnd:generator-design/block-reward
+    description: Source block-reward of generator-design.
+    required: true
+    range: string
+  generator-design-field-regeneration:
+    alias: regeneration
+    slot_uri: pixlnd:generator-design/regeneration
+    description: Source regeneration of generator-design.
+    required: true
+    range: string
+  generator-design-field-artifacts-per-land:
+    alias: artifacts-per-land
+    slot_uri: pixlnd:generator-design/artifacts-per-land
+    description: Source artifacts-per-land of generator-design.
+    required: true
+    range: generator-design-artifacts-per-land
+    inlined: true

@@ -1,0 +1,19 @@
+id: https://w3id.org/pixlnd/design-items/source-omega
+name: pixlnd-design-items-source-omega
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+- design-world-omega-coarse-map
+
+slots:
+  generators-source-field-coarse-map-omega:
+    alias: coarse-map-omega
+    slot_uri: pixlnd:generators-source/coarse-map-omega
+    description: Source coarse-map-omega of generators-source.
+    required: true
+    range: generator-source-coarse-map-omega
+    inlined: true

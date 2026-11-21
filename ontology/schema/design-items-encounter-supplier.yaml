@@ -1,0 +1,96 @@
+id: https://w3id.org/pixlnd/design-items/encounter-supplier
+name: pixlnd-design-items-encounter-supplier
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-design-initial-encounters-supplier:
+    class_uri: pixlnd:generator-design-initial-encounters-supplier
+    description: Configuration component generator-design-initial-encounters-supplier; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      size:
+        alias: size
+        slot_uri: pixlnd:generator-design-initial-encounters-supplier/size
+        description: Source size of generator-design-initial-encounters-supplier.
+        required: true
+        range: integer
+        minimum_value: 48
+        maximum_value: 48
+      occupancy:
+        alias: occupancy
+        slot_uri: pixlnd:generator-design-initial-encounters-supplier/occupancy
+        description: Source occupancy of generator-design-initial-encounters-supplier.
+        required: true
+        range: generator-selected-initial-encounters-supplier-occupancy
+        inlined: true
+        annotations:
+          source-tuple-positions: first second
+      exit-width:
+        alias: exit-width
+        slot_uri: pixlnd:generator-design-initial-encounters-supplier/exit-width
+        description: Source exit-width of generator-design-initial-encounters-supplier.
+        required: true
+        range: integer
+        minimum_value: 8
+        maximum_value: 8
+      tiers:
+        alias: tiers
+        slot_uri: pixlnd:generator-design-initial-encounters-supplier/tiers
+        description: Ordered supplier tier indices, white through purple.
+        required: true
+        range: integer
+        multivalued: true
+        minimum_cardinality: 4
+        maximum_cardinality: 4
+        minimum_value: 0
+        maximum_value: 3
+        equals_expression: '[0, 1, 2, 3]'
+      packs:
+        alias: packs
+        slot_uri: pixlnd:generator-design-initial-encounters-supplier/packs
+        description: Source packs of generator-design-initial-encounters-supplier.
+        required: true
+        range: integer
+        minimum_value: 2
+        maximum_value: 2
+  generator-selected-initial-encounters-supplier-occupancy:
+    class_uri: pixlnd:generator-selected-initial-encounters-supplier-occupancy
+    description: Configuration component generator-selected-initial-encounters-supplier-occupancy; applicability follows the linked
+      source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      first:
+        alias: first
+        slot_uri: pixlnd:generator-selected-initial-encounters-supplier-occupancy/first
+        description: Source first of generator-selected-initial-encounters-supplier-occupancy.
+        required: true
+        range: integer
+        minimum_value: -1
+        maximum_value: -1
+      second:
+        alias: second
+        slot_uri: pixlnd:generator-selected-initial-encounters-supplier-occupancy/second
+        description: Source second of generator-selected-initial-encounters-supplier-occupancy.
+        required: true
+        range: integer
+        minimum_value: 16
+        maximum_value: 16
+
+slots:
+  generator-design-initial-encounters-field-supplier:
+    alias: supplier
+    slot_uri: pixlnd:generator-design-initial-encounters/supplier
+    description: Source supplier of generator-design-initial-encounters.
+    required: true
+    range: generator-design-initial-encounters-supplier
+    inlined: true

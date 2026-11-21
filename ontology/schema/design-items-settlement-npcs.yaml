@@ -1,0 +1,77 @@
+id: https://w3id.org/pixlnd/design-items/settlement-npcs
+name: pixlnd-design-items-settlement-npcs
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+- identity-factions
+
+classes:
+  generator-design-settlement-npc:
+    class_uri: pixlnd:generator-design-settlement-npc
+    description: Configuration component generator-design-settlement-npc; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      interact-radius:
+        alias: interact-radius
+        slot_uri: pixlnd:generator-design-settlement-npc/interact-radius
+        description: Source interact-radius of generator-design-settlement-npc.
+        required: true
+        range: double
+      color:
+        alias: color
+        slot_uri: pixlnd:generator-design-settlement-npc/color
+        description: Source color of generator-design-settlement-npc.
+        required: true
+        range: string
+        pattern: ^#[0-9a-fA-F]{6}(?:[0-9a-fA-F]{2})?(?![\s\S])
+      roles:
+        alias: roles
+        slot_uri: pixlnd:generator-design-settlement-npc/roles
+        description: Source roles of generator-design-settlement-npc.
+        required: true
+        range: generator-design-settlement-npc-roles
+        inlined: true
+  generator-design-settlement-npc-roles:
+    class_uri: pixlnd:generator-design-settlement-npc-roles
+    description: Configuration component generator-design-settlement-npc-roles; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      entries:
+        alias: entries
+        slot_uri: pixlnd:generator-design-settlement-npc-roles/entries
+        description: Source entries of generator-design-settlement-npc-roles.
+        required: true
+        range: generator-design-settlement-npc-roles-entry
+        inlined: true
+        multivalued: true
+        minimum_cardinality: 0
+        inlined_as_list: true
+    annotations:
+      source-map-entries: entries
+  generator-design-settlement-npc-roles-entry:
+    class_uri: pixlnd:generator-design-settlement-npc-roles-entry
+    description: Configuration component generator-design-settlement-npc-roles-entry; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      key:
+        alias: key
+        slot_uri: pixlnd:generator-design-settlement-npc-roles-entry/key
+        description: Source key of generator-design-settlement-npc-roles-entry.
+        required: true
+        range: string
+      value:
+        alias: value
+        slot_uri: pixlnd:generator-design-settlement-npc-roles-entry/value
+        description: Source value of generator-design-settlement-npc-roles-entry.
+        required: true
+        range: npc-role

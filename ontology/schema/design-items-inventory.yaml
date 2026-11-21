@@ -1,0 +1,105 @@
+id: https://w3id.org/pixlnd/design-items/inventory
+name: pixlnd-design-items-inventory
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+- items-item-catalog
+
+classes:
+  generator-design-stack-cap:
+    class_uri: pixlnd:generator-design-stack-cap
+    description: Configuration component generator-design-stack-cap; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      doc:
+        alias: _doc
+        slot_uri: pixlnd:generator-design-stack-cap/doc
+        description: Source _doc of generator-design-stack-cap.
+        required: true
+        range: string
+      cap:
+        alias: cap
+        slot_uri: pixlnd:generator-design-stack-cap/cap
+        description: Source cap of generator-design-stack-cap.
+        required: true
+        range: integer
+      stackable:
+        alias: stackable
+        slot_uri: pixlnd:generator-design-stack-cap/stackable
+        description: Source stackable of generator-design-stack-cap.
+        required: true
+        range: item-type
+        multivalued: true
+        minimum_cardinality: 0
+  generator-design-starting-inventory:
+    class_uri: pixlnd:generator-design-starting-inventory
+    description: Configuration component generator-design-starting-inventory; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      doc:
+        alias: _doc
+        slot_uri: pixlnd:generator-design-starting-inventory/doc
+        description: Source _doc of generator-design-starting-inventory.
+        required: true
+        range: string
+      consumables:
+        alias: consumables
+        slot_uri: pixlnd:generator-design-starting-inventory/consumables
+        description: Source consumables of generator-design-starting-inventory.
+        required: true
+        range: generator-design-starting-inventory-consumables
+        inlined: true
+      coins:
+        alias: coins
+        slot_uri: pixlnd:generator-design-starting-inventory/coins
+        description: Source coins of generator-design-starting-inventory.
+        required: true
+        range: integer
+  generator-design-starting-inventory-consumables:
+    class_uri: pixlnd:generator-design-starting-inventory-consumables
+    description: Configuration component generator-design-starting-inventory-consumables; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      entries:
+        alias: entries
+        slot_uri: pixlnd:generator-design-starting-inventory-consumables/entries
+        description: Source entries of generator-design-starting-inventory-consumables.
+        required: true
+        range: generator-design-starting-inventory-consumables-entry
+        inlined: true
+        multivalued: true
+        minimum_cardinality: 0
+        inlined_as_list: true
+    annotations:
+      source-map-entries: entries
+  generator-design-starting-inventory-consumables-entry:
+    class_uri: pixlnd:generator-design-starting-inventory-consumables-entry
+    description: Configuration component generator-design-starting-inventory-consumables-entry; applicability follows the linked source
+      rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      key:
+        alias: key
+        slot_uri: pixlnd:generator-design-starting-inventory-consumables-entry/key
+        description: Source key of generator-design-starting-inventory-consumables-entry.
+        required: true
+        range: consumable
+      value:
+        alias: value
+        slot_uri: pixlnd:generator-design-starting-inventory-consumables-entry/value
+        description: Source value of generator-design-starting-inventory-consumables-entry.
+        required: true
+        range: integer
+        minimum_value: 1

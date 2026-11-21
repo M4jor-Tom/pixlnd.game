@@ -1,0 +1,69 @@
+id: https://w3id.org/pixlnd/design-world/terrain-dimensions
+name: pixlnd-design-world-terrain-dimensions
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+slots:
+  generator-design-terrain-field-doc:
+    alias: _doc
+    slot_uri: pixlnd:generator-design-terrain/doc
+    description: Source _doc of generator-design-terrain.
+    required: true
+    range: string
+  generator-design-terrain-field-block-m:
+    alias: block-m
+    slot_uri: pixlnd:generator-design-terrain/block-m
+    description: Source block-m of generator-design-terrain.
+    required: true
+    range: double
+    minimum_value: 1.0
+    maximum_value: 1.0
+  generator-design-terrain-field-zone-blocks:
+    alias: zone-blocks
+    slot_uri: pixlnd:generator-design-terrain/zone-blocks
+    description: Source zone-blocks of generator-design-terrain.
+    required: true
+    range: integer
+    minimum_value: 64
+    maximum_value: 64
+  generator-design-terrain-field-land-zones:
+    alias: land-zones
+    slot_uri: pixlnd:generator-design-terrain/land-zones
+    description: Source land-zones of generator-design-terrain.
+    required: true
+    range: integer
+    minimum_value: 256
+    maximum_value: 256
+  generator-design-terrain-field-lands-per-axis:
+    alias: lands-per-axis
+    slot_uri: pixlnd:generator-design-terrain/lands-per-axis
+    description: Source lands-per-axis of generator-design-terrain.
+    required: true
+    range: integer
+    minimum_value: 1024
+    maximum_value: 1024
+  generator-design-terrain-field-land-blocks:
+    alias: land-blocks
+    slot_uri: pixlnd:generator-design-terrain/land-blocks
+    description: Source land-blocks of generator-design-terrain.
+    required: true
+    range: integer
+    minimum_value: 16384
+    maximum_value: 16384
+  generator-design-terrain-field-view-zones:
+    alias: view-zones
+    slot_uri: pixlnd:generator-design-terrain/view-zones
+    description: Source view-zones of generator-design-terrain.
+    required: true
+    range: integer
+  generator-design-terrain-field-seed-default:
+    alias: seed-default
+    slot_uri: pixlnd:generator-design-terrain/seed-default
+    description: Source seed-default of generator-design-terrain.
+    required: true
+    range: integer

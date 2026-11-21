@@ -1,0 +1,85 @@
+id: https://w3id.org/pixlnd/design-items/settlement-layout
+name: pixlnd-design-items-settlement-layout
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+- world-settlement
+
+classes:
+  generator-design-settlement-placement:
+    class_uri: pixlnd:generator-design-settlement-placement
+    description: Configuration component generator-design-settlement-placement; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      search-step:
+        alias: search-step
+        slot_uri: pixlnd:generator-design-settlement-placement/search-step
+        description: Source search-step of generator-design-settlement-placement.
+        required: true
+        range: integer
+      search-rings:
+        alias: search-rings
+        slot_uri: pixlnd:generator-design-settlement-placement/search-rings
+        description: Source search-rings of generator-design-settlement-placement.
+        required: true
+        range: integer
+      min-above-sea:
+        alias: min-above-sea
+        slot_uri: pixlnd:generator-design-settlement-placement/min-above-sea
+        description: Source min-above-sea of generator-design-settlement-placement.
+        required: true
+        range: integer
+  generator-design-settlement-footprint:
+    class_uri: pixlnd:generator-design-settlement-footprint
+    description: Configuration component generator-design-settlement-footprint; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      default:
+        alias: default
+        slot_uri: pixlnd:generator-design-settlement-footprint/default
+        description: Source default of generator-design-settlement-footprint.
+        required: true
+        range: integer
+        multivalued: true
+        minimum_cardinality: 3
+        maximum_cardinality: 3
+      entries:
+        alias: entries
+        slot_uri: pixlnd:generator-design-settlement-footprint/entries
+        description: Source entries of generator-design-settlement-footprint.
+        required: true
+        range: generator-footprint-entry
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+    annotations:
+      source-map-entries: entries
+  generator-footprint-entry:
+    class_uri: pixlnd:generator-footprint-entry
+    description: Typed source configuration component.
+    see_also:
+    - ../domain/5_Constraints.md#constraint-catalog
+    attributes:
+      key:
+        alias: key
+        slot_uri: pixlnd:generator-footprint-entry/key
+        description: Source key of generator-footprint-entry.
+        required: true
+        range: building
+      value:
+        alias: value
+        slot_uri: pixlnd:generator-footprint-entry/value
+        description: Source value of generator-footprint-entry.
+        required: true
+        range: integer
+        multivalued: true
+        minimum_cardinality: 3
+        maximum_cardinality: 3

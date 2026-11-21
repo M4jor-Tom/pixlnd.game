@@ -1,0 +1,63 @@
+id: https://w3id.org/pixlnd/design-items/design-economy-fields
+name: pixlnd-design-items-design-economy-fields
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+- design-items-inventory
+- design-items-loot
+- design-items-prices
+- design-items-recipes-and-pvp
+
+slots:
+  generator-design-field-item-stat-curve:
+    alias: item-stat-curve
+    slot_uri: pixlnd:generator-design/item-stat-curve
+    description: Source item-stat-curve of generator-design.
+    required: true
+    range: string
+  generator-design-field-prices:
+    alias: prices
+    slot_uri: pixlnd:generator-design/prices
+    description: Source prices of generator-design.
+    required: true
+    range: generator-design-prices
+    inlined: true
+  generator-design-field-stack-cap:
+    alias: stack-cap
+    slot_uri: pixlnd:generator-design/stack-cap
+    description: Source stack-cap of generator-design.
+    required: true
+    range: generator-design-stack-cap
+    inlined: true
+  generator-design-field-pvp:
+    alias: pvp
+    slot_uri: pixlnd:generator-design/pvp
+    description: Source pvp of generator-design.
+    required: true
+    range: generator-design-pvp
+    inlined: true
+  generator-design-field-recipes:
+    alias: recipes
+    slot_uri: pixlnd:generator-design/recipes
+    description: Source recipes of generator-design.
+    required: true
+    range: generator-design-recipes
+    inlined: true
+  generator-design-field-loot:
+    alias: loot
+    slot_uri: pixlnd:generator-design/loot
+    description: Source loot of generator-design.
+    required: true
+    range: generator-design-loot
+    inlined: true
+  generator-design-field-starting-inventory:
+    alias: starting-inventory
+    slot_uri: pixlnd:generator-design/starting-inventory
+    description: Source starting-inventory of generator-design.
+    required: true
+    range: generator-design-starting-inventory
+    inlined: true

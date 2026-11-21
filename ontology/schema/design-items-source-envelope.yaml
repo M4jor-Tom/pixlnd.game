@@ -1,0 +1,23 @@
+id: https://w3id.org/pixlnd/design-items/source-envelope
+name: pixlnd-design-items-source-envelope
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+slots:
+  generators-source-field-schema-ref:
+    alias: $schema
+    slot_uri: pixlnd:generators-source/schema-ref
+    description: Source $schema of generators-source.
+    required: true
+    range: string
+  generators-source-field-doc:
+    alias: _doc
+    slot_uri: pixlnd:generators-source/doc
+    description: Source _doc of generators-source.
+    required: true
+    range: string

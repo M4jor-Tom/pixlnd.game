@@ -1,0 +1,136 @@
+id: https://w3id.org/pixlnd/design-items/encounter-mission
+name: pixlnd-design-items-encounter-mission
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-design-initial-encounters-mission-package:
+    class_uri: pixlnd:generator-design-initial-encounters-mission-package
+    description: Configuration component generator-design-initial-encounters-mission-package; applicability follows the linked source
+      rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      coin-per-grade:
+        alias: coin-per-grade
+        slot_uri: pixlnd:generator-design-initial-encounters-mission-package/coin-per-grade
+        description: Source coin-per-grade of generator-design-initial-encounters-mission-package.
+        required: true
+        range: integer
+        minimum_value: 20
+        maximum_value: 20
+      potion:
+        alias: potion
+        slot_uri: pixlnd:generator-design-initial-encounters-mission-package/potion
+        description: Source potion of generator-design-initial-encounters-mission-package.
+        required: true
+        range: string
+        equals_string: life-potion
+      potion-rarity:
+        alias: potion-rarity
+        slot_uri: pixlnd:generator-design-initial-encounters-mission-package/potion-rarity
+        description: Source potion-rarity of generator-design-initial-encounters-mission-package.
+        required: true
+        range: integer
+        minimum_value: 0
+        maximum_value: 0
+      potion-count:
+        alias: potion-count
+        slot_uri: pixlnd:generator-design-initial-encounters-mission-package/potion-count
+        description: Source potion-count of generator-design-initial-encounters-mission-package.
+        required: true
+        range: integer
+        minimum_value: 1
+        maximum_value: 1
+      gems:
+        alias: gems
+        slot_uri: pixlnd:generator-design-initial-encounters-mission-package/gems
+        description: Source gems of generator-design-initial-encounters-mission-package.
+        required: true
+        range: generator-selected-initial-encounters-mission-package-gems
+        inlined: true
+        annotations:
+          source-tuple-positions: first second third fourth
+      gem-count-per-grade:
+        alias: gem-count-per-grade
+        slot_uri: pixlnd:generator-design-initial-encounters-mission-package/gem-count-per-grade
+        description: Source gem-count-per-grade of generator-design-initial-encounters-mission-package.
+        required: true
+        range: integer
+        minimum_value: 1
+        maximum_value: 1
+      rarity-shift:
+        alias: rarity-shift
+        slot_uri: pixlnd:generator-design-initial-encounters-mission-package/rarity-shift
+        description: Source rarity-shift of generator-design-initial-encounters-mission-package.
+        required: true
+        range: integer
+        minimum_value: 1
+        maximum_value: 1
+      upgrades:
+        alias: upgrades
+        slot_uri: pixlnd:generator-design-initial-encounters-mission-package/upgrades
+        description: Source upgrades of generator-design-initial-encounters-mission-package.
+        required: true
+        range: integer
+        minimum_value: 0
+        maximum_value: 0
+      delivery-height:
+        alias: delivery-height
+        slot_uri: pixlnd:generator-design-initial-encounters-mission-package/delivery-height
+        description: Source delivery-height of generator-design-initial-encounters-mission-package.
+        required: true
+        range: double
+        minimum_value: 0.5
+        maximum_value: 0.5
+  generator-selected-initial-encounters-mission-package-gems:
+    class_uri: pixlnd:generator-selected-initial-encounters-mission-package-gems
+    description: Configuration component generator-selected-initial-encounters-mission-package-gems; applicability follows the linked
+      source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      first:
+        alias: first
+        slot_uri: pixlnd:generator-selected-initial-encounters-mission-package-gems/first
+        description: Source first of generator-selected-initial-encounters-mission-package-gems.
+        required: true
+        range: string
+        equals_string: emerald
+      second:
+        alias: second
+        slot_uri: pixlnd:generator-selected-initial-encounters-mission-package-gems/second
+        description: Source second of generator-selected-initial-encounters-mission-package-gems.
+        required: true
+        range: string
+        equals_string: sapphire
+      third:
+        alias: third
+        slot_uri: pixlnd:generator-selected-initial-encounters-mission-package-gems/third
+        description: Source third of generator-selected-initial-encounters-mission-package-gems.
+        required: true
+        range: string
+        equals_string: ruby
+      fourth:
+        alias: fourth
+        slot_uri: pixlnd:generator-selected-initial-encounters-mission-package-gems/fourth
+        description: Source fourth of generator-selected-initial-encounters-mission-package-gems.
+        required: true
+        range: string
+        equals_string: diamond
+
+slots:
+  generator-design-initial-encounters-field-mission-package:
+    alias: mission-package
+    slot_uri: pixlnd:generator-design-initial-encounters/mission-package
+    description: Source mission-package of generator-design-initial-encounters.
+    required: true
+    range: generator-design-initial-encounters-mission-package
+    inlined: true

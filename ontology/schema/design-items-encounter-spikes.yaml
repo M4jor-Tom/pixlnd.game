@@ -1,0 +1,138 @@
+id: https://w3id.org/pixlnd/design-items/encounter-spikes
+name: pixlnd-design-items-encounter-spikes
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-design-initial-encounters-spikes:
+    class_uri: pixlnd:generator-design-initial-encounters-spikes
+    description: Configuration component generator-design-initial-encounters-spikes; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      count:
+        alias: count
+        slot_uri: pixlnd:generator-design-initial-encounters-spikes/count
+        description: Source count of generator-design-initial-encounters-spikes.
+        required: true
+        range: integer
+        minimum_value: 2
+        maximum_value: 2
+      footprint:
+        alias: footprint
+        slot_uri: pixlnd:generator-design-initial-encounters-spikes/footprint
+        description: Source footprint of generator-design-initial-encounters-spikes.
+        required: true
+        range: generator-selected-initial-encounters-spikes-footprint
+        inlined: true
+        annotations:
+          source-tuple-positions: first second
+      victim-height:
+        alias: victim-height
+        slot_uri: pixlnd:generator-design-initial-encounters-spikes/victim-height
+        description: Source victim-height of generator-design-initial-encounters-spikes.
+        required: true
+        range: generator-selected-initial-encounters-spikes-victim-height
+        inlined: true
+        annotations:
+          source-tuple-positions: first second
+      warning-s:
+        alias: warning-s
+        slot_uri: pixlnd:generator-design-initial-encounters-spikes/warning-s
+        description: Source warning-s of generator-design-initial-encounters-spikes.
+        required: true
+        range: double
+        minimum_value: 0.8
+        maximum_value: 0.8
+      active-s:
+        alias: active-s
+        slot_uri: pixlnd:generator-design-initial-encounters-spikes/active-s
+        description: Source active-s of generator-design-initial-encounters-spikes.
+        required: true
+        range: double
+        minimum_value: 0.25
+        maximum_value: 0.25
+      cooldown-s:
+        alias: cooldown-s
+        slot_uri: pixlnd:generator-design-initial-encounters-spikes/cooldown-s
+        description: Source cooldown-s of generator-design-initial-encounters-spikes.
+        required: true
+        range: integer
+        minimum_value: 2
+        maximum_value: 2
+      damage:
+        alias: damage
+        slot_uri: pixlnd:generator-design-initial-encounters-spikes/damage
+        description: Source damage of generator-design-initial-encounters-spikes.
+        required: true
+        range: integer
+        minimum_value: 30
+        maximum_value: 30
+      attack-type:
+        alias: attack-type
+        slot_uri: pixlnd:generator-design-initial-encounters-spikes/attack-type
+        description: Source attack-type of generator-design-initial-encounters-spikes.
+        required: true
+        range: string
+        equals_string: physical
+      warning-sfx:
+        alias: warning-sfx
+        slot_uri: pixlnd:generator-design-initial-encounters-spikes/warning-sfx
+        description: Source warning-sfx of generator-design-initial-encounters-spikes.
+        required: true
+        range: string
+        equals_string: block
+  generator-selected-initial-encounters-spikes-footprint:
+    class_uri: pixlnd:generator-selected-initial-encounters-spikes-footprint
+    description: Configuration component generator-selected-initial-encounters-spikes-footprint; applicability follows the linked source
+      rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      first:
+        alias: first
+        slot_uri: pixlnd:generator-selected-initial-encounters-spikes-footprint/first
+        description: Source first of generator-selected-initial-encounters-spikes-footprint.
+        required: true
+        range: integer
+        minimum_value: 2
+        maximum_value: 2
+      second:
+        alias: second
+        slot_uri: pixlnd:generator-selected-initial-encounters-spikes-footprint/second
+        description: Source second of generator-selected-initial-encounters-spikes-footprint.
+        required: true
+        range: integer
+        minimum_value: 2
+        maximum_value: 2
+  generator-selected-initial-encounters-spikes-victim-height:
+    class_uri: pixlnd:generator-selected-initial-encounters-spikes-victim-height
+    description: Configuration component generator-selected-initial-encounters-spikes-victim-height; applicability follows the linked
+      source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      first:
+        alias: first
+        slot_uri: pixlnd:generator-selected-initial-encounters-spikes-victim-height/first
+        description: Source first of generator-selected-initial-encounters-spikes-victim-height.
+        required: true
+        range: integer
+        minimum_value: 0
+        maximum_value: 0
+      second:
+        alias: second
+        slot_uri: pixlnd:generator-selected-initial-encounters-spikes-victim-height/second
+        description: Source second of generator-selected-initial-encounters-spikes-victim-height.
+        required: true
+        range: integer
+        minimum_value: 1
+        maximum_value: 1

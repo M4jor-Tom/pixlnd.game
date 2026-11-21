@@ -1,0 +1,101 @@
+id: https://w3id.org/pixlnd/design-world/source-dungeon
+name: pixlnd-design-world-source-dungeon
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-source-dungeon:
+    class_uri: pixlnd:generator-source-dungeon
+    description: Configuration component generator-source-dungeon; applicability follows the linked source rules. Historical facts retain
+      their explicit A/S/X/Omega scope; hybrid overrides remain authoritative.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      alpha-layout:
+        alias: alpha-layout
+        slot_uri: pixlnd:generator-source-dungeon/alpha-layout
+        description: Source alpha-layout of generator-source-dungeon.
+        required: true
+        range: string
+      steam-layout:
+        alias: steam-layout
+        slot_uri: pixlnd:generator-source-dungeon/steam-layout
+        description: Source steam-layout of generator-source-dungeon.
+        required: true
+        range: string
+      group-size:
+        alias: group-size
+        slot_uri: pixlnd:generator-source-dungeon/group-size
+        description: Source group-size of generator-source-dungeon.
+        required: true
+        range: integer
+        multivalued: true
+        minimum_cardinality: 2
+        maximum_cardinality: 2
+      mob-tier:
+        alias: mob-tier
+        slot_uri: pixlnd:generator-source-dungeon/mob-tier
+        description: Source mob-tier of generator-source-dungeon.
+        required: true
+        range: string
+      traps-alpha:
+        alias: traps-alpha
+        slot_uri: pixlnd:generator-source-dungeon/traps-alpha
+        description: Source traps-alpha of generator-source-dungeon.
+        required: true
+        range: string
+        multivalued: true
+        minimum_cardinality: 0
+      traps-data-x:
+        alias: traps-data-x
+        slot_uri: pixlnd:generator-source-dungeon/traps-data-x
+        description: Source traps-data-x of generator-source-dungeon.
+        required: true
+        range: string
+        multivalued: true
+        minimum_cardinality: 0
+      boss:
+        alias: boss
+        slot_uri: pixlnd:generator-source-dungeon/boss
+        description: Source boss of generator-source-dungeon.
+        required: true
+        range: generator-source-dungeon-boss
+        inlined: true
+      artifact-s:
+        alias: artifact-s
+        slot_uri: pixlnd:generator-source-dungeon/artifact-s
+        description: Source artifact-s of generator-source-dungeon.
+        required: true
+        range: string
+      size-cap-s:
+        alias: size-cap-s
+        slot_uri: pixlnd:generator-source-dungeon/size-cap-s
+        description: Source size-cap-s of generator-source-dungeon.
+        required: true
+        range: string
+  generator-source-dungeon-boss:
+    class_uri: pixlnd:generator-source-dungeon-boss
+    description: Configuration component generator-source-dungeon-boss; applicability follows the linked source rules. Historical facts
+      retain their explicit A/S/X/Omega scope; hybrid overrides remain authoritative.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      alpha:
+        alias: A
+        slot_uri: pixlnd:generator-source-dungeon-boss/a
+        description: Source A of generator-source-dungeon-boss.
+        required: true
+        range: integer
+      steam:
+        alias: S
+        slot_uri: pixlnd:generator-source-dungeon-boss/s
+        description: Source S of generator-source-dungeon-boss.
+        required: true
+        range: string

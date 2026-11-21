@@ -1,0 +1,80 @@
+id: https://w3id.org/pixlnd/design-world/source-settlement
+name: pixlnd-design-world-source-settlement
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-source-settlement:
+    class_uri: pixlnd:generator-source-settlement
+    description: Configuration component generator-source-settlement; applicability follows the linked source rules. Historical facts
+      retain their explicit A/S/X/Omega scope; hybrid overrides remain authoritative.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      alpha-count:
+        alias: alpha-count
+        slot_uri: pixlnd:generator-source-settlement/alpha-count
+        description: Source alpha-count of generator-source-settlement.
+        required: true
+        range: integer
+      steam-count:
+        alias: steam-count
+        slot_uri: pixlnd:generator-source-settlement/steam-count
+        description: Source steam-count of generator-source-settlement.
+        required: true
+        range: string
+      districts-alpha:
+        alias: districts-alpha
+        slot_uri: pixlnd:generator-source-settlement/districts-alpha
+        description: Source districts-alpha of generator-source-settlement.
+        required: true
+        range: string
+        multivalued: true
+        minimum_cardinality: 0
+      buildings-procedural:
+        alias: buildings-procedural
+        slot_uri: pixlnd:generator-source-settlement/buildings-procedural
+        description: Source buildings-procedural of generator-source-settlement.
+        required: true
+        range: string
+        multivalued: true
+        minimum_cardinality: 0
+      style-by-landscape:
+        alias: style-by-landscape
+        slot_uri: pixlnd:generator-source-settlement/style-by-landscape
+        description: Source style-by-landscape of generator-source-settlement.
+        required: true
+        range: string
+      inn:
+        alias: inn
+        slot_uri: pixlnd:generator-source-settlement/inn
+        description: Source inn of generator-source-settlement.
+        required: true
+        range: generator-source-settlement-inn
+        inlined: true
+  generator-source-settlement-inn:
+    class_uri: pixlnd:generator-source-settlement-inn
+    description: Configuration component generator-source-settlement-inn; applicability follows the linked source rules. Historical
+      facts retain their explicit A/S/X/Omega scope; hybrid overrides remain authoritative.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      alpha:
+        alias: A
+        slot_uri: pixlnd:generator-source-settlement-inn/a
+        description: Source A of generator-source-settlement-inn.
+        required: true
+        range: string
+      steam:
+        alias: S
+        slot_uri: pixlnd:generator-source-settlement-inn/s
+        description: Source S of generator-source-settlement-inn.
+        required: true
+        range: integer

@@ -1,0 +1,99 @@
+id: https://w3id.org/pixlnd/design-world/source-item
+name: pixlnd-design-world-source-item
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-source-item:
+    class_uri: pixlnd:generator-source-item
+    description: Configuration component generator-source-item; applicability follows the linked source rules. Historical facts retain
+      their explicit A/S/X/Omega scope; hybrid overrides remain authoritative.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      roll:
+        alias: roll
+        slot_uri: pixlnd:generator-source-item/roll
+        description: Source roll of generator-source-item.
+        required: true
+        range: string
+      rarity-range:
+        alias: rarity-range
+        slot_uri: pixlnd:generator-source-item/rarity-range
+        description: Source rarity-range of generator-source-item.
+        required: true
+        range: integer
+        multivalued: true
+        minimum_cardinality: 2
+        maximum_cardinality: 2
+      mythical-bug:
+        alias: mythical-bug
+        slot_uri: pixlnd:generator-source-item/mythical-bug
+        description: Source mythical-bug of generator-source-item.
+        required: true
+        range: boolean
+      stat-curves:
+        alias: stat-curves
+        slot_uri: pixlnd:generator-source-item/stat-curves
+        description: Source stat-curves of generator-source-item.
+        required: true
+        range: string
+      cubes-max:
+        alias: cubes-max
+        slot_uri: pixlnd:generator-source-item/cubes-max
+        description: Source cubes-max of generator-source-item.
+        required: true
+        range: generator-source-item-cubes-max
+        inlined: true
+      plus-chance-s:
+        alias: plus-chance-s
+        slot_uri: pixlnd:generator-source-item/plus-chance-s
+        description: Source plus-chance-s of generator-source-item.
+        required: true
+        range: string
+      name-rule:
+        alias: name-rule
+        slot_uri: pixlnd:generator-source-item/name-rule
+        description: Source name-rule of generator-source-item.
+        required: true
+        range: string
+  generator-source-item-cubes-max:
+    class_uri: pixlnd:generator-source-item-cubes-max
+    description: Configuration component generator-source-item-cubes-max; applicability follows the linked source rules. Historical
+      facts retain their explicit A/S/X/Omega scope; hybrid overrides remain authoritative.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      value-1h:
+        alias: 1h
+        slot_uri: pixlnd:generator-source-item-cubes-max/value-1h
+        description: Source 1h of generator-source-item-cubes-max.
+        required: true
+        range: integer
+      value-2h:
+        alias: 2h
+        slot_uri: pixlnd:generator-source-item-cubes-max/value-2h
+        description: Source 2h of generator-source-item-cubes-max.
+        required: true
+        range: integer
+  generator-source-key-items-s:
+    class_uri: pixlnd:generator-source-key-items-s
+    description: Configuration component generator-source-key-items-s; applicability follows the linked source rules. Historical facts
+      retain their explicit A/S/X/Omega scope; hybrid overrides remain authoritative.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      rule:
+        alias: rule
+        slot_uri: pixlnd:generator-source-key-items-s/rule
+        description: Source rule of generator-source-key-items-s.
+        required: true
+        range: string

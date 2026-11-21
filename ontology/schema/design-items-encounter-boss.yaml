@@ -1,0 +1,114 @@
+id: https://w3id.org/pixlnd/design-items/encounter-boss
+name: pixlnd-design-items-encounter-boss
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+- design-items-encounter-specials
+
+classes:
+  generator-design-initial-encounters-boss-height:
+    class_uri: pixlnd:generator-design-initial-encounters-boss-height
+    description: Configuration component generator-design-initial-encounters-boss-height; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      base:
+        alias: base
+        slot_uri: pixlnd:generator-design-initial-encounters-boss-height/base
+        description: Source base of generator-design-initial-encounters-boss-height.
+        required: true
+        range: double
+        minimum_value: 1.7
+        maximum_value: 1.7
+      min-mult:
+        alias: min-mult
+        slot_uri: pixlnd:generator-design-initial-encounters-boss-height/min-mult
+        description: Source min-mult of generator-design-initial-encounters-boss-height.
+        required: true
+        range: double
+        minimum_value: 1.25
+        maximum_value: 1.25
+      growth:
+        alias: growth
+        slot_uri: pixlnd:generator-design-initial-encounters-boss-height/growth
+        description: Source growth of generator-design-initial-encounters-boss-height.
+        required: true
+        range: double
+        minimum_value: 0.75
+        maximum_value: 0.75
+      max-level:
+        alias: max-level
+        slot_uri: pixlnd:generator-design-initial-encounters-boss-height/max-level
+        description: Source max-level of generator-design-initial-encounters-boss-height.
+        required: true
+        range: integer
+        minimum_value: 10
+        maximum_value: 10
+  generator-design-initial-encounters-boss-specials:
+    class_uri: pixlnd:generator-design-initial-encounters-boss-specials
+    description: Configuration component generator-design-initial-encounters-boss-specials; applicability follows the linked source
+      rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      stomp:
+        alias: stomp
+        slot_uri: pixlnd:generator-design-initial-encounters-boss-specials/stomp
+        description: Source stomp of generator-design-initial-encounters-boss-specials.
+        required: true
+        range: double
+        minimum_value: 0.5
+        maximum_value: 0.5
+      charge:
+        alias: charge
+        slot_uri: pixlnd:generator-design-initial-encounters-boss-specials/charge
+        description: Source charge of generator-design-initial-encounters-boss-specials.
+        required: true
+        range: double
+        minimum_value: 0.5
+        maximum_value: 0.5
+
+slots:
+  generator-design-initial-encounters-field-boss-hp-mult:
+    alias: boss-hp-mult
+    slot_uri: pixlnd:generator-design-initial-encounters/boss-hp-mult
+    description: Source boss-hp-mult of generator-design-initial-encounters.
+    required: true
+    range: integer
+    minimum_value: 4
+    maximum_value: 4
+  generator-design-initial-encounters-field-boss-damage-mult:
+    alias: boss-damage-mult
+    slot_uri: pixlnd:generator-design-initial-encounters/boss-damage-mult
+    description: Source boss-damage-mult of generator-design-initial-encounters.
+    required: true
+    range: double
+    minimum_value: 1.5
+    maximum_value: 1.5
+  generator-design-initial-encounters-field-boss-height:
+    alias: boss-height
+    slot_uri: pixlnd:generator-design-initial-encounters/boss-height
+    description: Source boss-height of generator-design-initial-encounters.
+    required: true
+    range: generator-design-initial-encounters-boss-height
+    inlined: true
+  generator-design-initial-encounters-field-boss-specials:
+    alias: boss-specials
+    slot_uri: pixlnd:generator-design-initial-encounters/boss-specials
+    description: Source boss-specials of generator-design-initial-encounters.
+    required: true
+    range: generator-design-initial-encounters-boss-specials
+    inlined: true
+  generator-design-initial-encounters-field-special-profile:
+    alias: special-profile
+    slot_uri: pixlnd:generator-design-initial-encounters/special-profile
+    description: Source special-profile of generator-design-initial-encounters.
+    required: true
+    range: generator-design-initial-encounters-special-profile
+    inlined: true

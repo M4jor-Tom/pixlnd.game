@@ -1,0 +1,44 @@
+id: https://w3id.org/pixlnd/design-world/terrain-surface
+name: pixlnd-design-world-terrain-surface
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+slots:
+  generator-design-terrain-field-beach-above-sea:
+    alias: beach-above-sea
+    slot_uri: pixlnd:generator-design-terrain/beach-above-sea
+    description: Source beach-above-sea of generator-design-terrain.
+    required: true
+    range: integer
+  generator-design-terrain-field-snow-above:
+    alias: snow-above
+    slot_uri: pixlnd:generator-design-terrain/snow-above
+    description: Source snow-above of generator-design-terrain.
+    required: true
+    range: integer
+  generator-design-terrain-field-water-color:
+    alias: water-color
+    slot_uri: pixlnd:generator-design-terrain/water-color
+    description: Source water-color of generator-design-terrain.
+    required: true
+    range: string
+    pattern: ^#[0-9a-fA-F]{6}(?:[0-9a-fA-F]{2})?(?![\s\S])
+  generator-design-terrain-field-sand-color:
+    alias: sand-color
+    slot_uri: pixlnd:generator-design-terrain/sand-color
+    description: Source sand-color of generator-design-terrain.
+    required: true
+    range: string
+    pattern: ^#[0-9a-fA-F]{6}(?:[0-9a-fA-F]{2})?(?![\s\S])
+  generator-design-terrain-field-snow-color:
+    alias: snow-color
+    slot_uri: pixlnd:generator-design-terrain/snow-color
+    description: Source snow-color of generator-design-terrain.
+    required: true
+    range: string
+    pattern: ^#[0-9a-fA-F]{6}(?:[0-9a-fA-F]{2})?(?![\s\S])

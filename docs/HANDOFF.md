@@ -353,17 +353,6 @@ Found by the generic catalog-reference check in `scripts/ontology_bind.py` (bran
 Next: owner decides between widening the range (ingredient or material) and changing the data;
 then remove the `KNOWN_FINDINGS` entry.
 
-## LinkML schema-module cap — two modules cannot be split as authored
-
-`ontology-schema-size` (150 lines per `ontology/schema/*.yaml`) still fails for
-`design-items.yaml` (3613) and `design-world.yaml` (2562); the other 22 modules are split.
-Both are indent-2 JSON, and single class bodies exceed the cap on their own:
-`generator-design` 326 lines (38 attributes), `generator-design-initial-encounters` 219,
-`generators-source` 191, `generator-design-terrain` 151. A class cannot span modules, so a pure
-split cannot pass. Re-styled as block YAML the first three are still 280 / 191 / 165 lines.
-Next action: owner decision between remodelling those classes (semantic change), authoring them
-in the one-line attribute style the other modules already use, or a different cap rule.
-
 ## Range oracle — 46 subtest failures in `test_ontology_schema.py`
 
 `test_imports_ranges_aliases_and_compound_keys` fails 46 subtests at `8ce6932`, with the identical

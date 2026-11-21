@@ -1,0 +1,132 @@
+id: https://w3id.org/pixlnd/design-world/source-edition-scales
+name: pixlnd-design-world-source-edition-scales
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-source-world-scales-alpha:
+    class_uri: pixlnd:generator-source-world-scales-alpha
+    description: Configuration component generator-source-world-scales-alpha; applicability follows the linked source rules. Historical
+      facts retain their explicit A/S/X/Omega scope; hybrid overrides remain authoritative.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      zone-blocks:
+        alias: zone-blocks
+        slot_uri: pixlnd:generator-source-world-scales-alpha/zone-blocks
+        description: Source zone-blocks of generator-source-world-scales-alpha.
+        required: true
+        range: integer
+      region-zones:
+        alias: region-zones
+        slot_uri: pixlnd:generator-source-world-scales-alpha/region-zones
+        description: Source region-zones of generator-source-world-scales-alpha.
+        required: true
+        range: integer
+      region-blocks:
+        alias: region-blocks
+        slot_uri: pixlnd:generator-source-world-scales-alpha/region-blocks
+        description: Source region-blocks of generator-source-world-scales-alpha.
+        required: true
+        range: integer
+      regions-per-axis:
+        alias: regions-per-axis
+        slot_uri: pixlnd:generator-source-world-scales-alpha/regions-per-axis
+        description: Source regions-per-axis of generator-source-world-scales-alpha.
+        required: true
+        range: integer
+      world-blocks-per-axis:
+        alias: world-blocks-per-axis
+        slot_uri: pixlnd:generator-source-world-scales-alpha/world-blocks-per-axis
+        description: Source world-blocks-per-axis of generator-source-world-scales-alpha.
+        required: true
+        range: integer
+      mission-cells-per-region:
+        alias: mission-cells-per-region
+        slot_uri: pixlnd:generator-source-world-scales-alpha/mission-cells-per-region
+        description: Source mission-cells-per-region of generator-source-world-scales-alpha.
+        required: true
+        range: integer
+        multivalued: true
+        minimum_cardinality: 2
+        maximum_cardinality: 2
+      mission-scale:
+        alias: mission-scale
+        slot_uri: pixlnd:generator-source-world-scales-alpha/mission-scale
+        description: Source mission-scale of generator-source-world-scales-alpha.
+        required: true
+        range: string
+      region-struct-bytes:
+        alias: region-struct-bytes
+        slot_uri: pixlnd:generator-source-world-scales-alpha/region-struct-bytes
+        description: Source region-struct-bytes of generator-source-world-scales-alpha.
+        required: true
+        range: integer
+      zone-struct-bytes:
+        alias: zone-struct-bytes
+        slot_uri: pixlnd:generator-source-world-scales-alpha/zone-struct-bytes
+        description: Source zone-struct-bytes of generator-source-world-scales-alpha.
+        required: true
+        range: integer
+      spawn-struct-bytes:
+        alias: spawn-struct-bytes
+        slot_uri: pixlnd:generator-source-world-scales-alpha/spawn-struct-bytes
+        description: Source spawn-struct-bytes of generator-source-world-scales-alpha.
+        required: true
+        range: integer
+  generator-source-world-scales-steam:
+    class_uri: pixlnd:generator-source-world-scales-steam
+    description: Configuration component generator-source-world-scales-steam; applicability follows the linked source rules. Historical
+      facts retain their explicit A/S/X/Omega scope; hybrid overrides remain authoritative.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      zone-blocks:
+        alias: zone-blocks
+        slot_uri: pixlnd:generator-source-world-scales-steam/zone-blocks
+        description: Source zone-blocks of generator-source-world-scales-steam.
+        required: true
+        range: integer
+      map-chunk-blocks:
+        alias: map-chunk-blocks
+        slot_uri: pixlnd:generator-source-world-scales-steam/map-chunk-blocks
+        description: Source map-chunk-blocks of generator-source-world-scales-steam.
+        required: true
+        range: integer
+      zone-fields:
+        alias: zone-fields
+        slot_uri: pixlnd:generator-source-world-scales-steam/zone-fields
+        description: Source zone-fields of generator-source-world-scales-steam.
+        required: true
+        range: integer
+      field:
+        alias: field
+        slot_uri: pixlnd:generator-source-world-scales-steam/field
+        description: Source field of generator-source-world-scales-steam.
+        required: true
+        range: string
+      block-bytes:
+        alias: block-bytes
+        slot_uri: pixlnd:generator-source-world-scales-steam/block-bytes
+        description: Source block-bytes of generator-source-world-scales-steam.
+        required: true
+        range: integer
+      coords-typical-spawn:
+        alias: coords-typical-spawn
+        slot_uri: pixlnd:generator-source-world-scales-steam/coords-typical-spawn
+        description: Source coords-typical-spawn of generator-source-world-scales-steam.
+        required: true
+        range: string
+      origin-poi:
+        alias: origin-poi
+        slot_uri: pixlnd:generator-source-world-scales-steam/origin-poi
+        description: Source origin-poi of generator-source-world-scales-steam.
+        required: true
+        range: string

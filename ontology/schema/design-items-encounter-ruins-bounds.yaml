@@ -1,0 +1,82 @@
+id: https://w3id.org/pixlnd/design-items/encounter-ruins-bounds
+name: pixlnd-design-items-encounter-ruins-bounds
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-selected-initial-encounters-ruins-bounds:
+    class_uri: pixlnd:generator-selected-initial-encounters-ruins-bounds
+    description: Configuration component generator-selected-initial-encounters-ruins-bounds; applicability follows the linked source
+      rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      first:
+        alias: first
+        slot_uri: pixlnd:generator-selected-initial-encounters-ruins-bounds/first
+        description: Source first of generator-selected-initial-encounters-ruins-bounds.
+        required: true
+        range: integer
+        minimum_value: 36
+        maximum_value: 36
+      second:
+        alias: second
+        slot_uri: pixlnd:generator-selected-initial-encounters-ruins-bounds/second
+        description: Source second of generator-selected-initial-encounters-ruins-bounds.
+        required: true
+        range: integer
+        minimum_value: 112
+        maximum_value: 112
+  generator-selected-initial-encounters-ruins-door:
+    class_uri: pixlnd:generator-selected-initial-encounters-ruins-door
+    description: Configuration component generator-selected-initial-encounters-ruins-door; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      first:
+        alias: first
+        slot_uri: pixlnd:generator-selected-initial-encounters-ruins-door/first
+        description: Source first of generator-selected-initial-encounters-ruins-door.
+        required: true
+        range: integer
+        minimum_value: 4
+        maximum_value: 4
+      second:
+        alias: second
+        slot_uri: pixlnd:generator-selected-initial-encounters-ruins-door/second
+        description: Source second of generator-selected-initial-encounters-ruins-door.
+        required: true
+        range: integer
+        minimum_value: 5
+        maximum_value: 5
+  generator-selected-initial-encounters-ruins-occupancy:
+    class_uri: pixlnd:generator-selected-initial-encounters-ruins-occupancy
+    description: Configuration component generator-selected-initial-encounters-ruins-occupancy; applicability follows the linked source
+      rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      first:
+        alias: first
+        slot_uri: pixlnd:generator-selected-initial-encounters-ruins-occupancy/first
+        description: Source first of generator-selected-initial-encounters-ruins-occupancy.
+        required: true
+        range: integer
+        minimum_value: -1
+        maximum_value: -1
+      second:
+        alias: second
+        slot_uri: pixlnd:generator-selected-initial-encounters-ruins-occupancy/second
+        description: Source second of generator-selected-initial-encounters-ruins-occupancy.
+        required: true
+        range: integer
+        minimum_value: 12
+        maximum_value: 12

@@ -6,7 +6,7 @@ rescues. Documentation is not runtime coverage or implementation permission.
 
 ## Placement and access
 
-The corresponding required source inputs are [`generator-design-initial-encounters (distance/separation/apron/dry/hub fields), generator-design-settlement.no-hostiles-within`](../schema/design-items.yaml).
+The corresponding required source inputs are [`generator-design-initial-encounters (distance/separation/apron/dry/hub fields)`](../schema/design-items-encounter-placement.yaml), [`generator-design-settlement.no-hostiles-within`](../schema/design-items-settlement.yaml).
 These input structures do not replace the logical occurrences or the procedures below.
 
 Each land has one ruins dungeon, one daily camp and four supplier sites. Site centres are
@@ -39,7 +39,7 @@ failure only omits guidance, retaining terrain, village, sites and gameplay.
 
 ## Geometry and occupancy
 
-The corresponding required source inputs are [`generator-design-initial-encounters-ruins, generator-design-initial-encounters-camp, generator-design-initial-encounters-supplier`](../schema/design-items.yaml).
+The corresponding required source inputs are [`generator-design-initial-encounters-ruins`](../schema/design-items-encounter-ruins.yaml), [`generator-design-initial-encounters-camp`](../schema/design-items-encounter-camp.yaml), [`generator-design-initial-encounters-supplier`](../schema/design-items-encounter-supplier.yaml).
 These input structures do not replace the logical occurrences or the procedures below.
 
 All dimensions are in blocks. Ruins' structural layout, exact component dimensions/counts,
@@ -67,7 +67,7 @@ inside and requires all players outside every component, without extra grace.
 
 ## Populations, tiers and clear conditions
 
-The corresponding required source inputs are [`generator-design-initial-encounters.species, .pack-size, .role-weights and the ruins/camp/supplier tier fields`](../schema/design-items.yaml).
+The corresponding required source inputs are [`generator-design-initial-encounters.species, .pack-size, .role-weights`](../schema/design-items-encounter-population.yaml) and the [`ruins`](../schema/design-items-encounter-ruins.yaml), [`camp`](../schema/design-items-encounter-camp.yaml), [`supplier`](../schema/design-items-encounter-supplier.yaml) tier fields.
 These input structures do not replace the logical occurrences or the procedures below.
 
 Enemies are skeletons (`creatures.json#skeleton`), including at the ruined skeleton encampment;
@@ -107,7 +107,7 @@ enemies retain their daily refresh eligibility; completed one-time rescues stay 
 
 ## Local difficulty and boss size
 
-The corresponding required source inputs are [`generator-design-initial-encounters.power-base-offset, .boss-hp-mult, .boss-damage-mult, .boss-height`](../schema/design-items.yaml).
+The corresponding required source inputs are [`generator-design-initial-encounters.power-base-offset`](../schema/design-items-encounter-population.yaml), [`.boss-hp-mult, .boss-damage-mult, .boss-height`](../schema/design-items-encounter-boss.yaml).
 These input structures do not replace the logical occurrences or the procedures below.
 
 The fixed local difficulty and spawn facets are [`initial-site-local-difficulty-profile`,
@@ -131,7 +131,7 @@ not unmodified player spell damage.
 
 ## Ordinary kill loot
 
-The corresponding required source inputs are [`generator-design-loot and its coins, rarity-weights, gear-kinds, consumable-pool and ground children`](../schema/design-items.yaml).
+The corresponding required source inputs are [`generator-design-loot`](../schema/design-items-loot.yaml) and its [`coins and ground`](../schema/design-items-loot-pickup.yaml), [`rarity-weights`](../schema/design-items-loot-rarity.yaml), [`gear-kinds`](../schema/design-items-loot-gear.yaml), [`consumable-pool`](../schema/design-items-loot.yaml) fields.
 These input structures do not replace the logical occurrences or the procedures below.
 
 The structural roll facets are [`ordinary-site-kill-loot-profile`](../schema/world.yaml), covered
@@ -157,7 +157,7 @@ and [mission packages](#shared-mission-packages-and-supplier-shops), not replace
 
 ## Boss specials and breakable rubble
 
-The corresponding required source inputs are [`generator-design-initial-encounters-boss-specials, generator-design-initial-encounters-special-profile and its stomp/charge children, generator-design-initial-encounters-rubble`](../schema/design-items.yaml).
+The corresponding required source inputs are [`generator-design-initial-encounters-boss-specials`](../schema/design-items-encounter-boss.yaml), [`generator-design-initial-encounters-special-profile`](../schema/design-items-encounter-specials.yaml) and its [`stomp`](../schema/design-items-encounter-special-stomp.yaml), [`charge`](../schema/design-items-encounter-special-charge.yaml) children, [`generator-design-initial-encounters-rubble`](../schema/design-items-encounter-rubble.yaml).
 These input structures do not replace the logical occurrences or the procedures below.
 
 Each boss independently receives one permanent special according to [`boss-special-profile.assignment-probability`](../schema/world.yaml): ground stomp or charge. Fixed
@@ -199,7 +199,7 @@ overlap an actor. [World-clock/save rules](3_Classes.md#game-clock) apply.
 
 ## Spike traps and furnishing contents
 
-The corresponding required source inputs are [`generator-design-initial-encounters-spikes and generator-design-initial-encounters-furnishings with vase/table children`](../schema/design-items.yaml).
+The corresponding required source inputs are [`generator-design-initial-encounters-spikes`](../schema/design-items-encounter-spikes.yaml) and [`generator-design-initial-encounters-furnishings with vase/table children`](../schema/design-items-encounter-furnishings.yaml).
 These input structures do not replace the logical occurrences or the procedures below.
 
 The trap count, closed footprint, inclusive player-feet trigger interval, phase durations and
@@ -239,7 +239,7 @@ unload/restart and becomes idle on renewal. Furnishings contain no formulas, boo
 
 ## Guaranteed boss gear and spirits
 
-The corresponding required source inputs are [`generator-design-loot-gear-kinds, generator-design-initial-encounters-spirits`](../schema/design-items.yaml).
+The corresponding required source inputs are [`generator-design-loot-gear-kinds`](../schema/design-items-loot-gear.yaml), [`generator-design-initial-encounters-spirits`](../schema/design-items-encounter-spirits.yaml).
 These input structures do not replace the logical occurrences or the procedures below.
 
 The fixed reward structures are [`guaranteed-boss-gear-profile` and `initial-spirit-profile`](../schema/world.yaml),
@@ -280,7 +280,7 @@ numerical combat effects remain a separate feature, not globally removed or sile
 
 ## Shared mission packages and supplier shops
 
-The corresponding required source inputs are [`generator-design-initial-encounters-mission-package, generator-design-settlement-shop`](../schema/design-items.yaml).
+The corresponding required source inputs are [`generator-design-initial-encounters-mission-package`](../schema/design-items-encounter-mission.yaml), [`generator-design-settlement-shop`](../schema/design-items-settlement-services.yaml).
 These input structures do not replace the logical occurrences or the procedures below.
 
 The shared package and completion declarations are [`encounter-shared-package` and

@@ -1,0 +1,76 @@
+id: https://w3id.org/pixlnd/design-items/encounter-special-stomp
+name: pixlnd-design-items-encounter-special-stomp
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-design-initial-encounters-special-profile-stomp:
+    class_uri: pixlnd:generator-design-initial-encounters-special-profile-stomp
+    description: Configuration component generator-design-initial-encounters-special-profile-stomp; applicability follows the linked
+      source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      radius:
+        alias: radius
+        slot_uri: pixlnd:generator-design-initial-encounters-special-profile-stomp/radius
+        description: Source radius of generator-design-initial-encounters-special-profile-stomp.
+        required: true
+        range: integer
+        minimum_value: 4
+        maximum_value: 4
+      start-height-diff:
+        alias: start-height-diff
+        slot_uri: pixlnd:generator-design-initial-encounters-special-profile-stomp/start-height-diff
+        description: Source start-height-diff of generator-design-initial-encounters-special-profile-stomp.
+        required: true
+        range: integer
+        minimum_value: 2
+        maximum_value: 2
+      victim-height:
+        alias: victim-height
+        slot_uri: pixlnd:generator-design-initial-encounters-special-profile-stomp/victim-height
+        description: Source victim-height of generator-design-initial-encounters-special-profile-stomp.
+        required: true
+        range: generator-selected-initial-encounters-special-profile-stomp-victim-height
+        inlined: true
+        annotations:
+          source-tuple-positions: first second
+      damage-mult:
+        alias: damage-mult
+        slot_uri: pixlnd:generator-design-initial-encounters-special-profile-stomp/damage-mult
+        description: Source damage-mult of generator-design-initial-encounters-special-profile-stomp.
+        required: true
+        range: integer
+        minimum_value: 1
+        maximum_value: 1
+  generator-selected-initial-encounters-special-profile-stomp-victim-height:
+    class_uri: pixlnd:generator-selected-initial-encounters-special-profile-stomp-victim-height
+    description: Configuration component generator-selected-initial-encounters-special-profile-stomp-victim-height; applicability follows
+      the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      first:
+        alias: first
+        slot_uri: pixlnd:generator-selected-initial-encounters-special-profile-stomp-victim-height/first
+        description: Source first of generator-selected-initial-encounters-special-profile-stomp-victim-height.
+        required: true
+        range: integer
+        minimum_value: 0
+        maximum_value: 0
+      second:
+        alias: second
+        slot_uri: pixlnd:generator-selected-initial-encounters-special-profile-stomp-victim-height/second
+        description: Source second of generator-selected-initial-encounters-special-profile-stomp-victim-height.
+        required: true
+        range: integer
+        minimum_value: 1
+        maximum_value: 1

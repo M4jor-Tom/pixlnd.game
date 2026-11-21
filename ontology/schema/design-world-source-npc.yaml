@@ -1,0 +1,71 @@
+id: https://w3id.org/pixlnd/design-world/source-npc
+name: pixlnd-design-world-source-npc
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-source-npc-appearance:
+    class_uri: pixlnd:generator-source-npc-appearance
+    description: Configuration component generator-source-npc-appearance; applicability follows the linked source rules. Historical
+      facts retain their explicit A/S/X/Omega scope; hybrid overrides remain authoritative.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      asset-counts:
+        alias: asset-counts
+        slot_uri: pixlnd:generator-source-npc-appearance/asset-counts
+        description: Source asset-counts of generator-source-npc-appearance.
+        required: true
+        range: string
+      hair-rgb:
+        alias: hair-rgb
+        slot_uri: pixlnd:generator-source-npc-appearance/hair-rgb
+        description: Source hair-rgb of generator-source-npc-appearance.
+        required: true
+        range: string
+      omega:
+        alias: omega
+        slot_uri: pixlnd:generator-source-npc-appearance/omega
+        description: Source omega of generator-source-npc-appearance.
+        required: true
+        range: string
+  generator-source-schedule:
+    class_uri: pixlnd:generator-source-schedule
+    description: Configuration component generator-source-schedule; applicability follows the linked source rules. Historical facts
+      retain their explicit A/S/X/Omega scope; hybrid overrides remain authoritative.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      stops:
+        alias: stops
+        slot_uri: pixlnd:generator-source-schedule/stops
+        description: Source stops of generator-source-schedule.
+        required: true
+        range: string
+        multivalued: true
+        minimum_cardinality: 0
+      sleep:
+        alias: sleep
+        slot_uri: pixlnd:generator-source-schedule/sleep
+        description: Source sleep of generator-source-schedule.
+        required: true
+        range: string
+      campsite-rest:
+        alias: campsite-rest
+        slot_uri: pixlnd:generator-source-schedule/campsite-rest
+        description: Source campsite-rest of generator-source-schedule.
+        required: true
+        range: boolean
+      lantern-night:
+        alias: lantern-night
+        slot_uri: pixlnd:generator-source-schedule/lantern-night
+        description: Source lantern-night of generator-source-schedule.
+        required: true
+        range: boolean

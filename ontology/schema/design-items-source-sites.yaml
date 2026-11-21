@@ -1,0 +1,51 @@
+id: https://w3id.org/pixlnd/design-items/source-sites
+name: pixlnd-design-items-source-sites
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+- design-world-source-boss
+- design-world-source-dungeon
+- design-world-source-realm
+- design-world-source-settlement
+- design-world-source-spawns
+
+slots:
+  generators-source-field-settlement:
+    alias: settlement
+    slot_uri: pixlnd:generators-source/settlement
+    description: Source settlement of generators-source.
+    required: true
+    range: generator-source-settlement
+    inlined: true
+  generators-source-field-dungeon:
+    alias: dungeon
+    slot_uri: pixlnd:generators-source/dungeon
+    description: Source dungeon of generators-source.
+    required: true
+    range: generator-source-dungeon
+    inlined: true
+  generators-source-field-spawns:
+    alias: spawns
+    slot_uri: pixlnd:generators-source/spawns
+    description: Source spawns of generators-source.
+    required: true
+    range: generator-source-spawns
+    inlined: true
+  generators-source-field-boss:
+    alias: boss
+    slot_uri: pixlnd:generators-source/boss
+    description: Source boss of generators-source.
+    required: true
+    range: generator-source-boss
+    inlined: true
+  generators-source-field-realm:
+    alias: realm
+    slot_uri: pixlnd:generators-source/realm
+    description: Source realm of generators-source.
+    required: true
+    range: generator-source-realm
+    inlined: true

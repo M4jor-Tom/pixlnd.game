@@ -1,0 +1,34 @@
+id: https://w3id.org/pixlnd/design-items/source-npcs
+name: pixlnd-design-items-source-npcs
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+- design-world-source-names
+- design-world-source-npc
+
+slots:
+  generators-source-field-names:
+    alias: names
+    slot_uri: pixlnd:generators-source/names
+    description: Source names of generators-source.
+    required: true
+    range: generator-source-names
+    inlined: true
+  generators-source-field-npc-appearance:
+    alias: npc-appearance
+    slot_uri: pixlnd:generators-source/npc-appearance
+    description: Source npc-appearance of generators-source.
+    required: true
+    range: generator-source-npc-appearance
+    inlined: true
+  generators-source-field-schedule:
+    alias: schedule
+    slot_uri: pixlnd:generators-source/schedule
+    description: Source schedule of generators-source.
+    required: true
+    range: generator-source-schedule
+    inlined: true

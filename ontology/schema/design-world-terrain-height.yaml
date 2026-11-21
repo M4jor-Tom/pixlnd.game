@@ -1,0 +1,107 @@
+id: https://w3id.org/pixlnd/design-world/terrain-height
+name: pixlnd-design-world-terrain-height
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-design-terrain-height:
+    class_uri: pixlnd:generator-design-terrain-height
+    description: Configuration component generator-design-terrain-height; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      min:
+        alias: min
+        slot_uri: pixlnd:generator-design-terrain-height/min
+        description: Source min of generator-design-terrain-height.
+        required: true
+        range: integer
+      max:
+        alias: max
+        slot_uri: pixlnd:generator-design-terrain-height/max
+        description: Source max of generator-design-terrain-height.
+        required: true
+        range: integer
+  generator-design-terrain-heightfield:
+    class_uri: pixlnd:generator-design-terrain-heightfield
+    description: Configuration component generator-design-terrain-heightfield; applicability follows the linked source rules.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      base:
+        alias: base
+        slot_uri: pixlnd:generator-design-terrain-heightfield/base
+        description: Source base of generator-design-terrain-heightfield.
+        required: true
+        range: integer
+      amplitude:
+        alias: amplitude
+        slot_uri: pixlnd:generator-design-terrain-heightfield/amplitude
+        description: Source amplitude of generator-design-terrain-heightfield.
+        required: true
+        range: integer
+      octaves:
+        alias: octaves
+        slot_uri: pixlnd:generator-design-terrain-heightfield/octaves
+        description: Source octaves of generator-design-terrain-heightfield.
+        required: true
+        range: integer
+      frequency:
+        alias: frequency
+        slot_uri: pixlnd:generator-design-terrain-heightfield/frequency
+        description: Source frequency of generator-design-terrain-heightfield.
+        required: true
+        range: double
+      lacunarity:
+        alias: lacunarity
+        slot_uri: pixlnd:generator-design-terrain-heightfield/lacunarity
+        description: Source lacunarity of generator-design-terrain-heightfield.
+        required: true
+        range: double
+      gain:
+        alias: gain
+        slot_uri: pixlnd:generator-design-terrain-heightfield/gain
+        description: Source gain of generator-design-terrain-heightfield.
+        required: true
+        range: double
+
+slots:
+  generator-design-terrain-field-height:
+    alias: height
+    slot_uri: pixlnd:generator-design-terrain/height
+    description: Source height of generator-design-terrain.
+    required: true
+    range: generator-design-terrain-height
+    inlined: true
+  generator-design-terrain-field-sea-level:
+    alias: sea-level
+    slot_uri: pixlnd:generator-design-terrain/sea-level
+    description: Source sea-level of generator-design-terrain.
+    required: true
+    range: integer
+  generator-design-terrain-field-heightfield:
+    alias: heightfield
+    slot_uri: pixlnd:generator-design-terrain/heightfield
+    description: Source heightfield of generator-design-terrain.
+    required: true
+    range: generator-design-terrain-heightfield
+    inlined: true
+  generator-design-terrain-field-land-blend:
+    alias: land-blend
+    slot_uri: pixlnd:generator-design-terrain/land-blend
+    description: Source land-blend of generator-design-terrain.
+    required: true
+    range: string
+  generator-design-terrain-field-cliff-slope:
+    alias: cliff-slope
+    slot_uri: pixlnd:generator-design-terrain/cliff-slope
+    description: Source cliff-slope of generator-design-terrain.
+    required: true
+    range: double

@@ -1,0 +1,52 @@
+id: https://w3id.org/pixlnd/design-world/alpha-packets-s2c
+name: pixlnd-design-world-alpha-packets-s2c
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+default_range: string
+imports:
+- linkml:types
+
+classes:
+  generator-source-network-alpha-packets-s2c:
+    class_uri: pixlnd:generator-source-network-alpha-packets-s2c
+    description: Configuration component generator-source-network-alpha-packets-s2c; applicability follows the linked source rules.
+      Historical facts retain their explicit A/S/X/Omega scope; hybrid overrides remain authoritative.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      entries:
+        alias: entries
+        slot_uri: pixlnd:generator-source-network-alpha-packets-s2c/entries
+        description: Source entries of generator-source-network-alpha-packets-s2c.
+        required: true
+        range: generator-source-network-alpha-packets-s2c-entry
+        inlined: true
+        multivalued: true
+        minimum_cardinality: 0
+        inlined_as_list: true
+    annotations:
+      source-map-entries: entries
+  generator-source-network-alpha-packets-s2c-entry:
+    class_uri: pixlnd:generator-source-network-alpha-packets-s2c-entry
+    description: Configuration component generator-source-network-alpha-packets-s2c-entry; applicability follows the linked source rules.
+      Historical facts retain their explicit A/S/X/Omega scope; hybrid overrides remain authoritative.
+    see_also:
+    - ../domain/5_Constraints.md#required-inputs
+    - ../domain/6_Generators.md
+    attributes:
+      key:
+        alias: key
+        slot_uri: pixlnd:generator-source-network-alpha-packets-s2c-entry/key
+        description: Source key of generator-source-network-alpha-packets-s2c-entry.
+        required: true
+        range: string
+        pattern: ^[0-9]+$
+      value:
+        alias: value
+        slot_uri: pixlnd:generator-source-network-alpha-packets-s2c-entry/value
+        description: Source value of generator-source-network-alpha-packets-s2c-entry.
+        required: true
+        range: string
