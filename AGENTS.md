@@ -43,7 +43,8 @@ The [quality gate](docs/quality-checks.md) runs the same formatting, essential l
 checks locally before pushes and in GitHub Actions. Install once per clone with
 `nix develop --no-update-lock-file -c pre-commit install`; run manually with
 `nix develop --no-update-lock-file -c pre-commit run --all-files --hook-stage manual`.
-Every commit also starts it in the background (`scripts/gate.sh`); a push is refused until
+Short gates (ruff, LinkML module size, generated diagrams/instances) block the commit; every
+commit then starts the long ones in the background (`scripts/gate.sh`); a push is refused until
 the pushed commit's tree has passed (`bash scripts/gate.sh check` shows the state and log).
 
 ```bash

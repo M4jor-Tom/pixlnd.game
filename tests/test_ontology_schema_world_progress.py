@@ -1,16 +1,15 @@
 """Spirit scope, progress exclusion and ruins room level world schema tests."""
-from copy import deepcopy
 import json
-from pathlib import Path
 import shutil
 import tempfile
 import unittest
+from copy import deepcopy
+from pathlib import Path
 
 import jsonschema
 import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-
 from test_ontology_schema import SCHEMA
 from test_ontology_schema_authoring import catalog, validate, validator
 

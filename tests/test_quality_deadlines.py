@@ -1,8 +1,8 @@
 """Keep ordinary Godot deadlines aligned with the measured-duration policy."""
-from decimal import Decimal, ROUND_CEILING
-from pathlib import Path
 import re
 import unittest
+from decimal import ROUND_CEILING, Decimal
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 

@@ -1,16 +1,15 @@
 """Initial ruins population value and mutation world schema tests."""
-from copy import deepcopy
 import json
-from pathlib import Path
 import shutil
 import tempfile
 import unittest
+from copy import deepcopy
+from pathlib import Path
 
 import jsonschema
 import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-
 from test_ontology_schema import SCHEMA
 from test_ontology_schema_world_ruins_population import RuinsPopulationMixin
 
@@ -322,8 +321,9 @@ class LogicalWorldTests(RuinsPopulationMixin, unittest.TestCase):
         print('ruins native: 343 cases, 31 intended positives, 49 admissions, 294 rejections; 18 negative admissions')
 
     def test_initial_ruins_population_native_mutations(self):
-        from linkml_runtime.utils.inference_utils import Config
         from itertools import permutations
+
+        from linkml_runtime.utils.inference_utils import Config
 
         view, schemas = self._assert_initial_ruins_population_contract(SCHEMA)
         room, assembly = 'initial-populated-ruins-room', 'initial-populated-ruins-assembly'

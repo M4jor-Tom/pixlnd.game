@@ -1,20 +1,18 @@
 """Source-qualified cuwo static-entity composition contracts."""
-from copy import deepcopy
 import json
-from pathlib import Path
 import shutil
 import tempfile
 import unittest
+from copy import deepcopy
+from pathlib import Path
 
 import jsonschema
 import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-
 from ontology_source_contracts import assert_declared_root
 from test_ontology_schema import SCHEMA
 from test_ontology_schema_authoring import validator
-
 
 CUWO_SOURCE = "https://github.com/matpow2/cuwo/blob/240bb61ec42abb10a73d750ce72f243e04e55509/cuwo/tgen_wrap.pxd"
 CUWO_REFS = {

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Portable smoke check for repository skill discovery and local Markdown links."""
-from pathlib import Path
-from tempfile import TemporaryDirectory
 import os
 import re
+from pathlib import Path
+from tempfile import TemporaryDirectory
 from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parent.parent

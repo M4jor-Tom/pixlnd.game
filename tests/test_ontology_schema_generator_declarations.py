@@ -1,27 +1,37 @@
 """Authored and induced contracts are distinct from emitted-schema admission."""
 
-from copy import deepcopy
 import hashlib
-import tempfile
 import json
-from pathlib import Path
+import tempfile
 import unittest
+from copy import deepcopy
+from pathlib import Path
 
 import jsonschema
 import linkml_runtime
+import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-import yaml
-
 from ontology_generator_expectations import (
-    DESIGN_FIELDS, SOURCE_FIELDS, FIXED, REQUIRED_WEAPONS, aliases, assert_literal_contract,
-    OBJECT_EXPRESSIONS, SETTLEMENT_CONJUNCTS, NO_EQUALITY_FIELDS, STATUS_KEYS, POOL_FACTS,
-    EVENT_IDS, RUNTIME_FIELDS, RUNTIME_NONNULL_FIELDS, NUMERIC_DOMAIN_FIELDS,
+    DESIGN_FIELDS,
+    EVENT_IDS,
+    FIXED,
+    NO_EQUALITY_FIELDS,
+    NUMERIC_DOMAIN_FIELDS,
+    OBJECT_EXPRESSIONS,
+    POOL_FACTS,
+    REQUIRED_WEAPONS,
+    RUNTIME_FIELDS,
+    RUNTIME_NONNULL_FIELDS,
+    SETTLEMENT_CONJUNCTS,
+    SOURCE_FIELDS,
+    STATUS_KEYS,
+    aliases,
+    assert_literal_contract,
 )
 from ontology_source_contracts import assert_declared_root
 from test_ontology_schema import SCHEMA, generated
 from test_ontology_schema_authoring import catalog
-
 
 MODULE_NAMES = ("design-combat", "design-progression", "design-world", "design-items")
 

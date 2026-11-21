@@ -1,19 +1,18 @@
 """Basic world phase-2 roots and relations schema tests."""
-from copy import deepcopy
 import json
-from pathlib import Path
 import shutil
 import tempfile
 import unittest
+from copy import deepcopy
+from pathlib import Path
 
 import jsonschema
 import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-
+from ontology_source_contracts import assert_declared_root
 from test_ontology_schema import SCHEMA
 from test_ontology_schema_authoring import validator
-from ontology_source_contracts import assert_declared_root
 
 
 def verify_world_relations_raw(self, facts, raw, unions):

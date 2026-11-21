@@ -1,10 +1,9 @@
 """Complete unchanged generator configuration, not generator execution."""
 
-from copy import deepcopy
 import unittest
+from copy import deepcopy
 
 import jsonschema
-
 from ontology_source_contracts import validate_source
 from test_ontology_schema_authoring import catalog
 

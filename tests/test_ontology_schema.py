@@ -5,11 +5,11 @@ compound keys, or conditional gameplay rules. Real data below is projected to
 selected structural properties, never rewritten on disk.
 """
 
+import json
+import unittest
 from copy import deepcopy
 from functools import lru_cache
-import json
 from pathlib import Path
-import unittest
 
 import jsonschema
 import linkml_runtime

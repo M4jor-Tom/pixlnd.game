@@ -1,20 +1,27 @@
 """Full-source runtime/type boundaries and real-YAML loss sensitivity."""
-from copy import deepcopy
 import json
-from pathlib import Path
 import shutil
 import tempfile
 import unittest
+from copy import deepcopy
+from pathlib import Path
 
 import jsonschema
 import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-
 from ontology_generator_expectations import (
-    SOURCE_FIELDS, RUNTIME_FIELDS, RUNTIME_NONNULL_FIELDS, NUMERIC_DOMAIN_FIELDS,
+    NUMERIC_DOMAIN_FIELDS,
+    RUNTIME_FIELDS,
+    RUNTIME_NONNULL_FIELDS,
+    SOURCE_FIELDS,
 )
-from ontology_source_contracts import bind_source, unbind_source, assert_declared_root, source_view
+from ontology_source_contracts import (
+    assert_declared_root,
+    bind_source,
+    source_view,
+    unbind_source,
+)
 from test_ontology_schema import SCHEMA
 from test_ontology_schema_authoring import catalog, validator
 from test_ontology_schema_generator_declarations import declaration_oracle

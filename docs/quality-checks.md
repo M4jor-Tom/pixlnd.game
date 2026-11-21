@@ -8,8 +8,20 @@ From this checkout, run once (and again after cloning):
 nix develop --no-update-lock-file -c pre-commit install
 ```
 
-The configuration installs pre-commit, post-commit and pre-push hooks. Each commit starts the
-full gate, including tests, in the background on a clean export of the committed tree
+The configuration installs pre-commit, post-commit and pre-push hooks:
+
+| Stage | Gates |
+|---|---|
+| pre-commit (short, blocks the commit) | `ruff check` (`ruff.toml`), 150-line cap per `ontology/schema/*.yaml` module, Mermaid diagrams, bound instances |
+| post-commit (long, background) | LinkML schema/instance tests (`tests/test_ontology*.py`), runner regressions, `scripts/checks.sh` |
+| pre-push | only the post-commit gate's receipt |
+| CI | every gate of both stages, synchronously |
+
+The schema-module cap and the LinkML test run mirror the `starflake/design` gate; its ruff
+rules are narrowed to what this repo passes (see `ruff.toml`). A commit made with `--no-verify`
+skips the short gates; only CI catches that.
+
+Each commit starts the long gates in the background on a clean export of the committed tree
 (`scripts/gate.sh start`). Each `git push` only checks that the pushed commit's tree passed
 (`scripts/gate.sh check`): it fails fast while the gate is running, after a failure, or when no
 gate ran (e.g. a `--no-verify` commit: run `bash scripts/gate.sh start <rev>`). Receipts and
@@ -37,7 +49,7 @@ This is also the exact command in `.github/workflows/quality.yml` (synchronous, 
 nix develop --no-update-lock-file -c pre-commit run --all-files --hook-stage manual
 ```
 
-`.pre-commit-config.yaml` is the shared definition. Its local hooks run:
+`.pre-commit-config.yaml` is the shared definition. Besides the short gates above, its hooks run:
 
 1. `tests/test_checks.sh`: regression checks for the runner's pass/fail behavior,
    including size/complexity boundaries, class methods and bypass prevention.
@@ -47,9 +59,11 @@ nix develop --no-update-lock-file -c pre-commit run --all-files --hook-stage man
    The map test also runs at fixed 1000 FPS to catch render/physics ordering races.
    Each Godot invocation prints its own wall-clock `Elapsed:` time, excluding Nix setup,
    lint, formatting and size checks. Hook output is visible on success locally and in CI.
-3. `scripts/ontology_mermaid.sh` (also the pre-commit hook): regenerates `docs/ontology/mermaid/`
+3. `scripts/ontology_mermaid.sh` (pre-commit hook): regenerates `docs/ontology/mermaid/`
    with LinkML's `gen-erdiagram` and `gen-mermaid-class-diagram` from the `uv.lock`-pinned
    `tools/ontology` environment, failing on stale diagrams (e.g. committed with `--no-verify`).
+4. `python -m unittest discover -s tests -p 'test_ontology*.py'` in the same `tools/ontology`
+   environment: the LinkML schema and instance tests.
 
 The first two use the same `flake.lock`-pinned Godot, gdtoolkit and pre-commit packages.
 `flake.nix` additionally pins gdmetrics-g4 v1.6.1 by source commit and content hash,

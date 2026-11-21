@@ -1,19 +1,17 @@
 """Exactly 24 world catalog properties; raw text is not resolved relation data."""
-from copy import deepcopy
 import json
-from pathlib import Path
 import shutil
 import tempfile
 import unittest
+from copy import deepcopy
+from pathlib import Path
 
 import jsonschema
 import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-
 from test_ontology_schema import SCHEMA
 from test_ontology_schema_authoring import catalog, validate, validator
-
 
 # Literal source-backed facet oracles, not an alternate validation engine.
 FIELDS = {
@@ -287,7 +285,11 @@ class PoiPairTests(unittest.TestCase):
 
 class FullWorldSources(unittest.TestCase):
     def assert_source(self, name, fields, mutations):
-        from ontology_source_contracts import bind_source, unbind_source, validate_source
+        from ontology_source_contracts import (
+            bind_source,
+            unbind_source,
+            validate_source,
+        )
         from test_ontology_schema_contracts import assert_root
 
         row = catalog(name)
@@ -364,7 +366,11 @@ class FullWorldSources(unittest.TestCase):
             (("castle", "contents", "S"), "artifact"), (("castle", "contents"), {"A": []}),
             (("ruins", "variants", "dungeon-ruins"), 1), (("sewer", "contents"), [None]),
             (("_dungeon-rules", "A"), None), (("castle", "unknown"), True)])
-        from ontology_source_contracts import bind_source, unbind_source, validate_source
+        from ontology_source_contracts import (
+            bind_source,
+            unbind_source,
+            validate_source,
+        )
         from test_ontology_schema_contracts import assert_root
         for owner in ("source-integer-pair", "source-alpha-location-pair", "source-alpha-location-pair-pair"):
             assert_root(self, owner, {"first", "second"}, {"first", "second"})

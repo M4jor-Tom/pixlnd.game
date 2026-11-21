@@ -4,7 +4,6 @@ import unittest
 import jsonschema
 import yaml
 from linkml_runtime.utils.schemaview import SchemaView
-
 from test_ontology_schema import SCHEMA
 from test_ontology_schema_authoring import catalog, validate, validator
 

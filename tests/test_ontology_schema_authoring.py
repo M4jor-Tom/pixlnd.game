@@ -1,20 +1,18 @@
 """Source-backed S1 projections; native generation is not runtime admission."""
 
-from copy import deepcopy
-from functools import lru_cache
 import json
-from pathlib import Path
 import shutil
 import tempfile
 import unittest
+from copy import deepcopy
+from functools import lru_cache
+from pathlib import Path
 
 import jsonschema
 import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-
 from test_ontology_schema import ROOT, SCHEMA, generated
-
 
 generated = lru_cache(maxsize=None)(generated)
 

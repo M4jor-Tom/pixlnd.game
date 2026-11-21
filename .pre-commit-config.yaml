@@ -1,27 +1,47 @@
 default_install_hook_types: [pre-commit, post-commit, pre-push]
-# The full gate runs in the background after each commit (scripts/gate.sh); pre-push only
-# requires its pass. CI runs the same hooks synchronously with `--hook-stage manual`.
+# Short gates run in pre-commit. Long gates (default_stages) run in the background after each
+# commit (scripts/gate.sh run, keep its list in step); pre-push only requires their pass.
+# CI runs every gate of both synchronously with `--hook-stage manual`.
 default_stages: [manual]
 
 repos:
   - repo: local
     hooks:
+      - id: python-lint
+        name: Python lint (ruff)
+        entry: nix develop --no-update-lock-file -c ruff check --output-format concise
+        language: system
+        pass_filenames: false
+        types: [python]
+        stages: [pre-commit, manual]
+      - id: ontology-schema-size
+        name: LinkML schema modules stay within 150 lines
+        entry: awk 'FNR == 151 { print FILENAME " exceeds 150 lines"; bad = 1 } END { exit bad }'
+        language: system
+        files: ^ontology/schema/.*\.yaml$
+        stages: [pre-commit, manual]
       - id: ontology-mermaid
         name: Ontology Mermaid diagrams (LinkML)
         entry: nix develop --no-update-lock-file -c bash scripts/ontology_mermaid.sh
         language: system
         pass_filenames: false
         files: ^(ontology/schema/|tools/ontology/|docs/ontology/mermaid/|scripts/ontology_mermaid\.sh$)
-        # pre-push (and CI) rejects commits whose diagrams are stale, e.g. after --no-verify.
-        stages: [pre-commit, pre-push, manual]
+        stages: [pre-commit, manual]
       - id: ontology-instances
         name: Bound, validated ontology instances for the game (LinkML)
         entry: nix develop --no-update-lock-file -c uv run --locked --project tools/ontology python scripts/ontology_bind.py
         language: system
         pass_filenames: false
         files: ^(ontology/schema/|ontology/instances/|game/generated/instances/|tools/ontology/|scripts/ontology_bind\.py$|tests/ontology_source_contracts\.py$)
-        # pre-push (and CI) rejects commits whose bound instances are stale or invalid.
-        stages: [pre-commit, pre-push, manual]
+        stages: [pre-commit, manual]
+      - id: ontology-schema-tests
+        name: LinkML schema and instance tests
+        verbose: true
+        # No shell here: the pattern reaches unittest unexpanded.
+        entry: nix develop --no-update-lock-file -c uv run --locked --project tools/ontology python -m unittest discover -s tests -p test_ontology*.py
+        language: system
+        pass_filenames: false
+        always_run: true
       - id: quality-runner
         name: Quality runner regressions
         verbose: true

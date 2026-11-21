@@ -1,19 +1,23 @@
 """Whole Task5 inputs and device-independent control/profile shape contracts."""
 
-from copy import deepcopy
 import os
 import re
 import shutil
 import tempfile
 import unittest
+from copy import deepcopy
 
 import jsonschema
 import yaml
 from linkml_runtime.utils.schemaview import SchemaView
-
+from ontology_source_contracts import (
+    assert_declared_root,
+    bind_source,
+    unbind_source,
+    validate_source,
+)
 from test_ontology_schema import ROOT, SCHEMA, generated
 from test_ontology_schema_authoring import catalog, validate
-from ontology_source_contracts import assert_declared_root, bind_source, unbind_source, validate_source
 
 SOURCE_ROOTS = [
     ("rulesets", {"$schema", "_controls", "_doc", "entries"}),

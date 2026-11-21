@@ -585,3 +585,4 @@ resolve unmapped histories or certify generated/runtime behavior.
   and selected-input validation follow `c-combat-burning-applications` / `c-combat-poison-applications`;
   environmental hazards and additional DOT buff timing remain outside this implementation.
 - [ ] Ontology reference check (`scripts/ontology_bind.py` `CATALOGS`): which instances file owns each referenced class's ids is a hand table; a schema annotation (e.g. `instances-catalog`) could replace it. Uncovered reference slots (pet-food `tames`, ability `owner`, item/dungeon/poi types, rosters) stay checked by `ontology/model*.gd`.
+- [ ] Python lint (`ruff.toml`): E501, `ruff format --check` and the function-shape rules (PLR0911/0912/0913/0915/0917, C90) of the `starflake/design` gate are off; enabling them means reflowing ~50 files while keeping `scripts/check_python_bash.py`'s 600/100-line caps.

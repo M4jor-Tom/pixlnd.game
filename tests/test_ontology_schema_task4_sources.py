@@ -1,17 +1,21 @@
 """Complete Task4 source contracts; source values are not executable recipes."""
-from copy import deepcopy
-from pathlib import Path
 import shutil
 import tempfile
 import unittest
+from copy import deepcopy
+from pathlib import Path
 
 import jsonschema
 import yaml
 from linkml_runtime.utils.schemaview import SchemaView
-
-from ontology_source_contracts import assert_declared_root, bind_source, unbind_source, validate_source
-from test_ontology_schema_authoring import catalog
+from ontology_source_contracts import (
+    assert_declared_root,
+    bind_source,
+    unbind_source,
+    validate_source,
+)
 from test_ontology_schema import SCHEMA, generated
+from test_ontology_schema_authoring import catalog
 
 
 class CraftingSourcesTests(unittest.TestCase):

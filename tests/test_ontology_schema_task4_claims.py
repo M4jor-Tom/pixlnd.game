@@ -1,16 +1,14 @@
 """Personal claim declarations; native typing is not claim issuance or persistence."""
-from copy import deepcopy
-from pathlib import Path
 import shutil
 import tempfile
 import unittest
+from copy import deepcopy
+from pathlib import Path
 
 import jsonschema
 import yaml
 from linkml_runtime.utils.schemaview import SchemaView
-
 from test_ontology_schema import SCHEMA, generated
-
 
 OWNER = "personal-permanent-source-claim"
 FIELDS = ("character", "world", "source-kind", "source-key")

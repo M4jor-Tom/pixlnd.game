@@ -1,16 +1,15 @@
 """Literal logical Item/inventory contracts; native admission is not gameplay validity."""
 import ast
-from copy import deepcopy
 import unittest
+from copy import deepcopy
 
 import jsonschema
 import yaml
 from linkml_runtime.utils.eval_utils import eval_expr
 from linkml_runtime.utils.schemaview import SchemaView
-
+from ontology_source_contracts import assert_declared_root
 from test_ontology_schema import SCHEMA, generated
 from test_ontology_schema_authoring import catalog, validator
-from ontology_source_contracts import assert_declared_root
 
 ONE_HAND = ["sword", "axe", "mace", "dagger", "fist", "bracelet"]
 METALS = ["iron", "copper", "gold", "silver", "bronze"]

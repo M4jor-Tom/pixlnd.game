@@ -6,7 +6,6 @@ from pathlib import Path
 
 import yaml
 from linkml_runtime.utils.schemaview import SchemaView
-
 from test_ontology_schema import SCHEMA
 
 

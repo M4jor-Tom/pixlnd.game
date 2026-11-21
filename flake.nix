@@ -72,6 +72,7 @@
             gdtoolkit_4 # GDScript formatting + lint
             jq        # JSON sanity checks on ontology/instances
             shfmt     # parser for Python/Bash limits (scripts/check_python_bash.py)
+            ruff      # Python lint + format check (ruff.toml); PyPI's binary cannot run on NixOS
             bash      # test loops: `nix develop -c bash -c ...` (zsh does not word-split $var, see HANDOFF gotchas)
           ];
           # ponytail: no export templates here; CI downloads its own (.github/workflows/release.yml).

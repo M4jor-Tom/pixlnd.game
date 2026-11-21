@@ -5,7 +5,6 @@ from functools import lru_cache
 
 import jsonschema
 from linkml_runtime.utils.schemaview import SchemaView
-
 from test_ontology_schema import SCHEMA, generated
 from test_ontology_schema_authoring import validator
 

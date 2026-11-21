@@ -1,14 +1,13 @@
 """Six source-shaped payloads; catalog tables are not static entity instances."""
-from copy import deepcopy
-from pathlib import Path
 import shutil
 import tempfile
 import unittest
+from copy import deepcopy
+from pathlib import Path
 
 import jsonschema
 import yaml
 from linkml_runtime.utils.schemaview import SchemaView
-
 from test_ontology_schema import SCHEMA, JsonSchemaGenerator
 from test_ontology_schema_authoring import catalog, validate, validator
 from test_ontology_schema_crafting_social import mutated
@@ -473,7 +472,11 @@ class MapMarkerContracts(unittest.TestCase):
 
 class FullStructuredWorldSources(unittest.TestCase):
     def test_whole_block_types_source(self):
-        from ontology_source_contracts import bind_source, unbind_source, validate_source
+        from ontology_source_contracts import (
+            bind_source,
+            unbind_source,
+            validate_source,
+        )
         from test_ontology_schema_contracts import assert_root
 
         row = catalog("block-types")
@@ -520,7 +523,11 @@ class FullStructuredWorldSources(unittest.TestCase):
                 validate_source("block-types", bad)
 
     def test_whole_static_entities_source(self):
-        from ontology_source_contracts import bind_source, unbind_source, validate_source
+        from ontology_source_contracts import (
+            bind_source,
+            unbind_source,
+            validate_source,
+        )
         from test_ontology_schema_contracts import assert_root
 
         row = catalog("static-entities")
@@ -543,7 +550,11 @@ class FullStructuredWorldSources(unittest.TestCase):
         self.assertEqual([row["by-id"][str(i)] for i in (12, 13, 14)], ["table"] * 3)
 
     def test_whole_buildings_source(self):
-        from ontology_source_contracts import bind_source, unbind_source, validate_source
+        from ontology_source_contracts import (
+            bind_source,
+            unbind_source,
+            validate_source,
+        )
         from test_ontology_schema_contracts import assert_root
 
         row = catalog("buildings")

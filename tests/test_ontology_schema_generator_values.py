@@ -1,11 +1,14 @@
 """Full bound-source negatives; no climate interpreter or gameplay execution."""
 
-from copy import deepcopy
 import unittest
+from copy import deepcopy
 
 import jsonschema
-
-from ontology_generator_expectations import DESIGN_FIELDS, SOURCE_FIELDS, REQUIRED_WEAPONS
+from ontology_generator_expectations import (
+    DESIGN_FIELDS,
+    REQUIRED_WEAPONS,
+    SOURCE_FIELDS,
+)
 from ontology_source_contracts import validate_source
 from test_ontology_schema_authoring import catalog
 
@@ -26,7 +29,12 @@ class GeneratorValueTests(unittest.TestCase):
                 validate_source("generators", changed(row, path, value))
 
     def test_coupling_scalar_bounds_and_native_ceiling(self):
-        from ontology_source_contracts import bind_source, unbind_source, assert_declared_root, source_view
+        from ontology_source_contracts import (
+            assert_declared_root,
+            bind_source,
+            source_view,
+            unbind_source,
+        )
         from test_ontology_schema_authoring import validator
 
         source = catalog("generators")
@@ -398,7 +406,7 @@ class GeneratorValueTests(unittest.TestCase):
         """VR-B only; legacy selector A no longer denotes the full monolith."""
         from time import monotonic
         phase_start = monotonic()
-        from ontology_source_contracts import bind_source, unbind_source, _walk
+        from ontology_source_contracts import _walk, bind_source, unbind_source
         from test_ontology_schema_authoring import validator
         row = catalog('generators')
         print('VR-B baseline bind begin', 'elapsed', round(monotonic() - phase_start, 6), flush=True)

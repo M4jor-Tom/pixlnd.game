@@ -1,7 +1,7 @@
 """Hard GDScript physical-line limits; parse boundaries with the pinned gdtoolkit."""
 
-from pathlib import Path
 import sys
+from pathlib import Path
 
 from gdtoolkit.parser import parser
 

@@ -1,16 +1,15 @@
 """Initial site local difficulty world schema tests."""
-from copy import deepcopy
 import json
-from pathlib import Path
 import shutil
 import tempfile
 import unittest
+from copy import deepcopy
+from pathlib import Path
 
 import jsonschema
 import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-
 from test_ontology_schema import SCHEMA
 from test_ontology_schema_authoring import catalog, validator
 
@@ -301,6 +300,7 @@ class LogicalWorldTests(unittest.TestCase):
 
     def test_initial_site_local_difficulty_values(self):
         from fractions import Fraction
+
         from linkml_runtime.utils.inference_utils import Config
 
         view, schemas = self._assert_initial_site_local_difficulty(SCHEMA)

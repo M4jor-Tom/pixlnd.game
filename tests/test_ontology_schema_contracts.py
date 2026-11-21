@@ -1,17 +1,16 @@
 """Selected-root guards; full source families are added with their contracts."""
 
-from copy import deepcopy
 import json
-from pathlib import Path
 import tempfile
 import unittest
+from copy import deepcopy
+from pathlib import Path
 from unittest.mock import patch
 
 import jsonschema
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-
-from test_ontology_schema import ROOT, SCHEMA, generated
+from test_ontology_schema import SCHEMA, generated
 
 
 def assert_root(test: unittest.TestCase, name: str, properties: set[str],
@@ -35,7 +34,11 @@ class FullInputContracts(unittest.TestCase):
         validate_source("generators", row)
 
     def test_whole_races_source(self):
-        from ontology_source_contracts import bind_source, unbind_source, validate_source
+        from ontology_source_contracts import (
+            bind_source,
+            unbind_source,
+            validate_source,
+        )
         from test_ontology_schema_authoring import catalog
 
         row = catalog("races")
@@ -74,7 +77,11 @@ class FullInputContracts(unittest.TestCase):
             unbind_source("races", bound)
 
     def assert_family(self, name, fields, specimen, mutations):
-        from ontology_source_contracts import bind_source, unbind_source, validate_source
+        from ontology_source_contracts import (
+            bind_source,
+            unbind_source,
+            validate_source,
+        )
         from test_ontology_schema_authoring import catalog
 
         row = catalog(name)

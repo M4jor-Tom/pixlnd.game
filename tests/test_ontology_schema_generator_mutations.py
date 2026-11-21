@@ -1,18 +1,17 @@
 """Actual YAML loss/broadening against the same independent baseline oracle."""
 
-from copy import deepcopy
 import json
-from pathlib import Path
 import shutil
 import tempfile
 import unittest
+from copy import deepcopy
+from pathlib import Path
 
 import jsonschema
-from linkml.generators.jsonschemagen import JsonSchemaGenerator
 import yaml
-
+from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from ontology_generator_expectations import REQUIRED_WEAPONS
-from ontology_source_contracts import _walk, class_contract, assert_declared_root
+from ontology_source_contracts import _walk, assert_declared_root, class_contract
 from test_ontology_schema import SCHEMA, generated
 from test_ontology_schema_authoring import catalog
 from test_ontology_schema_generator_declarations import declaration_oracle

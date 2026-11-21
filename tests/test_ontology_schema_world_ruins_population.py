@@ -1,12 +1,11 @@
 """Initial ruins population contracts; hosts the shared RuinsPopulationMixin."""
-from copy import deepcopy
 import json
 import unittest
+from copy import deepcopy
 
 import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-
 from test_ontology_schema import SCHEMA
 from test_ontology_schema_authoring import validator
 
@@ -314,6 +313,7 @@ class LogicalWorldTests(RuinsPopulationMixin, unittest.TestCase):
 
     def test_initial_ruins_population_order_binding(self):
         from itertools import permutations
+
         from jsonasobj2 import JsonObj, as_dict
         from linkml_runtime.utils.inference_utils import Config, generate_slot_value
 

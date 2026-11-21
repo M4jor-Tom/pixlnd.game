@@ -1,10 +1,9 @@
 """Typed realm, land bounds, spawn clock and encounter geometry world schema tests."""
-from copy import deepcopy
 import unittest
+from copy import deepcopy
 
 import jsonschema
 from linkml_runtime.utils.schemaview import SchemaView
-
 from test_ontology_schema import SCHEMA
 from test_ontology_schema_authoring import validate
 

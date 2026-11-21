@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Check evidence admission without launching Nix/Godot; run with python3 -B."""
 import importlib.util
-from pathlib import Path
 import shutil
 import tempfile
+from pathlib import Path
 
 
 class NativeLaunchBlocked(Exception):

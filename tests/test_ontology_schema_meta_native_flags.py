@@ -1,17 +1,16 @@
 """Native JSON Schema characterization of profile and option input flags."""
 
-from copy import deepcopy
 import json
 import shutil
 import tempfile
 import unittest
+from copy import deepcopy
 from pathlib import Path
 
 import jsonschema
 import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-
 from ontology_source_contracts import bind_source
 from test_ontology_schema import SCHEMA
 from test_ontology_schema_authoring import catalog

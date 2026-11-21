@@ -1,16 +1,15 @@
 """Initial populated land world schema tests."""
-from copy import deepcopy
 import json
-from pathlib import Path
 import shutil
 import tempfile
 import unittest
+from copy import deepcopy
+from pathlib import Path
 
 import jsonschema
 import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-
 from test_ontology_schema import SCHEMA
 from test_ontology_schema_authoring import validator
 from test_ontology_schema_world_ruins_population import RuinsPopulationMixin
@@ -163,7 +162,11 @@ def verify_land_safe_names(self, view, owner, ranges, safe):
 def verify_land_compute(self, v, record, endpoints, owners, schemas, owner, roles, ranges, safe):
     from jsonasobj2 import JsonObj, as_dict, items
     from linkml_runtime.utils.formatutils import underscore
-    from linkml_runtime.utils.inference_utils import Config, generate_slot_value, obj_as_dict_nonrecursive
+    from linkml_runtime.utils.inference_utils import (
+        Config,
+        generate_slot_value,
+        obj_as_dict_nonrecursive,
+    )
 
     # Explicit supplied typed JsonObj views, NOT emitted classes or automatic resolution.
     original = deepcopy((record, endpoints, owners))

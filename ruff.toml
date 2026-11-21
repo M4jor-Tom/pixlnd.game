@@ -1,0 +1,8 @@
+# The starflake-design gate, minus what this repo's Python does not pass yet.
+# ponytail: no E501, no `ruff format --check`, no function-shape rules (PLR0911/0912/0913/0915/
+# 0917, C90): reformatting to 88 columns pushes ~40 test files past the 600-line / 100-line caps
+# of scripts/check_python_bash.py, which already bounds size and cognitive complexity.
+[lint]
+select = ["E", "W", "F", "I", "PLR"]
+# PLR2004: tests compare against literal counts.
+ignore = ["E501", "PLR2004", "PLR0911", "PLR0912", "PLR0913", "PLR0915", "PLR0917"]

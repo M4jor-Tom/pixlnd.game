@@ -3,7 +3,8 @@
 # never holds a connection open for the tens of minutes the full gate takes.
 #   gate.sh start [rev]  run the gate detached on rev's committed tree (default HEAD)
 #   gate.sh check [rev]  succeed only if rev's tree passed (pre-push passes PRE_COMMIT_TO_REF)
-#   gate.sh run <tree>   the gate itself (quality runner, then scripts/checks.sh)
+#   gate.sh run <tree>   the gate itself: the long hooks of .pre-commit-config.yaml (quality
+#                        runner, scripts/checks.sh, LinkML tests); pre-commit ran the short ones
 # Receipts are keyed by tree, so a squash or rebase with an identical tree reuses its pass.
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -54,7 +55,8 @@ run() {
   git archive "$tree" | tar -x -C "$work"
   # The session's LD_LIBRARY_PATH may point at host libraries that break the pinned Godot.
   if (cd "$work" && env -u LD_LIBRARY_PATH nix develop --no-update-lock-file \
-    -c bash -c 'bash tests/test_checks.sh && bash scripts/checks.sh'); then
+    -c bash -c 'bash tests/test_checks.sh && bash scripts/checks.sh &&
+      uv run --locked --project tools/ontology python -m unittest discover -s tests -p "test_ontology*.py"'); then
     mv "$receipts/$tree.running" "$receipts/$tree.pass"
   else
     mv "$receipts/$tree.running" "$receipts/$tree.fail"
