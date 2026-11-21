@@ -10,7 +10,7 @@ import jsonschema
 import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-from test_ontology_schema import SCHEMA
+from test_ontology_schema import SCHEMA, copy_schema, load_module
 from test_ontology_schema_world_ruins_population import RuinsPopulationMixin
 
 
@@ -334,12 +334,12 @@ class LogicalWorldTests(RuinsPopulationMixin, unittest.TestCase):
         add_ruins_parent_mutations(add)
         assert len({m['label'] for m in mutations}) == len(mutations)
         self.assertEqual(len(mutations), 110)
-        baseline = {name: yaml.safe_load((SCHEMA.parent / name).read_text())
+        baseline = {name: load_module(SCHEMA.parent / name)
                     for name in ('world.yaml', 'identity.yaml', 'relations.yaml')}
         # Copy the ACTUAL repository import graph; never edit generated definitions.
         with tempfile.TemporaryDirectory(prefix='ruins-population-mutations-') as directory:
             target = Path(directory) / 'schema'
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             path = target / SCHEMA.name
             for case in mutations:
                 verify_ruins_mutation_case(self, case, baseline, target, path)

@@ -1,6 +1,5 @@
 """Spirit scope, progress exclusion and ruins room level world schema tests."""
 import json
-import shutil
 import tempfile
 import unittest
 from copy import deepcopy
@@ -10,7 +9,7 @@ import jsonschema
 import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-from test_ontology_schema import SCHEMA
+from test_ontology_schema import SCHEMA, copy_schema, load_module
 from test_ontology_schema_authoring import catalog, validate, validator
 
 
@@ -268,7 +267,7 @@ class LogicalWorldTests(unittest.TestCase):
         view = SchemaView(str(SCHEMA))
         for owner, _, _, _ in scopes:
             self.assertTrue(owner in view.all_classes(), "Missing declared source class: " + owner)
-        raw = yaml.safe_load((SCHEMA.parent / "world.yaml").read_text())["classes"]
+        raw = load_module(SCHEMA.parent / "world.yaml")["classes"]
         generic_schema = validator("encounter-assignment").schema
         assert_declared_root("encounter-assignment", fields, base_required, view=view, schema=generic_schema)
         self.assertEqual(raw["encounter-assignment"]["attributes"]["spirit"]["exactly_one_of"],
@@ -276,7 +275,7 @@ class LogicalWorldTests(unittest.TestCase):
         # The approved nominal TYPE correction must not change native wire admission.
         with tempfile.TemporaryDirectory() as scratch:
             copied = Path(scratch) / "schema"
-            shutil.copytree(SCHEMA.parent, copied)
+            copy_schema(copied)
             path = copied / "world.yaml"
             mutated = yaml.safe_load(path.read_text())
             mutated["classes"]["encounter-assignment"]["attributes"]["spirit"]["exactly_one_of"][0]["range"] = "ingredient"
@@ -319,7 +318,7 @@ class LogicalWorldTests(unittest.TestCase):
         self.assertTrue(owner in view.all_classes(), "Missing declared source class: " + owner)
         schema = validator(owner).schema
         assert_declared_root(owner, set(row), set(row), view=view, schema=schema)
-        declaration = yaml.safe_load((SCHEMA.parent / "world.yaml").read_text())["classes"][owner]
+        declaration = load_module(SCHEMA.parent / "world.yaml")["classes"][owner]
         self.assertEqual(set(declaration["attributes"]), set(row))
         self.assertFalse(declaration.get("is_a") or declaration.get("slots") or declaration.get("mixins") or declaration.get("slot_usage"))
         self.assertEqual((declaration["class_uri"], str(view.get_class(owner).class_uri)), ("pixlnd:" + owner,) * 2)
@@ -400,7 +399,7 @@ class LogicalWorldTests(unittest.TestCase):
         view = SchemaView(str(SCHEMA))
         for owner in profiles:
             self.assertTrue(owner in view.all_classes(), "Missing declared source class: " + owner)
-        raw = yaml.safe_load((SCHEMA.parent / "world.yaml").read_text())["classes"]
+        raw = load_module(SCHEMA.parent / "world.yaml")["classes"]
         for owner, row in profiles.items():
             declaration, definition = verify_profile_declaration(self, owner, row, view, raw, class_sources)
             for field, value in row.items():
@@ -449,7 +448,7 @@ class LogicalWorldTests(unittest.TestCase):
         def assert_contract(raw, view, schema):
             verify_ruins_room_contract(self, raw, view, schema, rule, names, anchor, fields)
 
-        raw = yaml.safe_load((SCHEMA.parent / "save-world.yaml").read_text())
+        raw = load_module(SCHEMA.parent / "save-world.yaml")
         view = SchemaView(str(SCHEMA))
         self.assertIn("saved-site", view.all_classes())
         # Declaration-first RED must not rely on unsupported native conditional rejection.
@@ -491,7 +490,7 @@ class LogicalWorldTests(unittest.TestCase):
         for mutation in ("removed-rule", "wrong-family", "wrong-cardinality"):
             with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as scratch:
                 copied = Path(scratch) / "schema"
-                shutil.copytree(SCHEMA.parent, copied)
+                copy_schema(copied)
                 path = copied / "save-world.yaml"
                 mutant = deepcopy(raw)
                 if mutation == "removed-rule":

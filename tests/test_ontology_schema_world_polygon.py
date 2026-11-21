@@ -1,16 +1,15 @@
 """Canonical logical land-border polygon declaration tests."""
-import shutil
 import tempfile
 import unittest
 from pathlib import Path
 
 import yaml
 from linkml_runtime.utils.schemaview import SchemaView
-from test_ontology_schema import SCHEMA
+from test_ontology_schema import SCHEMA, copy_schema, load_module
 
 
 def assert_land_border_declaration(test, path):
-    raw = yaml.safe_load(path.with_name("world.yaml").read_text())
+    raw = load_module(path.with_name("world.yaml"))
     test.assertIn("polygon", raw["classes"])
     polygon = raw["classes"]["polygon"]
     test.assertEqual(polygon["class_uri"], "pixlnd:polygon")
@@ -51,7 +50,7 @@ class LandBorderPolygonTests(unittest.TestCase):
         original = SCHEMA.with_name("world.yaml").read_bytes()
         with tempfile.TemporaryDirectory(prefix="land-border-polygon-") as directory:
             target = Path(directory) / "schema"
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             schema = target / SCHEMA.name
             module = target / "world.yaml"
             for label, mutate in (
@@ -60,7 +59,7 @@ class LandBorderPolygonTests(unittest.TestCase):
                 ("wall semantics", lambda data: data["slots"]["land-border"].update(description="A physical wall.")),
             ):
                 with self.subTest(mutation=label):
-                    changed = yaml.safe_load(original)
+                    changed = load_module(SCHEMA.with_name("world.yaml"))
                     mutate(changed)
                     module.write_text(yaml.safe_dump(changed, sort_keys=False))
                     with self.assertRaises(AssertionError):

@@ -1,5 +1,4 @@
 """Literal source/config policies; catalog identities stay in keyed data."""
-import shutil
 import tempfile
 import unittest
 from copy import deepcopy
@@ -14,7 +13,7 @@ from ontology_source_contracts import (
     unbind_source,
     validate_source,
 )
-from test_ontology_schema import SCHEMA, generated
+from test_ontology_schema import SCHEMA, copy_schema, generated
 from test_ontology_schema_authoring import catalog
 
 ROOT_FIELDS = {
@@ -232,7 +231,7 @@ class FixedSectionsTests(unittest.TestCase):
         )
         with tempfile.TemporaryDirectory() as scratch:
             target = Path(scratch) / "schema"
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             for filename, owner, attribute, facet, value in mutations:
                 path = target / filename
                 original = path.read_text()

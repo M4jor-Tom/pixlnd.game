@@ -1,6 +1,5 @@
 """Initial site local difficulty world schema tests."""
 import json
-import shutil
 import tempfile
 import unittest
 from copy import deepcopy
@@ -10,7 +9,7 @@ import jsonschema
 import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-from test_ontology_schema import SCHEMA
+from test_ontology_schema import SCHEMA, copy_schema, load_module
 from test_ontology_schema_authoring import catalog, validator
 
 
@@ -240,7 +239,7 @@ class LogicalWorldTests(unittest.TestCase):
         }
         power = "parameters['power-base-offset'] + tier"
         height = "parameters['height-base-blocks'] * (parameters['height-minimum-multiplier'] + parameters['height-linear-growth'] * (max([1, min([level, parameters['height-maximum-level']])]) - 1) / (parameters['height-maximum-level'] - 1))"
-        raw = yaml.safe_load(path.with_name('world.yaml').read_text())
+        raw = load_module(path.with_name('world.yaml'))
         declarations = verify_local_raw(self, raw, profile, hostile, boss, anchor, constants, power)
         local = {(profile, name): (range_, value, value, value if name in
                  ('power-base-offset', 'boss-hp-multiplier', 'height-maximum-level') else None, None, False)
@@ -340,10 +339,10 @@ class LogicalWorldTests(unittest.TestCase):
         ]
         self.assertEqual(len(mutations), 14)
         original = SCHEMA.with_name('world.yaml').read_bytes()
-        baseline = yaml.safe_load(original)
+        baseline = load_module(SCHEMA.with_name('world.yaml'))
         with tempfile.TemporaryDirectory(prefix='local-difficulty-mutations-') as directory:
             target = Path(directory) / 'schema'
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             module = target / 'world.yaml'
             path = target / SCHEMA.name
             for label, keys, replacement in mutations:

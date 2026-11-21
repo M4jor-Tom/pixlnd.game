@@ -1,6 +1,5 @@
 """22 source encodings, not complete catalogs or runtime relation enforcement."""
 import json
-import shutil
 import tempfile
 import unittest
 from pathlib import Path
@@ -9,7 +8,7 @@ import jsonschema
 import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-from test_ontology_schema import SCHEMA
+from test_ontology_schema import SCHEMA, copy_schema
 from test_ontology_schema_authoring import catalog, validate, validator
 
 FIELDS = {
@@ -43,7 +42,7 @@ def mutated(module, name, facet, value, owner, row):
     """Regenerate from real temporary YAML, never a hand-edited emitted schema."""
     with tempfile.TemporaryDirectory() as scratch:
         target = Path(scratch) / "schema"
-        shutil.copytree(SCHEMA.parent, target)
+        copy_schema(target)
         path = target / module
         data = yaml.safe_load(path.read_text())
         data["slots"][name][facet] = value
@@ -321,7 +320,7 @@ class CraftingSocialTests(unittest.TestCase):
         check(SchemaView(str(SCHEMA)))
         with tempfile.TemporaryDirectory() as scratch:
             target = Path(scratch) / "schema"
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             for module, mutate in [
                 ("items.yaml", lambda data: data["slots"]["item-upgrade-level"].update(range="float")),
                 ("relations.yaml", lambda data: data["slots"]["produces"].update(range="item-type")),
@@ -343,7 +342,7 @@ class CraftingSocialTests(unittest.TestCase):
         assert_selected_facets(self, SchemaView(str(SCHEMA)))
         with tempfile.TemporaryDirectory() as scratch:
             target = Path(scratch) / "schema"
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             for owner, fields in FIELDS.items():
                 module = "items.yaml" if owner in ("ingredient", "material") else "identity.yaml"
                 path = target / module

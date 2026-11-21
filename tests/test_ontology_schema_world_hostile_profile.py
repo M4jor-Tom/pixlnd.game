@@ -10,7 +10,7 @@ import jsonschema
 import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-from test_ontology_schema import SCHEMA
+from test_ontology_schema import SCHEMA, load_module
 from test_ontology_schema_authoring import catalog
 
 
@@ -148,7 +148,7 @@ class LogicalWorldTests(unittest.TestCase):
                 'description': 'Dimensionless independent probability for choosing the existing ' + role + ' role once per pack or singleton boss, not a per-hostile roll or relative loot weight.',
                 'see_also': [anchor, source + '.role-weights'],
             }
-        raw = yaml.safe_load((path.parent / 'world.yaml').read_text())
+        raw = load_module(path.parent / 'world.yaml')
         self.assertTrue(owner in raw.get('classes', {}), 'missing raw world declaration: ' + owner)
         # ALL raw metadata, attachments and fields precede SDK induction/generation.
         self.assertEqual(raw['classes'][owner], expected)
@@ -226,13 +226,14 @@ class LogicalWorldTests(unittest.TestCase):
         mutations = hostile_profile_mutations(owner, root)
         self.assertEqual(len(mutations), len({m[0] for m in mutations}))
         original = (SCHEMA.parent / 'world.yaml').read_bytes()
-        baseline = yaml.safe_load(original)
+        baseline = load_module(SCHEMA.parent / 'world.yaml')
         with tempfile.TemporaryDirectory(prefix='hostile-profile-mutations-') as directory:
             target = Path(directory) / 'schema'
             target.mkdir()
             # Exact module membership from the accepted source manifest.
             for name in ('associations.yaml', 'catalog-crafting-social.yaml', 'catalog-identity-combat.yaml', 'catalog-properties.yaml', 'combat.yaml', 'design-combat.yaml', 'design-progression.yaml', 'entities.yaml', 'identity.yaml', 'items.yaml', 'meta.yaml', 'pixlnd.yaml', 'relation-types.yaml', 'relations.yaml', 'save-character.yaml', 'save-combat.yaml', 'save-content.yaml', 'save-geography.yaml', 'save-world.yaml', 'structured-world.yaml', 'world-catalog.yaml', 'world.yaml'):
-                shutil.copyfile(SCHEMA.parent / name, target / name)
+                for source in SCHEMA.parent.glob(name[:-5] + '*.yaml'):  # the module and its parts
+                    shutil.copyfile(source, target / source.name)
             path = target / SCHEMA.name
             module = target / 'world.yaml'
             _, schema = self._assert_initial_site_hostile_profile(path)

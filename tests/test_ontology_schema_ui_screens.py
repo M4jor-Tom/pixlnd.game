@@ -1,6 +1,5 @@
 """Selected source-shaped screens; not UI behavior or complete-envelope admission."""
 import json
-import shutil
 import tempfile
 import unittest
 from copy import deepcopy
@@ -10,7 +9,7 @@ import jsonschema
 import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-from test_ontology_schema import SCHEMA
+from test_ontology_schema import SCHEMA, copy_schema
 from test_ontology_schema_authoring import catalog, generated, validate, validator
 from test_ontology_schema_ui_presentation import assert_contract
 
@@ -140,7 +139,7 @@ class UiScreensTests(unittest.TestCase):
         assert_contract(self, SchemaView(str(SCHEMA)))
         with tempfile.TemporaryDirectory() as scratch:
             target = Path(scratch) / "schema"
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             path = target / "meta.yaml"
             original = yaml.safe_load(path.read_text())
             cases = []
@@ -169,7 +168,7 @@ class UiScreensTests(unittest.TestCase):
         assert_contract(self, SchemaView(str(SCHEMA)))
         with tempfile.TemporaryDirectory() as scratch:
             target = Path(scratch) / "schema"
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             path = target / "meta.yaml"
             original = yaml.safe_load(path.read_text())
             cases = []
@@ -230,7 +229,7 @@ class UiScreensTests(unittest.TestCase):
         ]
         with tempfile.TemporaryDirectory() as scratch:
             target = Path(scratch) / "schema"
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             path = target / "meta.yaml"
             original = yaml.safe_load(path.read_text())
             for name, facet, value, owner, row, no_effect, alternate in cases:

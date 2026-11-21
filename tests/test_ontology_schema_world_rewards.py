@@ -2,9 +2,8 @@
 import unittest
 
 import jsonschema
-import yaml
 from linkml_runtime.utils.schemaview import SchemaView
-from test_ontology_schema import SCHEMA
+from test_ontology_schema import SCHEMA, load_module
 from test_ontology_schema_authoring import catalog, validate, validator
 
 
@@ -37,7 +36,7 @@ class LogicalWorldTests(unittest.TestCase):
         for owner, row in profiles.items():
             # Missing top_class must fail before a permissive generated root can validate.
             assert_declared_root(owner, set(row), set(row), view=view)
-        raw = yaml.safe_load((SCHEMA.parent / "world.yaml").read_text())["classes"]
+        raw = load_module(SCHEMA.parent / "world.yaml")["classes"]
         for owner, row in profiles.items():
             declaration = raw[owner]
             expected_anchors = [anchors[owner], "../domain/3_Classes.md#loot-rule", item_anchor, pool_anchor]
@@ -100,7 +99,7 @@ class LogicalWorldTests(unittest.TestCase):
         for field, value in (("role", "any-class"), ("tier", 5), ("boss", 1), ("special", "fireball"), ("spirit", "sandstone"), ("special", None)):
             with self.subTest(field=field), self.assertRaises(jsonschema.ValidationError):
                 validate("encounter-assignment", dict(row, **{field: value}))
-        assignment = yaml.safe_load((SCHEMA.parent / "world.yaml").read_text())["classes"]["encounter-assignment"]
+        assignment = load_module(SCHEMA.parent / "world.yaml")["classes"]["encounter-assignment"]
         self.assertEqual(assignment.get("exactly_one_of"), [
             {"slot_conditions": {"boss": {"equals_expression": "True"}, "special": {"value_presence": "PRESENT"}}},
             {"slot_conditions": {"boss": {"equals_expression": "False"}, "special": {"value_presence": "ABSENT"}}},
@@ -203,7 +202,7 @@ def verify_assignment_slot(self, assignment_view, field, range_):
     slot = assignment_view.induced_slot(field, "encounter-assignment")
     expected_range = "string" if field in {"special", "spirit"} else range_
     if field in {"special", "spirit"}:
-        authored = yaml.safe_load((SCHEMA.parent / "world.yaml").read_text())
+        authored = load_module(SCHEMA.parent / "world.yaml")
         declaration = authored["classes"]["encounter-assignment"]["attributes"][field]
         self.assertNotIn("range", declaration)
     self.assertEqual((slot.alias, slot.range), (field, expected_range))

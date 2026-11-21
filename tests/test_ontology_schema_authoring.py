@@ -1,7 +1,6 @@
 """Source-backed S1 projections; native generation is not runtime admission."""
 
 import json
-import shutil
 import tempfile
 import unittest
 from copy import deepcopy
@@ -12,7 +11,7 @@ import jsonschema
 import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-from test_ontology_schema import ROOT, SCHEMA, generated
+from test_ontology_schema import ROOT, SCHEMA, copy_schema, generated
 
 generated = lru_cache(maxsize=None)(generated)
 
@@ -277,7 +276,7 @@ class AuthoringTests(unittest.TestCase):
         for field in ("origin", "endpoint"):
             with self.subTest(field=field), tempfile.TemporaryDirectory() as scratch:
                 target = Path(scratch) / "schema"
-                shutil.copytree(SCHEMA.parent, target)
+                copy_schema(target)
                 module = target / "save-content.yaml"
                 data = yaml.safe_load(module.read_text())
                 data["slots"]["saved-special-" + field]["any_of"][1]["minimum_cardinality"] = 1
@@ -331,7 +330,7 @@ class AuthoringTests(unittest.TestCase):
         for module, slot, field, value, top, row in cases:
             with self.subTest(slot=slot), tempfile.TemporaryDirectory() as scratch:
                 target = Path(scratch) / "schema"
-                shutil.copytree(SCHEMA.parent, target)
+                copy_schema(target)
                 data = yaml.safe_load((target / module).read_text())
                 data["slots"][slot][field] = value
                 (target / module).write_text(yaml.safe_dump(data, sort_keys=False))
@@ -529,7 +528,7 @@ class AuthoringTests(unittest.TestCase):
             validate(owner, row)
             with self.subTest(slot=slot, facet=facet), tempfile.TemporaryDirectory() as scratch:
                 target = Path(scratch) / "schema"
-                shutil.copytree(SCHEMA.parent, target)
+                copy_schema(target)
                 path = target / "catalog-properties.yaml"
                 data = yaml.safe_load(path.read_text())
                 data["slots"][slot][facet] = value

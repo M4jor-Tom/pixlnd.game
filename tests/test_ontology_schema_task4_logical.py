@@ -1,6 +1,5 @@
 """Task4 logical projections; native typing is not learning or reference enforcement."""
 import json
-import shutil
 import tempfile
 import unittest
 from copy import deepcopy
@@ -11,12 +10,12 @@ import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.eval_utils import eval_expr
 from linkml_runtime.utils.schemaview import SchemaView
-from test_ontology_schema import SCHEMA, generated
+from test_ontology_schema import SCHEMA, copy_schema, generated, load_module
 from test_ontology_schema_authoring import validate
 
 
 def assert_logical_fields(test, view, items_path=SCHEMA.parent / "items.yaml"):
-    raw = yaml.safe_load(items_path.read_text())
+    raw = load_module(items_path)
     for name in ("item-name", "artifact-name"):
         test.assertEqual(raw["slots"][name]["readonly"], "true")
     expected = {
@@ -222,7 +221,7 @@ class Task4LogicalTests(unittest.TestCase):
         ]
         with tempfile.TemporaryDirectory() as scratch:
             target = Path(scratch) / "schema"
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             originals = {name: (target / (name + ".yaml")).read_text() for name in ("items", "meta")}
             for module, path, replacement in cases:
                 for name, text in originals.items():
@@ -292,7 +291,7 @@ class Task4LogicalTests(unittest.TestCase):
         assert_logical_fields(self, SchemaView(str(SCHEMA)))
         with tempfile.TemporaryDirectory() as scratch:
             target = Path(scratch) / "schema"
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             path = target / "items.yaml"
             original = path.read_text()
             cases = [("item-name", "readonly", "false"),

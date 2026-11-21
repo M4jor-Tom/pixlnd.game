@@ -1,7 +1,6 @@
 """Actual YAML loss/broadening against the same independent baseline oracle."""
 
 import json
-import shutil
 import tempfile
 import unittest
 from copy import deepcopy
@@ -12,7 +11,7 @@ import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from ontology_generator_expectations import REQUIRED_WEAPONS
 from ontology_source_contracts import _walk, assert_declared_root, class_contract
-from test_ontology_schema import SCHEMA, generated
+from test_ontology_schema import copy_schema, generated
 from test_ontology_schema_authoring import catalog
 from test_ontology_schema_generator_declarations import declaration_oracle
 
@@ -50,7 +49,7 @@ class GeneratorMutationTests(unittest.TestCase):
         for mutation in ("bound", "alias", "attachment", "required-member"):
             with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as scratch:
                 target = Path(scratch) / "schema"
-                shutil.copytree(SCHEMA.parent, target)
+                copy_schema(target)
                 name = {"attachment": "design-items", "required-member": "design-combat"}.get(mutation, "design-world")
                 path = target / (name + ".yaml")
                 data = yaml.safe_load(path.read_text())
@@ -104,7 +103,7 @@ class GeneratorMutationTests(unittest.TestCase):
         for mutation, module, component, field, facet, replacement in cases:
             with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as scratch:
                 target = Path(scratch) / "schema"
-                shutil.copytree(SCHEMA.parent, target)
+                copy_schema(target)
                 path = target / (module + ".yaml")
                 data = yaml.safe_load(path.read_text())
                 if mutation == "status-correlation":
@@ -147,7 +146,7 @@ class GeneratorMutationTests(unittest.TestCase):
         for label, module, parts, replacement in cases:
             with self.subTest(mutation=label), tempfile.TemporaryDirectory() as scratch:
                 target = Path(scratch) / "schema"
-                shutil.copytree(SCHEMA.parent, target)
+                copy_schema(target)
                 path = target / (module + ".yaml")
                 before = path.read_text()
                 data = yaml.safe_load(before)
@@ -181,7 +180,7 @@ class GeneratorMutationTests(unittest.TestCase):
         for label, module, parts, replacement in cases:
             with self.subTest(mutation=label), tempfile.TemporaryDirectory() as scratch:
                 target = Path(scratch) / "schema"
-                shutil.copytree(SCHEMA.parent, target)
+                copy_schema(target)
                 path = target / (module + ".yaml")
                 before = path.read_text()
                 data = yaml.safe_load(before)
@@ -225,7 +224,7 @@ class GeneratorMutationTests(unittest.TestCase):
                 jsonschema.Draft201909Validator(baseline).validate(fixture)
             with self.subTest(mutation=label), tempfile.TemporaryDirectory() as scratch:
                 target = Path(scratch) / "schema"
-                shutil.copytree(SCHEMA.parent, target)
+                copy_schema(target)
                 path = target / "design-combat.yaml"
                 before = path.read_text()
                 data = yaml.safe_load(before)

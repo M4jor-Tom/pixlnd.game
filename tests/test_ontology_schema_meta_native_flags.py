@@ -1,7 +1,6 @@
 """Native JSON Schema characterization of profile and option input flags."""
 
 import json
-import shutil
 import tempfile
 import unittest
 from copy import deepcopy
@@ -12,7 +11,7 @@ import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
 from ontology_source_contracts import bind_source
-from test_ontology_schema import SCHEMA
+from test_ontology_schema import copy_schema
 from test_ontology_schema_authoring import catalog
 from test_ontology_schema_meta_inputs import (
     assert_android_profile_contract,
@@ -72,7 +71,7 @@ class Task5NativeFlags(unittest.TestCase):
         with tempfile.TemporaryDirectory() as scratch:
             root = Path(scratch)
             baseline_dir = root / "baseline"
-            shutil.copytree(SCHEMA.parent, baseline_dir)
+            copy_schema(baseline_dir)
             baseline_schemas = {}
             payloads = {}
             witnesses = {}
@@ -96,7 +95,7 @@ class Task5NativeFlags(unittest.TestCase):
 
             for index, (source_name, root_class, module, parts, value, oracle) in enumerate(CASES):
                 candidate_dir = root / f"candidate-{index}"
-                shutil.copytree(SCHEMA.parent, candidate_dir)
+                copy_schema(candidate_dir)
                 baseline_view = SchemaView(str(baseline_dir / "pixlnd.yaml"))
                 if oracle is assert_android_profile_contract:
                     oracle(self, baseline_view, baseline_dir / "meta.yaml")

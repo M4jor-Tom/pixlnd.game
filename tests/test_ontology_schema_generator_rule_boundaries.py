@@ -1,6 +1,5 @@
 """Full-source runtime/type boundaries and real-YAML loss sensitivity."""
 import json
-import shutil
 import tempfile
 import unittest
 from copy import deepcopy
@@ -22,7 +21,7 @@ from ontology_source_contracts import (
     source_view,
     unbind_source,
 )
-from test_ontology_schema import SCHEMA
+from test_ontology_schema import copy_schema
 from test_ontology_schema_authoring import catalog, validator
 from test_ontology_schema_generator_declarations import declaration_oracle
 from test_ontology_schema_generator_values import changed
@@ -142,7 +141,7 @@ class GeneratorRuleBoundaryTests(unittest.TestCase):
             for section, field in (("preconditions", "runtime"), ("postconditions", first)):
                 with self.subTest(kind=kind, section=section), tempfile.TemporaryDirectory() as scratch:
                     target = Path(scratch) / "schema"
-                    shutil.copytree(SCHEMA.parent, target)
+                    copy_schema(target)
                     path = target / "design-combat.yaml"
                     before = path.read_text()
                     data = yaml.safe_load(before)
@@ -171,7 +170,7 @@ class GeneratorRuleBoundaryTests(unittest.TestCase):
                 native.validate(fixture)
             with self.subTest(kind=kind, field=field), tempfile.TemporaryDirectory() as scratch:
                 target = Path(scratch) / "schema"
-                shutil.copytree(SCHEMA.parent, target)
+                copy_schema(target)
                 path = target / "design-combat.yaml"
                 before = path.read_text()
                 data = yaml.safe_load(before)
@@ -196,7 +195,7 @@ class GeneratorRuleBoundaryTests(unittest.TestCase):
             native.validate(fixture)
             with self.subTest(owner=owner, field=field, facet=facet), tempfile.TemporaryDirectory() as scratch:
                 target = Path(scratch) / "schema"
-                shutil.copytree(SCHEMA.parent, target)
+                copy_schema(target)
                 path = target / (module + ".yaml")
                 before = path.read_text()
                 data = yaml.safe_load(before)

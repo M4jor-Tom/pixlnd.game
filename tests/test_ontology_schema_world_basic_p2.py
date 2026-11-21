@@ -11,7 +11,7 @@ import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
 from ontology_source_contracts import assert_declared_root
-from test_ontology_schema import SCHEMA
+from test_ontology_schema import SCHEMA, copy_schema, load_module
 from test_ontology_schema_authoring import validator
 
 
@@ -50,7 +50,7 @@ class BasicWorldP2Tests(unittest.TestCase):
     def _assert_basic_world_roots(self, path):
         from ontology_source_contracts import assert_declared_root
 
-        raw = yaml.safe_load(path.with_name('world.yaml').read_text())
+        raw = load_module(path.with_name('world.yaml'))
         # §3.1 climate, zone, settlement, realm. Requiredness is logical,
         # not a claim that optional native null equals historical source null.
         facts = {
@@ -139,8 +139,8 @@ class BasicWorldP2Tests(unittest.TestCase):
             ('petrifies', 'creature', 'settlement', True, False),
             ('adjacent-to', 'land', 'land', False, True),
         ]
-        raw = yaml.safe_load(path.with_name('relations.yaml').read_text())
-        unions = yaml.safe_load(path.with_name('relation-types.yaml').read_text())['classes']
+        raw = load_module(path.with_name('relations.yaml'))
+        unions = load_module(path.with_name('relation-types.yaml'))['classes']
         verify_world_relations_raw(self, facts, raw, unions)
         view = SchemaView(str(path))
         verify_world_relations_view(self, facts, view)
@@ -204,7 +204,7 @@ class BasicWorldP2Tests(unittest.TestCase):
         ]
         with tempfile.TemporaryDirectory(prefix='basic-world-p2-') as directory:
             target = Path(directory) / 'schema'
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             original = yaml.safe_load((target / 'world.yaml').read_text())
             for keys, replacement in cases:
                 mutant = deepcopy(original)
@@ -227,7 +227,7 @@ class BasicWorldP2Tests(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix='landscape-fauna-') as directory:
             target = Path(directory) / 'schema'
             for keys, replacement in mutations:
-                shutil.copytree(SCHEMA.parent, target, dirs_exist_ok=True)
+                copy_schema(target, dirs_exist_ok=True)
                 path = target / 'world.yaml'
                 mutant = yaml.safe_load(path.read_text())
                 cursor = mutant
@@ -244,7 +244,7 @@ class BasicWorldP2Tests(unittest.TestCase):
             jsonschema.Draft201909Validator(self._assert_landscape_fauna_contract(SCHEMA)).validate(dict(row, fauna='skeleton'))
 
     def _assert_landscape_fauna_contract(self, path):
-        raw = yaml.safe_load(path.with_name('world.yaml').read_text())
+        raw = load_module(path.with_name('world.yaml'))
         declaration = raw['classes']['landscape']
         expected_slots = {'id', 'landscape-flora', 'landscape-fauna', 'landscape-dungeons', 'landscape-pois', 'landscape-gen'}
         self.assertEqual(set(declaration['slots']), expected_slots)
@@ -268,7 +268,7 @@ class BasicWorldP2Tests(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix='settlement-style-') as directory:
             target = Path(directory) / 'schema'
             for keys, replacement in mutations:
-                shutil.copytree(SCHEMA.parent, target, dirs_exist_ok=True)
+                copy_schema(target, dirs_exist_ok=True)
                 path = target / 'catalog-properties.yaml'
                 mutant = yaml.safe_load(path.read_text())
                 cursor = mutant
@@ -289,7 +289,7 @@ class BasicWorldP2Tests(unittest.TestCase):
                 native.validate(bad)
 
     def _assert_settlement_style_contract(self, path):
-        raw = yaml.safe_load(path.with_name('catalog-properties.yaml').read_text())
+        raw = load_module(path.with_name('catalog-properties.yaml'))
         declaration = raw['classes']['settlement-style']
         expected_slots = {'id', 'settlement-style-lands', 'settlement-style-desc'}
         self.assertEqual(set(declaration['slots']), expected_slots)
@@ -314,7 +314,7 @@ class BasicWorldP2Tests(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix='schema-generation-a-') as first, tempfile.TemporaryDirectory(prefix='schema-generation-b-') as second:
             for directory in (first, second):
                 path = Path(directory) / 'schema'
-                shutil.copytree(SCHEMA.parent, path)
+                copy_schema(path)
                 view = SchemaView(str(path / SCHEMA.name))
                 schemas = {}
                 for name, (properties, required) in expected.items():
@@ -333,7 +333,7 @@ class BasicWorldP2Tests(unittest.TestCase):
                  ('contains-station', 'multivalued', False)]
         with tempfile.TemporaryDirectory(prefix='world-relations-p2-') as directory:
             target = Path(directory) / 'schema'
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             original = yaml.safe_load((target / 'relations.yaml').read_text())
             for name, facet, replacement in cases:
                 mutant = deepcopy(original)

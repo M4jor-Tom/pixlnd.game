@@ -1,6 +1,5 @@
 """Initial populated land world schema tests."""
 import json
-import shutil
 import tempfile
 import unittest
 from copy import deepcopy
@@ -10,7 +9,7 @@ import jsonschema
 import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-from test_ontology_schema import SCHEMA
+from test_ontology_schema import SCHEMA, copy_schema, load_module
 from test_ontology_schema_authoring import validator
 from test_ontology_schema_world_ruins_population import RuinsPopulationMixin
 
@@ -300,7 +299,7 @@ class LogicalWorldTests(RuinsPopulationMixin, unittest.TestCase):
                        'Every selected site belongs to this land; rescue roles have no presentation order.')
         anchors = ['../domain/encounter-contracts.md#placement-and-access',
                    '../domain/encounter-contracts.md#populations-tiers-and-clear-conditions']
-        raw = yaml.safe_load(path.with_name('world.yaml').read_text())
+        raw = load_module(path.with_name('world.yaml'))
         verify_land_raw(self, raw, owner, roles, ranges, expression, description, anchors)
         # Every mutant meets this complete RAW oracle before any SDK induction/emission.
         view = SchemaView(str(path))
@@ -378,7 +377,7 @@ class LogicalWorldTests(RuinsPopulationMixin, unittest.TestCase):
         _, schemas, land, sites, compute = self._assert_initial_populated_land(SCHEMA)
         owner = 'initial-populated-land'
         original = SCHEMA.with_name('world.yaml').read_bytes()
-        raw = yaml.safe_load(original)
+        raw = load_module(SCHEMA.with_name('world.yaml'))
         expression = raw['classes'][owner]['slot_usage']['id']['equals_expression']
         roles = tuple(sites)
         mutations = build_land_mutations(owner, roles)
@@ -388,7 +387,7 @@ class LogicalWorldTests(RuinsPopulationMixin, unittest.TestCase):
         calls = 0
         with tempfile.TemporaryDirectory(prefix='whole-land-mutations-') as directory:
             target = Path(directory) / 'schema'
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             module, path = target / 'world.yaml', target / SCHEMA.name
             for label, keys, replacement, lost in mutations:
                 verify_land_mutation_write(self, raw, keys, replacement, module)

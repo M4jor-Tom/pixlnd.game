@@ -1,6 +1,5 @@
 """Source-qualified cuwo static-entity composition contracts."""
 import json
-import shutil
 import tempfile
 import unittest
 from copy import deepcopy
@@ -11,7 +10,7 @@ import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
 from ontology_source_contracts import assert_declared_root
-from test_ontology_schema import SCHEMA
+from test_ontology_schema import SCHEMA, copy_schema, load_module
 from test_ontology_schema_authoring import validator
 
 CUWO_SOURCE = "https://github.com/matpow2/cuwo/blob/240bb61ec42abb10a73d750ce72f243e04e55509/cuwo/tgen_wrap.pxd"
@@ -44,7 +43,7 @@ COMPONENTS = {
 
 
 def assert_static_composition(path):
-    raw = yaml.safe_load(path.with_name("world.yaml").read_text())
+    raw = load_module(path.with_name("world.yaml"))
     view = SchemaView(str(path))
     schemas = {}
     for name, fields in COMPONENTS.items():
@@ -113,14 +112,14 @@ class StaticCompositionTests(unittest.TestCase):
 
     def test_actual_yaml_mutation_rejected_by_same_metadata_oracle(self):
         assert_static_composition(SCHEMA)
-        original = yaml.safe_load(SCHEMA.with_name("world.yaml").read_text())
+        original = load_module(SCHEMA.with_name("world.yaml"))
         mutants = (("cuwo-static-entity-components", "item", "range", "string"),)
         for owner, field, facet, value in mutants:
             raw = deepcopy(original)
             raw["classes"][owner]["attributes"][field][facet] = value
             with self.subTest(owner=owner, field=field, facet=facet), tempfile.TemporaryDirectory() as directory:
                 schema_dir = Path(directory) / "schema"
-                shutil.copytree(SCHEMA.parent, schema_dir)
+                copy_schema(schema_dir)
                 (schema_dir / "world.yaml").write_text(yaml.safe_dump(raw, sort_keys=False))
                 with self.assertRaises(AssertionError):
                     assert_static_composition(schema_dir / SCHEMA.name)

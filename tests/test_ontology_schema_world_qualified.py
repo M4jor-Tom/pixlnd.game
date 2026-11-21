@@ -1,6 +1,5 @@
 """Qualified world components schema tests."""
 import json
-import shutil
 import tempfile
 import unittest
 from copy import deepcopy
@@ -10,7 +9,7 @@ import jsonschema
 import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-from test_ontology_schema import SCHEMA
+from test_ontology_schema import SCHEMA, copy_schema, load_module
 from test_ontology_schema_authoring import validator
 
 
@@ -206,7 +205,7 @@ def mutate_qualified_slot(declaration, alias, facet):
 
 def verify_qualified_mutant(self, oracle, original, owner, alias, facet, directory):
     target = Path(directory) / 'schema'
-    shutil.copytree(SCHEMA.parent, target)
+    copy_schema(target)
     raw = deepcopy(original)
     declaration = raw['classes'][owner]
     if facet is None:
@@ -232,7 +231,7 @@ class QualifiedWorldComponentsTests(unittest.TestCase):
         # Tuple = range, multiple, inline, minimum/maximum cardinality, value bounds.
         facts = qualified_component_facts(group)
         refs = qualified_component_refs()
-        raw = yaml.safe_load(path.with_name('world.yaml').read_text())
+        raw = load_module(path.with_name('world.yaml'))
         # Raw first keeps SAME actual-YAML mutations cheap and deterministic.
         for owner, (parent, fields) in facts.items():
             verify_qualified_raw_owner(self, group, raw, owner, parent, fields, refs)
@@ -318,7 +317,7 @@ class QualifiedWorldComponentsTests(unittest.TestCase):
     def _assert_qualified_attachments(self, path):
         from ontology_source_contracts import assert_declared_root
 
-        raw = yaml.safe_load(path.with_name('world.yaml').read_text())
+        raw = load_module(path.with_name('world.yaml'))
         view = SchemaView(str(path))
         facts = {'world': ({'id', 'seed', 'day', 'time-ms', 'spawn-rule', 'name', 'origin-poi', 'discovered-zones'},
                            {'id', 'seed', 'day', 'time-ms', 'spawn-rule', 'discovered-zones'}),
@@ -388,7 +387,7 @@ class QualifiedWorldComponentsTests(unittest.TestCase):
     def _qualified_same_yaml_mutations(self, group):
         oracle = self._assert_qualified_attachments if group == 'attachments' else lambda path: self._assert_qualified_components(group, path)
         oracle(SCHEMA)
-        original = yaml.safe_load(SCHEMA.with_name('world.yaml').read_text())
+        original = load_module(SCHEMA.with_name('world.yaml'))
         owners = {'discovery': ['zone-coordinate', 'cuwo-discovery-coordinate-components', 'cwsdk-zone-coordinate-components'],
                   'drop': ['dropped-item', 'cuwo-dropped-item-components', 'berld-dropped-item-components'],
                   'static': ['cuwo-static-header-components', 'berld-static-header-components', 'berld-static-size-components'],

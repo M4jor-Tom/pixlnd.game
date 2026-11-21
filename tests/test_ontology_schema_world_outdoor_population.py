@@ -1,6 +1,5 @@
 """Initial outdoor population world schema tests."""
 import json
-import shutil
 import tempfile
 import unittest
 from copy import deepcopy
@@ -10,7 +9,7 @@ import jsonschema
 import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-from test_ontology_schema import SCHEMA
+from test_ontology_schema import SCHEMA, copy_schema, load_module
 from test_ontology_schema_authoring import validator
 
 
@@ -280,7 +279,7 @@ class LogicalWorldTests(unittest.TestCase):
         S = 'initial-populated-rescue-assembly'
         F = {'id', 'located-in', 'battlefield', 'opposite-exits', 'tier', 'population', 'pack-assignments', 'boss-assignment'}
         A = '../domain/encounter-contracts.md#populations-tiers-and-clear-conditions'
-        raw = yaml.safe_load(path.with_name('world.yaml').read_text())
+        raw = load_module(path.with_name('world.yaml'))
         for owner, kind in ((C, 'camp'), (S, 'rescue')):
             verify_outdoor_raw_owner(owner, kind, raw, A)
         view = SchemaView(str(path))
@@ -291,11 +290,11 @@ class LogicalWorldTests(unittest.TestCase):
 
     def test_initial_outdoor_population_contracts(self):
         self._assert_initial_outdoor_population_contract(SCHEMA)
-        original = yaml.safe_load(SCHEMA.with_name('world.yaml').read_text())
+        original = load_module(SCHEMA.with_name('world.yaml'))
         mutations = build_outdoor_contract_mutations()
         with tempfile.TemporaryDirectory(prefix='outdoor-population-contract-') as directory:
             target = Path(directory) / 'schema'
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             for label, keys, value in mutations:
                 changed = deepcopy(original)
                 cursor = changed
@@ -343,14 +342,14 @@ class LogicalWorldTests(unittest.TestCase):
         from ontology_source_contracts import assert_declared_root
 
         self._assert_initial_outdoor_population_contract(SCHEMA)
-        original = yaml.safe_load(SCHEMA.with_name('world.yaml').read_text())
+        original = load_module(SCHEMA.with_name('world.yaml'))
         fields = {'id', 'located-in', 'battlefield', 'opposite-exits', 'tier', 'population',
                   'pack-assignments', 'boss-assignment'}
         camp, rescue = 'initial-populated-camp-assembly', 'initial-populated-rescue-assembly'
         with tempfile.TemporaryDirectory(prefix='outdoor-population-native-') as directory:
             for label, owner in [('tier3-postconditions', rescue), ('count-three', camp), ('population-swap', camp)]:
                 target = Path(directory) / label
-                shutil.copytree(SCHEMA.parent, target)
+                copy_schema(target)
                 changed = build_outdoor_native_changed(original, label, camp, rescue)
                 (target / 'world.yaml').write_text(yaml.safe_dump(changed, sort_keys=False))
                 self.assertEqual(yaml.safe_load((target / 'world.yaml').read_text()), changed)

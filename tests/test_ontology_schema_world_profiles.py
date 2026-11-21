@@ -2,9 +2,8 @@
 import unittest
 
 import jsonschema
-import yaml
 from linkml_runtime.utils.schemaview import SchemaView
-from test_ontology_schema import SCHEMA
+from test_ontology_schema import SCHEMA, load_module
 from test_ontology_schema_authoring import catalog, validate, validator
 
 
@@ -36,7 +35,7 @@ class LogicalWorldTests(unittest.TestCase):
         for owner, refined, local in profiles:
             assert_declared_root(owner, set(shared) | concepts | set(local),
                                  set(shared) | concepts | set(local), view=view)
-        raw = yaml.safe_load((SCHEMA.parent / "world.yaml").read_text())["classes"]
+        raw = load_module(SCHEMA.parent / "world.yaml")["classes"]
         base = raw["boss-special-profile"]
         self.assertEqual(set(base["attributes"]), set(shared) | concepts)
         self.assertFalse(base.get("slots") or base.get("is_a") or base.get("mixins"))
@@ -94,7 +93,7 @@ class LogicalWorldTests(unittest.TestCase):
         view = SchemaView(str(SCHEMA))
         for owner, anchor, row in profiles:
             assert_declared_root(owner, set(row), set(row), view=view)
-        raw = yaml.safe_load((SCHEMA.parent / "world.yaml").read_text())
+        raw = load_module(SCHEMA.parent / "world.yaml")
         rubble = raw["classes"]["rubble-profile"]
         self.assertEqual(rubble["slots"], ["block-breakable"])
         self.assertEqual(rubble["slot_usage"], {"block-breakable": {
@@ -167,7 +166,7 @@ class LogicalWorldTests(unittest.TestCase):
         for owner, refined, local in profiles:
             fields = set(shared) | concepts | set(local)
             assert_declared_root(owner, fields, fields, view=view)
-        raw = yaml.safe_load((SCHEMA.parent / "world.yaml").read_text())["classes"]
+        raw = load_module(SCHEMA.parent / "world.yaml")["classes"]
         base = raw["furnishing-profile"]
         self.assertEqual(set(base["attributes"]), set(shared) | concepts)
         self.assertFalse(base.get("slots") or base.get("is_a") or base.get("mixins") or base.get("slot_usage"))

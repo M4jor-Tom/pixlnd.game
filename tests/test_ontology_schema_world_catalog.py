@@ -1,6 +1,5 @@
 """Exactly 24 world catalog properties; raw text is not resolved relation data."""
 import json
-import shutil
 import tempfile
 import unittest
 from copy import deepcopy
@@ -10,7 +9,7 @@ import jsonschema
 import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-from test_ontology_schema import SCHEMA
+from test_ontology_schema import SCHEMA, copy_schema, load_module
 from test_ontology_schema_authoring import catalog, validate, validator
 
 # Literal source-backed facet oracles, not an alternate validation engine.
@@ -68,7 +67,7 @@ def verify_field_facets(self, view, owner, field, range_, multiple):
     expected_range = "string" if (owner, field) == ("terrain-feature", "named") else range_
     self.assertEqual((slot.alias, slot.domain, slot.range), (field, owner, expected_range))
     if (owner, field) == ("terrain-feature", "named"):
-        authored = yaml.safe_load((SCHEMA.parent / "world-catalog.yaml").read_text())
+        authored = load_module(SCHEMA.parent / "world-catalog.yaml")
         self.assertNotIn("range", authored["slots"][name])
     self.assertEqual(str(slot.slot_uri), "pixlnd:" + owner + "/" + field)
     self.assertEqual(bool(slot.multivalued), multiple)
@@ -185,7 +184,7 @@ class WorldCatalogTests(unittest.TestCase):
             validate(owner, row)
             with self.subTest(owner=owner, field=field, facet=facet), tempfile.TemporaryDirectory() as scratch:
                 target = Path(scratch) / "schema"
-                shutil.copytree(SCHEMA.parent, target)
+                copy_schema(target)
                 module = target / "world-catalog.yaml"
                 data = yaml.safe_load(module.read_text())
                 name = owner + "-" + field
@@ -262,7 +261,7 @@ class PoiPairTests(unittest.TestCase):
                 self.assertEqual(baseline_valid, facet not in ("minimum_cardinality", "maximum_cardinality"))
                 with self.subTest(field=field, facet=facet, value=value), tempfile.TemporaryDirectory() as scratch:
                     target = Path(scratch) / "schema"
-                    shutil.copytree(SCHEMA.parent, target)
+                    copy_schema(target)
                     path = target / "world-catalog.yaml"
                     data = yaml.safe_load(path.read_text())
                     name = "poi-type-" + field

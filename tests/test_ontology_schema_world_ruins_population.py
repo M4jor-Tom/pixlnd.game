@@ -6,7 +6,7 @@ from copy import deepcopy
 import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-from test_ontology_schema import SCHEMA
+from test_ontology_schema import SCHEMA, load_module
 from test_ontology_schema_authoring import validator
 
 
@@ -98,9 +98,9 @@ def verify_ruins_volume(self, classes, volume_fields, geo):
 
 
 def verify_ruins_identity(self, path):
-    identity = yaml.safe_load(path.with_name('identity.yaml').read_text())['slots']['id']
-    location = yaml.safe_load(path.with_name('relations.yaml').read_text())['slots']['located-in']
-    nominal = yaml.safe_load(path.with_name('relation-types.yaml').read_text())['classes']
+    identity = load_module(path.with_name('identity.yaml'))['slots']['id']
+    location = load_module(path.with_name('relations.yaml'))['slots']['located-in']
+    nominal = load_module(path.with_name('relation-types.yaml'))['classes']
     self.assertIs(identity['identifier'], True)
     self.assertIs(identity['required'], True)
     self.assertEqual((identity['alias'], identity['range']), ('id', 'string'))
@@ -251,7 +251,7 @@ class RuinsPopulationMixin:
         geo = '../domain/encounter-contracts.md#geometry-and-occupancy'
         pop = '../domain/encounter-contracts.md#populations-tiers-and-clear-conditions'
         expected = ruins_expected()
-        raw = yaml.safe_load(path.with_name('world.yaml').read_text())
+        raw = load_module(path.with_name('world.yaml'))
         classes = raw['classes']
         # All owners' complete RAW goldens precede ANY SchemaView/induction/emission.
         for owner in (room, assembly):

@@ -1,6 +1,5 @@
 """Selected presentation shapes only; no control, rendering or source-loader claim."""
 import json
-import shutil
 import tempfile
 import unittest
 from copy import deepcopy
@@ -10,7 +9,7 @@ import jsonschema
 import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-from test_ontology_schema import SCHEMA
+from test_ontology_schema import SCHEMA, copy_schema, load_module
 from test_ontology_schema_authoring import catalog, generated, validate, validator
 
 CATALOG = "ui-presentation-catalog"
@@ -124,8 +123,8 @@ def verify_option_bodies(self, base):
 
 def assert_contract(test, view):
     view.all_classes()  # Materialize imported modules before inspecting their own declarations.
-    module = next(s for s in view.schema_map.values() if s.name == "pixlnd-meta")
-    test.assertEqual(set(module.slots), {o + "-" + a for o, fs in FIELDS.items() for a, *_ in fs} |
+    module = load_module(Path(view.schema.source_file).with_name("meta.yaml"))
+    test.assertEqual(set(module["slots"]), {o + "-" + a for o, fs in FIELDS.items() for a, *_ in fs} |
                      {"ui-presentation-catalog-screens", "ui-screen-presentation-screen",
                       "ui-screen-presentation-desc", "ui-screen-presentation-shows", "ui-screen-presentation-extras",
                       "ui-screen-presentation-tabs", "ui-screen-presentation-stats",
@@ -137,7 +136,7 @@ def assert_contract(test, view):
                       "input-binding-phases", "input-binding-contexts", "input-binding-mapping-status",
                       "input-binding-alias-of", "input-binding-alias", "android-profile-deadzone-ratio",
                       "android-profile-min-target-dp", "android-profile-look-deg-per-safe-width"})
-    test.assertEqual(set(module.classes), {"ruleset", "control-action", "controller-profile", "input-binding",
+    test.assertEqual(set(module["classes"]), {"ruleset", "control-action", "controller-profile", "input-binding",
                      "android-profile-parameters", "android-controller-profile",
                      "hud-element", "option", "slash-command", "audio", "mission-type", "arena",
                      "arena-wave", "gnome-supplier", "circle-of-power", CATALOG, CAMERA, "ui-screen-presentation",
@@ -341,7 +340,7 @@ class UiPresentationTests(unittest.TestCase):
         assert_contract(self, SchemaView(str(SCHEMA)))
         with tempfile.TemporaryDirectory() as scratch:
             target = Path(scratch) / "schema"
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             path = target / "meta.yaml"
             original = yaml.safe_load(path.read_text())
             cases = []
@@ -386,7 +385,7 @@ class UiPresentationTests(unittest.TestCase):
         ]
         with tempfile.TemporaryDirectory() as scratch:
             target = Path(scratch) / "schema"
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             path = target / "meta.yaml"
             original = yaml.safe_load(path.read_text())
             for name, facet, value, owner, row in cases:
@@ -476,7 +475,7 @@ class UiOptionPresentationTests(unittest.TestCase):
         assert_contract(self, SchemaView(str(SCHEMA)))
         with tempfile.TemporaryDirectory() as scratch:
             target = Path(scratch) / "schema"
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             path = target / "meta.yaml"
             original = yaml.safe_load(path.read_text())
             cases = []
@@ -521,7 +520,7 @@ class UiOptionPresentationTests(unittest.TestCase):
         ]
         with tempfile.TemporaryDirectory() as scratch:
             target = Path(scratch) / "schema"
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             path = target / "meta.yaml"
             original = yaml.safe_load(path.read_text())
             for name, facet, value, owner, row, no_effect, alternate in cases:

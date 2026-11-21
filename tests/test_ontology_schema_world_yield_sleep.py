@@ -1,6 +1,5 @@
 """Deposit yield interval and hybrid inn sleep world schema tests."""
 import json
-import shutil
 import tempfile
 import unittest
 from copy import deepcopy
@@ -10,7 +9,7 @@ import jsonschema
 import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-from test_ontology_schema import SCHEMA
+from test_ontology_schema import SCHEMA, copy_schema, load_module
 from test_ontology_schema_authoring import catalog, validate, validator
 
 
@@ -19,7 +18,7 @@ class LogicalWorldTests(unittest.TestCase):
         from ontology_source_contracts import assert_declared_root
 
         owner = 'deposit-ingredient-yield'
-        raw = yaml.safe_load(path.with_name('world.yaml').read_text())
+        raw = load_module(path.with_name('world.yaml'))
         self.assertTrue(owner in raw['classes'], 'missing scalar declaration: deposit-ingredient-yield')
         anchors = ['../domain/3_Classes.md#deposit', '../schema/associations.yaml#ingredient-yield',
                    '../schema/world-catalog.yaml#deposit-yields']
@@ -34,7 +33,7 @@ class LogicalWorldTests(unittest.TestCase):
         for name in ('ingredient-yield-minimum', 'ingredient-yield-maximum'):
             self.assertIs(type(cls['slot_usage'][name]['equals_number']), int)
         # The reusable association is not narrowed for flora or other yield contexts.
-        generic = yaml.safe_load(path.with_name('associations.yaml').read_text())
+        generic = load_module(path.with_name('associations.yaml'))
         self.assertEqual(generic['classes']['ingredient-yield'], {
             'class_uri': 'pixlnd:ingredient-yield', 'see_also': ['../domain/4_Relations.md'],
             'slots': ['ingredient-yield-ingredient', 'ingredient-yield-minimum', 'ingredient-yield-maximum'],
@@ -132,7 +131,7 @@ class LogicalWorldTests(unittest.TestCase):
 
         owner = 'deposit-ingredient-yield'
         original = SCHEMA.with_name('world.yaml').read_bytes()
-        raw = yaml.safe_load(original)
+        raw = load_module(SCHEMA.with_name('world.yaml'))
         base = ('classes', owner)
         mutations = [('missing-class', base, None), ('class-uri', base + ('class_uri',), 'pixlnd:wrong'),
                      ('class-anchor', base + ('see_also',), []), ('class-description', base + ('description',), 'wrong scope'),
@@ -146,7 +145,7 @@ class LogicalWorldTests(unittest.TestCase):
                           (field + '-alias', keys + ('alias',), 'wrong')]
         with tempfile.TemporaryDirectory(prefix='deposit-interval-mutations-') as directory:
             target = Path(directory) / 'schema'
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             module, path = target / 'world.yaml', target / SCHEMA.name
             for label, keys, replacement in mutations:
                 changed = deepcopy(raw)
@@ -182,7 +181,7 @@ class LogicalWorldTests(unittest.TestCase):
         from ontology_source_contracts import assert_declared_root
 
         owner = 'hybrid-inn-sleep-service-parameters'
-        raw = yaml.safe_load(path.with_name('world.yaml').read_text())
+        raw = load_module(path.with_name('world.yaml'))
         self.assertTrue(owner in raw['classes'], 'missing scalar declaration: hybrid-inn-sleep-service-parameters')
         anchors = ['../domain/3_Classes.md#game-clock', '../domain/5_Constraints.md#c-inn-hours']
         description = ('Hybrid inn paid sleep parameters from settlements/inn items 2–4, distinct from free anytime healing and respawn. '
@@ -262,7 +261,7 @@ class LogicalWorldTests(unittest.TestCase):
 
         owner = 'hybrid-inn-sleep-service-parameters'
         original = SCHEMA.with_name('world.yaml').read_bytes()
-        raw = yaml.safe_load(original)
+        raw = load_module(SCHEMA.with_name('world.yaml'))
         base = ('classes', owner)
         mutations = [('missing-class', base, None), ('class-uri', base + ('class_uri',), 'pixlnd:wrong'),
                      ('class-anchor', base + ('see_also',), []), ('class-description', base + ('description',), 'wrong scope')]
@@ -276,7 +275,7 @@ class LogicalWorldTests(unittest.TestCase):
                           (name + '-attachment', keys, None)]
         with tempfile.TemporaryDirectory(prefix='inn-sleep-mutations-') as directory:
             target = Path(directory) / 'schema'
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             module, path = target / 'world.yaml', target / SCHEMA.name
             for label, keys, replacement in mutations:
                 changed = deepcopy(raw)

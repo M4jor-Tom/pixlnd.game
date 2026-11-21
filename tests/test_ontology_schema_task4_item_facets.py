@@ -4,11 +4,10 @@ import unittest
 from copy import deepcopy
 
 import jsonschema
-import yaml
 from linkml_runtime.utils.eval_utils import eval_expr
 from linkml_runtime.utils.schemaview import SchemaView
 from ontology_source_contracts import assert_declared_root
-from test_ontology_schema import SCHEMA, generated
+from test_ontology_schema import SCHEMA, generated, load_module
 from test_ontology_schema_authoring import catalog, validator
 
 ONE_HAND = ["sword", "axe", "mace", "dagger", "fist", "bracelet"]
@@ -84,7 +83,7 @@ BOOLEAN = [
 
 
 def modules():
-    return {name: yaml.safe_load((SCHEMA.parent / (name + ".yaml")).read_text())
+    return {name: load_module(SCHEMA.parent / (name + ".yaml"))
             for name in ("items", "identity", "entities", "relations")}
 
 

@@ -1,5 +1,4 @@
 """Personal claim declarations; native typing is not claim issuance or persistence."""
-import shutil
 import tempfile
 import unittest
 from copy import deepcopy
@@ -8,7 +7,7 @@ from pathlib import Path
 import jsonschema
 import yaml
 from linkml_runtime.utils.schemaview import SchemaView
-from test_ontology_schema import SCHEMA, generated
+from test_ontology_schema import SCHEMA, copy_schema, generated
 
 OWNER = "personal-permanent-source-claim"
 FIELDS = ("character", "world", "source-kind", "source-key")
@@ -134,7 +133,7 @@ class PersonalSourceClaimTests(unittest.TestCase):
         ]
         with tempfile.TemporaryDirectory() as scratch:
             target = Path(scratch) / "schema"
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             path = target / "associations.yaml"
             original = yaml.safe_load(path.read_text())
             for keys, value in cases:

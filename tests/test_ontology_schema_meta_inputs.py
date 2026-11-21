@@ -2,7 +2,6 @@
 
 import os
 import re
-import shutil
 import tempfile
 import unittest
 from copy import deepcopy
@@ -16,7 +15,7 @@ from ontology_source_contracts import (
     unbind_source,
     validate_source,
 )
-from test_ontology_schema import ROOT, SCHEMA, generated
+from test_ontology_schema import ROOT, SCHEMA, copy_schema, generated, load_module
 from test_ontology_schema_authoring import catalog, validate
 
 SOURCE_ROOTS = [
@@ -43,8 +42,7 @@ def assert_exact_numeric_value(test, actual, expected, numeric_type):
 
 
 def assert_android_profile_contract(test, view, meta_path):
-    with open(meta_path, encoding="utf-8") as schema_file:
-        raw_meta = yaml.safe_load(schema_file)
+    raw_meta = load_module(meta_path)
     test.assertIn("android-profile-parameters", view.all_classes(),
                   "Android-owned parameter facet class must be declared")
     parameters = view.get_class("android-profile-parameters")
@@ -548,8 +546,8 @@ class MetaInputContracts(unittest.TestCase):
         assert_profile_binding_contract(self, SchemaView(str(SCHEMA)))
         with tempfile.TemporaryDirectory() as scratch:
             target = os.path.join(scratch, "schema")
-            shutil.copytree(SCHEMA.parent, target)
-            originals = {name: yaml.safe_load((SCHEMA.parent / name).read_text())
+            copy_schema(target)
+            originals = {name: load_module(SCHEMA.parent / name)
                          for name in {case[0] for case in cases}}
             for module, path, value, oracle in cases:
                 for name, baseline in originals.items():

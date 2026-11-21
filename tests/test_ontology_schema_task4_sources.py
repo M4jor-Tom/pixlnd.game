@@ -1,5 +1,4 @@
 """Complete Task4 source contracts; source values are not executable recipes."""
-import shutil
 import tempfile
 import unittest
 from copy import deepcopy
@@ -14,7 +13,7 @@ from ontology_source_contracts import (
     unbind_source,
     validate_source,
 )
-from test_ontology_schema import SCHEMA, generated
+from test_ontology_schema import SCHEMA, copy_schema, generated
 from test_ontology_schema_authoring import catalog
 
 
@@ -131,7 +130,7 @@ class ItemSourcesTests(unittest.TestCase):
     def test_item_type_map_union_yaml_guards(self):
         with tempfile.TemporaryDirectory() as scratch:
             target = Path(scratch) / "schema"
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             path = target / "items.yaml"
             original = yaml.safe_load(path.read_text())
             self.assert_item_subtype_map_contract(SchemaView(str(target / "pixlnd.yaml")))
@@ -319,7 +318,7 @@ class RecipesSourceTests(unittest.TestCase):
     def test_actual_yaml_marker_requiredness_annotation_and_shape_guards(self):
         with tempfile.TemporaryDirectory() as scratch:
             target = Path(scratch) / "schema"
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             path = target / "items.yaml"
             original = yaml.safe_load(path.read_text())
             mutations = []
@@ -477,7 +476,7 @@ class LogicalMissionTests(unittest.TestCase):
         self.assert_mission_arena_contracts(SchemaView(str(SCHEMA)))
         with tempfile.TemporaryDirectory() as scratch:
             target = Path(scratch) / "schema"
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             path = target / "meta.yaml"
             original = yaml.safe_load(path.read_text())
             mutations = [

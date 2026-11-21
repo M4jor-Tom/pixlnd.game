@@ -1,5 +1,4 @@
 """Six source-shaped payloads; catalog tables are not static entity instances."""
-import shutil
 import tempfile
 import unittest
 from copy import deepcopy
@@ -8,7 +7,7 @@ from pathlib import Path
 import jsonschema
 import yaml
 from linkml_runtime.utils.schemaview import SchemaView
-from test_ontology_schema import SCHEMA, JsonSchemaGenerator
+from test_ontology_schema import SCHEMA, JsonSchemaGenerator, copy_schema
 from test_ontology_schema_authoring import catalog, validate, validator
 from test_ontology_schema_crafting_social import mutated
 
@@ -239,7 +238,7 @@ class StructuredWorldTests(unittest.TestCase):
         assert_contract(self, SchemaView(str(SCHEMA)))
         with tempfile.TemporaryDirectory() as scratch:
             target = Path(scratch) / "schema"
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             path = target / MODULE
             original = path.read_text()
             data = yaml.safe_load(original)
@@ -371,7 +370,7 @@ class BlockConfigurationTests(unittest.TestCase):
         self.assertTrue(validator(CONFIG_ROOT).is_valid(row))
         with tempfile.TemporaryDirectory() as scratch:
             target = Path(scratch) / "schema"
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             path = target / MODULE
             original = path.read_text()
             for field, *_ in CONFIG_FIELDS[CONFIG_ROOT]:
@@ -390,7 +389,7 @@ class BlockConfigurationTests(unittest.TestCase):
         assert_config_contract(self, SchemaView(str(SCHEMA)))
         with tempfile.TemporaryDirectory() as scratch:
             target = Path(scratch) / "schema"
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             path = target / MODULE
             original = path.read_text()
             data = yaml.safe_load(original)
@@ -428,7 +427,7 @@ class MapMarkerContracts(unittest.TestCase):
         assert_marker_contract(self, view)
         with tempfile.TemporaryDirectory() as scratch:
             target = Path(scratch) / "schema"
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             path = target / MODULE
             data = yaml.safe_load(path.read_text())
             data["slots"][self.TRIPLE + "-x"]["range"] = "string"

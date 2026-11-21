@@ -1,6 +1,5 @@
 """Initial site assembly world schema tests."""
 import json
-import shutil
 import tempfile
 import unittest
 from copy import deepcopy
@@ -10,7 +9,7 @@ import jsonschema
 import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-from test_ontology_schema import SCHEMA
+from test_ontology_schema import SCHEMA, copy_schema, load_module
 from test_ontology_schema_authoring import validator
 
 
@@ -27,7 +26,7 @@ class LogicalWorldTests(unittest.TestCase):
         path = SCHEMA
         with tempfile.TemporaryDirectory(prefix="initial-site-assembly-") as directory:
             destination = Path(directory)
-            original = yaml.safe_load(path.with_name('world.yaml').read_text())
+            original = load_module(path.with_name('world.yaml'))
             mutations = []
             for owner in ('initial-ruins-assembly', 'initial-camp-assembly', 'initial-rescue-assembly', 'initial-battlefield-exit'):
                 mutations.append(('remove-' + owner, ('classes', owner), None))
@@ -56,7 +55,7 @@ class LogicalWorldTests(unittest.TestCase):
             ]
             for label, keys, replacement in mutations:
                 target = destination / label
-                shutil.copytree(path.parent, target)
+                copy_schema(target)
                 mutant = deepcopy(original)
                 cursor = mutant
                 for key in keys[:-1]:
@@ -403,7 +402,7 @@ def assembly_oracle(self, path):
                 'initial-camp-assembly': {'id', 'located-in', 'battlefield', 'opposite-exits'},
                 'initial-rescue-assembly': {'id', 'located-in', 'battlefield', 'opposite-exits'},
                 exit_name: {'width-blocks'}}
-    raw = yaml.safe_load(path.with_name('world.yaml').read_text())
+    raw = load_module(path.with_name('world.yaml'))
     view = SchemaView(str(path))
     for owner in expected:
         verify_assembly_class_declaration(self, view, raw, owner, anchor)

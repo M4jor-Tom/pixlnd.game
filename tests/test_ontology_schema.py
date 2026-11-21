@@ -6,6 +6,7 @@ selected structural properties, never rewritten on disk.
 """
 
 import json
+import shutil
 import unittest
 from copy import deepcopy
 from functools import lru_cache
@@ -19,6 +20,41 @@ from linkml_runtime.utils.schemaview import SchemaView
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = ROOT / "ontology/schema/pixlnd.yaml"
+
+
+def load_module(path):
+    """A schema module as one document: the parts it imports (ids nested under its own id) are
+    merged back and dropped from its imports. A module without parts loads unchanged."""
+    path = Path(path)
+    data = yaml.safe_load(path.read_text())
+    for name in list(data.get("imports", [])):
+        part_path = path.with_name(name + ".yaml")
+        part = yaml.safe_load(part_path.read_text()) if part_path.exists() else {}
+        if part.get("id", "").startswith(data["id"] + "/"):
+            data["imports"].remove(name)
+            for section in ("classes", "slots", "enums", "types"):
+                if section in part:
+                    data.setdefault(section, {}).update(part[section])
+    return data
+
+
+@lru_cache(maxsize=None)
+def _merged_modules():
+    merged = {}
+    for path in SCHEMA.parent.glob("*.yaml"):
+        data = load_module(path)
+        if data != yaml.safe_load(path.read_text()):
+            merged[path.name] = yaml.safe_dump(data, sort_keys=False)
+    return merged
+
+
+def copy_schema(target, **kwargs):
+    """Copy the schema directory for a mutation test, each split module rewritten as the single
+    document `load_module` returns, so it can be edited by module name. Part files are copied
+    too but no longer imported; restoring a module's original bytes re-links them."""
+    shutil.copytree(SCHEMA.parent, target, **kwargs)
+    for name, text in _merged_modules().items():
+        (Path(target) / name).write_text(text)
 
 
 @lru_cache(maxsize=None)
@@ -155,14 +191,13 @@ class OntologySchemaTests(unittest.TestCase):
                 assert_ranges(self, owner.extra_slots.range_expression, known)
 
     def test_actual_species_yaml_mutation_uses_same_oracle(self):
-        import shutil
         import tempfile
         from unittest.mock import patch
 
         self.test_entity_species_reference()
         with tempfile.TemporaryDirectory() as scratch:
             target = Path(scratch) / "schema"
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             path = target / "entities.yaml"
             data = yaml.safe_load(path.read_text())
             data["slots"]["entity-species"]["range"] = "string"

@@ -1,6 +1,5 @@
 """Initial site placement world schema tests."""
 import json
-import shutil
 import tempfile
 import unittest
 from copy import deepcopy
@@ -10,7 +9,7 @@ import jsonschema
 import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-from test_ontology_schema import SCHEMA
+from test_ontology_schema import SCHEMA, copy_schema, load_module
 from test_ontology_schema_authoring import validator
 
 
@@ -19,7 +18,7 @@ class LogicalWorldTests(unittest.TestCase):
         from ontology_source_contracts import assert_declared_root
 
         owner = 'initial-site-placement-profile'
-        raw = yaml.safe_load(path.with_name('world.yaml').read_text())
+        raw = load_module(path.with_name('world.yaml'))
         self.assertTrue(owner in raw['classes'], 'missing placement declaration: initial-site-placement-profile')
         cls = raw['classes'][owner]
         anchors = ['../domain/encounter-contracts.md#placement-and-access']
@@ -118,7 +117,7 @@ class LogicalWorldTests(unittest.TestCase):
 
         owner = 'initial-site-placement-profile'
         original = SCHEMA.with_name('world.yaml').read_bytes()
-        raw = yaml.safe_load(original)
+        raw = load_module(SCHEMA.with_name('world.yaml'))
         mutations = [('missing-class', ('classes', owner), None),
                      ('class-uri', ('classes', owner, 'class_uri'), 'pixlnd:wrong-placement'),
                      ('class-anchor', ('classes', owner, 'see_also'), []),
@@ -131,7 +130,7 @@ class LogicalWorldTests(unittest.TestCase):
             mutations.append((name + '-equals_number-changed', base + ('equals_number',), number + 1))
         with tempfile.TemporaryDirectory(prefix='placement-mutations-') as directory:
             target = Path(directory) / 'schema'
-            shutil.copytree(SCHEMA.parent, target)
+            copy_schema(target)
             module, path = target / 'world.yaml', target / SCHEMA.name
             for label, keys, replacement in mutations:
                 changed = deepcopy(raw)

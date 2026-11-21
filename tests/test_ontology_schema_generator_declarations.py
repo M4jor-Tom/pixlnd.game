@@ -30,14 +30,14 @@ from ontology_generator_expectations import (
     assert_literal_contract,
 )
 from ontology_source_contracts import assert_declared_root
-from test_ontology_schema import SCHEMA, generated
+from test_ontology_schema import SCHEMA, generated, load_module
 from test_ontology_schema_authoring import catalog
 
 MODULE_NAMES = ("design-combat", "design-progression", "design-world", "design-items")
 
 
 def modules_at(directory):
-    return {name: yaml.safe_load((directory / (name + ".yaml")).read_text()) for name in MODULE_NAMES}
+    return {name: load_module(directory / (name + ".yaml")) for name in MODULE_NAMES}
 
 
 def assert_induced_owner(test, name, owner, view):
