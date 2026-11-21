@@ -1,0 +1,137 @@
+id: https://w3id.org/pixlnd/world/settlement
+name: pixlnd-world-settlement
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- entities
+default_range: string
+classes:
+  settlement:
+    description: "Settlement; interpreted under its linked source definition and context."
+    class_uri: pixlnd:settlement
+    see_also: &id008
+    - ../domain/3_Classes.md#settlement
+    attributes:
+      style: {"alias": "style", "slot_uri": "pixlnd:settlement/style", "range": "settlement-style", "description": "Style; interpreted within the linked source scope."}
+      population-races: {"alias": "population-races", "slot_uri": "pixlnd:settlement/population-races", "range": "race", "description": "Population races; interpreted within the linked source scope.", "multivalued": true}
+      population-animals: {"alias": "population-animals", "slot_uri": "pixlnd:settlement/population-animals", "range": "creature", "description": "Population animals; interpreted within the linked source scope.", "multivalued": true}
+      count-per-land: {"alias": "count-per-land", "slot_uri": "pixlnd:settlement/count-per-land", "range": "integer", "description": "Count per land; interpreted within the linked source scope.", "minimum_value": 1, "equals_number": 1}
+    slots:
+    - id
+    - settlement-districts
+    - settlement-buildings
+    - settlement-petrified
+    - settlement-possessed
+  district:
+    description: "District; interpreted under its linked source definition and context."
+    class_uri: pixlnd:district
+    see_also:
+    - ../domain/3_Classes.md#district
+    slots:
+    - id
+    - district-name
+    - district-buildings
+    - district-quarter-id
+    - district-decor
+  district-building:
+    description: "District building; interpreted under its linked source definition and context."
+    class_uri: pixlnd:district-building
+    see_also:
+    - ../domain/3_Classes.md#district
+    slots:
+    - district-building-id
+    - district-building-class
+  building:
+    description: "Building; interpreted under its linked source definition and context."
+    class_uri: pixlnd:building
+    see_also:
+    - ../domain/3_Classes.md#building
+    slots:
+    - id
+    - building-name
+    - building-sign
+    - building-map-icon
+    - building-roles
+    - building-stations
+  static-entity:
+    description: "Static entity; interpreted under its linked source definition and context."
+    class_uri: pixlnd:static-entity
+    see_also:
+    - ../domain/3_Classes.md#static-entity
+    attributes:
+      closed: {"alias": "closed", "domain": "static-entity", "slot_uri": "pixlnd:static-entity/closed", "range": "boolean", "required": false, "description": "Logical open/closed state; applicability follows open-able subset, not a new state machine. Optional native null is not historical wire null."}
+      occupant: {"alias": "occupant", "domain": "static-entity", "slot_uri": "pixlnd:static-entity/occupant", "range": "entity", "required": false, "description": "Logical sitter reference for sit-able subset, distinct from closed. No independent sat Boolean, universal numeric identity or empty sentinel is selected."}
+      orientation: {"alias": "orientation", "slot_uri": "pixlnd:static-entity/orientation", "range": "integer", "description": "Historical cardinal codes: 0 south, 1 east, 2 north, 3 west; not yaw degrees. Open-able and sit-able state remain separate.", "minimum_value": 0, "maximum_value": 3}
+    slots:
+    - id
+slots:
+  district-name:
+    description: "District name; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:district/name
+    alias: name
+    domain: district
+    range: string
+    see_also:
+    - ../domain/3_Classes.md#district
+  district-buildings:
+    description: "District buildings; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:district/buildings
+    alias: buildings
+    domain: district
+    multivalued: true
+    any_of:
+    - range: building
+    - range: district-building
+      inlined: true
+    see_also:
+    - ../domain/3_Classes.md#district
+  district-building-id:
+    description: "District building id; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:district-building/id
+    alias: id
+    domain: district-building
+    range: building
+    required: true
+    see_also:
+    - ../domain/3_Classes.md#district
+  district-building-class:
+    description: "District building class; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:district-building/class
+    alias: class
+    domain: district-building
+    range: character-class
+    required: true
+    see_also:
+    - ../domain/3_Classes.md#district
+  settlement-districts:
+    description: "Settlement districts; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:settlement/districts
+    alias: districts
+    range: district
+    required: true
+    multivalued: true
+    see_also: *id008
+  settlement-buildings:
+    description: "Settlement buildings; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:settlement/buildings
+    alias: buildings
+    range: building
+    required: true
+    multivalued: true
+    see_also: *id008
+  settlement-petrified:
+    slot_uri: pixlnd:settlement/petrified
+    alias: petrified
+    range: boolean
+    description: Curse state; shared-world persistence policy is linked in the canonical settlement definition.
+    see_also: *id008
+  settlement-possessed:
+    slot_uri: pixlnd:settlement/possessed
+    alias: possessed
+    range: boolean
+    description: Curse state; shared-world persistence policy is linked in the canonical settlement definition.
+    see_also: *id008

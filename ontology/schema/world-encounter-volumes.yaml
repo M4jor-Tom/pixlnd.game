@@ -1,0 +1,132 @@
+id: https://w3id.org/pixlnd/world/encounter-volumes
+name: pixlnd-world-encounter-volumes
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+classes:
+  encounter-volume:
+    class_uri: "pixlnd:encounter-volume"
+    description: "Logical closed playable component dimensions in blocks, not an enclosing rectangle or selected save wire. Occupancy of a union and boundary membership follow the linked rule."
+    see_also: ["../domain/encounter-contracts.md#geometry-and-occupancy"]
+    attributes:
+      width: {"alias": "width", "slot_uri": "pixlnd:encounter-volume/width", "range": "double", "description": "Width; interpreted within the linked source scope.", "required": true, "minimum_value": 0}
+      depth: {"alias": "depth", "slot_uri": "pixlnd:encounter-volume/depth", "range": "double", "description": "Depth; interpreted within the linked source scope.", "required": true, "minimum_value": 0}
+      below-floor: {"alias": "below-floor", "slot_uri": "pixlnd:encounter-volume/below-floor", "range": "double", "description": "Below floor; interpreted within the linked source scope.", "required": true, "minimum_value": 0}
+      above-floor: {"alias": "above-floor", "slot_uri": "pixlnd:encounter-volume/above-floor", "range": "double", "description": "Above floor; interpreted within the linked source scope.", "required": true, "minimum_value": 0}
+  ruins-room-volume:
+    class_uri: "pixlnd:ruins-room-volume"
+    description: "Source-scoped playable component dimensions; floor-height formula and placement remain linked rules."
+    see_also: ["../domain/encounter-contracts.md#geometry-and-occupancy"]
+    is_a: "encounter-volume"
+    slot_usage:
+      width: {"equals_number": 24}
+      depth: {"equals_number": 24}
+      below-floor: {"equals_number": 1}
+      above-floor: {"equals_number": 12}
+  ruins-corridor-volume:
+    class_uri: "pixlnd:ruins-corridor-volume"
+    description: "Source-scoped playable component dimensions; floor-height formula and placement remain linked rules."
+    see_also: ["../domain/encounter-contracts.md#geometry-and-occupancy"]
+    is_a: "encounter-volume"
+    slot_usage:
+      width: {"equals_number": 8}
+      depth: {"equals_number": 8}
+      below-floor: {"equals_number": 1}
+      above-floor: {"equals_number": 12}
+  ruins-court-volume:
+    class_uri: "pixlnd:ruins-court-volume"
+    description: "Source-scoped playable component dimensions; floor-height formula and placement remain linked rules."
+    see_also: ["../domain/encounter-contracts.md#geometry-and-occupancy"]
+    is_a: "encounter-volume"
+    slot_usage:
+      width: {"equals_number": 24}
+      depth: {"equals_number": 16}
+      below-floor: {"equals_number": 1}
+      above-floor: {"equals_number": 12}
+  ruins-passage-volume:
+    class_uri: "pixlnd:ruins-passage-volume"
+    description: "Source-scoped playable component dimensions; floor-height formula and placement remain linked rules."
+    see_also: ["../domain/encounter-contracts.md#geometry-and-occupancy"]
+    is_a: "encounter-volume"
+    slot_usage:
+      width: {"equals_number": 8}
+      depth: {"equals_number": 8}
+      below-floor: {"equals_number": 1}
+      above-floor: {"equals_number": 12}
+  ruins-alcove-volume:
+    class_uri: "pixlnd:ruins-alcove-volume"
+    description: "Source-scoped playable component dimensions; floor-height formula and placement remain linked rules."
+    see_also: ["../domain/encounter-contracts.md#geometry-and-occupancy"]
+    is_a: "encounter-volume"
+    slot_usage:
+      width: {"equals_number": 12}
+      depth: {"equals_number": 8}
+      below-floor: {"equals_number": 1}
+      above-floor: {"equals_number": 12}
+  camp-battlefield-volume:
+    class_uri: "pixlnd:camp-battlefield-volume"
+    description: "Source-scoped playable component dimensions; floor-height formula and placement remain linked rules."
+    see_also: ["../domain/encounter-contracts.md#geometry-and-occupancy"]
+    is_a: "encounter-volume"
+    slot_usage:
+      width: {"equals_number": 64}
+      depth: {"equals_number": 64}
+      below-floor: {"equals_number": 1}
+      above-floor: {"equals_number": 16}
+  rescue-battlefield-volume:
+    class_uri: "pixlnd:rescue-battlefield-volume"
+    description: "Source-scoped playable component dimensions; floor-height formula and placement remain linked rules."
+    see_also: ["../domain/encounter-contracts.md#geometry-and-occupancy"]
+    is_a: "encounter-volume"
+    slot_usage:
+      width: {"equals_number": 48}
+      depth: {"equals_number": 48}
+      below-floor: {"equals_number": 1}
+      above-floor: {"equals_number": 16}
+  encounter-population:
+    class_uri: "pixlnd:encounter-population"
+    description: "Designated population counts, not ambient fauna or live surviving-incarnation state. Clear and renewal predicates remain linked rules."
+    see_also: ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"]
+    attributes:
+      packs: {"alias": "packs", "slot_uri": "pixlnd:encounter-population/packs", "range": "integer", "description": "Packs; interpreted within the linked source scope.", "required": true, "minimum_value": 0}
+      pack-size: {"alias": "pack-size", "slot_uri": "pixlnd:encounter-population/pack-size", "range": "integer", "description": "Pack size; interpreted within the linked source scope.", "required": true, "minimum_value": 0}
+      bosses: {"alias": "bosses", "slot_uri": "pixlnd:encounter-population/bosses", "range": "integer", "description": "Bosses; interpreted within the linked source scope.", "required": true, "minimum_value": 0}
+      hostiles: {"alias": "hostiles", "slot_uri": "pixlnd:encounter-population/hostiles", "range": "integer", "description": "Hostiles; interpreted within the linked source scope.", "required": true, "minimum_value": 0}
+      captives: {"alias": "captives", "slot_uri": "pixlnd:encounter-population/captives", "range": "integer", "description": "Captives; interpreted within the linked source scope.", "required": true, "minimum_value": 0}
+  ruins-population:
+    class_uri: "pixlnd:ruins-population"
+    description: "Exact source-scoped designated population; no reinforcement or ambient roster change."
+    see_also: ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"]
+    is_a: "encounter-population"
+    slot_usage:
+      packs: {"equals_number": 3}
+      pack-size: {"equals_number": 3}
+      bosses: {"equals_number": 2}
+      hostiles: {"equals_number": 11}
+      captives: {"equals_number": 0}
+  camp-population:
+    class_uri: "pixlnd:camp-population"
+    description: "Exact source-scoped designated population; no reinforcement or ambient roster change."
+    see_also: ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"]
+    is_a: "encounter-population"
+    slot_usage:
+      packs: {"equals_number": 2}
+      pack-size: {"equals_number": 3}
+      bosses: {"equals_number": 1}
+      hostiles: {"equals_number": 7}
+      captives: {"equals_number": 0}
+  rescue-population:
+    class_uri: "pixlnd:rescue-population"
+    description: "Exact source-scoped designated population; no reinforcement or ambient roster change."
+    see_also: ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"]
+    is_a: "encounter-population"
+    slot_usage:
+      packs: {"equals_number": 2}
+      pack-size: {"equals_number": 3}
+      bosses: {"equals_number": 1}
+      hostiles: {"equals_number": 7}
+      captives: {"equals_number": 1}

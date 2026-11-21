@@ -1,0 +1,132 @@
+id: https://w3id.org/pixlnd/world/landscape
+name: pixlnd-world-landscape
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- world-catalog
+- identity
+- world-zone-contents
+default_range: string
+classes:
+  landscape:
+    description: "Landscape; interpreted under its linked source definition and context."
+    class_uri: pixlnd:landscape
+    see_also: &id005
+    - ../domain/3_Classes.md#landscape
+    slots:
+    - id
+    - landscape-flora
+    - landscape-fauna
+    - landscape-dungeons
+    - landscape-pois
+    - landscape-gen
+  climate:
+    description: "Climate; interpreted under its linked source definition and context."
+    class_uri: pixlnd:climate
+    see_also: &id007
+    - ../domain/3_Classes.md#climate
+    slots:
+    - id
+    - climate-temperature-c
+    - climate-humidity-pct
+  landscape-generation:
+    description: "Landscape generation; interpreted under its linked source definition and context."
+    class_uri: pixlnd:landscape-generation
+    see_also: &id006
+    - ../domain/3_Classes.md#landscape
+    slots:
+    - landscape-generation-relief
+    - landscape-generation-base
+    - landscape-generation-surface
+    - landscape-generation-top
+    - landscape-generation-cliff
+slots:
+  landscape-flora:
+    description: "Landscape flora; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:landscape/flora
+    alias: flora
+    range: flora
+    multivalued: true
+    see_also: *id005
+  landscape-fauna:
+    description: "Landscape fauna; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:landscape/fauna
+    alias: fauna
+    range: creature
+    multivalued: true
+    see_also: *id005
+  landscape-dungeons:
+    description: "Landscape dungeons; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:landscape/dungeons
+    alias: dungeons
+    range: dungeon-type
+    multivalued: true
+    see_also: *id005
+  landscape-pois:
+    description: "Landscape pois; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:landscape/pois
+    alias: pois
+    range: poi-type
+    multivalued: true
+    see_also: *id005
+  landscape-generation-relief:
+    description: "Landscape generation relief; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:landscape-generation/relief
+    alias: relief
+    range: float
+    required: true
+    see_also: *id006
+  landscape-generation-base:
+    description: "Landscape generation base; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:landscape-generation/base
+    alias: base
+    range: float
+    required: true
+    see_also: *id006
+  landscape-generation-surface:
+    description: "Landscape generation surface; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:landscape-generation/surface
+    alias: surface
+    range: block-type
+    required: true
+    see_also: *id006
+  landscape-generation-top:
+    description: "Landscape generation top; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:landscape-generation/top
+    alias: top
+    range: string
+    required: true
+    pattern: ^#[0-9a-fA-F]{6}$
+    see_also: *id006
+  landscape-generation-cliff:
+    description: "Landscape generation cliff; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:landscape-generation/cliff
+    alias: cliff
+    range: string
+    required: true
+    pattern: ^#[0-9a-fA-F]{6}$
+    see_also: *id006
+  landscape-gen:
+    description: "Landscape gen; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:landscape/gen
+    alias: gen
+    range: landscape-generation
+    inlined: true
+    see_also: *id005
+  climate-temperature-c:
+    description: "Climate temperature c; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:climate/temperature-c
+    alias: temperature-c
+    range: float
+    required: true
+    see_also: *id007
+  climate-humidity-pct:
+    description: "Climate humidity pct; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:climate/humidity-pct
+    alias: humidity-pct
+    range: float
+    required: true
+    see_also: *id007

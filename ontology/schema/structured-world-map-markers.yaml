@@ -1,0 +1,110 @@
+id: https://w3id.org/pixlnd/structured-world/map-markers
+name: pixlnd-structured-world-map-markers
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+classes:
+  map-marker-integer-triple:
+    class_uri: pixlnd:map-marker-integer-triple
+    description: Three integer coordinates of a source-qualified map marker; not a polygon vertex or a serialization rule.
+    slots:
+    - map-marker-integer-triple-x
+    - map-marker-integer-triple-y
+    - map-marker-integer-triple-z
+  map-marker-place-key:
+    class_uri: pixlnd:map-marker-place-key
+    description: Two integer coordinates forming the composite place key in the later WorldMap source collection.
+    slots:
+    - map-marker-place-key-x
+    - map-marker-place-key-y
+  place-marker-list-entry:
+    class_uri: pixlnd:place-marker-list-entry
+    description: Later release WorldMap positionsByPlace entry; retains its two-integer key and list of integer triples as separate members. Duplicate composite-key enforcement is not selected.
+    slots:
+    - place-marker-list-entry-place
+    - place-marker-list-entry-positions
+  zone-tile-marker-collection:
+    class_uri: pixlnd:zone-tile-marker-collection
+    description: Alpha-era source captures t05-infinite-alpha-worldmap-h.txt and t06-infinite-alpha-worldmap-cpp.txt show ZoneTile m_markers as a list of integer triples. This scope is distinct from the later release keyed collection; neither defines polygon geometry, connectivity, client authenticity, or a universal wire/save contract.
+    slots:
+    - zone-tile-marker-collection-markers
+  place-keyed-marker-collection:
+    class_uri: pixlnd:place-keyed-marker-collection
+    description: Later release captures t14-release-worldmap-h.txt and t15-release-worldmap-cpp.txt show WorldMapRegion positionsByPlace keyed by a two-integer place pair, with a list of integer triples per key. This source scope does not define polygon geometry, connectivity, client authenticity, or a universal wire/save contract.
+    slots:
+    - place-keyed-marker-collection-places
+slots:
+  map-marker-integer-triple-x:
+    description: First integer component of a source marker triple; no axis units are selected.
+    alias: x
+    slot_uri: pixlnd:map-marker-integer-triple/x
+    domain: map-marker-integer-triple
+    range: integer
+    required: true
+  map-marker-integer-triple-y:
+    description: Second integer component of a source marker triple; no axis units are selected.
+    alias: y
+    slot_uri: pixlnd:map-marker-integer-triple/y
+    domain: map-marker-integer-triple
+    range: integer
+    required: true
+  map-marker-integer-triple-z:
+    description: Third integer component of a source marker triple; no axis units are selected.
+    alias: z
+    slot_uri: pixlnd:map-marker-integer-triple/z
+    domain: map-marker-integer-triple
+    range: integer
+    required: true
+  map-marker-place-key-x:
+    description: First integer component of the later release's composite place key.
+    alias: x
+    slot_uri: pixlnd:map-marker-place-key/x
+    domain: map-marker-place-key
+    range: integer
+    required: true
+  map-marker-place-key-y:
+    description: Second integer component of the later release's composite place key.
+    alias: y
+    slot_uri: pixlnd:map-marker-place-key/y
+    domain: map-marker-place-key
+    range: integer
+    required: true
+  place-marker-list-entry-place:
+    description: Two-integer composite place key; duplicate-key enforcement is not selected.
+    alias: place
+    slot_uri: pixlnd:place-marker-list-entry/place
+    domain: place-marker-list-entry
+    range: map-marker-place-key
+    inlined: true
+    required: true
+  place-marker-list-entry-positions:
+    description: List of integer triples associated with this source place key.
+    alias: positions
+    slot_uri: pixlnd:place-marker-list-entry/positions
+    domain: place-marker-list-entry
+    range: map-marker-integer-triple
+    multivalued: true
+    inlined: true
+    required: true
+  zone-tile-marker-collection-markers:
+    description: Alpha ZoneTile source list of marker integer triples.
+    alias: markers
+    slot_uri: pixlnd:zone-tile-marker-collection/markers
+    domain: zone-tile-marker-collection
+    range: map-marker-integer-triple
+    multivalued: true
+    inlined: true
+    required: true
+  place-keyed-marker-collection-places:
+    description: Later release source entries grouped by their composite place key.
+    alias: places
+    slot_uri: pixlnd:place-keyed-marker-collection/places
+    domain: place-keyed-marker-collection
+    range: place-marker-list-entry
+    multivalued: true
+    inlined: true
+    required: true

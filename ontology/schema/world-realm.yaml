@@ -1,0 +1,73 @@
+id: https://w3id.org/pixlnd/world/realm
+name: pixlnd-world-realm
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- associations
+default_range: string
+classes:
+  realm:
+    description: "Realm; interpreted under its linked source definition and context."
+    class_uri: pixlnd:realm
+    see_also: &id009
+    - ../domain/3_Classes.md#realm
+    slots:
+    - id
+    - realm-kind
+    - realm-name
+    - realm-magic-or-technology
+    - realm-leader
+    - realm-capital
+slots:
+  realm-leader:
+    description: "Realm leader; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:realm/leader
+    alias: leader
+    domain: realm
+    range: realm-leader
+    inlined: true
+    see_also:
+    - ../domain/3_Classes.md#realm
+  realm-capital:
+    description: "Realm capital; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:realm/capital
+    alias: capital
+    domain: realm
+    range: realm-capital
+    inlined: true
+    see_also:
+    - ../domain/3_Classes.md#realm
+  realm-kind:
+    description: "Realm kind; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:realm/kind
+    alias: kind
+    range: realm-kind
+    required: true
+    see_also: *id009
+  realm-name:
+    description: "Realm name; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:realm/name
+    alias: name
+    range: string
+    required: true
+    see_also: *id009
+  realm-magic-or-technology:
+    description: "Realm magic or technology; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:realm/magic-or-technology
+    alias: magic-or-technology
+    range: string
+    required: true
+    see_also: *id009
+enums:
+  realm-kind:
+    description: "Realm kind; interpreted under its linked source definition and context."
+    enum_uri: pixlnd:realm-kind
+    permissible_values:
+      kingdom: {}
+      realm: {}
+      cult: {}
+      tribe: {}

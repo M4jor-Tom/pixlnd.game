@@ -1,0 +1,90 @@
+id: https://w3id.org/pixlnd/structured-world/block-sources
+name: pixlnd-structured-world-block-sources
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- structured-world-block-catalog
+- structured-world-block-cub-format
+default_range: string
+classes:
+  block-types-source:
+    class_uri: "pixlnd:block-types-source"
+    description: "Complete block catalog and configuration; numeric source indices are not global identities."
+    see_also: ["../instances/block-types.json", "../domain/5_Constraints.md"]
+    attributes:
+      schema-tag: {"range": "string", "required": true, "equals_string": "block-type", "alias": "$schema", "slot_uri": "pixlnd:block-types-source/schema", "description": "Source $schema of block-types-source; preserves literal representation and qualification."}
+      documentation: {"range": "string", "required": true, "alias": "_doc", "slot_uri": "pixlnd:block-types-source/doc", "description": "Source _doc of block-types-source; preserves literal representation and qualification."}
+      alpha: {"range": "alpha-block-table-source", "inlined": true, "required": true, "alias": "alpha", "slot_uri": "pixlnd:block-types-source/alpha", "description": "Source alpha of block-types-source; preserves literal representation and qualification."}
+      steam: {"range": "steam-block-table-source", "inlined": true, "required": true, "alias": "steam", "slot_uri": "pixlnd:block-types-source/steam", "description": "Source steam of block-types-source; preserves literal representation and qualification."}
+      scale: {"range": "block-scale-source", "inlined": true, "required": true, "alias": "scale", "slot_uri": "pixlnd:block-types-source/scale", "description": "Source scale of block-types-source; preserves literal representation and qualification."}
+      cub-format: {"range": "block-cub-format-source", "inlined": true, "required": true, "alias": "cub-format", "slot_uri": "pixlnd:block-types-source/cub-format", "description": "Source cub-format of block-types-source; preserves literal representation and qualification."}
+  alpha-block-table-source:
+    class_uri: "pixlnd:alpha-block-table-source"
+    description: "Reversible keyed source container; fixed metadata remains separate."
+    see_also: ["../instances/block-types.json", "../domain/5_Constraints.md"]
+    annotations: {"source-map-entries": "entries"}
+    attributes:
+      flags: {"range": "block-source-flags", "inlined": true, "required": true, "alias": "flags", "slot_uri": "pixlnd:alpha-block-table-source/flags", "description": "Source flags of alpha-block-table-source; preserves literal representation and qualification."}
+      entries: {"range": "alpha-block-source-entry", "multivalued": true, "required": true, "minimum_cardinality": 1, "inlined": true, "inlined_as_list": true, "alias": "entries", "slot_uri": "pixlnd:alpha-block-table-source/entries", "description": "Source entries of alpha-block-table-source; preserves literal representation and qualification."}
+  alpha-block-source-entry:
+    class_uri: "pixlnd:alpha-block-source-entry"
+    description: "Reversible original container key and unchanged value."
+    see_also: ["../instances/block-types.json", "../domain/5_Constraints.md"]
+    attributes:
+      key: {"range": "string", "required": true, "key": true, "pattern": "^[0-9]+$", "alias": "key", "slot_uri": "pixlnd:alpha-block-source-entry/key", "description": "Original local table key; not global identity."}
+      value: {"range": "alpha-block-source-row", "inlined": true, "required": true, "alias": "value", "slot_uri": "pixlnd:alpha-block-source-entry/value", "description": "Source value of alpha-block-source-entry; preserves literal representation and qualification."}
+  alpha-block-source-row:
+    class_uri: "pixlnd:alpha-block-source-row"
+    description: "Alpha block row retains body identifier and independent source-table key."
+    see_also: ["../instances/block-types.json", "../domain/5_Constraints.md"]
+    attributes:
+      id: {"range": "block-type", "required": true, "alias": "id", "slot_uri": "pixlnd:alpha-block-source-row/id", "description": "Source id of alpha-block-source-row; preserves literal representation and qualification."}
+      solid: {"range": "boolean", "required": true, "alias": "solid", "slot_uri": "pixlnd:alpha-block-source-row/solid", "description": "Source solid of alpha-block-source-row; preserves literal representation and qualification."}
+      note: {"exactly_one_of": [{"range": "string"}], "alias": "note", "slot_uri": "pixlnd:alpha-block-source-row/note", "description": "Source note of alpha-block-source-row; preserves literal representation and qualification."}
+  block-source-flags:
+    class_uri: "pixlnd:block-source-flags"
+    description: "Historical block flag descriptions."
+    see_also: ["../instances/block-types.json", "../domain/5_Constraints.md"]
+    attributes:
+      breakable: {"range": "string", "required": true, "alias": "breakable", "slot_uri": "pixlnd:block-source-flags/breakable", "description": "Source breakable of block-source-flags; preserves literal representation and qualification."}
+      dark: {"range": "string", "required": true, "alias": "dark", "slot_uri": "pixlnd:block-source-flags/dark", "description": "Source dark of block-source-flags; preserves literal representation and qualification."}
+  steam-block-table-source:
+    class_uri: "pixlnd:steam-block-table-source"
+    description: "Reversible keyed source container; fixed metadata remains separate."
+    see_also: ["../instances/block-types.json", "../domain/5_Constraints.md"]
+    annotations: {"source-map-entries": "entries"}
+    attributes:
+      note: {"range": "string", "required": true, "alias": "note", "slot_uri": "pixlnd:steam-block-table-source/note", "description": "Source note of steam-block-table-source; preserves literal representation and qualification."}
+      entries: {"range": "steam-block-source-entry", "multivalued": true, "required": true, "minimum_cardinality": 1, "inlined": true, "inlined_as_list": true, "alias": "entries", "slot_uri": "pixlnd:steam-block-table-source/entries", "description": "Source entries of steam-block-table-source; preserves literal representation and qualification."}
+  steam-block-source-entry:
+    class_uri: "pixlnd:steam-block-source-entry"
+    description: "Reversible original container key and unchanged value."
+    see_also: ["../instances/block-types.json", "../domain/5_Constraints.md"]
+    attributes:
+      key: {"range": "string", "required": true, "key": true, "pattern": "^[0-9]+$", "alias": "key", "slot_uri": "pixlnd:steam-block-source-entry/key", "description": "Original local table key; not global identity."}
+      value: {"range": "string", "required": true, "alias": "value", "slot_uri": "pixlnd:steam-block-source-entry/value", "description": "Source value of steam-block-source-entry; preserves literal representation and qualification."}
+  block-scale-source:
+    class_uri: "pixlnd:block-scale-source"
+    description: "Source block-scale numbers with uninterpreted character-height approximation."
+    see_also: ["../instances/block-types.json", "../domain/5_Constraints.md"]
+    is_a: block-scale
+    slot_usage:
+      block-scale-block-native-units: {required: true}
+      block-scale-alpha-zone-blocks: {required: true}
+      block-scale-steam-zone-blocks: {required: true}
+      block-scale-steam-map-chunk-blocks: {required: true}
+      block-scale-character-height-m: {required: true}
+  block-cub-format-source:
+    class_uri: "pixlnd:block-cub-format-source"
+    description: "Source file-format descriptions, not a new voxel storage contract."
+    see_also: ["../instances/block-types.json", "../domain/5_Constraints.md"]
+    is_a: block-cub-format
+    slot_usage:
+      block-cub-format-header: {required: true}
+      block-cub-format-body: {required: true}
+      block-cub-format-empty: {required: true}
+      block-cub-format-compression: {required: true}
+      block-cub-format-storage: {required: true}

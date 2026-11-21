@@ -1,0 +1,93 @@
+id: https://w3id.org/pixlnd/structured-world/yields-variants
+name: pixlnd-structured-world-yields-variants
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- items
+default_range: string
+classes:
+  flora-yield-entry:
+    description: "Flora yield entry; interpreted under its linked source definition and context."
+    class_uri: pixlnd:flora-yield-entry
+    see_also:
+    - ../domain/3_Classes.md#flora
+    - ../domain/4_Relations.md
+    - ../instances/flora.json
+    slots:
+    - flora-yield-entry-ingredient
+    - flora-yield-entry-quantity
+  dungeon-variant-entry:
+    description: "Dungeon variant entry; interpreted under its linked source definition and context."
+    class_uri: pixlnd:dungeon-variant-entry
+    see_also:
+    - ../domain/3_Classes.md#dungeon-type
+    - ../instances/dungeon-types.json
+    slots:
+    - dungeon-variant-entry-label
+    - dungeon-variant-entry-description
+slots:
+  flora-yields:
+    description: "Flora yields; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:flora/yields
+    alias: yields
+    domain: flora
+    range: flora-yield-entry
+    multivalued: true
+    inlined: true
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#flora
+    - ../domain/4_Relations.md
+    - ../instances/flora.json
+  flora-yield-entry-ingredient:
+    description: "Flora yield entry ingredient; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:flora-yield-entry/ingredient
+    alias: ingredient
+    domain: flora-yield-entry
+    range: ingredient
+    key: true
+    required: true
+  flora-yield-entry-quantity:
+    slot_uri: pixlnd:flora-yield-entry/quantity
+    alias: quantity
+    domain: flora-yield-entry
+    required: true
+    any_of:
+    - range: integer
+    - range: integer
+      multivalued: true
+      minimum_cardinality: 2
+      maximum_cardinality: 2
+    - range: string
+      equals_string: n
+    description: Source count, two-endpoint count range, or unresolved literal n.
+  dungeon-type-variants:
+    description: "Dungeon type variants; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:dungeon-type/variants
+    alias: variants
+    domain: dungeon-type
+    range: dungeon-variant-entry
+    multivalued: true
+    inlined: true
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#dungeon-type
+    - ../instances/dungeon-types.json
+  dungeon-variant-entry-label:
+    description: "Dungeon variant entry label; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:dungeon-variant-entry/label
+    alias: label
+    domain: dungeon-variant-entry
+    range: string
+    key: true
+    required: true
+  dungeon-variant-entry-description:
+    description: "Dungeon variant entry description; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:dungeon-variant-entry/description
+    alias: description
+    domain: dungeon-variant-entry
+    range: string
+    required: true

@@ -1,0 +1,111 @@
+id: https://w3id.org/pixlnd/world/content-profiles
+name: pixlnd-world-content-profiles
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- world-zone-contents
+default_range: string
+classes:
+  boss-special-profile:
+    class_uri: "pixlnd:boss-special-profile"
+    description: "Shared fixed logical parameters for permanent boss specials, not an activation, save or configuration payload. Targeting, sight, shielding, physical defence/status order, attack gating, interruption, cancellation and simulation/lifecycle rules remain linked behavior. No friendly-fire, DOT, resource, crit or combo policy fields."
+    see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]
+    attributes:
+      assignment-probability: {alias: "assignment-probability", slot_uri: "pixlnd:boss-special-profile/assignment-probability", range: double, required: true, minimum_value: 0.5, maximum_value: 0.5, description: "Dimensionless probability of either permanent special, selected independently for each boss; not a combat-trigger chance or an exclusive ordinary-loot weight.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+      warning-seconds: {alias: "warning-seconds", slot_uri: "pixlnd:boss-special-profile/warning-seconds", range: double, required: true, minimum_value: 1.2, maximum_value: 1.2, description: "Warning duration in simulation seconds before execution.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+      first-ready-after-engagement-seconds: {alias: "first-ready-after-engagement-seconds", slot_uri: "pixlnd:boss-special-profile/first-ready-after-engagement-seconds", range: double, required: true, minimum_value: 3, maximum_value: 3, description: "First readiness delay in simulation seconds after engagement.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+      cooldown-after-completion-or-cancellation-seconds: {alias: "cooldown-after-completion-or-cancellation-seconds", slot_uri: "pixlnd:boss-special-profile/cooldown-after-completion-or-cancellation-seconds", range: double, required: true, minimum_value: 10, maximum_value: 10, description: "Cooldown in simulation seconds after completion or cancellation, including recovery rather than followed by additional recovery.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+      recovery-within-cooldown-seconds: {alias: "recovery-within-cooldown-seconds", slot_uri: "pixlnd:boss-special-profile/recovery-within-cooldown-seconds", range: double, required: true, minimum_value: 0.8, maximum_value: 0.8, description: "Recovery occupies the first simulation seconds within cooldown, not an extra duration added to cooldown.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+      start-max-horizontal-distance-blocks: {alias: "start-max-horizontal-distance-blocks", slot_uri: "pixlnd:boss-special-profile/start-max-horizontal-distance-blocks", range: double, required: true, description: "Maximum target horizontal distance in blocks at start, inclusive; a fixed threshold parameter, not execution of the target-distance predicate.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+      start-max-feet-height-difference-blocks: {alias: "start-max-feet-height-difference-blocks", slot_uri: "pixlnd:boss-special-profile/start-max-feet-height-difference-blocks", range: double, required: true, description: "Maximum target feet-height difference in blocks at start, inclusive.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+      direct-damage-multiplier: {alias: "direct-damage-multiplier", slot_uri: "pixlnd:boss-special-profile/direct-damage-multiplier", range: double, required: true, description: "Dimensionless direct physical damage multiplier relative to boss damage, not unmodified player spell damage.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+  boss-stomp-profile:
+    class_uri: "pixlnd:boss-stomp-profile"
+    description: "Fixed ground-stomp logical parameters; closed floor-circle impact and victim-height predicates, wall shielding and jump avoidance follow the linked rules."
+    see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]
+    is_a: "boss-special-profile"
+    slot_usage:
+      start-max-horizontal-distance-blocks: {minimum_value: 4, maximum_value: 4}
+      start-max-feet-height-difference-blocks: {minimum_value: 2, maximum_value: 2}
+      direct-damage-multiplier: {minimum_value: 1, maximum_value: 1}
+    attributes:
+      strike-radius-blocks: {alias: "strike-radius-blocks", slot_uri: "pixlnd:boss-stomp-profile/strike-radius-blocks", range: double, required: true, minimum_value: 4, maximum_value: 4, description: "Warning floor-circle and strike radius in blocks, inclusive for victim feet on the closed circle boundary.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+      victim-min-feet-above-floor-blocks: {alias: "victim-min-feet-above-floor-blocks", slot_uri: "pixlnd:boss-stomp-profile/victim-min-feet-above-floor-blocks", range: double, required: true, minimum_value: 0, maximum_value: 0, description: "Minimum victim feet height above the impact floor in blocks, inclusive lower endpoint of the closed interval.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+      victim-max-feet-above-floor-blocks: {alias: "victim-max-feet-above-floor-blocks", slot_uri: "pixlnd:boss-stomp-profile/victim-max-feet-above-floor-blocks", range: double, required: true, minimum_value: 1, maximum_value: 1, description: "Maximum victim feet height above the impact floor in blocks, inclusive upper endpoint of the closed interval.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+  boss-charge-profile:
+    class_uri: "pixlnd:boss-charge-profile"
+    description: "Fixed charge logical parameters. Swept capsule height uses the approved boss-height rule, not a new fixed height. Direction/endpoint snapshot, no homing, first-hit/endpoint/obstacle stopping and cancellation remain linked behavior."
+    see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble", "../domain/encounter-contracts.md#local-difficulty-and-boss-size"]
+    is_a: "boss-special-profile"
+    slot_usage:
+      start-max-horizontal-distance-blocks: {minimum_value: 10, maximum_value: 10}
+      start-max-feet-height-difference-blocks: {minimum_value: 1, maximum_value: 1}
+      direct-damage-multiplier: {minimum_value: 1.25, maximum_value: 1.25}
+    attributes:
+      start-exclusive-min-horizontal-distance-blocks: {alias: "start-exclusive-min-horizontal-distance-blocks", slot_uri: "pixlnd:boss-charge-profile/start-exclusive-min-horizontal-distance-blocks", range: double, required: true, minimum_value: 4, maximum_value: 4, description: "Minimum start target horizontal distance threshold in blocks, exclusive: target distance must exceed this fixed parameter. Native constant admission does not execute that gameplay predicate.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+      warning-lane-width-blocks: {alias: "warning-lane-width-blocks", slot_uri: "pixlnd:boss-charge-profile/warning-lane-width-blocks", range: double, required: true, minimum_value: 2, maximum_value: 2, description: "Full warning lane width in blocks, not its half-width.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+      speed-blocks-per-second: {alias: "speed-blocks-per-second", slot_uri: "pixlnd:boss-charge-profile/speed-blocks-per-second", range: double, required: true, minimum_value: 12, maximum_value: 12, description: "Charge movement speed in blocks per simulation second.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+      swept-capsule-radius-blocks: {alias: "swept-capsule-radius-blocks", slot_uri: "pixlnd:boss-charge-profile/swept-capsule-radius-blocks", range: double, required: true, minimum_value: 1, maximum_value: 1, description: "Swept capsule radius in blocks; height follows the linked approved boss-height rule.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+  rubble-profile:
+    class_uri: "pixlnd:rubble-profile"
+    description: "Fixed logical parameters of stone rubble in each boss arena. Placement outside required routes and safe lanes, stomp shattering, charge continuation, no resource drops, protected structures and actor/occupancy-deferred restoration follow the linked rules."
+    see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]
+    slots:
+    - block-breakable
+    slot_usage:
+      block-breakable: {required: true, equals_expression: "True", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+    attributes:
+      count-per-boss-arena: {alias: "count-per-boss-arena", slot_uri: "pixlnd:rubble-profile/count-per-boss-arena", range: integer, required: true, equals_number: 8, description: "Number of rubble voxels per boss arena, not per land, site or room.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+      cube-edge-blocks: {alias: "cube-edge-blocks", slot_uri: "pixlnd:rubble-profile/cube-edge-blocks", range: double, required: true, minimum_value: 1, maximum_value: 1, description: "Edge length in blocks of each one-block cube.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+      material: {alias: "material", slot_uri: "pixlnd:rubble-profile/material", range: string, required: true, equals_string: "stone", description: "Current encounter rule's logical material token for stone; not a catalog identity or a historical numeric block code.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+      restoration-delay-world-hours: {alias: "restoration-delay-world-hours", slot_uri: "pixlnd:rubble-profile/restoration-delay-world-hours", range: double, required: true, minimum_value: 72, maximum_value: 72, description: "Restoration delay in world-clock hours after breaking; occupancy and actor overlap defer restoration under the linked world-clock rules.", see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]}
+  spike-trap-profile:
+    class_uri: "pixlnd:spike-trap-profile"
+    description: "Fixed logical parameters of the ruins' spike traps. Players-only feet triggering, once-per-activation hits, retriggering, persistent warnings, jump and safe-lane avoidance, armor-floor then reduction and absorption, exclusions of dodge/combat-block/Resistance, crit/status/resource/XP exclusions and renewal persistence follow the linked rules."
+    see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents", "../domain/encounter-contracts.md#geometry-and-occupancy"]
+    attributes:
+      count-per-ruins-site: {alias: "count-per-ruins-site", slot_uri: "pixlnd:spike-trap-profile/count-per-ruins-site", range: integer, required: true, equals_number: 2, description: "Number of spike traps per ruins site, not a count for every encounter.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+      footprint-width-blocks: {alias: "footprint-width-blocks", slot_uri: "pixlnd:spike-trap-profile/footprint-width-blocks", range: double, required: true, minimum_value: 2, maximum_value: 2, description: "Full width in blocks of the closed trap footprint, distinct from the trap-free safe lane.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+      footprint-depth-blocks: {alias: "footprint-depth-blocks", slot_uri: "pixlnd:spike-trap-profile/footprint-depth-blocks", range: double, required: true, minimum_value: 2, maximum_value: 2, description: "Full depth in blocks of the closed trap footprint.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+      trigger-min-feet-above-floor-blocks: {alias: "trigger-min-feet-above-floor-blocks", slot_uri: "pixlnd:spike-trap-profile/trigger-min-feet-above-floor-blocks", range: double, required: true, minimum_value: 0, maximum_value: 0, description: "Minimum triggering player-feet height above the trap floor in blocks, inclusive lower endpoint.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+      trigger-max-feet-above-floor-blocks: {alias: "trigger-max-feet-above-floor-blocks", slot_uri: "pixlnd:spike-trap-profile/trigger-max-feet-above-floor-blocks", range: double, required: true, minimum_value: 1, maximum_value: 1, description: "Maximum triggering player-feet height above the trap floor in blocks, inclusive upper endpoint.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+      warning-seconds: {alias: "warning-seconds", slot_uri: "pixlnd:spike-trap-profile/warning-seconds", range: double, required: true, minimum_value: 0.8, maximum_value: 0.8, description: "Visible and audible warning duration in simulation seconds; leaving does not cancel it.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+      active-seconds: {alias: "active-seconds", slot_uri: "pixlnd:spike-trap-profile/active-seconds", range: double, required: true, minimum_value: 0.25, maximum_value: 0.25, description: "Active duration in simulation seconds after warning.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+      cooldown-seconds: {alias: "cooldown-seconds", slot_uri: "pixlnd:spike-trap-profile/cooldown-seconds", range: double, required: true, minimum_value: 2, maximum_value: 2, description: "Cooldown duration in simulation seconds after the active phase.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+      physical-damage: {alias: "physical-damage", slot_uri: "pixlnd:spike-trap-profile/physical-damage", range: double, required: true, minimum_value: 30, maximum_value: 30, description: "Fixed physical damage amount per hit before the linked trap-specific defence order; not a boss-damage multiplier.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+  furnishing-profile:
+    class_uri: "pixlnd:furnishing-profile"
+    description: "Fixed logical parameters of ruins-room furnishings, distinct from current prop health, saved room levels and source/cycle item payloads or delivery receipts. Direct player/boss damage, DOT/trap exclusions, no combo/MP/XP/status rolls, shared level selection, surviving guards and mixed levels, persistence, safe coalesced renewal without reload refill and exclusion of formulas/books/artifacts follow the linked rules."
+    see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]
+    attributes:
+      count-per-ruins-room: {alias: "count-per-ruins-room", slot_uri: "pixlnd:furnishing-profile/count-per-ruins-room", range: integer, required: true, description: "Number of furnishings of this kind per ruins room, not a whole-site or global count.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+      full-health: {alias: "full-health", slot_uri: "pixlnd:furnishing-profile/full-health", range: double, required: true, description: "Initial/full furnishing health in HP, not current damaged HP or a restriction on enemy/player health.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+      armor: {alias: "armor", slot_uri: "pixlnd:furnishing-profile/armor", range: double, required: true, minimum_value: 0, maximum_value: 0, description: "Fixed furnishing armor amount.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+      minimum-room-guard-level: {alias: "minimum-room-guard-level", slot_uri: "pixlnd:furnishing-profile/minimum-room-guard-level", range: integer, required: true, equals_number: 1, description: "Minimum source level for the saved room guard-pack level shared by furnishings and newly spawned or replacement guards; a fixed context parameter, not an actual saved level or another room-level list.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+  vase-profile:
+    class_uri: "pixlnd:vase-profile"
+    description: "Fixed logical vase parameters. Destruction releases copper using the saved room guard-pack level; the fixed coefficients do not introduce an independent coin roll or power/spread-based income."
+    see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]
+    is_a: "furnishing-profile"
+    slot_usage:
+      count-per-ruins-room: {equals_number: 2}
+      full-health: {minimum_value: 10, maximum_value: 10}
+    attributes:
+      copper-base: {alias: "copper-base", slot_uri: "pixlnd:vase-profile/copper-base", range: integer, required: true, equals_number: 1, description: "Base copper per destroyed vase in 1 + 2L, where L is the stored room guard-pack level, not boss level or item power.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+      copper-per-room-guard-level: {alias: "copper-per-room-guard-level", slot_uri: "pixlnd:vase-profile/copper-per-room-guard-level", range: integer, required: true, equals_number: 2, description: "Linear coefficient in copper per room guard-pack level for each destroyed vase. The rule remains 1 + 2L; actual safe renewal may change stored L and thus the copper amount, not freeze it permanently.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+  table-profile:
+    class_uri: "pixlnd:table-profile"
+    description: "Fixed logical table parameters. Each table owns its pair per actual renewal, issued as loose pickups independently before break; breaking never reissues them whether remaining, taken or expired. Potion power converts the saved room level under the linked item rule; glass flasks are unchanged."
+    see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]
+    is_a: "furnishing-profile"
+    slot_usage:
+      count-per-ruins-room: {equals_number: 1}
+      full-health: {minimum_value: 20, maximum_value: 20}
+    attributes:
+      glass-flask-count-per-renewal: {alias: "glass-flask-count-per-renewal", slot_uri: "pixlnd:table-profile/glass-flask-count-per-renewal", range: integer, required: true, equals_number: 1, description: "Glass flask quantity owned by one table per actual renewal; no flask power is specified.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+      life-potion-count-per-renewal: {alias: "life-potion-count-per-renewal", slot_uri: "pixlnd:table-profile/life-potion-count-per-renewal", range: integer, required: true, equals_number: 1, description: "Life potion quantity owned by one table per actual renewal, with item power derived from the saved room guard-pack level rather than boss level.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"]}
+      life-potion-rarity-index: {alias: "life-potion-rarity-index", slot_uri: "pixlnd:table-profile/life-potion-rarity-index", range: integer, required: true, equals_number: 0, description: "Table life potion uses the common rarity index.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents", "../instances/rarities.json#common"]}
+      life-potion-power-spread: {alias: "life-potion-power-spread", slot_uri: "pixlnd:table-profile/life-potion-power-spread", range: integer, required: true, equals_number: 0, description: "Spread in power points after canonical source-level conversion: the potion uses power(L) directly for saved room guard-pack level L, not a flask power or coin-income spread.", see_also: ["../domain/encounter-contracts.md#spike-traps-and-furnishing-contents", "../domain/3_Classes.md#item"]}

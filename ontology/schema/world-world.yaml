@@ -1,0 +1,125 @@
+id: https://w3id.org/pixlnd/world/world
+name: pixlnd-world-world
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- world-catalog
+- identity
+- world-settlement
+- world-source-components
+- world-zone-contents
+default_range: string
+classes:
+  world:
+    description: "World; interpreted under its linked source definition and context."
+    class_uri: pixlnd:world
+    see_also: &id001
+    - ../domain/3_Classes.md#world
+    attributes:
+      discovered-zones: {"alias": "discovered-zones", "domain": "world", "slot_uri": "pixlnd:world/discovered-zones", "range": "zone-coordinate", "required": true, "description": "World-shared terrain exploration set; grants no personal shrine, flight or lore unlocks. Logical pair objects, not a selected save/packet encoding.", "multivalued": true, "inlined": true, "inlined_as_list": true, "list_elements_unique": true}
+    slot_usage:
+      world-name: {required: false}
+      world-origin-poi: {required: false}
+    slots:
+    - id
+    - world-seed
+    - world-day
+    - world-time-ms
+    - world-spawn-rule
+    - world-name
+    - world-origin-poi
+  zone:
+    description: "Zone; interpreted under its linked source definition and context."
+    class_uri: pixlnd:zone
+    see_also: &id002
+    - ../domain/3_Classes.md#zone
+    attributes:
+      chunk-items: {"alias": "chunk-items", "domain": "zone", "slot_uri": "pixlnd:zone/chunk-items", "range": "dropped-item", "required": true, "description": "Ground-item logical components; complete source/save Item envelopes remain unqualified.", "multivalued": true, "inlined": true, "inlined_as_list": true}
+      columns: {"alias": "columns", "slot_uri": "pixlnd:zone/columns", "range": "field", "description": "Columns; interpreted within the linked source scope.", "required": true, "multivalued": true, "inlined": true, "inlined_as_list": true}
+      spawns: {"alias": "spawns", "slot_uri": "pixlnd:zone/spawns", "range": "creature-spawn", "description": "Spawns; interpreted within the linked source scope.", "required": true, "multivalued": true, "inlined": true, "inlined_as_list": true}
+    slots:
+    - id
+    - zone-size-blocks
+    - zone-static-entities
+  zone-coordinate:
+    class_uri: "pixlnd:zone-coordinate"
+    description: "Logical horizontal integer coordinate pair for world-shared exploration. No packet, save encoding, finite range or discovery algorithm is selected. The cuwo 256-block and CWSDK 64-block global-zone views below are distinct historical components; separate 20-block SDK mapchunks are not zones."
+    see_also: ["../domain/3_Classes.md#world", "../domain/3_Classes.md#zone"]
+    attributes:
+      coordinate-x: {"alias": "x", "domain": "zone-coordinate", "slot_uri": "pixlnd:zone-coordinate/x", "range": "integer", "required": true, "description": "Horizontal x zone coordinate; no portable source width or hybrid wire selected."}
+      coordinate-y: {"alias": "y", "domain": "zone-coordinate", "slot_uri": "pixlnd:zone-coordinate/y", "range": "integer", "required": true, "description": "Horizontal y zone coordinate; no portable source width or hybrid wire selected."}
+slots:
+  world-seed:
+    description: "World seed; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:world/seed
+    alias: seed
+    range: uint32
+    required: true
+    see_also: *id001
+  world-day:
+    description: "World day; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:world/day
+    alias: day
+    range: integer
+    required: true
+    see_also: *id001
+  world-time-ms:
+    description: "World time ms; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:world/time-ms
+    alias: time-ms
+    range: integer
+    required: true
+    see_also: *id001
+    minimum_value: 0
+    maximum_value: 86400000
+  world-spawn-rule:
+    description: "World spawn rule; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:world/spawn-rule
+    alias: spawn-rule
+    range: spawn-rule
+    required: true
+    see_also: *id001
+  zone-size-blocks:
+    description: "Zone size blocks; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:zone/size-blocks
+    alias: size-blocks
+    range: integer
+    required: true
+    see_also: *id002
+  zone-static-entities:
+    description: "Zone static entities; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:zone/static-entities
+    alias: static-entities
+    range: static-entity
+    required: true
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+    see_also: *id002
+  world-name:
+    slot_uri: pixlnd:world/name
+    alias: name
+    range: string
+    required: true
+    domain: world
+    see_also:
+    - ../domain/3_Classes.md#world
+    description: Context-qualified declaration; applicability is defined by canonical prose.
+  world-origin-poi:
+    slot_uri: pixlnd:world/origin-poi
+    alias: origin-poi
+    range: poi-type
+    required: true
+    domain: world
+    see_also:
+    - ../domain/3_Classes.md#world
+    description: Context-qualified declaration; applicability is defined by canonical prose.
+enums:
+  spawn-rule:
+    description: "Spawn rule; interpreted under its linked source definition and context."
+    enum_uri: pixlnd:spawn-rule
+    permissible_values:
+      near-village: {}

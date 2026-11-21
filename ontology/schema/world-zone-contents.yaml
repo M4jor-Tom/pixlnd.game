@@ -1,0 +1,64 @@
+id: https://w3id.org/pixlnd/world/zone-contents
+name: pixlnd-world-zone-contents
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- world-catalog
+- identity
+- entities
+default_range: string
+classes:
+  block:
+    description: "Block; interpreted under its linked source definition and context."
+    class_uri: pixlnd:block
+    see_also: &id003
+    - ../domain/3_Classes.md#block
+    slots:
+    - id
+    - block-type
+    - block-rgb
+    - block-breakable
+  field:
+    class_uri: "pixlnd:field"
+    description: "Known logical base-z plus ordered vertical block run only; historical multi-gap storage remains unqualified."
+    see_also: ["../domain/3_Classes.md#zone"]
+    attributes:
+      base-z: {"alias": "base-z", "slot_uri": "pixlnd:field/base-z", "range": "integer", "description": "Base z; interpreted within the linked source scope.", "required": true}
+      blocks: {"alias": "blocks", "slot_uri": "pixlnd:field/blocks", "range": "block", "description": "Blocks; interpreted within the linked source scope.", "required": true, "multivalued": true, "inlined": true, "inlined_as_list": true}
+  creature-spawn:
+    class_uri: "pixlnd:creature-spawn"
+    description: "Logical spawn components reuse equivalent entity facets; not a historical binary wire contract."
+    see_also: ["../domain/3_Classes.md#zone"]
+    attributes:
+    slots: ["entity-hostility", "entity-species", "entity-class", "entity-specialization", "entity-level", "entity-power-base", "entity-appearance", "entity-equipment", "entity-name"]
+    slot_usage:
+      entity-species: {"alias": "type"}
+      entity-specialization: {"alias": "spec"}
+slots:
+  block-type:
+    description: "Block type; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:block/type
+    alias: type
+    range: block-type
+    required: true
+    see_also: *id003
+  block-rgb:
+    description: "Block rgb; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:block/rgb
+    alias: rgb
+    range: u8
+    required: true
+    multivalued: true
+    minimum_cardinality: 3
+    maximum_cardinality: 3
+    see_also: *id003
+  block-breakable:
+    description: "Block breakable; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:block/breakable
+    alias: breakable
+    range: boolean
+    required: true
+    see_also: *id003

@@ -1,0 +1,115 @@
+id: https://w3id.org/pixlnd/structured-world/static-entities
+name: pixlnd-structured-world-static-entities
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- structured-world-static-sources
+default_range: string
+classes:
+  static-entity-catalog:
+    class_uri: pixlnd:static-entity-catalog
+    description: Catalog tables and configuration, not an individual static entity.
+    see_also:
+    - ../domain/5_Constraints.md
+    - ../instances/static-entities.json
+    slots:
+    - static-entity-catalog-by-id
+    - static-entity-catalog-behaviour
+    - static-entity-catalog-s-additions
+    - static-entity-catalog-candles
+  static-index-name:
+    description: "Static index name; interpreted under its linked source definition and context."
+    class_uri: pixlnd:static-index-name
+    see_also:
+    - ../instances/static-entities.json#by-id
+    slots:
+    - static-index-name-index
+    - static-index-name-name
+  static-behaviour-entry:
+    description: "Static behaviour entry; interpreted under its linked source definition and context."
+    class_uri: pixlnd:static-behaviour-entry
+    see_also:
+    - ../instances/static-entities.json#behaviour
+    slots:
+    - static-behaviour-entry-group
+    - static-behaviour-entry-description
+slots:
+  static-entity-catalog-by-id:
+    description: "Static entity catalog by id; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:static-entity-catalog/by-id
+    alias: by-id
+    domain: static-entity-catalog
+    range: static-index-name
+    multivalued: true
+    inlined: true
+    required: false
+    see_also:
+    - ../domain/5_Constraints.md
+    - ../instances/static-entities.json#by-id
+  static-index-name-index:
+    slot_uri: pixlnd:static-index-name/index
+    alias: index
+    domain: static-index-name
+    range: string
+    key: true
+    required: true
+    description: Container-scoped source index string, not a stable ontology ID.
+  static-index-name-name:
+    description: "Static index name name; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:static-index-name/name
+    alias: name
+    domain: static-index-name
+    range: string
+    required: true
+  static-entity-catalog-behaviour:
+    description: "Static entity catalog behaviour; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:static-entity-catalog/behaviour
+    alias: behaviour
+    domain: static-entity-catalog
+    range: static-behaviour-entry
+    multivalued: true
+    inlined: true
+    required: false
+    see_also:
+    - ../domain/5_Constraints.md
+    - ../instances/static-entities.json#behaviour
+  static-behaviour-entry-group:
+    description: "Static behaviour entry group; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:static-behaviour-entry/group
+    alias: group
+    domain: static-behaviour-entry
+    range: string
+    key: true
+    required: true
+  static-behaviour-entry-description:
+    description: "Static behaviour entry description; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:static-behaviour-entry/description
+    alias: description
+    domain: static-behaviour-entry
+    range: string
+    required: true
+  static-entity-catalog-s-additions:
+    description: "Static entity catalog s additions; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:static-entity-catalog/s-additions
+    alias: s-additions
+    domain: static-entity-catalog
+    range: string
+    multivalued: true
+    required: false
+    see_also:
+    - ../domain/5_Constraints.md
+    - ../instances/static-entities.json#s-additions
+  static-entity-catalog-candles:
+    description: "Static entity catalog candles; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:static-entity-catalog/candles
+    alias: candles
+    domain: static-entity-catalog
+    range: static-candles
+    inlined: true
+    required: false
+    see_also:
+    - ../domain/5_Constraints.md
+    - ../instances/static-entities.json#candles

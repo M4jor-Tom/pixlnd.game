@@ -1,0 +1,91 @@
+id: https://w3id.org/pixlnd/world/encounter-assignments
+name: pixlnd-world-encounter-assignments
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- entities
+- items
+- world-zone-contents
+default_range: string
+classes:
+  encounter-assignment:
+    class_uri: "pixlnd:encounter-assignment"
+    description: "Permanent logical role/special and eligible non-mission boss spirit assignment. Probabilities, boss-only eligibility and initial-level/current-level distinctions remain the linked rules; no new assignment engine."
+    see_also: ["../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]
+    exactly_one_of:
+    - slot_conditions:
+        boss: {equals_expression: "True"}
+        special: {value_presence: PRESENT}
+    - slot_conditions:
+        boss: {equals_expression: "False"}
+        special: {value_presence: ABSENT}
+    attributes:
+      role: {"alias": "role", "slot_uri": "pixlnd:encounter-assignment/role", "range": "string", "description": "Role; interpreted within the linked source scope.", "required": true, "equals_string_in": ["melee", "ranged", "mage"]}
+      tier: {"alias": "tier", "slot_uri": "pixlnd:encounter-assignment/tier", "range": "integer", "description": "Tier; interpreted within the linked source scope.", "required": true, "minimum_value": 0, "maximum_value": 4}
+      boss: {"alias": "boss", "slot_uri": "pixlnd:encounter-assignment/boss", "range": "boolean", "description": "Boss; interpreted within the linked source scope.", "required": true}
+      special: {"alias": "special", "slot_uri": "pixlnd:encounter-assignment/special", "description": "Special; interpreted within the linked source scope.", "exactly_one_of": [{"range": "string", "equals_string_in": ["stomp", "charge"]}]}
+      spirit: {"alias": "spirit", "slot_uri": "pixlnd:encounter-assignment/spirit", "description": "Spirit; interpreted within the linked source scope.", "exactly_one_of": [{"range": "material", "equals_string_in": ["spirit-fire", "spirit-unholy", "spirit-ice", "spirit-wind"]}]}
+  initial-nonboss-assignment:
+    class_uri: "pixlnd:initial-nonboss-assignment"
+    description: "Permanent logical assignment of an initial site nonboss guard: not a boss, with neither a boss special nor a spirit type. Scope is expressed by this class, not a new mission/site/context field or saved payload; ordinary kill loot remains separate."
+    see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits", "../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]
+    is_a: "encounter-assignment"
+    slot_usage:
+      boss: {equals_expression: "False"}
+    none_of:
+    - slot_conditions:
+        special: {value_presence: PRESENT}
+    - slot_conditions:
+        spirit: {value_presence: PRESENT}
+  initial-ruins-boss-assignment:
+    class_uri: "pixlnd:initial-ruins-boss-assignment"
+    description: "Permanent logical assignment of either of the two initial ruins non-mission bosses: boss, one required permanent special and one required spirit type. First logical generation independently chooses the spirit type once; genuine deaths retain that type and power derived from the initial boss level across renewal. No per-player copy, per-death or daily type reroll, stored level or reward receipt is added."
+    see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits", "../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]
+    is_a: "encounter-assignment"
+    slot_usage:
+      boss: {equals_expression: "True"}
+      special: {required: true}
+      spirit: {required: true}
+  initial-mission-boss-assignment:
+    class_uri: "pixlnd:initial-mission-boss-assignment"
+    description: "Permanent logical assignment of the initial camp boss or any of the four supplier rescue bosses: boss with a required permanent special and no spirit type. These mission bosses give zero spirits; guaranteed gear and shared mission packages remain separate additive rewards. No mission Boolean, selected site serialization or global spirit exclusion is introduced."
+    see_also: ["../domain/encounter-contracts.md#guaranteed-boss-gear-and-spirits", "../domain/encounter-contracts.md#boss-specials-and-breakable-rubble"]
+    is_a: "encounter-assignment"
+    slot_usage:
+      boss: {equals_expression: "True"}
+      special: {required: true}
+    none_of:
+    - slot_conditions:
+        spirit: {value_presence: PRESENT}
+  initial-site-hostile-profile:
+    class_uri: "pixlnd:initial-site-hostile-profile"
+    description: "Fixed logical parameters for the designated initial-site hostiles: existing skeleton species and the basic-role choice probabilities. Friendly captives remain separate and ambient rosters are unchanged. Each pack and singleton boss makes its independent once-only role choice, retained across unload, restart and daily renewal, under the linked encounter rule. This is not a generated entity identity or assignment record."
+    see_also: ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions", "../instances/generators.json#design.initial-encounters"]
+    attributes:
+      hostile-species: {alias: "hostile-species", slot_uri: "pixlnd:initial-site-hostile-profile/hostile-species", range: creature, required: true, inlined: false, equals_string: skeleton, description: "Existing creature species for the designated initial hostiles, not a family, generated entity identity, captive or ambient roster extension.", see_also: ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions", "../instances/generators.json#design.initial-encounters.species", "../instances/creatures.json#skeleton"]}
+      melee-probability: {alias: "melee-probability", slot_uri: "pixlnd:initial-site-hostile-profile/melee-probability", range: double, required: true, minimum_value: 0.5, maximum_value: 0.5, description: "Dimensionless independent probability for choosing the existing melee role once per pack or singleton boss, not a per-hostile roll or relative loot weight.", see_also: ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions", "../instances/generators.json#design.initial-encounters.role-weights"]}
+      ranged-probability: {alias: "ranged-probability", slot_uri: "pixlnd:initial-site-hostile-profile/ranged-probability", range: double, required: true, minimum_value: 0.3, maximum_value: 0.3, description: "Dimensionless independent probability for choosing the existing ranged role once per pack or singleton boss, not a per-hostile roll or relative loot weight.", see_also: ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions", "../instances/generators.json#design.initial-encounters.role-weights"]}
+      mage-probability: {alias: "mage-probability", slot_uri: "pixlnd:initial-site-hostile-profile/mage-probability", range: double, required: true, minimum_value: 0.2, maximum_value: 0.2, description: "Dimensionless independent probability for choosing the existing mage role once per pack or singleton boss, not a per-hostile roll or relative loot weight.", see_also: ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions", "../instances/generators.json#design.initial-encounters.role-weights"]}
+  initial-site-local-difficulty-profile: {"class_uri":"pixlnd:initial-site-local-difficulty-profile","description":"Seven fixed logical parameters for initial-site local power, relative boss health and direct damage, and linear clamped boss height. Existing NPC curves and connected-party level selection remain authoritative; surviving enemies are never rescaled. Not a raw configuration envelope or mutable state.","see_also":["../domain/encounter-contracts.md#local-difficulty-and-boss-size","../instances/stats.json#alpha-character-formulas.npc-hp","../instances/generators.json#design.combat.enemy-attack","../instances/generators.json#design.enemy-level"],"attributes":{"power-base-offset":{"alias":"power-base-offset","slot_uri":"pixlnd:initial-site-local-difficulty-profile/power-base-offset","range":"integer","required":true,"description":"Dimensionless additive offset for local tier power.","see_also":["../domain/encounter-contracts.md#local-difficulty-and-boss-size","../instances/generators.json#design.initial-encounters.power-base-offset"],"equals_number":2,"minimum_value":2,"maximum_value":2},"boss-hp-multiplier":{"alias":"boss-hp-multiplier","slot_uri":"pixlnd:initial-site-local-difficulty-profile/boss-hp-multiplier","range":"double","required":true,"description":"Dimensionless boss health relative to an ordinary enemy at the same level and power, not an aggregate entity multiplier.","see_also":["../domain/encounter-contracts.md#local-difficulty-and-boss-size","../instances/generators.json#design.initial-encounters.boss-hp-mult"],"equals_number":4,"minimum_value":4,"maximum_value":4},"boss-direct-damage-multiplier":{"alias":"boss-direct-damage-multiplier","slot_uri":"pixlnd:initial-site-local-difficulty-profile/boss-direct-damage-multiplier","range":"double","required":true,"description":"Dimensionless boss direct damage relative to an ordinary enemy at the same level and power; hit-derived DOT inherits once only.","see_also":["../domain/encounter-contracts.md#local-difficulty-and-boss-size","../instances/generators.json#design.initial-encounters.boss-damage-mult"],"minimum_value":1.5,"maximum_value":1.5},"height-base-blocks":{"alias":"height-base-blocks","slot_uri":"pixlnd:initial-site-local-difficulty-profile/height-base-blocks","range":"double","required":true,"description":"Boss height base in blocks.","see_also":["../domain/encounter-contracts.md#local-difficulty-and-boss-size","../instances/generators.json#design.initial-encounters.boss-height.base"],"minimum_value":1.7,"maximum_value":1.7},"height-minimum-multiplier":{"alias":"height-minimum-multiplier","slot_uri":"pixlnd:initial-site-local-difficulty-profile/height-minimum-multiplier","range":"double","required":true,"description":"Dimensionless minimum boss height multiplier.","see_also":["../domain/encounter-contracts.md#local-difficulty-and-boss-size","../instances/generators.json#design.initial-encounters.boss-height.min-mult"],"minimum_value":1.25,"maximum_value":1.25},"height-linear-growth":{"alias":"height-linear-growth","slot_uri":"pixlnd:initial-site-local-difficulty-profile/height-linear-growth","range":"double","required":true,"description":"Dimensionless additive linear height multiplier growth, not an exponent.","see_also":["../domain/encounter-contracts.md#local-difficulty-and-boss-size","../instances/generators.json#design.initial-encounters.boss-height.growth"],"minimum_value":0.75,"maximum_value":0.75},"height-maximum-level":{"alias":"height-maximum-level","slot_uri":"pixlnd:initial-site-local-difficulty-profile/height-maximum-level","range":"integer","required":true,"description":"Level at and above which boss height remains at its maximum.","see_also":["../domain/encounter-contracts.md#local-difficulty-and-boss-size","../instances/generators.json#design.initial-encounters.boss-height.max-level"],"equals_number":10,"minimum_value":10,"maximum_value":10}}}
+  initial-site-hostile-spawn: {"class_uri":"pixlnd:initial-site-hostile-spawn","is_a":"creature-spawn","description":"Designated initial-site skeleton hostile spawn with inherited entity facts and local tier power p = 2 + t; tier indices white through yellow are 0 through 4. Party-level selection and no-rescale follow the linked rule.","see_also":["../domain/encounter-contracts.md#local-difficulty-and-boss-size","../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"],"slot_usage":{"entity-species":{"alias":"type","range":"creature","equals_string":"skeleton"},"entity-hostility":{"alias":"hostility","equals_string":"hostile"},"entity-power-base":{"alias":"power-base","minimum_value":2,"maximum_value":6,"equals_expression":"parameters['power-base-offset'] + tier"}},"attributes":{"tier":{"alias":"tier","slot_uri":"pixlnd:initial-site-hostile-spawn/tier","range":"integer","required":true,"description":"Tier index white, green, blue, purple, yellow in order.","see_also":["../domain/encounter-contracts.md#local-difficulty-and-boss-size"],"minimum_value":0,"maximum_value":4},"parameters":{"alias":"parameters","slot_uri":"pixlnd:initial-site-hostile-spawn/parameters","range":"initial-site-local-difficulty-profile","required":true,"description":"The same encounter-local fixed parameter bundle used for local power and boss size.","see_also":["../domain/encounter-contracts.md#local-difficulty-and-boss-size"],"inlined":true}}}
+  initial-site-boss-spawn: {"class_uri":"pixlnd:initial-site-boss-spawn","is_a":"initial-site-hostile-spawn","description":"Initial-site boss spawn; derived height in blocks uses its inherited level and the same local parameters. Boss relative HP and direct damage remain distinct from aggregate entity multipliers and DOT.","see_also":["../domain/encounter-contracts.md#local-difficulty-and-boss-size"],"attributes":{"height-blocks":{"alias":"height-blocks","slot_uri":"pixlnd:initial-site-boss-spawn/height-blocks","range":"double","required":true,"description":"Derived boss height in blocks, linear from level 1 through 10 and clamped outside that interval.","see_also":["../domain/encounter-contracts.md#local-difficulty-and-boss-size"],"minimum_value":2.125,"maximum_value":3.4,"equals_expression":"parameters['height-base-blocks'] * (parameters['height-minimum-multiplier'] + parameters['height-linear-growth'] * (max([1, min([level, parameters['height-maximum-level']])]) - 1) / (parameters['height-maximum-level'] - 1))"}}}
+
+  initial-site-placement-profile: {
+    "class_uri": "pixlnd:initial-site-placement-profile",
+    "description": "Initial hybrid site placement parameters, not positions or saved state. Land-seeded locations remain fixed across visits and daily renewal. Floors follow H=max(natural ground height, sea level+4 blocks); ocean lands retain dry site islands. The dry village hub applies only where ordinary ocean village generation fails. Protected village area, finite-world bounds and joint village/all-six-site geography validation remain required; failure is diagnostic, never fewer suppliers or partial encounters. Optional terrain-following guidance never reshapes terrain or guarantees walkability; its failure only omits guidance.",
+    "see_also": ["../domain/encounter-contracts.md#placement-and-access"],
+    "attributes": {
+      "minimum-village-distance-blocks": {"alias": "minimum-village-distance-blocks", "slot_uri": "pixlnd:initial-site-placement-profile/minimum-village-distance-blocks", "range": "integer", "required": true, "equals_number": 192, "description": "Inclusive lower distance of a site centre from the village square, not the land centre.", "see_also": ["../domain/encounter-contracts.md#placement-and-access"]},
+      "maximum-village-distance-blocks": {"alias": "maximum-village-distance-blocks", "slot_uri": "pixlnd:initial-site-placement-profile/maximum-village-distance-blocks", "range": "integer", "required": true, "equals_number": 215, "description": "Inclusive upper distance of a site centre from the village square, not the land centre.", "see_also": ["../domain/encounter-contracts.md#placement-and-access"]},
+      "minimum-site-separation-blocks": {"alias": "minimum-site-separation-blocks", "slot_uri": "pixlnd:initial-site-placement-profile/minimum-site-separation-blocks", "range": "integer", "required": true, "equals_number": 192, "description": "Minimum distance between site centres, distinct from village distance.", "see_also": ["../domain/encounter-contracts.md#placement-and-access"]},
+      "sea-level-floor-clearance-blocks": {"alias": "sea-level-floor-clearance-blocks", "slot_uri": "pixlnd:initial-site-placement-profile/sea-level-floor-clearance-blocks", "range": "integer", "required": true, "equals_number": 4, "description": "Relative sea-level clearance in H=max(natural ground height, sea level+4 blocks), not absolute floor altitude.", "see_also": ["../domain/encounter-contracts.md#placement-and-access"]},
+      "terrain-apron-blocks": {"alias": "terrain-apron-blocks", "slot_uri": "pixlnd:initial-site-placement-profile/terrain-apron-blocks", "range": "integer", "required": true, "equals_number": 8, "description": "Site terrain apron, not a connecting-route width or walkability guarantee.", "see_also": ["../domain/encounter-contracts.md#placement-and-access"]},
+      "fallback-village-hub-width-blocks": {"alias": "fallback-village-hub-width-blocks", "slot_uri": "pixlnd:initial-site-placement-profile/fallback-village-hub-width-blocks", "range": "integer", "required": true, "equals_number": 64, "description": "Dry village hub width only on ocean lands where ordinary village generation otherwise fails; not every site or battlefield.", "see_also": ["../domain/encounter-contracts.md#placement-and-access"]},
+      "fallback-village-hub-depth-blocks": {"alias": "fallback-village-hub-depth-blocks", "slot_uri": "pixlnd:initial-site-placement-profile/fallback-village-hub-depth-blocks", "range": "integer", "required": true, "equals_number": 64, "description": "Dry village hub depth only on ocean lands where ordinary village generation otherwise fails; not every site or battlefield.", "see_also": ["../domain/encounter-contracts.md#placement-and-access"]}
+    }
+  }
+

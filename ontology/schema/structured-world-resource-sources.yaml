@@ -1,0 +1,106 @@
+id: https://w3id.org/pixlnd/structured-world/resource-sources
+name: pixlnd-structured-world-resource-sources
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- items
+- catalog-identity-combat
+default_range: string
+classes:
+  terrain-features-source:
+    class_uri: "pixlnd:terrain-features-source"
+    description: "Reversible keyed source container; fixed metadata remains separate."
+    see_also: ["../instances/terrain-features.json", "../domain/5_Constraints.md"]
+    annotations: {"source-map-entries": "entries"}
+    attributes:
+      schema-tag: {"range": "string", "required": true, "equals_string": "terrain-feature", "alias": "$schema", "slot_uri": "pixlnd:terrain-features-source/schema", "description": "Source $schema of terrain-features-source; preserves literal representation and qualification."}
+      entries: {"range": "terrain-feature-source-row-entry", "multivalued": true, "required": true, "minimum_cardinality": 1, "inlined": true, "inlined_as_list": true, "alias": "entries", "slot_uri": "pixlnd:terrain-features-source/entries", "description": "Source entries of terrain-features-source; preserves literal representation and qualification."}
+  terrain-feature-source-row-entry:
+    class_uri: "pixlnd:terrain-feature-source-row-entry"
+    description: "Reversible original container key and unchanged value."
+    see_also: ["../instances/terrain-features.json", "../domain/5_Constraints.md"]
+    slots: ["source-entry-key"]
+    attributes:
+      value: {"range": "terrain-feature-source-row", "inlined": true, "required": true, "alias": "value", "slot_uri": "pixlnd:terrain-feature-source-row-entry/value", "description": "Source value of terrain-feature-source-row-entry; preserves literal representation and qualification."}
+  terrain-feature-source-row:
+    class_uri: "pixlnd:terrain-feature-source-row"
+    description: "Complete natural-feature descriptions; overhang storage uncertainty remains literal prose."
+    see_also: ["../instances/terrain-features.json", "../domain/5_Constraints.md"]
+    attributes:
+      name: {"range": "string", "required": true, "alias": "name", "slot_uri": "pixlnd:terrain-feature-source-row/name", "description": "Source name of terrain-feature-source-row; preserves literal representation and qualification."}
+      desc: {"range": "string", "required": true, "alias": "desc", "slot_uri": "pixlnd:terrain-feature-source-row/desc", "description": "Source desc of terrain-feature-source-row; preserves literal representation and qualification."}
+      named: {"exactly_one_of": [{"range": "boolean"}, {"range": "string"}], "alias": "named", "slot_uri": "pixlnd:terrain-feature-source-row/named", "description": "Source named of terrain-feature-source-row; preserves literal representation and qualification."}
+      versions: {"range": "string", "multivalued": true, "required": true, "minimum_cardinality": 1, "equals_string_in": ["A", "S", "Ω", "X", "A?", "S?"], "alias": "versions", "slot_uri": "pixlnd:terrain-feature-source-row/versions", "description": "Source versions of terrain-feature-source-row; preserves literal representation and qualification."}
+  deposits-source:
+    class_uri: "pixlnd:deposits-source"
+    description: "Reversible keyed source container; fixed metadata remains separate."
+    see_also: ["../instances/deposits.json", "../domain/5_Constraints.md"]
+    annotations: {"source-map-entries": "entries"}
+    attributes:
+      schema-tag: {"range": "string", "required": true, "equals_string": "deposit", "alias": "$schema", "slot_uri": "pixlnd:deposits-source/schema", "description": "Source $schema of deposits-source; preserves literal representation and qualification."}
+      documentation: {"range": "string", "required": true, "alias": "_doc", "slot_uri": "pixlnd:deposits-source/doc", "description": "Source _doc of deposits-source; preserves literal representation and qualification."}
+      entries: {"range": "deposit-source-row-entry", "multivalued": true, "required": true, "minimum_cardinality": 1, "inlined": true, "inlined_as_list": true, "alias": "entries", "slot_uri": "pixlnd:deposits-source/entries", "description": "Source entries of deposits-source; preserves literal representation and qualification."}
+  deposit-source-row-entry:
+    class_uri: "pixlnd:deposit-source-row-entry"
+    description: "Reversible original container key and unchanged value."
+    see_also: ["../instances/deposits.json", "../domain/5_Constraints.md"]
+    slots: ["source-entry-key"]
+    attributes:
+      value: {"range": "deposit-source-row", "inlined": true, "required": true, "alias": "value", "slot_uri": "pixlnd:deposit-source-row-entry/value", "description": "Source value of deposit-source-row-entry; preserves literal representation and qualification."}
+  deposit-source-row:
+    class_uri: "pixlnd:deposit-source-row"
+    description: "Yield names an ingredient; sandstone retains its unresolved source reference."
+    see_also: ["../instances/deposits.json", "../domain/5_Constraints.md"]
+    attributes:
+      aid: {"range": "integer", "required": true, "alias": "aid", "slot_uri": "pixlnd:deposit-source-row/aid", "description": "Source aid of deposit-source-row; preserves literal representation and qualification."}
+      yields: {"range": "ingredient", "required": true, "alias": "yields", "slot_uri": "pixlnd:deposit-source-row/yields", "description": "Source yields of deposit-source-row; preserves literal representation and qualification."}
+      versions: {"range": "string", "multivalued": true, "required": true, "minimum_cardinality": 1, "equals_string_in": ["A", "S", "Ω", "X", "A?", "S?"], "alias": "versions", "slot_uri": "pixlnd:deposit-source-row/versions", "description": "Source versions of deposit-source-row; preserves literal representation and qualification."}
+      lands: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "lands", "slot_uri": "pixlnd:deposit-source-row/lands", "description": "Source lands of deposit-source-row; preserves literal representation and qualification."}
+      note: {"exactly_one_of": [{"range": "string"}], "alias": "note", "slot_uri": "pixlnd:deposit-source-row/note", "description": "Source note of deposit-source-row; preserves literal representation and qualification."}
+  flora-source:
+    class_uri: "pixlnd:flora-source"
+    description: "Reversible keyed source container; fixed metadata remains separate."
+    see_also: ["../instances/flora.json", "../domain/5_Constraints.md"]
+    annotations: {"source-map-entries": "entries"}
+    attributes:
+      schema-tag: {"range": "string", "required": true, "equals_string": "flora", "alias": "$schema", "slot_uri": "pixlnd:flora-source/schema", "description": "Source $schema of flora-source; preserves literal representation and qualification."}
+      documentation: {"range": "string", "required": true, "alias": "_doc", "slot_uri": "pixlnd:flora-source/doc", "description": "Source _doc of flora-source; preserves literal representation and qualification."}
+      entries: {"range": "flora-source-row-entry", "multivalued": true, "required": true, "minimum_cardinality": 1, "inlined": true, "inlined_as_list": true, "alias": "entries", "slot_uri": "pixlnd:flora-source/entries", "description": "Source entries of flora-source; preserves literal representation and qualification."}
+  flora-source-row-entry:
+    class_uri: "pixlnd:flora-source-row-entry"
+    description: "Reversible original container key and unchanged value."
+    see_also: ["../instances/flora.json", "../domain/5_Constraints.md"]
+    slots: ["source-entry-key"]
+    attributes:
+      value: {"range": "flora-source-row", "inlined": true, "required": true, "alias": "value", "slot_uri": "pixlnd:flora-source-row-entry/value", "description": "Source value of flora-source-row-entry; preserves literal representation and qualification."}
+  flora-source-row:
+    class_uri: "pixlnd:flora-source-row"
+    description: "Complete source plant body; symbolic yield n remains symbolic."
+    see_also: ["../instances/flora.json", "../domain/5_Constraints.md"]
+    attributes:
+      name: {"range": "string", "required": true, "alias": "name", "slot_uri": "pixlnd:flora-source-row/name", "description": "Source name of flora-source-row; preserves literal representation and qualification."}
+      desc: {"exactly_one_of": [{"range": "string"}], "alias": "desc", "slot_uri": "pixlnd:flora-source-row/desc", "description": "Source desc of flora-source-row; preserves literal representation and qualification."}
+      lands: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "lands", "slot_uri": "pixlnd:flora-source-row/lands", "description": "Source lands of flora-source-row; preserves literal representation and qualification."}
+      variants: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "variants", "slot_uri": "pixlnd:flora-source-row/variants", "description": "Source variants of flora-source-row; preserves literal representation and qualification."}
+      aid: {"exactly_one_of": [{"range": "integer"}], "alias": "aid", "slot_uri": "pixlnd:flora-source-row/aid", "description": "Source aid of flora-source-row; preserves literal representation and qualification."}
+      yields: {"range": "flora-yields-source", "inlined": true, "exactly_one_of": [{"range": "flora-yields-source", "inlined": true}], "alias": "yields", "slot_uri": "pixlnd:flora-source-row/yields", "description": "Source yields of flora-source-row; preserves literal representation and qualification."}
+      versions: {"range": "string", "multivalued": true, "required": true, "minimum_cardinality": 1, "equals_string_in": ["A", "S", "Ω", "X", "A?", "S?"], "alias": "versions", "slot_uri": "pixlnd:flora-source-row/versions", "description": "Source versions of flora-source-row; preserves literal representation and qualification."}
+  flora-yields-source:
+    class_uri: "pixlnd:flora-yields-source"
+    description: "Reversible keyed source container; fixed metadata remains separate."
+    see_also: ["../instances/flora.json", "../domain/5_Constraints.md"]
+    annotations: {"source-map-entries": "entries"}
+    attributes:
+      entries: {"range": "flora-yield-source-entry", "multivalued": true, "required": true, "minimum_cardinality": 0, "inlined": true, "inlined_as_list": true, "alias": "entries", "slot_uri": "pixlnd:flora-yields-source/entries", "description": "Source entries of flora-yields-source; preserves literal representation and qualification."}
+  flora-yield-source-entry:
+    class_uri: "pixlnd:flora-yield-source-entry"
+    description: "Reversible original container key and unchanged value."
+    see_also: ["../instances/flora.json", "../domain/5_Constraints.md"]
+    slots: ["source-entry-key"]
+    attributes:
+      value: {"any_of": [{"range": "integer"}, {"range": "integer", "multivalued": true, "required": true, "minimum_cardinality": 2, "maximum_cardinality": 2}, {"range": "string", "equals_string": "n"}], "required": true, "alias": "value", "slot_uri": "pixlnd:flora-yield-source-entry/value", "description": "Source value of flora-yield-source-entry; preserves literal representation and qualification."}
+    slot_usage:
+      source-entry-key: {"range": "ingredient"}

@@ -1,0 +1,61 @@
+id: https://w3id.org/pixlnd/world-catalog/block-terrain
+name: pixlnd-world-catalog-block-terrain
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+default_range: string
+classes:
+  block-type:
+    description: "Block type; interpreted under its linked source definition and context."
+    class_uri: pixlnd:block-type
+    see_also:
+    - ../domain/3_Classes.md#block-type
+    slots:
+    - id
+    - block-type-solid
+  terrain-feature:
+    description: "Terrain feature; interpreted under its linked source definition and context."
+    class_uri: pixlnd:terrain-feature
+    see_also:
+    - ../domain/3_Classes.md#terrain-feature
+    slots:
+    - id
+    - terrain-feature-name
+    - terrain-feature-named
+slots:
+  block-type-solid:
+    description: "Block type solid; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:block-type/solid
+    alias: solid
+    domain: block-type
+    range: boolean
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#block-type
+    - ../instances/block-types.json#alpha
+  terrain-feature-name:
+    description: "Terrain feature name; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:terrain-feature/name
+    alias: name
+    domain: terrain-feature
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#terrain-feature
+    - ../instances/terrain-features.json
+  terrain-feature-named:
+    description: "Terrain feature named; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:terrain-feature/named
+    alias: named
+    domain: terrain-feature
+    any_of:
+    - range: boolean
+    - range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#terrain-feature
+    - ../instances/terrain-features.json

@@ -1,0 +1,138 @@
+id: https://w3id.org/pixlnd/world/site-assemblies
+name: pixlnd-world-site-assemblies
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- items
+- relation-types
+- relations
+- world-encounter-assignments
+- world-encounter-volumes
+default_range: string
+classes:
+  encounter-shared-package:
+    class_uri: "pixlnd:encounter-shared-package"
+    description: "One shared package per source/cycle, with source-level retained separately from derived item power. Omitted gear class is pending selection, not a new default; delivery/claim/lifecycle procedures remain linked rules."
+    see_also: ["../domain/encounter-contracts.md#shared-mission-packages-and-supplier-shops"]
+    attributes:
+      tier: {"alias": "tier", "slot_uri": "pixlnd:encounter-shared-package/tier", "range": "integer", "description": "Tier; interpreted within the linked source scope.", "required": true, "minimum_value": 0, "maximum_value": 3}
+      gear-count: {"alias": "gear-count", "slot_uri": "pixlnd:encounter-shared-package/gear-count", "range": "integer", "description": "Gear count; interpreted within the linked source scope.", "required": true, "minimum_value": 0, "equals_number": 1}
+      gear-rarity-index: {"alias": "gear-rarity-index", "slot_uri": "pixlnd:encounter-shared-package/gear-rarity-index", "range": "integer", "description": "Gear rarity index; interpreted within the linked source scope.", "required": true, "minimum_value": 1, "maximum_value": 4}
+      gear-upgrades: {"alias": "gear-upgrades", "slot_uri": "pixlnd:encounter-shared-package/gear-upgrades", "range": "integer", "description": "Shared mission-package gear has zero upgrades.", "required": true, "equals_number": 0, "see_also": ["../domain/encounter-contracts.md#shared-mission-packages-and-supplier-shops"]}
+      copper: {"alias": "copper", "slot_uri": "pixlnd:encounter-shared-package/copper", "range": "integer", "description": "Copper; interpreted within the linked source scope.", "required": true, "minimum_value": 20, "maximum_value": 80}
+      life-potion-count: {"alias": "life-potion-count", "slot_uri": "pixlnd:encounter-shared-package/life-potion-count", "range": "integer", "description": "Life potion count; interpreted within the linked source scope.", "required": true, "minimum_value": 0, "equals_number": 1}
+      life-potion-rarity-index: {"alias": "life-potion-rarity-index", "slot_uri": "pixlnd:encounter-shared-package/life-potion-rarity-index", "range": "integer", "description": "Shared mission-package life potion uses the common rarity index.", "required": true, "equals_number": 0, "see_also": ["../domain/encounter-contracts.md#shared-mission-packages-and-supplier-shops", "../instances/rarities.json#common"]}
+      gem-count: {"alias": "gem-count", "slot_uri": "pixlnd:encounter-shared-package/gem-count", "range": "integer", "description": "Gem count; interpreted within the linked source scope.", "required": true, "minimum_value": 1, "maximum_value": 4}
+      gem: {"alias": "gem", "slot_uri": "pixlnd:encounter-shared-package/gem", "range": "ingredient", "description": "Gem; interpreted within the linked source scope.", "required": true}
+      source-level: {"alias": "source-level", "slot_uri": "pixlnd:encounter-shared-package/source-level", "range": "integer", "description": "Source level; interpreted within the linked source scope.", "required": true, "minimum_value": 1}
+      selected-class: {"alias": "selected-class", "slot_uri": "pixlnd:encounter-shared-package/selected-class", "range": "character-class", "description": "Selected class; interpreted within the linked source scope."}
+    rules: [{"preconditions": {"slot_conditions": {"tier": {"equals_number": 0}}}, "postconditions": {"slot_conditions": {"gear-rarity-index": {"equals_number": 1}, "copper": {"equals_number": 20}, "gem-count": {"equals_number": 1}, "gem": {"equals_string": "emerald"}}}}, {"preconditions": {"slot_conditions": {"tier": {"equals_number": 1}}}, "postconditions": {"slot_conditions": {"gear-rarity-index": {"equals_number": 2}, "copper": {"equals_number": 40}, "gem-count": {"equals_number": 2}, "gem": {"equals_string": "sapphire"}}}}, {"preconditions": {"slot_conditions": {"tier": {"equals_number": 2}}}, "postconditions": {"slot_conditions": {"gear-rarity-index": {"equals_number": 3}, "copper": {"equals_number": 60}, "gem-count": {"equals_number": 3}, "gem": {"equals_string": "ruby"}}}}, {"preconditions": {"slot_conditions": {"tier": {"equals_number": 3}}}, "postconditions": {"slot_conditions": {"gear-rarity-index": {"equals_number": 4}, "copper": {"equals_number": 80}, "gem-count": {"equals_number": 4}, "gem": {"equals_string": "diamond"}}}}]
+  initial-ruins-assembly:
+    class_uri: "pixlnd:initial-ruins-assembly"
+    description: "Ruins with locally contained playable components; occupancy is their closed union, not the enclosing bounds. Placement and connectedness follow the linked geometry rule."
+    see_also: ["../domain/encounter-contracts.md#geometry-and-occupancy"]
+    is_a: "dungeon"
+    slots: ["located-in"]
+    attributes:
+      rooms: {"alias": "rooms", "slot_uri": "pixlnd:initial-ruins-assembly/rooms", "domain": "initial-ruins-assembly", "range": "ruins-room-volume", "description": "The three contained playable room occurrences.", "see_also": ["../domain/encounter-contracts.md#geometry-and-occupancy"], "required": true, "multivalued": true, "inlined": true, "inlined_as_list": true, "minimum_cardinality": 3, "maximum_cardinality": 3}
+      corridors: {"alias": "corridors", "slot_uri": "pixlnd:initial-ruins-assembly/corridors", "domain": "initial-ruins-assembly", "range": "ruins-corridor-volume", "description": "Contained room-joining corridors; connectedness follows the linked geometry rule.", "see_also": ["../domain/encounter-contracts.md#geometry-and-occupancy"], "required": true, "multivalued": true, "inlined": true, "inlined_as_list": true, "minimum_cardinality": 1}
+      entrance-court: {"alias": "entrance-court", "slot_uri": "pixlnd:initial-ruins-assembly/entrance-court", "domain": "initial-ruins-assembly", "range": "ruins-court-volume", "description": "The contained entrance court.", "see_also": ["../domain/encounter-contracts.md#geometry-and-occupancy"], "required": true, "inlined": true}
+      entrance-passage: {"alias": "entrance-passage", "slot_uri": "pixlnd:initial-ruins-assembly/entrance-passage", "domain": "initial-ruins-assembly", "range": "ruins-passage-volume", "description": "The contained entrance passage.", "see_also": ["../domain/encounter-contracts.md#geometry-and-occupancy"], "required": true, "inlined": true}
+      reward-alcove: {"alias": "reward-alcove", "slot_uri": "pixlnd:initial-ruins-assembly/reward-alcove", "domain": "initial-ruins-assembly", "range": "ruins-alcove-volume", "description": "The contained side reward alcove; side placement follows the linked geometry rule.", "see_also": ["../domain/encounter-contracts.md#geometry-and-occupancy"], "required": true, "inlined": true}
+      horizontal-bounds-width-blocks: {"alias": "horizontal-bounds-width-blocks", "slot_uri": "pixlnd:initial-ruins-assembly/horizontal-bounds-width-blocks", "domain": "initial-ruins-assembly", "range": "double", "description": "Enclosing horizontal width in blocks, not playable occupancy or an absolute axis.", "see_also": ["../domain/encounter-contracts.md#geometry-and-occupancy"], "required": true, "equals_number": 36}
+      horizontal-bounds-depth-blocks: {"alias": "horizontal-bounds-depth-blocks", "slot_uri": "pixlnd:initial-ruins-assembly/horizontal-bounds-depth-blocks", "domain": "initial-ruins-assembly", "range": "double", "description": "Enclosing horizontal depth in blocks, not playable occupancy or an absolute axis.", "see_also": ["../domain/encounter-contracts.md#geometry-and-occupancy"], "required": true, "equals_number": 112}
+      clear-ceiling-height-blocks: {"alias": "clear-ceiling-height-blocks", "slot_uri": "pixlnd:initial-ruins-assembly/clear-ceiling-height-blocks", "domain": "initial-ruins-assembly", "range": "double", "description": "Clear ceiling height in blocks, distinct from the playable components’ above-floor extent.", "see_also": ["../domain/encounter-contracts.md#geometry-and-occupancy"], "required": true, "equals_number": 6}
+      door-width-blocks: {"alias": "door-width-blocks", "slot_uri": "pixlnd:initial-ruins-assembly/door-width-blocks", "domain": "initial-ruins-assembly", "range": "double", "description": "Ruins door width in blocks; no door count or state is specified.", "see_also": ["../domain/encounter-contracts.md#geometry-and-occupancy"], "required": true, "equals_number": 4}
+      door-height-blocks: {"alias": "door-height-blocks", "slot_uri": "pixlnd:initial-ruins-assembly/door-height-blocks", "domain": "initial-ruins-assembly", "range": "double", "description": "Ruins door height in blocks; no door count or state is specified.", "see_also": ["../domain/encounter-contracts.md#geometry-and-occupancy"], "required": true, "equals_number": 5}
+      corridor-trap-free-lane-width-blocks: {"alias": "corridor-trap-free-lane-width-blocks", "slot_uri": "pixlnd:initial-ruins-assembly/corridor-trap-free-lane-width-blocks", "domain": "initial-ruins-assembly", "range": "double", "description": "Required trap-free corridor lane width in blocks; actual clearance follows the linked geometry rule.", "see_also": ["../domain/encounter-contracts.md#geometry-and-occupancy"], "required": true, "equals_number": 4}
+  initial-camp-assembly:
+    class_uri: "pixlnd:initial-camp-assembly"
+    description: "Outdoor camp with its contained battlefield and opposite exits; visible boundaries and spatial opposition follow the linked geometry rule."
+    see_also: ["../domain/encounter-contracts.md#geometry-and-occupancy"]
+    is_a: "poi"
+    slots: ["located-in", "initial-battlefield", "initial-opposite-exits"]
+    slot_usage: {"initial-battlefield": {"range": "camp-battlefield-volume"}}
+  initial-rescue-assembly:
+    class_uri: "pixlnd:initial-rescue-assembly"
+    description: "Outdoor rescue with its contained battlefield and opposite exits; visible boundaries and spatial opposition follow the linked geometry rule."
+    see_also: ["../domain/encounter-contracts.md#geometry-and-occupancy"]
+    is_a: "poi"
+    slots: ["located-in", "initial-battlefield", "initial-opposite-exits"]
+    slot_usage: {"initial-battlefield": {"range": "rescue-battlefield-volume"}}
+  initial-battlefield-exit:
+    class_uri: "pixlnd:initial-battlefield-exit"
+    description: "Local battlefield exit occurrence; equal widths do not imply spatial placement or opposition."
+    see_also: ["../domain/encounter-contracts.md#geometry-and-occupancy"]
+    attributes:
+      width-blocks: {"alias": "width-blocks", "slot_uri": "pixlnd:initial-battlefield-exit/width-blocks", "domain": "initial-battlefield-exit", "range": "double", "description": "Exit width in blocks.", "see_also": ["../domain/encounter-contracts.md#geometry-and-occupancy"], "required": true, "equals_number": 8}
+  initial-populated-camp-assembly:
+    class_uri: "pixlnd:initial-populated-camp-assembly"
+    description: "Outdoor camp geometry associated with its complete designated population and permanent assignments; not current survivors or cleared state."
+    see_also: ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"]
+    is_a: "initial-camp-assembly"
+    attributes:
+      tier: {"alias": "tier", "slot_uri": "pixlnd:initial-populated-camp-assembly/tier", "domain": "initial-populated-camp-assembly", "range": "integer", "description": "Designated site tier, shared by its packs and singleton boss.", "see_also": ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"], "required": true, "equals_number": 1}
+      population: {"alias": "population", "slot_uri": "pixlnd:initial-populated-camp-assembly/population", "domain": "initial-populated-camp-assembly", "range": "camp-population", "description": "Designated population, not surviving or spawned state.", "see_also": ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"], "required": true, "inlined": true}
+      pack-assignments: {"alias": "pack-assignments", "slot_uri": "pixlnd:initial-populated-camp-assembly/pack-assignments", "domain": "initial-populated-camp-assembly", "range": "initial-nonboss-assignment", "description": "One permanent assignment occurrence per designated pack, shared by its three guards; equal values may occur independently.", "see_also": ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"], "required": true, "multivalued": true, "inlined": true, "inlined_as_list": true, "minimum_cardinality": 2, "maximum_cardinality": 2, "range_expression": {"slot_conditions": {"tier": {"equals_number": 1}}}}
+      boss-assignment: {"alias": "boss-assignment", "slot_uri": "pixlnd:initial-populated-camp-assembly/boss-assignment", "domain": "initial-populated-camp-assembly", "range": "initial-mission-boss-assignment", "description": "Permanent assignment of the designated singleton mission boss.", "see_also": ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"], "required": true, "inlined": true, "range_expression": {"slot_conditions": {"tier": {"equals_number": 1}}}}
+  initial-populated-rescue-assembly:
+    class_uri: "pixlnd:initial-populated-rescue-assembly"
+    description: "Outdoor rescue geometry associated with its complete designated population and permanent assignments; not current survivors or cleared state."
+    see_also: ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"]
+    is_a: "initial-rescue-assembly"
+    rules: [{"preconditions": {"slot_conditions": {"tier": {"equals_number": 0}}}, "postconditions": {"slot_conditions": {"pack-assignments": {"range_expression": {"slot_conditions": {"tier": {"equals_number": 0}}}}, "boss-assignment": {"range_expression": {"slot_conditions": {"tier": {"equals_number": 0}}}}}}}, {"preconditions": {"slot_conditions": {"tier": {"equals_number": 1}}}, "postconditions": {"slot_conditions": {"pack-assignments": {"range_expression": {"slot_conditions": {"tier": {"equals_number": 1}}}}, "boss-assignment": {"range_expression": {"slot_conditions": {"tier": {"equals_number": 1}}}}}}}, {"preconditions": {"slot_conditions": {"tier": {"equals_number": 2}}}, "postconditions": {"slot_conditions": {"pack-assignments": {"range_expression": {"slot_conditions": {"tier": {"equals_number": 2}}}}, "boss-assignment": {"range_expression": {"slot_conditions": {"tier": {"equals_number": 2}}}}}}}, {"preconditions": {"slot_conditions": {"tier": {"equals_number": 3}}}, "postconditions": {"slot_conditions": {"pack-assignments": {"range_expression": {"slot_conditions": {"tier": {"equals_number": 3}}}}, "boss-assignment": {"range_expression": {"slot_conditions": {"tier": {"equals_number": 3}}}}}}}]
+    attributes:
+      tier: {"alias": "tier", "slot_uri": "pixlnd:initial-populated-rescue-assembly/tier", "domain": "initial-populated-rescue-assembly", "range": "integer", "description": "Designated site tier, shared by its packs and singleton boss.", "see_also": ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"], "required": true, "minimum_value": 0, "maximum_value": 3}
+      population: {"alias": "population", "slot_uri": "pixlnd:initial-populated-rescue-assembly/population", "domain": "initial-populated-rescue-assembly", "range": "rescue-population", "description": "Designated population, not surviving or spawned state.", "see_also": ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"], "required": true, "inlined": true}
+      pack-assignments: {"alias": "pack-assignments", "slot_uri": "pixlnd:initial-populated-rescue-assembly/pack-assignments", "domain": "initial-populated-rescue-assembly", "range": "initial-nonboss-assignment", "description": "One permanent assignment occurrence per designated pack, shared by its three guards; equal values may occur independently.", "see_also": ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"], "required": true, "multivalued": true, "inlined": true, "inlined_as_list": true, "minimum_cardinality": 2, "maximum_cardinality": 2}
+      boss-assignment: {"alias": "boss-assignment", "slot_uri": "pixlnd:initial-populated-rescue-assembly/boss-assignment", "domain": "initial-populated-rescue-assembly", "range": "initial-mission-boss-assignment", "description": "Permanent assignment of the designated singleton mission boss.", "see_also": ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"], "required": true, "inlined": true}
+  initial-populated-ruins-room:
+    class_uri: pixlnd:initial-populated-ruins-room
+    description: "The same contained ruins room volume with its designated tier, one shared three-guard pack assignment and a separate boss only in rooms two and three; not mutable survivors or saved room levels."
+    see_also: ["../domain/encounter-contracts.md#geometry-and-occupancy", "../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"]
+    is_a: ruins-room-volume
+    attributes:
+      tier: {alias: tier, domain: initial-populated-ruins-room, slot_uri: "pixlnd:initial-populated-ruins-room/tier", range: integer, required: true, minimum_value: 1, maximum_value: 3, description: "Designated room tier green, blue or purple, not an occurrence identifier.", see_also: ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"]}
+      pack-assignment: {alias: pack-assignment, domain: initial-populated-ruins-room, slot_uri: "pixlnd:initial-populated-ruins-room/pack-assignment", range: initial-nonboss-assignment, required: true, inlined: true, description: "One permanent singleton assignment shared by the designated three-guard pack of this room; not three independent member assignments.", see_also: ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"]}
+      boss-assignment: {alias: boss-assignment, domain: initial-populated-ruins-room, slot_uri: "pixlnd:initial-populated-ruins-room/boss-assignment", range: initial-ruins-boss-assignment, inlined: true, description: "Separate permanent non-mission boss assignment, absent in room one and present in rooms two and three at their room tier; existing special and spirit scope is retained.", see_also: ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"]}
+    rules:
+    - preconditions:
+        slot_conditions:
+          tier: {equals_number: 1}
+      postconditions:
+        slot_conditions:
+          pack-assignment: {range_expression: {slot_conditions: {tier: {equals_number: 1}}}}
+          boss-assignment: {value_presence: ABSENT}
+    - preconditions:
+        slot_conditions:
+          tier: {equals_number: 2}
+      postconditions:
+        slot_conditions:
+          pack-assignment: {range_expression: {slot_conditions: {tier: {equals_number: 2}}}}
+          boss-assignment: {value_presence: PRESENT, range: initial-ruins-boss-assignment, inlined: true, range_expression: {slot_conditions: {tier: {equals_number: 2}}}}
+    - preconditions:
+        slot_conditions:
+          tier: {equals_number: 3}
+      postconditions:
+        slot_conditions:
+          pack-assignment: {range_expression: {slot_conditions: {tier: {equals_number: 3}}}}
+          boss-assignment: {value_presence: PRESENT, range: initial-ruins-boss-assignment, inlined: true, range_expression: {slot_conditions: {tier: {equals_number: 3}}}}
+  initial-populated-ruins-assembly:
+    class_uri: pixlnd:initial-populated-ruins-assembly
+    description: "Initial ruins geometry refined on the same three contained room occurrences with ordered green, blue, purple allocations and its complete designated population; not a configuration or saved payload."
+    see_also: ["../domain/encounter-contracts.md#geometry-and-occupancy", "../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"]
+    is_a: initial-ruins-assembly
+    slot_usage:
+      rooms:
+        range: initial-populated-ruins-room
+        list_elements_ordered: true
+        equals_expression: "rooms if rooms.tier == [1, 2, 3] else []"
+    attributes:
+      population: {alias: population, domain: initial-populated-ruins-assembly, slot_uri: "pixlnd:initial-populated-ruins-assembly/population", range: ruins-population, required: true, inlined: true, description: "Complete designated three packs of three and two separate bosses, not surviving or spawned state.", see_also: ["../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"]}
+slots:
+  initial-battlefield: {"alias": "battlefield", "slot_uri": "pixlnd:poi/initial-battlefield", "domain": "poi", "range": "encounter-volume", "description": "The outdoor initial site’s contained playable battlefield.", "see_also": ["../domain/encounter-contracts.md#geometry-and-occupancy"], "required": true, "inlined": true}
+  initial-opposite-exits: {"alias": "opposite-exits", "slot_uri": "pixlnd:poi/initial-opposite-exits", "domain": "poi", "range": "initial-battlefield-exit", "description": "The outdoor initial site’s two opposite exit occurrences; spatial opposition follows the linked geometry rule.", "see_also": ["../domain/encounter-contracts.md#geometry-and-occupancy"], "required": true, "multivalued": true, "inlined": true, "inlined_as_list": true, "minimum_cardinality": 2, "maximum_cardinality": 2}

@@ -1,0 +1,73 @@
+id: https://w3id.org/pixlnd/structured-world/block-cub-format
+name: pixlnd-structured-world-block-cub-format
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+classes:
+  block-cub-format:
+    description: "Block cub format; interpreted under its linked source definition and context."
+    class_uri: pixlnd:block-cub-format
+    see_also:
+    - ../domain/3_Classes.md#block
+    - ../instances/block-types.json
+    slots:
+    - block-cub-format-header
+    - block-cub-format-body
+    - block-cub-format-empty
+    - block-cub-format-compression
+    - block-cub-format-storage
+slots:
+  block-cub-format-header:
+    description: "Block cub format header; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:block-cub-format/header
+    alias: header
+    domain: block-cub-format
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#block
+    - ../instances/block-types.json
+  block-cub-format-body:
+    description: "Block cub format body; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:block-cub-format/body
+    alias: body
+    domain: block-cub-format
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#block
+    - ../instances/block-types.json
+  block-cub-format-empty:
+    description: "Block cub format empty; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:block-cub-format/empty
+    alias: empty
+    domain: block-cub-format
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#block
+    - ../instances/block-types.json
+  block-cub-format-compression:
+    description: "Block cub format compression; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:block-cub-format/compression
+    alias: compression
+    domain: block-cub-format
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#block
+    - ../instances/block-types.json
+  block-cub-format-storage:
+    description: "Block cub format storage; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:block-cub-format/storage
+    alias: storage
+    domain: block-cub-format
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#block
+    - ../instances/block-types.json

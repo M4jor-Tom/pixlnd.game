@@ -1,0 +1,97 @@
+id: https://w3id.org/pixlnd/structured-world/static-sources
+name: pixlnd-structured-world-static-sources
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+classes:
+  static-candles:
+    description: "Static candles; interpreted under its linked source definition and context."
+    class_uri: pixlnd:static-candles
+    see_also:
+    - ../instances/static-entities.json#candles
+    slots:
+    - static-candles-colors
+    - static-candles-sizes
+    - static-candles-placement
+  static-entities-source:
+    class_uri: "pixlnd:static-entities-source"
+    description: "Complete static name/behaviour/configuration source, separate from interactive instances."
+    see_also: ["../instances/static-entities.json", "../domain/5_Constraints.md"]
+    attributes:
+      schema-tag: {"range": "string", "required": true, "equals_string": "static-entity", "alias": "$schema", "slot_uri": "pixlnd:static-entities-source/schema", "description": "Source $schema of static-entities-source; preserves literal representation and qualification."}
+      documentation: {"range": "string", "required": true, "alias": "_doc", "slot_uri": "pixlnd:static-entities-source/doc", "description": "Source _doc of static-entities-source; preserves literal representation and qualification."}
+      by-id: {"range": "static-names-source", "inlined": true, "required": true, "alias": "by-id", "slot_uri": "pixlnd:static-entities-source/by-id", "description": "Source by-id of static-entities-source; preserves literal representation and qualification."}
+      behaviour: {"range": "static-behaviour-source", "inlined": true, "required": true, "alias": "behaviour", "slot_uri": "pixlnd:static-entities-source/behaviour", "description": "Source behaviour of static-entities-source; preserves literal representation and qualification."}
+      s-additions: {"range": "string", "multivalued": true, "required": true, "alias": "s-additions", "slot_uri": "pixlnd:static-entities-source/s-additions", "description": "Source s-additions of static-entities-source; preserves literal representation and qualification."}
+      candles: {"range": "static-candles-source", "inlined": true, "required": true, "alias": "candles", "slot_uri": "pixlnd:static-entities-source/candles", "description": "Source candles of static-entities-source; preserves literal representation and qualification."}
+  static-names-source:
+    class_uri: "pixlnd:static-names-source"
+    description: "Reversible keyed source container; fixed metadata remains separate."
+    see_also: ["../instances/static-entities.json", "../domain/5_Constraints.md"]
+    annotations: {"source-map-entries": "entries"}
+    attributes:
+      entries: {"range": "static-name-source-entry", "multivalued": true, "required": true, "minimum_cardinality": 0, "inlined": true, "inlined_as_list": true, "alias": "entries", "slot_uri": "pixlnd:static-names-source/entries", "description": "Source entries of static-names-source; preserves literal representation and qualification."}
+  static-name-source-entry:
+    class_uri: "pixlnd:static-name-source-entry"
+    description: "Reversible original container key and unchanged value."
+    see_also: ["../instances/static-entities.json", "../domain/5_Constraints.md"]
+    attributes:
+      key: {"range": "string", "required": true, "key": true, "pattern": "^[0-9]+$", "alias": "key", "slot_uri": "pixlnd:static-name-source-entry/key", "description": "Original local table key; not global identity."}
+      value: {"range": "string", "required": true, "alias": "value", "slot_uri": "pixlnd:static-name-source-entry/value", "description": "Source value of static-name-source-entry; preserves literal representation and qualification."}
+  static-behaviour-source:
+    class_uri: "pixlnd:static-behaviour-source"
+    description: "Reversible keyed source container; fixed metadata remains separate."
+    see_also: ["../instances/static-entities.json", "../domain/5_Constraints.md"]
+    annotations: {"source-map-entries": "entries"}
+    attributes:
+      entries: {"range": "static-behaviour-source-entry", "multivalued": true, "required": true, "minimum_cardinality": 0, "inlined": true, "inlined_as_list": true, "alias": "entries", "slot_uri": "pixlnd:static-behaviour-source/entries", "description": "Source entries of static-behaviour-source; preserves literal representation and qualification."}
+  static-behaviour-source-entry:
+    class_uri: "pixlnd:static-behaviour-source-entry"
+    description: "Reversible original container key and unchanged value."
+    see_also: ["../instances/static-entities.json", "../domain/5_Constraints.md"]
+    attributes:
+      key: {"range": "string", "required": true, "key": true, "pattern": "^.+$", "alias": "key", "slot_uri": "pixlnd:static-behaviour-source-entry/key", "description": "Original local table key; not global identity."}
+      value: {"range": "string", "required": true, "alias": "value", "slot_uri": "pixlnd:static-behaviour-source-entry/value", "description": "Source value of static-behaviour-source-entry; preserves literal representation and qualification."}
+  static-candles-source:
+    class_uri: "pixlnd:static-candles-source"
+    description: "Complete candle configuration, not candle instance identity."
+    see_also: ["../instances/static-entities.json", "../domain/5_Constraints.md"]
+    is_a: static-candles
+    slot_usage:
+      static-candles-colors: {required: true}
+      static-candles-sizes: {required: true}
+      static-candles-placement: {required: true}
+slots:
+  static-candles-colors:
+    description: "Static candles colors; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:static-candles/colors
+    alias: colors
+    domain: static-candles
+    range: string
+    multivalued: true
+    required: false
+    see_also:
+    - ../instances/static-entities.json#candles
+  static-candles-sizes:
+    description: "Static candles sizes; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:static-candles/sizes
+    alias: sizes
+    domain: static-candles
+    range: string
+    multivalued: true
+    required: false
+    see_also:
+    - ../instances/static-entities.json#candles
+  static-candles-placement:
+    description: "Static candles placement; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:static-candles/placement
+    alias: placement
+    domain: static-candles
+    range: string
+    required: false
+    see_also:
+    - ../instances/static-entities.json#candles

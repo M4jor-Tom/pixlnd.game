@@ -1,0 +1,101 @@
+id: https://w3id.org/pixlnd/world-catalog/dungeon-type
+name: pixlnd-world-catalog-dungeon-type
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- structured-world
+default_range: string
+classes:
+  dungeon-type:
+    description: "Dungeon type; interpreted under its linked source definition and context."
+    class_uri: pixlnd:dungeon-type
+    see_also:
+    - ../domain/3_Classes.md#dungeon-type
+    slots:
+    - id
+    - dungeon-type-name
+    - dungeon-type-naming
+    - dungeon-type-lands
+    - dungeon-type-entrance
+    - dungeon-type-rosters
+    - dungeon-type-natural
+    - dungeon-type-boss
+    - dungeon-type-variants
+slots:
+  dungeon-type-name:
+    description: "Dungeon type name; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:dungeon-type/name
+    alias: name
+    domain: dungeon-type
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#dungeon-type
+    - ../instances/dungeon-types.json
+  dungeon-type-naming:
+    description: "Dungeon type naming; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:dungeon-type/naming
+    alias: naming
+    domain: dungeon-type
+    range: string
+    required: false
+    multivalued: true
+    see_also:
+    - ../domain/3_Classes.md#dungeon-type
+    - ../instances/dungeon-types.json
+  dungeon-type-lands:
+    slot_uri: pixlnd:dungeon-type/lands
+    alias: lands
+    domain: dungeon-type
+    range: string
+    required: false
+    multivalued: true
+    see_also:
+    - ../domain/3_Classes.md#dungeon-type
+    - ../instances/dungeon-types.json
+    description: Exact qualified placement text, not resolved placed-in endpoints.
+  dungeon-type-entrance:
+    slot_uri: pixlnd:dungeon-type/entrance
+    alias: entrance
+    domain: dungeon-type
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#dungeon-type
+    - ../instances/dungeon-types.json
+    description: Exact descriptive text, not a resolved object or access rule.
+  dungeon-type-rosters:
+    slot_uri: pixlnd:dungeon-type/rosters
+    alias: rosters
+    domain: dungeon-type
+    range: string
+    required: false
+    multivalued: true
+    see_also:
+    - ../domain/3_Classes.md#dungeon-type
+    - ../instances/dungeon-types.json
+    description: Exact race/family/species text, not uniformly resolved creature IDs.
+  dungeon-type-natural:
+    description: "Dungeon type natural; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:dungeon-type/natural
+    alias: natural
+    domain: dungeon-type
+    range: boolean
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#dungeon-type
+    - ../instances/dungeon-types.json
+  dungeon-type-boss:
+    slot_uri: pixlnd:dungeon-type/boss
+    alias: boss
+    domain: dungeon-type
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#dungeon-type
+    - ../instances/dungeon-types.json
+    description: Exact descriptive position text, not a creature reference.

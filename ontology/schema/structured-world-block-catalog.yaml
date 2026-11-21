@@ -1,0 +1,105 @@
+id: https://w3id.org/pixlnd/structured-world/block-catalog
+name: pixlnd-structured-world-block-catalog
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- structured-world-block-cub-format
+default_range: string
+classes:
+  block-type-catalog:
+    class_uri: pixlnd:block-type-catalog
+    description: Catalog configuration, not a voxel or an ordinary block type.
+    see_also:
+    - ../domain/3_Classes.md#block
+    - ../instances/block-types.json
+    slots:
+    - block-type-catalog-scale
+    - block-type-catalog-cub-format
+  block-scale:
+    description: "Block scale; interpreted under its linked source definition and context."
+    class_uri: pixlnd:block-scale
+    see_also:
+    - ../domain/3_Classes.md#block
+    - ../instances/block-types.json
+    slots:
+    - block-scale-block-native-units
+    - block-scale-alpha-zone-blocks
+    - block-scale-steam-zone-blocks
+    - block-scale-steam-map-chunk-blocks
+    - block-scale-character-height-m
+slots:
+  block-type-catalog-scale:
+    description: "Block type catalog scale; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:block-type-catalog/scale
+    alias: scale
+    domain: block-type-catalog
+    range: block-scale
+    inlined: true
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#block
+    - ../instances/block-types.json
+  block-type-catalog-cub-format:
+    description: "Block type catalog cub format; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:block-type-catalog/cub-format
+    alias: cub-format
+    domain: block-type-catalog
+    range: block-cub-format
+    inlined: true
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#block
+    - ../instances/block-types.json
+  block-scale-block-native-units:
+    description: "Block scale block native units; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:block-scale/block-native-units
+    alias: block-native-units
+    domain: block-scale
+    range: integer
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#block
+    - ../instances/block-types.json
+  block-scale-alpha-zone-blocks:
+    description: "Block scale alpha zone blocks; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:block-scale/alpha-zone-blocks
+    alias: alpha-zone-blocks
+    domain: block-scale
+    range: integer
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#block
+    - ../instances/block-types.json
+  block-scale-steam-zone-blocks:
+    description: "Block scale steam zone blocks; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:block-scale/steam-zone-blocks
+    alias: steam-zone-blocks
+    domain: block-scale
+    range: integer
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#block
+    - ../instances/block-types.json
+  block-scale-steam-map-chunk-blocks:
+    description: "Block scale steam map chunk blocks; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:block-scale/steam-map-chunk-blocks
+    alias: steam-map-chunk-blocks
+    domain: block-scale
+    range: integer
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#block
+    - ../instances/block-types.json
+  block-scale-character-height-m:
+    description: "Block scale character height m; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:block-scale/character-height-m
+    alias: character-height-m
+    domain: block-scale
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#block
+    - ../instances/block-types.json

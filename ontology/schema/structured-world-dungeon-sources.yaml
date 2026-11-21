@@ -1,0 +1,96 @@
+id: https://w3id.org/pixlnd/structured-world/dungeon-sources
+name: pixlnd-structured-world-dungeon-sources
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- catalog-identity-combat
+default_range: string
+classes:
+  dungeon-types-source:
+    class_uri: "pixlnd:dungeon-types-source"
+    description: "Reversible keyed source container; fixed metadata remains separate."
+    see_also: ["../instances/dungeon-types.json", "../domain/5_Constraints.md"]
+    annotations: {"source-map-entries": "entries"}
+    attributes:
+      schema-tag: {"range": "string", "required": true, "equals_string": "dungeon-type", "alias": "$schema", "slot_uri": "pixlnd:dungeon-types-source/schema", "description": "Source $schema of dungeon-types-source; preserves literal representation and qualification."}
+      documentation: {"range": "string", "required": true, "alias": "_doc", "slot_uri": "pixlnd:dungeon-types-source/doc", "description": "Source _doc of dungeon-types-source; preserves literal representation and qualification."}
+      dungeon-rules: {"range": "dungeon-source-rules", "inlined": true, "required": true, "alias": "_dungeon-rules", "slot_uri": "pixlnd:dungeon-types-source/dungeon-rules", "description": "Source _dungeon-rules of dungeon-types-source; preserves literal representation and qualification."}
+      entries: {"range": "dungeon-source-row-entry", "multivalued": true, "required": true, "minimum_cardinality": 1, "inlined": true, "inlined_as_list": true, "alias": "entries", "slot_uri": "pixlnd:dungeon-types-source/entries", "description": "Source entries of dungeon-types-source; preserves literal representation and qualification."}
+  dungeon-source-row-entry:
+    class_uri: "pixlnd:dungeon-source-row-entry"
+    description: "Reversible original container key and unchanged value."
+    see_also: ["../instances/dungeon-types.json", "../domain/5_Constraints.md"]
+    slots: ["source-entry-key"]
+    attributes:
+      value: {"range": "dungeon-source-row", "inlined": true, "required": true, "alias": "value", "slot_uri": "pixlnd:dungeon-source-row-entry/value", "description": "Source value of dungeon-source-row-entry; preserves literal representation and qualification."}
+  dungeon-source-row:
+    class_uri: "pixlnd:dungeon-source-row"
+    description: "Raw scalar/nested alpha-location pairs and content alternatives; no inferred dungeon identity."
+    see_also: ["../instances/dungeon-types.json", "../domain/5_Constraints.md"]
+    attributes:
+      name: {"range": "string", "required": true, "alias": "name", "slot_uri": "pixlnd:dungeon-source-row/name", "description": "Source name of dungeon-source-row; preserves literal representation and qualification."}
+      entrance: {"exactly_one_of": [{"range": "string"}], "alias": "entrance", "slot_uri": "pixlnd:dungeon-source-row/entrance", "description": "Source entrance of dungeon-source-row; preserves literal representation and qualification."}
+      desc: {"exactly_one_of": [{"range": "string"}], "alias": "desc", "slot_uri": "pixlnd:dungeon-source-row/desc", "description": "Source desc of dungeon-source-row; preserves literal representation and qualification."}
+      boss: {"exactly_one_of": [{"range": "string"}], "alias": "boss", "slot_uri": "pixlnd:dungeon-source-row/boss", "description": "Source boss of dungeon-source-row; preserves literal representation and qualification."}
+      see: {"exactly_one_of": [{"range": "string"}], "alias": "see", "slot_uri": "pixlnd:dungeon-source-row/see", "description": "Source see of dungeon-source-row; preserves literal representation and qualification."}
+      s-replacement: {"exactly_one_of": [{"range": "string"}], "alias": "s-replacement", "slot_uri": "pixlnd:dungeon-source-row/s-replacement", "description": "Source s-replacement of dungeon-source-row; preserves literal representation and qualification."}
+      naming: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "naming", "slot_uri": "pixlnd:dungeon-source-row/naming", "description": "Source naming of dungeon-source-row; preserves literal representation and qualification."}
+      lands: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "lands", "slot_uri": "pixlnd:dungeon-source-row/lands", "description": "Source lands of dungeon-source-row; preserves literal representation and qualification."}
+      rosters: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "rosters", "slot_uri": "pixlnd:dungeon-source-row/rosters", "description": "Source rosters of dungeon-source-row; preserves literal representation and qualification."}
+      natural: {"exactly_one_of": [{"range": "boolean"}], "alias": "natural", "slot_uri": "pixlnd:dungeon-source-row/natural", "description": "Source natural of dungeon-source-row; preserves literal representation and qualification."}
+      versions: {"range": "string", "multivalued": true, "required": true, "minimum_cardinality": 1, "equals_string_in": ["A", "S", "Ω", "X", "A?", "S?"], "alias": "versions", "slot_uri": "pixlnd:dungeon-source-row/versions", "description": "Source versions of dungeon-source-row; preserves literal representation and qualification."}
+      variants: {"range": "dungeon-variants-source", "inlined": true, "exactly_one_of": [{"range": "dungeon-variants-source", "inlined": true}], "alias": "variants", "slot_uri": "pixlnd:dungeon-source-row/variants", "description": "Source variants of dungeon-source-row; preserves literal representation and qualification."}
+      contents: {"exactly_one_of": [{"range": "string", "multivalued": true, "required": true}, {"range": "dungeon-source-contents", "inlined": true, "required": true}], "alias": "contents", "slot_uri": "pixlnd:dungeon-source-row/contents", "description": "Source contents of dungeon-source-row; preserves literal representation and qualification."}
+      alpha-loc: {"annotations": {"source-tuple-positions": "first second"}, "exactly_one_of": [{"range": "source-alpha-location-pair", "inlined": true, "required": true}, {"range": "source-alpha-location-pair-pair", "inlined": true, "required": true}], "alias": "alpha-loc", "slot_uri": "pixlnd:dungeon-source-row/alpha-loc", "description": "Source alpha-loc of dungeon-source-row; preserves literal representation and qualification."}
+  source-integer-pair:
+    class_uri: "pixlnd:source-integer-pair"
+    description: "Two positional integer members used only in a reversible source binding."
+    see_also: ["../instances/dungeon-types.json", "../domain/5_Constraints.md"]
+    attributes:
+      first: {"range": "integer", "required": true, "alias": "first", "slot_uri": "pixlnd:source-integer-pair/first", "description": "Source first of source-integer-pair; preserves literal representation and qualification."}
+      second: {"range": "integer", "required": true, "alias": "second", "slot_uri": "pixlnd:source-integer-pair/second", "description": "Source second of source-integer-pair; preserves literal representation and qualification."}
+  source-alpha-location-pair:
+    class_uri: "pixlnd:source-alpha-location-pair"
+    description: "Raw first position integer and second integer or literal symbolic range, not resolved IDs."
+    see_also: ["../instances/dungeon-types.json", "../domain/5_Constraints.md"]
+    attributes:
+      first: {"range": "integer", "required": true, "alias": "first", "slot_uri": "pixlnd:source-alpha-location-pair/first", "description": "Source first of source-alpha-location-pair; preserves literal representation and qualification."}
+      second: {"required": true, "any_of": [{"range": "integer"}, {"range": "string", "equals_string": "0-9"}], "alias": "second", "slot_uri": "pixlnd:source-alpha-location-pair/second", "description": "Source second of source-alpha-location-pair; preserves literal representation and qualification."}
+  source-alpha-location-pair-pair:
+    class_uri: "pixlnd:source-alpha-location-pair-pair"
+    description: "Original pair of integer pairs, preserving nested source shape."
+    see_also: ["../instances/dungeon-types.json", "../domain/5_Constraints.md"]
+    attributes:
+      first: {"range": "source-integer-pair", "inlined": true, "required": true, "alias": "first", "slot_uri": "pixlnd:source-alpha-location-pair-pair/first", "description": "Source first of source-alpha-location-pair-pair; preserves literal representation and qualification."}
+      second: {"range": "source-integer-pair", "inlined": true, "required": true, "alias": "second", "slot_uri": "pixlnd:source-alpha-location-pair-pair/second", "description": "Source second of source-alpha-location-pair-pair; preserves literal representation and qualification."}
+  dungeon-source-contents:
+    class_uri: "pixlnd:dungeon-source-contents"
+    description: "Steam content list, distinct from the alternate unversioned list."
+    see_also: ["../instances/dungeon-types.json", "../domain/5_Constraints.md"]
+    attributes:
+      steam: {"range": "string", "multivalued": true, "required": true, "alias": "S", "slot_uri": "pixlnd:dungeon-source-contents/steam", "description": "Source steam of dungeon-source-contents; preserves literal representation and qualification."}
+  dungeon-source-rules:
+    class_uri: "pixlnd:dungeon-source-rules"
+    description: "Historical source-scoped descriptions, not selected hybrid behavior."
+    see_also: ["../instances/dungeon-types.json", "../domain/5_Constraints.md"]
+    attributes:
+      alpha: {"range": "string", "multivalued": true, "required": true, "alias": "A", "slot_uri": "pixlnd:dungeon-source-rules/alpha", "description": "Source alpha of dungeon-source-rules; preserves literal representation and qualification."}
+      steam: {"range": "string", "multivalued": true, "required": true, "alias": "S", "slot_uri": "pixlnd:dungeon-source-rules/steam", "description": "Source steam of dungeon-source-rules; preserves literal representation and qualification."}
+      both: {"range": "string", "multivalued": true, "required": true, "alias": "both", "slot_uri": "pixlnd:dungeon-source-rules/both", "description": "Source both of dungeon-source-rules; preserves literal representation and qualification."}
+  dungeon-variants-source:
+    class_uri: "pixlnd:dungeon-variants-source"
+    description: "Reversible keyed source container; fixed metadata remains separate."
+    see_also: ["../instances/dungeon-types.json", "../domain/5_Constraints.md"]
+    annotations: {"source-map-entries": "entries"}
+    attributes:
+      entries: {"range": "dungeon-variant-source-entry", "multivalued": true, "required": true, "minimum_cardinality": 0, "inlined": true, "inlined_as_list": true, "alias": "entries", "slot_uri": "pixlnd:dungeon-variants-source/entries", "description": "Source entries of dungeon-variants-source; preserves literal representation and qualification."}
+  dungeon-variant-source-entry:
+    class_uri: "pixlnd:dungeon-variant-source-entry"
+    description: "Reversible original container key and unchanged value."
+    see_also: ["../instances/dungeon-types.json", "../domain/5_Constraints.md"]
+    slots: ["source-entry-key"]
+    attributes:
+      value: {"range": "string", "required": true, "alias": "value", "slot_uri": "pixlnd:dungeon-variant-source-entry/value", "description": "Source value of dungeon-variant-source-entry; preserves literal representation and qualification."}

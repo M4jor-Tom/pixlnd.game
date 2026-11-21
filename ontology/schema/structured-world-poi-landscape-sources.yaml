@@ -1,0 +1,94 @@
+id: https://w3id.org/pixlnd/structured-world/poi-landscape-sources
+name: pixlnd-structured-world-poi-landscape-sources
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- catalog-identity-combat
+default_range: string
+classes:
+  poi-types-source:
+    class_uri: "pixlnd:poi-types-source"
+    description: "Reversible keyed source container; fixed metadata remains separate."
+    see_also: ["../instances/poi-types.json", "../domain/5_Constraints.md"]
+    annotations: {"source-map-entries": "entries"}
+    attributes:
+      schema-tag: {"range": "string", "required": true, "equals_string": "poi-type", "alias": "$schema", "slot_uri": "pixlnd:poi-types-source/schema", "description": "Source $schema of poi-types-source; preserves literal representation and qualification."}
+      entries: {"range": "poi-source-row-entry", "multivalued": true, "required": true, "minimum_cardinality": 1, "inlined": true, "inlined_as_list": true, "alias": "entries", "slot_uri": "pixlnd:poi-types-source/entries", "description": "Source entries of poi-types-source; preserves literal representation and qualification."}
+  poi-source-row-entry:
+    class_uri: "pixlnd:poi-source-row-entry"
+    description: "Reversible original container key and unchanged value."
+    see_also: ["../instances/poi-types.json", "../domain/5_Constraints.md"]
+    slots: ["source-entry-key"]
+    attributes:
+      value: {"range": "poi-source-row", "inlined": true, "required": true, "alias": "value", "slot_uri": "pixlnd:poi-source-row-entry/value", "description": "Source value of poi-source-row-entry; preserves literal representation and qualification."}
+  poi-source-row:
+    class_uri: "pixlnd:poi-source-row"
+    description: "Full POI source body; alpha location and quarter remain raw numeric pairs, not identities."
+    see_also: ["../instances/poi-types.json", "../domain/5_Constraints.md"]
+    attributes:
+      name: {"range": "string", "required": true, "alias": "name", "slot_uri": "pixlnd:poi-source-row/name", "description": "Source name of poi-source-row; preserves literal representation and qualification."}
+      map: {"exactly_one_of": [{"range": "string"}], "alias": "map", "slot_uri": "pixlnd:poi-source-row/map", "description": "Source map of poi-source-row; preserves literal representation and qualification."}
+      desc: {"exactly_one_of": [{"range": "string"}], "alias": "desc", "slot_uri": "pixlnd:poi-source-row/desc", "description": "Source desc of poi-source-row; preserves literal representation and qualification."}
+      contents: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "contents", "slot_uri": "pixlnd:poi-source-row/contents", "description": "Source contents of poi-source-row; preserves literal representation and qualification."}
+      lands: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "lands", "slot_uri": "pixlnd:poi-source-row/lands", "description": "Source lands of poi-source-row; preserves literal representation and qualification."}
+      variants: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "variants", "slot_uri": "pixlnd:poi-source-row/variants", "description": "Source variants of poi-source-row; preserves literal representation and qualification."}
+      versions: {"range": "string", "multivalued": true, "required": true, "minimum_cardinality": 1, "equals_string_in": ["A", "S", "Ω", "X", "A?", "S?"], "alias": "versions", "slot_uri": "pixlnd:poi-source-row/versions", "description": "Source versions of poi-source-row; preserves literal representation and qualification."}
+      alpha-loc: {"exactly_one_of": [{"range": "integer", "multivalued": true, "minimum_cardinality": 2, "maximum_cardinality": 2}], "alias": "alpha-loc", "slot_uri": "pixlnd:poi-source-row/alpha-loc", "description": "Source alpha-loc of poi-source-row; preserves literal representation and qualification."}
+      quarter: {"exactly_one_of": [{"range": "integer", "multivalued": true, "minimum_cardinality": 2, "maximum_cardinality": 2}], "alias": "quarter", "slot_uri": "pixlnd:poi-source-row/quarter", "description": "Source quarter of poi-source-row; preserves literal representation and qualification."}
+      static-id: {"exactly_one_of": [{"range": "integer"}], "alias": "static-id", "slot_uri": "pixlnd:poi-source-row/static-id", "description": "Source static-id of poi-source-row; preserves literal representation and qualification."}
+      static-ids: {"exactly_one_of": [{"range": "integer", "multivalued": true}], "alias": "static-ids", "slot_uri": "pixlnd:poi-source-row/static-ids", "description": "Source static-ids of poi-source-row; preserves literal representation and qualification."}
+  landscapes-source:
+    class_uri: "pixlnd:landscapes-source"
+    description: "Reversible keyed source container; fixed metadata remains separate."
+    see_also: ["../instances/landscapes.json", "../domain/5_Constraints.md"]
+    annotations: {"source-map-entries": "entries"}
+    attributes:
+      schema-tag: {"range": "string", "required": true, "equals_string": "landscape", "alias": "$schema", "slot_uri": "pixlnd:landscapes-source/schema", "description": "Source $schema of landscapes-source; preserves literal representation and qualification."}
+      documentation: {"range": "string", "required": true, "alias": "_doc", "slot_uri": "pixlnd:landscapes-source/doc", "description": "Source _doc of landscapes-source; preserves literal representation and qualification."}
+      shared: {"range": "landscape-source-shared", "inlined": true, "required": true, "alias": "_shared", "slot_uri": "pixlnd:landscapes-source/shared", "description": "Source _shared of landscapes-source; preserves literal representation and qualification."}
+      entries: {"range": "landscape-source-row-entry", "multivalued": true, "required": true, "minimum_cardinality": 1, "inlined": true, "inlined_as_list": true, "alias": "entries", "slot_uri": "pixlnd:landscapes-source/entries", "description": "Source entries of landscapes-source; preserves literal representation and qualification."}
+  landscape-source-row-entry:
+    class_uri: "pixlnd:landscape-source-row-entry"
+    description: "Reversible original container key and unchanged value."
+    see_also: ["../instances/landscapes.json", "../domain/5_Constraints.md"]
+    slots: ["source-entry-key"]
+    attributes:
+      value: {"range": "landscape-source-row", "inlined": true, "required": true, "alias": "value", "slot_uri": "pixlnd:landscape-source-row-entry/value", "description": "Source value of landscape-source-row-entry; preserves literal representation and qualification."}
+  landscape-source-row:
+    class_uri: "pixlnd:landscape-source-row"
+    description: "Qualified raw rosters/style are not uniformly resolved references; desert ruins remain unresolved notes."
+    see_also: ["../instances/landscapes.json", "../domain/5_Constraints.md"]
+    attributes:
+      name: {"range": "string", "required": true, "alias": "name", "slot_uri": "pixlnd:landscape-source-row/name", "description": "Source name of landscape-source-row; preserves literal representation and qualification."}
+      style: {"exactly_one_of": [{"range": "string"}], "alias": "style", "slot_uri": "pixlnd:landscape-source-row/style", "description": "Source style of landscape-source-row; preserves literal representation and qualification."}
+      population: {"exactly_one_of": [{"range": "string"}], "alias": "population", "slot_uri": "pixlnd:landscape-source-row/population", "description": "Source population of landscape-source-row; preserves literal representation and qualification."}
+      planned: {"exactly_one_of": [{"range": "string"}], "alias": "planned", "slot_uri": "pixlnd:landscape-source-row/planned", "description": "Source planned of landscape-source-row; preserves literal representation and qualification."}
+      note: {"exactly_one_of": [{"range": "string"}], "alias": "note", "slot_uri": "pixlnd:landscape-source-row/note", "description": "Source note of landscape-source-row; preserves literal representation and qualification."}
+      terrain: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "terrain", "slot_uri": "pixlnd:landscape-source-row/terrain", "description": "Source terrain of landscape-source-row; preserves literal representation and qualification."}
+      flora: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "flora", "slot_uri": "pixlnd:landscape-source-row/flora", "description": "Source flora of landscape-source-row; preserves literal representation and qualification."}
+      hazards: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "hazards", "slot_uri": "pixlnd:landscape-source-row/hazards", "description": "Source hazards of landscape-source-row; preserves literal representation and qualification."}
+      dungeons: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "dungeons", "slot_uri": "pixlnd:landscape-source-row/dungeons", "description": "Source dungeons of landscape-source-row; preserves literal representation and qualification."}
+      pois: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "pois", "slot_uri": "pixlnd:landscape-source-row/pois", "description": "Source pois of landscape-source-row; preserves literal representation and qualification."}
+      notes: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "notes", "slot_uri": "pixlnd:landscape-source-row/notes", "description": "Source notes of landscape-source-row; preserves literal representation and qualification."}
+      climate: {"exactly_one_of": [{"range": "landscape-source-climate", "inlined": true}], "alias": "climate", "slot_uri": "pixlnd:landscape-source-row/climate", "description": "Source climate of landscape-source-row; preserves literal representation and qualification."}
+      gen: {"exactly_one_of": [{"range": "landscape-generation", "inlined": true}], "alias": "gen", "slot_uri": "pixlnd:landscape-source-row/gen", "description": "Source gen of landscape-source-row; preserves literal representation and qualification."}
+      versions: {"range": "string", "multivalued": true, "required": true, "minimum_cardinality": 1, "equals_string_in": ["A", "S", "Ω", "X", "A?", "S?"], "alias": "versions", "slot_uri": "pixlnd:landscape-source-row/versions", "description": "Source versions of landscape-source-row; preserves literal representation and qualification."}
+  landscape-source-climate:
+    class_uri: "pixlnd:landscape-source-climate"
+    description: "Raw climate bands and symbolic quantities, not converted numeric climate readings."
+    see_also: ["../instances/landscapes.json", "../domain/5_Constraints.md"]
+    attributes:
+      temp: {"range": "string", "required": true, "alias": "temp", "slot_uri": "pixlnd:landscape-source-climate/temp", "description": "Source temp of landscape-source-climate; preserves literal representation and qualification."}
+      humidity: {"range": "string", "required": true, "alias": "humidity", "slot_uri": "pixlnd:landscape-source-climate/humidity", "description": "Source humidity of landscape-source-climate; preserves literal representation and qualification."}
+  landscape-source-shared:
+    class_uri: "pixlnd:landscape-source-shared"
+    description: "Shared source context, not an additional landscape."
+    see_also: ["../instances/landscapes.json", "../domain/5_Constraints.md"]
+    attributes:
+      region-shape: {"range": "string", "required": true, "alias": "region-shape", "slot_uri": "pixlnd:landscape-source-shared/region-shape", "description": "Source region-shape of landscape-source-shared; preserves literal representation and qualification."}
+      land-level: {"range": "string", "required": true, "alias": "land-level", "slot_uri": "pixlnd:landscape-source-shared/land-level", "description": "Source land-level of landscape-source-shared; preserves literal representation and qualification."}
+      s-difficulty: {"range": "string", "required": true, "alias": "s-difficulty", "slot_uri": "pixlnd:landscape-source-shared/s-difficulty", "description": "Source s-difficulty of landscape-source-shared; preserves literal representation and qualification."}
+      village-styles: {"range": "string", "multivalued": true, "required": true, "alias": "village-styles", "slot_uri": "pixlnd:landscape-source-shared/village-styles", "description": "Source village-styles of landscape-source-shared; preserves literal representation and qualification."}

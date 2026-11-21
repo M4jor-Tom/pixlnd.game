@@ -1,0 +1,106 @@
+id: https://w3id.org/pixlnd/structured-world/settlement-sources
+name: pixlnd-structured-world-settlement-sources
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- items
+- catalog-identity-combat
+default_range: string
+classes:
+  buildings-source:
+    class_uri: "pixlnd:buildings-source"
+    description: "Complete source envelope with distinct districts, buildings, styles and shared context."
+    see_also: ["../instances/buildings.json", "../domain/5_Constraints.md"]
+    attributes:
+      schema-tag: {"range": "string", "required": true, "equals_string": "building", "alias": "$schema", "slot_uri": "pixlnd:buildings-source/schema", "description": "Source $schema of buildings-source; preserves literal representation and qualification."}
+      districts: {"range": "districts-source", "inlined": true, "required": true, "alias": "districts", "slot_uri": "pixlnd:buildings-source/districts", "description": "Source districts of buildings-source; preserves literal representation and qualification."}
+      buildings: {"range": "building-rows-source", "inlined": true, "required": true, "alias": "buildings", "slot_uri": "pixlnd:buildings-source/buildings", "description": "Source buildings of buildings-source; preserves literal representation and qualification."}
+      settlement-styles: {"range": "settlement-styles-source", "inlined": true, "required": true, "alias": "settlement-styles", "slot_uri": "pixlnd:buildings-source/settlement-styles", "description": "Source settlement-styles of buildings-source; preserves literal representation and qualification."}
+      population: {"range": "settlement-population-source", "inlined": true, "required": true, "alias": "population", "slot_uri": "pixlnd:buildings-source/population", "description": "Source population of buildings-source; preserves literal representation and qualification."}
+      map-visibility: {"range": "source-version-text", "inlined": true, "required": true, "alias": "map-visibility", "slot_uri": "pixlnd:buildings-source/map-visibility", "description": "Source map-visibility of buildings-source; preserves literal representation and qualification."}
+  districts-source:
+    class_uri: "pixlnd:districts-source"
+    description: "Reversible keyed source container; fixed metadata remains separate."
+    see_also: ["../instances/buildings.json", "../domain/5_Constraints.md"]
+    annotations: {"source-map-entries": "entries"}
+    attributes:
+      entries: {"range": "district-source-row-entry", "multivalued": true, "required": true, "minimum_cardinality": 1, "inlined": true, "inlined_as_list": true, "alias": "entries", "slot_uri": "pixlnd:districts-source/entries", "description": "Source entries of districts-source; preserves literal representation and qualification."}
+  district-source-row-entry:
+    class_uri: "pixlnd:district-source-row-entry"
+    description: "Reversible original container key and unchanged value."
+    see_also: ["../instances/buildings.json", "../domain/5_Constraints.md"]
+    slots: ["source-entry-key"]
+    attributes:
+      value: {"range": "district-source-row", "inlined": true, "required": true, "alias": "value", "slot_uri": "pixlnd:district-source-row-entry/value", "description": "Source value of district-source-row-entry; preserves literal representation and qualification."}
+  building-rows-source:
+    class_uri: "pixlnd:building-rows-source"
+    description: "Reversible keyed source container; fixed metadata remains separate."
+    see_also: ["../instances/buildings.json", "../domain/5_Constraints.md"]
+    annotations: {"source-map-entries": "entries"}
+    attributes:
+      entries: {"range": "building-source-row-entry", "multivalued": true, "required": true, "minimum_cardinality": 1, "inlined": true, "inlined_as_list": true, "alias": "entries", "slot_uri": "pixlnd:building-rows-source/entries", "description": "Source entries of building-rows-source; preserves literal representation and qualification."}
+  building-source-row-entry:
+    class_uri: "pixlnd:building-source-row-entry"
+    description: "Reversible original container key and unchanged value."
+    see_also: ["../instances/buildings.json", "../domain/5_Constraints.md"]
+    slots: ["source-entry-key"]
+    attributes:
+      value: {"range": "building-source-row", "inlined": true, "required": true, "alias": "value", "slot_uri": "pixlnd:building-source-row-entry/value", "description": "Source value of building-source-row-entry; preserves literal representation and qualification."}
+  settlement-styles-source:
+    class_uri: "pixlnd:settlement-styles-source"
+    description: "Reversible keyed source container; fixed metadata remains separate."
+    see_also: ["../instances/buildings.json", "../domain/5_Constraints.md"]
+    annotations: {"source-map-entries": "entries"}
+    attributes:
+      entries: {"range": "settlement-style-source-row-entry", "multivalued": true, "required": true, "minimum_cardinality": 1, "inlined": true, "inlined_as_list": true, "alias": "entries", "slot_uri": "pixlnd:settlement-styles-source/entries", "description": "Source entries of settlement-styles-source; preserves literal representation and qualification."}
+  settlement-style-source-row-entry:
+    class_uri: "pixlnd:settlement-style-source-row-entry"
+    description: "Reversible original container key and unchanged value."
+    see_also: ["../instances/buildings.json", "../domain/5_Constraints.md"]
+    slots: ["source-entry-key"]
+    attributes:
+      value: {"range": "settlement-style-source-row", "inlined": true, "required": true, "alias": "value", "slot_uri": "pixlnd:settlement-style-source-row-entry/value", "description": "Source value of settlement-style-source-row-entry; preserves literal representation and qualification."}
+  district-source-row:
+    class_uri: "pixlnd:district-source-row"
+    description: "Raw district entries retain building strings or class-qualified trainer objects, without invented building types."
+    see_also: ["../instances/buildings.json", "../domain/5_Constraints.md"]
+    attributes:
+      name: {"range": "string", "required": true, "alias": "name", "slot_uri": "pixlnd:district-source-row/name", "description": "Source name of district-source-row; preserves literal representation and qualification."}
+      decor: {"exactly_one_of": [{"range": "string", "multivalued": true}], "alias": "decor", "slot_uri": "pixlnd:district-source-row/decor", "description": "Source decor of district-source-row; preserves literal representation and qualification."}
+      quarter-id: {"range": "integer", "multivalued": true, "minimum_cardinality": 2, "maximum_cardinality": 2, "required": true, "alias": "quarter-id", "slot_uri": "pixlnd:district-source-row/quarter-id", "description": "Source quarter-id of district-source-row; preserves literal representation and qualification."}
+      versions: {"range": "string", "multivalued": true, "required": true, "minimum_cardinality": 1, "equals_string_in": ["A", "S", "Ω", "X", "A?", "S?"], "alias": "versions", "slot_uri": "pixlnd:district-source-row/versions", "description": "Source versions of district-source-row; preserves literal representation and qualification."}
+      buildings: {"exactly_one_of": [{"multivalued": true, "any_of": [{"range": "building"}, {"range": "district-building", "inlined": true, "required": true}]}], "alias": "buildings", "slot_uri": "pixlnd:district-source-row/buildings", "description": "Source buildings of district-source-row; preserves literal representation and qualification."}
+  building-source-row:
+    class_uri: "pixlnd:building-source-row"
+    description: "Complete source building row; role/station reference existence remains separate."
+    see_also: ["../instances/buildings.json", "../domain/5_Constraints.md"]
+    attributes:
+      name: {"range": "string", "required": true, "alias": "name", "slot_uri": "pixlnd:building-source-row/name", "description": "Source name of building-source-row; preserves literal representation and qualification."}
+      sign: {"exactly_one_of": [{"range": "string"}], "alias": "sign", "slot_uri": "pixlnd:building-source-row/sign", "description": "Source sign of building-source-row; preserves literal representation and qualification."}
+      map-icon: {"exactly_one_of": [{"range": "string"}], "alias": "map-icon", "slot_uri": "pixlnd:building-source-row/map-icon", "description": "Source map-icon of building-source-row; preserves literal representation and qualification."}
+      desc: {"exactly_one_of": [{"range": "string"}], "alias": "desc", "slot_uri": "pixlnd:building-source-row/desc", "description": "Source desc of building-source-row; preserves literal representation and qualification."}
+      roles: {"exactly_one_of": [{"range": "npc-role", "multivalued": true}], "alias": "roles", "slot_uri": "pixlnd:building-source-row/roles", "description": "Source roles of building-source-row; preserves literal representation and qualification."}
+      stations: {"exactly_one_of": [{"range": "crafting-station", "multivalued": true}], "alias": "stations", "slot_uri": "pixlnd:building-source-row/stations", "description": "Source stations of building-source-row; preserves literal representation and qualification."}
+      count: {"exactly_one_of": [{"range": "source-version-text", "inlined": true}], "alias": "count", "slot_uri": "pixlnd:building-source-row/count", "description": "Source count of building-source-row; preserves literal representation and qualification."}
+      versions: {"range": "string", "multivalued": true, "required": true, "minimum_cardinality": 1, "equals_string_in": ["A", "S", "Ω", "X", "A?", "S?"], "alias": "versions", "slot_uri": "pixlnd:building-source-row/versions", "description": "Source versions of building-source-row; preserves literal representation and qualification."}
+  settlement-style-source-row:
+    class_uri: "pixlnd:settlement-style-source-row"
+    description: "Original style roster and description, not hybrid runtime style selection."
+    see_also: ["../instances/buildings.json", "../domain/5_Constraints.md"]
+    attributes:
+      lands: {"range": "landscape", "multivalued": true, "required": true, "alias": "lands", "slot_uri": "pixlnd:settlement-style-source-row/lands", "description": "Source lands of settlement-style-source-row; preserves literal representation and qualification."}
+      desc: {"exactly_one_of": [{"range": "string"}], "alias": "desc", "slot_uri": "pixlnd:settlement-style-source-row/desc", "description": "Source desc of settlement-style-source-row; preserves literal representation and qualification."}
+  settlement-population-source:
+    class_uri: "pixlnd:settlement-population-source"
+    description: "Shared source population descriptions, not a generated population or scheduling engine."
+    see_also: ["../instances/buildings.json", "../domain/5_Constraints.md"]
+    attributes:
+      majority: {"range": "race", "required": true, "alias": "majority", "slot_uri": "pixlnd:settlement-population-source/majority", "description": "Source majority of settlement-population-source; preserves literal representation and qualification."}
+      undead-villages: {"range": "landscape", "multivalued": true, "required": true, "alias": "undead-villages", "slot_uri": "pixlnd:settlement-population-source/undead-villages", "description": "Source undead-villages of settlement-population-source; preserves literal representation and qualification."}
+      animals: {"range": "creature", "multivalued": true, "required": true, "alias": "animals", "slot_uri": "pixlnd:settlement-population-source/animals", "description": "Source animals of settlement-population-source; preserves literal representation and qualification."}
+      growth: {"range": "string", "required": true, "alias": "growth", "slot_uri": "pixlnd:settlement-population-source/growth", "description": "Source growth of settlement-population-source; preserves literal representation and qualification."}
+      schedule: {"range": "string", "required": true, "alias": "schedule", "slot_uri": "pixlnd:settlement-population-source/schedule", "description": "Source schedule of settlement-population-source; preserves literal representation and qualification."}

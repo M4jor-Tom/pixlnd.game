@@ -1,0 +1,130 @@
+id: https://w3id.org/pixlnd/world/land
+name: pixlnd-world-land
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- world-land-contents
+- world-landscape
+- world-settlement
+default_range: string
+classes:
+  land:
+    description: "Land; interpreted under its linked source definition and context."
+    class_uri: pixlnd:land
+    see_also: &id004
+    - ../domain/3_Classes.md#land
+    slot_usage:
+      land-tier-range: {required: false}
+      land-rarity: {required: false}
+      land-realm: {required: false}
+      land-key-items: {required: false}
+      land-gnome-suppliers: {required: false}
+      land-books-of-crafting: {required: false}
+      land-circles-of-power: {required: false}
+      land-artifacts: {required: false}
+    attributes:
+      wizard-towers: {"alias": "wizard-towers", "slot_uri": "pixlnd:land/wizard-towers", "range": "integer", "description": "Wizard towers; interpreted within the linked source scope.", "minimum_value": 0, "maximum_value": 5}
+    slots:
+    - id
+    - land-name
+    - land-landscape
+    - land-level
+    - land-danger-tier
+    - land-coords
+    - land-settlements
+    - land-border
+    - land-tier-range
+    - land-rarity
+    - land-realm
+    - land-key-items
+    - land-gnome-suppliers
+    - land-books-of-crafting
+    - land-circles-of-power
+    - land-artifacts
+  polygon:
+    class_uri: pixlnd:polygon
+    description: "Logical polygon geometry kind only; no vertex representation, coordinate units, identity, topology, or concrete serialization is selected."
+    see_also:
+    - ../domain/3_Classes.md#land
+slots:
+  land-name:
+    description: "Land name; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:land/name
+    alias: name
+    range: string
+    required: true
+    see_also: *id004
+  land-landscape:
+    description: "Land landscape; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:land/landscape
+    alias: landscape
+    range: landscape
+    required: true
+    see_also: *id004
+  land-level:
+    description: "Land level; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:land/level
+    alias: level
+    range: integer
+    required: true
+    see_also: *id004
+  land-danger-tier:
+    description: "Land danger tier; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:land/danger-tier
+    alias: danger-tier
+    range: danger-tier
+    required: true
+    see_also: *id004
+  land-coords:
+    description: "Land coords; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:land/coords
+    alias: coords
+    range: integer
+    required: true
+    multivalued: true
+    minimum_value: -512
+    maximum_value: 511
+    minimum_cardinality: 2
+    maximum_cardinality: 2
+    see_also: *id004
+  land-settlements:
+    description: "Land settlements; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:land/settlements
+    alias: settlements
+    range: settlement
+    required: true
+    multivalued: true
+    minimum_cardinality: 1
+    maximum_cardinality: 1
+    see_also: *id004
+  land-border:
+    slot_uri: pixlnd:land/border
+    alias: border
+    range: polygon
+    required: false
+    domain: land
+    see_also:
+    - ../domain/3_Classes.md#land
+    description: Internal land border is a dotted map line, not a physical wall; the outer-world travel boundary is defined separately.
+  land-tier-range:
+    slot_uri: pixlnd:land/tier-range
+    alias: tier-range
+    range: mob-strength-tier
+    required: true
+    multivalued: true
+    domain: land
+    see_also:
+    - ../domain/3_Classes.md#land
+    description: Context-qualified declaration; applicability is defined by canonical prose.
+enums:
+  danger-tier:
+    description: "Danger tier; interpreted under its linked source definition and context."
+    enum_uri: pixlnd:danger-tier
+    permissible_values:
+      safe: {}
+      normal: {}
+      dangerous: {}

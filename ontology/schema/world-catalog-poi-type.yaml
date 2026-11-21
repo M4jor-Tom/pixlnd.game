@@ -1,0 +1,128 @@
+id: https://w3id.org/pixlnd/world-catalog/poi-type
+name: pixlnd-world-catalog-poi-type
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+default_range: string
+classes:
+  poi-type:
+    description: "Poi type; interpreted under its linked source definition and context."
+    class_uri: pixlnd:poi-type
+    see_also:
+    - ../domain/3_Classes.md#poi-type
+    slots:
+    - id
+    - poi-type-name
+    - poi-type-map
+    - poi-type-contents
+    - poi-type-lands
+    - poi-type-variants
+    - poi-type-static-id
+    - poi-type-static-ids
+    - poi-type-alpha-loc
+    - poi-type-quarter
+slots:
+  poi-type-name:
+    description: "Poi type name; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:poi-type/name
+    alias: name
+    domain: poi-type
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#poi-type
+    - ../instances/poi-types.json
+  poi-type-map:
+    slot_uri: pixlnd:poi-type/map
+    alias: map
+    domain: poi-type
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#poi-type
+    - ../instances/poi-types.json
+    description: Exact descriptive map text, not a resolved icon or object reference.
+  poi-type-contents:
+    slot_uri: pixlnd:poi-type/contents
+    alias: contents
+    domain: poi-type
+    range: string
+    required: false
+    multivalued: true
+    see_also:
+    - ../domain/3_Classes.md#poi-type
+    - ../instances/poi-types.json
+    description: Exact qualified catalog text, not resolved static-entity references.
+  poi-type-lands:
+    slot_uri: pixlnd:poi-type/lands
+    alias: lands
+    domain: poi-type
+    range: string
+    required: false
+    multivalued: true
+    see_also:
+    - ../domain/3_Classes.md#poi-type
+    - ../instances/poi-types.json
+    description: Exact qualified placement text, not resolved placed-in endpoints.
+  poi-type-variants:
+    slot_uri: pixlnd:poi-type/variants
+    alias: variants
+    domain: poi-type
+    range: string
+    required: false
+    multivalued: true
+    see_also:
+    - ../domain/3_Classes.md#poi-type
+    - ../instances/poi-types.json
+    description: Exact descriptive text, not resolved POI references.
+  poi-type-alpha-loc:
+    description: "Poi type alpha loc; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:poi-type/alpha-loc
+    alias: alpha-loc
+    domain: poi-type
+    range: integer
+    required: false
+    multivalued: true
+    minimum_cardinality: 2
+    maximum_cardinality: 2
+    see_also:
+    - ../domain/3_Classes.md#poi-type
+    - ../instances/poi-types.json
+  poi-type-quarter:
+    description: "Poi type quarter; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:poi-type/quarter
+    alias: quarter
+    domain: poi-type
+    range: integer
+    required: false
+    multivalued: true
+    minimum_cardinality: 2
+    maximum_cardinality: 2
+    see_also:
+    - ../domain/3_Classes.md#poi-type
+    - ../instances/poi-types.json
+  poi-type-static-id:
+    slot_uri: pixlnd:poi-type/static-id
+    alias: static-id
+    domain: poi-type
+    range: integer
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#poi-type
+    - ../instances/poi-types.json
+    description: Source index including zero; not a stable ID or resolved static-entity reference.
+  poi-type-static-ids:
+    slot_uri: pixlnd:poi-type/static-ids
+    alias: static-ids
+    domain: poi-type
+    range: integer
+    required: false
+    multivalued: true
+    see_also:
+    - ../domain/3_Classes.md#poi-type
+    - ../instances/poi-types.json
+    description: Source indices including zero; not stable IDs or resolved static-entity references.

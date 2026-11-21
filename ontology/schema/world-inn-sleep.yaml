@@ -1,0 +1,55 @@
+id: https://w3id.org/pixlnd/world/inn-sleep
+name: pixlnd-world-inn-sleep
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+default_range: string
+classes:
+  hybrid-inn-sleep-service-parameters:
+    class_uri: pixlnd:hybrid-inn-sleep-service-parameters
+    description: "Hybrid inn paid sleep parameters from settlements/inn items 2–4, distinct from free anytime healing and respawn. The 18:00–06:00 availability wraps midnight; next 07:00 is a clock skip, not accelerated combat, statuses or cooldowns. All connected players explicitly agree; the initiator pays the single fee only on success, with refusal blocking the skip without charge. Ordinary midnight resets apply once only when crossed; sleeping grants no extra shop refresh or mission reroll. The historical reference sleep multiplier and fresh-world clock remain separate."
+    see_also: &inn-sleep-source ["../domain/3_Classes.md#game-clock", "../domain/5_Constraints.md#c-inn-hours"]
+    attributes:
+      fee-copper:
+        alias: fee-copper
+        slot_uri: pixlnd:hybrid-inn-sleep-service-parameters/fee-copper
+        range: integer
+        required: true
+        equals_number: 10
+        description: Single initiating-player fee on a successful agreed sleep skip.
+        see_also: *inn-sleep-source
+      available-from-hour:
+        alias: available-from-hour
+        slot_uri: pixlnd:hybrid-inn-sleep-service-parameters/available-from-hour
+        range: integer
+        required: true
+        equals_number: 18
+        description: Start hour of the overnight paid sleep window, not a free recovery restriction.
+        see_also: *inn-sleep-source
+      available-until-hour:
+        alias: available-until-hour
+        slot_uri: pixlnd:hybrid-inn-sleep-service-parameters/available-until-hour
+        range: integer
+        required: true
+        equals_number: 6
+        description: End hour of the overnight paid sleep window; wraps midnight from 18.
+        see_also: *inn-sleep-source
+      next-morning-hour:
+        alias: next-morning-hour
+        slot_uri: pixlnd:hybrid-inn-sleep-service-parameters/next-morning-hour
+        range: integer
+        required: true
+        equals_number: 7
+        description: "Next 07:00 target: 22:00 reaches tomorrow morning; 02:00 reaches that morning."
+        see_also: *inn-sleep-source
+  game-clock:
+    class_uri: "pixlnd:game-clock"
+    description: "Clock parameters only: initial time applies to fresh worlds; historical sleep multiplier baseline is unresolved. Sleep, midnight, weather and offline policies remain distinct linked rules."
+    see_also: ["../domain/3_Classes.md#game-clock"]
+    attributes:
+      speed: {"alias": "speed", "slot_uri": "pixlnd:game-clock/speed", "range": "double", "description": "Speed; interpreted within the linked source scope.", "required": true, "equals_number": 10}
+      initial-time-ms: {"alias": "initial-time-ms", "slot_uri": "pixlnd:game-clock/initial-time-ms", "range": "integer", "description": "Initial time ms; interpreted within the linked source scope.", "required": true, "minimum_value": 0, "maximum_value": 86400000, "equals_number": 25200000}
+      reference-sleep-speed: {"alias": "reference-sleep-speed", "slot_uri": "pixlnd:game-clock/reference-sleep-speed", "range": "double", "description": "Reference sleep speed; interpreted within the linked source scope.", "equals_number": 100}

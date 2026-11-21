@@ -1,0 +1,90 @@
+id: https://w3id.org/pixlnd/world/land-contents
+name: pixlnd-world-land-contents
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- items
+- world-land
+- world-realm
+default_range: string
+slots:
+  land-rarity:
+    slot_uri: pixlnd:land/rarity
+    alias: rarity
+    range: integer
+    required: true
+    domain: land
+    see_also:
+    - ../domain/3_Classes.md#land
+    description: Context-qualified declaration; applicability is defined by canonical prose.
+    minimum_value: 0
+    maximum_value: 4
+  land-realm:
+    slot_uri: pixlnd:land/realm
+    alias: realm
+    range: realm
+    required: true
+    domain: land
+    see_also:
+    - ../domain/3_Classes.md#land
+    description: Context-qualified declaration; applicability is defined by canonical prose.
+  land-key-items:
+    slot_uri: pixlnd:land/key-items
+    alias: key-items
+    range: key-item
+    required: true
+    multivalued: true
+    domain: land
+    see_also:
+    - ../domain/3_Classes.md#land
+    description: Context-qualified declaration; applicability is defined by canonical prose.
+    maximum_cardinality: 9
+  land-gnome-suppliers:
+    slot_uri: pixlnd:land/gnome-suppliers
+    alias: gnome-suppliers
+    range: gnome-supplier
+    required: true
+    multivalued: true
+    domain: land
+    see_also:
+    - ../domain/3_Classes.md#land
+    description: Context-qualified declaration; applicability is defined by canonical prose.
+    minimum_cardinality: 4
+    maximum_cardinality: 4
+  land-books-of-crafting:
+    slot_uri: pixlnd:land/books-of-crafting
+    alias: books-of-crafting
+    range: book-of-crafting
+    required: true
+    multivalued: true
+    domain: land
+    see_also:
+    - ../domain/3_Classes.md#land
+    description: Context-qualified declaration; applicability is defined by canonical prose.
+    minimum_cardinality: 4
+    maximum_cardinality: 4
+  land-circles-of-power:
+    slot_uri: pixlnd:land/circles-of-power
+    alias: circles-of-power
+    range: circle-of-power
+    required: true
+    multivalued: true
+    domain: land
+    see_also:
+    - ../domain/3_Classes.md#land
+    description: Context-qualified declaration; applicability is defined by canonical prose.
+    minimum_cardinality: 1
+  land-artifacts:
+    slot_uri: pixlnd:land/artifacts
+    alias: artifacts
+    range: artifact
+    required: true
+    multivalued: true
+    domain: land
+    see_also:
+    - ../domain/3_Classes.md#land
+    description: Context-qualified declaration; applicability is defined by canonical prose.
+    minimum_cardinality: 1

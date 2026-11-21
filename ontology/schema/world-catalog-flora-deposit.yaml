@@ -1,0 +1,110 @@
+id: https://w3id.org/pixlnd/world-catalog/flora-deposit
+name: pixlnd-world-catalog-flora-deposit
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- items
+- structured-world
+default_range: string
+classes:
+  flora:
+    description: "Flora; interpreted under its linked source definition and context."
+    class_uri: pixlnd:flora
+    see_also:
+    - ../domain/3_Classes.md#flora
+    slots:
+    - id
+    - flora-name
+    - flora-aid
+    - flora-lands
+    - flora-variants
+    - flora-yields
+  deposit:
+    description: "Deposit; interpreted under its linked source definition and context."
+    class_uri: pixlnd:deposit
+    see_also:
+    - ../domain/3_Classes.md#deposit
+    slots:
+    - id
+    - deposit-aid
+    - deposit-yields
+    - deposit-lands
+slots:
+  flora-name:
+    description: "Flora name; interpreted under its linked source definition and context."
+    slot_uri: pixlnd:flora/name
+    alias: name
+    domain: flora
+    range: string
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#flora
+    - ../instances/flora.json
+  flora-aid:
+    slot_uri: pixlnd:flora/aid
+    alias: aid
+    domain: flora
+    range: integer
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#flora
+    - ../instances/flora.json
+    description: Numeric source index, not stable identity or a resolved entity reference.
+  flora-lands:
+    slot_uri: pixlnd:flora/lands
+    alias: lands
+    domain: flora
+    range: string
+    required: false
+    multivalued: true
+    see_also:
+    - ../domain/3_Classes.md#flora
+    - ../instances/flora.json
+    description: Exact qualified catalog text, not resolved spawns-in endpoints.
+  flora-variants:
+    slot_uri: pixlnd:flora/variants
+    alias: variants
+    domain: flora
+    range: string
+    required: false
+    multivalued: true
+    see_also:
+    - ../domain/3_Classes.md#flora
+    - ../instances/flora.json
+    description: Exact descriptive catalog text, not resolved flora references.
+  deposit-aid:
+    slot_uri: pixlnd:deposit/aid
+    alias: aid
+    domain: deposit
+    range: integer
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#deposit
+    - ../instances/deposits.json
+    description: Numeric source index, not stable identity or a resolved entity reference.
+  deposit-yields:
+    slot_uri: pixlnd:deposit/yields
+    alias: yields
+    domain: deposit
+    range: ingredient
+    required: false
+    see_also:
+    - ../domain/3_Classes.md#deposit
+    - ../domain/4_Relations.md
+    - ../instances/deposits.json
+    description: Ingredient ID only; count-range payload and target existence require separate validation.
+  deposit-lands:
+    slot_uri: pixlnd:deposit/lands
+    alias: lands
+    domain: deposit
+    range: string
+    required: false
+    multivalued: true
+    see_also:
+    - ../domain/3_Classes.md#deposit
+    - ../instances/deposits.json
+    description: Exact qualified catalog text, not resolved spawns-in endpoints.

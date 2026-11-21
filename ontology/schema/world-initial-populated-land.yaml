@@ -1,0 +1,130 @@
+id: https://w3id.org/pixlnd/world/initial-populated-land
+name: pixlnd-world-initial-populated-land
+prefixes:
+  pixlnd: https://w3id.org/pixlnd/
+  linkml: https://w3id.org/linkml/
+default_prefix: pixlnd
+imports:
+- linkml:types
+- identity
+- world-land
+- world-site-assemblies
+default_range: string
+classes:
+  initial-populated-land: {
+    "attributes": {
+      "blue-rescue": {
+        "alias": "blue-rescue",
+        "description": "The blue-rescue site relationship for this initial hybrid land; not a captive or a duplicated site body.",
+        "inlined": false,
+        "range": "initial-populated-rescue-assembly",
+        "range_expression": {
+          "slot_conditions": {
+            "tier": {
+              "equals_number": 2
+            }
+          }
+        },
+        "required": true,
+        "see_also": [
+          "../domain/encounter-contracts.md#placement-and-access",
+          "../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"
+        ],
+        "slot_uri": "pixlnd:initial-populated-land/blue-rescue"
+      },
+      "daily-camp": {
+        "alias": "daily-camp",
+        "description": "The daily-camp site relationship for this initial hybrid land; not a captive or a duplicated site body.",
+        "inlined": false,
+        "range": "initial-populated-camp-assembly",
+        "required": true,
+        "see_also": [
+          "../domain/encounter-contracts.md#placement-and-access",
+          "../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"
+        ],
+        "slot_uri": "pixlnd:initial-populated-land/daily-camp"
+      },
+      "green-rescue": {
+        "alias": "green-rescue",
+        "description": "The green-rescue site relationship for this initial hybrid land; not a captive or a duplicated site body.",
+        "inlined": false,
+        "range": "initial-populated-rescue-assembly",
+        "range_expression": {
+          "slot_conditions": {
+            "tier": {
+              "equals_number": 1
+            }
+          }
+        },
+        "required": true,
+        "see_also": [
+          "../domain/encounter-contracts.md#placement-and-access",
+          "../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"
+        ],
+        "slot_uri": "pixlnd:initial-populated-land/green-rescue"
+      },
+      "purple-rescue": {
+        "alias": "purple-rescue",
+        "description": "The purple-rescue site relationship for this initial hybrid land; not a captive or a duplicated site body.",
+        "inlined": false,
+        "range": "initial-populated-rescue-assembly",
+        "range_expression": {
+          "slot_conditions": {
+            "tier": {
+              "equals_number": 3
+            }
+          }
+        },
+        "required": true,
+        "see_also": [
+          "../domain/encounter-contracts.md#placement-and-access",
+          "../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"
+        ],
+        "slot_uri": "pixlnd:initial-populated-land/purple-rescue"
+      },
+      "ruins": {
+        "alias": "ruins",
+        "description": "The ruins site relationship for this initial hybrid land; not a captive or a duplicated site body.",
+        "inlined": false,
+        "range": "initial-populated-ruins-assembly",
+        "required": true,
+        "see_also": [
+          "../domain/encounter-contracts.md#placement-and-access",
+          "../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"
+        ],
+        "slot_uri": "pixlnd:initial-populated-land/ruins"
+      },
+      "white-rescue": {
+        "alias": "white-rescue",
+        "description": "The white-rescue site relationship for this initial hybrid land; not a captive or a duplicated site body.",
+        "inlined": false,
+        "range": "initial-populated-rescue-assembly",
+        "range_expression": {
+          "slot_conditions": {
+            "tier": {
+              "equals_number": 0
+            }
+          }
+        },
+        "required": true,
+        "see_also": [
+          "../domain/encounter-contracts.md#placement-and-access",
+          "../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"
+        ],
+        "slot_uri": "pixlnd:initial-populated-land/white-rescue"
+      }
+    },
+    "class_uri": "pixlnd:initial-populated-land",
+    "description": "Initial hybrid land and its designated ruins, daily camp and four supplier-rescue sites. Every selected site belongs to this land; rescue roles have no presentation order.",
+    "is_a": "land",
+    "see_also": [
+      "../domain/encounter-contracts.md#placement-and-access",
+      "../domain/encounter-contracts.md#populations-tiers-and-clear-conditions"
+    ],
+    "slot_usage": {
+      "id": {
+        "equals_expression": "id if [ruins.located_in, daily_camp.located_in, white_rescue.located_in, green_rescue.located_in, blue_rescue.located_in, purple_rescue.located_in] == [id, id, id, id, id, id] else id + '-'"
+      }
+    }
+  }
+
