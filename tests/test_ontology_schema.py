@@ -64,15 +64,15 @@ def generated(class_name):
     ).serialize())
 
 
-def assert_ranges(test, slot, known):
-    # A native any_of may intentionally omit range: an explicit default string
-    # would incorrectly intersect numeric/object alternatives in the generator.
+def assert_ranges(test, slot, known, enclosing_range=None):
+    # Unions may omit range; predicate-only operands constrain the enclosing type.
     branches = slot.any_of + slot.exactly_one_of + slot.all_of + slot.none_of
-    test.assertTrue(slot.range or branches)
+    effective_range = slot.range or enclosing_range
+    test.assertTrue(effective_range or branches)
     if slot.range:
         test.assertIn(slot.range, known)
     for expression in branches:
-        assert_ranges(test, expression, known)
+        assert_ranges(test, expression, known, effective_range)
 
 
 class OntologySchemaTests(unittest.TestCase):
@@ -189,6 +189,26 @@ class OntologySchemaTests(unittest.TestCase):
         for owner in view.all_classes().values():
             if owner.extra_slots and owner.extra_slots.range_expression:
                 assert_ranges(self, owner.extra_slots.range_expression, known)
+
+    def test_boolean_predicates_use_enclosing_range(self):
+        from linkml_runtime.linkml_model.meta import SlotDefinition
+
+        for operator in ("any_of", "exactly_one_of", "all_of", "none_of"):
+            slot = SlotDefinition(name="probe", range="double",
+                                  **{operator: [{"equals_number": 0}]})
+            with self.subTest(operator=operator):
+                assert_ranges(self, slot, {"double"})
+                untyped = deepcopy(slot)
+                untyped.range = None
+                with self.assertRaises(AssertionError):
+                    assert_ranges(self, untyped, {"double"})
+                unknown = deepcopy(slot)
+                getattr(unknown, operator)[0].range = "not-a-defined-range"
+                with self.assertRaises(AssertionError):
+                    assert_ranges(self, unknown, {"double"})
+        nested = SlotDefinition(name="probe", range="double",
+                                all_of=[{"none_of": [{"equals_number": 0}]}])
+        assert_ranges(self, nested, {"double"})
 
     def test_actual_species_yaml_mutation_uses_same_oracle(self):
         import tempfile

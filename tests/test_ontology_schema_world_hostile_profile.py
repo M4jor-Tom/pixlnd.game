@@ -229,11 +229,7 @@ class LogicalWorldTests(unittest.TestCase):
         baseline = load_module(SCHEMA.parent / 'world.yaml')
         with tempfile.TemporaryDirectory(prefix='hostile-profile-mutations-') as directory:
             target = Path(directory) / 'schema'
-            target.mkdir()
-            # Exact module membership from the accepted source manifest.
-            for name in ('associations.yaml', 'catalog-crafting-social.yaml', 'catalog-identity-combat.yaml', 'catalog-properties.yaml', 'combat.yaml', 'design-combat.yaml', 'design-progression.yaml', 'entities.yaml', 'identity.yaml', 'items.yaml', 'meta.yaml', 'pixlnd.yaml', 'relation-types.yaml', 'relations.yaml', 'save-character.yaml', 'save-combat.yaml', 'save-content.yaml', 'save-geography.yaml', 'save-world.yaml', 'structured-world.yaml', 'world-catalog.yaml', 'world.yaml'):
-                for source in SCHEMA.parent.glob(name[:-5] + '*.yaml'):  # the module and its parts
-                    shutil.copyfile(source, target / source.name)
+            shutil.copytree(SCHEMA.parent, target)
             path = target / SCHEMA.name
             module = target / 'world.yaml'
             _, schema = self._assert_initial_site_hostile_profile(path)

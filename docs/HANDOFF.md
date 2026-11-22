@@ -3,12 +3,15 @@
 ## Phase-1 checkpoint before Task 7
 
 Work directly in `/home/theta/repos/pixlnd`, branch `feat/linkml-schema-authoring`.
-The current owner request selects local safe-state preparation before Task 7, not its
-implementation. The source-only module split `c86d05b` is now fast-forwarded into this
-branch; its schema/test/generated payload exactly matched the previous working changes.
-The newer handoff and two repository-owned skills are retained separately. History
-maintenance and regeneration are no longer pending operations. Keep `master` unchanged;
-no push, diagnostic-workflow integration, test repair or Task 7 implementation is selected.
+The owner has explicitly parked the remaining Godot import crash and selected saving
+the reviewed Python fixes as a safe local checkpoint before Task 7. No further crash
+investigation, engine backport/build, workaround or error suppression is selected. The
+parked crash is not a prerequisite repair for the next owner-selected Task 7 work, but
+it remains an unresolved quality finding, not a green-gate claim or hook exception.
+Task 7 implementation itself, unrelated repairs and pushes remain unselected here.
+The source-only split `c86d05b` and earlier checkpoint `cc9aa25` are retained in this
+branch. History maintenance and regeneration are no longer pending operations.
+Keep `master` and the diagnostic branch/worktree unchanged; preserve normal hooks.
 
 Task5 is verified published at `612bb80eb56e2222ab3d03eb7f3ab2acb08ef938`.
 Its final acceptance and independent publication audit are under
@@ -19,7 +22,7 @@ under `task6-active/` in the evidence root below; parent owns acceptance and exa
 approval. Preserve accepted earlier families and their qualified evidence. An infrastructure
 failure requires diagnosis, not CLI/foreground fallback, bypass, force or an ambiguous retry.
 
-### Task 6 — accepted source; full-gate/publication closure remains blocked
+### Task 6 — accepted source; covering gate/publication remains pending
 
 Parent accepted the source and qualified selected gates after all R2 reviews returned
 zero findings; all52 structural handoff spans and the exact pair19 companion are applied
@@ -36,12 +39,13 @@ The later module-split commits are local on this branch; only the temporary diag
 branch has their CI receipts. Do not merge diagnostic commits `1a093a1` or `99716b1`:
 they replace `.github/workflows/quality.yml` solely for focused CI execution.
 
-The focused generator checks and remaining CI matrix are accounted for below, but the
-three reproduced pre-existing ontology test failures still block a green Quality gate.
-Task 6 full-gate/publication closure is not claimed. Before Task 7 implementation, obtain
-owner disposition for those failures and select the next bounded verification/publication
-step. Do not grow timeouts, weaken assertions, repeat accepted checks for reporting or
-carry the temporary hook exceptions forward.
+The focused generator checks and remaining CI matrix are accounted for below. The three
+Python repairs now have affected red/green evidence; covering verification is still pending.
+The local import abort is traced to the pinned engine's documentation callback/shutdown
+boundary and is now owner-parked; do not pursue its correction during Task 7. Task 6
+full-gate/publication closure is not claimed. Preparing to resume Task 7 despite that
+parked finding does not authorize a push, weakened checks or renewed hook exceptions.
+Do not grow timeouts, weaken assertions or repeat unaffected accepted checks for reporting.
 
 The original gate failures and deadline measurement remain under
 `task6-active/publication-20261120/`; the measured ordinary deadline is now1719s,
@@ -368,39 +372,28 @@ merge it. [Run 45045211200](https://github.com/M4jor-Tom/pixlnd.game/actions/run
 on diagnostic commit `99716b1` finished all ten batches. The quality-runner regressions,
 static checks and all 88 Godot invocations passed, as did 31 of 34 non-generator
 ontology files. The three red files reproduced the same failure diagnostics on
-pre-split `74afa44`; see the three entries below. No new failure was observed, but
-these known failures still block a green gate. The owner subsequently selected local
-checkpoint integration of `c86d05b`, not test fixes, another push or Task 7 implementation.
-Do not replay completed checks except through the mandatory normal commit hooks.
+pre-split `74afa44`. After local checkpoint integration of `c86d05b`, the owner selected
+fixing those three failures and the local import abort. The Python fixes have affected
+red/green receipts, but no new full-gate/CI pass is claimed. Another push and Task 7
+implementation remain unselected. Do not replay unaffected completed checks merely
+for reporting.
 Retained logs (`remaining-ci/`, `focused-ci/`, `ci-run/quality-job.log`) and command matrix:
 `/home/theta/.pi-game-dev/recovery/pixlnd-linkml-cap-resume-20261121.JMYhzg/`.
 
-## Range oracle — 46 subtest failures in `test_ontology_schema.py`
+## Blocker repairs — covering verification pending
 
-`test_imports_ranges_aliases_and_compound_keys` fails 46 subtests at `8ce6932`, with the identical
-set after the module split (`Ran 14 tests`, `failures=46`): `assert_ranges` meets `any_of`
-branches that carry no `range`, e.g. `runtime-strike-radius`, `ability-runtime-cooldown-s`,
-`generator-move.damage-mult`. Reproduce: `… python -m unittest discover -v -s tests -p
-"test_ontology_schema.py"`. Next action: decide whether the oracle or those declarations change.
+Affected Python checks pass with schemas/domain/runtime untouched. The complete crafting
+file hit its330-second budget in its unchanged first metadata-mutation method; the changed
+native-values method passed separately. Hostile-profile's full file and standalone mutation
+method also exceeded330seconds, without assertion failures. All75 original mutation cases
+were then verified through the unchanged method in disjoint `[0,38)` / `[38,75)` partitions,
+with complete label coverage, unchanged corpus/helper/contract ASTs and the native broadening
+witness retained; the45-case native contract also passed. This is qualified partition evidence,
+not a passing whole file or full gate. No committed deadlines or assertions were relaxed.
+Keep original timeouts and red receipts; pending covering verification must not relabel them.
+Evidence: `/home/theta/.pi-game-dev/recovery/pixlnd-blocker-repair-20261122.LXbafg/`.
 
-## Crafting/social native-limit oracle — one failure
-
-`test_ontology_schema_crafting_social.py::test_native_values_and_limits` fails (`Ran 9`,
-`failures=1`): it expects a bare `{"type": "string"}` branch in `ingredient.refines-to`, while the
-generated JSON Schema (byte-identical at `8ce6932` and after the split) emits that branch with a
-`description`. Next action: decide whether the oracle or the declaration changes.
-
-## Hostile-profile mutation test — stale module manifest
-
-`tests/test_ontology_schema_world_hostile_profile.py::test_initial_site_hostile_profile_mutations`
-errors at `8ce6932` and after the module split alike: its hard-coded copy list omits
-`catalog-meta.yaml` (also `design-items`, `design-world`, `save-geography`), which `pixlnd.yaml`
-imports, so `SchemaView` raises `FileNotFoundError: …/schema/catalog-meta.yaml`.
-Reproduce: `uv run --locked --project tools/ontology python -m unittest discover -s tests -p
-"test_ontology_schema_world_hostile_profile.py"` (Ran 2, errors=1). The LinkML suite therefore
-cannot pass in the gate. Next action: decide the intended manifest (or copy the whole directory).
-
-## Fresh-checkout Godot runs — autoload error and `--import` abort
+## Fresh-checkout Godot runs — retained autoload characterization
 
 On a clean export of `8ce6932`, `godot --headless -s ontology/validate.gd` prints `ontology valid`
 and exits 0, then logs `SCRIPT ERROR: Invalid type in function '_rows' … Cannot convert argument 1
@@ -410,6 +403,30 @@ The background gate for that tree (`.git/pixlnd-gate/c2960ca1….log`) failed ea
 `godot --headless --import` aborted (exit 134, `Parameter "singleton" is null`,
 `editor/editor_node.cpp:6618`), so the gate never reached the LinkML tests. The
 current clean Ubuntu CI checkout passed `scripts/checks.sh`, including import,
-ontology validation and boot; it did not reproduce the local abort. Next action:
-if the local failure recurs, reproduce the same command on a clean local export
-and compare the environments.
+ontology validation and boot; it did not reproduce the local abort.
+
+## Godot import shutdown crash — owner-parked
+
+Owner explicitly chose to leave this crash unresolved while preparing the Task 7
+checkpoint. No further probe, engine patch/build, retry, CLI substitution or error
+suppression is selected. Keep its evidence and ordinary gate failure behavior intact;
+revisit only on a separate owner request.
+
+The normal `cc9aa25` checkpoint gate reproduced the minimal runner fixture's import
+abort. Its matched preserved core (PID139070, `godot --headless --import`, exact
+fixture cwd/binary) places the fault in `EditorHelp::_reload_scripts_documentation`
+on its script-doc regeneration thread while the main thread is already tearing down.
+This is an editor-lifecycle failure, not a game assertion or timeout kill. Pinned source
+shows static doc callbacks surviving cleanup; `EditorNode::is_cmdline_mode()` returns false
+for a destroyed singleton, permitting script-doc regeneration against the cleared filesystem.
+Import already selects the intended documentation-skip mode; no supported caller flag was
+found to enforce the missing lifetime boundary. Fresh isolated fixtures and one inherited
+host-state fixture passed, which does not establish reliability or close the failure. The
+precise private pointer/interleaving was not observed; no engine fix is yet implemented.
+No retry/error suppression/CLI substitution is accepted.
+Evidence: `import-preserved-core-diagnosis.md`, `import-host-state-discriminator.md` and
+`import-pinned-source-diagnosis.md` under
+`/home/theta/.pi-game-dev/recovery/pixlnd-blocker-repair-20261122.LXbafg/`.
+If separately reselected, a causal engine correction needs late-callback/shutdown
+regression evidence and complete fresh class/resource import plus a native consumer,
+with strict error detection. No such engine change is part of Task 7 preparation.

@@ -137,7 +137,10 @@ class CraftingSocialTests(unittest.TestCase):
         self.assertIn({"type": "string"}, station)
         compact = validator("ingredient").schema["$defs"]["ingredient"]["properties"]["refines-to"]
         alternatives = compact["additionalProperties"]["anyOf"]
-        self.assertIn({"type": "string"}, alternatives)
+        self.assertIn({"type": "string"}, [
+            {key: value for key, value in branch.items() if key != "description"}
+            for branch in alternatives
+        ])
         self.assertFalse(any(b.get("type") == "null" for b in alternatives))
         validate("ingredient", {"id": "example", "refines-to": {"missing-ingredient": "saw"}})
         for body in ({"process": "saw"}, {"target": "iron-cube", "process": "saw"}):
