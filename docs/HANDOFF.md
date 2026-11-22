@@ -1,16 +1,14 @@
 # Handoff — current pending work
 
-## Phase-1 continuation authority
+## Phase-1 checkpoint before Task 7
 
 Work directly in `/home/theta/repos/pixlnd`, branch `feat/linkml-schema-authoring`.
-Owner request: “Task 5 is done. Execute task 6, and wait before executing task 7”.
-**Task6 only is selected. STOP before Task7, including preparation/scouting.**
-Task6 completes generator/design schema contracts and their reviewed incremental Markdown
-handoff; no gameplay/runtime/save/raw-instance change or later-family repair is selected.
-Current owner authority is history maintenance: replay the authoring commits on
-`feat/generated-domain-model` (`4a97ec5`), regenerate derived output and verify, then
-reapply those commits on `master` (`d6b9d41`) with an identical tree. Leave `master`
-unchanged and do not push; Task7 remains unselected.
+The current owner request selects local safe-state preparation before Task 7, not its
+implementation. The source-only module split `c86d05b` is now fast-forwarded into this
+branch; its schema/test/generated payload exactly matched the previous working changes.
+The newer handoff and two repository-owned skills are retained separately. History
+maintenance and regeneration are no longer pending operations. Keep `master` unchanged;
+no push, diagnostic-workflow integration, test repair or Task 7 implementation is selected.
 
 Task5 is verified published at `612bb80eb56e2222ab3d03eb7f3ab2acb08ef938`.
 Its final acceptance and independent publication audit are under
@@ -21,13 +19,11 @@ under `task6-active/` in the evidence root below; parent owns acceptance and exa
 approval. Preserve accepted earlier families and their qualified evidence. An infrastructure
 failure requires diagnosis, not CLI/foreground fallback, bypass, force or an ambiguous retry.
 
-### Task6 — source and structural handoff accepted; publication pending
+### Task 6 — accepted source; full-gate/publication closure remains blocked
 
 Parent accepted the source and qualified selected gates after all R2 reviews returned
 zero findings; all52 structural handoff spans and the exact pair19 companion are applied
 and independently accepted, including the approved existing backlog-fragment correction.
-Only the history maintenance above is currently selected; no further schema/gameplay work.
-STOP before Task7, including preparation/scouting.
 
 Accepted source/evidence: `task6-active/review-round-1.fCDI8SZH/fix-round-2/phase-b/review-package/`.
 Source acceptance: `task6-active/review-round-2-20261120/`.
@@ -35,27 +31,25 @@ Applied bytes/references/acceptance: `task6-active/handoff-application-20261120/
 Historical failures, actual receipts and dependency-qualified earlier results remain immutable
 there; they are not pending regressions or a completed-bug history in this file.
 
-Pending gate: rebase/regeneration verification and separate approval before remote publication.
-Accepted Task6 source and the deadline correction were recorded as `962aeb1` and `3898818`
-in the original history; origin remains at `389881829334a555fb90f220e5630459fbc1ca51`.
-The rewritten local history is unpublished; simple pre-rebase ahead/behind counts do not apply.
-Both normal681s push failures remain immutable under
-`task6-active/publication-20261120/execution/` and `normal-push-retry-1/` (no case summaries).
-Cause is unclassified; current resource observations do not prove historical cause.
-The unchanged full-test diagnostic completed1687cases/0failures in457.701s Godot body time;
-its owned501.032956208s includes setup. Evidence: `publication-20261120/required-input-diagnostic-2/`.
-This is measurement evidence, not a normal full-gate pass. The interrupted D1 outcome remains
-UNKNOWN in managed recovery evidence, not a pending recovery operation.
+The current live feature ref is `fda5ac98372eff7014a5ec11a1a6f0f7726dd647`.
+The later module-split commits are local on this branch; only the temporary diagnostic
+branch has their CI receipts. Do not merge diagnostic commits `1a093a1` or `99716b1`:
+they replace `.github/workflows/quality.yml` solely for focused CI execution.
 
-The separately selected mechanical refresh uses the existing documented formula:
-3×ceil(1.25×457.701)=1719s for the three ordinary allocations. Special1263s, boot12s,
-outerpush5400s and CI90minutes remain unchanged. Exactly zero cases/assertions are weakened;
-no bypass, source/runtime repair or resource-cause claim follows. Correction evidence and the
-new five-path commit proposal belong under `publication-20261120/calibration-correction-1/`.
-The current history-maintenance request permits local regeneration commits, not a push;
-separate approval must precede publication. Any later normal full-gate failure requires STOP and separate
-parent disposition, not automatic further budget growth or retry. Task6 is incomplete;
-Task7 remains unselected, including preparation/scouting.
+The focused generator checks and remaining CI matrix are accounted for below, but the
+three reproduced pre-existing ontology test failures still block a green Quality gate.
+Task 6 full-gate/publication closure is not claimed. Before Task 7 implementation, obtain
+owner disposition for those failures and select the next bounded verification/publication
+step. Do not grow timeouts, weaken assertions, repeat accepted checks for reporting or
+carry the temporary hook exceptions forward.
+
+The original gate failures and deadline measurement remain under
+`task6-active/publication-20261120/`; the measured ordinary deadline is now1719s,
+with special1263s, boot12s and CI90minutes unchanged. No resource-cause diagnosis follows.
+Local preservation, exact candidate/residual comparison and continuation backup:
+`/home/theta/.pi-game-dev/recovery/pixlnd-task7-safe-state-20261122.MJq2BR/`.
+The original working state is also retained in the named safety stash and
+`backup/linkml-task7-prep-20261122`; do not drop either during Task 7 preparation.
 
 Qualification is construct-specific: configured directory lint retains exactly184diagnostics
 (26errors/158warnings) across five frozen save owners, with no owned/new diagnostic—not global
@@ -353,6 +347,34 @@ Found by the generic catalog-reference check in `scripts/ontology_bind.py` (bran
 Next: owner decides between widening the range (ingredient or material) and changing the data;
 then remove the `KNOWN_FINDINGS` entry.
 
+## LinkML module split — full gate unresolved
+
+[Quality run 44925840036](https://github.com/M4jor-Tom/pixlnd.game/actions/runs/44925840036)
+for `c86d05b` on `ci/linkml-module-size` passed Ruff, the 150-line cap, Mermaid and
+bound-instance checks. The gate then exited 143 during `ontology-schema-tests`
+after about 49 minutes, before the 90-minute job limit. The CI log has no unittest
+outcomes; the reason for termination is unknown. The owner approved skipping only
+the local `gate-background` and `gate-receipt` hooks for that push. No hook or
+workflow was changed, and `master` and the remote feature branch were untouched.
+
+The prior local full gate on the same tree (`0421db0a4ea3cc4f8d5d4248c04cc774464cfe0f`)
+also stopped during `ontology-schema-tests` without an exit receipt. The kernel's
+OOM kill was for a different process. All 22 remaining generator checks passed
+in [focused CI run 45037774452](https://github.com/M4jor-Tom/pixlnd.game/actions/runs/45037774452)
+(12 serial batches, 21m47s). Together with the 13 retained passes this closes
+focused generator verification, not the full Quality gate. Diagnostic commit
+`1a093a1` differs from `c86d05b` only in the temporary branch's workflow; do not
+merge it. [Run 45045211200](https://github.com/M4jor-Tom/pixlnd.game/actions/runs/45045211200)
+on diagnostic commit `99716b1` finished all ten batches. The quality-runner regressions,
+static checks and all 88 Godot invocations passed, as did 31 of 34 non-generator
+ontology files. The three red files reproduced the same failure diagnostics on
+pre-split `74afa44`; see the three entries below. No new failure was observed, but
+these known failures still block a green gate. The owner subsequently selected local
+checkpoint integration of `c86d05b`, not test fixes, another push or Task 7 implementation.
+Do not replay completed checks except through the mandatory normal commit hooks.
+Retained logs (`remaining-ci/`, `focused-ci/`, `ci-run/quality-job.log`) and command matrix:
+`/home/theta/.pi-game-dev/recovery/pixlnd-linkml-cap-resume-20261121.JMYhzg/`.
+
 ## Range oracle — 46 subtest failures in `test_ontology_schema.py`
 
 `test_imports_ranges_aliases_and_compound_keys` fails 46 subtests at `8ce6932`, with the identical
@@ -386,5 +408,8 @@ from Dictionary to Object` (`game/domain/domain.gd:123`) and `Nonexistent functi
 'default_ruleset' in base 'Nil'` (`game/ontology_db.gd:23`); identical in this worktree.
 The background gate for that tree (`.git/pixlnd-gate/c2960ca1….log`) failed earlier still:
 `godot --headless --import` aborted (exit 134, `Parameter "singleton" is null`,
-`editor/editor_node.cpp:6618`), so the gate never reached the LinkML tests. Cause not diagnosed.
-Next action: reproduce `scripts/checks.sh` on a clean export and classify (environment or code).
+`editor/editor_node.cpp:6618`), so the gate never reached the LinkML tests. The
+current clean Ubuntu CI checkout passed `scripts/checks.sh`, including import,
+ontology validation and boot; it did not reproduce the local abort. Next action:
+if the local failure recurs, reproduce the same command on a clean local export
+and compare the environments.
