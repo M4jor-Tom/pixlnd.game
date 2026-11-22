@@ -13,13 +13,13 @@ default_range: string
 classes:
   saved-spirit-level:
     class_uri: pixlnd:saved-spirit-level
-    see_also: &id008
+    see_also: &id001
     - ../domain/3_Classes.md#save-data
     slots:
     - saved-spirit-level-assignment
     - saved-spirit-level-level
-    description: Initial boss level keyed by stable assignment, not item power; source-level-to-power
-      conversion remains the canonical rule.
+    description: Initial boss level keyed by stable assignment, not item power; source-level-to-power conversion
+      remains the canonical rule.
 slots:
   saved-spirit-level-assignment:
     slot_uri: pixlnd:saved-spirit-level/assignment
@@ -27,62 +27,78 @@ slots:
     domain: saved-spirit-level
     range: string
     required: true
-    see_also: *id008
+    see_also: *id001
     key: true
+    description: Assignment of the saved spirit level.
   saved-spirit-level-level:
     slot_uri: pixlnd:saved-spirit-level/level
     alias: level
     domain: saved-spirit-level
     range: integer
     required: true
-    see_also: *id008
+    see_also: *id001
     minimum_value: 1
+    description: Level of the saved spirit level.
+    maximum_value: 9223372036854775295
   saved-site-mobs:
     slot_uri: pixlnd:saved-site/mobs
     alias: mobs
     domain: saved-site
     range: saved-mob-entry
     required: true
-    see_also: &id009
+    see_also: &id002
     - ../domain/3_Classes.md#save-data
     multivalued: true
     inlined: true
     inlined_as_list: false
+    description: Mobs of the saved site.
   saved-site-rewards:
     slot_uri: pixlnd:saved-site/rewards
     alias: rewards
     domain: saved-site
     range: saved-reward
     required: true
-    see_also: *id009
+    see_also: *id002
     multivalued: true
     inlined: true
     inlined_as_list: false
+    description: Rewards of the saved site.
   saved-site-spirit-levels:
     slot_uri: pixlnd:saved-site/spirit_levels
     alias: spirit_levels
     domain: saved-site
     range: saved-spirit-level
     required: true
-    see_also: *id009
+    see_also: *id002
     multivalued: true
     inlined: true
     inlined_as_list: false
+    description: Spirit levels of the saved site.
   saved-site-room-levels:
     slot_uri: pixlnd:saved-site/room_levels
     alias: room_levels
     domain: saved-site
-    range: integer
     required: true
-    see_also: *id009
-    multivalued: true
-    minimum_value: 1
-    maximum_cardinality: 3
+    see_also: *id002
+    description: Shared source levels for the three ruins rooms; empty for other site families.
+    any_of:
+    - range: integer
+      multivalued: true
+      maximum_cardinality: 0
+      minimum_value: 1
+      maximum_value: 9223372036854775295
+    - range: integer
+      multivalued: true
+      minimum_cardinality: 3
+      maximum_cardinality: 3
+      minimum_value: 1
+      maximum_value: 9223372036854775295
   saved-site-contents:
     slot_uri: pixlnd:saved-site/contents
     alias: contents
     domain: saved-site
     range: saved-contents
     required: true
-    see_also: *id009
+    see_also: *id002
     inlined: true
+    description: Contents of the saved site.

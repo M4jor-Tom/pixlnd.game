@@ -10,7 +10,7 @@ default_range: string
 classes:
   saved-special:
     class_uri: pixlnd:saved-special
-    see_also: &id004
+    see_also:
     - ../domain/encounter-contracts.md#boss-specials-and-breakable-rubble
     slots:
     - saved-special-phase
@@ -20,74 +20,76 @@ classes:
     - saved-special-target
     - saved-special-origin
     - saved-special-endpoint
-    description: Current special snapshot. Origin/endpoint are empty while inactive or three coordinates
-      while active; phase-dependent applicability and geometry remain linked checks.
-slots:
-  saved-special-phase:
-    slot_uri: pixlnd:saved-special/phase
-    alias: phase
-    domain: saved-special
-    range: special-phase
-    required: true
-    see_also: *id004
-  saved-special-left:
-    slot_uri: pixlnd:saved-special/left
-    alias: left
-    domain: saved-special
-    range: double
-    required: true
-    see_also: *id004
-    minimum_value: 0
-  saved-special-recovery:
-    slot_uri: pixlnd:saved-special/recovery
-    alias: recovery
-    domain: saved-special
-    range: double
-    required: true
-    see_also: *id004
-    minimum_value: 0
-  saved-special-engaged:
-    slot_uri: pixlnd:saved-special/engaged
-    alias: engaged
-    domain: saved-special
-    range: boolean
-    required: true
-    see_also: *id004
-  saved-special-target:
-    slot_uri: pixlnd:saved-special/target
-    alias: target
-    domain: saved-special
-    range: string
-    required: true
-    see_also: *id004
-  saved-special-origin:
-    slot_uri: pixlnd:saved-special/origin
-    alias: origin
-    domain: saved-special
-    required: true
-    see_also: *id004
-    any_of:
-    - range: double
-      multivalued: true
-      maximum_cardinality: 0
-    - range: double
-      multivalued: true
-      minimum_cardinality: 3
-      maximum_cardinality: 3
-  saved-special-endpoint:
-    slot_uri: pixlnd:saved-special/endpoint
-    alias: endpoint
-    domain: saved-special
-    required: true
-    see_also: *id004
-    any_of:
-    - range: double
-      multivalued: true
-      maximum_cardinality: 0
-    - range: double
-      multivalued: true
-      minimum_cardinality: 3
-      maximum_cardinality: 3
+    description: Persisted boss-special phase and remaining times. Origin and endpoint are empty when inactive,
+      or three coordinates when active.
+    rules:
+    - preconditions:
+        slot_conditions:
+          saved-special-phase:
+            alias: phase
+            equals_string_in:
+            - warning
+            - charge
+      postconditions:
+        slot_conditions:
+          saved-special-origin:
+            alias: origin
+            minimum_cardinality: 3
+            maximum_cardinality: 3
+          saved-special-endpoint:
+            alias: endpoint
+            minimum_cardinality: 3
+            maximum_cardinality: 3
+          saved-special-engaged:
+            alias: engaged
+            equals_expression: 'True'
+          saved-special-target:
+            alias: target
+            pattern: ^[\s\S]+$
+      elseconditions:
+        slot_conditions:
+          saved-special-origin:
+            alias: origin
+            maximum_cardinality: 0
+          saved-special-endpoint:
+            alias: endpoint
+            maximum_cardinality: 0
+          saved-special-target:
+            alias: target
+            equals_string: ''
+    - preconditions:
+        slot_conditions:
+          saved-special-phase:
+            alias: phase
+            equals_string_in:
+            - ready
+            - warning
+            - charge
+      postconditions:
+        slot_conditions:
+          saved-special-recovery:
+            alias: recovery
+            equals_number: 0
+    - preconditions:
+        slot_conditions:
+          saved-special-phase:
+            alias: phase
+            equals_string: charge
+      postconditions:
+        slot_conditions:
+          saved-special-left:
+            alias: left
+            equals_number: 0
+    - preconditions:
+        slot_conditions:
+          saved-special-phase:
+            alias: phase
+            equals_string: cooldown
+      postconditions:
+        slot_conditions:
+          saved-special-recovery:
+            alias: recovery
+            equals_expression: min({recovery}, {left})
 enums:
   special-phase:
     enum_uri: pixlnd:special-phase
@@ -96,3 +98,26 @@ enums:
       cooldown: {}
       warning: {}
       charge: {}
+    description: Special phase codes of persisted state.
+slots:
+  saved-special-phase: {slot_uri: 'pixlnd:saved-special/phase', alias: phase, domain: saved-special, range: special-phase, required: true,
+      see_also: [../domain/encounter-contracts.md#boss-specials-and-breakable-rubble], description: Phase of the saved
+        special.}
+  saved-special-left: {slot_uri: 'pixlnd:saved-special/left', alias: left, domain: saved-special, range: double, required: true, see_also: [
+        ../domain/encounter-contracts.md#boss-specials-and-breakable-rubble], minimum_value: 0, description: Left of
+        the saved special.}
+  saved-special-recovery: {slot_uri: 'pixlnd:saved-special/recovery', alias: recovery, domain: saved-special, range: double, required: true,
+      see_also: [../domain/encounter-contracts.md#boss-specials-and-breakable-rubble], minimum_value: 0, description: Recovery
+        of the saved special.}
+  saved-special-engaged: {slot_uri: 'pixlnd:saved-special/engaged', alias: engaged, domain: saved-special, range: boolean, required: true,
+      see_also: [../domain/encounter-contracts.md#boss-specials-and-breakable-rubble], description: Engaged of the saved
+        special.}
+  saved-special-target: {slot_uri: 'pixlnd:saved-special/target', alias: target, domain: saved-special, range: string, required: true, see_also: [
+        ../domain/encounter-contracts.md#boss-specials-and-breakable-rubble], description: Target of the saved special.}
+  saved-special-origin: {slot_uri: 'pixlnd:saved-special/origin', alias: origin, domain: saved-special, required: true, see_also: [../domain/encounter-contracts.md#boss-specials-and-breakable-rubble],
+      any_of: [{range: double, multivalued: true, maximum_cardinality: 0}, {range: double, multivalued: true, minimum_cardinality: 3,
+          maximum_cardinality: 3}], description: Origin of the saved special.}
+  saved-special-endpoint: {slot_uri: 'pixlnd:saved-special/endpoint', alias: endpoint, domain: saved-special, required: true, see_also: [
+        ../domain/encounter-contracts.md#boss-specials-and-breakable-rubble], any_of: [{range: double, multivalued: true,
+          maximum_cardinality: 0}, {range: double, multivalued: true, minimum_cardinality: 3, maximum_cardinality: 3}],
+      description: Endpoint of the saved special.}

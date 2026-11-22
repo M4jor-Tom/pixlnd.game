@@ -98,3 +98,8 @@ rules:
       - bench-remove
       # Source-literal move kind; this exact exclusion is global across element kinds.
       - at-cursor
+      # Literal saved-hostility codes; exclusions match globally across element kinds.
+      - H
+      - N
+      - P
+      - F

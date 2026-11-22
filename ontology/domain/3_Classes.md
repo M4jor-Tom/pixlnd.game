@@ -1670,12 +1670,20 @@ retain threat/order/neutral provocation across restart under `ai-behavior` item 
 Initial-site identities, special timers, rubble, trap/prop renewal and once-only reward state
 follow the [encounter contracts](encounter-contracts.md), without choosing a save format.
 
-**Current implementation:** validated atomic JSON save/load retains the implemented hero's
-ID, class/spec, level/XP, banked/spent skill points, coins, bag and equipment (including carried
-spirits), plus per-world position/respawn. World snapshots retain independent world ID/seed,
-clock/elapsed simulation time, generated land/site assignments, ambient/site incarnations and
-combat state, site contents/reward delivery records, supplier completion and remaining daily
-vendor gear. Invalid input is rejected with diagnostics before replacing the original save;
+**Current implementation:** persistence uses validated atomic JSON save/load. Current serialized
+structures are declared by [`save-data` and `world-state`](../schema/save-world-world-state.yaml),
+[`character-state` and `skill-investment`](../schema/save-character-character-state.yaml),
+[`saved-item` and `saved-equipment-entry`](../schema/save-character-saved-item.yaml), and
+[`character-world-position`](../schema/save-character-character-world-position.yaml).
+Permanent geography is declared by [`saved-land-plan` and `saved-village`](../schema/save-geography-saved-village.yaml),
+[`saved-site-layout`](../schema/save-geography-saved-site-layout.yaml) and
+[`saved-assignment`](../schema/save-geography-saved-assignment.yaml). Shared mutable structures
+are [`saved-mob`](../schema/save-combat-saved-mob.yaml),
+[`saved-combat`](../schema/save-combat-saved-combat.yaml), [`saved-site`](../schema/save-world-saved-site.yaml),
+[`saved-contents` and `saved-reward`](../schema/save-world-saved-contents.yaml), and
+[`saved-vendor`](../schema/save-content-saved-vendor.yaml). These wire definitions do not replace
+the distinct logical portable progression and per-world persistence policies above.
+Invalid input is rejected with diagnostics before replacing the original save;
 validation checks current rules, not whether progression was earned. Restoring the hero refills
 HP; transient player HP, statuses and cooldowns are not captured. Lifecycle saves cover meaningful
 state transitions, unload and graceful shutdown, not a guaranteed crash-checkpoint cadence.

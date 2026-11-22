@@ -340,6 +340,18 @@ class AuthoringTests(unittest.TestCase):
                 with self.assertRaises(jsonschema.ValidationError):
                     jsonschema.validate(row, mutant)
 
+    def test_saved_site_room_level_wire_lengths(self):
+        row = json.loads((ROOT / "tests/fixtures/ontology-schema/current-save.json").read_text())
+        site = next(iter(row["world"]["sites"].values()))
+        validate("saved-site", site)
+        validate("saved-site", dict(site, family="ruins", room_levels=[1, 2, 3]))
+        for levels in ([1], [1, 2], [1, 2, 3, 4], [0, 1, 1], [True, 1, 1], None, {}, 1):
+            with self.subTest(levels=levels), self.assertRaises(jsonschema.ValidationError):
+                validate("saved-site", dict(site, room_levels=levels))
+        # Pinned native anonymous conditions drop cardinality; declarations retain family3/0.
+        validate("saved-site", dict(site, family="ruins", room_levels=[]))
+        validate("saved-site", dict(site, family="supplier", room_levels=[1, 2, 3]))
+
     def test_current_world_envelope_and_nested_geometry(self):
         # Minimal writer-shaped current snapshot, not a claim to generated six-site validity.
         world = {"world_id": "world-a", "seed": -1, "clock": 25200, "elapsed": 0,

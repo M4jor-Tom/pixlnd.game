@@ -7,11 +7,13 @@ default_prefix: pixlnd
 imports:
 - linkml:types
 - save-combat-saved-mob-state
+- identity
+- save-content
 default_range: string
 classes:
   saved-mob:
     class_uri: pixlnd:saved-mob
-    see_also: &id005
+    see_also: &id001
     - ../domain/3_Classes.md#save-data
     slots:
     - saved-mob-species
@@ -32,9 +34,8 @@ classes:
     - saved-mob-combat
     - saved-mob-room-cycle
     - saved-mob-special
-    description: Individual mutable incarnation, never a creature species. World dictionary key provides
-      identity separately. Local curves, ID/pack agreement and conditional site-only fields remain current-rule
-      checks.
+    description: Individual mutable incarnation, distinct from its species and from permanent generation assignments.
+      Room cycle and special state apply to designated site members.
 slots:
   saved-mob-species:
     slot_uri: pixlnd:saved-mob/species
@@ -42,76 +43,91 @@ slots:
     domain: saved-mob
     range: creature
     required: true
-    see_also: *id005
+    see_also: *id001
+    description: Species of the saved mob.
   saved-mob-hostility:
     slot_uri: pixlnd:saved-mob/hostility
     alias: hostility
     domain: saved-mob
     range: saved-hostility
     required: true
-    see_also: *id005
+    see_also: *id001
+    description: Hostility of the saved mob.
   saved-mob-role:
     slot_uri: pixlnd:saved-mob/role
     alias: role
     domain: saved-mob
     range: saved-role
     required: true
-    see_also: *id005
+    see_also: *id001
+    description: Role of the saved mob.
   saved-mob-level:
     slot_uri: pixlnd:saved-mob/level
     alias: level
     domain: saved-mob
     range: integer
     required: true
-    see_also: *id005
+    see_also: *id001
     minimum_value: 1
+    description: Level of the saved mob.
+    maximum_value: 9223372036854775295
   saved-mob-seed:
     slot_uri: pixlnd:saved-mob/seed
     alias: seed
     domain: saved-mob
     range: integer
     required: true
-    see_also: *id005
+    see_also: *id001
     minimum_value: 0
+    description: Incarnation generation seed.
+    maximum_value: 9223372036854775295
   saved-mob-cycle:
     slot_uri: pixlnd:saved-mob/cycle
     alias: cycle
     domain: saved-mob
     range: integer
     required: true
-    see_also: *id005
+    see_also: *id001
     minimum_value: 0
+    description: Incarnation renewal cycle.
+    maximum_value: 9223372036854775295
   saved-mob-hp:
     slot_uri: pixlnd:saved-mob/hp
     alias: hp
     domain: saved-mob
     range: double
     required: true
-    see_also: *id005
+    see_also: *id001
     minimum_value: 0
+    description: Remaining incarnation health.
   saved-mob-max-hp:
     slot_uri: pixlnd:saved-mob/max_hp
     alias: max_hp
     domain: saved-mob
     range: double
     required: true
-    see_also: *id005
+    see_also: *id001
     minimum_value: 0
+    description: Strictly positive maximum incarnation health.
+    none_of:
+    - equals_number: 0
   saved-mob-damage:
     slot_uri: pixlnd:saved-mob/damage
     alias: damage
     domain: saved-mob
     range: double
     required: true
-    see_also: *id005
+    see_also: *id001
     minimum_value: 0
+    description: Damage of the saved mob.
   saved-mob-power-base:
     slot_uri: pixlnd:saved-mob/power_base
     alias: power_base
     domain: saved-mob
     range: double
     required: true
-    see_also: *id005
+    see_also: *id001
+    description: NPC power-curve input independent of level.
 enums:
   saved-hostility:
     enum_uri: pixlnd:saved-hostility
@@ -120,9 +136,11 @@ enums:
       N: {}
       P: {}
       F: {}
+    description: Hostility codes of persisted state.
   saved-role:
     enum_uri: pixlnd:saved-role
     permissible_values:
       melee: {}
       ranged: {}
       mage: {}
+    description: Role codes of persisted state.

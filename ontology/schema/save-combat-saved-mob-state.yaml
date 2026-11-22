@@ -16,63 +16,75 @@ slots:
     domain: saved-mob
     range: string
     required: true
-    see_also: &id005
+    see_also: &id001
     - ../domain/3_Classes.md#save-data
+    description: Persistent logical pack identity.
+    pattern: ^[\s\S]+$
   saved-mob-home:
     slot_uri: pixlnd:saved-mob/home
     alias: home
     domain: saved-mob
     range: double
     required: true
-    see_also: *id005
+    see_also: *id001
     multivalued: true
     minimum_cardinality: 3
     maximum_cardinality: 3
+    description: Logical home coordinates.
   saved-mob-position:
     slot_uri: pixlnd:saved-mob/position
     alias: position
     domain: saved-mob
     range: double
     required: true
-    see_also: *id005
+    see_also: *id001
     multivalued: true
     minimum_cardinality: 3
     maximum_cardinality: 3
+    description: Current logical coordinates.
   saved-mob-dead:
     slot_uri: pixlnd:saved-mob/dead
     alias: dead
     domain: saved-mob
     range: boolean
     required: true
-    see_also: *id005
+    see_also: *id001
+    description: Dead of the saved mob.
   saved-mob-eligible:
     slot_uri: pixlnd:saved-mob/eligible
     alias: eligible
     domain: saved-mob
     range: boolean
     required: true
-    see_also: *id005
+    see_also: *id001
+    description: Eligible of the saved mob.
   saved-mob-combat:
     slot_uri: pixlnd:saved-mob/combat
     alias: combat
     domain: saved-mob
     range: saved-combat
     required: true
-    see_also: *id005
+    see_also: *id001
     inlined: true
+    description: Combat of the saved mob.
   saved-mob-room-cycle:
     slot_uri: pixlnd:saved-mob/room_cycle
     alias: room_cycle
     domain: saved-mob
-    range: integer
     required: false
-    see_also: *id005
-    minimum_value: 0
+    see_also: *id001
+    description: Room renewal cycle that created this guard.
+    exactly_one_of:
+    - range: integer
+      minimum_value: 0
+      maximum_value: 9223372036854775295
   saved-mob-special:
     slot_uri: pixlnd:saved-mob/special
     alias: special
     domain: saved-mob
-    range: saved-special
     required: false
-    see_also: *id005
-    inlined: true
+    see_also: *id001
+    description: Boss-special state for a designated boss.
+    exactly_one_of:
+    - range: saved-special
+      inlined: true

@@ -1260,3 +1260,101 @@ The Godot adapter maps `design.frame-budget.max-catch-up-steps` to
 `Engine.max_physics_steps_per_frame`. Schema validation does not execute or verify
 that engine assignment; the domain's timing rule and configuration facets remain
 separate from this consumer-specific association.
+
+## Task7 — current-save structures, no runtime cutover
+
+Current-save declarations remain distinct from logical portable progression. Recipes, pets,
+artifacts, exploration, personal travel/lore and import fields are not fabricated in this wire model.
+The [save-only consumer mapping](consumer-integration.md) records source → explicit YAML element →
+test associations for every capture/snapshot owner and keyed wrapper; definitions remain in YAML.
+
+| Source scope | Declaring YAML elements | Focused evidence |
+|---|---|---|
+| Hero/item capture and character validation | `save-character-character-state.yaml`: `character-state`, `skill-investment`; `save-character-saved-item.yaml`: `saved-item`, `saved-equipment-entry`; `save-character-character-world-position.yaml`: `character-world-position` | full fixture/root; literal class inventory; nested deletion/shape; optional-null, empty hands, spirit and item-kind/power tests |
+| Ambient/site incarnations and targeting state | `save-combat-saved-mob.yaml`: `saved-mob`; `save-combat-saved-mob-state.yaml`: attached incarnation-state slots; `save-combat-saved-combat.yaml`: `saved-combat`; `save-combat-threat-records.yaml`: `saved-threat`, `saved-order`, `saved-provocation` | health/threat, combat, scalar/list, provocation-limit and wrapper tests |
+| Permanent land/village/site generation snapshots | `save-geography-saved-village.yaml`: `saved-village`, `saved-land-plan`; `save-geography-saved-site-layout.yaml`: `saved-site-layout` and family rules; `save-geography-saved-assignment.yaml`: `saved-assignment` | literal inventory, geometry/coordinate negatives and family-specific tier/captive declarations |
+| Shared world, site and compact collections | `save-world-world-state.yaml`: `save-data`, `world-state`; `save-world-saved-site.yaml`: `saved-site` and room rule; `save-world-saved-site-collections.yaml`: `saved-spirit-level`, `saved-site-room-levels`; `save-world-saved-entries.yaml`: five saved entry classes | independent literal root/required/closedness guard; parent/nested deletions; generic room union, authored/induced conditional rule and real-YAML mutation witnesses |
+| Specials, breakables, traps, rewards and vendors | `save-content-saved-special.yaml`: `saved-special`; `save-content-saved-props-traps.yaml`: `saved-rubble`, `saved-prop`, `saved-trap`; `save-content-saved-vendor.yaml`: `saved-vendor`; `save-world-saved-contents.yaml`: `saved-contents`, `saved-reward` and source-kind rules | coordinate-bound mutations, content shapes, conditional receipt declarations/required fields and measured absence limitations |
+
+Three-way enforcement qualification:
+
+- Native checks prove structural admission only: exact root and represented payload fields,
+  scalar/container/cardinality distinctions, non-null optional boundaries, empty hands and
+  declared item-kind/power, positive health/threat and supported family conditions.
+- Authored/get/induced declarations retain constraints whose native effects are narrower:
+  family-dependent room3/0, true-only provocation, uniqueness, key/body agreement and reward
+  variant applicability. Native admits identifier-omitted keyed bodies, explicit wrappers,
+  false provocation and duplicate classes. Reward multi-field absence becomes grouped
+  co-presence exclusion; empty and nonempty extra class arrays are measured admissions.
+  The generic room union rejects lengths1/2/4, but native admits ruins[] and nonruins3.
+  These are backend ceilings, not permission to omit the declarations.
+- Existing GDScript retains reference, deterministic geography, current-rule progression,
+  equipment, reward-receipt, supplier/stock and lifecycle enforcement. Invalid-save/original-file
+  protection is unchanged; synthetic JSON admission is not runtime save acceptance.
+
+The preserved fixture SHA256 is
+`1efb5bc20044eaaf94b766aeb5157f5c6ad5f4b880a04ba74663d59f25da1a70`:
+current/HEAD bytes match the original accepted baseline/candidate manifests. It is positive
+synthetic wire coverage, not a generated six-site save. Tests expand it only in memory.
+
+Verification is deliberately qualified: full-authoring timed out before the new test; true
+scoped RED and focused GREEN receipts are retained separately. The initial twelve-method save
+run had two newly characterized absence-assumption failures; its corrected affected two-method
+run and later reviewed-revision partitions are qualified separately, not relabeled a full-file pass. Directory
+lint timed out; final changed declaring modules and the aggregate entry lint clean independently,
+not a full-directory green. Literal H/N/P/F naming exclusions preserve existing wire codes and
+match globally across element kinds; the existing native policy test checks each exclusion's
+uniqueness/necessity and retains substantive naming/range negatives.
+
+The exact current-wire Markdown handoff passed independent semantic equivalence review and
+is applied with explicit YAML references. The applied-byte/reference/anchor check preserves
+all distinct §3.7 progression and encounter lifecycle rules. Task8 and runtime routing/relocation
+remain unselected.
+
+### Task7 review fix round1 — existing scalar and snapshot precision
+
+The reviewed missing facets are declared and passed independent spec/quality and wire-equivalence
+re-review. The correction changes no game code, JSON fixture or instance data; the separately
+approved current-wire Markdown handoff preserves distinct rules and operational qualifications.
+`tests/ontology_save_facet_expectations.py::INTEGER_SLOTS` is the literal helper-call inventory;
+`CurrentSaveFacetTests` independently checks raw declarations, SDK get/induced values and
+native numeric output, including exact integer type/value rather than a rounded float maximum.
+
+| Existing source predicate | Explicit YAML facet | Focused tests |
+|---|---|---|
+| `SaveData.integer` and the reviewed literal caller map | `maximum_value` on the listed hero/item/investment, combat order/incarnation, site/spirit/room, reward and vendor slots/branches; stronger version/rarity/power facets retained | `test_integer_upper_raw_sdk_and_native`, `test_integer_upper_actual_yaml_mutation` |
+| Coin empty-string sentinels; nonempty pack and trap hit identities | `saved-item.rules` coin condition; `saved-mob-pack.pattern`; `saved-trap-hit.pattern` | `test_scalar_facts` |
+| Active/inactive special snapshot and phase timer correlations | `saved-special.rules` attached to canonical phase/origin/endpoint/engaged/target/recovery/left slots | `test_snapshot_rules_authored_and_induced`, `test_snapshot_native_effects_and_limits` |
+| Cooldown recovery does not exceed remaining cooldown | `saved-special.rules` cooldown recovery `equals_expression` invariant | authored/get/induced exact rule checks, pinned expression evaluator witnesses, native no-effect admission |
+| Rubble state/deadline and idle/warning trap empty hitset | `saved-rubble.rules` two-conjunction postcondition; `saved-trap.rules` attached hit cardinality | snapshot declaration and native-limit tests |
+| Reward field absence | Existing `saved-reward.rules` unchanged | `test_conditional_payloads_and_native_provocation_limit` now isolates presence using otherwise-valid position/class/class-list values; malformed-value negatives remain separate |
+
+The one authorized Godot helper probe measured raw integer endpoint `9223372036854775295`
+accepted and its successor rejected. This exact inclusive endpoint is now declared only on
+helper-governed paths, not `world-state-seed` or deterministic geography integers. The same
+successor JSON token was parsed by Godot as FLOAT `9223372036854774784` and accepted; tests
+retain this distinct observed float admission. This is **not** raw-JSON lexical equivalence,
+complete JSON parser agreement, or arbitrary numeric/runtime admission certification.
+
+Native enforces the coin sentinels, truly nonempty string facets (including newline controls),
+active/nonactive special target forms, zero recovery outside cooldown and zero charge remainder.
+Authored/get/induced snapshot rules additionally retain exact active/inactive coordinate lengths,
+active engagement, cooldown recovery inequality, rubble state/deadline correlation and idle/warning
+hit emptiness. Those predicates have measured native gaps: wrong coordinate variants, false active
+engagement, excessive cooldown recovery, mismatched rubble deadlines and nonempty idle/warning hits
+remain admitted. The declarations are not dropped because of these backend limitations.
+
+Fresh changed-revision evidence is partitioned, not a whole-file replay: all12 existing save
+methods passed in frozen4/4/4 groups; five new facet methods passed in2/2/1 groups; affected
+six-method authoring group, coordinate-mutation method and exact full-fixture/root method passed.
+All13 changed declaring owners plus the aggregate entry linted clean independently. Original
+failed/time-limited runs remain preserved; no directory/full-Quality pass is inferred. Exact
+input pins, command selectors and the reviewed **validated atomic JSON save/load** handoff
+are retained in managed fix evidence. Parent application checks verified the exact approved
+replacements, 21 named YAML reference targets, unchanged anchors and verbatim room-renewal rules.
+
+The unchanged native Mermaid projection does not render relationship edges for the class
+ranges inside `saved-mob-special` and `saved-reward-classes` boolean expressions. Regenerated
+views therefore omit those two edges/click links, while declarations and native contracts
+retain the references. Diagrams are not a complete relationship oracle for these branches;
+no schema weakening or generator repair follows from this projection limit.

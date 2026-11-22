@@ -10,7 +10,7 @@ from unittest.mock import patch
 import jsonschema
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-from test_ontology_schema import SCHEMA, generated
+from test_ontology_schema import ROOT, SCHEMA, generated
 
 
 def assert_root(test: unittest.TestCase, name: str, properties: set[str],
@@ -24,6 +24,21 @@ def assert_root(test: unittest.TestCase, name: str, properties: set[str],
 
 
 class FullInputContracts(unittest.TestCase):
+    def test_current_save_full_fixture_and_root(self):
+        row = json.loads((ROOT / "tests/fixtures/ontology-schema/current-save.json").read_text())
+        fields = {"version", "world", "character"}
+        schema = assert_root(self, "save-data", fields, fields)
+        jsonschema.Draft201909Validator(schema).validate(row)
+        for key in ("version", "world", "character"):
+            bad = deepcopy(row)
+            del bad[key]
+            with self.subTest(key=key), self.assertRaises(jsonschema.ValidationError):
+                jsonschema.Draft201909Validator(schema).validate(bad)
+        bad = deepcopy(row)
+        bad["unexpected-field"] = True
+        with self.assertRaises(jsonschema.ValidationError):
+            jsonschema.Draft201909Validator(schema).validate(bad)
+
     def test_whole_generators_source(self):
         from ontology_generator_expectations import SOURCE_FIELDS
         from ontology_source_contracts import validate_source

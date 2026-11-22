@@ -42,6 +42,10 @@ failure only omits guidance, retaining terrain, village, sites and gameplay.
 The corresponding required source inputs are [`generator-design-initial-encounters-ruins`](../schema/design-items-encounter-ruins.yaml), [`generator-design-initial-encounters-camp`](../schema/design-items-encounter-camp.yaml), [`generator-design-initial-encounters-supplier`](../schema/design-items-encounter-supplier.yaml).
 These input structures do not replace the logical occurrences or the procedures below.
 
+Persisted geometry is declared separately by [`saved-land-plan` and `saved-village`](../schema/save-geography-saved-village.yaml),
+[`saved-site-layout` and its family rules](../schema/save-geography-saved-site-layout.yaml),
+and [`saved-assignment`](../schema/save-geography-saved-assignment.yaml).
+
 All dimensions are in blocks. Ruins' structural layout, exact component dimensions/counts,
 overall bounds, ceiling/door sizes and trap-free lane are declared by
 [`initial-ruins-assembly`, `ruins-room-volume`, `ruins-corridor-volume`, `ruins-court-volume`,
@@ -160,6 +164,10 @@ and [mission packages](#shared-mission-packages-and-supplier-shops), not replace
 The corresponding required source inputs are [`generator-design-initial-encounters-boss-specials`](../schema/design-items-encounter-boss.yaml), [`generator-design-initial-encounters-special-profile`](../schema/design-items-encounter-specials.yaml) and its [`stomp`](../schema/design-items-encounter-special-stomp.yaml), [`charge`](../schema/design-items-encounter-special-charge.yaml) children, [`generator-design-initial-encounters-rubble`](../schema/design-items-encounter-rubble.yaml).
 These input structures do not replace the logical occurrences or the procedures below.
 
+Persisted state shapes and local snapshot rules are [`saved-special`](../schema/save-content-saved-special.yaml)
+and [`saved-rubble`](../schema/save-content-saved-props-traps.yaml); these declarations
+neither execute specials nor replace cancellation, restoration or world-clock rules below.
+
 Each boss independently receives one permanent special according to [`boss-special-profile.assignment-probability`](../schema/world.yaml): ground stomp or charge. Fixed
 parameter shapes are [`boss-special-profile`, `boss-stomp-profile`, and `boss-charge-profile`](../schema/world.yaml),
 covered by `test_boss_special_profiles`; assignment scope is [`encounter-assignment`](../schema/world.yaml).
@@ -201,6 +209,11 @@ overlap an actor. [World-clock/save rules](3_Classes.md#game-clock) apply.
 
 The corresponding required source inputs are [`generator-design-initial-encounters-spikes`](../schema/design-items-encounter-spikes.yaml) and [`generator-design-initial-encounters-furnishings with vase/table children`](../schema/design-items-encounter-furnishings.yaml).
 These input structures do not replace the logical occurrences or the procedures below.
+
+Persisted payloads are [`saved-contents` and `saved-reward`](../schema/save-world-saved-contents.yaml),
+[`saved-prop` and `saved-trap`](../schema/save-content-saved-props-traps.yaml), and
+[`saved-site-room-levels`](../schema/save-world-saved-site-collections.yaml) with the
+[`saved-site` family-dependent room rule](../schema/save-world-saved-site.yaml).
 
 The trap count, closed footprint, inclusive player-feet trigger interval, phase durations and
 physical damage are declared by [`spike-trap-profile`, `spike-trap-profile.count-per-ruins-site`, `spike-trap-profile.footprint-width-blocks`,

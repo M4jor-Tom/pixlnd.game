@@ -258,7 +258,9 @@ class GeneratorDeclarationTests(unittest.TestCase):
         self.assertEqual((naming["level"], naming["class_pattern"], naming["slot_pattern"]),
                          ("error", "kebab", "kebab"))
         self.assertNotIn("exclude_type", naming)
-        self.assertEqual(naming["exclude"].count("at-cursor"), 1)
+        literals = ("at-cursor", "H", "N", "P", "F")
+        for literal in literals:
+            self.assertEqual(naming["exclude"].count(literal), 1)
         fixture = {
             "id": "https://w3id.org/pixlnd/policy-fixture", "name": "policy-fixture",
             "description": "Native naming-policy witness.",
@@ -269,18 +271,19 @@ class GeneratorDeclarationTests(unittest.TestCase):
                 "attributes": {"move-kind": {"description": "Move kind.", "slot_uri": "fixture:policy-row/move-kind",
                                              "range": "PolicyMoveKind"}}}},
             "enums": {"PolicyMoveKind": {"description": "Literal move kinds.", "enum_uri": "fixture:PolicyMoveKind",
-                                         "permissible_values": {"at-cursor": {}}}},
+                                         "permissible_values": {literal: {} for literal in literals}}},
         }
         with tempfile.TemporaryDirectory() as scratch:
             path = Path(scratch) / "policy.yaml"
             path.write_text(yaml.safe_dump(fixture, sort_keys=False))
             print("POLICY clean fixture", hashlib.sha256(path.read_bytes()).hexdigest(), path.read_text())
             self.assertEqual(list(Linter(policy).lint(str(path))), [])
-            without_literal = deepcopy(policy)
-            without_literal["rules"]["standard_naming"]["exclude"].remove("at-cursor")
-            problems = list(Linter(without_literal).lint(str(path)))
-            self.assertEqual([p.rule_name for p in problems], ["standard_naming"])
-            self.assertIn("'at-cursor'", problems[0].message)
+            for literal in literals:
+                without_literal = deepcopy(policy)
+                without_literal["rules"]["standard_naming"]["exclude"].remove(literal)
+                problems = list(Linter(without_literal).lint(str(path)))
+                self.assertEqual([p.rule_name for p in problems], ["standard_naming"])
+                self.assertIn(repr(literal), problems[0].message)
             for kind in ("class", "slot", "enum", "value", "range"):
                 bad = deepcopy(fixture)
                 if kind == "class":

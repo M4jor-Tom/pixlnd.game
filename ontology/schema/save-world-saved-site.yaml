@@ -11,7 +11,7 @@ default_range: string
 classes:
   saved-site:
     class_uri: pixlnd:saved-site
-    see_also: &id009
+    see_also: &id001
     - ../domain/3_Classes.md#save-data
     slots:
     - saved-site-id
@@ -26,8 +26,7 @@ classes:
     - saved-site-spirit-levels
     - saved-site-room-levels
     - saved-site-contents
-    description: Current mutable site state keyed by logical site ID. Conditional ruin room levels, boss
-      spirit membership, refresh/completion and reward issuance remain current-rule checks.
+    description: Mutable site incarnation, completion, renewal, content and reward state keyed by logical site identity.
     rules:
     - see_also:
       - ../domain/encounter-contracts.md#spike-traps-and-furnishing-contents
@@ -35,11 +34,18 @@ classes:
         slot_conditions:
           saved-site-family:
             equals_string: ruins
+            alias: family
       postconditions:
         slot_conditions:
           saved-site-room-levels:
             minimum_cardinality: 3
             maximum_cardinality: 3
+            alias: room_levels
+      elseconditions:
+        slot_conditions:
+          saved-site-room-levels:
+            alias: room_levels
+            maximum_cardinality: 0
 slots:
   saved-site-id:
     slot_uri: pixlnd:saved-site/id
@@ -47,52 +53,60 @@ slots:
     domain: saved-site
     range: string
     required: true
-    see_also: *id009
+    see_also: *id001
     key: true
+    description: Id of the saved site.
   saved-site-family:
     slot_uri: pixlnd:saved-site/family
     alias: family
     domain: saved-site
     range: saved-site-family
     required: true
-    see_also: *id009
+    see_also: *id001
+    description: Family of the saved site.
   saved-site-volumes:
     slot_uri: pixlnd:saved-site/volumes
     alias: volumes
     domain: saved-site
     range: double
     required: true
-    see_also: *id009
+    see_also: *id001
     array:
       dimensions:
       - minimum_cardinality: 1
       - exact_cardinality: 6
+    description: Volumes of the saved site.
   saved-site-pending:
     slot_uri: pixlnd:saved-site/pending
     alias: pending
     domain: saved-site
     range: boolean
     required: true
-    see_also: *id009
+    see_also: *id001
+    description: Pending of the saved site.
   saved-site-cleared:
     slot_uri: pixlnd:saved-site/cleared
     alias: cleared
     domain: saved-site
     range: boolean
     required: true
-    see_also: *id009
+    see_also: *id001
+    description: Cleared of the saved site.
   saved-site-completed:
     slot_uri: pixlnd:saved-site/completed
     alias: completed
     domain: saved-site
     range: boolean
     required: true
-    see_also: *id009
+    see_also: *id001
+    description: Completed of the saved site.
   saved-site-cycle:
     slot_uri: pixlnd:saved-site/cycle
     alias: cycle
     domain: saved-site
     range: integer
     required: true
-    see_also: *id009
+    see_also: *id001
     minimum_value: 0
+    description: Cycle of the saved site.
+    maximum_value: 9223372036854775295

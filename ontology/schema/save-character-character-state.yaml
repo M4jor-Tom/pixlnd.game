@@ -11,16 +11,15 @@ default_range: string
 classes:
   skill-investment:
     class_uri: pixlnd:skill-investment
-    see_also: &id002
+    see_also:
     - ../domain/3_Classes.md#save-data
     slots:
     - skill-investment-ability
     - skill-investment-points
-    description: Container-scoped ability key. SimpleDict scalar values are current wire encoding; key/body
-      agreement needs admission validation.
+    description: Ability investment keyed within one character, with positive spent points.
   character-state:
     class_uri: pixlnd:character-state
-    see_also: &id004
+    see_also:
     - ../domain/3_Classes.md#save-data
     slots:
     - character-state-id
@@ -33,107 +32,34 @@ classes:
     - character-state-points
     - character-state-bag
     - character-state-equipment
-    description: Current capture character payload only; no transient player HP, statuses, cooldowns or
-      deferred portable fields are added. Exact current-rule progression and equipment integrity remain
-      runtime checks.
+    description: Persisted hero identity, progression and possessions; transient health, effects and cooldowns are
+      excluded. Portable progression is a separate logical contract.
 slots:
-  skill-investment-ability:
-    slot_uri: pixlnd:skill-investment/ability
-    alias: ability
-    domain: skill-investment
-    range: ability
-    required: true
-    see_also: *id002
-    key: true
-  skill-investment-points:
-    slot_uri: pixlnd:skill-investment/points
-    alias: points
-    domain: skill-investment
-    range: integer
-    required: true
-    see_also: *id002
-    minimum_value: 1
-  character-state-id:
-    slot_uri: pixlnd:character-state/id
-    alias: id
-    domain: character-state
-    range: string
-    required: true
-    see_also: *id004
-    pattern: ^.+$
-  character-state-class-id:
-    slot_uri: pixlnd:character-state/class_id
-    alias: class_id
-    domain: character-state
-    range: character-class
-    required: true
-    see_also: *id004
-  character-state-spec:
-    slot_uri: pixlnd:character-state/spec
-    alias: spec
-    domain: character-state
-    range: specialization
-    required: true
-    see_also: *id004
-  character-state-level:
-    slot_uri: pixlnd:character-state/level
-    alias: level
-    domain: character-state
-    range: integer
-    required: true
-    see_also: *id004
-    minimum_value: 1
-  character-state-xp:
-    slot_uri: pixlnd:character-state/xp
-    alias: xp
-    domain: character-state
-    range: integer
-    required: true
-    see_also: *id004
-    minimum_value: 0
-  character-state-banked:
-    slot_uri: pixlnd:character-state/banked
-    alias: banked
-    domain: character-state
-    range: integer
-    required: true
-    see_also: *id004
-    minimum_value: 0
-  character-state-coins:
-    slot_uri: pixlnd:character-state/coins
-    alias: coins
-    domain: character-state
-    range: integer
-    required: true
-    see_also: *id004
-    minimum_value: 0
-  character-state-points:
-    slot_uri: pixlnd:character-state/points
-    alias: points
-    domain: character-state
-    range: skill-investment
-    required: true
-    see_also: *id004
-    multivalued: true
-    inlined: true
-    inlined_as_list: false
-  character-state-bag:
-    slot_uri: pixlnd:character-state/bag
-    alias: bag
-    domain: character-state
-    range: saved-item
-    required: true
-    see_also: *id004
-    multivalued: true
-    inlined: true
-    inlined_as_list: true
-  character-state-equipment:
-    slot_uri: pixlnd:character-state/equipment
-    alias: equipment
-    domain: character-state
-    range: saved-equipment-entry
-    required: true
-    see_also: *id004
-    multivalued: true
-    inlined: true
-    inlined_as_list: false
+  skill-investment-ability: {slot_uri: 'pixlnd:skill-investment/ability', alias: ability, domain: skill-investment, range: ability, required: true,
+      see_also: [../domain/3_Classes.md#save-data], key: true, description: Ability of the skill investment.}
+  skill-investment-points: {slot_uri: 'pixlnd:skill-investment/points', alias: points, domain: skill-investment, range: integer, required: true,
+      see_also: [../domain/3_Classes.md#save-data], minimum_value: 1, description: Points of the skill investment.,
+      maximum_value: 9223372036854775295}
+  character-state-id: {slot_uri: 'pixlnd:character-state/id', alias: id, domain: character-state, range: string, required: true, see_also: [
+        ../domain/3_Classes.md#save-data], pattern: ^.+$, description: Id of the character state.}
+  character-state-class-id: {slot_uri: 'pixlnd:character-state/class_id', alias: class_id, domain: character-state, range: character-class,
+      required: true, see_also: [../domain/3_Classes.md#save-data], description: Class id of the character state.}
+  character-state-spec: {slot_uri: 'pixlnd:character-state/spec', alias: spec, domain: character-state, range: specialization, required: true,
+      see_also: [../domain/3_Classes.md#save-data], description: Spec of the character state.}
+  character-state-level: {slot_uri: 'pixlnd:character-state/level', alias: level, domain: character-state, range: integer, required: true,
+      see_also: [../domain/3_Classes.md#save-data], minimum_value: 1, description: Level of the character state., maximum_value: 9223372036854775295}
+  character-state-xp: {slot_uri: 'pixlnd:character-state/xp', alias: xp, domain: character-state, range: integer, required: true, see_also: [
+        ../domain/3_Classes.md#save-data], minimum_value: 0, description: Xp of the character state., maximum_value: 9223372036854775295}
+  character-state-banked: {slot_uri: 'pixlnd:character-state/banked', alias: banked, domain: character-state, range: integer, required: true,
+      see_also: [../domain/3_Classes.md#save-data], minimum_value: 0, description: Banked of the character state., maximum_value: 9223372036854775295}
+  character-state-coins: {slot_uri: 'pixlnd:character-state/coins', alias: coins, domain: character-state, range: integer, required: true,
+      see_also: [../domain/3_Classes.md#save-data], minimum_value: 0, description: Coins of the character state., maximum_value: 9223372036854775295}
+  character-state-points: {slot_uri: 'pixlnd:character-state/points', alias: points, domain: character-state, range: skill-investment, required: true,
+      see_also: [../domain/3_Classes.md#save-data], multivalued: true, inlined: true, inlined_as_list: false, description: Points
+        of the character state.}
+  character-state-bag: {slot_uri: 'pixlnd:character-state/bag', alias: bag, domain: character-state, range: saved-item, required: true,
+      see_also: [../domain/3_Classes.md#save-data], multivalued: true, inlined: true, inlined_as_list: true, description: Bag
+        of the character state.}
+  character-state-equipment: {slot_uri: 'pixlnd:character-state/equipment', alias: equipment, domain: character-state, range: saved-equipment-entry,
+      required: true, see_also: [../domain/3_Classes.md#save-data], multivalued: true, inlined: true, inlined_as_list: false,
+      description: Equipment of the character state.}

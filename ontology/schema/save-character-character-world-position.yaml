@@ -10,7 +10,7 @@ default_range: string
 classes:
   character-world-position:
     class_uri: pixlnd:character-world-position
-    see_also: &id005
+    see_also: &id001
     - ../domain/3_Classes.md#save-data
     slots:
     - character-world-position-character
@@ -25,25 +25,28 @@ slots:
     domain: character-world-position
     range: string
     required: true
-    see_also: *id005
+    see_also: *id001
     key: true
+    description: Character of the character world position.
   character-world-position-position:
     slot_uri: pixlnd:character-world-position/position
     alias: position
     domain: character-world-position
     range: double
     required: true
-    see_also: *id005
+    see_also: *id001
     multivalued: true
     minimum_cardinality: 3
     maximum_cardinality: 3
+    description: Position of the character world position.
   character-world-position-respawn:
     slot_uri: pixlnd:character-world-position/respawn
     alias: respawn
     domain: character-world-position
     range: double
     required: true
-    see_also: *id005
+    see_also: *id001
     multivalued: true
     minimum_cardinality: 3
     maximum_cardinality: 3
+    description: Respawn of the character world position.

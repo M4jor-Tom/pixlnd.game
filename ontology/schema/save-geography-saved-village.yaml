@@ -11,7 +11,7 @@ default_range: string
 classes:
   saved-village:
     class_uri: pixlnd:saved-village
-    see_also: &id003
+    see_also: &id001
     - ../domain/3_Classes.md#settlement
     slots:
     - saved-village-centre
@@ -22,17 +22,16 @@ classes:
     - saved-village-style
     - saved-village-hub
     - saved-village-gate-index
-    description: Current joint-geography village payload, distinct from the generic settlement definition.
-      Layout and authored opening correctness remain deterministic checks.
+    description: Permanent joint-geography village location, style and authored opening.
   saved-land-plan:
     class_uri: pixlnd:saved-land-plan
-    see_also: &id004
+    see_also: &id002
     - ../domain/3_Classes.md#save-data
     slots:
     - saved-land-plan-village
     - saved-land-plan-sites
-    description: Complete current joint geography payload stored per land-grid key; contains no optional
-      guidance. Exact six-site allocation and deterministic equality remain runtime checks.
+    description: Permanent village and six site layouts keyed by land-grid location; optional guidance
+      is not persisted.
 slots:
   saved-village-centre:
     slot_uri: pixlnd:saved-village/centre
@@ -40,76 +39,86 @@ slots:
     domain: saved-village
     range: double
     required: true
-    see_also: *id003
+    see_also: *id001
     multivalued: true
     minimum_cardinality: 2
     maximum_cardinality: 2
+    description: Centre of the saved village.
   saved-village-height:
     slot_uri: pixlnd:saved-village/height
     alias: height
     domain: saved-village
     range: double
     required: true
-    see_also: *id003
+    see_also: *id001
+    description: Height of the saved village.
   saved-village-gate-width:
     slot_uri: pixlnd:saved-village/gate_width
     alias: gate_width
     domain: saved-village
     range: double
     required: true
-    see_also: *id003
+    see_also: *id001
+    description: Authored opening width.
   saved-village-gate-offset:
     slot_uri: pixlnd:saved-village/gate_offset
     alias: gate_offset
     domain: saved-village
     range: double
     required: true
-    see_also: *id003
+    see_also: *id001
+    description: Authored opening displacement.
   saved-village-name:
     slot_uri: pixlnd:saved-village/name
     alias: name
     domain: saved-village
     range: string
     required: true
-    see_also: *id003
+    see_also: *id001
+    description: Name of the saved village.
   saved-village-style:
     slot_uri: pixlnd:saved-village/style
     alias: style
     domain: saved-village
     range: string
     required: true
-    see_also: *id003
+    see_also: *id001
+    description: Style of the saved village.
   saved-village-hub:
     slot_uri: pixlnd:saved-village/hub
     alias: hub
     domain: saved-village
     range: boolean
     required: true
-    see_also: *id003
+    see_also: *id001
+    description: Whether the village uses the dry fallback hub.
   saved-village-gate-index:
     slot_uri: pixlnd:saved-village/gate_index
     alias: gate_index
     domain: saved-village
     range: integer
     required: true
-    see_also: *id003
+    see_also: *id001
+    description: Chosen village boundary opening index.
   saved-land-plan-village:
     slot_uri: pixlnd:saved-land-plan/village
     alias: village
     domain: saved-land-plan
     range: saved-village
     required: true
-    see_also: *id004
+    see_also: *id002
     inlined: true
+    description: Village of the saved land plan.
   saved-land-plan-sites:
     slot_uri: pixlnd:saved-land-plan/sites
     alias: sites
     domain: saved-land-plan
     range: saved-site-layout
     required: true
-    see_also: *id004
+    see_also: *id002
     multivalued: true
     inlined: true
     inlined_as_list: true
     minimum_cardinality: 6
     maximum_cardinality: 6
+    description: Sites of the saved land plan.

@@ -15,12 +15,33 @@ classes:
     slots:
     - saved-rubble-broken
     - saved-rubble-restore-at
+    description: Breakable stone state and world-clock restoration deadline.
+    rules:
+    - postconditions:
+        any_of:
+        - slot_conditions:
+            saved-rubble-broken:
+              alias: broken
+              equals_expression: 'False'
+            saved-rubble-restore-at:
+              alias: restore_at
+              equals_number: 0
+        - slot_conditions:
+            saved-rubble-broken:
+              alias: broken
+              equals_expression: 'True'
+            saved-rubble-restore-at:
+              alias: restore_at
+              minimum_value: 0
+              none_of:
+              - equals_number: 0
   saved-prop:
     class_uri: pixlnd:saved-prop
     see_also: &id002
     - ../domain/encounter-contracts.md#spike-traps-and-furnishing-contents
     slots:
     - saved-prop-hp
+    description: Remaining furnishing health.
   saved-trap:
     class_uri: pixlnd:saved-trap
     see_also: &id003
@@ -29,8 +50,20 @@ classes:
     - saved-trap-phase
     - saved-trap-left
     - saved-trap-hit
-    description: Current trap phase/timer/hit-set; phase-dependent timing and hit-set emptiness require
-      coupled current-rule checks.
+    description: Persisted spike phase, remaining time and identities already hit in the activation.
+    rules:
+    - preconditions:
+        slot_conditions:
+          saved-trap-phase:
+            alias: phase
+            equals_string_in:
+            - idle
+            - warning
+      postconditions:
+        slot_conditions:
+          saved-trap-hit:
+            alias: hit
+            maximum_cardinality: 0
 slots:
   saved-rubble-broken:
     slot_uri: pixlnd:saved-rubble/broken
@@ -39,6 +72,7 @@ slots:
     range: boolean
     required: true
     see_also: *id001
+    description: Broken of the saved rubble.
   saved-rubble-restore-at:
     slot_uri: pixlnd:saved-rubble/restore_at
     alias: restore_at
@@ -47,6 +81,7 @@ slots:
     required: true
     see_also: *id001
     minimum_value: 0
+    description: Restore at of the saved rubble.
   saved-prop-hp:
     slot_uri: pixlnd:saved-prop/hp
     alias: hp
@@ -55,6 +90,7 @@ slots:
     required: true
     see_also: *id002
     minimum_value: 0
+    description: Hp of the saved prop.
   saved-trap-phase:
     slot_uri: pixlnd:saved-trap/phase
     alias: phase
@@ -62,6 +98,7 @@ slots:
     range: trap-phase
     required: true
     see_also: *id003
+    description: Phase of the saved trap.
   saved-trap-left:
     slot_uri: pixlnd:saved-trap/left
     alias: left
@@ -70,6 +107,7 @@ slots:
     required: true
     see_also: *id003
     minimum_value: 0
+    description: Left of the saved trap.
   saved-trap-hit:
     slot_uri: pixlnd:saved-trap/hit
     alias: hit
@@ -79,6 +117,8 @@ slots:
     see_also: *id003
     multivalued: true
     list_elements_unique: true
+    description: Hit of the saved trap.
+    pattern: ^[\s\S]+$
 enums:
   trap-phase:
     enum_uri: pixlnd:trap-phase
@@ -87,3 +127,4 @@ enums:
       warning: {}
       active: {}
       cooldown: {}
+    description: Trap phase codes of persisted state.

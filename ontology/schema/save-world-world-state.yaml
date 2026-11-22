@@ -12,7 +12,7 @@ default_range: string
 classes:
   world-state:
     class_uri: pixlnd:world-state
-    see_also: &id010
+    see_also:
     - ../domain/3_Classes.md#save-data
     slots:
     - world-state-world-id
@@ -24,123 +24,28 @@ classes:
     - world-state-sites
     - world-state-mobs
     - world-state-characters
-    description: Current WorldState.snapshot wire fields only. Saved-world identity is distinct from seed;
-      IDs are not assumed to follow catalog kebab-case. Geometry, map key closure, local curves and reward
-      integrity remain current-rule admission responsibilities.
+    description: Persisted shared-world identity, time, geography, incarnations, stock and per-character
+      locations. World identity is independent of generation seed.
   save-data:
     class_uri: pixlnd:save-data
-    see_also: &id011
+    see_also:
     - ../domain/3_Classes.md#save-data
     slots:
     - save-data-version
     - save-data-world
     - save-data-character
-    description: Current save envelope only, not a portable import protocol or historical database. Current-rule
-      validation must succeed before publishing or replacing original bytes.
+    description: Versioned current saved-world and hero envelope, distinct from portable-world import
+      and historical formats.
 slots:
-  world-state-world-id:
-    slot_uri: pixlnd:world-state/world_id
-    alias: world_id
-    domain: world-state
-    range: string
-    required: true
-    see_also: *id010
-    pattern: ^[^/]+$
-  world-state-seed:
-    slot_uri: pixlnd:world-state/seed
-    alias: seed
-    domain: world-state
-    range: integer
-    required: true
-    see_also: *id010
-  world-state-clock:
-    slot_uri: pixlnd:world-state/clock
-    alias: clock
-    domain: world-state
-    range: double
-    required: true
-    see_also: *id010
-    minimum_value: 0
-  world-state-elapsed:
-    slot_uri: pixlnd:world-state/elapsed
-    alias: elapsed
-    domain: world-state
-    range: double
-    required: true
-    see_also: *id010
-    minimum_value: 0
-  world-state-lands:
-    slot_uri: pixlnd:world-state/lands
-    alias: lands
-    domain: world-state
-    range: saved-land-entry
-    required: true
-    see_also: *id010
-    multivalued: true
-    inlined: true
-    inlined_as_list: false
-  world-state-vendors:
-    slot_uri: pixlnd:world-state/vendors
-    alias: vendors
-    domain: world-state
-    range: saved-vendor-entry
-    required: true
-    see_also: *id010
-    multivalued: true
-    inlined: true
-    inlined_as_list: false
-  world-state-sites:
-    slot_uri: pixlnd:world-state/sites
-    alias: sites
-    domain: world-state
-    range: saved-site
-    required: true
-    see_also: *id010
-    multivalued: true
-    inlined: true
-    inlined_as_list: false
-  world-state-mobs:
-    slot_uri: pixlnd:world-state/mobs
-    alias: mobs
-    domain: world-state
-    range: saved-mob-entry
-    required: true
-    see_also: *id010
-    multivalued: true
-    inlined: true
-    inlined_as_list: false
-  world-state-characters:
-    slot_uri: pixlnd:world-state/characters
-    alias: characters
-    domain: world-state
-    range: character-world-position
-    required: true
-    see_also: *id010
-    multivalued: true
-    inlined: true
-    inlined_as_list: false
-  save-data-version:
-    slot_uri: pixlnd:save-data/version
-    alias: version
-    domain: save-data
-    range: integer
-    required: true
-    see_also: *id011
-    minimum_value: 1
-    maximum_value: 1
-  save-data-world:
-    slot_uri: pixlnd:save-data/world
-    alias: world
-    domain: save-data
-    range: world-state
-    required: true
-    see_also: *id011
-    inlined: true
-  save-data-character:
-    slot_uri: pixlnd:save-data/character
-    alias: character
-    domain: save-data
-    range: character-state
-    required: true
-    see_also: *id011
-    inlined: true
+  world-state-world-id: {slot_uri: 'pixlnd:world-state/world_id', alias: world_id, domain: world-state, range: string, required: true, see_also: [../domain/3_Classes.md#save-data], pattern: '^[^/]+$', description: Saved-world identity independent of seed; excludes the identity path separator.}
+  world-state-seed: {slot_uri: 'pixlnd:world-state/seed', alias: seed, domain: world-state, range: integer, required: true, see_also: [../domain/3_Classes.md#save-data], description: Signed world generation seed.}
+  world-state-clock: {slot_uri: 'pixlnd:world-state/clock', alias: clock, domain: world-state, range: double, required: true, see_also: [../domain/3_Classes.md#save-data], minimum_value: 0, description: World-clock seconds including accelerated simulation time.}
+  world-state-elapsed: {slot_uri: 'pixlnd:world-state/elapsed', alias: elapsed, domain: world-state, range: double, required: true, see_also: [../domain/3_Classes.md#save-data], minimum_value: 0, description: 'Elapsed running simulation seconds, excluding offline time.'}
+  world-state-lands: {slot_uri: 'pixlnd:world-state/lands', alias: lands, domain: world-state, range: saved-land-entry, required: true, see_also: [../domain/3_Classes.md#save-data], multivalued: true, inlined: true, inlined_as_list: false, description: Lands of the world state.}
+  world-state-vendors: {slot_uri: 'pixlnd:world-state/vendors', alias: vendors, domain: world-state, range: saved-vendor-entry, required: true, see_also: [../domain/3_Classes.md#save-data], multivalued: true, inlined: true, inlined_as_list: false, description: Vendors of the world state.}
+  world-state-sites: {slot_uri: 'pixlnd:world-state/sites', alias: sites, domain: world-state, range: saved-site, required: true, see_also: [../domain/3_Classes.md#save-data], multivalued: true, inlined: true, inlined_as_list: false, description: Sites of the world state.}
+  world-state-mobs: {slot_uri: 'pixlnd:world-state/mobs', alias: mobs, domain: world-state, range: saved-mob-entry, required: true, see_also: [../domain/3_Classes.md#save-data], multivalued: true, inlined: true, inlined_as_list: false, description: Mobs of the world state.}
+  world-state-characters: {slot_uri: 'pixlnd:world-state/characters', alias: characters, domain: world-state, range: character-world-position, required: true, see_also: [../domain/3_Classes.md#save-data], multivalued: true, inlined: true, inlined_as_list: false, description: Characters of the world state.}
+  save-data-version: {slot_uri: 'pixlnd:save-data/version', alias: version, domain: save-data, range: integer, required: true, see_also: [../domain/3_Classes.md#save-data], minimum_value: 1, maximum_value: 1, description: Version of the save data.}
+  save-data-world: {slot_uri: 'pixlnd:save-data/world', alias: world, domain: save-data, range: world-state, required: true, see_also: [../domain/3_Classes.md#save-data], inlined: true, description: World of the save data.}
+  save-data-character: {slot_uri: 'pixlnd:save-data/character', alias: character, domain: save-data, range: character-state, required: true, see_also: [../domain/3_Classes.md#save-data], inlined: true, description: Character of the save data.}

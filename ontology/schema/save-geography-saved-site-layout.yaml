@@ -11,7 +11,7 @@ default_range: string
 classes:
   saved-site-layout:
     class_uri: pixlnd:saved-site-layout
-    see_also: &id002
+    see_also:
     - ../domain/encounter-contracts.md#geometry-and-occupancy
     slots:
     - saved-site-layout-family
@@ -25,110 +25,41 @@ classes:
     - saved-site-layout-entry
     - saved-site-layout-tier
     - saved-site-layout-captive
-    description: Current permanent site geometry and assignments; conditional tier/captive applicability,
-      component unions, physical geometry and seeded correctness remain linked current-rule checks.
-slots:
-  saved-site-layout-family:
-    slot_uri: pixlnd:saved-site-layout/family
-    alias: family
-    domain: saved-site-layout
-    range: saved-site-family
-    required: true
-    see_also: *id002
-  saved-site-layout-ordinal:
-    slot_uri: pixlnd:saved-site-layout/ordinal
-    alias: ordinal
-    domain: saved-site-layout
-    range: integer
-    required: true
-    see_also: *id002
-    minimum_value: 0
-  saved-site-layout-centre:
-    slot_uri: pixlnd:saved-site-layout/centre
-    alias: centre
-    domain: saved-site-layout
-    range: double
-    required: true
-    see_also: *id002
-    multivalued: true
-    minimum_cardinality: 2
-    maximum_cardinality: 2
-  saved-site-layout-turn:
-    slot_uri: pixlnd:saved-site-layout/turn
-    alias: turn
-    domain: saved-site-layout
-    range: integer
-    required: true
-    see_also: *id002
-    minimum_value: 0
-    maximum_value: 3
-  saved-site-layout-floor:
-    slot_uri: pixlnd:saved-site-layout/floor
-    alias: floor
-    domain: saved-site-layout
-    range: double
-    required: true
-    see_also: *id002
-  saved-site-layout-components:
-    slot_uri: pixlnd:saved-site-layout/components
-    alias: components
-    domain: saved-site-layout
-    range: double
-    required: true
-    see_also: *id002
-    array:
-      dimensions:
-      - minimum_cardinality: 1
-      - exact_cardinality: 4
-  saved-site-layout-volumes:
-    slot_uri: pixlnd:saved-site-layout/volumes
-    alias: volumes
-    domain: saved-site-layout
-    range: double
-    required: true
-    see_also: *id002
-    array:
-      dimensions:
-      - minimum_cardinality: 1
-      - exact_cardinality: 6
-  saved-site-layout-assignments:
-    slot_uri: pixlnd:saved-site-layout/assignments
-    alias: assignments
-    domain: saved-site-layout
-    range: saved-assignment
-    required: true
-    see_also: *id002
-    multivalued: true
-    inlined: true
-    inlined_as_list: true
-  saved-site-layout-entry:
-    slot_uri: pixlnd:saved-site-layout/entry
-    alias: entry
-    domain: saved-site-layout
-    range: double
-    required: true
-    see_also: *id002
-    multivalued: true
-    minimum_cardinality: 2
-    maximum_cardinality: 2
-  saved-site-layout-tier:
-    slot_uri: pixlnd:saved-site-layout/tier
-    alias: tier
-    domain: saved-site-layout
-    range: integer
-    required: false
-    see_also: *id002
-    minimum_value: 0
-  saved-site-layout-captive:
-    slot_uri: pixlnd:saved-site-layout/captive
-    alias: captive
-    domain: saved-site-layout
-    range: double
-    required: false
-    see_also: *id002
-    multivalued: true
-    minimum_cardinality: 3
-    maximum_cardinality: 3
+    description: Permanent site geometry and member assignments. Tier applies to camp and supplier sites; captive
+      position applies to suppliers.
+    rules:
+    - preconditions:
+        slot_conditions:
+          saved-site-layout-family:
+            alias: family
+            equals_string_in:
+            - camp
+            - supplier
+      postconditions:
+        slot_conditions:
+          saved-site-layout-tier:
+            alias: tier
+            required: true
+      elseconditions:
+        slot_conditions:
+          saved-site-layout-tier:
+            alias: tier
+            value_presence: ABSENT
+    - preconditions:
+        slot_conditions:
+          saved-site-layout-family:
+            alias: family
+            equals_string: supplier
+      postconditions:
+        slot_conditions:
+          saved-site-layout-captive:
+            alias: captive
+            required: true
+      elseconditions:
+        slot_conditions:
+          saved-site-layout-captive:
+            alias: captive
+            value_presence: ABSENT
 enums:
   saved-site-family:
     enum_uri: pixlnd:saved-site-family
@@ -136,3 +67,37 @@ enums:
       ruins: {}
       camp: {}
       supplier: {}
+    description: Site family codes of persisted state.
+slots:
+  saved-site-layout-family: {slot_uri: 'pixlnd:saved-site-layout/family', alias: family, domain: saved-site-layout, range: saved-site-family,
+      required: true, see_also: [../domain/encounter-contracts.md#geometry-and-occupancy], description: Family of the
+        saved site layout.}
+  saved-site-layout-ordinal: {slot_uri: 'pixlnd:saved-site-layout/ordinal', alias: ordinal, domain: saved-site-layout, range: integer, required: true,
+      see_also: [../domain/encounter-contracts.md#geometry-and-occupancy], minimum_value: 0, description: Ordinal of
+        the saved site layout.}
+  saved-site-layout-centre: {slot_uri: 'pixlnd:saved-site-layout/centre', alias: centre, domain: saved-site-layout, range: double, required: true,
+      see_also: [../domain/encounter-contracts.md#geometry-and-occupancy], multivalued: true, minimum_cardinality: 2,
+      maximum_cardinality: 2, description: Centre of the saved site layout.}
+  saved-site-layout-turn: {slot_uri: 'pixlnd:saved-site-layout/turn', alias: turn, domain: saved-site-layout, range: integer, required: true,
+      see_also: [../domain/encounter-contracts.md#geometry-and-occupancy], minimum_value: 0, maximum_value: 3, description: Turn
+        of the saved site layout.}
+  saved-site-layout-floor: {slot_uri: 'pixlnd:saved-site-layout/floor', alias: floor, domain: saved-site-layout, range: double, required: true,
+      see_also: [../domain/encounter-contracts.md#geometry-and-occupancy], description: Floor of the saved site layout.}
+  saved-site-layout-components: {slot_uri: 'pixlnd:saved-site-layout/components', alias: components, domain: saved-site-layout, range: double, required: true,
+      see_also: [../domain/encounter-contracts.md#geometry-and-occupancy], array: {dimensions: [{minimum_cardinality: 1},
+          {exact_cardinality: 4}]}, description: Components of the saved site layout.}
+  saved-site-layout-volumes: {slot_uri: 'pixlnd:saved-site-layout/volumes', alias: volumes, domain: saved-site-layout, range: double, required: true,
+      see_also: [../domain/encounter-contracts.md#geometry-and-occupancy], array: {dimensions: [{minimum_cardinality: 1},
+          {exact_cardinality: 6}]}, description: Volumes of the saved site layout.}
+  saved-site-layout-assignments: {slot_uri: 'pixlnd:saved-site-layout/assignments', alias: assignments, domain: saved-site-layout, range: saved-assignment,
+      required: true, see_also: [../domain/encounter-contracts.md#geometry-and-occupancy], multivalued: true, inlined: true,
+      inlined_as_list: true, description: Assignments of the saved site layout.}
+  saved-site-layout-entry: {slot_uri: 'pixlnd:saved-site-layout/entry', alias: entry, domain: saved-site-layout, range: double, required: true,
+      see_also: [../domain/encounter-contracts.md#geometry-and-occupancy], multivalued: true, minimum_cardinality: 2,
+      maximum_cardinality: 2, description: Entry of the saved site layout.}
+  saved-site-layout-tier: {slot_uri: 'pixlnd:saved-site-layout/tier', alias: tier, domain: saved-site-layout, required: false, see_also: [
+        ../domain/encounter-contracts.md#geometry-and-occupancy], description: Tier of the saved site layout., exactly_one_of: [
+        {range: integer, minimum_value: 0}]}
+  saved-site-layout-captive: {slot_uri: 'pixlnd:saved-site-layout/captive', alias: captive, domain: saved-site-layout, required: false, see_also: [
+        ../domain/encounter-contracts.md#geometry-and-occupancy], description: Captive of the saved site layout., exactly_one_of: [
+        {range: double, multivalued: true, minimum_cardinality: 3, maximum_cardinality: 3}]}

@@ -6,6 +6,7 @@ prefixes:
 default_prefix: pixlnd
 imports:
 - linkml:types
+- save-combat
 default_range: string
 classes:
   saved-assignment:
@@ -22,9 +23,8 @@ classes:
     - saved-assignment-tier
     - saved-assignment-boss
     - saved-assignment-seed
-    description: Permanent generation assignment, not a live mob incarnation. Pack/member keys, spirit
-      and special sentinel strings preserve current encoding; deterministic assignment and eligibility
-      require current-rule checks.
+    description: Permanent site member assignment, distinct from a living incarnation; empty special and
+      spirit strings mean no assigned effect.
 slots:
   saved-assignment-key:
     slot_uri: pixlnd:saved-assignment/key
@@ -33,6 +33,7 @@ slots:
     range: string
     required: true
     see_also: *id001
+    description: Key of the saved assignment.
   saved-assignment-pack:
     slot_uri: pixlnd:saved-assignment/pack
     alias: pack
@@ -40,6 +41,7 @@ slots:
     range: string
     required: true
     see_also: *id001
+    description: Pack of the saved assignment.
   saved-assignment-special:
     slot_uri: pixlnd:saved-assignment/special
     alias: special
@@ -47,6 +49,7 @@ slots:
     range: string
     required: true
     see_also: *id001
+    description: Special of the saved assignment.
   saved-assignment-spirit:
     slot_uri: pixlnd:saved-assignment/spirit
     alias: spirit
@@ -54,6 +57,7 @@ slots:
     range: string
     required: true
     see_also: *id001
+    description: Spirit of the saved assignment.
   saved-assignment-home:
     slot_uri: pixlnd:saved-assignment/home
     alias: home
@@ -64,6 +68,7 @@ slots:
     multivalued: true
     minimum_cardinality: 3
     maximum_cardinality: 3
+    description: Home of the saved assignment.
   saved-assignment-role:
     slot_uri: pixlnd:saved-assignment/role
     alias: role
@@ -71,6 +76,7 @@ slots:
     range: saved-role
     required: true
     see_also: *id001
+    description: Role of the saved assignment.
   saved-assignment-tier:
     slot_uri: pixlnd:saved-assignment/tier
     alias: tier
@@ -79,6 +85,7 @@ slots:
     required: true
     see_also: *id001
     minimum_value: 0
+    description: Tier of the saved assignment.
   saved-assignment-boss:
     slot_uri: pixlnd:saved-assignment/boss
     alias: boss
@@ -86,6 +93,7 @@ slots:
     range: boolean
     required: true
     see_also: *id001
+    description: Boss of the saved assignment.
   saved-assignment-seed:
     slot_uri: pixlnd:saved-assignment/seed
     alias: seed
@@ -94,3 +102,4 @@ slots:
     required: true
     see_also: *id001
     minimum_value: 0
+    description: Seed of the saved assignment.

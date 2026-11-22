@@ -1,6 +1,51 @@
 # Handoff — current pending work
 
-## Phase-1 checkpoint before Task 7
+## Phase-1 Task 7 — reviewed; STOP before Task 8
+
+Task7 source and exact current-save Markdown handoff passed independent spec/quality,
+wire-equivalence, simplify/ponytail and applied-reference reviews. Runtime, instances,
+models and the accepted synthetic fixture are unchanged. No Task8 preparation or
+boundary relocation is selected; await the owner's next request. Do not replay Task6.
+Normal hooks and quality-gated publication apply; no full-gate pass, hook exception,
+crash repair or remote publication is claimed.
+
+Task7 BASE: `f5996ff8f7a8f2be2b5b8ab01a660a7f3c1cb898`, primary
+`/home/theta/repos/pixlnd`, branch `feat/linkml-schema-authoring`.
+Plan/ledger: `docs/superpowers/plans/2026-11-06-phase-1-ontology-linkml.md`
+and `.superpowers/sdd/2026-11-06-phase-1-ontology-linkml/progress.md` (both ignored).
+Evidence: `/home/theta/.pi-game-dev/recovery/pixlnd-task7-execution-20261122.x3WwXE/`:
+`fix-round-1/`, `review-round-1/` and `handoff-applied/` hold final qualified proofs.
+
+### Remaining covering-gate qualification
+
+Native directory lint and the initial whole authoring-file run retain330-second
+timeouts. Task7's final save/facet checks passed in exact approved partitions, and
+changed declaring save modules plus the aggregate entry linted clean independently;
+this is not a full directory, monolithic suite or Quality gate pass. Preserve actual
+receipts and source-pin bridges. No retry, timeout growth, assertion relaxation or
+reporting-only replay is selected; final phase-wide proof remains a later gate.
+
+### Save-schema enforcement ceilings
+
+[Coverage](ontology/phase-1-coverage.md#task7--current-save-structures-no-runtime-cutover)
+and the [save consumer mapping](ontology/consumer-integration.md) retain exact
+raw-integer versus Godot-parsed-number distinctions and native key/body, conditional
+cardinality, Boolean/expression, absence, uniqueness and integrity limits. Declared
+rules are not full native admission, parser equivalence or runtime/lifecycle proof.
+Keep current-rule invalid-save/original-file protection unchanged; any consumer
+alignment needs separate authority.
+
+### Native Mermaid boolean-range projection
+
+The unchanged native Mermaid generator omits the `saved-mob.special` and
+`saved-reward.classes` relationship edges when their optional non-null ranges live
+inside boolean slot expressions. The declarations and native validation still retain
+the references; the regenerated views remove only those two edges/click links. Evidence:
+Task7 `publication/mermaid.log` and exact generated diff. No schema weakening or custom
+generator repair is selected. Next: qualify branch-range rendering separately before
+using generated diagram edges as a complete relationship inventory.
+
+### Retained pre-Task7 checkpoint qualifications
 
 Work directly in `/home/theta/repos/pixlnd`, branch `feat/linkml-schema-authoring`.
 The owner has explicitly parked the remaining Godot import crash and selected saving
@@ -8,7 +53,8 @@ the reviewed Python fixes as a safe local checkpoint before Task 7. No further c
 investigation, engine backport/build, workaround or error suppression is selected. The
 parked crash is not a prerequisite repair for the next owner-selected Task 7 work, but
 it remains an unresolved quality finding, not a green-gate claim or hook exception.
-Task 7 implementation itself, unrelated repairs and pushes remain unselected here.
+The prior checkpoint selected no Task 7 implementation or push; the current owner
+request above now selects Task 7. Unrelated repairs remain unselected.
 The source-only split `c86d05b` and earlier checkpoint `cc9aa25` are retained in this
 branch. History maintenance and regeneration are no longer pending operations.
 Keep `master` and the diagnostic branch/worktree unchanged; preserve normal hooks.
@@ -55,9 +101,10 @@ Local preservation, exact candidate/residual comparison and continuation backup:
 The original working state is also retained in the named safety stash and
 `backup/linkml-task7-prep-20261122`; do not drop either during Task 7 preparation.
 
-Qualification is construct-specific: configured directory lint retains exactly184diagnostics
-(26errors/158warnings) across five frozen save owners, with no owned/new diagnostic—not global
-clean. Required scalar/type/kind checks do not establish expression evaluation, native
+Qualification is construct-specific: Task6's frozen-pin configured directory lint retained
+exactly184diagnostics (26errors/158warnings) across five then-unmodified save owners, with
+no owned/new diagnostic—not global clean. This is historical qualification, not Task7's
+current split-module lint result. Required scalar/type/kind checks do not establish expression evaluation, native
 configured membership/FK/status-key correlation, pool ordering/uniqueness, runtime or save
 conformance. Preserve the actual same-oracle mutation evidence and qualified old-method
 fixture/binder/native bridges; do not replay successful checks for reporting or weaken roots.
@@ -351,7 +398,7 @@ Found by the generic catalog-reference check in `scripts/ontology_bind.py` (bran
 Next: owner decides between widening the range (ingredient or material) and changing the data;
 then remove the `KNOWN_FINDINGS` entry.
 
-## LinkML module split — full gate unresolved
+## LinkML module split — accepted; retained covering-gate failures
 
 [Quality run 44925840036](https://github.com/M4jor-Tom/pixlnd.game/actions/runs/44925840036)
 for `c86d05b` on `ci/linkml-module-size` passed Ruff, the 150-line cap, Mermaid and
@@ -374,8 +421,8 @@ static checks and all 88 Godot invocations passed, as did 31 of 34 non-generator
 ontology files. The three red files reproduced the same failure diagnostics on
 pre-split `74afa44`. After local checkpoint integration of `c86d05b`, the owner selected
 fixing those three failures and the local import abort. The Python fixes have affected
-red/green receipts, but no new full-gate/CI pass is claimed. Another push and Task 7
-implementation remain unselected. Do not replay unaffected completed checks merely
+red/green receipts, but no new full-gate/CI pass is claimed. At that checkpoint, another push and Task 7
+implementation were unselected; the current owner request selects Task 7 only. Do not replay unaffected completed checks merely
 for reporting.
 Retained logs (`remaining-ci/`, `focused-ci/`, `ci-run/quality-job.log`) and command matrix:
 `/home/theta/.pi-game-dev/recovery/pixlnd-linkml-cap-resume-20261121.JMYhzg/`.

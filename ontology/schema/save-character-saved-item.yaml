@@ -6,11 +6,12 @@ prefixes:
 default_prefix: pixlnd
 imports:
 - linkml:types
+- items
 default_range: string
 classes:
   saved-item:
     class_uri: pixlnd:saved-item
-    see_also: &id001
+    see_also:
     - ../domain/3_Classes.md#save-data
     slots:
     - saved-item-type
@@ -22,102 +23,72 @@ classes:
     - saved-item-modifier
     - saved-item-minus-modifier
     - saved-item-count
-    description: Current item_data wire payload. This is mutable item state, not a catalog definition
-      or the historical ItemData layout; kind-dependent target membership and power bounds remain current-rule
-      checks.
+    description: Mutable carried or worn item, including spirits encoded as ingredients. Distinct from catalog items
+      and historical item layouts.
+    rules:
+    - preconditions:
+        slot_conditions:
+          saved-item-type:
+            alias: type
+            equals_string_in:
+            - weapon
+            - chest-armor
+            - gloves
+            - boots
+            - shoulder-armor
+            - ring
+            - amulet
+            - consumable
+      postconditions:
+        slot_conditions:
+          saved-item-level:
+            alias: level
+            maximum_value: 100
+    - preconditions:
+        slot_conditions:
+          saved-item-type:
+            alias: type
+            equals_string: coin
+      postconditions:
+        slot_conditions:
+          saved-item-subtype:
+            alias: subtype
+            equals_string: ''
+          saved-item-material:
+            alias: material
+            equals_string: ''
   saved-equipment-entry:
     class_uri: pixlnd:saved-equipment-entry
-    see_also: &id003
+    see_also:
     - ../domain/3_Classes.md#save-data
     slots:
     - saved-equipment-entry-slot
     - saved-equipment-entry-item
-    description: Container-scoped usable-slot key, independently empty hands represented by omitted keys;
-      legality remains current-rule validation.
+    description: Item keyed by usable equipment slot; omitted hand keys represent independently empty hands.
 slots:
-  saved-item-type:
-    slot_uri: pixlnd:saved-item/type
-    alias: type
-    domain: saved-item
-    range: string
-    required: true
-    see_also: *id001
-  saved-item-subtype:
-    slot_uri: pixlnd:saved-item/subtype
-    alias: subtype
-    domain: saved-item
-    range: string
-    required: true
-    see_also: *id001
-  saved-item-material:
-    slot_uri: pixlnd:saved-item/material
-    alias: material
-    domain: saved-item
-    range: string
-    required: true
-    see_also: *id001
-  saved-item-rarity:
-    slot_uri: pixlnd:saved-item/rarity
-    alias: rarity
-    domain: saved-item
-    range: integer
-    required: true
-    see_also: *id001
-    minimum_value: 0
-    maximum_value: 4
-  saved-item-level:
-    slot_uri: pixlnd:saved-item/level
-    alias: level
-    domain: saved-item
-    range: integer
-    required: true
-    see_also: *id001
-    minimum_value: 1
-  saved-item-upgrade-count:
-    slot_uri: pixlnd:saved-item/upgrade_count
-    alias: upgrade_count
-    domain: saved-item
-    range: integer
-    required: true
-    see_also: *id001
-    minimum_value: 0
-  saved-item-modifier:
-    slot_uri: pixlnd:saved-item/modifier
-    alias: modifier
-    domain: saved-item
-    range: integer
-    required: true
-    see_also: *id001
-    minimum_value: 0
-  saved-item-minus-modifier:
-    slot_uri: pixlnd:saved-item/minus_modifier
-    alias: minus_modifier
-    domain: saved-item
-    range: integer
-    required: true
-    see_also: *id001
-    minimum_value: 0
-  saved-item-count:
-    slot_uri: pixlnd:saved-item/count
-    alias: count
-    domain: saved-item
-    range: integer
-    required: true
-    see_also: *id001
-    minimum_value: 1
-  saved-equipment-entry-slot:
-    slot_uri: pixlnd:saved-equipment-entry/slot
-    alias: slot
-    domain: saved-equipment-entry
-    range: equipment-slot
-    required: true
-    see_also: *id003
-    key: true
-  saved-equipment-entry-item:
-    slot_uri: pixlnd:saved-equipment-entry/item
-    alias: item
-    domain: saved-equipment-entry
-    range: saved-item
-    required: true
-    see_also: *id003
-    inlined: true
+  saved-item-type: {slot_uri: 'pixlnd:saved-item/type', alias: type, domain: saved-item, range: string, required: true, see_also: [
+        ../domain/3_Classes.md#save-data], description: 'Item kind, including ingredient for carried spirits.', equals_string_in: [
+        weapon, chest-armor, gloves, boots, shoulder-armor, ring, amulet, consumable, ingredient, coin, pet-food]}
+  saved-item-subtype: {slot_uri: 'pixlnd:saved-item/subtype', alias: subtype, domain: saved-item, range: string, required: true, see_also: [
+        ../domain/3_Classes.md#save-data], description: Kind-specific catalog identity; empty for coins.}
+  saved-item-material: {slot_uri: 'pixlnd:saved-item/material', alias: material, domain: saved-item, range: string, required: true, see_also: [
+        ../domain/3_Classes.md#save-data], description: Item material identity; empty when not applicable.}
+  saved-item-rarity: {slot_uri: 'pixlnd:saved-item/rarity', alias: rarity, domain: saved-item, range: integer, required: true, see_also: [
+        ../domain/3_Classes.md#save-data], minimum_value: 0, maximum_value: 4, description: Rarity index from common
+        through legendary.}
+  saved-item-level: {slot_uri: 'pixlnd:saved-item/level', alias: level, domain: saved-item, range: integer, required: true, see_also: [
+        ../domain/3_Classes.md#save-data], minimum_value: 1, description: 'Stored item power or kind-specific level,
+        not necessarily the source character level.', maximum_value: 9223372036854775295}
+  saved-item-upgrade-count: {slot_uri: 'pixlnd:saved-item/upgrade_count', alias: upgrade_count, domain: saved-item, range: integer, required: true,
+      see_also: [../domain/3_Classes.md#save-data], minimum_value: 0, description: Applied upgrade count., maximum_value: 9223372036854775295}
+  saved-item-modifier: {slot_uri: 'pixlnd:saved-item/modifier', alias: modifier, domain: saved-item, range: integer, required: true, see_also: [
+        ../domain/3_Classes.md#save-data], minimum_value: 0, description: Positive modifier index., maximum_value: 9223372036854775295}
+  saved-item-minus-modifier: {slot_uri: 'pixlnd:saved-item/minus_modifier', alias: minus_modifier, domain: saved-item, range: integer, required: true,
+      see_also: [../domain/3_Classes.md#save-data], minimum_value: 0, description: Negative modifier index., maximum_value: 9223372036854775295}
+  saved-item-count: {slot_uri: 'pixlnd:saved-item/count', alias: count, domain: saved-item, range: integer, required: true, see_also: [
+        ../domain/3_Classes.md#save-data], minimum_value: 1, description: Positive stack quantity., maximum_value: 9223372036854775295}
+  saved-equipment-entry-slot: {slot_uri: 'pixlnd:saved-equipment-entry/slot', alias: slot, domain: saved-equipment-entry, range: equipment-slot,
+      required: true, see_also: [../domain/3_Classes.md#save-data], key: true, description: Slot of the saved equipment
+        entry.}
+  saved-equipment-entry-item: {slot_uri: 'pixlnd:saved-equipment-entry/item', alias: item, domain: saved-equipment-entry, range: saved-item, required: true,
+      see_also: [../domain/3_Classes.md#save-data], inlined: true, description: Item of the saved equipment entry.}

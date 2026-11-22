@@ -6,6 +6,9 @@ prefixes:
 default_prefix: pixlnd
 imports:
 - linkml:types
+- save-combat
+- save-geography
+- save-content
 default_range: string
 classes:
   saved-mob-entry:
@@ -15,8 +18,7 @@ classes:
     slots:
     - saved-mob-entry-mob
     - saved-mob-entry-value
-    description: Container-scoped current snapshot map entry; key identity and key/body agreement require
-      admission checks. Native generation also accepts explicit wrapper objects.
+    description: Container-local mob key and persisted value.
   saved-land-entry:
     class_uri: pixlnd:saved-land-entry
     see_also: &id002
@@ -24,8 +26,7 @@ classes:
     slots:
     - saved-land-entry-land
     - saved-land-entry-value
-    description: Container-scoped current snapshot map entry; key identity and key/body agreement require
-      admission checks. Native generation also accepts explicit wrapper objects.
+    description: Container-local land key and persisted value.
   saved-vendor-entry:
     class_uri: pixlnd:saved-vendor-entry
     see_also: &id003
@@ -33,8 +34,7 @@ classes:
     slots:
     - saved-vendor-entry-vendor
     - saved-vendor-entry-value
-    description: Container-scoped current snapshot map entry; key identity and key/body agreement require
-      admission checks. Native generation also accepts explicit wrapper objects.
+    description: Container-local vendor key and persisted value.
   saved-rubble-entry:
     class_uri: pixlnd:saved-rubble-entry
     see_also: &id004
@@ -42,8 +42,7 @@ classes:
     slots:
     - saved-rubble-entry-rubble
     - saved-rubble-entry-value
-    description: Container-scoped current snapshot map entry; key identity and key/body agreement require
-      admission checks. Native generation also accepts explicit wrapper objects.
+    description: Container-local rubble key and persisted value.
   saved-prop-entry:
     class_uri: pixlnd:saved-prop-entry
     see_also: &id005
@@ -51,8 +50,7 @@ classes:
     slots:
     - saved-prop-entry-prop
     - saved-prop-entry-value
-    description: Container-scoped current snapshot map entry; key identity and key/body agreement require
-      admission checks. Native generation also accepts explicit wrapper objects.
+    description: Container-local prop key and persisted value.
 slots:
   saved-mob-entry-mob:
     slot_uri: pixlnd:saved-mob-entry/mob
@@ -62,6 +60,7 @@ slots:
     required: true
     see_also: *id001
     key: true
+    description: Mob of the saved mob entry.
   saved-mob-entry-value:
     slot_uri: pixlnd:saved-mob-entry/value
     alias: value
@@ -70,6 +69,7 @@ slots:
     required: true
     see_also: *id001
     inlined: true
+    description: Value of the saved mob entry.
   saved-land-entry-land:
     slot_uri: pixlnd:saved-land-entry/land
     alias: land
@@ -78,6 +78,7 @@ slots:
     required: true
     see_also: *id002
     key: true
+    description: Land of the saved land entry.
   saved-land-entry-value:
     slot_uri: pixlnd:saved-land-entry/value
     alias: value
@@ -86,6 +87,7 @@ slots:
     required: true
     see_also: *id002
     inlined: true
+    description: Value of the saved land entry.
   saved-vendor-entry-vendor:
     slot_uri: pixlnd:saved-vendor-entry/vendor
     alias: vendor
@@ -94,6 +96,7 @@ slots:
     required: true
     see_also: *id003
     key: true
+    description: Vendor of the saved vendor entry.
   saved-vendor-entry-value:
     slot_uri: pixlnd:saved-vendor-entry/value
     alias: value
@@ -102,6 +105,7 @@ slots:
     required: true
     see_also: *id003
     inlined: true
+    description: Value of the saved vendor entry.
   saved-rubble-entry-rubble:
     slot_uri: pixlnd:saved-rubble-entry/rubble
     alias: rubble
@@ -110,6 +114,7 @@ slots:
     required: true
     see_also: *id004
     key: true
+    description: Rubble of the saved rubble entry.
   saved-rubble-entry-value:
     slot_uri: pixlnd:saved-rubble-entry/value
     alias: value
@@ -118,6 +123,7 @@ slots:
     required: true
     see_also: *id004
     inlined: true
+    description: Value of the saved rubble entry.
   saved-prop-entry-prop:
     slot_uri: pixlnd:saved-prop-entry/prop
     alias: prop
@@ -126,6 +132,7 @@ slots:
     required: true
     see_also: *id005
     key: true
+    description: Prop of the saved prop entry.
   saved-prop-entry-value:
     slot_uri: pixlnd:saved-prop-entry/value
     alias: value
@@ -134,3 +141,4 @@ slots:
     required: true
     see_also: *id005
     inlined: true
+    description: Value of the saved prop entry.
