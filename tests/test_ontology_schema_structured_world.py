@@ -7,7 +7,7 @@ from pathlib import Path
 import jsonschema
 import yaml
 from linkml_runtime.utils.schemaview import SchemaView
-from test_ontology_schema import SCHEMA, JsonSchemaGenerator, copy_schema
+from test_ontology_schema import SCHEMA, JsonSchemaGenerator, copy_schema, load_module
 from test_ontology_schema_authoring import catalog, validate, validator
 from test_ontology_schema_crafting_social import mutated
 
@@ -34,7 +34,6 @@ BRANCHES = [{"range": "integer"},
             {"range": "integer", "multivalued": True,
              "minimum_cardinality": 2, "maximum_cardinality": 2},
             {"range": "string", "equals_string": "n"}]
-
 
 def assert_marker_contract(self, view):
     triple, place = "map-marker-integer-triple", "map-marker-place-key"
@@ -66,7 +65,6 @@ def assert_marker_contract(self, view):
     self.assertIn("t15-release-worldmap-cpp.txt", view.get_class(keyed).description)
     for owner in (tile, keyed):
         self.assertIn("universal wire/save contract", view.get_class(owner).description)
-
 
 def assert_contract(self, view):
     assert_marker_contract(self, view)
@@ -107,7 +105,6 @@ def assert_contract(self, view):
                      ["ingredient-yield-ingredient", "ingredient-yield-minimum", "ingredient-yield-maximum"])
     assert_config_contract(self, view)
 
-
 def projections():
     result = {}
     for owner, file in (("flora", "flora"), ("dungeon-type", "dungeon-types")):
@@ -116,7 +113,6 @@ def projections():
     source = catalog("static-entities")
     result[ROOT] = [{alias: source[alias] for alias, *_ in FIELDS[ROOT]}]
     return result
-
 
 def verify_config_field(self, owner, field, range_, inline):
     good = [{}, None] if inline else ([0, -1, 10**30, None] if range_ == "integer"
@@ -280,7 +276,27 @@ CONFIG_FIELDS = {
 }
 
 
+def assert_raw_config_contract(self, raw):
+    for owner, fields in CONFIG_FIELDS.items():
+        self.assertIn(owner, raw["classes"])
+        cls = raw["classes"][owner]
+        self.assertEqual(cls.get("slots", []), [owner + "-" + alias for alias, *_ in fields])
+        for alias, range_, inline in fields:
+            name = owner + "-" + alias
+            slot = raw.get("slots", {}).get(name, {})
+            if any((name in cls.get("slot_usage", {}), slot.get("is_a"), slot.get("mixins"))):
+                continue  # Induction resolves overrides/inheritance; raw checks cannot contradict it.
+            for facet, expected in dict(alias=alias, domain=owner, slot_uri="pixlnd:" + owner + "/" + alias,
+                                        range=range_, inlined=inline, required=False,
+                                        identifier=False, multivalued=False).items():
+                if slot.get(facet) is not None:
+                    self.assertEqual(slot[facet], expected)
+
+
 def assert_config_contract(self, view):
+    path = Path(view) if isinstance(view, (str, Path)) else Path(view.schema.source_file)
+    assert_raw_config_contract(self, load_module(path.with_name(MODULE)))
+    view = SchemaView(str(path)) if isinstance(view, (str, Path)) else view
     for owner, fields in CONFIG_FIELDS.items():
         cls = view.get_class(owner)
         self.assertIsNotNone(cls)
@@ -316,7 +332,7 @@ def config_projections():
 
 class BlockConfigurationTests(unittest.TestCase):
     def test_config_contract(self):
-        assert_config_contract(self, SchemaView(str(SCHEMA)))
+        assert_config_contract(self, SCHEMA)
 
     def test_real_config_projections(self):
         source = catalog("block-types")
@@ -386,7 +402,7 @@ class BlockConfigurationTests(unittest.TestCase):
                     self.assertFalse(cls(schema).is_valid(row))
 
     def test_config_same_metadata_contract_mutations(self):
-        assert_config_contract(self, SchemaView(str(SCHEMA)))
+        assert_config_contract(self, SCHEMA)
         with tempfile.TemporaryDirectory() as scratch:
             target = Path(scratch) / "schema"
             copy_schema(target)
@@ -412,7 +428,7 @@ class BlockConfigurationTests(unittest.TestCase):
                 mutant[section][name][facet] = value
                 path.write_text(yaml.safe_dump(mutant, sort_keys=False))
                 with self.subTest(name=name, facet=facet), self.assertRaises(AssertionError):
-                    assert_config_contract(self, SchemaView(str(target / "pixlnd.yaml")))
+                    assert_config_contract(self, target / "pixlnd.yaml")
 
 
 class MapMarkerContracts(unittest.TestCase):
@@ -467,7 +483,6 @@ class MapMarkerContracts(unittest.TestCase):
                                  {"places": [{"place": place, "positions": [triple]}]}))
         self.assertFalse(mutated(MODULE, self.TRIPLE + "-z", "range", "string", self.TILE,
                                  {"markers": [triple]}))
-
 
 class FullStructuredWorldSources(unittest.TestCase):
     def test_whole_block_types_source(self):
@@ -579,7 +594,6 @@ class FullStructuredWorldSources(unittest.TestCase):
                 validate_source("buildings", bad)
         self.assertEqual(row["districts"]["adventurer"]["buildings"], [
             {"id": "class-trainer", "class": name} for name in ("warrior", "ranger", "rogue", "mage")])
-
 
 if __name__ == "__main__":
     unittest.main()

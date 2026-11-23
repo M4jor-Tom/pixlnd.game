@@ -11,24 +11,42 @@ import jsonschema
 import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
-from test_ontology_schema import ROOT, SCHEMA, copy_schema, generated
-
-generated = lru_cache(maxsize=None)(generated)
+from test_ontology_schema import (
+    ROOT,
+    SCHEMA,
+    _generate_baseline,
+    _native_schema,
+    copy_schema,
+    generated,
+)
 
 
 def catalog(name):
     return json.loads((ROOT / f"ontology/instances/{name}.json").read_text())
 
 
-@lru_cache(maxsize=None)
 def validator(name):
-    schema = generated(name)
+    native = _native_schema(name)
+    if native.checked_validator is None:
+        jsonschema.Draft201909Validator.check_schema(native.schema)
+        native.checked_validator = jsonschema.Draft201909Validator(native.schema)
+    return native.checked_validator
+
+
+@lru_cache(maxsize=1)
+def _validated_definitions():
+    # Private: inspected native roots and caller-owned schemas never share this graph.
+    schema = _generate_baseline()
     jsonschema.Draft201909Validator.check_schema(schema)
-    return jsonschema.Draft201909Validator(schema)
+    return schema["$defs"]
 
 
 def validate(name, row):
-    validator(name).validate(row)
+    definitions = _validated_definitions()
+    if name not in definitions:
+        raise ValueError(f"Unknown schema definition: {name}")
+    selector = {"$defs": definitions, "$ref": "#/$defs/" + name}
+    jsonschema.Draft201909Validator(selector).validate(row)
 
 
 def verify_projection_rows(name, key, fields):

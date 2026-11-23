@@ -57,7 +57,15 @@ def whole_schema() -> dict:
 
 
 def bound_files() -> dict[str, str]:
-    contracts.CHECK_CONTRACTS = False
+    previous = contracts.CHECK_CONTRACTS
+    try:
+        contracts.CHECK_CONTRACTS = False
+        return _bound_files()
+    finally:
+        contracts.CHECK_CONTRACTS = previous
+
+
+def _bound_files() -> dict[str, str]:
     defs = whole_schema()["$defs"]
     out, errors, bound_by_name = {}, [], {}
     for path in sorted(SOURCE.glob("*.json")):

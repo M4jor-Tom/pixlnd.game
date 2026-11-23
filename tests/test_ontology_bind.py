@@ -5,6 +5,7 @@ import json
 import sys
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -20,7 +21,7 @@ def bound(name):
 class OntologyBindTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        bind.contracts.CHECK_CONTRACTS = False
+        cls.enterClassContext(patch.object(bind.contracts, "CHECK_CONTRACTS", False))
         cls.defs = bind.whole_schema()["$defs"]
         names = {name for name, _ in bind.CATALOGS.values()}
         cls.catalogs = {name: bound(name) for name in sorted(names)}
@@ -41,6 +42,28 @@ class OntologyBindTest(unittest.TestCase):
         errors = bind.reference_errors(catalogs)
         self.assertTrue(any("unknown character-class 'bard'" in e for e in errors), errors)
         self.assertTrue(any("unknown pet-food 'no-such-food'" in e for e in errors), errors)
+
+
+class BinderIsolationTests(unittest.TestCase):
+    def test_bound_files_restores_guard_on_failure(self):
+        with patch.object(bind.contracts, "CHECK_CONTRACTS", True):
+            with patch.object(bind, "whole_schema", side_effect=RuntimeError("probe")):
+                with self.assertRaisesRegex(RuntimeError, "probe"):
+                    bind.bound_files()
+            self.assertIs(bind.contracts.CHECK_CONTRACTS, True)
+
+    def test_set_up_class_restores_guard_on_failure(self):
+        class IsolatedOntologyBindTest(OntologyBindTest):
+            pass
+
+        with patch.object(bind.contracts, "CHECK_CONTRACTS", True):
+            try:
+                with patch.object(bind, "whole_schema", side_effect=RuntimeError("probe")):
+                    with self.assertRaisesRegex(RuntimeError, "probe"):
+                        IsolatedOntologyBindTest.setUpClass()
+            finally:
+                IsolatedOntologyBindTest.doClassCleanups()
+            self.assertIs(bind.contracts.CHECK_CONTRACTS, True)
 
 
 if __name__ == "__main__":

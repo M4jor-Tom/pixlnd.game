@@ -13,26 +13,72 @@ The configuration installs pre-commit, post-commit and pre-push hooks:
 | Stage | Gates |
 |---|---|
 | pre-commit (short, blocks the commit) | `ruff check` (`ruff.toml`), 150-line cap per `ontology/schema/*.yaml` module, Mermaid diagrams, bound instances |
-| post-commit (long, background) | LinkML schema/instance tests (`tests/test_ontology*.py`), runner regressions, `scripts/checks.sh` |
+| post-commit (long, background) | the complete synchronous `scripts/quality_gate.sh` manifest, including short gates |
 | pre-push | only the post-commit gate's receipt |
 | CI | every gate of both stages, synchronously |
 
 The schema-module cap and the LinkML test run mirror the `starflake/design` gate; its ruff
-rules are narrowed to what this repo passes (see `ruff.toml`). A commit made with `--no-verify`
-skips the short gates; only CI catches that.
+rules are narrowed to what this repo passes (see `ruff.toml`). Short checks also run in
+the complete background gate and CI; skipping a local hook cannot authorize a pass.
 
 A module over the cap is split by topic into `<module>-<topic>.yaml` parts that it imports; the
 module file stays as the name other modules import. A part's `id` nests under its module's
 (`…/pixlnd/world/land` for `world-land.yaml`), which is how `load_module` and `copy_schema` in
 `tests/test_ontology_schema.py` read or copy a module as one document for mutation tests.
 
-Each commit starts the long gates in the background on a clean export of the committed tree
-(`scripts/gate.sh start`). Each `git push` only checks that the pushed commit's tree passed
-(`scripts/gate.sh check`): it fails fast while the gate is running, after a failure, or when no
-gate ran (e.g. a `--no-verify` commit: run `bash scripts/gate.sh start <rev>`). Receipts and
-logs live in `.git/pixlnd-gate/<tree>.{running,pass,fail,log}`; a squash or rebase with an
-identical tree reuses its pass. One gate runs at a time; later ones queue. The hooks enter the
-locked Nix environment themselves, so committing or pushing outside `nix develop` works.
+Each commit queues the complete gate on an exact detached commit, in a clean Git worktree.
+Use the checked-out branch with the intended changes committed (currently
+`feat/linkml-schema-authoring`); uncommitted changes are not certified.
+
+```sh
+bash scripts/gate.sh start [rev]  # default HEAD; zero means queued/already claimed, NOT passed
+bash scripts/gate.sh check [rev]  # zero only for a validated pass of this exact tree
+```
+
+The pre-push hook checks `PRE_COMMIT_TO_REF`, not an unrelated checkout's HEAD. A different
+commit with an identical tree reuses its pass; a different tree needs its own run. One gate
+runs at a time across all worktrees; other live owners remain `queued`, not interrupted.
+The suite enters the locked Nix environment itself, including outside `nix develop`.
+The Linux host also needs an existing `python3` on PATH for the lifetime guardian
+(stdlib subreaper and pidfd support); this does not change the pinned suite interpreter.
+A missing interpreter fails with an actionable error before a new start is acknowledged.
+
+Find receipts under `$(git rev-parse --path-format=absolute --git-common-dir)/pixlnd-gate/v4/`.
+Each `<tree>/state` points to a unique `attempt.*/gate.log`; tail that log for progress.
+The attempt's `status` records protocol, tree, owner PID/boot/start ticks, start/end,
+actual outer command exit (distinct from a failing hook's exit), cleanup and outcome.
+Nested `pixlnd-quality.*/` directories retain the synchronous runner's logs and status.
+Old marker namespaces, including v3 passes, are neither changed nor accepted.
+
+`check` fails promptly for queued/running, fail, timeout, interrupted, absent or unknown
+ownership. `OK` text is not a pass: the outer command must exit zero, the exact tree must
+still match, and owned checkout cleanup must succeed. A dead/zombie owner or a boot/start
+identity mismatch is reconciled as interrupted without inventing an exit code. An unreadable
+identity remains unknown and cannot authorize a pass or automatic retry.
+
+A kernel subreaper guardian retains the global execution lock independently of the worker.
+It owns the quality command and adopts orphan descendants, including ordinary hooks that
+close inherited descriptors or create sessions. `lifetime/command.json` records the actual
+direct-command status; only `waitpid` reporting no remaining children permits the separate,
+attempt-bound `lifetime/drained.json` proof. Command exit zero or a free lock alone cannot
+permit cleanup, pass or overlapping work. Registration in the common Git directory's
+`pixlnd-gate/lifetime-v1.json` precedes command launch; unresolved registration cannot be
+overwritten by another tree, even if its guardian has died and the lock is free.
+
+After a failure/interruption, inspect the retained log and explicitly run `start <rev>`
+again; a retry gets a new attempt and preserves earlier evidence. A killed worker's guardian
+continues draining; until positive drain proof, its checkout remains and another tree queues.
+After drain, queued work and explicit retry can proceed safely, with abandoned owned checkout
+cleanup under the execution lock. TERM requests stop only the guardian's own direct command
+through a pidfd; remaining descendants are allowed to finish, not sought by PID/SID scans.
+
+If the guardian itself is lost before drain proof, cleanup and new expensive work fail closed,
+including queued different trees. There is no automatic recovery or manual 'declare clean'
+switch for that unresolved boundary: retain the checkout/evidence for separately approved
+investigation; do not delete the registration or fabricate a drain record. Never signal a
+PID from an old receipt without verified identity. `check` remains prompt and non-pass for
+unknown ownership; the required GitHub **Quality** job remains the independent merge gate.
+This Linux lifetime protocol is not a security boundary against malicious code.
 
 On commits touching `ontology/schema/`, the pre-commit hook regenerates the
 [ontology Mermaid diagrams](ontology/mermaid/overview.mmd). If they change, the commit fails:
@@ -48,11 +94,17 @@ The full suite can take many minutes, which is why it no longer runs inside `git
 
 ## Run manually
 
-This is also the exact command in `.github/workflows/quality.yml` (synchronous, same hooks):
+This is the synchronous host/CI entry (also used by `.github/workflows/quality.yml`):
 
 ```sh
-nix develop --no-update-lock-file -c pre-commit run --all-files --hook-stage manual
+bash scripts/quality_gate.sh
 ```
+
+It runs the complete manual manifest in the pinned Nix environment, with an 80-minute
+command deadline plus 20-second kill grace, isolated caches and retained progress/status.
+It rejects selectors, nonempty `SKIP`, inherited Git overrides and dirty inputs; changes
+made by hooks also fail. Running `pre-commit run --all-files --hook-stage manual` directly
+is useful diagnostically but does not publish a host pass receipt.
 
 `.pre-commit-config.yaml` is the shared definition. Besides the short gates above, its hooks run:
 
@@ -98,9 +150,10 @@ or include CI times. The diagnostic is not a normal full-gate pass. Measurement 
 against the three ordinary allocations and preserves the special and boot limits.
 
 Cognitive analysis also uses the ordinary 1719-second deadline; it was not part of
-that earlier calibration. These limits apply separately to each invocation, locally and in CI. There is no
-whole-suite local deadline; the CI quality job has a tripled 90-minute total limit,
-including setup.
+that earlier calibration. These limits apply separately to each invocation, locally and in CI.
+The shared runner bounds its complete manual command at
+80 minutes plus 20-second kill grace. The CI quality job retains its 90-minute total limit,
+including setup, process exit and reporting.
 Nonzero exits, timeouts, `SCRIPT ERROR`, engine `ERROR` and `ontology INVALID`
 output all fail the gate, including when Godot exits zero.
 

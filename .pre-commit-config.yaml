@@ -1,7 +1,7 @@
 default_install_hook_types: [pre-commit, post-commit, pre-push]
 # Short gates run in pre-commit. Long gates (default_stages) run in the background after each
-# commit (scripts/gate.sh run, keep its list in step); pre-push only requires their pass.
-# CI runs every gate of both synchronously with `--hook-stage manual`.
+# commit via scripts/quality_gate.sh; pre-push only requires their pass.
+# Host and CI run this same complete manual manifest synchronously.
 default_stages: [manual]
 
 repos:
@@ -37,8 +37,7 @@ repos:
       - id: ontology-schema-tests
         name: LinkML schema and instance tests
         verbose: true
-        # No shell here: the pattern reaches unittest unexpanded.
-        entry: nix develop --no-update-lock-file -c uv run --locked --project tools/ontology python -m unittest discover -s tests -p test_ontology*.py
+        entry: nix develop --no-update-lock-file -c bash scripts/ontology_tests.sh
         language: system
         pass_filenames: false
         always_run: true

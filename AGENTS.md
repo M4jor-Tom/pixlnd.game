@@ -42,10 +42,16 @@ receipts in managed evidence rather than a completed-bug history.
 The [quality gate](docs/quality-checks.md) runs the same formatting, essential lint, ontology and headless
 checks locally before pushes and in GitHub Actions. Install once per clone with
 `nix develop --no-update-lock-file -c pre-commit install`; run manually with
-`nix develop --no-update-lock-file -c pre-commit run --all-files --hook-stage manual`.
+`bash scripts/quality_gate.sh` (the same complete manual manifest as CI).
 Short gates (ruff, LinkML module size, generated diagrams/instances) block the commit; every
-commit then starts the long ones in the background (`scripts/gate.sh`); a push is refused until
-the pushed commit's tree has passed (`bash scripts/gate.sh check` shows the state and log).
+commit queues the complete gate on its exact tree (`bash scripts/gate.sh start [rev]`, not a
+pass). `bash scripts/gate.sh check [rev]` shows state/log and succeeds only for a validated
+same-tree pass; pre-push uses `PRE_COMMIT_TO_REF`. Attempts/logs are retained under the common
+Git dir's `pixlnd-gate/v4/<tree>/`; the Linux host needs `python3` on PATH for the lifetime
+guardian (the suite's pinned interpreter is unchanged). After interruption inspect evidence
+and explicitly `start` again after kernel drain. Lost guardian proof blocks cleanup and new
+expensive work across trees; a free lock is not proof. Never signal by PID alone.
+The independent CI Quality job is still required; see the quality-gate guide for recovery.
 
 ```bash
 nix develop -c godot                                        # play (add -- --class=ranger|mage|rogue)

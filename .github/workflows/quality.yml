@@ -9,8 +9,16 @@ jobs:
   quality:
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    env:
+      QUALITY_GATE_LOG_ROOT: ${{ runner.temp }}/quality-logs
     steps:
       - uses: actions/checkout@v7
       - uses: cachix/install-nix-action@75c75c31ebece974e48ebc36b4ad125bd97bd97b # 31.11.3
       - name: Run the full quality gate (every pre-commit and post-commit gate, synchronously)
-        run: nix develop --no-update-lock-file -c pre-commit run --all-files --hook-stage manual
+        run: bash scripts/quality_gate.sh
+      - name: Retained Python progress on failure
+        if: failure()
+        run: |
+          if [[ -d "$QUALITY_GATE_LOG_ROOT" ]]; then
+            find "$QUALITY_GATE_LOG_ROOT" -name ontology-tests.log -type f -print -exec tail -n 100 {} \;
+          fi

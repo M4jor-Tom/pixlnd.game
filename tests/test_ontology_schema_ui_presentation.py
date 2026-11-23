@@ -121,9 +121,28 @@ def verify_option_bodies(self, base):
             validate(OPTION, dict(base, **body) if isinstance(body, dict) else body)
 
 
+def assert_raw_contract(test, module):
+    for owner, fields in FIELDS.items():
+        test.assertIn(owner, module["classes"])
+        cls = module["classes"][owner]
+        test.assertEqual(cls.get("slots", []), (["id"] if owner == "hud-element" else []) +
+                         [owner + "-" + alias for alias, *_ in fields] +
+                         ([CATALOG + "-screens", CATALOG + "-options"] if owner == CATALOG else []))
+        for alias, range_, multiple, inline in fields:
+            slot = module.get("slots", {}).get(owner + "-" + alias, {})
+            for facet, expected in dict(alias=alias, domain=owner, range=range_,
+                                        slot_uri="pixlnd:" + owner + "/" + alias, required=False,
+                                        multivalued=multiple, inlined=inline).items():
+                if slot.get(facet) is not None:
+                    test.assertEqual(slot[facet], expected)
+
+
 def assert_contract(test, view):
+    path = Path(view) if isinstance(view, (str, Path)) else Path(view.schema.source_file)
+    module = load_module(path.with_name("meta.yaml"))
+    assert_raw_contract(test, module)
+    view = SchemaView(str(path)) if isinstance(view, (str, Path)) else view
     view.all_classes()  # Materialize imported modules before inspecting their own declarations.
-    module = load_module(Path(view.schema.source_file).with_name("meta.yaml"))
     test.assertEqual(set(module["slots"]), {o + "-" + a for o, fs in FIELDS.items() for a, *_ in fs} |
                      {"ui-presentation-catalog-screens", "ui-screen-presentation-screen",
                       "ui-screen-presentation-desc", "ui-screen-presentation-shows", "ui-screen-presentation-extras",
@@ -254,7 +273,7 @@ def projections():
 
 class UiPresentationTests(unittest.TestCase):
     def test_contract(self):
-        assert_contract(self, SchemaView(str(SCHEMA)))
+        assert_contract(self, SCHEMA)
 
     def test_complete_ui_source_contract(self):
         from ontology_source_contracts import assert_declared_root, validate_source
@@ -337,7 +356,7 @@ class UiPresentationTests(unittest.TestCase):
                 validate(CATALOG, {"hud": hud})
 
     def test_actual_yaml_mutations_falsify_same_contract(self):
-        assert_contract(self, SchemaView(str(SCHEMA)))
+        assert_contract(self, SCHEMA)
         with tempfile.TemporaryDirectory() as scratch:
             target = Path(scratch) / "schema"
             copy_schema(target)
@@ -362,7 +381,7 @@ class UiPresentationTests(unittest.TestCase):
                 data[section][name][facet] = value
                 path.write_text(yaml.safe_dump(data, sort_keys=False))
                 with self.subTest(name=name, facet=facet), self.assertRaises(AssertionError):
-                    assert_contract(self, SchemaView(str(target / "pixlnd.yaml")))
+                    assert_contract(self, target / "pixlnd.yaml")
             self.assertEqual(len(cases), 75)
 
     def test_native_mutation_distinctions(self):
@@ -398,7 +417,7 @@ class UiPresentationTests(unittest.TestCase):
                 path.write_text(yaml.safe_dump(data, sort_keys=False))
                 with self.subTest(name=name, facet=facet):
                     with self.assertRaises(AssertionError):
-                        assert_contract(self, SchemaView(str(target / "pixlnd.yaml")))
+                        assert_contract(self, target / "pixlnd.yaml")
                     schema = json.loads(JsonSchemaGenerator(
                         str(target / "pixlnd.yaml"), top_class=owner,
                         preserve_names=True, not_closed=False).serialize())
@@ -472,7 +491,7 @@ class UiOptionPresentationTests(unittest.TestCase):
         verify_option_bodies(self, base)
 
     def test_option_yaml_mutations_falsify_same_contract(self):
-        assert_contract(self, SchemaView(str(SCHEMA)))
+        assert_contract(self, SCHEMA)
         with tempfile.TemporaryDirectory() as scratch:
             target = Path(scratch) / "schema"
             copy_schema(target)
@@ -498,7 +517,7 @@ class UiOptionPresentationTests(unittest.TestCase):
                 data[section][name][facet] = value
                 path.write_text(yaml.safe_dump(data, sort_keys=False))
                 with self.subTest(name=name, facet=facet), self.assertRaises(AssertionError):
-                    assert_contract(self, SchemaView(str(target / "pixlnd.yaml")))
+                    assert_contract(self, target / "pixlnd.yaml")
             self.assertEqual(len(cases), 58)
 
     def test_option_native_mutation_distinctions(self):
@@ -533,7 +552,7 @@ class UiOptionPresentationTests(unittest.TestCase):
                 path.write_text(yaml.safe_dump(data, sort_keys=False))
                 with self.subTest(name=name, facet=facet):
                     with self.assertRaises(AssertionError):
-                        assert_contract(self, SchemaView(str(target / "pixlnd.yaml")))
+                        assert_contract(self, target / "pixlnd.yaml")
                     schema = json.loads(JsonSchemaGenerator(str(target / "pixlnd.yaml"), top_class=owner,
                                         preserve_names=True, not_closed=False).serialize())
                     self.assertIn("properties", schema)

@@ -9,13 +9,14 @@ import json
 import shutil
 import unittest
 from copy import deepcopy
+from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
 
 import jsonschema
 import linkml_runtime
 import yaml
-from linkml.generators.jsonschemagen import JsonSchemaGenerator
+from linkml.generators.jsonschemagen import JsonSchema, JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -57,11 +58,44 @@ def copy_schema(target, **kwargs):
         (Path(target) / name).write_text(text)
 
 
-@lru_cache(maxsize=None)
+_BASELINE_GENERATOR = None
+
+
+def _generate_baseline(class_name=None):
+    # Only immutable repository YAML and these fixed options may use this generator.
+    # LinkML resets emission state in start_schema, but naming flags are process-wide.
+    global _BASELINE_GENERATOR
+    if (_BASELINE_GENERATOR is None
+            or (JsonSchema.PRESERVE_NAMES, JsonSchema.USE_CURIES) != (True, False)):
+        _BASELINE_GENERATOR = JsonSchemaGenerator(
+            str(SCHEMA), preserve_names=True, not_closed=False
+        )
+    _BASELINE_GENERATOR.top_class = class_name
+    return json.loads(_BASELINE_GENERATOR.serialize())
+
+
+@dataclass
+class _NativeSchema:
+    schema: dict
+    checked_validator: jsonschema.Draft201909Validator | None = None
+
+
+@lru_cache(maxsize=4)
+def _native_schema(class_name):
+    return _NativeSchema(_generate_baseline(class_name))
+
+
 def generated(class_name):
-    return json.loads(JsonSchemaGenerator(
-        str(SCHEMA), top_class=class_name, preserve_names=True, not_closed=False
-    ).serialize())
+    return _native_schema(class_name).schema
+
+
+def validate_modules(test, paths, schema):
+    cls = jsonschema.validators.validator_for(schema)
+    cls.check_schema(schema)
+    validator = cls(schema)
+    for path in paths:
+        with test.subTest(module=path.name):
+            validator.validate(yaml.safe_load(path.read_text()))
 
 
 def assert_ranges(test, slot, known, enclosing_range=None):
@@ -290,9 +324,7 @@ class OntologySchemaTests(unittest.TestCase):
     def test_linkml_metamodel(self):
         metamodel = Path(linkml_runtime.__file__).parent / "linkml_model/jsonschema/meta.schema.json"
         schema = json.loads(metamodel.read_text())
-        for path in SCHEMA.parent.glob("*.yaml"):
-            with self.subTest(module=path.name):
-                jsonschema.validate(yaml.safe_load(path.read_text()), schema)
+        validate_modules(self, SCHEMA.parent.glob("*.yaml"), schema)
 
     def test_exact_count_boundaries(self):
         # Literal oracles from §3, not a second field/type registry.

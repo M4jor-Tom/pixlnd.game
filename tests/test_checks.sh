@@ -199,4 +199,5 @@ expect_failure 'invalid ontology with exit 0' 'ontology INVALID'
 python3 tests/test_check_python_bash.py
 python3 tests/test_quality_deadlines.py
 bash tests/test_cognitive_defer.sh
+bash tests/test_gate.sh
 printf 'Quality runner checks passed.\n'
