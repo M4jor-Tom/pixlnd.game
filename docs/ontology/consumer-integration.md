@@ -62,3 +62,75 @@ co-presence rejects. Prior invalid-shape checks are retained but no longer descr
 proof. Snapshot-limit witnesses also explicitly admit wrong active/inactive coordinate variants,
 false active engagement, cooldown recovery above the remainder, rubble deadline mismatches and
 nonempty idle/warning hitsets. These are backend qualifications, not weaker domain rules.
+
+## Runtime and validation boundaries
+
+`game/ontology_db.gd` gets raw configuration and bound catalogs from `game/domain/domain.gd`.
+The autoload aborts on load diagnostics. It also rejects a missing default ruleset even when
+loading supplied no errors. The CLI (`ontology/validate.gd`) rejects either a false validation
+result, even with no errors, or retained errors, even with a true result.
+[`test_validation_fail_closed.gd`](../../tests/ontology/test_validation_fail_closed.gd) exercises both processes. The
+[equipment](../../tests/ontology/test_equipment_config.gd) and [identity/skill](../../tests/ontology/test_identity_skills.gd)
+tests combine raw model rejection with actual consumer operations. The shared [runner](../quality-checks.md)
+checks those scripts alongside the domain-only tests.
+
+`test_required_inputs.gd`, `test_required_catalogs.gd` and `test_world_references.gd` cover
+specific required catalogs, raw shapes, movesets, district/building references, landscapes,
+climate and style closure. `test_provenance.gd` checks finite source inheritance and malformed
+annotations; `test_artifact_corrections.gd` checks the corrected logarithmic definition, not
+reward generation, collection, stacking at runtime or personal claims. Valid configuration
+does not certify all of [§5](../../ontology/domain/5_Constraints.md).
+
+### Controls and presentation
+
+For `keybinds.json#hybrid`, `game/meta/input_map.gd` skips underscore metadata, expands `WASD`
+to the four movement actions and `wheel` to `_in`/`_out`, handles `M1`–`M3` as mouse buttons
+and resolves other Godot key names with `OS.find_keycode_from_string`. A configured token is
+not proof of a working feature. Movement, jump/ascent, sprint, dodge, attacks, class slots, inventory, skills, map
+and zoom have consumers; the fourth class slot requires a tree ultimate. Special and block
+share a hold. NPC interaction takes priority over ground pickup in that adapter only, with
+pickup and shop close routed through interact. There is no general priority rule or exclusive
+desktop context stack. Quick Item targets the first consumable stack; bag activation uses the
+selected row. Captured mouse motion supplies look. Native panel lists supply navigation,
+selection and double activation for equip/use/spend/buy/sell. Camera menu input changes
+cursor capture; shop cancel is distinct. No general controller resolver is implied.
+Climb, quick-select, lamp, pet-call, crafting, chat, help and debug-menu rows alone do not
+supply these features. Keyboard pickup's separate row is not the active pickup path.
+
+The [native Android adapter](../decisions/android-native-touch-controls.md) has synthetic,
+windowed and owner hardware evidence for the first slice. Device/OS, individual checklist
+results and render cost were not recorded. That does not certify every map gesture or
+provide full 54-action coverage. Gamepad is unselected. Rebinding, saved preferences and
+resolved prompts remain outside first-slice coverage. The [profiling choice](../decisions/runtime-profiling.md)
+selects release-player access, not evidence that the keyboard overlay already works.
+
+### Current implementation versus target
+
+- World bounds and the fixed player/boundary overview cover a much smaller scope than a terrain
+  map. The Teleport dash uses the travel guard without changing costs or cooldowns. Desktop
+  and synthetic Android captures cover the overview; the general owner hardware trial does
+  not establish map-specific rendering or touch acceptance. D22's seeded building ring, door services and safety tuning do not provide final district,
+  room, roof, schedule or settlement-service coverage. The inn configuration supplies free
+  recovery and a spawn point, not the separate paid clock skip and unanimous sleep contract.
+  The player respawns at the character’s current spawn point, not by searching for a revival statue.
+  The saved world clock runs; stealth generation uses ability and stillness parameters, not
+  darkness or nearby lamps.
+- Do not derive current creature family assignments, taming or `hp-mult` support from the
+  approved family rules. The single-species food mapping, Skeleton Dog's source assignment,
+  Bubble Gum's two eligible targets and missing family assignments need separate reconciliation.
+  Traversal prerequisites do not establish mounting, gliding or sailing coverage.
+- The equipment tests cover handedness, capacity, slots and Wand data, not crafting, off-hand
+  combat, attachment or use of spirit cubes. The equip boundary uses live character level;
+  structurally legal worn gear survives restore. Apple instant use is an approximation; its
+  coefficient is not a new rule for all foods. Item power does not implement formula production,
+  recipe learning or its UI. Resistance classification, aggro and DOT coverage are independent.
+- Historical design notes describe evolving resource gain, class roles, stealth, ring/amulet loot
+  and spawn coverage. A role does not implement humanoid equipment/appearance. Crossbow gravity
+  `3` does not supersede its flat trajectory. D25 uses time scale, camera offsets, sine/noise blips with pitch slide
+  and floating labels; those choices are not the source of hit-stop timing or hit rules.
+- Encounter declarations and targeted tests do not prove occupancy, generation, targeting,
+  reward issuance or renewal. Portable import UI, personal permanent-source claims, remaining
+  personal/world improvements and networking are separate from the validated atomic save.
+  Consult the [implementation backlog](../ROADMAP/todo_implement.md) for deferrals. The
+  [archived LinkML/C# contract](../decisions/superseded/linkml-csharp-toolchain.md) is superseded,
+  not current tooling or migration authority.

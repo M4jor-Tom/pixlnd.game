@@ -14,11 +14,8 @@
   its **generator** is a class (§6) and its config lives in `instances/generators.json`.
 - Numeric formulas are written in plain infix. `lvl` = character level, `n` = item level.
 
-**Undeployed-game clarification (owner, 2026-09-28):** no player data exists to migrate.
-Require current approved definitions directly; obsolete checked-in values need direct replacement
-when separately authorized, not save/config migrators, legacy-read fallbacks or compatibility
-paths. Older “migration” deferrals in this document mean data correction/enforcement debt only,
-not a migration plan. Stable source IDs and previously approved names remain unchanged.
+Require current approved definitions directly, not legacy-read fallbacks, migration formats
+or alternative rules. Stable source IDs and previously approved names remain unchanged.
 
 ---
 

@@ -1,4 +1,4 @@
-## Scoped Android required-input/reference regressions; broader catalog validation is deferred.
+## Scoped Android required-input/reference regressions.
 extends SceneTree
 const Model := preload("res://ontology/model.gd")
 const ACTIONS := [

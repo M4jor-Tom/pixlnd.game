@@ -151,7 +151,7 @@
    },
    "id": "pet",
    "index": 12,
-   "note": "pet-food is available here only during taming; no taming runtime in this slice"
+   "note": "pet-food is available here only during taming"
   }
  ]
 }

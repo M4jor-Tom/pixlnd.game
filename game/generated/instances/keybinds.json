@@ -7,7 +7,7 @@
   {
    "key": "hybrid",
    "value": {
-    "_doc": "Executable keyboard-mouse adapter only; canonical meanings: ontology/domain/controls.md; bindings, aliases, shared phases and status: ontology/domain/controller-profiles.md#keyboard-and-mouse. Tokens: Godot key name, M1/M2/M3 mouse buttons, wheel; move expands to four actions. Underscore metadata is not executable.",
+    "_doc": "Keyboard-mouse physical defaults only; canonical meanings: ontology/domain/controls.md; bindings, aliases, shared phases and contexts: ontology/domain/controller-profiles.md#keyboard-and-mouse. Tokens: key name, M1/M2/M3 mouse buttons, wheel; move expands to four actions. Underscore metadata is not a binding.",
     "entries": [
      {
       "key": "move",

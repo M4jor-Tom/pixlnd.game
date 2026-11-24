@@ -46,8 +46,8 @@ slots:
     range: input-binding
     multivalued: true
     domain: controller-profile
-    description: Cardinality 1→0..n. [profiles](controller-profiles.md) explicitly distinguish implemented,
-      registered-only and unselected mappings
+    description: Cardinality 1→0..n. The profile owns physical bindings;
+      no physical default is inferred for an unselected mapping.
     see_also:
     - ../domain/4_Relations.md
   costs:

@@ -4,7 +4,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 scratch=$(mktemp -d)
 trap 'rm -rf "$scratch"' EXIT
-mkdir -p "$scratch/scripts" "$scratch/ontology" "$scratch/game/tests" "$scratch/tests" "$scratch/skills" "$scratch/monitors" "$scratch/tools"
+mkdir -p "$scratch/scripts" "$scratch/ontology" "$scratch/game/tests" "$scratch/tests/ontology" "$scratch/skills" "$scratch/monitors" "$scratch/tools"
 cp scripts/check* "$scratch/scripts/"
 cp gdlintrc gdformatrc "$scratch/"
 printf 'config_version=5\n[application]\nrun/main_scene="res://game/main.tscn"\n' > "$scratch/project.godot"
@@ -12,9 +12,10 @@ printf '[gd_scene format=3]\n[node name="Main" type="Node"]\n' > "$scratch/game/
 printf 'extends SceneTree\nfunc _init() -> void:\n\tprint("ontology valid")\n\tquit(0)\n' > "$scratch/ontology/validate.gd"
 printf 'extends SceneTree\nfunc _init() -> void:\n\tquit(0)\n' > "$scratch/game/tests/test_fixture.gd"
 cp "$scratch/game/tests/test_fixture.gd" "$scratch/ontology/test_fixture.gd"
+cp "$scratch/game/tests/test_fixture.gd" "$scratch/tests/ontology/test_fixture.gd"
 
 format_fixture() {
-  gdformat "$scratch/game" "$scratch/ontology" > /dev/null
+  gdformat "$scratch/game" "$scratch/ontology" "$scratch/tests/ontology" > /dev/null
 }
 run_checks() {
   bash "$scratch/scripts/checks.sh" > "$scratch/output.log" 2>&1
@@ -50,7 +51,7 @@ limit_fixture py file 700 > "$scratch/tools/.venv/ignored.py"
 format_fixture
 run_checks || { cat "$scratch/output.log"; exit 1; }
 # Every completed Godot invocation reports its own wall-clock duration.
-if [[ $(grep -Ec '^Elapsed: [0-9]+\.[0-9]{3} s$' "$scratch/output.log") != 6 ]]; then
+if [[ $(grep -Ec '^Elapsed: [0-9]+\.[0-9]{3} s$' "$scratch/output.log") != 7 ]]; then
   printf 'FAIL: missing per-invocation timings\n' >&2
   cat "$scratch/output.log"
   exit 1
@@ -58,7 +59,7 @@ fi
 # An unrelated working directory must not change the checked project.
 (cd / && bash "$scratch/scripts/checks.sh") > "$scratch/output.log" 2>&1
 # File caps count comments too, including hidden paths and the tooling itself.
-for fixture in game/size.gd ontology/size.gd scripts/size.gd game/.size..gd; do
+for fixture in game/size.gd ontology/size.gd tests/ontology/size.gd scripts/size.gd game/.size..gd; do
   printf 'extends Node\n' > "$scratch/$fixture"
   for ((i = 1; i < 600; i++)); do
     printf '# padding\n' >> "$scratch/$fixture"
@@ -145,7 +146,7 @@ complexity_fixture 1 > "$scratch/game/complexity.gd"
 format_fixture
 run_checks || { cat "$scratch/output.log"; exit 1; }
 rm "$scratch/game/complexity.gd"
-for fixture in game/tests/test_complexity.gd ontology/test_complexity.gd \
+for fixture in game/tests/test_complexity.gd ontology/test_complexity.gd tests/ontology/test_complexity.gd \
     game/complexity..gd game/.complexity.gd \
     game/more..tests/test_complexity.gd game/.hidden/test_complexity.gd; do
   mkdir -p "$(dirname "$scratch/$fixture")"
@@ -176,16 +177,19 @@ for lang in py sh; do
   done
 done
 rm -r "$scratch/tests/limit_"* "$scratch/tools/.venv"
-printf 'extends Node\nvar value=1\n' > "$scratch/game/unformatted.gd"
+printf 'extends Node\nvar value=1\n' > "$scratch/tests/ontology/unformatted.gd"
 expect_failure 'unformatted GDScript' 'unformatted.gd'
-rm "$scratch/game/unformatted.gd"
-printf 'extends Node\nfunc broken(\n' > "$scratch/game/broken.gd"
+rm "$scratch/tests/ontology/unformatted.gd"
+printf 'extends Node\nfunc broken(\n' > "$scratch/tests/ontology/broken.gd"
 expect_failure 'invalid GDScript' 'broken.gd'
-rm "$scratch/game/broken.gd"
+rm "$scratch/tests/ontology/broken.gd"
 printf 'extends SceneTree\nfunc _init() -> void:\n\tprint("fixture test failed")\n\tquit(1)\n' > "$scratch/game/tests/test_fixture.gd"
 format_fixture
 expect_failure 'failing gameplay test' 'fixture test failed'
+cp "$scratch/game/tests/test_fixture.gd" "$scratch/tests/ontology/test_fixture.gd"
 cp "$scratch/ontology/test_fixture.gd" "$scratch/game/tests/test_fixture.gd"
+expect_failure 'failing integration test' 'fixture test failed'
+cp "$scratch/ontology/test_fixture.gd" "$scratch/tests/ontology/test_fixture.gd"
 printf 'extends SceneTree\nfunc _init() -> void:\n\tpush_error("fixture engine error")\n\tquit(0)\n' > "$scratch/ontology/test_fixture.gd"
 format_fixture
 expect_failure 'engine error with exit 0' 'fixture engine error'

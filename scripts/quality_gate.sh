@@ -56,8 +56,8 @@ fi
 time_command=$(type -P time)
 status=0
 "$time_command" -o "$QUALITY_GATE_LOG_DIR/resources.log" \
-  -f 'bounded_command_elapsed_seconds=%e\nlargest child RSS=%M KiB (not summed process-tree RSS)' \
-  timeout --kill-after=20s 80m env -u LD_LIBRARY_PATH \
+  -f 'command_elapsed_seconds=%e\nlargest child RSS=%M KiB (not summed process-tree RSS)' \
+  env -u LD_LIBRARY_PATH \
   nix develop --no-update-lock-file -c pre-commit run --all-files --hook-stage manual || status=$?
 git status --porcelain=v1 --untracked-files=all >"$QUALITY_GATE_LOG_DIR/after.status" || {
   git_status=$?

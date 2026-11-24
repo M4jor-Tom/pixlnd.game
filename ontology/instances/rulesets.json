@@ -1,7 +1,7 @@
 {
   "$schema": "ruleset",
   "_controls": "../domain/controls.md#climb; climb-key-hold is a retained legacy flag name, not a physical binding or complete climb lifecycle. Profiles: ../domain/controller-profiles.md",
-  "_doc": "Feature-flag bundles. Only ruleset-hybrid is the pixlnd target (D1); alpha/Steam bundles are historical reference, Omega is announced roadmap content, not v1 (D4). Historical true flags do not authorize hybrid availability. Regional gear power loss is permanently excluded: never propose or implement it, even for cloning fidelity. Hybrid flags describe target/configuration, not proof of implementation; unresolved merges remain in docs/ROADMAP/todo_decide.md §E.",
+  "_doc": "Feature-flag bundles. Only ruleset-hybrid is the pixlnd target (D1); alpha/Steam bundles are historical reference, Omega is announced roadmap content, not v1 (D4). Historical true flags do not authorize hybrid availability. Regional gear power loss is permanently excluded: never propose or implement it, even for cloning fidelity. Hybrid flags describe the selected configuration; they do not resolve open choices.",
   "ruleset-alpha": {
     "name": "Alpha 0.1.x rules",
     "versions": ["A"],

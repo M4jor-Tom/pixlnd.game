@@ -1,4 +1,4 @@
-## Design-config rejections moved from the game tests when the game stopped loading model.gd:
+## Design-config rejection cases:
 ## c-ability-runtime, c-defence-config, c-moveset-config, c-feel-config, c-creature-roles,
 ## c-xp-config, c-tree-shape, c-loot-config and c-settlement-config. Each case resets its mutation.
 extends SceneTree

@@ -11,7 +11,7 @@ One row per fact type. Cardinality as `domain → range`.
 | unlocks-next | ability | ability | 1→0..1 | alpha tree: 5 points |
 | invoked-by-control | ability | control-action | n→n | active ability activation refers to [controls](controls.md), directly or through the current class slot/tree; passive effects need no binding |
 | bound-to-input | control-action | input-binding | n→n | each binding belongs to a controller profile; aliases/shared phases and context are profile-owned, not versioned ability identity |
-| has-input-binding | controller-profile | input-binding | 1→0..n | [profiles](controller-profiles.md) explicitly distinguish implemented, registered-only and unselected mappings |
+| has-input-binding | controller-profile | input-binding | 1→0..n | [profiles](controller-profiles.md) own physical mappings and distinguish unselected defaults |
 | costs | ability | resource | 1→0..n | amount per resource, scoped by ruleset |
 | applies | ability ∪ weapon-type ∪ hazard | status-effect | n→n | |
 | has-moveset | weapon-type | ability (basic, special) | 1→2 | |

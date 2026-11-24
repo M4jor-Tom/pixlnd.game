@@ -1,6 +1,12 @@
 # Handoff — current pending work
 
-## Phase-1 Task 7 — reviewed; STOP before Task 8
+## Phase 1 — stop before Task 9
+
+Task 8's consumer boundary passed focused tests and independent review. Publication still requires the full post-commit Quality receipt for the exact tree; no hook exemption. Execution manifest and focused receipts: `/home/theta/.pi-game-dev/recovery/pixlnd-task8-restart.CJzfJiF9/resume.b8npyQ/`. Wait for the owner before Task 9.
+
+Generated-domain qualification: a fresh render of the pre-Task 8 schema differed from 35 other checked-in scripts. Task 8 applied only the controller documentation delta attributable to its schema change. See `fixes/render-comparison.txt` in the evidence above. Reconcile the historical generator baseline separately before any whole-directory regeneration.
+
+## Phase-1 Task 7 — reviewed checkpoint
 
 Task7 source and exact current-save Markdown handoff passed independent spec/quality,
 wire-equivalence, simplify/ponytail and applied-reference reviews. Runtime, instances,

@@ -60,7 +60,7 @@ Owner instruction, refined 2026-10-05: use **`./docs/todo_handle_reconciled_item
 decided but unhandled reconciliations, not completed history. Rule: save exact selections/amendments
 and application status before recording; resume pending **Previously selected** entries without
 unchanged reapproval. After canonical recording, checks, required review and item commit are
-verified, retain significant choices in `ontology/decisions/`, findings in `docs/findings/`
+verified, retain significant choices in `docs/decisions/`, findings in `docs/findings/`
 and routine receipts in managed evidence. Remove resolved questions from `todo_decide.md`
 and the handled queue entry; delete either pending file when empty. The former `docs/reconciled.md`
 name is retired. Keep canonical rules in `ontology/domain/index.md`.

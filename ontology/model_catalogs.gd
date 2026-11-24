@@ -206,7 +206,7 @@ static func climate_rule(o, rule: Variant) -> void:
 			{"number": "relief base", "string": "surface top cliff"}
 		)
 	var expression := Expression.new()
-	# Same input names as WorldGen.FIELD_NAMES; ontology never depends on game/.
+	# Required terrain field names.
 	if expression.parse(rule[1], ["temp", "humidity", "continent", "relief", "roll"]) != OK:
 		o.errors.append(path + ": invalid climate expression " + rule[1])
 

@@ -1,7 +1,7 @@
 # Cube World Rebuild — Domain Ontology (canonical layer)
 
-Source of truth for the rebuild of **Cube World** (Picroma / Wollay). Code, data and content are
-derived from this file and `instances/`. Nothing downstream may drift ahead of it.
+Source of truth for the rebuild of **Cube World** (Picroma / Wollay). The domain chapters explain the rules; `schema/` declares the structures and `instances/`
+records qualified source data.
 
 - [0. Conventions](0_Conventions.md)
 - [1. Scope](1_Scope.md)
@@ -9,7 +9,7 @@ derived from this file and `instances/`. Nothing downstream may drift ahead of i
 - [3. Classes](3_Classes.md)
 - [Initial hybrid encounter contracts](encounter-contracts.md)
 - [Controls — canonical player intentions](controls.md)
-- [Controller profiles — bindings and mapping status](controller-profiles.md)
+- [Controller profiles — bindings and device policy](controller-profiles.md)
 - [4. Relations](4_Relations.md)
 - [5. Constraints](5_Constraints.md)
 - [6. Generators](6_Generators.md)

@@ -2,7 +2,7 @@
 
 The initial [mission families](3_Classes.md#mission-type) are an ordinary multi-boss ruins
 dungeon, a repeatable daily ruined skeleton encampment and one-time world-shared supplier
-rescues. Documentation is not runtime coverage or implementation permission.
+rescues.
 
 ## Placement and access
 
@@ -12,8 +12,7 @@ These input structures do not replace the logical occurrences or the procedures 
 Each land has one ruins dungeon, one daily camp and four supplier sites. Site centres are
 land-seeded; [`initial-site-placement-profile`](../schema/world.yaml) declares the inclusive
 village-distance thresholds and minimum separation (`minimum-village-distance-blocks`,
-`maximum-village-distance-blocks`, `minimum-site-separation-blocks`). The contract is covered by
-`test_initial_site_placement_{contracts,values,mutations}`. Their saved-world locations stay fixed
+`maximum-village-distance-blocks`, `minimum-site-separation-blocks`). Their saved-world locations stay fixed
 across visits and daily renewal under [mission-type](3_Classes.md#mission-type).
 
 Each site has a flat floor at `H = max(natural ground height, sea level + clearance)`, where
@@ -30,9 +29,7 @@ village hub with the configured `fallback-village-hub-width-blocks` and
 `fallback-village-hub-depth-blocks` in [`initial-site-placement-profile`](../schema/world.yaml),
 containing the required settlement and valid village-square spawn, not a substitute landing. Validate the village and all six sites together, including
 finite-world bounds, independently of optional guidance. The complete logical land/site association is
-[`initial-populated-land`](../schema/world.yaml), covered by `test_initial_populated_land_contracts`,
-`test_initial_populated_land_owner_binding`, and `test_initial_populated_land_mutations` in
-`test_ontology_schema_world_populated_land.py`; it does not claim physical placement or runtime occupancy.
+[`initial-populated-land`](../schema/world.yaml); it does not claim physical placement or occupancy.
 Required geography failure produces
 a generation diagnostic, never fewer suppliers or partially populated encounters. Guidance
 failure only omits guidance, retaining terrain, village, sites and gameplay.
@@ -50,22 +47,18 @@ All dimensions are in blocks. Ruins' structural layout, exact component dimensio
 overall bounds, ceiling/door sizes and trap-free lane are declared by
 [`initial-ruins-assembly`, `ruins-room-volume`, `ruins-corridor-volume`, `ruins-court-volume`,
 `ruins-passage-volume`, and `ruins-alcove-volume`](../schema/world.yaml).
-`test_initial_site_assembly_contracts` and `test_initial_site_assembly_values` cover the assembly;
-`test_encounter_geometry_and_population` covers volume dimensions. Trap and furnishing counts
+Trap and furnishing counts
 are in [`spike-trap-profile.count-per-ruins-site`, `vase-profile.count-per-ruins-room`,
 `vase-profile.full-health`,
-`table-profile.count-per-ruins-room`, and `table-profile.full-health`](../schema/world.yaml),
-covered by `test_rubble_trap_profiles` and `test_furnishing_profiles`.
+`table-profile.count-per-ruins-room`, and `table-profile.full-health`](../schema/world.yaml).
 
 Ruins occupancy is the closed union of the playable rooms, corridors, entrance court, entrance
 passage and alcove, not the empty space of the enclosing rectangle; the component vertical extents
 are declared in the named volume classes above. Camp and rescue battlefield dimensions and vertical
-extents are [`camp-battlefield-volume` and `rescue-battlefield-volume`](../schema/world.yaml),
-covered by `test_encounter_geometry_and_population`. Outdoor geometry is assembled by
+extents are [`camp-battlefield-volume` and `rescue-battlefield-volume`](../schema/world.yaml). Outdoor geometry is assembled by
 [`initial-camp-assembly` and `initial-rescue-assembly`](../schema/world.yaml); both have two opposite
 [`initial-battlefield-exit`](../schema/world.yaml) occurrences (each with an [`initial-battlefield-exit.width-blocks`](../schema/world.yaml) member), associated by
-[`initial-opposite-exits`](../schema/world.yaml). `test_initial_site_assembly_contracts` and
-`test_initial_site_assembly_values` cover assembly and exit declarations. Both battlefields have visible boundaries
+[`initial-opposite-exits`](../schema/world.yaml). Both battlefields have visible boundaries
 and opposite exits. [Closed-volume occupancy](3_Classes.md#game-clock) still counts boundaries as
 inside and requires all players outside every component, without extra grace.
 
@@ -87,19 +80,14 @@ clear rules below remain separate from the population shapes linked in the table
 `initial-populated-ruins-room` and `initial-populated-ruins-assembly` retain the three
 contained room occurrences in green/blue/purple order: each room has one three-guard pack;
 room one has no separate boss, while rooms two and three each have a separate non-mission
-boss. The ruins room/assembly declarations are covered by `test_initial_ruins_population_contracts`,
-`test_initial_ruins_population_order_binding`, `test_initial_ruins_population_values`, and
-`test_initial_ruins_population_native_mutations` in `test_ontology_schema_world_ruins_population.py`
-and `test_ontology_schema_world_ruins_population_values.py`.
+boss.
 `initial-populated-camp-assembly` and `initial-populated-rescue-assembly` link each outdoor
-geometry occurrence to its designated population and permanent pack/boss assignments; existing
-coverage is `test_initial_outdoor_population_contracts`, `test_initial_outdoor_population_values`,
-and `test_initial_outdoor_population_native_mutations` in `test_ontology_schema_world_outdoor_population.py`.
+geometry occurrence to its designated population and permanent pack/boss assignments.
 These are designated logical associations, not current survival/spawn state or placement/execution.
-The population declarations above, covered by `test_encounter_geometry_and_population`, hold the exact
+The population declarations above hold the exact
 pack, boss, hostile and captive counts. No reinforcements are selected for these contracts. Each
 pack and singleton boss independently rolls its basic role with the declared 50/30/20 distribution
-in [`initial-site-hostile-profile`](../schema/world.yaml), covered by `test_initial_site_hostile_profile_contracts`; role assignment per individual is [`encounter-assignment`](../schema/world.yaml), covered by `test_encounter_assignments_and_shared_reward_contract`. Existing basic attacks and status
+in [`initial-site-hostile-profile`](../schema/world.yaml); role assignment per individual is [`encounter-assignment`](../schema/world.yaml). Existing basic attacks and status
 protections remain unchanged. Positions and roles persist across unloading, restarting and
 daily renewal; renewal does not reroll them.
 
@@ -115,9 +103,7 @@ The corresponding required source inputs are [`generator-design-initial-encounte
 These input structures do not replace the logical occurrences or the procedures below.
 
 The fixed local difficulty and spawn facets are [`initial-site-local-difficulty-profile`,
-`initial-site-hostile-spawn`, and `initial-site-boss-spawn`](../schema/world.yaml), covered by
-`test_initial_site_local_difficulty_contracts`, `test_initial_site_local_difficulty_values`, and
-`test_initial_site_local_difficulty_mutations` in `test_ontology_schema_world_local_difficulty.py`.
+`initial-site-hostile-spawn`, and `initial-site-boss-spawn`](../schema/world.yaml).
 Reuse the existing NPC health and damage curves (`stats.json#alpha-character-formulas.npc-hp`,
 `generators.json#design.combat.enemy-attack`) with local power-base formula
 `p = power-base-offset + t`, where [`initial-site-local-difficulty-profile.power-base-offset`](../schema/world.yaml)
@@ -138,8 +124,7 @@ not unmodified player spell damage.
 The corresponding required source inputs are [`generator-design-loot`](../schema/design-items-loot.yaml) and its [`coins and ground`](../schema/design-items-loot-pickup.yaml), [`rarity-weights`](../schema/design-items-loot-rarity.yaml), [`gear-kinds`](../schema/design-items-loot-gear.yaml), [`consumable-pool`](../schema/design-items-loot.yaml) fields.
 These input structures do not replace the logical occurrences or the procedures below.
 
-The structural roll facets are [`ordinary-site-kill-loot-profile`](../schema/world.yaml), covered
-by `test_gear_loot_profiles` in `test_ontology_schema_world_rewards.py`.
+The structural roll facets are [`ordinary-site-kill-loot-profile`](../schema/world.yaml).
 Each ordinary kill independently rolls for coins, gear, consumables, and each defined species
 ingredient using [`ordinary-site-kill-loot-profile.coin-probability`, `ordinary-site-kill-loot-profile.gear-probability`, `ordinary-site-kill-loot-profile.consumable-probability`, and
 `ordinary-site-kill-loot-profile.each-species-ingredient-probability`](../schema/world.yaml). Copper is [`ordinary-site-kill-loot-profile.copper-base`](../schema/world.yaml)
@@ -169,8 +154,7 @@ and [`saved-rubble`](../schema/save-content-saved-props-traps.yaml); these decla
 neither execute specials nor replace cancellation, restoration or world-clock rules below.
 
 Each boss independently receives one permanent special according to [`boss-special-profile.assignment-probability`](../schema/world.yaml): ground stomp or charge. Fixed
-parameter shapes are [`boss-special-profile`, `boss-stomp-profile`, and `boss-charge-profile`](../schema/world.yaml),
-covered by `test_boss_special_profiles`; assignment scope is [`encounter-assignment`](../schema/world.yaml).
+parameter shapes are [`boss-special-profile`, `boss-stomp-profile`, and `boss-charge-profile`](../schema/world.yaml); assignment scope is [`encounter-assignment`](../schema/world.yaml).
 These declarations do not encode the selection procedure or execute behavior. Use its canonical
 [current target](3_Classes.md#ai-behavior), including taunts and targeting ties.
 
@@ -190,15 +174,14 @@ not a global enemy-combo ban.
 
 First readiness, cooldown and its included recovery duration use `first-ready-after-engagement-seconds`,
 `cooldown-after-completion-or-cancellation-seconds`, and `recovery-within-cooldown-seconds` in
-[`boss-special-profile`, `boss-special-profile.first-ready-after-engagement-seconds`, `boss-special-profile.cooldown-after-completion-or-cancellation-seconds`, and `boss-special-profile.recovery-within-cooldown-seconds`](../schema/world.yaml); `test_boss_special_profiles` checks their fixed
-values. Basic attacks stop during windup, execution and recovery. Death, invalid target, stun,
+[`boss-special-profile`, `boss-special-profile.first-ready-after-engagement-seconds`, `boss-special-profile.cooldown-after-completion-or-cancellation-seconds`, and `boss-special-profile.recovery-within-cooldown-seconds`](../schema/world.yaml). Basic attacks stop during windup, execution and recovery. Death, invalid target, stun,
 knockback or home-return cancels the special; sight loss during windup also cancels. Inactive
 simulation pauses timers. Normal unload/restart cancels an ongoing special into cooldown/recovery
 without replaying hits; already-waiting timers retain their remainder, with no offline advancement.
 
 Each boss arena's count, cube edge, logical stone material and restoration delay are declared by
 [`rubble-profile`, `rubble-profile.count-per-boss-arena`, `rubble-profile.cube-edge-blocks`, `rubble-profile.material`, and
-`rubble-profile.restoration-delay-world-hours`](../schema/world.yaml), covered by `test_rubble_trap_profiles`. Rubble remains
+`rubble-profile.restoration-delay-world-hours`](../schema/world.yaml). Rubble remains
 breakable and outside required routes/safe lanes. Stomp shatters rubble in its impact area; charge
 shatters intersecting rubble and continues. These are real breakable stone blocks, not cosmetic
 particles, and yield no resource drops. Floors, supporting structure, access, exits, traps and
@@ -218,8 +201,7 @@ Persisted payloads are [`saved-contents` and `saved-reward`](../schema/save-worl
 The trap count, closed footprint, inclusive player-feet trigger interval, phase durations and
 physical damage are declared by [`spike-trap-profile`, `spike-trap-profile.count-per-ruins-site`, `spike-trap-profile.footprint-width-blocks`,
 `spike-trap-profile.footprint-depth-blocks`, `spike-trap-profile.trigger-min-feet-above-floor-blocks`, `spike-trap-profile.trigger-max-feet-above-floor-blocks`,
-`spike-trap-profile.warning-seconds`, `spike-trap-profile.active-seconds`, `spike-trap-profile.cooldown-seconds`, and `spike-trap-profile.physical-damage`](../schema/world.yaml), covered by
-`test_rubble_trap_profiles`; its effect/defence behavior remains below. Leaving does not cancel the warning. Each activation hits each player
+`spike-trap-profile.warning-seconds`, `spike-trap-profile.active-seconds`, `spike-trap-profile.cooldown-seconds`, and `spike-trap-profile.physical-damage`](../schema/world.yaml). Leaving does not cancel the warning. Each activation hits each player
 at most once; standing there retriggers after cooldown. Jumping above the trigger interval or using
 the safe lane avoids it. Only players take trap damage. Armor with its existing floor, then
 reduction buffs and absorption apply. Dodge i-frames and combat-block do not protect; Resistance
@@ -233,8 +215,7 @@ per-renewal quantities/rarity/spread are declared by [`vase-profile.count-per-ru
 `vase-profile.copper-per-room-guard-level`, `table-profile.count-per-ruins-room`,
 `table-profile.full-health`, `table-profile.glass-flask-count-per-renewal`,
 `table-profile.life-potion-count-per-renewal`, `table-profile.life-potion-rarity-index`, and
-`table-profile.life-potion-power-spread`](../schema/world.yaml), covered by
-`test_furnishing_profiles`. Direct player/boss
+`table-profile.life-potion-power-spread`](../schema/world.yaml). Direct player/boss
 attacks damage props; DOT and traps do not. Prop hits grant no combo, MP, XP or enemy-hit status
 rolls. Vase payout on destruction is `copper-base + copper-per-room-guard-level × L` using the named `vase-profile` facets above; table contents are issued as loose pickups.
 Breaking a table never reissues its pair, whether the pickups remain, were taken or expired. `L`
@@ -255,9 +236,7 @@ unload/restart and becomes idle on renewal. Furnishings contain no formulas, boo
 The corresponding required source inputs are [`generator-design-loot-gear-kinds`](../schema/design-items-loot-gear.yaml), [`generator-design-initial-encounters-spirits`](../schema/design-items-encounter-spirits.yaml).
 These input structures do not replace the logical occurrences or the procedures below.
 
-The fixed reward structures are [`guaranteed-boss-gear-profile` and `initial-spirit-profile`](../schema/world.yaml),
-covered by `test_gear_loot_profiles` in `test_ontology_schema_world_rewards.py` and
-`test_spirit_scope_fixed_profile` in `test_ontology_schema_world_progress.py`, respectively.
+The fixed reward structures are [`guaranteed-boss-gear-profile` and `initial-spirit-profile`](../schema/world.yaml).
 The two ruins bosses are non-mission bosses; the camp and four rescue bosses are mission
 bosses. Each independently guarantees the quantity in [`guaranteed-boss-gear-profile.additional-gear-count-per-boss`](../schema/world.yaml)
 in addition to normal kill-drop rolls. Rarity uses [`guaranteed-boss-gear-profile.rarity-tier-increment`](../schema/world.yaml)
@@ -287,7 +266,7 @@ All these rewards are shared ground drops, not per-player copies. No regional `+
 travel weakening is added.
 
 Quality means colour grade; item level means bounded [item power](3_Classes.md#item), not boss level. Spirit cubes are weapon-upgrade ingredients.
-Initial implementation is limited to collecting and carrying them. Attaching spirits and their
+The initial encounter scope covers collecting and carrying them. Attaching spirits and their
 numerical combat effects remain a separate feature, not globally removed or silently added. Existing [bench restrictions](3_Classes.md#customization-bench) and
 [spirit-level restrictions](3_Classes.md#spirit-cube) remain; this selects no effect numbers.
 
@@ -297,11 +276,8 @@ The corresponding required source inputs are [`generator-design-initial-encounte
 These input structures do not replace the logical occurrences or the procedures below.
 
 The shared package and completion declarations are [`encounter-shared-package` and
-`shared-mission-completion-profile`](../schema/world.yaml), covered by
-`test_encounter_assignments_and_shared_reward_contract` in `test_ontology_schema_world_rewards.py`
-and `test_progress_exclusion_profiles` in `test_ontology_schema_world_progress.py`, respectively.
-The supplier ceiling is [`supplier-gear-stock-ceiling-profile`](../schema/world.yaml), also covered
-by `test_progress_exclusion_profiles`.
+`shared-mission-completion-profile`](../schema/world.yaml).
+The supplier ceiling is [`supplier-gear-stock-ceiling-profile`](../schema/world.yaml).
 Each camp/rescue completion produces one shared package per completion cycle, not one per
 teammate. For the four site tiers (white, green, blue and purple), the package fields are [`encounter-shared-package.tier`, `encounter-shared-package.gear-count`,
 `encounter-shared-package.gear-rarity-index`, `encounter-shared-package.gear-upgrades`,
@@ -310,8 +286,7 @@ teammate. For the four site tiers (white, green, blue and purple), the package f
 `encounter-shared-package.gem`, `encounter-shared-package.source-level`, and
 `encounter-shared-package.selected-class`](../schema/world.yaml).
 Its four conditional class rules use `tier` to set `gear-rarity-index`, `copper`, `gem-count`,
-and `gem`; `test_encounter_assignments_and_shared_reward_contract` checks the exact postconditions
-for each tier and four positive tier cases. The fixed gear/potion counts, gear upgrades and common potion rarity are
+and `gem`. The fixed gear/potion counts, gear upgrades and common potion rarity are
 [`encounter-shared-package.gear-count`, `encounter-shared-package.life-potion-count`,
 `encounter-shared-package.life-potion-rarity-index`, and `encounter-shared-package.gear-upgrades`](../schema/world.yaml).
 Gear and potion use `power(L)` for the saved mission-boss source level `L`, without spread; this
@@ -339,8 +314,7 @@ when travelling.
 
 ## Initial permanent-source scope
 
-The [`initial-permanent-source-profile`](../schema/world.yaml) is covered by
-`test_progress_exclusion_profiles` in `test_ontology_schema_world_progress.py`.
+The logical scope is [`initial-permanent-source-profile`](../schema/world.yaml).
 The six initial sites, including their alcove, bosses, props and packages, have source counts in
 [`initial-permanent-source-profile.artifact-source-count` and `initial-permanent-source-profile.one-time-book-source-count`](../schema/world.yaml): both are zero.
 A later dedicated source contract must place those;
@@ -349,13 +323,10 @@ game content. [Personal claims](3_Classes.md#save-data) and the existing
 [artifact allocation](3_Classes.md#artifact) remain unchanged. Historical Steam book counts and
 recipe quantities are not hybrid selections.
 
-Full-land permanent sources and spirit customization are deferred outside the initial playable
-slice, not implementation prerequisites for this bounded contract or permanently deleted content.
+The six initial sites contain no artifact or one-time-book sources. Full-land source placement
+and spirit customization are not prerequisites of this encounter contract; it selects no future
+customization location.
 
-## Implementation boundary
-
-These rules are documentation only. Runtime, instance/config, checker, generator and save
-changes require separate authority; a passing current validator does not enforce this contract.
-Implementation dependencies include canonical targeting/defence, site generation/occupancy,
-world-clock/renewal, shared rewards/shops and saved logical identities. Deferred work is in the
-[implementation backlog](../../docs/ROADMAP/todo_implement.md#initial-encounter-contracts).
+<a id="implementation-boundary"></a>
+The contract depends on targeting/defence, site generation/occupancy, world-clock renewal,
+shared rewards/shops and persistent logical identities.

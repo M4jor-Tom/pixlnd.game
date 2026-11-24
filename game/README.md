@@ -3,12 +3,12 @@
 Consumes `ontology/`; never redefines it. New gameplay = ontology first (sync rule), then code here.
 
 ## Data flow
-- `OntologyDB` (autoload) loads `ontology/instances/*.json` through `ontology/model.gd` at start,
-  runs the §5 constraints, aborts the process on any error. Read-only for the whole run.
+- `OntologyDB` (autoload) uses `game/domain/domain.gd` to load raw configurations and bound catalogs.
+  Startup aborts on load diagnostics or a missing default ruleset. Read-only for the whole run.
 - `OntologyDB.ruleset` = the default ruleset (hybrid). Gate features with `OntologyDB.flag("…")`.
 - `OntologyDB.design` = `generators.json#design`, the owner-designed numbers (D6–D19).
 - Mutable state (world, characters, inventory) belongs to `save-data` (§3.7), not to the autoload.
-- Engine scripts `preload("res://ontology/model.gd")` instead of naming `CubeWorldModel`: the
+- Engine consumers preload the domain facade instead of the standalone ontology model: the
   class-name cache only exists after an editor scan, headless CI has none.
 
 ## Folders follow ontology/domain/index.md §3 (create a folder when its first scene lands)
@@ -127,9 +127,10 @@ publication checks remain separate gates.
 Consume [canonical player intentions](../ontology/domain/controls.md) and their
 [controller profiles](../ontology/domain/controller-profiles.md), not physical names from
 ability/source prose. `keybinds.json#hybrid` remains the unchanged keyboard adapter; it does
-not implement the newly separated catalog. The profile records shared inputs, aliases, raw
-camera/native UI paths and registered-only actions. Gamepad remains unselected; Android's
-[native tool stack](../ontology/decisions/android-native-touch-controls.md) and
+not implement the newly separated catalog. The profile records shared inputs and aliases. See
+[controls and presentation](../docs/ontology/consumer-integration.md#controls-and-presentation)
+for raw camera input, native UI paths and registered-only actions. Gamepad remains unselected; Android's
+[native tool stack](../docs/decisions/android-native-touch-controls.md) and
 [touch profile](../ontology/domain/controller-profiles.md#android) have a first-slice runtime:
 `android_touch.gd` injects separate native touch channels into player/camera and coordinates
 exclusive, live inventory/skills/shop panels with explicit selected-item operations.
@@ -179,7 +180,7 @@ and OpenGL; `--impure` permits host-driver detection. It does not install or rep
 host kernel driver, and it needs a matching installer available from NVIDIA. The first run
 may download and build the userspace package; driver updates require re-evaluation.
 It does not select a different renderer or change the default app/dev shell.
-See the [technical choice](../ontology/decisions/nix-nvidia-launcher.md) for the compatibility pin.
+See the [technical choice](../docs/decisions/nix-nvidia-launcher.md) for the compatibility pin.
 Arguments are forwarded unchanged, for example `nix run --impure .#nvidia -- -- --class=ranger`.
 
 ## Checks
@@ -203,14 +204,14 @@ nix develop --no-update-lock-file -c timeout 227 godot --headless -s game/entiti
 nix develop --no-update-lock-file -c timeout 227 godot --headless -s game/entities/test_stun_input.gd # normal-callback mapped keys/native synthetic touch: stun blocks jump/sustain/ascent; dead/stunned Talk/Pick Up/Use reject, real services and selected panels; expiry/fresh requests, passive coins and live timers/push
 nix develop --no-update-lock-file -c timeout 227 godot --headless -s game/entities/test_landing_death.gd # real-floor fatal landing stops mapped Q/basic/Smash edges; nonlethal and lethal-DOT controls, one death signal, retained items/coins/XP and equipped-max respawn
 timeout 150 nix develop --no-update-lock-file -c godot --headless -s ontology/test_artifact_corrections.gd # bounded checked-in artifact logarithm/config and historical/hybrid description correction; not production artifact enforcement/runtime
-timeout 150 nix develop --no-update-lock-file -c godot --headless -s ontology/test_identity_skills.gd # raw identity catalogs/shapes, ordered spec ownership, shared roots/links and Assassin single rank-3 Camouflage; cumulative diagnostics
+timeout 150 nix develop --no-update-lock-file -c godot --headless -s tests/ontology/test_identity_skills.gd # raw identity catalogs/shapes, ordered spec ownership, shared roots/links and Assassin single rank-3 Camouflage; cumulative diagnostics
 timeout 150 nix develop --no-update-lock-file -c godot --headless -s ontology/test_provenance.gd # exact qualified tags, finite §5 source envelopes/overrides, malformed annotations and unresolved-history controls
 timeout 150 nix develop --no-update-lock-file -c godot --headless -s ontology/test_required_inputs.gd # finite §5 heterogeneous catalogs/configs, raw conversion hazards, climate/family/building/service/style closure; cumulative missing/malformed inputs
 timeout 150 nix develop --no-update-lock-file -c godot --headless -s ontology/test_required_catalogs.gd # required/malformed whole races and movesets, real loader and cumulative/prior errors
 timeout 150 nix develop --no-update-lock-file -c godot --headless -s ontology/test_world_references.gd # district building/class and landscape dungeon/POI closure, malformed references and retained annotations
 timeout 150 nix develop --no-update-lock-file -c godot --headless -s game/world/test_spawner.gd # real ordinary plans exclude always-boss species regardless of category; mixed/boss-capable/category controls preserve RNG draws
 nix develop --no-update-lock-file -c timeout 681 godot --headless -s game/world/test_generation_contract.gd # frozen original ordered plans/assignments/mesh arrays and final RNG states, support overwrite order, strict contact and callback/renewal aliases
-timeout 150 nix develop --no-update-lock-file -c godot --headless -s ontology/test_validation_fail_closed.gd # malformed loot/reference continuation, actual CLI exit truth table/prior load errors and OntologyDB false/empty abort; child logs stay in PIXLND_TEST_DIR
+timeout 150 nix develop --no-update-lock-file -c godot --headless -s tests/ontology/test_validation_fail_closed.gd # malformed loot/reference continuation, actual CLI exit truth table/prior load errors and OntologyDB abort on a missing default ruleset without load diagnostics; child logs stay in PIXLND_TEST_DIR
 timeout 150 nix develop -c godot --headless -s ontology/test_encounter_rewards_config.gd # exact required package/loot/daily shop inputs, cumulative malformed/missing parents and references
 timeout 150 nix develop -c godot --headless -s game/items/test_encounter_rewards.gd # actual death/shared pickup/expiry/unload/restart, seven boss guarantees, fixed spirits and class-legal gear
 timeout 150 nix develop -c godot --headless -s game/world/test_supplier_shops.gd # actual main vendor/captive interactions, last-exit-before-refresh, class snapshot/deferral, saved purchases/daily ceilings and exact save negatives
@@ -241,7 +242,7 @@ timeout 150 nix develop -c godot --headless -s game/world/test_saved_runtime.gd 
 
 timeout 900 bash tests/test_flake.sh                            # pure default/platform checks; NVIDIA headless boot if a module is loaded
 nix develop -c godot --headless -s ontology/validate.gd            # ontology constraints
-nix develop -c godot --headless -s ontology/test_equipment_config.gd # slot indices/parents, raw item-type/weapon ownership/capacity and Wand/recipe negatives + cumulative diagnostics
+nix develop -c godot --headless -s tests/ontology/test_equipment_config.gd # slot indices/parents, raw item-type/weapon ownership/capacity and Wand/recipe negatives + cumulative diagnostics
 nix develop -c godot --headless -s ontology/test_world_bounds_config.gd # selected finite world scales and missing/malformed parent paths
 nix develop -c godot --headless -s ontology/test_gear_hp_config.gd # fixed HP required/finite/exact inputs and cumulative negatives
 nix develop -c godot --headless -s ontology/test_dot_config.gd     # required/malformed DOT rows, exact selected numeric inputs and accumulated negatives

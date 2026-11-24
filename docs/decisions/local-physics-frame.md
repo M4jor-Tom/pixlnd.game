@@ -18,7 +18,7 @@ oppositely translated enormous parent/child hierarchy. It requires complete spat
 and actual contact, lifecycle, Area, action and persistence verification; mechanism feasibility
 alone does not establish integrated correctness or bitwise translation invariance.
 
-Canonical meanings remain in [world](../domain/3_Classes.md#world),
-[save-data](../domain/3_Classes.md#save-data), [AI](../domain/3_Classes.md#ai-behavior),
-[controls](../domain/controls.md) and the [encounter contract](../domain/encounter-contracts.md).
+Canonical meanings remain in [world](../../ontology/domain/3_Classes.md#world),
+[save-data](../../ontology/domain/3_Classes.md#save-data), [AI](../../ontology/domain/3_Classes.md#ai-behavior),
+[controls](../../ontology/domain/controls.md) and the [encounter contract](../../ontology/domain/encounter-contracts.md).
 No gameplay values, membership policy, remote simulation or backend/export change follows.

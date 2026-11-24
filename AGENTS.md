@@ -19,7 +19,7 @@ Three files describe the whole repo, read them in this order before doing anythi
 Land approved necessary domain changes in `ontology/` before engine code, then implement by
 consuming it. For gameplay slices, require the repository-owned [resume workflow](skills/ontology-resume-router-slice/SKILL.md)
 and its authority/precision gate. Follow the [recording workflow](skills/record-impactful-decision/SKILL.md)
-for significant choices; reuse precise approved rules without inventing decisions or completed
+for significant choices (technical records belong in `docs/decisions/`); reuse precise approved rules without inventing decisions or completed
 backlog entries. Run the validator before coding. Skip ontology sync only for tasks that don't
 touch the domain (build, tooling, debugging).
 
@@ -62,19 +62,18 @@ nix develop -c godot -s game/combat/test_defence.gd         # same test, windowe
 ./monitors/godot_threads.sh                                 # while the game runs: red = physics spiral
 ```
 
-Tests are plain `extends SceneTree` scripts at `game/**/test_*.gd`, one per slice; `game/README.md`
+Headless tests are plain `extends SceneTree` scripts under `game/`, `ontology/` and `tests/ontology/`; `game/README.md`
 lists every check with what it covers. Always run them under `timeout` — an error after an `await`
 leaves the tree running forever. Never `pkill -f <script>`, it matches your own shell.
 
 ## Architecture
 
-- `OntologyDB` (autoload, `game/ontology_db.gd`) loads `ontology/instances/*.json` through
-  `ontology/model.gd`, validates, and aborts on any violation. Read-only for the whole run.
+- `OntologyDB` (autoload, `game/ontology_db.gd`) uses `game/domain/domain.gd` for raw configurations and bound catalogs;
+  it aborts on load diagnostics or a missing default ruleset. Read-only for the whole run.
   `OntologyDB.design` = the owner-decided numbers, `OntologyDB.flag("…")` gates features by ruleset.
 - Gameplay scripts never touch `OntologyDB`. `main.gd` injects the design dicts
   (`player.setup(...)`, `creature.setup(...)`, `world.design = …`) so `-s` tests can drive them.
-- Engine scripts `preload("res://ontology/model.gd")`, never `CubeWorldModel` by name: headless
-  Godot has no class-name cache.
+- Consumer tests belong in `tests/ontology/`; `ontology/validate.gd` checks the local model independently.
 - Mutable state (world, characters, inventory) belongs to save-data (§3.7), not to the autoload.
 - `game/` folders mirror `ontology/domain/index.md §3`: `world/ entities/ combat/ items/ progression/ missions/ meta/`.
 

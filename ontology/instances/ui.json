@@ -23,7 +23,7 @@
     "hp-bars-toggle":  {"versions": ["A"]},
     "item-notifications": {"desc": "receipt notifications consider + gear (0.9.3-0)", "versions": ["S"]},
     "cast-bars":       {"desc": "ability name + duration", "versions": ["Ω"]},
-    "debug-menu":      {"pos": "top-left", "shows": ["FPS", "frametime graph", "CPU/GPU time", "GPU + driver", "OS", "engine version"], "design": "D17: Godot Debug Menu add-on, ../domain/controls.md#debug-menu cycles hidden/compact/full, kept in release exports so any player can profile", "versions": ["hybrid"]}
+    "debug-menu":      {"pos": "top-left", "shows": ["FPS", "frametime graph", "CPU/GPU time", "GPU + driver", "OS", "engine version"], "design": "D17: ../domain/controls.md#debug-menu cycles hidden/compact/full, available in release play so any player can profile", "versions": ["hybrid"]}
   },
   "screens": {
     "world-map":        {"_controls": ["../domain/controls.md#world-map"], "desc": "Historical A/S presentation: 3-D voxel map, rotate/zoom (1:4..1:256 S); near zoom = terrain miniature (structures visible as voxels + names), far = landmarks; players as heads, missions as icons, markers, shrines as blue dots, flight points as +; A: unexplored uniform blue per land, explored trail lighter; S: full colours everywhere, white flashing current land border, land selector arrows, coordinates. Current hybrid first map is a fixed boundary-and-player overview only; no terrain, exploration, pan/zoom, markers or map travel. Live time/vulnerability and request gating: ../domain/3_Classes.md#hud-element; controls: ../domain/controls.md#world-map"},
@@ -38,7 +38,7 @@
     "character-creation": {"desc": "race, gender, class, head, hair, hair colour, name; random background (A)"},
     "world-selection":  {"versions": ["A"], "desc": "character select → world select → seed entry"},
     "friends-widget":   {"versions": ["S"]},
-    "system-menu":         {"desc": "system menu and help entry; ../domain/controls.md#menu; physical defaults and current cursor-only approximation belong to profiles"},
+    "system-menu":         {"desc": "system menu and help entry; ../domain/controls.md#menu; physical defaults belong to profiles"},
     "move-list":        {"_controls": ["../domain/controls.md#help"], "versions": ["S"]},
     "item-tooltip":     {"desc": "name (rarity colour) + material + type + +N (A); stats; sell price (A, removed 0.9.1-4); red name = wrong class; stars per rarity display option"}
   },

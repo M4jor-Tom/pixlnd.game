@@ -100,8 +100,8 @@ This is the synchronous host/CI entry (also used by `.github/workflows/quality.y
 bash scripts/quality_gate.sh
 ```
 
-It runs the complete manual manifest in the pinned Nix environment, with an 80-minute
-command deadline plus 20-second kill grace, isolated caches and retained progress/status.
+It runs the complete manual manifest in the pinned Nix environment with no overall
+command timeout, isolated caches and retained progress/status.
 It rejects selectors, nonempty `SKIP`, inherited Git overrides and dirty inputs; changes
 made by hooks also fail. Running `pre-commit run --all-files --hook-stage manual` directly
 is useful diagnostically but does not publish a host pass receipt.
@@ -112,7 +112,7 @@ is useful diagnostically but does not publish a host pass receipt.
    including size/complexity boundaries, class methods and bypass prevention.
 2. `scripts/checks.sh`: GDScript formatting and lint, file/function size, Python/Bash limits,
    cognitive complexity, ontology validation, every
-   `ontology/test_*.gd` and `game/*/test_*.gd`, then a headless main-scene boot.
+   `ontology/test_*.gd`, `tests/ontology/test_*.gd` and `game/*/test_*.gd`, then a headless main-scene boot.
    The map test also runs at fixed 1000 FPS to catch render/physics ordering races.
    Each Godot invocation prints its own wall-clock `Elapsed:` time, excluding Nix setup,
    lint, formatting and size checks. Hook output is visible on success locally and in CI.
@@ -151,9 +151,9 @@ against the three ordinary allocations and preserves the special and boot limits
 
 Cognitive analysis also uses the ordinary 1719-second deadline; it was not part of
 that earlier calibration. These limits apply separately to each invocation, locally and in CI.
-The shared runner bounds its complete manual command at
-80 minutes plus 20-second kill grace. The CI quality job retains its 90-minute total limit,
-including setup, process exit and reporting.
+There is no local suite-wide cutoff. The live-logging fixture waits for the child to start
+before checking whether output is visible while it is held. The CI job still has its
+90-minute infrastructure limit, including setup, process exit and reporting.
 Nonzero exits, timeouts, `SCRIPT ERROR`, engine `ERROR` and `ontology INVALID`
 output all fail the gate, including when Godot exits zero.
 
@@ -164,13 +164,13 @@ files during hooks or CI. `gdformatrc` explicitly enables parse-tree, comment an
 formatting-stability safety checks. Apply formatting locally with:
 
 ```sh
-nix develop --no-update-lock-file -c gdformat game ontology scripts
+nix develop --no-update-lock-file -c gdformat game ontology tests/ontology scripts
 ```
 
 ### File and function size
 
 `scripts/check_sizes.py` uses the pinned gdtoolkit syntax tree to enforce hard
-physical-line caps across every `.gd` file in `game/`, `ontology/` and `scripts/`,
+physical-line caps across every `.gd` file in `game/`, `ontology/`, `tests/ontology/` and `scripts/`,
 including tests, hidden paths and symlinked sources:
 
 | Metric | Maximum |
@@ -216,7 +216,7 @@ control-flow detector and cognitive-complexity calculator. A score of 15 passes;
 16 or more fails, with the file, line, function and score printed. This is gdmetrics'
 C-COG metric, not cyclomatic complexity or an interchangeable Sonar score.
 
-Every `.gd` file under `game/` and `ontology/`, including tests, is analyzed in a
+Every `.gd` file under `game/`, `ontology/` and `tests/ontology/`, including tests, is analyzed in a
 temporary project without game autoloads or normal saves. A complete `find` manifest
 includes hidden paths and names containing `..`, which native discovery skips.
 No result cache, baseline or default directory exclusion exempts existing code. Empty discovery

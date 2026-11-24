@@ -6,17 +6,17 @@ Date: 2026-10-30
 
 The [selected engine](engine-choice.md) must support the model's existing public
 construction, types and observable validation behavior within the
-[code-size and complexity limits](../../docs/quality-checks.md).
+[code-size and complexity limits](../quality-checks.md).
 A smaller function is not equivalent if it changes callback order, error ownership,
 subclass dispatch or which remaining checks execute after a GDScript error.
 
 ## Decision
 
 Keep the public preload entry point and concrete Resource/enumeration definitions in
-[`model.gd`](../model.gd). Keep typed operations involving those definitions in that
+[`model.gd`](../../ontology/model.gd). Keep typed operations involving those definitions in that
 facade, avoiding helper-to-facade preload cycles.
 
-Use one [`model_ontology.gd`](../model_ontology.gd) implementation base for existing
+Use one [`model_ontology.gd`](../../ontology/model_ontology.gd) implementation base for existing
 instance state, forwarding and necessary same-instance validation phases. Extract
 other cohesive families into focused `model_*` modules. This is implementation
 structure, not a new domain hierarchy or state owner.
@@ -54,12 +54,12 @@ entire short-circuit expressions rather than extracting unsafe recovery predicat
 ## Resumption and verification
 
 Use the existing model compatibility checks and the
-[shared verification policy](../../docs/quality-checks.md). Changes to these seams
+[shared verification policy](../quality-checks.md). Changes to these seams
 need original/current controls for callback read order, retained aliases, local and
 global error ownership, malformed values and inherited dispatch, followed by the
 affected game checks. Passing finite checks is not a universal equivalence proof.
 
-The canonical [domain model](../domain/index.md) and
-[validation contract](../domain/5_Constraints.md#validation-contract-item-9-owner-approved-2026-09-17)
+The canonical [domain model](../../ontology/domain/index.md) and
+[validation contract](../../ontology/domain/5_Constraints.md#validation-contract-item-9-owner-approved-2026-09-17)
 remain authoritative. This technical structure selects no new gameplay rule,
 validation obligation or permission to bypass a quality check.

@@ -35,11 +35,7 @@ an alternative mode. Historical region-lock data is reference only, never an imp
 and subsequent reconciliation approvals preserved. Ontology coverage is broader than v1:
 `X` cut/data-only content and `Ω`-only announcements are reference/roadmap material, not launch
 availability, even if a historical flag is true. Their existing definitions and provenance remain.
-**Current-build coverage:** dated slice notes and `generators.json#design` describe approved
-implementation stages, including temporary approximations, not proof that the final target is
-implemented. Later decisions supersede earlier placeholders. Current decision/research status
-is indexed in [§7](7_Open_points_for_validation.md#7-open-points-for-validation);
-this scope clarification does not authorize gameplay changes.
+[§7](7_Open_points_for_validation.md#7-open-points-for-validation) distinguishes open source questions from hybrid decisions.
 **Out of scope:** Picroma's engine internals (Plasma GUI runtime, DX11 renderer), the exact
 network byte layout of the 2013 protocol (kept as reference only), Steam platform integration,
 Omega content beyond what was publicly announced.

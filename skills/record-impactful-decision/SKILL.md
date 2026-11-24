@@ -26,7 +26,7 @@ does not justify a decision record. Required: follow the [recording guidance](re
    canonical ontology homes, with amendments folded into the effective rule. A consequential
    permanent gameplay exclusion is a rule, not an ADR. Source-claim precision uses `record-finding`.
 3. Duplicate-screen the existing topic and stable IDs. Only a genuine nontrivial technical
-   choice or non-obvious technically motivated architecture warrants `ontology/decisions/<slug>.md`.
+   choice or non-obvious technically motivated architecture warrants `docs/decisions/<slug>.md`.
    Reuse a matching record; routine approvals/refusals, checks and status changes create no record.
    Do not migrate or purge unrelated legacy records without authorization.
 4. A technical record contains the current selected tool/technical choice, necessary technical

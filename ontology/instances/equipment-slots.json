@@ -14,7 +14,7 @@
     {"id": "ring-right",  "index": 9,  "accepts": ["ring"]},
     {"id": "lamp",        "index": 10, "accepts": ["light"], "accepts-subtypes": ["lamp"], "versions": ["A"], "note": "S: innate light ability; ../domain/controls.md#lamp"},
     {"id": "special",     "index": 11, "accepts": ["special"], "accepts-subtypes": ["hang-glider", "boat"], "versions": ["A"], "note": "S: key items live in Special tab per land"},
-    {"id": "pet",         "index": 12, "accepts": ["pet-cage", "pet-food"], "accepts-conditions": {"pet-food": "during-taming"}, "note": "pet-food is available here only during taming; no taming runtime in this slice"}
+    {"id": "pet",         "index": 12, "accepts": ["pet-cage", "pet-food"], "accepts-conditions": {"pet-food": "during-taming"}, "note": "pet-food is available here only during taming"}
   ],
   "extra": {
     "consumable": {"accepts": ["consumable"], "_controls": ["../domain/controls.md#quick-item"], "note": "separate EntityData.consumable field; chosen via quick-select wheel"},

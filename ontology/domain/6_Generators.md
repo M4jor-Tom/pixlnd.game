@@ -11,7 +11,7 @@ For the initial hybrid families, settlement/terrain, dungeon/mission, spawn/boss
 generation must jointly satisfy the [encounter contracts](encounter-contracts.md) and
 `c-initial-encounters`, including persistent special/spirit assignments, shared rewards, safe
 renewal and the initial permanent-source exclusion. These scoped rules override generic/reference
-rows below where applicable; documentation does not authorize implementation.
+rows below where applicable.
 
 | id | input | output | invariants |
 |---|---|---|---|
@@ -52,8 +52,7 @@ outside completion requirements are excluded. The same guarantee applies to arti
 sources **when their separately authorized placement contracts arrive**; it adds no sources or
 acquisition/numerical defaults now. Existing [six-site placement](encounter-contracts.md#placement-and-access)
 and [initial permanent-source exclusion](encounter-contracts.md#initial-permanent-source-scope)
-retain their independent requirements; optional external guidance provides no walkability guarantee. Generated-output/runtime verification remains deferred; this is not proof
-of enforcement by the current validator.
+retain their independent requirements; optional external guidance provides no walkability guarantee.
 
 ---
 

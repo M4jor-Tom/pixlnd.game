@@ -9,7 +9,7 @@ updated: "2026-10-20"
 Use for the optional x86-64 Linux #nvidia app, host-driver matching, or launcher regressions. This is packaging work, not authority to change gameplay or renderers.
 
 ## Procedure
-1. Read flake.nix and ontology/decisions/nix-nvidia-launcher.md. Keep the ordinary default app and dev shell independent of host-driver detection; import nixGL with the same pinned nixpkgs as Godot.
+1. Read flake.nix and docs/decisions/nix-nvidia-launcher.md. Keep the ordinary default app and dev shell independent of host-driver detection; import nixGL with the same pinned nixpkgs as Godot.
 2. Before changing the nixGL pin, inspect compatibility with current nixpkgs: NVIDIA override arguments, open/closed kernel-module version strings and Vulkan ICD filenames. Upstream default or a registry/package name alone is not compatibility proof.
 3. Run `timeout 900 bash tests/test_flake.sh`. NVIDIA boot must be gated on x86-64 Linux plus a loaded module; a skipped boot is not runtime acceptance. Keep pure app metadata enumeration lazy enough not to force unsupported platform packages.
 4. From a scratch working directory, run `timeout 180 nix run --impure /absolute/path/to/pixlnd#nvidia -- --quit-after 3`. Read the log for both a real NVIDIA Vulkan device and project-specific `pixlnd:` startup. Headless exit zero alone does not verify graphics.

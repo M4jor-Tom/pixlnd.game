@@ -37,13 +37,13 @@ remain in the linked gameplay definitions; later owner approvals override stale 
 | <a id="sprint"></a>`sprint` | Sprint | Held | [Movement](3_Classes.md#player-character), not a class-utility alias |
 | <a id="jump"></a>`jump` | Jump from ground | Start, held sustain, release | [Movement](3_Classes.md#player-character); tap/hold height, no new airborne jump |
 | <a id="swim-ascent"></a>`swim-ascent` | Swim upward | Held; end stops ascent request | [Swimming movement](3_Classes.md#player-character); separate from jump |
-| <a id="climb"></a>`climb` | Grab / climb a surface | Grab request; ongoing direction via `move`; release/detach shape unselected | Existing [climbing](3_Classes.md#skill-tree-a) and [c-climbing](5_Constraints.md#constraint-catalog); runtime deferred, no new gate |
+| <a id="climb"></a>`climb` | Grab / climb a surface | Grab request; ongoing direction via `move`; release/detach shape unselected | Existing [climbing](3_Classes.md#skill-tree-a) and [c-climbing](5_Constraints.md#constraint-catalog); no new gate |
 | <a id="pet-call"></a>`pet-call` | Recall active pet | Trigger | [Pet](3_Classes.md#pet); not mounting |
 | <a id="pet-mount"></a>`pet-mount` | Mount eligible pet | Trigger | [Pet](3_Classes.md#pet) / `c-riding`; does not recall or bypass training/Reins |
 | <a id="pet-dismount"></a>`pet-dismount` | Request dismount | Trigger; physical mapping unselected | [Pet](3_Classes.md#pet); automatic dismount causes remain gameplay rules |
 | <a id="deploy-glider"></a>`deploy-glider` | Deploy equipped glider | Trigger; stow/toggle shape unselected | [Traversal](3_Classes.md#skill-tree-a), `c-gliding`; not boat deployment |
 | <a id="deploy-boat"></a>`deploy-boat` | Deploy equipped boat | Trigger; stow/toggle shape unselected | [Traversal](3_Classes.md#skill-tree-a), `c-sailing` |
-| <a id="glider-level"></a>`glider-level` | Level glider flight | Active request; hold/repeat shape unselected | [Glider effect](../instances/abilities.json) `deploy-special-item`; runtime deferred, no binding or gate inferred |
+| <a id="glider-level"></a>`glider-level` | Level glider flight | Active request; hold/repeat shape unselected | [Glider effect](../instances/abilities.json) `deploy-special-item`; no binding or gate inferred |
 
 ## Combat and class skills
 
@@ -66,9 +66,9 @@ remain in the linked gameplay definitions; later owner approvals override stale 
 | <a id="pick-up"></a>`pick-up` | Collect nearby ground item | Trigger | [Inventory](3_Classes.md#inventory), `generators.json#design.loot.ground`; automatic currency pickup remains automatic |
 | <a id="object-interact"></a>`object-interact` | Activate world object | Trigger with object context | [Static entity](3_Classes.md#static-entity) / [key item](3_Classes.md#key-item); object-specific effect, no universal new activation permission |
 | <a id="lamp"></a>`lamp` | Toggle light | Trigger | [Key item](3_Classes.md#key-item), ability `lantern` |
-| <a id="quick-item"></a>`quick-item` | Use quick-selected consumable | Trigger | [Consumable](3_Classes.md#consumable); current adapter uses the first consumable stack; food/potion channel rules are effects, not new control holds |
+| <a id="quick-item"></a>`quick-item` | Use quick-selected consumable | Trigger | [Consumable](3_Classes.md#consumable); food/potion channel rules are effects, not new control holds |
 | <a id="use-inventory-item"></a>`use-inventory-item` | Use selected bag consumable | Trigger with selected bag item | Same [consumable effects](3_Classes.md#consumable), but the inventory selection determines the item, not quick selection or its first-stack approximation |
-| <a id="quick-select"></a>`quick-select` | Open consumable selection | Trigger; close/commit shape unselected | [Inventory](3_Classes.md#inventory); current first-stack approximation does not define the final selector |
+| <a id="quick-select"></a>`quick-select` | Open consumable selection | Trigger; close/commit shape unselected | [Inventory](3_Classes.md#inventory); no final selector gesture inferred |
 | <a id="quick-cycle"></a>`quick-cycle` | Change consumable selection | Signed selection step | [Quick selector](../instances/ui.json) `screens.quick-select`; no physical mapping selected |
 | <a id="equip-item"></a>`equip-item` | Equip selected item / pet food | Trigger with selected item | [Equipment slot](3_Classes.md#equipment-slot) / [pet food](3_Classes.md#pet-food); existing class/slot/hand rules |
 | <a id="learn-formula"></a>`learn-formula` | Learn selected recipe formula | Trigger with selected formula | [Formula](3_Classes.md#formula); sufficient-power and duplicate rules unchanged |
@@ -91,9 +91,9 @@ historical command. Unapproved source-only commands/skills gain no hybrid activa
 | <a id="crafting"></a>`crafting` | Open crafting screen | Trigger | [Recipe](3_Classes.md#recipe) / `ui.json#screens.crafting`; not crafting an entry |
 | <a id="world-map"></a>`world-map` | Open/close world map | Trigger | [HUD](3_Classes.md#hud-element); not map manipulation |
 | <a id="chat"></a>`chat` | Open chat entry | Trigger | [Slash command](3_Classes.md#slash-command) / chat rules |
-| <a id="menu"></a>`menu` | Open system menu | Trigger | [HUD](3_Classes.md#hud-element); runtime only changes cursor capture today, no pause policy inferred |
-| <a id="help"></a>`help` | Open help / move list | Trigger | [UI](../instances/ui.json) `screens.move-list`; data-only binding |
-| <a id="debug-menu"></a>`debug-menu` | Cycle profiling overlay | Trigger: hidden/compact/full | [D17](../decisions/runtime-profiling.md), not UI scaling |
+| <a id="menu"></a>`menu` | Open system menu | Trigger | [HUD](3_Classes.md#hud-element); no pause policy inferred |
+| <a id="help"></a>`help` | Open help / move list | Trigger | [UI](../instances/ui.json) `screens.move-list` |
+| <a id="debug-menu"></a>`debug-menu` | Cycle profiling overlay | Trigger: hidden/compact/full | [D17 HUD rule](3_Classes.md#hud-element), not UI scaling |
 | <a id="ui-navigate"></a>`ui-navigate` | Move UI focus/selection | Direction or selection step | Existing panel/list selection; repeat/focus topology unselected |
 | <a id="ui-select"></a>`ui-select` | Select a UI entry or location | Selection value | Existing screen context; pointer/focus representation is profile-owned |
 | <a id="ui-activate"></a>`ui-activate` | Activate focused/selected UI entry | Trigger | Routes to entry's effect, including [use-inventory-item](#use-inventory-item) for a selected bag consumable; no new default operation |
@@ -109,13 +109,8 @@ historical command. Unapproved source-only commands/skills gain no hybrid activa
 
 ## Unselected boundaries
 
-This is a documentation contract, not runtime authorization or a new engine schema. Profiles
-must expose the same distinct meanings without inventing layouts. Android's
-[native tool stack](../decisions/android-native-touch-controls.md) and
-[touch-profile policy](controller-profiles.md#android) have a first-slice runtime; physical
-Android acceptance and broader catalog implementation remain pending.
-Gamepad remains unselected; Android's first-slice device/customization deferrals are
-[profile-owned](controller-profiles.md#android-device-scope). Deferred traversal/bench/map UI
+Profiles expose the same distinct meanings without inventing layouts. Gamepad remains unselected.
+Android device policy belongs to [its profile](controller-profiles.md#android-device-scope). Traversal/bench/map UI
 shapes and other profiles' unresolved shared-request arbitration remain bounded above. Wall-flip/detach lifecycle, map travel, sleep-consent UI and source-only class-utility/chord activation have
 no newly selected controls; their existing gameplay rules remain authoritative. No historical
 binding is a fallback for an unspecified present mapping. Pet unsummoning and player item-drop /

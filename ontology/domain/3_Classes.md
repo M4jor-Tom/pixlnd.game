@@ -15,17 +15,16 @@ Hybrid saved-world identity is distinct from the generation seed (`save-data`, p
 across** (D12), giving **16,777,216 blocks / roughly 16,777 km per side**. Land coordinates
 run **−512 through 511 inclusive on each horizontal axis**. This is enormous but bounded,
 not unlimited generation or a wrapping world. Historical “infinite” / “no borders” descriptions
-do not override this hybrid limit. Active generator data and terrain streaming enforce the
-finite grid.
+do not override this hybrid limit.
 
 **Hybrid world/reset item 2 (owner approved, 2026-09-28; depends on item 1):** mark the
 outer world boundary on a fixed overview showing only the boundary and current player position;
-terrain, exploration, pan/zoom, markers and map travel remain deferred. Prevent outward travel,
-including flight and teleport destinations, at any altitude; this slice integrates the current
-Teleport dash. The edge behaves like a wall and turn-back is allowed. Preserve current Teleport
+terrain, exploration, pan/zoom, markers and map travel are outside that overview. Prevent outward travel,
+including flight and teleport destinations, at any altitude. The edge behaves like a wall
+and turn-back is allowed. Preserve current Teleport
 costs and cooldowns. Crossing attempts
 cause **no special damage, death or forced teleport**. This chooses no edge art, warning UI,
-biome or numerical buffer. The selected map/travel behavior is implemented; Android hardware-specific rendering and touch acceptance remain unverified.
+biome or numerical buffer.
 
 Structural definition: [`world`](../schema/world.yaml) (class; `world-seed`, `world-name`, `world-day`, `world-time-ms`, `world-spawn-rule`, `world-origin-poi`, `discovered-zones`). Alpha seed is chosen per world (server default 26879); Steam uses one fixed shared seed without UI. The name is Alpha-only; day is a counter and time is milliseconds within the game day. Steam 0.9.1–3 starts new characters near a village; Alpha uses the (0,0) area, while hybrid uses the square of the (0,0) village. Steam's origin POI is `wollays-house` at block (0,0). Discovery remains world-shared (Alpha visitors; hybrid saved-world visitors) and grants no personal unlocks. Instances: none (runtime). Active scale: `generators.json#design.terrain.lands-per-axis`; `world-scales` retains historical source scales.
 
@@ -49,7 +48,7 @@ Enumeration of voxel kinds; alpha and 1.0 tables differ. `A S` → `instances/bl
 
 ### land
 A named, bordered gameplay region of one `landscape`. What the wiki calls "region"/"land". `A S`
-Structural definition: [`land`](../schema/world.yaml) (class; `land-name`, `land-landscape`, `land-level`, `land-danger-tier`, `land-tier-range`, `land-rarity`, `land-realm`, `land-border`, `land-key-items`, `land-gnome-suppliers`, `land-books-of-crafting`, `wizard-towers`, `land-circles-of-power`, `land-artifacts`, `land-settlements`, `land-coords`). Preserve the contextual source facts: names are not unique; A levels rose with distance, while hybrid uses the party-band rule in `generators.json#design.enemy-level`; danger-tier is rolled once at generation. A's 0..4 rarity tier is described as stronger monsters/better loot in the “rare zones” devlog, with uncertain applicability. S tiers run white→yellow, with dungeon enemies above surface tier; realm lore remains S-qualified. The [`land.land-border`](../schema/world.yaml) slot is a logical polygon kind for map only: internal borders are dotted, not physical walls; the outer-world travel boundary is the separate world item 2 rule. `test_land_border_logical_declaration` and `test_land_border_yaml_mutations_are_detected` in `test_ontology_schema_world_polygon.py` cover this declaration. S land inventory tabs remain a source description and are not selected as a land property. S counts remain source-qualified: four gnome suppliers, four crafting books, up to nine key items, up to five wizard towers, one or more circles/artifacts, and several settlements; A/hybrid settlement count remains separately qualified. Hybrid coordinates are bounded −512..511 inclusive on each horizontal axis; `seed = hash(world.seed, coords)`, and every land roll derives from that seed. No representation beyond the declarations is implied.
+Structural definition: [`land`](../schema/world.yaml) (class; `land-name`, `land-landscape`, `land-level`, `land-danger-tier`, `land-tier-range`, `land-rarity`, `land-realm`, `land-border`, `land-key-items`, `land-gnome-suppliers`, `land-books-of-crafting`, `wizard-towers`, `land-circles-of-power`, `land-artifacts`, `land-settlements`, `land-coords`). Preserve the contextual source facts: names are not unique; A levels rose with distance, while hybrid uses the party-band rule in `generators.json#design.enemy-level`; danger-tier is rolled once at generation. A's 0..4 rarity tier is described as stronger monsters/better loot in the “rare zones” devlog, with uncertain applicability. S tiers run white→yellow, with dungeon enemies above surface tier; realm lore remains S-qualified. The [`land.land-border`](../schema/world.yaml) slot is a logical polygon kind for map only: internal borders are dotted, not physical walls; the outer-world travel boundary is the separate world item 2 rule. S land inventory tabs remain a source description and are not selected as a land property. S counts remain source-qualified: four gnome suppliers, four crafting books, up to nine key items, up to five wizard towers, one or more circles/artifacts, and several settlements; A/hybrid settlement count remains separately qualified. Hybrid coordinates are bounded −512..511 inclusive on each horizontal axis; `seed = hash(world.seed, coords)`, and every land roll derives from that seed. No representation beyond the declarations is implied.
 Internal grid: alpha region = 64×64 zones = 16 384 blocks; 8×8 mission cells per region;
 world addressable as 1024×1024 regions (finite). One gameplay `land` = one internal region cell
 (F6, decided); heightmap, water level and noise are our own.
@@ -58,9 +57,9 @@ world addressable as 1024×1024 regions (finite). One gameplay `land` = one inte
 Biome family with climate, palette, flora, fauna and structure rosters. `A S Ω`
 → `instances/landscapes.json` (13: greenlands, snowlands, deserts, jungles, lava-lands, oceans,
 savannahs, wetlands, swamp-lands`?`, dark-woods, deadlands, mountains, mushroom-lands `X`).
-Logical roster facets belong to [`landscape`](../schema/world.yaml), with [`landscape-flora`, `landscape-fauna`, `landscape-dungeons`, and `landscape-pois`](../schema/world.yaml); source-list text remains in [`landscape-source-row.flora`, `landscape-source-row.dungeons`, and `landscape-source-row.pois`](../schema/structured-world.yaml). `landscape-fauna` is a typed creature reference. `FullWorldSources.test_whole_landscapes_source` in `test_ontology_schema_world_catalog.py` checks raw source rows/string lists; `BasicWorldP2Tests.test_landscape_fauna_logical_roster_contract` in `test_ontology_schema_world_basic_p2.py` independently checks the logical fauna slot, induced alias/range/cardinality, closed landscape root, native list admission and actual-YAML mutations. This does not resolve creature-reference existence or prove generated fauna selection. `BasicWorldP2Tests.test_world_root_generation_is_repeatable` compares selected landscape, settlement-style and settlement root schemas generated from two independent temporary copies; it does not establish world-generation or runtime determinism.
+Logical roster facets belong to [`landscape`](../schema/world.yaml), with [`landscape-flora`, `landscape-fauna`, `landscape-dungeons`, and `landscape-pois`](../schema/world.yaml); source-list text remains in [`landscape-source-row.flora`, `landscape-source-row.dungeons`, and `landscape-source-row.pois`](../schema/structured-world.yaml). `landscape-fauna` is a typed creature reference. A typed reference alone does not establish that the creature exists or is selected for a generated roster.
 
-Raw climate bands are [`landscape-source-row.climate`](../schema/structured-world.yaml) with [`landscape-source-climate.temp` and `landscape-source-climate.humidity`](../schema/structured-world.yaml), also covered by `test_whole_landscapes_source`; these strings are source bands, not converted climate readings. The architectural style roster is [`settlement-style`, `settlement-style-lands`, and `settlement-style-desc`](../schema/catalog-properties.yaml), while each raw landscape's style text is [`landscape-source-row.style`](../schema/structured-world.yaml). `test_world_land_bounds_and_context_facets` checks the logical `settlement.style` range; `test_whole_landscapes_source` covers raw landscape rows and `test_whole_buildings_source` covers source style records. `BasicWorldP2Tests.test_settlement_style_class_slot_contract` additionally checks both authored/induced style slots, requiredness, aliases, ranges, closed-root admission, valid/invalid rows and actual-YAML mutations. These checks do not establish style-reference resolution or historical/hybrid availability. Raw S hazard descriptions are [`landscape-source-row.hazards`](../schema/structured-world.yaml); the S cold-water slow, toxic-river poison and lava-burn examples remain source-qualified behavior.
+Raw climate bands are [`landscape-source-row.climate`](../schema/structured-world.yaml) with [`landscape-source-climate.temp` and `landscape-source-climate.humidity`](../schema/structured-world.yaml); these strings are source bands, not converted climate readings. The architectural style roster is [`settlement-style`, `settlement-style-lands`, and `settlement-style-desc`](../schema/catalog-properties.yaml), while each raw landscape's style text is [`landscape-source-row.style`](../schema/structured-world.yaml). A style description is not evidence of hybrid availability. Raw S hazard descriptions are [`landscape-source-row.hazards`](../schema/structured-world.yaml); the S cold-water slow, toxic-river poison and lava-burn examples remain source-qualified behavior.
 
 Generation is [`landscape-gen`](../schema/world.yaml) in `landscape`, with [`landscape-generation`](../schema/world.yaml), exact [`landscape-generation-relief`, `landscape-generation-base`, `landscape-generation-surface`, `landscape-generation-top`, and `landscape-generation-cliff`](../schema/world.yaml), and source [`landscape-source-row.gen`](../schema/structured-world.yaml). `relief` is the height multiplier; `base` is the height offset in blocks. Surface block type and top/cliff RGB meanings remain prose, not duplicated field definitions. Source versions are [`landscape-source-row.versions`](../schema/structured-world.yaml); the raw A/S/Ω/X and uncertainty qualifications do not themselves establish hybrid availability.
 
@@ -74,7 +73,7 @@ permanent all-version exclusion. No separate swamp terrain, fauna or reward rule
 Natural formation placed inside a land. `A S` → `instances/terrain-features.json`
 (mountain, plateau/cliff, valley, canyon+mesa, cave, river+waterfall, lake, lava-lake, volcano,
 island, sky-island `S`, forest (generic/birch/pine, dungeon-forest), field, road+bridge+tunnel,
-oasis, cloud (no collision), giant-rock `A`, giant-tree `A`, graveyard). The complete source row is [`terrain-feature-source-row`](../schema/structured-world.yaml), covered by `test_whole_terrain_features_source`; uncertain descriptions remain literal source facts.
+oasis, cloud (no collision), giant-rock `A`, giant-tree `A`, graveyard). The complete source row is [`terrain-feature-source-row`](../schema/structured-world.yaml); uncertain descriptions remain literal source facts.
 
 #### Hybrid connecting routes
 
@@ -125,22 +124,21 @@ Structural definition: [`climate`](../schema/world.yaml) (`climate-temperature-c
 
 ### flora
 Harvestable or decorative plant object; harvested by attacking. `A S` → `instances/flora.json`.
-Structural yield definition: [`ingredient-yield`](../schema/associations.yaml) and [`flora-yield-entry`](../schema/structured-world.yaml); existing world/catalog tests cover their declared shape. Example: bush → 1–3 wood log + plant fiber. Landscapes remain placement context; S daily respawn and shimmer-mushroom blue glow remain behavior, not structural yield fields.
+Structural yield definition: [`ingredient-yield`](../schema/associations.yaml) and [`flora-yield-entry`](../schema/structured-world.yaml). Example: bush → 1–3 wood log + plant fiber. Landscapes remain placement context; S daily respawn and shimmer-mushroom blue glow remain behavior, not structural yield fields.
 
 ### deposit
 Mineral node in caves / underwater caves. `A S` → `instances/deposits.json` (iron, silver, gold,
-sandstone, emerald, sapphire, ruby, diamond, ice-crystal). Structural catalog range is [`deposit-yields`](../schema/world-catalog.yaml); the fixed logical 1–3 interval is [`deposit-ingredient-yield`](../schema/world.yaml), covered by `test_deposit_yield_interval_*` and the full-source missing-sandstone characterization. Yields remain ingredient-typed; sandstone's unresolved target is not repaired. Respawn at 0:00 and rare boulder placement requiring a bomb remain behavior.
+sandstone, emerald, sapphire, ruby, diamond, ice-crystal). Structural catalog range is [`deposit-yields`](../schema/world-catalog.yaml); the fixed logical 1–3 interval is [`deposit-ingredient-yield`](../schema/world.yaml). Yields remain ingredient-typed; sandstone's unresolved target is not repaired. Respawn at 0:00 and rare boulder placement requiring a bomb remain behavior.
 
 ### settlement
 <a id="settlement-style"></a>
 Village or city. `A S`
-Structural definition: [`settlement`](../schema/world.yaml) (`settlement-style`, population races/animals, contextual count, districts, buildings, petrified and possessed state); settlement style details are [`settlement-style`](../schema/catalog-properties.yaml). Existing world root/mutation and full-building-source tests cover the declared subset. Historical styles (`european-framework`, `medieval-stone`, `na-wood`, `log`, `desert`, `jungle`, `undead`, `lava`, `ocean`), A district variants (trade, crafting, adventurer/class, pet quarter `X`, portal, palace) and population descriptions remain source-qualified: humans are noted as the majority, with undead villages in deadlands/dark woods. Alpha settlements are always visible on the map; Steam settlements are hidden until discovered. Steam has sewers under some 5★ villages holding an artifact; petrification is a witch curse until the witch is killed, and possession means a demon portal is active in the land. These are source-specific rules, not consequences of the structural reference. Hybrid D22 layout remains a separate rule.
+Structural definition: [`settlement`](../schema/world.yaml) (`settlement-style`, population races/animals, contextual count, districts, buildings, petrified and possessed state); settlement style details are [`settlement-style`](../schema/catalog-properties.yaml). Historical styles (`european-framework`, `medieval-stone`, `na-wood`, `log`, `desert`, `jungle`, `undead`, `lava`, `ocean`), A district variants (trade, crafting, adventurer/class, pet quarter `X`, portal, palace) and population descriptions remain source-qualified: humans are noted as the majority, with undead villages in deadlands/dark woods. Alpha settlements are always visible on the map; Steam settlements are hidden until discovered. Steam has sewers under some 5★ villages holding an artifact; petrification is a witch curse until the witch is killed, and possession means a demon portal is active in the land. These are source-specific rules, not consequences of the structural reference. Hybrid D22 layout remains a separate rule.
 
 **Hybrid settlements item 1 (owner approved, 2026-09-27):** exactly one settlement per land
 is the final target, not a temporary limit pending multiple settlements. Other D22 layout,
 services and settlement-safety rules are unchanged. `rulesets.json#ruleset-hybrid.flags`
-and `design.settlement.per-land` both select 1; current scoped configuration checks require
-that exact count. Generated geography and runtime coverage remain separate checks.
+and `design.settlement.per-land` both select 1.
 
 D22's land-seeded box-building ring and service coverage are slice approximations, not the
 final layout: terrain is flattened under `design.settlement.radius`, with one NPC per service
@@ -153,22 +151,22 @@ Hybrid village-curse state is world-shared and persistent under `save-data` item
 Settlement-style records are hybrid configuration under §5 Validation-contract mapping item 1.
 
 ### district
-City quarter. `A` → `instances/buildings.json#districts`. Structural definitions are [`district`](../schema/world.yaml) and [`district-building`](../schema/world.yaml), with `district-quarter-id` and `district-decor` in [`catalog-properties.yaml`](../schema/catalog-properties.yaml); full buildings-source coverage is `test_whole_buildings_source`. Building references are catalog IDs; the four adventurer-quarter trainers use `{id: "class-trainer", class: <class-id>}` to retain one building per class, not four invented building types. District provenance and the ranger master's aim-target note remain unchanged.
+City quarter. `A` → `instances/buildings.json#districts`. Structural definitions are [`district`](../schema/world.yaml) and [`district-building`](../schema/world.yaml), with `district-quarter-id` and `district-decor` in [`catalog-properties.yaml`](../schema/catalog-properties.yaml). Building references are catalog IDs; the four adventurer-quarter trainers use `{id: "class-trainer", class: <class-id>}` to retain one building per class, not four invented building types. District provenance and the ranger master's aim-target note remain unchanged.
 
 ### building
 Functional structure in a settlement. `A S` → `instances/buildings.json` (inn, weapon-shop,
 armor-shop, item-shop/general-store, identifier/analyst, smithy, clothier, workshop/carpenter,
 class-trainer ×4 / guild, adapter `A`, flight-master `S`, den, house, watchtower, well, market
-stalls). Structural definition: [`building`](../schema/world.yaml) and its [`building-name`, `building-sign`, `building-map-icon`, `building-roles`, and `building-stations`](../schema/catalog-properties.yaml), covered by `test_whole_buildings_source`. Each links to `npc-role`s and `crafting-station`s inside it.
+stalls). Structural definition: [`building`](../schema/world.yaml) and its [`building-name`, `building-sign`, `building-map-icon`, `building-roles`, and `building-stations`](../schema/catalog-properties.yaml). Each links to `npc-role`s and `crafting-station`s inside it.
 
 ### dungeon-type
-Built or natural structure that hosts a mission objective. `A S` → `instances/dungeon-types.json`. Logical catalog facets are [`dungeon-type`](../schema/world-catalog.yaml) with [`dungeon-type-name`, `dungeon-type-naming`, `dungeon-type-lands`, `dungeon-type-entrance`, `dungeon-type-rosters`, `dungeon-type-natural`, and `dungeon-type-boss`](../schema/world-catalog.yaml); the variant slot and its entry shape are [`dungeon-type-variants` and `dungeon-variant-entry`](../schema/structured-world.yaml). Complete literal fields are [`dungeon-source-row`](../schema/structured-world.yaml), covered by `test_whole_dungeon_types_source` in `test_ontology_schema_world_catalog.py`.
+Built or natural structure that hosts a mission objective. `A S` → `instances/dungeon-types.json`. Logical catalog facets are [`dungeon-type`](../schema/world-catalog.yaml) with [`dungeon-type-name`, `dungeon-type-naming`, `dungeon-type-lands`, `dungeon-type-entrance`, `dungeon-type-rosters`, `dungeon-type-natural`, and `dungeon-type-boss`](../schema/world-catalog.yaml); the variant slot and its entry shape are [`dungeon-type-variants` and `dungeon-variant-entry`](../schema/structured-world.yaml). Complete literal fields are [`dungeon-source-row`](../schema/structured-world.yaml).
 
 - **Naming:** the authored name/pattern fields are [`dungeon-type-name` and `dungeon-type-naming`](../schema/world-catalog.yaml), with literal [`dungeon-source-row.name` and `dungeon-source-row.naming`](../schema/structured-world.yaml); examples remain “Castle ___”, “Ruins of ___”, “Temple of ___”, “Catacombs of ___” and “Pyramid of ___”.
 - **Landscapes:** qualified placement text is [`dungeon-type-lands`](../schema/world-catalog.yaml) and raw [`dungeon-source-row.lands`](../schema/structured-world.yaml); it is not resolved placement relation/FK evidence.
 - **Layout:** retain A's linear route plus one reward dead end and S's room gauntlet with several bosses of rising tier as source-specific behavior; no authored facet selects these procedures.
 - **Entrance:** descriptive text is [`dungeon-type-entrance`](../schema/world-catalog.yaml) and [`dungeon-source-row.entrance`](../schema/structured-world.yaml), not an access rule. Retain the pyramid-top, temple-near-top/spiral-down and castle-gate-until-nearby-enemies examples.
-- **Contents:** literal alternatives are [`dungeon-source-row.contents`](../schema/structured-world.yaml), covered by `test_whole_dungeon_types_source`; retain A spike traps/vases/tables, S one-time chests/end artifact, and the X fire/stomp data and S magic-barrier source distinctions. These descriptions do not encode runtime execution.
+- **Contents:** literal alternatives are [`dungeon-source-row.contents`](../schema/structured-world.yaml); retain A spike traps/vases/tables, S one-time chests/end artifact, and the X fire/stomp data and S magic-barrier source distinctions. These descriptions do not encode runtime execution.
 - **Roster:** qualified text is [`dungeon-type-rosters`](../schema/world-catalog.yaml) and [`dungeon-source-row.rosters`](../schema/structured-world.yaml), not uniformly resolved creature IDs. Retain the forest roster examples (insect, animal-i, animal-ii, undead, orc, human, beetle, dwarf).
 Alpha location table (cuwo): Village, Mountain, Forest, Lake, Ruins, Gravesite, Canyon, Valley,
 Crater, Cave, Portal, Rock, Tree, Peak, Castle, Catacombs, Palace, Temple, Pyramid, Island.
@@ -184,25 +182,24 @@ Non-dungeon point of interest / event site. `A S` → `instances/poi-types.json`
 wizard-tower, circle-of-power, demon-portal, mana-pump, mana-inductor, mana-tree, shrine-of-life,
 revival-statue `A`, portal `A`, bird-statue, lore-site (menhir/tablet/crypt/henge), molehill,
 bone-pile, hornet-nest, slime-well, old-hut, hidden-treasure (log/sky statue/cave), airship,
-wollays-house, kingdom-frontier-wall `X`). Logical catalog facets are [`poi-type`](../schema/world-catalog.yaml), with exact raw alpha-location/quarter pairs [`poi-type-alpha-loc` and `poi-type-quarter`](../schema/world-catalog.yaml); full source rows are [`poi-source-row`](../schema/structured-world.yaml), covered by `test_whole_poi_types_source`.
-
+wollays-house, kingdom-frontier-wall `X`). Logical catalog facets are [`poi-type`](../schema/world-catalog.yaml), with exact raw alpha-location/quarter pairs [`poi-type-alpha-loc` and `poi-type-quarter`](../schema/world-catalog.yaml); full source rows are [`poi-source-row`](../schema/structured-world.yaml).
 
 ### static-entity
 Interactive or decorative world object with orientation and open/closed/sat state. `A S`
 → `instances/static-entities.json` (78 alpha ids: doors, gates, traps, lever, chests, furniture,
 market stands, shelves, corpse, rune stone, artifact pedestal, flower boxes, street lights,
-fences, vases, campfire, tent, beach umbrella/towel, sleeping mat, 7 crafting stations). Logical state and cardinal orientation are [`static-entity`](../schema/world.yaml); the complete name/behaviour/config catalog is [`static-entities-source`](../schema/structured-world.yaml), covered by `test_whole_static_entities_source`. Source-qualified projections are [`cuwo-static-entity-components`, `cuwo-static-header-components`, `cuwo-item-with-header-components`, `cuwo-item-with-header-list-components`, and `cuwo-item-with-header-lists-components`](../schema/world.yaml); source marker collections are [`zone-tile-marker-collection` and `place-keyed-marker-collection`](../schema/structured-world.yaml). `test_metadata_and_native_roots`, `test_component_values_and_nominal_item_references`, and `test_actual_yaml_mutation_rejected_by_same_metadata_oracle` in `test_ontology_schema_world_static_composition.py`, plus `test_marker_collection_metadata` and `test_marker_collection_native_boundaries_and_yaml_mutations` in `test_ontology_schema_structured_world.py`, cover these declarations. They remain distinct projections: Item references are nominal, seven opaque u32 components retain unknown meanings, and marker scopes are not polygon vertices, a canonical polygon, or a selected wire/save representation.
+fences, vases, campfire, tent, beach umbrella/towel, sleeping mat, 7 crafting stations). Logical state and cardinal orientation are [`static-entity`](../schema/world.yaml); the complete name/behaviour/config catalog is [`static-entities-source`](../schema/structured-world.yaml). Source-qualified projections are [`cuwo-static-entity-components`, `cuwo-static-header-components`, `cuwo-item-with-header-components`, `cuwo-item-with-header-list-components`, and `cuwo-item-with-header-lists-components`](../schema/world.yaml); source marker collections are [`zone-tile-marker-collection` and `place-keyed-marker-collection`](../schema/structured-world.yaml). They remain distinct projections: Item references are nominal, seven opaque u32 components retain unknown meanings, and marker scopes are not polygon vertices, a canonical polygon, or a selected wire/save representation.
 Initial hybrid ruins use the [spike and furnishing contract](encounter-contracts.md#spike-traps-and-furnishing-contents).
 Dynamic subset: sit-able {sleeping-mat, stool, bench, bed}; open-able {window, castle-window,
 door, big-door, chest}.
 
 ### realm
 Procedural kingdom / realm / cult / tribe that historically owned several lands. `S`
-Structural definition: [`realm`](../schema/world.yaml) and its typed leader/capital components [`realm-leader-birth-year`, `realm-leader-hometown`, `realm-leader-tomb-location`, `realm-capital-founding-year`, `realm-capital-destruction-date`](../schema/associations.yaml). `test_typed_realm_components` covers those components; optional destruction date remains distinct. Kind, procedural names, personality, magic/technology flavor text, lore percentage/site increments and artifact revelation at 100% retain their source-qualified meanings. Hostile NPCs in a land can be labelled with the realm's name.
+Structural definition: [`realm`](../schema/world.yaml) and its typed leader/capital components [`realm-leader-birth-year`, `realm-leader-hometown`, `realm-leader-tomb-location`, `realm-capital-founding-year`, `realm-capital-destruction-date`](../schema/associations.yaml). The optional destruction date remains distinct. Kind, procedural names, personality, magic/technology flavor text, lore percentage/site increments and artifact revelation at 100% retain their source-qualified meanings. Hostile NPCs in a land can be labelled with the realm's name.
 
 ### game-clock
 Time, resets and sleep. `A S`
-Structural parameters are [`game-clock`](../schema/world.yaml) (`speed`, `initial-time-ms`, qualified `reference-sleep-speed`) and [`hybrid-inn-sleep-service-parameters`](../schema/world.yaml), covered by `test_precise_field_spawn_clock_and_orientation` and `test_hybrid_inn_sleep_*`. Preserve the distinctions: 10× running-world time; 07:00 applies only to fresh saved worlds; historical A/S sleep is described as 100×, with unresolved baseline/units and no faster world simulation; hybrid inn sleep is the separate agreed clock skip. Historical inn references run 18:00–06:00 and set 07:00; Alpha is free, while Steam costs 10 coins and also rerolls daily missions. The historical midnight-reset account includes respawns, daily missions, deposits/plants, shop restock and divine-door closure, with Steam exclusions uncertain. Historical nights are very dark, use lanterns, and increase stealth buildup; A/S weather is absent, while Ω describes rain, snow, moving clouds and freezing water. These historical/source-qualified descriptions, along with hybrid occupancy, recovery and reset behavior, remain prose, not fields asserted by those structural declarations.
+Structural parameters are [`game-clock`](../schema/world.yaml) (`speed`, `initial-time-ms`, qualified `reference-sleep-speed`) and [`hybrid-inn-sleep-service-parameters`](../schema/world.yaml). Preserve the distinctions: 10× running-world time; 07:00 applies only to fresh saved worlds; historical A/S sleep is described as 100×, with unresolved baseline/units and no faster world simulation; hybrid inn sleep is the separate agreed clock skip. Historical inn references run 18:00–06:00 and set 07:00; Alpha is free, while Steam costs 10 coins and also rerolls daily missions. The historical midnight-reset account includes respawns, daily missions, deposits/plants, shop restock and divine-door closure, with Steam exclusions uncertain. Historical nights are very dark, use lanterns, and increase stealth buildup; A/S weather is absent, while Ω describes rain, snow, moving clouds and freezing water. These historical/source-qualified descriptions, along with hybrid occupancy, recovery and reset behavior, remain prose, not fields asserted by those structural declarations.
 
 **Hybrid world/reset item 3 (owner approved, 2026-09-28):** defeated enemies, **including
 bosses**, in **ordinary dungeons and repeatable daily encounters** return with the daily reset.
@@ -211,7 +208,6 @@ and boss. Enemy resets **never renew an artifact or book claim**: personal sourc
 world-shared improvements retain their approved scopes and reset rules (`save-data`, items 4–5).
 Tomorrow may offer another daily boss fight, but never recreate a completed supplier-rescue
 encounter. Daily-enemy eligibility does not change other mechanics' resets or reward rules.
-Live-data/checker migration and reset/save implementation remain deferred and unauthorized.
 
 **Hybrid world/reset item 4 (owner approved, 2026-09-28):** an **occupied dungeon/quest
 site waits until all players leave** before applying its pending daily refresh, using item 3's
@@ -226,7 +222,7 @@ visibly delimited outdoor battlefields. Boundaries count as inside: every player
 outside every component before the pending refresh applies. Camera distance, streaming and
 simulation range do not define occupancy. [Initial encounter geometry](encounter-contracts.md#geometry-and-occupancy)
 defines their dimensions and playable components; storage format remains unselected. No extra
-grace delay applies. Occupancy/reset enforcement is deferred.
+grace delay applies.
 
 **Hybrid settlements/inn item 2 (owner approved, 2026-09-27):** inn recovery fully heals and
 sets the respawn point **for free at any time**. A separate sleep service costs **10 copper**,
@@ -246,11 +242,10 @@ pays the **single 10-copper fee only when the skip succeeds**. A refusal blocks 
 nobody loses money. Free recovery needs no agreement. This specifies no voting timeout or
 disconnect protocol.
 
-Documentation only: `design.settlement.inn` and current runtime still provide free recovery
-without a clock/skip. The hybrid `inn-cost: 10` flag does not distinguish the two services;
+The hybrid `inn-cost: 10` flag does not distinguish the two services;
 `generators.json#time` and A/S inn records are not a complete hybrid service contract.
 The S sleep-specific refreshes in `economy.json#rules` / `npc-roles.json#innkeeper` are reference,
-not hybrid policy. Live-data migration and runtime implementation remain deferred and unauthorized.
+not hybrid policy.
 
 **Hybrid persistence item 8 (owner approved, 2026-09-28):** a **shut-down world accumulates
 no gameplay time**. Its clock and timed resets resume from saved time, without offline combat
@@ -259,7 +254,7 @@ with nobody connected. This preserves D16's frozen distant movement/attacks and 
 elapsed-gameplay-time threat/taunt timers (`ai-behavior`); it does not require simulating every
 creature in an empty world. Approved inn sleep remains its distinct clock-skip rule above.
 No character-absent cooldown/status policy, serialization/checkpoint cadence or crash-recovery
-policy is chosen. Clock/save implementation remains deferred and unauthorized.
+policy is chosen.
 
 ### 3.2 Entities
 
@@ -332,8 +327,8 @@ Control meanings: [move](controls.md#move), [sprint](controls.md#sprint),
 [jump](controls.md#jump) and distinct [swimming ascent](controls.md#swim-ascent).
 
 Hybrid death (D15): respawn at the character's current spawn point, initially set by
-[world.spawn-rule](#world) and relocated by [inn recovery](#game-clock). Spawn-point respawn
-is the current approximation until revival statues exist (`design.combat.death`), not their exclusion.
+[world.spawn-rule](#world) and relocated by [inn recovery](#game-clock). This `design.combat.death` selection is scoped to D15;
+Alpha respawns the character at the nearest revival statue.
 
 | prop | notes |
 |---|---|
@@ -424,14 +419,9 @@ abilities, drops, hostility, habitats or pack aggro, and introduces no numerical
 Items 4–6 below separately decide encounter rarity and extend variant habitat permission,
 not combat/loot tiers.
 
-Documentation only: live `creatures.json` still assigns Skeleton Dog to `skeletons`; migration,
-model/loader/validator support and runtime family scaling remain deferred and unauthorized.
-There is no live family `hp-mult` data or runtime family scaling today.
-
 **Hybrid family item 2 (owner approved, 2026-09-27):** these 25 missing primary assignments
 are authoritative. Preserve all other existing assignments except item 1's Skeleton Dog override.
 No numerical changes, new family classifications or species-trait inheritance are introduced.
-Live JSON still lacks these assignments; migration remains deferred.
 
 | primary family | creature IDs |
 |---|---|
@@ -489,10 +479,6 @@ tames both Collie and Skeleton Dog, under their ordinary eligibility rules. Keep
 existing availability and prices; add no food, recipe or family-wide bait inheritance.
 The shared-food/source-ID contract is in §3.4 `pet-food` / §5 `c-food-id`.
 
-Documentation only: live rosters/traits and Bubble Gum's single-species mapping still lack
-these decisions. Migration, model/loader/validator support and runtime enforcement remain
-separately deferred and unauthorized.
-
 ### pet
 A tamed creature owned by a player. `A S`
 | prop | notes |
@@ -510,7 +496,7 @@ A tamed creature owned by a player. `A S`
 **Hybrid traversal item 1 (owner approved, 2026-09-28):** mounting requires **5 Pet Master
 points and at least 1 Riding point**, globally acquired **Reins**, and a **rideable tamed pet**.
 Further Riding points retain their speed benefit. This grants no new species riding permission,
-Reins acquisition route or equipment slot. Live data and runtime enforcement remain deferred.
+Reins acquisition route or equipment slot.
 
 ### faction
 Lore/gameplay group. `S` (tweeted 2015) → `instances/factions.json` (order-of-the-light,
@@ -535,7 +521,7 @@ Rules shared by enemies. `A S`
 | chase | wraith pursues longer; most drop chase eventually `?` |
 | clones | some bosses/NPC mages summon doppelgangers |
 | possession | S: demon portal randomly possesses NPCs in the land (bigger, red, tougher, respawn possessed) |
-| simulation | hybrid: beyond `design.spawns.ai.sim-radius`, movement and attacks stay frozen (D16); threat decay and taunt expiry reflect elapsed gameplay time (approved 2026-09-27, below). Distance = nearest player once `multiplayer-mode` lands (single player: the one player). |
+| simulation | hybrid: beyond `design.spawns.ai.sim-radius`, movement and attacks stay frozen (D16); threat decay and taunt expiry reflect elapsed gameplay time (approved 2026-09-27, below). Distance is to the nearest player (the sole player in solo play). |
 
 Hybrid aggro rules (owner approved 2026-09-18/19 and 2026-09-27, documentation only; relation definitions in
 §4, constraints `c-threat-pair` / `c-current-target` in §5):
@@ -697,9 +683,7 @@ Hybrid aggro rules (owner approved 2026-09-18/19 and 2026-09-27, documentation o
   attack can provoke it again under the pack-response rule. Arrival is individual: it does not
   clear other packmates' provocation, threat or engagement order.
 
-Remaining uncertainties are indexed in §7; deferred application is tracked in
-`docs/ROADMAP/todo_implement.md`.
-These documentation decisions do not authorize runtime or live-data changes.
+Remaining source uncertainties are indexed in §7.
 
 Hybrid (D26): `combat-role` mapping is defined under [creature](#creature), with resolution per
 spawned group in §6 `gen-spawns`; melee retains its reach attack. Ranged / mage chase to a `range`,
@@ -786,7 +770,6 @@ The examples select no new block/buff strengths or shield capacities.
 **Hybrid Resistance item 6 (owner approved):** an unequipped creature or NPC has innate
 Resistance `R = 0`. No automatic level, species, role or family scaling applies; any equipped-item
 contribution remains separate under the existing equipment rules.
-Implementation status is tracked in `docs/ROADMAP/todo_implement.md`; this rule itself grants no implementation authority.
 
 ### ability
 An active or passive skill. `A S Ω` → `instances/abilities.json` (~65).
@@ -805,12 +788,12 @@ An active or passive skill. `A S Ω` → `instances/abilities.json` (~65).
 Runtime (D21): every class node and ultimate has a `design.abilities` entry naming one of six runtimes (dash, channel,
 burst, buff, heal, projectile — D24: shots along the aim; a dash may `throw` shots first) with its numbers, cost (mp / stamina, a number or `all`) and cooldown; strikes apply the ability's
 `applies` through `design.status-effects` (`c-ability-runtime`). Shared-column skills have no runtime here (swimming scales
-swim speed; pet, mount, climb, glider, boat wait for their systems).
+swim speed; pet, mount, climb, glider and boat have separate rules).
 Clone/zone effects remain scoped burst/buff approximations, not final fidelity.
 
 **Hybrid Cyclone:** shared by Berserker and Guardian, one clockwise world-top-down revolution
 per second from activation facing (`design.abilities.cyclone.turns-per-s: 1`; clockwise decreases
-Godot Y yaw from forward −Z). Only directly-ahead contacts land immediately. Later contacts use
+yaw from forward −Z). Only directly-ahead contacts land immediately. Later contacts use
 current player/enemy relative positions as the rotating attack reaches their azimuth, at most once
 per enemy per activation-referenced revolution. Entering already-swept space waits for the next
 pass; leaving reach avoids a pending hit. There are no simultaneous radial pulses. The front seam
@@ -860,15 +843,12 @@ Under D6's existing two-handed size class, a **common wand costs 20 wood cubes a
 (`5 × 4`), with existing rarity-gem requirements unchanged. This selects a complete two-handed
 loadout, not a one-handed pairing or a new damage/upgrade exception.
 
-Executable alignment: `weapon-types.json#wand.hands` is `2h` and `recipes.json#gear-weapons.wand` lists
-20 wood cubes at the existing workbench. The selected equipment validator and shared equip boundary
-consume these rules; crafting/customization runtime remains deferred.
+`weapon-types.json#wand.hands` is `2h`; `recipes.json#gear-weapons.wand` lists 20 wood cubes at a workbench.
 
 Hybrid (D24): `design.movesets.<weapon-type>.m1|m2` gives every class weapon its runtime — melee sphere (swing / radius mults,
 spin around the player, lunge, finisher status), projectile (count, spread, speed, gravity, life, hit radius, splash, pierce,
 return), beam (instant ray) or at-cursor (sphere where the aim lands); `c-moveset-config`. Data channels `m1`/`m2` mean basic/special attacks, never device bindings.
-Crossbow bolts fly flat and fast. The live `design.movesets.crossbow` gravity of **3** does not
-override that approved trajectory; tuning alignment remains deferred, not authorized here.
+Crossbow bolts fly flat and fast.
 Animations/hit timing, boomerang steering, held-ray Wand special attack, Bow dud shots and arrow pickup
 are outside the D24 slice, not final exclusions. Creature projectiles use D26's
 `design.creature-roles`, not the player movesets.
@@ -896,12 +876,10 @@ they neither increase nor reset combo, and do not refresh its inactivity timer, 
 any enemy is affected. Normal inactivity expiry still applies. Existing taunt/healing effects
 are unchanged; this does not settle threat amounts or targeting rules.
 
-Class-ability combo runtime authorization (walkthrough item 10, owner approved 2026-09-17):
-repair missing non-projectile class-strike combo handling and add regressions for the above
-rules. Reuse the existing landed-hit gain, inactivity timer and weapon cap; preserve damage,
+Non-projectile class strikes use the same landed-hit gain, inactivity timer and weapon cap. Preserve damage,
 costs, cooldowns, taunt/healing effects and projectile/weapon attack behavior. Empty channel
 ticks never reset combo; a wholly missed damaging channel resets on normal or early end.
-Zero-damage taunts remain neutral even with no targets. No other deferred work is authorized.
+Zero-damage taunts remain neutral even with no targets.
 
 ### special-attack
 [Special attack](controls.md#special-attack): Warrior/Ranger/Mage charge; Rogue instant.
@@ -917,25 +895,24 @@ the bar specials spend); Guardian block power ×2. `A S`
 Hybrid (D23): numbers `design.defence.block`. Block and special attack are distinct intentions;
 the current simultaneous hold coupling belongs to the [keyboard profile](controller-profiles.md#keyboard-and-mouse).
 
-Hybrid exhaustion (walkthrough item 10, runtime repair authorized 2026-09-17): judge each hit
+Hybrid exhaustion (walkthrough item 10): judge each hit
 using the block-power available when it arrives. An eligible hit with positive power is blocked
 normally, even if its cost empties the bar; its attached statuses remain blocked too. Subsequent
 hits at zero power receive neither block reduction nor block MP rewards or status protection,
 even before the next defence update. Other defences still apply. Preserve all block numbers,
-regeneration, Guardian and Cyclone rules. Authorization covers only this repair and its regression;
-panel-time, combo, broader slot-model and validator fixes remain separate, deferred work.
+regeneration, Guardian and Cyclone rules.
 
 ### dodge
 [Dodge](controls.md#dodge) while moving: roll with i-frames (not vs spike traps / dagger poison), costs 25 stamina (25 %),
 dismounts, negates fall damage on landing. Ninja gains +25 MP and guaranteed crit; Assassin gains
 stealth. `A S`
-Hybrid (D23): `design.defence.dodge` (roll 4 blocks in 0.4 s, i-frames 0.4 s; the crit window is not built).
+Hybrid (D23): `design.defence.dodge` (roll 4 blocks in 0.4 s, i-frames 0.4 s).
 
 ### stealth
 Separate bar: up to +20 % attack power, +50 % crit, faster MP gain, near-zero aggro at full;
 decays when not generated; sources: sneak (faster still / in dark, slower in daylight / near
 lamps), assassin specials, camouflage (instant full), sniper aim `A` / charging `S`. `A S`
-Hybrid (D23): `design.defence.stealth` + `design.abilities.<id>.stealth-per-s|stealth-full`; no darkness / lamp rule until a game clock exists.
+Hybrid (D23): `design.defence.stealth` + `design.abilities.<id>.stealth-per-s|stealth-full`. Darkness and lamp effects above are historical, not selected hybrid parameters.
 Hybrid threat behavior (approved 2026-09-27): full stealth means zero new damage-generated
 threat, not a threat wipe or taunt cancellation; landing-time checks and DOT follow §3.2 `ai-behavior`.
 
@@ -950,7 +927,7 @@ war-frenzy `A`, scouts-swiftness `A`, camouflage, ninjutsu, shadow-shooter clone
 Hybrid (D23): creature hits on the player roll stun and knockback under
 `design.defence.enemy-hit`; blocked or dodged hits roll neither.
 
-Hybrid poison (D26; narrow runtime repair authorized in walkthrough item 10, 2026-09-17):
+Hybrid poison (D26; walkthrough item 10):
 scheduled poison damage is not prevented by dodge i-frames. Preserve poison's identity through
 tick delivery, including when burns coexist. Ordinary burning/direct-hit dodge behavior is unchanged;
 independent applications follow the combat DOT rules below.
@@ -974,10 +951,9 @@ and the existing dagger total of **5 × the hit over five seconds**.
 
 These rules select application lifetimes and scheduling, not new damage coefficients, Resistance
 handling, dodge/status protections or aggro rules. Environmental hazards and additional DOT
-buff timing are outside scope. The runtime retains each application's damage, source, remaining
-lifetime and next tick independently, catching up due ticks only within its lifetime. Scoped
-load-time checks require the selected burning/poison design rows and numeric values; they do
-not by themselves establish Resistance or aggro runtime coverage.
+buff timing are outside scope. Each application retains its damage, source, remaining lifetime
+and next tick independently, catching up due ticks only within its lifetime. The selected
+burning/poison design rows and numeric values are required inputs.
 
 ### death
 No penalty in A or S (no gold/item/XP loss). A: respawn at nearest revival statue (never far), enemy
@@ -1028,8 +1004,7 @@ existing units. Stat, healing and price equations are unchanged, including fixed
 and upgrade inputs below; corrected item-power inputs can change their resulting values.
 Rarity, cube capacities, quantities, timings and the permanent regional-power-loss exclusion
 are unchanged. Producers, already-powered constructor bounds and deterministic save/import
-checks must enforce these units together, preserving source-level records. Recipe/formula
-production and learning retain their [separate deferrals](../../docs/ROADMAP/todo_implement.md#items-34-slice-abaded3).
+checks must enforce these units together, preserving source-level records.
 
 Hybrid equipment uses item power as an [equip requirement](#power-gate-a), not weakened stats.
 
@@ -1094,8 +1069,7 @@ with subtype restrictions where needed:
 - `pet` accepts a `pet-cage` or `pet-food` during taming, without replacing the quick-consumable selection.
 - Armor and jewelry retain their matching slots; `unknown-0` accepts nothing.
 
-The item-3 slot-model approval is consumed by the selected equipment validator and shared equip boundary;
-no new slot or traversal runtime is added here. Wand handedness is approved under `weapon-type`; traversal
+No new slot follows. Wand handedness is defined under `weapon-type`; traversal
 approvals are recorded separately under `skill-tree` / `pet`. Gliding/sailing require the respective Hang
 Glider/Boat equipped in `special`, not merely bought (traversal items 2–3, approved 2026-09-28). They share
 that single slot; no dual equip or new slot.
@@ -1103,11 +1077,9 @@ that single slot; no dual equip or new slot.
 Hybrid hand-conflict repair (item 10, authorized 2026-09-17): reject an equip attempt that would
 pair a two-handed weapon with a shield, regardless of equip order. Leave existing equipment and
 the attempted item in the bag unchanged; do not auto-unequip, delete or duplicate either item.
-The repair uses loaded handedness classifications without changing them; the later Wand item 1 rule
-now aligns live data as `2h`. Valid one-handed-plus-shield setups, two-handed weapons
-alone and non-conflicting slot replacements keep working. This selected equipment slice also consumes
-canonical slot/subtype and class/material rules and places legal 1H pairs; it does not add off-hand combat
-attacks/damage, bracelet coefficients, Guardian/Cyclone blocking changes or traversal/taming runtime.
+A Wand counts as two-handed. Valid one-handed-plus-shield setups, two-handed weapons alone, legal
+1H pairs and non-conflicting slot replacements remain subject to slot/subtype and class/material rules.
+Hand compatibility selects no off-hand attack or damage, bracelet coefficients or change to Guardian/Cyclone blocking.
 
 ### consumable
 Food (sit, immobile, heal over 15 s), potion (channel while moving), elixir `S` (10 min +20 % stat),
@@ -1118,8 +1090,7 @@ mushroom spit) or `× 100` (pineapple slice, pumpkin muffin).
 
 **Hybrid Apple:** nominal healing is the existing `item-base-hp(power, rarity) × 20` HP:
 20 HP at common power +1, one tenth an equal-power/equal-rarity Life Potion, capped by
-missing HP. This is a hybrid balance selection, not a historical formula claim. The current
-instant-use approximation remains; sitting/channeling is deferred. Other consumables do not
+missing HP. This is a hybrid balance selection, not a historical formula claim. Other consumables do not
 acquire a required healing coefficient or a general zero-heal use rejection rule.
 
 ### ingredient
@@ -1136,7 +1107,6 @@ recipes**, with **no rerolls or compensation** for known ones; four recipes with
 known teach one. Attempting to learn an **already-known formula leaves the scroll unconsumed**.
 Overlap can make later books less rewarding. This chooses no recipe-generation or identity defaults.
 A known recipe need not be usable: book-recorded recipes may be power-locked (`power-gate`, item 3).
-Live-data migration and recipe-learning implementation remain deferred.
 
 ### crafting-station
 7 stations + campfire + "anywhere". → `instances/crafting-stations.json`.
@@ -1156,7 +1126,6 @@ and sessions**; moving to another land never requires relearning them. Persisten
 (§3.7) extends character recipe knowledge across worlds, without shared-account knowledge. Crafting materials and
 equipment strength are unchanged. Shared knowledge/duplicates follow `recipe` item 2;
 immediate recording and power-locked crafting follow `power-gate` item 3.
-Live-data migration and implementation remain deferred.
 
 Hybrid one-time book-source claims are personal per saved world (`save-data`, persistence item 5).
 The [initial-site source exclusion](encounter-contracts.md#initial-permanent-source-scope) defers
@@ -1199,7 +1168,6 @@ and `skeleton-dog`. It remains one food item, with subtype **19** anchored to Co
 this neither assigns 19 to Skeleton Dog nor invents its unrecorded source ID. All other food
 pairings and numeric identities remain unchanged; membership in `dogs` grants no bait pairing.
 One of each food carried at a time still applies, not one Bubble Gum per target species.
-Live `pet-food.tames`, model/loader and validator remain single-species; migration is deferred.
 → `instances/pet-food.json` (58 obtainable + 5 cut `X`).
 
 ### key-item
@@ -1220,7 +1188,7 @@ plus training (`skill-tree`, traversal items 2–3); A/S acquisition records do 
 reduce climbing stamina consumption by 75%**, rather than eliminating it. Basic climbing and
 Climbing points' drain reduction follow `skill-tree`. The infinite-climbing/no-stamina S behavior
 in `key-items.json#climbing-spikes` and `abilities.json#climb` is reference only, not a hybrid
-target. Live-data migration and runtime enforcement remain deferred.
+target.
 
 **Hybrid traversal item 5 (owner approved separately, 2026-09-28):** apply Spikes **after the
 Climbing skill reduction**: `climbing cost with Spikes = skill-adjusted climbing cost × 0.25`.
@@ -1289,14 +1257,10 @@ floor**. The approved logarithmic curve replaces D6's ×0.9 accumulation/decay r
 floor; there is no hidden clamp, minimum per-artifact contribution or minimum marginal gain.
 The first artifact remains 5%.
 
-The checked-in `generators.json#design.artifact` now records the normalized logarithm with
+`generators.json#design.artifact` records the normalized logarithm with
 `first: 0.05` and adjustable positive `z`, initially `0.1`, without the obsolete decay/floor keys.
 `key-items.json#artifact` separates historical S reports from hybrid rules; the hybrid ruleset
-points to the approved curve. `test_artifact_corrections.gd` checks this bounded data correction,
-not production definition/config enforcement or generated/runtime behavior. Those systems,
-collection, consumers, persistence/import/personal source claims and remaining source/gameplay
-precision stay in the implementation backlog for later resume reconciliation. No legacy format
-or migration support is required (§0).
+points to the approved curve. No legacy format or migration support is required (§0).
 
 ### currency
 A: copper/silver/gold (100:1), platinum (adaptation only); S: single coin counter, auto-pickup by
@@ -1397,8 +1361,7 @@ cooldown and one buff, with no extra charge or duplicate purchase. Keep Camoufla
 effect, duration, cooldown, per-point scaling and approved stealth/threat rules unchanged.
 This is an explicit Assassin exception to D10's separate ultimate node; other specializations
 and the remaining D10/D20 rules stand. The player has three distinct class skills rather than
-paying twice for the same skill. The third-slot/no-fourth-slot runtime and definition validation
-both enforce this exception; `also-ultimate: true` remains source metadata, not a fourth unlock.
+paying twice for the same skill. `also-ultimate: true` is source metadata, not a fourth unlock.
 
 Hybrid traversal item 1 (approved 2026-09-28): the riding chain also requires global Reins
 and a rideable tamed pet; training and further-point speed benefits follow `pet` / `c-riding`.
@@ -1406,14 +1369,12 @@ and a rideable tamed pet; training and further-point speed benefits follow `pet`
 **Hybrid traversal item 2 (owner approved, 2026-09-28):** gliding requires **5 Climbing
 points + at least 1 Hang Gliding point** and an **equipped Hang Glider bought from an item
 vendor**. Further Hang Gliding points improve glide speed. Buying alone is insufficient;
-the glider occupies the existing single `special` slot, not an extra slot. Live-data migration
-and runtime enforcement remain deferred.
+the glider occupies the existing single `special` slot, not an extra slot.
 
 **Hybrid traversal item 3 (owner approved, 2026-09-28):** sailing requires **5 Swimming
 points + at least 1 Sailing point** and an **equipped Boat bought from an item vendor**.
 Further Sailing points improve sailing speed. Buying alone is insufficient; equip the boat
-instead of the glider in the existing single `special` slot, never both. Live-data migration
-and runtime enforcement remain deferred.
+instead of the glider in the existing single `special` slot, never both.
 
 **Hybrid traversal item 4 (owner corrected, 2026-09-28):** basic climbing requires **neither
 skill points nor Spikes**. Climbing points reduce stamina drain; global Spikes reduce climbing
@@ -1438,9 +1399,7 @@ HP/no-healing rules remain unchanged.
 This selection is **equipment-only**: it adds no consumable-use restriction or
 spirit-attachment player-power gate, and selects no retroactive unequip/eviction or save
 migration behavior. Existing formula-learning and book/crafting locks below are unchanged.
-The shared runtime equip boundary enforces this requirement using live character level;
-structurally legal already-worn gear remains intact on restore. Recipe enforcement and the
-item-power display remain [deferred](../../docs/ROADMAP/todo_implement.md#progression-35-slice-d19).
+Equip eligibility uses character level; structurally legal already-worn gear remains intact on restore.
 
 **Hybrid books/formulas item 3 (owner approved, 2026-09-28):** books record their unknown
 recipes **immediately, regardless of current power**. A recipe above the character's power
@@ -1451,8 +1410,7 @@ strength, materials or station requirements.
 
 Known-but-locked recipes count as known for item 2's duplicate rules: another book teaches
 nothing extra for them, and an already-known formula remains unconsumed. Neither source removes
-the power lock or grants compensation for a duplicate. Runtime/UI enforcement and live-data
-migration remain separately deferred and unauthorized.
+the power lock or grants compensation for a duplicate.
 
 ### region-lock `S` — **DROPPED (D4)**
 Reference only. In 1.0 gear, leftovers, bombs' loot and key items were bound to origin `land`;
@@ -1539,7 +1497,7 @@ the rules and decides gameplay outcomes. A client cannot simply announce extra m
 successful hit. Client predictions may need correction to authoritative outcomes.
 Alpha's client-authoritative protocol and `generators.json#network-alpha` are historical
 reference, not hybrid authority. This chooses no transport/protocol, anti-cheat numeric defaults
-or central trust service. Networking and enforcement remain deferred and unauthorized.
+or central trust service.
 
 **Hybrid persistence item 7 (owner approved, 2026-09-28; depends on item 1):** accept
 **rule-valid portable characters as trusted-co-op imports**, without requiring a central
@@ -1547,7 +1505,7 @@ progression service. Reject an invalid import with an explanation and **leave th
 untouched**; never silently strip items or levels. A legally shaped edited save can still pass:
 item 6's authority over gameplay after joining cannot prove where imported progression was earned
 and does not make portable progression cheat-proof. No provenance proof, closed economy or
-global concurrency guarantee is promised. Import validation/enforcement remains deferred.
+global concurrency guarantee is promised.
 
 ### control-action
 A distinct device-independent player intention whose per-action meaning and behavior remain in
@@ -1568,12 +1526,9 @@ Device-specific profiles use [`controller-profile`](../schema/meta.yaml), with i
 `bound-to-input` relation. Android's logical refinement is `android-controller-profile`
 with `android-profile-parameters`; the source row is `android-profile-source-row` in
 `catalog-meta.yaml`. These declarations encode relation cardinalities, not inverse or
-foreign-key consistency, implemented device mappings, or runtime behavior. [Profiles](controller-profiles.md) retain adapter
-choices, mapping status, aliases and contextual policy; keyboard/mouse is documented,
-gamepad remains unselected, and Android's [native tool stack](../decisions/android-native-touch-controls.md)
-and [touch-profile policy](controller-profiles.md#android) have a first-slice runtime tested by
-the owner on Android hardware. Device/checklist details and render-cost measurements remain
-unrecorded; broader controls implementation is deferred.
+foreign-key consistency or device behavior. [Profiles](controller-profiles.md) own binding choices,
+mapping status, aliases and context. Gamepad remains unselected; Android has its own
+[touch profile](controller-profiles.md#android).
 
 ### input-binding
 A physical input/shape in a controller profile referring to one or more distinct control actions.
@@ -1585,9 +1540,9 @@ phases/context, without merging their meanings. The schema record is `input-bind
 `input-binding-action` is a non-inlined list with minimum cardinality one; its generated
 items use the closed `ControlActionId` vocabulary. The original relation cardinalities are
 structurally attached, but these schema classes do not validate inverse/foreign-key
-consistency. Current executable keyboard adapter:
+consistency. Keyboard physical defaults:
 `instances/keybinds.json#hybrid`; its [profile](controller-profiles.md#keyboard-and-mouse)
-explains legacy grouping, aliases and implementation gaps. Remapping/persistence is deferred.
+explains binding groups, contexts and aliases.
 
 ### hud-element
 → `instances/ui.json`: portrait+name+level/class+HP+XP (A), coins + key-item bar (S), HP/MP/stamina
@@ -1598,8 +1553,8 @@ voxel, zoom 1:4..1:256, markers, missions, players, shrines, flight points), ove
 character sheet (power, HP, armor, resi, crit, haste, reg, weapon/armor rating), skills window `A`,
 crafting window, inventory, quick-select wheel, customization bench UI, character creation, world
 selection `A`, friends widget `S`. Hybrid (D17): `debug-menu` — the runtime profiling overlay any player
-can open without a dev environment (Godot Debug Menu add-on: FPS, frametime, CPU/GPU graphs, GPU +
-driver, OS; [debug-menu control](controls.md#debug-menu) cycles hidden/compact/full; shipped in release exports).
+can open without a development environment: FPS, frametime, CPU/GPU graphs, GPU, driver and OS.
+The [debug-menu control](controls.md#debug-menu) cycles hidden/compact/full, including in release play.
 
 Hybrid (D25): floating target numbers, stars over stunned heads and buff icons with countdown fill
 use `generators.json#design.feel`. The level-up toast pops from `level-up.pop-scale` back to ×1
@@ -1618,10 +1573,7 @@ timers continue together: enemies and projectiles remain active, damage-over-tim
 cooldowns count down, buffs expire and dodge protection ends under their existing rules. Opening
 these panels grants no immunity or extension of protection; players remain vulnerable while browsing.
 This does not decide new input availability or the behavior of other panels/menus. The world-map separately uses its approved live-time and input-gating policy above.
-Panel-time runtime authorization (walkthrough item 10, owner approved 2026-09-17): repair the
-player-only timer freeze and add regressions for these three panels. Preserve current gameplay
-input restrictions, balance and other menus; advance existing simulation rather than admitting
-new movement, combat or interaction input. Other runtime fixes remain separately deferred.
+Keep gameplay input restrictions: live panel time does not admit new movement, combat or interaction requests.
 
 ### option
 → `instances/ui.json#options`: FPS limit (default 111), invert Y, camera speed, resolution,
@@ -1670,7 +1622,7 @@ retain threat/order/neutral provocation across restart under `ai-behavior` item 
 Initial-site identities, special timers, rubble, trap/prop renewal and once-only reward state
 follow the [encounter contracts](encounter-contracts.md), without choosing a save format.
 
-**Current implementation:** persistence uses validated atomic JSON save/load. Current serialized
+**Serialized save contract:** current wire
 structures are declared by [`save-data` and `world-state`](../schema/save-world-world-state.yaml),
 [`character-state` and `skill-investment`](../schema/save-character-character-state.yaml),
 [`saved-item` and `saved-equipment-entry`](../schema/save-character-saved-item.yaml), and
@@ -1689,18 +1641,13 @@ HP; transient player HP, statuses and cooldowns are not captured. Lifecycle save
 state transitions, unload and graceful shutdown, not a guaranteed crash-checkpoint cadence.
 There is no legacy migration or offline time advancement.
 
-Portable-world import UI, recipes, artifacts/personal permanent-source claims, pets/progression,
-exploration, personal travel/lore, remaining world improvements and networking remain unfinished.
-The [persistence backlog](../../docs/ROADMAP/todo_implement.md#persistence--authority)
-tracks those boundaries. These policies grant no additional implementation authority.
-
 ### slash-command
 → `instances/slash-commands.json`.
 
 ### audio
 Composer Wollay. Tracks and SFX ids → `instances/audio.json`. Races have distinct voices.
-Hybrid (D25): feedback sounds use sine + noise + pitch slide from `generators.json#design.feel.sfx`,
-keyed by `audio.json#sfx-alpha-ids`, until real audio assets exist.
+Hybrid (D25): `generators.json#design.feel.sfx` defines the feedback sound profiles
+(frequency, duration, noise and pitch slide), keyed by `audio.json#sfx-alpha-ids`.
 
 ### version
 → `instances/versions.json`: dated feature timeline (devlog 2011–2013, alpha patches 2013-07-05 /

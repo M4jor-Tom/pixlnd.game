@@ -17,8 +17,9 @@ and numerical decision review. Paths in backticks below are relative to the repo
 ## Recover objective and authority
 
 1. Follow the bootstrap order in [AGENTS.md](../../AGENTS.md), then read
-   [ontology instructions](../../ontology/AGENTS.md), [decision instructions](../../ontology/decisions/AGENTS.md),
-   `docs/lessons.md`, current decision records and `docs/ROADMAP/todo_implement.md`.
+   [ontology instructions](../../ontology/AGENTS.md), [domain ownership guidance](../../ontology/decisions/AGENTS.md),
+   [technical recording guidance](../record-impactful-decision/recording-guidance.md),
+   `docs/lessons.md`, [current technical records](../../docs/decisions/) and `docs/ROADMAP/todo_implement.md`.
    Read `docs/ROADMAP/todo_decide.md` and `docs/todo_handle_reconciled_items.md` only if present:
    they are pending-only and may correctly be absent. An empty HANDOFF is valid.
 2. Establish the current objective, branch, HEAD, index, worktree ownership and exact owner

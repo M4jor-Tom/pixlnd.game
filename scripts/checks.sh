@@ -5,7 +5,7 @@ cd "$(dirname "$0")/.."
 shopt -s nullglob
 
 # game/generated/ is generator output (linkml-gdscript): checked by its own golden tests, not here.
-gd_sources() { find -L game ontology scripts -path game/generated -prune -o -type f -name '*.gd' -print0; }
+gd_sources() { find -L game ontology scripts tests/ontology -path game/generated -prune -o -type f -name '*.gd' -print0; }
 gd_sources | xargs -0 gdlint
 gd_sources | xargs -0 gdformat --check
 gd_sources | xargs -0 python3 scripts/check_sizes.py
@@ -36,16 +36,18 @@ metrics="$scratch/metrics"
 mkdir "$metrics"
 ln -s "${GDMETRICS_G4:?run the gate inside nix develop}/addons" "$metrics/addons"
 cp -R game ontology "$metrics/"
+mkdir "$metrics/tests"
+cp -R tests/ontology "$metrics/tests/"
 cp scripts/check_complexity.gd "$metrics/"
 # Enumerate independently: gdmetrics discovery silently skips hidden and '..' names.
-(cd "$metrics" && find -L game ontology -path game/generated -prune -o -type f -name '*.gd' -print0) |
+(cd "$metrics" && find -L game ontology tests/ontology -path game/generated -prune -o -type f -name '*.gd' -print0) |
   jq -Rs 'split("\u0000")[:-1]' > "$metrics/files.json"
 printf 'config_version=5\n' > "$metrics/project.godot"
 run_godot 1719 --path "$metrics" -s check_complexity.gd
 
 # Generated domain classes resolve each other by class_name: build the global class cache first.
 run_godot 300 --import
-for script in ontology/validate.gd ontology/test_*.gd game/*/test_*.gd; do
+for script in ontology/validate.gd ontology/test_*.gd tests/ontology/test_*.gd game/*/test_*.gd; do
   seconds=1719
   # Capsule traversals retain their separately calibrated deadline.
   case "$script" in

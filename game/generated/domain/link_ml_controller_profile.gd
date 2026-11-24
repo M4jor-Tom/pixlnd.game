@@ -6,7 +6,7 @@ extends RefCounted
 ## Stable instance identity under the canonical kebab-case convention; numeric source tables have separate unresolved namespace mappings.
 var slot_id: Variant = null
 
-## Cardinality 1→0..n. [lb]profiles[rb](controller-profiles.md) explicitly distinguish implemented, registered-only and unselected mappings
+## Cardinality 1→0..n. The profile owns physical bindings; no physical default is inferred for an unselected mapping.
 var slot_bindings: Array[LinkMLInputBinding] = []
 
 

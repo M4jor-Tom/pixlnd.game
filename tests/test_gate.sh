@@ -298,11 +298,15 @@ mkdir "$logs/python-hold"
 export FIXTURE_PROGRESS_HOLD="$logs/python-hold"
 bash scripts/quality_gate.sh >"$logs/logging-live.log" 2>&1 &
 logger_pid=$!
-for ((i = 0; i < 200; i++)); do
-  [[ -s "$FIXTURE_PROGRESS_HOLD/waiting" ]] && break
+# Cold Nix/pre-commit startup is not part of the live-output assertion.
+while [[ ! -s "$FIXTURE_PROGRESS_HOLD/waiting" ]]; do
+  if ! kill -0 "$logger_pid" 2>/dev/null; then
+    cat "$logs/logging-live.log" >&2
+    printf 'FAIL: logging fixture exited before reaching its hold\n' >&2
+    exit 1
+  fi
   sleep 0.05
 done
-test -s "$FIXTURE_PROGRESS_HOLD/waiting"
 visible=false
 for ((i = 0; i < 200; i++)); do
   if grep -lF 'test_progress (test_ontology_fixture.LoggingFixture.test_progress) ... ' "$logs"/quality/*/ontology-tests.log >"$logs/visible-path" 2>/dev/null; then

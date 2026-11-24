@@ -11,9 +11,9 @@ keeping native widgets functional, at the cost of an extra full-size UI composit
 Android render cost still needs measurement. Game-specific adapter and lifecycle
 integration remain necessary; API availability does not verify Android behavior.
 
-[Canonical controls](../domain/controls.md) own meanings;
-[the Android profile](../domain/controller-profiles.md#android) owns physical policy and scope.
-See the [implementation backlog](../../docs/ROADMAP/todo_implement.md#device-independent-controls-documentation-only).
+[Canonical controls](../../ontology/domain/controls.md) own meanings;
+[the Android profile](../../ontology/domain/controller-profiles.md#android) owns physical policy and scope.
+See the [implementation backlog](../ROADMAP/todo_implement.md#device-independent-controls-documentation-only).
 
 ## Tool references
 

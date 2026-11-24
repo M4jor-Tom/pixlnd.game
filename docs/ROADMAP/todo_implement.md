@@ -257,9 +257,10 @@ the items below retain those boundaries.
 <a id="validation-contract-documentation-approved-implementation-unauthorized"></a>
 ## Validation contract (bounded checks; remaining implementation deferred)
 
-Bounded identity/tree, required-input/reference and finite source-envelope checks are documented in
-[§5](../../ontology/domain/5_Constraints.md#validation-contract-mapping-owner-approved-2026-09-28)
-and [the check list](../../game/README.md#checks); the entries below are remaining work only.
+For the requirements, see [§5](../../ontology/domain/5_Constraints.md#validation-contract-mapping-owner-approved-2026-09-28).
+For the bounded identity/tree, required-input/reference and finite source-envelope checks, see
+[runtime and validation boundaries](../ontology/consumer-integration.md#runtime-and-validation-boundaries)
+and the [check list](../../game/README.md#checks). The entries below are remaining work only.
 Desert-ruins identity is unresolved, not a closed alias or new type. Historical Swamp Lands identity
 also remains research; hybrid v1 landscape availability is settled. Passing finite checks does not
 resolve unmapped histories or certify generated/runtime behavior.
