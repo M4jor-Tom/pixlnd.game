@@ -9,6 +9,7 @@ import jsonschema
 import yaml
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
+from ontology_save_facet_expectations import RAW_INTEGER_MAX
 from test_ontology_schema import SCHEMA, copy_schema, load_module
 from test_ontology_schema_authoring import catalog, validate, validator
 
@@ -202,9 +203,11 @@ def verify_profile_field(
 
 def verify_ruins_room_contract(self, raw, view, schema, rule, names, anchor, fields):
     from ontology_source_contracts import assert_declared_root
+    from test_ontology_schema_save import assert_room_rule
 
     self.assertEqual(raw["classes"]["saved-site"].get("rules"), [rule])
     self.assertEqual(raw["classes"]["saved-site"]["slots"], names)
+    assert_room_rule(self, view)
     for cls in (view.get_class("saved-site"), view.induced_class("saved-site")):
         self.assertEqual(str(cls.class_uri), "pixlnd:saved-site")
         self.assertEqual(cls.see_also, ["../domain/3_Classes.md#save-data"])
@@ -212,42 +215,38 @@ def verify_ruins_room_contract(self, raw, view, schema, rule, names, anchor, fie
         condition = cls.rules[0]
         self.assertEqual(condition.see_also, [anchor])
         self.assertEqual(set(condition.preconditions.slot_conditions), {"saved-site-family"})
-        self.assertEqual(condition.preconditions.slot_conditions["saved-site-family"].equals_string, "ruins")
         self.assertEqual(set(condition.postconditions.slot_conditions), {"saved-site-room-levels"})
-        levels = condition.postconditions.slot_conditions["saved-site-room-levels"]
-        self.assertEqual((levels.minimum_cardinality, levels.maximum_cardinality), (3, 3))
-        self.assertIsNone(condition.elseconditions)
+        self.assertEqual(set(condition.elseconditions.slot_conditions), {"saved-site-room-levels"})
         self.assertFalse(condition.bidirectional or condition.deactivated)
+    description = "Shared source levels for the three ruins rooms; empty for other site families."
+    branch = {"range": "integer", "multivalued": True, "minimum_value": 1, "maximum_value": RAW_INTEGER_MAX}
     self.assertEqual(raw["slots"]["saved-site-room-levels"], {
         "slot_uri": "pixlnd:saved-site/room_levels", "alias": "room_levels", "domain": "saved-site",
-        "range": "integer", "required": True, "see_also": ["../domain/3_Classes.md#save-data"],
-        "multivalued": True, "minimum_value": 1, "maximum_cardinality": 3})
-    for field, name, range_ in (("family", "saved-site-family", "saved-site-family"),
-                                 ("room_levels", "saved-site-room-levels", "integer")):
+        "required": True, "see_also": ["../domain/3_Classes.md#save-data"], "description": description,
+        "any_of": [dict(branch, maximum_cardinality=0), dict(branch, minimum_cardinality=3, maximum_cardinality=3)]})
+    for field, name in (("family", "saved-site-family"), ("room_levels", "saved-site-room-levels")):
         slot = view.induced_slot(name, "saved-site")
-        self.assertEqual((slot.alias, slot.domain, slot.range), (field, "saved-site", range_))
+        self.assertEqual((slot.alias, slot.domain), (field, "saved-site"))
         self.assertEqual(str(slot.slot_uri), "pixlnd:saved-site/" + field)
         self.assertTrue(slot.required)
         self.assertFalse(slot.identifier or slot.key or slot.inlined)
     levels = view.induced_slot("saved-site-room-levels", "saved-site")
-    self.assertTrue(levels.multivalued)
-    self.assertEqual((levels.minimum_value, levels.maximum_cardinality), (1, 3))
-    self.assertIsNone(levels.minimum_cardinality)
-    self.assertIsNone(levels.maximum_value)
+    self.assertEqual(view.induced_slot("saved-site-family", "saved-site").range, "saved-site-family")
+    self.assertEqual([(s.range, s.multivalued, s.minimum_value, s.maximum_value,
+                       s.minimum_cardinality, s.maximum_cardinality) for s in levels.any_of],
+                     [("integer", True, 1, RAW_INTEGER_MAX, None, 0), ("integer", True, 1, RAW_INTEGER_MAX, 3, 3)])
     self.assertIsNone(levels.ifabsent)
     self.assertEqual(set(view.get_enum("saved-site-family").permissible_values), {"ruins", "camp", "supplier"})
     self.assertEqual({s.alias for s in view.class_induced_slots("saved-site")}, fields)
     assert_declared_root("saved-site", fields, fields, view=view, schema=schema)
     definition = schema["$defs"]["saved-site"]
-    self.assertEqual(definition["properties"]["room_levels"], {
-        "type": "array", "items": {"type": "integer", "minimum": 1}, "maxItems": 3})
-    # Native 1.12.1 uses canonical rule names, not the closed root's wire aliases.
-    self.assertEqual(definition["if"], {
-        "properties": {"saved-site-family": {"const": "ruins"}}, "required": ["saved-site-family"]})
-    # Independently inspect the ACTUAL canonical then key: cardinalities are also omitted.
-    self.assertEqual(definition["then"], {
-        "properties": {"saved-site-room-levels": {"type": "array", "items": {}}},
-        "required": ["saved-site-room-levels"]})
+    array = {"type": "array", "items": {"type": "integer", "minimum": 1, "maximum": RAW_INTEGER_MAX}}
+    self.assertEqual(definition["properties"]["room_levels"], {"description": description, "anyOf": [
+        dict(array, maxItems=0), dict(array, minItems=3, maxItems=3)]})
+    # The native condition uses wire keys but does not emit the branch-specific array lengths.
+    self.assertEqual(definition["if"], {"properties": {"family": {"const": "ruins"}}, "required": ["family"]})
+    for key in ("then", "else"):
+        self.assertEqual(definition[key], {"properties": {"room_levels": {}}, "required": ["room_levels"]})
     self.assertNotIn("saved-site-family", definition["properties"])
     self.assertNotIn("saved-site-room-levels", definition["properties"])
 
@@ -436,9 +435,11 @@ class LogicalWorldTests(unittest.TestCase):
 
         anchor = "../domain/encounter-contracts.md#spike-traps-and-furnishing-contents"
         rule = {"see_also": [anchor],
-                "preconditions": {"slot_conditions": {"saved-site-family": {"equals_string": "ruins"}}},
+                "preconditions": {"slot_conditions": {"saved-site-family": {"alias": "family", "equals_string": "ruins"}}},
                 "postconditions": {"slot_conditions": {"saved-site-room-levels": {
-                    "minimum_cardinality": 3, "maximum_cardinality": 3}}}}
+                    "alias": "room_levels", "minimum_cardinality": 3, "maximum_cardinality": 3}}},
+                "elseconditions": {"slot_conditions": {"saved-site-room-levels": {
+                    "alias": "room_levels", "maximum_cardinality": 0}}}}
         fields = {"id", "family", "volumes", "pending", "cleared", "completed", "cycle", "mobs",
                   "rewards", "spirit_levels", "room_levels", "contents"}
         names = ["saved-site-" + field.replace("_", "-") for field in (
@@ -451,8 +452,6 @@ class LogicalWorldTests(unittest.TestCase):
         raw = load_module(SCHEMA.parent / "save-world.yaml")
         view = SchemaView(str(SCHEMA))
         self.assertIn("saved-site", view.all_classes())
-        # Declaration-first RED must not rely on unsupported native conditional rejection.
-        self.assertEqual(raw["classes"]["saved-site"].get("rules"), [rule])
         schema = validator("saved-site").schema
         assert_contract(raw, view, schema)
         row = {"id": "site", "family": "ruins", "volumes": [[0, 0, 0, 10, 5, 10]],
@@ -461,13 +460,13 @@ class LogicalWorldTests(unittest.TestCase):
                "contents": {"rubble": {}, "props": {}, "traps": []}}
         witnesses = []
         for family in ("ruins", "camp", "supplier"):
-            # Short ruins arrays admit NATIVELY despite the precise authored exactly-three rule.
-            # Nonruins keep their previous admission; neither result certifies runtime save validity.
-            for levels in ([], [1], [1, 2], [1, 2, 3], [1, 1, 1]):
+            # Only three levels for ruins and zero for camp/supplier are legal saves.
+            # Native validation admits either length for each family, but never lengths one or two.
+            for levels in ([], [1, 2, 3], [1, 1, 1]):
                 candidate = dict(row, family=family, room_levels=levels)
                 validate("saved-site", candidate)
                 witnesses.append((candidate, True))
-            for levels in ([1, 2, 3, 4], None, 1, True, "1", {}, [[1]], [0, 1, 2], [-1, 1, 2],
+            for levels in ([1], [1, 2], [1, 2, 3, 4], None, 1, True, "1", {}, [[1]], [0, 1, 2], [-1, 1, 2],
                            [True, 1, 2], [1.5, 1, 2], ["1", 1, 2], [None, 1, 2]):
                 candidate = dict(row, family=family, room_levels=levels)
                 with self.subTest(family=family, levels=levels), self.assertRaises(jsonschema.ValidationError):
@@ -487,19 +486,22 @@ class LogicalWorldTests(unittest.TestCase):
         for family in (None, "other", True, 1, [], {}):
             with self.assertRaises(jsonschema.ValidationError):
                 validate("saved-site", dict(row, family=family))
-        for mutation in ("removed-rule", "wrong-family", "wrong-cardinality"):
-            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as scratch:
+        for section, slot, change in (
+            (None, None, None),
+            ("preconditions", "saved-site-family", {"equals_string": "camp"}),
+            ("postconditions", "saved-site-room-levels", {"minimum_cardinality": 2, "maximum_cardinality": 2}),
+            ("elseconditions", "saved-site-room-levels", {"maximum_cardinality": 1}),
+        ):
+            with self.subTest(mutation=section or "removed-rule"), tempfile.TemporaryDirectory() as scratch:
                 copied = Path(scratch) / "schema"
                 copy_schema(copied)
                 path = copied / "save-world.yaml"
                 mutant = deepcopy(raw)
-                if mutation == "removed-rule":
-                    del mutant["classes"]["saved-site"]["rules"]
-                elif mutation == "wrong-family":
-                    mutant["classes"]["saved-site"]["rules"][0]["preconditions"]["slot_conditions"]["saved-site-family"]["equals_string"] = "camp"
+                site = mutant["classes"]["saved-site"]
+                if section is None:
+                    del site["rules"]
                 else:
-                    mutant["classes"]["saved-site"]["rules"][0]["postconditions"]["slot_conditions"]["saved-site-room-levels"] = {
-                        "minimum_cardinality": 2, "maximum_cardinality": 2}
+                    site["rules"][0][section]["slot_conditions"][slot].update(change)
                 path.write_text(yaml.safe_dump(mutant, sort_keys=False))
                 mutated_view = SchemaView(str(copied / SCHEMA.name))
                 emitted = json.loads(JsonSchemaGenerator(
@@ -507,7 +509,7 @@ class LogicalWorldTests(unittest.TestCase):
                 assert_declared_root("saved-site", fields, fields, view=mutated_view, schema=emitted)
                 with self.assertRaises(AssertionError):
                     assert_contract(yaml.safe_load(path.read_text()), mutated_view, emitted)
-                self.assertEqual(emitted == schema, mutation == "wrong-cardinality")
+                self.assertEqual(emitted == schema, section in ("postconditions", "elseconditions"))
                 native = jsonschema.Draft201909Validator(emitted)
                 for candidate, admitted in witnesses:
                     self.assertEqual(native.is_valid(candidate), admitted)

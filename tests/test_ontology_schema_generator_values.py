@@ -519,7 +519,8 @@ class GeneratorValueTests(unittest.TestCase):
         for value in (0, 1):
             validate_source("generators", changed(row, path, value))
         self.assert_invalid(row, path, [-0.001, 1.001, True])
-        from ontology_source_contracts import class_contract, validator
+        from ontology_source_contracts import class_contract
+        from test_ontology_schema_authoring import validator
 
         class_contract("runtime-projectile")
         native = validator("runtime-projectile")
