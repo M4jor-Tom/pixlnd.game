@@ -6,10 +6,11 @@ rescues.
 
 ## Placement and access
 
-The corresponding required source inputs are [`generator-design-initial-encounters (distance/separation/apron/dry/hub fields)`](../schema/design-items-encounter-placement.yaml), [`generator-design-settlement.no-hostiles-within`](../schema/design-items-settlement.yaml).
+The corresponding required source inputs are [`generator-design-initial-encounters-field-distance-min`, `generator-design-initial-encounters-field-distance-max`, `generator-design-initial-encounters-field-separation`, `generator-design-initial-encounters-field-apron`, `generator-design-initial-encounters-field-dry-above-sea` and `generator-design-initial-encounters-field-hub-size`](../schema/design-items-encounter-placement.yaml), attached to [`generator-design-initial-encounters`](../schema/design-items-encounters.yaml), [`generator-design-settlement.no-hostiles-within`](../schema/design-items-settlement.yaml).
 These input structures do not replace the logical occurrences or the procedures below.
 
-Each land has one ruins dungeon, one daily camp and four supplier sites. Site centres are
+The six required site associations are [`initial-populated-land`](../schema/world-initial-populated-land.yaml).
+These nominal references do not prove target existence, distinctness or physical placement. Site centres are
 land-seeded; [`initial-site-placement-profile`](../schema/world.yaml) declares the inclusive
 village-distance thresholds and minimum separation (`minimum-village-distance-blocks`,
 `maximum-village-distance-blocks`, `minimum-site-separation-blocks`). Their saved-world locations stay fixed
@@ -73,21 +74,20 @@ clear rules below remain separate from the population shapes linked in the table
 
 | Site | Population declaration | Tier | Clear predicate |
 |---|---|---|---|
-| Ruins | [`ruins-population`, `ruins-population.packs`, `ruins-population.pack-size`, `ruins-population.bosses`, `ruins-population.hostiles`, and `ruins-population.captives`](../schema/world.yaml); [`initial-populated-ruins-room` and `initial-populated-ruins-assembly`](../schema/world.yaml) | Rooms green → blue → purple; bosses blue and purple | All designated hostiles defeated |
-| Daily camp | [`camp-population`, `camp-population.packs`, `camp-population.pack-size`, `camp-population.bosses`, `camp-population.hostiles`, and `camp-population.captives`](../schema/world.yaml); [`initial-populated-camp-assembly`](../schema/world.yaml) | Green | All designated hostiles defeated |
-| Each supplier rescue | [`rescue-population`, `rescue-population.packs`, `rescue-population.pack-size`, `rescue-population.bosses`, `rescue-population.hostiles`, and `rescue-population.captives`](../schema/world.yaml); [`initial-populated-rescue-assembly`](../schema/world.yaml) | Existing white/green/blue/purple site tier | All designated hostiles defeated, then the existing rescue-completion rule |
+| Ruins | [`ruins-population`, `ruins-population.packs`, `ruins-population.pack-size`, `ruins-population.bosses`, `ruins-population.hostiles`, and `ruins-population.captives`](../schema/world.yaml); [`initial-populated-ruins-room` and `initial-populated-ruins-assembly`](../schema/world.yaml) | [`initial-populated-ruins-room.rules` and `initial-populated-ruins-assembly.slot_usage.rooms`](../schema/world-site-assemblies.yaml) | All designated hostiles defeated |
+| Daily camp | [`camp-population`, `camp-population.packs`, `camp-population.pack-size`, `camp-population.bosses`, `camp-population.hostiles`, and `camp-population.captives`](../schema/world.yaml); [`initial-populated-camp-assembly`](../schema/world.yaml) | [`initial-populated-camp-assembly.tier`](../schema/world-site-assemblies.yaml) | All designated hostiles defeated |
+| Each supplier rescue | [`rescue-population`, `rescue-population.packs`, `rescue-population.pack-size`, `rescue-population.bosses`, `rescue-population.hostiles`, and `rescue-population.captives`](../schema/world.yaml); [`initial-populated-rescue-assembly`](../schema/world.yaml) | [`initial-populated-rescue-assembly.tier` and `.rules`](../schema/world-site-assemblies.yaml) | All designated hostiles defeated, then the existing rescue-completion rule |
 
-`initial-populated-ruins-room` and `initial-populated-ruins-assembly` retain the three
-contained room occurrences in green/blue/purple order: each room has one three-guard pack;
-room one has no separate boss, while rooms two and three each have a separate non-mission
-boss.
+The [`initial-populated-ruins-room.rules` and `initial-populated-ruins-assembly.slot_usage.rooms`](../schema/world-site-assemblies.yaml)
+declare room/pack order and boss allocation. Bosses are separate non-mission occurrences.
+Native admission does not fully enforce sequence, boss Boolean predicates or conditional nonnull bosses.
 `initial-populated-camp-assembly` and `initial-populated-rescue-assembly` link each outdoor
 geometry occurrence to its designated population and permanent pack/boss assignments.
 These are designated logical associations, not current survival/spawn state or placement/execution.
 The population declarations above hold the exact
 pack, boss, hostile and captive counts. No reinforcements are selected for these contracts. Each
-pack and singleton boss independently rolls its basic role with the declared 50/30/20 distribution
-in [`initial-site-hostile-profile`](../schema/world.yaml); role assignment per individual is [`encounter-assignment`](../schema/world.yaml). Existing basic attacks and status
+pack and singleton boss independently rolls its basic role using
+[`initial-site-hostile-profile.melee-probability`, `.ranged-probability` and `.mage-probability`](../schema/world-encounter-assignments.yaml); role assignment per individual is [`encounter-assignment`](../schema/world.yaml). Existing basic attacks and status
 protections remain unchanged. Positions and roles persist across unloading, restarting and
 daily renewal; renewal does not reroll them.
 
@@ -303,7 +303,7 @@ Deliver at camp centre/captive feet, using [`shared-mission-completion-profile.d
 designated death or the rescue's [conversation/last-player-exit completion](3_Classes.md#gnome-supplier-s).
 Persist issuance and undelivered payload, including any pending gear-class selection;
 conversation or reload cannot duplicate rewards. Ordinary ground pickup/lifetime rules apply;
-anyone, including later visitors, can pick up the shared loot. [`shared-mission-completion-profile.extra-completion-xp`](../schema/world.yaml) is zero; no additional currency is included in this initial package. Existing kill XP and other future currency contracts remain unchanged.
+anyone, including later visitors, can pick up the shared loot. Extra completion XP follows [`shared-mission-completion-profile.extra-completion-xp`](../schema/world-reward-profiles.yaml); no additional currency is included in this initial package. Existing kill XP and other future currency contracts remain unchanged.
 
 The land-local gear-stock ceiling uses [`supplier-gear-stock-ceiling-profile.initial-rarity-index`, `supplier-gear-stock-ceiling-profile.rarity-increment-per-completed-rescue`,
 and `supplier-gear-stock-ceiling-profile.maximum-rarity-index`](../schema/world.yaml). All players in that saved world share that land's
@@ -316,15 +316,14 @@ when travelling.
 
 The logical scope is [`initial-permanent-source-profile`](../schema/world.yaml).
 The six initial sites, including their alcove, bosses, props and packages, have source counts in
-[`initial-permanent-source-profile.artifact-source-count` and `initial-permanent-source-profile.one-time-book-source-count`](../schema/world.yaml): both are zero.
+[`initial-permanent-source-profile.artifact-source-count` and `initial-permanent-source-profile.one-time-book-source-count`](../schema/world-reward-profiles.yaml).
 A later dedicated source contract must place those;
 this initial scope does not satisfy full-land permanent-content coverage or remove retained
 game content. [Personal claims](3_Classes.md#save-data) and the existing
 [artifact allocation](3_Classes.md#artifact) remain unchanged. Historical Steam book counts and
 recipe quantities are not hybrid selections.
 
-The six initial sites contain no artifact or one-time-book sources. Full-land source placement
-and spirit customization are not prerequisites of this encounter contract; it selects no future
+Full-land source placement and spirit customization are not prerequisites of this encounter contract; it selects no future
 customization location.
 
 <a id="implementation-boundary"></a>

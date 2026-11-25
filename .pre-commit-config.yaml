@@ -33,6 +33,14 @@ repos:
         pass_filenames: false
         files: ^(ontology/schema/|ontology/instances/|game/generated/instances/|tools/ontology/|scripts/ontology_bind\.py$|tests/ontology_source_contracts\.py$)
         stages: [pre-commit, manual]
+      - id: ontology-schema-lint
+        name: Native LinkML directory lint (zero diagnostics)
+        verbose: true
+        entry: nix develop --no-update-lock-file -c timeout 330 uv run --locked --project tools/ontology linkml-lint --config .linkmllint.yaml ontology/schema
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [manual]
       - id: ontology-schema-tests
         name: LinkML schema and instance tests
         verbose: true

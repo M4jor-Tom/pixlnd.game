@@ -48,6 +48,9 @@ slots:
     slot_uri: pixlnd:pet/cage
     alias: cage
     range: item
+    range_expression:
+      slot_conditions:
+        item-type: {alias: type, equals_string: pet}
     required: true
     see_also: *id003
   pet-level:

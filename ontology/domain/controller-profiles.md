@@ -3,6 +3,10 @@
 Profiles bind only the [canonical controls](controls.md). Physical choices, aliases, context
 multiplexing and binding names belong here, never in action meanings. The selected Android subset is
 in [`controller-profiles.json#android`](../instances/controller-profiles.json).
+Structural records are [`controller-profile`, `android-controller-profile` and
+`android-profile-parameters`](../schema/meta-controller-profiles.yaml),
+[`input-binding`](../schema/meta-input-binding.yaml), and literal
+[`android-profile-source-row` / `keybinds-source`](../schema/catalog-meta-rulesets-controls.yaml).
 
 ## Keyboard and mouse
 
@@ -70,21 +74,25 @@ unmapped intentions gain no physical defaults.
 
 Landscape in either direction; a fixed movement joystick at bottom-left, a right-side drag
 region for look, and separate action buttons. Keep controls within the screen safe area and
-each touch target at least 48 dp wide and high. Block and special have separate buttons;
+each touch target at least the [`android-profile-min-target-dp`](../schema/meta-controller-profiles.yaml)
+minimum in both width and height; larger targets are allowed. Block and special have separate buttons;
 NPC Talk and Pick Up remain separate. No automatic targeting or lock-on is introduced.
 
 <a id="android-response"></a>
 ### Movement response and camera sensitivity
 
-For joystick radius R, displacement of magnitude <= 0.15 R requests neutral. Beyond that,
+For joystick radius R and deadzone ratio D from
+[`android-profile-deadzone-ratio`](../schema/meta-controller-profiles.yaml), displacement of
+magnitude <= D R requests neutral. Beyond that,
 normalize the direction and request the existing full walking/swimming speed; retain existing
 movement eligibility, multipliers and costs from `generators.json#design.movement`.
 Sprint is a separate hold: no automatic sprint or new slow-walk curve.
 
 Dragging right looks right; dragging up looks up. Let W be the usable safe-area screen width
-and dx/dy the right/down-positive screen deltas in the same units. Apply yaw adjustment
-`-180 degrees * dx / W` and pitch adjustment `-180 degrees * dy / W`: a full-width drag turns
-180 degrees, with the same degrees-per-distance vertically. Preserve existing
+and dx/dy the right/down-positive screen deltas in the same units. Let K be
+[`android-profile-look-deg-per-safe-width`](../schema/meta-controller-profiles.yaml), in degrees.
+Apply yaw adjustment `-K * dx / W` and pitch adjustment `-K * dy / W`: a full-width drag turns
+K degrees, with the same degrees-per-distance vertically. Preserve existing
 `generators.json#design.camera.pitch-deg` bounds; add no acceleration. This is Android-only
 response, not a change to mouse sensitivity or a selection of saved settings.
 

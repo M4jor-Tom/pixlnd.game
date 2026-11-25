@@ -260,61 +260,55 @@ policy is chosen.
 
 ### entity
 Anything with a position, HP and appearance. Base of player, NPC, creature, pet, bomb. `A S`
-| prop | type | notes |
-|---|---|---|
-| pos, velocity, accel, roll/pitch/yaw | vectors | pos as int64 native units |
-| hostility | `hostility` enum | friendly-player 0, hostile 1, friendly 2/4/5, named-friendly 3, target 6 |
-| species | `race` or `creature` ref | stable ontology ID; numeric source entity IDs use the source version's namespace (see `creature`) |
-| class, specialization | refs | humanoids only (any humanoid NPC may have any class) |
-| hp, mp, stamina, block-power, stealth | `resource` | |
-| level, xp | int | A; S: level = artifact count |
-| power-base | u8 | NPC power tier |
-| hp/damage/armor/resi multipliers | float | NPC scaling knobs |
-| hit-counter, last-hit-time | | combo state |
-| stun-time, slowed-time, blue-time (frozen), speed-up-time | ms | status timers |
-| flags | bitset | climbing, attacking, glider, hostile, lantern, stealth |
-| appearance | `appearance` | |
-| equipment | `item`[13] | slot table in `instances/equipment-slots.json` |
-| skills | u32[11] | A skill points (pet-taming, riding, climbing, gliding, swimming, sailing, ability1..5) |
-| mana-cubes | u32 | A currency for cubes `?` |
-| name | ≤16 ASCII | |
-| parent-owner | entity id | pets, clones, bombs |
+Structural definition: [`entity`](../schema/entities-entity.yaml), with classification,
+resources, scaling, combo and timer slots in [`entities-entity-vitals.yaml`](../schema/entities-entity-vitals.yaml)
+and motion, flags, equipment and name slots in [`entities-entity-body.yaml`](../schema/entities-entity-body.yaml).
+Numeric source widths are declared in [`identity-types.yaml`](../schema/identity-types.yaml).
+
+Numeric source entity IDs use their source version's namespace, not the stable ontology ID
+(see `creature`). Qualified source hostility codes remain friendly-player 0, hostile 1,
+friendly 2/4/5, named-friendly 3 and target 6; they do not select a hybrid numeric encoding.
+Class and specialization apply to humanoids; any humanoid NPC may have any
+class. Alpha skills cover pet-taming, riding, climbing, gliding, swimming, sailing and abilities
+1–5; Alpha mana-cube currency remains source-qualified `?`. Steam level means artifact count.
+Power tier and multipliers describe NPC scaling. Combo state does not settle raw last-hit-clock
+units, epoch or wrap behavior. Blue-time means frozen; status timer meanings remain distinct.
+Flags describe climbing, attacking, glider, hostile, lantern and stealth, not a selected numeric
+bit layout. Equipment uses `instances/equipment-slots.json`; parent ownership covers pets,
+clones and bombs.
 
 ### appearance
 Rigid-part voxel body. `A S Ω`
-| prop | notes |
-|---|---|
-| hair-rgb | free RGB |
-| model ids | head, hair, hand, foot, body, tail, shoulder, wing (`.cub` models) |
-| per-part scale/offset/rotation | head, body, hand, foot, shoulder, weapon, tail, wing; body/arm/feet/wing/back pitch |
-| flags | double-scale (bosses), immovable |
-| expression | Ω: neutral/happy-angry/sad/surprised/sleeping/blink |
+Structural definition: [`appearance`](../schema/entities-appearance.yaml), its asymmetric
+[`scale/offset slots`](../schema/entities-appearance-scales-offsets.yaml) and
+[`pose slots`, `AppearanceFlag` and `AppearanceExpression`](../schema/entities-appearance-pose.yaml).
+The source-qualified model IDs refer to `.cub` parts; these declarations do not imply a uniform
+transform for every part. Double-scale describes bosses; immovable remains a separate flag.
+Omega expressions and procedural bodies retain their source scope.
 Ω: all parts procedural (no hand-modelled hair/face/hands).
 
 ### race
 Playable species (8) + NPC-only humanoids. `A S Ω` → `instances/races.json`.
-| prop | notes |
-|---|---|
-| playable | bool |
-| genders | male, female |
-| size-class | small (dwarf, goblin: fit through windows) / normal / large (orc) |
-| customization | hair count M/F, head count M/F (alpha asset counts), quirks (frogman "hair" = eyes; dwarf beards/braids; orc jaws; lizard eyelashes) |
-| stats | **no racial stat bonuses**; collision capsule varies by size-class (D13, `generators.json#design.movement.hitbox`) |
-| voice | race-specific groans |
+Structural definition: [`race`, `race-playable`, `race-genders`, `race-size-class`,
+`gender`, `size-class`, `quirks` and `voice`](../schema/identity-race.yaml), with
+[`race-hair`, `race-heads` and `gender-option-counts`](../schema/catalog-properties-races-rarities.yaml).
+Small dwarves/goblins fit through windows; orcs are large. Alpha customization counts and
+quirks remain race-specific: frogman “hair” means eyes, dwarves have beards/braids, orcs jaws
+and lizards eyelashes. There are **no racial stat bonuses**. Collision capsules are selected
+independently by size-class (D13, `generators.json#design.movement.hitbox`); voices are
+race-specific groans.
 
 ### character-class
 One of Warrior, Ranger, Mage, Rogue. `A S Ω` → `instances/classes.json`.
-| prop | notes |
-|---|---|
-| id-number | 1..4 (cuwo) |
-| weapon-types | 3 families each |
-| armor-material | iron / linen / silk / cotton |
-| mp-generation | warrior: hits & blocking; ranger: hits (sniper: stealth); rogue: hits (assassin: stealth; ninja: dodges); mage: passive regen to 100 |
-| special-attack-mode | charged (warrior, ranger, mage) vs instant (rogue) |
-| hp-mult | player max-HP class multiplier from `stats.json#player-hp` (warrior 1.30, ranger 1.10, rogue 1.20, mage 1.00) |
-| specializations | 2 |
+Structural definition: [`character-class`, its intrinsic `mp-generation` and named
+class slots, `has-specialization`, `uses-weapon`, `wears-material` and `attack-mode`](../schema/identity-character-class.yaml).
+The weapon restriction counts three **families**, not three subtype IDs. MP comes from warrior
+hits/blocking, ranger hits (Sniper stealth), rogue hits (Assassin stealth; Ninja dodges), or
+mage passive regeneration to 100. The selected player HP multipliers remain qualified by
+`stats.json#player-hp`: warrior 1.30, ranger 1.10, rogue 1.20, mage 1.00.
 
 ### specialization
+Structural definition: [`specialization`, its `passives`/`kit`, `specialization-class` and `specialization-index`](../schema/identity-character-class.yaml).
 Sub-class chosen at a trainer (A: fee; S: free at guild). `A S` → `instances/specializations.json`.
 Holds passives and the version-specific ability kit. Player spawns as the first spec of the class.
 
@@ -330,19 +324,22 @@ Hybrid death (D15): respawn at the character's current spawn point, initially se
 [world.spawn-rule](#world) and relocated by [inn recovery](#game-clock). This `design.combat.death` selection is scoped to D15;
 Alpha respawns the character at the nearest revival statue.
 
-| prop | notes |
-|---|---|
-| race, gender, class, spec, appearance, name | creation |
-| level, xp, skills[11] | A |
-| artifacts | hybrid: collected permanent stat rewards (§3.4), not character levels; S reference: level = count |
-| inventory, equipment, coins, platinum `A` | |
-| known-recipes | hybrid: one set of recipes shared by book/formula learning, with no source-specific duplicates; recipes persist across lands/sessions/worlds (§3.7 save-data); A formulas learned; S books per land (reference) |
-| lore-known | hybrid: per character, realm and saved world (§3.7 save-data); S: per realm |
-| discovered lands/portals/shrines/flight-points | hybrid: terrain exploration uses world.discovered-zones; personal travel unlocks remain per character/world (§3.7 save-data) |
-| pets (cages), active pet, pet slot | |
-| position, respawn point | hybrid: per character per saved world (§3.7 save-data) |
-| world-independent | hybrid: portable hero and progression between solo worlds and servers (§3.7 save-data, persistence item 1); A: any character enters any world; S: one world |
-| starting-kit | A: class weapons + gold ring + silver ring; S: 3 weapon sets + chest + 5 life potions |
+Structural definition: [`player-character`](../schema/entities-player-character.yaml),
+with inherited entity facts and local `entity-species` → `race` / `entity-specialization` →
+`spec` refinements, inventory/artifact/lore/pet/skill-bank slots and `knows-recipe`.
+Personal travel, position and respawn are [`character-world-state`](../schema/associations-character-claims.yaml).
+
+Creation uses the inherited classification/appearance/name facts. Alpha progression remains
+distinct from Steam's artifact-count level; hybrid artifacts are permanent stat rewards, not
+character levels. Inventory, worn gear, coins and Alpha platinum remain possessions. Hybrid
+book/formula learning shares one known-recipe set, including power-locked recipes, across
+lands/sessions/worlds (§3.7); Alpha formulas and Steam per-land books retain their source scope.
+Lore is per character, realm and saved world (Steam reference: per realm). World-shared terrain
+exploration grants no personal travel unlocks; discovered lands, portals, shrines and flight
+points remain character/world-scoped. Pets retain cages, active-pet/pet-slot and progression
+rules. The portable hybrid hero enters solo worlds and servers; Alpha permitted any world,
+while Steam used one world. Source starting kits remain Alpha class weapons plus gold/silver
+rings versus Steam three weapon sets, chest and five life potions; neither is a new hero field.
 
 ### npc-role
 Function of a humanoid NPC in a settlement or event. `A S` → `instances/npc-roles.json`
@@ -350,38 +347,35 @@ Function of a humanoid NPC in a settlement or event. `A S` → `instances/npc-ro
 `A`, guild-receptionist `S`, adapter `A`, flight-master `S`, gem-trader `S`, gnome-supplier `S`,
 arena-master `S`, carpenter, guard, adventurer (roaming groups, may be hostile), captive,
 old-man quest giver `X`, architect `X`, disenchanter `X`, sage `A`).
-| prop | notes |
-|---|---|
-| schedule | A* daily path: home → park → shops → inn; sleeps at night |
-| dialogue | speech bubbles; random banter; hints (missions, key items, lore); speech-bubble mission marker `A` |
-| services | shop / sleep / respec / travel / identify / adapt |
+Structural definition: [`npc-role`](../schema/identity-factions.yaml), with
+[`npc-role-dialogue`](../schema/catalog-properties-crafting-social.yaml) and
+[`npc-role-schedule`, `npc-role-service`](../schema/catalog-crafting-social-npc-roles.yaml).
+Daily A* paths run home → park → shops → inn, with sleep at night. Speech bubbles contain
+banter/hints about missions, key items and lore; the mission marker is Alpha-qualified.
+Services include shop, sleep, respec, travel, identify and adapt. Typed descriptions do not
+execute schedules or services.
 
 ### creature
 A non-player species (animal, insect, aquatic, monster, humanoid enemy, boss species). `A S Ω`
 → `instances/creatures.json` (~150).
-| prop | type | notes |
-|---|---|---|
-| alpha-entity-id | int? | legacy name for the numeric source entity ID, not alpha-only; JSON `aid`, typed `alpha_entity_id`; null = unrecorded |
-| family | `creature-family` ref? | optional primary balancing family; only this family supplies family stat modifiers |
-| descriptive-families | set<`creature-family` ref> | zero or more descriptive memberships; never supply or stack stat modifiers |
-| category | animal \| insect \| aquatic \| plant-creature \| monster \| undead \| demon \| elemental \| humanoid \| boss-species \| static-target \| unused |
-| hostility-default | hostile \| neutral \| passive \| friendly \| variable (by tribe) |
-| landscapes | refs | |
-| habitats | caves, rivers, dungeons, graveyards, pyramids… |
-| group-size | range | e.g. runners 3–5 |
-| combat-role | melee \| ranged \| mage \| any-class \| none | humanoids may be any class |
-| tame-food | `pet-food` ref? | null = untameable |
-| rideable | bool | per-page value (F2); the 1.0.0-1 bug made all rideable |
-| pet-types | melee, ranged, tank, healer, mount | |
-| boss-species | bool | always-boss species (troll, yeti, cyclops…) |
-| boss-capable | bool | may spawn as boss-ified variant |
-| breaks-terrain | bool | boss species |
-| drops | species-specific items (parrot feather, onion slice, radish slice, popcorn) | random tier loot otherwise |
-| abilities | notable moves (troll earthquake, cyclops charge/cyclone, djinn summon slimes, snout beetle charged shot, zombie bite `A`, wraith unkillable) |
-| signature-ability | Ω per species (zombie eat, ogre belly slide, slime divide, crab claw boomerang, hornet poison sting, hedgehog spike swirl, bat vampiric bite) |
-| drinks-potions | bool | ogre, mermaid, insect guard, NPCs |
-| lantern-at-night | bool | |
-| versions | | |
+Structural definition: [`creature`, its intrinsic fields, slots and enums](../schema/identity-creature.yaml),
+with [`ecology/taming/family/role slots`](../schema/identity-creature-ecology.yaml).
+The literal source representation is [`creature-source-row`](../schema/catalog-identity-combat-creatures.yaml).
+
+The legacy `alpha-entity-id` names a version-qualified numeric source ID, not Alpha-only;
+JSON uses `aid`, typed source code uses `alpha_entity_id`, and null means unrecorded. Only the
+optional primary family supplies balancing modifiers; descriptive memberships never stack or
+supply them. Hostility can vary by tribe. Habitats include caves, rivers, dungeons, graveyards
+and pyramids; runners illustrate groups of 3–5. Humanoids may have any class. Null tame-food
+means untameable. Rideability follows each page (F2), not the 1.0.0-1 all-rideable bug.
+Always-boss species (troll, yeti, cyclops) differ from boss-capable variants and terrain breaking.
+Species drops include parrot feather, onion/radish slices and popcorn, with ordinary random tier
+loot otherwise. Notable-move descriptions include troll earthquake, cyclops charge/cyclone,
+djinn slimes, snout beetle charged shot, Alpha zombie bite and unkillable wraiths; these raw
+strings are not necessarily resolved ability IDs. Omega signatures retain zombie eat, ogre
+belly slide, slime divide, crab claw boomerang, hornet poison sting, hedgehog spike swirl and
+bat vampiric bite. Ogre, mermaid, insect guard and NPC potion drinking remains source-qualified;
+pet-role and lantern-at-night meanings remain distinct.
 
 Hybrid combat-role mapping (D26): from `creatures.json` `role` text, take the first matching
 keyword in priority order **any-class / ranged / mage / melee**. Absent text or no matching
@@ -403,6 +397,7 @@ alpha availability (F10). Preserve stable creature IDs, numeric source IDs, vers
 clamp later IDs to the alpha range or invent values for unrecorded IDs.
 
 ### creature-family
+Structural definition: [`creature-family`, `member-of-family` and `descriptive-member-of-family`](../schema/identity-creature-ecology.yaml).
 Shared base form. → `instances/creature-families.json` (top-level family `members` lists,
 not nested spawn rosters). These taxonomy records follow §5 Validation-contract mapping item 1.
 
@@ -481,17 +476,23 @@ The shared-food/source-ID contract is in §3.4 `pet-food` / §5 `c-food-id`.
 
 ### pet
 A tamed creature owned by a player. `A S`
-| prop | notes |
-|---|---|
-| species | `creature` ref |
-| name | via `/namepet` |
-| cage | `item` of type pet (turtle cage = shell) |
-| level, xp | hybrid: retained with the portable hero (§3.7 save-data); A reference: did not persist in multiplayer |
-| hydration | A: droplets under HP; drains while riding; refill in water |
-| scaling | S: from owner's weapon/armor rating incl. `+` gear |
-| boss-origin | tamed boss keeps skills, normal size; reverts to normal on reload |
-| behaviour | never initiates; attacks owner's target; [recall](controls.md#pet-call) / [mount](controls.md#pet-mount); teleports to owner if far (S); revives ~1 min after death or on re-slot; ignores wraiths |
-| riding | A reference: pet-master 5 → riding skill; S reference: land's `reins`; hybrid gate below; dismount on attack/dodge/fall/pet death/water; explicit [dismount request](controls.md#pet-dismount) has no selected physical mapping |
+Structural definition: [`pet`](../schema/entities-pet.yaml), with inherited entity
+species/name/level/XP and `pet-cage`, `pet-hydration`, `pet-boss-origin`; ownership, mounting
+and rating scaling are [`owns`, `mounts`, `scales-with`](../schema/relations-economy-ownership.yaml).
+
+The cage's target-item type restriction is declared by
+[`pet-cage.range_expression.slot_conditions.item-type`](../schema/entities-pet.yaml).
+A turtle's cage is its shell.
+
+Naming uses `/namepet`. Hybrid progression travels with the hero
+(§3.7); Alpha reference progression did not persist in multiplayer. Alpha hydration appears
+as droplets below HP, drains while riding and refills in water. Steam rating scaling includes
+plus gear. Tamed bosses keep skills at normal size and revert to normal on reload.
+Pets never initiate, attack the owner's target, [recall](controls.md#pet-call) /
+[mount](controls.md#pet-mount), teleport to a distant owner (S), revive after about a minute
+or re-slot, and ignore wraiths. Alpha pet-master 5 → riding and Steam land Reins remain
+references; the hybrid gate is below. Attack, dodge, fall, pet death or water dismounts;
+explicit [dismount](controls.md#pet-dismount) has no selected physical mapping.
 
 **Hybrid traversal item 1 (owner approved, 2026-09-28):** mounting requires **5 Pet Master
 points and at least 1 Riding point**, globally acquired **Reins**, and a **rideable tamed pet**.
@@ -499,11 +500,13 @@ Further Riding points retain their speed benefit. This grants no new species rid
 Reins acquisition route or equipment slot.
 
 ### faction
+Structural definition: [`faction`](../schema/identity-factions.yaml) and literal [`factions-source`](../schema/catalog-identity-combat-factions.yaml).
 Lore/gameplay group. `S` (tweeted 2015) → `instances/factions.json` (order-of-the-light,
 druids-of-mana, unholy-pact, steel-empire, cult-of-doom, bloodaxe-clan, obsidian-knights,
 thaldania-cult, bandits `A`, benkal-pirates).
 
 ### hostility
+Structural definition: [`hostility`](../schema/identity-factions.yaml).
 Enum: hostile (red bar, attacks on sight, outside cities) / neutral (green, retaliates) /
 friendly (blue, unattackable, waves) / friendly-player / named-friendly / target. `A S`
 
@@ -699,17 +702,21 @@ class/equipment/appearance, Snout Beetle dodge and pathfinding are outside the D
 the approved AI rules above still govern the target.
 
 ### mob-strength-tier
+Structural definition: [`mob-strength-tier`](../schema/combat-stats.yaml).
 S enemy power colour: white (150–250 HP, farm animals) < green < blue < purple (dungeon base) <
 yellow (legendary; minotaurs, some collies). A equivalents: land level + `+1..+4` multiplier
-and boss tag; landmark name colour white/blue/red vs player. → `instances/rarities.json#tiers`.
+and boss tag; landmark name colour white/blue/red vs player. → `instances/rarities.json#mob-strength-tiers-s` and
+`instances/rarities.json#alpha-relative-colors`.
 
 ### 3.3 Combat
 
 ### resource
+Structural definition: [`resource`](../schema/combat-stats.yaml).
 Depletable bar. `A S` → `instances/stats.json#resources`: hp, mp (0–100), stamina, block-power,
 stealth, diving-breath `S`, pet-hydration `A`.
 
 ### stat
+Structural definition: [`stat`](../schema/combat-stats.yaml).
 Derived number on characters and items. `A S` → `instances/stats.json#stats`: hp, attack-power,
 spell-power, armor, resistance, crit, haste (alpha "tempo"), regeneration (stamina only, D11),
 mana-regeneration `A`, block-power, weapon-rating & armor-rating `S` (average star tier),
@@ -773,18 +780,20 @@ contribution remains separate under the existing equipment rules.
 
 ### ability
 An active or passive skill. `A S Ω` → `instances/abilities.json` (~65).
-| prop | notes |
-|---|---|
-| kind | active \| passive \| shared-passive (alpha tree) \| movement |
-| owner | class \| specialization \| all |
-| versions | A / S / both; `removed-in-s`, `added-in-s` |
-| _controls | inert references to [canonical actions](controls.md); class/ultimate activation resolves through the current tree, not versioned physical inputs |
-| cost | mp / stamina / all-stamina / all-mp / none |
-| cooldown-s, duration-s | |
-| effect | structured summary + numbers; historical A/S values remain separate from selected hybrid behavior |
-| alpha-tree | column, rank-needed (1 to unlock first, 5 in previous), per-point effect (D6: +5 % effect / −5 % cooldown per point, floor 25 %) |
-| alpha-ability-id | cuwo id (21 kick, 34 healing-stream, 48 intercept, 49 teleport, 50 retreat, 54 smash, 79 sneak, 86 cyclone, 88 fire-explosion, 96 shuriken, 97 camouflage, 99 aim, 100 swiftness, 101 bulwark, 102 war-frenzy, 103 mana-shield) |
-| applies | `status-effect` refs |
+Structural definition: [`ability`, its intrinsic fields, `ability-kind`,
+`ability-_controls`, `ability-alpha-ability-id` and `applies`](../schema/combat-ability.yaml),
+[`ability-tree-position`](../schema/combat-ability-tree.yaml) and
+[`resource-cost`](../schema/associations-crafting-costs.yaml).
+Qualified raw costs/timings retain [`ability-source-row`, `source-ability-cost` and
+`source-version-quantity`](../schema/catalog-identity-combat-abilities-weapons.yaml), not
+just the logical numeric cooldown. Historical A/S removed/added facts remain separate from
+selected hybrid behavior. Inert [canonical-action references](controls.md) resolve class/ultimate
+activation through the current tree, not physical inputs; passive effects need no binding.
+Cost alternatives retain MP, stamina, all-MP/all-stamina and none. Tree prerequisites and D6
+scaling (+5% effect / −5% cooldown per point, floor 25%) remain rules, not formula execution.
+Source ability-ID examples remain cuwo 21 kick, 34 healing-stream, 48 intercept, 49 teleport,
+50 retreat, 54 smash, 79 sneak, 86 cyclone, 88 fire-explosion, 96 shuriken, 97 camouflage, 99 aim,
+100 swiftness, 101 bulwark, 102 war-frenzy and 103 mana-shield.
 Runtime (D21): every class node and ultimate has a `design.abilities` entry naming one of six runtimes (dash, channel,
 burst, buff, heal, projectile — D24: shots along the aim; a dash may `throw` shots first) with its numbers, cost (mp / stamina, a number or `all`) and cooldown; strikes apply the ability's
 `applies` through `design.status-effects` (`c-ability-runtime`). Shared-column skills have no runtime here (swimming scales
@@ -811,15 +820,15 @@ inactivity rules remain unchanged; reset/death synchronously stop further channe
 ### weapon-type
 Weapon family with handedness, class and moveset. `A S` → `instances/weapon-types.json` (21 alpha
 subtypes; 17 usable).
-| prop | notes |
-|---|---|
-| class | |
-| hands | 1h-dual \| 1h-with-shield \| 2h \| offhand |
-| damage-k | alpha curve multiplier: 2 dagger/fist/shield, 4 one-handed, 8 two-handed |
-| cube-capacity | 16 (1h) / 32 (2h, shield) |
-| combo-cap | fists 50, staff 50, longsword 30, bow/crossbow 30, wand 20, bracelets 20, boomerang 80 |
-| m1 / m2 | retained data-channel names for [basic](controls.md#basic-attack) / [special](controls.md#special-attack) moveset summaries, not physical defaults |
-| material | wood (workbench) / iron (anvil) / gold-silver (bracelets) |
+Structural definition: [`weapon-type`, its named slots, `hands`, `m1`, `m2` and
+`material`](../schema/combat-weapon-type.yaml); literal source handedness, attack IDs and
+qualified material alternatives remain [`weapon-source-row` and `SourceHands`](../schema/catalog-identity-combat-abilities-weapons.yaml).
+Alpha curve examples are 2 for dagger/fist/shield, 4 one-handed and 8 two-handed. Upgrade-capacity
+and combo-cap examples remain source-qualified: 16 one-handed versus 32 two-handed/shield;
+fists/staff 50, longsword/bow/crossbow 30, wand/bracelets 20 and boomerang 80 combo.
+The retained `m1`/`m2` data channels mean [basic](controls.md#basic-attack) /
+[special](controls.md#special-attack), not physical defaults. Wood/workbench, iron/anvil and
+gold-silver bracelets are qualified source material/station descriptions, not parsed restrictions.
 
 **Hybrid hand occupancy and empty-handed actions:** either hand slot may independently be
 empty, including in a saved character. Removing one hand item leaves the other item untouched
@@ -917,6 +926,7 @@ Hybrid threat behavior (approved 2026-09-27): full stealth means zero new damage
 threat, not a threat wipe or taunt cancellation; landing-time checks and DOT follow §3.2 `ai-behavior`.
 
 ### status-effect
+Structural definition: [`status-effect`](../schema/combat-stats.yaml) and independent [`status-application`](../schema/associations-character-claims.yaml).
 → `instances/status-effects.json`: poison, burning, slow/frozen (blue tint), stun (stars),
 knockdown, knockback, taunt (red tint), stealth (transparent), possessed `S`, mana-absorption `S`,
 petrified `S`, dizzy (glider crash), drowning `S`, injured `X` (2012 devlog death debuff),
@@ -1043,6 +1053,7 @@ times; no buff-rescaling, artifact or passive redesign is introduced.
 25 alpha main types with subtypes. → `instances/item-types.json`.
 
 ### material
+Structural definition: [`material`](../schema/items-item-catalog.yaml), with qualified [`material-class`, `material-station` and `material-raw`](../schema/catalog-crafting-social-materials-factions.yaml).
 31 material ids incl. 4 spirits. → `instances/materials.json`. Fields: class restriction, station,
 raw → refined chain, unobtainable flag (`X` bone, saurian, mammoth, obsidian, parrot).
 
@@ -1055,6 +1066,7 @@ mythical `A X` (bug). Same scale colours enemies and missions. → `instances/ra
 Name prefix per rarity tier + "of <Name>" / "<Name>'s" for epic/legendary. → `instances/affixes.json`.
 
 ### equipment-slot
+Structural definition: [`equipment-slot`, `equipment-slot-index` and `equipment-slot-accepts`](../schema/items-item-catalog.yaml).
 13 indexed entity storage positions, including reserved `unknown-0` (not usable). The 12 usable
 positions are amulet, chest, gloves, boots, shoulders, main-hand, off-hand, ring-left, ring-right,
 lamp, special and pet. Preserve every index in `instances/equipment-slots.json`; no extra slot
@@ -1097,6 +1109,7 @@ acquire a required healing coefficient or a general zero-heal use rejection rule
 Gatherable, drop or refined crafting material. → `instances/ingredients.json`.
 
 ### recipe
+Structural definition: [`recipe` and `recipe-required-power`](../schema/items-crafting.yaml).
 Inputs → output at a station. `A S` → `instances/recipes.json` (gear quantity table by rarity ×
 slot, food, potions, elixirs, beverages, refining, rings/amulets, water flask).
 
@@ -1112,11 +1125,13 @@ A known recipe need not be usable: book-recorded recipes may be power-locked (`p
 7 stations + campfire + "anywhere". → `instances/crafting-stations.json`.
 
 ### formula
+Structural definition: [`formula` and `formula-recipe`](../schema/items-crafting.yaml).
 `A` recipe scroll (item type 2) with +N level; sold by vendors, dropped by tier, on dungeon tables;
 [Learn the formula](controls.md#learn-formula) once power suffices. Historically replaced in S by `book-of-crafting`;
 both sources remain in hybrid and share recipe knowledge/duplicate handling (`recipe`, item 2).
 
 ### book-of-crafting
+Structural definition: [`book-of-crafting` and `book-recipes`](../schema/items-crafting.yaml).
 `S` 4 per land (uncommon/rare/epic/legendary), 3–4 recipes each, from hammer-icon missions; only
 recipe source; recipes land-scoped. These are historical S rules, not hybrid exclusivity or scope.
 
@@ -1159,6 +1174,7 @@ Unidentified gear drop (type 14) with tier colour and +N; identified for a fee a
 lowering is free. Removed in S.
 
 ### pet-food
+Structural definition: [`pet-food` and `pet-food-tames`](../schema/items-special-items.yaml), with [`tamed-by`](../schema/identity-creature-ecology.yaml).
 Item type 20. `tames` identifies explicitly approved creature species by stable ID; each creature
 still has at most one `tame-food`. Normally a food names one species and its numeric subtype
 matches that species' known source entity ID, including post-alpha IDs (`c-food-id`).
@@ -1293,9 +1309,10 @@ slot, subject to the type/subtype restrictions in `equipment-slot` (c-slot-accep
 the separate Q selection is excluded. Coins are copper (`currency`), auto-picked up
 under `design.loot.ground`. This selects no persisted map encoding.
 
-| prop | type | notes |
-|---|---|---|
-| start | `design.starting-inventory` | D18: starter weapon equipped + 5 life potions |
+Starting configuration is [`generator-design-field-starting-inventory`](../schema/design-items-design-economy-fields.yaml)
+on [`generator-design`](../schema/design-items.yaml), ranging over
+[`generator-design-starting-inventory`](../schema/design-items-inventory.yaml), not an
+`inventory.start` field. D18 equips the starter weapon and supplies five life potions.
 
 Stacks have no cap (D6; one of each pet food). Tabs: equipment, special `S`,
 items, ingredients, pets, artifacts `S` (A: amulets tab). S: one page per visited land. [Inventory control](controls.md#inventory).
@@ -1323,6 +1340,7 @@ stable across reloads; conversion does not authorize rerolls or re-awards.
 ### 3.5 Progression
 
 ### ruleset
+Structural definition: [`ruleset`](../schema/meta-game-rules.yaml), with literal [`rulesets-source`, `ruleset-source-row` and `ruleset-source-flag-entry`](../schema/catalog-meta-rulesets-controls.yaml).
 Feature-flag bundle: playable hybrid uses Alpha progression plus approved Steam content (§1);
 Alpha/Steam bundles are historical reference, not additional playable modes. → `instances/rulesets.json`.
 
@@ -1475,6 +1493,7 @@ enemies return at those sites. Family-specific repeatability/permanent completio
 mission generation/reward rules are unchanged.
 
 ### arena `S`
+Structural definition: [`arena`, `arena-wave`, `waves` and `reward-coins`](../schema/meta-game-rules.yaml); ordered source configuration is [`generator-source-boss.arena-waves`](../schema/design-world-source-boss.yaml).
 5 waves: W/G, W/G, G/B, B/P, P/Y boss; any species (saurian, mammoth, yeti, mana mech, spectrino
 pairs); hosted by a Bloodaxe orc; resets daily; 18–50 coins + gear; more common in oceans.
 
@@ -1545,6 +1564,7 @@ consistency. Keyboard physical defaults:
 explains binding groups, contexts and aliases.
 
 ### hud-element
+Structural definition: [`hud-element` and `ui-presentation-catalog`](../schema/meta-ui-catalog.yaml), [`ui-screen-presentation`](../schema/meta-ui-screens.yaml) and full [`ui-source`](../schema/catalog-meta-ui.yaml).
 → `instances/ui.json`: portrait+name+level/class+HP+XP (A), coins + key-item bar (S), HP/MP/stamina
 bars, hotbar ([basic](controls.md#basic-attack), [special](controls.md#special-attack), class slots and [quick item](controls.md#quick-item)), stealth bar, pet HP/XP/hydration, message log, minimap (3-D,
 rotating, scalable), compass, time/temperature/humidity, land caption, buff icons `S`, help widget
@@ -1576,6 +1596,7 @@ This does not decide new input availability or the behavior of other panels/menu
 Keep gameplay input restrictions: live panel time does not admit new movement, combat or interaction requests.
 
 ### option
+Structural definition: [`ui-option-presentation`](../schema/meta-ui-screens.yaml) and full [`ui-source`](../schema/catalog-meta-ui.yaml).
 → `instances/ui.json#options`: FPS limit (default 111), invert Y, camera speed, resolution,
 windowed, render distance, AA samples (`options.cfg`), rarity display, music loop `S`, volumes,
 UI/minimap presentation options. No physical defaults are defined here; see
@@ -1642,14 +1663,17 @@ state transitions, unload and graceful shutdown, not a guaranteed crash-checkpoi
 There is no legacy migration or offline time advancement.
 
 ### slash-command
+Structural definition: [`slash-commands-source`](../schema/catalog-meta-audio-commands.yaml).
 → `instances/slash-commands.json`.
 
 ### audio
+Structural definition: [`audio-source`](../schema/catalog-meta-audio-commands.yaml).
 Composer Wollay. Tracks and SFX ids → `instances/audio.json`. Races have distinct voices.
 Hybrid (D25): `generators.json#design.feel.sfx` defines the feedback sound profiles
 (frequency, duration, noise and pitch slide), keyed by `audio.json#sfx-alpha-ids`.
 
 ### version
+Structural definition: [`versions-source`, `version-timeline-entry` and `version-delta`](../schema/catalog-meta-versions.yaml).
 → `instances/versions.json`: dated feature timeline (devlog 2011–2013, alpha patches 2013-07-05 /
 07-23, beta 0.9.1-3 … 0.9.3-0, 1.0.0-0/1, Omega posts 2023) and the recurring fan fix-list.
 

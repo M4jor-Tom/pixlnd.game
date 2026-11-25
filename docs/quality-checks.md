@@ -121,6 +121,22 @@ is useful diagnostically but does not publish a host pass receipt.
    `tools/ontology` environment, failing on stale diagrams (e.g. committed with `--no-verify`).
 4. Every `tests/test_ontology*.py` module runs under unittest discovery in its own Python
    process in the same `tools/ontology` environment, releasing memory between modules.
+   This includes full-original-input/roundtrip, root, mapped-element/range-closure,
+   native determinism and consumer-boundary checks; existing family/mutation/limitation
+   tests remain included. Process boundaries do not bound memory inside a large module.
+5. `ontology-schema-lint` runs native `linkml-lint --config .linkmllint.yaml ontology/schema`
+   exactly once, as an always-run manual-stage hook, with 330s child timeout inside Nix
+   and the locked Python environment. Native defaults reject warnings and errors;
+   module-local imports/metadata are checked, not just the aggregate entry. No warning
+   allowance, fixing or suppression is selected.
+
+Task9's [scoped proof commands](ontology/phase-1-coverage.md#standalone-checks) retain
+finite child/caller budgets for native directory lint, the covering schema suite,
+two-raw-copy/full-output determinism and the boundary check. They require a separately
+selected safe execution route while the host OOM/guardian-drain boundary is unresolved.
+The shared manual/CI manifest still has no suite-wide cutoff. Adding checks is not a
+native pass: prior partitions/module lint and source-only review do not close Task9's
+final directory/full-schema/determinism/shared-Quality or independent CI gates.
 
 The first two use the same `flake.lock`-pinned Godot, gdtoolkit and pre-commit packages.
 `flake.nix` additionally pins gdmetrics-g4 v1.6.1 by source commit and content hash,

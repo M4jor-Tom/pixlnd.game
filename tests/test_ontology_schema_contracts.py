@@ -1,6 +1,8 @@
 """Selected-root guards; full source families are added with their contracts."""
 
+import filecmp
 import json
+import shutil
 import tempfile
 import unittest
 from copy import deepcopy
@@ -10,6 +12,11 @@ from unittest.mock import patch
 import jsonschema
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_runtime.utils.schemaview import SchemaView
+from ontology_source_contracts import (
+    assert_declared_root,
+    source_contract,
+    validate_source,
+)
 from test_ontology_schema import ROOT, SCHEMA, generated
 
 
@@ -24,6 +31,53 @@ def assert_root(test: unittest.TestCase, name: str, properties: set[str],
 
 
 class FullInputContracts(unittest.TestCase):
+    def test_all_complete_inputs(self):
+        paths = sorted((ROOT / "ontology/instances").glob("*.json"))
+        self.assertTrue(paths, "No original source inputs")
+        for path in paths:
+            with self.subTest(path=path.name):
+                validate_source(path.stem, json.loads(path.read_text()))
+
+    def test_undeclared_source_is_rejected(self):
+        with self.assertRaisesRegex(AssertionError, "Missing declared source class"):
+            validate_source("not-a-selected-source", {})
+
+    def test_native_determinism(self):
+        names = [p.stem for p in sorted((ROOT / "ontology/instances").glob("*.json"))]
+        self.assertTrue(names, "No original source inputs")
+        expectations = {}
+        for name in names:
+            source_contract(name)
+            root = name + "-source"
+            definition = generated(root)["$defs"][root]
+            expectations[root] = (set(definition["properties"]),
+                                  set(definition.get("required", [])),
+                                  definition["additionalProperties"])
+        fields = {"version", "world", "character"}
+        assert_declared_root("save-data", fields, fields)
+        expectations["save-data"] = (fields, fields, False)
+        with tempfile.TemporaryDirectory() as tmp:
+            outputs = []
+            for copy in ("first", "second"):
+                directory = Path(tmp) / copy
+                shutil.copytree(SCHEMA.parent, directory / "schema")
+                generator = JsonSchemaGenerator(
+                    str(directory / "schema/pixlnd.yaml"), preserve_names=True, not_closed=False)
+                self.assertTrue(set(expectations) <= set(generator.schemaview.all_classes()))
+                for root, (properties, required, policy) in expectations.items():
+                    with self.subTest(copy=copy, root=root):
+                        generator.top_class = root
+                        serialized = generator.serialize()
+                        assert_declared_root(root, properties, required,
+                                             schema=json.loads(serialized), view=generator.schemaview,
+                                             additional_properties=policy)
+                        (directory / (root + ".json")).write_text(serialized)
+                outputs.append(directory)
+            for root in expectations:
+                with self.subTest(root=root):
+                    self.assertTrue(filecmp.cmp(outputs[0] / (root + ".json"),
+                                                outputs[1] / (root + ".json"), shallow=False))
+
     def test_current_save_full_fixture_and_root(self):
         row = json.loads((ROOT / "tests/fixtures/ontology-schema/current-save.json").read_text())
         fields = {"version", "world", "character"}

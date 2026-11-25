@@ -157,11 +157,11 @@ expect_exit 1 legacy-check bash scripts/gate.sh check "$good"
 # The CI entry itself, on the exact checkout. Inspect real good-tree hook output.
 git checkout -q "$good"
 expect_exit 0 ci-good bash scripts/quality_gate.sh
-for id in python-lint ontology-schema-size ontology-mermaid ontology-instances ontology-schema-tests quality-runner quality; do
+for id in python-lint ontology-schema-size ontology-mermaid ontology-instances ontology-schema-lint ontology-schema-tests quality-runner quality; do
   grep -Eq "^${id}\\.+Passed" "$logs/ci-good.log"
   grep -q "hook id: $id$" "$logs/ci-good.log"
 done
-[[ $(grep -c 'hook id:' "$logs/ci-good.log") == 7 ]]
+[[ $(grep -c 'hook id:' "$logs/ci-good.log") == 8 ]]
 expect_exit 2 selector bash scripts/quality_gate.sh quality
 expect_exit 2 skip env SKIP=quality bash scripts/quality_gate.sh
 printf 'dirty\n' >>payload
@@ -211,7 +211,7 @@ expect_exit 0 host-good-check bash scripts/gate.sh check "$good"
 cmp "$logs/legacy-marker" ".git/pixlnd-gate/$good_tree.pass"
 cmp "$logs/legacy-log" ".git/pixlnd-gate/$good_tree.log"
 awk -v commit="$good" -v tree="$good_tree" -v caller="$scratch" \
-  '$1 == commit && $2 == tree && $3 == "good" && $4 != caller { count++ } END { exit count != 7 }' "$FIXTURE_OBSERVATIONS"
+  '$1 == commit && $2 == tree && $3 == "good" && $4 != caller { count++ } END { exit count != 8 }' "$FIXTURE_OBSERVATIONS"
 [[ $(git rev-parse HEAD) == "$bad" ]]
 [[ $(cat payload) == 'caller dirt' ]]
 [[ $(git worktree list --porcelain | grep -c '^worktree ') == 1 ]]
@@ -227,7 +227,7 @@ for mode in generate modify; do
   expect_exit 1 "ci-$mode" bash scripts/quality_gate.sh
   grep -q 'Checkout changed' "$logs/ci-$mode.log"
   if [[ $mode == generate ]]; then
-    [[ $(grep -c 'Passed$' "$logs/ci-$mode.log") == 7 ]]
+    [[ $(grep -c 'Passed$' "$logs/ci-$mode.log") == 8 ]]
   fi
   git reset -q --hard HEAD
   rm -f generated

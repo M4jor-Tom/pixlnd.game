@@ -307,6 +307,8 @@ class MetaInputContracts(unittest.TestCase):
 
     def test_full_ui_missing_list_and_option_scalar_contract(self):
         row = catalog("ui")
+        fields = SOURCE_ROOTS[3][1]
+        assert_declared_root("ui-source", fields, fields)
         validate_source("ui", row)
         self.assertEqual(row["options"]["fps-limit"]["default"], 111)
         self.assertIsInstance(row["options"]["missing"], list)
