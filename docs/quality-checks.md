@@ -8,13 +8,13 @@ From this checkout, run once (and again after cloning):
 nix develop --no-update-lock-file -c pre-commit install
 ```
 
-The default install keeps pre-commit and pre-push. In older checkouts, run `nix develop -c pre-commit uninstall --hook-type post-commit` once to detach the background launcher.
+Only pre-commit is installed by default. In older checkouts, run `nix develop -c pre-commit uninstall --hook-type post-commit --hook-type pre-push` to remove both legacy hooks.
 
 | Stage | Gates |
 |---|---|
 | pre-commit (short, blocks the commit) | `ruff check` (`ruff.toml`), 150-line cap per `ontology/schema/*.yaml` module, Mermaid diagrams, bound instances |
 | post-commit (opt-in only) | the complete synchronous `scripts/quality_gate.sh` manifest, including short gates |
-| pre-push | only the post-commit gate's receipt |
+| pre-push | none by default; no local receipt required |
 | CI | full manual manifest, flake launcher tests, boss mutation suite and its evidence guard |
 
 The schema-module cap and the LinkML test run mirror the `starflake/design` gate; its ruff
@@ -35,7 +35,7 @@ bash scripts/gate.sh start [rev]  # default HEAD; zero means queued/already clai
 bash scripts/gate.sh check [rev]  # zero only for a validated pass of this exact tree
 ```
 
-The pre-push hook checks `PRE_COMMIT_TO_REF`, not an unrelated checkout's HEAD. A different
+If explicitly installed, the legacy pre-push hook checks `PRE_COMMIT_TO_REF`, not an unrelated checkout's HEAD. A different
 commit with an identical tree reuses its pass; a different tree needs its own run. One gate
 runs at a time across all worktrees; other live owners remain `queued`, not interrupted.
 The suite enters the locked Nix environment itself, including outside `nix develop`.

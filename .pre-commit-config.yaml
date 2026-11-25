@@ -1,4 +1,4 @@
-default_install_hook_types: [pre-commit, pre-push]
+default_install_hook_types: [pre-commit]
 # Short gates run at commit. CI runs the full manifest; the background launcher is opt-in.
 # Host and CI run this same complete manual manifest synchronously.
 default_stages: [manual]
