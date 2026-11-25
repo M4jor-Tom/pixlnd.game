@@ -124,19 +124,32 @@ is useful diagnostically but does not publish a host pass receipt.
    This includes full-original-input/roundtrip, root, mapped-element/range-closure,
    native determinism and consumer-boundary checks; existing family/mutation/limitation
    tests remain included. Process boundaries do not bound memory inside a large module.
-5. `ontology-schema-lint` runs native `linkml-lint --config .linkmllint.yaml ontology/schema`
-   exactly once, as an always-run manual-stage hook, with 330s child timeout inside Nix
-   and the locked Python environment. Native defaults reject warnings and errors;
-   module-local imports/metadata are checked, not just the aggregate entry. No warning
-   allowance, fixing or suppression is selected.
+5. `ontology-schema-lint` runs `scripts/ontology_lint.py` once as an always-run
+   manual-stage hook in the locked Python environment. Native `get_yaml_files`
+   discovers every physical YAML root under `ontology/schema`, including the aggregate
+   and unimported modules, with native suffix/dotfile/config-file inclusion rules.
+   Exactly two worker processes use native `Linter.lint(path, fix=False)` with the
+   unchanged `.linkmllint.yaml` recommended/naming policy, default metamodel validation
+   and fresh root-specific views. Only scheduling changes; no merged-view/custom-rule
+   cache replaces module-local import, recommended-metadata or PV-naming checks.
+   Native formatters retain diagnostics; scheduled/completed root lines expose coverage.
+   Errors exit2, otherwise warnings exit1, otherwise0. Empty/duplicate discovery,
+   worker exceptions/crashes and missing/mismatched results fail closed. Ordinary native
+   findings do not skip remaining roots. One unchanged **330s total** external timeout
+   includes startup, scheduling, reporting and worker shutdown—not330s per root.
+   `tests/test_ontology_lint.py` compares complete native sequential/parallel diagnostic
+   Counters on tiny fixtures and checks discovery, zero-diagnostic admission, two-worker
+   scheduling and failure propagation. This is not a whole-directory performance pass.
 
 Task9's [scoped proof commands](ontology/phase-1-coverage.md#standalone-checks) retain
-finite child/caller budgets for native directory lint, the covering schema suite,
-two-raw-copy/full-output determinism and the boundary check. They require a separately
-selected safe execution route while the host OOM/guardian-drain boundary is unresolved.
-The shared manual/CI manifest still has no suite-wide cutoff. Adding checks is not a
-native pass: prior partitions/module lint and source-only review do not close Task9's
-final directory/full-schema/determinism/shared-Quality or independent CI gates.
+finite child/caller budgets for lint, focused two-raw-copy/full-output determinism and
+the boundary check. The covering ontology checks use the current per-module process
+route, with no overall suite cutoff; the old monolithic diagnostic is not that route.
+They require a separately selected safe execution route while the host OOM/guardian-drain
+boundary is unresolved. Actual Quality run45632372531 failed on completion checks,
+sequential lint diagnostics/timeout and outer generated-UID dirt. Focused corrections
+and tiny fixture equivalence do not close the corrected-tree full-directory,
+full-schema/determinism/shared-Quality or independent CI gates.
 
 The first two use the same `flake.lock`-pinned Godot, gdtoolkit and pre-commit packages.
 `flake.nix` additionally pins gdmetrics-g4 v1.6.1 by source commit and content hash,

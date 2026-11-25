@@ -109,12 +109,11 @@ def assert_mapping(test, rows, obligations, view):
     test.assertEqual(set(rows), obligations, "Source obligations and completion map differ")
     modules = {Path(s.source_file).name: s for s in view.all_schema() if s.source_file}
     for source, (addresses, selectors) in rows.items():
-        with test.subTest(source=source):
-            for address in addresses:
-                assert_element(test, view, modules, address)
-            for selector in selectors:
-                module = selector.split(".", 1)[0]
-                test.assertIn(selector, test_selectors(module), source)
+        for address in addresses:
+            assert_element(test, view, modules, address)
+        for selector in selectors:
+            module = selector.split(".", 1)[0]
+            test.assertIn(selector, test_selectors(module), source)
 
 
 def branches(expression):
@@ -123,7 +122,7 @@ def branches(expression):
 
 def assert_slot_expression(test, view, slot, known, enclosing=None):
     effective = slot.range or (enclosing.range if enclosing else None)
-    if effective or branches(slot):
+    if effective or enclosing is None:
         assert_ranges(test, slot, known, effective)
     else:
         # A condition can constrain a union-typed slot without choosing a union arm.
@@ -133,7 +132,7 @@ def assert_slot_expression(test, view, slot, known, enclosing=None):
         owner = slot.range_expression.is_a or effective
         test.assertIn(owner, view.all_classes())
         assert_class_expression(test, view, slot.range_expression, owner, known)
-    context = slot if slot.range or branches(slot) else enclosing
+    context = slot if slot.range or enclosing is None else enclosing
     for member in (slot.has_member, slot.all_members):
         if member:
             assert_slot_expression(test, view, member, known, context)
@@ -164,17 +163,19 @@ def assert_range_closure(test, view):
         assert_slot_expression(test, view, slot, known)
         if slot.domain:
             test.assertIn(slot.domain, classes)
-    for name, cls in classes.items():
-        with test.subTest(owner=name):
-            assert_class_ranges(test, view, cls, known)
+    for cls in classes.values():
+        assert_class_ranges(test, view, cls, known)
 
 
 def assert_class_ranges(test, view, cls, known):
     for target in ([cls.is_a] if cls.is_a else []) + cls.mixins + cls.union_of:
         test.assertIn(target, view.all_classes())
     induced = {slot.name: slot for slot in view.class_induced_slots(cls.name)}
+    declared = set(view.all_slots(attributes=False))
+    for ancestor in view.class_ancestors(cls.name):
+        declared.update(view.get_class(ancestor).attributes)
     for attached in cls.slots:
-        test.assertIn(attached, view.all_slots(attributes=False))
+        test.assertIn(attached, declared, (cls.name, attached))
     for slot in induced.values():
         assert_slot_expression(test, view, slot, known)
     for slot in list(cls.attributes.values()) + list(cls.slot_usage.values()):
@@ -189,7 +190,127 @@ def assert_class_ranges(test, view, cls, known):
                 assert_class_expression(test, view, expression, cls.name, known)
 
 
+def predicate_schema(operator, union=False):
+    value = {"any_of": [{"range": "number"}, {"range": "text"}]} if union else {"range": "number"}
+    return SchemaDefinition(
+        id="https://example.org/predicates", name="predicates",
+        types={"number": {"base": "float", "uri": "xsd:double"}, "text": {"base": "str", "uri": "xsd:string"}},
+        classes={"owner": {"attributes": {"value": value}, "rules": [{"postconditions": {
+            "slot_conditions": {"value": {operator: [{"none_of": [{"equals_number": 0}]}]}}}}]}})
+
+
 class SchemaCompletionContracts(unittest.TestCase):
+    def test_boolean_predicates_preserve_scalar_and_union_context(self):
+        for union in (False, True):
+            for operator in ("any_of", "exactly_one_of", "all_of", "none_of"):
+                schema = predicate_schema(operator, union)
+                with self.subTest(union=union, operator=operator):
+                    assert_range_closure(self, SchemaView(schema))
+                    bad = deepcopy(schema)
+                    condition = bad.classes["owner"].rules[0].postconditions.slot_conditions["value"]
+                    getattr(condition, operator)[0].none_of[0].range = "missing"
+                    with self.assertRaises(AssertionError):
+                        assert_range_closure(self, SchemaView(bad))
+        for value in ({}, {"any_of": [{"range": "number"}, {}]}):
+            schema = SchemaDefinition(id="https://example.org/untyped", name="untyped",
+                                      slots={"value": value}, types={"number": {"base": "float", "uri": "xsd:double"}})
+            with self.subTest(untyped=value), self.assertRaises(AssertionError):
+                assert_range_closure(self, SchemaView(schema))
+
+    def test_member_range_expressions_preserve_predicate_context(self):
+        for member in ("has_member", "all_members"):
+            schema = SchemaDefinition(
+                id="https://example.org/members", name="members",
+                types={"number": {"base": "float", "uri": "xsd:double"}},
+                classes={"row": {"attributes": {"value": {"range": "number"}}},
+                         "owner": {"attributes": {"rows": {"range": "row", "multivalued": True}},
+                                   "rules": [{"postconditions": {"slot_conditions": {"rows": {
+                                       member: {"range_expression": {"slot_conditions": {"value": {
+                                           "none_of": [{"equals_number": 0}]}}}}}}}}]}})
+            with self.subTest(member=member):
+                assert_range_closure(self, SchemaView(schema))
+                bad = deepcopy(schema)
+                condition = bad.classes["owner"].rules[0].postconditions.slot_conditions["rows"]
+                getattr(condition, member).range_expression.slot_conditions["value"].none_of[0].range = "missing"
+                with self.assertRaises(AssertionError):
+                    assert_range_closure(self, SchemaView(bad))
+
+    def test_attachments_require_an_applicable_declaration(self):
+        attribute = {"value": {"range": "text"}}
+        positives = [
+            {"owner": {"attributes": attribute}},
+            {"owner": {"slots": ["value"], "attributes": attribute}},
+            {"parent": {"attributes": attribute}, "owner": {"is_a": "parent", "slots": ["value"]}},
+            {"parent": {"mixin": True, "attributes": attribute}, "owner": {"mixins": ["parent"], "slots": ["value"]}},
+        ]
+        negatives = [
+            {"owner": {"slots": ["value"]}},
+            {"owner": {"slots": ["value"]}, "other": {"attributes": attribute}},
+            {"owner": {"slots": ["value"], "slot_usage": attribute}},
+        ]
+        for classes in positives:
+            with self.subTest(positive=classes):
+                schema = SchemaDefinition(id="https://example.org/attachments", name="attachments", classes=deepcopy(classes),
+                                          types={"text": {"base": "str", "uri": "xsd:string"}})
+                assert_range_closure(self, SchemaView(schema))
+        for classes in negatives:
+            with self.subTest(negative=classes), self.assertRaises((AssertionError, ValueError)):
+                schema = SchemaDefinition(id="https://example.org/attachments", name="attachments", classes=deepcopy(classes),
+                                          types={"text": {"base": "str", "uri": "xsd:string"}})
+                assert_range_closure(self, SchemaView(schema))
+        schema = SchemaDefinition(id="https://example.org/domain", name="domain",
+                                  types={"text": {"base": "str", "uri": "xsd:string"}},
+                                  slots={"value": {"range": "text", "domain": "missing"}})
+        with self.assertRaises(AssertionError):
+            assert_range_closure(self, SchemaView(schema))
+
+    def test_actual_predicates_and_artifact_declarations_remain_typed(self):
+        view = source_view()
+        restore = view.induced_slot("saved-rubble-restore-at", "saved-rubble")
+        self.assertEqual((restore.range, restore.minimum_value), ("double", 0))
+        condition = view.get_class("saved-rubble").rules[0].postconditions.any_of[1].slot_conditions["saved-rubble-restore-at"]
+        self.assertEqual((condition.minimum_value, condition.none_of[0].equals_number), (0, 0))
+        self.assertEqual(view.induced_slot("item-upgrade-material", "item-upgrade").range, "material")
+        for branch, material in zip(view.get_class("item").all_of[1:], ("wood", "iron"), strict=True):
+            condition = branch.any_of[0].slot_conditions["item-upgrades"].all_members.range_expression.slot_conditions["item-upgrade-material"]
+            self.assertEqual(condition.none_of[0].equals_string, material)
+        artifact = view.get_class("artifact")
+        self.assertIn("traversal-kind", artifact.slots)
+        selector = artifact.attributes["traversal-kind"]
+        self.assertEqual((selector.range, selector.slot_uri, selector.required),
+                         ("ArtifactTraversalKind", "pixlnd:artifact/traversal-kind", True))
+        self.assertEqual(set(view.get_enum("ArtifactTraversalKind").permissible_values),
+                         {"climb_speed", "swim_speed", "diving_skill", "ride_speed", "glide_speed", "sail_speed", "light_radius"})
+
+    def test_runtime_cost_declaring_root_imports_exact_enum_owner(self):
+        path = ROOT / "ontology/schema/design-combat-runtime-cost-strike.yaml"
+        raw = yaml.safe_load(path.read_text())
+        self.assertIn("associations-crafting-costs", raw["imports"])
+        view = SchemaView(str(path))
+        for resource in ("mp", "stamina"):
+            slot = view.induced_slot("runtime-cost-" + resource, "runtime-cost")
+            self.assertEqual([arm.range for arm in slot.any_of], ["double", "all-resource"])
+            self.assertEqual(slot.any_of[0].minimum_value, 0)
+        self.assertEqual(view.induced_slot("runtime-cost-mp", "runtime-cost").any_of[0].maximum_value, 100)
+        enum = view.get_enum("all-resource")
+        self.assertEqual((enum.from_schema, enum.enum_uri, set(enum.permissible_values)),
+                         ("https://w3id.org/pixlnd/associations/crafting-costs", "pixlnd:all-resource", {"all"}))
+        assert_range_closure(self, view)
+
+    def test_alpha_block_declaring_root_imports_exact_reference_owner(self):
+        path = ROOT / "ontology/schema/structured-world-block-sources.yaml"
+        raw = yaml.safe_load(path.read_text())
+        self.assertIn("world-catalog-block-terrain", raw["imports"])
+        view = SchemaView(str(path))
+        slot = view.induced_slot("id", "alpha-block-source-row")
+        self.assertEqual((slot.range, slot.alias, slot.required), ("block-type", "id", True))
+        block = view.get_class("block-type")
+        self.assertEqual((block.from_schema, block.class_uri),
+                         ("https://w3id.org/pixlnd/world-catalog/block-terrain", "pixlnd:block-type"))
+        self.assertEqual(view.induced_slot("id", "block-type").range, "string")
+        self.assertEqual(view.get_class("alpha-block-source-entry").attributes["key"].pattern, "^[0-9]+$")
+        assert_range_closure(self, view)
+
     def test_pet_cage_target_condition_preserves_item_reference(self):
         raw = yaml.safe_load((ROOT / "ontology/schema/entities-pet.yaml").read_text())
         schema = SchemaDefinition(**raw)  # Declaring module only; no imported graph or induction.

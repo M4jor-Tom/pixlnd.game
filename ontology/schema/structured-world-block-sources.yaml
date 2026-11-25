@@ -8,6 +8,7 @@ imports:
 - linkml:types
 - structured-world-block-catalog
 - structured-world-block-cub-format
+- world-catalog-block-terrain
 default_range: string
 classes:
   block-types-source:

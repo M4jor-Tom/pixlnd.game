@@ -36,7 +36,7 @@ repos:
       - id: ontology-schema-lint
         name: Native LinkML directory lint (zero diagnostics)
         verbose: true
-        entry: nix develop --no-update-lock-file -c timeout 330 uv run --locked --project tools/ontology linkml-lint --config .linkmllint.yaml ontology/schema
+        entry: nix develop --no-update-lock-file -c timeout 330 uv run --locked --project tools/ontology python scripts/ontology_lint.py
         language: system
         pass_filenames: false
         always_run: true
