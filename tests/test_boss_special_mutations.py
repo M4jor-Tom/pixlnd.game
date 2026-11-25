@@ -85,6 +85,13 @@ def copy_project(source, destination):
         target.chmod(stat.S_IMODE(original.stat().st_mode))
         assert not target.is_symlink() and not os.path.samefile(original, target)
     assert not (destination / ".git").exists()
+    # The snapshot excludes .godot; build its generated class cache before the pristine test.
+    with (destination.parent / "import.log").open("w+") as log:
+        subprocess.run(["nix", "develop", "path:" + str(destination), "--no-update-lock-file", "-c",
+                        "timeout", "300", "godot", "--headless", "--import"], cwd=destination,
+                       stdout=log, stderr=subprocess.STDOUT, check=True)
+        log.seek(0)
+        assert not any(line.startswith(ERRORS) for line in log), log.name
 
 
 def owned_target(project, source, relative):

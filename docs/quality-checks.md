@@ -8,14 +8,14 @@ From this checkout, run once (and again after cloning):
 nix develop --no-update-lock-file -c pre-commit install
 ```
 
-The configuration installs pre-commit, post-commit and pre-push hooks:
+The default install keeps pre-commit and pre-push. In older checkouts, run `nix develop -c pre-commit uninstall --hook-type post-commit` once to detach the background launcher.
 
 | Stage | Gates |
 |---|---|
 | pre-commit (short, blocks the commit) | `ruff check` (`ruff.toml`), 150-line cap per `ontology/schema/*.yaml` module, Mermaid diagrams, bound instances |
-| post-commit (long, background) | the complete synchronous `scripts/quality_gate.sh` manifest, including short gates |
+| post-commit (opt-in only) | the complete synchronous `scripts/quality_gate.sh` manifest, including short gates |
 | pre-push | only the post-commit gate's receipt |
-| CI | every gate of both stages, synchronously |
+| CI | full manual manifest, flake launcher tests, boss mutation suite and its evidence guard |
 
 The schema-module cap and the LinkML test run mirror the `starflake/design` gate; its ruff
 rules are narrowed to what this repo passes (see `ruff.toml`). Short checks also run in
@@ -26,7 +26,7 @@ module file stays as the name other modules import. A part's `id` nests under it
 (`…/pixlnd/world/land` for `world-land.yaml`), which is how `load_module` and `copy_schema` in
 `tests/test_ontology_schema.py` read or copy a module as one document for mutation tests.
 
-Each commit queues the complete gate on an exact detached commit, in a clean Git worktree.
+A manually started gate (or opt-in post-commit hook) uses an exact detached commit in a clean Git worktree.
 Use the checked-out branch with the intended changes committed (currently
 `feat/linkml-schema-authoring`); uncommitted changes are not certified.
 
@@ -119,8 +119,8 @@ is useful diagnostically but does not publish a host pass receipt.
 3. `scripts/ontology_mermaid.sh` (pre-commit hook): regenerates `docs/ontology/mermaid/`
    with LinkML's `gen-erdiagram` and `gen-mermaid-class-diagram` from the `uv.lock`-pinned
    `tools/ontology` environment, failing on stale diagrams (e.g. committed with `--no-verify`).
-4. `python -m unittest discover -s tests -p 'test_ontology*.py'` in the same `tools/ontology`
-   environment: the LinkML schema and instance tests.
+4. Every `tests/test_ontology*.py` module runs under unittest discovery in its own Python
+   process in the same `tools/ontology` environment, releasing memory between modules.
 
 The first two use the same `flake.lock`-pinned Godot, gdtoolkit and pre-commit packages.
 `flake.nix` additionally pins gdmetrics-g4 v1.6.1 by source commit and content hash,
@@ -152,8 +152,9 @@ against the three ordinary allocations and preserves the special and boot limits
 Cognitive analysis also uses the ordinary 1719-second deadline; it was not part of
 that earlier calibration. These limits apply separately to each invocation, locally and in CI.
 There is no local suite-wide cutoff. The live-logging fixture waits for the child to start
-before checking whether output is visible while it is held. The CI job still has its
-90-minute infrastructure limit, including setup, process exit and reporting.
+before checking whether output is visible while it is held. The CI workflow sets no
+custom job deadline; the hosted runner's own limit still applies. Fixture handshakes
+and cleanup checks retain their liveness bounds.
 Nonzero exits, timeouts, `SCRIPT ERROR`, engine `ERROR` and `ontology INVALID`
 output all fail the gate, including when Godot exits zero.
 

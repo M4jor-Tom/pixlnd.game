@@ -1,5 +1,9 @@
 # Handoff — current pending work
 
+## Host memory exhaustion — do not restart the full local gate
+
+`fbd39ca`'s post-commit LinkML suite was interrupted at 23:48:18 UTC on Nov 24, coincident with a global OOM killing Python 3.12 (13.3 GiB resident, only 124 KiB swap free). Its terminal scope also stopped. The last test logged was `StructuredWorldTests.test_same_contract_metadata_mutations`; no evidence identifies the allocating test or object. The later 06:39 UTC power-off was requested via `systemctl`, not an immediate kernel reboot. The worker recorded exit 143, unknown command exit, and missing `drained.json`; the shell's zero is not a pass. Preserve the attempt and detached checkout. Before any new local full gate, isolate its RAM/swap consumption and address the missing cleanup proof without fabricating a receipt. Evidence: `/home/theta/.pi-game-dev/recovery/pixlnd-host-oom-20261125.z4x84QjR/`.
+
 ## Phase 1 — stop before Task 9
 
 Task 8's consumer boundary passed focused tests and independent review. Publication still requires the full post-commit Quality receipt for the exact tree; no hook exemption. Execution manifest and focused receipts: `/home/theta/.pi-game-dev/recovery/pixlnd-task8-restart.CJzfJiF9/resume.b8npyQ/`. Wait for the owner before Task 9.

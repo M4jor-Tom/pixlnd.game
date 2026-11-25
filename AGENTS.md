@@ -43,9 +43,8 @@ The [quality gate](docs/quality-checks.md) runs the same formatting, essential l
 checks locally before pushes and in GitHub Actions. Install once per clone with
 `nix develop --no-update-lock-file -c pre-commit install`; run manually with
 `bash scripts/quality_gate.sh` (the same complete manual manifest as CI).
-Short gates (ruff, LinkML module size, generated diagrams/instances) block the commit; every
-commit queues the complete gate on its exact tree (`bash scripts/gate.sh start [rev]`, not a
-pass). `bash scripts/gate.sh check [rev]` shows state/log and succeeds only for a validated
+Short gates (ruff, LinkML module size, generated diagrams/instances) block the commit.
+Host commits do not queue the full suite; CI runs it. Explicit `bash scripts/gate.sh start [rev]` queues a run, not a pass. `bash scripts/gate.sh check [rev]` shows state/log and succeeds only for a validated
 same-tree pass; pre-push uses `PRE_COMMIT_TO_REF`. Attempts/logs are retained under the common
 Git dir's `pixlnd-gate/v4/<tree>/`; the Linux host needs `python3` on PATH for the lifetime
 guardian (the suite's pinned interpreter is unchanged). After interruption inspect evidence

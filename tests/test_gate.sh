@@ -344,7 +344,10 @@ grep -q 'exit code: 23' "$logs/logging-late-failure.log"
 grep -q '^OK$' "$logs/logging-late-failure.log"
 # The original successful Python log is still present, not truncated by the next attempt.
 grep -q 'exit_status=0' "${python_log%.log}.status"
+# A later passing module must run without masking the first module's late exit.
+printf 'import unittest\nclass Later(unittest.TestCase):\n    def test_later(self): pass\n' >tests/test_ontology_z_later.py
 expect_exit 23 logging-no-dir env -u QUALITY_GATE_LOG_DIR bash scripts/ontology_tests.sh
+grep -Fq 'test_later (test_ontology_z_later.Later.test_later) ... ok' "$logs/logging-no-dir.log"
 rm late-failure
 mkdir "$logs/full-output"
 ln -s /dev/full "$logs/full-output/ontology-tests.log"

@@ -3,7 +3,16 @@
 set -uo pipefail
 cd "$(dirname "$0")/.." || exit
 run_tests() {
-  uv run --locked --project tools/ontology python -u -m unittest discover -v -s tests -p 'test_ontology*.py'
+  local file rc status=0
+  # Release LinkML's process memory between modules without omitting any test.
+  for file in tests/test_ontology*.py; do
+    [[ -f $file ]] || return 1
+    uv run --locked --project tools/ontology python -u -m unittest discover -v -s tests -p "${file##*/}" || {
+      rc=$?
+      ((status != 0)) || status=$rc
+    }
+  done
+  return "$status"
 }
 if [[ -z ${QUALITY_GATE_LOG_DIR:-} ]]; then
   run_tests

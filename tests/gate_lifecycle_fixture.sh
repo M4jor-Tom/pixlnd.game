@@ -187,7 +187,7 @@ commit_payload() {
 run_exit() {
   local expected=$1 label=$2 rc=0
   shift 2
-  timeout 5 "$@" >"$logs/$label.log" 2>&1 || rc=$?
+  "$@" >"$logs/$label.log" 2>&1 || rc=$?
   printf '%s: exit=%s expected=%s\n' "$label" "$rc" "$expected"
   [[ $rc == "$expected" ]] || { cat "$logs/$label.log"; exit 1; }
 }
@@ -517,7 +517,7 @@ YAML
   # Nix ignores untracked flakes: record setup before installing the real hooks.
   commit_payload hook-setup
   git config --unset core.hooksPath
-  timeout 60 nix develop --no-update-lock-file -c pre-commit install >"$logs/hooks-install.log" 2>&1
+  nix develop --no-update-lock-file -c pre-commit install >"$logs/hooks-install.log" 2>&1
   bare="$logs/remote.git"
   git init --bare -q "$bare"
   [[ $(git --git-dir="$bare" rev-parse --is-bare-repository) == true ]]

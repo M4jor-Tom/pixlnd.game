@@ -8,17 +8,23 @@ permissions:
 jobs:
   quality:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
-    env:
-      QUALITY_GATE_LOG_ROOT: ${{ runner.temp }}/quality-logs
     steps:
       - uses: actions/checkout@v7
       - uses: cachix/install-nix-action@75c75c31ebece974e48ebc36b4ad125bd97bd97b # 31.11.3
-      - name: Run the full quality gate (every pre-commit and post-commit gate, synchronously)
-        run: bash scripts/quality_gate.sh
+      - name: Run the full quality gate
+        run: QUALITY_GATE_LOG_ROOT="$RUNNER_TEMP/quality-logs" bash scripts/quality_gate.sh
+      - name: Flake launcher tests
+        if: ${{ !cancelled() }}
+        run: bash tests/test_flake.sh
+      - name: Boss mutation evidence guard
+        if: ${{ !cancelled() }}
+        run: python3 -B tests/test_boss_special_mutation_evidence.py
+      - name: Boss mutation tests
+        if: ${{ !cancelled() }}
+        run: python3 -B tests/test_boss_special_mutations.py --evidence "$RUNNER_TEMP/boss-mutations"
       - name: Retained Python progress on failure
         if: failure()
         run: |
-          if [[ -d "$QUALITY_GATE_LOG_ROOT" ]]; then
-            find "$QUALITY_GATE_LOG_ROOT" -name ontology-tests.log -type f -print -exec tail -n 100 {} \;
+          if [[ -d "$RUNNER_TEMP/quality-logs" ]]; then
+            find "$RUNNER_TEMP/quality-logs" -name ontology-tests.log -type f -print -exec tail -n 100 {} \;
           fi
