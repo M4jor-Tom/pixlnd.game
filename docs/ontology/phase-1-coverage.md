@@ -3,24 +3,37 @@
 This is an anchor-to-element/test map, not a second definition of properties or
 relations. YAML declarations are authoritative for structure. Tasks 1–8 are accepted
 prior source work; they are not work to replay. Task 9 adds completion oracles,
-residual structural handoffs and native lint wiring. **This is corrected source,
-not phase-1 completion or a successful Quality/CI gate.** Actual Quality run45632372531
-on `24e7ee8` ran all45 ontology modules:44 passed, including full-input/determinism,
-while completion recorded31 failures and sequential directory lint emitted nine errors
-then timed out at330s. Outer generated-UID dirt also failed cleanliness. These RED
-receipts remain authoritative; focused correction proof is not corrected-tree covering
-lint/schema/determinism/shared-Quality or integration acceptance.
+residual structural handoffs and native lint wiring. **Phase-1 structural source is
+verified and accepted** at commit `a9c5ce1d0e4537d70f72fe8e6df4a3f1c7b21a7e`,
+tree `26eb36fa5b0f04e9db53b71b251393561c8f4229`:
+[Quality run 45695497179, attempt 1](https://github.com/M4jor-Tom/pixlnd.game/actions/runs/45695497179)
+succeeded. All 223 physical lint roots completed exactly once with zero diagnostics in
+248.82s under the unchanged 330s limit. All 46 ontology modules / 323 methods passed,
+with no omissions or skips; the shared manifest passed static/runner checks, all 88
+Godot invocations, isolated saves and boot. Its actual outer exit was 0 after 7649s,
+with clean checked inputs/outputs; the remaining workflow steps, including boss mutation
+checks, also succeeded. Evidence and independent review:
+`/home/theta/.pi-game-dev/recovery/pixlnd-task9-20261125.o2qfnF9b/`,
+`worktree-resume/final-verification/combined-execution-absolute-python-20261125T202810/`
+and `final-evidence-integration-review.md`.
+
+This is source-pinned verification, not a CI receipt for later documentation or final
+phase-completion acceptance. Existing working GDScript remains; no C# cutover, runtime,
+FK/inverse/full-wire enforcement or new gameplay permission follows. NVIDIA hardware boot
+was explicitly skipped; the named Android cognitive deferral remains. Off-host success
+resolves neither host import/collision reliability nor the local OOM/lost-drain and older
+missing-exit-receipt boundaries in [HANDOFF](../HANDOFF.md). Historical RED/partial receipts
+remain authoritative at their original pins, not retroactively green.
 
 **Pet target restriction authored:** `entities-pet.yaml:pet-cage` retains its
 required scalar `item` reference and declares
 `range_expression.slot_conditions.item-type` with `alias: type` and
 `equals_string: pet`. The bounded raw/native declaring-module regression
 `SchemaCompletionContracts.test_pet_cage_target_condition_preserves_item_reference`
-passes; the previous missing-declaration blocker is closed at that scope only.
-This is not native FK resolution or target-type enforcement proof. The failed CI
-also passed the pet metadata and full-input methods, not an overall gate. The
-[`pet`](../../ontology/domain/3_Classes.md#pet) source scopes and turtle-shell
-qualification remain prose.
+passes in the accepted a9 covering run above, whose completion module passed all 11 tests.
+The missing-declaration blocker is closed; this is not native FK resolution or target-type
+enforcement proof. The [`pet`](../../ontology/domain/3_Classes.md#pet) source scopes and
+turtle-shell qualification remain prose.
 
 All family/checkpoint narratives below retain their **historical source pins and
 qualifications**. Statements that a later task was unselected/incomplete describe
@@ -81,19 +94,21 @@ Existing projection tests are not retroactively full-source contracts.
 reusable native generator per copy, preserving every source root plus save-data,
 full native options and exact full serialized-output equality. Outputs are compared
 as temporary files after root guards, not retained as 84 generators/strings. This
-is the approved resource-bounded equivalent of the plan snippet, **not a measured
-memory/time qualification**; it still performs 84 serializations for the 41 current
-inputs plus save-data. No cache clearing, output filtering or schema rewriting is
-introduced. This method passed on `24e7ee8` in the otherwise failed CI; that retained
-source-pinned result is not a corrected-tree covering-gate or resource qualification.
+is the approved resource-bounded equivalent of the plan snippet; it still performs
+84 serializations for 42 roots (41 current inputs plus save-data). No cache clearing, output
+filtering or schema rewriting is introduced. The accepted a9 run passed the full 24-method
+input-contract module, including this method, in 356.546s. That is not a separate receipt
+for the standalone 600s command or former 3600s command. The CI manifest's largest-child
+RSS was 6218820 KiB, not summed process-tree RSS or a local 2-GiB/host-RAM-fit guarantee;
+it does not diagnose or resolve the host OOM.
 
 ## Accepted anchor map (bounded starting coverage)
 
 Paths below are relative to `ontology/`; test paths are relative to `tests/`.
-This map references declarations, not copied field/type definitions. Each family
-must extend it to every approved source path and convertible facet as authored.
-Complete source envelopes, controls/profiles, encounter contracts and §6
-configuration coverage are still a frontier, not silently admitted by projections.
+This historical bounded starting map references declarations, not copied field/type
+definitions. Later family sections and the completion map extend it to complete source
+envelopes, controls/profiles, encounter contracts and §6 configuration. Its original
+projection scopes remain qualified; current covering proof does not broaden them.
 
 | Source anchor/path | Explicit YAML element(s) | Existing contract evidence |
 |---|---|---|
@@ -150,7 +165,7 @@ range. Structural tests do not reconcile source data or prove FK existence.
 
 ## Native lint policy and diagnostic frontier
 
-**Current correction frontier:** the two missing direct declaring-owner edges are
+**Pre-a9 correction history:** the two missing direct declaring-owner edges were
 `design-combat-runtime-cost-strike → associations-crafting-costs` and
 `structured-world-block-sources → world-catalog-block-terrain`. Their focused physical-root
 native CLI checks changed from two/one undefined-range errors to zero problems each;
@@ -172,10 +187,12 @@ fixing disabled. Tiny fixtures in `test_ontology_lint.py` pass complete
 Counter(root,rule,severity,message) equality against native sequential lint, physical
 discovery/completion, module-local warning/PV checks, malformed root/import and undefined
 range checks, warning/error exits and fail-closed worker/protocol cases. The hook keeps
-one330s total deadline across startup through shutdown. **No corrected-tree whole-directory
-run or330s directory performance/zero-diagnostic proof has been obtained.** The original
-failed directory/CI receipts are not replaced by these focused GREEN results. Historical
-family frontiers below retain their original pins; do not read them as current passes.
+one330s total deadline across startup through shutdown. The focused correction evidence
+preceded covering verification. At `a9c5ce1d0e4537d70f72fe8e6df4a3f1c7b21a7e` /
+tree `26eb36fa5b0f04e9db53b71b251393561c8f4229`, Quality run 45695497179 attempt 1
+completed all 223 physical roots exactly once, with zero diagnostics in 248.82s under
+that unchanged deadline. Original failed directory/CI receipts and historical family
+frontiers below retain their original pins; they are not retroactively current passes.
 
 `.linkmllint.yaml` extends native recommended rules. Kebab class/slot naming
 preserves accepted identifiers. Exact exclusions are naming-only: existing
@@ -196,9 +213,10 @@ At the historical Task1 checkpoint, the directory command aborts on module-local
 undeclared slots; entry-only lint is insufficient. The default entry reports 733 naming warnings; the
 configured entry is clean, but nine standalone modules still abort during range
 induction. Twelve finish, with retained module-local findings. This is **not a
-complete native-rule baseline or a passing directory gate**. The pending blocker
-is recorded in `docs/HANDOFF.md`; complete raw per-module diagnostics and
-unobserved-rule accounting are retained in managed Task1 evidence.
+complete native-rule baseline or a passing directory gate** at that checkpoint.
+That historical directory blocker is closed only by the current a9 covering proof above;
+complete raw per-module diagnostics and unobserved-rule accounting remain retained in
+managed Task1 evidence.
 
 Diagnostic lead ownership (not permission to fix unrelated source):
 
