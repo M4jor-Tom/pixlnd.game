@@ -54,6 +54,12 @@ Version tags `A` (alpha 0.1.x), `S` (Steam 1.0), `Ω` (Omega, announced), `X` (c
 `?` on a source value marks uncertainty; [§7](domain/7_Open_points_for_validation.md#7-open-points-for-validation) separates active hybrid questions from
 reference-only gaps. In type notation it means optional/nullable, not a missing design decision.
 
+## Regenerate Godot domain classes
+
+From the repo root, run `nix develop -c regenerate-domain` (or `regenerate-domain` inside the dev shell).
+This renders `schema/pixlnd.yaml` into `game/generated/domain/` in place. Review `git diff -- game/generated/domain/`
+before committing: the checked-in scripts have known differences from a fresh render.
+
 ## Validate JSON
 
 ```sh

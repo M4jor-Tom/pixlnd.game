@@ -9,7 +9,9 @@
     flake = false; # Imported with our nixpkgs below, without nixGL's separate toolchain.
   };
 
-  outputs = { self, nixpkgs, nixgl }:
+  inputs.linkml-gdscript.url = "github:M4jor-Tom/linkml-gdscript";
+
+  outputs = { self, nixpkgs, nixgl, linkml-gdscript }:
     let
       forAll = f: nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ]
         (system: f system nixpkgs.legacyPackages.${system});
@@ -41,7 +43,7 @@
             '');
           };
         });
-      devShells = forAll (_system: pkgs:
+      devShells = forAll (system: pkgs:
         let
           # LinkML's native wheel needs libstdc++ on Linux. Scope it to Python,
           # including uv-created venvs; never alter Godot's library environment.
@@ -67,6 +69,12 @@
             godot_4   # engine + headless validator: godot --headless -s ontology/validate.gd
             nodejs    # ontology edit/cross-ref scripts
             uv        # hash-locked schema dependencies
+            (writeShellScriptBin "regenerate-domain" ''
+              # The generator needs a newer uv build backend than the game's pinned uv.
+              exec ${linkml-gdscript.inputs.nixpkgs.legacyPackages.${system}.uv}/bin/uv run \
+                --project ${linkml-gdscript} --locked --isolated --no-dev --no-editable \
+                gen-gdscript ontology/schema/pixlnd.yaml -d game/generated/domain "$@"
+            '')
             gdb       # native debugger (development tool only)
             pre-commit # shared pre-push / CI gate
             gdtoolkit_4 # GDScript formatting + lint
