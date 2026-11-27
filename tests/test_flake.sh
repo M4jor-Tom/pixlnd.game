@@ -16,16 +16,25 @@ for system in x86_64-linux aarch64-linux aarch64-darwin; do
   nix eval --raw ".#apps.$system.default.program" >/dev/null
 done
 
-if [[ "$(uname -m)" == x86_64 && -r /proc/driver/nvidia/version ]]; then
-  root="$PWD"
-  scratch=$(mktemp -d)
-  trap 'rm -rf "$scratch"' EXIT
-  if ! (cd "$scratch" && timeout 600 nix run --impure "$root#nvidia" -- \
-      --headless --quit-after 1 -- --class=ranger --save-path="$scratch/world.json") >"$scratch/boot.log" 2>&1 ||
-      ! grep -q '^pixlnd:.*; bow dmg ' "$scratch/boot.log"; then
-    cat "$scratch/boot.log"
+root="$PWD"
+scratch=$(mktemp -d)
+trap 'rm -rf "$scratch"' EXIT
+boot() {
+  local app=$1
+  shift
+  mkdir "$scratch/$app"
+  if ! (cd "$scratch/$app" && timeout 600 nix run "$@" "$root#$app" -- \
+      --headless --quit-after 1 -- --class=ranger --save-path="$PWD/world.json") >"$scratch/$app.log" 2>&1 ||
+      grep -Eq '^(SCRIPT ERROR:|ERROR:)' "$scratch/$app.log" ||
+      ! grep -Eq "^pixlnd:.*land '[^']+'.*; bow dmg " "$scratch/$app.log"; then
+    cat "$scratch/$app.log" >&2
     exit 1
   fi
+}
+
+boot default
+if [[ "$(uname -m)" == x86_64 && -r /proc/driver/nvidia/version ]]; then
+  boot nvidia --impure
 else
   printf 'NVIDIA boot skipped: requires x86-64 Linux with a loaded NVIDIA kernel module.\n'
 fi

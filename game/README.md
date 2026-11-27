@@ -165,7 +165,9 @@ Other architecture/test gotchas are in `AGENTS.md`.
 
 ## Nix launchers
 
-`nix run /path/to/pixlnd` selects the bundled game independently of the working directory.
+Run `nix run .` from the checkout, or `nix run /path/to/pixlnd` from elsewhere. Nix imports the
+project at build time and ships the class cache and imported resources with both launchers;
+no editor launch or local `.godot/` directory is required.
 On an x86-64 Linux
 system using Ubuntu or another non-NixOS distribution with a loaded NVIDIA driver, use:
 
@@ -240,7 +242,7 @@ timeout 150 nix develop -c godot --headless -s game/world/test_encounter_clock.g
 timeout 150 nix develop -c godot --headless -s game/world/test_save_data.gd # atomic character/world roundtrip, equipment/skills/spirits, retained worn +40 at level10/refill, new +40 re-equip rejection/progression and restored +32 admission, ordered family diagnostics, absolute recursive equality, validation-before-temp/original-byte protection and classified callback/native-error children
 timeout 150 nix develop -c godot --headless -s game/world/test_saved_runtime.gd # real main/world unload/restart/midnight and empty/independent-hand lifecycle/HUD boots
 
-timeout 900 bash tests/test_flake.sh                            # pure default/platform checks; NVIDIA headless boot if a module is loaded
+timeout 900 bash tests/test_flake.sh                            # platform checks and default packaged boot; NVIDIA boot if a module is loaded
 nix develop -c godot --headless -s ontology/validate.gd            # ontology constraints
 nix develop -c godot --headless -s tests/ontology/test_equipment_config.gd # slot indices/parents, raw item-type/weapon ownership/capacity and Wand/recipe negatives + cumulative diagnostics
 nix develop -c godot --headless -s ontology/test_world_bounds_config.gd # selected finite world scales and missing/malformed parent paths

@@ -18,8 +18,24 @@
     in {
       apps = forAll (system: pkgs:
         let
+          src = pkgs.lib.fileset.toSource {
+            root = ./.;
+            fileset = pkgs.lib.fileset.unions [ ./project.godot ./game ./ontology ];
+          };
+          project = pkgs.runCommand "pixlnd-project" {} ''
+            export HOME="$TMPDIR/home"
+            mkdir -p "$HOME" "$out"
+            cp -R ${src}/. "$out/"
+            chmod -R u+w "$out"
+            cd "$out"
+            set -o pipefail
+            timeout 300 ${pkgs.godot_4}/bin/godot --headless --import 2>&1 | tee "$TMPDIR/import.log"
+            if grep -Eq '^(SCRIPT ERROR:|ERROR:)' "$TMPDIR/import.log"; then exit 1; fi
+            test -s .godot/global_script_class_cache.cfg
+            rm -rf .godot/editor
+          '';
           launcher = pkgs.writeShellScript "pixlnd" ''
-            exec ${pkgs.godot_4}/bin/godot --path "${self}" "$@"
+            exec ${pkgs.godot_4}/bin/godot --path "${project}" "$@"
           '';
         in {
           default = {
